@@ -23,6 +23,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         SDK,
         Examples,
         Tests,
+        Extensions,
+        Tools
     }
 
     /// <summary>
@@ -253,7 +255,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { "Services", MixedRealityToolkitModuleType.Services },
             { "SDK", MixedRealityToolkitModuleType.SDK },
             { "Examples", MixedRealityToolkitModuleType.Examples },
-            { "Tests", MixedRealityToolkitModuleType.Tests }
+            { "Tests", MixedRealityToolkitModuleType.Tests },
+            { "Extensions", MixedRealityToolkitModuleType.Extensions },
+            { "Tools", MixedRealityToolkitModuleType.Tools }
         };
 
         public static bool FindMatchingModule(string path, out MixedRealityToolkitModuleType result)

@@ -3,6 +3,7 @@
 
 using Microsoft.CSharp;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -66,12 +67,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private static readonly string DefaultExtensionNamespace = "Microsoft.MixedReality.Toolkit.Extensions";
         private static readonly string PersistentStateKey = "MRTK_ExtensionServiceWizard_State_Before_Recompilation";
-        private static readonly string DefaultExtensionsFolder = "Assets/MixedRealityToolkit.Extensions";
-        private static readonly string DefaultExtensionsFolderName = "MixedRealityToolkit.Extensions";
-        private static readonly string ServiceTemplatePath = "Assets/MixedRealityToolkit.Tools/ExtensionServiceCreator/Templates/ExtensionScriptTemplate.txt";
-        private static readonly string InspectorTemplatePath = "Assets/MixedRealityToolkit.Tools/ExtensionServiceCreator/Templates/ExtensionInspectorTemplate.txt";
-        private static readonly string InterfaceTemplatePath = "Assets/MixedRealityToolkit.Tools/ExtensionServiceCreator/Templates/ExtensionInterfaceTemplate.txt";
-        private static readonly string ProfileTemplatePath = "Assets/MixedRealityToolkit.Tools/ExtensionServiceCreator/Templates/ExtensionProfileTemplate.txt";
         private static readonly string ScriptExtension = ".cs";
         private static readonly string ProfileExtension = ".asset";
         private static readonly string ServiceNameSearchString = "#SERVICE_NAME#";
@@ -83,6 +78,34 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly string ExtensionNamespaceSearchString = "#NAMESPACE#";
         private static readonly string SampleCodeTemplate = "#INTERFACE_NAME# #SERVICE_NAME# = MixedRealityToolkit.Instance.GetService<#INTERFACE_NAME#>();";
 
+        #endregion
+
+        #region paths
+
+        // todo fix these....
+        private static readonly string DefaultExtensionsFolder = "Assets/MixedRealityToolkit.Extensions";
+        private static readonly string DefaultExtensionsFolderName = "MixedRealityToolkit.Extensions";
+
+        private string ServiceTemplatePath
+        {
+            get => MixedRealityToolkitFiles.MapRelativeFilePath(MixedRealityToolkitModuleType.Tools, "ExtensionServiceCreator/Templates/ExtensionScriptTemplate.txt");
+        }
+
+        private string InspectorTemplatePath
+        {
+            get => MixedRealityToolkitFiles.MapRelativeFilePath(MixedRealityToolkitModuleType.Tools, "ExtensionServiceCreator/Templates/ExtensionInspectorTemplate.txt");
+        }
+
+        private string InterfaceTemplatePath
+        {
+            get => MixedRealityToolkitFiles.MapRelativeFilePath(MixedRealityToolkitModuleType.Tools, "ExtensionServiceCreator/Templates/ExtensionInterfaceTemplate.txt");
+        }
+
+        private string ProfileTemplatePath
+        {
+            get => MixedRealityToolkitFiles.MapRelativeFilePath(MixedRealityToolkitModuleType.Tools, "ExtensionServiceCreator/Templates/ExtensionProfileTemplate.txt");
+        }
+        
         #endregion
 
         #region public properties
