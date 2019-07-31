@@ -43,7 +43,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private void ResetCreator()
         {
             if (creator == null)
+            {
                 creator = new ExtensionServiceCreator();
+            }
 
             creator.ResetState();
         }
@@ -51,7 +53,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private void OnEnable()
         {
             if (creator == null)
+            {
                 creator = new ExtensionServiceCreator();
+            }
 
             creator.LoadStoredState();
         }
@@ -239,11 +243,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Draw crude working indicator so we know it hasn't frozen
             numEllipses++;
             if (numEllipses > 10)
+            {
                 numEllipses = 0;
+            }
 
             string workingIndicator = ".";
             for (int i = 0; i < numEllipses; i++)
+            {
                 workingIndicator += ".";
+            }
 
             EditorGUILayout.LabelField(workingIndicator, EditorStyles.boldLabel);
 
