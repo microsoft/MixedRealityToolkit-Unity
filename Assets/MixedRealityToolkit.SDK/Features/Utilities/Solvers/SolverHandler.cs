@@ -57,8 +57,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         private Handedness trackedHandness = Handedness.Both;
 
         /// <summary>
-        /// If tracking hands or motion controllers, determines which hand(s) are valid attachments. Only None, Left, Right, & Both are valid
+        /// If tracking hands or motion controllers, determines which hand(s) are valid attachments.
         /// </summary>
+        /// <remarks>
+        /// Only None, Left, Right, and Both are valid values
+        /// </remarks>
         public Handedness TrackedHandness
         {
             get { return trackedHandness; }
