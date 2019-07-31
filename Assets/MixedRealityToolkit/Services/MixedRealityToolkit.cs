@@ -732,9 +732,26 @@ namespace Microsoft.MixedReality.Toolkit
             }
 
             if (activeInstance == null)
-            {   // If we don't have an active instance
-                // Choose the first instance in our list
-                activeInstance = setAsActiveInstance ? toolkitInstance : toolkitInstances[0];
+            {
+                // If we don't have an active instance, either set this instance
+                // to be the active instance if requested, or get the first valid remaining instance
+                // in the list.
+                if (setAsActiveInstance)
+                {
+                    activeInstance = toolkitInstance;
+                }
+                else
+                {
+                    for (int i = 0; i < toolkitInstances.Count; i++)
+                    {
+                        if (toolkitInstances[i] != null)
+                        {
+                            activeInstance = toolkitInstances[i];
+                            break;
+                        }
+                    }
+                }
+
                 activeInstance.InitializeInstance();
             }
         }
@@ -1496,7 +1513,7 @@ namespace Microsoft.MixedReality.Toolkit
 #if UNITY_EDITOR
         /// <summary>
         /// Static class whose constructor is called once on startup. Listens for editor events.
-        /// Removes the need for invidual instances to listen for events.
+        /// Removes the need for individual instances to listen for events.
         /// </summary>
         [InitializeOnLoad]
         private static class EditorEventListener
@@ -1511,7 +1528,6 @@ namespace Microsoft.MixedReality.Toolkit
                         case PlayModeStateChange.EnteredEditMode:
                             isApplicationQuitting = false;
                             break;
-
                         case PlayModeStateChange.ExitingEditMode:
                             isApplicationQuitting = false;
                             // Do a profile check
@@ -1524,7 +1540,6 @@ namespace Microsoft.MixedReality.Toolkit
                                 EditorGUIUtility.PingObject(Instance);
                             }
                             break;
-
                         default:
                             break;
                     }
@@ -1567,16 +1582,19 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         private void OnValidate()
         {
-            if (EditorApplication.isPlayingOrWillChangePlaymode)
-            {   // This check is only necessary in edit mode
+            // This check is only necessary in edit mode. This can also get called during player builds as well,
+            // and shouldn't be run during that time.
+            if (EditorApplication.isPlayingOrWillChangePlaymode ||
+                EditorApplication.isCompiling ||
+                BuildPipeline.isBuildingPlayer)
+            {
                 return;
             }
 
             RegisterInstance(this);
         }
-
 #endif // UNITY_EDITOR
 
-#endregion
+        #endregion
     }
 }
