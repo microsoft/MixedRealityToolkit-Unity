@@ -216,7 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     {
                         MixedRealityInputAction inputAction = MixedRealityInputAction.None;
                         int idx = actionId.intValue - 1;
-                        if (idx > 0 && idx < inputActions.Length)
+                        if (idx >= 0 && idx < inputActions.Length)
                         {
                             inputAction = inputActions[idx];
                         }
