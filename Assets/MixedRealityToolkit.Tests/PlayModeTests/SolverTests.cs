@@ -22,8 +22,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class SolverTests : BasePlayModeTests
     {
-        private const float HandOrbitalDistanceThreshold = 2.5f;
+        private const float DistanceThreshold = 1.5f;
+        private const float SolverUpdateWaitTime = 1.0f; //seconds
 
+        /// <summary>
+        /// Internal class used to store data for setup
+        /// </summary>
         protected class SetupData
         {
             public SolverHandler handler;
@@ -32,6 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// Test adding solver dynamically at runtime to gameobject
         /// </summary>
         /// <returns></returns>
         [UnityTest]
@@ -43,6 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// Test solver system's ability to change target types at runtime
         /// </summary>
         /// <returns></returns>
         [UnityTest]
@@ -67,22 +73,23 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Test orbital around head
             testObjects.handler.TrackedTargetType = TrackedObjectType.Head;
 
-            yield return new WaitForSeconds(3.0f);
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
 
-            Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, Vector3.zero), HandOrbitalDistanceThreshold);
+            Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, Camera.main.transform.position), DistanceThreshold);
 
             // Test orbital around custom override
             testObjects.handler.TrackedTargetType = TrackedObjectType.CustomOverride;
-            testObjects.handler.SetTransformOverride(transformOverride.transform);
+            testObjects.handler.TransformOverride = transformOverride.transform;
 
-            yield return new WaitForSeconds(3.0f);
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
 
-            Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, customTransformPos), HandOrbitalDistanceThreshold);
+            Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, customTransformPos), DistanceThreshold);
 
             yield return null;
         }
 
         /// <summary>
+        /// Tests solver handler's ability to switch hands
         /// </summary>
         /// <returns></returns>
         [UnityTest]
@@ -106,26 +113,129 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Test orbital around left hand
             yield return TestHandSolver(testObjects.target, inputSimulationService, leftHandPos, Handedness.Left);
+
+            // Test orbital with both hands visible
+            yield return PlayModeTestUtilities.ShowHand(Handedness.Left, inputSimulationService, Utilities.ArticulatedHandPose.GestureId.Open, leftHandPos);
+            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService, Utilities.ArticulatedHandPose.GestureId.Open, rightHandPos);
+
+            // Give time for cube to float to hand
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+
+            Vector3 handOrbitalPos = testObjects.target.transform.position;
+            Assert.LessOrEqual(Vector3.Distance(handOrbitalPos, leftHandPos), DistanceThreshold);
         }
+
+        /// <summary>
+        /// Test Surface Magnetism against "wall" and that attached object falls head direction
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator TestSurfaceMagnetism()
+        {
+            // Reset view to origin
+            MixedRealityPlayspace.PerformTransformation(p =>
+            {
+                p.position = Vector3.zero;
+                p.LookAt(Vector3.forward);
+            });
+
+            // Build wall to collide against
+            var wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            wall.transform.localScale = new Vector3(25.0f, 25.0f, 0.2f);
+            wall.transform.position = Vector3.forward * 10.0f;
+
+            yield return null;
+
+            // Instantiate our test gameobject with solver. 
+            // Set layer to ignore raycast so solver doesn't raycast itself (i.e BoxCollider)
+            var testObjects = InstantiateTestSolver<SurfaceMagnetism>();
+            testObjects.target.layer = LayerMask.NameToLayer("Ignore Raycast");
+
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+
+            // Confirm that the surfacemagnetic cube is about on the wall straight ahead
+            Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, wall.transform.position), DistanceThreshold);
+
+            // Rotate the camera
+            Vector3 cameraDir = Vector3.forward + Vector3.right;
+            MixedRealityPlayspace.PerformTransformation(p =>
+            {
+                p.position = Vector3.zero;
+                p.LookAt(cameraDir);
+            });
+
+            // Calculate where our camera hits the wall
+            RaycastHit hitInfo;
+            Assert.IsTrue(UnityEngine.Physics.Raycast(Vector3.zero, cameraDir, out hitInfo), "Raycast from camera did not hit wall");
+
+            // Let SurfaceMagnetism update
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+
+            // Confirm that the surfacemagnetic cube is on the wall with camera rotated
+            Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, hitInfo.point), DistanceThreshold);
+        }
+
+        /// <summary>
+        /// Test solver system's ability to change target types at runtime
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator TestInBetween()
+        {
+            // Build "posts" to put solved object between
+            var leftPost = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            leftPost.transform.position = Vector3.forward * 10.0f - Vector3.right * 10.0f;
+
+            var rightPost = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            rightPost.transform.position = Vector3.forward * 10.0f + Vector3.right * 10.0f;
+
+            // Instantiate our test gameobject with solver. 
+            var testObjects = InstantiateTestSolver<InBetween>();
+
+            testObjects.handler.TrackedTargetType = TrackedObjectType.CustomOverride;
+            testObjects.handler.TransformOverride = leftPost.transform;
+
+            InBetween inBetween = testObjects.solver as InBetween;
+            Assert.IsNotNull(inBetween, "Solver cast to InBetween is null");
+
+            inBetween.SecondTrackedObjectType = TrackedObjectType.CustomOverride;
+            inBetween.SecondTransformOverride = rightPost.transform;
+
+            // Let InBetween update
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+
+            TestUtilities.AssertAboutEqual(testObjects.target.transform.position, Vector3.forward * 10.0f, "InBetween solver did not place object in middle of posts");
+
+            inBetween.PartwayOffset = 0.0f;
+
+            // Let InBetween update
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+
+            TestUtilities.AssertAboutEqual(testObjects.target.transform.position, rightPost.transform.position, "InBetween solver did not move to the left post");
+        }
+
+
+#region Test Helpers
 
         private IEnumerator TestHandSolver(GameObject target, InputSimulationService inputSimulationService, Vector3 handPos, Handedness hand)
         {
             yield return PlayModeTestUtilities.ShowHand(hand, inputSimulationService, Utilities.ArticulatedHandPose.GestureId.Open, handPos);
 
             // Give time for cube to float to hand
-            yield return new WaitForSeconds(3.0f);
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
 
             Vector3 handOrbitalPos = target.transform.position;
-            Assert.LessOrEqual(Vector3.Distance(handOrbitalPos, handPos), HandOrbitalDistanceThreshold);
+            Assert.LessOrEqual(Vector3.Distance(handOrbitalPos, handPos), DistanceThreshold);
 
             yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
 
-            yield return new WaitForSeconds(3.0f);
+            yield return null;
         }
 
         private SetupData InstantiateTestSolver<T>() where T: Solver
         {
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.localScale = new Vector3(0.1f, 0.2f, 0.1f);
 
             Solver solver = cube.AddComponent<T>();
             Assert.IsNotNull(solver, "AddComponent<T>() returned null");
@@ -140,6 +250,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 target = cube
             };
         }
+#endregion
     }
 }
 #endif

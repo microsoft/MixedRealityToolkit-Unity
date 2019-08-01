@@ -53,7 +53,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <summary>
         /// The handler reference for this solver that's attached to this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>
         /// </summary>
-        [SerializeField]
         [HideInInspector]
         protected SolverHandler SolverHandler;
 

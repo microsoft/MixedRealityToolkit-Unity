@@ -8,46 +8,46 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
 {
     [CustomEditor(typeof(InBetween))]
-    public class InBetweenEditor : UnityEditor.Editor
+    public class InBetweenEditor : SolverInspector
     {
-        private SerializedProperty trackedObjectProperty;
-        private SerializedProperty transformTargetProperty;
+        private SerializedProperty secondTrackedTargetTypeProperty;
+        private SerializedProperty secondTransformOverrideProperty;
+        private SerializedProperty partwayOffsetProperty;
+
         private InBetween solverInBetween;
 
-        private static readonly string[] fieldsToExclude = new string[] { "m_Script" };
-
-        private void OnEnable()
+        protected override void OnEnable()
         {
-            trackedObjectProperty = serializedObject.FindProperty("trackedObjectForSecondTransform");
-            transformTargetProperty = serializedObject.FindProperty("secondTransformOverride");
+            base.OnEnable();
+
+            secondTrackedTargetTypeProperty = serializedObject.FindProperty("secondTrackedObjectType");
+            secondTransformOverrideProperty = serializedObject.FindProperty("secondTransformOverride");
+            partwayOffsetProperty = serializedObject.FindProperty("partwayOffset");
 
             solverInBetween = target as InBetween;
         }
 
         public override void OnInspectorGUI()
         {
+            base.OnInspectorGUI();
+
             serializedObject.Update();
-            EditorGUILayout.Space();
 
-            bool trackedObjectChanged = false;
+            bool objectChanged = false;
 
-            if (transformTargetProperty.objectReferenceValue == null)
+            EditorGUI.BeginChangeCheck();
+            EditorGUILayout.PropertyField(secondTrackedTargetTypeProperty, new GUIContent("Second Tracked Target Type"));
+
+            if (secondTrackedTargetTypeProperty.enumValueIndex == (int)TrackedObjectType.CustomOverride)
             {
-                EditorGUI.BeginChangeCheck();
-                EditorGUILayout.PropertyField(trackedObjectProperty);
-                trackedObjectChanged = EditorGUI.EndChangeCheck();
+                EditorGUILayout.PropertyField(secondTransformOverrideProperty);
             }
 
-            EditorGUILayout.PropertyField(transformTargetProperty);
+            objectChanged = EditorGUI.EndChangeCheck();
 
-            DrawPropertiesExcluding(serializedObject, fieldsToExclude);
+            EditorGUILayout.PropertyField(partwayOffsetProperty);
 
             serializedObject.ApplyModifiedProperties();
-
-            if (Application.isPlaying && trackedObjectChanged)
-            {
-                solverInBetween.AttachSecondTransformToNewTrackedObject();
-            }
         }
     }
 }

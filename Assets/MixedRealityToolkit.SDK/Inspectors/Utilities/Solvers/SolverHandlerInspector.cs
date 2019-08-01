@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
 {
     [CustomEditor(typeof(SolverHandler))]
     [CanEditMultipleObjects]
-    public class SolverHandlerInspector : ControllerFinderInspector
+    public class SolverHandlerInspector : UnityEditor.Editor
     {
         private SerializedProperty trackedTargetProperty;
         private SerializedProperty trackedHandnessProperty;
@@ -20,10 +21,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
         private SerializedProperty updateSolversProperty;
         private SolverHandler solverHandler;
 
-        protected override void OnEnable()
+        protected void OnEnable()
         {
-            base.OnEnable();
-
             trackedTargetProperty = serializedObject.FindProperty("trackedTargetType");
             trackedHandnessProperty = serializedObject.FindProperty("trackedHandness");
             trackedHandJointProperty = serializedObject.FindProperty("trackedHandJoint");
@@ -38,17 +37,27 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
-            EditorGUILayout.Space();
 
             bool trackedObjectChanged = false;
 
             EditorGUI.BeginChangeCheck();
-            EditorGUILayout.PropertyField(trackedTargetProperty);
+
+            solverHandler.TrackedTargetType = (TrackedObjectType)EditorGUILayout.EnumPopup(new GUIContent("Tracked Target Type"), solverHandler.TrackedTargetType, null, false);
+            if (!SolverHandler.IsValidTrackedObjectType(solverHandler.TrackedTargetType))
+            {
+                InspectorUIUtility.DrawWarning(" Current Tracked Target Type value of \"" 
+                    + Enum.GetName(typeof(TrackedObjectType), solverHandler.TrackedTargetType) 
+                    + "\" is obsolete. Select MotionController or HandJoint values instead");
+            }
 
             if (trackedTargetProperty.enumValueIndex == (int)TrackedObjectType.HandJoint ||
                 trackedTargetProperty.enumValueIndex == (int)TrackedObjectType.MotionController)
             {
                 EditorGUILayout.PropertyField(trackedHandnessProperty);
+                if (trackedHandnessProperty.enumValueIndex > (int)Handedness.Both)
+                {
+                    InspectorUIUtility.DrawWarning("Only Handedness values of None, Left, Right, and Both are valid");
+                }
             }
 
             if (trackedTargetProperty.enumValueIndex == (int)TrackedObjectType.HandJoint)
@@ -73,13 +82,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             {
                 solverHandler.RefreshTrackedObject();
             }
-
-            /*
-            if (Application.isPlaying && additionalOffsetChanged)
-            {
-                solverHandler.AdditionalOffset = additionalOffsetProperty.vector3Value;
-                solverHandler.AdditionalRotation = additionalRotationProperty.vector3Value;
-            }*/
         }
     }
 }

@@ -7,6 +7,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 156863744684443484, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
+        type: 3}
+      propertyPath: highlightPlate
+      value: 
+      objectReference: {fileID: 1922151181346869929}
+    - target: {fileID: 156863744684443484, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
+        type: 3}
+      propertyPath: highlightPlateAnimationTime
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 316800718, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
       propertyPath: m_Name
       value: PressableButtonHoloLens2
@@ -238,16 +248,6 @@ PrefabInstance:
       propertyPath: Profiles.Array.data[0].Target
       value: 
       objectReference: {fileID: 1874729665501627384}
-    - target: {fileID: 156863744684443484, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
-        type: 3}
-      propertyPath: highlightPlate
-      value: 
-      objectReference: {fileID: 1922151181346869929}
-    - target: {fileID: 156863744684443484, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
-        type: 3}
-      propertyPath: highlightPlateAnimationTime
-      value: 0.25
-      objectReference: {fileID: 0}
     - target: {fileID: 316800720, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
       propertyPath: routingTarget
       value: 
@@ -299,6 +299,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2816231285305654104, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
