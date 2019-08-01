@@ -92,40 +92,57 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">SolverHandler</span></div>
+    <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ControllerFinder.html">ControllerFinder</a></div>
+    <div class="level2"><span class="xref">SolverHandler</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">IMixedRealitySourceStateHandler</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ControllerFinder.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_ControllerFinder_Handedness">ControllerFinder.Handedness</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ControllerFinder.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_ControllerFinder_ControllerTransform">ControllerFinder.ControllerTransform</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ControllerFinder.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_ControllerFinder_InputSystem">ControllerFinder.InputSystem</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ControllerFinder.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_ControllerFinder_OnEnable">ControllerFinder.OnEnable()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ControllerFinder.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_ControllerFinder_OnDisable">ControllerFinder.OnDisable()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ControllerFinder.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_ControllerFinder_OnSourceDetected_SourceStateEventData_">ControllerFinder.OnSourceDetected(SourceStateEventData)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ControllerFinder.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_ControllerFinder_OnSourceLost_SourceStateEventData_">ControllerFinder.OnSourceLost(SourceStateEventData)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ControllerFinder.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_ControllerFinder_TryAndAddControllerTransform">ControllerFinder.TryAndAddControllerTransform()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ControllerFinder.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_ControllerFinder_AddControllerTransform_IMixedRealityController_">ControllerFinder.AddControllerTransform(IMixedRealityController)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ControllerFinder.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_ControllerFinder_RemoveControllerTransform">ControllerFinder.RemoveControllerTransform()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ControllerFinder.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_ControllerFinder_RefreshControllerTransform">ControllerFinder.RefreshControllerTransform()</a>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.html">Microsoft.MixedReality.Toolkit.Utilities.Solvers</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class SolverHandler : MonoBehaviour</code></pre>
+    <pre><code class="lang-csharp hljs">public class SolverHandler : ControllerFinder, IMixedRealitySourceStateHandler</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
-  
-  
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_currentTrackedHandedness" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.currentTrackedHandedness">currentTrackedHandedness</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Handedness currentTrackedHandedness</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Handedness.html">Handedness</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   
   
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_solvers" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.solvers">solvers</h4>
@@ -232,35 +249,6 @@
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_CurrentTrackedHandedness_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.CurrentTrackedHandedness*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_CurrentTrackedHandedness" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.CurrentTrackedHandedness">CurrentTrackedHandedness</h4>
-  <div class="markdown level1 summary"><p>Currently tracked hand or motion controller if applicable</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Handedness CurrentTrackedHandedness { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Handedness.html">Handedness</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_CurrentTrackedHandedness_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Only possible values Left, Right, or None</p>
-</div>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_DeltaTime_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.DeltaTime*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_DeltaTime" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.DeltaTime">DeltaTime</h4>
   <div class="markdown level1 summary"><p>The timestamp the solvers will use to calculate with.</p>
@@ -365,61 +353,9 @@
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_InputSystem_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.InputSystem*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_InputSystem" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.InputSystem">InputSystem</h4>
-  <div class="markdown level1 summary"><p>The active instance of the input system.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected IMixedRealityInputSystem InputSystem { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IMixedRealityInputSystem</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_Solvers_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.Solvers*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_Solvers" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.Solvers">Solvers</h4>
-  <div class="markdown level1 summary"><p>List of solvers that this handler will manage and update</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IReadOnlyCollection&lt;Solver&gt; Solvers { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IReadOnlyCollection</span>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html">Solver</a>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_TrackedHandJoint_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.TrackedHandJoint*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_TrackedHandJoint" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.TrackedHandJoint">TrackedHandJoint</h4>
-  <div class="markdown level1 summary"><p>When TrackedTargetType is set to hands, use this specific joint to calculate position and orientation</p>
+  <div class="markdown level1 summary"><p>When using the hand to calculate position and orientation, use this specific joint.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -443,35 +379,6 @@
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_TrackedHandness_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.TrackedHandness*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_TrackedHandness" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.TrackedHandness">TrackedHandness</h4>
-  <div class="markdown level1 summary"><p>If tracking hands or motion controllers, determines which hand(s) are valid attachments.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Handedness TrackedHandness { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Handedness.html">Handedness</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_TrackedHandness_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Only None, Left, Right, and Both are valid values</p>
-</div>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_TrackedObjectToReference_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.TrackedObjectToReference*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_TrackedObjectToReference" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.TrackedObjectToReference">TrackedObjectToReference</h4>
   <div class="markdown level1 summary"><p>Tracked object to calculate position and orientation from. If you want to manually override and use a scene object, use the TransformTarget field.</p>
@@ -479,8 +386,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use TrackedTargetType instead&quot;)]
-public TrackedObjectType TrackedObjectToReference { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public TrackedObjectType TrackedObjectToReference { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -493,58 +399,6 @@ public TrackedObjectType TrackedObjectToReference { get; set; }</code></pre>
     <tbody>
       <tr>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.TrackedObjectType.html">TrackedObjectType</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_TrackedTargetType_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.TrackedTargetType*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_TrackedTargetType" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.TrackedTargetType">TrackedTargetType</h4>
-  <div class="markdown level1 summary"><p>Tracked object to calculate position and orientation from. If you want to manually override and use a scene object, use the TransformTarget field.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TrackedObjectType TrackedTargetType { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.TrackedObjectType.html">TrackedObjectType</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_TransformOverride_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.TransformOverride*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_TransformOverride" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.TransformOverride">TransformOverride</h4>
-  <div class="markdown level1 summary"><p>Manual override for when TrackedTargetType is set to CustomOverride</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Transform TransformOverride { set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Transform</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -558,7 +412,7 @@ public TrackedObjectType TrackedObjectToReference { get; set; }</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Transform TransformTarget { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Transform TransformTarget { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -625,88 +479,28 @@ public TrackedObjectType TrackedObjectToReference { get; set; }</code></pre>
   </div>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_IsValidHandedness_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.IsValidHandedness*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_IsValidHandedness_Microsoft_MixedReality_Toolkit_Utilities_Handedness_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.IsValidHandedness(Microsoft.MixedReality.Toolkit.Utilities.Handedness)">IsValidHandedness(Handedness)</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_OnControllerFound_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.OnControllerFound*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_OnControllerFound" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.OnControllerFound">OnControllerFound()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool IsValidHandedness(Handedness hand)</code></pre>
+    <pre><code class="lang-csharp hljs">protected override void OnControllerFound()</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Handedness.html">Handedness</a></td>
-        <td><span class="parametername">hand</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ControllerFinder.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_ControllerFinder_OnControllerFound">ControllerFinder.OnControllerFound()</a></div>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_IsValidTrackedObjectType_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.IsValidTrackedObjectType*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_IsValidTrackedObjectType_Microsoft_MixedReality_Toolkit_Utilities_TrackedObjectType_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.IsValidTrackedObjectType(Microsoft.MixedReality.Toolkit.Utilities.TrackedObjectType)">IsValidTrackedObjectType(TrackedObjectType)</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_OnControllerLost_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.OnControllerLost*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_OnControllerLost" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.OnControllerLost">OnControllerLost()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool IsValidTrackedObjectType(TrackedObjectType type)</code></pre>
+    <pre><code class="lang-csharp hljs">protected override void OnControllerLost()</code></pre>
   </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.TrackedObjectType.html">TrackedObjectType</a></td>
-        <td><span class="parametername">type</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ControllerFinder.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_ControllerFinder_OnControllerLost">ControllerFinder.OnControllerLost()</a></div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_OnDestroy_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.OnDestroy*"></a>
@@ -721,12 +515,58 @@ public TrackedObjectType TrackedObjectToReference { get; set; }</code></pre>
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_RefreshTrackedObject_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.RefreshTrackedObject*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_RefreshTrackedObject" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.RefreshTrackedObject">RefreshTrackedObject()</h4>
-  <div class="markdown level1 summary"><p>Clears the transform target and attaches to the current <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_TrackedTargetType">TrackedTargetType</a>.</p>
+  <div class="markdown level1 summary"><p>Clears the transform target and attaches to the current <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_TrackedObjectToReference">TrackedObjectToReference</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public void RefreshTrackedObject()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_RequestEnableHandJoint_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.RequestEnableHandJoint*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SolverHandler_RequestEnableHandJoint_Microsoft_MixedReality_Toolkit_Utilities_Handedness_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.RequestEnableHandJoint(Microsoft.MixedReality.Toolkit.Utilities.Handedness)">RequestEnableHandJoint(Handedness)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Transform RequestEnableHandJoint(Handedness handedness)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Handedness.html">Handedness</a></td>
+        <td><span class="parametername">handedness</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Transform</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">IMixedRealitySourceStateHandler</span>
   </div>
 </article>
           </div>
