@@ -285,6 +285,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Overload of MapRelativeFilePathToAbsolutePath which provides the ability to specify the module that the
         /// file belongs to.
+        /// </summary>
         /// <remarks>
         /// When searching for a resource that lives in the MixedRealityToolkit.SDK folder, this could be invoked
         /// in this way:
@@ -301,6 +302,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         public static string MapRelativeFolderPathToAbsolutePath(MixedRealityToolkitModuleType module, string mrtkPathToFolder)
         {
             return MapRelativePathToAbsolutePath(SearchType.Folder, module, mrtkPathToFolder);
+        }
+
+        public static string MapModulePath(MixedRealityToolkitModuleType module)
+        {
+            return GetAssetDatabasePath(MapRelativeFolderPathToAbsolutePath(module, ""));
         }
 
         /// <summary>
