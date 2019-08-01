@@ -205,6 +205,25 @@ class SampleHandler2 : MonoBehaviour, IMixedRealitySpeechHandler
 <li>IMixedRealitySpatialAwarenessSystem.ClearObservations&lt;T&gt;(string name)</li>
 <li>IMixedRealitySpatialAwarenessObserver.ClearObservations()</li>
 </ul>
+<h3 id="solvers">Solvers</h3>
+<p>Some solver components and the SolverHandler manager class has changed to fix various bugs and for more intuitive usage.</p>
+<h4 id="solverhandler">SolverHandler</h4>
+<ul>
+<li>Class no longer extends from <code>ControllerFinder</code></li>
+<li><code>TrackedObjectToReference</code> public property deprecated and has been renamed to <code>TrackedTargetType</code></li>
+<li><code>TrackedObjectType</code> deprecates left &amp; right controller values. Instead use <code>MotionController</code> or <code>HandJoint</code> values and update new <code>TrackedHandness</code> property to limit tracking to left or right controller</li>
+</ul>
+<h4 id="inbetween">InBetween</h4>
+<ul>
+<li><code>TrackedObjectForSecondTransform</code> public property deprecated and has been renamed to <code>SecondTrackedObjectType</code></li>
+<li><code>AttachSecondTransformToNewTrackedObject()</code> has been removed. To update the solver, modify the public properties (i.e <code>SecondTrackedObjectType</code>)</li>
+</ul>
+<h5 id="surfacemagnetism">SurfaceMagnetism</h5>
+<ul>
+<li><code>MaxDistance</code> public property deprecated and has been renamed to <code>MaxRaycastDistance</code></li>
+<li><code>CloseDistance</code> public property deprecated and has been renamed to <code>ClosestDistance</code></li>
+<li>Default value for <code>RaycastDirectionMode</code> is now <code>TrackedTargetForward</code> which raycasts in the direction of the tracked target transform forward</li>
+</ul>
 <h3 id="clipping-sphere">Clipping Sphere</h3>
 <p>The ClippingSphere interface has changed to mirror the APIs found in the ClippingBox and ClippingPlane.</p>
 <h4 id="changes-1">Changes</h4>
@@ -421,7 +440,7 @@ This makes it clear that PokeThreshold is the counterpart to DebounceThreshold. 
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/UpdatingToGA.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/2.0.0_stabilization/Documentation/UpdatingToGA.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
