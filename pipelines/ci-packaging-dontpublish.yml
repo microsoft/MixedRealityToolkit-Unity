@@ -17,3 +17,4 @@ jobs:
   - template: templates/ci-dontpublish.yml
     parameters:
       packagingEnabled: true
+      packagePublishing: false
