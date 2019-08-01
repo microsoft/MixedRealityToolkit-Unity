@@ -20,6 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
     public class ThemeInspector : UnityEditor.Editor
     {
         protected SerializedProperty settings;
+        protected SerializedProperty states;
 
         protected static InteractableTypesContainer themeOptions;
         protected static string[] shaderOptions;
@@ -37,6 +38,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         protected virtual void OnEnable()
         {
             settings = serializedObject.FindProperty("Settings");
+            states = serializedObject.FindProperty("States");
+
             SetupThemeOptions();
         }
 
@@ -57,40 +60,17 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
             boxStyle = InspectorUIUtility.Box(0);
 
-            GUILayout.BeginVertical(boxStyle);
-            bool hasStates = RenderStates();
-
-            GUILayout.EndVertical();
-            /*
-            bool hasStates = false;
-            if (layoutComplete || Event.current.type == EventType.Layout)
+            using (new EditorGUILayout.VerticalScope(boxStyle))
             {
-                boxStyle = InspectorUIUtility.Box(0);
-
-                GUILayout.BeginVertical(boxStyle);
-                hasStates = RenderStates();
-
-                GUILayout.EndVertical();
-            }*/
-
-            if (!hasStates)
-            {
-                serializedObject.ApplyModifiedProperties();
-                return;
+                if (!RenderStates())
+                {
+                    serializedObject.ApplyModifiedProperties();
+                    return;
+                }
             }
 
-            if (GetStates().Length < 1)
-            {
-                serializedObject.ApplyModifiedProperties();
-                return;
-            }
-
-            if (settings.arraySize < 1)
-            {
-                AddThemeProperty();
-            }
-
-            if (InspectorUIUtility.FlexButton(AddThemePropertyLabel))
+            // If no theme properties assigned, add a default one
+            if (settings.arraySize < 1 || InspectorUIUtility.FlexButton(AddThemePropertyLabel))
             {
                 AddThemeProperty();
             }
@@ -109,9 +89,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         /// <returns></returns>
         protected bool RenderStates()
         {
-            // States
-            SerializedProperty states = serializedObject.FindProperty("States");
-
             // If states value is not provided, try to use Default states type
             if (states.objectReferenceValue == null)
             {
@@ -122,11 +99,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             EditorGUILayout.PropertyField(states, new GUIContent("States", "The States this Interactable is based on"));
             GUI.enabled = true;
 
-            if (states.objectReferenceValue == null)
+            if (states.objectReferenceValue == null || GetStates().Length < 1)
             {
-                InspectorUIUtility.DrawError("Please assign a States object!");
-                EditorGUILayout.EndVertical();
-                serializedObject.ApplyModifiedProperties();
+                InspectorUIUtility.DrawError("Please assign a valid States object!");
                 return false;
             }
 
@@ -313,7 +288,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                     }
 
                     if (property.Type == InteractableThemePropertyValueTypes.ShaderFloat 
-                        || property.Type == InteractableThemePropertyValueTypes.shaderRange)
+                        || property.Type == InteractableThemePropertyValueTypes.ShaderRange)
                     {
                         if (hasRenderer || target == null)
                         {
@@ -653,7 +628,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                     floatTo = copyTo.FindPropertyRelative("Float");
                     floatTo.floatValue = floatFrom.floatValue;
                     break;
-                case InteractableThemePropertyValueTypes.shaderRange:
+                case InteractableThemePropertyValueTypes.ShaderRange:
                     vector2From = copyFrom.FindPropertyRelative("Vector2");
                     vector2To = copyTo.FindPropertyRelative("Vector2");
                     vector2To.vector2Value = vector2From.vector2Value;
@@ -756,7 +731,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                     floatTo = copyTo.FindPropertyRelative("Float");
                     floatTo.floatValue = copyFrom.Float;
                     break;
-                case InteractableThemePropertyValueTypes.shaderRange:
+                case InteractableThemePropertyValueTypes.ShaderRange:
                     vector2To = copyTo.FindPropertyRelative("Vector2");
                     vector2To.vector2Value = copyFrom.Vector2;
                     break;
@@ -817,12 +792,13 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
         public static void RenderThemeSettings(SerializedProperty themeSettings, 
             InteractableTypesContainer themeOptions, 
-            SerializedProperty gameObject, 
+            SerializedProperty gameObjectProperty, 
             State[] states, 
             int margin = 0)
         {
             GUIStyle box = InspectorUIUtility.Box(margin);
 
+            // Loop through all InteractableThemePropertySettings of Theme
             for (int settingIndex = 0; settingIndex < themeSettings.arraySize; settingIndex++)
             {
                 SerializedProperty settingsItem = themeSettings.GetArrayElementAtIndex(settingIndex);
@@ -850,25 +826,20 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                             className.stringValue = themeOptions.ClassNames[newId];
                             assemblyQualifiedName.stringValue = themeOptions.AssemblyQualifiedNames[newId];
 
-                            themeSettings = ChangeThemeProperty(settingIndex, themeSettings, gameObject, states);
+                            themeSettings = ChangeThemeProperty(settingIndex, themeSettings, gameObjectProperty, states);
                         }
 
                     }
 
-                    SerializedProperty sProps = settingsItem.FindPropertyRelative("Properties");
+                    SerializedProperty themeProperties = settingsItem.FindPropertyRelative("Properties");
                     int animatorCount = 0;
-                    int idCount = 0;
 
-                    for (int p = 0; p < sProps.arraySize; p++)
+                    // Loop through all InteractableThemeProperty of InteractableThemePropertySettings
+                    for (int p = 0; p < themeProperties.arraySize; p++)
                     {
-                        SerializedProperty item = sProps.GetArrayElementAtIndex(p);
-                        SerializedProperty propId = item.FindPropertyRelative("PropId");
-                        SerializedProperty name = item.FindPropertyRelative("Name");
+                        SerializedProperty propertyItem = themeProperties.GetArrayElementAtIndex(p);
 
-                        SerializedProperty shaderNames = item.FindPropertyRelative("ShaderOptionNames");
-                        SerializedProperty shaderName = item.FindPropertyRelative("ShaderName");
-                        SerializedProperty propType = item.FindPropertyRelative("Type");
-
+                        SerializedProperty propType = propertyItem.FindPropertyRelative("Type");
                         InteractableThemePropertyValueTypes type = (InteractableThemePropertyValueTypes)propType.intValue;
 
                         if (type == InteractableThemePropertyValueTypes.AnimatorTrigger)
@@ -876,138 +847,25 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                             animatorCount++;
                         }
 
-                        bool hasTextComp = false;
+                        SerializedProperty shaderNames = propertyItem.FindPropertyRelative("ShaderOptionNames");
                         if (shaderNames.arraySize > 0)
                         {
-                            // show shader property dropdown
-                            if (idCount < 1)
-                            {
-                                GUILayout.Space(5);
-                            }
-
-                            string[] shaderOptionNames = InspectorUIUtility.GetOptions(shaderNames);
-                            string propName = shaderOptionNames[propId.intValue];
-                            bool hasShaderProperty = true;
-
-                            if (gameObject == null)
-                            {
-                                EditorGUILayout.LabelField(new GUIContent("Shader: " + shaderName.stringValue));
-                            }
-                            else
-                            {
-                                GameObject renderHost = gameObject.objectReferenceValue as GameObject;
-                                if (renderHost != null)
-                                {
-                                    Renderer renderer = renderHost.GetComponent<Renderer>();
-                                    hasTextComp = InteractableColorTheme.HasTextComponentOnObject(renderHost);
-                                    if (renderer != null && !hasTextComp)
-                                    {
-                                        ShaderPropertyType[] filter = new ShaderPropertyType[0];
-                                        switch (type)
-                                        {
-                                            case InteractableThemePropertyValueTypes.Color:
-                                                filter = new ShaderPropertyType[] { ShaderPropertyType.Color };
-                                                break;
-                                            case InteractableThemePropertyValueTypes.ShaderFloat:
-                                                filter = new ShaderPropertyType[] { ShaderPropertyType.Float };
-                                                break;
-                                            case InteractableThemePropertyValueTypes.shaderRange:
-                                                filter = new ShaderPropertyType[] { ShaderPropertyType.Float };
-                                                break;
-                                            default:
-                                                break;
-                                        }
-
-                                        ShaderInfo info = GetShaderProperties(renderer, filter);
-
-                                        if (info.Name != shaderName.stringValue)
-                                        {
-                                            hasShaderProperty = false;
-
-                                            for (int i = 0; i < info.ShaderOptions.Length; i++)
-                                            {
-                                                if (info.ShaderOptions[i].Name == propName)
-                                                {
-                                                    hasShaderProperty = true;
-                                                    break;
-                                                }
-                                            }
-                                        }
-
-                                    }
-                                }
-
-                            }
-
-                            if (!hasTextComp)
-                            {
-                                GUIStyle popupStyle = new GUIStyle(EditorStyles.popup);
-                                popupStyle.margin.right = Mathf.RoundToInt(Screen.width - (Screen.width - 40));
-                                propId.intValue = EditorGUILayout.Popup("Material " + name.stringValue + "Id", propId.intValue, shaderOptionNames, popupStyle);
-                                idCount++;
-
-                                if (!hasShaderProperty)
-                                {
-                                    InspectorUIUtility.DrawError(propName + " is not available on the currently assigned Material.");
-                                }
-                            }
-                            else
-                            {
-                                EditorGUILayout.LabelField(new GUIContent("Text Property: Color"));
-                            }
-
-                            // Handle issue where the material color id renders on objects it shouldn't
-                            // theme is save for a game object with a renderer, but when put on a textmesh, rendering prop values show up.
-                            // when changing the theme type on a TextMesh, everything works, but the rendering prop is removed from the theme on the renderer object.
-                            // make this passive, only show up when needed.
+                            RenderShaderProperties(propertyItem, gameObjectProperty, type);
                         }
                     }
 
-                    SerializedProperty custom = settingsItem.FindPropertyRelative("CustomSettings");
-                    for (int p = 0; p < custom.arraySize; p++)
+                    SerializedProperty customSettings = settingsItem.FindPropertyRelative("CustomSettings");
+                    RenderCustomSettings(customSettings);
+
+                    if (animatorCount < themeProperties.arraySize)
                     {
-                        SerializedProperty item = custom.GetArrayElementAtIndex(p);
-                        SerializedProperty name = item.FindPropertyRelative("Name");
-                        SerializedProperty propType = item.FindPropertyRelative("Type");
-                        SerializedProperty value = item.FindPropertyRelative("Value");
-                        InteractableThemePropertyValueTypes type = (InteractableThemePropertyValueTypes)propType.intValue;
-
-                        RenderValue(value, name.stringValue, name.stringValue, type);
-                    }
-
-                    if (animatorCount < sProps.arraySize)
-                    {
-                        // show theme properties
-                        SerializedProperty easing = settingsItem.FindPropertyRelative("Easing");
-                        SerializedProperty enabled = easing.FindPropertyRelative("Enabled");
-
-                        SerializedProperty noEasing = settingsItem.FindPropertyRelative("NoEasing");
-                        if (!noEasing.boolValue)
-                        {
-                            enabled.boolValue = EditorGUILayout.Toggle(EasingContent, enabled.boolValue);
-
-                            if (enabled.boolValue)
-                            {
-                                using (new EditorGUI.IndentLevelScope())
-                                {
-                                    SerializedProperty time = easing.FindPropertyRelative("LerpTime");
-                                    SerializedProperty curve = easing.FindPropertyRelative("Curve");
-
-                                    time.floatValue = EditorGUILayout.FloatField(new GUIContent("Duration", "animation duration"), time.floatValue);
-                                    EditorGUILayout.PropertyField(curve, new GUIContent("Animation Curve"));
-                                }
-                            }
-                        }
-                        else
-                        {
-                            enabled.boolValue = false;
-                        }
+                        RenderEasingProperties(settingsItem);
                     }
 
                     // check to see if an animatorController exists
-                    if (animatorCount > 0 && gameObject != null)
+                    if (animatorCount > 0 && gameObjectProperty != null)
                     {
-                        GameObject host = gameObject.objectReferenceValue as GameObject;
+                        GameObject host = gameObjectProperty.objectReferenceValue as GameObject;
                         Animator animator = null;
 
                         if (host != null)
@@ -1017,26 +875,172 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
                         if (animator == null && host != null)
                         {
-                            SerializedProperty targetInfo = settingsItem.FindPropertyRelative("ThemeTarget");
-                            SerializedProperty targetStates = targetInfo.FindPropertyRelative("States");
+                            SerializedProperty themeTargetProperty = settingsItem.FindPropertyRelative("ThemeTarget");
+                            SerializedProperty targetStates = themeTargetProperty.FindPropertyRelative("States");
                             targetStates = GetSerializedStates(targetStates, states);
 
-#pragma warning disable 0219    // disable value is never used warning
+#pragma warning disable 0219
+                            // disable value is never used warning
                             //assigning values to be passed to the FlexButton
-                            SerializedProperty target = targetInfo.FindPropertyRelative("Target");
-                            SerializedProperty props = targetInfo.FindPropertyRelative("Properties");
-                            target = gameObject;
-                            props = sProps;
+                            SerializedProperty targetProperty = themeTargetProperty.FindPropertyRelative("Target");
+                            SerializedProperty props = themeTargetProperty.FindPropertyRelative("Properties");
+                            targetProperty = gameObjectProperty;
+                            props = themeProperties;
 #pragma warning restore 0219    // enable value is never used warning
 
                             if (InspectorUIUtility.FlexButton(CreateAnimationsContent))
                             {
-                                AddAnimator(targetInfo);
+                                AddAnimator(themeTargetProperty);
                             }
                         }
                     }
 
                 }
+            }
+        }
+
+        /// <summary>
+        /// Render shader name options for InteractableThemeProperty in a InteractableThemePropertySettings
+        /// </summary>
+        /// <param name="themePropertyItem">SerializedProperty of InteractableThemeProperty</param>
+        /// <param name="gameObjectProperty">SerializedProperty for gameobject associated with Theme and consequently the InteractableThemeProperty</param>
+        /// <param name="type">Theme property type</param>
+        private static void RenderShaderProperties(SerializedProperty themePropertyItem,
+            SerializedProperty gameObjectProperty, 
+            InteractableThemePropertyValueTypes type)
+        {
+            bool hasTextComp = false;
+            SerializedProperty propId = themePropertyItem.FindPropertyRelative("PropId");
+            SerializedProperty name = themePropertyItem.FindPropertyRelative("Name");
+
+            SerializedProperty shaderNames = themePropertyItem.FindPropertyRelative("ShaderOptionNames");
+            SerializedProperty shaderName = themePropertyItem.FindPropertyRelative("ShaderName");
+
+            string[] shaderOptionNames = InspectorUIUtility.GetOptions(shaderNames);
+            string propName = shaderOptionNames[propId.intValue];
+            bool hasShaderProperty = true;
+
+            if (gameObjectProperty == null)
+            {
+                EditorGUILayout.LabelField(new GUIContent("Shader: " + shaderName.stringValue));
+            }
+            else
+            {
+                GameObject renderHost = gameObjectProperty.objectReferenceValue as GameObject;
+                if (renderHost != null)
+                {
+                    Renderer renderer = renderHost.GetComponent<Renderer>();
+                    hasTextComp = InteractableColorTheme.HasTextComponentOnObject(renderHost);
+                    if (renderer != null && !hasTextComp)
+                    {
+                        ShaderPropertyType[] filter = new ShaderPropertyType[0];
+                        switch (type)
+                        {
+                            case InteractableThemePropertyValueTypes.Color:
+                                filter = new ShaderPropertyType[] { ShaderPropertyType.Color };
+                                break;
+                            case InteractableThemePropertyValueTypes.ShaderFloat:
+                                filter = new ShaderPropertyType[] { ShaderPropertyType.Float };
+                                break;
+                            case InteractableThemePropertyValueTypes.ShaderRange:
+                                filter = new ShaderPropertyType[] { ShaderPropertyType.Float };
+                                break;
+                            default:
+                                break;
+                        }
+
+                        ShaderInfo info = GetShaderProperties(renderer, filter);
+
+                        if (info.Name != shaderName.stringValue)
+                        {
+                            hasShaderProperty = false;
+
+                            for (int i = 0; i < info.ShaderOptions.Length; i++)
+                            {
+                                if (info.ShaderOptions[i].Name == propName)
+                                {
+                                    hasShaderProperty = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                    }
+                }
+
+            }
+
+            if (!hasTextComp)
+            {
+                GUIStyle popupStyle = new GUIStyle(EditorStyles.popup);
+                popupStyle.margin.right = Mathf.RoundToInt(Screen.width - (Screen.width - 40));
+                propId.intValue = EditorGUILayout.Popup("Material " + name.stringValue + "Id", propId.intValue, shaderOptionNames, popupStyle);
+
+                if (!hasShaderProperty)
+                {
+                    InspectorUIUtility.DrawError(propName + " is not available on the currently assigned Material.");
+                }
+            }
+            else
+            {
+                EditorGUILayout.LabelField(new GUIContent("Text Property: Color"));
+            }
+
+            GUILayout.Space(5);
+
+            // Handle issue where the material color id renders on objects it shouldn't
+            // theme is save for a game object with a renderer, but when put on a textmesh, rendering prop values show up.
+            // when changing the theme type on a TextMesh, everything works, but the rendering prop is removed from the theme on the renderer object.
+            // make this passive, only show up when needed.
+        }
+
+        /// <summary>
+        /// Renders easing & related time properties for InteractableThemePropertySettings
+        /// </summary>
+        /// <param name="settingsItem">Serialized property of a InteractableThemePropertySettings object</param>
+        private static void RenderEasingProperties(SerializedProperty settingsItem)
+        {
+            SerializedProperty easing = settingsItem.FindPropertyRelative("Easing");
+            SerializedProperty enabled = easing.FindPropertyRelative("Enabled");
+
+            SerializedProperty noEasing = settingsItem.FindPropertyRelative("NoEasing");
+            if (!noEasing.boolValue)
+            {
+                enabled.boolValue = EditorGUILayout.Toggle(EasingContent, enabled.boolValue);
+
+                if (enabled.boolValue)
+                {
+                    using (new EditorGUI.IndentLevelScope())
+                    {
+                        SerializedProperty time = easing.FindPropertyRelative("LerpTime");
+                        SerializedProperty curve = easing.FindPropertyRelative("Curve");
+
+                        EditorGUILayout.PropertyField(time, new GUIContent("Duration", "Animation duration"));
+                        EditorGUILayout.PropertyField(curve, new GUIContent("Animation Curve"));
+                    }
+                }
+            }
+            else
+            {
+                enabled.boolValue = false;
+            }
+        }
+
+        /// <summary>
+        /// Render list of custom settings part of a InteractableThemePropertySettings object
+        /// </summary>
+        /// <param name="customSettings">SerializedProperty for InteractableThemePropertySettings.CustomSettings</param>
+        private static void RenderCustomSettings(SerializedProperty customSettings)
+        {
+            for (int p = 0; p < customSettings.arraySize; p++)
+            {
+                SerializedProperty item = customSettings.GetArrayElementAtIndex(p);
+                SerializedProperty name = item.FindPropertyRelative("Name");
+                SerializedProperty propType = item.FindPropertyRelative("Type");
+                SerializedProperty value = item.FindPropertyRelative("Value");
+                InteractableThemePropertyValueTypes type = (InteractableThemePropertyValueTypes)propType.intValue;
+
+                RenderValue(value, name.stringValue, name.stringValue, type);
             }
         }
 
@@ -1058,7 +1062,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                 index.intValue = states[i].Index;
                 name.stringValue = states[i].Name;
                 value.intValue = states[i].Value;
-
             }
 
             return serialized;
@@ -1093,7 +1096,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                 case InteractableThemePropertyValueTypes.ShaderFloat:
                     floatValue.floatValue = EditorGUILayout.FloatField(new GUIContent(propName, propName), floatValue.floatValue);
                     break;
-                case InteractableThemePropertyValueTypes.shaderRange:
+                case InteractableThemePropertyValueTypes.ShaderRange:
                     vector2Value.vector2Value = EditorGUILayout.Vector2Field(new GUIContent(propName, propName), vector2Value.vector2Value);
                     break;
                 case InteractableThemePropertyValueTypes.Vector2:
