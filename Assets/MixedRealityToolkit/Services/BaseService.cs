@@ -39,6 +39,9 @@ namespace Microsoft.MixedReality.Toolkit
         public virtual void LateUpdate() { }
 
         /// <inheritdoc />
+        public virtual void FixedUpdate() { }
+
+        /// <inheritdoc />
         public virtual void Disable() { }
 
         /// <inheritdoc />

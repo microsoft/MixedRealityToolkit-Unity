@@ -55,6 +55,11 @@ namespace Microsoft.MixedReality.Toolkit
         void LateUpdate();
 
         /// <summary>
+        /// Optional FixedUpdate function to that is called during the FixedUpdate (physics) step.
+        /// </summary>
+        void FixedUpdate();
+
+        /// <summary>
         /// Optional Disable function to pause the service.
         /// </summary>
         void Disable();

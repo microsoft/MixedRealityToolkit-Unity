@@ -117,10 +117,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (profile.IsCameraControlEnabled)
             {
                 EnableCameraControl();
-                if (CameraCache.Main)
-                {
-                    cameraControl.UpdateTransform(CameraCache.Main.transform);
-                }
             }
             else
             {
@@ -178,6 +174,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
 
                     lastHandUpdateTimestamp = currentTime.Ticks;
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        public override void FixedUpdate()
+        {
+            var profile = InputSimulationProfile;
+
+            if (profile.IsCameraControlEnabled)
+            {
+                if (CameraCache.Main)
+                {
+                    cameraControl.UpdateTransform(CameraCache.Main.transform);
                 }
             }
         }

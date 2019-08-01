@@ -61,6 +61,25 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
             }
         }
 
+        private void FixedUpdate()
+        {
+            if (Application.isPlaying)
+            {
+                if (Application.isPlaying)
+                {
+                    foreach (IMixedRealityService service in registeredServices.Values)
+                    {
+                        service.FixedUpdate();
+                    }
+
+                    for (int i = 0; i < dataProviders.Count; i++)
+                    {
+                        dataProviders[i].FixedUpdate();
+                    }
+                }
+            }
+        }
+
 
         protected virtual void OnEnable()
         {
