@@ -156,6 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             TestUtilities.EditorTearDownScenes();
             if (adhocTestDirectoryCreated)
             {
+                File.Delete(Path.Combine(Application.dataPath, "lib.meta"));
                 RecursiveFolderCleanup(new DirectoryInfo(Path.Combine(Application.dataPath, "lib")));
                 adhocTestDirectoryCreated = false;
             }

@@ -272,9 +272,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// Maps a single relative path file to MRTK folders to its absolute path, if found. Otherwise returns null.
         /// </summary>
         /// <remarks>
-        /// For example, this will map "Inspectors/Data/EditorWindowOptions.json" to its full path like
-        /// "c:/project/Assets/Libs/MRTK/MixedRealityToolkit/Inspectors/Data/EditorWindowOptions.json".
-        ///
+        /// For example, this will map "Inspectors\Data\EditorWindowOptions.json" to its full path like
+        /// "c:\project\Assets\Libs\MRTK\MixedRealityToolkit\Inspectors\Data\EditorWindowOptions.json".
         /// This assumes that the passed in mrtkPathToFile is found under the "MixedRealityToolkit" folder
         /// (instead of the MixedRealityToolkit.SDK, or any of the other folders).
         /// </remarks>
@@ -289,8 +288,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <remarks>
         /// When searching for a resource that lives in the MixedRealityToolkit.SDK folder, this could be invoked
         /// in this way:
-        ///
-        /// MapRelativeFilePathToAbsolutePath(MixedRealityToolkitModuleType.SDK, mrtkPathToFile);
+        /// MapRelativeFilePathToAbsolutePath(MixedRealityToolkitModuleType.SDK, mrtkPathToFile)
         /// </remarks>
         public static string MapRelativeFilePathToAbsolutePath(MixedRealityToolkitModuleType module, string mrtkPathToFile)
         {
@@ -327,17 +325,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return null;
         }
 
-        public static string MapModulePath(MixedRealityToolkitModuleType module)
-        {
-            if (mrtkFolders.TryGetValue(module, out HashSet<string> modFolders))
-            {
-                string path = modFolders
-                    .FirstOrDefault(t => Directory.Exists(t));
-                return path != null ? GetAssetDatabasePath(path) : null;
-            }
-            return null;
-        }
-
         private static readonly Dictionary<string, MixedRealityToolkitModuleType> moduleNameMap = new Dictionary<string, MixedRealityToolkitModuleType>()
         {
             { "", MixedRealityToolkitModuleType.Core },
@@ -349,6 +336,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { "Tests", MixedRealityToolkitModuleType.Tests },
             { "Extensions", MixedRealityToolkitModuleType.Extensions },
             { "Tools", MixedRealityToolkitModuleType.Tools },
+
             // This module only exists for testing purposes, and is used in edit mode tests in conjunction
             // with MixedRealityToolkitFiles to ensure that this class is able to reason over MRTK
             // files that are placed outside of the root asset folder.
