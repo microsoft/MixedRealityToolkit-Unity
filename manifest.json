@@ -13127,6 +13127,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.Core.MixedRealityToolkitFilesTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.Core.MixedRealityToolkitFilesTests.html",
+          "hash": "eBCeqoqvCImXVvfOI7GzRw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.Core.TestFixture_01_MixedRealityToolkitTests.yml",
       "output": {
         ".html": {
@@ -13139,23 +13151,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.Core.TestFixture_02_MixedRealityToolkitFilesTests.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.Core.TestFixture_02_MixedRealityToolkitFilesTests.html",
-          "hash": "Gj+PE/sQ5COr43565XT4MQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.Core.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.Core.html",
-          "hash": "vehzoff+vdqjqfqqSnTrQw=="
+          "hash": "4vEeBoUAZZ9csMyIQSDx1w=="
         }
       },
       "is_incremental": false,
@@ -15783,7 +15783,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitFiles.html",
-          "hash": "an8AiyGohJVuK9QmnIZ7xA=="
+          "hash": "D1kypk/ZHoqDWYbM2MxR4w=="
         }
       },
       "is_incremental": false,
@@ -15795,7 +15795,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitModuleType.html",
-          "hash": "0hKNGACzW1EpY+XRXfsG3Q=="
+          "hash": "ZUvnBewklBXyQ1qxVAVwJQ=="
         }
       },
       "is_incremental": false,
@@ -18171,7 +18171,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "PdSBuIrZCIH0SKLS7aYZxQ=="
+          "hash": "gOoGOOPdU/1E963QZYf70A=="
         }
       },
       "is_incremental": false,
@@ -18236,17 +18236,17 @@
           "total_file_count": 117,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1059,
+          "skipped_file_count": 0
+        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1059,
           "skipped_file_count": 0
         }
       }
