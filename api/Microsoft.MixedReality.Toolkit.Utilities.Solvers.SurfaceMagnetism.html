@@ -122,9 +122,6 @@
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_WorkingScale">Solver.WorkingScale</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_OnValidate">Solver.OnValidate()</a>
-    </div>
-    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_Awake">Solver.Awake()</a>
     </div>
     <div>
@@ -213,7 +210,34 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float CloseDistance { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use ClosestDistance instead&quot;)]
+public float CloseDistance { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SurfaceMagnetism_ClosestDistance_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.ClosestDistance*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SurfaceMagnetism_ClosestDistance" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.ClosestDistance">ClosestDistance</h4>
+  <div class="markdown level1 summary"><p>Closest distance to bring object</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float ClosestDistance { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -260,7 +284,7 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SurfaceMagnetism_CurrentRaycastDirectionMode_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.CurrentRaycastDirectionMode*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SurfaceMagnetism_CurrentRaycastDirectionMode" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.CurrentRaycastDirectionMode">CurrentRaycastDirectionMode</h4>
-  <div class="markdown level1 summary"><p>Raycast direction. Can cast from head in facing direction, or cast from head to object position</p>
+  <div class="markdown level1 summary"><p>Raycast direction type. Default is forward direction of Tracked Target transform</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -343,7 +367,8 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float MaxDistance { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use MaxRaycastDistance instead&quot;)]
+public float MaxDistance { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -370,6 +395,32 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public float MaximumNormalVariance { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SurfaceMagnetism_MaxRaycastDistance_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.MaxRaycastDistance*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SurfaceMagnetism_MaxRaycastDistance" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.MaxRaycastDistance">MaxRaycastDistance</h4>
+  <div class="markdown level1 summary"><p>Max distance for raycast to check for surfaces</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MaxRaycastDistance { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
