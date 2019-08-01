@@ -13,6 +13,12 @@ namespace Microsoft.MixedReality.Toolkit
     /// </summary>
     public abstract class BaseEventSystem : BaseService, IMixedRealityEventSystem
     {
+        // Utility flag controlling error messages in 'Destroy' method for reporting dangling event handlers.
+        // This may generate false warnings in usual Unity play mode due to arbitrary order 
+        // of disabling and destroying components. It is enabled by tests and can be enabled for debugging purposes.
+        // Variable is static to be shared between all event system instances.
+        public static bool enableDanglingHandlerDiagnostics = false;
+
         private static int eventExecutionDepth = 0;
         private readonly Type eventSystemHandlerType = typeof(IEventSystemHandler);
 
@@ -244,6 +250,32 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
+        public override void Destroy()
+        {
+            if(!enableDanglingHandlerDiagnostics)
+            {
+                return;
+            }
+
+            foreach (var listener in EventListeners)
+            {
+                Debug.LogError("Event system is destroyed, while still having a registered listener. " +
+                    "Make sure that all global event listeners have been unregistered before destroying the event system. " +
+                    $"Dangling listener: object {listener.name}");
+            }
+
+            foreach (var typeEntry in EventHandlersByType)
+            {
+                for (int index = 0; index < typeEntry.Value.Count; index++)
+                {
+                    var handlerEntry = typeEntry.Value[index];
+                    Debug.LogError("Event system is being destroyed while still having a registered listener. " +
+                        "Make sure that all global event listeners have been unregistered before destroying the event system. " +
+                        $"Dangling listener: handler {handlerEntry.handler}");
+                }
+            }
+        }
+
     #endregion IMixedRealityEventSystem Implementation
 
     #region Registration helpers
@@ -274,7 +306,6 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void AddHandlerToMap(Type handlerType, IEventSystemHandler handler)
         {
-            List<EventHandlerEntry> handlers;
             bool isParentObjectRegistered = false;
 
             var componentHandler = handler as Component;
@@ -284,6 +315,7 @@ namespace Microsoft.MixedReality.Toolkit
                 WarnAboutConflictingApis(componentHandler.gameObject.name);
             }
 
+            List<EventHandlerEntry> handlers;
             if (!EventHandlersByType.TryGetValue(handlerType, out handlers))
             {
                 handlers = new List<EventHandlerEntry> { new EventHandlerEntry(handler, isParentObjectRegistered) };
@@ -291,7 +323,17 @@ namespace Microsoft.MixedReality.Toolkit
                 return;
             }
 
-            if (!handlers.Exists(h => h.handler == handler))
+            bool handlerExists = false;
+            for (int i = handlers.Count - 1; i >= 0; i--)
+            {
+                if (handlers[i].handler == handler)
+                {
+                    handlerExists = true;
+                    break;
+                }
+            }
+
+            if (!handlerExists)
             {
                 handlers.Add(new EventHandlerEntry(handler, isParentObjectRegistered));
             }
@@ -301,20 +343,22 @@ namespace Microsoft.MixedReality.Toolkit
         private void RemoveHandlerFromMap(Type handlerType, IEventSystemHandler handler)
         {
             List<EventHandlerEntry> handlers;
-
             if (!EventHandlersByType.TryGetValue(handlerType, out handlers))
             {
                 return;
             }
 
-            if (handlers.Exists(h => h.handler == handler))
+            for (int i = handlers.Count - 1; i >= 0; i--)
             {
-                handlers.RemoveAll(h => h.handler == handler);
-
-                if (handlers.Count == 0)
+                if (handlers[i].handler == handler)
                 {
-                    EventHandlersByType.Remove(handlerType);
+                    handlers.RemoveAt(i);
                 }
+            }
+
+            if (handlers.Count == 0)
+            {
+                EventHandlersByType.Remove(handlerType);
             }
         }
 

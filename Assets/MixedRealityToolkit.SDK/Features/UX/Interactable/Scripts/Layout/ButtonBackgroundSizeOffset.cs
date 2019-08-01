@@ -14,6 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     ///     Event if the background changes size, this element will remain 40 pixels smaller.
     /// </summary>
     [ExecuteInEditMode]
+    [System.Obsolete("This component is no longer supported", true)]
     public class ButtonBackgroundSizeOffset : MonoBehaviour
     {
         /// <summary>
@@ -94,6 +95,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Vector3 scale = Vector3.Scale(AnchorTransform.localScale, Scale) + Offset / BasePixelScale;
             transform.localScale = scale;
+        }
+
+        private void Awake()
+        {
+            Debug.LogError(this.GetType().Name + " is deprecated");
         }
 
         void Update()

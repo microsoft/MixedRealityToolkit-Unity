@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> This feature is currently available in the [**mrtk_development**](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development) branch.
+
 # Content Scene Loading
 All content load operations are asynchronous, and by default all content loading is additive. Manager and lighting scenes are never affected by content loading operations. For information about monitoring load progress and scene activation, see [Monitoring Content Loading.](SceneSystemLoadProgress.md)
 

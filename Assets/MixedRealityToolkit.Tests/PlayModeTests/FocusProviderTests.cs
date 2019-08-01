@@ -3,17 +3,17 @@
 
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
-// Unity doesn't include the required assemblies (i.e. the ones below).
-// Given that the .NET backend is deprecated by Unity at this point it's we have
-// to work around this on our end.
-using Microsoft.MixedReality.Toolkit.UI;
+// The assembly that this file is part of is still built for the player,
+// even though the assembly itself is marked as a test assembly (this is not
+// expected because test assemblies should not be included in player builds).
+// Because the .NET backend is deprecated in 2018 and removed in 2019 and this
+// issue will likely persist for 2018, this issue is worked around by wrapping all
+// play mode tests in this check.
+
 using NUnit.Framework;
 using System.Collections;
-using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
-using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Linq;
@@ -22,14 +22,24 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class FocusProviderTests
     {
+        [SetUp]
+        public void Setup()
+        {
+            PlayModeTestUtilities.Setup();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            PlayModeTestUtilities.TearDown();
+        }
+
         /// <summary>
         /// </summary>
         /// <returns></returns>
         [UnityTest]
         public IEnumerator TestGazeCursorArticulated()
         {
-            RenderSettings.skybox = null;
-
             IMixedRealityInputSystem inputSystem;
             MixedRealityServiceRegistry.TryGetService(out inputSystem);
             Assert.IsNotNull(inputSystem, "MixedRealityInputSystem is null!");
@@ -45,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             inputSimulationService.UserInputEnabled = false;
             ArticulatedHandPose gesturePose = ArticulatedHandPose.GetGesturePose(ArticulatedHandPose.GestureId.Open);
-            var handOpenPose = PlayModeTestUtilities.GenerateHandPose(ArticulatedHandPose.GestureId.Open, Handedness.Right, Vector3.forward * 0.1f);
+            var handOpenPose = PlayModeTestUtilities.GenerateHandPose(ArticulatedHandPose.GestureId.Open, Handedness.Right, Vector3.forward * 0.1f, Quaternion.identity);
             inputSimulationService.HandDataRight.Update(true, false, handOpenPose);
             yield return null;
             // Gaze cursor should not be visible
@@ -61,17 +71,27 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(inputSystem.GazeProvider.GazePointer.IsInteractionEnabled, "Gaze cursor should be visible after select command");
         }
 
-        [SetUp]
-        public void SetupMrtk()
+        /// <summary>
+        /// Ensure that the gaze provider hit result is not null when looking at an object,
+        /// even when the hand is up
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator TestGazeProviderTargetNotNull()
         {
-            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
-            TestUtilities.InitializePlayspace();
-        }
+            TestUtilities.PlayspaceToOriginLookingForward();
+            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.position = Vector3.forward;
 
-        [TearDown]
-        public void ShutdownMrtk()
-        {
-            TestUtilities.ShutdownMixedRealityToolkit();
+            yield return null;
+
+            Assert.NotNull(MixedRealityToolkit.InputSystem.GazeProvider.GazeTarget, "GazeProvider target is null when looking at an object");
+
+            TestHand h = new TestHand(Handedness.Right);
+            yield return h.Show(Vector3.forward * 0.2f);
+            yield return null;
+
+            Assert.NotNull(MixedRealityToolkit.InputSystem.GazeProvider.GazeTarget, "GazeProvider target is null when looking at an object with hand raised");
         }
     }
 }

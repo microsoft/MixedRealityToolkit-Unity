@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> This feature is currently available in the [**mrtk_development**](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development) branch.
+
 # Lighting Scene Operations
 The default lighting scene defined in your profile is loaded on startup. That lighting scene remains loaded until `SetLightingScene` is called.
 

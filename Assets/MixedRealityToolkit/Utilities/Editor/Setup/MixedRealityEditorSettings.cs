@@ -112,11 +112,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 }
             }
 
+#if !UNITY_2019_3_OR_NEWER
             if (PlayerSettings.scriptingRuntimeVersion != ScriptingRuntimeVersion.Latest)
             {
                 PlayerSettings.scriptingRuntimeVersion = ScriptingRuntimeVersion.Latest;
                 restart = true;
             }
+#endif
 
             if (refresh || restart)
             {

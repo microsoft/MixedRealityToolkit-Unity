@@ -225,24 +225,32 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 IsAlwaysVisibleRight = !IsAlwaysVisibleRight;
             }
 
-            if (UnityEngine.Input.GetKeyDown(profile.LeftHandManipulationKey))
-            {
-                isSimulatingLeft = true;
-            }
-            if (UnityEngine.Input.GetKeyUp(profile.LeftHandManipulationKey))
+            if (!Application.isFocused)
             {
                 isSimulatingLeft = false;
-            }
-
-            if (UnityEngine.Input.GetKeyDown(profile.RightHandManipulationKey))
-            {
-                isSimulatingRight = true;
-            }
-            if (UnityEngine.Input.GetKeyUp(profile.RightHandManipulationKey))
-            {
                 isSimulatingRight = false;
             }
-       
+            else
+            {
+                if (UnityEngine.Input.GetKeyDown(profile.LeftHandManipulationKey))
+                {
+                    isSimulatingLeft = true;
+                }
+                if (UnityEngine.Input.GetKeyUp(profile.LeftHandManipulationKey))
+                {
+                    isSimulatingLeft = false;
+                }
+
+                if (UnityEngine.Input.GetKeyDown(profile.RightHandManipulationKey))
+                {
+                    isSimulatingRight = true;
+                }
+                if (UnityEngine.Input.GetKeyUp(profile.RightHandManipulationKey))
+                {
+                    isSimulatingRight = false;
+                }
+            }
+
             Vector3 mouseDelta = (lastMousePosition.HasValue ? UnityEngine.Input.mousePosition - lastMousePosition.Value : Vector3.zero);
             mouseDelta.z += UnityEngine.Input.GetAxis("Mouse ScrollWheel") * profile.HandDepthMultiplier;
             float rotationDelta = profile.HandRotationSpeed * Time.deltaTime;
@@ -335,17 +343,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// Gets the currenctly active gesture, according to the mouse configuration and mouse button that is down.
+        /// </summary>
         private ArticulatedHandPose.GestureId SelectGesture()
         {
-            if (UnityEngine.Input.GetMouseButton(0))
+            // Each check needs to verify that both:
+            // 1) The corresponding mouse button is down (meaning the gesture, if defined, should be used)
+            // 2) The gesture is defined.
+            // If only #1 is checked and #2 is not checked, it's possible to "miss" transitions in cases where the user has
+            // the left mouse button down and then while it is down, presses the right button, and then lifts the left.
+            // It's not until both mouse buttons lift in that case, that the state finally "rests" to the DefaultHandGesture.
+            if (UnityEngine.Input.GetMouseButton(0) && profile.LeftMouseHandGesture != ArticulatedHandPose.GestureId.None)
             {
                 return profile.LeftMouseHandGesture;
             }
-            else if (UnityEngine.Input.GetMouseButton(1))
+            else if (UnityEngine.Input.GetMouseButton(1) && profile.RightMouseHandGesture != ArticulatedHandPose.GestureId.None)
             {
                 return profile.RightMouseHandGesture;
             }
-            else if (UnityEngine.Input.GetMouseButton(2))
+            else if (UnityEngine.Input.GetMouseButton(2) && profile.MiddleMouseHandGesture != ArticulatedHandPose.GestureId.None)
             {
                 return profile.MiddleMouseHandGesture;
             }
@@ -357,15 +374,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private ArticulatedHandPose.GestureId ToggleGesture(ArticulatedHandPose.GestureId gesture)
         {
-            if (UnityEngine.Input.GetMouseButtonDown(0))
+            // See comments in SelectGesture for why both the button down and gesture are checked.
+            if (UnityEngine.Input.GetMouseButtonDown(0) && profile.LeftMouseHandGesture != ArticulatedHandPose.GestureId.None)
             {
                 return (gesture != profile.LeftMouseHandGesture ? profile.LeftMouseHandGesture : profile.DefaultHandGesture);
             }
-            else if (UnityEngine.Input.GetMouseButtonDown(1))
+            else if (UnityEngine.Input.GetMouseButtonDown(1) && profile.RightMouseHandGesture != ArticulatedHandPose.GestureId.None)
             {
                 return (gesture != profile.RightMouseHandGesture ? profile.RightMouseHandGesture : profile.DefaultHandGesture);
             }
-            else if (UnityEngine.Input.GetMouseButtonDown(2))
+            else if (UnityEngine.Input.GetMouseButtonDown(2) && profile.MiddleMouseHandGesture != ArticulatedHandPose.GestureId.None)
             {
                 return (gesture != profile.MiddleMouseHandGesture ? profile.MiddleMouseHandGesture : profile.DefaultHandGesture);
             }

@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.SceneSystem;
-using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -11,7 +10,7 @@ using UnityEngine.SceneManagement;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
-    [MixedRealityServiceInspector(typeof(MixedRealitySceneSystem))]
+    [MixedRealityServiceInspector(typeof(IMixedRealitySceneSystem))]
     public class SceneSystemInspector : BaseMixedRealityServiceInspector
     {
         private const float maxLoadButtonWidth = 50;
@@ -31,7 +30,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public override void DrawInspectorGUI(object target)
         {
-            MixedRealitySceneSystem sceneSystem = (MixedRealitySceneSystem)target;
+            // Get the scene system itself
+            IMixedRealitySceneSystem sceneSystem = target as IMixedRealitySceneSystem;
+            // Get the scene system's editor interface
+            IMixedRealitySceneSystemEditor sceneSystemEditor = target as IMixedRealitySceneSystemEditor;
+
+            if (sceneSystemEditor == null)
+            {
+                EditorGUILayout.HelpBox("This scene service implementation does not implement IMixedRealitySceneSystemEditor. Inspector will not be rendered.", MessageType.Info);
+                return;
+            }
 
             GUI.color = enabledColor;
 
@@ -40,14 +48,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (profile.UseLightingScene)
             {
                 EditorGUILayout.LabelField("Lighting Scene", EditorStyles.boldLabel);
-                List<SceneInfo> lightingScenes = new List<SceneInfo>(sceneSystem.LightingScenes);
+                List<SceneInfo> lightingScenes = new List<SceneInfo>(sceneSystemEditor.LightingScenes);
                 if (lightingScenes.Count == 0)
                 {
                     EditorGUILayout.LabelField("(No lighting scenes found)", EditorStyles.miniLabel);
                 }
                 else
                 {
-                    RenderLightingScenes(sceneSystem, lightingScenes);
+                    RenderLightingScenes(sceneSystem, sceneSystemEditor, lightingScenes);
                 }
                 EditorGUILayout.Space();
             }
@@ -55,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             GUI.color = enabledColor;
 
             EditorGUILayout.LabelField("Content Scenes", EditorStyles.boldLabel);
-            List<SceneInfo> contentScenes = new List<SceneInfo>(sceneSystem.ContentScenes);
+            List<SceneInfo> contentScenes = new List<SceneInfo>(sceneSystemEditor.ContentScenes);
             if (contentScenes.Count == 0)
             {
                 EditorGUILayout.LabelField("(No content scenes found)", EditorStyles.miniLabel);
@@ -88,14 +96,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
 
                 EditorGUI.BeginDisabledGroup(sceneSystem.SceneOperationInProgress);
-                RenderContentScenes(sceneSystem, contentScenes);
+                RenderContentScenes(sceneSystem, sceneSystemEditor, contentScenes);
                 EditorGUI.EndDisabledGroup();
             }
 
             EditorGUILayout.Space();
         }
 
-        private void RenderLightingScenes(MixedRealitySceneSystem sceneSystem, List<SceneInfo> lightingScenes)
+        private void RenderLightingScenes(IMixedRealitySceneSystem sceneSystem, IMixedRealitySceneSystemEditor sceneSystemEditor, List<SceneInfo> lightingScenes)
         {
             EditorGUILayout.HelpBox("Select the active lighting scene by clicking its name.", MessageType.Info);
 
@@ -136,12 +144,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.EndVertical();
         }
 
-        private void RenderContentScenes(MixedRealitySceneSystem sceneSystem, List<SceneInfo> contentScenes)
+        private void RenderContentScenes(IMixedRealitySceneSystem sceneSystem, IMixedRealitySceneSystemEditor sceneSystemEditor, List<SceneInfo> contentScenes)
         {
             EditorGUILayout.Space();
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Load / Unload by tag", EditorStyles.miniBoldLabel);
-            List<string> contentTags = new List<string>(sceneSystem.ContentTags);
+            List<string> contentTags = new List<string>(sceneSystemEditor.ContentTags);
 
             if (contentTags.Count == 0)
             {
@@ -164,7 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         }
                         else
                         {
-                            foreach (SceneInfo contentScene in sceneSystem.ContentScenes)
+                            foreach (SceneInfo contentScene in sceneSystemEditor.ContentScenes)
                             {
                                 if (contentScene.Tag == tag)
                                 {
@@ -181,7 +189,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         }
                         else
                         {
-                            foreach (SceneInfo contentScene in sceneSystem.ContentScenes)
+                            foreach (SceneInfo contentScene in sceneSystemEditor.ContentScenes)
                             {
                                 if (contentScene.Tag == tag)
                                 {
@@ -209,7 +217,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
                 else
                 {
-                    sceneSystem.EditorLoadPrevContent();
+                    sceneSystemEditor.EditorLoadPrevContent();
                 }
             }
             EditorGUI.EndDisabledGroup();
@@ -223,7 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
                 else
                 {
-                    sceneSystem.EditorLoadNextContent();
+                    sceneSystemEditor.EditorLoadNextContent();
                 }
             }
             EditorGUI.EndDisabledGroup();
@@ -232,7 +240,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Load / Unload individually", EditorStyles.miniBoldLabel);
-            foreach (SceneInfo contentScene in sceneSystem.ContentScenes)
+            foreach (SceneInfo contentScene in sceneSystemEditor.ContentScenes)
             {
                 if (contentScene.IsEmpty)
                 {
@@ -273,17 +281,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
-        private async void ServiceContentLoadNext(MixedRealitySceneSystem sceneSystem)
+        private async void ServiceContentLoadNext(IMixedRealitySceneSystem sceneSystem)
         {
             await sceneSystem.LoadNextContent(false, LoadSceneMode.Single, activationToken);
         }
 
-        private async void ServiceContentLoadPrev(MixedRealitySceneSystem sceneSystem)
+        private async void ServiceContentLoadPrev(IMixedRealitySceneSystem sceneSystem)
         {
             await sceneSystem.LoadPrevContent(false, LoadSceneMode.Single, activationToken);
         }
 
-        private async void ServiceContentLoadByTag(MixedRealitySceneSystem sceneSystem, string tag)
+        private async void ServiceContentLoadByTag(IMixedRealitySceneSystem sceneSystem, string tag)
         {
             if (requireActivationToken)
             {
@@ -293,12 +301,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             await sceneSystem.LoadContentByTag(tag, loadSceneMode, activationToken);
         }
 
-        private async void ServiceContentUnloadByTag(MixedRealitySceneSystem sceneSystem, string tag)
+        private async void ServiceContentUnloadByTag(IMixedRealitySceneSystem sceneSystem, string tag)
         {
             await sceneSystem.UnloadContentByTag(tag);
         }
 
-        private async void ServiceContentLoad(MixedRealitySceneSystem sceneSystem, string sceneName)
+        private async void ServiceContentLoad(IMixedRealitySceneSystem sceneSystem, string sceneName)
         {
             if (requireActivationToken)
             {
@@ -308,7 +316,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             await sceneSystem.LoadContent(sceneName, loadSceneMode, activationToken);
         }
 
-        private async void ServiceContentUnload(MixedRealitySceneSystem sceneSystem, string sceneName)
+        private async void ServiceContentUnload(IMixedRealitySceneSystem sceneSystem, string sceneName)
         {
             await sceneSystem.UnloadContent(sceneName);
         }

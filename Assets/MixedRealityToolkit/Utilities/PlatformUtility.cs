@@ -98,9 +98,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 case UnityEditor.BuildTarget.StandaloneOSX:
                     supportedPlatforms |= SupportedPlatforms.MacStandalone;
                     break;
+#if !UNITY_2019_2_OR_NEWER
                 case UnityEditor.BuildTarget.StandaloneLinux:
-                case UnityEditor.BuildTarget.StandaloneLinux64:
                 case UnityEditor.BuildTarget.StandaloneLinuxUniversal:
+#endif
+                case UnityEditor.BuildTarget.StandaloneLinux64:
                     supportedPlatforms |= SupportedPlatforms.LinuxStandalone;
                     break;
                 case UnityEditor.BuildTarget.Android:

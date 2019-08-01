@@ -17,11 +17,29 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
         private static List<Transform> childrenToDelete = new List<Transform>();
         private static List<IMixedRealityService> servicesToSort = new List<IMixedRealityService>();
         private static MixedRealityToolkit previousActiveInstance;
+        private static long previousFrameCount;
 
         static MixedRealityToolkitFacadeHandler()
         {
-            SceneView.onSceneGUIDelegate += UpdateServiceFacades;
+#if UNITY_2019_1_OR_NEWER
+            SceneView.duringSceneGui += OnSceneGUI;
+#else
+            SceneView.onSceneGUIDelegate += OnSceneGUI;
+#endif
             EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+            EditorApplication.update += OnUpdate;
+        }
+
+        #region callbacks
+
+        private static void OnSceneGUI(SceneView sceneView)
+        {
+            UpdateServiceFacades();
+        }
+
+        private static void OnUpdate()
+        {
+            UpdateServiceFacades();
         }
 
         [UnityEditor.Callbacks.DidReloadScripts]
@@ -44,7 +62,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             previousActiveInstance = null;
         }
 
-        private static void UpdateServiceFacades(SceneView sceneView)
+        #endregion
+
+        private static void UpdateServiceFacades()
         {
             if (!MixedRealityToolkit.IsInitialized)
             {   // Nothing to do here.
@@ -55,6 +75,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             {   // Wait for compilation to complete before creating or destroying facades
                 return;
             }
+
+            if (Application.isPlaying && Time.frameCount == previousFrameCount)
+            {   // Only update once per frame (SceneGUI + Update may result in multiple calls)
+                return;
+            }
+
+            previousFrameCount = Time.frameCount;
 
             if (previousActiveInstance != null && MixedRealityToolkit.Instance != previousActiveInstance)
             {   // We've changed active instances. Destroy all children in the previous instance.

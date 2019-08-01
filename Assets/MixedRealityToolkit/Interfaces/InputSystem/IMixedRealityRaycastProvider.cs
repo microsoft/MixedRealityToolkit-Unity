@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Physics;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -14,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// in a custom implementation, the raycast does not have to rely only on Unity-based Colliders to provide hit results, e.g. a
     /// GameObject may use a different mechanism for raycasting, and with a custom implementation, it could be included in the hit result.
     /// </remarks>
-    public interface IMixedRealityRaycastProvider : IMixedRealityDataProvider
+    public interface IMixedRealityRaycastProvider : IMixedRealityService
     {
         /// <summary>
         /// Performs a raycast using the specified <see cref="Microsoft.MixedReality.Toolkit.Physics.RayStep"/>.
@@ -27,5 +28,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <returns>Whether or not the SphereCast hit something.</returns>
         bool SphereCast(RayStep step, float radius, LayerMask[] prioritizedLayerMasks, out MixedRealityRaycastHit hitInfo);
+
+        /// <summary>
+        /// Performs a graphics raycast against the specified layerMasks.
+        /// </summary>
+        /// <returns>The RaycastResult of the raycast.</returns>
+        RaycastResult GraphicsRaycast(EventSystem eventSystem, PointerEventData pointerEventData, LayerMask[] layerMasks);
     }
 }

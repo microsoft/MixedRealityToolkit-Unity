@@ -3,25 +3,25 @@
 
 using Microsoft.MixedReality.Toolkit.Physics;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// The default implementation of IMixedRealityRaycastProvider.
     /// </summary>
-    public class DefaultRaycastProvider : BaseDataProvider, IMixedRealityRaycastProvider
+    public class DefaultRaycastProvider : BaseCoreSystem, IMixedRealityRaycastProvider
     {
         public DefaultRaycastProvider(
             IMixedRealityServiceRegistrar registrar,
-            IMixedRealityInputSystem inputSystem,
-            MixedRealityInputSystemProfile profile) : base(registrar, inputSystem, null, DefaultPriority, profile)
+            MixedRealityInputSystemProfile profile) : base(registrar, profile)
         { }
 
         /// <inheritdoc />
         public bool Raycast(RayStep step, LayerMask[] prioritizedLayerMasks, out MixedRealityRaycastHit hitInfo)
         {
-            var result = MixedRealityRaycaster.RaycastSimplePhysicsStep(step, step.Length, prioritizedLayerMasks, out RaycastHit physicsHit);
-            hitInfo = new MixedRealityRaycastHit(physicsHit);
+            bool result = MixedRealityRaycaster.RaycastSimplePhysicsStep(step, step.Length, prioritizedLayerMasks, out RaycastHit physicsHit);
+            hitInfo = new MixedRealityRaycastHit(result, physicsHit);
             return result;
         }
 
@@ -29,8 +29,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public bool SphereCast(RayStep step, float radius, LayerMask[] prioritizedLayerMasks, out MixedRealityRaycastHit hitInfo)
         {
             var result = MixedRealityRaycaster.RaycastSpherePhysicsStep(step, radius, step.Length, prioritizedLayerMasks, out RaycastHit physicsHit);
-            hitInfo = new MixedRealityRaycastHit(physicsHit);
+            hitInfo = new MixedRealityRaycastHit(result, physicsHit);
             return result;
+        }
+
+        /// <inheritdoc />
+        public RaycastResult GraphicsRaycast(EventSystem eventSystem, PointerEventData pointerEventData, LayerMask[] layerMasks)
+        {
+            return eventSystem.Raycast(pointerEventData, layerMasks);
         }
     }
 }

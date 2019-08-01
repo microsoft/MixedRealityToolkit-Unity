@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
+    [System.Obsolete("This component is no longer supported", true)]
     public class StatusText : MonoBehaviour
     {
         #region Singleton
@@ -24,6 +25,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         [SerializeField]
         private TextMesh status = null;
+
+        private void Awake()
+        {
+            Debug.LogError(this.GetType().Name + " is deprecated");
+        }
 
         public void Start()
         {

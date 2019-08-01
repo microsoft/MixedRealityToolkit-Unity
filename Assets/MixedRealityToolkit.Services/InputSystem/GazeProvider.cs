@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("If true, the gaze cursor will disappear when the pointer's focus is locked, to prevent the cursor from floating idly in the world.")]
-        private bool setCursorInvisibleWhenFocusLocked = true;
+        private bool setCursorInvisibleWhenFocusLocked = false;
 
         [SerializeField]
         [Tooltip("Maximum distance at which the gaze can hit a GameObject.")]
@@ -256,19 +256,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             public override void OnPostSceneQuery()
             {
-                if (Result != null)
-                {
-                    gazeProvider.HitInfo = Result.Details.LastRaycastHit;
-                    gazeProvider.GazeTarget = Result.Details.Object;
-
-                    if (Result.Details.Object != null)
-                    {
-                        gazeProvider.lastHitDistance = (Result.Details.Point - Rays[0].Origin).magnitude;
-                        gazeProvider.HitPosition = Rays[0].Origin + (gazeProvider.lastHitDistance * Rays[0].Direction);
-                        gazeProvider.HitNormal = Result.Details.Normal;
-                    }
-                }
-
                 if (isDown)
                 {
                     InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, currentHandedness, currentInputSource);
@@ -335,7 +322,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void OnValidate()
         {
-            Debug.Assert(minHeadVelocityThreshold < maxHeadVelocityThreshold, "Minimum head velocity threshold should be less than the maximum velocity threshold.");
+            if (minHeadVelocityThreshold > maxHeadVelocityThreshold)
+            {
+                Debug.LogWarning("Minimum head velocity threshold should be less than the maximum velocity threshold. Changing now.");
+                minHeadVelocityThreshold = maxHeadVelocityThreshold;
+            }
         }
 
         protected override void OnEnable()
@@ -515,6 +506,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             InputSystem?.RaiseSourceDetected(GazeInputSource);
             GazePointer.BaseCursor?.SetVisibility(true);
+        }
+
+        internal void UpdateGazeInfoFromHit(MixedRealityRaycastHit raycastHit)
+        {
+            HitInfo = raycastHit;
+            if (raycastHit.transform != null)
+            {
+                GazeTarget = raycastHit.transform.gameObject;
+                var ray = GazePointer.Rays[0];
+                var lhd = (raycastHit.point - ray.Origin).magnitude;
+                lastHitDistance = lhd;
+                HitPosition = ray.Origin + lhd * ray.Direction;
+                HitNormal = raycastHit.normal;
+            }
+            else
+            {
+                GazeTarget = null;
+                HitPosition = Vector3.zero;
+                HitNormal = Vector3.zero;
+            }
         }
 
         /// <summary>

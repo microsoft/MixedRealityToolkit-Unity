@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 #endif // WINDOWS_UWP
             }
             else // Pre-Windows 10 1903.
-            {                
+            {
                 if (!UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque)
                 {
                     // HoloLens supports GGV hands
@@ -396,7 +396,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 {
                     gestureRecognizer = new GestureRecognizer();
                 }
-                catch (UnityException ex)
+                catch (Exception ex)
                 {
                     Debug.LogWarning($"Failed to create gesture recognizer. OS version might not support it. Exception: {ex}");
                     gestureRecognizer = null;
@@ -461,7 +461,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     {
                         navigationGestureRecognizer = new GestureRecognizer();
                     }
-                    catch (UnityException ex)
+                    catch (Exception ex)
                     {
                         Debug.LogWarning($"Failed to create gesture recognizer. OS version might not support it. Exception: {ex}");
                         navigationGestureRecognizer = null;
@@ -550,14 +550,21 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
             IMixedRealityPointer[] pointers = null;
             InputSourceType inputSourceType = InputSourceType.Other;
-            switch(interactionSource.kind)
+            switch (interactionSource.kind)
             {
                 case InteractionSourceKind.Controller:
-                    pointers = RequestPointers(SupportedControllerType.WindowsMixedReality, controllingHand);
+                    if (interactionSource.supportsPointing)
+                    {
+                        pointers = RequestPointers(SupportedControllerType.WindowsMixedReality, controllingHand);
+                    }
+                    else
+                    {
+                        pointers = RequestPointers(SupportedControllerType.GGVHand, controllingHand);
+                    }
                     inputSourceType = InputSourceType.Controller;
                     break;
                 case InteractionSourceKind.Hand:
-                    if(interactionSource.supportsPointing)
+                    if (interactionSource.supportsPointing)
                     {
                         pointers = RequestPointers(SupportedControllerType.ArticulatedHand, controllingHand);
                     }
@@ -580,9 +587,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             var inputSource = inputSystem?.RequestNewGenericInputSource($"Mixed Reality Controller {nameModifier}", pointers, inputSourceType);
 
             BaseWindowsMixedRealitySource detectedController;
-            if (interactionSource.kind == InteractionSourceKind.Hand)
+            if (interactionSource.supportsPointing)
             {
-                if (interactionSource.supportsPointing)
+                if (interactionSource.kind == InteractionSourceKind.Hand)
                 {
                     detectedController = new WindowsMixedRealityArticulatedHand(TrackingState.NotTracked, controllingHand, inputSource);
                     if (!detectedController.SetupConfiguration(typeof(WindowsMixedRealityArticulatedHand), inputSourceType))
@@ -592,24 +599,26 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                         return null;
                     }
                 }
-                else
+                else if (interactionSource.kind == InteractionSourceKind.Controller)
                 {
-                    detectedController = new WindowsMixedRealityGGVHand(TrackingState.NotTracked, controllingHand, inputSource);
-                    if (!detectedController.SetupConfiguration(typeof(WindowsMixedRealityGGVHand), inputSourceType))
+                    detectedController = new WindowsMixedRealityController(TrackingState.NotTracked, controllingHand, inputSource);
+                    if (!detectedController.SetupConfiguration(typeof(WindowsMixedRealityController), inputSourceType))
                     {
                         // Controller failed to be setup correctly.
                         // Return null so we don't raise the source detected.
                         return null;
                     }
-
                 }
-
+                else
+                {
+                    Debug.Log($"Unhandled source type {interactionSource.kind} detected.");
+                    return null;
+                }
             }
             else
             {
-                detectedController = new WindowsMixedRealityController(TrackingState.NotTracked, controllingHand, inputSource);
-
-                if (!detectedController.SetupConfiguration(typeof(WindowsMixedRealityController), inputSourceType))
+                detectedController = new WindowsMixedRealityGGVHand(TrackingState.NotTracked, controllingHand, inputSource);
+                if (!detectedController.SetupConfiguration(typeof(WindowsMixedRealityGGVHand), inputSourceType))
                 {
                     // Controller failed to be setup correctly.
                     // Return null so we don't raise the source detected.

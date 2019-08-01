@@ -4,7 +4,9 @@ parameters:
 
 steps:
 - template: common.yml
+- template: compilemsbuild.yml
 - ${{ if eq(parameters.packagingEnabled, true) }}:
+  - template: tasks/unitypackages.yml
   - template: package.yml
   - template: publishpackages.yml
 - template: end.yml

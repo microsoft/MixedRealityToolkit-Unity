@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -214,11 +215,25 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <param name="currentState">reference bool for current visibility state of foldout</param>
         /// <param name="title">Title in foldout</param>
         /// <param name="renderContent">code to execute to render inside of foldout</param>
-        protected static void RenderFoldout(ref bool currentState, string title, Action renderContent)
+        /// <param name="preferenceKey">optional argument, current show/hide state will be tracked associated with provided preference key</param>
+        protected static void RenderFoldout(ref bool currentState, string title, Action renderContent, string preferenceKey = null)
         {
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
 
-            currentState = EditorGUILayout.Foldout(currentState, title, true, MixedRealityStylesUtility.BoldFoldoutStyle);
+            bool isValidPreferenceKey = !string.IsNullOrEmpty(preferenceKey);
+            bool state = currentState;
+            if (isValidPreferenceKey)
+            {
+                state = EditorPrefs.GetBool(preferenceKey, currentState);
+            }
+
+            currentState = EditorGUILayout.Foldout(state, title, true, MixedRealityStylesUtility.BoldFoldoutStyle);
+
+            if (isValidPreferenceKey && currentState != state)
+            {
+                EditorPrefs.SetBool(preferenceKey, currentState);
+            }
+
             if (currentState)
             {
                 renderContent();
@@ -240,38 +255,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             dropdownKeyBuilder.Append("_");
             dropdownKeyBuilder.Append(property.objectReferenceValue.GetType().Name);
             return dropdownKeyBuilder.ToString();
-        }
-
-        protected static BaseMixedRealityProfile CreateCustomProfile(BaseMixedRealityProfile sourceProfile)
-        {
-            if (sourceProfile == null)
-            {
-                return null;
-            }
-
-            ScriptableObject newProfile = CreateInstance(sourceProfile.GetType().ToString());
-            BaseMixedRealityProfile targetProfile = newProfile.CreateAsset("Assets/MixedRealityToolkit.Generated/CustomProfiles") as BaseMixedRealityProfile;
-            Debug.Assert(targetProfile != null);
-
-            EditorUtility.CopySerialized(sourceProfile, targetProfile);
-
-            var serializedProfile = new SerializedObject(targetProfile);
-            serializedProfile.FindProperty(IsCustomProfileProperty).boolValue = true;
-            serializedProfile.ApplyModifiedProperties();
-            AssetDatabase.SaveAssets();
-
-            if (!sourceProfile.IsCustomProfile)
-            {
-                // For now we only replace it if it's the master configuration profile.
-                // Sub-profiles are easy to update in the master configuration inspector.
-                if (MixedRealityToolkit.Instance.ActiveProfile.GetType() == targetProfile.GetType())
-                {
-                    UnityEditor.Undo.RecordObject(MixedRealityToolkit.Instance, "Copy & Customize Profile");
-                    MixedRealityToolkit.Instance.ActiveProfile = targetProfile as MixedRealityToolkitConfigurationProfile;
-                }
-            }
-
-            return targetProfile;
         }
 
         /// <summary>

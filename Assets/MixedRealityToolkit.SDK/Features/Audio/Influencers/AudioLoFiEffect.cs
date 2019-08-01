@@ -61,6 +61,8 @@ namespace Microsoft.MixedReality.Toolkit.Audio
 
         private void Awake()
         {
+            influencerController = gameObject.GetComponent<AudioInfluencerController>();
+
             LoadQualityFilterSettings();
             filterSettings = sourceQualityFilterSettings[SourceQuality];
 
@@ -89,11 +91,6 @@ namespace Microsoft.MixedReality.Toolkit.Audio
                 lowPassFilter.cutoffFrequency = filterSettings.LowPassCutoff;
                 highPassFilter.cutoffFrequency = filterSettings.HighPassCutoff;
             }
-        }
-
-        private void OnValidate()
-        {
-            influencerController = gameObject.GetComponent<AudioInfluencerController>();
         }
 
         /// <summary>

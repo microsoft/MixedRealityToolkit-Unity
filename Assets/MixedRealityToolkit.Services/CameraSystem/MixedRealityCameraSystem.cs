@@ -80,6 +80,14 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             {
                 ApplySettingsForTransparentDisplay();
             }
+
+            // Ensure the camera is parented to the playspace which starts, unrotated, at the origin.
+            MixedRealityPlayspace.Position = Vector3.zero;
+            MixedRealityPlayspace.Rotation = Quaternion.identity;
+            if (CameraCache.Main.transform.position != Vector3.zero)
+            {
+                Debug.LogWarning($"The main camera is not positioned at the origin ({Vector3.zero}), immersive experiences may not behave as expected.");
+            }
         }
 
         /// <inheritdoc />

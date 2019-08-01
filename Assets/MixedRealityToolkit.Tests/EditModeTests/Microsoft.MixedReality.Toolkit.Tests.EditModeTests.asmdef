@@ -1,0 +1,27 @@
+{
+    "name": "Microsoft.MixedReality.Toolkit.Tests.EditModeTests",
+    "references": [
+        "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.Editor.BuildAndDeploy",
+        "Microsoft.MixedReality.Toolkit.Editor.ClassExtensions",
+        "Microsoft.MixedReality.Toolkit.Editor.Utilities",
+        "Microsoft.MixedReality.Toolkit.SDK",
+        "Microsoft.MixedReality.Toolkit.Services.InputSystem",
+        "Microsoft.MixedReality.Toolkit.Services.InputSimulation",
+        "Microsoft.MixedReality.Toolkit.Tests",
+        "Microsoft.MixedReality.Toolkit.Examples",
+        "Microsoft.MixedReality.Toolkit.Tools"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}

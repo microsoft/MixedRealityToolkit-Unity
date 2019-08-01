@@ -12,7 +12,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public abstract class InputSystemGlobalHandlerListener : MonoBehaviour
     {
-        private bool lateInitialize = true;
+        // If true, we will try to register ourselves as a global input listener in Start
+        private bool lateInitialize = false;
         private IMixedRealityInputSystem inputSystem = null;
 
         /// <summary>
@@ -32,9 +33,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected virtual void OnEnable()
         {
-            if (InputSystem != null && !lateInitialize)
+            if (InputSystem != null)
             {
                 RegisterHandlers();
+            }
+            else
+            {
+                // We tried to register for input, but no input system found. Try again at Start
+                lateInitialize = true;
             }
         }
 
