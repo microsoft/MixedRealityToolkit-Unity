@@ -135,6 +135,27 @@ Based on customer feedback, support for easy removal of previously observed spat
 - IMixedRealitySpatialAwarenessSystem.ClearObservations\<T\>(string name)
 - IMixedRealitySpatialAwarenessObserver.ClearObservations()
 
+### Solvers
+
+Some solver components and the SolverHandler manager class has changed to fix various bugs and for more intuitive usage.
+
+#### SolverHandler
+
+- Class no longer extends from `ControllerFinder`
+- `TrackedObjectToReference` public property deprecated and has been renamed to `TrackedTargetType`
+- `TrackedObjectType` deprecates left & right controller values. Instead use `MotionController` or `HandJoint` values and update new `TrackedHandness` property to limit tracking to left or right controller
+
+#### InBetween
+
+- `TrackedObjectForSecondTransform` public property deprecated and has been renamed to `SecondTrackedObjectType`
+- `AttachSecondTransformToNewTrackedObject()` has been removed. To update the solver, modify the public properties (i.e `SecondTrackedObjectType`)
+
+##### SurfaceMagnetism
+
+- `MaxDistance` public property deprecated and has been renamed to `MaxRaycastDistance`
+- `CloseDistance` public property deprecated and has been renamed to `ClosestDistance`
+- Default value for `RaycastDirectionMode` is now `TrackedTargetForward` which raycasts in the direction of the tracked target transform forward
+
 ### Clipping Sphere
 
 The ClippingSphere interface has changed to mirror the APIs found in the ClippingBox and ClippingPlane.
