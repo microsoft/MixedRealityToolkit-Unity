@@ -47,7 +47,7 @@ Various bounding box visualization options.
 If Flatten Axis is set to *Flatten Auto*, the script will disallow manipulation along the axis with the smallest extent. This results in a 2D bounding box, which is usually used for thin objects.
  
 **Handles**
-You can assign the material and prefab to override the handle style. If no handles are assigned, they will be displayed in the default style. 
+You can assign the material and prefab to override the handle style. If no handles are assigned, they will be displayed in the default style.
  
 ## Events ##
 Bounding box provides the following events. The example uses these events to play audio feedback.
