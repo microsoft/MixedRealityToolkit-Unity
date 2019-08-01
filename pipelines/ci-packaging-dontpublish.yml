@@ -14,7 +14,7 @@ jobs:
     - COG-UnityCache-WUS2-01
     - SDK_18362 -equals TRUE
   steps:
-  - template: templates/ci-dontpublish.yml
+  - template: templates/ci-common.yml
     parameters:
       packagingEnabled: true
       packagePublishing: false
