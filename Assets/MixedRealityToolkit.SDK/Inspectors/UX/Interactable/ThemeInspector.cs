@@ -85,20 +85,19 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                 return;
             }
 
-            //if (layoutComplete || Event.current.type == EventType.Layout)
-            //{
+            if (settings.arraySize < 1)
+            {
+                AddThemeProperty();
+            }
+
             if (InspectorUIUtility.FlexButton(AddThemePropertyLabel))
             {
                 AddThemeProperty();
             }
 
-            RenderThemeSettings(settings, null, themeOptions, null, GetStates());
+            RenderThemeSettings(settings, themeOptions, null, GetStates());
 
-            // render a list of all the properties from the theme based on state
             RenderThemeStates(settings, GetStates(), 0);
-
-                //layoutComplete = true;
-            //}
 
             serializedObject.ApplyModifiedProperties();
         }
@@ -817,18 +816,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         }
 
         public static void RenderThemeSettings(SerializedProperty themeSettings, 
-            SerializedObject themeObj, 
             InteractableTypesContainer themeOptions, 
             SerializedProperty gameObject, 
             State[] states, 
             int margin = 0)
         {
             GUIStyle box = InspectorUIUtility.Box(margin);
-
-            if (themeObj != null)
-            {
-                themeObj.Update();
-            }
 
             for (int settingIndex = 0; settingIndex < themeSettings.arraySize; settingIndex++)
             {
@@ -857,7 +850,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                             className.stringValue = themeOptions.ClassNames[newId];
                             assemblyQualifiedName.stringValue = themeOptions.AssemblyQualifiedNames[newId];
 
-                            // add the themeOjects if in a profile?
                             themeSettings = ChangeThemeProperty(settingIndex, themeSettings, gameObject, states);
                         }
 
@@ -1044,11 +1036,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                         }
                     }
 
-                }
-
-                if (themeObj != null)
-                {
-                    themeObj.ApplyModifiedProperties();
                 }
             }
         }
