@@ -390,39 +390,44 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         private void RegisterGestureEvents()
         {
-            if (gestureRecognizer == null)
+            if (holdAction != MixedRealityInputAction.None ||
+                manipulationAction != MixedRealityInputAction.None ||
+                selectAction != MixedRealityInputAction.None)
             {
-                try
+                if (gestureRecognizer == null)
                 {
-                    gestureRecognizer = new GestureRecognizer();
+                    try
+                    {
+                        gestureRecognizer = new GestureRecognizer();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogWarning($"Failed to create gesture recognizer. OS version might not support it. Exception: {ex}");
+                        gestureRecognizer = null;
+                        return;
+                    }
+                    gestureRecognizer.SetRecognizableGestures(WSAGestureSettings);
                 }
-                catch (Exception ex)
+
+                if (holdAction != MixedRealityInputAction.None)
                 {
-                    Debug.LogWarning($"Failed to create gesture recognizer. OS version might not support it. Exception: {ex}");
-                    gestureRecognizer = null;
-                    return;
+                    gestureRecognizer.HoldStarted += GestureRecognizer_HoldStarted;
+                    gestureRecognizer.HoldCompleted += GestureRecognizer_HoldCompleted;
+                    gestureRecognizer.HoldCanceled += GestureRecognizer_HoldCanceled;
                 }
-                gestureRecognizer.SetRecognizableGestures(WSAGestureSettings);
-            }
 
-            if (holdAction != MixedRealityInputAction.None)
-            {
-                gestureRecognizer.HoldStarted += GestureRecognizer_HoldStarted;
-                gestureRecognizer.HoldCompleted += GestureRecognizer_HoldCompleted;
-                gestureRecognizer.HoldCanceled += GestureRecognizer_HoldCanceled;
-            }
+                if (manipulationAction != MixedRealityInputAction.None)
+                {
+                    gestureRecognizer.ManipulationStarted += GestureRecognizer_ManipulationStarted;
+                    gestureRecognizer.ManipulationUpdated += GestureRecognizer_ManipulationUpdated;
+                    gestureRecognizer.ManipulationCompleted += GestureRecognizer_ManipulationCompleted;
+                    gestureRecognizer.ManipulationCanceled += GestureRecognizer_ManipulationCanceled;
+                }
 
-            if (manipulationAction != MixedRealityInputAction.None)
-            {
-                gestureRecognizer.ManipulationStarted += GestureRecognizer_ManipulationStarted;
-                gestureRecognizer.ManipulationUpdated += GestureRecognizer_ManipulationUpdated;
-                gestureRecognizer.ManipulationCompleted += GestureRecognizer_ManipulationCompleted;
-                gestureRecognizer.ManipulationCanceled += GestureRecognizer_ManipulationCanceled;
-            }
-
-            if (selectAction != MixedRealityInputAction.None)
-            {
-                gestureRecognizer.Tapped += GestureRecognizer_Tapped;
+                if (selectAction != MixedRealityInputAction.None)
+                {
+                    gestureRecognizer.Tapped += GestureRecognizer_Tapped;
+                }
             }
         }
 
