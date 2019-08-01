@@ -4,12 +4,8 @@
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.TestTools;
 using System;
 using System.IO;
-using System.Threading.Tasks;
-using System.Linq;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.Core
 {
@@ -17,7 +13,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
     public class MixedRealityToolkitFilesTests
     {
         string[] basePaths = new string[] { "", "C:\\", "C:\\xyz\\", "C:/xyz/" };
-        bool adhocTestDirectoryCreated = false;
 
         [Test]
         public void FindMatchingModule()
@@ -103,25 +98,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         }
 
         /// <summary>
-        /// This test validates that the MixedRealityToolkitFiles class is able to reason over MRTK folders even
-        /// when they aren't in the root Asset directory.
-        /// </summary>
-        /// <remarks>
-        /// Note that this test will create a folder called lib/mrtk/MixedRealityToolkit.AdhocTesting/empty
-        /// in order to do this.
-        /// </remarks>
-        [Test]
-        public void TestNonRootAssetFolderResolution()
-        {
-            CreateAdhocTestingPackageDirectory();
-            MixedRealityToolkitFiles.RefreshFolders();
-            string resolvedPath =
-                MixedRealityToolkitFiles.MapRelativeFolderPathToAbsolutePath(MixedRealityToolkitModuleType.AdhocTesting,
-                    "empty");
-            string expectedPath = Path.Combine(Application.dataPath, "lib/mrtk/MixedRealityToolkit.AdhocTesting/empty");
-        }
-
-        /// <summary>
         /// Validates that MixedRealityToolkitFiles is able to reason over MRTK folders when placed in the root Asset directory.
         /// </summary>
         public void TestRootAssetFolderResolution()
@@ -154,55 +130,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         public void CleanupTests()
         {
             TestUtilities.EditorTearDownScenes();
-            if (adhocTestDirectoryCreated)
-            {
-                File.Delete(Path.Combine(Application.dataPath, "lib.meta"));
-                RecursiveFolderCleanup(new DirectoryInfo(Path.Combine(Application.dataPath, "lib")));
-                adhocTestDirectoryCreated = false;
-            }
-        }
-
-        /// <summary>
-        /// Creates a directory under the Assets path that looks like:
-        /// Assets/lib/mrtk/MixedRealityToolkit.Adhoc/empty
-        /// </summary>
-        /// <remarks>
-        /// This must be cleaned up in CleanupTests.
-        /// </remarks>
-        private void CreateAdhocTestingPackageDirectory()
-        {
-            adhocTestDirectoryCreated = true;
-            Directory.CreateDirectory(Path.Combine(Application.dataPath, "lib"));
-            Directory.CreateDirectory(Path.Combine(Application.dataPath, "lib/mrtk"));
-            Directory.CreateDirectory(Path.Combine(Application.dataPath, "lib/mrtk/MixedRealityToolkit.AdhocTesting"));
-            Directory.CreateDirectory(Path.Combine(Application.dataPath, "lib/mrtk/MixedRealityToolkit.AdhocTesting/empty"));
-        }
-
-        private static void RecursiveFolderCleanup(DirectoryInfo folder)
-        {
-            foreach (DirectoryInfo subFolder in folder.GetDirectories())
-            {
-                RecursiveFolderCleanup(subFolder);
-            }
-
-            FileInfo[] fileList = folder.GetFiles("*");
-            DirectoryInfo[] folderList = folder.GetDirectories();
-            foreach (FileInfo file in fileList)
-            {
-                if (file.Extension.Equals(".meta"))
-                {
-                    string nameCheck = file.FullName.Remove(file.FullName.Length - 5);
-                    if (!fileList.Concat<FileSystemInfo>(folderList).Any(t => nameCheck.Equals(t.FullName)))
-                    {
-                        file.Delete();
-                    }
-                }
-            }
-
-            if (folder.GetDirectories().Length == 0 && folder.GetFiles().Length == 0)
-            {
-                folder.Delete();
-            }
         }
     }
 }
