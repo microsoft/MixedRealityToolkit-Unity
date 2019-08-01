@@ -167,23 +167,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <returns></returns>
         public static bool FlexButton(GUIContent label, int index, ListButtonEvent callback, SerializedProperty prop = null)
         {
-            // delete button
-            GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
-
-            float buttonWidth = GUI.skin.button.CalcSize(label).x;
-
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-
-            bool triggered = false;
-            if (GUILayout.Button(label, buttonStyle, GUILayout.Width(buttonWidth)))
+            if (FlexButton(label))
             {
                 callback(index, prop);
-                triggered = true;
+                return true;
             }
 
-            EditorGUILayout.EndHorizontal();
-            return triggered;
+            return false;
         }
 
         /// <summary>
@@ -193,12 +183,26 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <param name="indexArr"></param>
         /// <param name="callback"></param>
         /// <param name="prop"></param>
-        /// <returns></returns>
+        /// <returns>true if button clicked, false otherwise</returns>
         public static bool FlexButton(GUIContent label, int[] indexArr, MultiListButtonEvent callback, SerializedProperty prop = null)
         {
-            // delete button
-            GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
+            if (FlexButton(label))
+            {
+                callback(indexArr, prop);
+                return true;
+            }
 
+            return false;
+        }
+
+        /// <summary>
+        /// A button that is as wide as the label
+        /// </summary>
+        /// <param name="label">content for button</param>
+        /// <returns>true if button clicked, false otherwise</returns>
+        public static bool FlexButton(GUIContent label)
+        {
+            GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
             float buttonWidth = GUI.skin.button.CalcSize(label).x;
 
             EditorGUILayout.BeginHorizontal();
@@ -207,7 +211,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             bool triggered = false;
             if (GUILayout.Button(label, buttonStyle, GUILayout.Width(buttonWidth)))
             {
-                callback(indexArr, prop);
                 triggered = true;
             }
 
