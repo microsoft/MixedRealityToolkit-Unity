@@ -2,17 +2,15 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
+namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 {
     /// <summary>
-    /// Provides a solver that constrains the target to a region safe for hand constrained content.
+    /// Provides a solver that constrains the target to a region safe for hand constrained interactive content.
     /// </summary>
     [RequireComponent(typeof(HandBounds))]
     public class HandConstraint : Solver, IMixedRealitySourceStateHandler
@@ -224,7 +222,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
             }
 
             // Update the goal position and rotation if a tracked hand is present.
-            if (trackedHand != null)
+            if (trackedHand != null && SolverHandler.TransformTarget != null)
             {
                 if (updateWhenOppositeHandNear || !IsOppositeHandNear(trackedHand))
                 {
@@ -269,6 +267,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
 
         /// <summary>
         /// Performs a ray vs AABB test to determine where the solver can constrain the tracked object without intersection.
+        /// The "safe zone" is calculated as if projected into the horizontal and vertical plane of the camera.
         /// </summary>
         /// <returns>The new goal position.</returns>
         protected virtual Vector3 CalculateGoalPosition()
@@ -280,7 +279,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
                 handBounds.Bounds.TryGetValue(trackedHand.ControllerHandedness, out trackedHandBounds))
             {
                 float distance;
-                Ray ray = CalculateSafeZoneRay(goalPosition, trackedHand.ControllerHandedness, safeZone);
+                Ray ray = CalculateProjectedSafeZoneRay(goalPosition, trackedHand, safeZone);
                 trackedHandBounds.Expand(safeZoneBuffer);
 
                 if (trackedHandBounds.IntersectRay(ray, out distance))
@@ -415,7 +414,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
                     if (trackedHand == null)
                     {
                         trackedHand = hand;
-                        onHandActivate.Invoke();
+                        onHandActivate?.Invoke();
                     }
                     else
                     {
@@ -437,12 +436,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
                 {
                     StartCoroutine(ToggleCursor(true));
                     trackedHand = null;
-                    onHandDeactivate.Invoke();
+                    onHandDeactivate?.Invoke();
                 }
             }
         }
 
-        private static Ray CalculateSafeZoneRay(Vector3 origin, Handedness handedness, SolverSafeZone handSafeZone)
+        private static Ray CalculateProjectedSafeZoneRay(Vector3 origin, IMixedRealityController hand, SolverSafeZone handSafeZone)
         {
             Vector3 direction;
 
@@ -452,8 +451,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
                 case SolverSafeZone.UlnarSide:
                     {
                         direction = Vector3.Cross(CameraCache.Main.transform.forward, Vector3.up);
+                        direction = IsPalmFacingCamera(hand) ? direction : -direction;
 
-                        if (handedness == Handedness.Left)
+                        if (hand.ControllerHandedness == Handedness.Left)
                         {
                             direction = -direction;
                         }
@@ -462,9 +462,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
 
                 case SolverSafeZone.RadialSide:
                     {
-                        direction = -Vector3.Cross(CameraCache.Main.transform.forward, Vector3.up);
+                        direction = Vector3.Cross(CameraCache.Main.transform.forward, Vector3.up);
+                        direction = IsPalmFacingCamera(hand) ? direction : -direction;
 
-                        if (handedness == Handedness.Left)
+                        if (hand.ControllerHandedness == Handedness.Right)
                         {
                             direction = -direction;
                         }
@@ -487,6 +488,19 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
             return new Ray(origin + direction, -direction);
         }
 
+        private static bool IsPalmFacingCamera(IMixedRealityController hand)
+        {
+            MixedRealityPose palmPose;
+            var jointedHand = hand as IMixedRealityHand;
+
+            if ((jointedHand != null) && jointedHand.TryGetJoint(TrackedHandJoint.Palm, out palmPose))
+            {
+                return (Vector3.Dot(palmPose.Up, CameraCache.Main.transform.forward) > 0.0f);
+            }
+
+            return false;
+        }
+
         #region MonoBehaviour Implementation
 
         protected override void Awake()
@@ -506,8 +520,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
 
             // Initially no hands are tacked or active.
             trackedHand = null;
-            onLastHandLost.Invoke();
-            onHandDeactivate.Invoke();
+            onLastHandLost?.Invoke();
+            onHandDeactivate?.Invoke();
         }
 
         protected virtual void OnDisable()
@@ -528,7 +542,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
             {
                 if (handStack.Count == 0)
                 {
-                    onFirstHandDetected.Invoke();
+                    onFirstHandDetected?.Invoke();
                 }
 
                 handStack.Add(hand);
@@ -546,7 +560,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
 
                 if (handStack.Count == 0)
                 {
-                    onLastHandLost.Invoke();
+                    onLastHandLost?.Invoke();
                 }
             }
         }
