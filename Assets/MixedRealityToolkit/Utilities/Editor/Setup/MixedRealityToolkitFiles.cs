@@ -24,7 +24,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         Examples,
         Tests,
         Extensions,
-        Tools
+        Tools,
+        // This module only exists for testing purposes, and is used in edit mode tests in conjunction
+        // with MixedRealityToolkitFiles to ensure that this class is able to reason over MRTK
+        // files that are placed outside of the root asset folder.
+        AdhocTesting,
     }
 
     /// <summary>
@@ -33,6 +37,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     [InitializeOnLoad]
     public static class MixedRealityToolkitFiles
     {
+        /// <summary>
+        /// This controls the behavior of MapRelativePathToAbsolutePath.
+        /// </summary>
+        private enum SearchType
+        {
+            /// <summary>
+            /// This indicates
+            /// </summary>
+            File,
+            Folder,
+        }
+
         /// <summary>
         /// In order to subscribe for a <see cref="OnPostprocessAllAssets(string[], string[], string[], string[])"/> callback, 
         /// the class declaring the method must derive from AssetPostprocessor. So this class is nested privately as to prevent instantiation of it.
@@ -248,6 +264,57 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <returns>The project relative path to the file.</returns>
         public static string MapRelativeFilePath(MixedRealityToolkitModuleType module, string mrtkPathToFile)
         {
+            string absolutePath = MapRelativeFilePathToAbsolutePath(module, mrtkPathToFile);
+            return absolutePath != null ? GetAssetDatabasePath(absolutePath) : null;
+        }
+
+        /// <summary>
+        /// Maps a single relative path file to MRTK folders to its absolute path, if found. Otherwise returns null.
+        /// </summary>
+        /// <remarks>
+        /// For example, this will map "Inspectors\Data\EditorWindowOptions.json" to its full path like
+        /// "c:\project\Assets\Libs\MRTK\MixedRealityToolkit\Inspectors\Data\EditorWindowOptions.json".
+        /// This assumes that the passed in mrtkPathToFile is found under the "MixedRealityToolkit" folder
+        /// (instead of the MixedRealityToolkit.SDK, or any of the other folders).
+        /// </remarks>
+        public static string MapRelativeFilePathToAbsolutePath(string mrtkPathToFile)
+        {
+            return MapRelativeFilePathToAbsolutePath(MixedRealityToolkitModuleType.Core, mrtkPathToFile);
+        }
+
+        /// <summary>
+        /// Overload of MapRelativeFilePathToAbsolutePath which provides the ability to specify the module that the
+        /// file belongs to.
+        /// </summary>
+        /// <remarks>
+        /// When searching for a resource that lives in the MixedRealityToolkit.SDK folder, this could be invoked
+        /// in this way:
+        /// MapRelativeFilePathToAbsolutePath(MixedRealityToolkitModuleType.SDK, mrtkPathToFile)
+        /// </remarks>
+        public static string MapRelativeFilePathToAbsolutePath(MixedRealityToolkitModuleType module, string mrtkPathToFile)
+        {
+            return MapRelativePathToAbsolutePath(SearchType.File, module, mrtkPathToFile);
+        }
+
+        /// <summary>
+        /// Similar to MapRelativeFilePathToAbsolutePath, except this checks for the existence of a folder instead of file.
+        /// </summary>
+        public static string MapRelativeFolderPathToAbsolutePath(MixedRealityToolkitModuleType module, string mrtkPathToFolder)
+        {
+            return MapRelativePathToAbsolutePath(SearchType.Folder, module, mrtkPathToFolder);
+        }
+
+        public static string MapModulePath(MixedRealityToolkitModuleType module)
+        {
+            return GetAssetDatabasePath(MapRelativeFolderPathToAbsolutePath(module, ""));
+        }
+
+        /// <summary>
+        /// Maps a single relative path (file or folder) in MRTK folders to its absolute path, if found.
+        /// Otherwise returns null.
+        /// </summary>
+        private static string MapRelativePathToAbsolutePath(SearchType searchType, MixedRealityToolkitModuleType module, string mrtkPath)
+        {
             if (!AreFoldersAvailable)
             {
                 Debug.LogError("Failed to locate MixedRealityToolkit folders in the project.");
@@ -257,20 +324,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             if (mrtkFolders.TryGetValue(module, out HashSet<string> modFolders))
             {
                 string path = modFolders
-                    .Select(t => Path.Combine(t, mrtkPathToFile))
-                    .FirstOrDefault(t => File.Exists(t));
-                return path != null ? GetAssetDatabasePath(path) : null;
-            }
-            return null;
-        }
-
-        public static string MapModulePath(MixedRealityToolkitModuleType module)
-        {
-            if (mrtkFolders.TryGetValue(module, out HashSet<string> modFolders))
-            {
-                string path = modFolders
-                    .FirstOrDefault(t => Directory.Exists(t));
-                return path != null ? GetAssetDatabasePath(path) : null;
+                    .Select(t => Path.Combine(t, mrtkPath))
+                    .FirstOrDefault(t => searchType == SearchType.File ? File.Exists(t) : Directory.Exists(t));
+                return path;
             }
             return null;
         }
@@ -285,7 +341,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { "Examples", MixedRealityToolkitModuleType.Examples },
             { "Tests", MixedRealityToolkitModuleType.Tests },
             { "Extensions", MixedRealityToolkitModuleType.Extensions },
-            { "Tools", MixedRealityToolkitModuleType.Tools }
+            { "Tools", MixedRealityToolkitModuleType.Tools },
+
+            // This module only exists for testing purposes, and is used in edit mode tests in conjunction
+            // with MixedRealityToolkitFiles to ensure that this class is able to reason over MRTK
+            // files that are placed outside of the root asset folder.
+            { "AdhocTesting", MixedRealityToolkitModuleType.AdhocTesting },
         };
 
         public static bool FindMatchingModule(string path, out MixedRealityToolkitModuleType result)
@@ -336,6 +397,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             result = MixedRealityToolkitModuleType.Core;
             return false;
+        }
+
+        /// <summary>
+        /// This function is only exposed for testing purposes, and can change/be removed at any time.
+        /// </summary>
+        /// <remarks>
+        /// Syncronously refreshes the MRTK folder database.
+        /// </remarks>
+        public static void RefreshFolders()
+        {
+            SearchForFoldersAsync(Application.dataPath);
         }
     }
 }
