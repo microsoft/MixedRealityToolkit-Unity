@@ -9,9 +9,27 @@ Between the RC2 and GA releases of the Microsoft Mixed Reality Toolkit, changes 
 
 Since the release of RC2, there have been a number of API changes including some that may break existing projects. The following sections describe the changes that have occurred between the RC2 and GA releases.
 
+- [MixedRealityToolkit](#MixedRealityToolkit)
 - [Event System](#event-system)
 - [Spatial Awareness](#spatial-awareness)
 - [Clipping Sphere](#clipping-sphere)
+
+### MixedRealityToolkit
+
+The following public properties on the MixedRealityToolkit object have been deprecated.
+
+- `RegisteredMixedRealityServices` - Use [`IMixedRealityServiceRegistrar.GetDataProvider<T>()`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar) or [`IMixedRealityDataProviderAccess`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess) instead
+
+Use [`MixedRealityServiceRegistry`](xref:Microsoft.MixedReality.Toolkit.MixedRealityServiceRegistry) or [`CoreServices`](xref:Microsoft.MixedReality.Toolkit.CoreServices) instead for the following deprecated properties
+
+- `ActiveSystems`
+- `InputSystem`
+- `BoundarySystem`
+- `CameraSystem`
+- `SpatialAwarenessSystem`
+- `TeleportSystem`
+- `DiagnosticsSystem`
+- `SceneSystem`
 
 ### Event System
 
