@@ -786,7 +786,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/GettingStartedWithTheMRTK.html",
-          "hash": "j8lRtE//ov/V0lhc154TPw=="
+          "hash": "EHoWpSzRsLOVttLpliaSkg=="
         }
       },
       "is_incremental": false,
@@ -5018,7 +5018,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Packaging/MRTK_Packages.html",
-          "hash": "298nqciUoRSoRdYD5Jlslw=="
+          "hash": "iATUUOi5+iSkrOeN27B1lw=="
         }
       },
       "is_incremental": false,
@@ -18318,17 +18318,17 @@
           "total_file_count": 117,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1064,
+          "skipped_file_count": 0
+        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1064,
           "skipped_file_count": 0
         }
       }
