@@ -321,6 +321,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                    profile == MixedRealityToolkit.Instance.ActiveProfile;
         }
 
+        /// <summary>
+        /// Checks if a system is enabled and the service type or validProfile is null, then displays warning message to the user
+        /// </summary>
+        /// <param name="service">name of service being tested</param>
+        /// <param name="systemEnabled">true if checkbox enabled, false otherwise</param>
+        /// <param name="systemType">Selected implementation type for service</param>
+        /// <param name="validProfile">true if profile scriptableobject property is not null, false otherwise</param>
         protected void CheckSystemConfiguration(string service, bool systemEnabled, SystemType systemType, bool validProfile)
         {
             if (systemEnabled)
