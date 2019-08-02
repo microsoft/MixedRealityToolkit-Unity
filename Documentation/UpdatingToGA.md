@@ -11,6 +11,7 @@ Since the release of RC2, there have been a number of API changes including some
 
 - [Event System](#event-system)
 - [Spatial Awareness](#spatial-awareness)
+- [Solvers](#solvers)
 - [Clipping Sphere](#clipping-sphere)
 
 ### Event System
@@ -184,6 +185,10 @@ The `PointerClickHandler` class has been deprecated. The `PointerHandler` should
 ### HoloLens clicker support
 
 - The HoloLens clicker's controller mappings have changed from being an unhanded [`WindowsMixedRealityController`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityController) to being an unhanded [`WindowsMixedRealityGGVHand`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityGGVHand). To account for this, an automatic updater will run the first time you open your ControllerMapping profile. Please open any custom profiles at least once after upgrading to GA in order to trigger this one-time migration step.
+
+### InteractableHighlight
+
+The `InteractableHighlight` class has been deprecated. The `InteractableOnFocus` class and `FocusInteractableStates` asset should be used instead. To create a new `Theme` asset for the `InteractableOnFocus`, right click in the project window and select *Create* > *Mixed Reality Toolkit* > *Interactable* > *Theme*.
 
 ## Assembly name changes
 
