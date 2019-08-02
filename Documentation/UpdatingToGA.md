@@ -9,7 +9,7 @@ Between the RC2 and GA releases of the Microsoft Mixed Reality Toolkit, changes 
 
 Since the release of RC2, there have been a number of API changes including some that may break existing projects. The following sections describe the changes that have occurred between the RC2 and GA releases.
 
-- [MixedRealityToolkit](#MixedRealityToolkit)
+- [MixedRealityToolkit](#mixedrealitytoolkit)
 - [Event System](#event-system)
 - [Spatial Awareness](#spatial-awareness)
 - [Clipping Sphere](#clipping-sphere)
