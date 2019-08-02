@@ -1133,9 +1133,15 @@ namespace Microsoft.MixedReality.Toolkit
 
             IMixedRealityService service;
             MixedRealityServiceRegistry.TryGetService(interfaceType, out service, out _, serviceName);
-            return service;
-            // TODO: Troy
-            /*
+            if (service != null)
+            {
+                return service;
+            }
+
+            // The interal dictionary of MRTK will eventually be fully deprecated 
+            // and storage access should be done against the MixedRealityServiceRegistry
+            // However, MixedRealityServiceRegistry cannot atm handle IMixedRealityDataProviders and
+            // there is a convoluted API interface for IMixedRealityServiceRegistrar and IMixedRealityDataProviderAccess
             if (IsCoreSystem(interfaceType))
             {
                 IMixedRealityService serviceInstance;
@@ -1159,7 +1165,6 @@ namespace Microsoft.MixedReality.Toolkit
             }
 
             return null;
-            */
         }
 
         /// <summary>
