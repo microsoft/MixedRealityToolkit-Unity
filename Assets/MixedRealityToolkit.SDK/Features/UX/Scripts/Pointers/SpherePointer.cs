@@ -119,8 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Controller.ControllerHandedness, out MixedRealityPose thumb);
                 if (index != null && thumb != null)
                 {
-                    // result = 0.5f * (index.position + thumb.position);
-                    result = index.Position;
+                    result = 0.5f * (index.Position + thumb.Position);
                     return true;
                 }
             }
