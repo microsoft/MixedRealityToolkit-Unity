@@ -27,15 +27,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             foreach (var profile in this.Profiles)
             {
-                var themes = profile.CreateThemeEngines();
+                var themeEngines = profile.CreateThemeEngines();
 
-                themes.AddRange(themes);
+                themes.AddRange(themeEngines);
             }
-        }
-
-        public virtual void OnDisable()
-        {
-            //Refresh();
         }
 
         private void UpdateThemes(bool isFocused)

@@ -31,6 +31,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
             InspectorUIUtility.DrawTitle("Profiles");
 
+            if (profilesProperty.arraySize == 0)
+            {
+                AddProfile();
+            }
+
             for (int i = 0; i < profilesProperty.arraySize; i++)
             {
                 using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))

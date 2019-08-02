@@ -37,9 +37,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
         protected virtual void OnEnable()
         {
-            settings = serializedObject.FindProperty("Settings");
-            states = serializedObject.FindProperty("States");
-
             SetupThemeOptions();
         }
 
@@ -55,6 +52,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
         public virtual void RenderCustomInspector()
         {
+            settings = serializedObject.FindProperty("Settings");
+            states = serializedObject.FindProperty("States");
+
             //base.OnInspectorGUI();
             serializedObject.Update();
 
@@ -323,24 +323,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                         }
 
                         ShaderInfo info = GetShaderProperties(renderer, shaderPropFilter.ToArray());
-                        ShaderProperties[] shaderProps = info.ShaderOptions;
-                        shaderName.stringValue = info.Name;
-                        for (int n = 0; n < shaderProps.Length; n++)
-                        {
-                            shaderList.InsertArrayElementAtIndex(shaderList.arraySize);
-                            SerializedProperty shaderListItem = shaderList.GetArrayElementAtIndex(shaderList.arraySize - 1);
-                            SerializedProperty shaderListName = shaderListItem.FindPropertyRelative("Name");
-                            SerializedProperty shaderListType = shaderListItem.FindPropertyRelative("Type");
-                            SerializedProperty shaderListRange = shaderListItem.FindPropertyRelative("Range");
-
-                            shaderListName.stringValue = shaderProps[n].Name;
-                            shaderListType.intValue = (int)shaderProps[n].Type;
-                            shaderListRange.vector2Value = shaderProps[n].Range;
-
-                            shaderNames.InsertArrayElementAtIndex(shaderNames.arraySize);
-                            SerializedProperty names = shaderNames.GetArrayElementAtIndex(shaderNames.arraySize - 1);
-                            names.stringValue = shaderProps[n].Name;
-                        }
+                        PopulateShaderNames(shaderList, shaderNames, shaderName, info);
                     }
                 }
 
@@ -351,6 +334,28 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             }
 
             return themeSettings;
+        }
+
+        private static void PopulateShaderNames(SerializedProperty shaderList, SerializedProperty shaderNames, SerializedProperty shaderName, ShaderInfo info)
+        {
+            ShaderProperties[] shaderProps = info.ShaderOptions;
+            shaderName.stringValue = info.Name;
+            for (int n = 0; n < shaderProps.Length; n++)
+            {
+                shaderList.InsertArrayElementAtIndex(shaderList.arraySize);
+                SerializedProperty shaderListItem = shaderList.GetArrayElementAtIndex(shaderList.arraySize - 1);
+                SerializedProperty shaderListName = shaderListItem.FindPropertyRelative("Name");
+                SerializedProperty shaderListType = shaderListItem.FindPropertyRelative("Type");
+                SerializedProperty shaderListRange = shaderListItem.FindPropertyRelative("Range");
+
+                shaderListName.stringValue = shaderProps[n].Name;
+                shaderListType.intValue = (int)shaderProps[n].Type;
+                shaderListRange.vector2Value = shaderProps[n].Range;
+
+                shaderNames.InsertArrayElementAtIndex(shaderNames.arraySize);
+                SerializedProperty names = shaderNames.GetArrayElementAtIndex(shaderNames.arraySize - 1);
+                names.stringValue = shaderProps[n].Name;
+            }
         }
 
         /// <summary>
@@ -828,7 +833,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
                             themeSettings = ChangeThemeProperty(settingIndex, themeSettings, gameObjectProperty, states);
                         }
-
                     }
 
                     SerializedProperty themeProperties = settingsItem.FindPropertyRelative("Properties");
@@ -851,6 +855,16 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                         if (shaderNames.arraySize > 0)
                         {
                             RenderShaderProperties(propertyItem, gameObjectProperty, type);
+                        }
+                        else
+                        {
+                            // If there are no shader options available
+                            SerializedProperty shaderList = propertyItem.FindPropertyRelative("ShaderOptions");
+                            SerializedProperty shaderName = propertyItem.FindPropertyRelative("ShaderName");
+
+                            ShaderPropertyType[] filter = GetShaderPropertyFilters(type);
+                            ShaderInfo info = GetShaderProperties(null, filter);
+                            PopulateShaderNames(shaderList, shaderNames, shaderName, info);
                         }
                     }
 
@@ -933,22 +947,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                     hasTextComp = InteractableColorTheme.HasTextComponentOnObject(renderHost);
                     if (renderer != null && !hasTextComp)
                     {
-                        ShaderPropertyType[] filter = new ShaderPropertyType[0];
-                        switch (type)
-                        {
-                            case InteractableThemePropertyValueTypes.Color:
-                                filter = new ShaderPropertyType[] { ShaderPropertyType.Color };
-                                break;
-                            case InteractableThemePropertyValueTypes.ShaderFloat:
-                                filter = new ShaderPropertyType[] { ShaderPropertyType.Float };
-                                break;
-                            case InteractableThemePropertyValueTypes.ShaderRange:
-                                filter = new ShaderPropertyType[] { ShaderPropertyType.Float };
-                                break;
-                            default:
-                                break;
-                        }
-
+                        ShaderPropertyType[] filter = GetShaderPropertyFilters(type);
                         ShaderInfo info = GetShaderProperties(renderer, filter);
 
                         if (info.Name != shaderName.stringValue)
@@ -992,6 +991,27 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             // theme is save for a game object with a renderer, but when put on a textmesh, rendering prop values show up.
             // when changing the theme type on a TextMesh, everything works, but the rendering prop is removed from the theme on the renderer object.
             // make this passive, only show up when needed.
+        }
+
+        private static ShaderPropertyType[] GetShaderPropertyFilters(InteractableThemePropertyValueTypes type)
+        {
+            ShaderPropertyType[] filter = new ShaderPropertyType[0];
+            switch (type)
+            {
+                case InteractableThemePropertyValueTypes.Color:
+                    filter = new ShaderPropertyType[] { ShaderPropertyType.Color };
+                    break;
+                case InteractableThemePropertyValueTypes.ShaderFloat:
+                    filter = new ShaderPropertyType[] { ShaderPropertyType.Float };
+                    break;
+                case InteractableThemePropertyValueTypes.ShaderRange:
+                    filter = new ShaderPropertyType[] { ShaderPropertyType.Float };
+                    break;
+                default:
+                    break;
+            }
+
+            return filter;
         }
 
         /// <summary>
@@ -1265,7 +1285,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             }
             else
             {
-                material = new Material(Shader.Find("MixedRealityToolkit/Standard"));
+                material = new Material(Shader.Find("Mixed Reality Toolkit/Standard"));
             }
 
             if (material != null)
@@ -1290,6 +1310,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             info.ShaderOptions = properties.ToArray();
             return info;
         }
+
         public static States GetDefaultInteractableStates()
         {
             AssetDatabase.Refresh();
