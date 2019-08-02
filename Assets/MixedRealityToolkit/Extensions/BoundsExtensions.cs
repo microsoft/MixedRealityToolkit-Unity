@@ -59,6 +59,11 @@ namespace Microsoft.MixedReality.Toolkit
         public const int FWD = 4;
         public const int BCK = 5;
 
+        // Axis of the capsule’s lengthwise orientation in the object’s local space
+        private const int CAPSULE_X_AXIS = 0;
+        private const int CAPSULE_Y_AXIS = 1;
+        private const int CAPSULE_Z_AXIS = 2;
+
         public enum Axis
         {
             X,
@@ -396,15 +401,15 @@ namespace Microsoft.MixedReality.Toolkit
                 Bounds capsuleBounds = new Bounds(cc.center, Vector3.zero);
                 switch (cc.direction)
                 {
-                    case 0:
+                    case CAPSULE_X_AXIS:
                         capsuleBounds.size = new Vector3(cc.height, cc.radius * 2, cc.radius * 2);
                         break;
 
-                    case 1:
+                    case CAPSULE_Y_AXIS:
                         capsuleBounds.size = new Vector3(cc.radius * 2, cc.height, cc.radius * 2);
                         break;
 
-                    case 2:
+                    case CAPSULE_Z_AXIS:
                         capsuleBounds.size = new Vector3(cc.radius * 2, cc.radius * 2, cc.height);
                         break;
                 }

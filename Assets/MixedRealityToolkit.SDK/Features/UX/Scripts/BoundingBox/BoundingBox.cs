@@ -81,16 +81,24 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// This enum defines what volume type the bound calculation depends on and its priority
         /// for it.
-        /// RendererOverCollider: Used Renderers for the bounds calculation and Colliders as a fallback
-        /// ColliderOverRenderer: Used Colliders for the bounds calculation and Renderers as a fallback
-        /// ColliderOnly: Omits Renderers and uses Colliders for the bounds calculation exclusively
-        /// ColliderOnly: Omits Colliders and uses Renderers for the bounds calculation exclusively
         /// </summary>
         public enum BoundsCalculationMethod
         {
+            /// <summary>
+            /// Used Renderers for the bounds calculation and Colliders as a fallback
+            /// </summary>
             RendererOverCollider = 0,
+            /// <summary>
+            /// Used Colliders for the bounds calculation and Renderers as a fallback
+            /// </summary>
             ColliderOverRenderer,
+            /// <summary>
+            /// Omits Renderers and uses Colliders for the bounds calculation exclusively
+            /// </summary>
             ColliderOnly,
+            /// <summary>
+            /// Omits Colliders and uses Renderers for the bounds calculation exclusively
+            /// </summary>
             RendererOnly,
         }
 
@@ -154,6 +162,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [Tooltip("Defines the volume type and the priority for the bounds calculation")]
         private BoundsCalculationMethod boundsCalculationMethod = BoundsCalculationMethod.RendererOverCollider;
+
+        /// <summary>
+        /// Defines the volume type and the priority for the bounds calculation
+        /// </summary>
         public BoundsCalculationMethod CalculationMethod
         {
             get { return boundsCalculationMethod; }
