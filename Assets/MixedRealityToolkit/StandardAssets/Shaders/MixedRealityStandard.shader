@@ -99,6 +99,7 @@ Shader "Mixed Reality Toolkit/Standard"
         [Enum(UnityEngine.Rendering.CullMode)] _CullMode("Cull Mode", Float) = 2                     // "Back"
         _RenderQueueOverride("Render Queue Override", Range(-1.0, 5000)) = -1
         [Toggle(_INSTANCED_COLOR)] _InstancedColor("Instanced Color", Float) = 0.0
+        [Toggle(_IGNORE_Z_SCALE)] _IgnoreZScale("Ignore Z Scale", Float) = 0.0
         [Toggle(_STENCIL)] _Stencil("Enable Stencil Testing", Float) = 0.0
         _StencilReference("Stencil Reference", Range(0, 255)) = 0
         [Enum(UnityEngine.Rendering.CompareFunction)]_StencilComparison("Stencil Comparison", Int) = 0
@@ -253,6 +254,7 @@ Shader "Mixed Reality Toolkit/Standard"
             #pragma shader_feature _IRIDESCENCE
             #pragma shader_feature _ENVIRONMENT_COLORING
             #pragma shader_feature _INSTANCED_COLOR
+            #pragma shader_feature _IGNORE_Z_SCALE
 
             #define IF(a, b, c) lerp(b, c, step((fixed) (a), 0.0)); 
 
@@ -706,7 +708,11 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_SCALE)
                 o.scale.x = length(mul(unity_ObjectToWorld, float4(1.0, 0.0, 0.0, 0.0)));
                 o.scale.y = length(mul(unity_ObjectToWorld, float4(0.0, 1.0, 0.0, 0.0)));
+#if defined(_IGNORE_Z_SCALE)
+                o.scale.z = o.scale.x;
+#else
                 o.scale.z = length(mul(unity_ObjectToWorld, float4(0.0, 0.0, 1.0, 0.0)));
+#endif
 #endif
 
 #if defined(_BORDER_LIGHT) || defined(_ROUND_CORNERS)

@@ -196,23 +196,47 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [SerializeField]
-        [Tooltip("Maximum scaling allowed relative to the initial size")]
-        private float scaleMaximum = 2.0f;
-        [SerializeField]
+        [Obsolete("Use a TransformScaleHandler script rather than setting minimum on BoundingBox directly", false)]
         [Tooltip("Minimum scaling allowed relative to the initial size")]
         private float scaleMinimum = 0.2f;
+        [SerializeField]
+        [Obsolete("Use a TransformScaleHandler script rather than setting maximum on BoundingBox directly")]
+        [Tooltip("Maximum scaling allowed relative to the initial size")]
+        private float scaleMaximum = 2.0f;
 
-        /// <summary>
-        /// Public property for the scale maximum, in the target's local scale.
-        /// Set this value with SetScaleLimits.
-        /// </summary>
-        public float ScaleMaximum => maximumScale.x;
 
         /// <summary>
         /// Public property for the scale minimum, in the target's local scale.
         /// Set this value with SetScaleLimits.
         /// </summary>
-        public float ScaleMinimum => minimumScale.x;
+        [Obsolete("Use a TransformScaleHandler.ScaleMinimum as it is the authoritative value for min scale")]
+        public float ScaleMinimum
+        {
+            get
+            {
+                if (scaleHandler != null)
+                {
+                    return scaleHandler.ScaleMinimum;
+                }
+                return 0.0f;
+            }
+        }
+
+        /// <summary>
+        /// Public property for the scale maximum, in the target's local scale.
+        /// Set this value with SetScaleLimits.
+        /// </summary>
+        [Obsolete("Use a TransformScaleHandler.ScaleMinimum as it is the authoritative value for max scale")]
+        public float ScaleMaximum
+        {
+            get
+            {
+                if (scaleHandler != null)
+                {
+                    return scaleHandler.ScaleMaximum;
+                }
+                return 0.0f;            }
+        }
 
         [Header("Box Display")]
         [SerializeField]
@@ -841,11 +865,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // Current position of the grab point
         private Vector3 currentGrabPoint;
 
-
-        // Scale of the target at startup (in Start())
-        private Vector3 initialScaleAtStart;
-        private Vector3 maximumScale;
-        private Vector3 minimumScale;
+        private TransformScaleHandler scaleHandler;
 
 
         // Grab point position in pointer space. Used to calculate the current grab point from the current pointer pose.
@@ -964,26 +984,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <param name="min">Minimum scale</param>
         /// <param name="max">Maximum scale</param>
         /// <param name="relativeToInitialState">If true the values will be multiplied by scale of target at startup. If false they will be in absolute local scale.</param>
+        [Obsolete("Use a TransformScaleHandler script rather than setting min/max scale on BoundingBox directly")]
         public void SetScaleLimits(float min, float max, bool relativeToInitialState = true)
         {
-            scaleMaximum = max;
             scaleMinimum = min;
-
-            // Update the absolute min/max
-            var target = Target;
-            if (target != null)
-            {
-                if (relativeToInitialState)
-                {
-                    maximumScale = initialScaleAtStart * scaleMaximum;
-                    minimumScale = initialScaleAtStart * scaleMinimum;
-                }
-                else
-                {
-                    maximumScale = new Vector3(scaleMaximum, scaleMaximum, scaleMaximum);
-                    minimumScale = new Vector3(scaleMinimum, scaleMinimum, scaleMinimum);
-                }
-            }
+            scaleMaximum = max;
         }
 
         /// <summary>
@@ -1173,10 +1178,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     float scaleFactor = 1 + (currentDist - initialDist) / initialDist;
 
                     Vector3 newScale = initialScaleOnGrabStart * scaleFactor;
-                    Vector3 clampedScale = ClampScale(newScale);
-                    if (clampedScale != newScale)
+                    Vector3 clampedScale = newScale;
+                    if (scaleHandler != null)
                     {
-                        scaleFactor = clampedScale[0] / initialScaleOnGrabStart[0];
+                        clampedScale = scaleHandler.ClampScale(newScale);
+                        if (clampedScale != newScale)
+                        {
+                            scaleFactor = clampedScale[0] / initialScaleOnGrabStart[0];
+                        }
                     }
 
                     Target.transform.localScale = clampedScale;
@@ -1800,67 +1809,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
             var target = Target;
             if (target != null)
             {
-                initialScaleAtStart = target.transform.localScale;
-
-                maximumScale = initialScaleAtStart * scaleMaximum;
-                minimumScale = initialScaleAtStart * scaleMinimum;
                 isChildOfTarget = transform.IsChildOf(target.transform);
-            }
-        }
 
-        private Vector3 ClampScale(Vector3 scale)
-        {
-            if (Vector3.Min(maximumScale, scale) != scale)
-            {
-                float maxRatio = 0.0f;
-                int maxIdx = -1;
-
-                // Find out the component with the maximum ratio to its maximum allowed value
-                for (int i = 0; i < 3; ++i)
+                scaleHandler = GetComponent<TransformScaleHandler>();
+                if (scaleHandler == null)
                 {
-                    if (maximumScale[i] > 0)
-                    {
-                        float ratio = scale[i] / maximumScale[i];
-                        if (ratio > maxRatio)
-                        {
-                            maxRatio = ratio;
-                            maxIdx = i;
-                        }
-                    }
-                }
+                    scaleHandler = gameObject.AddComponent<TransformScaleHandler>();
 
-                if (maxIdx != -1)
-                {
-                    scale /= maxRatio;
+                    scaleHandler.TargetTransform = Target.transform;
+                #pragma warning disable 0618
+                    scaleHandler.ScaleMinimum = scaleMinimum;
+                    scaleHandler.ScaleMaximum = scaleMaximum;
+                #pragma warning restore 0618
                 }
             }
-
-            if (Vector3.Max(minimumScale, scale) != scale)
-            {
-                float minRatio = 1.0f;
-                int minIdx = -1;
-
-                // Find out the component with the minimum ratio to its minimum allowed value
-                for (int i = 0; i < 3; ++i)
-                {
-                    if (minimumScale[i] > 0)
-                    {
-                        float ratio = scale[i] / minimumScale[i];
-                        if (ratio < minRatio)
-                        {
-                            minRatio = ratio;
-                            minIdx = i;
-                        }
-                    }
-                }
-
-                if (minIdx != -1)
-                {
-                    scale /= minRatio;
-                }
-            }
-
-            return scale;
         }
 
         private Vector3 GetLinkDimensions()

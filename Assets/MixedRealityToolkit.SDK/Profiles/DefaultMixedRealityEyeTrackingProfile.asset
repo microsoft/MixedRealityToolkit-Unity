@@ -14,5 +14,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isCustomProfile: 0
   smoothEyeTracking: 1
-  saccadeThreshInDegree: 2
-  minDwellInMs: 600
