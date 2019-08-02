@@ -1,5 +1,5 @@
 using System;
-using Microsoft.MixedReality.Toolkit.Extensions;
+using Microsoft.MixedReality.Toolkit;
 
 namespace #NAMESPACE#
 {

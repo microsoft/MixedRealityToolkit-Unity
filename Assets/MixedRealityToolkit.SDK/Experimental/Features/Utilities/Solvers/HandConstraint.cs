@@ -238,15 +238,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
             // If transitioning between hands is not allowed, make sure the TrackedObjectType matches the hand.
             if (!transitionBetweenHands)
             {
-                TrackedObjectType trackedObjectType;
-
-                if (HandednessToTrackedObjectType(hand.ControllerHandedness, out trackedObjectType))
-                {
-                    if (trackedObjectType != SolverHandler.TrackedObjectToReference)
-                    {
-                        return false;
-                    }
-                }
+                return SolverHandler.TrackedTargetType == TrackedObjectType.HandJoint &&
+                    (SolverHandler.TrackedHandness == Handedness.Both || hand.ControllerHandedness == SolverHandler.TrackedHandness);
             }
 
             return true;
@@ -311,13 +304,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
         {
             if (hand != null)
             {
-                TrackedObjectType trackedObjectType;
-
-                if (HandednessToTrackedObjectType(hand.ControllerHandedness, out trackedObjectType))
+                if (SolverHandler.TrackedTargetType == TrackedObjectType.HandJoint)
                 {
-                    if (SolverHandler.TrackedObjectToReference != trackedObjectType)
+                    if (SolverHandler.TrackedHandness != hand.ControllerHandedness)
                     {
-                        SolverHandler.TrackedObjectToReference = trackedObjectType;
+                        SolverHandler.TrackedHandness = hand.ControllerHandedness;
 
                         // Move the currently tracked hand to the top of the stack.
                         handStack.Remove(hand);
@@ -340,7 +331,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
                 }
                 else
                 {
-                    Debug.LogWarning("Failed to change the tracked object type because an IMixedRealityHand could not be resolved to a TrackedObjectType.");
+                    Debug.LogWarning("Failed because TrackedTargetType is not of type HandJoint.");
                 }
             }
             else
@@ -352,23 +343,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers
                     onHandDeactivate.Invoke();
                 }
             }
-        }
-
-        private static bool HandednessToTrackedObjectType(Handedness handedness, out TrackedObjectType trackedObjectType)
-        {
-            switch (handedness)
-            {
-                case Handedness.Left:
-                    trackedObjectType = TrackedObjectType.HandJointLeft;
-                    return true;
-
-                case Handedness.Right:
-                    trackedObjectType = TrackedObjectType.HandJointRight;
-                    return true;
-            }
-
-            trackedObjectType = default(TrackedObjectType);
-            return false;
         }
 
         private static Ray CalculateSafeZoneRay(Vector3 origin, Handedness handedness, HandSafeZone handSafeZone)
