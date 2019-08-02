@@ -7,16 +7,17 @@ At this time, there is no easy, reliable way to specify the update order for Uni
 Building on this, solvers offer a range of behaviors to attach objects to other objects or systems. One example would be a tag-along object that hovers in front of the user (based on the camera). A solver could also be attached to a controller and an object to make the object tag-along the controller. All solvers can be safely stacked, for example a tag-along behavior + surface magnetism + momentum.
 
 ## How to use a solver ##
-First, add the desired behavior to an object by using the respective solver type. All solvers are based on [`Solver.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Utilities/Solvers/Solver.cs).
+
+First, add the desired behavior to an object by using the respective solver type. 
 
 The Solver system consists of three categories of scripts:
 
-* **SolverBase**: The base abstract class that all solvers to derive from. It provides state tracking, smoothing parameters and implementation, automatic solver system integration, and update order.
-* **SolverHandler**: Sets the reference object (eg, the main camera transform) and handles gathering of solver components and executes them in order.
+* [`Solver`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver): The base abstract class that all solvers derive from. It provides state tracking, smoothing parameters and implementation, automatic solver system integration, and update order.
+* [`SolverHandler`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler): Sets the reference object (eg, the main camera transform) and handles gathering of solver components and executes them in order.
 
 The third category is the solver itself. The following solvers provide the building blocks for basic behavior:
 
-* **Orbital**: Locks to a specified position * offset from the referenced object.
+* [`Orbital`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.Orbital): Locks to a specified position and offset from the referenced object.
 * **ConstantViewSize**: Scales to maintain a constant size relative to the view of the referenced object.
 * **RadialView**: Keeps the object within a view cone cast by the referenced object.
 * **SurfaceMagnetism**, casts rays to surfaces in the world, and align the object to that surface.
