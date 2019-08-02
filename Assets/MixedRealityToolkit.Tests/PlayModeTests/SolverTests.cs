@@ -21,7 +21,7 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class SolverTests
+    public class SolverTests : BasePlayModeTests
     {
         private const float DistanceThreshold = 1.5f;
         private const float HandDistanceThreshold = 0.5f;
@@ -39,21 +39,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private List<SetupData> setupDataList = new List<SetupData>();
 
-        [SetUp]
-        public void Setup()
-        {
-            PlayModeTestUtilities.Setup();
-        }
-
         [TearDown]
-        public void TearDown()
+        public override void TearDown()
         {
             foreach (var setupData in setupDataList)
             {
                 Object.Destroy(setupData?.target);
             }
 
-            PlayModeTestUtilities.TearDown();
+            base.TearDown();
         }
 
         /// <summary>

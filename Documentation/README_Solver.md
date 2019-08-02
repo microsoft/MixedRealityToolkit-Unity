@@ -22,8 +22,8 @@ The third category is the solver itself. The following solvers provide the build
 * **SurfaceMagnetism**, casts rays to surfaces in the world, and align the object to that surface.
 * **Momentum**: Applies acceleration/velocity/friction to simulate momentum and springiness for an object being moved by other solvers/components.
 * **InBetween**: Keeps an object in between two tracked objects.
-* **HandConstraint**: Keeps an object in a region safe for hand constrained interactive content.
-* **HandConstraintPalmUp**: Derives from HandConstraint, also includes logic to test if the palm is facing the user before activation.
+* [HandConstraint](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint): Constrains object to follow hands in a region that doesn't intersect the GameObject with the hands. Useful for hand constrained interactive content such as menus, etc.
+* [HandConstraintPalmUp](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp): Derives from HandConstraint but includes logic to test if the palm is facing the user before activation.
 
 When a solver is used, the [`SolverHandler.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Utilities/Solvers/SolverHandler.cs) will be added automatically. It has two fields for setting the reference object. You can choose a tracked object (such as the user camera or L/R motion controllers), or instead use the **TransformTarget** field which overrides any set tracked object. This enables you to have solvers reference any scene object. That means objects can have tag alongs and cast surface magnetism as well as tracked objects.
 
@@ -40,9 +40,9 @@ To create a new solver script, you will want to extend from the abstract base cl
 
 ## Hand constraint solvers ##
 
-The **HandConstraint** behavior provides a solver that constrains the tracked object to a region safe for hand constrained content (such as hand UI, menus, etc). Safe regions are considered areas that don't intersect with the hand. A derived class of **HandConstraint** called **HandConstraintPalmUp** is also included to demonstrate a common behavior of activating the solver tracked object when the palm is facing the user. For example use of this behavior please see the **HandBasedMenuExample** scene.
+The [HandConstraint](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) behavior provides a solver that constrains the tracked object to a region safe for hand constrained content (such as hand UI, menus, etc). Safe regions are considered areas that don't intersect with the hand. A derived class of [HandConstraint](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) called [HandConstraintPalmUp](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp) is also included to demonstrate a common behavior of activating the solver tracked object when the palm is facing the user. For example use of this behavior please see the [HandBasedMenuExample](../Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/HandBasedMenuExample.unity) scene.
 
-Please see the tool tips available for each **HandConstraint** property for additional documentation. A few properties are defined in more detail below.
+Please see the tool tips available for each [HandConstraint](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) property for additional documentation. A few properties are defined in more detail below.
 
 <img src="../Documentation/Images/Solver/MRTK_Solver_HandConstraintPalmUp.PNG" width="450">
 
@@ -50,7 +50,13 @@ Please see the tool tips available for each **HandConstraint** property for addi
 
 <img src="../Documentation/Images/Solver/MRTK_Solver_HandConstraintSafeZones.PNG" width="450">
 
-* **Activation Events**: Currently the **HandConstraint** triggers four events, OnHandActivate, OnHandDecativate, OnFirstHandDetected, and OnLastHandDetected. The OnHandActivate events triggers when a hand satisfies the IsHandActive method and OnHandDecativate triggers when the IsHandActive method is no longer satisfied. OnFirstHandDetected occurs when state changes from no hands in view, to the first hand in view. And, on OnLastHandDetected occurs when state changes from at least one hand in view, to no hands in view. These events can be used in many different combinations to create unique **HandConstraint** behaviors, please see the **HandBasedMenuExample** scene for examples of these behaviors.
+* **Activation Events**: Currently the [HandConstraint](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) triggers four activation events. These events can be used in many different combinations to create unique [HandConstraint](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) behaviors, please see the [HandBasedMenuExample](../Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/HandBasedMenuExample.unity) scene for examples of these behaviors.
 
+
+    * [OnHandActivate](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.OnHandActivate): triggers when a hand satisfies the [IsHandActive](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.IsHandActive) method
+    * [OnHandDeactivate](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.OnHandDeactivate): triggers when the [IsHandActive](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.IsHandActive) method is no longer satisfied. 
+    * [OnFirstHandDetected](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.OnFirstHandDetected): occurs when the hand tracking state changes from no hands in view, to the first hand in view. 
+    * [OnLastHandDetected](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.OnLastHandDetected): occurs when the hand tracking state changes from at least one hand in view, to no hands in view.
+    
 ## Known Issues ##
 Sometimes solvers behave differently than one may expect based on the order in which they're executed. Previous solvers can change or even neutralize the behavior of earlier solvers. Try re-arranging their execution order if the settings on a particular solver aren't having the desired effect.
