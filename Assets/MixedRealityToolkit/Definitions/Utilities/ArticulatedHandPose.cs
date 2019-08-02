@@ -154,7 +154,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             /// </summary>
             Open,
             /// <summary>
-            /// Index finger and Thumb touching, index tip does not move
+            /// Relaxed hand pose, grab point does not move
+            /// </summary>
+            OpenSteadyGrabPoint,
+            /// <summary>
+            /// Index finger and Thumb touching, grab point does not move
             /// </summary>
             Pinch,
             /// <summary>
