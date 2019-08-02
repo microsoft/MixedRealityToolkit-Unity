@@ -9,7 +9,7 @@ The Mixed Reality Toolkit (MRTK) is a cross-platform toolkit for building Mixed 
 To get started with the Mixed Reality Toolkit you will need:
 
 * [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/)
-* [Unity 2018.4.x](https://unity3d.com/get-unity/download/archive) or [Unity 2019.x](https://unity3d.com/get-unity/download/archive)
+* [Unity 2018.4.x, 2019.1.x or 2019.2.x](https://unity3d.com/get-unity/download/archive)
 
   MRTK supports both IL2CPP and .NET scripting backends on Unity 2018
 
@@ -50,9 +50,9 @@ For instance, if you want to create a HoloLens application, switch to Universal 
 
 1. Create a new Unity project, or open an existing project. When creating a project, make sure to select "3D" as the template type. 
 1. Import the `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage` you downloaded by going into "Asset -> Import Package -> Custom Package", selecting the .unitypackage file, ensure all items to import are checked, and then selecting "Import".
-1. Import the `Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage` following the same steps as above. The extensions package provides a set of useful optional components for the MRTK.
-1. Import the 'Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage` following the same steps as for the foundation package. These tools package is optional and contains useful tools, such as the ExtensionServiceCreator, that enhance the MRTK developer experience.
-1. Import `Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage` following the same steps as for the foundation package. The examples package is optional and contains useful demonstration scenes for current MRTK features.
+1. Import the `Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage` following the same steps as above. The examples package is optional and contains useful demonstration scenes for current MRTK features.
+1. Import the `Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage` following the same steps as for the foundation package. These tools package is optional and contains useful tools, such as the ExtensionServiceCreator, that enhance the MRTK developer experience.
+1. Import the `Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage` following the same steps as for the foundation package. The extensions package provides a set of useful optional components for the MRTK.
 
 After importing the Foundation package, you may see a setup prompt like the following:
 
