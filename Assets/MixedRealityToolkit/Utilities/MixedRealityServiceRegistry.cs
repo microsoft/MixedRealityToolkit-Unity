@@ -281,6 +281,17 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
+        /// Clears the registry cache of all services
+        /// </summary>
+        public static void ClearAllServices()
+        {
+            if (registry != null)
+            {
+                registry.Clear();
+            }
+        }
+
+        /// <summary>
         /// Returns readonly list of all services registered
         /// </summary>
         /// <returns>readonly list of all services registered</returns>

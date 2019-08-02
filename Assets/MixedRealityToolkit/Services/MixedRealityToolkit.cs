@@ -135,7 +135,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <remarks>
         /// Systems can only be registered once by <see cref="Type"/>
         /// </remarks>
-        //[Obsolete]
+        [Obsolete("Use GetService<T> instead")]
         public IReadOnlyDictionary<Type, IMixedRealityService> ActiveSystems => new Dictionary<Type, IMixedRealityService>(activeSystems) as IReadOnlyDictionary<Type, IMixedRealityService>;
 
         private static readonly List<Tuple<Type, IMixedRealityService>> registeredMixedRealityServices = new List<Tuple<Type, IMixedRealityService>>();
@@ -143,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Local service registry for the Mixed Reality Toolkit, to allow runtime use of the <see cref="Microsoft.MixedReality.Toolkit.IMixedRealityService"/>.
         /// </summary>
-        //[Obsolete]
+        [Obsolete("Use GetDataProvider<T> instead")]
         public IReadOnlyList<Tuple<Type, IMixedRealityService>> RegisteredMixedRealityServices => new List<Tuple<Type, IMixedRealityService>>(registeredMixedRealityServices) as IReadOnlyList<Tuple<Type, IMixedRealityService>>;
 
 #endregion Mixed Reality runtime service registry
@@ -259,7 +259,35 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public bool IsServiceRegistered<T>(string name = null) where T : IMixedRealityService
         {
-            return GetService<T>(name) != null;
+            T service;
+            MixedRealityServiceRegistry.TryGetService<T>(out service);
+
+            // If registry failed to have it, check active systems
+            if (service == null)
+            {
+                IMixedRealityService activeSerivce;
+                activeSystems.TryGetValue(typeof(T), out activeSerivce);
+
+                // if active services dictionary failed to have it, check registered data providers
+                if (activeSerivce == null)
+                {
+                    Type interfaceType = typeof(T);
+
+                    for (int i = 0; i < registeredMixedRealityServices.Count; i++)
+                    {
+                        if (CheckServiceMatch(interfaceType, string.Empty, 
+                            registeredMixedRealityServices[i].Item1, 
+                            registeredMixedRealityServices[i].Item2))
+                        {
+                            return true;
+                        }
+                    }
+
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         /// <inheritdoc />
@@ -482,27 +510,7 @@ namespace Microsoft.MixedReality.Toolkit
 
 #endregion Service Registration
 
-#region Services Initialization
-
-            var orderedCoreSystems = activeSystems.OrderBy(m => m.Value.Priority).ToArray();
-            activeSystems.Clear();
-
-            foreach (var system in orderedCoreSystems)
-            {
-                RegisterServiceInternal(system.Key, system.Value);
-            }
-
-            var orderedServices = registeredMixedRealityServices.OrderBy(service => service.Item2.Priority).ToArray();
-            registeredMixedRealityServices.Clear();
-
-            foreach (var service in orderedServices)
-            {
-                RegisterServiceInternal(service.Item1, service.Item2);
-            }
-
             InitializeAllServices();
-
-#endregion Services Initialization
 
             isInitializing = false;
         }
@@ -702,6 +710,7 @@ namespace Microsoft.MixedReality.Toolkit
 
             // Disable the old instance
             SetInstanceInactive(activeInstance);
+
             // Immediately register the new instance
             RegisterInstance(toolkitInstance, true);
         }
@@ -744,6 +753,7 @@ namespace Microsoft.MixedReality.Toolkit
                     }
                 }
 
+                activeInstance.DestroyAllServices();
                 activeInstance.InitializeInstance();
             }
         }
@@ -936,25 +946,25 @@ namespace Microsoft.MixedReality.Toolkit
         private void InitializeAllServices()
         {
             // Initialize all systems
-            ExecuteOnAllServices(service => service.Initialize());
+            ExecuteOnAllServicesInOrder(service => service.Initialize());
         }
 
         private void ResetAllServices()
         {
             // Reset all systems
-            ExecuteOnAllServices(service => service.Reset());
+            ExecuteOnAllServicesInOrder(service => service.Reset());
         }
 
         private void EnableAllServices()
         {
             // Enable all systems
-            ExecuteOnAllServices(service => service.Enable());
+            ExecuteOnAllServicesInOrder(service => service.Enable());
         }
 
         private void UpdateAllServices()
         {
             // Update all systems
-            ExecuteOnAllServices(service => service.Update());
+            ExecuteOnAllServicesInOrder(service => service.Update());
         }
 
         private void LateUpdateAllServices()
@@ -1040,24 +1050,42 @@ namespace Microsoft.MixedReality.Toolkit
             }
 
             activeSystems.Clear();
+            CoreServices.ResetCacheReferences();
+            MixedRealityServiceRegistry.ClearAllServices();
         }
 
-        private bool ExecuteOnAllServices(Action<IMixedRealityService> execute)
+        private bool ExecuteOnAllServicesInternal(
+            IEnumerable<KeyValuePair<Type, IMixedRealityService>> activeServices,
+            IEnumerable<Tuple<Type, IMixedRealityService>> registeredServices,
+            Action<IMixedRealityService> execute)
         {
             // If the Mixed Reality Toolkit is not configured, stop.
             if (!HasProfileAndIsInitialized) { return false; }
 
-            foreach (var system in activeSystems)
+            foreach (var system in activeServices)
             {
                 execute(system.Value);
             }
 
-            foreach (var service in registeredMixedRealityServices)
+            foreach (var service in registeredServices)
             {
                 execute(service.Item2);
             }
 
             return true;
+        }
+
+        private bool ExecuteOnAllServices( Action<IMixedRealityService> execute)
+        {
+            return ExecuteOnAllServicesInternal(activeSystems, registeredMixedRealityServices, execute);
+        }
+
+        private bool ExecuteOnAllServicesInOrder(Action<IMixedRealityService> execute)
+        {
+            var orderedActiveSystems = activeSystems.OrderBy(m => m.Value.Priority);
+            var orderedRegisteredServices = registeredMixedRealityServices.OrderBy(service => service.Item2.Priority);
+
+            return ExecuteOnAllServicesInternal(orderedActiveSystems, orderedRegisteredServices, execute);
         }
 
         private bool ExecuteOnAllServicesReverseOrder(Action<IMixedRealityService> execute)
@@ -1092,14 +1120,21 @@ namespace Microsoft.MixedReality.Toolkit
         /// Note: type should be the Interface of the system to be retrieved and not the concrete class itself.
         /// </remarks>
         /// <returns>True, there is a system registered with the selected interface, False, no system found for that interface</returns>
-        public bool IsSystemRegistered<T>() where T : class
+        [Obsolete("Use IsSystemRegistered instead")]
+        public bool IsSystemRegistered<T>() where T : IMixedRealityService
         {
             if (!IsCoreSystem(typeof(T))) return false;
 
-            IMixedRealityService service;
-            MixedRealityServiceRegistry.TryGetService(out service);
-            // TODO: Troy
-            //activeSystems.TryGetValue(typeof(T), out service);
+            T service;
+            MixedRealityServiceRegistry.TryGetService<T>(out service);
+
+            if (service == null)
+            {
+                IMixedRealityService activeSerivce;
+                activeSystems.TryGetValue(typeof(T), out activeSerivce);
+                return activeSerivce != null;
+            }
+
             return service != null;
         }
 
@@ -1120,11 +1155,6 @@ namespace Microsoft.MixedReality.Toolkit
                    typeof(IMixedRealitySpatialAwarenessSystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealityDiagnosticsSystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealitySceneSystem).IsAssignableFrom(type);
-        }
-
-        private void ClearCoreSystemCache()
-        {
-            CoreServices.ResetCacheReferences();
         }
 
         private IMixedRealityService GetServiceByNameInternal(Type interfaceType, string serviceName)
