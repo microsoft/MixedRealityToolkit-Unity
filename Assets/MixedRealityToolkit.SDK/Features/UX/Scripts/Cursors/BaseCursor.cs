@@ -144,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             get { return pointer; }
             set
             {
-                if (ReferenceEquals(pointer?.BaseCursor, this))
+                if (IsPointerValid && ReferenceEquals(pointer.BaseCursor, this))
                 {
                     // if the previous pointer was attached to this cursor, null out the
                     // pointer's cursor reference - that way we don't have multiple pointers
@@ -153,7 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 
                 pointer = value;
-                if (pointer != null)
+                if (IsPointerValid)
                 {
                     pointer.BaseCursor = this;
                 }
@@ -163,6 +163,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         private IMixedRealityPointer pointer;
+
+        /// <summary>
+        /// Checks whether the associated pointer is null, and if the pointer is a UnityEngine.Object it also checks whether it has been destroyed.
+        /// </summary>
+        protected bool IsPointerValid => (pointer is UnityEngine.Object) ? ((pointer as UnityEngine.Object) != null) : (pointer != null);
 
         /// <inheritdoc />
         public float DefaultCursorDistance
@@ -220,7 +225,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public virtual void OnSourceDetected(SourceStateEventData eventData)
         {
-            if (Pointer != null && eventData.Controller != null)
+            if (IsPointerValid && eventData.Controller != null)
             {
                 for (int i = 0; i < eventData.InputSource.Pointers.Length; i++)
                 {
@@ -243,7 +248,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public virtual void OnSourceLost(SourceStateEventData eventData)
         {
-            if (Pointer != null && eventData.Controller != null)
+            if (IsPointerValid && eventData.Controller != null)
             {
                 for (int i = 0; i < eventData.InputSource.Pointers.Length; i++)
                 {
@@ -271,7 +276,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public virtual void OnBeforeFocusChange(FocusEventData eventData)
         {
-            if (Pointer != null && Pointer.PointerId == eventData.Pointer.PointerId)
+            if (IsPointerValid && Pointer.PointerId == eventData.Pointer.PointerId)
             {
                 TargetedObject = eventData.NewFocusedObject;
             }
@@ -287,7 +292,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public virtual void OnPointerDown(MixedRealityPointerEventData eventData)
         {
-            if (Pointer != null)
+            if (IsPointerValid)
             {
                 foreach (var sourcePointer in eventData.InputSource.Pointers)
                 {
@@ -309,7 +314,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public virtual void OnPointerUp(MixedRealityPointerEventData eventData)
         {
-            if (Pointer != null)
+            if (IsPointerValid)
             {
                 foreach (var sourcePointer in eventData.InputSource.Pointers)
                 {
@@ -484,7 +489,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             SourceDownIds.Clear();
             visibleSourcesCount = 0;
-            if (Pointer != null)
+            if (IsPointerValid)
             {
                 uint cursorPointerId = Pointer.PointerId;
                 foreach (IMixedRealityInputSource inputSource in InputSystem.DetectedInputSources)
