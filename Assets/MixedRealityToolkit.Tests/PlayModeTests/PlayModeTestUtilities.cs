@@ -111,6 +111,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             return inputSystem;
         }
 
+        /// <summary>
+        /// Utility function to simplify code for getting access to the running InputSimulationService
+        /// </summary>
+        /// <returns>Returns InputSimulationService registered for playmode test scene</returns>
         public static InputSimulationService GetInputSimulationService()
         {
             IMixedRealityInputSystem inputSystem = GetInputSystem();

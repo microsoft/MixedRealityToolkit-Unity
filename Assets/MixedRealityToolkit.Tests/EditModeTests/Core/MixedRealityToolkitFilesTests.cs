@@ -4,21 +4,18 @@
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.TestTools;
 using System;
 using System.IO;
-using System.Threading.Tasks;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.Core
 {
     // Tests for the MixedRealityToolkitFiles utility class
-    public class TestFixture_02_MixedRealityToolkitFilesTests
+    public class MixedRealityToolkitFilesTests
     {
         string[] basePaths = new string[] { "", "C:\\", "C:\\xyz\\", "C:/xyz/" };
 
         [Test]
-        public void Test_01_FindMatchingModule()
+        public void FindMatchingModule()
         {
             TestInvalidPath("");
 
@@ -56,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         }
 
         [Test]
-        public void Test_02_FindMatchingModuleNuget()
+        public void FindMatchingModuleNuget()
         {
             // Test invalid base name
             TestInvalidPath("aaa.1.23-45/MRTK");
@@ -98,6 +95,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
                     TestValidPath($"Microsoft.MixedReality.Toolkit.{moduleNames[i]}.1.23-45/MRTK", (MixedRealityToolkitModuleType)modules.GetValue(i));
                 }
             }
+        }
+
+        /// <summary>
+        /// Validates that MixedRealityToolkitFiles is able to reason over MRTK folders when placed in the root Asset directory.
+        /// </summary>
+        public void TestRootAssetFolderResolution()
+        {
+            string resolvedPath = MixedRealityToolkitFiles.MapRelativeFilePathToAbsolutePath("Inspectors/Data/EditorWindowOptions.json");
+            string expectedPath = Path.Combine(Application.dataPath, "MixedRealityToolkit/Inspectors/Data/EditorWindowOptions.json");
+            Assert.AreEqual(expectedPath, resolvedPath);
         }
 
         public void TestInvalidPath(string path)
