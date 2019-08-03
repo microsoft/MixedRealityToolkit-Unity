@@ -17,6 +17,7 @@
     <RelativeBuildFolder>..\Output\</RelativeBuildFolder>
     <BuildFolder>$(MSBuildThisFileDirectory)$(RelativeBuildFolder)</BuildFolder>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	<Deterministic>false</Deterministic>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(PublishOutputPath)'==''">
