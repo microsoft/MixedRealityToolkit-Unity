@@ -13,9 +13,6 @@ To enable the spatial object mesh observer, you will need to configure the spati
 
 ![Add Spatatial Observer](../../Documentation/Images/SpatialAwareness/AddObserver.png)
 
-> {!NOTE]
-> For more details on configuring profiles, please see the [Mixed Reality Toolkit Profile configuration guide](../MixedRealityConfigurationGuide.md) 
-
 2. Select the SpatialObjectMeshObserver 
 
 ![Select Spatial Object Mesh Observer](../../Documentation/Images/SpatialAwareness/SelectObjectObserver.png)
