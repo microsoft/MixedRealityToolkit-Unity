@@ -132,7 +132,7 @@
     - name: What makes a mixed reality feature
       href: MixedRealityServices.md
     - name: What are the MixedRealityServiceRegistry and IMixedRealityServiceRegistrar
-      href: ServiceUtilities/MixedRealityServiceRegistryAndMixedRealityServiceRegistrar.md
+      href: ServiceUtilities/MixedRealityServiceRegistryAndIMixedRealityServiceRegistrar.md
   - name: Packages
     items:
     - name: MRTK Packages
