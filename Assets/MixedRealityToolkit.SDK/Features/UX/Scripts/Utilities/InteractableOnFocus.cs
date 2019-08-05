@@ -21,11 +21,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [HideInInspector]
         protected List<VisualProfile> Profiles = new List<VisualProfile>();
 
+        protected InteractableStates.InteractableStateEnum State
+        {
+            get
+            {
+                return HasFocus? InteractableStates.InteractableStateEnum.Focus : InteractableStates.InteractableStateEnum.Default;
+            }
+        }
+
         private List<InteractableThemeBase> themes = new List<InteractableThemeBase>();
 
         public void Awake()
         {
-            foreach (var profile in this.Profiles)
+            foreach (var profile in Profiles)
             {
                 var themeEngines = profile.CreateThemeEngines();
 
@@ -33,34 +41,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        private void UpdateThemes(bool isFocused)
+        public void Update()
         {
-            var state = isFocused ? InteractableStates.InteractableStateEnum.Focus : InteractableStates.InteractableStateEnum.Default;
-
-            foreach(var theme in this.themes)
-            { 
-                theme.OnUpdate((int)state, null, true);
+            foreach (var theme in themes)
+            {
+                theme.OnUpdate((int)State, null, false);
             }
         }
-
-        #region IMixedRealityFocusHandler Implementation
-
-        /// <inheritdoc />
-        public override void OnFocusEnter(FocusEventData eventData)
-        {
-            base.OnFocusEnter(eventData);
-
-            UpdateThemes(HasFocus);
-        }
-
-        /// <inheritdoc />
-        public override void OnFocusExit(FocusEventData eventData)
-        {
-            base.OnFocusExit(eventData);
-
-            UpdateThemes(HasFocus);
-        }
-
-        #endregion IMixedRealityFocusHandler Implementation
     }
 }

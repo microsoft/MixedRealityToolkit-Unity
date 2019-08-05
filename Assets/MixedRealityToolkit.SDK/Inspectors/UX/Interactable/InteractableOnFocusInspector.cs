@@ -27,8 +27,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         {
             base.OnInspectorGUI();
 
-            EditorGUILayout.BeginVertical();
-
             InspectorUIUtility.DrawTitle("Profiles");
 
             if (profilesProperty.arraySize == 0)

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e7e7db9a2688ed540af9819c456ba2e2, type: 3}
-  m_Name: HolographicButtonBackPlate
+  m_Name: FocusExampleTheme
   m_EditorClassIdentifier: 
   Name: 
   Settings:
@@ -32,7 +32,7 @@ MonoBehaviour:
         Vector2: {x: 0, y: 0}
         Vector3: {x: 0, y: 0, z: 0}
         Vector4: {x: 0, y: 0, z: 0, w: 0}
-        Color: {r: 0.16078432, g: 0.16078432, b: 0.16078432, a: 1}
+        Color: {r: 1, g: 0, b: 0, a: 1}
         Quaternion: {x: 0, y: 0, z: 0, w: 0}
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
@@ -47,7 +47,7 @@ MonoBehaviour:
         Vector2: {x: 0, y: 0}
         Vector3: {x: 0, y: 0, z: 0}
         Vector4: {x: 0, y: 0, z: 0, w: 0}
-        Color: {r: 0.16078432, g: 0.16078432, b: 0.16078432, a: 1}
+        Color: {r: 0.19332737, g: 0.08018869, b: 1, a: 1}
         Quaternion: {x: 0, y: 0, z: 0, w: 0}
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
@@ -491,4 +491,4 @@ MonoBehaviour:
       Target: {fileID: 0}
       States: []
   CustomSettings: []
-  States: {fileID: 11400000, guid: 5eac1712038236e4b8ffdb3893804fe1, type: 2}
+  States: {fileID: 11400000, guid: eea7cc35b9115d34595e51c5e4211c84, type: 2}
