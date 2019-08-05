@@ -48,7 +48,8 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
         private const string BuiltInPackagesRelativePath = @"Data\Resources\PackageManager\BuiltInPackages";
 
-        public static string MSBuildOutputFolder { get; } = GetNormalizedPath(MSBuildFolderName + Application.dataPath.Substring(AssetsFolderName.Length), true);
+        public static string ProjectPath { get; } = Application.dataPath.Substring(0, Application.dataPath.Length - AssetsFolderName.Length);
+        public static string MSBuildOutputFolder { get; } = GetNormalizedPath(ProjectPath + MSBuildFolderName, true);
         public static string PackagesCopyPath { get; } = Path.Combine(MSBuildOutputFolder, PackagesCopyFolderName);
         public const string MetaFileGuidRegex = @"guid:\s*([0-9a-fA-F]{32})";
 
@@ -61,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         static Utilities()
         {
             AssetPath = Path.GetFullPath(Application.dataPath);
-            packagesPath = Path.GetFullPath(PackagesFolderName + Application.dataPath.Substring(AssetsFolderName.Length));
+            packagesPath = Path.GetFullPath(ProjectPath + PackagesFolderName);
             BuiltInPackagesPath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(EditorApplication.applicationPath), BuiltInPackagesRelativePath));
         }
 
