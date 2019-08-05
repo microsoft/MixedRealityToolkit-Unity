@@ -12,17 +12,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     [RequireComponent(typeof(MeshFilter))]
     public class MeshSmoother : MonoBehaviour
     {
+        private const int smoothNormalUVChannel = 2;
+
         [Tooltip("TODO")]
         [SerializeField]
-        private bool smoothNormals = false;
+        private bool smoothNormalsOnAwake = false;
 
         private MeshFilter meshFilter = null;
+        private static Dictionary<Mesh, Mesh> processedMeshes = new Dictionary<Mesh, Mesh>();
 
         private void Awake()
         {
             meshFilter = GetComponent<MeshFilter>();
 
-            if (smoothNormals)
+            if (smoothNormalsOnAwake)
             {
                 SmoothNormals();
             }
@@ -30,12 +33,29 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         public void SmoothNormals()
         {
-            var mesh = meshFilter.mesh;
-            mesh.SetUVs(2, CalculateSmoothNormals(mesh.vertices, mesh.normals));
+            // Avoid smoothing meshes which have already been smoothed.
+            var sharedMesh = meshFilter.sharedMesh;
+            Mesh mesh;
+
+            if (processedMeshes.TryGetValue(sharedMesh, out mesh))
+            {
+                meshFilter.mesh = mesh;
+            }
+            else
+            {
+                // Clone the current mesh and add shared mesh and cloned mesh to the table of previously smoothed meshes.
+                mesh = meshFilter.mesh;
+                processedMeshes[sharedMesh] = mesh;
+                processedMeshes[mesh] = mesh;
+
+                mesh.SetUVs(smoothNormalUVChannel, CalculateSmoothNormals(mesh.vertices, mesh.normals));
+            }
         }
 
         private static List<Vector3> CalculateSmoothNormals(Vector3[] verticies, Vector3[] normals)
         {
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+
             // Group all vertices that share the same location in space.
             var groupedVerticies = new Dictionary<Vector3, List<KeyValuePair<int, Vector3>>>();
 
@@ -55,35 +75,34 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             var smoothNormals = new List<Vector3>(normals);
 
-            // If none of the vertices can be grouped, no smoothing can be applied, simply return the default normals.
-            if (groupedVerticies.Count == verticies.Length)
+            // If we don't hit the degenerate case of each vertex is it's own group (no vertices shared a location), average the normals of each group.
+            if (groupedVerticies.Count != verticies.Length)
             {
-                return smoothNormals;
-            }
-
-            // Average the normals of each group.
-            foreach (var group in groupedVerticies)
-            {
-                var smoothingGroup = group.Value;
-
-                // No need to smooth a group of one.
-                if (smoothingGroup.Count != 1)
+                foreach (var group in groupedVerticies)
                 {
-                    var smoothedNormal = Vector3.zero;
+                    var smoothingGroup = group.Value;
 
-                    foreach (var vertex in smoothingGroup)
+                    // No need to smooth a group of one.
+                    if (smoothingGroup.Count != 1)
                     {
-                        smoothedNormal += normals[vertex.Key];
-                    }
+                        var smoothedNormal = Vector3.zero;
 
-                    smoothedNormal.Normalize();
+                        foreach (var vertex in smoothingGroup)
+                        {
+                            smoothedNormal += normals[vertex.Key];
+                        }
 
-                    foreach (var vertex in smoothingGroup)
-                    {
-                        smoothNormals[vertex.Key] = smoothedNormal;
+                        smoothedNormal.Normalize();
+
+                        foreach (var vertex in smoothingGroup)
+                        {
+                            smoothNormals[vertex.Key] = smoothedNormal;
+                        }
                     }
                 }
             }
+
+            Debug.LogFormat("CalculateSmoothNormals took {0} ms on {1} vertices.", watch.ElapsedMilliseconds, verticies.Length);
 
             return smoothNormals;
         }
