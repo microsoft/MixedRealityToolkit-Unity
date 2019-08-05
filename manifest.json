@@ -4326,6 +4326,28 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/Solver/GeneralSolverProperties.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Solver/GeneralSolverProperties.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Solver/InBetweenExample.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Solver/InBetweenExample.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/Solver/MRTK_Solver_Main.png",
       "output": {
         "resource": {
@@ -4337,10 +4359,43 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/Solver/MRTK_Solver_Orbital.png",
+      "source_relative_path": "Documentation/Images/Solver/OrbitalExample.PNG",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/Solver/MRTK_Solver_Orbital.png"
+          "relative_path": "Documentation/Images/Solver/OrbitalExample.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Solver/RadialViewExample.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Solver/RadialViewExample.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Solver/SurfaceMagExample.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Solver/SurfaceMagExample.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Solver/TrackedObjectType-Example.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Solver/TrackedObjectType-Example.gif"
         }
       },
       "is_incremental": false,
@@ -5210,7 +5265,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Solver.html",
-          "hash": "0r7A5A+/BshtAu7PtYUuCg=="
+          "hash": "1SmasIX8M+OvpL2d+qLq7Q=="
         }
       },
       "is_incremental": false,
@@ -8085,6 +8140,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.SolverExampleManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.SolverExampleManager.html",
+          "hash": "lmzi6LfGIw2v531UpUKyNg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.SpawnOnPointerEvent.yml",
       "output": {
         ".html": {
@@ -8126,18 +8193,6 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.StandardShader.html",
           "hash": "D9gCQbChiSrHUBQ8Z3yRXA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.SwapVolume.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.SwapVolume.html",
-          "hash": "WqDdPYteIa7AsNFoi+e57A=="
         }
       },
       "is_incremental": false,
@@ -8209,7 +8264,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.html",
-          "hash": "mQ7LjzVATo7V5up/GbnA9Q=="
+          "hash": "e5tnjy+HggoU85m0GBZNKw=="
         }
       },
       "is_incremental": false,
@@ -15781,7 +15836,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.html",
-          "hash": "6xGQqE5NujRF4UODg1igXw=="
+          "hash": "zTlS+wFxxOrpqHGkbWHA1Q=="
         }
       },
       "is_incremental": false,
@@ -17461,7 +17516,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html",
-          "hash": "iNPZfHZ1e5+YYdv5LVeoVg=="
+          "hash": "8xwTSRdfUikhJDmAJvm4kA=="
         }
       },
       "is_incremental": false,
@@ -17473,7 +17528,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.html",
-          "hash": "J5A+nT9s34OEW8qeXomoSg=="
+          "hash": "4cRFwkSnKgcaD7CVMNzxnA=="
         }
       },
       "is_incremental": false,
@@ -17485,7 +17540,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.OrientationMode.html",
-          "hash": "1CeBnbF9dUgYZdpx0C+yAQ=="
+          "hash": "AOQueTK9LjfnVY5zs15+Wg=="
         }
       },
       "is_incremental": false,
@@ -17629,7 +17684,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.TrackedObjectType.html",
-          "hash": "UGYrYzjVWLE8lqu8dhhUCQ=="
+          "hash": "f5WG6Dm7HA9cM/pRH5bvig=="
         }
       },
       "is_incremental": false,
@@ -18253,7 +18308,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "bXC0BOUDppS0OrjBsoUKag=="
+          "hash": "VoI3h1prDcMTjaQzMFCsQg=="
         }
       },
       "is_incremental": false,
@@ -18312,16 +18367,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1064,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 117,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1064,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
