@@ -95,6 +95,8 @@
       href: SpatialAwareness/SpatialAwarenessGettingStarted.md
     - name: Configuring the Spatial Awareness Mesh Observer
       href: SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.md
+    - name: Spatial Object Mesh Observer
+      href: SpatialAwareness/SpatialObjectMeshObserver.md
     - name: Usage Guide
       href: SpatialAwareness/UsageGuide.md
   - name: Multi Scene System
