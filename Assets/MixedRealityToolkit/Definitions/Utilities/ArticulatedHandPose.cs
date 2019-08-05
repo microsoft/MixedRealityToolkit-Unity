@@ -301,7 +301,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             var dict = new ArticulatedHandPoseDictionary();
             dict.FromJointPoses(localJointPoses);
-            return JsonUtility.ToJson(dict);
+            return JsonUtility.ToJson(dict, true);
         }
 
         /// <summary>
