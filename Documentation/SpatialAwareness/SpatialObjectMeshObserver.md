@@ -52,7 +52,7 @@ observer settings. The following sections describe these settings.
 ### Update Interval
 
 The spatial object mesh observer sends all meshes to an application when the model is loaded. It does not
-simulate dime deltas between updates.
+simulate time deltas between updates.
 
 An application can re-receive the mesh events by calling ClearObservations() and the Resume(). 
 
