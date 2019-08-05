@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -155,6 +156,47 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Render DocLink header if Object contains DocLinkAttribute
+        /// </summary>
+        /// <param name="target">UnityEngine object to test for DocLinkAttribute</param>
+        /// <returns>true if object drawn & button clicked, false otherwise</returns>
+        public static bool RenderDocLink(UnityEngine.Object target)
+        {
+            bool result = false;
+
+            if (target != null)
+            {
+                DocLinkAttribute docLink = target.GetType().GetCustomAttribute<DocLinkAttribute>();
+                if (docLink != null)
+                {
+                    result = RenderDocLink(docLink.URL);
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Render DocLink header for given url value
+        /// </summary>
+        /// <param name="url">Url to open if button is clicked</param>
+        /// <returns>true if object drawn & button clicked, false otherwise</returns>
+        public static bool RenderDocLink(string url)
+        {
+            bool result = false;
+            if (!string.IsNullOrEmpty(url))
+            {
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    GUILayout.FlexibleSpace();
+                    result = RenderDocLinkButton(url);
+                }
+            }
+
+            return result;
         }
 
         /// <summary>

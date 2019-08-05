@@ -40,6 +40,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
         {
             serializedObject.Update();
 
+            InspectorUIUtility.RenderDocLink(target);
+
             bool trackedObjectChanged = false;
 
             EditorGUI.BeginChangeCheck();
