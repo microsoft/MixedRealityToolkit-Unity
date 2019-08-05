@@ -4326,6 +4326,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/SpatialAwareness/AddObserver.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SpatialAwareness/AddObserver.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/SpatialAwareness/MRTKConfig_SpatialAwareness.png",
       "output": {
         "resource": {
@@ -4385,6 +4396,28 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/SpatialAwareness/MeshObserverPhysicsSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/SpatialAwareness/ObjectObserverProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SpatialAwareness/ObjectObserverProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/SpatialAwareness/SelectObjectObserver.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SpatialAwareness/SelectObjectObserver.png"
         }
       },
       "is_incremental": false,
@@ -5320,7 +5353,19 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html",
-          "hash": "xTGeMLwQkGA/h3QC4J6LqQ=="
+          "hash": "ty2H/OuhqDE2aKb4U88WYw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/SpatialAwareness/SpatialObjectMeshObserver.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/SpatialAwareness/SpatialObjectMeshObserver.html",
+          "hash": "orPVivi7qCGWLgfbOQ68zQ=="
         }
       },
       "is_incremental": false,
@@ -5440,7 +5485,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "ITow9KGFBoT2yZMGkpOeCw=="
+          "hash": "0FuUmnBSeTNMPFKodwEz5Q=="
         }
       },
       "is_incremental": false,
@@ -18283,23 +18328,23 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1063,
-          "skipped_file_count": 0
-        },
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 118,
-          "skipped_file_count": 0
-        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 119,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1063,
           "skipped_file_count": 0
         },
         "TocDocumentProcessor": {
