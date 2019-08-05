@@ -162,7 +162,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// Render DocLink header if Object contains DocLinkAttribute
         /// </summary>
         /// <param name="target">UnityEngine object to test for DocLinkAttribute</param>
-        /// <returns>true if object drawn & button clicked, false otherwise</returns>
+        /// <returns>true if object drawn and button clicked, false otherwise</returns>
         public static bool RenderDocLink(UnityEngine.Object target)
         {
             bool result = false;
@@ -183,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// Render DocLink header for given url value
         /// </summary>
         /// <param name="url">Url to open if button is clicked</param>
-        /// <returns>true if object drawn & button clicked, false otherwise</returns>
+        /// <returns>true if object drawn and button clicked, false otherwise</returns>
         public static bool RenderDocLink(string url)
         {
             bool result = false;
