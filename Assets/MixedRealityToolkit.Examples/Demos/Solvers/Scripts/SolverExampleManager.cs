@@ -36,17 +36,17 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         public void SetTrackedHead()
         {
-            this.TrackedType = TrackedObjectType.Head;
+            TrackedType = TrackedObjectType.Head;
         }
 
         public void SetTrackedHands()
         {
-            this.TrackedType = TrackedObjectType.HandJoint;
+            TrackedType = TrackedObjectType.HandJoint;
         }
 
         public void SetTrackedCustom()
         {
-            this.TrackedType = TrackedObjectType.CustomOverride;
+            TrackedType = TrackedObjectType.CustomOverride;
         }
 
         public void SetRadialView()
@@ -63,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             AddSolver<Orbital>();
 
             // Modify properties of solver custom to this example
-            var orbital = this.currentSolver as Orbital;
+            var orbital = currentSolver as Orbital;
             orbital.LocalOffset = new Vector3(0.0f, -0.5f, 1.0f);
         }
 
@@ -74,14 +74,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             AddSolver<SurfaceMagnetism>();
 
             // Modify properties of solver custom to this example
-            var surfaceMagnetism = this.currentSolver as SurfaceMagnetism;
+            var surfaceMagnetism = currentSolver as SurfaceMagnetism;
             surfaceMagnetism.SurfaceNormalOffset = 0.2f;
         }
 
         private void AddSolver<T>() where T : Solver
         {
-            currentSolver = this.gameObject.AddComponent<T>();
-            handler = this.GetComponent<SolverHandler>();
+            currentSolver = gameObject.AddComponent<T>();
+            handler = GetComponent<SolverHandler>();
             RefreshSolverHandler();
         }
 
@@ -89,11 +89,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         {
             if (handler != null)
             {
-                this.handler.TrackedTargetType = this.TrackedType;
-                this.handler.TrackedHandness = Handedness.Both;
-                if (this.CustomTrackedObject != null)
+                handler.TrackedTargetType = TrackedType;
+                handler.TrackedHandness = Handedness.Both;
+                if (CustomTrackedObject != null)
                 {
-                    this.handler.TransformOverride = this.CustomTrackedObject.transform;
+                    handler.TransformOverride = CustomTrackedObject.transform;
                 }
             }
         }

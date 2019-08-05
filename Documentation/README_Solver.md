@@ -17,12 +17,12 @@ The Solver system consists of three categories of scripts:
 
 The third category is the solver itself. The following solvers provide the building blocks for basic behavior:
 
-* [`Orbital`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.Orbital): Locks to a specified position and offset from the referenced object.
+* [`Orbital`](#orbital): Locks to a specified position and offset from the referenced object.
 * [`ConstantViewSize`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.ConstantViewSize): Scales to maintain a constant size relative to the view of the referenced object.
-* [`RadialView`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.RadialView): Keeps the object within a view cone cast by the referenced object.
-* [`SurfaceMagnetism`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism): casts rays to surfaces in the world, and align the object to that surface.
+* [`RadialView`](#radialview): Keeps the object within a view cone cast by the referenced object.
+* [`SurfaceMagnetism`](#surfacemagnetism): casts rays to surfaces in the world, and align the object to that surface.
 * [`Momentum`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.Momentum): Applies acceleration/velocity/friction to simulate momentum and springiness for an object being moved by other solvers/components.
-* [`InBetween`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.InBetween): Keeps an object in between two tracked objects.
+* [`InBetween`](#inbetween): Keeps an object in between two tracked objects.
 
 In order to use the Solver system, simply add one of the components listed above to a GameObject. Since all Solvers require a [`SolverHandler`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler), one will be created automatically by Unity.
 
@@ -34,8 +34,11 @@ In order to use the Solver system, simply add one of the components listed above
 The *Tracked Target Type* property of the [`SolverHandler`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler) component defines the point of reference all solvers will use to calculate their algorithms. For example, a value type of [`Head`](xref:Microsoft.MixedReality.Toolkit.Utilities.TrackedObjectType.Head) with a simple [`SurfaceMagnetism`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism) component will result in a raycast from the head and in the direction of the user's gaze for solving what surface is hit. Potential values for the `TrackedTargetType` property are:
 
 * *Head* : Point of reference from the camera
-* *MotionController*: Point of reference from a motion controller. Use `TrackedHandedness` property to define details
-* *HandJoint*: Point of reference from a hand. Use `TrackedHandJoint` and `TrackedHandedness` properties to define details
+* *MotionController*: Point of reference from a motion controller
+    * Use the `TrackedHandedness` property to select the handedness preference (i.e Left, Right, Both)
+* *HandJoint*: Point of reference from a hand
+    * Use the `TrackedHandedness` property to select the handedness preference (i.e Left, Right, Both)
+    * Use the  `TrackedHandJoint` property to determine the joint transform to utilize
 * *CustomOverride*: Point of reference from the assigned `TransformOverride`
 
 > [!NOTE]
