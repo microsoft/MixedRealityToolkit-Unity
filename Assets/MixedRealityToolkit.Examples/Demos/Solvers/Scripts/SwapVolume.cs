@@ -74,17 +74,21 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
                 if (updateSolverTargetToClickSource && solverHandler != null)
                 {
-                    if (eventData.Handedness == Handedness.Right)
+
+                    if (eventData.Handedness == Handedness.Right || eventData.Handedness == Handedness.Left)
                     {
-                        solverHandler.TrackedObjectToReference = TrackedObjectType.MotionControllerRight;
-                    }
-                    else if (eventData.Handedness == Handedness.Left)
-                    {
-                        solverHandler.TrackedObjectToReference = TrackedObjectType.MotionControllerLeft;
+                        if (eventData.Pointer.Controller is IMixedRealityHand)
+                        {
+                            solverHandler.TrackedTargetType = TrackedObjectType.HandJoint;
+                        }
+                        else
+                        {
+                            solverHandler.TrackedTargetType = TrackedObjectType.MotionController;
+                        }
                     }
                     else
                     {
-                        solverHandler.TrackedObjectToReference = TrackedObjectType.Head;
+                        solverHandler.TrackedTargetType = TrackedObjectType.Head;
                     }
                 }
 

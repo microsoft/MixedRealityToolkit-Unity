@@ -135,6 +135,27 @@ Based on customer feedback, support for easy removal of previously observed spat
 - IMixedRealitySpatialAwarenessSystem.ClearObservations\<T\>(string name)
 - IMixedRealitySpatialAwarenessObserver.ClearObservations()
 
+### Solvers
+
+Some solver components and the SolverHandler manager class has changed to fix various bugs and for more intuitive usage.
+
+#### SolverHandler
+
+- Class no longer extends from `ControllerFinder`
+- `TrackedObjectToReference` public property deprecated and has been renamed to `TrackedTargetType`
+- `TrackedObjectType` deprecates left & right controller values. Instead use `MotionController` or `HandJoint` values and update new `TrackedHandness` property to limit tracking to left or right controller
+
+#### InBetween
+
+- `TrackedObjectForSecondTransform` public property deprecated and has been renamed to `SecondTrackedObjectType`
+- `AttachSecondTransformToNewTrackedObject()` has been removed. To update the solver, modify the public properties (i.e `SecondTrackedObjectType`)
+
+##### SurfaceMagnetism
+
+- `MaxDistance` public property deprecated and has been renamed to `MaxRaycastDistance`
+- `CloseDistance` public property deprecated and has been renamed to `ClosestDistance`
+- Default value for `RaycastDirectionMode` is now `TrackedTargetForward` which raycasts in the direction of the tracked target transform forward
+
 ### Clipping Sphere
 
 The ClippingSphere interface has changed to mirror the APIs found in the ClippingBox and ClippingPlane.
@@ -163,6 +184,9 @@ The `PointerClickHandler` class has been deprecated. The `PointerHandler` should
 ### HoloLens clicker support
 
 - The HoloLens clicker's controller mappings have changed from being an unhanded [`WindowsMixedRealityController`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityController) to being an unhanded [`WindowsMixedRealityGGVHand`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityGGVHand). To account for this, an automatic updater will run the first time you open your ControllerMapping profile. Please open any custom profiles at least once after upgrading to GA in order to trigger this one-time migration step.
+
+### HandInteractionPanZoom
+- `HandInteractionPanZoom` has been moved to the UI namespace as it was not an input component. `HandPanEventData` has also been moved into this namespace, and simplified to correspond with other UI event data. 
 
 ## Assembly name changes
 
