@@ -154,10 +154,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             /// </summary>
             Open,
             /// <summary>
-            /// Relaxed hand pose, grab point does not move
-            /// </summary>
-            OpenSteadyGrabPoint,
-            /// <summary>
             /// Index finger and Thumb touching, grab point does not move
             /// </summary>
             Pinch,
@@ -181,6 +177,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             /// Victory sign
             /// </summary>
             Victory,
+            /// <summary>
+            /// Relaxed hand pose, grab point does not move
+            /// </summary>
+            OpenSteadyGrabPoint,
         }
 
         private static readonly Dictionary<GestureId, ArticulatedHandPose> handPoses = new Dictionary<GestureId, ArticulatedHandPose>();
