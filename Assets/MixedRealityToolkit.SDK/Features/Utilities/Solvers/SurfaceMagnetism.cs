@@ -330,7 +330,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 switch (CurrentRaycastDirectionMode)
                 {
                     case RaycastDirectionMode.TrackedTargetForward:
-                        endPoint = SolverHandler.TransformTarget.position + SolverHandler.TransformTarget.forward;
+                        if (SolverHandler != null && SolverHandler.TransformTarget != null)
+                        {
+                            endPoint = SolverHandler.TransformTarget.position + SolverHandler.TransformTarget.forward;
+                        }
                         break;
 
                     case RaycastDirectionMode.ToObject:
