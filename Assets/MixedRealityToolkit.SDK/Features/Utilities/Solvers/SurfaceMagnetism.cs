@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             None = 0,
 
             /// <summary>
-            /// Face head, but always oriented up or down
+            /// Face the tracked transform, but always oriented up or down
             /// </summary>
             Vertical,
 
@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             Full,
 
             /// <summary>
-            /// Blend between head and surface orientation
+            /// Blend between tracked transform and the surface orientation
             /// </summary>
             Blended
         }
