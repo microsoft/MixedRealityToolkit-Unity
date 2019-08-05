@@ -9,6 +9,8 @@
     href: Performance/PerfGettingStarted.md
   - name: Hologram Stabilization
     href: Hologram-Stabilization.md
+  - name: Known Issues
+    href: KnownIssues.md
 - name: Architecture
   items:
   - name: Overview
@@ -95,6 +97,8 @@
       href: SpatialAwareness/SpatialAwarenessGettingStarted.md
     - name: Configuring the Spatial Awareness Mesh Observer
       href: SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.md
+    - name: Spatial Object Mesh Observer
+      href: SpatialAwareness/SpatialObjectMeshObserver.md
     - name: Usage Guide
       href: SpatialAwareness/UsageGuide.md
   - name: Multi Scene System
