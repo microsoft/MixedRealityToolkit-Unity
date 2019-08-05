@@ -1,3 +1,5 @@
+># NOTE: The Spectator View code within this repository has been deprecated. To use Spectator View, migrate to the [MixedReality-SpectatorView repository](https://github.com/microsoft/MixedReality-SpectatorView).
+
 # NOTE: This documentation is in the process of being deprecated. An official release of spectator view has not yet been published and will be based on a different architecture/code organization.
 
 # Spectator View (Old)

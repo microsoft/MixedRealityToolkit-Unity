@@ -1,3 +1,5 @@
+># NOTE: The Spectator View code within this repository has been deprecated. To use Spectator View, migrate to the [MixedReality-SpectatorView repository](https://github.com/microsoft/MixedReality-SpectatorView).
+
 # Overview
 
 [SpectatorView](Scripts/SpectatorView.cs) is a multi-device experience that allows a user's HoloLens application to be viewed by additional devices at their own viewpoints. It offers functionality for unidirectional content synchronization (State Synchronization) and leverages spatial coordinates for scene alignment (Spatial Alignment). It can be used to enable a variety of filming experiences including documenting prototypes and keynote demos.
