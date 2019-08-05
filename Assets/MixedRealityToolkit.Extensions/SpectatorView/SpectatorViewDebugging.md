@@ -1,3 +1,5 @@
+># NOTE: The Spectator View code within this repository has been deprecated. To use Spectator View, migrate to the [MixedReality-SpectatorView repository](https://github.com/microsoft/MixedReality-SpectatorView).
+
 # Debug Logging
 
 Majority of the Spectator View related classes will have 'Debug Logging' flags that can be toggled on and off through the Unity inspector. Enabling these flags results in richer state information being output to log files as well as debug consoles. It's suggested to enable all of these flags when debugging Spectator View related issues.

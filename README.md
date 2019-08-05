@@ -1,3 +1,5 @@
+># NOTE: The Spectator View code within this repository has been deprecated. To use Spectator View, migrate to the [MixedReality-SpectatorView repository](https://github.com/microsoft/MixedReality-SpectatorView).
+
 <img src="Documentation/Images/MRTK_Logo_Rev.png">
 
 # What is the Mixed Reality Toolkit
