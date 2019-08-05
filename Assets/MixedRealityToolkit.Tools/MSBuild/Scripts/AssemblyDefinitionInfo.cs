@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         /// Creates an instance of <see cref="AssemblyDefinitionInfo"/> for the default projects (such as Assembly-CSharp)
         /// </summary>
         /// <param name="assembly">The Unity assembly reference.</param>
-        /// <returns>A new instnace.</returns>
+        /// <returns>A new instance.</returns>
         public static AssemblyDefinitionInfo GetDefaultAssemblyCSharpInfo(Assembly assembly)
         {
             AssemblyDefinitionInfo toReturn = new AssemblyDefinitionInfo() { IsDefaultAssembly = true, Guid = Guid.NewGuid(), Directory = new DirectoryInfo(Utilities.AssetPath) };
@@ -192,10 +192,10 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 List<SourceFileInfo> sourceFiles = new List<SourceFileInfo>();
                 if (assembly != null)
                 {
-                    foreach (string file in assembly.sourceFiles)
+                    foreach (string sourceFile in assembly.sourceFiles)
                     {
-                        MonoScript asset = AssetDatabase.LoadAssetAtPath<MonoScript>(file);
-                        sourceFiles.Add(SourceFileInfo.Parse(new FileInfo(Utilities.GetFullPathFromKnownRelative(file)), asset.GetClass()));
+                        MonoScript asset = AssetDatabase.LoadAssetAtPath<MonoScript>(sourceFile);
+                        sourceFiles.Add(SourceFileInfo.Parse(new FileInfo(Utilities.GetFullPathFromKnownRelative(sourceFile)), asset.GetClass()));
                     }
                 }
                 else

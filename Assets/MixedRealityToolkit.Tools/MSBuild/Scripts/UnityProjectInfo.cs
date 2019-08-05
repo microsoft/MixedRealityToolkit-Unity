@@ -73,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
         private Dictionary<string, CSProjectInfo> CreateUnityProjects(string projectOutputPath)
         {
-            // Not all of these will be inflated
+            // Not all of these will be converted to C# objects, only the ones found to be referenced
             Dictionary<string, AssemblyDefinitionInfo> asmDefInfoMap = new Dictionary<string, AssemblyDefinitionInfo>();
             HashSet<string> builtInPackagesWithoutSource = new HashSet<string>();
 
