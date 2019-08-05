@@ -255,7 +255,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 if (!MixedRealityOptimizeUtils.IsDepthBufferSharingEnabled())
                 {
                     // If depth buffer sharing not enabled, advise to enable setting
-                    Debug.LogWarning("<b>Depth Buffer Sharing</b> is not enabled to improve hologram stabilization. Consider using 16-bit for performance. See <i>Mixed Reality Toolkit</i> > <i>Utilities</i> > <i>Optimize Window</i> tool for more information to improve performance");
+                    Debug.LogWarning("<b>Depth Buffer Sharing</b> is not enabled to improve hologram stabilization. See <i>Mixed Reality Toolkit</i> > <i>Utilities</i> > <i>Optimize Window</i> tool for more information to improve performance");
                 }
 
                 if (!MixedRealityOptimizeUtils.IsWMRDepthBufferFormat16bit())
