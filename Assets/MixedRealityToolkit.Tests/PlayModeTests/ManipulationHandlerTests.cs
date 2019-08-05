@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
             yield return null;
 
-            Destroy(testObject);
+            GameObject.Destroy(testObject);
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
         }
