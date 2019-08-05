@@ -6729,19 +6729,15 @@ PrefabInstance:
     - target: {fileID: 114995780653097258, guid: a900c08743a94c328074df8bbe3eb63c,
         type: 3}
       propertyPath: m_Text
-      value: 'Solvers are intended to provide a reliable way to specify the update
-        order for Unity components, in order to implement deterministic compound transformations.
-
-
-        Building on this, solvers offer a range of follow behaviors (e.g. tag-along)
-        which can be safely stacked (e.g. tag-along + surface magnetism + momentum).
-
-
-
-        To use this scene, point at and select on a sphere in the scene. This will
-        activate the associated solver and, if supported, attach it to the controller
-        that selected on it. Select the sphere again to deactivate it. You can tap
-        on multiple spheres in a row to activate more than one solver at a time.'
+      value: "Solvers are components that facilitate the means of calculating an object's
+        position & orientation according to a predefine algorithm. An example may
+        be placing an object on the surface the user's gaze raycast currently hits.
+        \ \r\n\r\nFurthermore, the Solver system deterministically defines an order
+        of operations for these transform calculations as there is no reliable way
+        to specify to Unity the update order for components.\n\n\nTo use this scene,
+        use the buttons below to configure the type of Solver attached to the coffee
+        cup.  Furthermore, there is an example of the InBetween solver to the left.
+        The surfaces in front are useful for exploring the SurfaceMagnetism solver. "
       objectReference: {fileID: 0}
     - target: {fileID: 114125765304321574, guid: a900c08743a94c328074df8bbe3eb63c,
         type: 3}
@@ -6751,7 +6747,7 @@ PrefabInstance:
     - target: {fileID: 224849082003076088, guid: a900c08743a94c328074df8bbe3eb63c,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.12
+      value: 0.103
       objectReference: {fileID: 0}
     - target: {fileID: 224745427211728820, guid: a900c08743a94c328074df8bbe3eb63c,
         type: 3}
@@ -6761,7 +6757,11 @@ PrefabInstance:
     - target: {fileID: 114713125240876806, guid: a900c08743a94c328074df8bbe3eb63c,
         type: 3}
       propertyPath: m_Text
-      value: Immersive headset
+      value: 'HoloLens
+
+        HoloLens 2
+
+        Immersive headset'
       objectReference: {fileID: 0}
     - target: {fileID: 1149545904682892, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
       propertyPath: m_IsActive
