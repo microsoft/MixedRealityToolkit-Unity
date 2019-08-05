@@ -85,6 +85,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         /// <typeparam name="T">The interface type of the data provider to be registered.</typeparam>
         /// <param name="dataProviderInstance">An instance of the data provider to be registered.</param>
+        [Obsolete]
         bool RegisterDataProvider<T>(T dataProviderInstance) where T : IMixedRealityDataProvider;
 
         /// <summary>
@@ -92,6 +93,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         /// <typeparam name="T">The interface type of the data provider to be registered.</typeparam>
         /// <returns>True if the data provider was successfully registered, false otherwise.</returns>
+        [Obsolete]
         bool RegisterDataProvider<T>(
             Type concreteType,
             SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1),
@@ -104,6 +106,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="name">The name of the data provider to unregister.</param>
         /// <returns>True if the data provider was successfully unregistered, false otherwise.</returns>
         /// <remarks>If the name argument is not specified, the first instance will be unregistered</remarks>
+        [Obsolete]
         bool UnregisterDataProvider<T>(string name = null) where T : IMixedRealityDataProvider;
 
         /// <summary>
@@ -112,6 +115,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <typeparam name="T">The interface type of the data provider to be unregistered.</typeparam>
         /// <param name="service">The specific data provider instance to unregister.</param>
         /// <returns>True if the data provider was successfully unregistered, false otherwise.</returns>
+        [Obsolete]
         bool UnregisterDataProvider<T>(T dataProviderInstance) where T : IMixedRealityDataProvider;
 
         /// <summary>
@@ -120,6 +124,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <typeparam name="T">The interface type of the data provider.</typeparam>
         /// <param name="name">The name of the service.</param>
         /// <returns>True if the data provider is registered, false otherwise.</returns>
+        [Obsolete]
         bool IsDataProviderRegistered<T>(string name = null) where T : IMixedRealityDataProvider;
 
         /// <summary>
@@ -128,6 +133,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <typeparam name="T">The interface type of the data provider.</typeparam>
         /// <param name="name">The name of the data provider.</param>
         /// <returns>The registered data provider instance as the requested type.</returns>
+        [Obsolete]
         T GetDataProvider<T>(string name = null) where T : IMixedRealityDataProvider;
 
         /// <summary>
@@ -136,6 +142,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <typeparam name="T">The interface type of the data provider.</typeparam>
         /// <param name="name">The name of the data provider.</param>
         /// <returns>Read-only collection of the data provider instances, as the requested type.</returns>
+        [Obsolete]
         IReadOnlyList<T> GetDataProviders<T>(string name = null) where T : IMixedRealityDataProvider;
 
         #endregion IMixedRealityDataProvider registration

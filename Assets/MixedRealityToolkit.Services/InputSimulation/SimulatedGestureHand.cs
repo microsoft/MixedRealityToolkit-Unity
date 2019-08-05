@@ -84,7 +84,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 useRailsNavigation = gestureProfile.UseRailsNavigation;
             }
 
-            var inputSimProfile = MixedRealityToolkit.Instance?.GetService<IInputSimulationService>()?.InputSimulationProfile;
+            MixedRealityInputSimulationProfile inputSimProfile = null;
+            if (InputSystem != null)
+            {
+                inputSimProfile = (InputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IInputSimulationService>()?.InputSimulationProfile;
+            }
+
             if (inputSimProfile != null)
             {
                 holdStartDuration = inputSimProfile.HoldStartDuration;
