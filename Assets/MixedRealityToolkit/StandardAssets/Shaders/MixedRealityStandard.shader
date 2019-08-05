@@ -35,6 +35,7 @@ Shader "Mixed Reality Toolkit/Standard"
         _RimColor("Rim Color", Color) = (0.5, 0.5, 0.5, 1.0)
         _RimPower("Rim Power", Range(0.0, 8.0)) = 0.25
         [Toggle(_VERTEX_COLORS)] _VertexColors("Vertex Colors", Float) = 0.0
+        [Toggle(_SMOOTH_NORMALS)] _SmoothNormals("Use Smooth Normals", Float) = 0.0
         [Toggle(_VERTEX_EXTRUSION)] _VertexExtrusion("Vertex Extrusion", Float) = 0.0
         _VertexExtrusionValue("Vertex Extrusion Value", Float) = 0.0
         _BlendedClippingWidth("Blended Clipping With", Range(0.0, 10.0)) = 1.0
@@ -235,6 +236,7 @@ Shader "Mixed Reality Toolkit/Standard"
             #pragma shader_feature _REFRACTION
             #pragma shader_feature _RIM_LIGHT
             #pragma shader_feature _VERTEX_COLORS
+            #pragma shader_feature _SMOOTH_NORMALS
             #pragma shader_feature _VERTEX_EXTRUSION
             #pragma shader_feature _CLIPPING_BORDER
             #pragma shader_feature _NEAR_PLANE_FADE
@@ -326,6 +328,9 @@ Shader "Mixed Reality Toolkit/Standard"
                 float2 uv : TEXCOORD0;
 #if defined(LIGHTMAP_ON)
                 float2 lightMapUV : TEXCOORD1;
+#endif
+#if defined (_SMOOTH_NORMALS)
+                fixed3 smoothNormal : TEXCOORD2;
 #endif
 #if defined(_VERTEX_COLORS)
                 fixed4 color : COLOR0;
@@ -666,8 +671,13 @@ Shader "Mixed Reality Toolkit/Standard"
                 float3 worldVertexPosition = mul(unity_ObjectToWorld, vertexPosition).xyz;
 #endif
 
+                fixed3 localNormal = v.normal;
+
 #if defined(_NORMAL) || defined(_VERTEX_EXTRUSION)
-                fixed3 worldNormal = UnityObjectToWorldNormal(v.normal);
+#if defined(_SMOOTH_NORMALS)
+                localNormal = v.smoothNormal;
+#endif
+                fixed3 worldNormal = UnityObjectToWorldNormal(localNormal);
 #endif
 
 #if defined(_VERTEX_EXTRUSION)
@@ -731,7 +741,7 @@ Shader "Mixed Reality Toolkit/Standard"
                 float borderWidth = _BorderWidth;
 #endif
 
-                if (abs(v.normal.x) == 1.0) // Y,Z plane.
+                if (abs(localNormal.x) == 1.0) // Y,Z plane.
                 {
                     o.scale.x = o.scale.z;
                     o.scale.y = o.scale.y;
@@ -743,7 +753,7 @@ Shader "Mixed Reality Toolkit/Standard"
                     }
 #endif
                 }
-                else if (abs(v.normal.y) == 1.0) // X,Z plane.
+                else if (abs(localNormal.y) == 1.0) // X,Z plane.
                 {
                     o.scale.x = o.scale.x;
                     o.scale.y = o.scale.z;
@@ -802,7 +812,7 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_TRIPLANAR_MAPPING)
                 o.worldNormal = worldNormal;
 #if defined(_LOCAL_SPACE_TRIPLANAR_MAPPING)
-                o.triplanarNormal = v.normal;
+                o.triplanarNormal = localNormal;
                 o.triplanarPosition = vertexPosition;
 #else
                 o.triplanarNormal = worldNormal;
