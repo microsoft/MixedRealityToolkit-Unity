@@ -245,6 +245,45 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
         }
 
+        // This test is temporarily removed for the following reasons:
+        // - This test was moving the hand through a number of stacked touchables. Previously
+        //   moving the hand through these touchables gave touch events first for touchables[0],
+        //   and then touchables[3] twice. These events weren't necessarily expected to occur
+        //   in this manner, but because that was the behaviour when the test was written, we
+        //   were verifying that this behaviour did not change. However, with the new changes
+        //   to the hand gesture JSON files, it became clear that this test was brittle
+        // - The PokePointer ray starts a distance behind the pointer. This means that in cases
+        //   where you have touchables stacked on top of each other, like in this test, the
+        //   pointer target will be behind the hand.
+        // - The PokePointer.closestProximityTouchable however is the object with the shortest
+        //   distance to the pointer, using NearInteractionTouchable.DistanceToTouchable to
+        //   calculate distance. This calculation gets the distance from the pointer to the
+        //   touchable surface, but if the pointer is not in front of or behind the surface, it
+        //   will return float.PositiveInfinity.
+        // - In order for RaiseOnTouchStarted to be called, the closestProximityTouchable needs
+        //   to be part of the same GameObject as the pointer target. But for the reasons
+        //   outlined above, in this test, the pointer target is most often well behind the
+        //   hand, whereas the closestProximityTouchable is nearer the hand. Because they are
+        //   not on the same object, we get no touch down events for touchables excluding the
+        //   touchables[0], where these would be on the same object, and touchables[3].
+        // - So why touchables[3]? Well the touchables in this test had random x,y offsets that
+        //   were consistent across runs. When the hand in this test moved towards the right, it
+        //   would by chance no longer be in front of or behind the touchables closer to it, and
+        //   so NearInteractionTouchable.DistanceToTouchable would return infinity for these
+        //   touchables. However, the hand would still be in front of touchables[3], which
+        //   happened to be the pointer target when the hand started moving to the right. And so
+        //   we would get touch down for touchables[3] even though the hand was not close to it.
+        // - With the minor changes to the hand gestures, the precise series of events that led
+        //   to touchables[3] getting a touch down were no longer occuring, and so the test
+        //   would fail.
+        // - Because stacked touchables are broken, and because this test was only passing
+        //   before because of strange behaviour, I have commented out this test, until we have
+        //   fixed touchables and we have a way to test this properly.
+        // - Here is a link to a PR that aims to fix many aspects of touch, but cannot be
+        //   completed before GA: 
+        //   https://github.com/microsoft/MixedRealityToolkit-Unity/pull/5264 
+
+#if false
         /// <summary>
         /// Test scene query with stacked touchables.
         /// </summary>
@@ -289,6 +328,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 UnityEngine.Object.Destroy(touchable.gameObject);
             }
         }
+#endif
 
         /// <summary>
         /// Test buffer saturation for the overlap query
