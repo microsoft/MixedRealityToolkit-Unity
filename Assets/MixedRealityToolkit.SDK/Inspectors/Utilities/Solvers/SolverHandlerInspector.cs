@@ -21,6 +21,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
         private SerializedProperty updateSolversProperty;
         private SolverHandler solverHandler;
 
+        private static readonly GUIContent TrackedTypeLabel = new GUIContent("Tracked Target Type");
+
         protected void OnEnable()
         {
             trackedTargetProperty = serializedObject.FindProperty("trackedTargetType");
@@ -42,7 +44,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
 
             EditorGUI.BeginChangeCheck();
 
-            solverHandler.TrackedTargetType = (TrackedObjectType)EditorGUILayout.EnumPopup(new GUIContent("Tracked Target Type"), solverHandler.TrackedTargetType, null, false);
+            InspectorUIUtility.DrawEnumSerializedProperty(trackedTargetProperty, TrackedTypeLabel, solverHandler.TrackedTargetType);
+
             if (!SolverHandler.IsValidTrackedObjectType(solverHandler.TrackedTargetType))
             {
                 InspectorUIUtility.DrawWarning(" Current Tracked Target Type value of \"" 
@@ -78,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
 
             serializedObject.ApplyModifiedProperties();
 
-            if (Application.isPlaying && trackedObjectChanged)
+            if (EditorApplication.isPlaying && trackedObjectChanged)
             {
                 solverHandler.RefreshTrackedObject();
             }

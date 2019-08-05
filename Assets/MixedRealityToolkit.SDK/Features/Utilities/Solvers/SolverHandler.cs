@@ -348,7 +348,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         {
             if (trackingTarget != null)
             {
-                DestroyImmediate(trackingTarget);
+                Destroy(trackingTarget);
                 trackingTarget = null;
             }
         }

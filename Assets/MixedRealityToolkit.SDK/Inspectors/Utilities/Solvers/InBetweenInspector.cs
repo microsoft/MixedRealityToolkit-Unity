@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
         private SerializedProperty partwayOffsetProperty;
 
         private InBetween solverInBetween;
-
+        private static readonly GUIContent SecondTrackedTypeLabel = new GUIContent("Second Tracked Target Type");
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -36,7 +36,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             bool objectChanged = false;
 
             EditorGUI.BeginChangeCheck();
-            EditorGUILayout.PropertyField(secondTrackedTargetTypeProperty, new GUIContent("Second Tracked Target Type"));
+
+            InspectorUIUtility.DrawEnumSerializedProperty(secondTrackedTargetTypeProperty, SecondTrackedTypeLabel, solverInBetween.SecondTrackedObjectType);
 
             if (secondTrackedTargetTypeProperty.enumValueIndex == (int)TrackedObjectType.CustomOverride)
             {

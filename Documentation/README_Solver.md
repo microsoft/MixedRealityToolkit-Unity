@@ -28,7 +28,17 @@ The third category is the solver itself. The following solvers provide the build
 
 ## How to change tracking reference
 
-TOOD: Insert solverhandler information & gif
+The `TrackedTargetType` of the [`SolverHandler`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler) component defines the point of reference all solvers will use to calculate their algorithms. For example, a value type of `Head` (xref:Microsoft.MixedReality.Toolkit.Utilities.TrackedObjectType.Head) with a simple [`SurfaceMagnetism`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism) component will result in a raycast from the head and in the direction of the user's gaze for solving what surface is hit. Potential values for the `TrackedTargetType` property are:
+
+- *Head* : Point of reference from the camera
+- *MotionController*: Point of reference from motion controller. Use `TrackedHandedness` property to define details
+- *HandJoint*: Point of reference from hand. Use `TrackedHandJoint` and `TrackedHandedness` properties to define details
+- *CustomOverride*: Point of reference from assigned `TransformOverride`
+
+> [!NOTE]
+> For both *MotionController* and *HandJoint*, the solver handler will attempt to provide the left controller/hand transform first and then the right if the former is not available or unless the `TrackedHandedness` property specifies otherwise.
+
+// ADD gif of changing solverhandler
 
 ## How to use chain solvers
 
@@ -39,9 +49,15 @@ When *UpdateLinkedTransform* is true, the solver will calculate position & orien
 
 ## Common misteps
 
-- Set layer of gameobject to IgnoreRaycast* for surface magnetism
-- Surface Magnetism layermask
-- Surface Magnetism raycast distance
+
+### SurfaceMagnetism
+
+When adding a [`SurfaceMagnetism`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism) component to a GameObject, it is important to consider the layer of the GameObject and it's children, if any have colliders. The component works by performing various types of raycast to determine what surface to "magnet" itself against. If the GameObject has a collider on one of the layers listed in the `MagneticSurfaces` property of SurfaceMagnetism, then the raycast will likely hit itself resulting in the GameObject attaching to it's own collider point. This odd behavior can be avoided by setting the main GameObject and all children to the *Ignore Raycast* layer or modifying the `MagneticSurfaces` LayerMask array appropriately. 
+
+Conversely, a [`SurfaceMagnetism`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism) GameObject will not collide with surfaces on a layer not listed in the `MagneticSurfaces` property. 
+
+Finally, surfaces farther than the `MaxRaycastDistance` property setting will be ignored by the Surface Magnetism raycasts. 
+
 
 
 When a solver is used, the [`SolverHandler`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler) will be added automatically. It has two fields for setting the reference object. You can choose a tracked object (such as the user camera or L/R motion controllers), or instead use the **TransformTarget** field which overrides any set tracked object. This enables you to have solvers reference any scene object. That means objects can have tag alongs and cast surface magnetism as well as tracked objects.
