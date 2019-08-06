@@ -92,6 +92,16 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7275668376220915354, guid: 619a998cd64497849b8f0c168df8eecb,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7275668376220915354, guid: 619a998cd64497849b8f0c168df8eecb,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8299962812379938168, guid: 619a998cd64497849b8f0c168df8eecb,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -101,6 +111,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299962811373005417, guid: 619a998cd64497849b8f0c168df8eecb,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299962811373005417, guid: 619a998cd64497849b8f0c168df8eecb,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1550239703016457202, guid: 619a998cd64497849b8f0c168df8eecb,
         type: 3}
@@ -112,6 +132,16 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1550239701876364515, guid: 619a998cd64497849b8f0c168df8eecb,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1550239701876364515, guid: 619a998cd64497849b8f0c168df8eecb,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8758088219859672264, guid: 619a998cd64497849b8f0c168df8eecb,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -121,6 +151,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8758088218853264345, guid: 619a998cd64497849b8f0c168df8eecb,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8758088218853264345, guid: 619a998cd64497849b8f0c168df8eecb,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8784570591754725263, guid: 619a998cd64497849b8f0c168df8eecb,
         type: 3}
