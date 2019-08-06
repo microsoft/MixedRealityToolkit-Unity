@@ -1518,6 +1518,8 @@ namespace Microsoft.MixedReality.Toolkit
         [InitializeOnLoad]
         private static class EditorEventListener
         {
+            private const string WarnUser_EmptyActiveProfile = "WarnUser_EmptyActiveProfile";
+
             static EditorEventListener()
             {
                 // Detect when we enter edit mode so we can reset isApplicationQuitting
@@ -1530,14 +1532,26 @@ namespace Microsoft.MixedReality.Toolkit
                             break;
                         case PlayModeStateChange.ExitingEditMode:
                             isApplicationQuitting = false;
-                            // Do a profile check
+
                             if (activeInstance != null && activeInstance.activeProfile == null)
-                            {   // If we have an active instance, and its profile is null,
-                                // Stop play mode and alert the user that we don't have a profile
-                                Debug.LogWarning("Can't enter play mode - MixedRealityToolkit doesn't have a profile.");
-                                EditorApplication.isPlaying = false;
-                                Selection.activeObject = Instance;
-                                EditorGUIUtility.PingObject(Instance);
+                            {
+                                // If we have an active instance, and its profile is null,
+                                // Alert the user that we don't have an active profile
+                                // Keep track though whether user has instructed to ignore this warning
+                                if (SessionState.GetBool(WarnUser_EmptyActiveProfile, true))
+                                {
+                                    if (EditorUtility.DisplayDialog("Warning!", "Mixed Reality Toolkit cannot initialize because no Active Profile has been assigned.", "OK", "Ignore"))
+                                    {
+                                        // Stop play mode as changes done in play mode will be lost
+                                        EditorApplication.isPlaying = false;
+                                        Selection.activeObject = Instance;
+                                        EditorGUIUtility.PingObject(Instance);
+                                    }
+                                    else
+                                    {
+                                        SessionState.SetBool(WarnUser_EmptyActiveProfile, false);
+                                    }
+                                }
                             }
                             break;
                         default:
