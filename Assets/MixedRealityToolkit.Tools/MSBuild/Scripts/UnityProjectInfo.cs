@@ -303,8 +303,6 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     }
                 }
 
-                File.WriteAllLines(Path.Combine(generatedProjectPath, "buildall.bat"), orderedProjects.Select(t => $"dotnet build {t.ReferencePath.AbsolutePath} -p:\"UnityConfiguration=%1;UnityPlatform=%2;MSBuildExtensionsPath=%~3\" --no-dependencies\nif %ERRORLEVEL% GEQ 1 EXIT /B 1"));
-
                 IEnumerable<string> projectEntries = orderedProjects.Select(t => GetProjectEntry(t, projectEntryTemplateBody));
 
                 string[] twoConfigs = new string[] {
