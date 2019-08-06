@@ -110,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             // Profiles include doc links by default now
             if (!drawProfile)
             {
-                InspectorUIUtility.RenderDocLink(facade.ServiceType);
+                InspectorUIUtility.RenderHelpURL(facade.ServiceType);
             }
 
             bool drewSomething = drawProfile | drawInspector | drawDataProviders;
