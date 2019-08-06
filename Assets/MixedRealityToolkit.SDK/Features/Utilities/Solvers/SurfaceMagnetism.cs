@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             SurfaceNormal = 2,
 
             /// <summary>
-            /// Blend between tracked transform vertical and the surface orientation
+            /// Blend between tracked transform and the surface normal orientation
             /// </summary>
             Blended = 3,
         }
