@@ -89,7 +89,7 @@
 <ul>
 <li><p><a href="https://visualstudio.microsoft.com/downloads/">Visual Studio 2019</a></p>
 </li>
-<li><p><a href="https://unity3d.com/get-unity/download/archive">Unity 2018.4.x</a></p>
+<li><p><a href="https://unity3d.com/get-unity/download/archive">Unity 2018.4.x, 2019.1.x or 2019.2.x</a></p>
 <p>MRTK supports both IL2CPP and .NET scripting backends on Unity 2018</p>
 </li>
 <li><p><a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/releases">Latest MRTK release</a></p>
@@ -105,7 +105,14 @@ when building for OpenVR.</p>
 <h2 id="get-the-latest-mrtk-unity-packages">Get the latest MRTK Unity packages</h2>
 <ol>
 <li>Go to the  <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/releases">MRTK release page</a>.</li>
-<li>Under Assets, download both <code>Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage</code> and <code>Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage</code></li>
+<li>Under Assets, download
+<ul>
+<li><code>Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage</code></li>
+<li><code>Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage</code></li>
+<li><code>Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage</code></li>
+<li><code>Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage</code></li>
+</ul>
+</li>
 </ol>
 <p>For additional delivery mechanisms, please see <a href="DownloadingTheMRTK.html">Downloading the MRTK</a>.</p>
 <h2 id="switch-your-unity-project-to-the-target-platform">Switch your Unity project to the target platform</h2>
@@ -119,12 +126,11 @@ when building for OpenVR.</p>
 </ul>
 <h2 id="import-mrtk-packages-into-your-unity-project">Import MRTK packages into your Unity project</h2>
 <ol>
-<li><p>Create a new Unity project, or open an existing project. When creating a project, make sure to select &quot;3D&quot; as the template type.</p>
-</li>
-<li><p>Import the <code>Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage</code> you downloaded by going into &quot;Asset -&gt; Import Package -&gt; Custom Package&quot;, selecting the .unitypackage file, ensure all items to import are checked, and then selecting &quot;Import&quot;.</p>
-</li>
-<li><p>Import <code>Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage</code> following the same steps as above. The examples package is optional but contains useful demonstration scenes for current MRTK features.</p>
-</li>
+<li>Create a new Unity project, or open an existing project. When creating a project, make sure to select &quot;3D&quot; as the template type.</li>
+<li>Import the <code>Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage</code> you downloaded by going into &quot;Asset -&gt; Import Package -&gt; Custom Package&quot;, selecting the .unitypackage file, ensure all items to import are checked, and then selecting &quot;Import&quot;.</li>
+<li>Import the <code>Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage</code> following the same steps as above. The examples package is optional and contains useful demonstration scenes for current MRTK features.</li>
+<li>Import the <code>Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage</code> following the same steps as for the foundation package. These tools package is optional and contains useful tools, such as the ExtensionServiceCreator, that enhance the MRTK developer experience.</li>
+<li>Import the <code>Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage</code> following the same steps as for the foundation package. The extensions package provides a set of useful optional components for the MRTK.</li>
 </ol>
 <p>After importing the Foundation package, you may see a setup prompt like the following:</p>
 <p><img src="Images/MRTK_UnitySetupPrompt.png" alt=""></p>
