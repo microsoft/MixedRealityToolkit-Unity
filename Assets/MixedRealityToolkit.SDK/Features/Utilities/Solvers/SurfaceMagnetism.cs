@@ -47,9 +47,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             None = 0,
 
             /// <summary>
-            /// Face the tracked transform, but always oriented up or down
+            /// Face the tracked transform
             /// </summary>
-            TrackedVertical = 1,
+            TrackedTarget = 1,
 
             /// <summary>
             /// Aligned to surface normal completely
@@ -264,8 +264,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         [SerializeField]
-        [Tooltip("How solver will orient model. None = no orieting, TrackedVertical = Face tracked target transform, but always oriented up/down, SurfaceNormal = Aligned to surface normal completely, Blended = blend between tracked transform and surface orientation")]
-        private OrientationMode orientationMode = OrientationMode.TrackedVertical;
+        [Tooltip("How solver will orient model. None = no orieting, TrackedTarget = Face tracked target transform, SurfaceNormal = Aligned to surface normal completely, Blended = blend between tracked transform and surface orientation")]
+        private OrientationMode orientationMode = OrientationMode.TrackedTarget;
 
         /// <summary>
         /// How solver will orient model. See OrientationMode enum for possible modes. When mode=Blended, use OrientationBlend property to define ratio for blending
@@ -277,16 +277,29 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         [SerializeField]
-        [Tooltip("Value used for when OrientationMode=Blended. If 0.0 orientation is driven as if in TrackedVertical mode, and if 1.0 orientation is driven as if in SurfaceNormal mode")]
+        [Tooltip("Value used for when OrientationMode=Blended. If 0.0 orientation is driven as if in TrackedTarget mode, and if 1.0 orientation is driven as if in SurfaceNormal mode")]
         private float orientationBlend = 0.65f;
 
         /// <summary>
-        /// Value used for when Orientation Mode=Blended. If 0.0 orientation is driven all by TrackedVertical mode and if 1.0 orientation is driven all by SurfaceNormal mode
+        /// Value used for when Orientation Mode=Blended. If 0.0 orientation is driven all by TrackedTarget mode and if 1.0 orientation is driven all by SurfaceNormal mode
         /// </summary>
         public float OrientationBlend
         {
             get { return orientationBlend; }
             set { orientationBlend = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("If true, ensures object is kept vertical for TrackedTarget, SurfaceNormal, and Blended Orientation Modes")]
+        private bool keepOrientationVertical = true;
+
+        /// <summary>
+        /// If true, ensures object is kept vertical for TrackedTarget, SurfaceNormal, and Blended Orientation Modes
+        /// </summary>
+        public bool KeepOrientationVertical
+        {
+            get { return keepOrientationVertical; }
+            set { keepOrientationVertical = value; }
         }
 
         [SerializeField]
@@ -380,30 +393,27 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         private float ScaleOverride => useLinkedAltScaleOverride ? SolverHandler.AltScale.Current.magnitude : volumeCastSizeOverride;
 
         /// <summary>
-        /// Calculates how the object should orient to the surface.  May be none to pass shared orientation through,
-        /// oriented to the surface but fully vertical, fully oriented to the surface normal, or a slerped blend
-        /// of the vertical orientation and the pass-through rotation.
+        /// Calculates how the object should orient to the surface.
         /// </summary>
-        /// <param name="direction"></param>
-        /// <param name="surfaceNormal"></param>
+        /// <param name="direction">direction of tracked target</param>
+        /// <param name="surfaceNormal">normal of surface at hit point</param>
         /// <returns>Quaternion, the orientation to use for the object</returns>
         private Quaternion CalculateMagnetismOrientation(Vector3 direction, Vector3 surfaceNormal)
         {
-            // Calculate the surface rotation
-            Vector3 newDirection = -surfaceNormal;
-
-            if (IsNormalVertical(newDirection))
+            if (KeepOrientationVertical)
             {
-                newDirection = direction;
+                direction.y = 0;
+                surfaceNormal.y = 0;
             }
 
-            var trackedReferenceRotation = Quaternion.LookRotation(newDirection, Vector3.up);
+            var trackedReferenceRotation = Quaternion.LookRotation(-direction, Vector3.up);
             var surfaceReferenceRotation = Quaternion.LookRotation(-surfaceNormal, Vector3.up);
+
             switch (CurrentOrientationMode)
             {
                 case OrientationMode.None:
                     return SolverHandler.GoalRotation;
-                case OrientationMode.TrackedVertical:
+                case OrientationMode.TrackedTarget:
                     return trackedReferenceRotation;
                 case OrientationMode.SurfaceNormal:
                     return surfaceReferenceRotation;
