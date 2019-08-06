@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     /// as long as updateLinkedTransform is false.
     /// </summary>
     [RequireComponent(typeof(SolverHandler))]
+    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Solver.html")]
     public abstract class Solver : MonoBehaviour
     {
         [SerializeField]

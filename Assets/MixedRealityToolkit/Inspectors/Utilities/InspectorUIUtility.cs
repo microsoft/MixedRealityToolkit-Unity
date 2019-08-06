@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -155,6 +156,47 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Render DocLink header if Object contains DocLinkAttribute
+        /// </summary>
+        /// <param name="target">UnityEngine object to test for DocLinkAttribute</param>
+        /// <returns>true if object drawn and button clicked, false otherwise</returns>
+        public static bool RenderDocLink(UnityEngine.Object target)
+        {
+            bool result = false;
+
+            if (target != null)
+            {
+                DocLinkAttribute docLink = target.GetType().GetCustomAttribute<DocLinkAttribute>();
+                if (docLink != null)
+                {
+                    result = RenderDocLink(docLink.URL);
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Render DocLink header for given url value
+        /// </summary>
+        /// <param name="url">Url to open if button is clicked</param>
+        /// <returns>true if object drawn and button clicked, false otherwise</returns>
+        public static bool RenderDocLink(string url)
+        {
+            bool result = false;
+            if (!string.IsNullOrEmpty(url))
+            {
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    GUILayout.FlexibleSpace();
+                    result = RenderDocLinkButton(url);
+                }
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -443,6 +485,41 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             return drawSection;
+        }
+
+        /// <summary>
+        /// Draws a popup UI with PropertyField type features.
+        /// Displays prefab pending updates
+        /// </summary>
+        /// <param name="prop">serialized property corresponding to Enum</param>
+        /// <param name="label">label for property</param>
+        /// <param name="propValue">Current enum value for property</param>
+        /// <returns>New enum value after draw</returns>
+        public static Enum DrawEnumSerializedProperty(SerializedProperty prop, GUIContent label, Enum propValue)
+        {
+            return DrawEnumSerializedProperty(EditorGUILayout.GetControlRect(), prop, label, propValue);
+        }
+
+        /// <summary>
+        /// Draws a popup UI with PropertyField type features.
+        /// Displays prefab pending updates
+        /// </summary>
+        /// <param name="position">position to render the serialized property</param>
+        /// <param name="prop">serialized property corresponding to Enum</param>
+        /// <param name="label">label for property</param>
+        /// <param name="propValue">Current enum value for property</param>
+        /// <returns>New enum value after draw</returns>
+        public static Enum DrawEnumSerializedProperty(Rect position, SerializedProperty prop, GUIContent label, Enum propValue)
+        {
+            Enum result = propValue;
+            EditorGUI.BeginProperty(position, label, prop);
+            {
+                result = EditorGUI.EnumPopup(position, label, propValue);
+                prop.enumValueIndex = Convert.ToInt32(result);
+            }
+            EditorGUI.EndProperty();
+
+            return result;
         }
 
         /// <summary>
