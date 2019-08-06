@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
@@ -27,29 +28,60 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             if (smoothNormalsOnAwake)
             {
-                SmoothNormals();
+                SmoothNormalsAsync();
             }
         }
 
         public void SmoothNormals()
         {
-            // Avoid smoothing meshes which have already been smoothed.
-            var sharedMesh = meshFilter.sharedMesh;
             Mesh mesh;
+
+            if (AcquirePreprocessedMesh(out mesh))
+            {
+                return;
+            }
+
+            var result = CalculateSmoothNormals(mesh.vertices, mesh.normals);
+            mesh.SetUVs(smoothNormalUVChannel, result);
+        }
+
+        public Task SmoothNormalsAsync()
+        {
+            Mesh mesh;
+
+            if (AcquirePreprocessedMesh(out mesh))
+            {
+                return Task.CompletedTask;
+            }
+
+            var vertices = mesh.vertices;
+            var normals = mesh.normals;
+            var asyncTask = Task.Run(() => CalculateSmoothNormals(vertices, normals));
+
+            return asyncTask.ContinueWith((i) =>
+            {
+                mesh.SetUVs(smoothNormalUVChannel, i.Result);
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+        }
+
+        private bool AcquirePreprocessedMesh(out Mesh mesh)
+        {
+            // Check if a mesh has already been processed, and if so simply assign that mesh to this filter.
+            var sharedMesh = meshFilter.sharedMesh;
 
             if (processedMeshes.TryGetValue(sharedMesh, out mesh))
             {
                 meshFilter.mesh = mesh;
-            }
-            else
-            {
-                // Clone the current mesh and add shared mesh and cloned mesh to the table of previously smoothed meshes.
-                mesh = meshFilter.mesh;
-                processedMeshes[sharedMesh] = mesh;
-                processedMeshes[mesh] = mesh;
 
-                mesh.SetUVs(smoothNormalUVChannel, CalculateSmoothNormals(mesh.vertices, mesh.normals));
+                return true;
             }
+
+            // Else, clone the current mesh and add shared mesh and cloned mesh to the table of previously smoothed meshes.
+            mesh = meshFilter.mesh;
+            processedMeshes[sharedMesh] = mesh;
+            processedMeshes[mesh] = mesh;
+
+            return false;
         }
 
         private static List<Vector3> CalculateSmoothNormals(Vector3[] verticies, Vector3[] normals)

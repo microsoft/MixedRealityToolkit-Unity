@@ -84,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 // If smooth normals are requested, make sure the mesh has smooth normals.
                 if (outlineMaterial.IsKeywordEnabled("_SMOOTH_NORMALS"))
                 {
-                    gameObject.EnsureComponent<MeshSmoother>().SmoothNormals();
+                    gameObject.EnsureComponent<MeshSmoother>().SmoothNormalsAsync();
                 }
 
                 ApplyOutlineWidth();
