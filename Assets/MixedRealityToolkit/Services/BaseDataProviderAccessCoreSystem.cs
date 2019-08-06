@@ -12,6 +12,9 @@ using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit
 {
+    /// <summary>
+    /// Abstract class for core MRTK system with functionality defined for managing and accessing IMixedRealityDataProviders
+    /// </summary>
     public abstract class BaseDataProviderAccessCoreSystem : BaseCoreSystem, IMixedRealityDataProviderAccess
     {
         private List<IMixedRealityDataProvider> dataProviders = new List<IMixedRealityDataProvider>();

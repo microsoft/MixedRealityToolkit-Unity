@@ -252,6 +252,13 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public bool IsServiceRegistered<T>(string name = null) where T : IMixedRealityService
         {
+            Type interfaceType = typeof(T);
+            if (typeof(IMixedRealityDataProvider).IsAssignableFrom(interfaceType))
+            {
+                Debug.LogWarning($"Unable to check a service of type {typeof(IMixedRealityDataProvider).Name}. Inquire with the MixedRealityService that registered the DataProvider type in question");
+                return false;
+            }
+
             T service;
             MixedRealityServiceRegistry.TryGetService<T>(out service, name);
             return service != null;
@@ -275,57 +282,6 @@ namespace Microsoft.MixedReality.Toolkit
         public IReadOnlyList<T> GetServices<T>(string name = null) where T : IMixedRealityService
         {
             return GetAllServicesByNameInternal<T>(typeof(T), name);
-        }
-
-        /// <inheritdoc />
-        public bool RegisterDataProvider<T>(T dataProviderInstance) where T : IMixedRealityDataProvider
-        {
-            return RegisterService<T>(dataProviderInstance);
-        }
-
-        /// <inheritdoc />
-        public bool RegisterDataProvider<T>(
-            Type concreteType,
-            SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1),
-            params object[] args) where T : IMixedRealityDataProvider
-        {
-            return RegisterService<T>(concreteType, supportedPlatforms, args);
-        }
-
-        /// <inheritdoc />
-        public bool UnregisterDataProvider<T>(string name = null) where T : IMixedRealityDataProvider
-        {
-            return UnregisterService<T>(name);
-        }
-
-        /// <inheritdoc />
-        public bool UnregisterDataProvider<T>(T dataProviderInstance) where T : IMixedRealityDataProvider
-        {
-            return UnregisterService<T>(dataProviderInstance);
-        }
-
-        /// <inheritdoc />
-        public bool IsDataProviderRegistered<T>(string name = null) where T : IMixedRealityDataProvider
-        {
-            return IsServiceRegistered<T>(name);
-        }
-
-        /// <inheritdoc />
-        public T GetDataProvider<T>(string name = null) where T : IMixedRealityDataProvider
-        {
-            return GetService<T>(name);
-        }
-
-        /// <inheritdoc />
-        public IReadOnlyList<T> GetDataProviders<T>(string name = null) where T : IMixedRealityDataProvider
-        {
-            return GetServices<T>(name);
-        }
-
-        /// <inheritdoc />
-        public IReadOnlyList<T> GetDataProviders<T>() where T : IMixedRealityDataProvider
-        {
-            throw new NotImplementedException();
         }
 
 #endregion IMixedRealityServiceRegistrar implementation
@@ -793,13 +749,13 @@ namespace Microsoft.MixedReality.Toolkit
         {
             if (serviceInstance == null)
             {
-                Debug.LogWarning($"Unable to add a {interfaceType.Name} service with a null instance.");
+                Debug.LogWarning($"Unable to register a {interfaceType.Name} service with a null instance.");
                 return false;
             }
 
             if (typeof(IMixedRealityDataProvider).IsAssignableFrom(interfaceType))
             {
-                Debug.LogWarning($"Unable to add a service of type {typeof(IMixedRealityDataProvider).Name}.");
+                Debug.LogWarning($"Unable to register a service of type {typeof(IMixedRealityDataProvider).Name}. Register this DataProvider with the MixedRealityService that depends on it.");
                 return false;
             }
 
