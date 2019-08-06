@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             if (target != null)
             {
-                InspectorUIUtility.RenderDocLink(target.GetType());
+                InspectorUIUtility.RenderHelpURL(target.GetType());
             }
 
             serializedObject.Update();

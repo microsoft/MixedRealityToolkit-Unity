@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             DocLinkAttribute docLink = profileObject.GetType().GetCustomAttribute<DocLinkAttribute>();
             if (docLink != null)
             {
-                InspectorUIUtility.RenderDocLinkButton(docLink.URL);
+                InspectorUIUtility.RenderDocumentationButton(docLink.URL);
             }
         }
 

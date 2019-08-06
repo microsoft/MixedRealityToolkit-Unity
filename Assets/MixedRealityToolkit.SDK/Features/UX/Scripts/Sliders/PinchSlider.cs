@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// <summary>
     /// A slider that can be moved by grabbing / pinching a slider thumb
     /// </summary>
-    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Sliders.html")]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Sliders.html")]
     public class PinchSlider : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusHandler
     {
         #region Serialized Fields and Properties

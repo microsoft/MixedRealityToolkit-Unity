@@ -133,11 +133,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         /// <summary>
-        /// Render doc link attribute as clickable button routing to revelant URI
+        /// Render documentation button routing to revelant URI
         /// </summary>
-        /// <param name="docLink">doc link attribute information to build button</param>
+        /// <param name="docURL">documentation URL to open on button click</param>
         /// <returns>true if button clicked, false otherwise</returns>
-        public static bool RenderDocLinkButton(string docURL)
+        public static bool RenderDocumentationButton(string docURL)
         {
             if (!string.IsNullOrEmpty(docURL))
             {
@@ -159,20 +159,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         /// <summary>
-        /// Render DocLink header if Object contains DocLinkAttribute
+        /// Render a documentation header with button if Object contains HelpURLAttribute
         /// </summary>
-        /// <param name="target">UnityEngine object to test for DocLinkAttribute</param>
+        /// <param name="targetType">Type to test for HelpURLAttribute</param>
         /// <returns>true if object drawn and button clicked, false otherwise</returns>
-        public static bool RenderDocLink(Type targetType)
+        public static bool RenderHelpURL(Type targetType)
         {
             bool result = false;
 
             if (targetType != null)
             {
-                DocLinkAttribute docLink = targetType.GetCustomAttribute<DocLinkAttribute>();
-                if (docLink != null)
+                HelpURLAttribute helpURL = targetType.GetCustomAttribute<HelpURLAttribute>();
+                if (helpURL != null)
                 {
-                    result = RenderDocLink(docLink.URL);
+                    result = RenderDocumentationSection(helpURL.URL);
                 }
             }
 
@@ -180,11 +180,32 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         /// <summary>
-        /// Render DocLink header for given url value
+        /// Render a documentation header with button if Object contains DocLinkAttribute
+        /// </summary>
+        /// <param name="targetType">Type to test for DocLinkAttribute</param>
+        /// <returns>true if object drawn and button clicked, false otherwise</returns>
+        public static bool RenderDocLink(Type targetType)
+        {
+            bool result = false;
+
+            if (targetType != null)
+            {
+                DocLinkAttribute helpURL = targetType.GetCustomAttribute<DocLinkAttribute>();
+                if (helpURL != null)
+                {
+                    result = RenderDocumentationSection(helpURL.URL);
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Render a documentation header with button for given url value
         /// </summary>
         /// <param name="url">Url to open if button is clicked</param>
         /// <returns>true if object drawn and button clicked, false otherwise</returns>
-        public static bool RenderDocLink(string url)
+        public static bool RenderDocumentationSection(string url)
         {
             bool result = false;
             if (!string.IsNullOrEmpty(url))
@@ -192,7 +213,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     GUILayout.FlexibleSpace();
-                    result = RenderDocLinkButton(url);
+                    result = RenderDocumentationButton(url);
                 }
             }
 

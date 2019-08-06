@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             if (target != null)
             {
-                InspectorUIUtility.RenderDocLink(target.GetType());
+                InspectorUIUtility.RenderHelpURL(target.GetType());
             }
 
             DrawDefaultInspector();

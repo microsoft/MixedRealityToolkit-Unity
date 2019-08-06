@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
 
             if (target != null)
             {
-                InspectorUIUtility.RenderDocLink(target.GetType());
+                InspectorUIUtility.RenderHelpURL(target.GetType());
             }
 
             bool trackedObjectChanged = false;

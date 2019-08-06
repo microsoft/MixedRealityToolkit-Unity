@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -42,8 +43,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private static GUIContent startDimensionLabel = new GUIContent("Start Dimension Index", "The dimensionIndex value to set on start.");
         private static GUIContent CurrentDimensionLabel = new GUIContent("Dimension Index", "The dimensionIndex value at runtime.");
         private static GUIContent isToggledLabel = new GUIContent("Is Toggled", "The toggled value to set on start.");
-
-        private const string Interactable_URL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Interactable.html";
 
         protected virtual void OnEnable()
         {
@@ -90,191 +89,198 @@ namespace Microsoft.MixedReality.Toolkit.UI
             bool isPlayMode = EditorApplication.isPlaying || EditorApplication.isPaused;
 
             #region General Settings
-            EditorGUILayout.BeginHorizontal();
+            using (new EditorGUILayout.HorizontalScope())
+            {
                 InspectorUIUtility.DrawTitle("General");
-                InspectorUIUtility.RenderDocLinkButton(Interactable_URL);
-            EditorGUILayout.EndHorizontal();
 
-            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-
-            // States
-            SerializedProperty states = serializedObject.FindProperty("States");
-
-            // If states value is not provided, try to use Default states type
-            if (states.objectReferenceValue == null)
-            {
-                states.objectReferenceValue = ThemeInspector.GetDefaultInteractableStates();
-            }
-
-            GUI.enabled = !isPlayMode;
-                EditorGUILayout.PropertyField(states, new GUIContent("States", "The States this Interactable is based on"));
-            GUI.enabled = true;
-
-            if (states.objectReferenceValue == null)
-            {
-                InspectorUIUtility.DrawError("Please assign a States object!");
-                EditorGUILayout.EndVertical();
-                serializedObject.ApplyModifiedProperties();
-                return;
-            }
-
-            //standard Interactable Object UI
-            SerializedProperty enabled = serializedObject.FindProperty("Enabled");
-            EditorGUILayout.PropertyField(enabled, new GUIContent("Enabled", "Is this Interactable Enabled?"));
-
-            SerializedProperty actionId = serializedObject.FindProperty("InputActionId");
-
-            if (actionOptions == null)
-            {
-                GUI.enabled = false;
-                EditorGUILayout.Popup("Input Actions", 0, new string[] { "Missing Mixed Reality Toolkit" });
-                GUI.enabled = true;
-            }
-            else
-            {
-                position = EditorGUILayout.GetControlRect();
-                DrawDropDownProperty(position, actionId, actionOptions, new GUIContent("Input Actions", "The input action filter"));
-            }
-
-            using (new EditorGUI.IndentLevelScope())
-            {
-                SerializedProperty isGlobal = serializedObject.FindProperty("IsGlobal");
-                EditorGUILayout.PropertyField(isGlobal, new GUIContent("Is Global", "Like a modal, does not require focus"));
-            }
-
-            SerializedProperty voiceCommands = serializedObject.FindProperty("VoiceCommand");
-
-            // check speech commands profile for a list of commands
-            if (speechKeywords == null)
-            {
-                GUI.enabled = false;
-                EditorGUILayout.Popup("Speech Command", 0, new string[] { "Missing Speech Commands" });
-                InspectorUIUtility.DrawNotice("Create speech commands in the MRTK/Input/Speech Commands Profile");
-                GUI.enabled = true;
-            }
-            else
-            {
-                //look for items in the sppech commands list that match the voiceCommands string
-                // this string should be empty if we are not listening to speech commands
-                // will return zero if empty, to match the inserted off value.
-                int currentIndex = SpeechKeywordLookup(voiceCommands.stringValue, speechKeywords);
-                GUI.enabled = !isPlayMode;
-                position = EditorGUILayout.GetControlRect();
-                GUIContent label = new GUIContent("Speech Command", "Speech Commands to use with Interactable, pulled from MRTK/Input/Speech Commands Profile");
-                EditorGUI.BeginProperty(position, label, voiceCommands);
+                if (target != null)
                 {
-                    currentIndex = EditorGUI.Popup(position, label, currentIndex, speechKeywords);
-
-                    if (currentIndex > 0)
+                    var helpURL = target.GetType().GetCustomAttribute<HelpURLAttribute>();
+                    if (helpURL != null)
                     {
-                        voiceCommands.stringValue = speechKeywords[currentIndex].text;
+                        InspectorUIUtility.RenderDocumentationButton(helpURL.URL);
                     }
-                    else
+                }
+            }
+
+            using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
+            {
+                // States
+                SerializedProperty states = serializedObject.FindProperty("States");
+
+                // If states value is not provided, try to use Default states type
+                if (states.objectReferenceValue == null)
+                {
+                    states.objectReferenceValue = ThemeInspector.GetDefaultInteractableStates();
+                }
+
+                GUI.enabled = !isPlayMode;
+                EditorGUILayout.PropertyField(states, new GUIContent("States", "The States this Interactable is based on"));
+                GUI.enabled = true;
+
+                if (states.objectReferenceValue == null)
+                {
+                    InspectorUIUtility.DrawError("Please assign a States object!");
+                    serializedObject.ApplyModifiedProperties();
+                    return;
+                }
+
+                //standard Interactable Object UI
+                SerializedProperty enabled = serializedObject.FindProperty("Enabled");
+                EditorGUILayout.PropertyField(enabled, new GUIContent("Enabled", "Is this Interactable Enabled?"));
+
+                SerializedProperty actionId = serializedObject.FindProperty("InputActionId");
+
+                if (actionOptions == null)
+                {
+                    GUI.enabled = false;
+                    EditorGUILayout.Popup("Input Actions", 0, new string[] { "Missing Mixed Reality Toolkit" });
+                    GUI.enabled = true;
+                }
+                else
+                {
+                    position = EditorGUILayout.GetControlRect();
+                    DrawDropDownProperty(position, actionId, actionOptions, new GUIContent("Input Actions", "The input action filter"));
+                }
+
+                using (new EditorGUI.IndentLevelScope())
+                {
+                    SerializedProperty isGlobal = serializedObject.FindProperty("IsGlobal");
+                    EditorGUILayout.PropertyField(isGlobal, new GUIContent("Is Global", "Like a modal, does not require focus"));
+                }
+
+                SerializedProperty voiceCommands = serializedObject.FindProperty("VoiceCommand");
+
+                // check speech commands profile for a list of commands
+                if (speechKeywords == null)
+                {
+                    GUI.enabled = false;
+                    EditorGUILayout.Popup("Speech Command", 0, new string[] { "Missing Speech Commands" });
+                    InspectorUIUtility.DrawNotice("Create speech commands in the MRTK/Input/Speech Commands Profile");
+                    GUI.enabled = true;
+                }
+                else
+                {
+                    //look for items in the sppech commands list that match the voiceCommands string
+                    // this string should be empty if we are not listening to speech commands
+                    // will return zero if empty, to match the inserted off value.
+                    int currentIndex = SpeechKeywordLookup(voiceCommands.stringValue, speechKeywords);
+                    GUI.enabled = !isPlayMode;
+                    position = EditorGUILayout.GetControlRect();
+                    GUIContent label = new GUIContent("Speech Command", "Speech Commands to use with Interactable, pulled from MRTK/Input/Speech Commands Profile");
+                    EditorGUI.BeginProperty(position, label, voiceCommands);
                     {
-                        voiceCommands.stringValue = "";
+                        currentIndex = EditorGUI.Popup(position, label, currentIndex, speechKeywords);
+
+                        if (currentIndex > 0)
+                        {
+                            voiceCommands.stringValue = speechKeywords[currentIndex].text;
+                        }
+                        else
+                        {
+                            voiceCommands.stringValue = "";
+                        }
+                    }
+                    EditorGUI.EndProperty();
+                    GUI.enabled = true;
+                }
+
+                // show requires gaze because voice command has a value
+                if (!string.IsNullOrEmpty(voiceCommands.stringValue))
+                {
+                    using (new EditorGUI.IndentLevelScope())
+                    {
+                        SerializedProperty requireGaze = serializedObject.FindProperty("RequiresFocus");
+                        EditorGUILayout.PropertyField(requireGaze, new GUIContent("Requires Focus", "Does the voice command require gazing at this interactable?"));
+                    }
+                }
+
+                SerializedProperty dimensions = serializedObject.FindProperty("Dimensions");
+                // should be 1 or more
+                dimensions.intValue = Mathf.Clamp(dimensions.intValue, 1, 9);
+                string[] selectionModeNames = Enum.GetNames(typeof(SelectionModes));
+                // clamp to values in the enum
+                int selectionModeIndex = Mathf.Clamp(dimensions.intValue, 1, selectionModeNames.Length) - 1;
+
+                // user-friendly dimension settings
+                SelectionModes selectionMode = SelectionModes.Button;
+                position = EditorGUILayout.GetControlRect();
+                GUI.enabled = !isPlayMode;
+                EditorGUI.BeginProperty(position, selectionModeLabel, dimensions);
+                {
+                    selectionMode = (SelectionModes)EditorGUI.EnumPopup(position, selectionModeLabel, (SelectionModes)(selectionModeIndex));
+
+                    switch (selectionMode)
+                    {
+                        case SelectionModes.Button:
+                            dimensions.intValue = 1;
+                            break;
+                        case SelectionModes.Toggle:
+                            dimensions.intValue = 2;
+                            break;
+                        case SelectionModes.MultiDimension:
+                            // multi dimension mode - set min value to 3
+                            dimensions.intValue = Mathf.Max(3, dimensions.intValue);
+                            position = EditorGUILayout.GetControlRect();
+                            dimensions.intValue = EditorGUI.IntField(position, dimensionsLabel, dimensions.intValue);
+                            break;
+                        default:
+                            break;
                     }
                 }
                 EditorGUI.EndProperty();
-                GUI.enabled = true;
-            }
-            
-            // show requires gaze because voice command has a value
-            if (!string.IsNullOrEmpty(voiceCommands.stringValue))
-            {
-                using (new EditorGUI.IndentLevelScope())
+
+                if (dimensions.intValue > 1)
                 {
-                    SerializedProperty requireGaze = serializedObject.FindProperty("RequiresFocus");
-                    EditorGUILayout.PropertyField(requireGaze, new GUIContent("Requires Focus", "Does the voice command require gazing at this interactable?"));
-                }
-            }
-
-            SerializedProperty dimensions = serializedObject.FindProperty("Dimensions");
-            // should be 1 or more
-            dimensions.intValue = Mathf.Clamp(dimensions.intValue, 1, 9);
-            string[] selectionModeNames = Enum.GetNames(typeof(SelectionModes));
-            // clamp to values in the enum
-            int selectionModeIndex = Mathf.Clamp(dimensions.intValue, 1, selectionModeNames.Length) - 1;
-
-            // user-friendly dimension settings
-            SelectionModes selectionMode = SelectionModes.Button;
-            position = EditorGUILayout.GetControlRect();
-            GUI.enabled = !isPlayMode;
-            EditorGUI.BeginProperty(position, selectionModeLabel, dimensions);
-            {
-                selectionMode = (SelectionModes)EditorGUI.EnumPopup(position, selectionModeLabel, (SelectionModes)(selectionModeIndex));
-
-                switch (selectionMode)
-                {
-                    case SelectionModes.Button:
-                        dimensions.intValue = 1;
-                        break;
-                    case SelectionModes.Toggle:
-                        dimensions.intValue = 2;
-                        break;
-                    case SelectionModes.MultiDimension:
-                        // multi dimension mode - set min value to 3
-                        dimensions.intValue = Mathf.Max(3, dimensions.intValue);
-                        position = EditorGUILayout.GetControlRect();
-                        dimensions.intValue = EditorGUI.IntField(position, dimensionsLabel, dimensions.intValue);
-                        break;
-                    default:
-                        break;
-                }
-            }
-            EditorGUI.EndProperty();
-
-            if (dimensions.intValue > 1)
-            {
-                // toggle or multi dimensional button
-                using (new EditorGUI.IndentLevelScope())
-                {
-                    SerializedProperty canSelect = serializedObject.FindProperty("CanSelect");
-                    SerializedProperty canDeselect = serializedObject.FindProperty("CanDeselect");
-                    SerializedProperty startDimensionIndex = serializedObject.FindProperty("StartDimensionIndex");
-
-                    EditorGUILayout.PropertyField(canSelect, new GUIContent("Can Select", "The user can toggle this button"));
-                    EditorGUILayout.PropertyField(canDeselect, new GUIContent("Can Deselect", "The user can untoggle this button, set false for a radial interaction."));
-
-                    position = EditorGUILayout.GetControlRect();
-                    EditorGUI.BeginProperty(position, startDimensionLabel, startDimensionIndex);
+                    // toggle or multi dimensional button
+                    using (new EditorGUI.IndentLevelScope())
                     {
-                        if (dimensions.intValue >= selectionModeNames.Length)
-                        {
-                            // multi dimensions
-                            if (!isPlayMode)
-                            {
-                                startDimensionIndex.intValue = EditorGUI.IntField(position, startDimensionLabel, startDimensionIndex.intValue);
-                            }
-                            else
-                            {
-                                SerializedProperty dimensionIndex = serializedObject.FindProperty("dimensionIndex");
-                                EditorGUI.IntField(position, CurrentDimensionLabel, dimensionIndex.intValue);
-                            }
-                        }
-                        else if (dimensions.intValue == (int)SelectionModes.Toggle + 1)
-                        {
-                            // toggle
-                            if (!isPlayMode)
-                            {
-                                bool isToggled = EditorGUI.Toggle(position, isToggledLabel, startDimensionIndex.intValue > 0);
-                                startDimensionIndex.intValue = isToggled ? 1 : 0;
-                            }
-                            else
-                            {
-                                SerializedProperty dimensionIndex = serializedObject.FindProperty("dimensionIndex");
-                                bool isToggled = EditorGUI.Toggle(position, isToggledLabel, dimensionIndex.intValue > 0);
-                            }
-                        }
+                        SerializedProperty canSelect = serializedObject.FindProperty("CanSelect");
+                        SerializedProperty canDeselect = serializedObject.FindProperty("CanDeselect");
+                        SerializedProperty startDimensionIndex = serializedObject.FindProperty("StartDimensionIndex");
 
-                        startDimensionIndex.intValue = Mathf.Clamp(startDimensionIndex.intValue, 0, dimensions.intValue - 1);
+                        EditorGUILayout.PropertyField(canSelect, new GUIContent("Can Select", "The user can toggle this button"));
+                        EditorGUILayout.PropertyField(canDeselect, new GUIContent("Can Deselect", "The user can untoggle this button, set false for a radial interaction."));
+
+                        position = EditorGUILayout.GetControlRect();
+                        EditorGUI.BeginProperty(position, startDimensionLabel, startDimensionIndex);
+                        {
+                            if (dimensions.intValue >= selectionModeNames.Length)
+                            {
+                                // multi dimensions
+                                if (!isPlayMode)
+                                {
+                                    startDimensionIndex.intValue = EditorGUI.IntField(position, startDimensionLabel, startDimensionIndex.intValue);
+                                }
+                                else
+                                {
+                                    SerializedProperty dimensionIndex = serializedObject.FindProperty("dimensionIndex");
+                                    EditorGUI.IntField(position, CurrentDimensionLabel, dimensionIndex.intValue);
+                                }
+                            }
+                            else if (dimensions.intValue == (int)SelectionModes.Toggle + 1)
+                            {
+                                // toggle
+                                if (!isPlayMode)
+                                {
+                                    bool isToggled = EditorGUI.Toggle(position, isToggledLabel, startDimensionIndex.intValue > 0);
+                                    startDimensionIndex.intValue = isToggled ? 1 : 0;
+                                }
+                                else
+                                {
+                                    SerializedProperty dimensionIndex = serializedObject.FindProperty("dimensionIndex");
+                                    bool isToggled = EditorGUI.Toggle(position, isToggledLabel, dimensionIndex.intValue > 0);
+                                }
+                            }
+
+                            startDimensionIndex.intValue = Mathf.Clamp(startDimensionIndex.intValue, 0, dimensions.intValue - 1);
+                        }
+                        EditorGUI.EndProperty();
                     }
-                    EditorGUI.EndProperty();
-                }
 
-                GUI.enabled = true;
+                    GUI.enabled = true;
+                }
             }
-            
-            EditorGUILayout.EndVertical();
 
             #endregion
 
