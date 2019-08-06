@@ -185,6 +185,9 @@ The `PointerClickHandler` class has been deprecated. The `PointerHandler` should
 
 - The HoloLens clicker's controller mappings have changed from being an unhanded [`WindowsMixedRealityController`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityController) to being an unhanded [`WindowsMixedRealityGGVHand`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityGGVHand). To account for this, an automatic updater will run the first time you open your ControllerMapping profile. Please open any custom profiles at least once after upgrading to GA in order to trigger this one-time migration step.
 
+### HandInteractionPanZoom
+- `HandInteractionPanZoom` has been moved to the UI namespace as it was not an input component. `HandPanEventData` has also been moved into this namespace, and simplified to correspond with other UI event data. 
+
 ## Assembly name changes
 
 In The GA release, all of the official Mixed Reality Toolkit assembly names and their associated assembly definition (.asmdef) files have been updated to fit the following pattern.

@@ -1,18 +1,15 @@
 fileFormatVersion: 2
-guid: 36fc2837fda89a6479905d3bc90d9ff8
+guid: 57c53da2552a8114ab6d68e0cd31b1eb
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
     100000: //RootNode
-    100002: shl_adjustBoxScaleWidget_16mmx2mm
     400000: //RootNode
-    400002: shl_adjustBoxScaleWidget_16mmx2mm
-    2100000: No Name
+    2100000: lambert1
+    2100002: No Name
     2300000: //RootNode
-    2300002: shl_adjustBoxScaleWidget_16mmx2mm
     3300000: //RootNode
-    3300002: shl_adjustBoxScaleWidget_16mmx2mm
-    4300000: shl_adjustBoxScaleWidget_16mmx2mm
+    4300000: shl_adjustBoxRotateWidget_Sq_16mmx2mm
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -58,7 +55,7 @@ ModelImporter:
     optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
-    preserveHierarchy: 1
+    preserveHierarchy: 0
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
