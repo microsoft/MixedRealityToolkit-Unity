@@ -85,12 +85,16 @@
 <p><img src="Images/BoundingBox/MRTK_BoundingBox_Main.png" alt="Bounding box"></p>
 <p>The <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/BoundingBox/BoundingBox.cs"><code>BoundingBox.cs</code></a> script provides basic functionality for transforming objects in mixed reality. A bounding box will show a cube around the hologramm to indicate that it can be interacted with. Handles on the corners and edges of the cube allow scaling or rotating the object. The bounding box also reacts to user input. On HoloLens 2 for example the bounding box responds to finger proximity, providing visual feedback to help perceive the distance from the object. All interactions and visuals can be easily customized. </p>
 <p>For more information please see <a href="https://docs.microsoft.com/en-us/windows/mixed-reality/app-bar-and-bounding-box">App Bar and Bounding Box</a> on Windows Dev Center.</p>
-<h2 id="example-scene">Example scene</h2>
-<p>You can find examples of Bounding Box configurations in the <code>BoundingBoxExamples</code> scene.</p>
-<img src="Images/BoundingBox/MRTK_BoundingBox_Examples.png" width="550">
 <h2 id="how-to-use-a-bounding-box">How to use a bounding box</h2>
 <p>To enable a bounding box around an object, simply assign the <code>BoundingBox</code> script to any GameObject. Note that the object will need a box collider, added in the <em>Bounds Override</em> field in the inspector.</p>
 <p><img src="Images/BoundingBox/MRTK_BoundingBox_Assign.png" alt="Bounding Box"></p>
+<h2 id="making-an-object-movable-with-manipulation-handler">Making an object movable with manipulation handler</h2>
+<p>A bounding box can be combined with <a href="README_ManipulationHandler.html"><code>ManipulationHandler.cs</code></a> to make the object movable using far interaction. The manipulation handler supports both one and two-handed interactions. <a href="InputSystem/HandTracking.html">Hand tracking</a> can be used to interact with an object up close.</p>
+<img src="Images/BoundingBox/MRTK_BoundingBox_ManipulationHandler.png" width="450">
+<p>In order for the bounding box edges to behave the same way when moving it using <a href="README_ManipulationHandler.html"><code>ManipulationHandler</code></a>'s far interaction, it is advised to connect its events for <em>On Manipulation Started</em> / <em>On Manipulation Ended</em> to <code>BoundingBox.HighlightWires</code> / <code>BoundingBox.UnhighlightWires</code> respectively, as shown in the screenshot above.</p>
+<h2 id="example-scene">Example scene</h2>
+<p>You can find examples using bounding box in the <a href="README_HandInteractionExamples.html">HandInteractionExample scene</a>.</p>
+<img src="Images/BoundingBox/MRTK_BoundingBox_Examples.png" width="550">
 <h2 id="inspector-properties">Inspector properties</h2>
 <p><img src="Images/BoundingBox/MRTK_BoundingBox_Structure.png" alt="Bounding Box"></p>
 <p><strong>Target Object</strong>
@@ -123,37 +127,6 @@ You can assign the material and prefab to override the handle style. If no handl
 <li><strong>Scale Ended</strong>: Fires when scaling ends.</li>
 </ul>
 <img src="Images/BoundingBox/MRTK_BoundingBox_Events.png" width="450">
-<h2 id="bounding-box-handle-styles">Bounding box handle styles</h2>
-<p>By default, when you just assign the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/BoundingBox/BoundingBox.cs"><code>BoundingBox.cs</code></a> script, it will show the handle of the HoloLens 1st gen style. To use HoloLens 2 style handles, you need to assign proper handle prefabs and materials.</p>
-<p><img src="Images/BoundingBox/MRTK_BoundingBox_HandleStyles1.png" alt="Bounding Box"></p>
-<p>Below are the prefabs, materials, and the scaling values for the HoloLens 2 style Bounding Box handles. You can find this example in the <code>BoundingBoxExamples</code> scene.</p>
-<img src="Images/BoundingBox/MRTK_BoundingBox_HandleStyles2.png" width="450">
-<h3 id="handles">Handles</h3>
-<ul>
-<li><strong>Handle Material</strong>: BoundingBoxHandleWhite</li>
-<li><strong>Handle Grabbed Material</strong>: BoundingBoxHandleBlueGrabbed</li>
-<li><strong>Scale Handle Prefab</strong>: MRTK_BoundingBox_ScaleWidget_1m</li>
-<li><strong>Scale Handle Slate Prefab</strong>: MRTK_BoundingBox_ScaleWidget_Slate_1m</li>
-<li><strong>Scale Handle Size</strong>: 0.016 (1.6cm)</li>
-<li><strong>Scale Handle Collider Padding</strong>: 0.016 (makes the grabbable collider slightly bigger than handle visual)</li>
-<li><strong>Rotation Handle Prefab</strong>: MRTK_BoundingBox_RotateWidget_1m</li>
-<li><strong>Rotation Handle Size</strong>: 0.016</li>
-<li><strong>Rotation Handle Collider Padding</strong>: 0.016 (makes the grabbable collider slightly bigger than handle visual)</li>
-</ul>
-<h3 id="proximity">Proximity</h3>
-<p>Show and hide the handles with animation based on the distance to the hands. It has two-step scaling animation.</p>
-<ul>
-<li><strong>Proximity Effect Active</strong>: Enable proximity-based handle activation</li>
-<li><strong>Handle Medium Proximity</strong>: Distance for the 1st step scaling</li>
-<li><strong>Handle Close Proximity</strong>: Distance for the 2nd step scaling</li>
-<li><strong>Far Scale</strong>: Default scale value of the handle asset when the hands are out of the range of Bounding Box interaction(distance defined above by 'Handle Medium Proximity'. Use 0 to hide handle in default)</li>
-<li><strong>Medium Scale</strong>: Scale value of the handle asset when the hands are within the range of the Bounding Box interaction(distance defined above by 'Handle Close Proximity'. Use 1 to show normal size)</li>
-<li><strong>Close Scale</strong>: Scale value of the handle asset when the hands are within the grab interaction(distance defined above by 'Handle Close Proximity'. Use 1.x to show bigger size)</li>
-</ul>
-<h2 id="making-an-object-movable-with-manipulation-handler">Making an object movable with manipulation handler</h2>
-<p>A bounding box can be combined with <a href="README_ManipulationHandler.html"><code>ManipulationHandler.cs</code></a> to make the object movable using far interaction. The manipulation handler supports both one and two-handed interactions. <a href="InputSystem/HandTracking.html">Hand tracking</a> can be used to interact with an object up close.</p>
-<img src="Images/BoundingBox/MRTK_BoundingBox_ManipulationHandler.png" width="450">
-<p>In order for the bounding box edges to behave the same way when moving it using <a href="README_ManipulationHandler.html"><code>ManipulationHandler</code></a>'s far interaction, it is advised to connect its events for <em>On Manipulation Started</em> / <em>On Manipulation Ended</em> to <code>BoundingBox.HighlightWires</code> / <code>BoundingBox.UnhighlightWires</code> respectively, as shown in the screenshot above.</p>
 </article>
           </div>
           
@@ -162,7 +135,7 @@ You can assign the material and prefab to override the handle style. If no handl
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/2.0.0_stabilization/Documentation/README_BoundingBox.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/README_BoundingBox.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
