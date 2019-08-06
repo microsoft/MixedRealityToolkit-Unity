@@ -49,17 +49,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             /// <summary>
             /// Face the tracked transform, but always oriented up or down
             /// </summary>
-            Vertical,
+            TrackedVertical = 1,
 
             /// <summary>
             /// Aligned to surface normal completely
             /// </summary>
-            Full,
+            SurfaceNormal = 2,
 
             /// <summary>
-            /// Blend between tracked transform and the surface orientation
+            /// Blend between tracked transform vertical and the surface orientation
             /// </summary>
-            Blended
+            Blended = 3,
         }
         #endregion
 
@@ -264,11 +264,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         [SerializeField]
-        [Tooltip("Orientation mode. None = no orienting, Vertical = Face head, but always oriented up/down, Full = Aligned to surface normal completely")]
-        private OrientationMode orientationMode = OrientationMode.Vertical;
+        [Tooltip("How solver will orient model. None = no orieting, TrackedVertical = Face tracked target transform, but always oriented up/down, SurfaceNormal = Aligned to surface normal completely, Blended = blend between tracked transform and surface orientation")]
+        private OrientationMode orientationMode = OrientationMode.TrackedVertical;
 
         /// <summary>
-        /// Orientation mode. None = no orienting, Vertical = Face head, but always oriented up/down, Full = Aligned to surface normal completely
+        /// How solver will orient model. See OrientationMode enum for possible modes. When mode=Blended, use OrientationBlend property to define ratio for blending
         /// </summary>
         public OrientationMode CurrentOrientationMode
         {
@@ -277,11 +277,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         [SerializeField]
-        [Tooltip("Orientation Blend Value where 0.0 = All head and 1.0 = All surface")]
+        [Tooltip("Value used for when OrientationMode=Blended. If 0.0 orientation is driven as if in TrackedVertical mode, and if 1.0 orientation is driven as if in SurfaceNormal mode")]
         private float orientationBlend = 0.65f;
 
         /// <summary>
-        /// Orientation Blend Value where 0.0 = All head and 1.0 = All surface
+        /// Value used for when Orientation Mode=Blended. If 0.0 orientation is driven all by TrackedVertical mode and if 1.0 orientation is driven all by SurfaceNormal mode
         /// </summary>
         public float OrientationBlend
         {
@@ -397,23 +397,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 newDirection = direction;
             }
 
-            newDirection.y = 0;
-
-            var surfaceRot = Quaternion.LookRotation(newDirection, Vector3.up);
-
+            var trackedReferenceRotation = Quaternion.LookRotation(newDirection, Vector3.up);
+            var surfaceReferenceRotation = Quaternion.LookRotation(-surfaceNormal, Vector3.up);
             switch (CurrentOrientationMode)
             {
                 case OrientationMode.None:
                     return SolverHandler.GoalRotation;
-
-                case OrientationMode.Vertical:
-                    return surfaceRot;
-
-                case OrientationMode.Full:
-                    return Quaternion.LookRotation(-surfaceNormal, Vector3.up);
-
+                case OrientationMode.TrackedVertical:
+                    return trackedReferenceRotation;
+                case OrientationMode.SurfaceNormal:
+                    return surfaceReferenceRotation;
                 case OrientationMode.Blended:
-                    return Quaternion.Slerp(SolverHandler.GoalRotation, surfaceRot, orientationBlend);
+                    return Quaternion.Slerp(trackedReferenceRotation, surfaceReferenceRotation, orientationBlend);
                 default:
                     return Quaternion.identity;
             }

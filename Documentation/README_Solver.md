@@ -143,9 +143,12 @@ Conversely, the *Surface Ray Offset* will place the GameObject a set distance in
 The *Orientation Mode* determines the type of rotation to apply in relation to the normal on the surface.
 
 * *None* - No rotation applied
-* *Vertical* - Object will always be oriented up but face the tracked transform driving the raycast
-* *Full* - Object will align based on normal at hit point on surface
-* *Blended* - Object will align based on normal at hit point on surface AND based on facing the tracked transform. Use *Orientation Blend* property to control balance between two rotation factors
+* *TrackedVertical* - Object will always be oriented up but face the tracked transform driving the raycast
+* *SurfaceNormal* - Object will align based on normal at hit point on surface
+* *Blended* - Object will align based on normal at hit point on surface AND based on facing the tracked transform.
+
+> [!NOTE]
+> Use the *Orientation Blend* property to control the balance between rotation factors when *Orientation Mode* is set to *Blended*. A value of 0.0 will have orientation entirely driven by *TrackedVertical* mode and a value of 1.0 will have orientation driven entirely by *SurfaceNormal*.
 
 ![SurfaceMagnetism Example](../Documentation/Images/Solver/SurfaceMagExample.png)
 
