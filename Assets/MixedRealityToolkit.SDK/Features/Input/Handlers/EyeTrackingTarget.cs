@@ -94,6 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public UnityEvent OnSelected
         {
             get { return onSelected; }
+            set { onSelected = value; }
         }
         
         [SerializeField]
