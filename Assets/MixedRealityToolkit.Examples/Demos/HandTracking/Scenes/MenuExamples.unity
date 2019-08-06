@@ -681,7 +681,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83d9acc7968244a8886f3af591305bcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeProfile: {fileID: 11400000, guid: 0cb92366e82d1e14f969da00ec2bf887, type: 2}
+  activeProfile: {fileID: 11400000, guid: 7e7c962b9eb9dfa44993d5b2f2576752, type: 2}
 --- !u!4 &509045572
 Transform:
   m_ObjectHideFlags: 0
@@ -803,7 +803,7 @@ MonoBehaviour:
   gazeTransform: {fileID: 0}
   minHeadVelocityThreshold: 0.5
   maxHeadVelocityThreshold: 2
-  useEyeTracking: 0
+  useEyeTracking: 1
 --- !u!114 &534669907
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1450,8 +1450,30 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5451606509669297783, guid: 6bc544428a065cb45b0bd0f9e57565ff,
+        type: 3}
+      propertyPath: autoFollowAtDistance
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5451606509669297783, guid: 6bc544428a065cb45b0bd0f9e57565ff,
+        type: 3}
+      propertyPath: interactableObject
+      value: 
+      objectReference: {fileID: 944797239}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6bc544428a065cb45b0bd0f9e57565ff, type: 3}
+--- !u!114 &944797239 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6750813618967417135, guid: 6bc544428a065cb45b0bd0f9e57565ff,
+    type: 3}
+  m_PrefabInstance: {fileID: 944797238}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1126983936
 GameObject:
   m_ObjectHideFlags: 0
