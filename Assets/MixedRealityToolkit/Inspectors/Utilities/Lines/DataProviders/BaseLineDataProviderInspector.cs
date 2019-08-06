@@ -269,8 +269,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             serializedObject.ApplyModifiedProperties();
-
-            EditorUtility.SetDirty(LineData);
         }
 
         protected virtual void OnSceneGUI()

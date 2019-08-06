@@ -163,13 +163,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         /// <param name="target">UnityEngine object to test for DocLinkAttribute</param>
         /// <returns>true if object drawn and button clicked, false otherwise</returns>
-        public static bool RenderDocLink(UnityEngine.Object target)
+        public static bool RenderDocLink(Type targetType)
         {
             bool result = false;
 
-            if (target != null)
+            if (targetType != null)
             {
-                DocLinkAttribute docLink = target.GetType().GetCustomAttribute<DocLinkAttribute>();
+                DocLinkAttribute docLink = targetType.GetCustomAttribute<DocLinkAttribute>();
                 if (docLink != null)
                 {
                     result = RenderDocLink(docLink.URL);

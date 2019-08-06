@@ -190,7 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     },
                     () => {
                         // Note: cannot use mrtkConfigProfile.Is*SystemEnabled because property checks multiple parameters
-                        CheckSystemConfiguration("Scene System System", enableSceneSystem.boolValue,
+                        CheckSystemConfiguration("Scene System", enableSceneSystem.boolValue,
                             mrtkConfigProfile.SceneSystemSystemType,
                             mrtkConfigProfile.SceneSystemProfile != null);
 
