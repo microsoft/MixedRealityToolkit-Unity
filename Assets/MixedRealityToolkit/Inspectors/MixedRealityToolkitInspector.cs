@@ -85,7 +85,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             ScriptableObject profile = CreateInstance(nameof(MixedRealityToolkitConfigurationProfile));
                             profile.CreateAsset("Assets/MixedRealityToolkit.Generated/CustomProfiles");
                             activeProfile.objectReferenceValue = profile;
-                            //Selection.activeObject = profile;
                             EditorGUIUtility.PingObject(profile);
                         }
                     }
@@ -128,8 +127,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         public static void CreateMixedRealityToolkitGameObject()
         {
             MixedRealityInspectorUtility.AddMixedRealityToolkitToScene();
+            Selection.activeObject = MixedRealityToolkit.Instance;
             EditorGUIUtility.PingObject(MixedRealityToolkit.Instance);
-            forceShowProfilePicker = true;
+
+            if (!MixedRealityToolkit.Instance.HasActiveProfile)
+            {
+                forceShowProfilePicker = true;
+            }
         }
     }
 }
