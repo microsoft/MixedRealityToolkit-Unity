@@ -29,6 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
         private SerializedProperty currentRaycastDirectionModeProperty;
         private SerializedProperty orientationModeProperty;
         private SerializedProperty orientationBlendProperty;
+        private SerializedProperty orientationVerticalProperty;
         private SerializedProperty debugEnabledProperty;
 
         private SurfaceMagnetism surfaceMagnetism;
@@ -53,6 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             currentRaycastDirectionModeProperty = serializedObject.FindProperty("currentRaycastDirectionMode");
             orientationModeProperty = serializedObject.FindProperty("orientationMode");
             orientationBlendProperty = serializedObject.FindProperty("orientationBlend");
+            orientationVerticalProperty = serializedObject.FindProperty("keepOrientationVertical");
             debugEnabledProperty = serializedObject.FindProperty("debugEnabled");
 
             surfaceMagnetism = target as SurfaceMagnetism;
@@ -68,8 +70,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             EditorGUILayout.LabelField("General Properties", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(surfaceNormalOffsetProperty);
             EditorGUILayout.PropertyField(surfaceRayOffsetProperty);
+
             EditorGUILayout.PropertyField(orientationModeProperty);
-            EditorGUILayout.PropertyField(orientationBlendProperty);
+
+            if (surfaceMagnetism.CurrentOrientationMode != SurfaceMagnetism.OrientationMode.None)
+            {
+                EditorGUILayout.PropertyField(orientationVerticalProperty);
+            }
+
+            if (surfaceMagnetism.CurrentOrientationMode == SurfaceMagnetism.OrientationMode.Blended)
+            {
+                EditorGUILayout.PropertyField(orientationBlendProperty);
+            }
 
             // Raycast properties
             EditorGUILayout.LabelField("Raycast Properties", EditorStyles.boldLabel);
