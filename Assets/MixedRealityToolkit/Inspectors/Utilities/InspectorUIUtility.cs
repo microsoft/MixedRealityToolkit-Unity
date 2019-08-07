@@ -247,17 +247,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
             float buttonWidth = GUI.skin.button.CalcSize(label).x;
 
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-
-            bool triggered = false;
-            if (GUILayout.Button(label, buttonStyle, GUILayout.Width(buttonWidth)))
+            using (new EditorGUILayout.HorizontalScope())
             {
-                triggered = true;
+                GUILayout.FlexibleSpace();
+
+                if (GUILayout.Button(label, buttonStyle, GUILayout.Width(buttonWidth)))
+                {
+                    return true;
+                }
             }
 
-            EditorGUILayout.EndHorizontal();
-            return triggered;
+            return false;
         }
 
         /// <summary>
@@ -274,18 +274,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             GUIStyle addStyle = new GUIStyle(GUI.skin.button);
             addStyle.fixedHeight = 25;
             float addButtonWidth = GUI.skin.button.CalcSize(label).x * padding;
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-
             bool triggered = false;
-            if (GUILayout.Button(label, addStyle, GUILayout.Width(addButtonWidth)))
+
+            using (new EditorGUILayout.HorizontalScope())
             {
-                callback(index, prop);
-                triggered = true;
+                GUILayout.FlexibleSpace();
+
+                if (GUILayout.Button(label, addStyle, GUILayout.Width(addButtonWidth)))
+                {
+                    callback(index, prop);
+                    triggered = true;
+                }
+
+                GUILayout.FlexibleSpace();
             }
 
-            GUILayout.FlexibleSpace();
-            EditorGUILayout.EndHorizontal();
             return triggered;
         }
 
@@ -303,18 +306,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             GUIStyle addStyle = new GUIStyle(GUI.skin.button);
             addStyle.fixedHeight = 25;
             float addButtonWidth = GUI.skin.button.CalcSize(label).x * padding;
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-
             bool triggered = false;
-            if (GUILayout.Button(label, addStyle, GUILayout.Width(addButtonWidth)))
+
+            using (new EditorGUILayout.HorizontalScope())
             {
-                callback(indexArr, prop);
-                triggered = true;
+                GUILayout.FlexibleSpace();
+
+                if (GUILayout.Button(label, addStyle, GUILayout.Width(addButtonWidth)))
+                {
+                    callback(indexArr, prop);
+                    triggered = true;
+                }
+
+                GUILayout.FlexibleSpace();
             }
 
-            GUILayout.FlexibleSpace();
-            EditorGUILayout.EndHorizontal();
             return triggered;
         }
 
