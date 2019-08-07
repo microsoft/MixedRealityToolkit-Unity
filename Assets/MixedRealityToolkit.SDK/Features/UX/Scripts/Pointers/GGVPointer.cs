@@ -27,9 +27,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Handedness lastControllerHandedness;
 
         #region IMixedRealityPointer
-        private IMixedRealityController controller;
-        private IMixedRealityInputSource inputSourceParent;
 
+        private IMixedRealityController controller;
 
         /// <inheritdoc />
         public IMixedRealityController Controller
@@ -43,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     gameObject.name = $"{Controller.ControllerHandedness}_GGVPointer";
                     pointerName = gameObject.name;
-                    inputSourceParent = controller.InputSource;
+                    InputSourceParent = controller.InputSource;
                 }
             }
         }
@@ -80,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        public IMixedRealityInputSource InputSourceParent => inputSourceParent;
+        public IMixedRealityInputSource InputSourceParent { get; private set; }
 
         public IMixedRealityCursor BaseCursor { get; set; }
 
