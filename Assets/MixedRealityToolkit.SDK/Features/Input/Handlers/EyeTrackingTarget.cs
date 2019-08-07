@@ -141,6 +141,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public static GameObject LookedAtTarget { get;  private set; }
         public static EyeTrackingTarget LookedAtEyeTarget { get; private set; }
         public static Vector3 LookedAtPoint { get; private set; }
+        public static Ray LookRay { get; private set; }
+        
 
         #region Focus handling
         protected override void Start()
@@ -209,8 +211,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     // ToDo: Handle raycasting layers
                     RaycastHit hitInfo = default(RaycastHit);
-                    Ray lookRay = new Ray(InputSystem.EyeGazeProvider.GazeOrigin, InputSystem.EyeGazeProvider.GazeDirection.normalized);
-                    bool isHit = UnityEngine.Physics.Raycast(lookRay, out hitInfo);
+                    LookRay = new Ray(InputSystem.EyeGazeProvider.GazeOrigin, InputSystem.EyeGazeProvider.GazeDirection.normalized);
+                    bool isHit = UnityEngine.Physics.Raycast(LookRay, out hitInfo);
 
                     if (isHit)
                     {

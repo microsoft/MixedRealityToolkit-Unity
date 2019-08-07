@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         Vertical
     }
 
+    [RequireComponent(typeof(EyeTrackingTarget))]
     public class MoveObjByEyeGaze : MonoBehaviour,
         IMixedRealitySpeechHandler,
         IMixedRealitySourceStateHandler,
@@ -34,9 +35,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 return inputSystem;
             }
         }
-
-        private IMixedRealityEyeGazeProvider EyeTrackingProvider => eyeTrackingProvider ?? (eyeTrackingProvider = InputSystem?.EyeGazeProvider);
-        private IMixedRealityEyeGazeProvider eyeTrackingProvider = null;
 
         #region Serialized variables
         [Header("Eyes")]
@@ -127,6 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         #endregion
 
         #region Private variables
+        private EyeTrackingTarget myEyeTrackingTarget;
         private GameObject previewGameObject;
         private bool onlyEyeWarpOnRelease = true; // Only warp the currently grabbed target to the current look at location once the user releases the pinch gesture.        
 
@@ -173,6 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         private void Start()
         {
+            myEyeTrackingTarget = this.GetComponent<EyeTrackingTarget>();
             UpdateSliderTextOutput();
         }
 
@@ -183,14 +183,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 // Check whether the user is still looking within the proximity of the target
                 if (IsLookingAwayFromTarget() && IsLookingAwayFromPreview())
                 {
-                    if ((EyeTrackingProvider?.GazeTarget != null) &&
-                        (EyeTrackingProvider?.GazeTarget != gameObject))     // To prevent trying to place it on itself
+                    if (!myEyeTrackingTarget.IsLookedAt)     // To prevent trying to place it on itself
                     {
                         plausibleLocation = null;
 
-                        if (EyeTrackingProvider?.GazeTarget.GetComponent<SnapTo>() != null)
+                        if (myEyeTrackingTarget.GetComponent<SnapTo>() != null)
                         {
-                            plausibleLocation = EyeTrackingProvider?.GazeTarget.transform.position;
+                            plausibleLocation = myEyeTrackingTarget.transform.position;
                         }
                         // Determine the location to place the selected target at
                         else if (onlyTransitionToPlausibleDestinations)
@@ -198,16 +197,16 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
                             if (IsDestinationPlausible())
                             {
-                                plausibleLocation = EyeTrackingProvider?.HitPosition;
+                                plausibleLocation = EyeTrackingTarget.LookedAtPoint;
                             }
                             else
                             {
-                                plausibleLocation = GetValidPlacemLocation(EyeTrackingProvider?.GazeTarget);
+                                plausibleLocation = GetValidPlacemLocation(EyeTrackingTarget.LookedAtTarget);
                             }
                         }
                         else
                         {
-                            plausibleLocation = EyeTrackingProvider?.HitPosition;
+                            plausibleLocation = EyeTrackingTarget.LookedAtPoint;
                         }
 
                         // Only show preview and place target in plausible locations
@@ -271,7 +270,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         {
             MixedRealityPose pose;
             eventData.InputData.TryGetValue(TrackedHandJoint.Palm, out pose);
-
+           // Debug.Log($"OnHandJointsUpdated -- \t{(pose != null)} \tcurrHand:{(eventData.Handedness == currEngagedHand)} \t{isManipulatingUsing_Hands}");
             if ((pose != null) && (eventData.Handedness == currEngagedHand) && isManipulatingUsing_Hands)
             {
                 if (handPos_absolute == Vector3.zero)
@@ -292,7 +291,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             }
         }
 
-        void IMixedRealitySourceStateHandler.OnSourceDetected(SourceStateEventData eventData) { }
+        void IMixedRealitySourceStateHandler.OnSourceDetected(SourceStateEventData eventData)
+        {
+
+        }
 
         void IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {
@@ -392,7 +394,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         private bool IsLookingAwayFromTarget()
         {
             // First, let's check if the target is still hit by the eye gaze cursor
-            if (EyeTrackingProvider?.GazeTarget == gameObject)
+            if (myEyeTrackingTarget.IsLookedAt)
             {
                 return false;
             }
@@ -416,13 +418,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <returns></returns>
         private bool IsLookingAwayFromPreview()
         {
-            if (prevPreviewPos == null || EyeTrackingProvider == null)
+            if (prevPreviewPos == null)
             {
                 return true;
             }
 
-            Vector3 eyes2PrevPreview = prevPreviewPos.Value - EyeTrackingProvider.GazeOrigin;
-            Vector3 eye2HitPos = EyeTrackingProvider.GazeDirection;
+            Vector3 eyes2PrevPreview = prevPreviewPos.Value - EyeTrackingTarget.LookRay.origin;
+            Vector3 eye2HitPos = EyeTrackingTarget.LookRay.direction;
 
             float angle = Vector3.Angle(eyes2PrevPreview, eye2HitPos);
             float distance = EyeTrackingDemoUtils.VisAngleInDegreesToMeters(Vector3.Angle(eyes2PrevPreview, eye2HitPos), eye2HitPos.magnitude);
@@ -433,7 +435,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             }
 
             // Check if the target is still hit by the eye gaze cursor
-            if (EyeTrackingProvider.GazeTarget == previewGameObject)
+            if (EyeTrackingTarget.LookedAtTarget == previewGameObject)
             {
                 return false;
             }
@@ -456,7 +458,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         {
             if (PlacementSurface == PlacementSurfaces.Horizontal)
             {
-                float angle = Vector3.Angle(EyeTrackingProvider.HitNormal, Vector3.up);
+                float angle = Vector3.Angle(InputSystem.EyeGazeProvider.HitNormal, Vector3.up);
                 if (angle < maxDiffAngleForHorizontalPlacem) // If the angle is more than for example 20 degrees off from the up vector
                 {
                     return true;
@@ -465,10 +467,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
             else if (PlacementSurface == PlacementSurfaces.Vertical)
             {
-                float angle = Vector3.Angle(EyeTrackingProvider.HitNormal, gameObject.transform.up);
+                float angle = Vector3.Angle(InputSystem.EyeGazeProvider.HitNormal, gameObject.transform.up);
                 if (angle > minDiffAngleForVerticalPlacem)
                 {
-                    gameObject.transform.forward = -EyeTrackingProvider.HitNormal;
+                    gameObject.transform.forward = -InputSystem.EyeGazeProvider.HitNormal;
                     return true;
                 }
             }
@@ -525,7 +527,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// </summary>
         public void DragAndDrop_Start()
         {
-            if ((EyeTrackingProvider?.GazeTarget == gameObject) && (!objIsGrabbed))
+            if ((myEyeTrackingTarget.IsLookedAt) && (!objIsGrabbed))
             {
                 if (AudioFeedbackPlayer.Instance != null)
                 {
@@ -535,7 +537,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 objIsGrabbed = true;
                 EyeTrackingDemoUtils.GameObject_ChangeTransparency(gameObject, transparency_inTransition, ref originalTransparency);
                 initialHandPos = handPos_absolute;
-                initalGazeDir = new Vector3(EyeTrackingProvider.GazeDirection.x, EyeTrackingProvider.GazeDirection.y, EyeTrackingProvider.GazeDirection.z);
+                initalGazeDir = EyeTrackingTarget.LookRay.direction;
 
                 Rigidbody rbody = GetComponent<Rigidbody>();
                 if (rbody != null)
@@ -608,7 +610,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <returns></returns>
         public float Angle_InitialGazeToCurrGazeDir()
         {
-            return Vector3.Angle(initalGazeDir, EyeTrackingProvider.GazeDirection);
+            return Vector3.Angle(initalGazeDir, EyeTrackingTarget.LookRay.direction);
         }
 
         /// <summary>
@@ -617,12 +619,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <returns></returns>
         public float Angle_ToCurrHitTarget(GameObject gobj)
         {
-            if (EyeTrackingProvider?.GazeTarget != null)
+            if (EyeTrackingTarget.LookedAtTarget != null)
             {
                 // Target is currently hit
-                if (EyeTrackingProvider?.GazeTarget == gobj)
+                if (EyeTrackingTarget.LookedAtTarget == gobj)
                 {
-                    initalGazeDir = new Vector3(EyeTrackingProvider.GazeDirection.x, EyeTrackingProvider.GazeDirection.y, EyeTrackingProvider.GazeDirection.z);
+                    initalGazeDir = EyeTrackingTarget.LookRay.direction;
                     return 0.0f;
                 }
 
@@ -685,7 +687,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 if (ShouldObjBeWarped(deltaHand, angle_ToCurrHitTarget, headIsInMotion))
                 {
                     // Discrete cursor-based target movement
-                    Vector3 hitp = EyeTrackingProvider.HitPosition;
+                    Vector3 hitp = InputSystem.EyeGazeProvider.HitPosition;
 
                     if (PlacementSurface == PlacementSurfaces.Horizontal)
                     {

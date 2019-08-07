@@ -371,7 +371,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
-        public virtual Vector3 Position => raycastOrigin != null ? raycastOrigin.position : transform.position;
+        public virtual Vector3 Position {
+            get
+            {
+                try
+                {
+                    return (raycastOrigin != null ? raycastOrigin.position : transform.position);
+                }
+                catch (MissingReferenceException)
+                {
+                    return Vector3.zero;
+                }
+            }
+        }
 
         /// <inheritdoc />
         public virtual Quaternion Rotation => raycastOrigin != null ? raycastOrigin.rotation : transform.rotation;
