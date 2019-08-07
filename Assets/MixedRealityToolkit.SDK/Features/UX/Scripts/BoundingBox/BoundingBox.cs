@@ -2171,11 +2171,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void GetControllerPoints(List<Vector3> points)
         {
-            foreach (IMixedRealityInputSource source in inputSystem.DetectedInputSources)
+            if (inputSystem != null)
             {
-                if (source.SourceType == InputSourceType.Controller && source.Pointers[0].Result != null)
+                foreach (IMixedRealityInputSource source in inputSystem.DetectedInputSources)
                 {
-                    points.Add(source.Pointers[0].Result.Details.Point);
+                    if (source.SourceType == InputSourceType.Controller && source.Pointers[0].Result != null)
+                    {
+                        points.Add(source.Pointers[0].Result.Details.Point);
+                    }
                 }
             }
         }
@@ -2336,48 +2339,51 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void OnPointerDown(MixedRealityPointerEventData eventData)
         {
-            if (currentPointer == null && !eventData.used)
+            if ((currentPointer == null) && (!eventData.used))
             {
                 GameObject grabbedHandle = eventData.Pointer.Result.CurrentPointerTarget;
-                Transform grabbedHandleTransform = grabbedHandle.transform;
-                currentHandleType = GetHandleType(grabbedHandleTransform);
-                if (currentHandleType != HandleType.None)
+                if (grabbedHandle != null)
                 {
-                    currentPointer = eventData.Pointer;
-                    initialGrabPoint = currentPointer.Result.Details.Point;
-                    currentGrabPoint = initialGrabPoint;
-                    initialScaleOnGrabStart = Target.transform.localScale;
-                    initialPositionOnGrabStart = Target.transform.position;
-                    grabPointInPointer = Quaternion.Inverse(eventData.Pointer.Rotation) * (initialGrabPoint - currentPointer.Position);
-
-                    SetHighlighted(grabbedHandleTransform);
-
-                    if (currentHandleType == HandleType.Scale)
+                    Transform grabbedHandleTransform = grabbedHandle.transform;
+                    currentHandleType = GetHandleType(grabbedHandleTransform);
+                    if (currentHandleType != HandleType.None)
                     {
-                        // Will use this to scale the target relative to the opposite corner
-                        oppositeCorner = rigRoot.transform.TransformPoint(-grabbedHandle.transform.localPosition);
-                        diagonalDir = (grabbedHandle.transform.position - oppositeCorner).normalized;
+                        currentPointer = eventData.Pointer;
+                        initialGrabPoint = currentPointer.Result.Details.Point;
+                        currentGrabPoint = initialGrabPoint;
+                        initialScaleOnGrabStart = Target.transform.localScale;
+                        initialPositionOnGrabStart = Target.transform.position;
+                        grabPointInPointer = Quaternion.Inverse(eventData.Pointer.Rotation) * (initialGrabPoint - currentPointer.Position);
 
-                        ScaleStarted?.Invoke();
+                        SetHighlighted(grabbedHandleTransform);
 
-                        if (debugText != null)
+                        if (currentHandleType == HandleType.Scale)
                         {
-                            debugText.text = "OnPointerDown:ScaleStarted";
+                            // Will use this to scale the target relative to the opposite corner
+                            oppositeCorner = rigRoot.transform.TransformPoint(-grabbedHandle.transform.localPosition);
+                            diagonalDir = (grabbedHandle.transform.position - oppositeCorner).normalized;
+
+                            ScaleStarted?.Invoke();
+
+                            if (debugText != null)
+                            {
+                                debugText.text = "OnPointerDown:ScaleStarted";
+                            }
                         }
-                    }
-                    else if (currentHandleType == HandleType.Rotation)
-                    {
-                        currentRotationAxis = GetRotationAxis(grabbedHandleTransform);
-
-                        RotateStarted?.Invoke();
-
-                        if (debugText != null)
+                        else if (currentHandleType == HandleType.Rotation)
                         {
-                            debugText.text = "OnPointerDown:RotateStarted";
-                        }
-                    }
+                            currentRotationAxis = GetRotationAxis(grabbedHandleTransform);
 
-                    eventData.Use();
+                            RotateStarted?.Invoke();
+
+                            if (debugText != null)
+                            {
+                                debugText.text = "OnPointerDown:RotateStarted";
+                            }
+                        }
+
+                        eventData.Use();
+                    }
                 }
             }
 
