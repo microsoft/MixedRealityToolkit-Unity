@@ -52,7 +52,7 @@ The following capabilities apply to the [spatial awareness](../SpatialAwareness/
 
 - SpatialAwarenessMesh
 - SpatialAwarenessPlane
-- SpatialAwaarenessPoint
+- SpatialAwarenessPoint
 
 ## See Also
 
