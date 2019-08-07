@@ -452,6 +452,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (focusingPointers.Count == 0)
             {
                 ResetBaseStates();
+                ForceUpdateThemes();
             }
         }
 
@@ -893,7 +894,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             SetObservation(false);
             SetObservationTargeted(false);
             SetInteractive(false);
-            SetCustom(false);
             SetTargeted(false);
             SetToggled(false);
             SetVisited(false);
