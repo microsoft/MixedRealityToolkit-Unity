@@ -5265,7 +5265,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Solver.html",
-          "hash": "1SmasIX8M+OvpL2d+qLq7Q=="
+          "hash": "bdCK7Lyq230Lv9V8RYWgGQ=="
         }
       },
       "is_incremental": false,
@@ -5481,7 +5481,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/UpdatingToGA.html",
-          "hash": "mKNy3QELQN+9K62SJftSuA=="
+          "hash": "BYQxzmQ9ObhlgwG0Zegm1Q=="
         }
       },
       "is_incremental": false,
@@ -17456,7 +17456,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.ConstantViewSize.html",
-          "hash": "MJWwDUJlCOv0Qm2AfvuMEw=="
+          "hash": "8QsPpBfK8dJFFjagZc67iw=="
         }
       },
       "is_incremental": false,
@@ -17480,7 +17480,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.InBetween.html",
-          "hash": "kjM38F9UF6kK5SHLupz5ow=="
+          "hash": "uA/xDWaRHekqE448r5cE1w=="
         }
       },
       "is_incremental": false,
@@ -17492,7 +17492,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.Momentum.html",
-          "hash": "Vtb3lSN62BsSl7IbQFq6RQ=="
+          "hash": "Y1jHQINmoFV3Bh7jg5U/XQ=="
         }
       },
       "is_incremental": false,
@@ -17504,7 +17504,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.Orbital.html",
-          "hash": "/hy42J92QJhNFyb9fW2AfQ=="
+          "hash": "LgwT0zf6msykOn9FRrWJ9A=="
         }
       },
       "is_incremental": false,
@@ -17516,7 +17516,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.Overlap.html",
-          "hash": "kfjwW9+ImEoNenK1Y0Bflw=="
+          "hash": "VrRq871upA8D6Ht7QaQV5Q=="
         }
       },
       "is_incremental": false,
@@ -17528,7 +17528,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.RadialView.html",
-          "hash": "iF/HfekvmRqLr5Rxs/Snkw=="
+          "hash": "I0sK8ffyEhfojR1y92NM5A=="
         }
       },
       "is_incremental": false,
@@ -17540,7 +17540,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html",
-          "hash": "iNPZfHZ1e5+YYdv5LVeoVg=="
+          "hash": "YEqr7ANyw7w/zguV1Pij1w=="
         }
       },
       "is_incremental": false,
@@ -17564,7 +17564,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.OrientationMode.html",
-          "hash": "AOQueTK9LjfnVY5zs15+Wg=="
+          "hash": "49ETO+HJwF0zV3YVNxLO/A=="
         }
       },
       "is_incremental": false,
@@ -17588,7 +17588,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.html",
-          "hash": "Imm77iMvGbQnW2sCrU2klg=="
+          "hash": "M57G1SwiluLLrN6ITpDD5w=="
         }
       },
       "is_incremental": false,

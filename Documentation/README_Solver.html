@@ -193,10 +193,15 @@ public class InFront : Solver
 <p>The <em>Orientation Mode</em> determines the type of rotation to apply in relation to the normal on the surface.</p>
 <ul>
 <li><em>None</em> - No rotation applied</li>
-<li><em>Vertical</em> - Object will always be oriented up but face the tracked transform driving the raycast</li>
-<li><em>Full</em> - Object will align based on normal at hit point on surface</li>
-<li><em>Blended</em> - Object will align based on normal at hit point on surface AND based on facing the tracked transform. Use <em>Orientation Blend</em> property to control balance between two rotation factors</li>
+<li><em>TrackedTarget</em> - Object will face the tracked transform driving the raycast</li>
+<li><em>SurfaceNormal</em> - Object will align based on normal at hit point on surface</li>
+<li><em>Blended</em> - Object will align based on normal at hit point on surface AND based on facing the tracked transform.</li>
 </ul>
+<p>To force the associated GameObject to stay vertical in any mode other than <em>None</em>, enable <em>Keep Orientation Vertical</em>.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Use the <em>Orientation Blend</em> property to control the balance between rotation factors when <em>Orientation Mode</em> is set to <em>Blended</em>. A value of 0.0 will have orientation entirely driven by <em>TrackedTarget</em> mode and a value of 1.0 will have orientation driven entirely by <em>SurfaceNormal</em>.</p>
+</div>
 <p><img src="Images/Solver/SurfaceMagExample.PNG" alt="SurfaceMagnetism Example"></p>
 <h4 id="determining-what-surfaces-can-be-hit">Determining what surfaces can be hit</h4>
 <p>When adding a <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.html"><code>SurfaceMagnetism</code></a> component to a GameObject, it is important to consider the layer of the GameObject and it's children, if any have colliders. The component works by performing various types of raycasts to determine what surface to &quot;magnet&quot; itself against. If the Solver GameObject has a collider on one of the layers listed in the <code>MagneticSurfaces</code> property of <code>SurfaceMagnetism</code>, then the raycast will likely hit itself resulting in the GameObject attaching to it's own collider point. This odd behavior can be avoided by setting the main GameObject and all children to the <em>Ignore Raycast</em> layer or modifying the <code>MagneticSurfaces</code> LayerMask array appropriately.</p>
