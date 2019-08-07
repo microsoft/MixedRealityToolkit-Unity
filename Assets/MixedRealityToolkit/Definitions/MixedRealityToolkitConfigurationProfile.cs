@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// Configuration profile settings for the Mixed Reality Toolkit.
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Toolkit Configuration Profile", fileName = "MixedRealityToolkitConfigurationProfile", order = (int)CreateProfileMenuItemIndices.Configuration)]
-    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html")]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html")]
     public class MixedRealityToolkitConfigurationProfile : BaseMixedRealityProfile
     {
         #region Mixed Reality Toolkit configurable properties

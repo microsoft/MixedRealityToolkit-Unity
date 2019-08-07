@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -42,8 +43,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private static GUIContent startDimensionLabel = new GUIContent("Start Dimension Index", "The dimensionIndex value to set on start.");
         private static GUIContent CurrentDimensionLabel = new GUIContent("Dimension Index", "The dimensionIndex value at runtime.");
         private static GUIContent isToggledLabel = new GUIContent("Is Toggled", "The toggled value to set on start.");
-
-        private const string Interactable_URL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Interactable.html";
 
         protected virtual void OnEnable()
         {
@@ -90,13 +89,21 @@ namespace Microsoft.MixedReality.Toolkit.UI
             bool isPlayMode = EditorApplication.isPlaying || EditorApplication.isPaused;
 
             #region General Settings
-            EditorGUILayout.BeginHorizontal();
+            using (new EditorGUILayout.HorizontalScope())
+            {
                 InspectorUIUtility.DrawTitle("General");
-                InspectorUIUtility.RenderDocLinkButton(Interactable_URL);
-            EditorGUILayout.EndHorizontal();
+
+                if (target != null)
+                {
+                    var helpURL = target.GetType().GetCustomAttribute<HelpURLAttribute>();
+                    if (helpURL != null)
+                    {
+                        InspectorUIUtility.RenderDocumentationButton(helpURL.URL);
+                    }
+                }
+            }
 
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-
             // States
             SerializedProperty states = serializedObject.FindProperty("States");
 
@@ -107,13 +114,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             GUI.enabled = !isPlayMode;
-                EditorGUILayout.PropertyField(states, new GUIContent("States", "The States this Interactable is based on"));
+            EditorGUILayout.PropertyField(states, new GUIContent("States", "The States this Interactable is based on"));
             GUI.enabled = true;
 
             if (states.objectReferenceValue == null)
             {
                 InspectorUIUtility.DrawError("Please assign a States object!");
-                EditorGUILayout.EndVertical();
                 serializedObject.ApplyModifiedProperties();
                 return;
             }
@@ -177,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 EditorGUI.EndProperty();
                 GUI.enabled = true;
             }
-            
+
             // show requires gaze because voice command has a value
             if (!string.IsNullOrEmpty(voiceCommands.stringValue))
             {
@@ -273,7 +279,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 GUI.enabled = true;
             }
-            
             EditorGUILayout.EndVertical();
 
             #endregion
