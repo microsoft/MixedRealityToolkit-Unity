@@ -4,12 +4,12 @@
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI.Editor
 {
-#if UNITY_EDITOR
     [CustomEditor(typeof(Interactable))]
     public class InteractableInspector : UnityEditor.Editor
     {
@@ -57,8 +57,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         private static readonly GUIContent CreateThemeLabel = new GUIContent("Create Theme", "Create a new theme");
         private static readonly GUIContent AddThemePropertyLabel = new GUIContent("+ Add Theme Property", "Add Theme Property");
         private static readonly GUIContent SpeechComamndsLabel = new GUIContent("Speech Command", "Speech Commands to use with Interactable, pulled from MRTK/Input/Speech Commands Profile");
-
-        private const string Interactable_URL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Interactable.html";
 
         protected virtual void OnEnable()
         {
@@ -347,11 +345,18 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             using (new EditorGUILayout.HorizontalScope())
             {
                 InspectorUIUtility.DrawTitle("General");
-                InspectorUIUtility.RenderDocLinkButton(Interactable_URL);
+
+                if (target != null)
+                {
+                    var helpURL = target.GetType().GetCustomAttribute<HelpURLAttribute>();
+                    if (helpURL != null)
+                    {
+                        InspectorUIUtility.RenderDocumentationButton(helpURL.URL);
+                    }
+                }
             }
 
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-
             // States
             // If states value is not provided, try to use Default states type
             if (statesProperty.objectReferenceValue == null)
@@ -366,7 +371,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             if (statesProperty.objectReferenceValue == null)
             {
                 InspectorUIUtility.DrawError("Please assign a States object!");
-                EditorGUILayout.EndVertical();
                 serializedObject.ApplyModifiedProperties();
                 return;
             }
@@ -405,7 +409,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                 }
             }
             EditorGUI.EndProperty();
-
             GUI.enabled = true;
 
             // show requires gaze because voice command has a value
@@ -771,5 +774,4 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         }
     }
     #endregion KeywordUtilities
-#endif
 }

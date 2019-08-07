@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     // TODO: Make sure all shader values are batched by theme
 
     [System.Serializable]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Interactable.html")]
     public class Interactable :
         MonoBehaviour,
         IMixedRealityFocusChangedHandler,
@@ -452,6 +453,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (focusingPointers.Count == 0)
             {
                 ResetBaseStates();
+                ForceUpdateThemes();
             }
         }
 
@@ -893,7 +895,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             SetObservation(false);
             SetObservationTargeted(false);
             SetInteractive(false);
-            SetCustom(false);
             SetTargeted(false);
             SetToggled(false);
             SetVisited(false);

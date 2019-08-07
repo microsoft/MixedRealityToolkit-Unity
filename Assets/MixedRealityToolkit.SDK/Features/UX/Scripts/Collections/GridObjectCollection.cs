@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// layout parameters.  The collection can be used to quickly create 
     /// control panels or sets of prefab/objects.
     /// </summary>
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_ObjectCollection.html")]
     public class GridObjectCollection : BaseObjectCollection
     {
         [Tooltip("Type of surface to map the collection to")]
