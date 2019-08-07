@@ -60,39 +60,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
 
         #endregion Service Locator Tests
 
-        #region IMixedRealityDataprovider Tests
-
-        [Test]
-        public void Test_04_RegisterMixedRealityDataProvider()
-        {
-            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
-
-            var testName2 = "Test04-07-2";
-
-            bool registeration1 = MixedRealityToolkit.Instance.RegisterService<ITestDataProvider1>(new TestDataProvider1(null, null, "Test Data Provider 1", 10));
-            bool registeration2 = MixedRealityToolkit.Instance.RegisterService<ITestDataProvider2>(new TestDataProvider2(null, null, testName2, 10));
-
-            LogAssert.Expect(LogType.Warning, $"Unable to add a service of type {typeof(IMixedRealityDataProvider).Name}.");
-            LogAssert.Expect(LogType.Warning, $"Unable to add a service of type {typeof(IMixedRealityDataProvider).Name}.");
-
-            var getService = MixedRealityToolkit.Instance.GetService<ITestDataProvider1>();
-            var getServices = MixedRealityToolkit.Instance.GetServices<ITestDataProvider1>();
-
-            LogAssert.Expect(LogType.Error, $"Unable to find {typeof(ITestDataProvider1).Name} service.");
-
-            var isServiceRegistered = MixedRealityToolkit.Instance.IsServiceRegistered<TestDataProvider2>();
-
-            // Tests
-            Assert.IsFalse(registeration1);
-            Assert.IsFalse(registeration2);
-            Assert.IsFalse(isServiceRegistered);
-            Assert.IsNull(getService);
-            Assert.IsEmpty(getServices);
-            Assert.IsEmpty(MixedRealityToolkit.Instance.ActiveSystems);
-        }
-
-        #endregion IMixedRealityDataprovider Tests
-
         #region IMixedRealityExtensionService Tests
 
         [Test]
