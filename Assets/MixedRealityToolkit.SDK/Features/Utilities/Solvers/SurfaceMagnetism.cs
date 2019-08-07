@@ -264,7 +264,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         [SerializeField]
-        [Tooltip("How solver will orient model. None = no orieting, TrackedTarget = Face tracked target transform, SurfaceNormal = Aligned to surface normal completely, Blended = blend between tracked transform and surface orientation")]
+        [Tooltip("How solver will orient model. None = no orienting, TrackedTarget = Face tracked target transform, SurfaceNormal = Aligned to surface normal completely, Blended = blend between tracked transform and surface orientation")]
         private OrientationMode orientationMode = OrientationMode.TrackedTarget;
 
         /// <summary>
