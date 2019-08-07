@@ -142,6 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Build wall to collide against
             var wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
             wall.transform.localScale = new Vector3(25.0f, 25.0f, 0.2f);
+            wall.transform.Rotate(Vector3.up, 180.0f); // Rotate wall so forward faces camera
             wall.transform.position = Vector3.forward * 10.0f;
 
             yield return null;
@@ -150,11 +151,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Set layer to ignore raycast so solver doesn't raycast itself (i.e BoxCollider)
             var testObjects = InstantiateTestSolver<SurfaceMagnetism>();
             testObjects.target.layer = LayerMask.NameToLayer("Ignore Raycast");
+            SurfaceMagnetism surfaceMag = testObjects.solver as SurfaceMagnetism;
+
+            var targetTransform = testObjects.target.transform;
+            var cameraTransform = CameraCache.Main.transform;
 
             yield return new WaitForSeconds(SolverUpdateWaitTime);
 
             // Confirm that the surfacemagnetic cube is about on the wall straight ahead
-            Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, wall.transform.position), DistanceThreshold);
+            Assert.LessOrEqual(Vector3.Distance(targetTransform.position, wall.transform.position), DistanceThreshold);
 
             // Rotate the camera
             Vector3 cameraDir = Vector3.forward + Vector3.right;
@@ -172,7 +177,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForSeconds(SolverUpdateWaitTime);
 
             // Confirm that the surfacemagnetic cube is on the wall with camera rotated
-            Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, hitInfo.point), DistanceThreshold);
+            Assert.LessOrEqual(Vector3.Distance(targetTransform.position, hitInfo.point), DistanceThreshold);
+
+            // Default orientation mode is TrackedTarget, test object should be facing camera
+            Assert.IsTrue(Mathf.Approximately(-1.0f, Vector3.Dot(targetTransform.forward.normalized, cameraTransform.forward.normalized)));
+
+            // Change default orientation mode to surface normal
+            surfaceMag.CurrentOrientationMode = SurfaceMagnetism.OrientationMode.SurfaceNormal;
+
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+
+            // Test object should now be facing into the wall (i.e Z axis)
+            Assert.IsTrue(Mathf.Approximately(1.0f, Vector3.Dot(targetTransform.forward.normalized, Vector3.forward)));
         }
 
         /// <summary>
@@ -238,6 +254,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Solver solver = cube.AddComponent<T>();
             Assert.IsNotNull(solver, "AddComponent<T>() returned null");
+
+            // Set Solver lerp times to 0 so we can process tests faster instead of waiting for transforms to update/apply
+            solver.MoveLerpTime = 0.0f;
+            solver.RotateLerpTime = 0.0f;
+            solver.ScaleLerpTime = 0.0f;
 
             SolverHandler handler = cube.GetComponent<SolverHandler>();
             Assert.IsNotNull(handler, "GetComponent<SolverHandler>() returned null");
