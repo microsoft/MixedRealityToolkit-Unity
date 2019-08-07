@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
-    public class BoundingBoxTest : MonoBehaviour, IMixedRealitySpeechHandler
+    public class BoundingBoxExampleTest : MonoBehaviour, IMixedRealitySpeechHandler
     {
         public TextMeshPro statusText;
 
@@ -192,20 +192,45 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
                 GameObject multiRoot = new GameObject();
                 multiRoot.name = "multiRoot";
-                multiRoot.transform.position = cubePosition;
+                Vector3 forwardOffset = Vector3.forward * .5f;
+                multiRoot.transform.position = cubePosition + forwardOffset;
+
+                Transform lastParent = null;
+
                 int numCubes = 10;
                 for (int i = 0; i < numCubes; i++)
                 {
                     var cubechild = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    cubechild.transform.localScale = Vector3.one * 0.1f;
-                    cubechild.transform.parent = multiRoot.transform;
-                    cubechild.transform.localPosition = Random.insideUnitSphere;
+                    cubechild.transform.localPosition = Random.insideUnitSphere + cubePosition + forwardOffset;
                     cubechild.transform.rotation = Quaternion.Euler(Random.insideUnitSphere * 360f);
+                    cubechild.transform.parent = lastParent ?? multiRoot.transform;
+                    float baseScale = lastParent == null ? 0.1f : 1f;
+                    cubechild.transform.localScale = new Vector3(baseScale, baseScale, baseScale);
+                    lastParent = cubechild.transform;
                 }
+
                 bbox = multiRoot.AddComponent<BoundingBox>();
                 bbox.BoundingBoxActivation = BoundingBox.BoundingBoxActivationType.ActivateOnStart;
                 bbox.HideElementsInInspector = false;
+                bbox.WireframeEdgeRadius = .05f;
                 multiRoot.AddComponent<ManipulationHandler>();
+
+                SetStatus("Randomize Child Scale for skewing");
+                yield return WaitForSpeechCommand();
+
+                multiRoot.transform.position += Vector3.forward * 200f;
+
+                var childTransform = multiRoot.transform;
+                while (childTransform.childCount > 0)
+                {
+                    childTransform = childTransform.GetChild(0);
+                    float baseScale = lastParent == null ? 0.1f : 1f;
+                    childTransform.transform.localScale = new Vector3(baseScale * Random.Range(.5f, 2f), baseScale * Random.Range(.5f, 2f), baseScale * Random.Range(.5f, 2f));
+                }
+
+                bbox.WireframeEdgeRadius = 1f;
+                bbox.CreateRig();
+                SetStatus("Delete GameObject");
                 yield return WaitForSpeechCommand();
 
                 Destroy(multiRoot);
