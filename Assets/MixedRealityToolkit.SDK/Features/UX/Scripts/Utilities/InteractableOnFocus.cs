@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             get
             {
-                return HasFocus? InteractableStates.InteractableStateEnum.Focus : InteractableStates.InteractableStateEnum.Default;
+                return HasFocus ? InteractableStates.InteractableStateEnum.Focus : InteractableStates.InteractableStateEnum.Default;
             }
         }
 
