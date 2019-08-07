@@ -1,25 +1,40 @@
 # Determining platform capabilities
 
 A common question asked of the MRTK involves knowing which specific device (ex: Microsoft HoloLens 2) is being
-used to run an application. The goal behind that knoweldge generally centers around knowing whether or not a
-particular feature (ex: articulated hands) is available.
+used to run an application. Identifying the exact hardware can be challenging on different platforms. The MRTK
+instead provides a way identify specific capabilities of the system (for example, if the system has the articulated
+hands capability).
 
-Mixed reality devices are evolving rapidly and any attempt at capturing a table mapping features to specific
-hardware will quickly become untennable.
+## Capabilites
 
-## Checking for platform capabilities
+The Mixed Reality Toolkit provides the [MixedRealityCapability](xref:Microsoft.MixedReality.Toolkit.MixedRealityCapability)
+enumeration which defines a set of capabilities for which an application can query at runtime. This enum contains the 
+complete set of capabilities for which the Mixed Reality Toolkit supports checking.
 
-To help answer the root question of whether or not an application can leverage a specific feature, the Mixed Reality
-Toolkit provides the [IMixedRealityCapabilityCheck](xref:Microsoft.MixedReality.Toolkit.IMixedRealityCapabilityCheck)
-interface.
+### Input System capabilies
 
-### Querying for a capability
+The input system supports querying the following capabilities.
 
-The most common pattern for determining support for a specific capability is to query the service.
+| Capability | Description |
+|---|---|
+| ArticulatedHand | Articulated hand input |
+| EyeTracking | Eye gaze targeting |
+| GGVHand | Gaze-Gesture-Voice hand input |
+| MotionController | Motion controller input |
+| VoiceCommand | Coice commands using app defined keywords |
+| VoiceDictation | Voice to text dictation |
 
-The following example checks to see if the input system has loaded a data provider with support for articulated hands.
+This example checks to see if the input system has loaded a data provider with support for articulated hands.
 
 ```
+// Get the input system.
+IMixedRealityInputSystem inputSystem = null;
+MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+if (inputSystem == null)
+{
+    // Failed to get the input system.
+}
+
 bool supportsArticulatedHands = false;
 
 IMixedRealityCapabilityCheck capabilityCheck = inputSystem as IMixedRealityCapabilityCheck;
@@ -29,30 +44,35 @@ if (capabilityCheck != null)
 }
 ```
 
-### Capabilites
+### Spatial Awareness capabilities
 
-The Mixed Reality Toolkit provides the [MixedRealityCapability](xref:Microsoft.MixedReality.Toolkit.MixedRealityCapability)
-enumeration which defines a set of capabilities for which an application can query at runtime. This enum contains the 
-complete set of capabilities for which the Mixed Reality Toolkit supports checking.
+The spatial awareness system supports querying the following capabilities.
 
-#### Input System capabilies
+| Capability | Description |
+|---|---|
+| SpatialAwarenessMesh | Spatial meshes |
+| SpatialAwarenessPlane | Spatial planes |
+| SpatialAwarenessPoint | Spatial points |
 
-The following capabilities apply to the [input system](../Input/Overview.md).
+This example checks to see if the spatial awareness system has loaded a data provider with support for spatial meshes.
 
-- ArticulatedHand
-- EyeTracking
-- GGVHand
-- MotionController
-- VoiceCommand
-- VoiceDication
+```
+// Get the spatial awareness system.
+IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
+MixedRealityServiceRegistry.TryGetService<IMixedRealitySpatialAwarenessSystem>(out spatialAwarenessSystem);
+if (spatialAwarenessSystem == null)
+{
+    // Failed to get the spatial awareness system.
+}
 
-#### Spatial Awareness capabilities
+bool supportsSpatialMesh = false;
 
-The following capabilities apply to the [spatial awareness](../SpatialAwareness/SpatialAwarenessGettingStarted.md) system.
-
-- SpatialAwarenessMesh
-- SpatialAwarenessPlane
-- SpatialAwarenessPoint
+IMixedRealityCapabilityCheck capabilityCheck = spatialAwarenessSystem as IMixedRealityCapabilityCheck;
+if (capabilityCheck != null)
+{
+    supportsSpatialMesh = capabilityCheck.CheckCapability(MixedRealityCapability.SpatialAwarenessMesh);
+}
+```
 
 ## See Also
 
