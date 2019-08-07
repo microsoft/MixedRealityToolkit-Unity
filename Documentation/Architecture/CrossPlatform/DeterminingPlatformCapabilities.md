@@ -26,7 +26,7 @@ The input system supports querying the following capabilities.
 
 This example checks to see if the input system has loaded a data provider with support for articulated hands.
 
-```
+``` C#
 // Get the input system.
 IMixedRealityInputSystem inputSystem = null;
 MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
@@ -56,7 +56,7 @@ The spatial awareness system supports querying the following capabilities.
 
 This example checks to see if the spatial awareness system has loaded a data provider with support for spatial meshes.
 
-```
+``` C#
 // Get the spatial awareness system.
 IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
 MixedRealityServiceRegistry.TryGetService<IMixedRealitySpatialAwarenessSystem>(out spatialAwarenessSystem);
