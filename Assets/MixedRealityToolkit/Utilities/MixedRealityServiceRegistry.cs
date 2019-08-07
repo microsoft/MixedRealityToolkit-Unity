@@ -230,7 +230,7 @@ namespace Microsoft.MixedReality.Toolkit
             return TryGetServiceInternal(interfaceType, out serviceInstance, out registrar, name);
         }
 
-        private static bool TryGetServiceInternal(Type interfaceType, 
+        private static bool TryGetServiceInternal(Type interfaceType,
             out IMixedRealityService serviceInstance,
             out IMixedRealityServiceRegistrar registrar,
             string name = null)

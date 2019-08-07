@@ -135,7 +135,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <remarks>
         /// Systems can only be registered once by <see cref="Type"/>
         /// </remarks>
-        [Obsolete("Use GetService<T> instead")]
+        [Obsolete("Use CoreService, MixedRealityServiceRegistry, or GetService<T> instead")]
         public IReadOnlyDictionary<Type, IMixedRealityService> ActiveSystems => new Dictionary<Type, IMixedRealityService>(activeSystems) as IReadOnlyDictionary<Type, IMixedRealityService>;
 
         private static readonly List<Tuple<Type, IMixedRealityService>> registeredMixedRealityServices = new List<Tuple<Type, IMixedRealityService>>();
@@ -143,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Local service registry for the Mixed Reality Toolkit, to allow runtime use of the <see cref="Microsoft.MixedReality.Toolkit.IMixedRealityService"/>.
         /// </summary>
-        [Obsolete("Use GetDataProvider<T> instead")]
+        [Obsolete("Use GetDataProvider<T> of MixedRealityService registering the desired IMixedRealityDataProvider")]
         public IReadOnlyList<Tuple<Type, IMixedRealityService>> RegisteredMixedRealityServices => new List<Tuple<Type, IMixedRealityService>>(registeredMixedRealityServices) as IReadOnlyList<Tuple<Type, IMixedRealityService>>;
 
 #endregion Mixed Reality runtime service registry
@@ -986,7 +986,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// Note: type should be the Interface of the system to be retrieved and not the concrete class itself.
         /// </remarks>
         /// <returns>True, there is a system registered with the selected interface, False, no system found for that interface</returns>
-        [Obsolete("Use IsSystemRegistered instead")]
+        [Obsolete("Use IsServiceRegistered instead")]
         public bool IsSystemRegistered<T>() where T : IMixedRealityService
         {
             if (!IsCoreSystem(typeof(T))) return false;
