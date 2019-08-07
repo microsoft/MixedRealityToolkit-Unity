@@ -19,17 +19,53 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         [Tooltip("If true, the position and orientation will be calculated, but not applied, for other components to use")]
         private bool updateLinkedTransform = false;
 
+        /// <summary>
+        /// If true, the position and orientation will be calculated, but not applied, for other components to use
+        /// </summary>
+        public bool UpdateLinkedTransform
+        {
+            get => updateLinkedTransform;
+            set => updateLinkedTransform = value;
+        }
+
         [SerializeField]
         [Tooltip("If 0, the position will update immediately.  Otherwise, the greater this attribute the slower the position updates")]
         private float moveLerpTime = 0.1f;
+
+        /// <summary>
+        /// If 0, the position will update immediately.  Otherwise, the greater this attribute the slower the position updates
+        /// </summary>
+        public float MoveLerpTime
+        {
+            get => moveLerpTime;
+            set => moveLerpTime = value;
+        }
 
         [SerializeField]
         [Tooltip("If 0, the rotation will update immediately.  Otherwise, the greater this attribute the slower the rotation updates")]
         private float rotateLerpTime = 0.1f;
 
+        /// <summary>
+        /// If 0, the rotation will update immediately.  Otherwise, the greater this attribute the slower the rotation updates")]
+        /// </summary>
+        public float RotateLerpTime
+        {
+            get => rotateLerpTime;
+            set => rotateLerpTime = value;
+        }
+
         [SerializeField]
         [Tooltip("If 0, the scale will update immediately.  Otherwise, the greater this attribute the slower the scale updates")]
         private float scaleLerpTime = 0;
+
+        /// <summary>
+        /// If 0, the scale will update immediately.  Otherwise, the greater this attribute the slower the scale updates
+        /// </summary>
+        public float ScaleLerpTime
+        {
+            get => scaleLerpTime;
+            set => scaleLerpTime = value;
+        }
 
         [SerializeField]
         [Tooltip("If true, the Solver will respect the object's original scale values")]
@@ -39,6 +75,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         [Tooltip("If true, updates are smoothed to the target. Otherwise, they are snapped to the target")]
         private bool smoothing = true;
 
+        /// <summary>
+        /// If true, updates are smoothed to the target. Otherwise, they are snapped to the target
+        /// </summary>
         public bool Smoothing
         {
             get => smoothing;
