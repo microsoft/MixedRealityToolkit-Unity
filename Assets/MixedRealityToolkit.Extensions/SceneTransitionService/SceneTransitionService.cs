@@ -11,7 +11,7 @@ using Microsoft.MixedReality.Toolkit.UI;
 namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 {
     [MixedRealityExtensionService(SupportedPlatforms.WindowsStandalone|SupportedPlatforms.MacStandalone|SupportedPlatforms.LinuxStandalone|SupportedPlatforms.WindowsUniversal)]
-    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Extensions/SceneTransitionService/SceneTransitionServiceOverview.html")]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Extensions/SceneTransitionService/SceneTransitionServiceOverview.html")]
     public class SceneTransitionService : BaseExtensionService, ISceneTransitionService, IMixedRealityExtensionService
     {
         public SceneTransitionService(IMixedRealityServiceRegistrar registrar, string name, uint priority, BaseMixedRealityProfile profile) : base(registrar, name, priority, profile)

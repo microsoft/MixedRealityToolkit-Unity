@@ -105,10 +105,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             MixedRealityInspectorUtility.RenderMixedRealityToolkitLogo();
 
             // Render Title
-            EditorGUILayout.BeginHorizontal();
+            using (new EditorGUILayout.HorizontalScope())
+            {
                 EditorGUILayout.LabelField("Mixed Reality Toolkit Optimize Window", MixedRealityStylesUtility.BoldLargeTitleStyle);
-                InspectorUIUtility.RenderDocLinkButton(OptimizeWindow_URL);
-            EditorGUILayout.EndHorizontal();
+                InspectorUIUtility.RenderDocumentationButton(OptimizeWindow_URL);
+            }
 
             EditorGUILayout.LabelField("This tool automates the process of updating your project, currently open scene, and material assets to recommended settings for Mixed Reality", EditorStyles.wordWrappedLabel);
             EditorGUILayout.Space();
@@ -491,7 +492,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Section Title
             EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(new GUIContent(title, titleIcon), EditorStyles.boldLabel);
-                InspectorUIUtility.RenderDocLinkButton(url);
+                InspectorUIUtility.RenderDocumentationButton(url);
             EditorGUILayout.EndHorizontal();
         }
 

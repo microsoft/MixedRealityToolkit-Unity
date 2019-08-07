@@ -20,6 +20,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         sealed public override void OnInspectorGUI()
         {
+            if (target != null)
+            {
+                InspectorUIUtility.RenderHelpURL(target.GetType());
+            }
+
             serializedObject.Update();
             EditorGUILayout.PropertyField(ignoreInactiveTransforms);
             EditorGUILayout.PropertyField(sortType);

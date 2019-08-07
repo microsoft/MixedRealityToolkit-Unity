@@ -19,6 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     // TODO: Make sure all shader values are batched by theme
 
     [System.Serializable]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Interactable.html")]
     public class Interactable :
         MonoBehaviour,
         IMixedRealityFocusChangedHandler,
