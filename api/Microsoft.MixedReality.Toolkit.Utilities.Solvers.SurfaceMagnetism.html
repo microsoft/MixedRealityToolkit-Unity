@@ -98,18 +98,6 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_UpdateLinkedTransform">Solver.UpdateLinkedTransform</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_MoveLerpTime">Solver.MoveLerpTime</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_RotateLerpTime">Solver.RotateLerpTime</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_ScaleLerpTime">Solver.ScaleLerpTime</a>
-    </div>
-    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_Smoothing">Solver.Smoothing</a>
     </div>
     <div>
@@ -270,7 +258,7 @@ public float CloseDistance { get; set; }</code></pre>
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SurfaceMagnetism_CurrentOrientationMode_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.CurrentOrientationMode*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SurfaceMagnetism_CurrentOrientationMode" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.CurrentOrientationMode">CurrentOrientationMode</h4>
-  <div class="markdown level1 summary"><p>How solver will orient model. See OrientationMode enum for possible modes. When mode=Blended, use OrientationBlend property to define ratio for blending</p>
+  <div class="markdown level1 summary"><p>Orientation mode. None = no orienting, Vertical = Face head, but always oriented up/down, Full = Aligned to surface normal completely</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -328,32 +316,6 @@ public float CloseDistance { get; set; }</code></pre>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool DebugEnabled { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SurfaceMagnetism_KeepOrientationVertical_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.KeepOrientationVertical*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SurfaceMagnetism_KeepOrientationVertical" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.KeepOrientationVertical">KeepOrientationVertical</h4>
-  <div class="markdown level1 summary"><p>If true, ensures object is kept vertical for TrackedTarget, SurfaceNormal, and Blended Orientation Modes</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool KeepOrientationVertical { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -505,7 +467,7 @@ public float MaxDistance { get; set; }</code></pre>
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SurfaceMagnetism_OrientationBlend_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.OrientationBlend*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_SurfaceMagnetism_OrientationBlend" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.OrientationBlend">OrientationBlend</h4>
-  <div class="markdown level1 summary"><p>Value used for when Orientation Mode=Blended. If 0.0 orientation is driven all by TrackedTarget mode and if 1.0 orientation is driven all by SurfaceNormal mode</p>
+  <div class="markdown level1 summary"><p>Orientation Blend Value where 0.0 = All head and 1.0 = All surface</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>

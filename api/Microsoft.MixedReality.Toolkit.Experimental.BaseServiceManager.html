@@ -142,6 +142,130 @@ custom service management component for one or more services, similar to the Mix
   </h3>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_BaseServiceManager_GetDataProvider_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.BaseServiceManager.GetDataProvider*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_BaseServiceManager_GetDataProvider__1_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.BaseServiceManager.GetDataProvider``1(System.String)">GetDataProvider&lt;T&gt;(String)</h4>
+  <div class="markdown level1 summary"><p>Gets the instance of the registered data provider of the specified type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public T GetDataProvider&lt;T&gt;(string name = null)
+    where T : IMixedRealityDataProvider</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name of the data provider.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>The registered data provider instance as the requested type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The interface type of the data provider.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_BaseServiceManager_GetDataProviders_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.BaseServiceManager.GetDataProviders*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_BaseServiceManager_GetDataProviders__1_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.BaseServiceManager.GetDataProviders``1(System.String)">GetDataProviders&lt;T&gt;(String)</h4>
+  <div class="markdown level1 summary"><p>Gets the collection of the registered data provider instances matching the requested type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IReadOnlyList&lt;T&gt; GetDataProviders&lt;T&gt;(string name = null)
+    where T : IMixedRealityDataProvider</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name of the data provider.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IReadOnlyList</span>&lt;T&gt;</td>
+        <td><p>Read-only collection of the data provider instances, as the requested type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The interface type of the data provider.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Experimental_BaseServiceManager_GetService_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.BaseServiceManager.GetService*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Experimental_BaseServiceManager_GetService__1_System_String_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.BaseServiceManager.GetService``1(System.String,System.Boolean)">GetService&lt;T&gt;(String, Boolean)</h4>
   <div class="markdown level1 summary"><p>Gets the instance of the registered service.</p>
@@ -330,6 +454,68 @@ custom service management component for one or more services, similar to the Mix
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_BaseServiceManager_IsDataProviderRegistered_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.BaseServiceManager.IsDataProviderRegistered*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_BaseServiceManager_IsDataProviderRegistered__1_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.BaseServiceManager.IsDataProviderRegistered``1(System.String)">IsDataProviderRegistered&lt;T&gt;(String)</h4>
+  <div class="markdown level1 summary"><p>Checks to see if a data provider of the specified type has been registered.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsDataProviderRegistered&lt;T&gt;(string name = null)
+    where T : IMixedRealityDataProvider</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name of the service.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True if the data provider is registered, false otherwise.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The interface type of the data provider.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Experimental_BaseServiceManager_IsServiceRegistered_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.BaseServiceManager.IsServiceRegistered*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Experimental_BaseServiceManager_IsServiceRegistered__1_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.BaseServiceManager.IsServiceRegistered``1(System.String)">IsServiceRegistered&lt;T&gt;(String)</h4>
   <div class="markdown level1 summary"><p>Checks to see if a service of the specified type has been registered.</p>
@@ -420,6 +606,135 @@ custom service management component for one or more services, similar to the Mix
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected virtual void OnEnable()</code></pre>
   </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_BaseServiceManager_RegisterDataProvider_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.BaseServiceManager.RegisterDataProvider*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_BaseServiceManager_RegisterDataProvider__1___0_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.BaseServiceManager.RegisterDataProvider``1(``0)">RegisterDataProvider&lt;T&gt;(T)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RegisterDataProvider&lt;T&gt;(T dataProviderInstance)
+    where T : IMixedRealityDataProvider</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">dataProviderInstance</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_BaseServiceManager_RegisterDataProvider_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.BaseServiceManager.RegisterDataProvider*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_BaseServiceManager_RegisterDataProvider__1_System_Type_SupportedPlatforms_System_Object___" data-uid="Microsoft.MixedReality.Toolkit.Experimental.BaseServiceManager.RegisterDataProvider``1(System.Type,SupportedPlatforms,System.Object[])">RegisterDataProvider&lt;T&gt;(Type, SupportedPlatforms, Object[])</h4>
+  <div class="markdown level1 summary"><p>Registers a data provider of the specified type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RegisterDataProvider&lt;T&gt;(Type concreteType, SupportedPlatforms supportedPlatforms = null, params object[] args)
+    where T : IMixedRealityDataProvider</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">concreteType</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">SupportedPlatforms</span></td>
+        <td><span class="parametername">supportedPlatforms</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a>[]</td>
+        <td><span class="parametername">args</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True if the data provider was successfully registered, false otherwise.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The interface type of the data provider to be registered.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Experimental_BaseServiceManager_RegisterService_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.BaseServiceManager.RegisterService*"></a>
@@ -580,6 +895,129 @@ custom service management component for one or more services, similar to the Mix
       </tr>
     </tbody>
   </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_BaseServiceManager_UnregisterDataProvider_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.BaseServiceManager.UnregisterDataProvider*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_BaseServiceManager_UnregisterDataProvider__1___0_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.BaseServiceManager.UnregisterDataProvider``1(``0)">UnregisterDataProvider&lt;T&gt;(T)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool UnregisterDataProvider&lt;T&gt;(T dataProviderInstance)
+    where T : IMixedRealityDataProvider</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">dataProviderInstance</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Experimental_BaseServiceManager_UnregisterDataProvider_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.BaseServiceManager.UnregisterDataProvider*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Experimental_BaseServiceManager_UnregisterDataProvider__1_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.BaseServiceManager.UnregisterDataProvider``1(System.String)">UnregisterDataProvider&lt;T&gt;(String)</h4>
+  <div class="markdown level1 summary"><p>Unregisters a data provider of the specified type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool UnregisterDataProvider&lt;T&gt;(string name = null)
+    where T : IMixedRealityDataProvider</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name of the data provider to unregister.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True if the data provider was successfully unregistered, false otherwise.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The interface type of the data provider to be unregistered.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Experimental_BaseServiceManager_UnregisterDataProvider__1_System_String__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If the name argument is not specified, the first instance will be unregistered</p>
+</div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Experimental_BaseServiceManager_UnregisterService_" data-uid="Microsoft.MixedReality.Toolkit.Experimental.BaseServiceManager.UnregisterService*"></a>
