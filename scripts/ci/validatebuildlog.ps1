@@ -30,8 +30,8 @@ function CheckDuplicateGuids(
     if ($LogFileContent[$LineNumber] -match "GUID \[[a-g0-9]{32}?\] for asset '.*' conflicts with") {
         for ($i = $LineNumber; $i -lt $LogFileContent.Length; $i++) {
             if ($LogFileContent[$i] -eq "Assigning a new guid.") {
-                Write-Host "Found duplicated GUID, Unity will non-deterministically use one of them, please manually"
-                    "regenerate the intended one by deleting the .meta file and re-opening the Unity editor locally"
+                Write-Host "Found duplicated GUID, Unity will non-deterministically use one of them, please manually "
+                Write-Host "regenerate the intended one by deleting the .meta file and re-opening the Unity editor locally."
 
                 # Found the end of the guid conflict message - output to the console
                 # all lines between these two locations (including the assigning a new guid message
