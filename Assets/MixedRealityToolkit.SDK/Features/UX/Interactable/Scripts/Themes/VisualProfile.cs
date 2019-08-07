@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
-    /// Theme scriptableObject for loading theme settings
+    /// Profile container for theme and for loading theme settings
     /// </summary>
     [Serializable]
     public class VisualProfile
