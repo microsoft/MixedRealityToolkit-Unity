@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         typeof(IMixedRealityInputSystem),
         (SupportedPlatforms)(-1), // All platforms supported by Unity
         "Hand Joint Service")]
-    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/InputSystem/HandTracking.html")]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/InputSystem/HandTracking.html")]
     public class HandJointService : BaseInputDeviceManager, IMixedRealityHandJointService
     {
         private IMixedRealityHand leftHand;

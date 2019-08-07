@@ -173,6 +173,8 @@ Some solver components and the SolverHandler manager class has changed to fix va
 - `MaxDistance` public property deprecated and has been renamed to `MaxRaycastDistance`
 - `CloseDistance` public property deprecated and has been renamed to `ClosestDistance`
 - Default value for `RaycastDirectionMode` is now `TrackedTargetForward` which raycasts in the direction of the tracked target transform forward
+- `OrientationMode` enum values, `Vertical` and `Full`, have been renamed to `TrackedTarget` and `SurfaceNormal` respectively
+- `KeepOrientationVertical` public property has been added to control whether orientation of associated GameObject remains vertical
 
 ### Clipping Sphere
 
@@ -202,6 +204,9 @@ The `PointerClickHandler` class has been deprecated. The `PointerHandler` should
 ### HoloLens clicker support
 
 - The HoloLens clicker's controller mappings have changed from being an unhanded [`WindowsMixedRealityController`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityController) to being an unhanded [`WindowsMixedRealityGGVHand`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityGGVHand). To account for this, an automatic updater will run the first time you open your ControllerMapping profile. Please open any custom profiles at least once after upgrading to GA in order to trigger this one-time migration step.
+
+### HandInteractionPanZoom
+- `HandInteractionPanZoom` has been moved to the UI namespace as it was not an input component. `HandPanEventData` has also been moved into this namespace, and simplified to correspond with other UI event data. 
 
 ## Assembly name changes
 

@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         "Windows Mixed Reality Spatial Mesh Observer",
         "Profiles/DefaultMixedRealitySpatialAwarenessMeshObserverProfile.asset", 
         "MixedRealityToolkit.SDK")]
-    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
     public class WindowsMixedRealitySpatialMeshObserver : 
         BaseSpatialObserver, 
         IMixedRealitySpatialAwarenessMeshObserver, 
@@ -737,13 +737,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
 
             if (outstandingMeshObject == null)
             {
-                Debug.LogWarning($"OnDataReady called for mesh id {cookedData.id.handle} while no request was outstanding.");
                 return;
             }
 
             if (!outputWritten)
             {
-                Debug.LogWarning($"OnDataReady reported no data written for mesh id {cookedData.id.handle}");
                 ReclaimMeshObject(outstandingMeshObject);
                 outstandingMeshObject = null;
                 return;

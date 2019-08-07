@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         "Spatial Object Mesh Observer",
         "ObjectMeshObserver/Profiles/DefaultObjectMeshObserverProfile.asset",
         "MixedRealityToolkit.Providers")]
-    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
     public class SpatialObjectMeshObserver : 
         BaseSpatialObserver, 
         IMixedRealitySpatialAwarenessMeshObserver, 

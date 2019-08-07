@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// The service registry store where the key is the Type of the service interface and the value is
         /// a pair in which they key is the service instance and the value is the registrar instance.
         /// </summary>
-        private static Dictionary<Type, List<KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>>> registry = 
+        private static Dictionary<Type, List<KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>>> registry =
             new Dictionary<Type, List<KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>>>();
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </returns>
         public static bool RemoveService<T>(string name) where T : IMixedRealityService
         {
-            T tempService;            
+            T tempService;
             IMixedRealityServiceRegistrar registrar;
 
             if (!TryGetService<T>(out tempService, out registrar, name))
@@ -310,7 +310,7 @@ namespace Microsoft.MixedReality.Toolkit
             List<IMixedRealityService> results = new List<IMixedRealityService>();
             foreach (var entry in registry.Values)
             {
-                foreach(var tuple in entry)
+                foreach (var tuple in entry)
                 {
                     if (registrar == null || tuple.Value == registrar)
                     {

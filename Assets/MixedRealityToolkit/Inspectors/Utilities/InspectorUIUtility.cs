@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -132,11 +133,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         /// <summary>
-        /// Render doc link attribute as clickable button routing to revelant URI
+        /// Render documentation button routing to revelant URI
         /// </summary>
-        /// <param name="docLink">doc link attribute information to build button</param>
+        /// <param name="docURL">documentation URL to open on button click</param>
         /// <returns>true if button clicked, false otherwise</returns>
-        public static bool RenderDocLinkButton(string docURL)
+        public static bool RenderDocumentationButton(string docURL)
         {
             if (!string.IsNullOrEmpty(docURL))
             {
@@ -155,6 +156,47 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Render a documentation header with button if Object contains HelpURLAttribute
+        /// </summary>
+        /// <param name="targetType">Type to test for HelpURLAttribute</param>
+        /// <returns>true if object drawn and button clicked, false otherwise</returns>
+        public static bool RenderHelpURL(Type targetType)
+        {
+            bool result = false;
+
+            if (targetType != null)
+            {
+                HelpURLAttribute helpURL = targetType.GetCustomAttribute<HelpURLAttribute>();
+                if (helpURL != null)
+                {
+                    result = RenderDocumentationSection(helpURL.URL);
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Render a documentation header with button for given url value
+        /// </summary>
+        /// <param name="url">Url to open if button is clicked</param>
+        /// <returns>true if object drawn and button clicked, false otherwise</returns>
+        public static bool RenderDocumentationSection(string url)
+        {
+            bool result = false;
+            if (!string.IsNullOrEmpty(url))
+            {
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    GUILayout.FlexibleSpace();
+                    result = RenderDocumentationButton(url);
+                }
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -443,6 +485,41 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             return drawSection;
+        }
+
+        /// <summary>
+        /// Draws a popup UI with PropertyField type features.
+        /// Displays prefab pending updates
+        /// </summary>
+        /// <param name="prop">serialized property corresponding to Enum</param>
+        /// <param name="label">label for property</param>
+        /// <param name="propValue">Current enum value for property</param>
+        /// <returns>New enum value after draw</returns>
+        public static Enum DrawEnumSerializedProperty(SerializedProperty prop, GUIContent label, Enum propValue)
+        {
+            return DrawEnumSerializedProperty(EditorGUILayout.GetControlRect(), prop, label, propValue);
+        }
+
+        /// <summary>
+        /// Draws a popup UI with PropertyField type features.
+        /// Displays prefab pending updates
+        /// </summary>
+        /// <param name="position">position to render the serialized property</param>
+        /// <param name="prop">serialized property corresponding to Enum</param>
+        /// <param name="label">label for property</param>
+        /// <param name="propValue">Current enum value for property</param>
+        /// <returns>New enum value after draw</returns>
+        public static Enum DrawEnumSerializedProperty(Rect position, SerializedProperty prop, GUIContent label, Enum propValue)
+        {
+            Enum result = propValue;
+            EditorGUI.BeginProperty(position, label, prop);
+            {
+                result = EditorGUI.EnumPopup(position, label, propValue);
+                prop.enumValueIndex = Convert.ToInt32(result);
+            }
+            EditorGUI.EndProperty();
+
+            return result;
         }
 
         /// <summary>

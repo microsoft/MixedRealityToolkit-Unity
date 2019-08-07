@@ -23,7 +23,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     public class SolverTests : BasePlayModeTests
     {
         private const float DistanceThreshold = 1.5f;
-        private const float SolverUpdateWaitTime = 1.0f; //seconds
 
         /// <summary>
         /// Internal class used to store data for setup
@@ -73,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Test orbital around head
             testObjects.handler.TrackedTargetType = TrackedObjectType.Head;
 
-            yield return new WaitForSeconds(SolverUpdateWaitTime);
+            yield return WaitForFrames(2);
 
             Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, Camera.main.transform.position), DistanceThreshold);
 
@@ -81,11 +80,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             testObjects.handler.TrackedTargetType = TrackedObjectType.CustomOverride;
             testObjects.handler.TransformOverride = transformOverride.transform;
 
-            yield return new WaitForSeconds(SolverUpdateWaitTime);
+            yield return WaitForFrames(2);
 
             Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, customTransformPos), DistanceThreshold);
 
-            yield return null;
+            yield return WaitForFrames(2);
         }
 
         /// <summary>
@@ -104,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 rightHandPos = Vector3.right * 20.0f;
             Vector3 leftHandPos = Vector3.right * -20.0f;
 
-            yield return null;
+            yield return WaitForFrames(2);
 
             InputSimulationService inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
 
@@ -119,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService, Utilities.ArticulatedHandPose.GestureId.Open, rightHandPos);
 
             // Give time for cube to float to hand
-            yield return new WaitForSeconds(SolverUpdateWaitTime);
+            yield return WaitForFrames(2);
 
             Vector3 handOrbitalPos = testObjects.target.transform.position;
             Assert.LessOrEqual(Vector3.Distance(handOrbitalPos, leftHandPos), DistanceThreshold);
@@ -142,19 +141,24 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Build wall to collide against
             var wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
             wall.transform.localScale = new Vector3(25.0f, 25.0f, 0.2f);
+            wall.transform.Rotate(Vector3.up, 180.0f); // Rotate wall so forward faces camera
             wall.transform.position = Vector3.forward * 10.0f;
 
-            yield return null;
+            yield return WaitForFrames(2);
 
             // Instantiate our test gameobject with solver. 
             // Set layer to ignore raycast so solver doesn't raycast itself (i.e BoxCollider)
             var testObjects = InstantiateTestSolver<SurfaceMagnetism>();
             testObjects.target.layer = LayerMask.NameToLayer("Ignore Raycast");
+            SurfaceMagnetism surfaceMag = testObjects.solver as SurfaceMagnetism;
 
-            yield return new WaitForSeconds(SolverUpdateWaitTime);
+            var targetTransform = testObjects.target.transform;
+            var cameraTransform = CameraCache.Main.transform;
+
+            yield return WaitForFrames(2);
 
             // Confirm that the surfacemagnetic cube is about on the wall straight ahead
-            Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, wall.transform.position), DistanceThreshold);
+            Assert.LessOrEqual(Vector3.Distance(targetTransform.position, wall.transform.position), DistanceThreshold);
 
             // Rotate the camera
             Vector3 cameraDir = Vector3.forward + Vector3.right;
@@ -169,10 +173,21 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(UnityEngine.Physics.Raycast(Vector3.zero, cameraDir, out hitInfo), "Raycast from camera did not hit wall");
 
             // Let SurfaceMagnetism update
-            yield return new WaitForSeconds(SolverUpdateWaitTime);
+            yield return WaitForFrames(2);
 
             // Confirm that the surfacemagnetic cube is on the wall with camera rotated
-            Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, hitInfo.point), DistanceThreshold);
+            Assert.LessOrEqual(Vector3.Distance(targetTransform.position, hitInfo.point), DistanceThreshold);
+
+            // Default orientation mode is TrackedTarget, test object should be facing camera
+            Assert.IsTrue(Mathf.Approximately(-1.0f, Vector3.Dot(targetTransform.forward.normalized, cameraTransform.forward.normalized)));
+
+            // Change default orientation mode to surface normal
+            surfaceMag.CurrentOrientationMode = SurfaceMagnetism.OrientationMode.SurfaceNormal;
+
+            yield return WaitForFrames(2);
+
+            // Test object should now be facing into the wall (i.e Z axis)
+            Assert.IsTrue(Mathf.Approximately(1.0f, Vector3.Dot(targetTransform.forward.normalized, Vector3.forward)));
         }
 
         /// <summary>
@@ -202,18 +217,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             inBetween.SecondTransformOverride = rightPost.transform;
 
             // Let InBetween update
-            yield return new WaitForSeconds(SolverUpdateWaitTime);
+            yield return WaitForFrames(2);
 
             TestUtilities.AssertAboutEqual(testObjects.target.transform.position, Vector3.forward * 10.0f, "InBetween solver did not place object in middle of posts");
 
             inBetween.PartwayOffset = 0.0f;
 
             // Let InBetween update
-            yield return new WaitForSeconds(SolverUpdateWaitTime);
+            yield return WaitForFrames(2);
 
             TestUtilities.AssertAboutEqual(testObjects.target.transform.position, rightPost.transform.position, "InBetween solver did not move to the left post");
         }
-
 
 #region Test Helpers
 
@@ -222,14 +236,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return PlayModeTestUtilities.ShowHand(hand, inputSimulationService, Utilities.ArticulatedHandPose.GestureId.Open, handPos);
 
             // Give time for cube to float to hand
-            yield return new WaitForSeconds(SolverUpdateWaitTime);
+            yield return WaitForFrames(2);
 
             Vector3 handOrbitalPos = target.transform.position;
             Assert.LessOrEqual(Vector3.Distance(handOrbitalPos, handPos), DistanceThreshold);
 
             yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
 
-            yield return null;
+            yield return WaitForFrames(2);
         }
 
         private SetupData InstantiateTestSolver<T>() where T: Solver
@@ -239,6 +253,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Solver solver = cube.AddComponent<T>();
             Assert.IsNotNull(solver, "AddComponent<T>() returned null");
+
+            // Set Solver lerp times to 0 so we can process tests faster instead of waiting for transforms to update/apply
+            solver.MoveLerpTime = 0.0f;
+            solver.RotateLerpTime = 0.0f;
+            solver.ScaleLerpTime = 0.0f;
 
             SolverHandler handler = cube.GetComponent<SolverHandler>();
             Assert.IsNotNull(handler, "GetComponent<SolverHandler>() returned null");
@@ -250,6 +269,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 target = cube
             };
         }
+
+        private IEnumerator WaitForFrames(int frames)
+        {
+            for (int i = 0; i < frames; i++)
+            {
+                yield return null;
+            }
+        }
+
 #endregion
     }
 }

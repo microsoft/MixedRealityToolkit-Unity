@@ -13,22 +13,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         Head = 0,
 
         /// <summary>
-        /// Calculates position and orientation from the left motion-tracked controller.
+        /// (Obsolete) Calculates position and orientation from the left motion-tracked controller.
         /// </summary>
         [Obsolete("Use TrackedObjectType.MotionController and TrackedHandedness instead")]
         MotionControllerLeft = 1,
         /// <summary>
-        /// Calculates position and orientation from the right motion-tracked controller.
+        /// (Obsolete) Calculates position and orientation from the right motion-tracked controller.
         /// </summary>
         [Obsolete("Use TrackedObjectType.MotionController and TrackedHandedness instead")]
         MotionControllerRight = 2,
         /// <summary>
-        /// Calculates position and orientation from a tracked hand joint on the left hand.
+        /// (Obsolete) Calculates position and orientation from a tracked hand joint on the left hand.
         /// </summary>
         [Obsolete("Use TrackedObjectType.HandJoint and TrackedHandedness instead")]
         HandJointLeft = 3,
         /// <summary>
-        /// Calculates position and orientation from a tracked hand joint on the right hand.
+        /// (Obsolete) Calculates position and orientation from a tracked hand joint on the right hand.
         /// </summary>
         [Obsolete("Use TrackedObjectType.HandJoint and TrackedHandedness instead")]
         HandJointRight = 4,

@@ -64,7 +64,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
             // Check for Input System
-            Assert.IsFalse(MixedRealityToolkit.Instance.IsServiceRegistered<IMixedRealityInputSystem>());
+            var inputSystemExists = MixedRealityToolkit.Instance.IsServiceRegistered<IMixedRealityInputSystem>();
+
+            // Tests
+            Assert.IsFalse(inputSystemExists);
         }
 
         [Test]
@@ -77,6 +80,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 
             // Tests
             Assert.IsTrue(inputSystemExists);
+        }
+
+        [Test]
+        public void Test05_TestMixedRealityInputSystemDataProviders()
+        {
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
+
+            // Check for Input System
+            var inputSystem = MixedRealityToolkit.Instance.GetService<IMixedRealityInputSystem>();
+            Assert.IsNotNull(inputSystem);
+
+            var dataProviderAccess = (inputSystem as IMixedRealityDataProviderAccess);
+            Assert.IsNotNull(dataProviderAccess);
+
+            // Tests
+            Assert.IsEmpty(dataProviderAccess.GetDataProviders());
         }
 
         [TearDown]
