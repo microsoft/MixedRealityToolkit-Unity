@@ -6193,7 +6193,7 @@ MonoBehaviour:
   startTransparency: 0
   endTransparency: 0
   Highlight_UseIt: 1
-  Highlight_Color: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
+  Highlight_Color: {r: 0.3137255, g: 0.3137255, b: 0.3137255, a: 1}
   MinDwellTimeInMs: 30
   MaxDwellTimeInMs: 800
   MinLookAwayTimeInMs: 30
@@ -6247,11 +6247,11 @@ MonoBehaviour:
   audio_OnDragStart: {fileID: 8300000, guid: 9a10debaf8483ae49aa91211098634f1, type: 3}
   audio_OnDragStop: {fileID: 8300000, guid: 59244bce6dca9494ebc881d9543fa339, type: 3}
   voiceAction_PutThis:
-    id: 16
+    id: 0
     description: StartToDrag
     axisConstraint: 0
   voiceAction_OverHere:
-    id: 17
+    id: 0
     description: StopToDrag
     axisConstraint: 0
   OnDragStart:
@@ -6556,7 +6556,7 @@ MonoBehaviour:
   startTransparency: 0
   endTransparency: 0
   Highlight_UseIt: 1
-  Highlight_Color: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
+  Highlight_Color: {r: 0.3137255, g: 0.3137255, b: 0.3137255, a: 1}
   MinDwellTimeInMs: 30
   MaxDwellTimeInMs: 800
   MinLookAwayTimeInMs: 30
@@ -6610,11 +6610,11 @@ MonoBehaviour:
   audio_OnDragStart: {fileID: 8300000, guid: 9a10debaf8483ae49aa91211098634f1, type: 3}
   audio_OnDragStop: {fileID: 8300000, guid: 59244bce6dca9494ebc881d9543fa339, type: 3}
   voiceAction_PutThis:
-    id: 16
+    id: 0
     description: StartToDrag
     axisConstraint: 0
   voiceAction_OverHere:
-    id: 17
+    id: 0
     description: StopToDrag
     axisConstraint: 0
   OnDragStart:
@@ -16890,7 +16890,7 @@ MonoBehaviour:
   startTransparency: 0
   endTransparency: 0
   Highlight_UseIt: 1
-  Highlight_Color: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
+  Highlight_Color: {r: 0.3137255, g: 0.3137255, b: 0.3137255, a: 1}
   MinDwellTimeInMs: 30
   MaxDwellTimeInMs: 800
   MinLookAwayTimeInMs: 30
@@ -16944,11 +16944,11 @@ MonoBehaviour:
   audio_OnDragStart: {fileID: 8300000, guid: 9a10debaf8483ae49aa91211098634f1, type: 3}
   audio_OnDragStop: {fileID: 8300000, guid: 59244bce6dca9494ebc881d9543fa339, type: 3}
   voiceAction_PutThis:
-    id: 16
+    id: 0
     description: StartToDrag
     axisConstraint: 0
   voiceAction_OverHere:
-    id: 17
+    id: 0
     description: StopToDrag
     axisConstraint: 0
   OnDragStart:
@@ -17134,7 +17134,7 @@ MonoBehaviour:
   startTransparency: 0
   endTransparency: 0
   Highlight_UseIt: 1
-  Highlight_Color: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
+  Highlight_Color: {r: 0.3137255, g: 0.3137255, b: 0.3137255, a: 1}
   MinDwellTimeInMs: 30
   MaxDwellTimeInMs: 800
   MinLookAwayTimeInMs: 30
@@ -17170,11 +17170,11 @@ MonoBehaviour:
   audio_OnDragStart: {fileID: 8300000, guid: 9a10debaf8483ae49aa91211098634f1, type: 3}
   audio_OnDragStop: {fileID: 8300000, guid: 59244bce6dca9494ebc881d9543fa339, type: 3}
   voiceAction_PutThis:
-    id: 16
+    id: 0
     description: StartToDrag
     axisConstraint: 0
   voiceAction_OverHere:
-    id: 17
+    id: 0
     description: StopToDrag
     axisConstraint: 0
   OnDragStart:
@@ -17373,7 +17373,7 @@ MonoBehaviour:
   startTransparency: 0.126
   endTransparency: 0.728
   Highlight_UseIt: 1
-  Highlight_Color: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
+  Highlight_Color: {r: 0.3137255, g: 0.3137255, b: 0.3137255, a: 1}
   MinDwellTimeInMs: 30
   MaxDwellTimeInMs: 800
   MinLookAwayTimeInMs: 30
@@ -17409,11 +17409,11 @@ MonoBehaviour:
   audio_OnDragStart: {fileID: 8300000, guid: 9a10debaf8483ae49aa91211098634f1, type: 3}
   audio_OnDragStop: {fileID: 8300000, guid: 59244bce6dca9494ebc881d9543fa339, type: 3}
   voiceAction_PutThis:
-    id: 16
+    id: 0
     description: StartToDrag
     axisConstraint: 0
   voiceAction_OverHere:
-    id: 17
+    id: 0
     description: StopToDrag
     axisConstraint: 0
   OnDragStart:
@@ -23014,7 +23014,7 @@ MonoBehaviour:
   startTransparency: 0
   endTransparency: 0
   Highlight_UseIt: 1
-  Highlight_Color: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
+  Highlight_Color: {r: 0.3137255, g: 0.3137255, b: 0.3137255, a: 1}
   MinDwellTimeInMs: 30
   MaxDwellTimeInMs: 800
   MinLookAwayTimeInMs: 30
@@ -23068,11 +23068,11 @@ MonoBehaviour:
   audio_OnDragStart: {fileID: 8300000, guid: 9a10debaf8483ae49aa91211098634f1, type: 3}
   audio_OnDragStop: {fileID: 8300000, guid: 59244bce6dca9494ebc881d9543fa339, type: 3}
   voiceAction_PutThis:
-    id: 16
+    id: 0
     description: StartToDrag
     axisConstraint: 0
   voiceAction_OverHere:
-    id: 17
+    id: 0
     description: StopToDrag
     axisConstraint: 0
   OnDragStart:
