@@ -138,10 +138,9 @@ namespace Microsoft.MixedReality.Toolkit
             else
             {
                 T service;
-                MixedRealityServiceRegistry.TryGetService<T>(out service);
-                if (service == null)
+                if (!MixedRealityServiceRegistry.TryGetService(out service))
                 {
-                    return service;
+                    return default(T);
                 }
 
                 serviceCache.Add(typeof(T), service as IMixedRealityService);
