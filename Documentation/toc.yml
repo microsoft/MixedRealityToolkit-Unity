@@ -17,6 +17,10 @@
     href: Architecture/Overview.md
   - name: Framework and Runtime
     href: Architecture/FrameworkAndRuntime.md
+  - name: Cross-platform
+    items:
+    - name: Platform Capabilities
+      href: Architecture/CrossPlatform/DeterminingPlatformCapabilities.md
   - name: Input System
     items:
     - name: Terminology
