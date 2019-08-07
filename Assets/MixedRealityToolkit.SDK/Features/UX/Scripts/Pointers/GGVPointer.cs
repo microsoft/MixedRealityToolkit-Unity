@@ -9,14 +9,17 @@ using Microsoft.MixedReality.Toolkit.Physics;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    public class GGVPointer : InputSystemGlobalHandlerListener, IMixedRealityPointer, IMixedRealityInputHandler, IMixedRealityInputHandler<MixedRealityPose>, IMixedRealitySourcePoseHandler, IMixedRealitySourceStateHandler
+    public class GGVPointer : InputSystemGlobalHandlerListener,
+        IMixedRealityPointer,
+        IMixedRealityInputHandler,
+        IMixedRealityInputHandler<MixedRealityPose>,
+        IMixedRealitySourceStateHandler
     {
         [Header("Pointer")]
         [SerializeField]
         private MixedRealityInputAction selectAction = MixedRealityInputAction.None;
         [SerializeField]
         private MixedRealityInputAction poseAction = MixedRealityInputAction.None;
-
 
         private GazeProvider gazeProvider;
         private Vector3 sourcePosition;
@@ -175,27 +178,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Rays[0].UpdateRayStep(ref newGazeOrigin, ref endPoint);
         }
 
-        public void OnPreCurrentPointerTargetChange()
-        {
-        }
+        public void OnPreCurrentPointerTargetChange() { }
 
         /// <inheritdoc />
-        public virtual Vector3 Position
-        {
-            get
-            {
-                return sourcePosition;
-            }
-        }
+        public virtual Vector3 Position => sourcePosition;
 
         /// <inheritdoc />
-        public virtual Quaternion Rotation
-        {
-            get
-            {
-                return Quaternion.LookRotation(gazeProvider.GazePointer.Rays[0].Direction);
-            }
-        }
+        public virtual Quaternion Rotation => Quaternion.LookRotation(gazeProvider.GazePointer.Rays[0].Direction);
 
         #endregion
 
@@ -246,7 +235,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         InputSystem.RaisePointerDown(this, selectAction, Controller.ControllerHandedness);
 
                         // For GGV, the gaze pointer does not set this value itself as it does not receive input 
-                        // events from the hands. Because this value is important for certain gaze behaviour, 
+                        // events from the hands. Because this value is important for certain gaze behavior, 
                         // such as positioning the gaze cursor, it is necessary to set it here.
                         gazeProvider.GazePointer.IsFocusLocked = (gazeProvider.GazePointer.Result?.Details.Object != null);
                     }
@@ -259,17 +248,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected override void OnEnable()
         {
             base.OnEnable();
-            this.gazeProvider = InputSystem.GazeProvider as GazeProvider;
+            gazeProvider = InputSystem.GazeProvider as GazeProvider;
             BaseCursor c = gazeProvider.GazePointer.BaseCursor as BaseCursor;
             if (c != null)
             {
                 c.VisibleSourcesCount++;
             }
-        }
-
-        protected override void Start()
-        {
-            base.Start();
         }
 
         protected override void OnDisable()
@@ -291,7 +275,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             InputSystem?.RegisterHandler<IMixedRealityInputHandler>(this);
             InputSystem?.RegisterHandler<IMixedRealityInputHandler<MixedRealityPose>>(this);
-            InputSystem?.RegisterHandler<IMixedRealitySourcePoseHandler>(this);
             InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
         }
 
@@ -299,47 +282,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             InputSystem?.UnregisterHandler<IMixedRealityInputHandler>(this);
             InputSystem?.UnregisterHandler<IMixedRealityInputHandler<MixedRealityPose>>(this);
-            InputSystem?.UnregisterHandler<IMixedRealitySourcePoseHandler>(this);
             InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
         }
 
         #endregion InputSystemGlobalHandlerListener Implementation
 
-        #region IMixedRealitySourcePoseHandler
+        #region IMixedRealitySourceStateHandler
 
-        public void OnInputPressed(InputEventData<float> eventData)
-        {
-        }
+        /// <inheritdoc />
+        public void OnSourceDetected(SourceStateEventData eventData) { }
 
-        public void OnPositionInputChanged(InputEventData<Vector2> eventData)
-        {
-        }
-
-        public void OnSourcePoseChanged(SourcePoseEventData<TrackingState> eventData)
-        {
-        }
-
-        public void OnSourcePoseChanged(SourcePoseEventData<Vector2> eventData)
-        {
-        }
-
-        public void OnSourcePoseChanged(SourcePoseEventData<Vector3> eventData)
-        {
-        }
-
-        public void OnSourcePoseChanged(SourcePoseEventData<Quaternion> eventData)
-        {
-        }
-
-        public void OnSourcePoseChanged(SourcePoseEventData<MixedRealityPose> eventData)
-        {
-        }
-
-
-        public void OnSourceDetected(SourceStateEventData eventData)
-        {
-        }
-
+        /// <inheritdoc />
         public void OnSourceLost(SourceStateEventData eventData)
         {
             if (eventData.SourceId == InputSourceParent.SourceId)
@@ -359,9 +312,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     // See comment in OnInputDown for more details.
                     gazeProvider.GazePointer.IsFocusLocked = false;
                 }
-                
+
                 // Destroy the pointer since nobody else is destroying us
-                if (Application.isEditor)
+                if (!Application.isPlaying)
                 {
                     DestroyImmediate(gameObject);
                 }
@@ -370,19 +323,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     Destroy(gameObject);
                 }
             }
-
-
         }
 
+        #endregion IMixedRealitySourceStateHandler
+
+        #region IMixedRealityInputHandler<MixedRealityPose>
+
+        /// <inheritdoc />
         public void OnInputChanged(InputEventData<MixedRealityPose> eventData)
         {
             if (eventData.SourceId == Controller?.InputSource.SourceId &&
-                eventData.Handedness == Controller?.ControllerHandedness && 
+                eventData.Handedness == Controller?.ControllerHandedness &&
                 eventData.MixedRealityInputAction == poseAction)
             {
                 sourcePosition = eventData.InputData.Position;
             }
         }
-        #endregion
+
+        #endregion IMixedRealityInputHandler<MixedRealityPose>
     }
 }
