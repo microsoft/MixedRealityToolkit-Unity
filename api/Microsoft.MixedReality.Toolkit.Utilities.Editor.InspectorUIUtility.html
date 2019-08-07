@@ -1499,14 +1499,59 @@ Displays prefab pending updates</p>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_RenderDocLink_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.RenderDocLink*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_RenderDocLink_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.RenderDocLink(System.String)">RenderDocLink(String)</h4>
-  <div class="markdown level1 summary"><p>Render DocLink header for given url value</p>
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_RenderDocumentationButton_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.RenderDocumentationButton*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_RenderDocumentationButton_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.RenderDocumentationButton(System.String)">RenderDocumentationButton(String)</h4>
+  <div class="markdown level1 summary"><p>Render documentation button routing to revelant URI</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool RenderDocLink(string url)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool RenderDocumentationButton(string docURL)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">docURL</span></td>
+        <td><p>documentation URL to open on button click</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>true if button clicked, false otherwise</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_RenderDocumentationSection_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.RenderDocumentationSection*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_RenderDocumentationSection_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.RenderDocumentationSection(System.String)">RenderDocumentationSection(String)</h4>
+  <div class="markdown level1 summary"><p>Render a documentation header with button for given url value</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool RenderDocumentationSection(string url)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1544,14 +1589,14 @@ Displays prefab pending updates</p>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_RenderDocLink_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.RenderDocLink*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_RenderDocLink_UnityEngine_Object_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.RenderDocLink(UnityEngine.Object)">RenderDocLink(UnityEngine.Object)</h4>
-  <div class="markdown level1 summary"><p>Render DocLink header if Object contains DocLinkAttribute</p>
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_RenderHelpURL_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.RenderHelpURL*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_RenderHelpURL_System_Type_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.RenderHelpURL(System.Type)">RenderHelpURL(Type)</h4>
+  <div class="markdown level1 summary"><p>Render a documentation header with button if Object contains HelpURLAttribute</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool RenderDocLink(UnityEngine.Object target)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool RenderHelpURL(Type targetType)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1564,9 +1609,9 @@ Displays prefab pending updates</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">UnityEngine.Object</span></td>
-        <td><span class="parametername">target</span></td>
-        <td><p>UnityEngine object to test for DocLinkAttribute</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">targetType</span></td>
+        <td><p>Type to test for HelpURLAttribute</p>
 </td>
       </tr>
     </tbody>
@@ -1583,50 +1628,6 @@ Displays prefab pending updates</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><p>true if object drawn and button clicked, false otherwise</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_RenderDocLinkButton_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.RenderDocLinkButton*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_RenderDocLinkButton_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.RenderDocLinkButton(System.String)">RenderDocLinkButton(String)</h4>
-  <div class="markdown level1 summary"><p>Render doc link attribute as clickable button routing to revelant URI</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool RenderDocLinkButton(string docURL)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">docURL</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>true if button clicked, false otherwise</p>
 </td>
       </tr>
     </tbody>
