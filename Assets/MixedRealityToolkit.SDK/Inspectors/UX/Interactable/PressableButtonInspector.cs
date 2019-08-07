@@ -274,7 +274,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                 EditorGUILayout.Space();
                 EditorGUILayout.LabelField("Button State", EditorStyles.boldLabel);
-                EditorGUILayout.LabelField("Current Push Distance", button.CurrentPushDistance.ToString("0.##"));
+                EditorGUILayout.LabelField("Current Push Distance", button.CurrentPushDistance.ToString());
                 EditorGUILayout.Toggle("Touching", button.IsTouching);
                 EditorGUILayout.Toggle("Pressing", button.IsPressing);
                 EditorGUI.EndDisabledGroup();
