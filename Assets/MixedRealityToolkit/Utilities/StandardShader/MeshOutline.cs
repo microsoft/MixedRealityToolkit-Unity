@@ -14,61 +14,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// on objects which are non-uniformly scaled and depth sorting issues on overlapping objects.
     /// </summary>
     [RequireComponent(typeof(MeshRenderer))]
-    public class MeshOutline : MonoBehaviour
+    public class MeshOutline : BaseMeshOutline
     {
-        private const string smoothNormalsKeyword = "_SMOOTH_NORMALS";
+        private const string vertexExtrusionKeyword = "_VERTEX_EXTRUSION";
+        private const string vertexExtrusionSmoothNormalsKeyword = "_VERTEX_EXTRUSION_SMOOTH_NORMALS";
         private const string vertexExtrusionValueName = "_VertexExtrusionValue";
-
-        /// <summary>
-        /// The material used to render the outline. Outline materials should normal have "Depth Write" set to Off and "Vertex Extrusion" enabled.
-        /// Most MRTK/Standard features should work as an outline material, but it is recommended to use a simple unlit material.
-        /// </summary>
-        public Material OutlineMaterial
-        {
-            get { return outlineMaterial; }
-            set
-            {
-                outlineMaterial = value;
-                ApplyOutlineMaterial();
-            }
-        }
-
-        [Tooltip("The material used to render the outline. Outline materials should normal have \"Depth Write\" set to Off and \"Vertex Extrusion\" enabled.")]
-        [SerializeField]
-        private Material outlineMaterial = null;
-
-        /// <summary>
-        /// How thick (in meters) should the outline be. Overrides the "Extrusion Value" in the MRTK/Standard material.
-        /// </summary>
-        public float OutlineWidth
-        {
-            get { return outlineWidth; }
-            set
-            {
-                outlineWidth = value;
-                ApplyOutlineWidth();
-            }
-        }
-
-        [Tooltip("How thick (in meters) should the outline be. Overrides the \"Extrusion Value\" in the MRTK/Standard material.")]
-        [SerializeField]
-        [Range(0.001f, 1.0f)]
-        private float outlineWidth = 0.01f;
 
         private MeshRenderer meshRenderer = null;
         private MaterialPropertyBlock propertyBlock = null;
         private int vertexExtrusionValueID = 0;
         private Material[] defaultMaterials = null;
+        private MeshSmoother createdMeshSmoother = null;
 
         #region MonoBehaviour Implementation
-
-        /// <summary>
-        /// Used to update the outline width when modifying the property in the inspector.
-        /// </summary>
-        private void OnValidate()
-        {
-            ApplyOutlineMaterial();
-        }
 
         /// <summary>
         /// Gathers initial render state.
@@ -97,22 +55,43 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             meshRenderer.materials = defaultMaterials;
         }
 
+        /// <summary>
+        /// Removes any components this component has created.
+        /// </summary>
+        private void OnDestroy()
+        {
+            Destroy(createdMeshSmoother);
+        }
+
         #endregion MonoBehaviour Implementation
+
+        #region BaseMeshOutline Implementation
 
         /// <summary>
         /// Prepares and applies the current outline material to the renderer.
         /// </summary>
-        private void ApplyOutlineMaterial()
+        protected override void ApplyOutlineMaterial()
         {
             if (outlineMaterial != null && meshRenderer != null)
             {
-                // Ensure that the outline material always renders before the default materials. 
+                Debug.AssertFormat(outlineMaterial.IsKeywordEnabled(vertexExtrusionKeyword), 
+                                   "The material \"{0}\" does not have vertex extrusion enabled, no outline will be rendered.", outlineMaterial.name);
+
+                // Ensure that the outline material always renders before the default materials.
                 outlineMaterial.renderQueue = GetMinRenderQueue(defaultMaterials) - 1;
 
                 // If smooth normals are requested, make sure the mesh has smooth normals.
-                if (outlineMaterial.IsKeywordEnabled(smoothNormalsKeyword))
+                if (outlineMaterial.IsKeywordEnabled(vertexExtrusionSmoothNormalsKeyword))
                 {
-                    gameObject.EnsureComponent<MeshSmoother>().SmoothNormalsAsync();
+                    var meshSmoother = (createdMeshSmoother == null) ? gameObject.GetComponent<MeshSmoother>() : createdMeshSmoother;
+
+                    if (meshSmoother == null)
+                    {
+                        createdMeshSmoother = gameObject.AddComponent<MeshSmoother>();
+                        meshSmoother = createdMeshSmoother;
+                    }
+
+                    meshSmoother.SmoothNormals();
                 }
 
                 ApplyOutlineWidth();
@@ -127,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Updates the current vertex extrusion value used by the shader. 
         /// </summary>
-        private void ApplyOutlineWidth()
+        protected override void ApplyOutlineWidth()
         {
             if (meshRenderer != null && propertyBlock != null)
             {
@@ -136,6 +115,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 meshRenderer.SetPropertyBlock(propertyBlock);
             }
         }
+
+        #endregion BaseMeshOutline Implementation
 
         /// <summary>
         /// Searches for the minimum render queue value in a list of materials.
