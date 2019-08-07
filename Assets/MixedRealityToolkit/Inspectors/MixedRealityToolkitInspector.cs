@@ -12,7 +12,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     {
         private SerializedProperty activeProfile;
         private int currentPickerWindow = -1;
-        private bool checkChange = false;
 
         // Utility to show object picker for ActiveProfile property since Show command must be called in OnGUI()
         private static bool forceShowProfilePicker = false;
@@ -21,7 +20,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             activeProfile = serializedObject.FindProperty("activeProfile");
             currentPickerWindow = -1;
-            checkChange = activeProfile.objectReferenceValue == null;
         }
 
         public override void OnInspectorGUI()
@@ -68,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                     // Shows the list of MixedRealityToolkitConfigurationProfiles in our project,
                     // selecting the default profile by default (if it exists).
-                    if (allConfigProfiles.Length > 1)
+                    if (allConfigProfiles.Length > 0)
                     {
                         currentPickerWindow = GUIUtility.GetControlID(FocusType.Passive);
 
