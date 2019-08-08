@@ -86,7 +86,9 @@
   
   <h1 id="Microsoft_MixedReality_Toolkit_Input_GGVPointer" data-uid="Microsoft.MixedReality.Toolkit.Input.GGVPointer" class="text-break">Class GGVPointer
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>This class allows for HoloLens 1 style input, using a far gaze ray
+for focus with hand and gesture-based input and interaction across it.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -101,7 +103,6 @@
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler.html">IMixedRealityInputHandler</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityBaseInputHandler.html">IMixedRealityBaseInputHandler</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler-1.html">IMixedRealityInputHandler</a>&lt;<span class="xref">MixedRealityPose</span>&gt;</div>
-    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourcePoseHandler.html">IMixedRealitySourcePoseHandler</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourceStateHandler.html">IMixedRealitySourceStateHandler</a></div>
     <div><span class="xref">IEventSystemHandler</span></div>
   </div>
@@ -111,6 +112,9 @@
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.html#Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_InputSystem">InputSystemGlobalHandlerListener.InputSystem</a>
     </div>
     <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.html#Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_Start">InputSystemGlobalHandlerListener.Start()</a>
+    </div>
+    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.html#Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_EnsureInputSystemValid">InputSystemGlobalHandlerListener.EnsureInputSystemValid()</a>
     </div>
   </div>
@@ -118,8 +122,12 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Input_GGVPointer_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class GGVPointer : InputSystemGlobalHandlerListener, IMixedRealityPointer, IEqualityComparer, IMixedRealityInputHandler, IMixedRealityBaseInputHandler, IMixedRealityInputHandler&lt;MixedRealityPose&gt;, IMixedRealitySourcePoseHandler, IMixedRealitySourceStateHandler, IEventSystemHandler</code></pre>
+    <pre><code class="lang-csharp hljs">public class GGVPointer : InputSystemGlobalHandlerListener, IMixedRealityPointer, IEqualityComparer, IMixedRealityInputHandler, IMixedRealityBaseInputHandler, IMixedRealityInputHandler&lt;MixedRealityPose&gt;, IMixedRealitySourceStateHandler, IEventSystemHandler</code></pre>
   </div>
+  <h5 id="Microsoft_MixedReality_Toolkit_Input_GGVPointer_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>This pointer's position is given by hand position (grip pose),
+and the input focus is given by head gaze.</p>
+</div>
   <h3 id="properties">Properties
   </h3>
   
@@ -731,33 +739,6 @@
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Input_GGVPointer_OnInputPressed_" data-uid="Microsoft.MixedReality.Toolkit.Input.GGVPointer.OnInputPressed*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_GGVPointer_OnInputPressed_Microsoft_MixedReality_Toolkit_Input_InputEventData_System_Single__" data-uid="Microsoft.MixedReality.Toolkit.Input.GGVPointer.OnInputPressed(Microsoft.MixedReality.Toolkit.Input.InputEventData{System.Single})">OnInputPressed(InputEventData&lt;Single&gt;)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnInputPressed(InputEventData&lt;float&gt; eventData)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputEventData-1.html">InputEventData</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a>&gt;</td>
-        <td><span class="parametername">eventData</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_Input_GGVPointer_OnInputUp_" data-uid="Microsoft.MixedReality.Toolkit.Input.GGVPointer.OnInputUp*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_GGVPointer_OnInputUp_Microsoft_MixedReality_Toolkit_Input_InputEventData_" data-uid="Microsoft.MixedReality.Toolkit.Input.GGVPointer.OnInputUp(Microsoft.MixedReality.Toolkit.Input.InputEventData)">OnInputUp(InputEventData)</h4>
   <div class="markdown level1 summary"><p>Input Up updates from Interactions, Keys, or any other simple input.</p>
@@ -779,33 +760,6 @@
     <tbody>
       <tr>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputEventData.html">InputEventData</a></td>
-        <td><span class="parametername">eventData</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_GGVPointer_OnPositionInputChanged_" data-uid="Microsoft.MixedReality.Toolkit.Input.GGVPointer.OnPositionInputChanged*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_GGVPointer_OnPositionInputChanged_Microsoft_MixedReality_Toolkit_Input_InputEventData_Vector2__" data-uid="Microsoft.MixedReality.Toolkit.Input.GGVPointer.OnPositionInputChanged(Microsoft.MixedReality.Toolkit.Input.InputEventData{Vector2})">OnPositionInputChanged(InputEventData&lt;Vector2&gt;)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnPositionInputChanged(InputEventData&lt;Vector2&gt; eventData)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputEventData-1.html">InputEventData</a>&lt;<span class="xref">Vector2</span>&gt;</td>
         <td><span class="parametername">eventData</span></td>
         <td></td>
       </tr>
@@ -845,7 +799,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Input_GGVPointer_OnSourceDetected_" data-uid="Microsoft.MixedReality.Toolkit.Input.GGVPointer.OnSourceDetected*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_GGVPointer_OnSourceDetected_Microsoft_MixedReality_Toolkit_Input_SourceStateEventData_" data-uid="Microsoft.MixedReality.Toolkit.Input.GGVPointer.OnSourceDetected(Microsoft.MixedReality.Toolkit.Input.SourceStateEventData)">OnSourceDetected(SourceStateEventData)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Raised when a source is detected.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -872,7 +827,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Input_GGVPointer_OnSourceLost_" data-uid="Microsoft.MixedReality.Toolkit.Input.GGVPointer.OnSourceLost*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_GGVPointer_OnSourceLost_Microsoft_MixedReality_Toolkit_Input_SourceStateEventData_" data-uid="Microsoft.MixedReality.Toolkit.Input.GGVPointer.OnSourceLost(Microsoft.MixedReality.Toolkit.Input.SourceStateEventData)">OnSourceLost(SourceStateEventData)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Raised when a source is lost.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -897,141 +853,6 @@
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Input_GGVPointer_OnSourcePoseChanged_" data-uid="Microsoft.MixedReality.Toolkit.Input.GGVPointer.OnSourcePoseChanged*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_GGVPointer_OnSourcePoseChanged_Microsoft_MixedReality_Toolkit_Input_SourcePoseEventData_Microsoft_MixedReality_Toolkit_TrackingState__" data-uid="Microsoft.MixedReality.Toolkit.Input.GGVPointer.OnSourcePoseChanged(Microsoft.MixedReality.Toolkit.Input.SourcePoseEventData{Microsoft.MixedReality.Toolkit.TrackingState})">OnSourcePoseChanged(SourcePoseEventData&lt;TrackingState&gt;)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnSourcePoseChanged(SourcePoseEventData&lt;TrackingState&gt; eventData)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SourcePoseEventData-1.html">SourcePoseEventData</a>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.TrackingState.html">TrackingState</a>&gt;</td>
-        <td><span class="parametername">eventData</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_GGVPointer_OnSourcePoseChanged_" data-uid="Microsoft.MixedReality.Toolkit.Input.GGVPointer.OnSourcePoseChanged*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_GGVPointer_OnSourcePoseChanged_Microsoft_MixedReality_Toolkit_Input_SourcePoseEventData_MixedRealityPose__" data-uid="Microsoft.MixedReality.Toolkit.Input.GGVPointer.OnSourcePoseChanged(Microsoft.MixedReality.Toolkit.Input.SourcePoseEventData{MixedRealityPose})">OnSourcePoseChanged(SourcePoseEventData&lt;MixedRealityPose&gt;)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnSourcePoseChanged(SourcePoseEventData&lt;MixedRealityPose&gt; eventData)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SourcePoseEventData-1.html">SourcePoseEventData</a>&lt;<span class="xref">MixedRealityPose</span>&gt;</td>
-        <td><span class="parametername">eventData</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_GGVPointer_OnSourcePoseChanged_" data-uid="Microsoft.MixedReality.Toolkit.Input.GGVPointer.OnSourcePoseChanged*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_GGVPointer_OnSourcePoseChanged_Microsoft_MixedReality_Toolkit_Input_SourcePoseEventData_Quaternion__" data-uid="Microsoft.MixedReality.Toolkit.Input.GGVPointer.OnSourcePoseChanged(Microsoft.MixedReality.Toolkit.Input.SourcePoseEventData{Quaternion})">OnSourcePoseChanged(SourcePoseEventData&lt;Quaternion&gt;)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnSourcePoseChanged(SourcePoseEventData&lt;Quaternion&gt; eventData)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SourcePoseEventData-1.html">SourcePoseEventData</a>&lt;<span class="xref">Quaternion</span>&gt;</td>
-        <td><span class="parametername">eventData</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_GGVPointer_OnSourcePoseChanged_" data-uid="Microsoft.MixedReality.Toolkit.Input.GGVPointer.OnSourcePoseChanged*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_GGVPointer_OnSourcePoseChanged_Microsoft_MixedReality_Toolkit_Input_SourcePoseEventData_Vector2__" data-uid="Microsoft.MixedReality.Toolkit.Input.GGVPointer.OnSourcePoseChanged(Microsoft.MixedReality.Toolkit.Input.SourcePoseEventData{Vector2})">OnSourcePoseChanged(SourcePoseEventData&lt;Vector2&gt;)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnSourcePoseChanged(SourcePoseEventData&lt;Vector2&gt; eventData)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SourcePoseEventData-1.html">SourcePoseEventData</a>&lt;<span class="xref">Vector2</span>&gt;</td>
-        <td><span class="parametername">eventData</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_GGVPointer_OnSourcePoseChanged_" data-uid="Microsoft.MixedReality.Toolkit.Input.GGVPointer.OnSourcePoseChanged*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_GGVPointer_OnSourcePoseChanged_Microsoft_MixedReality_Toolkit_Input_SourcePoseEventData_Vector3__" data-uid="Microsoft.MixedReality.Toolkit.Input.GGVPointer.OnSourcePoseChanged(Microsoft.MixedReality.Toolkit.Input.SourcePoseEventData{Vector3})">OnSourcePoseChanged(SourcePoseEventData&lt;Vector3&gt;)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnSourcePoseChanged(SourcePoseEventData&lt;Vector3&gt; eventData)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SourcePoseEventData-1.html">SourcePoseEventData</a>&lt;<span class="xref">Vector3</span>&gt;</td>
-        <td><span class="parametername">eventData</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_Input_GGVPointer_RegisterHandlers_" data-uid="Microsoft.MixedReality.Toolkit.Input.GGVPointer.RegisterHandlers*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_GGVPointer_RegisterHandlers" data-uid="Microsoft.MixedReality.Toolkit.Input.GGVPointer.RegisterHandlers">RegisterHandlers()</h4>
   <div class="markdown level1 summary"></div>
@@ -1042,18 +863,6 @@
   </div>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.html#Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_RegisterHandlers">InputSystemGlobalHandlerListener.RegisterHandlers()</a></div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_GGVPointer_Start_" data-uid="Microsoft.MixedReality.Toolkit.Input.GGVPointer.Start*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_GGVPointer_Start" data-uid="Microsoft.MixedReality.Toolkit.Input.GGVPointer.Start">Start()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override void Start()</code></pre>
-  </div>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.html#Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_Start">InputSystemGlobalHandlerListener.Start()</a></div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_GGVPointer_UnregisterHandlers_" data-uid="Microsoft.MixedReality.Toolkit.Input.GGVPointer.UnregisterHandlers*"></a>
@@ -1081,9 +890,6 @@
   </div>
   <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler-1.html">IMixedRealityInputHandler&lt;T&gt;</a>
-  </div>
-  <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourcePoseHandler.html">IMixedRealitySourcePoseHandler</a>
   </div>
   <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourceStateHandler.html">IMixedRealitySourceStateHandler</a>
