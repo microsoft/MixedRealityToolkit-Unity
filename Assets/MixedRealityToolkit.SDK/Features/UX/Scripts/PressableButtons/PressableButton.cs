@@ -37,7 +37,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         [SerializeField]
         [Tooltip("Describes in which coordinate space the plane distances are stored and calculated")]
-        [HideInInspector]
         private SpaceMode distanceSpaceMode = SpaceMode.Local;
 
         /// <summary>

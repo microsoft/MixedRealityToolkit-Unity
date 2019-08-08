@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 
@@ -59,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static Vector3[] releasePlaneVertices = new Vector3[4];
 
         private static readonly GUIContent DistanceSpaceModeLabel = new GUIContent("Coordinate Space Mode");
-        private static readonly string[] excludeProperties = new string[] { "movingButtonVisuals", "m_Script" };
+        private static readonly string[] excludeProperties = new string[] { "distanceSpaceMode", "movingButtonVisuals", "m_Script" };
 
         private void OnEnable()
         {
@@ -247,6 +248,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public override void OnInspectorGUI()
         {
+            serializedObject.Update();
+
             EditorGUILayout.Space();
             EditorGUILayout.PropertyField(movingButtonVisuals);
             EditorGUILayout.LabelField("Press Settings", EditorStyles.boldLabel);
@@ -255,15 +258,19 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Utilize EditorGUI.BeginProperty to keep prefab bolding and other editor field tracking
             EditorGUI.BeginProperty(pos, DistanceSpaceModeLabel, distanceSpaceMode);
             {
+                PressableButton.SpaceMode currentMode = button.DistanceSpaceMode;
                 // If user changes space mode, we want to call the property which will update the distance value appropriately
-                var spaceMode = (PressableButton.SpaceMode)EditorGUI.EnumPopup(pos, DistanceSpaceModeLabel, button.DistanceSpaceMode);
-                if (spaceMode != button.DistanceSpaceMode)
+                var spaceMode = (PressableButton.SpaceMode)EditorGUI.EnumPopup(pos, DistanceSpaceModeLabel, currentMode);
+                if (spaceMode != currentMode)
                 {
                     button.DistanceSpaceMode = spaceMode;
                     distanceSpaceMode.enumValueIndex = (int)spaceMode;
                 }
             }
             EditorGUI.EndProperty();
+
+            // Leveraging button.DistanceSpaceMode setter modifies other component properties that need to be refreshed
+            serializedObject.ApplyModifiedProperties();
             serializedObject.Update();
 
             DrawPropertiesExcluding(serializedObject, excludeProperties);
@@ -307,6 +314,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                 EditorGUI.EndDisabledGroup();
             }
+
+            serializedObject.ApplyModifiedProperties();
         }
 
         private bool IsMouseOverQuad(ButtonInfo info, Vector3 halfExtents, Vector3 centerLocal)
