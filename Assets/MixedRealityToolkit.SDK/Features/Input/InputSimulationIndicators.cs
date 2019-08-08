@@ -88,12 +88,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public void ResetLeftHand()
         {
-            InputSimService.HandRotationLeft = Quaternion.identity;
+            InputSimService.ResetHandLeft();
         }
 
         public void ResetRightHand()
         {
-            InputSimService.HandRotationRight = Quaternion.identity;
+            InputSimService.ResetHandRight();
         }
     }
 }

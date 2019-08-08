@@ -59,16 +59,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
-        public Quaternion HandRotationLeft
+        public void ResetHandLeft()
         {
-            get => handDataProvider != null ? handDataProvider.HandRotationLeft : Quaternion.identity;
-            set { if (handDataProvider != null) { handDataProvider.HandRotationLeft = value; } }
+            if (handDataProvider != null)
+            {
+                handDataProvider.ResetHand(Handedness.Left);
+            }
         }
         /// <inheritdoc />
-        public Quaternion HandRotationRight
+        public void ResetHandRight()
         {
-            get => handDataProvider != null ? handDataProvider.HandRotationRight : Quaternion.identity;
-            set { if (handDataProvider != null) { handDataProvider.HandRotationRight = value; } }
+            if (handDataProvider != null)
+            {
+                handDataProvider.ResetHand(Handedness.Right);
+            }
         }
 
         /// <summary>

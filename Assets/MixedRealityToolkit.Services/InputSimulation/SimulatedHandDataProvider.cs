@@ -71,15 +71,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             handedness = _handedness;
         }
 
-        public void Reset()
-        {
-            ViewportPosition = Vector3.zero;
-            ViewportRotation = Quaternion.identity;
-            JitterOffset = Vector3.zero;
-
-            ResetGesture();
-        }
-
         public void SimulateInput(Vector3 mouseDelta, float noiseAmount, Vector3 rotationDeltaEulerAngles)
         {
             Vector3 screenPosition = CameraCache.Main.ViewportToScreenPoint(ViewportPosition);
@@ -145,19 +136,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public bool IsAlwaysVisibleRight = false;
 
-        public Quaternion HandRotationLeft
-        {
-            get => HandStateLeft.ViewportRotation;
-            set => HandStateLeft.ViewportRotation = value;
-        }
-        public Quaternion HandRotationRight
-        {
-            get => HandStateRight.ViewportRotation;
-            set => HandStateRight.ViewportRotation = value;
-        }
-
-        private SimulatedHandState HandStateLeft;
-        private SimulatedHandState HandStateRight;
+        internal SimulatedHandState HandStateLeft;
+        internal SimulatedHandState HandStateRight;
 
         // If true then hands are controlled by user input
         private bool isSimulatingLeft = false;
@@ -192,9 +172,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             HandStateLeft.Gesture = profile.DefaultHandGesture;
             HandStateRight.Gesture = profile.DefaultHandGesture;
-
-            HandStateLeft.Reset();
-            HandStateRight.Reset();
         }
 
         /// <summary>
@@ -329,16 +306,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             bool enableTracking = isAlwaysVisible || isSimulating;
             if (!state.IsTracked && enableTracking)
             {
-                if (isSimulating)
-                {
-                    // Start at current mouse position
-                    Vector3 mousePos = UnityEngine.Input.mousePosition;
-                    state.ViewportPosition = CameraCache.Main.ScreenToViewportPoint(new Vector3(mousePos.x, mousePos.y, profile.DefaultHandDistance));
-                }
-                else
-                {
-                    state.ViewportPosition = new Vector3(0.5f, 0.5f, profile.DefaultHandDistance);
-                }
+                ResetHand(state, isSimulating);
             }
 
             if (isSimulating)
@@ -375,6 +343,37 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     state.IsTracked = false;
                 }
             }
+        }
+
+        public void ResetHand(Handedness handedness)
+        {
+            if (handedness == Handedness.Left)
+            {
+                ResetHand(HandStateLeft, isSimulatingLeft);
+            }
+            else
+            {
+                ResetHand(HandStateRight, isSimulatingRight);
+            }
+        }
+
+        private void ResetHand(SimulatedHandState state, bool isSimulating)
+        {
+            if (isSimulating)
+            {
+                // Start at current mouse position
+                Vector3 mousePos = UnityEngine.Input.mousePosition;
+                state.ViewportPosition = CameraCache.Main.ScreenToViewportPoint(new Vector3(mousePos.x, mousePos.y, profile.DefaultHandDistance));
+            }
+            else
+            {
+                state.ViewportPosition = new Vector3(0.5f, 0.5f, profile.DefaultHandDistance);
+            }
+
+            state.ViewportRotation = Quaternion.identity;
+
+            state.Gesture = profile.DefaultHandGesture;
+            state.ResetGesture();
         }
 
         /// <summary>

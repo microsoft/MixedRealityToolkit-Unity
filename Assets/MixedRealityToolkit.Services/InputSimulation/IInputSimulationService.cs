@@ -45,12 +45,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         bool IsAlwaysVisibleHandRight { get; set; }
 
         /// <summary>
-        /// Rotation of the left hand.
+        /// Reset the left hand.
         /// </summary>
-        Quaternion HandRotationLeft { get; set; }
+        void ResetHandLeft();
         /// <summary>
-        /// Rotation of the right hand.
+        /// Reset the right hand.
         /// </summary>
-        Quaternion HandRotationRight { get; set; }
+        void ResetHandRight();
     }
 }
