@@ -1,14 +1,21 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-using System.Collections;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Teleport;
 using Microsoft.MixedReality.Toolkit.Physics;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using System.Collections;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    /// <summary>
+    /// This class allows for HoloLens 1 style input, using a far gaze ray
+    /// for focus with hand and gesture-based input and interaction across it.
+    /// </summary>
+    /// <remarks>
+    /// This pointer's position is given by hand position (grip pose),
+    /// and the input focus is given by head gaze.
+    /// </remarks>
     public class GGVPointer : InputSystemGlobalHandlerListener,
         IMixedRealityPointer,
         IMixedRealityInputHandler,
