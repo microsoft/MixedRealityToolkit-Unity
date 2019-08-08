@@ -5481,7 +5481,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/UpdatingToGA.html",
-          "hash": "BYQxzmQ9ObhlgwG0Zegm1Q=="
+          "hash": "673KyQLnfyebA21FYKD42g=="
         }
       },
       "is_incremental": false,
@@ -13972,6 +13972,42 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.Editor.InteractableInspector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.Editor.InteractableInspector.html",
+          "hash": "5BY+c2NRZL8EvixgIfhQOw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.Editor.InteractableOnFocusInspector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.Editor.InteractableOnFocusInspector.html",
+          "hash": "WfzjPSljtbrifgHQdjtcyA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.Editor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.Editor.html",
+          "hash": "nciIj63Ty6kMNX378CAFTg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.FollowMeToggle.yml",
       "output": {
         ".html": {
@@ -14096,7 +14132,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.Interactable.html",
-          "hash": "ZeKZcuEzc2tyACeZWxhQAQ=="
+          "hash": "iRkTvve4ovz07/vt8cYNHA=="
         }
       },
       "is_incremental": false,
@@ -14289,6 +14325,18 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.InteractableOnClickReceiver.html",
           "hash": "1zk6tMafZxNUuOa4SBFoKg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.InteractableOnFocus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.InteractableOnFocus.html",
+          "hash": "kCWcbZcre9u0u0W+Db5xAA=="
         }
       },
       "is_incremental": false,
@@ -14588,7 +14636,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.InteractableThemePropertyValueTypes.html",
-          "hash": "/bUR/YCvxjbW79/LGHo9kg=="
+          "hash": "l/doyMpgMomkvUyvyWDBmw=="
         }
       },
       "is_incremental": false,
@@ -15256,11 +15304,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.VisualProfile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.VisualProfile.html",
+          "hash": "LQ4gzbCAY61OndugX+N89A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.html",
-          "hash": "AnovV+Ra2kon93O6CJDt6w=="
+          "hash": "Xs/tWLIg/AAAk4UUP/hLNg=="
         }
       },
       "is_incremental": false,
@@ -15884,7 +15944,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.html",
-          "hash": "AGwAvQHLRGALfKAIoNGrYA=="
+          "hash": "oiRuk9ieKEggrRDqfildfA=="
         }
       },
       "is_incremental": false,
@@ -18356,7 +18416,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "p5n+8xOg6kBbEUFSBmk8Kg=="
+          "hash": "F2kJCEAWULjiN3Sl/AKmlw=="
         }
       },
       "is_incremental": false,
@@ -18408,10 +18468,17 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1068,
+          "total_file_count": 1073,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
@@ -18423,13 +18490,6 @@
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0

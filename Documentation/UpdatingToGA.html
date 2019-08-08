@@ -92,6 +92,7 @@
 <ul>
 <li><a href="#event-system">Event System</a></li>
 <li><a href="#spatial-awareness">Spatial Awareness</a></li>
+<li><a href="#solvers">Solvers</a></li>
 <li><a href="#clipping-sphere">Clipping Sphere</a></li>
 </ul>
 <h3 id="event-system">Event System</h3>
@@ -240,19 +241,15 @@ This is the distance and which the PokePointer can interact with touchables. Pre
 This makes it clear that PokeThreshold is the counterpart to DebounceThreshold. A touchable is activated when the PokeThreshold is crossed, and released when DebounceThreshold is crossed.</li>
 </ul>
 <h3 id="readonlyattribute">ReadOnlyAttribute</h3>
-<ul>
-<li>The <code>Microsoft.MixedReality.Toolkit</code> namespace has been added to <code>ReadOnlyAttribute</code>, <code>BeginReadOnlyGroupAttribute</code>, and <code>EndReadOnlyGroupAttribute</code>.</li>
-</ul>
+<p>The <code>Microsoft.MixedReality.Toolkit</code> namespace has been added to <code>ReadOnlyAttribute</code>, <code>BeginReadOnlyGroupAttribute</code>, and <code>EndReadOnlyGroupAttribute</code>.</p>
 <h3 id="pointerclickhandler">PointerClickHandler</h3>
 <p>The <code>PointerClickHandler</code> class has been deprecated. The <code>PointerHandler</code> should be used instead, it provides the same functionality.</p>
 <h3 id="hololens-clicker-support">HoloLens clicker support</h3>
-<ul>
-<li>The HoloLens clicker's controller mappings have changed from being an unhanded <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityController.html"><code>WindowsMixedRealityController</code></a> to being an unhanded <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityGGVHand.html"><code>WindowsMixedRealityGGVHand</code></a>. To account for this, an automatic updater will run the first time you open your ControllerMapping profile. Please open any custom profiles at least once after upgrading to GA in order to trigger this one-time migration step.</li>
-</ul>
+<p>The HoloLens clicker's controller mappings have changed from being an unhanded <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityController.html"><code>WindowsMixedRealityController</code></a> to being an unhanded <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityGGVHand.html"><code>WindowsMixedRealityGGVHand</code></a>. To account for this, an automatic updater will run the first time you open your ControllerMapping profile. Please open any custom profiles at least once after upgrading to GA in order to trigger this one-time migration step.</p>
+<h3 id="interactablehighlight">InteractableHighlight</h3>
+<p>The <code>InteractableHighlight</code> class has been deprecated. The <code>InteractableOnFocus</code> class and <code>FocusInteractableStates</code> asset should be used instead. To create a new <code>Theme</code> asset for the <code>InteractableOnFocus</code>, right click in the project window and select <em>Create</em> &gt; <em>Mixed Reality Toolkit</em> &gt; <em>Interactable</em> &gt; <em>Theme</em>.</p>
 <h3 id="handinteractionpanzoom">HandInteractionPanZoom</h3>
-<ul>
-<li><code>HandInteractionPanZoom</code> has been moved to the UI namespace as it was not an input component. <code>HandPanEventData</code> has also been moved into this namespace, and simplified to correspond with other UI event data.</li>
-</ul>
+<p><code>HandInteractionPanZoom</code> has been moved to the UI namespace as it was not an input component. <code>HandPanEventData</code> has also been moved into this namespace, and simplified to correspond with other UI event data.</p>
 <h2 id="assembly-name-changes">Assembly name changes</h2>
 <p>In The GA release, all of the official Mixed Reality Toolkit assembly names and their associated assembly definition (.asmdef) files have been updated to fit the following pattern.</p>
 <pre><code class="lang-c#">Microsoft.MixedReality.Toolkit[.&lt;name&gt;]
