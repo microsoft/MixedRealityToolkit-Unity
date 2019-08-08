@@ -95,19 +95,44 @@
     <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html">BaseService</a></div>
     <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseEventSystem.html">BaseEventSystem</a></div>
     <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseCoreSystem.html">BaseCoreSystem</a></div>
-    <div class="level4"><span class="xref">MixedRealitySpatialAwarenessSystem</span></div>
+    <div class="level4"><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseDataProviderAccessCoreSystem.html">BaseDataProviderAccessCoreSystem</a></div>
+    <div class="level5"><span class="xref">MixedRealitySpatialAwarenessSystem</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess.html">IMixedRealityDataProviderAccess</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSystem.html">IMixedRealitySpatialAwarenessSystem</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.html">IMixedRealityEventSystem</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a></div>
     <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
-    <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess.html">IMixedRealityDataProviderAccess</a></div>
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityCapabilityCheck.html">IMixedRealityCapabilityCheck</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseDataProviderAccessCoreSystem.html#Microsoft_MixedReality_Toolkit_BaseDataProviderAccessCoreSystem_Update">BaseDataProviderAccessCoreSystem.Update()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseDataProviderAccessCoreSystem.html#Microsoft_MixedReality_Toolkit_BaseDataProviderAccessCoreSystem_LateUpdate">BaseDataProviderAccessCoreSystem.LateUpdate()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseDataProviderAccessCoreSystem.html#Microsoft_MixedReality_Toolkit_BaseDataProviderAccessCoreSystem_GetDataProviders">BaseDataProviderAccessCoreSystem.GetDataProviders()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseDataProviderAccessCoreSystem.html#Microsoft_MixedReality_Toolkit_BaseDataProviderAccessCoreSystem_GetDataProvider_System_String_">BaseDataProviderAccessCoreSystem.GetDataProvider(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseDataProviderAccessCoreSystem.html#Microsoft_MixedReality_Toolkit_BaseDataProviderAccessCoreSystem_RegisterDataProvider__1_System_Type_SupportedPlatforms_System_Object___">BaseDataProviderAccessCoreSystem.RegisterDataProvider&lt;T&gt;(Type, SupportedPlatforms, Object[])</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseDataProviderAccessCoreSystem.html#Microsoft_MixedReality_Toolkit_BaseDataProviderAccessCoreSystem_RegisterDataProvider__1___0_">BaseDataProviderAccessCoreSystem.RegisterDataProvider&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseDataProviderAccessCoreSystem.html#Microsoft_MixedReality_Toolkit_BaseDataProviderAccessCoreSystem_UnregisterDataProvider__1_System_String_">BaseDataProviderAccessCoreSystem.UnregisterDataProvider&lt;T&gt;(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseDataProviderAccessCoreSystem.html#Microsoft_MixedReality_Toolkit_BaseDataProviderAccessCoreSystem_UnregisterDataProvider__1___0_">BaseDataProviderAccessCoreSystem.UnregisterDataProvider&lt;T&gt;(T)</a>
+    </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseCoreSystem.html#Microsoft_MixedReality_Toolkit_BaseCoreSystem_Registrar">BaseCoreSystem.Registrar</a>
     </div>
@@ -148,12 +173,6 @@
       <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_ConfigurationProfile">BaseService.ConfigurationProfile</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Update">BaseService.Update()</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_LateUpdate">BaseService.LateUpdate()</a>
-    </div>
-    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_disposed">BaseService.disposed</a>
     </div>
     <div>
@@ -188,8 +207,7 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_MixedRealitySpatialAwarenessSystem_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[DocLink(&quot;https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html&quot;)]
-public class MixedRealitySpatialAwarenessSystem : BaseCoreSystem, IMixedRealitySpatialAwarenessSystem, IMixedRealityEventSystem, IMixedRealityService, IDisposable, IMixedRealityDataProviderAccess, IMixedRealityCapabilityCheck</code></pre>
+    <pre><code class="lang-csharp hljs">public class MixedRealitySpatialAwarenessSystem : BaseDataProviderAccessCoreSystem, IMixedRealityDataProviderAccess, IMixedRealitySpatialAwarenessSystem, IMixedRealityEventSystem, IMixedRealityService, IDisposable, IMixedRealityCapabilityCheck</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -470,7 +488,7 @@ is used to enable observations to be grouped by observer.</p>
     <pre><code class="lang-csharp hljs">public override void Enable()</code></pre>
   </div>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Enable">BaseService.Enable()</a></div>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseDataProviderAccessCoreSystem.html#Microsoft_MixedReality_Toolkit_BaseDataProviderAccessCoreSystem_Enable">BaseDataProviderAccessCoreSystem.Enable()</a></div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_MixedRealitySpatialAwarenessSystem_GenerateNewSourceId_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessSystem.GenerateNewSourceId*"></a>
@@ -504,61 +522,13 @@ is used to enable observations to be grouped by observer.</p>
   
   
   <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_MixedRealitySpatialAwarenessSystem_GetDataProvider_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessSystem.GetDataProvider*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_MixedRealitySpatialAwarenessSystem_GetDataProvider_System_String_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessSystem.GetDataProvider(System.String)">GetDataProvider(String)</h4>
-  <div class="markdown level1 summary"><p>Get the data provider that is registered under the specified name.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IMixedRealityDataProvider GetDataProvider(string name)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">name</span></td>
-        <td><p>The friendly name of the data provider.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html">IMixedRealityDataProvider</a></td>
-        <td><p>The requested data provider, or null if one cannot be found.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_MixedRealitySpatialAwarenessSystem_GetDataProvider_System_String__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>If more than one data provider is registered under the specified name, the first will be returned.</p>
-</div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_MixedRealitySpatialAwarenessSystem_GetDataProvider_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessSystem.GetDataProvider*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_MixedRealitySpatialAwarenessSystem_GetDataProvider__1_System_String_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessSystem.GetDataProvider``1(System.String)">GetDataProvider&lt;T&gt;(String)</h4>
   <div class="markdown level1 summary"><p>Get the data provider that is registered under the specified name (optional) and matching the specified type.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public T GetDataProvider&lt;T&gt;(string name = null)
+    <pre><code class="lang-csharp hljs">public override T GetDataProvider&lt;T&gt;(string name = null)
     where T : IMixedRealityDataProvider</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -611,36 +581,11 @@ is used to enable observations to be grouped by observer.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseDataProviderAccessCoreSystem.html#Microsoft_MixedReality_Toolkit_BaseDataProviderAccessCoreSystem_GetDataProvider__1_System_String_">BaseDataProviderAccessCoreSystem.GetDataProvider&lt;T&gt;(String)</a></div>
   <h5 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_MixedRealitySpatialAwarenessSystem_GetDataProvider__1_System_String__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>If more than one data provider is registered under the specified name, the first will be returned.</p>
 </div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_MixedRealitySpatialAwarenessSystem_GetDataProviders_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessSystem.GetDataProviders*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_MixedRealitySpatialAwarenessSystem_GetDataProviders" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessSystem.GetDataProviders">GetDataProviders()</h4>
-  <div class="markdown level1 summary"><p>Gets the collection of registered data providers.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IReadOnlyList&lt;IMixedRealityDataProvider&gt; GetDataProviders()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html">IMixedRealityDataProvider</a>&gt;</td>
-        <td><p>Read only copy of the list of registered data providers.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_MixedRealitySpatialAwarenessSystem_GetDataProviders_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessSystem.GetDataProviders*"></a>
@@ -650,7 +595,7 @@ is used to enable observations to be grouped by observer.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IReadOnlyList&lt;T&gt; GetDataProviders&lt;T&gt;()
+    <pre><code class="lang-csharp hljs">public override IReadOnlyList&lt;T&gt; GetDataProviders&lt;T&gt;()
     where T : IMixedRealityDataProvider</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
@@ -685,6 +630,8 @@ is used to enable observations to be grouped by observer.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseDataProviderAccessCoreSystem.html#Microsoft_MixedReality_Toolkit_BaseDataProviderAccessCoreSystem_GetDataProviders__1">BaseDataProviderAccessCoreSystem.GetDataProviders&lt;T&gt;()</a></div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_MixedRealitySpatialAwarenessSystem_GetObserver_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessSystem.GetObserver*"></a>
@@ -895,7 +842,7 @@ This method is called once all services have been registered in the Mixed Realit
     <pre><code class="lang-csharp hljs">public override void Reset()</code></pre>
   </div>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html#Microsoft_MixedReality_Toolkit_BaseService_Reset">BaseService.Reset()</a></div>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseDataProviderAccessCoreSystem.html#Microsoft_MixedReality_Toolkit_BaseDataProviderAccessCoreSystem_Reset">BaseDataProviderAccessCoreSystem.Reset()</a></div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_MixedRealitySpatialAwarenessSystem_ResumeObserver_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessSystem.ResumeObserver*"></a>
@@ -1067,6 +1014,9 @@ This method is called once all services have been registered in the Mixed Realit
   </table>
   <h3 id="implements">Implements</h3>
   <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess.html">IMixedRealityDataProviderAccess</a>
+  </div>
+  <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSystem.html">IMixedRealitySpatialAwarenessSystem</a>
   </div>
   <div>
@@ -1077,9 +1027,6 @@ This method is called once all services have been registered in the Mixed Realit
   </div>
   <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
-  </div>
-  <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess.html">IMixedRealityDataProviderAccess</a>
   </div>
   <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityCapabilityCheck.html">IMixedRealityCapabilityCheck</a>
