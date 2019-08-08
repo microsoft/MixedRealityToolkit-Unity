@@ -326,9 +326,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             bool enableTracking = isAlwaysVisible || isSimulating;
             if (!state.IsTracked && enableTracking)
             {
-                // Start at current mouse position
-                Vector3 mousePos = UnityEngine.Input.mousePosition;
-                state.ScreenPosition = new Vector3(mousePos.x, mousePos.y, profile.DefaultHandDistance);
+                if (isSimulating)
+                {
+                    // Start at current mouse position
+                    Vector3 mousePos = UnityEngine.Input.mousePosition;
+                    state.ScreenPosition = new Vector3(mousePos.x, mousePos.y, profile.DefaultHandDistance);
+                }
+                else
+                {
+                    state.ScreenPosition = CameraCache.Main.ViewportToScreenPoint(new Vector3(0.5f, 0.5f, profile.DefaultHandDistance));
+                }
             }
 
             if (isSimulating)
