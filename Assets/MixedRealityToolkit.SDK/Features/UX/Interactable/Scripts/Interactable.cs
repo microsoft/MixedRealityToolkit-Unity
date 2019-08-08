@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     // TODO: Make sure all shader values are batched by theme
 
     [System.Serializable]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Interactable.html")]
     public class Interactable :
         MonoBehaviour,
         IMixedRealityFocusChangedHandler,
@@ -377,7 +377,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         /// <param name="keywords"></param>
         /// <returns></returns>
-        public static bool TryGetSpeechKeywords(out GUIContent[] keywords)
+        public static bool TryGetSpeechKeywords(out string[] keywords)
         {
             SpeechCommands[] commands;
             if (!TryGetMixedRealitySpeechCommands(out commands))
@@ -386,13 +386,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return false;
             }
 
-            List<GUIContent> keys = new List<GUIContent>();
+            List<string> keys = new List<string>();
+            keys.Add("(No Selection)");
+
             for (var i = 0; i < commands.Length; i++)
             {
-                keys.Add(new GUIContent(commands[i].Keyword));
+                keys.Add(commands[i].Keyword);
             }
 
-            keys.Insert(0, new GUIContent("(No Selection)"));
             keywords = keys.ToArray();
             return true;
         }
@@ -452,6 +453,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (focusingPointers.Count == 0)
             {
                 ResetBaseStates();
+                ForceUpdateThemes();
             }
         }
 
@@ -893,7 +895,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             SetObservation(false);
             SetObservationTargeted(false);
             SetInteractive(false);
-            SetCustom(false);
             SetTargeted(false);
             SetToggled(false);
             SetVisited(false);

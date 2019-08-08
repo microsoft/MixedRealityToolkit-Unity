@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         /// <returns></returns>
         [UnityTest]
-        public IEnumerator Test01_ManipulationHandlerInstantiate()
+        public IEnumerator ManipulationHandlerInstantiate()
         {
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one * 0.2f;
@@ -63,9 +63,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         /// <returns></returns>
         [UnityTest]
-        public IEnumerator Test02_ManipulationHandlerGazeHover()
+        public IEnumerator ManipulationHandlerGazeHover()
         {
-
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one * 0.2f;
 
@@ -697,6 +696,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Collect data for unmodified cube
             OriginOffsetTest expectedTest = new OriginOffsetTest();
             yield return expectedTest.RecordTransformValues(testObject);
+            yield return null;
 
             // Modify cube mesh so origin is offset from centre
             Vector3 offset = Vector3.one * 5;
@@ -718,6 +718,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Collect data for modified cube
             OriginOffsetTest actualTest = new OriginOffsetTest();
             yield return actualTest.RecordTransformValues(testObject);
+            yield return null;
 
             // Test that the results of both tests are equal
             var expectedData = expectedTest.data;
@@ -732,8 +733,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 TestUtilities.AssertAboutEqual(expectedData[i].scale, actualData[i].scale, $"Failed for scale of object for {actualData[i].manipDescription}");
             }
         }
-		
-		/// <summary>
+
+        /// <summary>
         /// This tests the minimum and maximum scaling for manipulation.
         /// This test will scale a cube with two hand manipulation and ensure that
         /// maximum and minimum scales are not exceeded.

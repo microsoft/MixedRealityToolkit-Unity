@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         Int,
         Color,
         ShaderFloat,
-        shaderRange,
+        ShaderRange,
         Vector2,
         Vector3,
         Vector4,

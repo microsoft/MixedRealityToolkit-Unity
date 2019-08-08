@@ -14,6 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Creates a floating tooltip that is attached to an object and moves to stay in view as object rotates with respect to the view.
     /// </summary>
     [ExecuteAlways]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Tooltip.html")]
     public class ToolTip : MonoBehaviour
     {
         [SerializeField]

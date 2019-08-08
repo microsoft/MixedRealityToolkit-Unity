@@ -106,14 +106,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         public void UpdateVelocity(InteractionSourceState interactionSourceState)
         {
             Vector3 newVelocity;
-            bool isVelocityValid = interactionSourceState.sourcePose.TryGetVelocity(out newVelocity);
-            if (isVelocityValid)
+            if (interactionSourceState.sourcePose.TryGetVelocity(out newVelocity))
             {
                 Velocity = newVelocity;
             }
             Vector3 newAngularVelocity;
-            bool isAngularVelocityValid = interactionSourceState.sourcePose.TryGetAngularVelocity(out newAngularVelocity);
-            if(isAngularVelocityValid)
+            if (interactionSourceState.sourcePose.TryGetAngularVelocity(out newAngularVelocity))
             {
                 AngularVelocity = newAngularVelocity;
             }
@@ -228,11 +226,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             {
                 case AxisType.SixDof:
                 {
-                    interactionSourceState.sourcePose.TryGetPosition(out currentGripPosition, InteractionSourceNode.Grip);
-                    interactionSourceState.sourcePose.TryGetRotation(out currentGripRotation, InteractionSourceNode.Grip);
-
-                    currentGripPose.Position = MixedRealityPlayspace.TransformPoint(currentGripPosition);
-                    currentGripPose.Rotation = Quaternion.Euler(MixedRealityPlayspace.TransformDirection(currentGripRotation.eulerAngles));
+                    // The data queried in UpdateSourceData is the grip pose.
+                    // Reuse that data to save two method calls and transforms.
+                    currentGripPose.Position = currentSourcePosition;
+                    currentGripPose.Rotation = currentSourceRotation;
 
                     // Update the interaction data source
                     interactionMapping.PoseData = currentGripPose;
@@ -347,7 +344,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         private bool GetSelectPressedWorkaround(InteractionSourceState interactionSourceState)
         {
             bool selectPressed = interactionSourceState.selectPressed;
-            if (interactionSourceState.source.kind == InteractionSourceKind.Hand && 
+            if (interactionSourceState.source.kind == InteractionSourceKind.Hand &&
                 UnityEngine.XR.WSA.HolographicRemoting.ConnectionState == UnityEngine.XR.WSA.HolographicStreamerConnectionState.Connected)
             {
                 // This workaround is safe as long as all these assumptions hold:

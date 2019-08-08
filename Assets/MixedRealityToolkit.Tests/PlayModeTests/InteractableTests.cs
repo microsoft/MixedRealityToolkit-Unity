@@ -151,15 +151,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Find an input source to associate with the input event (doesn't matter which one)
-            IMixedRealityInputSource defaultInputSource = MixedRealityToolkit.InputSystem.DetectedInputSources.FirstOrDefault();
+            IMixedRealityInputSource defaultInputSource = CoreServices.InputSystem.DetectedInputSources.FirstOrDefault();
             Assert.NotNull(defaultInputSource, "At least one input source must be present for this test to work.");
 
             // Add interactable as a global listener
             // This is only necessary if IsGlobal is being set manually. If it's set in the inspector, interactable will register itself in OnEnable automatically.
-            MixedRealityToolkit.InputSystem.PushModalInputHandler(interactableObject);
+            CoreServices.InputSystem.PushModalInputHandler(interactableObject);
 
             // Raise a select down input event, then wait for transition to take place
-            MixedRealityToolkit.InputSystem.RaiseOnInputDown(defaultInputSource, Handedness.None, interactable.InputAction);
+            CoreServices.InputSystem.RaiseOnInputDown(defaultInputSource, Handedness.None, interactable.InputAction);
             // Wait for at least one frame explicitly to ensure the input goes through
             yield return new WaitForFixedUpdate();
 
@@ -172,7 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 
             // Raise a select up input event, then wait for transition to take place
-            MixedRealityToolkit.InputSystem.RaiseOnInputUp(defaultInputSource, Handedness.Right, interactable.InputAction);
+            CoreServices.InputSystem.RaiseOnInputUp(defaultInputSource, Handedness.Right, interactable.InputAction);
             // Wait for at least one frame explicitly to ensure the input goes through
             yield return new WaitForFixedUpdate();
             yield return new WaitForSeconds(buttonReleaseAnimationDelay);
@@ -182,7 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.False(interactable.HasFocus, "Interactable had focus");
 
             // Remove as global listener
-            MixedRealityToolkit.InputSystem.PopModalInputHandler();
+            CoreServices.InputSystem.PopModalInputHandler();
         }
 
         /// <summary>
@@ -282,11 +282,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Find an input source to associate with the input event (doesn't matter which one)
-            IMixedRealityInputSource defaultInputSource = MixedRealityToolkit.InputSystem.DetectedInputSources.FirstOrDefault();
+            IMixedRealityInputSource defaultInputSource = CoreServices.InputSystem.DetectedInputSources.FirstOrDefault();
             Assert.NotNull(defaultInputSource, "At least one input source must be present for this test to work.");
 
             // Raise an input down event, then wait for transition to take place
-            MixedRealityToolkit.InputSystem.RaiseOnInputDown(defaultInputSource, Handedness.None, interactable.InputAction);
+            CoreServices.InputSystem.RaiseOnInputDown(defaultInputSource, Handedness.None, interactable.InputAction);
             // Wait for at least one frame explicitly to ensure the input goes through
             yield return new WaitForFixedUpdate();
 
@@ -299,7 +299,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 
             // Raise an input up event, then wait for transition to take place
-            MixedRealityToolkit.InputSystem.RaiseOnInputUp(defaultInputSource, Handedness.None, interactable.InputAction);
+            CoreServices.InputSystem.RaiseOnInputUp(defaultInputSource, Handedness.None, interactable.InputAction);
             // Wait for at least one frame explicitly to ensure the input goes through
             yield return new WaitForFixedUpdate();
             yield return new WaitForSeconds(buttonReleaseAnimationDelay);
@@ -338,18 +338,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Find the menu action from the input system profile
-            MixedRealityInputAction menuAction = MixedRealityToolkit.InputSystem.InputSystemProfile.InputActionsProfile.InputActions.Where(m => m.Description == "Menu").FirstOrDefault();
+            MixedRealityInputAction menuAction = CoreServices.InputSystem.InputSystemProfile.InputActionsProfile.InputActions.Where(m => m.Description == "Menu").FirstOrDefault();
             Assert.NotNull(menuAction.Description, "Couldn't find menu input action in input system profile.");
 
             // Set the interactable to respond to a 'menu' input action
             interactable.InputAction = menuAction;
 
             // Find an input source to associate with the input event (doesn't matter which one)
-            IMixedRealityInputSource defaultInputSource = MixedRealityToolkit.InputSystem.DetectedInputSources.FirstOrDefault();
+            IMixedRealityInputSource defaultInputSource = CoreServices.InputSystem.DetectedInputSources.FirstOrDefault();
             Assert.NotNull(defaultInputSource, "At least one input source must be present for this test to work.");
 
             // Raise a menu down input event, then wait for transition to take place
-            MixedRealityToolkit.InputSystem.RaiseOnInputDown(defaultInputSource, Handedness.Right, menuAction);
+            CoreServices.InputSystem.RaiseOnInputDown(defaultInputSource, Handedness.Right, menuAction);
             // Wait for at least one frame explicitly to ensure the input goes through
             yield return new WaitForFixedUpdate();
 
@@ -362,7 +362,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 
             // Raise a menu up input event, then wait for transition to take place
-            MixedRealityToolkit.InputSystem.RaiseOnInputUp(defaultInputSource, Handedness.Right, menuAction);
+            CoreServices.InputSystem.RaiseOnInputUp(defaultInputSource, Handedness.Right, menuAction);
             // Wait for at least one frame explicitly to ensure the input goes through
             yield return new WaitForFixedUpdate();
             yield return new WaitForSeconds(buttonReleaseAnimationDelay);
@@ -403,12 +403,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Find an input source to associate with the input event (doesn't matter which one)
-            IMixedRealityInputSource defaultInputSource = MixedRealityToolkit.InputSystem.DetectedInputSources.FirstOrDefault();
+            IMixedRealityInputSource defaultInputSource = CoreServices.InputSystem.DetectedInputSources.FirstOrDefault();
             Assert.NotNull(defaultInputSource, "At least one input source must be present for this test to work.");
 
             // Raise a voice select input event, then wait for transition to take place
             SpeechCommands commands = new SpeechCommands("Select", KeyCode.None, interactable.InputAction);
-            MixedRealityToolkit.InputSystem.RaiseSpeechCommandRecognized(defaultInputSource, RecognitionConfidenceLevel.High, new System.TimeSpan(100), System.DateTime.Now, commands);
+            CoreServices.InputSystem.RaiseSpeechCommandRecognized(defaultInputSource, RecognitionConfidenceLevel.High, new System.TimeSpan(100), System.DateTime.Now, commands);
             // Wait for at least one frame explicitly to ensure the input goes through
             yield return new WaitForFixedUpdate();
 
@@ -475,7 +475,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 #endif
 
             // Set the interactable to respond to the requested input action
-            MixedRealityInputAction selectAction = MixedRealityToolkit.InputSystem.InputSystemProfile.InputActionsProfile.InputActions.Where(m => m.Description == selectActionDescription).FirstOrDefault();
+            MixedRealityInputAction selectAction = CoreServices.InputSystem.InputSystemProfile.InputActionsProfile.InputActions.Where(m => m.Description == selectActionDescription).FirstOrDefault();
             Assert.NotNull(selectAction.Description, "Couldn't find " + selectActionDescription + " input action in input system profile.");
             interactable.InputAction = selectAction;
         }
