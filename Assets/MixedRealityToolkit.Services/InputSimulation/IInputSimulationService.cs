@@ -23,5 +23,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// If true then keyboard and mouse input are used to simulate hands.
         /// </summary>
         bool UserInputEnabled { get; set; }
+
+        /// <summary>
+        /// The left hand is controlled by user input.
+        /// </summary>
+        bool IsSimulatingHandLeft { get; }
+        /// <summary>
+        /// The right hand is controlled by user input.
+        /// </summary>
+        bool IsSimulatingHandRight { get; }
+
+        /// <summary>
+        /// The left hand is always tracking.
+        /// </summary>
+        bool IsAlwaysVisibleHandLeft { get; set; }
+        /// <summary>
+        /// The right hand is always tracking.
+        /// </summary>
+        bool IsAlwaysVisibleHandRight { get; set; }
     }
 }

@@ -11,6 +11,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
     [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/InputSimulation/InputSimulationService.html")]
     public class MixedRealityInputSimulationProfile : BaseMixedRealityProfile
     {
+        [SerializeField]
+        [Tooltip("Indicator buttons to show input simulation state in the viewport")]
+        private GameObject indicatorsPrefab = null;
+        public GameObject IndicatorsPrefab => indicatorsPrefab;
+
+        [SerializeField]
+        [Tooltip("Maximum time interval for double press")]
+        private float doublePressTime = 0.4f;
+        public float DoublePressTime => doublePressTime;
+
         [Header("Camera Control")]
         [SerializeField]
         [Tooltip("Enable manual camera control")]

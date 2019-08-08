@@ -23,14 +23,40 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private ManualCameraControl cameraControl = null;
         private SimulatedHandDataProvider handDataProvider = null;
 
-        /// <summary>
-        /// Pose data for the left hand.
-        /// </summary>
+        /// <inheritdoc />
         public SimulatedHandData HandDataLeft { get; } = new SimulatedHandData();
-        /// <summary>
-        /// Pose data for the right hand.
-        /// </summary>
+        /// <inheritdoc />
         public SimulatedHandData HandDataRight { get; } = new SimulatedHandData();
+
+        /// <inheritdoc />
+        public bool IsSimulatingHandLeft => (handDataProvider != null ? handDataProvider.IsSimulatingLeft : false);
+        /// <inheritdoc />
+        public bool IsSimulatingHandRight => (handDataProvider != null ? handDataProvider.IsSimulatingRight : false);
+
+        /// <inheritdoc />
+        public bool IsAlwaysVisibleHandLeft
+        {
+            get => handDataProvider != null ? handDataProvider.IsAlwaysVisibleLeft : false;
+            set
+            {
+                if (handDataProvider != null)
+                {
+                    handDataProvider.IsAlwaysVisibleLeft = value;
+                }
+            }
+        }
+        /// <inheritdoc />
+        public bool IsAlwaysVisibleHandRight
+        {
+            get => handDataProvider != null ? handDataProvider.IsAlwaysVisibleRight : false;
+            set
+            {
+                if (handDataProvider != null)
+                {
+                    handDataProvider.IsAlwaysVisibleRight = value;
+                }
+            }
+        }
 
         /// <summary>
         /// If true then keyboard and mouse input are used to simulate hands.
@@ -51,6 +77,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Timestamp of the last hand device update
         /// </summary>
         private long lastHandUpdateTimestamp = 0;
+
+        /// <summary>
+        /// Indicators to show input simulation state in the viewport.
+        /// </summary>
+        private GameObject indicators;
 
         #region BaseInputDeviceManager Implementation
 
@@ -100,11 +131,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void Enable()
         {
+            var profile = InputSimulationProfile;
+
+            if (indicators == null && profile.IndicatorsPrefab)
+            {
+                indicators = GameObject.Instantiate(profile.IndicatorsPrefab);
+            }
         }
 
         /// <inheritdoc />
         public override void Disable()
         {
+            if (indicators)
+            {
+                GameObject.Destroy(indicators);
+            }
+
             DisableCameraControl();
             DisableHandSimulation();
         }
