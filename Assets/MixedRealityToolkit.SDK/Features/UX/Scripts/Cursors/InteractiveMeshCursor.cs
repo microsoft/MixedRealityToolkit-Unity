@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private bool hasHand = false;
         private bool isDown = false;
 
-        private Vector3 targetScale;
+        private float ringDotTargetScale;
         private Vector3 initialScale;
 
         private void Awake()
@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             isDown = IsPointerDown;
             hasHover = TargetedObject != null;
 
-            targetScale = Vector3.one * defaultScale;
+            ringDotTargetScale = defaultScale;
             bool showRing = false;
 
             switch (state)
@@ -89,14 +89,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     break;
                 case CursorStateEnum.Interact:
                     showRing = true;
-                    targetScale = Vector3.one * downScale;
+                    ringDotTargetScale = downScale;
                     break;
                 case CursorStateEnum.InteractHover:
                     showRing = true;
-                    targetScale = Vector3.one * upScale;
+                    ringDotTargetScale = upScale;
                     break;
                 case CursorStateEnum.Select:
-                    targetScale = Vector3.one * upScale;
+                    ringDotTargetScale = upScale;
                     break;
                 case CursorStateEnum.Release:
                     break;
@@ -135,8 +135,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     timer = scaleTime;
                 }
 
-                ring.transform.localScale = Vector3.Lerp(Vector3.one * defaultScale, targetScale, timer / scaleTime);
-                dot.transform.localScale = Vector3.Lerp(Vector3.one * defaultScale, targetScale, timer / scaleTime);
+                Vector3 useScale = Vector3.one * Mathf.Lerp(defaultScale, ringDotTargetScale, timer / scaleTime);
+                ring.transform.localScale = useScale;
+                dot.transform.localScale = useScale;
             }
 
             // handle scale of main cursor go

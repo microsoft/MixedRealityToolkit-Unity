@@ -17,6 +17,10 @@
     href: Architecture/Overview.md
   - name: Framework and Runtime
     href: Architecture/FrameworkAndRuntime.md
+  - name: Cross-platform
+    items:
+    - name: Platform Capabilities
+      href: Architecture/CrossPlatform/DeterminingPlatformCapabilities.md
   - name: Input System
     items:
     - name: Terminology
@@ -128,7 +132,11 @@
     - name: Using the Visual Profiler
       href: Diagnostics/UsingVisualProfiler.md
   - name: Services
-    href: MixedRealityServices.md
+    items:
+    - name: What makes a mixed reality feature
+      href: MixedRealityServices.md
+    - name: What are the MixedRealityServiceRegistry and IMixedRealityServiceRegistrar
+      href: ServiceUtilities/MixedRealityServiceRegistryAndIMixedRealityServiceRegistrar.md
   - name: Packages
     items:
     - name: MRTK Packages

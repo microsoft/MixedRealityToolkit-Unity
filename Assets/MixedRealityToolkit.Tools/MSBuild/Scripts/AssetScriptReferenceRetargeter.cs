@@ -225,7 +225,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
                         if (line.Contains(ScriptFileIdConstant))
                         {
-                            Match regexResults = Regex.Match(line, @"guid:\s*([0-9a-fA-F]*)");
+                            Match regexResults = Regex.Match(line, Utilities.MetaFileGuidRegex);
                             if (!regexResults.Success || regexResults.Groups.Count != 2 || !regexResults.Groups[1].Success || regexResults.Groups[1].Captures.Count != 1)
                             {
                                 throw new InvalidDataException($"Failed to find the guid in line: {line}.");
