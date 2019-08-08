@@ -18,10 +18,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Internal class to define current gesture and smoothly animate hand data points.
     /// </summary>
-    [Serializable]
     internal class SimulatedHandState
     {
-        [SerializeField]
         private Handedness handedness = Handedness.None;
         public Handedness Handedness => handedness;
 
@@ -30,13 +28,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // Activate the pinch gesture
         public bool IsPinching { get; private set; }
 
-        public Vector3 ScreenPosition;
+        public Vector3 ViewportPosition = Vector3.zero;
         // Rotation of the hand
         public Vector3 HandRotateEulerAngles = Vector3.zero;
         // Random offset to simulate tracking inaccuracy
         public Vector3 JitterOffset = Vector3.zero;
 
-        [SerializeField]
         private ArticulatedHandPose.GestureId gesture = ArticulatedHandPose.GestureId.None;
         public ArticulatedHandPose.GestureId Gesture
         {
@@ -75,29 +72,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public void Reset()
         {
-            ScreenPosition = Vector3.zero;
+            ViewportPosition = Vector3.zero;
             HandRotateEulerAngles = Vector3.zero;
             JitterOffset = Vector3.zero;
 
             ResetGesture();
         }
 
-        /// <summary>
-        /// Set the position in viewport space rather than screen space (pixels).
-        /// </summary>
-        public void SetViewportPosition(Vector3 point)
-        {
-            ScreenPosition = CameraCache.Main.ViewportToScreenPoint(point);
-        }
-
         public void SimulateInput(Vector3 mouseDelta, float noiseAmount, Vector3 rotationDeltaEulerAngles)
         {
+            Vector3 screenPosition = CameraCache.Main.ViewportToScreenPoint(ViewportPosition);
             // Apply mouse delta x/y in screen space, but depth offset in world space
-            ScreenPosition.x += mouseDelta.x;
-            ScreenPosition.y += mouseDelta.y;
-            Vector3 newWorldPoint = CameraCache.Main.ScreenToWorldPoint(ScreenPosition);
+            screenPosition.x += mouseDelta.x;
+            screenPosition.y += mouseDelta.y;
+            Vector3 newWorldPoint = CameraCache.Main.ScreenToWorldPoint(screenPosition);
             newWorldPoint += CameraCache.Main.transform.forward * mouseDelta.z;
-            ScreenPosition = CameraCache.Main.WorldToScreenPoint(newWorldPoint);
+            ViewportPosition = CameraCache.Main.WorldToViewportPoint(newWorldPoint);
 
             HandRotateEulerAngles += rotationDeltaEulerAngles;
 
@@ -130,7 +120,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             poseBlending = gestureBlending;
 
             Quaternion rotation = Quaternion.Euler(HandRotateEulerAngles);
-            Vector3 position = CameraCache.Main.ScreenToWorldPoint(ScreenPosition + JitterOffset);
+            Vector3 screenPosition = CameraCache.Main.ViewportToScreenPoint(ViewportPosition);
+            Vector3 position = CameraCache.Main.ScreenToWorldPoint(screenPosition + JitterOffset);
             pose.ComputeJointPoses(handedness, rotation, position, jointsOut);
         }
     }
@@ -341,11 +332,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     // Start at current mouse position
                     Vector3 mousePos = UnityEngine.Input.mousePosition;
-                    state.ScreenPosition = new Vector3(mousePos.x, mousePos.y, profile.DefaultHandDistance);
+                    state.ViewportPosition = CameraCache.Main.ScreenToViewportPoint(new Vector3(mousePos.x, mousePos.y, profile.DefaultHandDistance));
                 }
                 else
                 {
-                    state.ScreenPosition = CameraCache.Main.ViewportToScreenPoint(new Vector3(0.5f, 0.5f, profile.DefaultHandDistance));
+                    state.ViewportPosition = new Vector3(0.5f, 0.5f, profile.DefaultHandDistance);
                 }
             }
 
