@@ -1,6 +1,40 @@
 # Pointers
 
-Pointers are instanced automatically at runtime when a new controller is detected. You can have more than one pointer attached to a controller; for example, with the default pointer profile, WMR controllers get both a line and a parabolic pointer for normal selection and teleportation respectively. Pointers communicate with each other to decide which one is active. The pointers created for each controller are set up in the **Pointer Profile**, under the *Input System Profile*.
+This article discusses how to configure and respond to Pointer input in practice, compared to [Pointer Architecture]() and [Pointer UX]().
+
+Pointers are instanced automatically at runtime when a new controller is detected. You can have more than one pointer attached to a controller. For example, with the default pointer profile, Windows Mixed Reality controllers get both a line and a parabolic pointer for normal selection and teleportation respectively.
+
+## Pointer configuration
+
+Pointers communicate with each other to decide which one is active. The pointers created for each controller are set up in the **Pointer Profile**, under the *Input System Profile*.
+
+Explain profile & screenshot
+
+## Default Pointer classes
+
+Mention categories?
+LIST HERE from ControllersPointersAndFocus
+
+
+## Pointer interactions via code
+
+### Pointer event interfaces
+
+TABLE goes here
+
+#### Example
+
+blah
+
+#### Register globally
+
+blah
+
+### Pointer interactions via editor
+
+Pointer handler here
+
+
 
 <img src="../../Documentation/Images/Input/PointerProfile.png" style="max-width:100%;">
 
@@ -10,9 +44,9 @@ MRTK provides a set of pointer prefabs in *Assets/MixedRealityToolkit.SDK/Featur
 
 These are all the pointer-related events raised by MRTK:
 
-Event | Description | Handler
---- | --- | ---
-Before Focus Changed / Focus Changed | Raised on both the game object losing focus and the one gaining it every time a pointer changes focus. | [`IMixedRealityFocusChangedHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusChangedHandler)
+| Event | Description | Handler |
+| --- | --- | --- |
+| Before Focus Changed / Focus Changed | Raised on both the game object losing focus and the one gaining it every time a pointer changes focus. | `IMixedRealityFocusChangedHandler` [API](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusChangedHandler) |
 Focus Enter / Exit | Raised on the game object gaining focus when the first pointer enters it and on the one losing focus when the last pointer leaves it. | [`IMixedRealityFocusHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusHandler)
 Pointer Down / Dragged / Up / Clicked | Raised to report pointer press, drag and release. | [`IMixedRealityPointerHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler)
 Touch Started / Updated / Completed | Raised by touch-aware pointers like [`PokePointer`](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer) to report touch activity. | [`IMixedRealityTouchHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler)
