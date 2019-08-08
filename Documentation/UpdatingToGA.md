@@ -11,6 +11,7 @@ Since the release of RC2, there have been a number of API changes including some
 
 - [Event System](#event-system)
 - [Spatial Awareness](#spatial-awareness)
+- [Solvers](#solvers)
 - [Clipping Sphere](#clipping-sphere)
 
 ### Event System
@@ -177,7 +178,7 @@ The ClippingSphere's Radius property is now implicitly calculated based on the t
 
 ### ReadOnlyAttribute
 
-- The `Microsoft.MixedReality.Toolkit` namespace has been added to `ReadOnlyAttribute`, `BeginReadOnlyGroupAttribute`, and `EndReadOnlyGroupAttribute`.
+The `Microsoft.MixedReality.Toolkit` namespace has been added to `ReadOnlyAttribute`, `BeginReadOnlyGroupAttribute`, and `EndReadOnlyGroupAttribute`.
 
 ### PointerClickHandler
 
@@ -185,10 +186,15 @@ The `PointerClickHandler` class has been deprecated. The `PointerHandler` should
 
 ### HoloLens clicker support
 
-- The HoloLens clicker's controller mappings have changed from being an unhanded [`WindowsMixedRealityController`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityController) to being an unhanded [`WindowsMixedRealityGGVHand`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityGGVHand). To account for this, an automatic updater will run the first time you open your ControllerMapping profile. Please open any custom profiles at least once after upgrading to GA in order to trigger this one-time migration step.
+The HoloLens clicker's controller mappings have changed from being an unhanded [`WindowsMixedRealityController`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityController) to being an unhanded [`WindowsMixedRealityGGVHand`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityGGVHand). To account for this, an automatic updater will run the first time you open your ControllerMapping profile. Please open any custom profiles at least once after upgrading to GA in order to trigger this one-time migration step.
+
+### InteractableHighlight
+
+The `InteractableHighlight` class has been deprecated. The `InteractableOnFocus` class and `FocusInteractableStates` asset should be used instead. To create a new `Theme` asset for the `InteractableOnFocus`, right click in the project window and select *Create* > *Mixed Reality Toolkit* > *Interactable* > *Theme*.
 
 ### HandInteractionPanZoom
-- `HandInteractionPanZoom` has been moved to the UI namespace as it was not an input component. `HandPanEventData` has also been moved into this namespace, and simplified to correspond with other UI event data. 
+
+`HandInteractionPanZoom` has been moved to the UI namespace as it was not an input component. `HandPanEventData` has also been moved into this namespace, and simplified to correspond with other UI event data. 
 
 ## Assembly name changes
 
