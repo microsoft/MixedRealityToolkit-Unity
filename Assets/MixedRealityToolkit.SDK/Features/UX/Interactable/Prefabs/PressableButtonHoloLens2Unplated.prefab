@@ -66,6 +66,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movingButtonVisuals: {fileID: 1019827635}
+  distanceSpaceMode: 1
   startPushDistance: 0
   maxPushDistance: 0.01
   pressDistance: 0.006
@@ -73,7 +74,6 @@ MonoBehaviour:
   returnSpeed: 25
   releaseOnTouchEnd: 1
   enforceFrontPush: 1
-  distanceSpaceMode: 0
   TouchBegin:
     m_PersistentCalls:
       m_Calls:
@@ -162,7 +162,6 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  currentPushDistance: 0
   movingButtonIconText: {fileID: 8352633413104042190}
   compressableButtonVisuals: {fileID: 3030092746254298942}
   minCompressPercentage: 0.25
@@ -564,7 +563,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_textAlignment: 514
-  m_isAlignmentEnumConverted: 1
+  m_isAlignmentEnumConverted: 0
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -1033,7 +1032,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_textAlignment: 514
-  m_isAlignmentEnumConverted: 1
+  m_isAlignmentEnumConverted: 0
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
