@@ -58,6 +58,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
+        public Quaternion HandRotationLeft
+        {
+            get => handDataProvider != null ? handDataProvider.HandRotationLeft : Quaternion.identity;
+            set { if (handDataProvider != null) { handDataProvider.HandRotationLeft = value; } }
+        }
+        /// <inheritdoc />
+        public Quaternion HandRotationRight
+        {
+            get => handDataProvider != null ? handDataProvider.HandRotationRight : Quaternion.identity;
+            set { if (handDataProvider != null) { handDataProvider.HandRotationRight = value; } }
+        }
+
         /// <summary>
         /// If true then keyboard and mouse input are used to simulate hands.
         /// </summary>

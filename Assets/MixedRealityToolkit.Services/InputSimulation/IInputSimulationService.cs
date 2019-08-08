@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using UnityEngine;
+
 namespace Microsoft.MixedReality.Toolkit.Input
 { 
     public interface IInputSimulationService : IMixedRealityInputDeviceManager
@@ -41,5 +43,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// The right hand is always tracking.
         /// </summary>
         bool IsAlwaysVisibleHandRight { get; set; }
+
+        /// <summary>
+        /// Rotation of the left hand.
+        /// </summary>
+        Quaternion HandRotationLeft { get; set; }
+        /// <summary>
+        /// Rotation of the right hand.
+        /// </summary>
+        Quaternion HandRotationRight { get; set; }
     }
 }

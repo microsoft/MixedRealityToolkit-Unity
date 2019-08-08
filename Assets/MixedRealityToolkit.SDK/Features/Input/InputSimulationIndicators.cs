@@ -85,5 +85,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             InputSimService.IsAlwaysVisibleHandRight = !InputSimService.IsAlwaysVisibleHandRight;
         }
+
+        public void ResetLeftHand()
+        {
+            InputSimService.HandRotationLeft = Quaternion.identity;
+        }
+
+        public void ResetRightHand()
+        {
+            InputSimService.HandRotationRight = Quaternion.identity;
+        }
     }
 }

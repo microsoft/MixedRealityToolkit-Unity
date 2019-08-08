@@ -153,6 +153,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public bool IsAlwaysVisibleRight = false;
 
+        public Quaternion HandRotationLeft
+        {
+            get => Quaternion.Euler(HandStateLeft.HandRotateEulerAngles);
+            set => HandStateLeft.HandRotateEulerAngles = value.eulerAngles;
+        }
+        public Quaternion HandRotationRight
+        {
+            get => Quaternion.Euler(HandStateRight.HandRotateEulerAngles);
+            set => HandStateRight.HandRotateEulerAngles = value.eulerAngles;
+        }
+
         private SimulatedHandState HandStateLeft;
         private SimulatedHandState HandStateRight;
 
