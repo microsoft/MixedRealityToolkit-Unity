@@ -344,6 +344,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         private bool GetSelectPressedWorkaround(InteractionSourceState interactionSourceState)
         {
             bool selectPressed = interactionSourceState.selectPressed;
+            // Only do this workaround inside the Unity editor (in holographic remoting scenarios).
+            // When this is invoked on device, this will display an error attempting to load the
+            // remoting binaries.
+#if UNITY_EDITOR
             if (interactionSourceState.source.kind == InteractionSourceKind.Hand &&
                 UnityEngine.XR.WSA.HolographicRemoting.ConnectionState == UnityEngine.XR.WSA.HolographicStreamerConnectionState.Connected)
             {
@@ -357,6 +361,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
                 selectPressed = interactionSourceState.anyPressed;
             }
+#endif // UNITY_EDITOR
             return selectPressed;
         }
 
