@@ -75,7 +75,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
 
             // Tests
             Assert.IsNotNull(extensionService1);
-            Assert.IsEmpty(MixedRealityToolkit.Instance.ActiveSystems);
             Assert.AreEqual(1, MixedRealityServiceRegistry.GetAllServices().Count);
         }
 
@@ -92,7 +91,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
 
             // Tests
             Assert.IsNotNull(extensionService1);
-            Assert.IsEmpty(MixedRealityToolkit.Instance.ActiveSystems);
             Assert.AreEqual(1, MixedRealityServiceRegistry.GetAllServices().Count);
 
             var success = MixedRealityToolkit.Instance.UnregisterService<ITestExtensionService1>();
@@ -103,7 +101,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             // Tests
             Assert.IsTrue(success);
             Assert.IsFalse(isServiceRegistered);
-            Assert.IsEmpty(MixedRealityToolkit.Instance.ActiveSystems);
             Assert.IsEmpty(MixedRealityServiceRegistry.GetAllServices());
         }
 
@@ -120,7 +117,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
 
             // Tests
             Assert.IsNotNull(extensionService1);
-            Assert.IsEmpty(MixedRealityToolkit.Instance.ActiveSystems);
             Assert.AreEqual(1, MixedRealityServiceRegistry.GetAllServices().Count);
 
             var success = MixedRealityToolkit.Instance.UnregisterService<ITestExtensionService1>(extensionService1.Name);
@@ -131,7 +127,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             // Tests
             Assert.IsTrue(success);
             Assert.IsFalse(isServiceRegistered);
-            Assert.IsEmpty(MixedRealityToolkit.Instance.ActiveSystems);
             Assert.IsEmpty(MixedRealityServiceRegistry.GetAllServices());
         }
 
@@ -150,7 +145,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
 
             // Tests
             Assert.IsNotNull(MixedRealityToolkit.Instance.ActiveProfile);
-            Assert.IsEmpty(MixedRealityToolkit.Instance.ActiveSystems);
             Assert.AreEqual(2, serviceCount);
             Assert.AreEqual(extensionServices.Count, serviceCount);
         }
@@ -170,7 +164,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
 
             // Tests
             Assert.IsNotNull(MixedRealityToolkit.Instance.ActiveProfile);
-            Assert.IsEmpty(MixedRealityToolkit.Instance.ActiveSystems);
             Assert.AreEqual(2, serviceCount);
             Assert.AreEqual(extensionServices.Count, serviceCount);
 
@@ -194,7 +187,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             Assert.IsTrue(success2);
             Assert.IsFalse(isService1Registered);
             Assert.IsFalse(isService2Registered);
-            Assert.IsEmpty(MixedRealityToolkit.Instance.ActiveSystems);
             Assert.IsEmpty(MixedRealityServiceRegistry.GetAllServices());
         }
 

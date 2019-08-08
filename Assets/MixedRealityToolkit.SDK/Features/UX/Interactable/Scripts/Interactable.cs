@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -378,7 +377,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         /// <param name="keywords"></param>
         /// <returns></returns>
-        public static bool TryGetSpeechKeywords(out GUIContent[] keywords)
+        public static bool TryGetSpeechKeywords(out string[] keywords)
         {
             SpeechCommands[] commands;
             if (!TryGetMixedRealitySpeechCommands(out commands))
@@ -387,13 +386,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return false;
             }
 
-            List<GUIContent> keys = new List<GUIContent>();
+            List<string> keys = new List<string>();
+            keys.Add("(No Selection)");
+
             for (var i = 0; i < commands.Length; i++)
             {
-                keys.Add(new GUIContent(commands[i].Keyword));
+                keys.Add(commands[i].Keyword);
             }
 
-            keys.Insert(0, new GUIContent("(No Selection)"));
             keywords = keys.ToArray();
             return true;
         }
