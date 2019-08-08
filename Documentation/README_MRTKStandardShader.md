@@ -97,6 +97,8 @@ This windows can be automatically filled out by selecting a Unity Standard shade
 
 Below are extra details on a handful of features details available with the MRTK/Standard shader.
 
+### Primitive Clipping
+
 Performant plane, sphere, and box shape clipping with the ability to specify which side of the primitive to clip against (inside or outside). You can find a scene that demonstrates advanced usage of clipping primitives in the  **ClippingExamples** scene under: [MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes)
 
 ![primitive clipping](../Documentation/Images/MRTKStandardShader/MRTK_PrimitiveClipping.gif)
@@ -105,17 +107,45 @@ Performant plane, sphere, and box shape clipping with the ability to specify whi
 
 ![primitive clipping gizmos](../Documentation/Images/MRTKStandardShader/MRTK_PrimitiveClippingGizmos.gif)
 
+### Mesh Outlines
+
+Many mesh outline techniques are done using a [post processing](https://docs.unity3d.com/Manual/PostProcessingOverview.html) technique. Post processing provides great quality outlines but can be prohibitively expensive on mobile Mixed Reality devices. You can find a scene that demonstrates usage of mesh outlines in the  **OutlineExamples** scene under: [MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes)
+
+[**MeshOutline.cs**](xref:Microsoft.MixedReality.Toolkit.Utilities.MeshOutline) and [**MeshOutlineHierarchy.cs**](xref:Microsoft.MixedReality.Toolkit.Utilities.MeshOutlineHierarchy) can be used render an outline around a mesh renderer. Enabling this component introduces an additional render pass of the object being outlined, but is designed to run performantly on mobile Mixed Reality devices and does not utilize any post processes. Limitations of this effect include it not working well on objects which are non-uniformly scaled and depth sorting issues on overlapping objects.
+
+The outline behaviors are designed to be used in conjunction with the MRTK/Standard shader. Outline materials are usually a solid unlit color, but can be configured to achieve a wide array of effects. The default configuration of a outline material is as follows: 
+
+<img src="../Documentation/Images/MRTKStandardShader/MRTK_OutlineMaterial.jpg" width="450">
+
+    1. Depth Write - should be disabled for outline materials to make sure the outline does not prevent other objects from rendering.
+    2. Vertex Extrusion - needs to be enabled to render the outline.
+    3. Use Smooth Normals - TODO
+
+### Stencil Testing
+
 Built in configurable stencil test support to achieve a wide array of effects. Such as portals:
 
 ![stencil test](../Documentation/Images/MRTKStandardShader/MRTK_StencilTest.gif)
+
+### Instanced Color Support
 
 Instanced color support to give thousands of GPU instanced meshes unique material properties:
 
 ![instanced properties](../Documentation/Images/MRTKStandardShader/MRTK_InstancedProperties.gif)
 
+### Triplanar Mapping
+
 Triplanar mapping is a technique to programmatically texture a mesh. Often used in terrain, meshes without UVs, or difficult to unwrap shapes. This implementation supports world or local space projection, the specification of blending smoothness, and normal map support. Note, each texture used requires 3 texture samples, so please use sparingly in performance critical situations.
 
 ![triplanar](../Documentation/Images/MRTKStandardShader/MRTK_TriplanarMapping.gif)
+
+### Vertex Extrusion
+
+Vertex extrusion in world space. Useful for visualizing extruded bounding volumes or transitions in/out meshes.
+
+![normal map scale](../Documentation/Images/MRTKStandardShader/MRTK_VertexExtrusion.gif)
+
+### Miscellaneous
 
 A checkbox to control albedo optimizations. As an optimization albedo operations are disabled when no albedo texture is specified. This is useful for controlling [remote texture loading](http://dotnetbyexample.blogspot.com/2018/10/workaround-remote-texture-loading-does.html).
 
@@ -126,10 +156,6 @@ Simply check this box:
 Per pixel clipping textures, local edge based anti aliasing, and normal map scaling are supported.
 
 ![normal map scale](../Documentation/Images/MRTKStandardShader/MRTK_NormalMapScale.gif)
-
-Vertex extrusion in world space. Useful for visualizing extruded bounding volumes or transitions in/out meshes.
-
-![normal map scale](../Documentation/Images/MRTKStandardShader/MRTK_VertexExtrusion.gif)
 
 ## See also
 
