@@ -270,7 +270,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUI.EndProperty();
 
             // Leveraging button.DistanceSpaceMode setter modifies other component properties that need to be refreshed
-            serializedObject.ApplyModifiedProperties();
             serializedObject.Update();
 
             DrawPropertiesExcluding(serializedObject, excludeProperties);
