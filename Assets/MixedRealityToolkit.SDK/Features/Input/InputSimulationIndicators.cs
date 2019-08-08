@@ -75,5 +75,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 imageHandRight.sprite = iconHandRight;
             }
         }
+
+        public void ToggleLeftHand()
+        {
+            InputSimService.IsAlwaysVisibleHandLeft = !InputSimService.IsAlwaysVisibleHandLeft;
+        }
+
+        public void ToggleRightHand()
+        {
+            InputSimService.IsAlwaysVisibleHandRight = !InputSimService.IsAlwaysVisibleHandRight;
+        }
     }
 }
