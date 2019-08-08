@@ -31,6 +31,8 @@ MonoBehaviour:
   mouseY: Mouse Y
   lookHorizontal: AXIS_4
   lookVertical: AXIS_5
+  rollCameraCWKey: 109
+  rollCameraCCWKey: 110
   simulateEyePosition: 0
   handSimulationMode: 2
   toggleLeftHandKey: 116

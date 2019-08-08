@@ -87,6 +87,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("Look Vertical Axis - Right Stick On Controller ")]
         private string lookVertical = ControllerMappingLibrary.AXIS_5;
         public string LookVertical => lookVertical;
+        [SerializeField]
+        [Tooltip("Key to roll the camera clockwise")]
+        private KeyCode rollCameraCWKey = KeyCode.M;
+        public KeyCode RollCameraCWKey => rollCameraCWKey;
+        [SerializeField]
+        [Tooltip("Key to roll the camera counter-clockwise")]
+        private KeyCode rollCameraCCWKey = KeyCode.N;
+        public KeyCode RollCameraCCWKey => rollCameraCCWKey;
 
         [Header("Eye Simulation")]
         [SerializeField]
