@@ -28,9 +28,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // Activate the pinch gesture
         public bool IsPinching { get; private set; }
 
+        // Position of the hand in viewport space
         public Vector3 ViewportPosition = Vector3.zero;
-        // Rotation of the hand
-        public Vector3 HandRotateEulerAngles = Vector3.zero;
+        // Rotation of the hand relative to the camera
+        public Quaternion ViewportRotation = Quaternion.identity;
         // Random offset to simulate tracking inaccuracy
         public Vector3 JitterOffset = Vector3.zero;
 
@@ -73,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public void Reset()
         {
             ViewportPosition = Vector3.zero;
-            HandRotateEulerAngles = Vector3.zero;
+            ViewportRotation = Quaternion.identity;
             JitterOffset = Vector3.zero;
 
             ResetGesture();
@@ -89,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             newWorldPoint += CameraCache.Main.transform.forward * mouseDelta.z;
             ViewportPosition = CameraCache.Main.WorldToViewportPoint(newWorldPoint);
 
-            HandRotateEulerAngles += rotationDeltaEulerAngles;
+            ViewportRotation = Quaternion.Euler(ViewportRotation.eulerAngles + rotationDeltaEulerAngles);
 
             JitterOffset = UnityEngine.Random.insideUnitSphere * noiseAmount;
         }
@@ -119,10 +120,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             poseBlending = gestureBlending;
 
-            Quaternion rotation = Quaternion.Euler(HandRotateEulerAngles);
             Vector3 screenPosition = CameraCache.Main.ViewportToScreenPoint(ViewportPosition);
-            Vector3 position = CameraCache.Main.ScreenToWorldPoint(screenPosition + JitterOffset);
-            pose.ComputeJointPoses(handedness, rotation, position, jointsOut);
+            Vector3 worldPosition = CameraCache.Main.ScreenToWorldPoint(screenPosition + JitterOffset);
+            Quaternion worldRotation = CameraCache.Main.transform.rotation * ViewportRotation;
+            pose.ComputeJointPoses(handedness, worldRotation, worldPosition, jointsOut);
         }
     }
 
@@ -146,13 +147,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public Quaternion HandRotationLeft
         {
-            get => Quaternion.Euler(HandStateLeft.HandRotateEulerAngles);
-            set => HandStateLeft.HandRotateEulerAngles = value.eulerAngles;
+            get => HandStateLeft.ViewportRotation;
+            set => HandStateLeft.ViewportRotation = value;
         }
         public Quaternion HandRotationRight
         {
-            get => Quaternion.Euler(HandStateRight.HandRotateEulerAngles);
-            set => HandStateRight.HandRotateEulerAngles = value.eulerAngles;
+            get => HandStateRight.ViewportRotation;
+            set => HandStateRight.ViewportRotation = value;
         }
 
         private SimulatedHandState HandStateLeft;

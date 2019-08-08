@@ -43,8 +43,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public void ComputeJointPoses(Handedness handedness, Quaternion rotation, Vector3 position, MixedRealityPose[] jointsOut)
         {
-            var cameraRotation = CameraCache.Main.transform.rotation;
-
             for (int i = 0; i < jointCount; i++)
             {
                 // Initialize from local offsets
@@ -58,10 +56,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     r.y = -r.y;
                     r.z = -r.z;
                 }
-
-                // Apply camera transform
-                p = cameraRotation * p;
-                r = cameraRotation * r;
 
                 // Apply external transform
                 p = position + rotation * p;
