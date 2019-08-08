@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Utility behavior to access the axis aligned bounds of IMixedRealityHands.
+    /// Utility behavior to access the axis aligned bounds of IMixedRealityHands (or the proxy visualizer of IMixedRealityControllers).
     /// </summary>
     public class HandBounds : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedRealityHandJointHandler
     {
