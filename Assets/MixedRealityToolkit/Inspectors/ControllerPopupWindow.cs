@@ -219,7 +219,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     }
                 };
 
-                File.WriteAllText(editorWindowOptionsPath, JsonUtility.ToJson(empty));
+                File.WriteAllText(editorWindowOptionsPath, JsonUtility.ToJson(empty, true));
                 AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
             }
             else
@@ -336,7 +336,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     string editorWindowOptionsPath = ResolveEditorWindowOptionsPath();
                     if (!editInputActionPositions)
                     {
-                        File.WriteAllText(editorWindowOptionsPath, JsonUtility.ToJson(controllerInputActionOptions));
+                        File.WriteAllText(editorWindowOptionsPath, JsonUtility.ToJson(controllerInputActionOptions, true));
                     }
                     else
                     {
@@ -361,7 +361,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                         option.Controller == 0));
                             }
 
-                            File.WriteAllText(editorWindowOptionsPath, JsonUtility.ToJson(controllerInputActionOptions));
+                            File.WriteAllText(editorWindowOptionsPath, JsonUtility.ToJson(controllerInputActionOptions, true));
                         }
                     }
                 }

@@ -10,5 +10,5 @@ steps:
   - template: tasks/unitypackages.yml
   - template: package.yml
   - ${{ if eq(parameters.packagePublishing, true) }}:
-    - $template: publishpackages.yml
+    - template: publishpackages.yml
 - template: end.yml
