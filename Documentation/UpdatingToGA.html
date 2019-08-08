@@ -90,10 +90,28 @@
 <h2 id="api-changes">API changes</h2>
 <p>Since the release of RC2, there have been a number of API changes including some that may break existing projects. The following sections describe the changes that have occurred between the RC2 and GA releases.</p>
 <ul>
+<li><a href="#mixedrealitytoolkit">MixedRealityToolkit</a></li>
 <li><a href="#event-system">Event System</a></li>
 <li><a href="#spatial-awareness">Spatial Awareness</a></li>
 <li><a href="#solvers">Solvers</a></li>
 <li><a href="#clipping-sphere">Clipping Sphere</a></li>
+</ul>
+<h3 id="mixedrealitytoolkit">MixedRealityToolkit</h3>
+<p>The following public properties on the MixedRealityToolkit object have been deprecated.</p>
+<ul>
+<li><code>RegisteredMixedRealityServices</code> no longer contains the collection of registered extensions services and data providers.</li>
+</ul>
+<p>To access extension services, use [<code>MixedRealityServiceRegistry.TryGetService&lt;T&gt;</code>]. To access data providers, cast the service instance to <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess.html"><code>IMixedRealityDataProviderAccess</code></a> and use <code>GetDataProvider&lt;T&gt;</code>.</p>
+<p>Use <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.MixedRealityServiceRegistry.html"><code>MixedRealityServiceRegistry</code></a> or <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.CoreServices.html"><code>CoreServices</code></a> instead for the following deprecated properties</p>
+<ul>
+<li><code>ActiveSystems</code></li>
+<li><code>InputSystem</code></li>
+<li><code>BoundarySystem</code></li>
+<li><code>CameraSystem</code></li>
+<li><code>SpatialAwarenessSystem</code></li>
+<li><code>TeleportSystem</code></li>
+<li><code>DiagnosticsSystem</code></li>
+<li><code>SceneSystem</code></li>
 </ul>
 <h3 id="event-system">Event System</h3>
 <p><strong>Changes</strong></p>
@@ -256,7 +274,7 @@ This makes it clear that PokeThreshold is the counterpart to DebounceThreshold. 
 </code></pre>
 <p>In some instances, multiple assemblies have been merged to create better unity of their contents. If your project uses custom .asmdef files, they may require updating.</p>
 <p>The following tables describe how the RC2 .asmdef file names map to the GA release. All assembly names match the .asmdef file name.</p>
-<h3 id="mixedrealitytoolkit">MixedRealityToolkit</h3>
+<h3 id="mixedrealitytoolkit-1">MixedRealityToolkit</h3>
 <table>
 <thead>
 <tr>

@@ -143,7 +143,8 @@ The Profile can be swapped out at any time to meet the needs of your project.</p
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IReadOnlyDictionary&lt;Type, IMixedRealityService&gt; ActiveSystems { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use CoreService, MixedRealityServiceRegistry, or GetService&lt;T&gt; instead&quot;)]
+public IReadOnlyDictionary&lt;Type, IMixedRealityService&gt; ActiveSystems { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -172,7 +173,8 @@ The Profile can be swapped out at any time to meet the needs of your project.</p
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IMixedRealityBoundarySystem BoundarySystem { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Utilize CoreServices.BoundarySystem instead&quot;)]
+public static IMixedRealityBoundarySystem BoundarySystem { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -198,7 +200,8 @@ The Profile can be swapped out at any time to meet the needs of your project.</p
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IMixedRealityCameraSystem CameraSystem { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Utilize CoreServices.CameraSystem instead&quot;)]
+public static IMixedRealityCameraSystem CameraSystem { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -224,7 +227,8 @@ The Profile can be swapped out at any time to meet the needs of your project.</p
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IMixedRealityDiagnosticsSystem DiagnosticsSystem { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Utilize CoreServices.DiagnosticsSystem instead&quot;)]
+public static IMixedRealityDiagnosticsSystem DiagnosticsSystem { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -276,7 +280,8 @@ The Profile can be swapped out at any time to meet the needs of your project.</p
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IMixedRealityInputSystem InputSystem { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Utilize CoreServices.InputSystem instead&quot;)]
+public static IMixedRealityInputSystem InputSystem { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -432,7 +437,7 @@ The Profile can be swapped out at any time to meet the needs of your project.</p
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete]
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use GetDataProvider&lt;T&gt; of MixedRealityService registering the desired IMixedRealityDataProvider&quot;)]
 public IReadOnlyList&lt;Tuple&lt;Type, IMixedRealityService&gt;&gt; RegisteredMixedRealityServices { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
@@ -459,7 +464,8 @@ public IReadOnlyList&lt;Tuple&lt;Type, IMixedRealityService&gt;&gt; RegisteredMi
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IMixedRealitySceneSystem SceneSystem { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Utilize CoreServices.SceneSystem instead&quot;)]
+public static IMixedRealitySceneSystem SceneSystem { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -485,7 +491,8 @@ public IReadOnlyList&lt;Tuple&lt;Type, IMixedRealityService&gt;&gt; RegisteredMi
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Utilize CoreServices.SpatialAwarenessSystem instead&quot;)]
+public static IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -511,7 +518,8 @@ public IReadOnlyList&lt;Tuple&lt;Type, IMixedRealityService&gt;&gt; RegisteredMi
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IMixedRealityTeleportSystem TeleportSystem { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Utilize CoreServices.TeleportSystem instead&quot;)]
+public static IMixedRealityTeleportSystem TeleportSystem { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -896,8 +904,9 @@ public IReadOnlyList&lt;Tuple&lt;Type, IMixedRealityService&gt;&gt; RegisteredMi
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsSystemRegistered&lt;T&gt;()
-    where T : class</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use IsServiceRegistered instead&quot;)]
+public bool IsSystemRegistered&lt;T&gt;()
+    where T : IMixedRealityService</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
