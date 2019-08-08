@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Enum BoundingBox.BoundingBoxActivationType
+    <title>Enum BoundingBox.BoundsCalculationMethod
    | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Enum BoundingBox.BoundingBoxActivationType
+    <meta name="title" content="Enum BoundingBox.BoundsCalculationMethod
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
@@ -81,19 +81,20 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.BoundingBoxActivationType">
+            <article class="content wrap" id="_content" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.BoundsCalculationMethod">
   
   
-  <h1 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_BoundingBoxActivationType" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.BoundingBoxActivationType" class="text-break">Enum BoundingBox.BoundingBoxActivationType
+  <h1 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_BoundsCalculationMethod" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.BoundsCalculationMethod" class="text-break">Enum BoundingBox.BoundsCalculationMethod
   </h1>
-  <div class="markdown level0 summary"><p>This enum defines how the BoundingBox gets activated</p>
+  <div class="markdown level0 summary"><p>This enum defines what volume type the bound calculation depends on and its priority
+for it.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.UI.html">Microsoft.MixedReality.Toolkit.UI</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
-  <h5 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_BoundingBoxActivationType_syntax">Syntax</h5>
+  <h5 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_BoundsCalculationMethod_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public enum BoundingBoxActivationType</code></pre>
+    <pre><code class="lang-csharp hljs">public enum BoundsCalculationMethod</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
@@ -106,24 +107,24 @@
     <thead>
     <tbody>
       <tr>
-        <td id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_BoundingBoxActivationType_ActivateByPointer">ActivateByPointer</td>
-        <td></td>
+        <td id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_BoundsCalculationMethod_ColliderOnly">ColliderOnly</td>
+        <td><p>Omits Renderers and uses Colliders for the bounds calculation exclusively</p>
+</td>
       </tr>
       <tr>
-        <td id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_BoundingBoxActivationType_ActivateByProximity">ActivateByProximity</td>
-        <td></td>
+        <td id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_BoundsCalculationMethod_ColliderOverRenderer">ColliderOverRenderer</td>
+        <td><p>Used Colliders for the bounds calculation and Renderers as a fallback</p>
+</td>
       </tr>
       <tr>
-        <td id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_BoundingBoxActivationType_ActivateByProximityAndPointer">ActivateByProximityAndPointer</td>
-        <td></td>
+        <td id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_BoundsCalculationMethod_RendererOnly">RendererOnly</td>
+        <td><p>Omits Colliders and uses Renderers for the bounds calculation exclusively</p>
+</td>
       </tr>
       <tr>
-        <td id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_BoundingBoxActivationType_ActivateManually">ActivateManually</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_BoundingBoxActivationType_ActivateOnStart">ActivateOnStart</td>
-        <td></td>
+        <td id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_BoundsCalculationMethod_RendererOverCollider">RendererOverCollider</td>
+        <td><p>Used Renderers for the bounds calculation and Colliders as a fallback</p>
+</td>
       </tr>
     </tbody>
   </thead></thead></table>
