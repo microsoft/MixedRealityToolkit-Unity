@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 {
     /// <summary>
     /// Provides a solver that constrains the target to a region safe for hand constrained interactive content.
-    /// This solver is intended to work with <see cref="IMixedRealityHand"/> but also works with <see cref="IMixedRealityController"/>. 
+    /// This solver is intended to work with <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand"/> but also works with <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityController"/>. 
     /// </summary>
     [RequireComponent(typeof(HandBounds))]
     public class HandConstraint : Solver, IMixedRealitySourceStateHandler

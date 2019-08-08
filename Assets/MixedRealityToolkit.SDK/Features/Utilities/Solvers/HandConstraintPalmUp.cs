@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 {
     /// <summary>
     /// Augments the HandConstraint to also check if the palm is facing the user before activation. This solver only works 
-    /// with <see cref="IMixedRealityHand"/> controllers, with other <see cref="IMixedRealityController"/> types this solver will behave just like it's base class.
+    /// with <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand"/> controllers, with other <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityController"/> types this solver will behave just like it's base class.
     /// </summary>
     public class HandConstraintPalmUp : HandConstraint
     {
@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         private float facingThreshold = 80.0f;
 
         /// <summary>
-        /// The angle (in degrees) of the cone between the palm's up and camera's forward have to match. Only supported by <see cref="IMixedRealityHand"/> controllers.
+        /// The angle (in degrees) of the cone between the palm's up and camera's forward have to match. Only supported by <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand"/> controllers.
         /// </summary>
         public float FacingThreshold
         {
@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         private bool requireFlatHand = false;
 
         /// <summary>
-        /// Do the fingers on the hand need to be straightened, rather than curled, to form a flat hand shape. Only supported by <see cref="IMixedRealityHand"/> controllers.
+        /// Do the fingers on the hand need to be straightened, rather than curled, to form a flat hand shape. Only supported by <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand"/> controllers.
         /// </summary>
         public bool RequireFlatHand
         {
@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         private float flatHandThreshold = 45.0f;
 
         /// <summary>
-        /// The angle (in degrees) of the cone between the palm's up and triangle's normal formed from the palm, to index, to ring finger tip have to match. Only supported by <see cref="IMixedRealityHand"/> controllers.
+        /// The angle (in degrees) of the cone between the palm's up and triangle's normal formed from the palm, to index, to ring finger tip have to match. Only supported by <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand"/> controllers.
         /// </summary>
         public float FlatHandThreshold
         {
