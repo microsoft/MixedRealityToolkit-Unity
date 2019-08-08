@@ -38,25 +38,34 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             return hand.Velocity;
         }
 
-        public IEnumerator Show(Vector3 position)
+        public IEnumerator Show(Vector3 position, bool waitForFixedUpdate = true)
         {
             this.position = position;
             yield return PlayModeTestUtilities.ShowHand(handedness, simulationService, gestureId, position);
-            yield return new WaitForFixedUpdate();
+            if (waitForFixedUpdate)
+            {
+                yield return new WaitForFixedUpdate();
+            }
         }
 
-        public IEnumerator Hide()
+        public IEnumerator Hide(bool waitForFixedUpdate = true)
         {
             yield return PlayModeTestUtilities.HideHand(handedness, simulationService);
-            yield return new WaitForFixedUpdate();
+            if (waitForFixedUpdate)
+            {
+                yield return new WaitForFixedUpdate();
+            }
         }
 
-        public IEnumerator MoveTo(Vector3 newPosition, int numSteps = 30)
+        public IEnumerator MoveTo(Vector3 newPosition, int numSteps = 30, bool waitForFixedUpdate = true)
         {
             Vector3 oldPosition = position;
             position = newPosition;
             yield return PlayModeTestUtilities.MoveHandFromTo(oldPosition, newPosition, numSteps, gestureId, handedness, simulationService);
-            yield return new WaitForFixedUpdate();
+            if (waitForFixedUpdate)
+            {
+                yield return new WaitForFixedUpdate();
+            }
         }
 
         public IEnumerator Move(Vector3 delta, int numSteps = 30)
@@ -71,11 +80,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return PlayModeTestUtilities.SetHandRotation(oldRotation, newRotation, position, gestureId, handedness, numSteps, simulationService);
         }
 
-        public IEnumerator SetGesture(ArticulatedHandPose.GestureId newGestureId)
+        public IEnumerator SetGesture(ArticulatedHandPose.GestureId newGestureId, bool waitForFixedUpdate = true)
         {
             gestureId = newGestureId;
             yield return PlayModeTestUtilities.MoveHandFromTo(position, position, 1, gestureId, handedness, simulationService);
-            yield return new WaitForFixedUpdate();
+            if (waitForFixedUpdate)
+            {
+                yield return new WaitForFixedUpdate();
+            }
         }
 
         public IEnumerator GrabAndThrowAt(Vector3 positionToRelease, int numSteps = 30)

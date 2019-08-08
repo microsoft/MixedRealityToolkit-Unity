@@ -3,8 +3,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
 using Microsoft.MixedReality.Toolkit.UI;
-using System.Collections;
-using System.Collections.Generic;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,6 +13,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     public class PinchSliderInspector : UnityEditor.Editor
     {
         private static GUIStyle labelStyle;
+
+        public override void OnInspectorGUI()
+        {
+            if (target != null)
+            {
+                InspectorUIUtility.RenderHelpURL(target.GetType());
+            }
+
+            DrawDefaultInspector();
+        }
 
         private void OnSceneGUI()
         {
@@ -33,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
 
                 EditorGUI.BeginChangeCheck();
-                
+
                 float handleSize = HandleUtility.GetHandleSize(startPos) * 0.15f;
                 slider.SliderStartPosition = Handles.FreeMoveHandle(startPos,
                     Quaternion.identity,

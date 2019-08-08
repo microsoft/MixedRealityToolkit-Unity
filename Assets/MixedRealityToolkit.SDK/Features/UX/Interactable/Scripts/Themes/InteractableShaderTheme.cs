@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     newValue = LerpFloat(property.StartValue.Float, property.Values[index].Float, percentage);
                     propertyBlock = SetFloat(propertyBlock, newValue, propId);
                     break;
-                case InteractableThemePropertyValueTypes.shaderRange:
+                case InteractableThemePropertyValueTypes.ShaderRange:
                     newValue = LerpFloat(property.StartValue.Float, property.Values[index].Float, percentage);
                     propertyBlock = SetFloat(propertyBlock, newValue, propId);
                     break;
@@ -98,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 case InteractableThemePropertyValueTypes.ShaderFloat:
                     startValue.Float = propertyBlock.GetFloat(propId);
                     break;
-                case InteractableThemePropertyValueTypes.shaderRange:
+                case InteractableThemePropertyValueTypes.ShaderRange:
                     startValue.Float = propertyBlock.GetFloat(propId);
                     break;
                 default:

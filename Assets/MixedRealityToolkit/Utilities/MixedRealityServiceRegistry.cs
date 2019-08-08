@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// The service registry store where the key is the Type of the service interface and the value is
         /// a pair in which they key is the service instance and the value is the registrar instance.
         /// </summary>
-        private static Dictionary<Type, List<KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>>> registry = 
+        private static Dictionary<Type, List<KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>>> registry =
             new Dictionary<Type, List<KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>>>();
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </returns>
         public static bool RemoveService<T>(string name) where T : IMixedRealityService
         {
-            T tempService;            
+            T tempService;
             IMixedRealityServiceRegistrar registrar;
 
             if (!TryGetService<T>(out tempService, out registrar, name))
@@ -168,6 +168,25 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         /// <typeparam name="T">The interface type of the service being requested.</typeparam>
         /// <param name="serviceInstance">Output parameter to receive the requested service instance.</param>
+        /// <param name="name">Optional name of the service.</param>
+        /// <returns>
+        /// True if the requested service is being returned, false otherwise.
+        /// </returns>
+        public static bool TryGetService<T>(
+            out T serviceInstance,
+            string name = null) where T : IMixedRealityService
+        {
+            return TryGetService<T>(
+                out serviceInstance,
+                out _,                  // The registrar out param is not used, it can be discarded.
+                name);
+        }
+
+        /// <summary>
+        /// Gets the instance of the requested service from the registry.
+        /// </summary>
+        /// <typeparam name="T">The interface type of the service being requested.</typeparam>
+        /// <param name="serviceInstance">Output parameter to receive the requested service instance.</param>
         /// <param name="registrar">Output parameter to receive the registrar that loaded the service instance.</param>
         /// <param name="name">Optional name of the service.</param>
         /// <returns>
@@ -180,15 +199,53 @@ namespace Microsoft.MixedReality.Toolkit
         {
             Type interfaceType = typeof(T);
 
+            IMixedRealityService tempService;
+            if (TryGetServiceInternal(interfaceType, out tempService, out registrar, name))
+            {
+                Debug.Assert(tempService is T, "The service in the registry does not match the expected type.");
+                serviceInstance = (T)tempService;
+                return true;
+            }
+
+            serviceInstance = default(T);
+            registrar = null;
+            return false;
+        }
+
+        /// <summary>
+        /// Gets the instance of the requested service from the registry.
+        /// </summary>
+        /// <param name="interfaceType">The interface type of the service being requested.</param>
+        /// <param name="serviceInstance">Output parameter to receive the requested service instance.</param>
+        /// <param name="registrar">Output parameter to receive the registrar that loaded the service instance.</param>
+        /// <param name="name">Optional name of the service.</param>
+        /// <returns>
+        /// True if the requested service is being returned, false otherwise.
+        /// </returns>
+        public static bool TryGetService(Type interfaceType,
+            out IMixedRealityService serviceInstance,
+            out IMixedRealityServiceRegistrar registrar,
+            string name = null)
+        {
+            return TryGetServiceInternal(interfaceType, out serviceInstance, out registrar, name);
+        }
+
+        private static bool TryGetServiceInternal(Type interfaceType,
+            out IMixedRealityService serviceInstance,
+            out IMixedRealityServiceRegistrar registrar,
+            string name = null)
+        {
+            // Assume failed to return null unless proven otherwise
+            serviceInstance = null;
+            registrar = null;
+
             if (!registry.ContainsKey(interfaceType))
             {
-                serviceInstance = default(T);
-                registrar = null;
                 return false;
             }
 
             List<KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>> services = registry[interfaceType];
-            
+
             int registryIndex = -1;
             if (!string.IsNullOrWhiteSpace(name))
             {
@@ -204,8 +261,6 @@ namespace Microsoft.MixedReality.Toolkit
                 if (registryIndex == -1)
                 {
                     // Failed to find the requested service.
-                    serviceInstance = default(T);
-                    registrar = null;
                     return false;
                 }
             }
@@ -214,38 +269,57 @@ namespace Microsoft.MixedReality.Toolkit
                 if (services.Count > 1)
                 {
                     Debug.LogWarning("Multiple instances of the requested service were found. Please re-call this method and provide a value for the name parameter.");
-                    serviceInstance = default(T);
-                    registrar = null;
                     return false;
                 }
                 registryIndex = 0;
             }
 
-            IMixedRealityService tempService = services[registryIndex].Key;
-            Debug.Assert(tempService is T, "The service in the registry does not match the expected type.");
-
-            serviceInstance = (T)tempService;
+            serviceInstance = services[registryIndex].Key;
             registrar = services[registryIndex].Value;
+
             return true;
         }
 
         /// <summary>
-        /// Gets the instance of the requested service from the registry.
+        /// Clears the registry cache of all services
         /// </summary>
-        /// <typeparam name="T">The interface type of the service being requested.</typeparam>
-        /// <param name="serviceInstance">Output parameter to receive the requested service instance.</param>
-        /// <param name="name">Optional name of the service.</param>
-        /// <returns>
-        /// True if the requested service is being returned, false otherwise.
-        /// </returns>
-        public static bool TryGetService<T>(
-            out T serviceInstance,
-            string name = null) where T : IMixedRealityService
+        public static void ClearAllServices()
         {
-            return TryGetService<T>(
-                out serviceInstance,
-                out _,                  // The registrar out param is not used, it can be discarded.
-                name);
+            if (registry != null)
+            {
+                registry.Clear();
+            }
+        }
+
+        /// <summary>
+        /// Returns readonly list of all services registered
+        /// </summary>
+        /// <returns>readonly list of all services registered</returns>
+        public static IReadOnlyCollection<IMixedRealityService> GetAllServices()
+        {
+            return GetAllServices(null);
+        }
+
+        /// <summary>
+        /// Returns readonly list of all services registered for given registrar
+        /// </summary>
+        /// <param name="registrar">Registrar object to filter sevices by</param>
+        /// <returns>readonly list of all services registered for given registrar, all services if parameter nul</returns>
+        public static IReadOnlyCollection<IMixedRealityService> GetAllServices(IMixedRealityServiceRegistrar registrar)
+        {
+            List<IMixedRealityService> results = new List<IMixedRealityService>();
+            foreach (var entry in registry.Values)
+            {
+                foreach (var tuple in entry)
+                {
+                    if (registrar == null || tuple.Value == registrar)
+                    {
+                        results.Add(tuple.Key);
+                    }
+                }
+            }
+
+            return results.AsReadOnly();
         }
     }
 }

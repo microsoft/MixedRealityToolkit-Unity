@@ -37,12 +37,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile = inputSystemProfile;
 
             // Add Input System
-            MixedRealityToolkit.Instance.RegisterService<IMixedRealityInputSystem>(new MixedRealityInputSystem(MixedRealityToolkit.Instance, MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile));
+            bool didRegister = MixedRealityToolkit.Instance.RegisterService<IMixedRealityInputSystem>(new MixedRealityInputSystem(MixedRealityToolkit.Instance, MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile));
 
             // Tests
-            Assert.IsNotEmpty(MixedRealityToolkit.Instance.ActiveSystems);
-            Assert.AreEqual(1, MixedRealityToolkit.Instance.ActiveSystems.Count);
-            Assert.AreEqual(0, MixedRealityToolkit.Instance.RegisteredMixedRealityServices.Count);
+            Assert.IsTrue(didRegister);
+            Assert.AreEqual(1, MixedRealityServiceRegistry.GetAllServices().Count);
+            Assert.IsNotNull(MixedRealityToolkit.Instance.GetService<IMixedRealityInputSystem>());
         }
 
         [Test]
@@ -68,7 +68,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 
             // Tests
             Assert.IsFalse(inputSystemExists);
-            LogAssert.Expect(LogType.Error, $"Unable to find {typeof(IMixedRealityInputSystem).Name} service.");
         }
 
         [Test]
@@ -81,6 +80,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 
             // Tests
             Assert.IsTrue(inputSystemExists);
+        }
+
+        [Test]
+        public void Test05_TestMixedRealityInputSystemDataProviders()
+        {
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
+
+            // Check for Input System
+            var inputSystem = MixedRealityToolkit.Instance.GetService<IMixedRealityInputSystem>();
+            Assert.IsNotNull(inputSystem);
+
+            var dataProviderAccess = (inputSystem as IMixedRealityDataProviderAccess);
+            Assert.IsNotNull(dataProviderAccess);
+
+            // Tests
+            Assert.IsEmpty(dataProviderAccess.GetDataProviders());
         }
 
         [TearDown]
