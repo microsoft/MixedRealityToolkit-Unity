@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
 
             EditorGUI.BeginChangeCheck();
 
-            solverHandler.TrackedTargetType = (TrackedObjectType)EditorGUILayout.EnumPopup(new GUIContent("Tracked Target Type"), solverHandler.TrackedTargetType, null, false);
+            trackedTargetProperty.enumValueIndex = (int)(TrackedObjectType)EditorGUILayout.EnumPopup(new GUIContent("Tracked Target Type"), solverHandler.TrackedTargetType, null, false);
             if (!SolverHandler.IsValidTrackedObjectType(solverHandler.TrackedTargetType))
             {
                 InspectorUIUtility.DrawWarning(" Current Tracked Target Type value of \"" 
