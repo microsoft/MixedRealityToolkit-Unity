@@ -121,10 +121,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         private void OnDestroy()
         {
-            var sharedMesh = meshFilter.sharedMesh;
             MeshReference meshReference;
+            var sharedMesh = meshFilter.sharedMesh;
 
-            if (processedMeshes.TryGetValue(sharedMesh, out meshReference))
+            if (sharedMesh != null && 
+                processedMeshes.TryGetValue(sharedMesh, out meshReference))
             {
                 meshReference.Decrement();
 
@@ -150,7 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             MeshReference meshReference;
 
             // If this mesh has already been processed, apply the preprocessed mesh and increment the reference count.
-            if (processedMeshes.TryGetValue(sharedMesh, out meshReference))
+            if (sharedMesh != null && processedMeshes.TryGetValue(sharedMesh, out meshReference))
             {
                 meshReference.Increment();
                 mesh = meshReference.Mesh;
@@ -162,8 +163,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             // Clone the mesh, and create a mesh reference which can be keyed off either the original mesh or cloned mesh.
             mesh = meshFilter.mesh;
             meshReference = new MeshReference(mesh);
-            processedMeshes[sharedMesh] = meshReference;
             processedMeshes[mesh] = meshReference;
+
+            if (sharedMesh != null)
+            {
+                processedMeshes[sharedMesh] = meshReference;
+            }
 
             return false;
         }

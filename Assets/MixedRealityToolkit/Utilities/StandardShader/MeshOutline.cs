@@ -129,7 +129,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             foreach (var material in materials)
             {
-                min = Mathf.Min(min, material.renderQueue);
+                if (material != null)
+                {
+                    min = Mathf.Min(min, material.renderQueue);
+                }
             }
 
             if (min == int.MaxValue)
