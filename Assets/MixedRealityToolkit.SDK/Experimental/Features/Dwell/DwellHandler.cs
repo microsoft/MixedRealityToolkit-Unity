@@ -13,17 +13,27 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
     {
     }
 
+    /// <summary>
+    /// Use this component to add a Dwell modality (https://docs.microsoft.com/en-us/windows/mixed-reality/gaze-and-dwell) to the UI target.
+    /// </summary>
     public class DwellHandler : MonoBehaviour, IMixedRealityFocusHandler
     {
+        protected enum DwellState
+        {
+            None = 0,
+            FocusGained,
+            DwellIntended,
+            DwellStarted,
+            DwellCompleted,
+            DwellCanceled,
+            Invalid
+        }
+
+        [Header("Dwell Settings")]
         [SerializeField]
         protected DwellProfile dwellProfile = null;
 
-        [SerializeField]
-        private bool allowDwellResume = false;
-
-        [SerializeField]
-        private float timeToAllowDwellResume = 1;
-
+        [Header("Dwell Events")]
         [SerializeField]
         private PointerUnityEvent DwellIntended = new PointerUnityEvent();
 
@@ -36,74 +46,32 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
         [SerializeField]
         private PointerUnityEvent DwellCanceled = new PointerUnityEvent();
 
+        /// <summary>
+        /// Invoke this event if the dwell is interrupted with alternate modality
+        /// </summary>
         public UnityAction<bool> CancelDwellAction;
 
-        public bool dwellInteractionEnabled;
-
-        protected float DwellProgress;
         protected bool HasFocus { get; private set; }
 
-        protected DwellState currentDwellState = DwellState.None;
-
-        public Action OnDwellInterrupted;
+        /// <summary>
+        /// Cached pointer reference to track focus events maps to teh same pointer that initiated dwell
+        /// </summary>
         private IMixedRealityPointer pointerRef;
-        private DateTime focusEnterTime = DateTime.MaxValue;
-        private DateTime focusExitTime = DateTime.MaxValue;
 
-        protected enum DwellState
-        {
-            FocusGained = 0,
-            DwellIntended,
-            DwellStarted,
-            DwellCompleted,
-            DwellCanceled,
-            None
-        }
+        protected DateTime focusEnterTime = DateTime.MaxValue;
+        protected DateTime focusExitTime = DateTime.MaxValue;
+        protected DwellState currentDwellState = DwellState.None;
 
         private void Awake()
         {
+            Debug.Assert(dwellProfile != null, "DwellProfile is null, creating default profile.");
+
             if (dwellProfile == null)
             {
                 dwellProfile = ScriptableObject.CreateInstance("DwellProfile") as DwellProfile;
             }
-            Debug.Assert(dwellProfile != null, "DwellProfile is null");
 
             CancelDwellAction += OnDwellCancelAction;
-        }
-
-        private void OnDwellCancelAction(bool isPermanent = false)
-        {
-            if (!isPermanent)
-            {
-                DwellCanceled.Invoke(pointerRef);
-                focusEnterTime = DateTime.MaxValue;
-            }
-        }
-
-        public virtual float CalculateDwellProgress()
-        {
-            switch (currentDwellState)
-            {
-                case DwellState.None:
-                    DwellProgress =  0;
-                    break;
-                case DwellState.FocusGained:
-                    DwellProgress = 0;
-                    break;
-                case DwellState.DwellStarted:
-                    DwellProgress = Mathf.Clamp((float)(DateTime.UtcNow - focusEnterTime.AddSeconds(dwellProfile.DwellIntentDelay + dwellProfile.DwellStartDelay)).TotalSeconds 
-                        / dwellProfile.TimeToCompleteDwell,
-                        0f, 1f);
-                    break;
-                case DwellState.DwellCompleted:
-                    DwellProgress = 1;
-                    break;
-                case DwellState.DwellCanceled:
-                default:
-                    return DwellProgress;
-            }
-
-            return DwellProgress;
         }
 
         private void Update()
@@ -130,23 +98,56 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
             }
         }
 
+        public virtual float CalculateDwellProgress(float lastProgressValue)
+        {
+            float dwellProgress = 0;
+
+            switch (currentDwellState)
+            {
+                case DwellState.None:
+                    dwellProgress =  0;
+                    break;
+                case DwellState.FocusGained:
+                    dwellProgress = 0;
+                    break;
+                case DwellState.DwellStarted:
+                    dwellProgress = Mathf.Clamp((float)(DateTime.UtcNow - focusEnterTime.AddSeconds(dwellProfile.DwellIntentDelay + dwellProfile.DwellStartDelay)).TotalSeconds 
+                        / dwellProfile.TimeToCompleteDwell,
+                        0f, 1f);
+                    break;
+                case DwellState.DwellCompleted:
+                    dwellProgress = 1;
+                    break;
+                case DwellState.DwellCanceled:
+                case DwellState.Invalid:
+                default:
+                    return dwellProgress;
+            }
+
+            return dwellProgress;
+        }
+
         public void OnFocusEnter(FocusEventData eventData)
         {
             if (eventData.NewFocusedObject == gameObject 
                 && eventData.Pointer.InputSourceParent.SourceType == dwellProfile.DwellPointerType)
             {
                 HasFocus = true;
-                if (currentDwellState == DwellState.None || currentDwellState == DwellState.DwellIntended || !allowDwellResume || (DateTime.UtcNow - focusExitTime).TotalSeconds > timeToAllowDwellResume)
+
+                // dwell state machine re-starts
+                if (currentDwellState <= DwellState.DwellIntended
+                    || !dwellProfile.AllowDwellResume || (DateTime.UtcNow - focusExitTime).TotalSeconds > dwellProfile.TimeToAllowDwellResume)
                 {
                     focusEnterTime = DateTime.UtcNow;
                     currentDwellState = DwellState.FocusGained;
                     pointerRef = eventData.Pointer;
                 }
-                //potential intent to resume //todo: and pointer id is same
-                else if (currentDwellState == DwellState.DwellCanceled && allowDwellResume  
-                    && (DateTime.UtcNow - focusExitTime).TotalSeconds <= timeToAllowDwellResume)
+                //intent to resume 
+                else if (currentDwellState == DwellState.DwellCanceled && dwellProfile.AllowDwellResume 
+                    && pointerRef.InputSourceParent.SourceId == eventData.Pointer.InputSourceParent.SourceId //make sure the returning pointer id is the same
+                    && (DateTime.UtcNow - focusExitTime).TotalSeconds <= dwellProfile.TimeToAllowDwellResume)
                 {
-                    focusEnterTime.AddSeconds(timeToAllowDwellResume);
+                    focusEnterTime = focusEnterTime.AddSeconds(dwellProfile.TimeToAllowDwellResume); //todo: is this correct ?
                     currentDwellState = DwellState.DwellStarted;
                     DwellStarted.Invoke(pointerRef);
                 }
@@ -156,7 +157,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
         public void OnFocusExit(FocusEventData eventData)
         {
             if (eventData.OldFocusedObject == gameObject 
-                && eventData.Pointer.InputSourceParent.SourceType == dwellProfile.DwellPointerType)
+                && eventData.Pointer.InputSourceParent.SourceType == dwellProfile.DwellPointerType
+                && pointerRef.InputSourceParent.SourceId == eventData.Pointer.InputSourceParent.SourceId)
             {
                 HasFocus = false;
 
@@ -171,6 +173,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
                     currentDwellState = DwellState.None;
                     focusExitTime = DateTime.MinValue;
                 }
+            }
+        }
+
+        private void OnDwellCancelAction(bool isPermanent = false)
+        {
+            if (!isPermanent)
+            {
+                DwellCanceled.Invoke(pointerRef);
+                focusEnterTime = DateTime.MaxValue;
+                currentDwellState = DwellState.None;
+                focusExitTime = DateTime.MinValue;
             }
         }
     }

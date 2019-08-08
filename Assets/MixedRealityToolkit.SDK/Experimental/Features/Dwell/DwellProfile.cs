@@ -2,12 +2,17 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
 {
+    [MixedRealityServiceProfile(typeof(DwellProfile))]
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Dwell Profile", fileName = "DwellProfile", order = 100)]
+    [Serializable]
     public class DwellProfile : ScriptableObject
     {
+        [Tooltip("Pointer type to use for triggering a dwell interaction")]
         [SerializeField]
         private InputSourceType dwellTriggerPointerType = InputSourceType.Head;
 
@@ -26,9 +31,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
         [Range(0, 20)]
         private float timeToCompleteDwell = 6;
 
-        //[Tooltip("Additional time (not including the timeToTriggerDwellInSec) the user needs to keep looking at the UI to trigger select on it.")]
-        //[SerializeField]
-        //private bool allowFocusLossAfterDwellStarts
+        [Tooltip("Should the system allow for dwell to resume if the pointer exits the target briefly.")]
+        [SerializeField]
+        private bool allowDwellResume = false;
+
+        [Tooltip("Time in seconds when gaze can fall off the target and come back.")]
+        [SerializeField]
+        [Range(0, 2)]
+        private float timeToAllowDwellResume = 1;
 
         public InputSourceType DwellPointerType
         {
@@ -59,6 +69,22 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
             get
             {
                 return timeToCompleteDwell;
+            }
+        }
+
+        public bool AllowDwellResume
+        {
+            get
+            {
+                return allowDwellResume;
+            }
+        }
+
+        public float TimeToAllowDwellResume
+        {
+            get
+            {
+                return timeToAllowDwellResume;
             }
         }
     }
