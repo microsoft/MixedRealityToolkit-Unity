@@ -10,6 +10,7 @@ using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Teleport;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit
 {
@@ -111,9 +112,14 @@ namespace Microsoft.MixedReality.Toolkit
             serviceCache.Clear();
         }
 
+        /// <summary>
+        /// Clears the cache of the reference with key of given type if present and applicable
+        /// </summary>
+        /// <param name="serviceType">interface of service to key against. Must be of type IMixedRealityService</param>
+        /// <returns>true if succesfully cleared, false otherwise</returns>
         public static bool ResetCacheReference(Type serviceType)
         {
-            if (serviceType is IMixedRealityService)
+            if (typeof(IMixedRealityService).IsAssignableFrom(serviceType))
             {
                 if (serviceCache.ContainsKey(serviceType))
                 {
@@ -121,31 +127,44 @@ namespace Microsoft.MixedReality.Toolkit
                     return true;
                 }
             }
+            else
+            {
+                Debug.Log("Cache only contains types that implement IMixedRealityService");
+            }
 
             return false;
         }
 
-        private static Dictionary<Type, IMixedRealityService> serviceCache = new Dictionary<Type, IMixedRealityService>();
+        // We do not want to keep a service around so use WeakReference
+        private static readonly Dictionary<Type, WeakReference<IMixedRealityService>> serviceCache = new Dictionary<Type, WeakReference<IMixedRealityService>>();
 
         private static T GetService<T>() where T : IMixedRealityService
         {
             Type serviceType = typeof(T);
 
+            // See if we already have a WeakReference entry for this serivce type
             if (serviceCache.ContainsKey(serviceType))
             {
-                return (T)serviceCache[serviceType];
-            }
-            else
-            {
-                T service;
-                if (!MixedRealityServiceRegistry.TryGetService(out service))
+                IMixedRealityService svc;
+                // If our reference object is still alive, return it
+                if (serviceCache[serviceType].TryGetTarget(out svc))
                 {
-                    return default(T);
+                    return (T)svc;
                 }
 
-                serviceCache.Add(typeof(T), service as IMixedRealityService);
-                return service;
+                // Our reference object has been collected by the GC. Try to get the latest service if available
+                serviceCache.Remove(serviceType);
             }
+
+            // This is the first request for the given service type. See if it is available and if so, add entry
+            T service;
+            if (!MixedRealityServiceRegistry.TryGetService(out service))
+            {
+                return default(T);
+            }
+
+            serviceCache.Add(typeof(T), new WeakReference<IMixedRealityService>(service, false));
+            return service;
         }
     }
 }
