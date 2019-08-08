@@ -53,7 +53,6 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <param name="objectScale"></param>
         /// <param name="isNearMode"></param>
         /// <param name="usePointerRotation"></param>
-        /// <param name="objectScale"></param>
         /// <param name="movementConstraint"></param>
         /// <returns>A Vector3 describing the desired position</returns>
         public Vector3 Update(MixedRealityPose pointerCentroidPose, Quaternion objectRotation, Vector3 objectScale, bool isNearMode, bool usePointerRotation, MovementConstraintType movementConstraint)
