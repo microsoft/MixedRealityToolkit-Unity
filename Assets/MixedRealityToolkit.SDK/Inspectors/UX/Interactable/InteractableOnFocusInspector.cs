@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI.Editor
 {
+    /// <summary>
+    /// Class controls inspector rendering logic for the InteractableOnFocus class
+    /// </summary>
     [CustomEditor(typeof(InteractableOnFocus))]
     public class InteractableOnFocusInspector : UnityEditor.Editor
     {
