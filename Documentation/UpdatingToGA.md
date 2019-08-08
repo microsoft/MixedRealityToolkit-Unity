@@ -18,7 +18,9 @@ Since the release of RC2, there have been a number of API changes including some
 
 The following public properties on the MixedRealityToolkit object have been deprecated.
 
-- `RegisteredMixedRealityServices` - Use [`IMixedRealityServiceRegistrar.GetDataProvider<T>()`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar) or [`IMixedRealityDataProviderAccess`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess) instead
+- `RegisteredMixedRealityServices` no longer contains the collection of registered extensions services and data providers.
+
+To access extension services, use [`MixedRealityServiceRegistry.TryGetService<T>`]. To access data providers, cast the service instance to [`IMixedRealityDataProviderAccess`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess) and use `GetDataProvider<T>`. 
 
 Use [`MixedRealityServiceRegistry`](xref:Microsoft.MixedReality.Toolkit.MixedRealityServiceRegistry) or [`CoreServices`](xref:Microsoft.MixedReality.Toolkit.CoreServices) instead for the following deprecated properties
 
