@@ -37,11 +37,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile = inputSystemProfile;
 
             // Add Input System
-            MixedRealityToolkit.Instance.RegisterService<IMixedRealityInputSystem>(new MixedRealityInputSystem(MixedRealityToolkit.Instance, MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile));
+            bool didRegister = MixedRealityToolkit.Instance.RegisterService<IMixedRealityInputSystem>(new MixedRealityInputSystem(MixedRealityToolkit.Instance, MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile));
 
             // Tests
-            Assert.IsNotEmpty(MixedRealityToolkit.Instance.ActiveSystems);
-            Assert.AreEqual(1, MixedRealityToolkit.Instance.ActiveSystems.Count);
+            Assert.IsTrue(didRegister);
+            Assert.AreEqual(1, MixedRealityServiceRegistry.GetAllServices().Count);
+            Assert.IsNotNull(MixedRealityToolkit.Instance.GetService<IMixedRealityInputSystem>());
         }
 
         [Test]
