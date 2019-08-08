@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
@@ -157,8 +156,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 TrackingState = eventData.Controller.TrackingState;
                 IsTracked = (TrackingState == TrackingState.Tracked);
-                transform.localPosition = eventData.SourceData.Position;
-                transform.localRotation = eventData.SourceData.Rotation;
+                transform.position = eventData.SourceData.Position;
+                transform.rotation = eventData.SourceData.Rotation;
             }
         }
 
