@@ -100,6 +100,8 @@
 <li><a href="#surfacemagnetism"><code>SurfaceMagnetism</code></a>: casts rays to surfaces in the world, and align the object to that surface.</li>
 <li><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.Momentum.html"><code>Momentum</code></a>: Applies acceleration/velocity/friction to simulate momentum and springiness for an object being moved by other solvers/components.</li>
 <li><a href="#inbetween"><code>InBetween</code></a>: Keeps an object in between two tracked objects.</li>
+<li><a href="#handconstraint-and-handconstraintpalmup"><code>HandConstraint</code></a>: Constrains object to follow hands in a region that doesn't intersect the GameObject with the hands. Useful for hand constrained interactive content such as menus, etc. This solver is intended to work with <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand.html">IMixedRealityHand</a> but also works with <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityController.html">IMixedRealityController</a>.</li>
+<li><a href="#handconstraint-and-handconstraintpalmup"><code>HandConstraintPalmUp</code></a>: Derives from HandConstraint but includes logic to test if the palm is facing the user before activation. This solver only works with <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand.html">IMixedRealityHand</a> controllers, with other controller types this solver will behave just like its base class.</li>
 </ul>
 <p>In order to use the Solver system, simply add one of the components listed above to a GameObject. Since all Solvers require a <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.html"><code>SolverHandler</code></a>, one will be created automatically by Unity.</p>
 <div class="NOTE">
@@ -203,6 +205,24 @@ public class InFront : Solver
 <p>Use the <em>Orientation Blend</em> property to control the balance between rotation factors when <em>Orientation Mode</em> is set to <em>Blended</em>. A value of 0.0 will have orientation entirely driven by <em>TrackedTarget</em> mode and a value of 1.0 will have orientation driven entirely by <em>SurfaceNormal</em>.</p>
 </div>
 <p><img src="Images/Solver/SurfaceMagExample.PNG" alt="SurfaceMagnetism Example"></p>
+<h3 id="handconstraint-and-handconstraintpalmup">HandConstraint and HandConstraintPalmUp</h3>
+<p>The <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> behavior provides a solver that constrains the tracked object to a region safe for hand constrained content (such as hand UI, menus, etc). Safe regions are considered areas that don't intersect with the hand. A derived class of <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> called <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.html"><code>HandConstraintPalmUp</code></a> is also included to demonstrate a common behavior of activating the solver tracked object when the palm is facing the user. For example use of this behavior please see the HandBasedMenuExample scene under: <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes">MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/</a></p>
+<p>Please see the tool tips available for each <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> property for additional documentation. A few properties are defined in more detail below.</p>
+<img src="Images/Solver/MRTK_Solver_HandConstraintPalmUp.PNG" width="450">
+<ul>
+<li><strong>Safe Zone</strong>: The safe zone specifies where on the hand to constrain content. It is recommended that content be placed on the Ulnar Side to avoid overlap with the hand and improved interaction quality. Safe zones are calculated by taking the hands orientation projected into a plane orthogonal to the camera's view and raycasting against a bounding box around the hands. Safe zones are defined to work with <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand.html"><code>IMixedRealityHand</code></a> but also works with other controller types. It is recommended to explore what each safe zone represents on different controller types.</li>
+</ul>
+<img src="Images/Solver/MRTK_Solver_HandConstraintSafeZones.PNG" width="450">
+<ul>
+<li><p><strong>Activation Events</strong>: Currently the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> triggers four activation events. These events can be used in many different combinations to create unique <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> behaviors, please see the HandBasedMenuExample scene under: <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes">MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/</a> for examples of these behaviors.</p>
+<ul>
+<li>OnHandActivate: triggers when a hand satisfies the IsHandActive method</li>
+<li>OnHandDeactivate: triggers when the IsHandActive method is no longer satisfied.</li>
+<li>OnFirstHandDetected: occurs when the hand tracking state changes from no hands in view, to the first hand in view.</li>
+<li>OnLastHandDetected: occurs when the hand tracking state changes from at least one hand in view, to no hands in view.</li>
+</ul>
+</li>
+</ul>
 <h4 id="determining-what-surfaces-can-be-hit">Determining what surfaces can be hit</h4>
 <p>When adding a <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.html"><code>SurfaceMagnetism</code></a> component to a GameObject, it is important to consider the layer of the GameObject and it's children, if any have colliders. The component works by performing various types of raycasts to determine what surface to &quot;magnet&quot; itself against. If the Solver GameObject has a collider on one of the layers listed in the <code>MagneticSurfaces</code> property of <code>SurfaceMagnetism</code>, then the raycast will likely hit itself resulting in the GameObject attaching to it's own collider point. This odd behavior can be avoided by setting the main GameObject and all children to the <em>Ignore Raycast</em> layer or modifying the <code>MagneticSurfaces</code> LayerMask array appropriately.</p>
 <p>Conversely, a <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.html"><code>SurfaceMagnetism</code></a> GameObject will not collide with surfaces on a layer not listed in the <code>MagneticSurfaces</code> property. It is generally recommended to place all desired surfaces on a dedicated layer (i.e <em>Surfaces</em>) and setting the <code>MagneticSurfaces</code> property to just this layer.  Using <em>default</em> or <em>everything</em> may result in UI components or cursors contributing to the solver.</p>
@@ -215,7 +235,7 @@ public class InFront : Solver
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/2.0.0_stabilization/Documentation/README_Solver.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/README_Solver.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
