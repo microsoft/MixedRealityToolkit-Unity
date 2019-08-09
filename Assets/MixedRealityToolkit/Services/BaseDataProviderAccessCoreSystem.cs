@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit
 
             foreach (var provider in dataProviders)
             {
-                provider.Reset();
+                provider.Enable();
             }
         }
 
