@@ -469,7 +469,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             RaycastHit result;
 
             // Do the cast!
-            isHit = MixedRealityRaycaster.RaycastSimplePhysicsStep(rayStep, maxRaycastDistance, magneticSurfaces, out result);
+            isHit = MixedRealityRaycaster.RaycastSimplePhysicsStep(rayStep, maxRaycastDistance, magneticSurfaces, false, out result);
 
             OnSurface = isHit;
 
@@ -501,7 +501,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
             // Do the cast!
             float size = ScaleOverride > 0 ? ScaleOverride : transform.lossyScale.x * sphereSize;
-            isHit = MixedRealityRaycaster.RaycastSpherePhysicsStep(rayStep, size, maxRaycastDistance, magneticSurfaces, out result);
+            isHit = MixedRealityRaycaster.RaycastSpherePhysicsStep(rayStep, size, maxRaycastDistance, magneticSurfaces, false, out result);
 
             OnSurface = isHit;
 
@@ -549,7 +549,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             Vector3[] normals;
             bool[] hits;
 
-            if (MixedRealityRaycaster.RaycastBoxPhysicsStep(rayStep, extents, transform.position, targetMatrix, maxRaycastDistance, magneticSurfaces, boxRaysPerEdge, orthographicBoxCast, out positions, out normals, out hits))
+            if (MixedRealityRaycaster.RaycastBoxPhysicsStep(rayStep, extents, transform.position, targetMatrix, maxRaycastDistance, magneticSurfaces, boxRaysPerEdge, orthographicBoxCast, out positions, out normals, false, out hits))
             {
                 Plane plane;
                 float distance;
