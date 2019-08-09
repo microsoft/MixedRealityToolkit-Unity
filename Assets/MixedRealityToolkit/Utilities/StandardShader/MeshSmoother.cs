@@ -14,6 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// with the MRTK/Standard shader which assumes smoothed normals are packed into the 3rd UV set.
     /// </summary>
     [RequireComponent(typeof(MeshFilter))]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_MRTKStandardShader.html#mesh-outlines")]
     public class MeshSmoother : MonoBehaviour
     {
         private const int smoothNormalUVChannel = 2;
