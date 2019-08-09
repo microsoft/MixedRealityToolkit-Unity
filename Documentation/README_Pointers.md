@@ -1,4 +1,4 @@
-# Pointers #
+# Pointer UX #
 
 ![Pointer](../Documentation/Images/Pointers/MRTK_Pointer_Main.png)
 
