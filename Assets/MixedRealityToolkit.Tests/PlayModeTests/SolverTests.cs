@@ -15,6 +15,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using NUnit.Framework;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TestTools;
 
@@ -23,6 +24,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     public class SolverTests : BasePlayModeTests
     {
         private const float DistanceThreshold = 1.5f;
+        private const float HandDistanceThreshold = 0.5f;
+        private const float SolverUpdateWaitTime = 1.0f; //seconds
 
         /// <summary>
         /// Internal class used to store data for setup
@@ -32,6 +35,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             public SolverHandler handler;
             public Solver solver;
             public GameObject target;
+        }
+
+        private List<SetupData> setupDataList = new List<SetupData>();
+
+        [TearDown]
+        public override void TearDown()
+        {
+            foreach (var setupData in setupDataList)
+            {
+                Object.Destroy(setupData?.target);
+            }
+
+            base.TearDown();
         }
 
         /// <summary>
@@ -229,7 +245,51 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.AssertAboutEqual(testObjects.target.transform.position, rightPost.transform.position, "InBetween solver did not move to the left post");
         }
 
-#region Test Helpers
+        /// <summary>
+        /// Test the HandConstraint to make sure it tracks hands correctly.
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator TestHandConstraint()
+        {
+            // Instantiate our test gameobject with solver.
+            var testObjects = InstantiateTestSolver<HandConstraint>();
+            testObjects.handler.TrackedTargetType = TrackedObjectType.HandJoint;
+            testObjects.handler.TrackedHandness = Handedness.Both;
+
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+
+            TestUtilities.AssertAboutEqual(testObjects.target.transform.position, Vector3.zero, "HandConstraint solver did not start at the origin");
+
+            // Add a right hand.
+            var rightHand = new TestHand(Handedness.Right);
+            yield return rightHand.Show(Vector3.zero);
+
+            // Move the hand to 0, 0, 1 and ensure that the hand constraint followed.
+            var handPosition = Vector3.forward;
+            yield return rightHand.MoveTo(handPosition);
+
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+
+            // Make sure the solver is not in the same location as the hand because the solver should move to a hand safe zone.
+            TestUtilities.AssertNotAboutEqual(testObjects.target.transform.position, handPosition, "HandConstraint solver is in the same location of the hand when it should be slightly offset from the hand.");
+
+            // Make sure the solver is near the hand.
+            Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, handPosition), HandDistanceThreshold, "HandConstraint solver is not within {0} units of the hand", HandDistanceThreshold);
+
+            // Hide the right hand and create a left hand.
+            yield return rightHand.Hide();
+            var leftHand = new TestHand(Handedness.Left);
+            handPosition = Vector3.zero;
+            yield return leftHand.Show(handPosition);
+
+            yield return new WaitForSeconds(SolverUpdateWaitTime);
+
+            // Make sure the solver is now near the other hand.
+            Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, handPosition), HandDistanceThreshold, "HandConstraint solver is not within {0} units of the hand", HandDistanceThreshold);
+        }
+
+        #region Test Helpers
 
         private IEnumerator TestHandSolver(GameObject target, InputSimulationService inputSimulationService, Vector3 handPos, Handedness hand)
         {
@@ -262,12 +322,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             SolverHandler handler = cube.GetComponent<SolverHandler>();
             Assert.IsNotNull(handler, "GetComponent<SolverHandler>() returned null");
 
-            return new SetupData()
+           var setupData =  new SetupData()
             {
                 handler = handler,
                 solver = solver,
                 target = cube
             };
+
+            setupDataList.Add(setupData);
+
+            return setupData;
         }
 
         private IEnumerator WaitForFrames(int frames)
