@@ -20,13 +20,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     public abstract class BasePlayModeTests
     {
         [SetUp]
-        public void Setup()
+        public virtual void Setup()
         {
             PlayModeTestUtilities.Setup();
         }
 
         [TearDown]
-        public void TearDown()
+        public virtual void TearDown()
         {
             PlayModeTestUtilities.TearDown();
         }
