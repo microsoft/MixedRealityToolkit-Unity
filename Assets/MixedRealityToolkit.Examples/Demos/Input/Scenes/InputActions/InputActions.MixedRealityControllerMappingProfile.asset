@@ -2189,7 +2189,7 @@ MonoBehaviour:
         id: 2
         description: Menu
         axisConstraint: 2
-      keyCode: 330
+      keyCode: 332
       axisCodeX: 
       axisCodeY: 
       invertXAxis: 0
@@ -2350,7 +2350,7 @@ MonoBehaviour:
         id: 2
         description: Menu
         axisConstraint: 2
-      keyCode: 332
+      keyCode: 330
       axisCodeX: 
       axisCodeY: 
       invertXAxis: 0
