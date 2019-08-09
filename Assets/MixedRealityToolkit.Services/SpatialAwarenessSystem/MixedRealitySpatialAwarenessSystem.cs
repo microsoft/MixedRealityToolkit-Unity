@@ -89,8 +89,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <inheritdoc/>
         public override void Enable()
         {
-            base.Enable();
-
             MixedRealitySpatialAwarenessSystemProfile profile = ConfigurationProfile as MixedRealitySpatialAwarenessSystemProfile;
 
             if ((GetDataProviders<IMixedRealitySpatialAwarenessObserver>().Count == 0) && (profile != null))
@@ -107,11 +105,15 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
                         args);
                 }
             }
+
+            // Ensure data providers are enabled (performed by the base class)
+            base.Enable();
         }
 
         /// <inheritdoc/>
         public override void Reset()
         {
+            base.Reset();
             Disable();
             Initialize();
             Enable();
@@ -145,6 +147,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
                     spatialAwarenessObjectParent = null;
                 }
             }
+
+            base.Destroy();
         }
 
         #endregion IMixedRealityToolkitService Implementation
