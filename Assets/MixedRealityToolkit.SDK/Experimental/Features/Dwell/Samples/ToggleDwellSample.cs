@@ -1,13 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Input;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Microsoft.MixedReality.Toolkit.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
 {
+    /// <summary>
+    /// Example script to demonstrate a toggle button using dwell
+    /// </summary>
     public class ToggleDwellSample : BaseDwellSample
     {
         [SerializeField]
@@ -32,6 +35,20 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
 
         private float cancelStartScale = 0;
 
+        public void Update()
+        {
+            if (isDwelling)
+            {
+                float value = dwellHandler.CalculateDwellProgress();
+                dwellVisualImage.transform.localScale = new Vector3(value, value, value);
+            }
+            else if (!isDwelling && dwellVisualImage.transform.localScale.x > 0)
+            {
+                float value = Mathf.Clamp(dwellVisualImage.transform.localScale.x - (cancelStartScale / dwellVisualCancelDurationInFPS), 0f, 1f);
+                dwellVisualImage.transform.localScale = new Vector3(value, value, value);
+            }
+        }
+
         public override void DwellIntended(IMixedRealityPointer pointer)
         {
             buttonBackground.color = dwellIntendedColor;
@@ -49,20 +66,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
         {
             base.DwellCompleted(pointer);
             dwellVisualImage.transform.localScale = Vector3.zero;
-        }
-
-        public void Update()
-        {
-            if (isDwelling)
-            {
-                float value = dwellHandler.CalculateDwellProgress(dwellVisualImage.transform.localScale.x);
-                dwellVisualImage.transform.localScale = new Vector3(value, value, value);
-            }
-            else if (!isDwelling && dwellVisualImage.transform.localScale.x > 0)
-            {
-                float value = Mathf.Clamp(dwellVisualImage.transform.localScale.x - (cancelStartScale / dwellVisualCancelDurationInFPS), 0f, 1f);
-                dwellVisualImage.transform.localScale = new Vector3(value, value, value);
-            }
         }
 
         public override void ButtonExecute()

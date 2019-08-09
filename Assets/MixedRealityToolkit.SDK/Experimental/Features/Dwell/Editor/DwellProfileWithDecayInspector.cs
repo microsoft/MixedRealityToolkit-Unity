@@ -6,6 +6,9 @@ using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
 {
+    /// <summary>
+    /// Custom profile inspector for the extended dwell profile sample
+    /// </summary>
     [CustomEditor(typeof(DwellProfileWithDecay))]
     [Serializable]
     public class DwellProfileWithDecayInspector : DwellProfileInspector
@@ -13,8 +16,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
         public override void OnInspectorGUI()
         {
             DrawPropertiesExcluding(this.serializedObject, "timeToAllowDwellDecay", "timeToAllowDwellResume");
-            DrawConditionParameter("timeToAllowDwellResume", "allowDwellResume");
-            DrawConditionParameter("timeToAllowDwellDecay", "allowDwellDecayOnCancel");
+            DrawConditionalParameter("timeToAllowDwellResume", "allowDwellResume");
+            DrawConditionalParameter("timeToAllowDwellDecay", "allowDwellDecayOnCancel");
 
             this.serializedObject.ApplyModifiedProperties();
         }

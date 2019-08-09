@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: ToggleDwellProfile
   m_EditorClassIdentifier: 
   dwellTriggerPointerType: 4
-  dwellIntentDelay: 0.35
+  dwellIntentDelay: 0
   dwellStartDelay: 1.5
-  timeToCompleteDwell: 5
+  timeToCompleteDwell: 4.54
   allowDwellResume: 0
-  timeToAllowDwellResume: 1
+  timeToAllowDwellResume: 0.747

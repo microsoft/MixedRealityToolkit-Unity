@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
 
         [Tooltip("Time in seconds when gaze can fall off the target and come back.")]
         [SerializeField]
-        [Range(0, 2)]
+        [Range(0, 20)]
         private float timeToAllowDwellResume = 1;
 
         public InputSourceType DwellPointerType

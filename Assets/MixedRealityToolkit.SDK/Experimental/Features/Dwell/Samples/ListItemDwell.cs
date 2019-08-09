@@ -1,26 +1,19 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Input;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-using Microsoft.MixedReality.Toolkit.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
 {
-    public class ListItemDwell : BaseDwellSample, IMixedRealityFocusHandler
+    public class ListItemDwell : BaseDwellSample
     {
         [SerializeField]
         private TextMeshProUGUI itemName = null;
 
         [SerializeField]
         private TextMeshProUGUI displayLabel = null;
-
-        public override void DwellCompleted(IMixedRealityPointer pointer)
-        {
-            base.DwellCompleted(pointer);
-            dwellVisualImage.fillAmount = 0;
-        }
 
         protected override void Awake()
         {
@@ -32,24 +25,20 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
         {
             if (isDwelling)
             {
-                float value = dwellHandler.CalculateDwellProgress(dwellVisualImage.fillAmount);
+                float value = dwellHandler.CalculateDwellProgress();
                 dwellVisualImage.fillAmount = value;
             }
+        }
+
+        public override void DwellCompleted(IMixedRealityPointer pointer)
+        {
+            base.DwellCompleted(pointer);
+            dwellVisualImage.fillAmount = 0;
         }
 
         public override void ButtonExecute()
         {
             displayLabel.text = "Selected Item: " + itemName.text;
-        }
-
-        public void OnFocusEnter(FocusEventData eventData)
-        {
-            
-        }
-
-        public void OnFocusExit(FocusEventData eventData)
-        {
-            
         }
     }
 }

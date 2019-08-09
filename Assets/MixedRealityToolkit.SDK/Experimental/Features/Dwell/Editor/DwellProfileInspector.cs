@@ -5,19 +5,19 @@ using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
 {
-    [CustomEditor(typeof(DwellProfile))]
+    [CustomEditor(typeof(DwellProfile), true)]
     public class DwellProfileInspector : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {
             DrawPropertiesExcluding(this.serializedObject, "timeToAllowDwellResume");
 
-            DrawConditionParameter("timeToAllowDwellResume", "allowDwellResume");
+            DrawConditionalParameter("timeToAllowDwellResume", "allowDwellResume");
 
             this.serializedObject.ApplyModifiedProperties();
         }
 
-        public void DrawConditionParameter(string propertyToDraw, string conditionalProperty)
+        public void DrawConditionalParameter(string propertyToDraw, string conditionalProperty)
         {
             var allowDwllResume = serializedObject.FindProperty(conditionalProperty);
             if (allowDwllResume.boolValue)

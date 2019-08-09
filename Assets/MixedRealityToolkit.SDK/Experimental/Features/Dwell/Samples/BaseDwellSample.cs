@@ -7,14 +7,17 @@ using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
 {
+    /// <summary>
+    /// Example script to demonstrate dwell visuals in sample scene
+    /// </summary>
     public abstract class BaseDwellSample : MonoBehaviour
     {
-        public bool isDwelling = false;
+        [SerializeField]
+        protected Image dwellVisualImage = null;
 
         protected DwellHandler dwellHandler;
 
-        [SerializeField]
-        protected Image dwellVisualImage = null;
+        public bool isDwelling = false;
 
         protected virtual void Awake()
         {

@@ -1,16 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
 {
+    /// <summary>
+    /// Example to demonstrate override
+    /// </summary>
     public class CustomDwellHandler : DwellHandler
     {
-        private float lastDwellProgress = 0;
-
-        public override float CalculateDwellProgress(float lastProgressValue)
+        public override float CalculateDwellProgress()
         {
             float dwellProgress = 0;
 
@@ -23,18 +23,20 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
                     dwellProgress = 0;
                     break;
                 case DwellState.DwellStarted:
-                    dwellProgress = Mathf.Clamp((float)(DateTime.UtcNow - focusEnterTime.AddSeconds(dwellProfile.DwellIntentDelay + dwellProfile.DwellStartDelay)).TotalSeconds
-                        / dwellProfile.TimeToCompleteDwell,
+                    fillTimer -= Time.deltaTime;
+                    dwellProgress = Mathf.Clamp((float)(dwellProfile.TimeToCompleteDwell - fillTimer) / dwellProfile.TimeToCompleteDwell,
                         0f, 1f);
                     break;
                 case DwellState.DwellCompleted:
                     dwellProgress = 1;
                     break;
                 case DwellState.DwellCanceled:
-                    var myDwellProfile = dwellProfile as DwellProfileWithDecay;
-                    if (myDwellProfile.AllowDwellDecayOnCancel)
+                    var customDwellProfile = dwellProfile as DwellProfileWithDecay;
+                    if (customDwellProfile.AllowDwellDecayOnCancel)
                     {
-                        dwellProgress = lastProgressValue - (lastDwellProgress / myDwellProfile.TimeToAllowDwellDecay);
+                        fillTimer += Time.deltaTime;
+                        dwellProgress = Mathf.Clamp((float)(dwellProfile.TimeToCompleteDwell - fillTimer) / dwellProfile.TimeToCompleteDwell,
+                                          0f, 1f);
                     }
                     break;
                 case DwellState.Invalid:
@@ -42,7 +44,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
                     return dwellProgress;
             }
 
-            lastDwellProgress = dwellProgress;
             return dwellProgress;
         }
     }
