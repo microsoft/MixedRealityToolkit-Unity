@@ -18,7 +18,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.Examples/Demos/Gltf/Models/Avocado/README.html",
-          "hash": "QKlxVl314F3+Ne1kkh8bhg=="
+          "hash": "w4BUVArI/7mhPd5Y9Q2SIQ=="
         }
       },
       "is_incremental": false,
@@ -30,7 +30,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.Examples/Demos/README.html",
-          "hash": "iBPEqq+vKo5OM0frAnBzAg=="
+          "hash": "zYZ54UOEO9LscbwbvAj9wQ=="
         }
       },
       "is_incremental": false,
@@ -42,7 +42,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.Examples/Demos/StandardShader/README.html",
-          "hash": "bMFL8vqGgxg86egXkrAMLw=="
+          "hash": "akpOSJOrjch1up3gHc39Bw=="
         }
       },
       "is_incremental": false,
@@ -54,7 +54,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.Examples/StandardAssets/README.html",
-          "hash": "4F13cFStukorK1YEkGaOsQ=="
+          "hash": "kFGWk3TBlD40vZDP4T1PYQ=="
         }
       },
       "is_incremental": false,
@@ -78,7 +78,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.SDK/Features/README.html",
-          "hash": "WB305nrq2Z3vsTfK+mQ47A=="
+          "hash": "58MRILj+191u/DtpyB/a3g=="
         }
       },
       "is_incremental": false,
@@ -90,7 +90,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/README.html",
-          "hash": "1McTCQ7uZGp8eMO1dqGz4A=="
+          "hash": "1rRFWJ2ZblAq3EEf8ZsYQQ=="
         }
       },
       "is_incremental": false,
@@ -102,7 +102,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/README.html",
-          "hash": "chmxq9lDgeWljugAg7RrSg=="
+          "hash": "J4MQn38x3iCC9m7SwKMyKw=="
         }
       },
       "is_incremental": false,
@@ -114,7 +114,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.SDK/Features/UX/README.html",
-          "hash": "HNm1Zg0VUo59urz1pXWU1w=="
+          "hash": "9tGtGne52ePD0GH5EGOmbg=="
         }
       },
       "is_incremental": false,
@@ -126,7 +126,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Controllers/README.html",
-          "hash": "dxkserR5mBi89jNrSFjD5g=="
+          "hash": "MdRRAI6jIiQK81RG+sCj+A=="
         }
       },
       "is_incremental": false,
@@ -138,7 +138,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/PressableButtons/README.html",
-          "hash": "yjKr8IGYiJCBokvzBgZFNw=="
+          "hash": "oudvr/eREGDXg/rsGS5ysA=="
         }
       },
       "is_incremental": false,
@@ -150,7 +150,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Tooltips/README.html",
-          "hash": "qowz7MbEiiRpJcrwL1NbAQ=="
+          "hash": "N2/q9f8Oif+XrKuq7QY59g=="
         }
       },
       "is_incremental": false,
@@ -162,7 +162,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.SDK/Profiles/MixedRealityControllerConfigurationProfile.html",
-          "hash": "yWTDjC3sFCSp+mILH+jWXg=="
+          "hash": "NBtyZlmGHoXky60BbzoCMQ=="
         }
       },
       "is_incremental": false,
@@ -174,7 +174,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.SDK/Profiles/README.html",
-          "hash": "AM9LqH4p9hAxrrtLxZKpbQ=="
+          "hash": "HrIJW3pBEk2yWgz6Gg+IyA=="
         }
       },
       "is_incremental": false,
@@ -186,7 +186,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.SDK/StandardAssets/Audio/README.html",
-          "hash": "tlcUSkf8sRuIB4e76vYXTw=="
+          "hash": "2qYv1wKMf5CoJ4vVYJ85fA=="
         }
       },
       "is_incremental": false,
@@ -198,7 +198,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.SDK/StandardAssets/Fonts/README.html",
-          "hash": "48k3bLULZccRFAaGtBqM7A=="
+          "hash": "HC4hrNR3t5e3odYUoOk4Mg=="
         }
       },
       "is_incremental": false,
@@ -210,7 +210,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.SDK/StandardAssets/Materials/README.html",
-          "hash": "nVbGA5x/RPbq+X8lgKpUkw=="
+          "hash": "6TwoTvUU8sBODubH+W8fmg=="
         }
       },
       "is_incremental": false,
@@ -222,7 +222,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.SDK/StandardAssets/Models/README.html",
-          "hash": "D6AHpS9crOM0WoAbmsGgcA=="
+          "hash": "ljndv+ObeBEfL/3PQ3linQ=="
         }
       },
       "is_incremental": false,
@@ -234,7 +234,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.SDK/StandardAssets/Shaders/README.html",
-          "hash": "yhLoDMJnKPOnjR21Hx6yvA=="
+          "hash": "2KXzBA3kaMG2aOf90S1aXw=="
         }
       },
       "is_incremental": false,
@@ -246,7 +246,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit.SDK/StandardAssets/Textures/README.html",
-          "hash": "Mc607WP+NT6ThntDlLF5Ig=="
+          "hash": "Svzf7WS6O55S27ceHpKDOQ=="
         }
       },
       "is_incremental": false,
@@ -270,7 +270,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit/EventDatum/README.html",
-          "hash": "3DtJ2b4u/A+PouaUl++bXg=="
+          "hash": "bUXCAMzqjjVzVx67sCRWtg=="
         }
       },
       "is_incremental": false,
@@ -282,7 +282,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit/Providers/Hands/README.html",
-          "hash": "lGQLMW83eYtK6u807D0c8g=="
+          "hash": "2G4vs7bb25d269s/PJoDDQ=="
         }
       },
       "is_incremental": false,
@@ -294,7 +294,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit/StandardAssets/README.html",
-          "hash": "5rdJBm05TDO79NnztneAcw=="
+          "hash": "BlU5s6F8VdafjY6UALsEBQ=="
         }
       },
       "is_incremental": false,
@@ -306,7 +306,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit/Utilities/Async/License.html",
-          "hash": "AeOoF7coZG3VeQIyOviWoQ=="
+          "hash": "mtXqgS95p8Y4PEf0c/BLbg=="
         }
       },
       "is_incremental": false,
@@ -318,7 +318,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit/Utilities/Async/ReadMe.html",
-          "hash": "gfEu+rK2jlzpu8sjIRrwEQ=="
+          "hash": "Q4RrQ/Lc9ZQ0oalxRlzUbA=="
         }
       },
       "is_incremental": false,
@@ -330,7 +330,7 @@
       "output": {
         ".html": {
           "relative_path": "Assets/MixedRealityToolkit/Utilities/README.html",
-          "hash": "LUaUEMH7Gxol5U9+kLFmug=="
+          "hash": "iIncdN0TRijkhAwes8H8dw=="
         }
       },
       "is_incremental": false,
@@ -354,19 +354,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Architecture/ConfigurationAndProfiles.html",
-          "hash": "j1BjNvuVUWGKhiuL115YKw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Documentation/Architecture/CrossPlatform/DeterminingPlatformCapabilities.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/Architecture/CrossPlatform/DeterminingPlatformCapabilities.html",
-          "hash": "eqJCaEb3dqIXqgVgWrEnLw=="
+          "hash": "zmQR2FeBIohr9mDVb212QA=="
         }
       },
       "is_incremental": false,
@@ -378,7 +366,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Architecture/FrameworkAndRuntime.html",
-          "hash": "xEbiNvi4hGDCHeRWigpL6A=="
+          "hash": "yrmkL0281burPAN+FW6wsg=="
         }
       },
       "is_incremental": false,
@@ -390,7 +378,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Architecture/InputSystem/ControllersPointersAndFocus.html",
-          "hash": "hqc0QL8mOxK3w6INtkXROQ=="
+          "hash": "gv0cGIJ8xEAO3jYOr5GTDg=="
         }
       },
       "is_incremental": false,
@@ -402,7 +390,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Architecture/InputSystem/CoreSystem.html",
-          "hash": "MquU1aicIXes/IGgkFdxWw=="
+          "hash": "b3KFDm6avLl9KDaNy5h16g=="
         }
       },
       "is_incremental": false,
@@ -414,7 +402,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Architecture/InputSystem/Terminology.html",
-          "hash": "RLCuMuf5Q4+pKLd9ogxHSA=="
+          "hash": "4gLs+VCj91pjO5B3bZSv3g=="
         }
       },
       "is_incremental": false,
@@ -426,7 +414,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Architecture/Overview.html",
-          "hash": "pPLByDgfucmF+7OduMLTGg=="
+          "hash": "PwsjwDU1h/LsxcnGiywWsw=="
         }
       },
       "is_incremental": false,
@@ -438,7 +426,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Architecture/SpatialAwareness.html",
-          "hash": "2sjB72D/xMJOJogb0D6yZA=="
+          "hash": "gk/rx3rCWT0zhAdyRDixig=="
         }
       },
       "is_incremental": false,
@@ -450,7 +438,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Authors.html",
-          "hash": "VDFKlpuDRitmvMmIFJZSjw=="
+          "hash": "/I9rhMKRmgITtTcw2lh1HA=="
         }
       },
       "is_incremental": false,
@@ -462,7 +450,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Boundary/BoundarySystemGettingStarted.html",
-          "hash": "6Kowalcv8vsdGlGGqG4cIw=="
+          "hash": "Gx5nc7hOsIhEWYwwvkEGNg=="
         }
       },
       "is_incremental": false,
@@ -474,7 +462,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Boundary/ConfiguringBoundaryVisualization.html",
-          "hash": "vGHjmntM74ewe/HM5qrv3g=="
+          "hash": "SvBmFft3IxCWm65PNQG0sQ=="
         }
       },
       "is_incremental": false,
@@ -486,7 +474,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/BreakingChanges.html",
-          "hash": "9Umfxabt2zefpJGcF+plNQ=="
+          "hash": "g6q7GtCsTvp1VNGYwIKiuA=="
         }
       },
       "is_incremental": false,
@@ -498,7 +486,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/CONTRIBUTING.html",
-          "hash": "SVclesbuUdENbHYYhxeRGA=="
+          "hash": "WFMO6nZ4Q20b3xPA7qGhzA=="
         }
       },
       "is_incremental": false,
@@ -510,7 +498,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/CodingGuidelines.html",
-          "hash": "8y2nxBoc7IUiY8QhposU1w=="
+          "hash": "Pn4d6Bm+A4Uj+RZ+t71xwQ=="
         }
       },
       "is_incremental": false,
@@ -522,7 +510,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/DevDocGuide.html",
-          "hash": "p/R6hqjx0m/oaR5x+vEzBA=="
+          "hash": "L7m306lLkzsRYpaqhOqEMw=="
         }
       },
       "is_incremental": false,
@@ -534,7 +522,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/DocsToDo.html",
-          "hash": "lCGabhKbeOa19csByNoXgA=="
+          "hash": "El2MOP1OKHdC0iEBXPQMMg=="
         }
       },
       "is_incremental": false,
@@ -546,7 +534,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/DocumentationGuide.html",
-          "hash": "yjNuF8hA4ORpcveqhk8qZA=="
+          "hash": "sQc1ZRQK+sh1naob7gRAEQ=="
         }
       },
       "is_incremental": false,
@@ -558,7 +546,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/Feature_Contribution_Process.html",
-          "hash": "iQIUwoQld95f5KuL+FEKVg=="
+          "hash": "ZIu9qGzOfFC3D1OTQa2prA=="
         }
       },
       "is_incremental": false,
@@ -570,7 +558,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/Roadmap.html",
-          "hash": "R2J2B+00MxOHZ3IQelj6cw=="
+          "hash": "8FEoY9T2weS2ST3i4Z4zVg=="
         }
       },
       "is_incremental": false,
@@ -582,7 +570,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/UnitTests.html",
-          "hash": "XO7Fvde0oHxk6PDc1EPZ+g=="
+          "hash": "LD/L2IbTkPROJJteZyCOFA=="
         }
       },
       "is_incremental": false,
@@ -594,7 +582,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Diagnostics/ConfiguringDiagnostics.html",
-          "hash": "+64D7g5yIC/ZPLUuuwZluA=="
+          "hash": "ifLLu4jzmUX6BT+07j0UIw=="
         }
       },
       "is_incremental": false,
@@ -606,7 +594,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Diagnostics/DiagnosticsSystemGettingStarted.html",
-          "hash": "qws2JstObv7iwVWSliAIgg=="
+          "hash": "f21EzLAKaX39p1gqTCC8DQ=="
         }
       },
       "is_incremental": false,
@@ -618,7 +606,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Diagnostics/UsingVisualProfiler.html",
-          "hash": "2shynIGoDXj4D7lhjEZStA=="
+          "hash": "INCd88TBkSXN0J8UlWE2Tg=="
         }
       },
       "is_incremental": false,
@@ -630,7 +618,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/DownloadingTheMRTK.html",
-          "hash": "DbWopC1ufcCUdd/b5k9lDA=="
+          "hash": "0Pg/hLlA3Z+SdF2UG3Ttig=="
         }
       },
       "is_incremental": false,
@@ -642,7 +630,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/ExperimentalFeatures.html",
-          "hash": "L9n6FKW6PhTqLgH9mHgsdw=="
+          "hash": "0pqEzCxP3SIK1E8uPuYUwg=="
         }
       },
       "is_incremental": false,
@@ -654,7 +642,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Extensions/SceneTransitionService/SceneTransitionServiceOverview.html",
-          "hash": "/TK+wCN8J+epPqTd9IndQQ=="
+          "hash": "Gjp9Ii4IZcQNBs+Ez9pDWw=="
         }
       },
       "is_incremental": false,
@@ -666,7 +654,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_BasicSetup.html",
-          "hash": "lAer4o8bIzZNCaCcq8Xp0g=="
+          "hash": "8fk1ncsEATIUXx1vWbArsQ=="
         }
       },
       "is_incremental": false,
@@ -678,7 +666,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_Cursor.html",
-          "hash": "4K0mrkRii3vTxLLrVmesjg=="
+          "hash": "kzbp0lwcrKQibwRKpknvhQ=="
         }
       },
       "is_incremental": false,
@@ -690,7 +678,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_ExamplesOverview.html",
-          "hash": "Q4K0S5MNaUkxSEBt2VhX8Q=="
+          "hash": "/ed5B65K9bJcRmBJhMbLfA=="
         }
       },
       "is_incremental": false,
@@ -702,7 +690,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_EyeGazeProvider.html",
-          "hash": "DiRIulkpudWt/L2vPzanHA=="
+          "hash": "iNAxrodtBMD6eQFGyJWb0Q=="
         }
       },
       "is_incremental": false,
@@ -714,7 +702,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_EyesAndHands.html",
-          "hash": "4RVGu7ovDuG7PbTkDa/CeQ=="
+          "hash": "66XhmOpYkP9fb8BWj4BICg=="
         }
       },
       "is_incremental": false,
@@ -726,7 +714,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_IsUserCalibrated.html",
-          "hash": "o2jU3r5np2gc3pumSqGCqg=="
+          "hash": "wHbimtpyQFynGMy8ARZAww=="
         }
       },
       "is_incremental": false,
@@ -738,7 +726,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_Main.html",
-          "hash": "YvgWqRpft5//QvRSEp1JGQ=="
+          "hash": "bJdPBLfcXLEhzBX+gmUbEw=="
         }
       },
       "is_incremental": false,
@@ -750,7 +738,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_Navigation.html",
-          "hash": "nHRUWVqIm217fl84hbZ3+Q=="
+          "hash": "q+EYdlHB6rHDvOPu0nbdxg=="
         }
       },
       "is_incremental": false,
@@ -762,7 +750,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_Positioning.html",
-          "hash": "iX/mBIPrIZ8DE58kHQhiCw=="
+          "hash": "c1zr0TFNop/8kv8ii6mwvQ=="
         }
       },
       "is_incremental": false,
@@ -774,7 +762,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_TargetSelection.html",
-          "hash": "6SFpZ9FFmiwy1brfZdeHpQ=="
+          "hash": "vCsDf+h523xn/hB9ddRdRg=="
         }
       },
       "is_incremental": false,
@@ -786,7 +774,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_Visualization.html",
-          "hash": "1F0jbySLFWL7oUx9tjR/0w=="
+          "hash": "DqdgqhnkqgUxJiwvvtELHg=="
         }
       },
       "is_incremental": false,
@@ -798,7 +786,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/GettingStartedWithTheMRTK.html",
-          "hash": "I6FNYF64MhARx/iYPH+edg=="
+          "hash": "EHoWpSzRsLOVttLpliaSkg=="
         }
       },
       "is_incremental": false,
@@ -810,7 +798,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/HTKToMRTKPortingGuide.html",
-          "hash": "QhdlLrs9GawoBZld8HoItA=="
+          "hash": "YpksrIpLz37wXHKb4jgWIw=="
         }
       },
       "is_incremental": false,
@@ -4437,17 +4425,6 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/SpatialAwareness/AddObserver.png",
-      "output": {
-        "resource": {
-          "relative_path": "Documentation/Images/SpatialAwareness/AddObserver.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
       "source_relative_path": "Documentation/Images/SpatialAwareness/MRTKConfig_SpatialAwareness.png",
       "output": {
         "resource": {
@@ -4507,28 +4484,6 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/SpatialAwareness/MeshObserverPhysicsSettings.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "Documentation/Images/SpatialAwareness/ObjectObserverProfile.png",
-      "output": {
-        "resource": {
-          "relative_path": "Documentation/Images/SpatialAwareness/ObjectObserverProfile.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "Documentation/Images/SpatialAwareness/SelectObjectObserver.png",
-      "output": {
-        "resource": {
-          "relative_path": "Documentation/Images/SpatialAwareness/SelectObjectObserver.png"
         }
       },
       "is_incremental": false,
@@ -4936,7 +4891,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/Controllers.html",
-          "hash": "HAiel4HWzC+GVGzB18hpaA=="
+          "hash": "oj65zjvn+EdyuJpzeqDidQ=="
         }
       },
       "is_incremental": false,
@@ -4948,7 +4903,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/Dictation.html",
-          "hash": "iGoaNHn34ji970L8HdY34w=="
+          "hash": "b8rpq6r44uczSdWUTjan7g=="
         }
       },
       "is_incremental": false,
@@ -4960,7 +4915,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/Gestures.html",
-          "hash": "KIlpTj3YpWbAat04aiHPAw=="
+          "hash": "+MxoqUwd3sRsvqIxP+9auw=="
         }
       },
       "is_incremental": false,
@@ -4972,7 +4927,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/InputActions.html",
-          "hash": "vxdA/0O5Jc9npqF6yDyU3g=="
+          "hash": "uvCqV1P4KX13erkiYmaeTg=="
         }
       },
       "is_incremental": false,
@@ -4984,7 +4939,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/InputEvents.html",
-          "hash": "4QfdR6bc62kJKrlySqw6yg=="
+          "hash": "S0euF1mrfDyYRiHovo9X8g=="
         }
       },
       "is_incremental": false,
@@ -4996,7 +4951,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/InputProviders.html",
-          "hash": "9bQWiwa7r+fZxq3KRJ95KA=="
+          "hash": "AFChx26HG39DOmv1RTaEPQ=="
         }
       },
       "is_incremental": false,
@@ -5008,7 +4963,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/Overview.html",
-          "hash": "yx2mWWbZY3LPNnNcgFweCQ=="
+          "hash": "qpRqoOtL2IFlWQeHw7QBKw=="
         }
       },
       "is_incremental": false,
@@ -5020,7 +4975,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/Pointers.html",
-          "hash": "nx1sO4Isu244tmM4MNeT9Q=="
+          "hash": "zFDILGKWWR87M7Hfn2oAWQ=="
         }
       },
       "is_incremental": false,
@@ -5032,7 +4987,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/Speech.html",
-          "hash": "dJTx0NGl+uR43u5V+EHxaw=="
+          "hash": "39cCCXktZX6eMfzElDQ/Bw=="
         }
       },
       "is_incremental": false,
@@ -5044,7 +4999,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/InputSimulation/InputAnimationFileFormat.html",
-          "hash": "CzDZmfoZP0hs3DboLQPeSg=="
+          "hash": "e65loD7F3ZxSIAJFKKxi1w=="
         }
       },
       "is_incremental": false,
@@ -5056,7 +5011,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/InputSimulation/InputAnimationRecording.html",
-          "hash": "s+MDAPQ/zDLGBEO9G7gPTw=="
+          "hash": "zFvAENqNaWAX1BSQHntxXw=="
         }
       },
       "is_incremental": false,
@@ -5068,7 +5023,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/InputSimulation/InputSimulationService.html",
-          "hash": "9wrSEoOMWotbHHGNErYxkg=="
+          "hash": "NcKAtvAL1044Z/0KUAcXDg=="
         }
       },
       "is_incremental": false,
@@ -5080,19 +5035,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/InputSystem/HandTracking.html",
-          "hash": "LI7lkFYJza87yDy1mWi1Qg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Documentation/KnownIssues.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/KnownIssues.html",
-          "hash": "EDsngXoyXI+WeLDhjb0AOQ=="
+          "hash": "8yrGpsD0YJA7Oli4B6cLcw=="
         }
       },
       "is_incremental": false,
@@ -5104,7 +5047,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Legal/NOTICE.html",
-          "hash": "3UPi/ZcwWECpitjRccpMqQ=="
+          "hash": "P9tHbMC7wjkccAOkfKIw0w=="
         }
       },
       "is_incremental": false,
@@ -5116,7 +5059,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/MixedRealityConfigurationGuide.html",
-          "hash": "N17Qv+Utu54LyC0rzpSmgQ=="
+          "hash": "b+uJukP0ic9XgJ83AZkAcQ=="
         }
       },
       "is_incremental": false,
@@ -5128,7 +5071,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/MixedRealityServices.html",
-          "hash": "uK7FmkD/unaM3FxzercHpA=="
+          "hash": "y28TLfPhd9RUMy+uHyAtaA=="
         }
       },
       "is_incremental": false,
@@ -5140,7 +5083,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Packaging/MRTK_Modularization.html",
-          "hash": "J5gxIZ7Zt8IGqMRGHEAMUQ=="
+          "hash": "wcFubJuwhgRmTAuAXGwIiQ=="
         }
       },
       "is_incremental": false,
@@ -5152,7 +5095,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Packaging/MRTK_Packages.html",
-          "hash": "cKD25yxvb5106SasrYTcQA=="
+          "hash": "iATUUOi5+iSkrOeN27B1lw=="
         }
       },
       "is_incremental": false,
@@ -5164,7 +5107,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Performance/PerfGettingStarted.html",
-          "hash": "Q/08YyH7p2WVoXveuE8eVg=="
+          "hash": "eF0uzORfqgZSBCYdaPa6/Q=="
         }
       },
       "is_incremental": false,
@@ -5176,7 +5119,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Profiles/Profiles.html",
-          "hash": "mn+xD6C1VL6Ftol0ixmFiA=="
+          "hash": "BTjwCPWY+YmcsIL+p6YByA=="
         }
       },
       "is_incremental": false,
@@ -5188,7 +5131,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_AppBar.html",
-          "hash": "zhZy2msGAjClc6dXK2EDHw=="
+          "hash": "HRJEYGVSN97dbNlyCFvCyw=="
         }
       },
       "is_incremental": false,
@@ -5200,7 +5143,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_BoundingBox.html",
-          "hash": "WSwo7PXUvGp0FX47f9UPdw=="
+          "hash": "yu4E5w0o9KWnX/U7YqbSiQ=="
         }
       },
       "is_incremental": false,
@@ -5212,7 +5155,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Button.html",
-          "hash": "1GPkH1GL8sh44pX44z7zfg=="
+          "hash": "hQ5gMiA3pAb8YQPxTGXlag=="
         }
       },
       "is_incremental": false,
@@ -5224,7 +5167,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_FingertipVisualization.html",
-          "hash": "xYrdi622Tvj7nlgUBhFFZw=="
+          "hash": "e9eQHnVEaA6ZvOwdwt3vow=="
         }
       },
       "is_incremental": false,
@@ -5236,7 +5179,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_HandInteractionExamples.html",
-          "hash": "/xhjyGFYQzg85sTJ+IcQtg=="
+          "hash": "HXBXhVl8SyI56hRs2Mqp0A=="
         }
       },
       "is_incremental": false,
@@ -5248,7 +5191,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_HandJointChaser.html",
-          "hash": "9+CnK6qN/96AYQRg9GHgmg=="
+          "hash": "AG7kT4cYYh5tKACh5XxSdw=="
         }
       },
       "is_incremental": false,
@@ -5260,7 +5203,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Interactable.html",
-          "hash": "xCG1wrNwP9O4Vnc2m7i7AA=="
+          "hash": "q3PmZfqw9bagm0HtxKte6w=="
         }
       },
       "is_incremental": false,
@@ -5272,7 +5215,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_MRTKStandardShader.html",
-          "hash": "r0e44u1RCvlSz7ojThbMtw=="
+          "hash": "V3r3ZB9w+QzusdtPsOdv8A=="
         }
       },
       "is_incremental": false,
@@ -5284,7 +5227,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_ManipulationHandler.html",
-          "hash": "8YuAf+duHW7t/0ChzKLKHg=="
+          "hash": "ebWHPCEF2hxcod0fDgPetw=="
         }
       },
       "is_incremental": false,
@@ -5296,7 +5239,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_ObjectCollection.html",
-          "hash": "HX5j4Nwvo++skK2f13Rwcg=="
+          "hash": "brINs62xkgchIWEKNsigfA=="
         }
       },
       "is_incremental": false,
@@ -5308,7 +5251,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Pointers.html",
-          "hash": "zxtL99lgEtXbtNIgMYRndQ=="
+          "hash": "P0MROwzv68re5GVZp9kPyQ=="
         }
       },
       "is_incremental": false,
@@ -5320,7 +5263,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Slate.html",
-          "hash": "E8bq3PnFMl8JMN4MywMOrg=="
+          "hash": "EiKz7GyO1LQdTKZtnh8XMg=="
         }
       },
       "is_incremental": false,
@@ -5332,7 +5275,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Sliders.html",
-          "hash": "nCdizRHuGGxXCYVgsfBRAA=="
+          "hash": "3QnuieRR76eh0pIC/iEtPw=="
         }
       },
       "is_incremental": false,
@@ -5344,7 +5287,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Solver.html",
-          "hash": "rsNJIpsdSnAa0ebuukSlHw=="
+          "hash": "EeXMdawfW2LxUqDQoZOeog=="
         }
       },
       "is_incremental": false,
@@ -5356,7 +5299,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_SystemKeyboard.html",
-          "hash": "eBx88TAkBV6MN3d9DZZhFA=="
+          "hash": "8v8Qa3S1suX6yN71lJy4iw=="
         }
       },
       "is_incremental": false,
@@ -5368,7 +5311,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_TextPrefab.html",
-          "hash": "9n/OCTB3cD4rukd61TLfYg=="
+          "hash": "PvmjyQkzNGgeWCMtkQ4YpA=="
         }
       },
       "is_incremental": false,
@@ -5380,7 +5323,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Tooltip.html",
-          "hash": "WPW0LtwKw8+vOjN+VmMrsw=="
+          "hash": "MB2jcNhmBegopGQZsQ8FQQ=="
         }
       },
       "is_incremental": false,
@@ -5392,7 +5335,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/SceneSystem/SceneSystemContentLoading.html",
-          "hash": "Ukm4NVAmmYUnZEQ57+DlIA=="
+          "hash": "HGEG8bnZqnjh/59vFDcMgA=="
         }
       },
       "is_incremental": false,
@@ -5404,7 +5347,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/SceneSystem/SceneSystemGettingStarted.html",
-          "hash": "9AKzaEI4NHowIT0Vt5OQfw=="
+          "hash": "wCs07+xkCBO9zn1bBp7/fw=="
         }
       },
       "is_incremental": false,
@@ -5416,7 +5359,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/SceneSystem/SceneSystemLightingScenes.html",
-          "hash": "pZ/RqXgiW/buPOO4MqYPGw=="
+          "hash": "6G1omMvfnS0ALtDqlOWojQ=="
         }
       },
       "is_incremental": false,
@@ -5428,7 +5371,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/SceneSystem/SceneSystemLoadProgress.html",
-          "hash": "8OpayEgo/Z9rgabALJiJQA=="
+          "hash": "SW8nir6IOpmczaWnE1s3wg=="
         }
       },
       "is_incremental": false,
@@ -5440,19 +5383,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/SceneSystem/SceneSystemSceneTypes.html",
-          "hash": "0aPp22w6eELiV1sPs2vaUg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Documentation/ServiceUtilities/MixedRealityServiceRegistryAndIMixedRealityServiceRegistrar.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/ServiceUtilities/MixedRealityServiceRegistryAndIMixedRealityServiceRegistrar.html",
-          "hash": "q0xx8U5p4ecpW4bhA7BrVg=="
+          "hash": "isXgm9wzWT2uYNs+e36+lA=="
         }
       },
       "is_incremental": false,
@@ -5464,7 +5395,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.html",
-          "hash": "XsHKTKDfpzvuwP8caW5w4g=="
+          "hash": "dyhCV4/DyYJ559JQV0sgog=="
         }
       },
       "is_incremental": false,
@@ -5476,19 +5407,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html",
-          "hash": "ty2H/OuhqDE2aKb4U88WYw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Documentation/SpatialAwareness/SpatialObjectMeshObserver.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/SpatialAwareness/SpatialObjectMeshObserver.html",
-          "hash": "orPVivi7qCGWLgfbOQ68zQ=="
+          "hash": "UUEXGGRDUj4A6RGGbEWoHQ=="
         }
       },
       "is_incremental": false,
@@ -5500,7 +5419,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/SpatialAwareness/UsageGuide.html",
-          "hash": "kzLJ5eDAQH3FIA/SQqSrqg=="
+          "hash": "GTBbt+stznP47hb1Ukk7Mg=="
         }
       },
       "is_incremental": false,
@@ -5512,7 +5431,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/TODO.html",
-          "hash": "LAEo1yeiJT6Ek63WZtxduw=="
+          "hash": "7O2gPBiyR2CtMYae1I6crA=="
         }
       },
       "is_incremental": false,
@@ -5524,7 +5443,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Tools/BuildWindow.html",
-          "hash": "mnE8BUesPWNL1iXhJugq5A=="
+          "hash": "n17WJvQVWOnt1zMia40L2g=="
         }
       },
       "is_incremental": false,
@@ -5536,7 +5455,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Tools/DependencyWindow.html",
-          "hash": "lQDYZU5T3fx8pOA/ffKCCg=="
+          "hash": "bQutOd8gGDax45wxiB3Irg=="
         }
       },
       "is_incremental": false,
@@ -5548,7 +5467,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Tools/ExtensionServiceCreationWizard.html",
-          "hash": "po4dWSCGdjR66PQ6K5MB3g=="
+          "hash": "YCED9f5xeX6LAnYFn1uaSg=="
         }
       },
       "is_incremental": false,
@@ -5560,7 +5479,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Tools/OptimizeWindow.html",
-          "hash": "W5Vd+KMfM2ejKNx4Ts+klg=="
+          "hash": "gqGMwEsGKF+VMPsOTTr9yQ=="
         }
       },
       "is_incremental": false,
@@ -5572,7 +5491,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Tools/ScreenshotUtility.html",
-          "hash": "awSpcMZImrA4KjSQ+wlAYg=="
+          "hash": "/7VgPskjxPWhZuG4/RXrRQ=="
         }
       },
       "is_incremental": false,
@@ -5584,7 +5503,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/UpdatingToGA.html",
-          "hash": "MYvF/+68L6nyAZ9qUI9f6Q=="
+          "hash": "YppMTol7Fp7BpRqUJRrvuQ=="
         }
       },
       "is_incremental": false,
@@ -5596,7 +5515,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/hologram-stabilization.html",
-          "hash": "EGP6Vi8FLRE6Dg9DgCJZzw=="
+          "hash": "3XQD579ctUS8C/lBTKuRDA=="
         }
       },
       "is_incremental": false,
@@ -5608,7 +5527,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "lZyi2xHj0I7YKKTx8WDBQA=="
+          "hash": "m0KyE3hPDwsDjMLb0REs6Q=="
         }
       },
       "is_incremental": false,
@@ -5620,7 +5539,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "7CbdD5LJmQ5NhsP5M4k9ZA=="
+          "hash": "RZ1M33/Gf10Ea0AXs/VSYg=="
         }
       },
       "is_incremental": false,
@@ -8427,7 +8346,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.GestureTester.html",
-          "hash": "y5myOoElyZZ4aRbvJTsHXQ=="
+          "hash": "Lm7EYg+qOl0ljVI8v7g2uQ=="
         }
       },
       "is_incremental": false,
@@ -9723,7 +9642,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.GestureInputType.html",
-          "hash": "M+hy0vdpQf0fO4IwyYRC4w=="
+          "hash": "gdrKFY+Y/4XN1SeEy3xWkg=="
         }
       },
       "is_incremental": false,
@@ -11855,30 +11774,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.MSBuild.SourceFileInfo.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.MSBuild.SourceFileInfo.html",
-          "hash": "5JTpwkcNqlTAGKq8D2kOxg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.MSBuild.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.MSBuild.html",
-          "hash": "0s3IoOVr1bwPvGYkN2mfCA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.MathExtensions.yml",
       "output": {
         ".html": {
@@ -12387,7 +12282,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Physics.TwoHandMoveLogic.html",
-          "hash": "UTXmYeXKrQ4V/0Pc0q4QyA=="
+          "hash": "9TWlSORnFDH4D3Xa+pc7fg=="
         }
       },
       "is_incremental": false,
@@ -13311,7 +13206,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.Core.TestFixture_01_MixedRealityToolkitTests.html",
-          "hash": "OHeAV51gkbPkQ1zTmaa7Jw=="
+          "hash": "N9kXN4Xm6rylPfX5InXllw=="
         }
       },
       "is_incremental": false,
@@ -13415,11 +13310,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.InputSystem.InputSystemTests.yml",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.InputSystem.TestFixture_01_UnityInputManagerHelperTests.yml",
       "output": {
         ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.InputSystem.InputSystemTests.html",
-          "hash": "jzzmISGDDq59tQiEkJHlag=="
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.InputSystem.TestFixture_01_UnityInputManagerHelperTests.html",
+          "hash": "zJkdkgbYN8th60n7vL++cw=="
         }
       },
       "is_incremental": false,
@@ -13427,11 +13322,23 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.InputSystem.InteractionDefinitionTests.yml",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.InputSystem.TestFixture_02_InteractionDefinitionTests.yml",
       "output": {
         ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.InputSystem.InteractionDefinitionTests.html",
-          "hash": "TPy0h/NtlNWSf3uTNH1FrA=="
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.InputSystem.TestFixture_02_InteractionDefinitionTests.html",
+          "hash": "vZ89Ws33mrT4eTqT+dI/lw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.InputSystem.TestFixture_03_InputSystemTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.InputSystem.TestFixture_03_InputSystemTests.html",
+          "hash": "EQhajGvz+MUvGiq/71LCYA=="
         }
       },
       "is_incremental": false,
@@ -13451,23 +13358,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.InputSystem.UnityInputManagerHelperTests.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.InputSystem.UnityInputManagerHelperTests.html",
-          "hash": "b2dZpIQ58YaEkbHhF2GXpA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.InputSystem.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.InputSystem.html",
-          "hash": "p3+3OELfskGrukuaX3EqYA=="
+          "hash": "mYUL9/WqbCB+mOXq18sDFQ=="
         }
       },
       "is_incremental": false,
@@ -14235,7 +14130,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.Interactable.html",
-          "hash": "iRkTvve4ovz07/vt8cYNHA=="
+          "hash": "Z7ZzazWGDcjcB8BcYZB5ww=="
         }
       },
       "is_incremental": false,
@@ -14943,7 +14838,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.PressableButton.html",
-          "hash": "Q1GS7bLw6jDDNPWPrvWamw=="
+          "hash": "GRS4xXYlNEHf0gPhiL/K1w=="
         }
       },
       "is_incremental": false,
@@ -14955,7 +14850,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.PressableButtonHoloLens2.html",
-          "hash": "HpiZlFAKmrYtVVWLWHwtPw=="
+          "hash": "iNXytJgZRDVwJISkDKxsUw=="
         }
       },
       "is_incremental": false,
@@ -18567,7 +18462,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "n9kON28fqdEWfrN+CRAgyg=="
+          "hash": "Lqzi/XW3VgFUKkQLTOffnA=="
         }
       },
       "is_incremental": false,
@@ -18629,13 +18524,13 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 121,
+          "total_file_count": 117,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1077,
+          "total_file_count": 1075,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
