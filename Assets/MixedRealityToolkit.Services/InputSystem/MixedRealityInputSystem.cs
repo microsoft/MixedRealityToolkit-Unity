@@ -245,12 +245,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
+            // Ensure data providers are enabled (performed by the base class)
+            base.Enable();
+
             InputEnabled?.Invoke();
         }
 
         /// <inheritdoc />
         public override void Reset()
         {
+            base.Reset();
             Disable();
             Initialize();
             Enable();
@@ -259,6 +263,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void Disable()
         {
+            base.Disable();
+
             // Input System adds a gaze provider component on the main camera, which needs to be removed when the input system is disabled/removed.
             // Otherwise the component would keep references to dead objects.
             // Unity's way to remove component is to destroy it.
