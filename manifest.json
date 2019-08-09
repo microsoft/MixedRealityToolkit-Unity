@@ -4360,6 +4360,28 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/Solver/MRTK_Solver_HandConstraintPalmUp.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Solver/MRTK_Solver_HandConstraintPalmUp.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Solver/MRTK_Solver_HandConstraintSafeZones.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Solver/MRTK_Solver_HandConstraintSafeZones.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/Solver/MRTK_Solver_Main.png",
       "output": {
         "resource": {
@@ -5322,7 +5344,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Solver.html",
-          "hash": "i8HbZCu3ttx5RABJxqQcCw=="
+          "hash": "rsNJIpsdSnAa0ebuukSlHw=="
         }
       },
       "is_incremental": false,
@@ -8629,54 +8651,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.HandSafeZone.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.HandSafeZone.html",
-          "hash": "PyU6xLuQM5Otvdu6Koyo+A=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraint.html",
-          "hash": "/GatRd5OKIt2URxisBGXCw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraintPalmUp.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.HandConstraintPalmUp.html",
-          "hash": "pq33jh2T6KeeDT9RsBI+pA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers.html",
-          "hash": "zqYUAr99GRlntL5VPPSNSQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.StabilizationPlaneModifier.StabilizationPlaneMode.yml",
       "output": {
         ".html": {
@@ -9761,7 +9735,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.HandBounds.html",
-          "hash": "Ejc3k6uZ23Z7tHfIVyQK7w=="
+          "hash": "RuZnkrY5FoOmb2EISXjDyA=="
         }
       },
       "is_incremental": false,
@@ -11777,7 +11751,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.html",
-          "hash": "HbnYHW0OdOFDVBtIE0sj9g=="
+          "hash": "YER/txOg5Pl99I/P1IByKg=="
         }
       },
       "is_incremental": false,
@@ -13301,7 +13275,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.BasePlayModeTests.html",
-          "hash": "lkhyjkit3dWHYWSP9OZLpg=="
+          "hash": "J1sZHYI/obeIsRsyZxhwcg=="
         }
       },
       "is_incremental": false,
@@ -13613,7 +13587,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.SolverTests.html",
-          "hash": "dd3HY7cGyy3LIImNmjfwcg=="
+          "hash": "d05+JcihVsXNowYKMvAxcA=="
         }
       },
       "is_incremental": false,
@@ -17689,6 +17663,54 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.SolverRotationBehavior.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.SolverRotationBehavior.html",
+          "hash": "Lea2lCOdo8pqJjW7rjUeWg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.SolverSafeZone.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.SolverSafeZone.html",
+          "hash": "AHUiDJDkqQalhbqbN3xj8Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html",
+          "hash": "Gqhy6GuqGKsTII7wd0FoUw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.html",
+          "hash": "oDy+0ay64LKpcFhkatcSsw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.InBetween.yml",
       "output": {
         ".html": {
@@ -17753,7 +17775,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html",
-          "hash": "YEqr7ANyw7w/zguV1Pij1w=="
+          "hash": "c9dRx2lio97M/u2OkCqpDw=="
         }
       },
       "is_incremental": false,
@@ -17813,7 +17835,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.html",
-          "hash": "V/jAT41sEe9xaUDDDO3NrQ=="
+          "hash": "OOe21almpcrYDdDO/YwgNA=="
         }
       },
       "is_incremental": false,
@@ -18545,7 +18567,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "FhTS5S/7rVQ/Y4g8IY47qg=="
+          "hash": "IRikU9HLFqu32/cs/hT2/g=="
         }
       },
       "is_incremental": false,
@@ -18604,11 +18626,10 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ResourceDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 1077,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
@@ -18617,10 +18638,11 @@
           "total_file_count": 121,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
+        "ResourceDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 1077,
+          "total_file_count": 0,
           "skipped_file_count": 0
         }
       }
