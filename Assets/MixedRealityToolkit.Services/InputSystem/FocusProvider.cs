@@ -30,10 +30,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private readonly Dictionary<GameObject, int> pendingOverallFocusExitSet = new Dictionary<GameObject, int>();
         private readonly List<PointerData> pendingPointerSpecificFocusChange = new List<PointerData>();
         private readonly Dictionary<uint, IMixedRealityPointerMediator> pointerMediators = new Dictionary<uint, IMixedRealityPointerMediator>();
-        private PointerHitResult hitResult3d = new PointerHitResult();
-        private PointerHitResult hitResultUi = new PointerHitResult();
+        private readonly PointerHitResult hitResult3d = new PointerHitResult();
+        private readonly PointerHitResult hitResultUi = new PointerHitResult();
 
-        private int maxQuerySceneResults = 128;
+        private readonly int maxQuerySceneResults = 128;
 
         public IReadOnlyDictionary<uint, IMixedRealityPointerMediator> PointerMediators
         {
@@ -464,7 +464,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private GazePointerVisibilityStateMachine gazePointerStateMachine = new GazePointerVisibilityStateMachine();
+        private readonly GazePointerVisibilityStateMachine gazePointerStateMachine = new GazePointerVisibilityStateMachine();
 
         /// <summary>
         /// Interface used for selecting the primary pointer.
