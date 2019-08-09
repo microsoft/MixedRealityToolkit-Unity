@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Component which can be used to automatically generate smoothed normals on a mesh and pack 
-    /// those normals into an UV set. Smoothed normals can be used for a variety of effects including 
+    /// those normals into a UV set. Smoothed normals can be used for a variety of effects including 
     /// extruding disjoint meshes along a vertex normal. This behavior is designed to be used in conjunction 
     /// with the MRTK/Standard shader which assumes smoothed normals are packed into the 3rd UV set.
     /// </summary>
