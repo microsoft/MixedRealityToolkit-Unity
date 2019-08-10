@@ -3966,7 +3966,6 @@ MonoBehaviour:
   clippingSide: 1
   useOnPreRender: 0
   cameraMethods: {fileID: 0}
-  radius: 0.2
 --- !u!4 &919952302 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4085006294760784, guid: 28f445004b874b329a03cd0e3cc63e5d,
@@ -3984,6 +3983,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Model_Bucky
       objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 24d47aad909b7114f99ea8657d2883d8, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e7e8f42522979ae46b757e994f32af5e, type: 2}
     - target: {fileID: 400002, guid: 24d47aad909b7114f99ea8657d2883d8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -4040,10 +4043,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.3
       objectReference: {fileID: 0}
-    - target: {fileID: 2300000, guid: 24d47aad909b7114f99ea8657d2883d8, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: e7e8f42522979ae46b757e994f32af5e, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 24d47aad909b7114f99ea8657d2883d8, type: 3}
 --- !u!4 &924359330 stripped
