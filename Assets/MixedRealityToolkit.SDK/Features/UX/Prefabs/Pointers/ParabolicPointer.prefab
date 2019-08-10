@@ -366,6 +366,8 @@ MonoBehaviour:
   roundedEdges: 1
   roundedCaps: 1
   lineRenderer: {fileID: 120827243805602862}
+  tileMaterialByWorldLength: 0
+  tileMaterialScale: 1
 --- !u!114 &114225980339285346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -445,7 +447,6 @@ MonoBehaviour:
   pointerExtent: 20
   defaultPointerExtent: 20
   sphereCastRadius: 0.1
-  pointerOrientation: 0
   LineCastResolution: 15
   LineColorSelected:
     serializedVersion: 2
@@ -593,13 +594,6 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 4
   lineBase: {fileID: 114203474425088848}
-  useContextSpecificRenderers: 1
-  lineRendererSelected: {fileID: 114102700686190618}
-  lineRendererValid: {fileID: 114102700686190618}
-  lineRendererInvalid: {fileID: 114102700686190618}
-  lineRendererNoTarget: {fileID: 0}
-  lineRendererLockFocus: {fileID: 114102700686190618}
-  focusLockGravity: {fileID: 114225980339285346}
   lineRenderers:
   - {fileID: 114102700686190618}
   teleportAction:
@@ -650,6 +644,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4
   gravityDistorter: {fileID: 114225980339285346}
+  pointerOrientation: 0
   minParabolaVelocity: 5
   maxParabolaVelocity: 20
   minDistanceModifier: 1

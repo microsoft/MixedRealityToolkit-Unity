@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4857302741068522056}
   - component: {fileID: 4857302741068522057}
   m_Layer: 0
-  m_Name: PressableButtonHoloLens2Bar3
+  m_Name: PressableButtonHoloLens2Bar3H
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

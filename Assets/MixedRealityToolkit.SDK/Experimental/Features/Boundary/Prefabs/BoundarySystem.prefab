@@ -43,7 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18b48313b32659745bf07af7fcccea15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  expereinceScale: 3
+  experienceScale: 3
   BoundarySystemType:
     reference: Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem,
       Microsoft.MixedReality.Toolkit.Services.BoundarySystem
