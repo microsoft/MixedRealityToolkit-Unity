@@ -96,6 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
                 }
                 else if ((focusTime - dwellProfile.DwellIntentDelay - dwellProfile.DwellStartDelay) >= dwellProfile.TimeToCompleteDwell && currentDwellState == DwellState.DwellStarted)
                 {
+                    Debug.Assert(fillTimer < float.Epsilon, $"Fill timer was not 0. It was {fillTimer}.");
                     DwellCompleted.Invoke(pointerRef);
                     currentDwellState = DwellState.DwellCompleted;
                 }
