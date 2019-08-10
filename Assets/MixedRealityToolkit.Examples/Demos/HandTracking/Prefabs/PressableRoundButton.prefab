@@ -456,10 +456,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movingButtonVisuals: {fileID: 7428662621771460844}
   distanceSpaceMode: 0
-  startPushDistance: 0
-  maxPushDistance: 0.018
-  pressDistance: 0.01
-  releaseDistanceDelta: 0.001
+  startPushDistance: -0.0069344956
+  maxPushDistance: 0.009872608
+  pressDistance: 0.0031100959
+  releaseDistanceDelta: 0.0009916779
   returnSpeed: 25
   releaseOnTouchEnd: 1
   enforceFrontPush: 1
