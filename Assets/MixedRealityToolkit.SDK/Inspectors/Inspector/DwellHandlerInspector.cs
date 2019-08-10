@@ -3,7 +3,7 @@
 
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
+namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell.Editor
 {
     [CustomEditor(typeof(DwellHandler), true)]
     public class DwellHandlerInspector : UnityEditor.Editor

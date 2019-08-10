@@ -3,7 +3,7 @@
 
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
+namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell.Editor
 {
     [CustomEditor(typeof(DwellProfile), true)]
     public class DwellProfileInspector : UnityEditor.Editor
@@ -19,12 +19,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
 
         public void DrawConditionalParameter(string propertyToDraw, string conditionalProperty)
         {
-            var allowDwllResume = serializedObject.FindProperty(conditionalProperty);
-            if (allowDwllResume.boolValue)
+            var propertyRef = serializedObject.FindProperty(conditionalProperty);
+            if (propertyRef.boolValue)
             {
                 EditorGUILayout.PropertyField(this.serializedObject.FindProperty(propertyToDraw));
             }
-
         }
     }
 }

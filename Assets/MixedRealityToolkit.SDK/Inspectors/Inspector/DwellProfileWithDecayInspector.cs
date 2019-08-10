@@ -4,7 +4,7 @@
 using System;
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
+namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell.Editor
 {
     /// <summary>
     /// Custom profile inspector for the extended dwell profile sample
