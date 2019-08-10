@@ -68,11 +68,11 @@ MonoBehaviour:
   InputActionId: 0
   IsGlobal: 0
   Dimensions: 1
+  StartDimensionIndex: 0
   CanSelect: 1
   CanDeselect: 1
   VoiceCommand: 
   RequiresFocus: 1
-  PhysicalPressOnClickTrigger: 0
   Profiles:
   - Target: {fileID: 6956884834071603112}
     Themes:
@@ -88,7 +88,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Events: []
-  PhysicalPressDistance: 0.05
+  dimensionIndex: 0
 --- !u!114 &6956884833964320617
 MonoBehaviour:
   m_ObjectHideFlags: 0
