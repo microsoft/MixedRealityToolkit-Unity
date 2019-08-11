@@ -458,6 +458,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movingButtonVisuals: {fileID: 7428662621771460844}
+  distanceSpaceMode: 0
   startPushDistance: 0
   maxPushDistance: 0.018
   pressDistance: 0.01
@@ -465,7 +466,6 @@ MonoBehaviour:
   returnSpeed: 25
   releaseOnTouchEnd: 1
   enforceFrontPush: 1
-  distanceSpaceMode: 0
   TouchBegin:
     m_PersistentCalls:
       m_Calls:
@@ -554,7 +554,6 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  currentPushDistance: 0
 --- !u!114 &6293782215702940609
 MonoBehaviour:
   m_ObjectHideFlags: 0

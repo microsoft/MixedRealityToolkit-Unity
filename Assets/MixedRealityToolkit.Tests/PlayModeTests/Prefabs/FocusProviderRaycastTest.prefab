@@ -49,9 +49,9 @@ MonoBehaviour:
     m_Bits: 32
   - serializedVersion: 2
     m_Bits: 1
-  ExpectedHitObject: {fileID: 3939072328957289200}
   RayLineData: {fileID: 0}
   LineCastResolution: 1
+  ExpectedHitObject: {fileID: 3939072328957289200}
 --- !u!114 &686154052112816694
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,9 +284,9 @@ MonoBehaviour:
   PrioritizedLayerMasks:
   - serializedVersion: 2
     m_Bits: 4294967295
-  ExpectedHitObject: {fileID: 1337579111295073325}
   RayLineData: {fileID: 0}
   LineCastResolution: 1
+  ExpectedHitObject: {fileID: 1337579111295073325}
 --- !u!114 &686154052393145425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -434,9 +434,9 @@ MonoBehaviour:
   PrioritizedLayerMasks:
   - serializedVersion: 2
     m_Bits: 4294967295
-  ExpectedHitObject: {fileID: 686154052317876847}
   RayLineData: {fileID: 0}
   LineCastResolution: 1
+  ExpectedHitObject: {fileID: 686154052317876847}
 --- !u!114 &686154052680110874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -544,9 +544,9 @@ MonoBehaviour:
   PrioritizedLayerMasks:
   - serializedVersion: 2
     m_Bits: 4294967295
-  ExpectedHitObject: {fileID: 1514934116660331332}
   RayLineData: {fileID: 0}
   LineCastResolution: 1
+  ExpectedHitObject: {fileID: 1514934116660331332}
 --- !u!114 &686154052808880567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -654,9 +654,9 @@ MonoBehaviour:
   PrioritizedLayerMasks:
   - serializedVersion: 2
     m_Bits: 4294967295
-  ExpectedHitObject: {fileID: 3939072328957289200}
   RayLineData: {fileID: 0}
   LineCastResolution: 1
+  ExpectedHitObject: {fileID: 3939072328957289200}
 --- !u!114 &686154053023572055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -766,9 +766,9 @@ MonoBehaviour:
     m_Bits: 1
   - serializedVersion: 2
     m_Bits: 32
-  ExpectedHitObject: {fileID: 686154052317876847}
   RayLineData: {fileID: 0}
   LineCastResolution: 1
+  ExpectedHitObject: {fileID: 686154052317876847}
 --- !u!114 &686154053187575433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -878,9 +878,9 @@ MonoBehaviour:
     m_Bits: 32
   - serializedVersion: 2
     m_Bits: 1
-  ExpectedHitObject: {fileID: 1630041609674114830}
   RayLineData: {fileID: 0}
   LineCastResolution: 1
+  ExpectedHitObject: {fileID: 1630041609674114830}
 --- !u!114 &686154053187947783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -988,9 +988,9 @@ MonoBehaviour:
   PrioritizedLayerMasks:
   - serializedVersion: 2
     m_Bits: 4294967295
-  ExpectedHitObject: {fileID: 1630041609674114830}
   RayLineData: {fileID: 0}
   LineCastResolution: 1
+  ExpectedHitObject: {fileID: 1630041609674114830}
 --- !u!114 &686154053224083652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1100,9 +1100,9 @@ MonoBehaviour:
     m_Bits: 1
   - serializedVersion: 2
     m_Bits: 32
-  ExpectedHitObject: {fileID: 686154052317876847}
   RayLineData: {fileID: 0}
   LineCastResolution: 1
+  ExpectedHitObject: {fileID: 686154052317876847}
 --- !u!114 &686154053621959656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1210,9 +1210,9 @@ MonoBehaviour:
   PrioritizedLayerMasks:
   - serializedVersion: 2
     m_Bits: 4294967295
-  ExpectedHitObject: {fileID: 686154052317876847}
   RayLineData: {fileID: 0}
   LineCastResolution: 1
+  ExpectedHitObject: {fileID: 686154052317876847}
 --- !u!114 &686154053762152275
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -504,7 +504,7 @@ MonoBehaviour:
   rotationLerpTime: 0.01
   lookRotationBlend: 0
   PrimaryCursorVisual: {fileID: 4000014090385390}
-  IsPointerDown: 0
+  SourceDownIds: 
   defaultCursorDistance: 2
   cursorStateData:
   - name: Observe
@@ -555,6 +555,7 @@ MonoBehaviour:
       defaultFloat: 0
       defaultBool: 0
       name: CursorState
+  cursorContextData: []
   inputEnabledParameter:
     parameterType: 4
     defaultInt: 0
