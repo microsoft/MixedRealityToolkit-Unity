@@ -655,7 +655,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set { drawTetherWhenManipulating = value; }
         }
 
-        [Header("Proximity")]
+        [Header("Animated Handle by Proximity")]
         [SerializeField]
         private bool proximityEffectActive = true;
         public bool ProximityEffectActive
@@ -678,8 +678,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Range(0.001f, 0.1f)]
         private float handleCloseProximity = 0.03f;
         [SerializeField]
-        [Tooltip("A Proximity-enabled Handle scales by this amount when a hand moves out of range")]
-        private float farScale = 1.0f;
+        [Tooltip("A Proximity-enabled Handle scales by this amount when a hand moves out of range. Default is 0, invisible handle.")]
+        private float farScale = 0.0f;
         public float FarScale
         {
             get
@@ -692,8 +692,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
         [SerializeField]
-        [Tooltip("A Proximity-enabled Handle scales by this amount when a hand moves into the Medium Proximity range")]
-        private float mediumScale = 1.2f;
+        [Tooltip("A Proximity-enabled Handle scales by this amount when a hand moves into the Medium Proximity range. Default is 1.0, original handle size.")]
+        private float mediumScale = 1.0f;
         public float MediumScale
         {
             get
@@ -706,7 +706,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
         [SerializeField]
-        [Tooltip("A Proximity-enabled Handle scales by this amount when a hand moves into the Close Proximity range")]
+        [Tooltip("A Proximity-enabled Handle scales by this amount when a hand moves into the Close Proximity range. Default is 1.5, larger handle size.")]
         private float closeScale = 1.5f;
         public float CloseScale
         {
