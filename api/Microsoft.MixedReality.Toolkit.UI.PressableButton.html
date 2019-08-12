@@ -158,6 +158,31 @@ You can use <a class="xref" href="Microsoft.MixedReality.Toolkit.Examples.Demos.
   </table>
   
   
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_PressableButton_currentPushDistance" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.currentPushDistance">currentPushDistance</h4>
+  <div class="markdown level1 summary"><p>Current push distance relative to the start push plane.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float currentPushDistance</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <h4 id="Microsoft_MixedReality_Toolkit_UI_PressableButton_movingButtonVisuals" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.movingButtonVisuals">movingButtonVisuals</h4>
   <div class="markdown level1 summary"><p>The object that is being pushed.</p>
 </div>
@@ -184,7 +209,8 @@ You can use <a class="xref" href="Microsoft.MixedReality.Toolkit.Examples.Demos.
   
   
   <h4 id="Microsoft_MixedReality_Toolkit_UI_PressableButton_startPushDistance" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.startPushDistance">startPushDistance</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The offset at which pushing starts. Offset is relative to the pivot of either the moving visuals if there's any or the button itself.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -259,12 +285,11 @@ You can use <a class="xref" href="Microsoft.MixedReality.Toolkit.Examples.Demos.
   
   <a id="Microsoft_MixedReality_Toolkit_UI_PressableButton_CurrentPushDistance_" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.CurrentPushDistance*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_PressableButton_CurrentPushDistance" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.CurrentPushDistance">CurrentPushDistance</h4>
-  <div class="markdown level1 summary"><p>Current push distance relative to the start push plane.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float CurrentPushDistance { get; protected set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public float CurrentPushDistance { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -285,7 +310,7 @@ You can use <a class="xref" href="Microsoft.MixedReality.Toolkit.Examples.Demos.
   
   <a id="Microsoft_MixedReality_Toolkit_UI_PressableButton_DistanceSpaceMode_" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.DistanceSpaceMode*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_PressableButton_DistanceSpaceMode" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.DistanceSpaceMode">DistanceSpaceMode</h4>
-  <div class="markdown level1 summary"><p>Describes in which coordinate space the plane distances are stored and calculated</p>
+  <div class="markdown level1 summary"><p>Describes in which space the plane distances are stored and calculated.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -493,8 +518,7 @@ You can use <a class="xref" href="Microsoft.MixedReality.Toolkit.Examples.Demos.
   
   <a id="Microsoft_MixedReality_Toolkit_UI_PressableButton_StartPushDistance_" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.StartPushDistance*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_PressableButton_StartPushDistance" data-uid="Microsoft.MixedReality.Toolkit.UI.PressableButton.StartPushDistance">StartPushDistance</h4>
-  <div class="markdown level1 summary"><p>The offset at which pushing starts. Offset is relative to the pivot of either the moving visuals if there's any or the button itself.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
