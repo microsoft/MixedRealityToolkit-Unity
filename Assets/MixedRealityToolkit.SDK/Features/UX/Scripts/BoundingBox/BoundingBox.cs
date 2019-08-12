@@ -201,11 +201,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         [Header("Behavior")]
         [SerializeField]
-        [Tooltip("")]
+        [Tooltip("Type of activation method for showing/hiding bounding box handles and controls")]
         private BoundingBoxActivationType activation = BoundingBoxActivationType.ActivateOnStart;
 
         /// <summary>
-        /// TODO: Troy
+        /// Type of activation method for showing/hiding bounding box handles and controls
         /// </summary>
         public BoundingBoxActivationType BoundingBoxActivation
         {
@@ -964,6 +964,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // Cache for the corner points of either renderers or colliders during the bounds calculation phase
         private static List<Vector3> totalBoundsCorners = new List<Vector3>();
 
+        private HashSet<IMixedRealityPointer> proximityPointers = new HashSet<IMixedRealityPointer>();
+        private List<Vector3> proximityPoints = new List<Vector3>();
+        private Coroutine closestHandleCoroutine;
+
         #endregion
 
         #region public Properties
@@ -1139,9 +1143,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     Target.transform.hasChanged = false;
                 }
 
-                if (proximityEffectActive)
+
+                // Only update proximity scaling of handles if they are visible which is when
+                // active is true and wireframeOnly is false
+                if (proximityEffectActive && !wireframeOnly)
                 {
-                    HandleProximityScaling();
+                    // If any handle type is visible, then update
+                    if (ShowScaleHandles || ShowRotationHandleForX || ShowRotationHandleForY || ShowRotationHandleForZ)
+                    {
+                        HandleProximityScaling();
+                    }
                 }
             }
             else if (boundsOverride != null && HasBoundsOverrideChanged())
@@ -2061,87 +2072,84 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void HandleProximityScaling()
         {
-            if (corners?.Count > 0 || balls?.Count > 0)
+            //only use proximity effect if nothing is being dragged or grabbed
+            if (currentPointer == null)
             {
-                //only use proximity effect if nothing is being dragged or grabbed
-                if (currentPointer == null)
+                proximityPointers.Clear();
+                proximityPoints.Clear();
+
+                // Find all valid pointers
+                foreach (var inputSource in CoreServices.InputSystem.DetectedInputSources)
                 {
-                    HashSet<IMixedRealityPointer> proximityPointers = new HashSet<IMixedRealityPointer>();
-                    List<Vector3> points = new List<Vector3>();
-
-                    // Find all valid pointers
-                    foreach (var inputSource in CoreServices.InputSystem.DetectedInputSources)
+                    foreach (var pointer in inputSource.Pointers)
                     {
-                        foreach (var pointer in inputSource.Pointers)
+                        if (pointer.IsInteractionEnabled && !proximityPointers.Contains(pointer))
                         {
-                            if (pointer.IsInteractionEnabled && !proximityPointers.Contains(pointer))
-                            {
-                                proximityPointers.Add(pointer);
-                            }
+                            proximityPointers.Add(pointer);
                         }
                     }
+                }
 
-                    // Get the max radius possible of our current bounds plus the proximity
-                    float maxRadius = Mathf.Max(Mathf.Max(currentBoundsExtents.x, currentBoundsExtents.y), currentBoundsExtents.z);
-                    maxRadius *= maxRadius;
-                    maxRadius += handleCloseProximity + handleMediumProximity;
+                // Get the max radius possible of our current bounds plus the proximity
+                float maxRadius = Mathf.Max(Mathf.Max(currentBoundsExtents.x, currentBoundsExtents.y), currentBoundsExtents.z);
+                maxRadius *= maxRadius;
+                maxRadius += handleCloseProximity + handleMediumProximity;
 
-                    // Grab points within sphere of inluence from valid pointers
-                    foreach (var pointer in proximityPointers)
+                // Grab points within sphere of inluence from valid pointers
+                foreach (var pointer in proximityPointers)
+                {
+                    if (IsPointWithinBounds(pointer.Position, maxRadius))
                     {
-                        if (IsPointWithinBounds(pointer.Position, maxRadius))
-                        {
-                            points.Add(pointer.Position);
-                        }
-
-                        if (IsPointWithinBounds(pointer.Result.Details.Point, maxRadius))
-                        {
-                            points.Add(pointer.Result.Details.Point);
-                        }
+                        proximityPoints.Add(pointer.Position);
                     }
 
-                    // Loop through all handles and find closest one
-                    int closestHandleIdx = -1;
-                    float closestDistanceSqr = float.MaxValue;
+                    if (IsPointWithinBounds(pointer.Result.Details.Point, maxRadius))
+                    {
+                        proximityPoints.Add(pointer.Result.Details.Point);
+                    }
+                }
+
+                // Loop through all handles and find closest one
+                int closestHandleIdx = -1;
+                float closestDistanceSqr = float.MaxValue;
+                foreach (var point in proximityPoints)
+                {
                     for (int i = 0; i < handles.Count; ++i)
                     {
-                        foreach (var point in points)
+                        // If handle can't be visisble, skip calculations
+                        if (!IsHandleTypeVisible(handles[i].Type))
+                            continue;
+
+                        // Perform comparison on sqr distance since sqrt() operation is expensive in Vector3.Distance()
+                        float sqrDistance = (handles[i].HandleVisual.position - point).sqrMagnitude;
+                        if (sqrDistance < closestDistanceSqr)
                         {
-                            // Perform comparison on sqr distance since sqrt() operation is expensive in Vector3.Distance()
-                            float sqrDistance = (handles[i].HandleVisual.position - point).sqrMagnitude;
-                            if (sqrDistance < closestDistanceSqr)
-                            {
-                                closestHandleIdx = i;
-                                closestDistanceSqr = sqrDistance;
-                            }
+                            closestHandleIdx = i;
+                            closestDistanceSqr = sqrDistance;
                         }
                     }
+                }
 
-                    // TODO: Troy
-                    // TODO: keep track of last closest point and only switch if difference is large enough*
-                    // TODO: Look at scaling issue and medium scale?
-                    // TODO: Look at disable/enable? and CreateRig()
+                // Loop through all handles and update visual state based on closest point
+                for (int i = 0; i < handles.Count; ++i)
+                {
+                    Handle h = handles[i];
 
-                    // Loop through all handles and update visual state based on closest point
-                    for (int i = 0; i < handles.Count; ++i)
+                    HandleProximityState newState = i == closestHandleIdx ? GetProximityState(closestDistanceSqr) : HandleProximityState.FullsizeNoProximity;
+
+                    // Only apply updates if handle is in a new state or closest handle needs to lerp scaling
+                    if (h.ProximityState != newState)
                     {
-                        Handle h = handles[i];
-                        HandleProximityState newState = i == closestHandleIdx ? GetProximityState(closestDistanceSqr) : HandleProximityState.FullsizeNoProximity;
+                        // Update and save new state
+                        h.ProximityState = newState;
 
-                        // Only apply updates if handle is in a new state or closest handle needs to lerp scaling
-                        if (h.ProximityState != newState)
+                        if (h.HandleVisualRenderer != null)
                         {
-                            // Update and save new state
-                            h.ProximityState = newState;
-
-                            if (h.HandleVisualRenderer != null)
-                            {
-                                h.HandleVisualRenderer.material = newState == HandleProximityState.CloseProximity ? handleGrabbedMaterial : handleMaterial;
-                            }
+                            h.HandleVisualRenderer.material = newState == HandleProximityState.CloseProximity ? handleGrabbedMaterial : handleMaterial;
                         }
-
-                        LerpScaleHandle(h);
                     }
+
+                    ScaleHandle(h, true);
                 }
             }
         }
@@ -2167,11 +2175,26 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        private void LerpScaleHandle(Handle handle)
+        private void ScaleHandle(Handle handle, bool lerp = false)
         {
             float handleSize = handle.Type == HandleType.Scale ? scaleHandleSize : rotationHandleSize;
-            float targetScale = handle.ProximityState == HandleProximityState.CloseProximity ? closeScale : (handle.ProximityState == HandleProximityState.MediumProximity ? mediumScale : farScale);
-            float weight = handle.ProximityState == HandleProximityState.CloseProximity ? closeGrowRate : (handle.ProximityState == HandleProximityState.MediumProximity ? mediumGrowRate : farGrowRate);
+            float targetScale = 1.0f, weight = 0.0f;
+
+            switch (handle.ProximityState)
+            {
+                case HandleProximityState.FullsizeNoProximity:
+                    targetScale = farScale;
+                    weight = lerp ? farGrowRate : 1.0f;
+                    break;
+                case HandleProximityState.MediumProximity:
+                    targetScale = mediumScale;
+                    weight = lerp ? mediumGrowRate : 1.0f;
+                    break;
+                case HandleProximityState.CloseProximity:
+                    targetScale = closeScale;
+                    weight = lerp ? closeGrowRate : 1.0f;
+                    break;
+            }
 
             float newLocalScale = (handle.HandleVisual.localScale.x * (1.0f - weight)) + (handleSize * targetScale * weight);
             handle.HandleVisual.localScale = new Vector3(newLocalScale, newLocalScale, newLocalScale);
@@ -2190,6 +2213,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return (transform.position - point).sqrMagnitude < radiusSqr;
         }
 
+        /// <summary>
+        /// Helper method to check if handle type may be visible based on configuration
+        /// </summary>
+        /// <param name="h">handle reference to check</param>
+        /// <returns>true if potentially visible, false otherwise</returns>
+        private bool IsHandleTypeVisible(HandleType type)
+        {
+            return  (type == HandleType.Scale && ShowScaleHandles) ||
+                (type == HandleType.Rotation && (ShowRotationHandleForX || ShowRotationHandleForY || ShowRotationHandleForZ));
+        }
+
         private void ResetHandleProximityScale()
         {
             for (int i = 0; i < handles.Count; ++i)
@@ -2198,15 +2232,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (h.ProximityState != HandleProximityState.FullsizeNoProximity)
                 {
                     h.ProximityState = HandleProximityState.FullsizeNoProximity;
+
                     if (h.HandleVisualRenderer != null)
                     {
                         h.HandleVisualRenderer.material = handleMaterial;
                     }
 
-                    float newScale = h.Type == HandleType.Scale ? scaleHandleSize : rotationHandleSize;
-                    h.HandleVisual.localScale = newScale * farScale * Vector3.one;
-                    
-                    //ScaleHandle(h);
+                    ScaleHandle(h);
                 }
             }
         }
