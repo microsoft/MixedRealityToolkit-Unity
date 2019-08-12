@@ -69,12 +69,12 @@ class SampleHandler : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedReal
 {
     private void OnEnable()
     {
-        InputSystem?.Register(2.0.0meObject);
+        InputSystem?.Register(gameObject);
     }
 
     private void OnDisable()
     {
-        InputSystem?.Unregister(2.0.0meObject);
+        InputSystem?.Unregister(gameObject);
     }
 }
 
@@ -177,7 +177,7 @@ Some solver components and the SolverHandler manager class has changed to fix va
 - `CloseDistance` public property deprecated and has been renamed to `ClosestDistance`
 - Default value for `RaycastDirectionMode` is now `TrackedTargetForward` which raycasts in the direction of the tracked target transform forward
 - `OrientationMode` enum values, `Vertical` and `Full`, have been renamed to `TrackedTarget` and `SurfaceNormal` respectively
-- `KeepOrientationVertical` public property has been added to control whether orientation of associated 2.0.0meObject remains vertical
+- `KeepOrientationVertical` public property has been added to control whether orientation of associated GameObject remains vertical
 
 ### Buttons
 
