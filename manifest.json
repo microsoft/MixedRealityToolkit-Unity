@@ -1026,10 +1026,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/BoundingBox/MRTK_BoundingBox_Structure.png",
+      "source_relative_path": "Documentation/Images/BoundingBox/MRTK_BoundingBox_Proximity.png",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/BoundingBox/MRTK_BoundingBox_Structure.png"
+          "relative_path": "Documentation/Images/BoundingBox/MRTK_BoundingBox_Proximity.png"
         }
       },
       "is_incremental": false,
@@ -5143,7 +5143,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_BoundingBox.html",
-          "hash": "yu4E5w0o9KWnX/U7YqbSiQ=="
+          "hash": "kKZYiMvIcwiHN9sc/DbzWw=="
         }
       },
       "is_incremental": false,
@@ -18514,9 +18514,9 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "TocDocumentProcessor": {
+        "ResourceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
@@ -18527,9 +18527,9 @@
           "total_file_count": 117,
           "skipped_file_count": 0
         },
-        "ResourceDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
