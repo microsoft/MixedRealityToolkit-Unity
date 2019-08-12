@@ -237,7 +237,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         GUI.Label(new Rect(position.width, position.y, position.width, position.height), errorContent);
 
                         Rect dropdownPosition = new Rect(position.x, position.y, position.width - 90, position.height);
-                        Rect buttonPosition = new Rect(position.width - 75, position.y, 75, position.height);
+                        Rect buttonPosition = new Rect(position.x + position.width - 75, position.y, 75, position.height);
 
                         property.stringValue = DrawTypeSelectionControl(dropdownPosition, label, property.stringValue, filter, false);
 
