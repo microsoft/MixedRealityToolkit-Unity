@@ -5,6 +5,8 @@
     href: HTKToMRTKPortingGuide.md
   - name: Updating from RC releases
     href: Updating.md
+  - name: Release Notes
+    href: ReleaseNotes.md
   - name: Performance
     href: Performance/PerfGettingStarted.md
   - name: Hologram Stabilization
