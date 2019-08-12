@@ -69,7 +69,7 @@ class SampleHandler : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedReal
 {
     private void OnEnable()
     {
-        InputSystem?.Register(2.0.0meObject);
+        InputSystem?.Register(gameObject);
     }
 
     private void OnDisable()
