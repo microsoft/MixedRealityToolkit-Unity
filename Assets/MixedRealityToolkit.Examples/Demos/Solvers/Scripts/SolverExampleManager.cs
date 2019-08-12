@@ -78,6 +78,18 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             surfaceMagnetism.SurfaceNormalOffset = 0.2f;
         }
 
+        public void SetFollow()
+        {
+            DestroySolver();
+
+            AddSolver<Follow>();
+
+            // Modify properties of solver custom to this example
+            var follow = currentSolver as Follow;
+            follow.PitchOffset = 10.0f;
+            follow.IgnoreReferencePitchAndRoll = true;
+        }
+
         private void AddSolver<T>() where T : Solver
         {
             currentSolver = gameObject.AddComponent<T>();
