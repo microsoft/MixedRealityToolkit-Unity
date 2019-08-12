@@ -2263,38 +2263,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return HandleType.None;
         }
 
-        private bool TryGetPointerPoint(Handedness handed, out Vector3 point)
-        {
-            IMixedRealityHand hand = HandJointUtils.FindHand(handed);
-            if (hand != null && hand.InputSource.Pointers[0].Result != null)
-            {
-                point = hand.InputSource.Pointers[0].Result.Details.Point;
-                hand = null;
-                return true;
-            }
-
-            if (HandJointUtils.TryGetJointPose(Utilities.TrackedHandJoint.IndexTip, handed, out MixedRealityPose pose))
-            {
-                point = pose.Position;
-                return true;
-            }
-
-            point = new Vector3(float.NaN, float.NaN, float.NaN);
-            return false;
-        }
-
-        private bool TryGetEyeGazePoint(out Vector3 point)
-        {
-            if (EyeTrackingProvider != null && EyeTrackingProvider.GazePointer != null && eyeTrackingProvider.GazePointer.Result != null)
-            {
-                point = eyeTrackingProvider.GazePointer.Result.Details.Point;
-                return true;
-            }
-
-            point = new Vector3(float.NaN, float.NaN, float.NaN);
-            return false;
-        }
-
         private void Flatten()
         {
             if (flattenAxis == FlattenModeType.FlattenX)
