@@ -81,5 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Get the GameObject reference for this Gaze Provider.
         /// </summary>
         GameObject GameObjectReference { get; }
+
+        void UpdateGazeInfoFromHit(MixedRealityRaycastHit raycastHit);
     }
 }

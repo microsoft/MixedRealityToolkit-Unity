@@ -541,7 +541,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 gazeHitResult = hitResult3d;
             }
 
-            ((GazeProvider)InputSystem.GazeProvider).UpdateGazeInfoFromHit(gazeHitResult.raycastHit);
+            InputSystem.GazeProvider.UpdateGazeInfoFromHit(gazeHitResult.raycastHit);
 
             // Zero out value after every use to ensure the hit result is updated every frame.
             gazeHitResult = null;
