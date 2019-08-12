@@ -17,12 +17,22 @@ ModelImporter:
     3300002: node_id4 1
     4300000: node_id4
     4300002: node_id4
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material_37
+    second: {fileID: 2100000, guid: 71d471797c0e430783230146721c3fcb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material_38
+    second: {fileID: 2100000, guid: 2e7ee0c64b3021a46be96a51517a1d94, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
     materialSearch: 1
-    materialLocation: 0
+    materialLocation: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
