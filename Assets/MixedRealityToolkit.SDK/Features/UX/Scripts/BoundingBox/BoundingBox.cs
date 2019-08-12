@@ -753,8 +753,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Check to draw a tether point from the handles to the hand when manipulating.
         /// </summary>
-        public bool DrawTetherWhenManipulating => drawTetherWhenManipulating;
-
+        public bool DrawTetherWhenManipulating
+        {
+            get
+            {
+                return drawTetherWhenManipulating;
+            }
+            set
+            {
+                drawTetherWhenManipulating = value;
+            }
+        }
+        
         [Header("Proximity")]
         [SerializeField]
         [Tooltip("Determines whether proximity feature (scaling and material toggling) for bounding box handles is activated")]
@@ -763,7 +773,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Determines whether proximity feature (scaling and material toggling) for bounding box handles is activated
         /// </summary>
-        public bool ProximityEffectActive => proximityEffectActive;
+        public bool ProximityEffectActive
+        {
+            get
+            {
+                return proximityEffectActive;
+            }
+            set
+            {
+                proximityEffectActive = value;
+            }
+        }
 
         [SerializeField]
         [Tooltip("How far away should the hand be from a handle before it starts scaling the handle?")]
@@ -782,7 +802,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// A Proximity-enabled Handle scales by this amount when a hand moves out of range
         /// </summary>
-        public float FarScale => farScale;
+        public float FarScale
+        {
+            get
+            {
+                return farScale;
+            }
+            set
+            {
+                farScale = value;
+            }
+        }
 
         [SerializeField]
         [Tooltip("A Proximity-enabled Handle scales by this amount when a hand moves into the Medium Proximity range")]
@@ -791,7 +821,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// A Proximity-enabled Handle scales by this amount when a hand moves into the Medium Proximity range
         /// </summary>
-        public float MediumScale => mediumScale;
+        public float MediumScale
+        {
+            get
+            {
+                return mediumScale;
+            }
+            set
+            {
+                mediumScale = value;
+            }
+        }
 
         [SerializeField]
         [Tooltip("A Proximity-enabled Handle scales by this amount when a hand moves into the Close Proximity range")]
@@ -800,7 +840,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// A Proximity-enabled Handle scales by this amount when a hand moves into the Close Proximity range
         /// </summary>
-        public float CloseScale => closeScale;
+        public float CloseScale
+        {
+            get
+            {
+                return closeScale;
+            }
+            set
+            {
+                closeScale = value;
+            }
+        }
 
         [SerializeField]
         [Tooltip("At what rate should a Proximity-scaled Handle scale when the Hand moves from Medium proximity to Far proximity?")]
@@ -824,7 +874,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Add a Collider here if you do not want the handle colliders to interact with another object's collider.
         /// </summary>
-        public Collider HandlesIgnoreCollider => handlesIgnoreCollider;
+        public Collider HandlesIgnoreCollider
+        {
+            get
+            {
+                return handlesIgnoreCollider;
+            }
+            set
+            {
+                handlesIgnoreCollider = value;
+            }
+        }
 
         [Header("Debug")]
         [Tooltip("Debug only. Component used to display debug messages")]
