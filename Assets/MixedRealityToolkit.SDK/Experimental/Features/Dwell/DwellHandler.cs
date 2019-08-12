@@ -129,6 +129,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
                     dwellProgress = 1;
                     break;
                 case DwellState.DwellCanceled:
+                    if (dwellProfile.AllowDwellResume && (DateTime.UtcNow - focusExitTime).TotalSeconds > dwellProfile.TimeToAllowDwellResume)
+                    {
+                        dwellProgress = 0;
+                        fillTimer = 0;
+                        currentDwellState = DwellState.None;
+                    }
+                    else if (dwellProfile.AllowDwellResume)
+                    {
+                        dwellProgress = Mathf.Clamp((float)(dwellProfile.TimeToCompleteDwell - fillTimer) / dwellProfile.TimeToCompleteDwell, 0f, 1f);
+                    }
+                    break;
                 case DwellState.Invalid:
                 default:
                     return dwellProgress;
