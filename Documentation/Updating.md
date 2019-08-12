@@ -74,7 +74,7 @@ class SampleHandler : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedReal
 
     private void OnDisable()
     {
-        InputSystem?.Unregister(2.0.0meObject);
+        InputSystem?.Unregister(gameObject);
     }
 }
 
