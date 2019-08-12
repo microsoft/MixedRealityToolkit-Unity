@@ -1,13 +1,13 @@
-# Updating to the General Availability (GA) Release
+# Updating to the 2.0.0 Release
 
-Between the RC2 and GA releases of the Microsoft Mixed Reality Toolkit, changes were made that may impact existing projects. This document describes those changes and how to update projects to the GA release.
+Between the RC2 and 2.0.0 releases of the Microsoft Mixed Reality Toolkit, changes were made that may impact existing projects. This document describes those changes and how to update projects to the 2.0.0 release.
 
 - [API changes](#api-changes)
 - [Assembly name changes](#assembly-name-changes)
 
 ## API changes
 
-Since the release of RC2, there have been a number of API changes including some that may break existing projects. The following sections describe the changes that have occurred between the RC2 and GA releases.
+Since the release of RC2, there have been a number of API changes including some that may break existing projects. The following sections describe the changes that have occurred between the RC2 and 2.0.0 releases.
 
 - [MixedRealityToolkit](#mixedrealitytoolkit)
 - [Event System](#event-system)
@@ -69,12 +69,12 @@ class SampleHandler : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedReal
 {
     private void OnEnable()
     {
-        InputSystem?.Register(gameObject);
+        InputSystem?.Register(2.0.0meObject);
     }
 
     private void OnDisable()
     {
-        InputSystem?.Unregister(gameObject);
+        InputSystem?.Unregister(2.0.0meObject);
     }
 }
 
@@ -177,7 +177,7 @@ Some solver components and the SolverHandler manager class has changed to fix va
 - `CloseDistance` public property deprecated and has been renamed to `ClosestDistance`
 - Default value for `RaycastDirectionMode` is now `TrackedTargetForward` which raycasts in the direction of the tracked target transform forward
 - `OrientationMode` enum values, `Vertical` and `Full`, have been renamed to `TrackedTarget` and `SurfaceNormal` respectively
-- `KeepOrientationVertical` public property has been added to control whether orientation of associated GameObject remains vertical
+- `KeepOrientationVertical` public property has been added to control whether orientation of associated 2.0.0meObject remains vertical
 
 ### Buttons
 
@@ -210,7 +210,7 @@ The `PointerClickHandler` class has been deprecated. The `PointerHandler` should
 
 ### HoloLens clicker support
 
-The HoloLens clicker's controller mappings have changed from being an unhanded [`WindowsMixedRealityController`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityController) to being an unhanded [`WindowsMixedRealityGGVHand`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityGGVHand). To account for this, an automatic updater will run the first time you open your ControllerMapping profile. Please open any custom profiles at least once after upgrading to GA in order to trigger this one-time migration step.
+The HoloLens clicker's controller mappings have changed from being an unhanded [`WindowsMixedRealityController`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityController) to being an unhanded [`WindowsMixedRealityGGVHand`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityGGVHand). To account for this, an automatic updater will run the first time you open your ControllerMapping profile. Please open any custom profiles at least once after upgrading to 2.0.0 in order to trigger this one-time migration step.
 
 ### InteractableHighlight
 
@@ -222,7 +222,7 @@ The `InteractableHighlight` class has been deprecated. The `InteractableOnFocus`
 
 ## Assembly name changes
 
-In The GA release, all of the official Mixed Reality Toolkit assembly names and their associated assembly definition (.asmdef) files have been updated to fit the following pattern.
+In The 2.0.0 release, all of the official Mixed Reality Toolkit assembly names and their associated assembly definition (.asmdef) files have been updated to fit the following pattern.
 
 ```c#
 Microsoft.MixedReality.Toolkit[.<name>]
@@ -230,11 +230,11 @@ Microsoft.MixedReality.Toolkit[.<name>]
 
 In some instances, multiple assemblies have been merged to create better unity of their contents. If your project uses custom .asmdef files, they may require updating.
 
-The following tables describe how the RC2 .asmdef file names map to the GA release. All assembly names match the .asmdef file name.
+The following tables describe how the RC2 .asmdef file names map to the 2.0.0 release. All assembly names match the .asmdef file name.
 
 ### MixedRealityToolkit
 
-| RC2 | GA |
+| RC2 | 2.0.0 |
 | --- | --- |
 | MixedRealityToolkit.asmdef | Microsoft.MixedReality.Toolkit.asmdef |
 | MixedRealityToolkit.Core.BuildAndDeploy.asmdef | Microsoft.MixedReality.Toolkit.Editor.BuildAndDeploy.asmdef |
@@ -249,7 +249,7 @@ The following tables describe how the RC2 .asmdef file names map to the GA relea
 
 ### MixedRealityToolkit.Providers
 
-| RC2 | GA |
+| RC2 | 2.0.0 |
 | --- | --- |
 | MixedRealityToolkit.Providers.OpenVR.asmdef | Microsoft.MixedReality.Toolkit.Providers.OpenVR.asmdef |
 | MixedRealityToolkit.Providers.WindowsMixedReality.asmdef | Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.asmdef |
@@ -257,7 +257,7 @@ The following tables describe how the RC2 .asmdef file names map to the GA relea
 
 ### MixedRealityToolkit.Services
 
-| RC2 | GA |
+| RC2 | 2.0.0 |
 | --- | --- |
 | MixedRealityToolkit.Services.BoundarySystem.asmdef | Microsoft.MixedReality.Toolkit.Services.BoundarySystem.asmdef |
 | MixedRealityToolkit.Services.CameraSystem.asmdef | Microsoft.MixedReality.Toolkit.Services.CameraSystem.asmdef |
@@ -272,14 +272,14 @@ The following tables describe how the RC2 .asmdef file names map to the GA relea
 
 ### MixedRealityToolkit.SDK
 
-| RC2 | GA |
+| RC2 | 2.0.0 |
 | --- | --- |
 | MixedRealityToolkit.SDK.asmdef | Microsoft.MixedReality.Toolkit.SDK.asmdef |
 | MixedRealityToolkit.SDK.Inspectors.asmdef | Microsoft.MixedReality.Toolkit.SDK.Inspectors.asmdef |
 
 ### MixedRealityToolkit.Examples
 
-| RC2 | GA |
+| RC2 | 2.0.0 |
 | --- | --- |
 | MixedRealityToolkit.Examples.asmdef | Microsoft.MixedReality.Toolkit.Examples.asmdef |
 | MixedRealityToolkit.Examples.Demos.Gltf.asmdef | Microsoft.MixedReality.Toolkit.Demos.Gltf.asmdef |

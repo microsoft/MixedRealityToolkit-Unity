@@ -3,8 +3,8 @@
   items:
   - name: Upgrading from HTK
     href: HTKToMRTKPortingGuide.md
-  - name: Updating from RC2 to GA
-    href: UpdatingToGA.md
+  - name: Updating from RC releases
+    href: Updating.md
   - name: Performance
     href: Performance/PerfGettingStarted.md
   - name: Hologram Stabilization

@@ -21,7 +21,10 @@ The Mixed Reality Toolkit v2 is authored by:
 - danielhofmann-ms
 - davidkline-ms
 - Ecnassianer
+- gejohnst
+- googlan
 - Jarodshow
+- jbienzms
 - Jerome Humbert
 - johnppella
 - JonathanPalmerGD
@@ -47,6 +50,7 @@ The Mixed Reality Toolkit v2 is authored by:
 - stefan.wasserbauer
 - StephenHodgson
 - thalbern
+- Troy-Ferrell
 - wassx
 - witian
 - wiwei
