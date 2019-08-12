@@ -4,7 +4,7 @@
 
 ## Version 2.0.0
 
-- [What's new](#whats-new-in-2.0.0)
+- [What's new](#whats-new-in-2-0-0)
 - [Known issues](#known-issues-in-2.0.0)
 - [Changes](#changes-in-2.0.0)
 
