@@ -129,43 +129,14 @@ Call Update any time to update the move logic and get a new rotation for the obj
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class TwoHandMoveLogic</code></pre>
   </div>
-  <h3 id="constructors">Constructors
-  </h3>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Physics_TwoHandMoveLogic__ctor_" data-uid="Microsoft.MixedReality.Toolkit.Physics.TwoHandMoveLogic.#ctor*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Physics_TwoHandMoveLogic__ctor_MovementConstraintType_" data-uid="Microsoft.MixedReality.Toolkit.Physics.TwoHandMoveLogic.#ctor(MovementConstraintType)">TwoHandMoveLogic(MovementConstraintType)</h4>
-  <div class="markdown level1 summary"><p>Constructor.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TwoHandMoveLogic(MovementConstraintType movementConstraint)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">MovementConstraintType</span></td>
-        <td><span class="parametername">movementConstraint</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="methods">Methods
   </h3>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Physics_TwoHandMoveLogic_Setup_" data-uid="Microsoft.MixedReality.Toolkit.Physics.TwoHandMoveLogic.Setup*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Physics_TwoHandMoveLogic_Setup_MixedRealityPose_Vector3_MixedRealityPose_Vector3_" data-uid="Microsoft.MixedReality.Toolkit.Physics.TwoHandMoveLogic.Setup(MixedRealityPose,Vector3,MixedRealityPose,Vector3)">Setup(MixedRealityPose, Vector3, MixedRealityPose, Vector3)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Setup function</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -206,12 +177,13 @@ Call Update any time to update the move logic and get a new rotation for the obj
   
   
   <a id="Microsoft_MixedReality_Toolkit_Physics_TwoHandMoveLogic_Update_" data-uid="Microsoft.MixedReality.Toolkit.Physics.TwoHandMoveLogic.Update*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Physics_TwoHandMoveLogic_Update_MixedRealityPose_Quaternion_Vector3_System_Boolean_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Physics.TwoHandMoveLogic.Update(MixedRealityPose,Quaternion,Vector3,System.Boolean,System.Boolean)">Update(MixedRealityPose, Quaternion, Vector3, Boolean, Boolean)</h4>
-  <div class="markdown level1 summary"></div>
+  <h4 id="Microsoft_MixedReality_Toolkit_Physics_TwoHandMoveLogic_Update_MixedRealityPose_Quaternion_Vector3_System_Boolean_System_Boolean_MovementConstraintType_" data-uid="Microsoft.MixedReality.Toolkit.Physics.TwoHandMoveLogic.Update(MixedRealityPose,Quaternion,Vector3,System.Boolean,System.Boolean,MovementConstraintType)">Update(MixedRealityPose, Quaternion, Vector3, Boolean, Boolean, MovementConstraintType)</h4>
+  <div class="markdown level1 summary"><p>Update the rotation based on input.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Vector3 Update(MixedRealityPose pointerCentroidPose, Quaternion objectRotation, Vector3 objectScale, bool isNearMode, bool usePointerRotation)</code></pre>
+    <pre><code class="lang-csharp hljs">public Vector3 Update(MixedRealityPose pointerCentroidPose, Quaternion objectRotation, Vector3 objectScale, bool isNearMode, bool usePointerRotation, MovementConstraintType movementConstraint)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -248,6 +220,11 @@ Call Update any time to update the move logic and get a new rotation for the obj
         <td><span class="parametername">usePointerRotation</span></td>
         <td></td>
       </tr>
+      <tr>
+        <td><span class="xref">MovementConstraintType</span></td>
+        <td><span class="parametername">movementConstraint</span></td>
+        <td></td>
+      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -261,7 +238,8 @@ Call Update any time to update the move logic and get a new rotation for the obj
     <tbody>
       <tr>
         <td><span class="xref">Vector3</span></td>
-        <td></td>
+        <td><p>A Vector3 describing the desired position</p>
+</td>
       </tr>
     </tbody>
   </table>
