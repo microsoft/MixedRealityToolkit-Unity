@@ -174,7 +174,7 @@ Please see the tool tips available for each [`HandConstraint`](xref:Microsoft.Mi
     * OnHandActivate: triggers when a hand satisfies the IsHandActive method
     * OnHandDeactivate: triggers when the IsHandActive method is no longer satisfied. 
     * OnFirstHandDetected: occurs when the hand tracking state changes from no hands in view, to the first hand in view. 
-    * OnLastHandDetected: occurs when the hand tracking state changes from at least one hand in view, to no hands in view.
+    * OnLastHandLost: occurs when the hand tracking state changes from at least one hand in view, to no hands in view.
 
 #### Determining what surfaces can be hit
 

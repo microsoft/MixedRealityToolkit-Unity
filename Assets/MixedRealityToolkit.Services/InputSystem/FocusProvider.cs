@@ -30,18 +30,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private readonly Dictionary<GameObject, int> pendingOverallFocusExitSet = new Dictionary<GameObject, int>();
         private readonly List<PointerData> pendingPointerSpecificFocusChange = new List<PointerData>();
         private readonly Dictionary<uint, IMixedRealityPointerMediator> pointerMediators = new Dictionary<uint, IMixedRealityPointerMediator>();
-        private PointerHitResult hitResult3d = new PointerHitResult();
-        private PointerHitResult hitResultUi = new PointerHitResult();
+        private readonly PointerHitResult hitResult3d = new PointerHitResult();
+        private readonly PointerHitResult hitResultUi = new PointerHitResult();
 
-        private int maxQuerySceneResults = 128;
+        private readonly int maxQuerySceneResults = 128;
 
-        public IReadOnlyDictionary<uint, IMixedRealityPointerMediator> PointerMediators
-        {
-            get
-            {
-                return pointerMediators;
-            }
-        }
+        public IReadOnlyDictionary<uint, IMixedRealityPointerMediator> PointerMediators => pointerMediators;
 
         /// <summary>
         /// Number of IMixedRealityNearPointers that are active (IsInteractionEnabled == true).
@@ -464,7 +458,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private GazePointerVisibilityStateMachine gazePointerStateMachine = new GazePointerVisibilityStateMachine();
+        private readonly GazePointerVisibilityStateMachine gazePointerStateMachine = new GazePointerVisibilityStateMachine();
 
         /// <summary>
         /// Interface used for selecting the primary pointer.
@@ -517,7 +511,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public override void Update()
         {
             if (!IsSetupValid) { return; }
-            
+
             UpdatePointers();
 
             if (gazeProviderPointingData?.Pointer != null)
@@ -531,7 +525,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Updates the the gaze raycast provider even in scenarios where gaze isn't used for focus
+        /// Updates the gaze raycast provider even in scenarios where gaze isn't used for focus
         /// </summary>
         private void UpdateGazeProvider()
         {
@@ -546,8 +540,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     hitResult3d, maxQuerySceneResults);
                 gazeHitResult = hitResult3d;
             }
-            
-            ((GazeProvider)InputSystem.GazeProvider).UpdateGazeInfoFromHit(gazeHitResult.raycastHit);
+
+            InputSystem.GazeProvider.UpdateGazeInfoFromHit(gazeHitResult.raycastHit);
 
             // Zero out value after every use to ensure the hit result is updated every frame.
             gazeHitResult = null;
@@ -927,7 +921,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                         hit = GetPrioritizedHitResult(hit, hitResultUi, prioritizedLayerMasks);
                     }
-                    
+
                     if (hit != hitResult3d || hitResult3dLayer > 0)
                     {
                         // Truncate if we didn't already for this hit
