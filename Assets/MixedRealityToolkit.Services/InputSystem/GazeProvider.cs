@@ -492,6 +492,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             GazePointer.BaseCursor?.SetVisibility(true);
         }
 
+        /// <inheritdoc />
         public void UpdateGazeInfoFromHit(MixedRealityRaycastHit raycastHit)
         {
             HitInfo = raycastHit;
