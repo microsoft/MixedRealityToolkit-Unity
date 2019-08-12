@@ -757,16 +757,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         [Header("Proximity")]
         [SerializeField]
-        [Tooltip("")]
+        [Tooltip("Determines whether proximity feature (scaling and material toggling) for bounding box handles is activated")]
         private bool proximityEffectActive = true;
 
-        // TODO: Troy
         /// <summary>
-        /// 
+        /// Determines whether proximity feature (scaling and material toggling) for bounding box handles is activated
         /// </summary>
         public bool ProximityEffectActive => proximityEffectActive;
 
-        // TODO: Create public properties and fix setting to be sqr-magnitude
         [SerializeField]
         [Tooltip("How far away should the hand be from a handle before it starts scaling the handle?")]
         [Range(0.005f, 0.2f)]
@@ -775,7 +773,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [Tooltip("How far away should the hand be from a handle before it activates the close-proximity scaling effect?")]
         [Range(0.001f, 0.1f)]
-        private float handleCloseProximity = 0.03f; //
+        private float handleCloseProximity = 0.03f;
 
         [SerializeField]
         [Tooltip("A Proximity-enabled Handle scales by this amount when a hand moves out of range")]
@@ -833,12 +831,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public TextMesh debugText;
 
         [SerializeField]
-        [Tooltip("")]
+        [Tooltip("Determines whether to hide GameObjects (i.e handles, links etc) created and managed by this component in the editor")]
         private bool hideElementsInInspector = true;
 
-        // TODO: Troy
         /// <summary>
-        /// 
+        /// Determines whether to hide GameObjects (i.e handles, links etc) created and managed by this component in the editor
         /// </summary>
         public bool HideElementsInInspector
         {
@@ -1008,9 +1005,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        // TODO: Troy
         /// <summary>
-        ///
+        /// The collider reference tracking the bounds utilized by this component during runtime
         /// </summary>
         public BoxCollider TargetBounds { get; private set; }
 

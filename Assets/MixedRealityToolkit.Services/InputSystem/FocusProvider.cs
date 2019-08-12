@@ -831,13 +831,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             ReconcilePointers();
 
-            int pointerCount = 0;
-
             foreach (var pointerMediator in pointerMediators)
             {
                 pointerMediator.Value.UpdatePointers();
             }
 
+#if UNITY_EDITOR
+            int pointerCount = 0;
+#endif
             foreach (var pointerData in pointers)
             {
                 UpdatePointer(pointerData);
