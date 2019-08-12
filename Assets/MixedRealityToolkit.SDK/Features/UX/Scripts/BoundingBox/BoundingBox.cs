@@ -657,7 +657,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         [Header("Animated Handle by Proximity")]
         [SerializeField]
-        private bool proximityEffectActive = true;
+        private bool proximityEffectActive = false;
         public bool ProximityEffectActive
         {
             get
