@@ -1,12 +1,12 @@
 # Microsoft Mixed Reality Toolkit Release Notes
 
-- [Version 2.0.0](#version-2.0.0)
+- [Version 2.0.0](#version-200)
 
 ## Version 2.0.0
 
-- [What's new](#whats-new-in-2-0-0)
-- [Known issues](#known-issues-in-2.0.0)
-- [Changes](#changes-in-2.0.0)
+- [What's new](#whats-new-in-200)
+- [Known issues](#known-issues-in-200)
+- [Changes](#changes-in-200)
 
 This release of the Microsoft Mixed Reality Toolkit 2.0.0 supports the following devices and platforms.
 
