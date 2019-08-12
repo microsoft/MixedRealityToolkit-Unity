@@ -842,8 +842,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 UpdatePointer(pointerData);
 
+#if UNITY_EDITOR
                 var pointerProfile = profile.PointerProfile;
-
                 if (pointerProfile != null && pointerProfile.DebugDrawPointingRays)
                 {
                     MixedRealityRaycaster.DebugEnabled = pointerProfile.DebugDrawPointingRays;
@@ -868,6 +868,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     Debug.DrawRay(pointerData.StartPoint, (pointerData.Details.Point - pointerData.StartPoint), rayColor);
                 }
+#endif
             }
         }
 
