@@ -60,6 +60,17 @@ are subject to change. Please file any and all issues you encounter on GitHub
 
 ### Known issues in 2.0.0
 
+The sections below highlight some of the known issues in the Microsoft Mixed Reality Toolkit
+2.0.0. The [complete list of issues](https://github.com/microsoft/MixedRealityToolkit-Unity/issues) 
+can be found on GitHub.
+
+**Unity 2019: Windows Mixed Reality package v3.0.3**
+
+<< error >>
+
+Please check for a newer version or roll back to version 3.0.2 using Window > Package Manager in
+the Unity editor.
+
 **Runtime profile swapping**
 
 MRTK 2.0.0 does not fully support profile swapping at runtime. This feature is being
