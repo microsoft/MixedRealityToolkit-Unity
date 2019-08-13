@@ -31,11 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
         [Range(0, 20)]
         private float timeToCompleteDwell = 6;
 
-        [Tooltip("Should the system allow for dwell to resume if the pointer exits the target briefly.")]
-        [SerializeField]
-        private bool allowDwellResume = false;
-
-        [Tooltip("Time in seconds when gaze can fall off the target and come back.")]
+        [Tooltip("Time in seconds when gaze can fall off the target and come back to resume an ongoing dwell.")]
         [SerializeField]
         [Range(0, 20)]
         private float timeToAllowDwellResume = 1;
@@ -69,14 +65,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
             get
             {
                 return timeToCompleteDwell;
-            }
-        }
-
-        public bool AllowDwellResume
-        {
-            get
-            {
-                return allowDwellResume;
             }
         }
 

@@ -6,45 +6,35 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
 {
     /// <summary>
-    /// Example to demonstrate override
+    /// Example to demonstrate DwellHandler override
     /// </summary>
     public class CustomDwellHandler : DwellHandler
     {
-        public override float CalculateDwellProgress()
+        protected override void UpdateFillTimer()
         {
-            float dwellProgress = 0;
-
-            switch (currentDwellState)
+            switch (CurrentDwellState)
             {
-                case DwellState.None:
-                    dwellProgress = 0;
+                case DwellStateType.None:
+                case DwellStateType.FocusGained:
+                    FillTimer = 0;
                     break;
-                case DwellState.FocusGained:
-                    dwellProgress = 0;
+                case DwellStateType.DwellStarted:
+                    FillTimer -= Time.deltaTime;
                     break;
-                case DwellState.DwellStarted:
-                    fillTimer -= Time.deltaTime;
-                    dwellProgress = Mathf.Clamp((float)(dwellProfile.TimeToCompleteDwell - fillTimer) / dwellProfile.TimeToCompleteDwell,
-                        0f, 1f);
+                case DwellStateType.DwellCompleted:
+                    FillTimer = 0;
                     break;
-                case DwellState.DwellCompleted:
-                    dwellProgress = 1;
-                    break;
-                case DwellState.DwellCanceled:
+                case DwellStateType.DwellCanceled:
                     var customDwellProfile = dwellProfile as DwellProfileWithDecay;
                     if (customDwellProfile.AllowDwellDecayOnCancel)
                     {
-                        fillTimer += Time.deltaTime;
-                        dwellProgress = Mathf.Clamp((float)(dwellProfile.TimeToCompleteDwell - fillTimer) / dwellProfile.TimeToCompleteDwell,
-                                          0f, 1f);
+                        FillTimer += Time.deltaTime;
                     }
                     break;
-                case DwellState.Invalid:
                 default:
-                    return dwellProgress;
+                    FillTimer = 0;
+                    break;
             }
-
-            return dwellProgress;
         }
     }
 }

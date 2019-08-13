@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
         {
             if (isDwelling)
             {
-                float value = dwellHandler.CalculateDwellProgress();
+                float value = dwellHandler.DwellProgress;
                 dwellVisualImage.fillAmount = value;
             }
         }

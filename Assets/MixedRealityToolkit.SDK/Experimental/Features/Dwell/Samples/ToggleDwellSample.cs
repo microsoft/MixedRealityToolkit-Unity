@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
         private Color dwellIntendedColor = Color.cyan;
 
         [SerializeField]
-        private float dwellVisualCancelDurationInFPS = 60;
+        private float dwellVisualCancelDurationInFrames = 60;
 
         private float cancelStartScale = 0;
 
@@ -39,12 +39,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
         {
             if (isDwelling)
             {
-                float value = dwellHandler.CalculateDwellProgress();
+                float value = dwellHandler.DwellProgress;
                 dwellVisualImage.transform.localScale = new Vector3(value, value, value);
             }
             else if (!isDwelling && dwellVisualImage.transform.localScale.x > 0)
             {
-                float value = Mathf.Clamp(dwellVisualImage.transform.localScale.x - (cancelStartScale / dwellVisualCancelDurationInFPS), 0f, 1f);
+                float value = Mathf.Clamp(dwellVisualImage.transform.localScale.x - (cancelStartScale / dwellVisualCancelDurationInFrames), 0f, 1f);
                 dwellVisualImage.transform.localScale = new Vector3(value, value, value);
             }
         }

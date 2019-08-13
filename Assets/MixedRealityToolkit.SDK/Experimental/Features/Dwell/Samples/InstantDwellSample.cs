@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
 
         public void Update()
         {
-            float value = dwellHandler.CalculateDwellProgress();
+            float value = dwellHandler.DwellProgress;
             dwellVisualImage.transform.localScale = new Vector3(value, 1, 0);
         }
 

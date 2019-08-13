@@ -11,15 +11,23 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell.Editor
     /// </summary>
     [CustomEditor(typeof(DwellProfileWithDecay))]
     [Serializable]
-    public class DwellProfileWithDecayInspector : DwellProfileInspector
+    public class DwellProfileWithDecayInspector : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {
             DrawPropertiesExcluding(this.serializedObject, "timeToAllowDwellDecay", "timeToAllowDwellResume");
-            DrawConditionalParameter("timeToAllowDwellResume", "allowDwellResume");
             DrawConditionalParameter("timeToAllowDwellDecay", "allowDwellDecayOnCancel");
 
             this.serializedObject.ApplyModifiedProperties();
+        }
+
+        public void DrawConditionalParameter(string propertyToDraw, string conditionalProperty)
+        {
+            var propertyRef = serializedObject.FindProperty(conditionalProperty);
+            if (propertyRef.boolValue)
+            {
+                EditorGUILayout.PropertyField(this.serializedObject.FindProperty(propertyToDraw));
+            }
         }
     }
 }
