@@ -21,7 +21,7 @@ The following public properties on the MixedRealityToolkit object have been depr
 
 - `RegisteredMixedRealityServices` no longer contains the collection of registered extensions services and data providers.
 
-To access extension services, use [`MixedRealityServiceRegistry.TryGetService<T>`]. To access data providers, cast the service instance to [`IMixedRealityDataProviderAccess`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess) and use `GetDataProvider<T>`. 
+To access extension services, use [`MixedRealityServiceRegistry.TryGetService<T>`]. To access data providers, cast the service instance to [`IMixedRealityDataProviderAccess`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess) and use `GetDataProvider<T>`.
 
 Use [`MixedRealityServiceRegistry`](xref:Microsoft.MixedReality.Toolkit.MixedRealityServiceRegistry) or [`CoreServices`](xref:Microsoft.MixedReality.Toolkit.CoreServices) instead for the following deprecated properties
 
@@ -179,6 +179,10 @@ Some solver components and the SolverHandler manager class has changed to fix va
 - `OrientationMode` enum values, `Vertical` and `Full`, have been renamed to `TrackedTarget` and `SurfaceNormal` respectively
 - `KeepOrientationVertical` public property has been added to control whether orientation of associated GameObject remains vertical
 
+### Buttons
+
+- [`PressableButton`](xref:Microsoft.MixedReality.Toolkit.UI.PressableButton) now has `DistanceSpaceMode` property set to `Local` as default. This allows buttons to be scaled while still be pressable
+
 ### Clipping Sphere
 
 The ClippingSphere interface has changed to mirror the APIs found in the ClippingBox and ClippingPlane.
@@ -214,7 +218,7 @@ The `InteractableHighlight` class has been deprecated. The `InteractableOnFocus`
 
 ### HandInteractionPanZoom
 
-`HandInteractionPanZoom` has been moved to the UI namespace as it was not an input component. `HandPanEventData` has also been moved into this namespace, and simplified to correspond with other UI event data. 
+`HandInteractionPanZoom` has been moved to the UI namespace as it was not an input component. `HandPanEventData` has also been moved into this namespace, and simplified to correspond with other UI event data.
 
 ## Assembly name changes
 

@@ -1418,7 +1418,7 @@ MonoBehaviour:
   StartDimensionIndex: 0
   CanSelect: 1
   CanDeselect: 0
-  VoiceCommand: Radial One
+  VoiceCommand: 
   RequiresFocus: 1
   Profiles:
   - Target: {fileID: 1903041749280706}

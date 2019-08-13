@@ -989,6 +989,7 @@ MonoBehaviour:
   layout: 0
   radius: 2
   radialRange: 180
+  distance: 1
   rows: 1
   cellWidth: 0.021
   cellHeight: 0.01

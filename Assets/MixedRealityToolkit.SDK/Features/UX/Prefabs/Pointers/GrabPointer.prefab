@@ -71,6 +71,7 @@ MonoBehaviour:
   pointerExtent: 10
   defaultPointerExtent: 10
   sphereCastRadius: 0.05
+  nearObjectMargin: 0.2
   debugMode: 0
 --- !u!114 &7376459786343609486
 MonoBehaviour:

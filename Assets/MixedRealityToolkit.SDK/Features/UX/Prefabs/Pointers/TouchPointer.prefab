@@ -51,6 +51,7 @@ MonoBehaviour:
   lineEndClamp: 1
   customLineTransform: {fileID: 0}
   loops: 0
+  transformMode: 0
   rotationMode: 1
   flipUpVector: 0
   originOffset: {x: 0, y: 0, z: 0}
@@ -62,6 +63,7 @@ MonoBehaviour:
   velocitySearchRange: 0.02
   distorters:
   - {fileID: 114052612917089170}
+  distortionEnabled: 1
   distortionMode: 0
   distortionStrength:
     serializedVersion: 2
@@ -283,10 +285,38 @@ MonoBehaviour:
   widthOffset: 0
   stepMode: 0
   lineStepCount: 16
+  pointDistributionMode: 1
+  customPointDistributionLength: 0.1
+  customPointDistributionCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   lineMaterial: {fileID: 2100000, guid: 11727442de02c1d4b8d37a063c748aec, type: 2}
   roundedEdges: 1
   roundedCaps: 1
   lineRenderer: {fileID: 120690711267243118}
+  tileMaterialByWorldLength: 0
+  tileMaterialScale: 1
 --- !u!114 &114052612917089170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -366,4 +396,3 @@ MonoBehaviour:
   pointerExtent: 10
   defaultPointerExtent: 10
   sphereCastRadius: 0.1
-  pointerOrientation: 0

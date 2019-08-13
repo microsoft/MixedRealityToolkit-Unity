@@ -199,9 +199,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public bool IsVisited { get; private set; }
 
         /// <summary>
-        /// The dimension index is not zero, in a toggled state
+        /// True if SelectionMode is "Toggle" (Dimensions == 2) and the dimension index is not zero.
         /// </summary>
-        public bool IsToggled { get; private set; }
+        public bool IsToggled { get { return Dimensions == 2 && dimensionIndex > 0; } }
 
         /// <summary>
         /// Currently pressed and some movement has occurred
@@ -751,7 +751,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <param name="toggled"></param>
         public virtual void SetToggled(bool toggled)
         {
-            IsToggled = toggled;
             SetState(InteractableStates.InteractableStateEnum.Toggled, toggled);
 
             // if in toggle mode
@@ -940,11 +939,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public void OnFocusEnter(FocusEventData eventData)
         {
-            Debug.Assert(focusingPointers.Count > 0,
-                "OnFocusEnter called but focusingPointers == 0. Most likely caused by the presence of a child object " +
-                "that is handling IMixedRealityFocusChangedHandler");
             if (CanInteract())
             {
+                Debug.Assert(focusingPointers.Count > 0,
+                    "OnFocusEnter called but focusingPointers == 0. Most likely caused by the presence of a child object " +
+                    "that is handling IMixedRealityFocusChangedHandler");
                 SetFocus(true);
             }
         }
@@ -1198,7 +1197,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return false;
             }
 
-            if (Dimensions > 1 && ((dimensionIndex != Dimensions - 1 & !CanSelect) || (dimensionIndex == Dimensions - 1 & !CanDeselect)))
+            if (Dimensions > 1 && ((dimensionIndex != Dimensions - 1 && !CanSelect) || (dimensionIndex == Dimensions - 1 && !CanDeselect)))
             {
                 return false;
             }

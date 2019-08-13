@@ -15,6 +15,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
+using NUnit.Framework.Internal;
 using System.Collections;
 using System.Linq;
 using UnityEditor;
@@ -28,6 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         const float buttonPressAnimationDelay = 0.25f;
         const float buttonReleaseAnimationDelay = 0.25f;
         const string defaultInteractablePrefabAssetPath = "Assets/MixedRealityToolkit.Examples/Demos/UX/Interactables/Prefabs/Model_PushButton.prefab";
+        const string radialSetPrefabAssetPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/RadialSet.prefab";
 
         [SetUp]
         public void Setup()
@@ -310,6 +312,38 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// Tests that radial buttons can be selected and deselected, and that a radial button
+        /// set allows just one button to be selected at a time
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator TestRadialButtons()
+        {
+            var radialSet = InstantiateInteractableFromPath(Vector3.forward, Vector3.zero, radialSetPrefabAssetPath);
+            var firstRadialButton = radialSet.transform.Find("Radial (1)");
+            var secondRadialButton = radialSet.transform.Find("Radial (2)");
+            var thirdRadialButton = radialSet.transform.Find("Radial (3)");
+            var testHand = new TestHand(Handedness.Right);
+            yield return testHand.Show(Vector3.zero);
+            Assert.IsTrue(firstRadialButton.GetComponent<Interactable>().IsToggled);
+            Assert.IsFalse(secondRadialButton.GetComponent<Interactable>().IsToggled);
+            Assert.IsFalse(thirdRadialButton.GetComponent<Interactable>().IsToggled);
+
+            yield return testHand.Show(Vector3.zero);
+
+            var aBitBack = Vector3.forward * -0.2f;
+            yield return testHand.MoveTo(firstRadialButton.position);
+            yield return testHand.Move(aBitBack);
+
+            yield return testHand.MoveTo(secondRadialButton.transform.position);
+            yield return testHand.Move(aBitBack);
+
+            Assert.IsFalse(firstRadialButton.GetComponent<Interactable>().IsToggled);
+            Assert.IsTrue(secondRadialButton.GetComponent<Interactable>().IsToggled);
+            Assert.IsFalse(thirdRadialButton.GetComponent<Interactable>().IsToggled);
+        }
+
+        /// <summary>
         /// Instantiates a push button prefab and uses simulated input events to press it.
         /// </summary>
         /// <returns></returns>
@@ -480,6 +514,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             interactable.InputAction = selectAction;
         }
 
+        private GameObject InstantiateInteractableFromPath(Vector3 position, Vector3 eulerAngles, string path)
+        {
+            // Load interactable prefab
+            Object interactablePrefab = AssetDatabase.LoadAssetAtPath(path, typeof(Object));
+            GameObject result = Object.Instantiate(interactablePrefab) as GameObject;
+            Assert.IsNotNull(result);
+
+            // Move the object into position
+            result.transform.position = position;
+            result.transform.eulerAngles = eulerAngles;
+            return result;
+        }
+
         /// <summary>
         /// Instantiates the default interactable button.
         /// </summary>
@@ -491,8 +538,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private void InstantiateDefaultInteractablePrefab(Vector3 position, Vector3 rotation, out GameObject interactableObject, out Interactable interactable, out Transform translateTargetObject)
         {
             // Load interactable prefab
-            Object interactablePrefab = AssetDatabase.LoadAssetAtPath(defaultInteractablePrefabAssetPath, typeof(Object));
-            interactableObject = Object.Instantiate(interactablePrefab) as GameObject;
+            interactableObject = InstantiateInteractableFromPath(position, rotation, defaultInteractablePrefabAssetPath);
             interactable = interactableObject.GetComponent<Interactable>();
             Assert.IsNotNull(interactable);
 
