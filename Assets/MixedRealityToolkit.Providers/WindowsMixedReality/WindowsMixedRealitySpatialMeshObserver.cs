@@ -679,20 +679,32 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// </summary>
         private void ConfigureObserverVolume()
         {
+            if ((CameraCache.Main == null) ||
+                (CameraCache.Main.transform == null) ||
+                (CameraCache.Main.transform.parent == null))
+            {
+                Debug.LogError("The main camera is not parented. Please ensure the camera is parented before setting the observer volume.");
+                return;
+            }
+
+            // The observer's origin is in world space, we need it in camera space
+            // to set the volume.
+            Vector3 observerOriginCameraSpace = CameraCache.Main.transform.parent.InverseTransformPoint(ObserverOrigin);
+
             // Update the observer
             switch(ObserverVolumeType)
             {
                 case VolumeType.AxisAlignedCube:
-                    observer.SetVolumeAsAxisAlignedBox(ObserverOrigin, ObservationExtents);
+                    observer.SetVolumeAsAxisAlignedBox(observerOriginCameraSpace, ObservationExtents);
                     break;
 
                 case VolumeType.Sphere:
                     // We use the x value of the extents as the sphere radius
-                    observer.SetVolumeAsSphere(ObserverOrigin, ObservationExtents.x);
+                    observer.SetVolumeAsSphere(observerOriginCameraSpace, ObservationExtents.x);
                     break;
 
                 case VolumeType.UserAlignedCube:
-                    observer.SetVolumeAsOrientedBox(ObserverOrigin, ObservationExtents, ObserverRotation);
+                    observer.SetVolumeAsOrientedBox(observerOriginCameraSpace, ObservationExtents, ObserverRotation);
                     break;
 
                 default:

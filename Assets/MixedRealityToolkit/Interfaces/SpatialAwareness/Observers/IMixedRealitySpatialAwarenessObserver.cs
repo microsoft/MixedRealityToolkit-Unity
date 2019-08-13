@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         Quaternion ObserverRotation { get; set; }
 
         /// <summary>
-        /// Gets or sets the origin of the observer.
+        /// Gets or sets the origin, in World Space, of the observer.
         /// </summary>
         /// <remarks>
         /// Moving the observer origin allows the spatial awareness system to locate and discard meshes as the user
