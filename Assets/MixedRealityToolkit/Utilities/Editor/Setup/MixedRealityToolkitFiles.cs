@@ -184,7 +184,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private static bool TryUnregisterModuleFolder(string folder)
         {
             string normalizedFolder = NormalizeSeparators(folder);
-            bool found = false;
+
             foreach (var modFolders in mrtkFolders)
             {
                 if (modFolders.Value.Remove(normalizedFolder))
@@ -193,11 +193,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     {
                         mrtkFolders.Remove(modFolders.Key);
                     }
-                    found = true;
+                    return true;
                 }
             }
-
-            return found;
+            return false;
         }
 
         private static string NormalizeSeparators(string path) => path.Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar);
