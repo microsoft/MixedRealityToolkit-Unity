@@ -16,27 +16,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Release", Tooltip = "The button is released")]
         public UnityEvent OnRelease = new UnityEvent();
 
-        private enum PressType
+        public enum PressType
         {
-            ALL_INTERACTIONS = 0,
-            PHYSICAL_ONLY = 1,
-            FAR_ONLY = 2
+            NearAndFar = 0,
+            NearOnly = 1,
+            FarOnly = 2
         }
 
-        //This is what i want to do:
-        //[SerializeField]
-        //[Tooltip("Filter for Near and Far Press")]
-        //public PressType pressTypeFilterTest = PressType.ALL_INTERACTIONS;
-		
-		// This is what it seems like I have to do, but it's broken:
-		//[InspectorField(Label = "Press Filter Type", Tooltip = "A index value of the component", Type = InspectorField.FieldTypes.DropdownInt, Options = new string[] { "All Interactions", "Physical Only", "Far Only" })]
-        // public int ComponentIndex = 2;
-        // public int pressTypeFilter = (int)PressType.ALL_INTERACTIONS;
-
-		// this is what I'm doing right now to at least make it work and test the behavior:
-        [InspectorField(Label = "Press Type Filter", Tooltip = "Filter for Near and Far Press", Type = InspectorField.FieldTypes.Int)]
-        public int PressTypeFilter = 0;
-
+        [InspectorField(Label = "Press Interaction Type", Tooltip = "Specify whether press event is for near or far interaction", Type = InspectorField.FieldTypes.DropdownInt, Options = new string[] { "Near and Far", "Near Only", "Far Only" })]
+        public PressType PressTypeFilter = PressType.NearAndFar;
 
         private bool hasDown;
         private State lastState;
@@ -54,8 +42,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <returns>true if interactable state matches filter</returns>
         private bool IsFilterValid()
         {
-            if (PressTypeFilter == (int)PressType.FAR_ONLY && isNear
-                || PressTypeFilter == (int)PressType.PHYSICAL_ONLY && !isNear)
+            if (PressTypeFilter == PressType.FarOnly && isNear
+                || PressTypeFilter == PressType.NearOnly && !isNear)
             {
                 return false;
             }
