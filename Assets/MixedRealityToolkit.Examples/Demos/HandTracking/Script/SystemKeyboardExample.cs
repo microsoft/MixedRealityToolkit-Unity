@@ -25,8 +25,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
 #if WINDOWS_UWP || UNITY_IOS || UNITY_ANDROID
         public static string keyboardText = "";
-        public TextMeshPro debugMessage;
 #endif
+
+        [SerializeField]
+        private TextMeshPro debugMessage;
 
         private void Start()
         {
