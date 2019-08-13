@@ -322,7 +322,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                 for (int i = 0; i < events.arraySize; i++)
                 {
                     SerializedProperty eventItem = events.GetArrayElementAtIndex(i);
-                    InteractableReceiverListInspector.RenderEventSettings(eventItem, i, eventOptions, ChangeEvent, RemoveEvent);
+                    if (InteractableReceiverListInspector.RenderEventSettings(eventItem, i, eventOptions, ChangeEvent, RemoveEvent))
+                    {
+                        // If removed, skip rendering rest of list till next redraw
+                        break;
+                    }
                 }
                 GUI.enabled = true;
 
