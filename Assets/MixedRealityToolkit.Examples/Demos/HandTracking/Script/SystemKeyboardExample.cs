@@ -23,9 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         private TouchScreenKeyboard touchscreenKeyboard;
 #endif
 
-#if WINDOWS_UWP || UNITY_IOS || UNITY_ANDROID
-        public static string keyboardText = "";
-#endif
+        public static string KeyboardText = "";
 
         [SerializeField]
         private TextMeshPro debugMessage = null;
@@ -55,20 +53,20 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         {
 #if WINDOWS_UWP
             // Windows mixed reality keyboard update goes here
-            keyboardText = wmrKeyboard.Text;
+            KeyboardText = wmrKeyboard.Text;
             if (wmrKeyboard.Visible)
             {
-                debugMessage.text = "typing... " + keyboardText;
+                debugMessage.text = "typing... " + KeyboardText;
             }
             else
             {
-                if (keyboardText == null || keyboardText.Length == 0)
+                if (KeyboardText == null || KeyboardText.Length == 0)
                 {
                     debugMessage.text = "open keyboard to type text";
                 }
                 else
                 {
-                    debugMessage.text = "typed " + keyboardText;
+                    debugMessage.text = "typed " + KeyboardText;
                 }
             }
 #elif UNITY_IOS || UNITY_ANDROID
