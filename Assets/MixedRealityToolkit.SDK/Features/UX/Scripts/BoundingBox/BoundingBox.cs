@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -965,12 +964,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // Half the size of the current bounds
         private Vector3 currentBoundsExtents;
 
-        private BoundsCalculationMethod boundsMethod;
-
         private IMixedRealityEyeGazeProvider EyeTrackingProvider => eyeTrackingProvider ?? (eyeTrackingProvider = CoreServices.InputSystem?.EyeGazeProvider);
         private IMixedRealityEyeGazeProvider eyeTrackingProvider = null;
 
-        private List<IMixedRealityInputSource> touchingSources = new List<IMixedRealityInputSource>();
+        private readonly List<IMixedRealityInputSource> touchingSources = new List<IMixedRealityInputSource>();
 
         private List<Transform> links;
         private List<Renderer> linkRenderers;
@@ -1012,7 +1009,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // The size, position of boundsOverride object in the previous frame
         // Used to determine if boundsOverride size has changed.
         private Bounds prevBoundsOverride = new Bounds();
-        private Vector3 lastBounds;
 
         // True if this game object is a child of the Target one
         private bool isChildOfTarget = false;
@@ -1023,7 +1019,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private HashSet<IMixedRealityPointer> proximityPointers = new HashSet<IMixedRealityPointer>();
         private List<Vector3> proximityPoints = new List<Vector3>();
-        private Coroutine closestHandleCoroutine;
 
         #endregion
 

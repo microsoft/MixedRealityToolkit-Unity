@@ -37,7 +37,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private AppBar parentToolBar;
         private Vector3 targetPosition;
-        private MaterialPropertyBlock iconPropertyBlock;
         private Texture buttonIcon;
         private string buttonText;
 

@@ -45,7 +45,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         protected bool hasProfileLayout;
 
         protected GUIStyle boxStyle;
-        private SerializedProperty tempSettings;
         private const int ThemePropertiesBoxMargin = 30;
 
         private static readonly GUIContent InputActionsLabel = new GUIContent("Input Actions", "The input action filter");

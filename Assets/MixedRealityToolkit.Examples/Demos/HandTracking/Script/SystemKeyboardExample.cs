@@ -17,14 +17,20 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// </remarks>
     public class SystemKeyboardExample : MonoBehaviour
     {
+#if WINDOWS_UWP
         private MixedRealityKeyboard wmrKeyboard;
+#elif UNITY_IOS || UNITY_ANDROID
         private TouchScreenKeyboard touchscreenKeyboard;
+#endif
+
+#if WINDOWS_UWP || UNITY_IOS || UNITY_ANDROID
         public static string keyboardText = "";
         public TextMeshPro debugMessage;
+#endif
 
         private void Start()
         {
-#if !UNITY_EDITOR && UNITY_WSA
+#if WINDOWS_UWP
             // Windows mixed reality keyboard initialization goes here
             wmrKeyboard = gameObject.AddComponent<MixedRealityKeyboard>();
 #elif UNITY_IOS || UNITY_ANDROID
@@ -34,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         public void OpenSystemKeyboard()
         {
-#if !UNITY_EDITOR && UNITY_WSA
+#if WINDOWS_UWP
             wmrKeyboard.ShowKeyboard();
 #elif UNITY_IOS || UNITY_ANDROID
             touchscreenKeyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default, false, false, false, false);
@@ -43,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         private void Update()
         {
-#if !UNITY_EDITOR && UNITY_WSA
+#if WINDOWS_UWP
             // Windows mixed reality keyboard update goes here
             keyboardText = wmrKeyboard.Text;
             if (wmrKeyboard.Visible)
