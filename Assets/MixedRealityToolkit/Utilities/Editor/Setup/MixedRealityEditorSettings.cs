@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Boo.Lang;
 using Microsoft.MixedReality.Toolkit.Editor;
 using System;
 using System.IO;
@@ -124,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                         case 0:
                             EditorSettings.serializationMode = SerializationMode.ForceText;
                             EditorSettings.externalVersionControl = "Visible Meta Files";
-                            PlayerSettings.virtualRealitySupported = true;
+                            ApplyXRSettings();
                             PlayerSettings.stereoRenderingPath = StereoRenderingPath.Instancing;
                             refresh = true;
                             break;
@@ -154,6 +155,26 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             if (restart)
             {
                 EditorApplication.OpenProject(Directory.GetParent(Application.dataPath).ToString());
+            }
+        }
+
+        private static void ApplyXRSettings()
+        {
+            BuildTargetGroup targetGroup = EditorUserBuildSettings.selectedBuildTargetGroup;
+
+            List<string> targetSDKs = new List<string>();
+            foreach (string sdk in PlayerSettings.GetAvailableVirtualRealitySDKs(targetGroup))
+            {
+                if (sdk.Contains("OpenVR") || sdk.Contains("Windows"))
+                {
+                    targetSDKs.Add(sdk);
+                }
+            }
+
+            if (targetSDKs.Count != 0)
+            {
+                PlayerSettings.SetVirtualRealitySDKs(targetGroup, targetSDKs.ToArray());
+                PlayerSettings.SetVirtualRealitySupported(targetGroup, true);
             }
         }
 
