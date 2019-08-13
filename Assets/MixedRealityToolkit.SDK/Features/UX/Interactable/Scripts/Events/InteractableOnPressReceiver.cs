@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [InspectorField(Label = "Press Interaction Type", Tooltip = "Specify whether press event is for near or far interaction", Type = InspectorField.FieldTypes.DropdownInt, Options = new string[] { "Near and Far", "Near Only", "Far Only" })]
-        public PressType PressTypeFilter = PressType.NearAndFar;
+        public int PressTypeFilter = (int)PressType.NearAndFar;
 
         private bool hasDown;
         private State lastState;
@@ -42,8 +42,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <returns>true if interactable state matches filter</returns>
         private bool IsFilterValid()
         {
-            if (PressTypeFilter == PressType.FarOnly && isNear
-                || PressTypeFilter == PressType.NearOnly && !isNear)
+            if (PressTypeFilter == (int)PressType.FarOnly && isNear
+                || PressTypeFilter == (int)PressType.NearOnly && !isNear)
             {
                 return false;
             }
