@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 #endif
 
         [SerializeField]
-        private TextMeshPro debugMessage;
+        private TextMeshPro debugMessage = null;
 
         private void Start()
         {
@@ -37,6 +37,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             wmrKeyboard = gameObject.AddComponent<MixedRealityKeyboard>();
 #elif UNITY_IOS || UNITY_ANDROID
             // non-Windows mixed reality keyboard initialization goes here
+#else
+            debugMessage.text = "Keyboard not supported on this platform.";
 #endif
         }
 
