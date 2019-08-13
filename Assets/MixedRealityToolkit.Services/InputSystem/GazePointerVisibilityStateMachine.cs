@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             // If there are any far pointers active while eye gaze is valid, then
             // eye gaze should be disabled.
-            bool isEyeGazePointerActive = numFarPointersActive == 0;
+            bool isEyeGazePointerActive = numFarPointersActive == 0 && numNearPointersActive == 0;
 
             gazePointerState = isEyeGazePointerActive ?
                 GazePointerState.GazePointerActive :
