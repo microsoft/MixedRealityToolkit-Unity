@@ -158,6 +158,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
         }
 
+        /// <summary>
+        /// Discover and set the appropriate XR Settings for the current build target.
+        /// </summary>
         private static void ApplyXRSettings()
         {
             BuildTargetGroup targetGroup = EditorUserBuildSettings.selectedBuildTargetGroup;
