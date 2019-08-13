@@ -503,8 +503,8 @@ to grab events.</p>
   <a id="Microsoft_MixedReality_Toolkit_Input_SpherePointer_TryGetNearGraspPoint_" data-uid="Microsoft.MixedReality.Toolkit.Input.SpherePointer.TryGetNearGraspPoint*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_SpherePointer_TryGetNearGraspPoint_Vector3__" data-uid="Microsoft.MixedReality.Toolkit.Input.SpherePointer.TryGetNearGraspPoint(Vector3@)">TryGetNearGraspPoint(out Vector3)</h4>
   <div class="markdown level1 summary"><p>Gets the position of where grasp happens
-For sixdof it's just the pointer origin
-for hand it's the average of index and thumb.</p>
+For IMixedRealityHand it's the average of index and thumb.
+For any other IMixedRealityController, return just the pointer origin</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>

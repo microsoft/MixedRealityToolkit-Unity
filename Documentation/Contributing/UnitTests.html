@@ -89,11 +89,8 @@
 </ol>
 <p>If you fix a bug, please consider writing a test to ensure that this bug doesn't regress in the future as well.</p>
 <h2 id="executing-tests-locally">Executing tests locally</h2>
-<p>The <a href="https://docs.unity3d.com/Manual/testing-editortestsrunner.html">Unity Test Runner</a> can be found under
-Window &gt; General &gt; Test Runner and will show all available MRTK play and edit mode tests.</p>
-<p>You can also run the <a href="https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-6">powershell</a>
-script located at <code>Scripts\test\run_playmode_tests.ps1</code>. This will run the playmode tests exactly as they are executed
-on github / CI (see below), and print results. Here are some examples of how to run the script</p>
+<p>The <a href="https://docs.unity3d.com/Manual/testing-editortestsrunner.html">Unity Test Runner</a> can be found under Window &gt; General &gt; Test Runner and will show all available MRTK play and edit mode tests.</p>
+<p>You can also run the <a href="https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-6">powershell</a> script located at <code>Scripts\test\run_playmode_tests.ps1</code>. This will run the playmode tests exactly as they are executed on github / CI (see below), and print results. Here are some examples of how to run the script</p>
 <p>Run the tests on the project located at H:\mrtk.dev, with Unity 2018.4.1f1</p>
 <pre><code>    .\run_playmode_tests.ps1 H:\mrtk.dev -unityExePath = &quot;C:\Program Files\Unity\Hub\Editor\2018.4.1f1\Editor\Unity.exe&quot;
 </code></pre>
@@ -101,23 +98,18 @@ on github / CI (see below), and print results. Here are some examples of how to 
 <pre><code>    .\run_playmode_tests.ps1 H:\mrtk.dev -unityExePath = &quot;C:\Program Files\Unity\Hub\Editor\2018.4.1f1\Editor\Unity.exe&quot; -outFolder &quot;C:\playmode_test_out\&quot;
 </code></pre>
 <h2 id="executing-tests-on-github--ci">Executing tests on github / CI</h2>
-<p>MRTK's CI will build MRTK in all configurations and run all edit and play mode tests. CI can be triggered by posting a
-comment on the github PR <code>/azp run mrtk_pr</code> if the user has sufficient rights. CI runs can be seen in the 'checks' tab of the PR.
-Only after all of the tests passed successfully the PR can be merged into mrtk_development.</p>
+<p>MRTK's CI will build MRTK in all configurations and run all edit and play mode tests. CI can be triggered by posting a comment on the github PR <code>/azp run mrtk_pr</code> if the user has sufficient rights. CI runs can be seen in the 'checks' tab of the PR.</p>
+<p>Only after all of the tests passed successfully the PR can be merged into mrtk_development.</p>
 <div class="NOTE">
 <h5>Note</h5>
-<p>Some tests will only fail when run from the command line. You can run the tests locally from command line using similar
-setup to what it done in MRTK's CI by running <code>scripts\test\run_playmode_tests.ps1</code></p>
+<p>Some tests will only fail when run from the command line. You can run the tests locally from command line using similar setup to what it done in MRTK's CI by running <code>scripts\test\run_playmode_tests.ps1</code></p>
 </div>
 <h2 id="writing-tests-for-your-code">Writing Tests for your code</h2>
 <p>To ensure MRTK being a stable and reliable toolkit, every feature should come with unit tests and sample usage in one of the example scenes.</p>
 <p>Preferrably when fixing a bug there should also be a test added to avoid running into the same issue again in the future.</p>
 <p>Having good test coverage in a big codebase like MRTK is crucial for stability and having confidence when doing changes in code.</p>
-<p>MRTK uses the <a href="https://docs.unity3d.com/Manual/testing-editortestsrunner.html">Unity Test Runner</a> which uses a Unity
-integration of <a href="https://nunit.org/">NUnit</a>.</p>
-<p>This guide will give a starting point on how to add tests to MRTK. It will not explain the
-<a href="https://docs.unity3d.com/Manual/testing-editortestsrunner.html">Unity Test Runner</a> and
-<a href="https://nunit.org/">NUnit</a> which can be looked up in the links provided.</p>
+<p>MRTK uses the <a href="https://docs.unity3d.com/Manual/testing-editortestsrunner.html">Unity Test Runner</a> which uses a Unity integration of <a href="https://nunit.org/">NUnit</a>.</p>
+<p>This guide will give a starting point on how to add tests to MRTK. It will not explain the <a href="https://docs.unity3d.com/Manual/testing-editortestsrunner.html">Unity Test Runner</a> and <a href="https://nunit.org/">NUnit</a> which can be looked up in the links provided.</p>
 <p>There's two types of tests that can be added for new code</p>
 <ul>
 <li>Edit mode tests</li>
@@ -151,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         // do any kind of setup here that can't be done in playmode
         public void Setup()
         {
-            // eg installing unity packages is only possible in edit mode
+            // eg installing unity packages is only possible in edit mode 
             // so if a test requires TextMeshPro we will need to check for the package before entering play mode
             PlayModeTestUtilities.EnsureTextMeshProEssentials();
         }
@@ -213,36 +205,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 }
 
 </code></pre>
-<h2 id="test-naming-conventions">Test naming conventions</h2>
-<p>Tests should generally be named based on the class they are testing, or the scenario that they are testing.
-For example, given a to-be-tested class:</p>
-<pre><code class="lang-csharp">
-namespace Microsoft.MixedReality.Toolkit.Input
-{
-    class InterestingInputClass
-    {
-    }
-}
-</code></pre>
-<p>Consider naming the test</p>
-<pre><code class="lang-csharp">
-namespace Microsoft.MixedReality.Toolkit.Tests.Input
-{
-    class InterestingInputClassTest
-    {
-    }
-}
-</code></pre>
-<p>Consider placing the test in a folder hierarchy that is similar to its corresponding non-test file.
-For example:</p>
-<pre><code>Non-Test: Assets/MixedRealityToolkit/Utilities/InterestingUtilityClass.cs
-Test: Assets/MixedRealityToolkit.Tests/EditModeTests/Core/Utilities/InterestingUtilityClassTest.cs
-</code></pre>
-<p>This is to ensure that there's a clear an obvious way of finding each class's corresponding test class,
-if such a test class exists.</p>
-<p>Placement of scenario based tests is less defined - if the test exercises the overall input system,
-for example, consider putting it into an &quot;InputSystem&quot; folder in the corresponding edit mode
-or play mode test folder.</p>
 <h2 id="mrtk-utility-methods">MRTK Utility methods</h2>
 <p>This section shows some of the commonly used code snippets / methods when writing tests for MRTK.</p>
 <p>There are two Utility classes that help with setting up MRTK and testing interactions with components in MRTK</p>
@@ -263,9 +225,7 @@ TestUtilities.InitializePlayspace();
 /// destroys previously created mrtk gameobject and playspace
 TestUtilities.ShutdownMixedRealityToolkit();
 </code></pre>
-<p>Please refer to the API docs of <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Tests.TestUtilities.html"><code>TestUtilities</code></a> and
-<a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.html"><code>PlayModeTestUtilities</code></a> for further methods
-of these util classes as they're extended on a regular basis while new tests get added to MRTK.</p>
+<p>Please refer to the API docs of <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Tests.TestUtilities.html"><code>TestUtilities</code></a> and <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.html"><code>PlayModeTestUtilities</code></a> for further methods of these util classes as they're extended on a regular basis while new tests get added to MRTK.</p>
 <h2 id="see-also">See also</h2>
 <ul>
 <li><a href="DevDocGuide.html">Documentation portal generation guide</a></li>
@@ -278,7 +238,7 @@ of these util classes as they're extended on a regular basis while new tests get
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/Contributing/UnitTests.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/2.0.0_stabilization/Documentation/Contributing/UnitTests.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

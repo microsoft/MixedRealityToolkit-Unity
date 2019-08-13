@@ -92,7 +92,6 @@
 <p>To enable a bounding box around an object, simply assign the <code>BoundingBox</code> script to any GameObject. Note that the object will need a box collider, added in the <em>Bounds Override</em> field in the inspector.</p>
 <p><img src="Images/BoundingBox/MRTK_BoundingBox_Assign.png" alt="Bounding Box"></p>
 <h2 id="inspector-properties">Inspector properties</h2>
-<p><img src="Images/BoundingBox/MRTK_BoundingBox_Structure.png" alt="Bounding Box"></p>
 <p><strong>Target Object</strong>
 This property specifies which object will get transformed by the bounding box manipulation. If no object is set, the bounding box defaults to the owner object.</p>
 <p><strong>Bounds Override</strong>
@@ -128,25 +127,26 @@ You can assign the material and prefab to override the handle style. If no handl
 <p><img src="Images/BoundingBox/MRTK_BoundingBox_HandleStyles1.png" alt="Bounding Box"></p>
 <p>Below are the prefabs, materials, and the scaling values for the HoloLens 2 style Bounding Box handles. You can find this example in the <code>BoundingBoxExamples</code> scene.</p>
 <img src="Images/BoundingBox/MRTK_BoundingBox_HandleStyles2.png" width="450">
-<h3 id="handles">Handles</h3>
+<h3 id="handles-setup-for-hololens-2-style">Handles (Setup for HoloLens 2 style)</h3>
 <ul>
 <li><strong>Handle Material</strong>: BoundingBoxHandleWhite</li>
 <li><strong>Handle Grabbed Material</strong>: BoundingBoxHandleBlueGrabbed</li>
-<li><strong>Scale Handle Prefab</strong>: MRTK_BoundingBox_ScaleWidget_1m</li>
-<li><strong>Scale Handle Slate Prefab</strong>: MRTK_BoundingBox_ScaleWidget_Slate_1m</li>
+<li><strong>Scale Handle Prefab</strong>: MRTK_BoundingBox_ScaleWidget</li>
+<li><strong>Scale Handle Slate Prefab</strong>: MRTK_BoundingBox_ScaleWidget_Slate</li>
 <li><strong>Scale Handle Size</strong>: 0.016 (1.6cm)</li>
 <li><strong>Scale Handle Collider Padding</strong>: 0.016 (makes the grabbable collider slightly bigger than handle visual)</li>
-<li><strong>Rotation Handle Prefab</strong>: MRTK_BoundingBox_RotateWidget_1m</li>
+<li><strong>Rotation Handle Prefab</strong>: MRTK_BoundingBox_RotateWidget</li>
 <li><strong>Rotation Handle Size</strong>: 0.016</li>
 <li><strong>Rotation Handle Collider Padding</strong>: 0.016 (makes the grabbable collider slightly bigger than handle visual)</li>
 </ul>
-<h3 id="proximity">Proximity</h3>
+<h3 id="proximity-setup-for-hololens-2-style">Proximity (Setup for HoloLens 2 style)</h3>
 <p>Show and hide the handles with animation based on the distance to the hands. It has two-step scaling animation.</p>
+<img src="Images/BoundingBox/MRTK_BoundingBox_Proximity.png">
 <ul>
 <li><strong>Proximity Effect Active</strong>: Enable proximity-based handle activation</li>
 <li><strong>Handle Medium Proximity</strong>: Distance for the 1st step scaling</li>
 <li><strong>Handle Close Proximity</strong>: Distance for the 2nd step scaling</li>
-<li><strong>Far Scale</strong>: Default scale value of the handle asset when the hands are out of the range of Bounding Box interaction(distance defined above by 'Handle Medium Proximity'. Use 0 to hide handle in default)</li>
+<li><strong>Far Scale</strong>: Default scale value of the handle asset when the hands are out of the range of Bounding Box interaction(distance defined above by 'Handle Medium Proximity'. Use 0 to hide handle by default)</li>
 <li><strong>Medium Scale</strong>: Scale value of the handle asset when the hands are within the range of the Bounding Box interaction(distance defined above by 'Handle Close Proximity'. Use 1 to show normal size)</li>
 <li><strong>Close Scale</strong>: Scale value of the handle asset when the hands are within the grab interaction(distance defined above by 'Handle Close Proximity'. Use 1.x to show bigger size)</li>
 </ul>
@@ -162,7 +162,7 @@ You can assign the material and prefab to override the handle style. If no handl
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/README_BoundingBox.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/2.0.0_stabilization/Documentation/README_BoundingBox.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
