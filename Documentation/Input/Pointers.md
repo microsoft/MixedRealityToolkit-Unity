@@ -34,7 +34,7 @@ It is possible to have multiple pointers associated with a controller. For examp
 the articulated hand controller is associated with the *PokePointer*, *GrabPointer*, and the *DefaultControllerPointer* (i.e hand rays).
 
 > [!NOTE]
-> MRTK provides a set of pointer prefabs in *Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Pointers*. One build a new prefab as long as it contains one of the pointer scripts in *Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Pointers* or any other script implementing [`IMixedRealityPointer`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer).
+> MRTK provides a set of pointer prefabs in *Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Pointers*. A new custom prefab can be built as long as it contains one of the pointer scripts in *Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Pointers* or any other script implementing [`IMixedRealityPointer`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer).
 
 ![Pointer Options Profile Example](../Images/Input/Pointers/PointerOptionsProfile.PNG)
 
@@ -212,6 +212,14 @@ The [PrimaryPointerExample scene](https://github.com/microsoft/MixedRealityToolk
 ### Pointer Result
 
 The pointer [`Result`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.Result) property contains the current result for the scene query used to determine the object with focus. For a raycast pointer, like the ones created by default for motion controllers, gaze input and hand rays, it will contain the location and normal of the raycast hit.
+
+```csharp
+    private void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData)
+    {
+        var result = eventData.Pointer.Result;
+        Instantiate(MyPrefab, result.Details.Point, Quaternion.LookRotation(result.Details.Normal));
+    }
+```
 
 The [PointerResultExample scene](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development/Assets/MixedRealityToolkit.Examples/Demos/Input/Scenes/PointerResult/PointerResultExample.unity) shows how to use the pointer [`Result`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.Result) to spawn an object at the hit location.
 
