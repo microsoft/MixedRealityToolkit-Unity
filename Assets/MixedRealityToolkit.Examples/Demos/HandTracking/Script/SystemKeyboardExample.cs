@@ -77,14 +77,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             // Unity bug tracking the issue https://fogbugz.unity3d.com/default.asp?1137074_rttdnt8t1lccmtd3
             if (touchscreenKeyboard != null)
             {
-                keyboardText = touchscreenKeyboard.text;
+                KeyboardText = touchscreenKeyboard.text;
                 if (TouchScreenKeyboard.visible)
                 {
-                    debugMessage.text = "typing... " + keyboardText;
+                    debugMessage.text = "typing... " + KeyboardText;
                 }
                 else
                 {
-                    debugMessage.text = "typed " + keyboardText;
+                    debugMessage.text = "typed " + KeyboardText;
                     touchscreenKeyboard = null;
                 }
             }
