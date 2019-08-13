@@ -53,7 +53,7 @@ The following classes are the out-of-box MRTK pointers available and defined in 
 
 For motion controllers like in Oculus, Vive, Windows Mixed Reality, the rotation will match the rotation of the controller. For other controllers like HoloLens 2 articulated hands, the rotation matches the system-provided pointing pose of the hand.
 
-<img src="../../Documentation/Images/Pointers/MRTK_Pointers_Line.png" width="600">
+<img src="../../Documentation/Images/Pointers/MRTK_Pointers_Line.png" width="400">
 
 ##### [`ShellHandRayPointer`](xref:Microsoft.MixedReality.Toolkit.Input.ShellHandRayPointer)
 
@@ -71,7 +71,7 @@ The TouchPointer is responsible for working with Unity Touch input (i.e. touchsc
 
 The MousePointer powers a screen to world raycast for far interactions, but for mouse instead of touch.
 
-![Mouse pointer](../../Documentation/Images/Pointers/MRTK_MousePointer.jpg)
+<img src="../../Documentation/Images/Pointers/MRTK_MousePointer.png" width="400">
 
 #### Near pointers
 
@@ -87,7 +87,7 @@ Useful Poke Pointer properties:
 - *Visuals*: Game object used to render finger tip visual (the ring on finger, by default).
 - *Line*: Optional line to draw from fingertip to the active input surface.
 
-<img src="../../Documentation/Images/Pointers/MRTK_PokePointer.jpg" width="600">
+<img src="../../Documentation/Images/Pointers/MRTK_PokePointer.png" width="400">
 
 ##### [`SpherePointer`](xref:Microsoft.MixedReality.Toolkit.Input.SpherePointer)
 
@@ -98,14 +98,14 @@ Useful Sphere Pointer properties:
 - *Sphere Cast Radius*: The radius for the sphere used to query for grabbable objects.
 - *Debug Mode*: If true, draw the sphere that is used to query for grabbable objects.
 
-<img src="../../Documentation/Images/Pointers/MRTK_GrabPointer.jpg" width="600">
+<img src="../../Documentation/Images/Pointers/MRTK_GrabPointer.jpg" width="400">
 
 #### Teleport pointers
 
 - [`TeleportPointer`](xref:Microsoft.MixedReality.Toolkit.Teleport.TeleportPointer) will raise a teleport request when action is taken (i.e the teleport button is pressed) in order to move the user.
 - [`ParabolicTeleportPointer`](xref:Microsoft.MixedReality.Toolkit.Teleport.ParabolicTeleportPointer) will raise a teleport request when action is taken (i.e the teleport button is pressed) with a parabolic line raycast in order to move the user.
 
-<img src="../../Documentation/Images/Pointers/MRTK_Pointers_Parabolic.png" width="600">
+<img src="../../Documentation/Images/Pointers/MRTK_Pointers_Parabolic.png" width="400">
 
 ## Pointer interactions via code
 
