@@ -366,7 +366,7 @@ MonoBehaviour:
       Label: Press Interaction Type
       Name: PressTypeFilter
       Tooltip: Specify whether press event is for near or far interaction
-      IntValue: 0
+      IntValue: 2
       StringValue: 
       FloatValue: 0
       BoolValue: 0
