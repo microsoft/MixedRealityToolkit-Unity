@@ -825,19 +825,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             ReconcilePointers();
 
-            int pointerCount = 0;
-
             foreach (var pointerMediator in pointerMediators)
             {
                 pointerMediator.Value.UpdatePointers();
             }
 
+#if UNITY_EDITOR
+            int pointerCount = 0;
+#endif
             foreach (var pointerData in pointers)
             {
                 UpdatePointer(pointerData);
 
+#if UNITY_EDITOR
                 var pointerProfile = profile.PointerProfile;
-
                 if (pointerProfile != null && pointerProfile.DebugDrawPointingRays)
                 {
                     MixedRealityRaycaster.DebugEnabled = pointerProfile.DebugDrawPointingRays;
@@ -862,6 +863,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     Debug.DrawRay(pointerData.StartPoint, (pointerData.Details.Point - pointerData.StartPoint), rayColor);
                 }
+#endif
             }
         }
 
