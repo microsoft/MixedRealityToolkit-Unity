@@ -1247,7 +1247,7 @@ GameObject:
   - component: {fileID: 4533479808906774275}
   - component: {fileID: 4533479808906774272}
   m_Layer: 5
-  m_Name: HolographicButton
+  m_Name: RecordButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1308,6 +1308,7 @@ MonoBehaviour:
   InputActionId: 0
   IsGlobal: 0
   Dimensions: 1
+  StartDimensionIndex: 0
   CanSelect: 1
   CanDeselect: 1
   VoiceCommand: Select
@@ -1360,6 +1361,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Events: []
+  dimensionIndex: 0
 --- !u!114 &4533479808906774277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1376,14 +1378,14 @@ MonoBehaviour:
     id: 0
     description: None
     axisConstraint: 0
-  voice_select: []
-  cursor_snapToCenter: 1
-  OnLookAtStart:
+  voiceSelect: []
+  dwellTimeInSec: 0.8
+  onLookAtStart:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  WhileLookingAtTarget:
+  whileLookingAtTarget:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
@@ -1399,7 +1401,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnLookAway:
+  onLookAway:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
@@ -1415,17 +1417,17 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnDwell:
+  onDwell:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  OnSelected:
+  onSelected:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  timeToTriggerDwellInSec: 0
+  eyeCursorSnapToTargetCenter: 0
 --- !u!82 &4533479808906774274
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1557,6 +1559,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a656c6c65ef0f744197614591beb4193, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  focusEnabled: 1
+  timeToTriggerDwellInSec: 5
   startEnabledOnStartup: 0
   rootFeedbackToEnable: {fileID: 4533479808497721749}
   feedbackToChangeInSize: {fileID: 4533479807636293499}

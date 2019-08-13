@@ -71,6 +71,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             ".pdf",
         };
 
+        private const string DependencyWindow_URL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Tools/DependencyWindow.html";
+
         [MenuItem("Mixed Reality Toolkit/Utilities/Dependency Window", false, 3)]
         private static void ShowWindow()
         {
@@ -142,7 +144,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             MixedRealityInspectorUtility.RenderMixedRealityToolkitLogo();
 
-            EditorGUILayout.LabelField("Mixed Reality Toolkit Dependency Window", EditorStyles.boldLabel);
+            // Render Title
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField("Mixed Reality Toolkit Dependency Window", EditorStyles.boldLabel);
+                InspectorUIUtility.RenderDocumentationButton(DependencyWindow_URL);
+            }
+
             EditorGUILayout.LabelField("This tool displays how assets reference and depend on each other. Dependencies are calculated by parsing guids within project YAML files, code dependencies are not considered.", EditorStyles.wordWrappedLabel);
 
             EditorGUILayout.Space();
