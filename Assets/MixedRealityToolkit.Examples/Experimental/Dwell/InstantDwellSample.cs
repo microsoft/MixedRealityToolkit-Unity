@@ -19,19 +19,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
             dwellVisualImage.transform.localScale = new Vector3(value, 1, 0);
         }
 
-        public override void DwellStarted(IMixedRealityPointer pointer)
-        {
-            base.DwellStarted(pointer);
-        }
-
-        public override void DwellCanceled(IMixedRealityPointer pointer)
-        {
-            isDwelling = false;
-        }
-
         public override void DwellCompleted(IMixedRealityPointer pointer)
         {
-            isDwelling = false;
             dwellVisualImage.transform.localScale = Vector3.zero;
             base.DwellCompleted(pointer);
         }

@@ -24,14 +24,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
         [Tooltip("Delay in seconds until dwell feedback is started to be shown.")]
         [SerializeField]
         [Range(0, 5)]
-        private float dwellStartDelay = 3;
+        private float dwellStartDelay = 0.5f;
 
-        [Tooltip("Additional time (not including the timeToTriggerDwellInSec) the user needs to keep looking at the UI to trigger select on it.")]
+        [Tooltip("Additional time in seconds (not including the dwellStartDelay) the user needs to keep looking at the UI to trigger select on it.")]
         [SerializeField]
         [Range(0, 20)]
-        private float timeToCompleteDwell = 6;
+        private float timeToCompleteDwell = 4;
 
-        [Tooltip("Time in seconds when gaze can fall off the target and come back to resume an ongoing dwell.")]
+        [Tooltip("Time in seconds when gaze can fall off the target and come back to resume an ongoing dwell.Thisonly comes into play afetr DwellStarted state is reached.")]
         [SerializeField]
         [Range(0, 20)]
         private float timeToAllowDwellResume = 1;

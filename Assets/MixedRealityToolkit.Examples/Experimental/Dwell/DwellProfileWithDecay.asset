@@ -16,7 +16,6 @@ MonoBehaviour:
   dwellIntentDelay: 0
   dwellStartDelay: 1.5
   timeToCompleteDwell: 5
-  allowDwellResume: 1
-  timeToAllowDwellResume: 2
+  timeToAllowDwellResume: 5
   allowDwellDecayOnCancel: 1
   timeToAllowDwellDecay: 4
