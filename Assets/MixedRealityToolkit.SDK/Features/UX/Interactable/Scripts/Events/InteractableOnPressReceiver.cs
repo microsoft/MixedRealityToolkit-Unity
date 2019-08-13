@@ -16,9 +16,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Release", Tooltip = "The button is released")]
         public UnityEvent OnRelease = new UnityEvent();
 
-        
-
-        public int PressTypeFilter = 0;
         private enum PressType
         {
             ALL_INTERACTIONS = 0,
@@ -38,6 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
 		// this is what I'm doing right now to at least make it work and test the behavior:
         [InspectorField(Label = "Press Type Filter", Tooltip = "Filter for Near and Far Press", Type = InspectorField.FieldTypes.Int)]
+        public int PressTypeFilter = 0;
 
 
         private bool hasDown;
