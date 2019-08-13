@@ -362,11 +362,11 @@ MonoBehaviour:
         m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       Options: []
-    - Type: 1
-      Label: Press Type Filter
+    - Type: 5
+      Label: Press Interaction Type
       Name: PressTypeFilter
-      Tooltip: Filter for Near and Far Press
-      IntValue: 2
+      Tooltip: Specify whether press event is for near or far interaction
+      IntValue: 0
       StringValue: 
       FloatValue: 0
       BoolValue: 0
@@ -392,7 +392,10 @@ MonoBehaviour:
           m_Calls: []
         m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      Options: []
+      Options:
+      - Near and Far
+      - Near Only
+      - Far Only
     HideUnityEvents: 0
   dimensionIndex: 0
 --- !u!82 &316800719

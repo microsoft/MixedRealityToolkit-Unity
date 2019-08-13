@@ -7,10 +7,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 316800718, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
-      propertyPath: m_Name
-      value: PressableButtonHoloLens2
-      objectReference: {fileID: 0}
     - target: {fileID: 1944713263, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -54,6 +50,10 @@ PrefabInstance:
     - target: {fileID: 1944713263, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 316800718, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9, type: 3}
+      propertyPath: m_Name
+      value: PressableButtonHoloLens2
       objectReference: {fileID: 0}
     - target: {fileID: 9181818329810857364, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
         type: 3}
@@ -215,11 +215,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7440800412470431853, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
         type: 3}
-      propertyPath: Events.Array.data[1].Event.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2204069621426241314}
-    - target: {fileID: 7440800412470431853, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
-        type: 3}
       propertyPath: Events.Array.data[1].Event.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: PlayOneShot
       objectReference: {fileID: 0}
@@ -237,11 +232,6 @@ PrefabInstance:
         type: 3}
       propertyPath: Events.Array.data[1].Event.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.AudioClip, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 7440800412470431853, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
-        type: 3}
-      propertyPath: Events.Array.data[1].ClassName
-      value: InteractableOnPressReceiver
       objectReference: {fileID: 0}
     - target: {fileID: 7440800412470431853, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
         type: 3}
@@ -263,11 +253,6 @@ PrefabInstance:
       propertyPath: Events.Array.data[1].Settings.Array.data[0].Tooltip
       value: The button is released
       objectReference: {fileID: 0}
-    - target: {fileID: 7440800412470431853, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
-        type: 3}
-      propertyPath: Events.Array.data[1].Settings.Array.data[0].EventValue.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2204069621426241314}
     - target: {fileID: 7440800412470431853, guid: 45fd0ad89d6d17b4fbe68eb48dbe9de9,
         type: 3}
       propertyPath: Events.Array.data[1].Settings.Array.data[0].EventValue.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
