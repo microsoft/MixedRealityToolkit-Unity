@@ -980,10 +980,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         // Scale of the target at the beginning of the current manipulation
         private Vector3 initialScaleOnGrabStart;
-        
+
         // Position of the target at the beginning of the current manipulation
         private Vector3 initialPositionOnGrabStart;
-        
+
         // Point that was initially grabbed in OnPointerDown()
         private Vector3 initialGrabPoint;
 
@@ -1408,7 +1408,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 // this is the size of the corner visuals
                 var cornerbounds = GetMaxBounds(cornerVisual);
-                float maxDim = Mathf.Max(Mathf.Max(cornerbounds.size.x, cornerbounds.size.y),cornerbounds.size.z);
+                float maxDim = Mathf.Max(Mathf.Max(cornerbounds.size.x, cornerbounds.size.y), cornerbounds.size.z);
                 cornerbounds.size = maxDim * Vector3.one;
 
                 // we need to multiply by this amount to get to desired scale handle size
@@ -1448,7 +1448,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 SphereCollider sphere = afford.AddComponent<SphereCollider>();
                 sphere.center = bounds.center;
                 sphere.radius = bounds.extents.x;
-                sphere.radius += Mathf.Max( Mathf.Max(colliderPadding.x, colliderPadding.y), colliderPadding.z);
+                sphere.radius += Mathf.Max(Mathf.Max(colliderPadding.x, colliderPadding.y), colliderPadding.z);
             }
 
             // In order for the affordance to be grabbed using near interaction we need
@@ -1796,7 +1796,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Vector3[] cornersToWorld = null;
             rendererBoundsByTarget.Value.GetCornerPositions(rendererBoundsByTarget.Key, ref cornersToWorld);
             totalBoundsCorners.AddRange(cornersToWorld);
-    }
+        }
 
         private void AddColliderBoundsToTarget(KeyValuePair<Transform, Collider> colliderByTransform)
         {
@@ -2271,7 +2271,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <returns>true if potentially visible, false otherwise</returns>
         private bool IsHandleTypeVisible(HandleType type)
         {
-            return  (type == HandleType.Scale && ShowScaleHandles) ||
+            return (type == HandleType.Scale && ShowScaleHandles) ||
                 (type == HandleType.Rotation && (ShowRotationHandleForX || ShowRotationHandleForY || ShowRotationHandleForZ));
         }
 

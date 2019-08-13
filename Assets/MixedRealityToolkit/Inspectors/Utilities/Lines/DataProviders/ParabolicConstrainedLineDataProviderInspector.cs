@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         protected override void OnSceneGUI()
         {
             base.OnSceneGUI();
-        
+
             serializedObject.Update();
 
             var rotation = endPoint.FindPropertyRelative("rotation");

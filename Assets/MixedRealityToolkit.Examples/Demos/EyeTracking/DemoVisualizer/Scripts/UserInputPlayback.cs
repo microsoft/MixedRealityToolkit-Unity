@@ -146,7 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             }
         }
 
-#region Parsers
+        #region Parsers
         private Vector3 TryParseStringToVector3(string x, string y, string z, out bool isValid)
         {
             isValid = true;
@@ -180,9 +180,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
             return tval;
         }
-#endregion
+        #endregion
 
-#region Available player actions
+        #region Available player actions
         public void Load()
         {
 #if UNITY_EDITOR
@@ -338,7 +338,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             if (txt_LoadingUpdate != null)
             {
                 LoadingStatus_Show();
-                txt_LoadingUpdate.text = String.Format($"Replay status: {((100f*now)/total):0}%");
+                txt_LoadingUpdate.text = String.Format($"Replay status: {((100f * now) / total):0}%");
             }
         }
 
@@ -417,9 +417,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             }
             return null;
         }
-#endregion
+        #endregion
 
-#region Handle data replay
+        #region Handle data replay
         private bool DataIsLoaded
         {
             get { return (loggedLines.Count > 0); }
@@ -532,6 +532,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
                 replayNotStartedYet = true;
             }
         }
-#endregion
+        #endregion
     }
 }
