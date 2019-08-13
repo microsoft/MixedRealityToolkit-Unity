@@ -34,13 +34,13 @@ Pointers generally fall into one of the following categories:
 
 - **Teleport pointers**
 
-  These types of pointers plug into the teleportation system to handle moving the user to the location targetted by the pointer.
+  These types of pointers plug into the teleportation system to handle moving the user to the location targeted by the pointer.
 
 ## Pointer Mediation
 
 Because a single controller can have multiple pointers (for example, the articulated hand can have both near and far interaction pointers), there exists a component that is responsible for mediating which pointer should be active.
 
-For example, as the user’s hand approaches a pressable button, the `ShellHandRayPointer` should stop showing, and the `PokePointer` should be engaged.
+For example, as the user’s hand approaches a pressable button, the [`ShellHandRayPointer`](xref:Microsoft.MixedReality.Toolkit.Input.ShellHandRayPointer) should stop showing, and the [`PokePointer`](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer) should be engaged.
 
 This is handled by the [`DefaultPointerMediator`](xref:Microsoft.MixedReality.Toolkit.Input.DefaultPointerMediator),
 which is responsible for determining which pointers based on the state of all pointers. One of the key things this does is [disable far pointers when a near pointer is close to an object](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Pointers/DefaultPointerMediator.cs#L127)
@@ -60,7 +60,7 @@ In each `Update()` call, this will:
 
 ### Pointer configuration and lifecycle
 
-[Pointers can be configured](../Input/Pointers.md) in the *Pointers* section of the input system profile.
+[Pointers can be configured](../../Input/Pointers.md) in the *Pointers* section of the input system profile.
 
 The lifetime of a pointer is generally the following:
 
@@ -71,9 +71,3 @@ The lifetime of a pointer is generally the following:
     - Because it's possible to have multiple sources of input active at the same time (for example, two hands active present), it's also possible to have multiple objects that have focus at the same time.
 
 3. The device manager, upon discovering that a controller source was lost, will tear down the pointers associated with the lost controller.
-
-
-
-
-
-
