@@ -49,10 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public static T FindHand<T>(Handedness handedness) where T : class, IMixedRealityHand
         {
-            IMixedRealityInputSystem inputSystem = null;
-            if (!MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem)) { return null; }
-
-            foreach (var detectedController in inputSystem.DetectedControllers)
+            foreach (var detectedController in CoreServices.InputSystem.DetectedControllers)
             {
                 var hand = detectedController as T;
                 if (hand != null)
