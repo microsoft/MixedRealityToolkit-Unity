@@ -679,32 +679,31 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// </summary>
         private void ConfigureObserverVolume()
         {
-            if ((CameraCache.Main == null) ||
-                (CameraCache.Main.transform == null) ||
-                (CameraCache.Main.transform.parent == null))
+            if (MixedRealityPlayspace.Transform == null)
             {
-                Debug.LogError("The main camera is not parented. Please ensure the camera is parented before setting the observer volume.");
+                Debug.LogError("Unexpected failure acquiring MixedRealityPlayspace.");
                 return;
             }
 
-            // The observer's origin is in world space, we need it in camera space
-            // to set the volume.
-            Vector3 observerOriginCameraSpace = CameraCache.Main.transform.parent.InverseTransformPoint(ObserverOrigin);
+            // The observer's origin is in world space, we need it in the camera's parent's space
+            // to set the volume. The MixedRealityPlayspace provides that space that the camera/head moves around in.
+            Vector3 observerOriginPlayspace = MixedRealityPlayspace.InverseTransformPoint(ObserverOrigin);
+            Quaternion observerRotationPlayspace = Quaternion.Inverse(MixedRealityPlayspace.Rotation) * ObserverRotation;
 
             // Update the observer
             switch(ObserverVolumeType)
             {
                 case VolumeType.AxisAlignedCube:
-                    observer.SetVolumeAsAxisAlignedBox(observerOriginCameraSpace, ObservationExtents);
+                    observer.SetVolumeAsAxisAlignedBox(observerOriginPlayspace, ObservationExtents);
                     break;
 
                 case VolumeType.Sphere:
                     // We use the x value of the extents as the sphere radius
-                    observer.SetVolumeAsSphere(observerOriginCameraSpace, ObservationExtents.x);
+                    observer.SetVolumeAsSphere(observerOriginPlayspace, ObservationExtents.x);
                     break;
 
                 case VolumeType.UserAlignedCube:
-                    observer.SetVolumeAsOrientedBox(observerOriginCameraSpace, ObservationExtents, ObserverRotation);
+                    observer.SetVolumeAsOrientedBox(observerOriginPlayspace, ObservationExtents, observerRotationPlayspace);
                     break;
 
                 default:

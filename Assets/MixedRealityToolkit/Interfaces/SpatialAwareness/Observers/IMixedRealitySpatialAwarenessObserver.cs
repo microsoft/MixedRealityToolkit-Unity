@@ -47,8 +47,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         Vector3 ObservationExtents { get; set; }
 
         /// <summary>
-        /// Gets or sets the orientation of the volume.
+        /// Gets or sets the orientation of the volume in World Space. 
         /// </summary>
+        /// <remarks>
+        /// This is only used when <see cref="ObserverVolumeType"/> is set to <see cref="Microsoft.MixedReality.Toolkit.Utilities.VolumeType.UserAlignedCube"/>
+        /// </remarks>
         Quaternion ObserverRotation { get; set; }
 
         /// <summary>
