@@ -17,6 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     /// </summary>
     public enum MixedRealityToolkitModuleType
     {
+        None = 0,
         Core,
         Generated,
         Providers,
@@ -77,19 +78,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 searchForFoldersTask.Wait();
 
-                // Identify the unique set of imported folders instead of unique files
-                // in order to avoid duplicating per-folder work.
-                HashSet<string> importedFolders = new HashSet<string>();
                 foreach (string asset in importedAssets.Concat(movedAssets))
                 {
                     string fullAssetPath = ResolveFullAssetsPath(asset);
-                    string folder = Path.GetDirectoryName(fullAssetPath);
-                    importedFolders.Add(folder);
-                }
-
-                foreach (string folder in importedFolders)
-                {
-                    TryRegisterModuleFolder(folder);
+                    TryRegisterModuleFile(fullAssetPath);
                 }
 
                 foreach (string asset in deletedAssets.Concat(movedFromAssetPaths))
@@ -202,6 +194,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     }
                     modFolders.Add(normalizedFolder);
                 }
+            }
+        }
+
+        private static void TryRegisterModuleFile(string fullAssetPath)
+        {
+            MixedRealityToolkitModuleType moduleType = MatchModuleType(fullAssetPath);
+            if (moduleType != MixedRealityToolkitModuleType.None)
+            {
+                if (!mrtkFolders.TryGetValue(moduleType, out HashSet<string> modFolders))
+                {
+                    modFolders = new HashSet<string>();
+                    mrtkFolders.Add(moduleType, modFolders);
+                }
+
+                string folder = Path.GetDirectoryName(fullAssetPath);
+                modFolders.Add(NormalizeSeparators(folder));
             }
         }
 
@@ -384,7 +392,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         public static bool FindMatchingModule(string path, out List<MixedRealityToolkitModuleType> result)
         {
             result = null;
-            const string sentinelRegexPattern = @"^MRTK\.(?<module>[a-zA-Z]+)\.sentinel";
+            
             if (path.Length > 0)
             {
                 // Note that path can be a file or a directory
@@ -396,21 +404,36 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     {
                         result = new List<MixedRealityToolkitModuleType>();
                     }
-                    FileInfo fileInfo = new FileInfo(sentinelFile);
-                    var matches = Regex.Matches(fileInfo.Name, sentinelRegexPattern);
-                    if (matches.Count == 1)
+                    MixedRealityToolkitModuleType moduleType = MatchModuleType(sentinelFile);
+                    if (moduleType != MixedRealityToolkitModuleType.None)
                     {
-                        var moduleName = matches[0].Groups["module"].Value;
-                        MixedRealityToolkitModuleType moduleType;
-                        if (moduleNameMap.TryGetValue(moduleName, out moduleType))
-                        {
-                            result.Add(moduleType);
-                        }
+                        result.Add(moduleType);
                     }
                 }
             }
 
             return result != null;
+        }
+
+        /// <summary>
+        /// Given the full file path, returns the module it's associated with (if it is an MRTK
+        /// sentinel file).
+        /// </summary>
+        private static MixedRealityToolkitModuleType MatchModuleType(string filePath)
+        {
+            const string sentinelRegexPattern = @"^MRTK\.(?<module>[a-zA-Z]+)\.sentinel";
+            string fileName = Path.GetFileName(filePath);
+            var matches = Regex.Matches(fileName, sentinelRegexPattern);
+            if (matches.Count == 1)
+            {
+                var moduleName = matches[0].Groups["module"].Value;
+                MixedRealityToolkitModuleType moduleType;
+                if (moduleNameMap.TryGetValue(moduleName, out moduleType))
+                {
+                    return moduleType;
+                }
+            }
+            return MixedRealityToolkitModuleType.None;
         }
 
         /// <summary>
