@@ -13374,7 +13374,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.ManipulationHandlerTests.html",
-          "hash": "lQ5W0hDgJdUxzfOAn+FVuA=="
+          "hash": "95Vl2EgG2uCSxIYSaBUfVA=="
         }
       },
       "is_incremental": false,
@@ -13530,7 +13530,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.TestUtilities.html",
-          "hash": "mbnedmxF8qTgGVJonzJKLQ=="
+          "hash": "YI7/LG18/zzF0Fm1lpJi/A=="
         }
       },
       "is_incremental": false,
@@ -18521,16 +18521,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 117,
-          "skipped_file_count": 0
-        },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 1075,
+          "skipped_file_count": 0
+        },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 117,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
