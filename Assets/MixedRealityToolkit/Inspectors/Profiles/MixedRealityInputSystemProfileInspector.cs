@@ -25,6 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private SerializedProperty focusProviderType;
         private SerializedProperty focusQueryBufferSize;
         private SerializedProperty raycastProviderType;
+        private SerializedProperty focusIndividualCompoundCollider;
 
         private static bool showPointerProperties = false;
         private const string ShowInputSystem_Pointers_PreferenceKey = "ShowInputSystem_Pointers_PreferenceKey";
@@ -65,6 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             focusProviderType = serializedObject.FindProperty("focusProviderType");
             focusQueryBufferSize = serializedObject.FindProperty("focusQueryBufferSize");
             raycastProviderType = serializedObject.FindProperty("raycastProviderType");
+            focusIndividualCompoundCollider = serializedObject.FindProperty("focusIndividualCompoundCollider");
             inputActionsProfile = serializedObject.FindProperty("inputActionsProfile");
             inputActionRulesProfile = serializedObject.FindProperty("inputActionRulesProfile");
             pointerProfile = serializedObject.FindProperty("pointerProfile");
@@ -94,6 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 EditorGUILayout.PropertyField(focusProviderType);
                 EditorGUILayout.PropertyField(focusQueryBufferSize);
                 EditorGUILayout.PropertyField(raycastProviderType);
+                EditorGUILayout.PropertyField(focusIndividualCompoundCollider);
                 changed |= EditorGUI.EndChangeCheck();
 
                 EditorGUILayout.Space();
