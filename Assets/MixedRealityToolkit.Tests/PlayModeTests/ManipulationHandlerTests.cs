@@ -823,6 +823,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one * 0.2f;
             Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
+            Quaternion initialObjectRotation = testObject.transform.rotation;
             testObject.transform.position = initialObjectPosition;
 
             var manipHandler = testObject.AddComponent<ManipulationHandler>();
@@ -848,6 +849,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
                 // Test Object hasn't moved
                 TestUtilities.AssertAboutEqual(initialObjectPosition, testObject.transform.position, "Object moved while rotating head");
+                TestUtilities.AssertAboutEqual(initialObjectRotation, testObject.transform.rotation, "Object rotated while rotating head", 0.25f);
             }
 
             // Restore the input simulation profile
