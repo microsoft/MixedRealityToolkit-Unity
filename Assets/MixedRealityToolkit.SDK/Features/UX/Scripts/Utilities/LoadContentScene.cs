@@ -39,9 +39,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 			if (transitions.TransitionInProgress)
 				return;
 
-			transitions.DoSceneTransition(() => MixedRealityToolkit.SceneSystem.LoadContent(contentScene.Name, loadSceneMode));
+			transitions.DoSceneTransition(() => CoreServices.SceneSystem.LoadContent(contentScene.Name, loadSceneMode));
 #else
-            MixedRealityToolkit.SceneSystem.LoadContent(contentScene.Name, loadSceneMode);
+            CoreServices.SceneSystem.LoadContent(contentScene.Name, loadSceneMode);
             #endif
         }
 	}
