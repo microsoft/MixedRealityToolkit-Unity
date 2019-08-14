@@ -17,10 +17,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         [SerializeField]
         public UnityEvent EventToTrigger;
 
-        [SerializeField]
-        [Tooltip("Optional AudioClip which is played when the button is selected.")]
-        private AudioClip audio_OnSelect;
-
         private void Awake()
         {
             Debug.LogError(this.GetType().Name + " is deprecated");
