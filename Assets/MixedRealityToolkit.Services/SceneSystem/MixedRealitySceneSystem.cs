@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
     /// This part handles the runtime parts of the service.
     /// </summary>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SceneSystem/SceneSystemGettingStarted.html")]
-    public partial class MixedRealitySceneSystem : BaseCoreSystem, IMixedRealitySceneSystem
+    public partial class MixedRealitySceneSystem : BaseCoreSystem
     {
         /// <summary>
         /// Async load operation progress amount indicating that we're ready to activate a scene.
