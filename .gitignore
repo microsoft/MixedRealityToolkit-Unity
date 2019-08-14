@@ -77,7 +77,8 @@ doc/
 # ============================= #
 # NuGet Build Process Generated #
 # ============================= #
-/NuGet/
+/NuGet/*
+!/NuGet/BuildSource.proj
 /MRTKBuild/
 /MSBuild/
 /PackagesCopy/

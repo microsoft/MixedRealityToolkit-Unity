@@ -8,12 +8,12 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 {
-    public class TestFixture_02_InteractionDefinitionTests
+    public class InteractionDefinitionTests
     {
         #region objects
 
         [Test]
-        public void Test01_TestObjectChanged()
+        public void TestObjectChanged()
         {
             var interaction = new MixedRealityInteractionMapping(1, string.Empty, AxisType.Raw, DeviceInputType.None, MixedRealityInputAction.None);
             var testValue1 = (object)1f;
@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         }
 
         [Test]
-        public void Test02_TestObjectNoChange()
+        public void TestObjectNoChange()
         {
             var interaction = new MixedRealityInteractionMapping(1, string.Empty, AxisType.Raw, DeviceInputType.None, MixedRealityInputAction.None);
             var testValue = new object();
@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         #region bools
 
         [Test]
-        public void Test03_TestBoolChanged()
+        public void TestBoolChanged()
         {
             var interaction = new MixedRealityInteractionMapping(1, string.Empty, AxisType.Digital, DeviceInputType.None, MixedRealityInputAction.None);
             var testValue1 = true;
@@ -119,7 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         }
 
         [Test]
-        public void Test04_TestBoolNoChange()
+        public void TestBoolNoChange()
         {
             var interaction = new MixedRealityInteractionMapping(1, string.Empty, AxisType.Digital, DeviceInputType.None, MixedRealityInputAction.None);
             var testValue = true;
@@ -147,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         #region float
 
         [Test]
-        public void Test05_TestFloatChanged()
+        public void TestFloatChanged()
         {
             var interaction = new MixedRealityInteractionMapping(1, string.Empty, AxisType.SingleAxis, DeviceInputType.None, MixedRealityInputAction.None);
             var testValue1 = 1f;
@@ -178,7 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         }
 
         [Test]
-        public void Test06_TestFloatNoChange()
+        public void TestFloatNoChange()
         {
             var interaction = new MixedRealityInteractionMapping(1, string.Empty, AxisType.SingleAxis, DeviceInputType.None, MixedRealityInputAction.None);
             var testValue = 1f;
@@ -206,7 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         #region Vector2
 
         [Test]
-        public void Test07_TestVector2()
+        public void TestVector2()
         {
             bool[] invertAxisValues = { true, false };
             Vector2[] vectorValues = { new Vector2(1, 1), new Vector2(1, -1) };
@@ -217,13 +217,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
                 {
                     foreach (var value in vectorValues)
                     {
-                        Test07_TestVector2_internal(invertXAxis, invertYAxis, value);
+                        TestVector2Internal(invertXAxis, invertYAxis, value);
                     }
                 }
             }
         }
             
-        private static void Test07_TestVector2_internal(bool invertXAxis, bool invertYAxis, Vector2 vectorValue)
+        private static void TestVector2Internal(bool invertXAxis, bool invertYAxis, Vector2 vectorValue)
         {
             string msg = string.Format("invertXAxis: {0}, invertYAxis: {1}, vectorValue: {2}", invertXAxis, invertYAxis, vectorValue);
 
@@ -254,7 +254,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         #region Vector3
 
         [Test]
-        public void Test09_TestVector3Changed()
+        public void TestVector3Changed()
         {
             var interaction = new MixedRealityInteractionMapping(1, string.Empty, AxisType.ThreeDofPosition, DeviceInputType.None, MixedRealityInputAction.None);
             var testValue1 = Vector3.one;
@@ -285,7 +285,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         }
 
         [Test]
-        public void Test10_TestVector3NoChange()
+        public void TestVector3NoChange()
         {
             var interaction = new MixedRealityInteractionMapping(1, string.Empty, AxisType.ThreeDofPosition, DeviceInputType.None, MixedRealityInputAction.None);
             var testValue = Vector3.one;
@@ -313,7 +313,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         #region Quaternion
 
         [Test]
-        public void Test11_TestQuaternionChanged()
+        public void TestQuaternionChanged()
         {
             var interaction = new MixedRealityInteractionMapping(1, string.Empty, AxisType.ThreeDofRotation, DeviceInputType.None, MixedRealityInputAction.None);
             var testValue1 = Quaternion.Euler(45f, 45f, 45f);
@@ -344,7 +344,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         }
 
         [Test]
-        public void Test12_TestQuaternionNoChange()
+        public void TestQuaternionNoChange()
         {
             var interaction = new MixedRealityInteractionMapping(1, string.Empty, AxisType.ThreeDofRotation, DeviceInputType.None, MixedRealityInputAction.None);
             var testValue = Quaternion.Euler(45f, 45f, 45f);
@@ -372,7 +372,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         #region MixedRealityPose
 
         [Test]
-        public void Test13_TestMixedRealityPoseChanged()
+        public void TestMixedRealityPoseChanged()
         {
             var interaction = new MixedRealityInteractionMapping(1, string.Empty, AxisType.SixDof, DeviceInputType.None, MixedRealityInputAction.None);
             var testValue1 = new MixedRealityPose(Vector3.up, Quaternion.identity);
@@ -403,7 +403,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         }
 
         [Test]
-        public void Test14_TesMixedRealityPoseNoChange()
+        public void TesMixedRealityPoseNoChange()
         {
             var interaction = new MixedRealityInteractionMapping(1, string.Empty, AxisType.SixDof, DeviceInputType.None, MixedRealityInputAction.None);
             var testValue = new MixedRealityPose(Vector3.up, Quaternion.identity);
@@ -431,7 +431,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         #region Interaction Array Tests
 
         [Test]
-        public void Test15_InteractionArrayObject()
+        public void InteractionArrayObject()
         {
             var interactions = new[]
             {
@@ -471,7 +471,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         }
 
         [Test]
-        public void Test16_InteractionArrayBool()
+        public void InteractionArrayBool()
         {
             var interactions = new[]
             {
@@ -511,7 +511,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         }
 
         [Test]
-        public void Test17_InteractionArrayFloat()
+        public void InteractionArrayFloat()
         {
             var interactions = new[]
             {
@@ -549,7 +549,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         }
 
         [Test]
-        public void Test18_InteractionArrayVector2()
+        public void InteractionArrayVector2()
         {
             var interactions = new[]
             {
@@ -587,7 +587,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         }
 
         [Test]
-        public void Test19_InteractionArrayVector3()
+        public void InteractionArrayVector3()
         {
             var interactions = new[]
             {
@@ -625,7 +625,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         }
 
         [Test]
-        public void Test20_InteractionArrayQuaternion()
+        public void InteractionArrayQuaternion()
         {
             var interactions = new[]
             {
@@ -663,7 +663,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         }
 
         [Test]
-        public void Test21_InteractionArrayMixedRealityPose()
+        public void InteractionArrayMixedRealityPose()
         {
             var interactions = new[]
             {
