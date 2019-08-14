@@ -74,7 +74,7 @@ MonoBehaviour:
     Tag: Untagged
     Asset: {fileID: 102900000, guid: b2d06bb8d7f107d4783a56c796c5c120, type: 3}
   - Name: HandBasedMenuExample
-    Path: Assets/MixedRealityToolkit.Examples/Experimental/HandTracking/Scenes/HandBasedMenuExample.unity
+    Path: Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/HandBasedMenuExample.unity
     Included: 1
     BuildIndex: 8
     Tag: Untagged

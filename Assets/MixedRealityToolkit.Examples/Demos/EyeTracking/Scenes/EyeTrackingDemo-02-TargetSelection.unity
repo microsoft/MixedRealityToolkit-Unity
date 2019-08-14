@@ -178,6 +178,23 @@ PrefabInstance:
         say \"Explode\" \n\nIt is <color=#FCFF94>fast</color>\nIt is <color=#FCFF94>effortless</color>\nIt
         is <color=#FCFF94>eye-supported target selection</color>\n"
       objectReference: {fileID: 0}
+    - target: {fileID: 114090657554267990, guid: 427730042d0a7ac41b1d81947f081754,
+        type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: e869342c56e54acf989b2422b4b80dcc,
+        type: 3}
+    - target: {fileID: 114036592940955730, guid: 427730042d0a7ac41b1d81947f081754,
+        type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: e48b920555144c6da3ee2ab03f0fda88,
+        type: 3}
+    - target: {fileID: 114036592940955730, guid: 427730042d0a7ac41b1d81947f081754,
+        type: 3}
+      propertyPath: m_Text
+      value: Eye Tracking
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 427730042d0a7ac41b1d81947f081754, type: 3}
 --- !u!4 &79442900 stripped
@@ -776,6 +793,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8156331670825583612, guid: 56babc71502e6324689c25fc80545fd8,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1273885567370549374, guid: 56babc71502e6324689c25fc80545fd8,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5655218824098574871, guid: 56babc71502e6324689c25fc80545fd8,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1724824858966379360, guid: 56babc71502e6324689c25fc80545fd8,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56babc71502e6324689c25fc80545fd8, type: 3}
 --- !u!114 &1308668584 stripped
@@ -886,7 +923,6 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_textAlignment: 257
-  m_isAlignmentEnumConverted: 1
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -913,6 +949,7 @@ MonoBehaviour:
   m_verticalMapping: 0
   m_uvLineOffset: 0
   m_geometrySortingOrder: 0
+  m_VertexBufferAutoSizeReduction: 1
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
@@ -927,12 +964,9 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 1
-  m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 1432764269}
   m_subTextObjects:
@@ -1102,7 +1136,6 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_textAlignment: 257
-  m_isAlignmentEnumConverted: 1
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -1129,6 +1162,7 @@ MonoBehaviour:
   m_verticalMapping: 0
   m_uvLineOffset: 0
   m_geometrySortingOrder: 0
+  m_VertexBufferAutoSizeReduction: 1
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
@@ -1143,12 +1177,9 @@ MonoBehaviour:
     lineCount: 6
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 1
-  m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 1760202123}
   m_subTextObjects:
