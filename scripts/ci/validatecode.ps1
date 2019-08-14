@@ -16,6 +16,7 @@
     .\validatecode.ps1 -Directory c:\path\to\MRTK\Assets
 #>
 param(
+    [Parameter(Mandatory=$true)]
     [string]$Directory
 )
 
@@ -35,10 +36,6 @@ function CheckBooLang(
         return $true;
     }
     return $false
-}
-
-if (-not $Directory) {
-    throw "-Directory is a required flag"
 }
 
 function CheckFile(
