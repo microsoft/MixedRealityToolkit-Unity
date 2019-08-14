@@ -7,10 +7,10 @@ using NUnit.Framework;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 {
-    public class TestFixture_01_UnityInputManagerHelperTests
+    public class UnityInputManagerHelperTests
     {
         [Test]
-        public void Test01_TestAddCustomMappings()
+        public void TestAddCustomMappings()
         {
             InputMappingAxisUtility.CheckUnityInputManagerMappings(ControllerMappingLibrary.UnityInputManagerAxes);
 
@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         }
 
         [Test]
-        public void Test02_TestRemoveCustomMappings()
+        public void TestRemoveCustomMappings()
         {
             InputMappingAxisUtility.RemoveMappings(ControllerMappingLibrary.UnityInputManagerAxes);
 

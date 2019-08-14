@@ -8,7 +8,7 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 {
-    public class TestFixture_03_InputSystemTests
+    public class InputSystemTests
     {
         [TearDown]
         public void TearDown()
@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         }
 
         [Test]
-        public void Test01_CreateMixedRealityInputSystem()
+        public void CreateMixedRealityInputSystem()
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         }
 
         [Test]
-        public void Test02_TestGetMixedRealityInputSystem()
+        public void TestGetMixedRealityInputSystem()
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
 
@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         }
 
         [Test]
-        public void Test03_TestMixedRealityInputSystemDoesNotExist()
+        public void TestMixedRealityInputSystemDoesNotExist()
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
@@ -71,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         }
 
         [Test]
-        public void Test04_TestMixedRealityInputSystemExists()
+        public void TestMixedRealityInputSystemExists()
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
 
@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         }
 
         [Test]
-        public void Test05_TestMixedRealityInputSystemDataProviders()
+        public void TestMixedRealityInputSystemDataProviders()
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
 
