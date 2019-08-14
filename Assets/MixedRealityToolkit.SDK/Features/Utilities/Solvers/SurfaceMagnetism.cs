@@ -549,7 +549,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             Vector3[] normals;
             bool[] hits;
 
-            if (MixedRealityRaycaster.RaycastBoxPhysicsStep(rayStep, extents, transform.position, targetMatrix, maxRaycastDistance, magneticSurfaces, boxRaysPerEdge, orthographicBoxCast, out positions, out normals, false, out hits))
+            if (MixedRealityRaycaster.RaycastBoxPhysicsStep(rayStep, extents, transform.position, targetMatrix, maxRaycastDistance, magneticSurfaces, boxRaysPerEdge, orthographicBoxCast, false, out positions, out normals, out hits))
             {
                 Plane plane;
                 float distance;

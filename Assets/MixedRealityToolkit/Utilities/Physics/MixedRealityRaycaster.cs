@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// Box raycasts each physics <see cref="Microsoft.MixedReality.Toolkit.Physics.RayStep"/>.
         /// </summary>
         /// <returns>Whether or not the raycast hit something.</returns>
-        public static bool RaycastBoxPhysicsStep(RayStep step, Vector3 extents, Vector3 targetPosition, Matrix4x4 matrix, float maxDistance, LayerMask[] prioritizedLayerMasks, int raysPerEdge, bool isOrthographic, out Vector3[] points, out Vector3[] normals, bool focusIndividualCompoundCollider,out bool[] hits)
+        public static bool RaycastBoxPhysicsStep(RayStep step, Vector3 extents, Vector3 targetPosition, Matrix4x4 matrix, float maxDistance, LayerMask[] prioritizedLayerMasks, int raysPerEdge, bool isOrthographic, bool focusIndividualCompoundCollider, out Vector3[] points, out Vector3[] normals, out bool[] hits)
         {
             if (Application.isEditor && DebugEnabled)
             {
@@ -163,11 +163,8 @@ namespace Microsoft.MixedReality.Toolkit.Physics
                 for (int hitIdx = 0; hitIdx < hits.Length; hitIdx++)
                 {
                     RaycastHit hit = hits[hitIdx];
-                    GameObject targetGameObject = hit.transform.gameObject;
-                    if (focusIndividualCompoundCollider)
-                    {
-                        targetGameObject = hit.collider.gameObject;
-                    }
+                    GameObject targetGameObject = focusIndividualCompoundCollider ? hit.collider.gameObject : hit.transform.gameObject;
+
                     if (targetGameObject.layer.IsInLayerMask(priorityLayers[layerMaskIdx]) &&
                         (minHit == null || hit.distance < minHit.Value.distance))
                     {
