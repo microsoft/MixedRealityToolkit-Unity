@@ -295,11 +295,12 @@ was selected.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_InteractableReceiverListInspector_RenderEventSettings_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableReceiverListInspector.RenderEventSettings*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableReceiverListInspector_RenderEventSettings_SerializedProperty_System_Int32_Microsoft_MixedReality_Toolkit_UI_InteractableTypesContainer_InspectorUIUtility_MultiListButtonEvent_InspectorUIUtility_ListButtonEvent_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableReceiverListInspector.RenderEventSettings(SerializedProperty,System.Int32,Microsoft.MixedReality.Toolkit.UI.InteractableTypesContainer,InspectorUIUtility.MultiListButtonEvent,InspectorUIUtility.ListButtonEvent)">RenderEventSettings(SerializedProperty, Int32, InteractableTypesContainer, InspectorUIUtility.MultiListButtonEvent, InspectorUIUtility.ListButtonEvent)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Render event properties for the given event item. If item has been removed, returns true. False otherwise</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void RenderEventSettings(SerializedProperty eventItem, int index, InteractableTypesContainer options, InspectorUIUtility.MultiListButtonEvent changeEvent, InspectorUIUtility.ListButtonEvent removeEvent)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool RenderEventSettings(SerializedProperty eventItem, int index, InteractableTypesContainer options, InspectorUIUtility.MultiListButtonEvent changeEvent, InspectorUIUtility.ListButtonEvent removeEvent)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -314,27 +315,48 @@ was selected.</p>
       <tr>
         <td><span class="xref">SerializedProperty</span></td>
         <td><span class="parametername">eventItem</span></td>
-        <td></td>
+        <td><p>serialized property of the event item to render properties from</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><span class="parametername">index</span></td>
-        <td></td>
+        <td><p>index of event item in higher order list</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableTypesContainer.html">InteractableTypesContainer</a></td>
         <td><span class="parametername">options</span></td>
-        <td></td>
+        <td><p>Event type options</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">InspectorUIUtility.MultiListButtonEvent</span></td>
         <td><span class="parametername">changeEvent</span></td>
-        <td></td>
+        <td><p>Function to call if event properties have changed</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">InspectorUIUtility.ListButtonEvent</span></td>
         <td><span class="parametername">removeEvent</span></td>
-        <td></td>
+        <td><p>Function to call if event requested to be removed</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>If item has been removed, returns true. False otherwise</p>
+</td>
       </tr>
     </tbody>
   </table>
