@@ -123,11 +123,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         public void ShowKeyboard()
         {
-            if (state == KeyboardState.Showing)
-            {
-                Debug.Log($"MixedRealityKeyboard.ShowKeyboard called but keyboard already visible");
-                return;
-            }
+            // 2019/08/14: We show the keyboard even when the keyboard is already visible because on HoloLens 1
+            // and WMR the events OnKeyboardShowing and OnKeyboardHiding do not fire
+            //if (state == KeyboardState.Showing)
+            //{
+            //    Debug.Log($"MixedRealityKeyboard.ShowKeyboard called but keyboard already visible.");
+            //    return;
+            //}
 
             State = KeyboardState.Showing;
 
