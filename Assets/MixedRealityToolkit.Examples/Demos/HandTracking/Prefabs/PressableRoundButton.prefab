@@ -683,8 +683,8 @@ MonoBehaviour:
           Culture=neutral, PublicKeyToken=null
       Options: []
     - Type: 5
-      Label: Press Interaction Type
-      Name: PressTypeFilter
+      Label: Interaction Filter
+      Name: InteractionFilter
       Tooltip: Specify whether press event is for near or far interaction
       IntValue: 2
       StringValue: 
