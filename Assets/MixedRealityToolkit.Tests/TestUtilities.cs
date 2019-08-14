@@ -21,9 +21,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public static class TestUtilities
     {
-        const float vector3DistanceEpsilon = 0.01f;
-        const float quaternionAngleEpsilon = 0.01f;
-
         const string primaryTestSceneTemporarySavePath = "Assets/__temp_primary_test_scene.unity";
         const string additiveTestSceneTemporarySavePath = "Assets/__temp_additive_test_scene_#.unity";
         public static Scene primaryTestScene;
@@ -192,28 +189,28 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 #endif
         }
 
-        public static void AssertAboutEqual(Vector3 actual, Vector3 expected, string message)
+        public static void AssertAboutEqual(Vector3 actual, Vector3 expected, string message, float tolerance = 0.01f)
         {
             var dist = (actual - expected).magnitude;
-            Debug.Assert(dist < vector3DistanceEpsilon, $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}");
+            Debug.Assert(dist < tolerance, $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}");
         }
 
-        public static void AssertAboutEqual(Quaternion actual, Quaternion expected, string message)
+        public static void AssertAboutEqual(Quaternion actual, Quaternion expected, string message, float tolerance = 0.01f)
         {
             var angle = Quaternion.Angle(actual, expected);
-            Debug.Assert(angle < quaternionAngleEpsilon, $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}");
+            Debug.Assert(angle < tolerance, $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}");
         }
 
-        public static void AssertNotAboutEqual(Vector3 val1, Vector3 val2, string message)
+        public static void AssertNotAboutEqual(Vector3 val1, Vector3 val2, string message, float tolerance = 0.01f)
         {
             var dist = (val1 - val2).magnitude;
-            Debug.Assert(dist >= vector3DistanceEpsilon, $"{message}, val1 {val1.ToString("0.000")} almost equals val2 {val2.ToString("0.000")}");
+            Debug.Assert(dist >= tolerance, $"{message}, val1 {val1.ToString("0.000")} almost equals val2 {val2.ToString("0.000")}");
         }
 
-        public static void AssertNotAboutEqual(Quaternion val1, Quaternion val2, string message)
+        public static void AssertNotAboutEqual(Quaternion val1, Quaternion val2, string message, float tolerance = 0.01f)
         {
             var angle = Quaternion.Angle(val1, val2);
-            Debug.Assert(angle >= quaternionAngleEpsilon, $"{message}, val1 {val1.ToString("0.000")} almost equals val2 {val2.ToString("0.000")}");
+            Debug.Assert(angle >= tolerance, $"{message}, val1 {val1.ToString("0.000")} almost equals val2 {val2.ToString("0.000")}");
         }
     }
 }
