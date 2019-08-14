@@ -124,14 +124,6 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static class MixedRealityToolkitFiles</code></pre>
   </div>
-  <h5 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitFiles_remarks"><strong>Remarks</strong></h5>
-  <div class="markdown level0 remarks"><p>This class works by looking for sentinel files (following the pattern MRTK.*.sentinel,
-for example, MRTK.Core.sentinel) in order to identify where the MRTK is located
-within the project.</p>
-<p>If the MRTK is being consumed as code that sits within the Assets folder, the &quot;root&quot;
-MRTK folder must be at most three directories deep - this search code will only reason
-over MRTK folders that sit in a depth range [0, 3].</p>
-</div>
   <h3 id="fields">Fields
   </h3>
   
@@ -221,14 +213,12 @@ over MRTK folders that sit in a depth range [0, 3].</p>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitFiles_FindMatchingModule_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitFiles.FindMatchingModule*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitFiles_FindMatchingModule_System_String_List_Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitModuleType___" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitFiles.FindMatchingModule(System.String,List{Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitModuleType}@)">FindMatchingModule(String, out List&lt;MixedRealityToolkitModuleType&gt;)</h4>
-  <div class="markdown level1 summary"><p>Try to find the matching modules associated with path by looking for the presence of
-MRTK sentinel files.</p>
-</div>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitFiles_FindMatchingModule_System_String_Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitModuleType__" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitFiles.FindMatchingModule(System.String,Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitModuleType@)">FindMatchingModule(String, out MixedRealityToolkitModuleType)</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool FindMatchingModule(string path, out List&lt;MixedRealityToolkitModuleType&gt; result)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool FindMatchingModule(string path, out MixedRealityToolkitModuleType result)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -246,7 +236,7 @@ MRTK sentinel files.</p>
         <td></td>
       </tr>
       <tr>
-        <td><span class="xref">List</span>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitModuleType.html">MixedRealityToolkitModuleType</a>&gt;</td>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitModuleType.html">MixedRealityToolkitModuleType</a></td>
         <td><span class="parametername">result</span></td>
         <td></td>
       </tr>
@@ -267,10 +257,6 @@ MRTK sentinel files.</p>
       </tr>
     </tbody>
   </table>
-  <h5 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitFiles_FindMatchingModule_System_String_List_Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitModuleType____remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>In certain consumption situations, the content can be placed within the same folder,
-meaning it's possible for multiple sentinel values to exist within the same folder.</p>
-</div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitFiles_GetAssetDatabasePath_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitFiles.GetAssetDatabasePath*"></a>
