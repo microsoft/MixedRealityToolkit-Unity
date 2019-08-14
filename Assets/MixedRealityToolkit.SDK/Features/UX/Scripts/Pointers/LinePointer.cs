@@ -140,10 +140,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.OnPostSceneQuery();
 
-            LineBase.enabled = IsInteractionEnabled;
-            BaseCursor?.SetVisibility(IsInteractionEnabled);
+            bool isEnabled = IsInteractionEnabled;
+            LineBase.enabled = isEnabled;
+            BaseCursor?.SetVisibility(isEnabled);
 
-            if (!LineBase.enabled) 
+            if (!isEnabled) 
             {
                 return;
             }

@@ -10,11 +10,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
     /// <summary>
     /// Class providing the default implementation of the <see cref="IMixedRealitySpatialAwarenessSystem"/> interface.
     /// </summary>
-    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
-    public class MixedRealitySpatialAwarenessSystem : 
-        BaseCoreSystem, 
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
+    public class MixedRealitySpatialAwarenessSystem :
+        BaseDataProviderAccessCoreSystem, 
         IMixedRealitySpatialAwarenessSystem, 
-        IMixedRealityDataProviderAccess, 
         IMixedRealityCapabilityCheck
     {
         public MixedRealitySpatialAwarenessSystem(
@@ -32,9 +31,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <inheritdoc />
         public bool CheckCapability(MixedRealityCapability capability)
         {
-            for (int i = 0; i < observers.Count; i++)
+            foreach(var observer in GetDataProviders<IMixedRealitySpatialAwarenessObserver>())
             {
-                IMixedRealityCapabilityCheck capabilityChecker = observers[i] as IMixedRealityCapabilityCheck;
+                IMixedRealityCapabilityCheck capabilityChecker = observer as IMixedRealityCapabilityCheck;
 
                 // If one of the running data providers supports the requested capability, 
                 // the application has the needed support to leverage the desired functionality.
@@ -81,28 +80,18 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         {
             base.Disable();
 
-            if (observers.Count > 0)
+            foreach (var provider in GetDataProviders<IMixedRealitySpatialAwarenessObserver>())
             {
-                // Unregister the spatial observers
-                for (int i = 0; i < observers.Count; i++)
-                {
-                    if (observers[i] != null)
-                    {
-                        Registrar.UnregisterDataProvider<IMixedRealitySpatialAwarenessObserver>(observers[i]);
-                    }
-                }
+                UnregisterDataProvider(provider);
             }
-            observers.Clear();
         }
 
         /// <inheritdoc/>
         public override void Enable()
         {
-            base.Enable();
-
             MixedRealitySpatialAwarenessSystemProfile profile = ConfigurationProfile as MixedRealitySpatialAwarenessSystemProfile;
 
-            if ((observers.Count == 0) && (profile != null))
+            if ((GetDataProviders<IMixedRealitySpatialAwarenessObserver>().Count == 0) && (profile != null))
             {
                 // Register the spatial observers.
                 for (int i = 0; i < profile.ObserverConfigurations.Length; i++)
@@ -110,20 +99,21 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
                     MixedRealitySpatialObserverConfiguration configuration = profile.ObserverConfigurations[i];
                     object[] args = { Registrar, this, configuration.ComponentName, configuration.Priority, configuration.ObserverProfile };
 
-                    if (Registrar.RegisterDataProvider<IMixedRealitySpatialAwarenessObserver>(
+                    RegisterDataProvider<IMixedRealitySpatialAwarenessObserver>(
                         configuration.ComponentType.Type,
                         configuration.RuntimePlatform,
-                        args))
-                    {
-                        observers.Add(Registrar.GetDataProvider<IMixedRealitySpatialAwarenessObserver>(configuration.ComponentName));
-                    }
+                        args);
                 }
             }
+
+            // Ensure data providers are enabled (performed by the base class)
+            base.Enable();
         }
 
         /// <inheritdoc/>
         public override void Reset()
         {
+            base.Reset();
             Disable();
             Initialize();
             Enable();
@@ -157,16 +147,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
                     spatialAwarenessObjectParent = null;
                 }
             }
+
+            base.Destroy();
         }
 
         #endregion IMixedRealityToolkitService Implementation
 
         #region IMixedRealitySpatialAwarenessSystem Implementation
-
-        /// <summary>
-        /// The collection of registered spatial awareness observers.
-        /// </summary>
-        private List<IMixedRealitySpatialAwarenessObserver> observers = new List<IMixedRealitySpatialAwarenessObserver>();
 
         /// <summary>
         /// The parent object, in the hierarchy, under which all observed game objects will be placed.
@@ -233,32 +220,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         }
 
         /// <inheritdoc />
-        public IReadOnlyList<IMixedRealityDataProvider> GetDataProviders()
-        {
-            return new List<IMixedRealitySpatialAwarenessObserver>(observers) as IReadOnlyList<IMixedRealitySpatialAwarenessObserver>;
-        }
-
-        /// <inheritdoc />
         public IReadOnlyList<T> GetObservers<T>() where T : IMixedRealitySpatialAwarenessObserver
         {
             return GetDataProviders<T>();
-        }
-
-
-        /// <inheritdoc />
-        public IReadOnlyList<T> GetDataProviders<T>() where T : IMixedRealityDataProvider
-        {
-            List<T> selected = new List<T>();
-
-            for (int i = 0; i < observers.Count; i++)
-            {
-                if (observers[i] is T)
-                {
-                    selected.Add((T)observers[i]);
-                }
-            }
-
-            return selected;
         }
 
         /// <inheritdoc />
@@ -268,59 +232,54 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         }
 
         /// <inheritdoc />
-        public IMixedRealityDataProvider GetDataProvider(string name)
-        {
-            for (int i = 0; i < observers.Count; i++)
-            {
-                if (observers[i].Name == name)
-                {
-                    return observers[i];
-                }
-            }
-
-            return null;
-        }
-
-        /// <inheritdoc />
         public T GetObserver<T>(string name = null) where T : IMixedRealitySpatialAwarenessObserver
         {
             return GetDataProvider<T>(name);
         }
 
+        #region IMixedRealityDataProviderAccess Implementation
+
         /// <inheritdoc />
-        public T GetDataProvider<T>(string name = null) where T : IMixedRealityDataProvider
+        public override IReadOnlyList<T> GetDataProviders<T>()
         {
-            for (int i = 0; i < observers.Count; i++)
+            if (!typeof(IMixedRealitySpatialAwarenessObserver).IsAssignableFrom(typeof(T)))
             {
-                if (observers[i] is T)
-                {
-                    if ((name == null) || (observers[i].Name == name))
-                    {
-                        return (T)observers[i];
-                    }
-                }
+                return null;
             }
 
-            return default(T);
+            return base.GetDataProviders<T>();
         }
+
+        /// <inheritdoc />
+        public override T GetDataProvider<T>(string name = null)
+        {
+            if (!typeof(IMixedRealitySpatialAwarenessObserver).IsAssignableFrom(typeof(T)))
+            {
+                return default(T);
+            }
+
+            return base.GetDataProvider<T>(name);
+        }
+
+        #endregion IMixedRealityDataProviderAccess Implementation
 
         /// <inheritdoc />
         public void ResumeObservers()
         {
-            for (int i = 0; i < observers.Count; i++)
+            foreach (var observer in GetDataProviders<IMixedRealitySpatialAwarenessObserver>())
             {
-                observers[i].Resume();
+                observer.Resume();
             }
         }
 
         /// <inheritdoc />
         public void ResumeObservers<T>() where T : IMixedRealitySpatialAwarenessObserver
         {
-            for (int i = 0; i < observers.Count; i++)
+            foreach (var observer in GetDataProviders<IMixedRealitySpatialAwarenessObserver>())
             {
-                if (observers[i] is T)
+                if (observer is T)
                 {
-                    observers[i].Resume();
+                    observer.Resume();
                 }
             }
         }
@@ -328,11 +287,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <inheritdoc />
         public void ResumeObserver<T>(string name) where T : IMixedRealitySpatialAwarenessObserver
         {
-            for (int i = 0; i < observers.Count; i++)
+            foreach (var observer in GetDataProviders<IMixedRealitySpatialAwarenessObserver>())
             {
-                if ((observers[i] is T) && (observers[i].Name == name))
+                if (observer is T && observer.Name == name)
                 {
-                    observers[i].Resume();
+                    observer.Resume();
                     break;
                 }
             }
@@ -341,20 +300,20 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <inheritdoc />
         public void SuspendObservers()
         {
-            for (int i = 0; i < observers.Count; i++)
+            foreach (var observer in GetDataProviders<IMixedRealitySpatialAwarenessObserver>())
             {
-                observers[i].Suspend();
+                observer.Suspend();
             }
         }
 
         /// <inheritdoc />
         public void SuspendObservers<T>() where T : IMixedRealitySpatialAwarenessObserver
         {
-            for (int i = 0; i < observers.Count; i++)
+            foreach (var observer in GetDataProviders<IMixedRealitySpatialAwarenessObserver>())
             {
-                if (observers[i] is T)
+                if (observer is T)
                 {
-                    observers[i].Suspend();
+                    observer.Suspend();
                 }
             }
         }
@@ -362,11 +321,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <inheritdoc />
         public void SuspendObserver<T>(string name) where T : IMixedRealitySpatialAwarenessObserver
         {
-            for (int i = 0; i < observers.Count; i++)
+            foreach (var observer in GetDataProviders<IMixedRealitySpatialAwarenessObserver>())
             {
-                if ((observers[i] is T) && (observers[i].Name == name))
+                if (observer is T && observer.Name == name)
                 {
-                    observers[i].Suspend();
+                    observer.Suspend();
                     break;
                 }
             }
@@ -375,9 +334,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <inheritdoc />
         public void ClearObservations()
         {
-            for (int i = 0; i < observers.Count; i++)
+            foreach (var observer in GetDataProviders<IMixedRealitySpatialAwarenessObserver>())
             {
-                observers[i].ClearObservations();
+                observer.ClearObservations();
             }
         }
 

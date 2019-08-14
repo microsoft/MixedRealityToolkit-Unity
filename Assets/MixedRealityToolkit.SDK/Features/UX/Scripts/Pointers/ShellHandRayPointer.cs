@@ -47,7 +47,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return;
             }
 
-
             BaseMixedRealityLineRenderer lineToShow = lineRendererNoTarget;
 
             // Make the line solid when pressed

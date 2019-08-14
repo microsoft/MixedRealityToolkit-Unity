@@ -9,9 +9,30 @@ Between the RC2 and GA releases of the Microsoft Mixed Reality Toolkit, changes 
 
 Since the release of RC2, there have been a number of API changes including some that may break existing projects. The following sections describe the changes that have occurred between the RC2 and GA releases.
 
+- [MixedRealityToolkit](#mixedrealitytoolkit)
 - [Event System](#event-system)
 - [Spatial Awareness](#spatial-awareness)
+- [Solvers](#solvers)
 - [Clipping Sphere](#clipping-sphere)
+
+### MixedRealityToolkit
+
+The following public properties on the MixedRealityToolkit object have been deprecated.
+
+- `RegisteredMixedRealityServices` no longer contains the collection of registered extensions services and data providers.
+
+To access extension services, use [`MixedRealityServiceRegistry.TryGetService<T>`]. To access data providers, cast the service instance to [`IMixedRealityDataProviderAccess`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess) and use `GetDataProvider<T>`.
+
+Use [`MixedRealityServiceRegistry`](xref:Microsoft.MixedReality.Toolkit.MixedRealityServiceRegistry) or [`CoreServices`](xref:Microsoft.MixedReality.Toolkit.CoreServices) instead for the following deprecated properties
+
+- `ActiveSystems`
+- `InputSystem`
+- `BoundarySystem`
+- `CameraSystem`
+- `SpatialAwarenessSystem`
+- `TeleportSystem`
+- `DiagnosticsSystem`
+- `SceneSystem`
 
 ### Event System
 
@@ -155,6 +176,12 @@ Some solver components and the SolverHandler manager class has changed to fix va
 - `MaxDistance` public property deprecated and has been renamed to `MaxRaycastDistance`
 - `CloseDistance` public property deprecated and has been renamed to `ClosestDistance`
 - Default value for `RaycastDirectionMode` is now `TrackedTargetForward` which raycasts in the direction of the tracked target transform forward
+- `OrientationMode` enum values, `Vertical` and `Full`, have been renamed to `TrackedTarget` and `SurfaceNormal` respectively
+- `KeepOrientationVertical` public property has been added to control whether orientation of associated GameObject remains vertical
+
+### Buttons
+
+- [`PressableButton`](xref:Microsoft.MixedReality.Toolkit.UI.PressableButton) now has `DistanceSpaceMode` property set to `Local` as default. This allows buttons to be scaled while still be pressable
 
 ### Clipping Sphere
 
@@ -175,7 +202,7 @@ The ClippingSphere's Radius property is now implicitly calculated based on the t
 
 ### ReadOnlyAttribute
 
-- The `Microsoft.MixedReality.Toolkit` namespace has been added to `ReadOnlyAttribute`, `BeginReadOnlyGroupAttribute`, and `EndReadOnlyGroupAttribute`.
+The `Microsoft.MixedReality.Toolkit` namespace has been added to `ReadOnlyAttribute`, `BeginReadOnlyGroupAttribute`, and `EndReadOnlyGroupAttribute`.
 
 ### PointerClickHandler
 
@@ -183,10 +210,15 @@ The `PointerClickHandler` class has been deprecated. The `PointerHandler` should
 
 ### HoloLens clicker support
 
-- The HoloLens clicker's controller mappings have changed from being an unhanded [`WindowsMixedRealityController`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityController) to being an unhanded [`WindowsMixedRealityGGVHand`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityGGVHand). To account for this, an automatic updater will run the first time you open your ControllerMapping profile. Please open any custom profiles at least once after upgrading to GA in order to trigger this one-time migration step.
+The HoloLens clicker's controller mappings have changed from being an unhanded [`WindowsMixedRealityController`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityController) to being an unhanded [`WindowsMixedRealityGGVHand`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityGGVHand). To account for this, an automatic updater will run the first time you open your ControllerMapping profile. Please open any custom profiles at least once after upgrading to GA in order to trigger this one-time migration step.
+
+### InteractableHighlight
+
+The `InteractableHighlight` class has been deprecated. The `InteractableOnFocus` class and `FocusInteractableStates` asset should be used instead. To create a new `Theme` asset for the `InteractableOnFocus`, right click in the project window and select *Create* > *Mixed Reality Toolkit* > *Interactable* > *Theme*.
 
 ### HandInteractionPanZoom
-- `HandInteractionPanZoom` has been moved to the UI namespace as it was not an input component. `HandPanEventData` has also been moved into this namespace, and simplified to correspond with other UI event data. 
+
+`HandInteractionPanZoom` has been moved to the UI namespace as it was not an input component. `HandPanEventData` has also been moved into this namespace, and simplified to correspond with other UI event data.
 
 ## Assembly name changes
 
