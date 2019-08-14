@@ -190,7 +190,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public virtual Vector3 Position => sourcePosition;
 
         /// <inheritdoc />
-        public virtual Quaternion Rotation => Quaternion.LookRotation(gazeProvider.GazePointer.Rays[0].Direction);
+        public virtual Quaternion Rotation
+        {
+            get
+            {
+                Vector3 look = Position - CameraCache.Main.transform.position;
+                look.y = 0;
+                return Quaternion.LookRotation(look);
+            }
+        }
 
         #endregion
 
