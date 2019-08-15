@@ -386,8 +386,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return false;
             }
 
-            List<string> keys = new List<string>();
-            keys.Add("(No Selection)");
+            List<string> keys = new List<string>
+            {
+                "(No Selection)"
+            };
 
             for (var i = 0; i < commands.Length; i++)
             {
