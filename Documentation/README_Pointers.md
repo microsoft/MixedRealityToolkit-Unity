@@ -66,7 +66,7 @@ Other parameters:
 * *line*: Optional line to draw from fingertip to the active input surface.
 
 **Mouse pointer**
-Mouse pointer is used for interacting with the mouse. This pointer will only be used if the active input is a mouse. By default, the MRTK profile does not provide a mouse as an input provider, as mouse input is instead used to simulate hand input. You may add a mouse in your MRTK profile by modifying the *Registered Service Providers* in your MRTK profile.
+Mouse pointer is used for interacting with the mouse. This pointer will only be used if the active input is a mouse. By default, the MRTK profile does not provide a mouse as an input provider, as mouse input is instead used to simulate hand input. Mouse support can be enabled by adding a new *Input Data Provider* of type @Microsoft.MixedReality.Toolkit.Input.UnityInput.MouseDeviceManager to your MRTK input profile. Further settings for this input type can be found in the MousePointer prefab.
 
 ![Mouse pointer](../Documentation/Images/Pointers/MRTK_MousePointer.jpg)
 
