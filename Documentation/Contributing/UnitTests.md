@@ -38,7 +38,7 @@ Only after all of the tests passed successfully the PR can be merged into mrtk_d
 ## Writing Tests for your code
 To ensure MRTK being a stable and reliable toolkit, every feature should come with unit tests and sample usage in one of the example scenes.
 
-Preferrably when fixing a bug there should also be a test added to avoid running into the same issue again in the future.
+Preferably when fixing a bug there should also be a test added to avoid running into the same issue again in the future.
 
 Having good test coverage in a big codebase like MRTK is crucial for stability and having confidence when doing changes in code.
 
@@ -92,16 +92,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Setup]
         public void Init()
         {
-            // in most play mode test cases you would want to at least create an MRTK gameobject using the default profile
+            // in most play mode test cases you would want to at least create an MRTK GameObject using the default profile
             TestUtilities.InitializeMixedRealityToolkit(true);
         }
 
 
-        // destroy commonly initialzed objects here - this will be called after each of your tests has finished
+        // destroy commonly initialized objects here - this will be called after each of your tests has finished
         [TearDown]
         public void Shutdown()
         {
-            // call shutdown if you've created an mrtk gameobject in your test
+            // call shutdown if you've created an mrtk GameObject in your test
             TestUtilities.ShutdownMixedRealityToolkit();
         }
 
@@ -159,19 +159,19 @@ There are two Utility classes that help with setting up MRTK and testing interac
 * [`TestUtilities`](xref:Microsoft.MixedReality.Toolkit.Tests.TestUtilities)
 * [`PlayModeTestUtilities`](xref:Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities)
 
-TestUtilities provide the following methods to set up your MRTK scene and gameobjects:
+TestUtilities provide the following methods to set up your MRTK scene and GameObjects:
 
 ``` csharp
-/// creates the mrtk gameobject and sets the default profile if passed param is true
+/// creates the mrtk GameObject and sets the default profile if passed param is true
 TestUtilities.InitializeMixedRealityToolkit()
 
-/// creates an empty scene prior to adding the mrtk gameobject to it
+/// creates an empty scene prior to adding the mrtk GameObject to it
 TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
 /// sets the initial playspace transform and camera position
 TestUtilities.InitializePlayspace();
 
-/// destroys previously created mrtk gameobject and playspace
+/// destroys previously created mrtk GameObject and playspace
 TestUtilities.ShutdownMixedRealityToolkit();
 ```
 

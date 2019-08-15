@@ -164,7 +164,7 @@ Some solver components and the SolverHandler manager class has changed to fix va
 
 - Class no longer extends from `ControllerFinder`
 - `TrackedObjectToReference` public property deprecated and has been renamed to `TrackedTargetType`
-- `TrackedObjectType` deprecates left & right controller values. Instead use `MotionController` or `HandJoint` values and update new `TrackedHandness` property to limit tracking to left or right controller
+- `TrackedObjectType` deprecates left & right controller values. Instead use `MotionController` or `HandJoint` values and update new `TrackedHandedness` property to limit tracking to left or right controller
 
 #### InBetween
 
