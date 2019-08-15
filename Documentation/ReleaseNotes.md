@@ -69,7 +69,7 @@ The CoreServices static class works in conjunction with the MixedRealityServiceR
 to provide applications with a fast and convenient mechanism to aquire instances of core
 services (ex: Input System).
 
-To access extension service instances, use [MixedRealityServiceRegistry.TryGetService< T >](). << link >>
+To access extension service instances, use `MixedRealityServiceRegistry.TryGetService<T>`.
 
 **IMixedRealityRaycastProvider**
 
@@ -87,11 +87,12 @@ for more information on configuring your application.
 
 **Multi-scene support**
 
- << extension >>
+MRTK 2.0.0 has added the [Scene System](SceneSystem/SceneSystemGettingStarted.md) to help with
+applications that contain more than once scene.
 
  **Input Animation Recording**
  
- <<>>
+ << >>
 
 **Optimize Window**
 
@@ -127,7 +128,7 @@ are subject to change. Please file any and all issues you encounter on GitHub
 
 **Updated Architecture Documentation**
 
-<< >>
+The [archtecture documentation](Architecture/Overview.md) is all new for version 2.0.0.
 
 ### Known issues in 2.0.0
 
@@ -154,3 +155,14 @@ To work around the issues, please check for a newer version or roll back to vers
 
 MRTK 2.0.0 does not fully support profile swapping at runtime. This feature is being
 investigated for a future release.
+
+## Extension Service Wizard
+
+When using the Extension Service Wizard,  *Generate Inspector* and/or *Generate Profile* are not actually optional. Trying to create an extension service with either of these deselected will result in an error on the following page. Furthermore, the extension service created for the user will create a property for the ScriptableObject profile that was not actually created. This results in a compiler error until the property line is removed. 
+
+Current workaround steps:
+
+1. Ignore error message in Extension Service Wizard
+1. Open up the *ExtensionService.cs file created and remove reference to the non-existent profile.
+
+Issue [#5654](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5654) is tracking this problem.

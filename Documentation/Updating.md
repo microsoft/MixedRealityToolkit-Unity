@@ -1,4 +1,4 @@
-# Updating to the 2.0.0 Release
+# Updating from RC2 to 2.0.0
 
 Between the RC2 and 2.0.0 releases of the Microsoft Mixed Reality Toolkit, changes were made that may impact existing projects. This document describes those changes and how to update projects to the 2.0.0 release.
 
@@ -21,7 +21,7 @@ The following public properties on the MixedRealityToolkit object have been depr
 
 - `RegisteredMixedRealityServices` no longer contains the collection of registered extensions services and data providers.
 
-To access extension services, use [`MixedRealityServiceRegistry.TryGetService<T>`]. To access data providers, cast the service instance to [`IMixedRealityDataProviderAccess`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess) and use `GetDataProvider<T>`.
+To access extension services, use `MixedRealityServiceRegistry.TryGetService<T>`. To access data providers, cast the service instance to [`IMixedRealityDataProviderAccess`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess) and use `GetDataProvider<T>`.
 
 Use [`MixedRealityServiceRegistry`](xref:Microsoft.MixedReality.Toolkit.MixedRealityServiceRegistry) or [`CoreServices`](xref:Microsoft.MixedReality.Toolkit.CoreServices) instead for the following deprecated properties
 
