@@ -477,7 +477,7 @@ runtime without requiring direct code reference to a singleton style component.<
   
   <a id="Microsoft_MixedReality_Toolkit_MixedRealityServiceRegistry_TryGetService_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityServiceRegistry.TryGetService*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_MixedRealityServiceRegistry_TryGetService_System_Type_Microsoft_MixedReality_Toolkit_IMixedRealityService__Microsoft_MixedReality_Toolkit_IMixedRealityServiceRegistrar__System_String_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityServiceRegistry.TryGetService(System.Type,Microsoft.MixedReality.Toolkit.IMixedRealityService@,Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar@,System.String)">TryGetService(Type, out IMixedRealityService, out IMixedRealityServiceRegistrar, String)</h4>
-  <div class="markdown level1 summary"><p>Gets the instance of the requested service from the registry.</p>
+  <div class="markdown level1 summary"><p>Gets the first instance of the requested service from the registry that matches the given query.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -540,12 +540,13 @@ runtime without requiring direct code reference to a singleton style component.<
   
   <a id="Microsoft_MixedReality_Toolkit_MixedRealityServiceRegistry_TryGetService_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityServiceRegistry.TryGetService*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_MixedRealityServiceRegistry_TryGetService__1___0__Microsoft_MixedReality_Toolkit_IMixedRealityServiceRegistrar__System_String_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityServiceRegistry.TryGetService``1(``0@,Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar@,System.String)">TryGetService&lt;T&gt;(out T, out IMixedRealityServiceRegistrar, String)</h4>
-  <div class="markdown level1 summary"><p>Gets the instance of the requested service from the registry.</p>
+  <div class="markdown level1 summary"><p>Gets the first instance of the requested service from the registry that matches the given query.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool TryGetService&lt;T&gt;(out T serviceInstance, out IMixedRealityServiceRegistrar registrar, string name = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool TryGetService&lt;T&gt;(out T serviceInstance, out IMixedRealityServiceRegistrar registrar, string name = null)
+    where T : IMixedRealityService</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -613,7 +614,7 @@ runtime without requiring direct code reference to a singleton style component.<
   
   <a id="Microsoft_MixedReality_Toolkit_MixedRealityServiceRegistry_TryGetService_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityServiceRegistry.TryGetService*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_MixedRealityServiceRegistry_TryGetService__1___0__System_String_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityServiceRegistry.TryGetService``1(``0@,System.String)">TryGetService&lt;T&gt;(out T, String)</h4>
-  <div class="markdown level1 summary"><p>Gets the instance of the requested service from the registry.</p>
+  <div class="markdown level1 summary"><p>Gets the first instance of the requested service from the registry that matches the given query.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
