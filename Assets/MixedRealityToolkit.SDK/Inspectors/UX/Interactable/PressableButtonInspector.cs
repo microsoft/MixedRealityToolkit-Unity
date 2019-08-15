@@ -254,9 +254,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.PropertyField(movingButtonVisuals);
             EditorGUILayout.LabelField("Press Settings", EditorStyles.boldLabel);
 
+            serializedObject.ApplyModifiedProperties();
+
             var pos = EditorGUILayout.GetControlRect();
-            // Utilize EditorGUI.BeginProperty to keep prefab bolding and other editor field tracking
-            EditorGUI.BeginProperty(pos, DistanceSpaceModeLabel, distanceSpaceMode);
+            // Utilize EditorGUI.PropertyScope to keep prefab bolding and other editor field tracking
+            using (var propertyScope = new EditorGUI.PropertyScope(pos, DistanceSpaceModeLabel, distanceSpaceMode))
             {
                 PressableButton.SpaceMode currentMode = button.DistanceSpaceMode;
                 // If user changes space mode, we want to call the property which will update the distance value appropriately
@@ -267,7 +269,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     distanceSpaceMode.enumValueIndex = (int)spaceMode;
                 }
             }
-            EditorGUI.EndProperty();
 
             // Leveraging button.DistanceSpaceMode setter modifies other component properties that need to be refreshed
             serializedObject.Update();
