@@ -77,7 +77,7 @@ The Input System was modified to add a reference to an IMixedRealityRaycastProvi
 
 Specify your desired raycast provider in the Input System's configuration profile. 
 
-![Selecting the Raycast provider](Images/ReleaseNotes/SelectingRaycastProvider.png)
+![Selecting the Raycast provider](Images/ReleaseNotes/SelectRaycastProvider.png)
 
 **SpatialObjectMeshObserver**
 
@@ -179,7 +179,7 @@ The ClippingExamples scene, demonstates using the MRTK Standard Shader’s new c
 
 **MRTK Standard Shader**
 
-The [MRTK Standard Shader](README_MRTKStandardShader) now supports Unity's Lightweight Scriptable render pipeline.
+The [MRTK Standard Shader](README_MRTKStandardShader.md) now supports Unity's Lightweight Scriptable render pipeline.
 
 Additional improvments
 - A warning and "Fix Now" button is now displayed on materials which are in a project that has depth buffer
