@@ -362,6 +362,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/Architecture/CrossPlatform/DeterminingPlatformCapabilities.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Architecture/CrossPlatform/DeterminingPlatformCapabilities.html",
+          "hash": "cqUBpSR14W+bIdZv5JS5dA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/Architecture/FrameworkAndRuntime.md",
       "output": {
         ".html": {
@@ -786,7 +798,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/GettingStartedWithTheMRTK.html",
-          "hash": "EHoWpSzRsLOVttLpliaSkg=="
+          "hash": "yFRQeJo5eqDMeFdomwtOXA=="
         }
       },
       "is_incremental": false,
@@ -4425,6 +4437,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/SpatialAwareness/AddObserver.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SpatialAwareness/AddObserver.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/SpatialAwareness/MRTKConfig_SpatialAwareness.png",
       "output": {
         "resource": {
@@ -4484,6 +4507,28 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/SpatialAwareness/MeshObserverPhysicsSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/SpatialAwareness/ObjectObserverProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SpatialAwareness/ObjectObserverProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/SpatialAwareness/SelectObjectObserver.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SpatialAwareness/SelectObjectObserver.png"
         }
       },
       "is_incremental": false,
@@ -5043,6 +5088,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/KnownIssues.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/KnownIssues.html",
+          "hash": "wJiknTJOmNZaePKAl8v50w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/Legal/NOTICE.md",
       "output": {
         ".html": {
@@ -5391,6 +5448,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/ServiceUtilities/MixedRealityServiceRegistryAndIMixedRealityServiceRegistrar.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/ServiceUtilities/MixedRealityServiceRegistryAndIMixedRealityServiceRegistrar.html",
+          "hash": "nOIAppoQ5GPVMZ4W3d11sA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.md",
       "output": {
         ".html": {
@@ -5407,7 +5476,19 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html",
-          "hash": "UUEXGGRDUj4A6RGGbEWoHQ=="
+          "hash": "vHxf/8Hka+8Dg/BcZnn8GA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/SpatialAwareness/SpatialObjectMeshObserver.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/SpatialAwareness/SpatialObjectMeshObserver.html",
+          "hash": "oRMhkCTNqhq/nlT6o6Vw7w=="
         }
       },
       "is_incremental": false,
@@ -5527,7 +5608,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "m0KyE3hPDwsDjMLb0REs6Q=="
+          "hash": "lZyi2xHj0I7YKKTx8WDBQA=="
         }
       },
       "is_incremental": false,
@@ -18526,12 +18607,6 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 117,
-          "skipped_file_count": 0
-        },
         "TocDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
@@ -18539,17 +18614,23 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ResourceDocumentProcessor": {
+        "ConceptualDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 121,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 1076,
+          "skipped_file_count": 0
+        },
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
           "skipped_file_count": 0
         }
       }
