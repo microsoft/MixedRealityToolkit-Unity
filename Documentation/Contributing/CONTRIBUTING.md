@@ -65,7 +65,7 @@ A comment in the PR will let you know if you do.
 > If you are a Microsoft employee and are not a member of the [Microsoft organization on GitHub](https://github.com/Microsoft), please link your Microsoft and GitHub accounts on corpnet by visiting [Open Source at Microsoft](https://opensource.microsoft.com/) before you start your pull request. There's some process stuff you'll need to do ahead of time.
 
 When you are ready:
-* Start a GitHub pull request to merge your topic branch targetting the [mrtk_development](https://github.com/microsoft/mixedrealitytoolkit-unity/tree/mrtk_development) branch. 
+* Start a GitHub pull request to merge your topic branch targeting the [mrtk_development](https://github.com/microsoft/mixedrealitytoolkit-unity/tree/mrtk_development) branch.
 * Ensure you fill in all details required by the Pull Request template, ensuring you reference any Issue / Feature Request or Task the PR relates to.
 * Validate that you are only checking in files / changes related to the PR
 * Check your documentation is up to date and included (unless submitted in a previous PR)
