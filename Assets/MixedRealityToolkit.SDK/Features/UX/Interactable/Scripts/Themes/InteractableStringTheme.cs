@@ -36,8 +36,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             base.Init(host, settings);
 
-            mesh = Host.GetComponent<TextMesh>();
-            text = Host.GetComponent<Text>();
+            mesh = Host.GetComponentInChildren<TextMesh>();
+            text = Host.GetComponentInChildren<Text>();
         }
 
         public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
