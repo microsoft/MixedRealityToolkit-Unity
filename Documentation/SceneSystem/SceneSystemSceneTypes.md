@@ -1,6 +1,3 @@
-> [!IMPORTANT]
-> This feature is currently available in the [**mrtk_development**](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development) branch.
-
 # Scene Types
 
 Scenes have been divided into three types, and each type has a different function.
