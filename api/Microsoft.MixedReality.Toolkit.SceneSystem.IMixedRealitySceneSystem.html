@@ -120,6 +120,12 @@ are considered valid before the action is invoked.</p>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.html#Microsoft_MixedReality_Toolkit_IMixedRealityEventSystem_UnregisterHandler__1_IEventSystemHandler_">IMixedRealityEventSystem.UnregisterHandler&lt;T&gt;(IEventSystemHandler)</a>
     </div>
     <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityEventSource.html#Microsoft_MixedReality_Toolkit_IMixedRealityEventSource_SourceId">IMixedRealityEventSource.SourceId</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityEventSource.html#Microsoft_MixedReality_Toolkit_IMixedRealityEventSource_SourceName">IMixedRealityEventSource.SourceName</a>
+    </div>
+    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html#Microsoft_MixedReality_Toolkit_IMixedRealityService_Name">IMixedRealityService.Name</a>
     </div>
     <div>
@@ -152,18 +158,12 @@ are considered valid before the action is invoked.</p>
     <div>
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable.dispose#System_IDisposable_Dispose">IDisposable.Dispose()</a>
     </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityEventSource.html#Microsoft_MixedReality_Toolkit_IMixedRealityEventSource_SourceId">IMixedRealityEventSource.SourceId</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityEventSource.html#Microsoft_MixedReality_Toolkit_IMixedRealityEventSource_SourceName">IMixedRealityEventSource.SourceName</a>
-    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.SceneSystem.html">Microsoft.MixedReality.Toolkit.SceneSystem</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_SceneSystem_IMixedRealitySceneSystem_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IMixedRealitySceneSystem : IMixedRealityEventSystem, IMixedRealityService, IDisposable, IMixedRealityEventSource, IEqualityComparer</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IMixedRealitySceneSystem : IMixedRealityEventSystem, IMixedRealityEventSource, IEqualityComparer, IMixedRealityDataProvider, IMixedRealityService, IDisposable</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
