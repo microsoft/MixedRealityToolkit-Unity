@@ -143,7 +143,7 @@ following list can now be instantiated and configured from code.
 
 - BoundingBox
 - ManipulationHandler
-- HandInteractionPanZOom
+- HandInteractionPanZoom
 - Interactable (basic features)
 
 **HoloLens 2 Button**
