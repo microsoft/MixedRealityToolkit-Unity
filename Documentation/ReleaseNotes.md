@@ -58,6 +58,7 @@ profiles, please open them to verify that all of the updated properties are corr
 - [IMixedRealityRaycastProvider](#imixedrealityraycastprovider)
 - [SpatialObjectMeshObserver](#spatialobjectmeshobserver)
 - [SceneSystem](#scenesystem)
+- [HoloLens 2 Shall Parity](#hololens-2-shell-parity)
 - [Input Animation Recording](#input-animation-recording)
 - [HandConstraint Solvers](#handconstraint-solvers)
 - [UX Controls](#ux-controls)
@@ -101,6 +102,24 @@ SpatialObjectMeshObserver is not enabled in the default profiles, please see the
 [Spatial Awareness Gettniving Started](SpatialAwareness/SpatialAwarenessGettingStarted.md) article
 for more information on configuring your application. 
 
+#### HoloLens 2 Shell Parity
+
+This release updates the MRTK to better mirror the featires. behaviors and visuals of the HoloLens 2 shell experience. This [GitHub](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4200) issue describes the changes.
+
+#### System Keyboard
+
+The system keyboard can now be used on all platforms. See the HandInteractionExamples scene in the Examples
+package (Demos\HandInteraction\Scenes\HandInteractionDemos.unity) for a demonstration of using the
+SystemKeyboardExample script.
+
+
+#### Launch applications from within your Unity app
+
+On HoloLens 2 and Windows Mixed Reality Immersive applications, you can now launch applications
+from within your Uniity application. See the HandInteractionExamples scene in the Examples package
+(Demos\HandInteraction\Scenes\HandInteractionDemos.unity) for a demonstration of using the LaunchUri script
+to start an external application.
+
 #### SceneSystem
 
 MRTK 2.0.0 has added the [Scene System](SceneSystem/SceneSystemGettingStarted.md) to help with
@@ -113,14 +132,19 @@ data can be stored in animation files. The recorded data can then be played back
 
 #### HandConstraint Solvers
 
-The HandConstraint and HandConstraintPalmUp solvers are now an official feature (no longer experimental) and have
-improved documentation.
+The HandConstraint and HandConstraintPalmUp solvers are now an official feature (no longer experimental) and have improved documentation.
 
 The HandConstraintPalmUp solver now has a toggle to enforce the hand’s fingers are coplanar before activating.
 
 #### UX Controls
 
-The following UX controls have been added and/or improved in version 2.0.0.
+The following UX controls have been added and/or improved in version 2.0.0. In addition, those in the
+following list can now be instantiated and configured from code.
+
+- BoundingBox
+- ManipulationHandler
+- HandInteractionPanZOom
+- Interactable (basic features)
 
 **HoloLens 2 Button**
 
