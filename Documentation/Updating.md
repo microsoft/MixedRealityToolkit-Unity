@@ -10,10 +10,19 @@ Between the RC2 and 2.0.0 releases of the Microsoft Mixed Reality Toolkit, chang
 Since the release of RC2, there have been a number of API changes including some that may break existing projects. The following sections describe the changes that have occurred between the RC2 and 2.0.0 releases.
 
 - [MixedRealityToolkit](#mixedrealitytoolkit)
+- [CoreServices](#coreservices)
+- [IMixedRealityRaycastProvider](#imixedrealityraycastprovider)
 - [Event System](#event-system)
 - [Spatial Awareness](#spatial-awareness)
 - [Solvers](#solvers)
+- [Buttons](#buttons)
 - [Clipping Sphere](#clipping-sphere)
+- [NearInteractionTouchable and PokePointer](#nearinteractiontouchable-and-pokepointer)
+- [ReadOnlyAttribute](#readonlyattribute)
+- [PointerClickHandler](#pointerclickhandler)
+- [HoloLens Clicker Support](#hololens-clicker-support)
+- [InteractableHighlight](#interactablehighlight)
+- [HandInteractionPanZoom](#handinteractionpanzoom)
 
 ### MixedRealityToolkit
 
@@ -33,6 +42,35 @@ Use [`MixedRealityServiceRegistry`](xref:Microsoft.MixedReality.Toolkit.MixedRea
 - `TeleportSystem`
 - `DiagnosticsSystem`
 - `SceneSystem`
+
+### CoreServices
+
+The [`CoreServices`](xref:Microsoft.MixedReality.Toolkit.CoreServices) class is the replacement for the static system accessors (ex: BoundarySystem) found in the `MixedRealityToolkit` object.
+
+>[!Important]
+>The `MixedRealityToolkit` system accessors have been deprecated in version 2.0.0 and will be removed in a future release of the MRTK.
+
+The following code example illustrates the old and the new pattern.
+
+``` c#
+// Old
+GameObject playAreaVisualization = MixedRealityToolkit.BoundarySystem?.GetPlayAreaVisualization();
+
+// New
+GameObject playAreaVisualization = CoreServices.BoundarySystem?.GetPlayAreaVisualization();
+```
+
+Using the new CoreSystem class will ensure that your application code will not need updating if you change the application to use a different service registrar (ex: one of the experimental service managers).
+
+### IMixedRealityRaycastProvider
+
+With the addition of the IMixedRealityRaycastProvider, the input system configuration profile was changed. If you have a custom profile, you may receive the errors in the following image when you run your application.
+
+![Selecting the Raycast provider](Images/ReleaseNotes/UnableToRegisterRaycastProvider.png)
+
+To fix these, please add an IMixedRealityRaycastProvider instance to your input system profile.
+
+![Selecting the Raycast provider](Images/ReleaseNotes/SelectRaycastProvider.png)
 
 ### Event System
 
@@ -146,15 +184,15 @@ The IMixedRealitySpatialAwarenessSystem and IMixedRealitySpatialAwarenessObserve
 
 The following method(s) have been renamed to better describe their usage.
 
-- IMixedRealitySpatialAwarenessSystem.CreateSpatialObjectParent has been renamed to IMixedRealitySpatialAwarenessSystem.CreateSpatialAwarenessObservationParent to clarify its usage.
+- `IMixedRealitySpatialAwarenessSystem.CreateSpatialObjectParent` has been renamed to `IMixedRealitySpatialAwarenessSystem.CreateSpatialAwarenessObservationParent` to clarify its usage.
 
 #### Additions
 
 Based on customer feedback, support for easy removal of previously observed spatial awareness data has been added.
 
-- IMixedRealitySpatialAwarenessSystem.ClearObservations()
-- IMixedRealitySpatialAwarenessSystem.ClearObservations\<T\>(string name)
-- IMixedRealitySpatialAwarenessObserver.ClearObservations()
+- `IMixedRealitySpatialAwarenessSystem.ClearObservations()`
+- `IMixedRealitySpatialAwarenessSystem.ClearObservations<T>(string name)`
+- `IMixedRealitySpatialAwarenessObserver.ClearObservations()`
 
 ### Solvers
 
