@@ -71,10 +71,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1(null, "Test ExtensionService 1",10, null));
 
             // Retrieve ITestExtensionService1
-            var extensionService1 = MixedRealityToolkit.Instance.GetService<ITestExtensionService1>();
-
-            // Tests
-            Assert.IsNotNull(extensionService1);
+            Assert.IsNotNull(MixedRealityToolkit.Instance.GetService<IMixedRealityExtensionService>());
+            Assert.IsNotNull(MixedRealityToolkit.Instance.GetService<ITestExtensionService1>());
+            Assert.IsNotNull(MixedRealityToolkit.Instance.GetService<TestExtensionService1>());
+            Assert.IsNotNull(MixedRealityToolkit.Instance.GetService<BaseExtensionService>());
             Assert.AreEqual(1, MixedRealityServiceRegistry.GetAllServices().Count);
         }
 
@@ -228,22 +228,21 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
             // Add test ExtensionService 1
-            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1(null, "Test14-1", 10, null));
+            string service1Name = "Test14-1";
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1(null, service1Name, 10, null));
 
             // Add test ExtensionService 2
-            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(new TestExtensionService2(null, "Test14-2", 10, null));
+            string service2Name = "Test14-2";
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(new TestExtensionService2(null, service2Name, 10, null));
 
             // Retrieve Test ExtensionService 2-2
-            var extensionService2 = (TestExtensionService2)MixedRealityToolkit.Instance.GetService<ITestExtensionService2>("Test14-2");
-
-            // ExtensionService 2-2 Tests
-            Assert.AreEqual("Test14-2", extensionService2.Name);
+            var extensionService2 = MixedRealityToolkit.Instance.GetService<ITestExtensionService2>(service2Name);
+            Assert.AreEqual(service2Name, extensionService2.Name);
+            Assert.IsNotNull(MixedRealityToolkit.Instance.GetService<IMixedRealityExtensionService>(service2Name));
 
             // Retrieve Test ExtensionService 2-1
-            var extensionService1 = (TestExtensionService1)MixedRealityToolkit.Instance.GetService<ITestExtensionService1>("Test14-1");
-
-            // ExtensionService 2-1 Tests
-            Assert.AreEqual("Test14-1", extensionService1.Name);
+            var extensionService1 = MixedRealityToolkit.Instance.GetService<ITestExtensionService1>(service1Name);
+            Assert.AreEqual(service1Name, extensionService1.Name);
         }
 
         [Test]
