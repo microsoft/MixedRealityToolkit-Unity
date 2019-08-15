@@ -130,7 +130,7 @@ applications that contain more than once scene.
 MRTK 2.0.0 features a [recording system](InputSimulation/InputAnimationRecording.md) by which head movement and hand tracking
 data can be stored in animation files. The recorded data can then be played back using the [input simulation system](InputSimulation/InputSimulationService.md).
 
-#### HandConstraint Solvers
+#### Hand Menu Graduated from Experimental
 
 The HandConstraint and HandConstraintPalmUp solvers are now an official feature (no longer experimental) and have improved documentation.
 
