@@ -80,7 +80,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 
             // Check for Input System
             var inputSystem = MixedRealityToolkit.Instance.GetService<IMixedRealityInputSystem>();
-            Assert.IsNotNull(inputSystem);
 
             var dataProviderAccess = (inputSystem as IMixedRealityDataProviderAccess);
             Assert.IsNotNull(dataProviderAccess);
@@ -96,7 +95,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile = AssetDatabase.LoadAssetAtPath<MixedRealityInputSystemProfile>(TestInputSystemProfilePath);
 
             var inputSystem = new MixedRealityInputSystem(MixedRealityToolkit.Instance, MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile);
-            Assert.IsNotNull(inputSystem);
             Assert.IsTrue(MixedRealityToolkit.Instance.RegisterService<IMixedRealityInputSystem>(inputSystem));
 
             // Since EditMode, we have to auto-enable MRTK input system ourselves
@@ -133,6 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             dataProvider = dataProviderAccess.GetDataProvider<TestInputDataProvider>();
             Assert.IsNotNull(dataProvider);
             Assert.IsTrue(dataProvider.IsInitialized);
+            Assert.IsTrue(dataProvider.IsEnabled);
         }
 
         [TearDown]

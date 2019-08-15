@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.SpatialAwarenessSystem
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
 
-            // Retrieve Input System
+            // Retrieve Spatial Awareness System
             IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
             MixedRealityServiceRegistry.TryGetService(out spatialAwarenessSystem);
 
@@ -56,11 +56,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests.SpatialAwarenessSystem
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
 
-            // Check for Input System
+            // Check for Spatial Awareness System
             var spatialAwarenessSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySpatialAwarenessSystem>();
-            Assert.IsNotNull(spatialAwarenessSystem);
-
             var dataProviderAccess = spatialAwarenessSystem as IMixedRealityDataProviderAccess;
+
             Assert.IsNotNull(dataProviderAccess);
             Assert.IsEmpty(dataProviderAccess.GetDataProviders());
         }
@@ -72,10 +71,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests.SpatialAwarenessSystem
             MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessSystemProfile = AssetDatabase.LoadAssetAtPath<MixedRealitySpatialAwarenessSystemProfile>(TestSpatialAwarenessSysteProfilePath);
 
             var spatialAwarenessSystem = new MixedRealitySpatialAwarenessSystem(MixedRealityToolkit.Instance, MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessSystemProfile);
-            Assert.IsNotNull(spatialAwarenessSystem);
+
             Assert.IsTrue(MixedRealityToolkit.Instance.RegisterService<IMixedRealitySpatialAwarenessSystem>(spatialAwarenessSystem));
 
-            // Since EditMode, we have to auto-enable MRTK input system ourselves
+            // Since EditMode, we have to auto-enable MRTK spatial awareness system ourselves
             MixedRealityToolkit.Instance.EnableAllServicesByType(typeof(IMixedRealitySpatialAwarenessSystem));
 
             Assert.AreEqual(1, MixedRealityServiceRegistry.GetAllServices().Count);
