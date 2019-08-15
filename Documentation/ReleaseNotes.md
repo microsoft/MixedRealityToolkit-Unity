@@ -53,20 +53,7 @@ profiles, please open them to verify that all of the updated properties are corr
 
 ### What's new in 2.0.0
 
-- [Default HoloLens (1st gen) profile](#default-hololens-1st-gen-profile)
-- [CoreServices](#coreservices)
-- [IMixedRealityRaycastProvider](#imixedrealityraycastprovider)
-- [SpatialObjectMeshObserver](#spatialobjectmeshobserver)
-- [SceneSystem](#scenesystem)
-- [HoloLens 2 Shall Parity](#hololens-2-shell-parity)
-- [Input Animation Recording](#input-animation-recording)
-- [HandConstraint Solvers](#handconstraint-solvers)
-- [UX Controls](#ux-controls)
-- [MRTK Standard Shader](#mrtk-standard-shader)
-- [Tools](#tools)
-- [Service Managers (experimental)](#service-managers-experimental)
-
-#### Default HoloLens (1st gen) profile
+**Default HoloLens (1st gen) profile**
 
 We have added a new profile for HoloLens (1st gen) development that includes some of the
 recommended MRTK configurations for best performance.
@@ -74,9 +61,9 @@ recommended MRTK configurations for best performance.
 To configure your application for HoloLens (1st gen) optimized settings, set the
 Mixed Reality Toolkit's **Active Profile** to **DefaultHoloLens1ConfigurationProfile**.
 
-![Default HoloLens (1st gen) Configuration Profile](../../Documentation/Images/ReleaseNotes/DefaultHoloLens1ConfigurationProfile.png)
+![Default HoloLens (1st gen) Configuration Profile](./Images/ReleaseNotes/DefaultHoloLens1ConfigurationProfile.png)
 
-#### CoreServices
+**CoreServices**
 
 The [CoreServices](xref:Microsoft.MixedReality.Toolkit.CoreServices) static class works in conjunction with the
 MixedRealityServiceRegistry to provide applications with a fast and convenient mechanism to acquire instances of core
@@ -84,15 +71,15 @@ services (ex: Input System).
 
 To access extension service instances, use `MixedRealityServiceRegistry.TryGetService<T>`.
 
-#### IMixedRealityRaycastProvider
+**IMixedRealityRaycastProvider**
 
 The Input System was modified to add a reference to an IMixedRealityRaycastProvider.
 
 Specify your desired raycast provider in the Input System's configuration profile. 
 
-![Selecting the Raycast provider](../../Documentation/Images/ReleaseNotes/SelectingRaycastProvider.png)
+![Selecting the Raycast provider](Images/ReleaseNotes/SelectingRaycastProvider.png)
 
-#### SpatialObjectMeshObserver
+**SpatialObjectMeshObserver**
 
 We have added the SpatialObjectMeshObserver to improve developer productivity when working
 with the Spatial Awareness system. This observer reads mesh data from imported 3D models
@@ -102,41 +89,41 @@ SpatialObjectMeshObserver is not enabled in the default profiles, please see the
 [Spatial Awareness Gettniving Started](SpatialAwareness/SpatialAwarenessGettingStarted.md) article
 for more information on configuring your application. 
 
-#### HoloLens 2 Shell Parity
+**HoloLens 2 Shell Parity**
 
 This release updates the MRTK to better mirror the featires. behaviors and visuals of the HoloLens 2 shell experience. This [GitHub](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4200) issue describes the changes.
 
-#### System Keyboard
+**System Keyboard**
 
 The system keyboard can now be used on all platforms. See the HandInteractionExamples scene in the Examples
 package (Demos\HandInteraction\Scenes\HandInteractionDemos.unity) for a demonstration of using the
 SystemKeyboardExample script.
 
 
-#### Launch applications from within your Unity app
+**Launch applications from within your Unity app**
 
 On HoloLens 2 and Windows Mixed Reality Immersive applications, you can now launch applications
 from within your Uniity application. See the HandInteractionExamples scene in the Examples package
 (Demos\HandInteraction\Scenes\HandInteractionDemos.unity) for a demonstration of using the LaunchUri script
 to start an external application.
 
-#### SceneSystem
+**SceneSystem**
 
 MRTK 2.0.0 has added the [Scene System](SceneSystem/SceneSystemGettingStarted.md) to help with
 applications that contain more than once scene.
 
-#### Input Animation Recording
+**Input Animation Recording**
  
 MRTK 2.0.0 features a [recording system](InputSimulation/InputAnimationRecording.md) by which head movement and hand tracking
 data can be stored in animation files. The recorded data can then be played back using the [input simulation system](InputSimulation/InputSimulationService.md).
 
-#### Hand Menu Graduated from Experimental
+**Hand Menu Graduated from Experimental**
 
 The HandConstraint and HandConstraintPalmUp solvers are now an official feature (no longer experimental) and have improved documentation.
 
 The HandConstraintPalmUp solver now has a toggle to enforce the hand’s fingers are coplanar before activating.
 
-#### UX Controls
+**UX Controls**
 
 The following UX controls have been added and/or improved in version 2.0.0. In addition, those in the
 following list can now be instantiated and configured from code.
@@ -190,13 +177,20 @@ The ClippingExamples scene, demonstates using the MRTK Standard Shader’s new c
 - Fixed
     - Border thickness issue fixed on flattend Bounding Box
 
-#### MRTK Standard Shader
+**MRTK Standard Shader**
 
 The [MRTK Standard Shader](README_MRTKStandardShader) now supports Unity's Lightweight Scriptable render pipeline.
 
-#### Tools
-
-Version 2.0.0 adds a number of new tools to help you build your mixed reality experiences.
+Additional improvments
+- A warning and "Fix Now" button is now displayed on materials which are in a project that has depth buffer
+sharing enabled and do not write depth
+- Proximity lights now have per material color overrides and a "Subtractive Light" option to mimic proximity
+shadows
+- Clipping primitives can now be toggled on/off at runtime without requiring shader permutations to be known
+at (player) build time
+- Additive and transparent materials are now clipped correctly. A new property for non-opaque or cutout materials
+called “Blended Clipping Width” allows developers to set the width of the clip blend region
+- Lighting of back face triangles is now correct
 
 **Dependency Window**
 
@@ -219,7 +213,7 @@ A Take Screenshot utility menu item (Mixed Reality Toolkit > Utilities > Take Sc
 to capture high resolution screenshots within the editor. Screenshots can be captured with a transparent
 clear color for use in easy post compositing of images for documentation or media.
 
-#### Service managers (experimental)
+**Service managers (experimental)**
 
 This release adds service managers to enable the light-weight addition of specific Microsoft 
 Mixed Reality Toolkit features, such as the Spatial Awareness system, individually.
@@ -258,7 +252,7 @@ Some demo scenes contained in the Examples package are optimized for HoloLens de
 may place objects below the user when run on VR/Immersive devices. To work around this issue, 
 select the **Scene Content** object, in the Hierarchy, and set the Transform's Position Y value to **1.5**.
 
-![Adjusting Scene Content Height](../../Documentation/Images/ReleaseNotes/AdjustContentHeight.png)
+![Adjusting Scene Content Height](Images/ReleaseNotes/AdjustContentHeight.png)
 
 **Unity 2019: Could not copy the file HolographicAppRemoting.dll**
 
