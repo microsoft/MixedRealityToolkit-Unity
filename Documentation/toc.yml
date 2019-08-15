@@ -9,12 +9,18 @@
     href: Performance/PerfGettingStarted.md
   - name: Hologram Stabilization
     href: Hologram-Stabilization.md
+  - name: Known Issues
+    href: KnownIssues.md
 - name: Architecture
   items:
   - name: Overview
     href: Architecture/Overview.md
   - name: Framework and Runtime
     href: Architecture/FrameworkAndRuntime.md
+  - name: Cross-platform
+    items:
+    - name: Platform Capabilities
+      href: Architecture/CrossPlatform/DeterminingPlatformCapabilities.md
   - name: Input System
     items:
     - name: Terminology
@@ -95,6 +101,8 @@
       href: SpatialAwareness/SpatialAwarenessGettingStarted.md
     - name: Configuring the Spatial Awareness Mesh Observer
       href: SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.md
+    - name: Spatial Object Mesh Observer
+      href: SpatialAwareness/SpatialObjectMeshObserver.md
     - name: Usage Guide
       href: SpatialAwareness/UsageGuide.md
   - name: Multi Scene System
@@ -124,7 +132,11 @@
     - name: Using the Visual Profiler
       href: Diagnostics/UsingVisualProfiler.md
   - name: Services
-    href: MixedRealityServices.md
+    items:
+    - name: What makes a mixed reality feature
+      href: MixedRealityServices.md
+    - name: What are the MixedRealityServiceRegistry and IMixedRealityServiceRegistrar
+      href: ServiceUtilities/MixedRealityServiceRegistryAndIMixedRealityServiceRegistrar.md
   - name: Packages
     items:
     - name: MRTK Packages
