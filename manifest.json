@@ -14378,11 +14378,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.InteractableOnPressReceiver.InteractionType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.InteractableOnPressReceiver.InteractionType.html",
+          "hash": "QK8KKG8arzf0U6GwfP5dJg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.InteractableOnPressReceiver.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.InteractableOnPressReceiver.html",
-          "hash": "MDsg+PMntaY7VvbEDyI2Pg=="
+          "hash": "o12KjttoAq00bo16SCTH3Q=="
         }
       },
       "is_incremental": false,
@@ -15318,7 +15330,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.html",
-          "hash": "Xs/tWLIg/AAAk4UUP/hLNg=="
+          "hash": "9guJqA6XHx/CBXNs53k3ug=="
         }
       },
       "is_incremental": false,
@@ -18462,7 +18474,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "Lqzi/XW3VgFUKkQLTOffnA=="
+          "hash": "2NxxB5xPGQ0fscuQ1OCM1Q=="
         }
       },
       "is_incremental": false,
@@ -18537,7 +18549,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1075,
+          "total_file_count": 1076,
           "skipped_file_count": 0
         }
       }
