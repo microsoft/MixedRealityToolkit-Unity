@@ -14,9 +14,13 @@ Pointers are configured as part of the Input System in MRTK via a [`MixedReality
 
 - *Pointing Raycast Layer Masks* - This is a prioritized array of LayerMasks to determine what possible GameObjects any given Pointer can interact and the order of interaction to attempt. This is may be useful to ensure Pointers interact with UI elements first before other scene objects.
 
-![Pointer Profile Example](../Images/Input/Pointers/PointerProfile.png)
+![Pointer Profile Example](../Images/Input/Pointers/PointerProfile.PNG)
+
+### Pointer options configuration
 
 The default MRTK Pointer Profile configuration includes the following pointer classes and associated prefabs out-of-box. The list of pointers available to the system at runtime is defined under *Pointer Options* in the Pointer profile. Developers can utilize this list to reconfigure existing Pointers, add new Pointers, or delete one.
+
+![Pointer Options Profile Example](../Images/Input/Pointers/PointerOptionsProfile.PNG)
 
 Each pointer entry pointer is defined by the following set of data:
 
@@ -36,20 +40,17 @@ the articulated hand controller is associated with the *PokePointer*, *GrabPoint
 > [!NOTE]
 > MRTK provides a set of pointer prefabs in *Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Pointers*. A new custom prefab can be built as long as it contains one of the pointer scripts in *Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Pointers* or any other script implementing [`IMixedRealityPointer`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer).
 
-![Pointer Options Profile Example](../Images/Input/Pointers/PointerOptionsProfile.png)
-
 ### Default pointer classes
 
 The following classes are the out-of-box MRTK pointers available and defined in the default *MRTK Pointer Profile* outlined above. Each pointer prefab provided under *Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Pointers* contains one of these pointer components attached.
 
 ![MRTK Default Pointers](../Images/Input/Pointers/MRTK_Pointers.png)
 
-
 #### Far pointers
 
-##### [`LinePointer`](xref:Microsoft.MixedReality.Toolkit.Input.MousePointer)
+##### [`LinePointer`](xref:Microsoft.MixedReality.Toolkit.Input.LinePointer)
 
- A base pointer class, draws lines from the source of the input (i.e. the controller) in the pointer direction. This is also used by other things like the Shell Hand Ray Pointer and the teleport pointers (which also draw lines to indicate where teleportation will end up at).
+ A base pointer class, draws lines from the source of the input (i.e. the controller) in the pointer direction. Generally, children classes such  the [`ShellHandRayPointer`](xref:Microsoft.MixedReality.Toolkit.Input.ShellHandRayPointer) and the teleport pointers are instantiated and utilized (which also draw lines to indicate where teleportation will end up at) instead of this class which primarily provides common functionality.
 
 For motion controllers like in Oculus, Vive, Windows Mixed Reality, the rotation will match the rotation of the controller. For other controllers like HoloLens 2 articulated hands, the rotation matches the system-provided pointing pose of the hand.
 
@@ -160,12 +161,6 @@ Below is an example script that changes the color of the attached renderer when 
         }
 ```
 
-#### Register globally
-
-blah need to add code example for CoreServices.InputSystem.Register etc
-
-Alternatively, there's the possibility to derive the handler script from [`InputSystemGlobalHandlerListener`](xref:Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener) for global registration or from [`BaseInputHandler`](xref:Microsoft.MixedReality.Toolkit.Input.BaseInputHandler) for choosing in the inspector whether to register as global listener or not. In both cases the abstract methods `RegisterHandlers` and `UnregisterHandlers` which specify the interfaces to listen to, need to be implemented.
-
 ### Query Pointers
 
 It is possible to gather all pointers currently active by looping through the available input sources (i.e controllers and inputs available) to discover which pointers are attached to them.
@@ -204,6 +199,7 @@ Developers can subscribe to the FocusProviders PrimaryPointerChanged event to be
     private void OnDisable()
     {
         CoreServices.InputSystem?.FocusProvider?.UnsubscribeFromPrimaryPointerChanged(OnPrimaryPointerChanged);
+        // This flushes out the current primary pointer
         OnPrimaryPointerChanged(null, null);
     }
 ```
