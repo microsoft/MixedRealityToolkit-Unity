@@ -13,12 +13,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     public class InteractableStringTheme : InteractableThemeBase
     {
+        private TMPro.TextMeshPro meshPro;
         private TextMesh mesh;
         private Text text;
 
         public InteractableStringTheme()
         {
-            Types = new Type[] { typeof(TextMesh), typeof(Text) };
+            Types = new Type[] { typeof(TMPro.TextMeshPro), typeof(TextMesh), typeof(Text) };
             Name = "String Theme";
             NoEasing = true;
             ThemeProperties.Add(
@@ -36,6 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             base.Init(host, settings);
 
+            meshPro = Host.GetComponentInChildren<TMPro.TextMeshPro>();
             mesh = Host.GetComponentInChildren<TextMesh>();
             text = Host.GetComponentInChildren<Text>();
         }
@@ -44,6 +46,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             InteractableThemePropertyValue start = new InteractableThemePropertyValue();
             start.String = "";
+
+            if (meshPro != null)
+            {
+                start.String = meshPro.text;
+                return start;
+            }
 
             if (mesh != null)
             {
@@ -60,7 +68,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public override void SetValue(InteractableThemeProperty property, int index, float percentage)
         {
-            if(mesh != null)
+            if (meshPro != null)
+            {
+                meshPro.text = property.Values[index].String;
+                return;
+            }
+            if (mesh != null)
             {
                 mesh.text = property.Values[index].String;
                 return;
