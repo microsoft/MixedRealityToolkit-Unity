@@ -106,7 +106,7 @@
 </div>
 <h2 id="writing-tests-for-your-code">Writing Tests for your code</h2>
 <p>To ensure MRTK being a stable and reliable toolkit, every feature should come with unit tests and sample usage in one of the example scenes.</p>
-<p>Preferrably when fixing a bug there should also be a test added to avoid running into the same issue again in the future.</p>
+<p>Preferably when fixing a bug there should also be a test added to avoid running into the same issue again in the future.</p>
 <p>Having good test coverage in a big codebase like MRTK is crucial for stability and having confidence when doing changes in code.</p>
 <p>MRTK uses the <a href="https://docs.unity3d.com/Manual/testing-editortestsrunner.html">Unity Test Runner</a> which uses a Unity integration of <a href="https://nunit.org/">NUnit</a>.</p>
 <p>This guide will give a starting point on how to add tests to MRTK. It will not explain the <a href="https://docs.unity3d.com/Manual/testing-editortestsrunner.html">Unity Test Runner</a> and <a href="https://nunit.org/">NUnit</a> which can be looked up in the links provided.</p>
@@ -152,16 +152,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [Setup]
         public void Init()
         {
-            // in most play mode test cases you would want to at least create an MRTK gameobject using the default profile
+            // in most play mode test cases you would want to at least create an MRTK GameObject using the default profile
             TestUtilities.InitializeMixedRealityToolkit(true);
         }
 
 
-        // destroy commonly initialzed objects here - this will be called after each of your tests has finished
+        // destroy commonly initialized objects here - this will be called after each of your tests has finished
         [TearDown]
         public void Shutdown()
         {
-            // call shutdown if you've created an mrtk gameobject in your test
+            // call shutdown if you've created an mrtk GameObject in your test
             TestUtilities.ShutdownMixedRealityToolkit();
         }
 
@@ -212,17 +212,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 <li><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Tests.TestUtilities.html"><code>TestUtilities</code></a></li>
 <li><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.html"><code>PlayModeTestUtilities</code></a></li>
 </ul>
-<p>TestUtilities provide the following methods to set up your MRTK scene and gameobjects:</p>
-<pre><code class="lang-csharp">/// creates the mrtk gameobject and sets the default profile if passed param is true
+<p>TestUtilities provide the following methods to set up your MRTK scene and GameObjects:</p>
+<pre><code class="lang-csharp">/// creates the mrtk GameObject and sets the default profile if passed param is true
 TestUtilities.InitializeMixedRealityToolkit()
 
-/// creates an empty scene prior to adding the mrtk gameobject to it
+/// creates an empty scene prior to adding the mrtk GameObject to it
 TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
 /// sets the initial playspace transform and camera position
 TestUtilities.InitializePlayspace();
 
-/// destroys previously created mrtk gameobject and playspace
+/// destroys previously created mrtk GameObject and playspace
 TestUtilities.ShutdownMixedRealityToolkit();
 </code></pre>
 <p>Please refer to the API docs of <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Tests.TestUtilities.html"><code>TestUtilities</code></a> and <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.html"><code>PlayModeTestUtilities</code></a> for further methods of these util classes as they're extended on a regular basis while new tests get added to MRTK.</p>
