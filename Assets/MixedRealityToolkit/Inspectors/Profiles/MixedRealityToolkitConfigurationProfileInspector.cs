@@ -55,10 +55,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         // Editor settings
         private SerializedProperty useServiceInspectors;
 
-        private MixedRealityToolkitConfigurationProfile configurationProfile;
         private Func<bool>[] RenderProfileFuncs;
 
-        private static string[] ProfileTabTitles = { "Camera", "Input", "Boundary", "Teleport", "Spatial Awareness", "Diagnostics", "Scene System", "Extensions", "Editor" };
+        private static readonly string[] ProfileTabTitles = { "Camera", "Input", "Boundary", "Teleport", "Spatial Awareness", "Diagnostics", "Scene System", "Extensions", "Editor" };
         private static int SelectedProfileTab = 0;
         private const string SelectedTabPreferenceKey = "SelectedProfileTab";
 

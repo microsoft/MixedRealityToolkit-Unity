@@ -158,13 +158,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         public static object GetSettingValue(List<InspectorPropertySetting> settings, string name)
         {
             InspectorPropertySetting setting = new InspectorPropertySetting();
+            bool hasSetting = false;
             for (int i = 0; i < settings.Count; i++)
             {
                 if (settings[i].Name == name)
                 {
                     setting = settings[i];
+                    hasSetting = true;
                     break;
                 }
+            }
+
+            if (!hasSetting)
+            {
+                return null;
             }
 
             object value = null;

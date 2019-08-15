@@ -10,8 +10,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     {
         public override void SolverUpdate()
         {
-            GoalPosition = SolverHandler.TransformTarget.position;
-            GoalRotation = SolverHandler.TransformTarget.rotation;
+            var target = SolverHandler.TransformTarget;
+            if (target != null)
+            {
+                GoalPosition = target.position;
+                GoalRotation = target.rotation;
+            }
         }
     }
 }

@@ -289,6 +289,44 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, handPosition), HandDistanceThreshold, "HandConstraint solver is not within {0} units of the hand", HandDistanceThreshold);
         }
 
+        /// <summary>
+        /// Test the Overlap solver and make sure it tracks the left simulated hand exactly
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator TestOverlap()
+        {
+            // Instantiate our test gameobject with solver.
+            var testObjects = InstantiateTestSolver<Overlap>();
+            testObjects.handler.TrackedTargetType = TrackedObjectType.HandJoint;
+            var targetTransform = testObjects.target.transform;
+
+            TestUtilities.AssertAboutEqual(targetTransform.position, Vector3.zero, "Overlap not at original position");
+            TestUtilities.AssertAboutEqual(targetTransform.rotation, Quaternion.identity, "Overlap not at original rotation");
+
+            // Test that the solver flies to the position of the left hand
+            var handPosition = Vector3.forward - Vector3.right;
+            var handRotation = Quaternion.LookRotation(handPosition);
+            var leftHand = new TestHand(Handedness.Left);
+            yield return leftHand.Show(handPosition);
+            yield return leftHand.SetRotation(handRotation);
+            
+            yield return WaitForFrames(2);
+            var hand = PlayModeTestUtilities.GetInputSimulationService().GetHandDevice(Handedness.Left);
+            Assert.IsNotNull(hand);
+            Assert.IsTrue(hand.TryGetJoint(TrackedHandJoint.Palm, out MixedRealityPose pose));
+
+            TestUtilities.AssertAboutEqual(targetTransform.position, pose.Position, "Overlap solver is not at the same position as the left hand.");
+            Assert.IsTrue(Quaternion.Angle(targetTransform.rotation, pose.Rotation) < 2.0f);
+
+            // Make sure the solver did not move when hand was hidden
+            yield return leftHand.Hide();
+            yield return WaitForFrames(2);
+            TestUtilities.AssertAboutEqual(targetTransform.position, pose.Position, "Overlap solver moved when the hand was hidden.");
+            Assert.IsTrue(Quaternion.Angle(targetTransform.rotation, pose.Rotation) < 2.0f);
+        }
+
+
         #region Test Helpers
 
         private IEnumerator TestHandSolver(GameObject target, InputSimulationService inputSimulationService, Vector3 handPos, Handedness hand)

@@ -190,7 +190,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public virtual Vector3 Position => sourcePosition;
 
         /// <inheritdoc />
-        public virtual Quaternion Rotation => Quaternion.LookRotation(gazeProvider.GazePointer.Rays[0].Direction);
+        public virtual Quaternion Rotation
+        {
+            get
+            {
+                // Previously we were simply returning the InternalGazeProvider rotation here.
+                // This caused issues when the head rotated, but the hand stayed where it was.
+                // Now we're returning a rotation based on the vector from the camera position
+                // to the hand. This rotation is not affected by rotating your head.
+                //
+                // The y value is set to 0 here as we want the rotation to be about the y axis.
+                // Without this, one-hand manipulating an object would give it unwanted x/z 
+                // rotations as you move your hand up and down.
+                Vector3 look = Position - CameraCache.Main.transform.position;
+                look.y = 0;
+                return Quaternion.LookRotation(look);
+            }
+        }
 
         #endregion
 
