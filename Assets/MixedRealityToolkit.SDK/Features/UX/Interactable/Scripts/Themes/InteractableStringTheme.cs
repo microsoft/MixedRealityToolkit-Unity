@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return start;
             }
 
-            if (mesh != null)
+            if (text != null)
             {
                 start.String = text.text;
             }
@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 mesh.text = property.Values[index].String;
                 return;
             }
-            if (mesh != null)
+            if (text != null)
             {
                 text.text = property.Values[index].String;
             }
