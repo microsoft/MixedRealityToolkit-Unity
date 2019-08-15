@@ -55,7 +55,7 @@ Pointers generally fall into one of the following categories:
 - Teleport pointers
 
   These types of pointers plug into the teleportation system to handle moving the user to the location
-  targetted by the pointer.
+  targeted by the pointer.
 
 ## Far pointers
 

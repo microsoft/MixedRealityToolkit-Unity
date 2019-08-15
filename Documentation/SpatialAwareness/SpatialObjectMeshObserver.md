@@ -11,7 +11,7 @@ To enable the spatial object mesh observer, you will need to configure the spati
 
 1. Add a new spatial observer
 
-![Add Spatatial Observer](../../Documentation/Images/SpatialAwareness/AddObserver.png)
+![Add Spatial Observer](../../Documentation/Images/SpatialAwareness/AddObserver.png)
 
 2. Select the SpatialObjectMeshObserver 
 

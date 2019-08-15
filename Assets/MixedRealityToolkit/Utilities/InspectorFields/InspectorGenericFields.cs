@@ -31,7 +31,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 foreach (var attr in attrs)
                 {
                     object value = InspectorField.GetSettingValue(settings, propInfo.Name);
-                    propInfo.SetValue(target, value);
+                    if (value != null)
+                    {
+                        propInfo.SetValue(target, value);
+                    }
                 }
             }
 
@@ -43,7 +46,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 foreach (var attr in attrs)
                 {
                     object value = InspectorField.GetSettingValue(settings, fieldInfo.Name);
-                    fieldInfo.SetValue(target, value);
+                    if (value != null)
+                    {
+                        fieldInfo.SetValue(target, value);
+                    }
                 }
             }
         }
