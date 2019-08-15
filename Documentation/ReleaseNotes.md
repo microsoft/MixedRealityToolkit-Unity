@@ -53,7 +53,19 @@ profiles, please open them to verify that all of the updated properties are corr
 
 ### What's new in 2.0.0
 
-**Default HoloLens (1st gen) profile**
+- [Default HoloLens (1st gen) profile](#default-hololens-1st-gen-profile)
+- [CoreServices](#coreservices)
+- [IMixedRealityRaycastProvider](#imixedrealityraycastprovider)
+- [SpatialObjectMeshObserver](#spatialobjectmeshobserver)
+- [SceneSystem](#scenesystem)
+- [Input Animation Recording](#input-animation-recording)
+- [HandConstraint Solvers](#handconstraint-solvers)
+- [UX Controls](#ux-controls)
+- [MRTK Standard Shader](#mrtk-standard-shader)
+- [Tools](#tools)
+- [Service Managers (experimental)](#service-managers-experimental)
+
+#### Default HoloLens (1st gen) profile
 
 We have added a new profile for HoloLens (1st gen) development that includes some of the
 recommended MRTK configurations for best performance.
@@ -63,19 +75,23 @@ Mixed Reality Toolkit's **Active Profile** to **DefaultHoloLens1ConfigurationPro
 
 ![Default HoloLens (1st gen) Configuration Profile](../../Documentation/Images/ReleaseNotes/DefaultHoloLens1ConfigurationProfile.png)
 
-**CoreServices**
+#### CoreServices
 
-The CoreServices static class works in conjunction with the MixedRealityServiceRegistry
-to provide applications with a fast and convenient mechanism to aquire instances of core
+The [CoreServices](xref:Microsoft.MixedReality.Toolkit.CoreServices) static class works in conjunction with the
+MixedRealityServiceRegistry to provide applications with a fast and convenient mechanism to acquire instances of core
 services (ex: Input System).
 
 To access extension service instances, use `MixedRealityServiceRegistry.TryGetService<T>`.
 
-**IMixedRealityRaycastProvider**
+#### IMixedRealityRaycastProvider
 
-<< >>
+The Input System was modified to add a reference to an IMixedRealityRaycastProvider.
 
-**SpatialObjectMeshObserver**
+Specify your desired raycast provider in the Input System's configuration profile. 
+
+![Selecting the Raycast provider](../../Documentation/Images/ReleaseNotes/SelectingRaycastProvider.png)
+
+#### SpatialObjectMeshObserver
 
 We have added the SpatialObjectMeshObserver to improve developer productivity when working
 with the Spatial Awareness system. This observer reads mesh data from imported 3D models
@@ -85,24 +101,101 @@ SpatialObjectMeshObserver is not enabled in the default profiles, please see the
 [Spatial Awareness Gettniving Started](SpatialAwareness/SpatialAwarenessGettingStarted.md) article
 for more information on configuring your application. 
 
-**Multi-scene support**
+#### SceneSystem
 
 MRTK 2.0.0 has added the [Scene System](SceneSystem/SceneSystemGettingStarted.md) to help with
 applications that contain more than once scene.
 
- **Input Animation Recording**
+#### Input Animation Recording
  
- << >>
+MRTK 2.0.0 features a [recording system](InputSimulation/InputAnimationRecording.md) by which head movement and hand tracking
+data can be stored in animation files. The recorded data can then be played back using the [input simulation system](InputSimulation/InputSimulationService.md).
 
-**Optimize Window**
+#### HandConstraint Solvers
 
-<< >>
+The HandConstraint and HandConstraintPalmUp solvers are now an official feature (no longer experimental) and have
+improved documentation.
+
+The HandConstraintPalmUp solver now has a toggle to enforce the hand’s fingers are coplanar before activating.
+
+#### UX Controls
+
+The following UX controls have been added and/or improved in version 2.0.0.
+
+**HoloLens 2 Button**
+
+- Improved many visual details to match the HoloLens 2 shell including
+    - Compressing visuals
+    - Far interaction support
+    - Focus highlight
+    - Shader effects
+- HoloLens 2 style Round Button has been added
+
+**Fingertip Cursor**
+
+The fingertip cursor has been updated to better match the HoloLens 2 shell.
+
+**BoundingBox**
+
+- Improvements
+    - Normalized the handle asset size and scaling logic
+    - The handle asset is now sized to 1-meter
+    - Default values and examples are updated
+- New features
+    - Animated Handle by Proximity
+    - Match the HoloLens 2 shell behavior
+    - You can now make the handles appear only when your hand is close to them
+- New example scene
+    - The BoundingBoxExample scene shows various types of configurations
+
+Please refer to the [Bounding Box](README_BoundingBox.md) documentation for more details.
+
+**Radial Solver**
+
+There have been improvements on vertical positioning. Check ‘Use Fixed Vertical Position’ to lock the vertical movement to achieve shell-style tag-along behavior. You can see the example of lazy-following tag-along behavior in the ‘ToggleFeaturesPanel’ prefab .
+
+**Clipping Example**
+
+The ClippingExamples scene, demonstates using the MRTK Standard Shader’s new clipping feature.
+
+**Slate**
+
+- Improved
+    - Usability of slates by adding the shadow based on the finger proximity
+    - ‘Follow Me’ behavior to match the HoloLens 2 shell behavior, using Radial Solver.
+- Fixed
+    - Border thickness issue fixed on flattend Bounding Box
+
+#### MRTK Standard Shader
+
+The [MRTK Standard Shader](README_MRTKStandardShader) now supports Unity's Lightweight Scriptable render pipeline.
+
+#### Tools
+
+Version 2.0.0 adds a number of new tools to help you build your mixed reality experiences.
+
+**Dependency Window**
+
+A [Dependency Window](Tools/DependencyWindow.md) has been added which displays how assets reference and depend on each other.
+This tool can be used to easily determine which assets within a project are not being used.
 
 **Extension Service Creation Wizard**
 
-<< >>
+Making the transition from singletons to services can be difficult. The [Extension Service Creation Wizard](Tools/ExtensionServiceCreationWizard.md)
+supplements documentation and sample code by enabling devs to create new services easily
 
-**Service managers (experimental)**
+**Optimize Window**
+
+The MRTK [Optimize Window](Tools/OptimizeWindow.md) is a utility to help automate and inform in the process of
+configuring a mixed reality project for best performance in Unity.
+
+**Take Screenshot**
+
+A Take Screenshot utility menu item (Mixed Reality Toolkit > Utilities > Take Screenshot) has been added
+to capture high resolution screenshots within the editor. Screenshots can be captured with a transparent
+clear color for use in easy post compositing of images for documentation or media.
+
+#### Service managers (experimental)
 
 This release adds service managers to enable the light-weight addition of specific Microsoft 
 Mixed Reality Toolkit features, such as the Spatial Awareness system, individually.
