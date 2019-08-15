@@ -50,7 +50,7 @@ The boundary system uses a configuration profile to specify which boundary compo
 ![Boundary Visualization Options](../../Documentation/Images/Boundary/BoundaryVisualizationProfile.png)
 
 > [!NOTE]
-> Users of the default profile (DefaultMixedRealitBoundarySystemProfile) will have the boundary system pre-configured to display a floor plane, the play area and the tracked area.
+> Users of the default profile (DefaultMixedRealityBoundarySystemProfile) will have the boundary system pre-configured to display a floor plane, the play area and the tracked area.
 
 ## Build and Deploy
 
