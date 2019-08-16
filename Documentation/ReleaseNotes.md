@@ -268,6 +268,10 @@ To work around the issues, please check for a newer version or roll back to vers
 MRTK 2.0.0 does not fully support profile swapping at runtime. This feature is being
 investigated for a future release.
 
+**Text overflow in the some of the scroll view example when deployed with 16-bit depth buffer**
+
+Examples made with Unity's scroll view show text overflow on the device when it is built with 16-bit depth buffer. (e.g. EyeTrackingDemo-03-Navigation.unity scene) Use 24-bit depth to build these example scenes.
+
 ## Extension Service Wizard
 
 When using the Extension Service Wizard,  *Generate Inspector* and/or *Generate Profile* are not actually optional. Trying to create an extension service with either of these deselected will result in an error on the following page. Furthermore, the extension service created for the user will create a property for the ScriptableObject profile that was not actually created. This results in a compiler error until the property line is removed. 
@@ -278,3 +282,4 @@ Current workaround steps:
 1. Open up the *ExtensionService.cs file created and remove reference to the non-existent profile.
 
 Issue [#5654](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5654) is tracking this problem.
+
