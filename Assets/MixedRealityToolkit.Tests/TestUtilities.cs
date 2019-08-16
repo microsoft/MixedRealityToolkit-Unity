@@ -136,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityToolkit(useDefaultProfile);
         }
 
-        public static void InitializeMixedRealityToolkit(bool useDefaultProfile = false)
+        public static void InitializeMixedRealityToolkit(MixedRealityToolkitConfigurationProfile configuration)
         {
             if (!MixedRealityToolkit.IsInitialized)
             {
@@ -154,19 +154,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 BaseEventSystem.enableDanglingHandlerDiagnostics = true;
             }
 
-            // Tests
             Assert.IsTrue(MixedRealityToolkit.IsInitialized);
             Assert.IsNotNull(MixedRealityToolkit.Instance);
-            if (!MixedRealityToolkit.Instance.HasActiveProfile)
-            {
-                var configuration = useDefaultProfile
-                    ? GetDefaultMixedRealityProfile<MixedRealityToolkitConfigurationProfile>()
-                    : ScriptableObject.CreateInstance<MixedRealityToolkitConfigurationProfile>();
 
-                Assert.IsTrue(configuration != null, "Failed to find the Default Mixed Reality Configuration Profile");
-                MixedRealityToolkit.Instance.ActiveProfile = configuration;
-                Assert.IsTrue(MixedRealityToolkit.Instance.ActiveProfile != null);
-            }
+
+            MixedRealityToolkit.Instance.ActiveProfile = configuration;
+            Assert.IsTrue(MixedRealityToolkit.Instance.ActiveProfile != null);
+        }
+
+        public static void InitializeMixedRealityToolkit(bool useDefaultProfile = false)
+        {
+            var configuration = useDefaultProfile
+                ? GetDefaultMixedRealityProfile<MixedRealityToolkitConfigurationProfile>()
+                : ScriptableObject.CreateInstance<MixedRealityToolkitConfigurationProfile>();
+
+            Assert.IsTrue(configuration != null, "Failed to find the Default Mixed Reality Configuration Profile");
+            InitializeMixedRealityToolkit(configuration);
         }
 
         public static void ShutdownMixedRealityToolkit()
