@@ -144,16 +144,6 @@ If you need to move the players start point, then **move the scene content and N
 
 6. Hit play and test out hand simulation by pressing spacebar.
 
-
-
-
-
-
-
-
-
-
-
 You are now ready to start building your project!
 
 ## Recommended build settings (UWP)
