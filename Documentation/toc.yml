@@ -160,10 +160,6 @@
     href: Extensions/SceneTransitionService/SceneTransitionServiceOverview.md
   - name: Experimental Features
     href: ExperimentalFeatures.md
-  - name: Advanced topics
-    items:
-    - name: Shared Experiences
-      href: TODO.md
 - name: Contributing
   items:
   - name: Contributing Overview
