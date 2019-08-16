@@ -24,11 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public class ProfileTests
     {
-        [SetUp]
-        public void SetUp()
-        {
-        }
-
         [TearDown]
         public void TearDown()
         {
