@@ -11,6 +11,7 @@ The Mixed Reality Toolkit team would like to extend a special thank you to contr
 The Mixed Reality Toolkit v2 is authored by:
 
 - achaperon
+- AdamMitchell-ms
 - Alex Cooper
 - Alexees
 - andreiborodin
