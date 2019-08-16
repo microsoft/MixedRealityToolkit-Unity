@@ -255,8 +255,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.LabelField("Press Settings", EditorStyles.boldLabel);
 
             EditorGUI.BeginChangeCheck();
+            var currentMode = distanceSpaceMode.intValue;
             EditorGUILayout.PropertyField(distanceSpaceMode);
-            if (EditorGUI.EndChangeCheck())
+            if (EditorGUI.EndChangeCheck() && currentMode != distanceSpaceMode.intValue)
             {
                 // Changing the DistanceSpaceMode requires updating the plane distance values so they stay in the same relative ratio positions
                 // NOTE: This is redundant code with the PressableButton.DistanceSpaceMode setter
