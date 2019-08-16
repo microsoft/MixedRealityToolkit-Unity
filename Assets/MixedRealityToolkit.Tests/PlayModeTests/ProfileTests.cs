@@ -17,8 +17,6 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using System.Collections;
 using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.UI;
-using UnityEditor;
 using Microsoft.MixedReality.Toolkit.Editor;
 using System.Linq;
 
