@@ -518,23 +518,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "Documentation/Contributing/DocsToDo.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/Contributing/DocsToDo.html",
-          "hash": "El2MOP1OKHdC0iEBXPQMMg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
       "source_relative_path": "Documentation/Contributing/DocumentationGuide.md",
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/DocumentationGuide.html",
-          "hash": "sQc1ZRQK+sh1naob7gRAEQ=="
+          "hash": "myVuLzAOG6QDd3GgNf58CQ=="
         }
       },
       "is_incremental": false,
@@ -18607,17 +18595,10 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 121,
+          "total_file_count": 120,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
@@ -18629,6 +18610,13 @@
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
