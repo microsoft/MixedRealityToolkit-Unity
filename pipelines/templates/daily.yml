@@ -6,5 +6,6 @@ steps:
   parameters:
     Arch: 'arm64'
     Platform: 'UWP'
-    Unity2019: true
+    PackagingDir: 'ARM64'
+    UnityVer: 'Unity2019'
     PublishArtifacts: true

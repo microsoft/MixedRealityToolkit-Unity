@@ -7,18 +7,18 @@ parameters:
   ScriptingBackend: 'default'  # [optional] default|.NET
   PublishArtifacts: false
   PackagingDir: 'Win32'
-  Unity2019: false
+  UnityVer: 'Unity2018'
 
 steps:
 - powershell: |
    # Find unity.exe as Start-UnityEditor currently doesn't support arbitrary parameters
-   If (${parameters.Unity2019})
-   {
-       $editor = Get-ChildItem ${Env:$(Unity2019Version)} -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
-   }
-   Else
+   If ("${{ parameters.UnityVer }}" -eq "Unity2018")
    {
        $editor = Get-ChildItem ${Env:$(Unity2018Version)} -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
+   }
+   ElseIf ("${{ parameters.UnityVer }}" -eq "Unity2019")
+   {
+       $editor = Get-ChildItem ${Env:$(Unity2019Version)} -Filter 'Unity.exe' -Recurse | Select-Object -First 1 -ExpandProperty FullName
    }
    
    # The build output goes to a unique combination of Platform + Arch + ScriptingBackend to ensure that
@@ -44,7 +44,7 @@ steps:
        $extraArgs += " ${{ parameters.UnityArgs }}"
    }
 
-   If ("${{  parameters.ScriptingBackend }}" -eq ".NET")
+   If ("${{ parameters.ScriptingBackend }}" -eq ".NET")
    {
        $extraArgs += " -scriptingBackend 2"
    }
