@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         #region Service Locator Tests
 
         [Test]
-        public void TestInitializeMixedRealityToolkit()
+        public void Test_01_InitializeMixedRealityToolkit()
         {
             TestUtilities.EditorCreateScenes();
             MixedRealityToolkit mixedRealityToolkit = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         }
 
         [Test]
-        public void TestNoMixedRealityConfigurationFound()
+        public void Test_02_TestNoMixedRealityConfigurationFound()
         {
             TestUtilities.EditorCreateScenes();
             MixedRealityToolkit mixedRealityToolkit = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         }
 
         [Test]
-        public void TestCreateMixedRealityToolkit()
+        public void Test_03_CreateMixedRealityToolkit()
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
@@ -63,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         #region IMixedRealityExtensionService Tests
 
         [Test]
-        public void TestRegisterMixedRealityExtensionService()
+        public void Test_05_01_RegisterMixedRealityExtensionService()
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
@@ -71,15 +71,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1(null, "Test ExtensionService 1",10, null));
 
             // Retrieve ITestExtensionService1
-            var extensionService1 = MixedRealityToolkit.Instance.GetService<ITestExtensionService1>();
-
-            // Tests
-            Assert.IsNotNull(extensionService1);
+            Assert.IsNotNull(MixedRealityToolkit.Instance.GetService<IMixedRealityExtensionService>());
+            Assert.IsNotNull(MixedRealityToolkit.Instance.GetService<ITestExtensionService1>());
+            Assert.IsNotNull(MixedRealityToolkit.Instance.GetService<TestExtensionService1>());
+            Assert.IsNotNull(MixedRealityToolkit.Instance.GetService<BaseExtensionService>());
             Assert.AreEqual(1, MixedRealityServiceRegistry.GetAllServices().Count);
         }
 
         [Test]
-        public void TestUnregisterMixedRealityExtensionServiceByType()
+        public void Test_05_02_01_UnregisterMixedRealityExtensionServiceByType()
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         }
 
         [Test]
-        public void TestUnregisterMixedRealityExtensionServiceByTypeAndName()
+        public void Test_05_02_02_UnregisterMixedRealityExtensionServiceByTypeAndName()
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
@@ -131,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         }
 
         [Test]
-        public void TestRegisterMixedRealityExtensionServices()
+        public void Test_05_03_RegisterMixedRealityExtensionServices()
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
@@ -150,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         }
 
         [Test]
-        public void TestUnregisterMixedRealityExtensionServicesByType()
+        public void Test_05_04_UnregisterMixedRealityExtensionServicesByType()
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
@@ -191,7 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         }
 
         [Test]
-        public void TestMixedRealityExtensionService2DoesNotExist()
+        public void Test_05_05_MixedRealityExtensionService2DoesNotExist()
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
@@ -206,7 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         }
 
         [Test]
-        public void TestMixedRealityExtensionServiceDoesNotReturnByName()
+        public void Test_05_06_MixedRealityExtensionServiceDoesNotReturnByName()
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
@@ -223,31 +223,30 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         }
 
         [Test]
-        public void TestValidateExtensionServiceName()
+        public void Test_05_07_ValidateExtensionServiceName()
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
             // Add test ExtensionService 1
-            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1(null, "Test14-1", 10, null));
+            string service1Name = "Test14-1";
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1(null, service1Name, 10, null));
 
             // Add test ExtensionService 2
-            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(new TestExtensionService2(null, "Test14-2", 10, null));
+            string service2Name = "Test14-2";
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(new TestExtensionService2(null, service2Name, 10, null));
 
             // Retrieve Test ExtensionService 2-2
-            var extensionService2 = (TestExtensionService2)MixedRealityToolkit.Instance.GetService<ITestExtensionService2>("Test14-2");
-
-            // ExtensionService 2-2 Tests
-            Assert.AreEqual("Test14-2", extensionService2.Name);
+            var extensionService2 = MixedRealityToolkit.Instance.GetService<ITestExtensionService2>(service2Name);
+            Assert.AreEqual(service2Name, extensionService2.Name);
+            Assert.IsNotNull(MixedRealityToolkit.Instance.GetService<IMixedRealityExtensionService>(service2Name));
 
             // Retrieve Test ExtensionService 2-1
-            var extensionService1 = (TestExtensionService1)MixedRealityToolkit.Instance.GetService<ITestExtensionService1>("Test14-1");
-
-            // ExtensionService 2-1 Tests
-            Assert.AreEqual("Test14-1", extensionService1.Name);
+            var extensionService1 = MixedRealityToolkit.Instance.GetService<ITestExtensionService1>(service1Name);
+            Assert.AreEqual(service1Name, extensionService1.Name);
         }
 
         [Test]
-        public void TestGetMixedRealityExtensionServiceCollectionByInterface()
+        public void Test_05_08_GetMixedRealityExtensionServiceCollectionByInterface()
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
@@ -266,7 +265,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         }
 
         [Test]
-        public void TestGetAllMixedRealityExtensionServices()
+        public void Test_05_09_GetAllMixedRealityExtensionServices()
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
@@ -288,7 +287,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         #endregion IMixedRealityExtensionService Tests
 
         [Test]
-        public void TestEnableServicesByType()
+        public void Test_07_01_EnableServicesByType()
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
@@ -314,7 +313,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         }
 
         [Test]
-        public void TestDisableServicesByType()
+        public void Test_07_02_DisableServicesByType()
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
@@ -351,7 +350,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         #region Multiple Instances Tests
 
         [Test]
-        public void TestCreateMultipleInstances()
+        public void Test_08_01_CreateMultipleInstances()
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
@@ -365,7 +364,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         }
 
         [Test]
-        public void TestSwitchBetweenActiveInstances()
+        public void Test_08_02_SwitchBetweenActiveInstances()
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
@@ -389,7 +388,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         }
 
         [Test]
-        public void TestDestroyActiveInstance()
+        public void Test_08_03_DestroyActiveInstance()
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
@@ -405,7 +404,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         }
 
         [Test]
-        public void TestCreateMultipleInstancesInMultipleScenes()
+        public void Test_08_04_CreateMultipleInstancesInMultipleScenes()
         {
             TestUtilities.EditorCreateScenes(3);
 
