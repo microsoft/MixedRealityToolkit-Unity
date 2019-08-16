@@ -1,6 +1,6 @@
 # Dictation
 
-Dictation allows users to record audio clips and obtain a transcription. To use it make sure that a dictation system is registered in the *Input System Profile*. **Windows Dictation Input Provider** is the dication system provided out of the box but alternative dictation systems can be created implementing [`IMixedRealityDictationSystem`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityDictationSystem).
+Dictation allows users to record audio clips and obtain a transcription. To use it make sure that a dictation system is registered in the *Input System Profile*. **Windows Dictation Input Provider** is the dictation system provided out of the box but alternative dictation systems can be created implementing [`IMixedRealityDictationSystem`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityDictationSystem).
 
 <img src="../../Documentation/Images/Input/DictationDataProvider.png" width="80%" class="center">
 

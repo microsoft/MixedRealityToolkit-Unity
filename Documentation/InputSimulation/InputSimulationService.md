@@ -57,7 +57,7 @@ Press and hold the movement keys (W/A/S/D for forward/left/back/right).
 
 # Hand Simulation
 
-The input simulation supports emulated hand devices. These virtual hands can interact with any object that supports regular hand devices, such as buttons or grabable objects.
+The input simulation supports emulated hand devices. These virtual hands can interact with any object that supports regular hand devices, such as buttons or grabbable objects.
 
 <a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandSimulationMode.png">
   <img src="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandSimulationMode.png" title="Full Hand Mesh" width="80%" class="center" />
@@ -67,13 +67,13 @@ The __Hand Simulation Mode__ switches between two distinct input models.
 
 * _Articulated Hands_: Simulates a fully articulated hand device with joint position data.
 
-   Emulates Hololens 2 interaction model.
+   Emulates HoloLens 2 interaction model.
 
    Interactions that are based on precise positioning of the hand or use touching can be simulated in this mode.
 
 * _Gestures_: Simulates a simplified hand model with air tap and basic gestures.
 
-   Emulates [Hololens interaction model](https://docs.microsoft.com/en-us/windows/mixed-reality/gestures).
+   Emulates [HoloLens interaction model](https://docs.microsoft.com/en-us/windows/mixed-reality/gestures).
 
    Focus is controlled using the Gaze pointer. The _Air Tap_ gesture is used to interact with buttons.
 
