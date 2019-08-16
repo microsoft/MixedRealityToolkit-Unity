@@ -53,6 +53,8 @@
       href: Input/Dictation.md
     - name: Hands
       href: InputSystem/HandTracking.md
+    - name: Gaze
+      href: Input/Gaze.md
     - name: Eyes
       href: EyeTracking/EyeTracking_Main.md
   - name: In-Editor Input Simulation
