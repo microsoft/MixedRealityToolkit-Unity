@@ -178,8 +178,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 Undo.RecordObject(target, string.Concat("Modify Button Planes of ", button.name));
 
-                Debug.Log("Modify button planes");
-
                 startPushDistance.floatValue = info.StartPushDistance;
                 maxPushDistance.floatValue = info.MaxPushDistance; 
                 pressDistance.floatValue = info.PressDistance;
