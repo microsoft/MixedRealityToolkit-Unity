@@ -482,7 +482,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (Application.isPlaying)
             {
                 Debug.Assert(uiRaycastCamera == null);
-                CreateUiRaycastCamera();
+                FindOrCreateUiRaycastCamera();
             }
 
             var primaryPointerSelectorType = InputSystem?.InputSystemProfile.PointerProfile.PrimaryPointerSelector.Type;
@@ -606,11 +606,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Utility for creating the UIRaycastCamera.
         /// </summary>
         /// <returns>The UIRaycastCamera</returns>
-        private void CreateUiRaycastCamera()
+        private void FindOrCreateUiRaycastCamera()
         {
             GameObject cameraObject = null;
 
-            cameraObject = new GameObject { name = "UIRaycastCamera" };
+            var existingUiRaycastCameraObject = GameObject.Find("UIRaycastCamera");
+            if (existingUiRaycastCameraObject != null)
+            {
+                cameraObject = existingUiRaycastCameraObject;
+            }
+            else
+            {
+                cameraObject = new GameObject { name = "UIRaycastCamera" };
+            }
 
             uiRaycastCamera = cameraObject.EnsureComponent<Camera>();
             uiRaycastCamera.enabled = false;
@@ -892,7 +900,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     hitResult3d.Clear();
                     QueryScene(pointerData.Pointer, raycastProvider, prioritizedLayerMasks, hitResult3d, maxQuerySceneResults, focusIndividualCompoundCollider);
 
-                    if (pointerData.Pointer.PointerId == gazeProviderPointingData?.Pointer.PointerId)
+                    if (pointerData.Pointer.PointerId == gazeProviderPointingData.Pointer.PointerId)
                     {
                         gazeHitResult = hitResult3d;
                     }
