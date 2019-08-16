@@ -145,8 +145,6 @@
       href: Packaging/MRTK_Modularization.md
   - name: Tools
     items:
-    - name: Build Window
-      href: Tools/BuildWindow.md
     - name: Dependency Window
       href: Tools/DependencyWindow.md
     - name: Optimize Window
