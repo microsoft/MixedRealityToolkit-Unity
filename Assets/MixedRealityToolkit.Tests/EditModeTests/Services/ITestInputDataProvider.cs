@@ -2,9 +2,11 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 
+using Microsoft.MixedReality.Toolkit.Input;
+
 namespace Microsoft.MixedReality.Toolkit.Tests.Services
 {
-    internal interface ITestDataProvider2 : IMixedRealityDataProvider, ITestService
+    internal interface ITestInputDataProvider : IMixedRealityDataProvider, ITestService, IMixedRealityInputDeviceManager
     {
     }
 }

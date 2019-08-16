@@ -296,7 +296,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1(null, "Test07-01-1.2",10, null));
 
             // Add test 2 services
-            MixedRealityToolkit.Instance.RegisterService<ITestDataProvider2>(new TestDataProvider2(null, null, "Test07-01-2.1", 10));
+            MixedRealityToolkit.Instance.RegisterService<ITestInputDataProvider>(new TestInputDataProvider(null, null, "Test07-01-2.1", 10, null));
             MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(new TestExtensionService2(null, "Test07-01-2.2",10, null));
 
             // Enable all test services
@@ -322,7 +322,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1(null, "Test07-01-1.2",10, null));
 
             // Add test 2 services
-            MixedRealityToolkit.Instance.RegisterService<ITestDataProvider2>(new TestDataProvider2(null, null, "Test07-01-2.1", 10));
+            MixedRealityToolkit.Instance.RegisterService<ITestInputDataProvider>(new TestInputDataProvider(null, null, "Test07-01-2.1", 10, null));
             MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(new TestExtensionService2(null, "Test07-01-2.2",10, null));
 
             // Enable all test services
