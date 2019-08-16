@@ -29,8 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [SetUp]
         public void SetUp()
         {
-            TestUtilities.InitializeMixedRealityToolkit(true);
-            TestUtilities.PlayspaceToOriginLookingForward();
         }
 
         [TearDown]
@@ -40,6 +38,26 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         private const string HoloLens1ProfileName = "DefaultHoloLens1ConfigurationProfile";
+
+        /// <summary>
+        /// Test that the default HoloLens 2 profile acts as expected (when hands are up, we see a hand ray).
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator TestDefaultProfile()
+        {
+            TestUtilities.InitializeMixedRealityToolkit(true);
+
+            TestHand hand = new TestHand(Handedness.Right);
+            yield return hand.Show(Vector3.forward);
+
+
+            var allPointers = GetAllPointers();
+            // https://nunit.org/docs/2.5.5/collectionConstraints.html
+            Assert.That(allPointers, Has.No.InstanceOf(typeof(GGVPointer)));
+            Assert.That(allPointers, Has.Some.InstanceOf(typeof(ShellHandRayPointer)));
+        }
+
         /// <summary>
         /// Test that HoloLens 1 profile acts as expected (e.g. when hands are up there are no hand rays)
         /// </summary>
@@ -49,17 +67,25 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             var hl1Profile = ScriptableObjectExtensions.GetAllInstances<MixedRealityToolkitConfigurationProfile>()
                 .FirstOrDefault(x => x.name.Equals(HoloLens1ProfileName));
-            MixedRealityToolkit.Instance.ActiveProfile = hl1Profile;
+            TestUtilities.InitializeMixedRealityToolkit(hl1Profile);
 
             TestHand hand = new TestHand(Handedness.Right);
             yield return hand.Show(Vector3.forward);
 
+            var allPointers = GetAllPointers();
             // https://nunit.org/docs/2.5.5/collectionConstraints.html
-            foreach(var i in CoreServices.InputSystem.DetectedInputSources)
+            Assert.That(allPointers, Has.Some.InstanceOf(typeof(GGVPointer)));
+            Assert.That(allPointers, Has.No.InstanceOf(typeof(ShellHandRayPointer)));
+        }
+
+        private List<IMixedRealityPointer> GetAllPointers()
+        {
+            var allPointers = new List<IMixedRealityPointer>();
+            foreach (var i in CoreServices.InputSystem.DetectedInputSources)
             {
-                Assert.That(i.Pointers, Has.Some.InstanceOf(typeof(GGVPointer)));
-                Assert.That(i.Pointers, Has.No.InstanceOf(typeof(ShellHandRayPointer)));
+                allPointers.AddRange(i.Pointers);
             }
+            return allPointers;
         }
     }
 }
