@@ -13,7 +13,8 @@ We will start with a quick overview of what the individual eye tracking demo sce
 The MRTK eye tracking demo scenes are [loaded additively](https://docs.unity3d.com/ScriptReference/SceneManagement.LoadSceneMode.Additive.html) which we will explain below how to set up.
 
 ## Overview of the eye tracking demo samples
-[**Eye-Supported Target Selection**](EyeTracking_TargetSelection.md)
+
+### [**Eye-Supported Target Selection**](EyeTracking_TargetSelection.md)
 
 This tutorial showcases the ease of accessing eye gaze data to select targets. 
 It includes an example for subtle yet powerful feedback to provide confidence to the user that a target is focused while not being overwhelming.
@@ -24,7 +25,7 @@ In addition, there is a simple example of smart notifications that automatically
 <br>
 
 
-[**Eye-Supported Navigation**](EyeTracking_Navigation.md)
+### [**Eye-Supported Navigation**](EyeTracking_Navigation.md)
 
 Imagine you are reading some information on a distant display or your e-reader and when you reach the end of the displayed text, the text automatically scrolls up to reveal more content. 
 Or how about magically zooming directly toward where you were looking at? 
@@ -36,7 +37,7 @@ In addition, there is an example for hands-free rotation of 3D holograms by maki
 <br>
 
 
-[**Eye-Supported Positioning**](EyeTracking_Positioning.md)
+### [**Eye-Supported Positioning**](EyeTracking_Positioning.md)
 
 This tutorial shows an input scenario called [Put-That-There](https://youtu.be/CbIn8p4_4CQ) dating back to research from the MIT Media Lab in the early 1980's with eye, hand and voice input.
 The idea is simple: Benefit from your eyes for fast target selection and positioning. 
@@ -48,7 +49,7 @@ For more precisely positioning your hologram, you can use additional input from 
 <br>
 
 
-[**Visualization of Visual Attention**](EyeTracking_Visualization.md)
+### **Visualization of Visual Attention**
 
 Information about where users look at is an immensely powerful tool to assess usability of a design and to identify problems in efficient work streams. 
 This tutorial discusses different eye tracking visualizations and how they fit different needs. 
