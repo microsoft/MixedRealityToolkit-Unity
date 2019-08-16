@@ -178,6 +178,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 Undo.RecordObject(target, string.Concat("Modify Button Planes of ", button.name));
 
+                Debug.Log("Modify button planes");
+
                 startPushDistance.floatValue = info.StartPushDistance;
                 maxPushDistance.floatValue = info.MaxPushDistance; 
                 pressDistance.floatValue = info.PressDistance;
@@ -254,24 +256,22 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.PropertyField(movingButtonVisuals);
             EditorGUILayout.LabelField("Press Settings", EditorStyles.boldLabel);
 
-            serializedObject.ApplyModifiedProperties();
-
-            var pos = EditorGUILayout.GetControlRect();
-            // Utilize EditorGUI.PropertyScope to keep prefab bolding and other editor field tracking
-            using (var propertyScope = new EditorGUI.PropertyScope(pos, DistanceSpaceModeLabel, distanceSpaceMode))
+            EditorGUI.BeginChangeCheck();
+            EditorGUILayout.PropertyField(distanceSpaceMode);
+            if (EditorGUI.EndChangeCheck())
             {
-                PressableButton.SpaceMode currentMode = button.DistanceSpaceMode;
-                // If user changes space mode, we want to call the property which will update the distance value appropriately
-                var spaceMode = (PressableButton.SpaceMode)EditorGUI.EnumPopup(pos, DistanceSpaceModeLabel, currentMode);
-                if (spaceMode != currentMode)
-                {
-                    button.DistanceSpaceMode = spaceMode;
-                    distanceSpaceMode.enumValueIndex = (int)spaceMode;
-                }
-            }
+                // Changing the DistanceSpaceMode requires updating the plane distance values so they stay in the same relative ratio positions
+                // NOTE: This is redundant code with the PressableButton.DistanceSpaceMode setter
+                // Unfortunately, the serializedobject modifies the private serialized field and not the setter so we have to do the scaling manually
+                float scale = ((PressableButton.SpaceMode)distanceSpaceMode.enumValueIndex == PressableButton.SpaceMode.Local) ? button.WorldToLocalScale : button.LocalToWorldScale;
 
-            // Leveraging button.DistanceSpaceMode setter modifies other component properties that need to be refreshed
-            serializedObject.Update();
+                startPushDistance.floatValue *= scale;
+                maxPushDistance.floatValue *= scale;
+                pressDistance.floatValue *= scale;
+                releaseDistanceDelta.floatValue *= scale;
+
+                serializedObject.ApplyModifiedProperties();
+            }
 
             DrawPropertiesExcluding(serializedObject, excludeProperties);
 
