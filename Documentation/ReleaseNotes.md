@@ -159,7 +159,8 @@ The fingertip cursor has been updated to better match the HoloLens 2 shell.
 - New example scene
     - The BoundingBoxExample scene shows various types of configurations
 
-Please refer to the [Bounding Box](README_BoundingBox.md) documentation for more details.
+[!Important]  Normalized asset handle size and scaling logic requires updated handle scale values. With this change, existing bounding box handle will be displayed in very large size. Please refer to the **Bounding box handle styles** section in the [Bounding Box](README_BoundingBox.md) documentation for updated recommended values for the handle size. You can also find handle configuration examples in the **BoundingBoxExamples** scene. 
+<img src="../Documentation/Images/BoundingBox/MRTK_BoundingBox_HandleStyles2.png" width="450">
 
 **Radial Solver**
 
