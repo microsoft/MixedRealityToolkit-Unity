@@ -72,6 +72,8 @@ The TouchPointer is responsible for working with Unity Touch input (i.e. touchsc
 
 The MousePointer powers a screen to world raycast for far interactions, but for mouse instead of touch.
 
+> [!NOTE] Mouse support is not available by default in MRTK but can be enabled by adding a new *Input Data Provider* of type [`MouseDeviceManager`](xref:Microsoft.MixedReality.Toolkit.Input.UnityInput.MouseDeviceManager) to the MRTK input profile.
+
 <img src="../../Documentation/Images/Pointers/MRTK_MousePointer.png" width="400">
 
 #### Near pointers
