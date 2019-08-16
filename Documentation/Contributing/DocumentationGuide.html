@@ -123,17 +123,10 @@
 }
 </code></pre>
 <p>When mentioning code within a sentence <code>use a single backtick</code>.</p>
-<h3 id="todos">TODOs</h3>
-<p>Avoid using TODOS in docs, as over time these TODOs (like code TODOs) tend to accumulate
-and information about how they should be updated and why gets lost.</p>
-<p>If it is absolutely necessary to add a TODO, follow these steps:</p>
-<ol>
-<li>File a new issue on Github describing the context behind the TODO, and provide enough
-background that another contributor would be able to understand and then address the
-TODO.</li>
-<li>Reference the issue URL in the todo in the docs.</li>
-</ol>
-<p>&lt;!-- TODO(<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/ISSUE_NUMBER_HERE">https://github.com/microsoft/MixedRealityToolkit-Unity/issues/ISSUE_NUMBER_HERE</a>): A brief blurb on the issue --&gt;</p>
+<h3 id="todo-comments">TODO comments</h3>
+<p>To mark areas in the documentation that need to be revisited later again, please use the following comment style, to make it easy to find those places again:</p>
+<p>&lt;!-- TODO: add more details --&gt;</p>
+<p>Also consider adding pages with TODOs to the <a href="DocsToDo.html">documentation TODO list</a>.</p>
 <h3 id="highlighted-sections">Highlighted sections</h3>
 <p>To highlight specific points to the reader, use <em>&gt; [!NOTE]</em> , <em>&gt; [!WARNING]</em> , and <em>&gt; [!IMPORTANT]</em> to produce the following styles. It is recommended to use notes for general points and warning/important points only for special relevant cases.</p>
 <div class="NOTE">
@@ -218,6 +211,7 @@ There can be a toc file for every subfolder in the documentation folder which ca
 <p>When documenting a list of properties, use bold text to highlight the property name, then line breaks and regular text to describe them. Do not use sub-chapters or bullet point lists.</p>
 <p>Also, don't forget to finish all sentences with a period.</p>
 <h2 id="when-you-are-finished-with-a-page">When you are finished with a page</h2>
+<p>First off, it is ok for a 'finished' page to contain <a href="#todo-comments">TODO comments</a>. However, once you stop working on a page, please do the following:</p>
 <ol>
 <li>Make sure you followed the guidelines in this document.</li>
 <li>Browse the document structure and see if your new document could be mentioned under the <a href="#see-also">See also</a> section of other pages.</li>
@@ -338,7 +332,7 @@ No known breaking changes
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/2.0.0_stabilization/Documentation/Contributing/DocumentationGuide.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/Contributing/DocumentationGuide.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
