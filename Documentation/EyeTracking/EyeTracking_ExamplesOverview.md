@@ -47,18 +47,6 @@ For more precisely positioning your hologram, you can use additional input from 
 
 <br>
 
-
-[**Visualization of Visual Attention**](EyeTracking_Visualization.md)
-
-Information about where users look at is an immensely powerful tool to assess usability of a design and to identify problems in efficient work streams. 
-This tutorial discusses different eye tracking visualizations and how they fit different needs. 
-We provide basic examples for logging and loading eye tracking data and examples for how to visualize them. 
-
-**Summary**: Two-dimensional attention map (heatmaps) on slates. Recording & replaying eye tracking data.
-
-<br>
-
-
 ## Setting up the MRTK eye tracking samples
 
 ### 1. Load EyeTrackingDemo-00-RootScene.unity
