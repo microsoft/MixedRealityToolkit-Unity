@@ -83,6 +83,15 @@
 <h1 id="dictation">Dictation</h1>
 
 <p>Dictation allows users to record audio clips and obtain a transcription. To use it make sure that a dictation system is registered in the <em>Input System Profile</em>. <strong>Windows Dictation Input Provider</strong> is the dictation system provided out of the box but alternative dictation systems can be created implementing <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityDictationSystem.html"><code>IMixedRealityDictationSystem</code></a>.</p>
+<h2 id="requirements">Requirements</h2>
+<p>The dictation system uses Unity's <a href="https://docs.unity3d.com/ScriptReference/Windows.Speech.DictationRecognizer.html">DictationRecognizer</a>
+which itself uses the underlying Windows speech APIs for handling dictation. Note that this
+implies that this feature is only present on Windows-based platforms.</p>
+<p>Usage of the Dictation system requires both the &quot;Internet Client&quot; and &quot;Microphone&quot; application
+capabilities in the <a href="https://docs.unity3d.com/Manual/class-PlayerSettingsWSA.html#Capabilities">PlayerSettings - Capabilities section</a>.
+See <a href="https://docs.microsoft.com/en-us/windows/mixed-reality/voice-input-in-unity#dictation">Windows Mixed Reality Documentation</a>
+for more details on voice input in Unity.</p>
+<h2 id="configuration">Configuration</h2>
 <img src="../Images/Input/DictationDataProvider.png" width="80%" class="center">
 <p>Once you have a dictation service set up, you can use the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.DictationHandler.html"><code>DictationHandler</code></a> script to start and stop recording sessions and obtain the transcription results via UnityEvents.</p>
 <img src="../Images/Input/DictationHandler.png" width="80%" class="center">

@@ -362,18 +362,6 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "Documentation/Architecture/CrossPlatform/DeterminingPlatformCapabilities.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/Architecture/CrossPlatform/DeterminingPlatformCapabilities.html",
-          "hash": "ADo69q5o//v/uZuBg/uxhw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
       "source_relative_path": "Documentation/Architecture/FrameworkAndRuntime.md",
       "output": {
         ".html": {
@@ -474,7 +462,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Boundary/ConfiguringBoundaryVisualization.html",
-          "hash": "vGHjmntM74ewe/HM5qrv3g=="
+          "hash": "UVl+p2BO49IG/v2pmxIcsA=="
         }
       },
       "is_incremental": false,
@@ -530,23 +518,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "Documentation/Contributing/DocsToDo.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/Contributing/DocsToDo.html",
-          "hash": "lCGabhKbeOa19csByNoXgA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
       "source_relative_path": "Documentation/Contributing/DocumentationGuide.md",
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/DocumentationGuide.html",
-          "hash": "yjNuF8hA4ORpcveqhk8qZA=="
+          "hash": "9RA3cLxH5Oaye39k9PwtGg=="
         }
       },
       "is_incremental": false,
@@ -583,6 +559,18 @@
         ".html": {
           "relative_path": "Documentation/Contributing/UnitTests.html",
           "hash": "KHGMbwQ1aRBzWf/qrwdgvA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/DetectingPlatformCapabilities.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/DetectingPlatformCapabilities.html",
+          "hash": "Yec+EXKYLTB2UXFM8u2iRQ=="
         }
       },
       "is_incremental": false,
@@ -674,23 +662,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "Documentation/EyeTracking/EyeTracking_Cursor.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/EyeTracking/EyeTracking_Cursor.html",
-          "hash": "4K0mrkRii3vTxLLrVmesjg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
       "source_relative_path": "Documentation/EyeTracking/EyeTracking_ExamplesOverview.md",
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_ExamplesOverview.html",
-          "hash": "Q4K0S5MNaUkxSEBt2VhX8Q=="
+          "hash": "AGTevvpXfEXPEVrgNG8Z6g=="
         }
       },
       "is_incremental": false,
@@ -782,23 +758,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "Documentation/EyeTracking/EyeTracking_Visualization.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/EyeTracking/EyeTracking_Visualization.html",
-          "hash": "1F0jbySLFWL7oUx9tjR/0w=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
       "source_relative_path": "Documentation/GettingStartedWithTheMRTK.md",
       "output": {
         ".html": {
           "relative_path": "Documentation/GettingStartedWithTheMRTK.html",
-          "hash": "I6FNYF64MhARx/iYPH+edg=="
+          "hash": "Gu8kyGiweu2fRrb7CRLWRA=="
         }
       },
       "is_incremental": false,
@@ -4948,7 +4912,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/Dictation.html",
-          "hash": "eLnBEFYlcKA4il+gYXwTYw=="
+          "hash": "PH9wmDQ/MKd9FE8+hxs6jQ=="
         }
       },
       "is_incremental": false,
@@ -5068,7 +5032,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/InputSimulation/InputSimulationService.html",
-          "hash": "BJYXYC/+uFUF70guH3E7ZQ=="
+          "hash": "i8Ifq4vSuQyThBIaQEpeuA=="
         }
       },
       "is_incremental": false,
@@ -5508,30 +5472,6 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "Documentation/TODO.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/TODO.html",
-          "hash": "LAEo1yeiJT6Ek63WZtxduw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Documentation/Tools/BuildWindow.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/Tools/BuildWindow.html",
-          "hash": "mnE8BUesPWNL1iXhJugq5A=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
       "source_relative_path": "Documentation/Tools/DependencyWindow.md",
       "output": {
         ".html": {
@@ -5608,7 +5548,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "lZyi2xHj0I7YKKTx8WDBQA=="
+          "hash": "J7fs9U+V2RijHlU/YuFYxQ=="
         }
       },
       "is_incremental": false,
@@ -5620,7 +5560,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "7CbdD5LJmQ5NhsP5M4k9ZA=="
+          "hash": "KayUkphxkzXkW3EVSBsVxQ=="
         }
       },
       "is_incremental": false,
@@ -13535,6 +13475,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.ProfileTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.ProfileTests.html",
+          "hash": "xQFTFVQ1erzas0jpNgkeBg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.SanityTests.DemoSceneTests.yml",
       "output": {
         ".html": {
@@ -13707,7 +13659,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.TestUtilities.html",
-          "hash": "YI7/LG18/zzF0Fm1lpJi/A=="
+          "hash": "YwTLRatlGoNCJgLBXckxPw=="
         }
       },
       "is_incremental": false,
@@ -13767,7 +13719,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.html",
-          "hash": "zYfEXrYZZujBRPPHlB0l9g=="
+          "hash": "H4r/tcqVMLg1/RzK1aaO8Q=="
         }
       },
       "is_incremental": false,
@@ -18651,7 +18603,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "Yb/2Dw93isRYbuZkLRMNjQ=="
+          "hash": "T78qZ6Yu1FWjW7dtlvMIHw=="
         }
       },
       "is_incremental": false,
@@ -18703,6 +18655,18 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1085,
+          "skipped_file_count": 0
+        },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 116,
+          "skipped_file_count": 0
+        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
@@ -18710,23 +18674,11 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 121,
-          "skipped_file_count": 0
-        },
         "TocDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1084,
           "skipped_file_count": 0
         }
       }
