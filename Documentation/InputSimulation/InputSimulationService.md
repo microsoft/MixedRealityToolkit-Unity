@@ -14,7 +14,7 @@ Users can use a conventional keyboard and mouse combination to control simulated
 
 Input simulation is enabled by default in MRTK.
 
-Input simulation is an optional [Mixed Reality service](../MixedRealityServices.md). It can be added as a data provider in the [Input System profile](../TODO.md).
+Input simulation is an optional [Mixed Reality service](../MixedRealityServices.md). It can be added as a data provider in the [Input System profile](../Input/InputProviders.md).
 * __Type__ must be _Microsoft.MixedReality.Toolkit.Input > InputSimulationService_.
 * __Platform(s)__ should always be _Windows Editor_ since the service depends on keyboard and mouse input.
 * __Profile__ has all settings for input simulation.
