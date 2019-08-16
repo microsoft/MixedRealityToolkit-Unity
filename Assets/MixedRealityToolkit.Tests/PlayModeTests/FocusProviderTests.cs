@@ -83,13 +83,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return null;
 
-            Assert.NotNull(MixedRealityToolkit.InputSystem.GazeProvider.GazeTarget, "GazeProvider target is null when looking at an object");
+            Assert.NotNull(CoreServices.InputSystem.GazeProvider.GazeTarget, "GazeProvider target is null when looking at an object");
 
             TestHand h = new TestHand(Handedness.Right);
             yield return h.Show(Vector3.forward * 0.2f);
             yield return null;
 
-            Assert.NotNull(MixedRealityToolkit.InputSystem.GazeProvider.GazeTarget, "GazeProvider target is null when looking at an object with hand raised");
+            Assert.NotNull(CoreServices.InputSystem.GazeProvider.GazeTarget, "GazeProvider target is null when looking at an object with hand raised");
         }
     }
 }

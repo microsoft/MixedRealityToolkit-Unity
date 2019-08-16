@@ -19,11 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         /// </summary>
         protected Dictionary<Type, IMixedRealityService> registeredServices = new Dictionary<Type, IMixedRealityService>();
 
-        /// <summary>
-        /// The collection of registered data providers.
-        /// </summary>
-        private List<IMixedRealityDataProvider> dataProviders = new List<IMixedRealityDataProvider>();
-
         #region MonoBehaviour implementation
 
         protected virtual void Update()
@@ -33,11 +28,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
                 foreach (IMixedRealityService service in registeredServices.Values)
                 {
                     service.Update();
-                }
-
-                for (int i = 0; i < dataProviders.Count; i++)
-                {
-                    dataProviders[i].Update();
                 }
             }
         }
@@ -52,11 +42,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
                     {
                         service.LateUpdate();
                     }
-
-                    for (int i = 0; i < dataProviders.Count; i++)
-                    {
-                        dataProviders[i].LateUpdate();
-                    }
                 }
             }
         }
@@ -70,11 +55,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
                 {
                     service.Enable();
                 }
-
-                for (int i = 0; i < dataProviders.Count; i++)
-                {
-                    dataProviders[i].Enable();
-                }
             }
         }
 
@@ -86,23 +66,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
                 {
                     service.Disable();
                 }
-
-                for (int i = 0; i < dataProviders.Count; i++)
-                {
-                    dataProviders[i].Disable();
-                }
             }
         }
 
         protected virtual void OnDestroy()
         {
-            for (int i = 0; i < dataProviders.Count; i++)
-            {
-                dataProviders[i].Disable(); // Disable before destroy to ensure the data provider has time to get in a good state.
-                dataProviders[i].Destroy();
-            }
-            dataProviders.Clear();
-
             foreach (IMixedRealityService service in registeredServices.Values)
             {
                 service.Disable(); // Disable before destroy to ensure the service has time to get in a good state.
@@ -114,57 +82,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         #endregion MonoBehaviour implementation
 
         #region IMixedRealityServiceRegistrar implementation
-
-        /// <inheritdoc />
-        public T GetDataProvider<T>(string name = null) where T : IMixedRealityDataProvider
-        {
-            Type interfaceType = typeof(T);
-            T provider = default(T);
-
-            for (int i = 0; i < dataProviders.Count; i++)
-            {
-                // Check for null and mismatched type.
-                if (!interfaceType.IsAssignableFrom(dataProviders[i].GetType())) { continue; }
-
-                // Check to see if a name has been provided and if it matches the provider's name.
-                if (!string.IsNullOrWhiteSpace(name) && string.Equals(dataProviders[i].Name, name))
-                {
-                    provider = (T)dataProviders[i];
-                }
-                // If no name specified, the first instance of a matching provider type will be returned.
-                else
-                {
-                    provider = (T)dataProviders[i];
-                }
-            }
-
-            return provider;
-        }
-
-        /// <inheritdoc />
-        public IReadOnlyList<T> GetDataProviders<T>(string name = null) where T : IMixedRealityDataProvider
-        {
-            Type interfaceType = typeof(T);
-            List<T> matchingProviders = new List<T>();
-
-            for (int i = 0; i < dataProviders.Count; i++)
-            {
-                if (!interfaceType.IsAssignableFrom(dataProviders[i].GetType())) { continue; }
-
-                // If a name has been provided and if it matches the provider's name, add the provider.
-                if (!string.IsNullOrWhiteSpace(name) && string.Equals(dataProviders[i].Name, name))
-                {
-                    matchingProviders.Add((T)dataProviders[i]);
-                }
-                // If no name has been specified, always add the provoder.
-                else
-                {
-                    matchingProviders.Add((T)dataProviders[i]);
-                }
-            }
-
-            return matchingProviders;
-        }
 
         /// <inheritdoc />
         public T GetService<T>(string name = null, bool showLogs = true) where T : IMixedRealityService
@@ -205,35 +122,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         }
 
         /// <inheritdoc />
-        public bool IsDataProviderRegistered<T>(string name = null) where T : IMixedRealityDataProvider
-        {
-            return (GetDataProvider<T>(name) != null);
-        }
-
-        /// <inheritdoc />
         public bool IsServiceRegistered<T>(string name = null) where T : IMixedRealityService
         {
             return (GetService<T>(name) != null);
-        }
-
-        /// <inheritdoc />
-        public bool RegisterDataProvider<T>(T dataProviderInstance) where T : IMixedRealityDataProvider
-        {
-            if ((dataProviderInstance == null) || (dataProviders.Contains(dataProviderInstance))) { return false; }
-
-            dataProviders.Add(dataProviderInstance);
-            dataProviderInstance.Initialize();
-
-            return true;
-        }
-
-        /// <inheritdoc />
-        public bool RegisterDataProvider<T>(Type concreteType, SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1), params object[] args) where T : IMixedRealityDataProvider
-        {
-            T serviceInstance = ActivateInstance<T>(concreteType, supportedPlatforms, args);
-            if (serviceInstance == null) { return false; }
-
-            return RegisterDataProvider<T>(serviceInstance);
         }
 
         /// <inheritdoc />
@@ -267,23 +158,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
             }
 
             return RegisterService<T>(serviceInstance);
-        }
-
-        /// <inheritdoc />
-        public bool UnregisterDataProvider<T>(string name = null) where T : IMixedRealityDataProvider
-        {
-            T dataProviderInstance = GetDataProvider<T>(name);
-            return UnregisterDataProvider<T>(dataProviderInstance);
-        }
-
-        /// <inheritdoc />
-        public bool UnregisterDataProvider<T>(T dataProviderInstance) where T : IMixedRealityDataProvider
-        {
-            if ((dataProviderInstance == null) || (!dataProviders.Contains(dataProviderInstance))) { return false; }
-
-            dataProviders.Remove(dataProviderInstance);
-
-            return true;
         }
 
         /// <inheritdoc />

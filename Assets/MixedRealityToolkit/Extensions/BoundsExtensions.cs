@@ -59,6 +59,11 @@ namespace Microsoft.MixedReality.Toolkit
         public const int FWD = 4;
         public const int BCK = 5;
 
+        // Axis of the capsule’s lengthwise orientation in the object’s local space
+        private const int CAPSULE_X_AXIS = 0;
+        private const int CAPSULE_Y_AXIS = 1;
+        private const int CAPSULE_Z_AXIS = 2;
+
         public enum Axis
         {
             X,
@@ -354,54 +359,62 @@ namespace Microsoft.MixedReality.Toolkit
             Collider[] colliders = target.GetComponentsInChildren<Collider>();
             for (int i = 0; i < colliders.Length; i++)
             {
-                if (ignoreLayers == (1 << colliders[i].gameObject.layer | ignoreLayers))
-                {
-                    continue;
-                }
+                GetColliderBoundsPoints(colliders[i], boundsPoints, ignoreLayers);
+            }
+        }
 
-                if(colliders[i] is SphereCollider)
-                {
-                    SphereCollider sc = colliders[i] as SphereCollider;
-                    Bounds sphereBounds = new Bounds(sc.center, Vector3.one * sc.radius * 2);
-                    sphereBounds.GetFacePositions(sc.transform, ref corners);
-                    boundsPoints.AddRange(corners);
-                }
-                else if(colliders[i] is BoxCollider)
-                {
-                    BoxCollider bc = colliders[i] as BoxCollider;
-                    Bounds boxBounds = new Bounds(bc.center, bc.size);
-                    boxBounds.GetCornerPositions(bc.transform, ref corners);
-                    boundsPoints.AddRange(corners);
+        /// <summary>
+        /// Method to get bounds from a single Collider
+        /// </summary>
+        /// <param name="collider">Target collider</param>
+        /// <param name="boundsPoints">array reference that gets filled with points</param>
+        /// <param name="ignoreLayers">layerMask to simplify search</param>
+        public static void GetColliderBoundsPoints(Collider collider, List<Vector3> boundsPoints, LayerMask ignoreLayers)
+        {
+            if (ignoreLayers == (1 << collider.gameObject.layer | ignoreLayers)) { return; }
 
-                }
-                else if(colliders[i] is MeshCollider)
-                {
-                    MeshCollider mc = colliders[i] as MeshCollider;
-                    Bounds meshBounds = mc.sharedMesh.bounds;
-                    meshBounds.GetCornerPositions(mc.transform, ref corners);
-                    boundsPoints.AddRange(corners);
-                }
-                else if(colliders[i] is CapsuleCollider)
-                {
-                    CapsuleCollider cc = colliders[i] as CapsuleCollider;
-                    Bounds capsuleBounds = new Bounds(cc.center, Vector3.zero);
-                    switch (cc.direction)
-                    {
-                        case 0:
-                            capsuleBounds.size = new Vector3(cc.height, cc.radius * 2, cc.radius * 2);
-                            break;
+            if (collider is SphereCollider)
+            {
+                SphereCollider sc = collider as SphereCollider;
+                Bounds sphereBounds = new Bounds(sc.center, Vector3.one * sc.radius * 2);
+                sphereBounds.GetFacePositions(sc.transform, ref corners);
+                boundsPoints.AddRange(corners);
+            }
+            else if (collider is BoxCollider)
+            {
+                BoxCollider bc = collider as BoxCollider;
+                Bounds boxBounds = new Bounds(bc.center, bc.size);
+                boxBounds.GetCornerPositions(bc.transform, ref corners);
+                boundsPoints.AddRange(corners);
 
-                        case 1:
-                            capsuleBounds.size = new Vector3(cc.radius * 2, cc.height, cc.radius * 2);
-                            break;
+            }
+            else if (collider is MeshCollider)
+            {
+                MeshCollider mc = collider as MeshCollider;
+                Bounds meshBounds = mc.sharedMesh.bounds;
+                meshBounds.GetCornerPositions(mc.transform, ref corners);
+                boundsPoints.AddRange(corners);
+            }
+            else if (collider is CapsuleCollider)
+            {
+                CapsuleCollider cc = collider as CapsuleCollider;
+                Bounds capsuleBounds = new Bounds(cc.center, Vector3.zero);
+                switch (cc.direction)
+                {
+                    case CAPSULE_X_AXIS:
+                        capsuleBounds.size = new Vector3(cc.height, cc.radius * 2, cc.radius * 2);
+                        break;
 
-                        case 2:
-                            capsuleBounds.size = new Vector3(cc.radius * 2, cc.radius * 2, cc.height);
-                            break;
-                    }
-                    capsuleBounds.GetFacePositions(cc.transform, ref corners);
-                    boundsPoints.AddRange(corners);
-                }             
+                    case CAPSULE_Y_AXIS:
+                        capsuleBounds.size = new Vector3(cc.radius * 2, cc.height, cc.radius * 2);
+                        break;
+
+                    case CAPSULE_Z_AXIS:
+                        capsuleBounds.size = new Vector3(cc.radius * 2, cc.radius * 2, cc.height);
+                        break;
+                }
+                capsuleBounds.GetFacePositions(cc.transform, ref corners);
+                boundsPoints.AddRange(corners);
             }
         }
 

@@ -10,9 +10,23 @@
     <TargetPlatformMinVersion><!--UWP_MIN_PLATFORM_VERSION_TOKEN--></TargetPlatformMinVersion>
     <TargetFrameworkIdentifier>.NETCore</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
-    <LanguageTargets>$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets</LanguageTargets>
+    
     <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
   </PropertyGroup>
+
+  <!-- This is for succesful building step from dotnet cli -->
+  <Choose>
+    <When Condition="'$(MSBuildExtensionsPathOverride)'!= ''">
+      <PropertyGroup>
+        <LanguageTargets>$(MSBuildExtensionsPathOverride)\Microsoft\WindowsXaml\v15.0\Microsoft.Windows.UI.Xaml.CSharp.targets</LanguageTargets>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <LanguageTargets>$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v15.0\Microsoft.Windows.UI.Xaml.CSharp.targets</LanguageTargets>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
 
   <ItemGroup Condition="'$(IsEditorOnlyTarget)' == 'false' OR '$(IsEditorOnlyTarget)' == ''">
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="5.0.0" />

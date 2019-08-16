@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Editor;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEditor;
@@ -124,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                         case 0:
                             EditorSettings.serializationMode = SerializationMode.ForceText;
                             EditorSettings.externalVersionControl = "Visible Meta Files";
-                            PlayerSettings.virtualRealitySupported = true;
+                            ApplyXRSettings();
                             PlayerSettings.stereoRenderingPath = StereoRenderingPath.Instancing;
                             refresh = true;
                             break;
@@ -154,6 +155,29 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             if (restart)
             {
                 EditorApplication.OpenProject(Directory.GetParent(Application.dataPath).ToString());
+            }
+        }
+
+        /// <summary>
+        /// Discover and set the appropriate XR Settings for the current build target.
+        /// </summary>
+        private static void ApplyXRSettings()
+        {
+            BuildTargetGroup targetGroup = EditorUserBuildSettings.selectedBuildTargetGroup;
+
+            List<string> targetSDKs = new List<string>();
+            foreach (string sdk in PlayerSettings.GetAvailableVirtualRealitySDKs(targetGroup))
+            {
+                if (sdk.Contains("OpenVR") || sdk.Contains("Windows"))
+                {
+                    targetSDKs.Add(sdk);
+                }
+            }
+
+            if (targetSDKs.Count != 0)
+            {
+                PlayerSettings.SetVirtualRealitySDKs(targetGroup, targetSDKs.ToArray());
+                PlayerSettings.SetVirtualRealitySupported(targetGroup, true);
             }
         }
 
@@ -255,7 +279,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 if (!MixedRealityOptimizeUtils.IsDepthBufferSharingEnabled())
                 {
                     // If depth buffer sharing not enabled, advise to enable setting
-                    Debug.LogWarning("<b>Depth Buffer Sharing</b> is not enabled to improve hologram stabilization. Consider using 16-bit for performance. See <i>Mixed Reality Toolkit</i> > <i>Utilities</i> > <i>Optimize Window</i> tool for more information to improve performance");
+                    Debug.LogWarning("<b>Depth Buffer Sharing</b> is not enabled to improve hologram stabilization. See <i>Mixed Reality Toolkit</i> > <i>Utilities</i> > <i>Optimize Window</i> tool for more information to improve performance");
                 }
 
                 if (!MixedRealityOptimizeUtils.IsWMRDepthBufferFormat16bit())

@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.OnFocusChanged(eventData);
 
-            if (Pointer.CursorModifier != null)
+            if (((Pointer is UnityEngine.Object) ? ((Pointer as UnityEngine.Object) != null) : (Pointer != null)) && Pointer.CursorModifier != null)
             {
                 if ((Pointer.CursorModifier.CursorParameters != null) && (Pointer.CursorModifier.CursorParameters.Length > 0))
                 {

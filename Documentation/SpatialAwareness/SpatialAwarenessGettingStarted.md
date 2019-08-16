@@ -70,3 +70,4 @@ Once the spatial awareness system is configured with the desired observer(s), th
 
 - [Spatial Awareness API documentation](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness)
 - [Configuring the Spatial Awareness Mesh Observer](ConfiguringSpatialAwarenessMeshObserver.md)
+- [Spatial Object Mesh Observer](SpatialObjectMeshObserver.md)

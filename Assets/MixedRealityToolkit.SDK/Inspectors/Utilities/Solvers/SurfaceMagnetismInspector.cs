@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -28,6 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
         private SerializedProperty currentRaycastDirectionModeProperty;
         private SerializedProperty orientationModeProperty;
         private SerializedProperty orientationBlendProperty;
+        private SerializedProperty orientationVerticalProperty;
         private SerializedProperty debugEnabledProperty;
 
         private SurfaceMagnetism surfaceMagnetism;
@@ -52,6 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             currentRaycastDirectionModeProperty = serializedObject.FindProperty("currentRaycastDirectionMode");
             orientationModeProperty = serializedObject.FindProperty("orientationMode");
             orientationBlendProperty = serializedObject.FindProperty("orientationBlend");
+            orientationVerticalProperty = serializedObject.FindProperty("keepOrientationVertical");
             debugEnabledProperty = serializedObject.FindProperty("debugEnabled");
 
             surfaceMagnetism = target as SurfaceMagnetism;
@@ -67,12 +70,35 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             EditorGUILayout.LabelField("General Properties", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(surfaceNormalOffsetProperty);
             EditorGUILayout.PropertyField(surfaceRayOffsetProperty);
+
             EditorGUILayout.PropertyField(orientationModeProperty);
-            EditorGUILayout.PropertyField(orientationBlendProperty);
+
+            if (surfaceMagnetism.CurrentOrientationMode != SurfaceMagnetism.OrientationMode.None)
+            {
+                EditorGUILayout.PropertyField(orientationVerticalProperty);
+            }
+
+            if (surfaceMagnetism.CurrentOrientationMode == SurfaceMagnetism.OrientationMode.Blended)
+            {
+                EditorGUILayout.PropertyField(orientationBlendProperty);
+            }
 
             // Raycast properties
             EditorGUILayout.LabelField("Raycast Properties", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(magneticSurfacesProperty, true);
+
+            // When raycast from the center of the GameObject, Raycast may hit one of the collider on the GameObject (or children)
+            // This results in the GameObject "magnetizes" against itself. Warn user if this possiblity exists
+            var colliders = surfaceMagnetism.GetComponentsInChildren<Collider>();
+            foreach (var collider in colliders)
+            {
+                if (surfaceMagnetism.MagneticSurfaces.Any(s => collider.gameObject.IsInLayerMask(s)))
+                {
+                    InspectorUIUtility.DrawWarning("This GameObject, or a child of the GameObject, has a collider on a layer listed in the Magnetic Surfaces property. Raycasts calculated for the SurfaceMagnetism component may result in hits against itself causing odd behavior. Consider moving this GameObject and all children to the \"Ignore Raycast\" layer");
+                    break;
+                }
+            }
+
             EditorGUILayout.PropertyField(closestDistanceProperty);
             EditorGUILayout.PropertyField(maxDistanceProperty);
             EditorGUILayout.PropertyField(currentRaycastDirectionModeProperty);

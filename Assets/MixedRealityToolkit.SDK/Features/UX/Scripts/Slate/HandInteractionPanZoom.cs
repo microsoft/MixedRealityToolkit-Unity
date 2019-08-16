@@ -1,16 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 
-namespace Microsoft.MixedReality.Toolkit.Input
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     public class HandInteractionPanZoom : 
         BaseFocusHandler, IMixedRealityTouchHandler, IMixedRealityPointerHandler, IMixedRealitySourceStateHandler
@@ -682,13 +681,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             StartTouch(data.touchingSource.SourceId);
         }
+
         private bool TryGetHandPositionFromController(IMixedRealityController controller, TrackedHandJoint joint, out Vector3 position)
         {
-            if (controller != null &&
-                HandJointUtils.TryGetJointPose(joint, controller.ControllerHandedness, out MixedRealityPose pose))
-            {
-                position = pose.Position;
-                return true;
+            var hand = controller as IMixedRealityHand;
+            if (hand != null)
+            { 
+                if (hand.TryGetJoint(joint, out MixedRealityPose pose))
+                {
+                    position = pose.Position;
+                    return true;
+                }
             }
 
             position = Vector3.zero;
@@ -727,31 +730,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
         #region Fire Events to Listening Objects
         private void RaisePanStarted(uint sourceId)
         {
-            HandPanEventData eventData = new HandPanEventData(EventSystem.current);
-            eventData.Initialize(handDataMap[sourceId].touchingSource, GetUvOffset());
+            HandPanEventData eventData = new HandPanEventData();
+            eventData.PanDelta = GetUvOffset();
             PanStarted?.Invoke(eventData);
         }
         private void RaisePanEnded(uint sourceId)
         {
-            HandPanEventData eventData = new HandPanEventData(EventSystem.current);
-            eventData.Initialize(null, Vector2.zero);
+            HandPanEventData eventData = new HandPanEventData();
+            eventData.PanDelta = Vector2.zero;
             PanStopped?.Invoke(eventData);
         }
         private void RaisePanning(uint sourceId)
         {
-            if (handDataMap.ContainsKey(sourceId))
-            {
-                HandPanEventData eventData = new HandPanEventData(EventSystem.current);
-                eventData.Initialize(handDataMap[sourceId].touchingSource, GetUvOffset());
-                PanUpdated?.Invoke(eventData);
-            }
-            else if (sourceId == 0)
-            {
-                // we are no longer touching but the pan is still updating
-                HandPanEventData eventData = new HandPanEventData(EventSystem.current);
-                eventData.Initialize(null, GetUvOffset());
-                PanUpdated?.Invoke(eventData);
-            }
+            HandPanEventData eventData = new HandPanEventData();
+            eventData.PanDelta = GetUvOffset();
+            PanUpdated?.Invoke(eventData);
         }
         #endregion Fire Events to Listening Objects
 

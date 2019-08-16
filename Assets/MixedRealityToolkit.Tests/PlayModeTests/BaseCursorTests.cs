@@ -110,11 +110,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             VerifyCursorStateFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorStateEnum.Select);
 
             // Release pinch
-            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open, false);
             VerifyCursorStateFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorStateEnum.Release);
 
             // Wait to transition back to InteractHover
-            yield return new WaitForFixedUpdate();
+            yield return null;
             VerifyCursorStateFromPointers(inputSystem.FocusProvider.GetPointers<ShellHandRayPointer>(), CursorStateEnum.InteractHover);
 
             // Move back so the cursor is no longer on the object
