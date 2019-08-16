@@ -249,9 +249,8 @@ The sections below highlight some of the known issues in the Microsoft Mixed Rea
 
 **VR/Immersive devices: Content in some demo scenes is placed below the user**
 
-Some demo scenes contained in the Examples package are optimized for HoloLens devices. These scenes
-may place objects below the user when run on VR/Immersive devices. To work around this issue, 
-select the **Scene Content** object, in the Hierarchy, and set the Transform's Position Y value to **1.5**.
+Some demo scenes contained in the Examples package are optimized for HoloLens devices(headset's y position is 0). These scenes
+may place objects below the user when run on VR/Immersive devices(headset's Y position is the distance from the floor). To work around this issue, select the **Scene Content** object, in the Hierarchy, and set the Transform's Position Y value to **1.5**(1.5 meters, or your preferred headset height).
 
 ![Adjusting Scene Content Height](Images/ReleaseNotes/AdjustContentHeight.png)
 
