@@ -863,16 +863,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7955608330305758694, guid: 619a998cd64497849b8f0c168df8eecb,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4916537311988503760, guid: 619a998cd64497849b8f0c168df8eecb,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 322915066641978915, guid: 619a998cd64497849b8f0c168df8eecb,
         type: 3}
       propertyPath: m_havePropertiesChanged
@@ -1033,11 +1023,6 @@ PrefabInstance:
       propertyPath: m_textInfo.characterCount
       value: 8
       objectReference: {fileID: 0}
-    - target: {fileID: 8758088219894511235, guid: 619a998cd64497849b8f0c168df8eecb,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 85b164de2cfcb854cbbcb9c82670749d, type: 2}
     - target: {fileID: 8784570591754725263, guid: 619a998cd64497849b8f0c168df8eecb,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -1051,17 +1036,27 @@ PrefabInstance:
     - target: {fileID: 5361998637517856981, guid: 619a998cd64497849b8f0c168df8eecb,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.0674
+      value: -0.0757
       objectReference: {fileID: 0}
-    - target: {fileID: 8689957801840862757, guid: 619a998cd64497849b8f0c168df8eecb,
+    - target: {fileID: 7955608330305758694, guid: 619a998cd64497849b8f0c168df8eecb,
         type: 3}
-      propertyPath: StartDimensionIndex
-      value: 1
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1233100628148518159, guid: 619a998cd64497849b8f0c168df8eecb,
         type: 3}
       propertyPath: m_LocalPosition.y
       value: -0.0246
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916537311988503760, guid: 619a998cd64497849b8f0c168df8eecb,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8689957801840862757, guid: 619a998cd64497849b8f0c168df8eecb,
+        type: 3}
+      propertyPath: StartDimensionIndex
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2468600106589978469, guid: 619a998cd64497849b8f0c168df8eecb,
         type: 3}
@@ -1073,6 +1068,11 @@ PrefabInstance:
       propertyPath: sortType
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8758088219894511235, guid: 619a998cd64497849b8f0c168df8eecb,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 85b164de2cfcb854cbbcb9c82670749d, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 619a998cd64497849b8f0c168df8eecb, type: 3}
 --- !u!4 &7742523292279256223 stripped

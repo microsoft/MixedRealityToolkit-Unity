@@ -206,10 +206,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7742523292279256223, guid: 981cd02bc1b561f41ae4bc52845083a2,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.049
+      objectReference: {fileID: 0}
     - target: {fileID: 8988832309921513688, guid: 981cd02bc1b561f41ae4bc52845083a2,
         type: 3}
       propertyPath: m_Name
-      value: MenuExampleLargeWithTitle Variant
+      value: MenuExampleLargeWithTitle
       objectReference: {fileID: 0}
     - target: {fileID: 5630871317435319109, guid: 981cd02bc1b561f41ae4bc52845083a2,
         type: 3}
@@ -294,12 +299,7 @@ PrefabInstance:
     - target: {fileID: 3460885262891297093, guid: 981cd02bc1b561f41ae4bc52845083a2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.1175
-      objectReference: {fileID: 0}
-    - target: {fileID: 7742523292279256223, guid: 981cd02bc1b561f41ae4bc52845083a2,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.049
+      value: -0.1262
       objectReference: {fileID: 0}
     - target: {fileID: 6353478613029697269, guid: 981cd02bc1b561f41ae4bc52845083a2,
         type: 3}

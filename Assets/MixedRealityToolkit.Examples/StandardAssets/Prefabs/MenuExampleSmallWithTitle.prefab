@@ -365,7 +365,7 @@ MonoBehaviour:
   minDistance: 0.4
   maxDistance: 0.8
   minViewDegrees: 0
-  maxViewDegrees: 15
+  maxViewDegrees: 20
   aspectV: 1
   ignoreAngleClamp: 0
   ignoreDistanceClamp: 0
@@ -385,6 +385,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visualizationObject: {fileID: 0}
+  interactableObject: {fileID: 0}
+  autoFollowAtDistance: 0
+  autoFollowDistance: 2
+  autoFollowTransform: {fileID: 0}
 --- !u!65 &676809234
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -396,8 +400,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.2112824, y: 0.80036473, z: 2.3714156}
-  m_Center: {x: 0.0027797716, y: -0.33937296, z: -0.07656962}
+  m_Size: {x: 1.2112824, y: 1.7880623, z: 2.3714156}
+  m_Center: {x: 0.0027797932, y: 0.017717186, z: -0.07656962}
 --- !u!114 &676809233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -735,11 +739,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3768090345545353941}
     m_Modifications:
-    - target: {fileID: 6742094791252829599, guid: 64790b91b91094d49942373c4e83c237,
-        type: 3}
-      propertyPath: m_Name
-      value: ButtonPin
-      objectReference: {fileID: 0}
     - target: {fileID: 6742094790733259646, guid: 64790b91b91094d49942373c4e83c237,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -794,6 +793,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6742094791252829599, guid: 64790b91b91094d49942373c4e83c237,
+        type: 3}
+      propertyPath: m_Name
+      value: ButtonPin
       objectReference: {fileID: 0}
     - target: {fileID: 4238929520169732924, guid: 64790b91b91094d49942373c4e83c237,
         type: 3}
@@ -962,6 +966,11 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8495876841678131188, guid: 64790b91b91094d49942373c4e83c237,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 64790b91b91094d49942373c4e83c237, type: 3}
 --- !u!4 &2295681432100752999 stripped
@@ -1002,7 +1011,7 @@ PrefabInstance:
     - target: {fileID: 586303850521236049, guid: 9215a7c858170d74fb2257375d5feaf1,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.0174
+      value: -0.0254
       objectReference: {fileID: 0}
     - target: {fileID: 586303850521236049, guid: 9215a7c858170d74fb2257375d5feaf1,
         type: 3}
@@ -1067,7 +1076,7 @@ PrefabInstance:
     - target: {fileID: 3958481853798167113, guid: 9215a7c858170d74fb2257375d5feaf1,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.0079
+      value: -0.01095
       objectReference: {fileID: 0}
     - target: {fileID: 3958481853798167113, guid: 9215a7c858170d74fb2257375d5feaf1,
         type: 3}
@@ -1077,7 +1086,7 @@ PrefabInstance:
     - target: {fileID: 3958481853798167113, guid: 9215a7c858170d74fb2257375d5feaf1,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.014800001
+      value: 0.0087009175
       objectReference: {fileID: 0}
     - target: {fileID: 6326842415924641645, guid: 9215a7c858170d74fb2257375d5feaf1,
         type: 3}
