@@ -178,7 +178,7 @@ For manipulating objects with two hands at the same time the persistent hand mod
 
 ## Eye tracking
 
-Eye tracking simulation can be enabled by checking the __Simulate Eye Position__ option in the
+[Eye tracking simulation](../EyeTracking/EyeTracking_BasicSetup.md#simulating-eye-tracking-in-the-unity-editor) can be enabled by checking the __Simulate Eye Position__ option in the
 [Input Simulation Profile](#enabling-the-input-simulation-service). This should not be used with GGV
 style interactions (so ensure that __Hand Simulation Mode__ is set to _Articulated_).
 
