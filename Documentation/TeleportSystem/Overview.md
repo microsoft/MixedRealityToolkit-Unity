@@ -7,9 +7,9 @@ be enabled.
 
 ## Enabling and disabling
 
-The teleport system can be enabled or disabled by toggling the checkbox in its profile:
-
-![Teleport system profile](../../Documentation/Images/TeleportSystem/profile.png)
+The teleport system can be enabled or disabled by toggling the checkbox in its profile.
+This can be done by selecting the MixedRealityToolkit object in the scene, clicking
+"Teleport" and then toggling the "Enable Teleport System" checkbox.
 
 This can also be done at runtime:
 
