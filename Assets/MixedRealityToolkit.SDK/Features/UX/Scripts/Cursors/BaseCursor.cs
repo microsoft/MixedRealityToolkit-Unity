@@ -132,9 +132,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             set { visibleSourcesCount = value; }
         }
 
-        private Vector3 targetPosition;
-        private Vector3 targetScale;
-        private Quaternion targetRotation;
+        protected Vector3 targetPosition;
+        protected Vector3 targetScale;
+        protected Quaternion targetRotation;
 
         #region IMixedRealityCursor Implementation
 
@@ -144,13 +144,30 @@ namespace Microsoft.MixedReality.Toolkit.Input
             get { return pointer; }
             set
             {
+                if (IsPointerValid && ReferenceEquals(pointer.BaseCursor, this))
+                {
+                    // if the previous pointer was attached to this cursor, null out the
+                    // pointer's cursor reference - that way we don't have multiple pointers
+                    // trying to use the same cursor
+                    pointer.BaseCursor = null;
+                }
+
                 pointer = value;
-                pointer.BaseCursor = this;
-                RegisterManagers();
+                if (IsPointerValid)
+                {
+                    pointer.BaseCursor = this;
+                }
+
+                ResetInputSourceState();
             }
         }
 
         private IMixedRealityPointer pointer;
+
+        /// <summary>
+        /// Checks whether the associated pointer is null, and if the pointer is a UnityEngine.Object it also checks whether it has been destroyed.
+        /// </summary>
+        protected bool IsPointerValid => (pointer is UnityEngine.Object) ? ((pointer as UnityEngine.Object) != null) : (pointer != null);
 
         /// <inheritdoc />
         public float DefaultCursorDistance
@@ -182,6 +199,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
+        public virtual void Destroy()
+        {
+            // Cursor needs to unregister its input handlers explicitly, while input system is still active.
+            // If this would be done from OnDestroy, it will happen in the end of Update loop,
+            // when the input system itself is already destroyed.
+            UnregisterManagers();
+        }
+
+        /// <inheritdoc />
         public bool IsVisible => PrimaryCursorVisual != null ? PrimaryCursorVisual.gameObject.activeInHierarchy : gameObject.activeInHierarchy;
 
         /// <inheritdoc />
@@ -199,7 +225,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public virtual void OnSourceDetected(SourceStateEventData eventData)
         {
-            if (eventData.Controller != null)
+            if (IsPointerValid && eventData.Controller != null)
             {
                 for (int i = 0; i < eventData.InputSource.Pointers.Length; i++)
                 {
@@ -222,36 +248,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public virtual void OnSourceLost(SourceStateEventData eventData)
         {
-            if (eventData.Controller != null)
+            if (IsPointerValid && eventData.Controller != null)
             {
                 for (int i = 0; i < eventData.InputSource.Pointers.Length; i++)
                 {
                     // If a source is lost that's using this cursor's pointer, we decrement the count to set the cursor state properly.
                     if (eventData.InputSource.Pointers[i].PointerId == Pointer.PointerId)
                     {
-                        var basePointer = eventData.InputSource.Pointers[i] as BaseControllerPointer;
-
-                        if (basePointer != null &&
-                            basePointer.DestroyOnSourceLost)
-                        {
-                            SourceDownIds.Remove(eventData.SourceId);
-                            Destroy(gameObject);
-                            return;
-                        }
-
                         visibleSourcesCount--;
+                        break;
                     }
                 }
             }
 
-            if (!IsSourceDetected)
-            {
-                SourceDownIds.Remove(eventData.SourceId);
+            SourceDownIds.Remove(eventData.SourceId);
 
-                if (SetVisibilityOnSourceDetected)
-                {
-                    SetVisibility(false);
-                }
+            if (!IsSourceDetected && SetVisibilityOnSourceDetected)
+            {
+                SetVisibility(false);
             }
         }
 
@@ -262,7 +276,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public virtual void OnBeforeFocusChange(FocusEventData eventData)
         {
-            if (Pointer.PointerId == eventData.Pointer.PointerId)
+            if (IsPointerValid && Pointer.PointerId == eventData.Pointer.PointerId)
             {
                 TargetedObject = eventData.NewFocusedObject;
             }
@@ -278,11 +292,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public virtual void OnPointerDown(MixedRealityPointerEventData eventData)
         {
-            foreach (var sourcePointer in eventData.InputSource.Pointers)
+            if (IsPointerValid)
             {
-                if (sourcePointer.PointerId == Pointer.PointerId)
+                foreach (var sourcePointer in eventData.InputSource.Pointers)
                 {
-                    SourceDownIds.Add(eventData.SourceId);
+                    if (sourcePointer.PointerId == Pointer.PointerId)
+                    {
+                        SourceDownIds.Add(eventData.SourceId);
+                        return;
+                    }
                 }
             }
         }
@@ -296,11 +314,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public virtual void OnPointerUp(MixedRealityPointerEventData eventData)
         {
-            foreach (var sourcePointer in eventData.InputSource.Pointers)
+            if (IsPointerValid)
             {
-                if (sourcePointer.PointerId == Pointer.PointerId)
+                foreach (var sourcePointer in eventData.InputSource.Pointers)
                 {
-                    SourceDownIds.Remove(eventData.SourceId);
+                    if (sourcePointer.PointerId == Pointer.PointerId)
+                    {
+                        SourceDownIds.Remove(eventData.SourceId);
+                        return;
+                    }
                 }
             }
         }
@@ -308,6 +330,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         #endregion IMixedRealityPointerHandler Implementation
 
         #region MonoBehaviour Implementation
+        protected virtual void Start()
+        {
+            RegisterManagers();
+        }
 
         private void Update()
         {
@@ -326,6 +352,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected virtual void OnEnable()
         {
             OnCursorStateChange(CursorStateEnum.None);
+            ResetInputSourceState();
         }
 
         protected virtual void OnDisable()
@@ -333,11 +360,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             TargetedObject = null;
             visibleSourcesCount = 0;
             OnCursorStateChange(CursorStateEnum.Contextual);
-        }
-
-        private void OnDestroy()
-        {
-            UnregisterManagers();
         }
 
         #endregion MonoBehaviour Implementation
@@ -424,6 +446,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
+            LerpToTargetTransform();
+        }
+
+        protected void LerpToTargetTransform()
+        {
             float deltaTime = useUnscaledTime
                 ? Time.unscaledDeltaTime
                 : Time.deltaTime;
@@ -432,6 +459,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             transform.position = Vector3.Lerp(transform.position, targetPosition, deltaTime / positionLerpTime);
             transform.localScale = Vector3.Lerp(transform.localScale, targetScale, deltaTime / scaleLerpTime);
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, deltaTime / rotationLerpTime);
+        }
+
+        protected void SnapToTargetTransform()
+        {
+            transform.position = targetPosition;
+            transform.localScale = targetScale;
+            transform.rotation = targetRotation;
         }
 
         /// <summary>
@@ -451,6 +485,45 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public virtual void OnInputEnabled()
         {
             OnCursorStateChange(CursorStateEnum.None);
+            ResetInputSourceState();
+        }
+
+        /// <summary>
+        /// Update visibleSourcesCount (and correspondingly IsSourceDetected) by looking at all input sources
+        /// registered with the input system (DetectedInputSources). This is useful for cases where the cursor
+        /// has not been listening for SourceDetected events (or the events have been disabled) and so the
+        /// count may have gotten out of sync.
+        /// It will also clear SourceDownIds (which will make IsPointerDown false, regardless of the underlying
+        /// input source state) - so it should really *only* be used in cases where the source state hadn't been
+        /// updating (for whatever reason).
+        /// </summary>
+        private void ResetInputSourceState()
+        {
+            SourceDownIds.Clear();
+            visibleSourcesCount = 0;
+            if (IsPointerValid)
+            {
+                uint cursorPointerId = Pointer.PointerId;
+                foreach (IMixedRealityInputSource inputSource in InputSystem.DetectedInputSources)
+                {
+                    if (inputSource.SourceType != InputSourceType.Head && inputSource.SourceType != InputSourceType.Eyes)
+                    {
+                        foreach (IMixedRealityPointer inputSourcePointer in inputSource.Pointers)
+                        {
+                            if (inputSourcePointer.PointerId == cursorPointerId)
+                            {
+                                ++visibleSourcesCount;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (SetVisibilityOnSourceDetected)
+            {
+                SetVisibility(IsSourceDetected);
+            }
         }
 
         /// <summary>

@@ -16,39 +16,60 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <returns>True if the project has depth buffer sharing enabled, false otherwise.</returns>
         public static bool IsDepthBufferSharingEnabled()
         {
-            if (PlayerSettings.VROculus.sharedDepthBuffer)
+            if (IsBuildTargetOpenVR())
             {
-                return true;
+                if (PlayerSettings.VROculus.sharedDepthBuffer)
+                {
+                    return true;
+                }
             }
-
+            else if (IsBuildTargetWMR())
+            {
 #if UNITY_2019_1_OR_NEWER
-            if (PlayerSettings.VRWindowsMixedReality.depthBufferSharingEnabled)
-            {
-                return true;
-            }
+                if (PlayerSettings.VRWindowsMixedReality.depthBufferSharingEnabled)
+                {
+                    return true;
+                }
 #else
-            var playerSettings = GetSettingsObject("PlayerSettings");
-            var property = playerSettings?.FindProperty("vrSettings.hololens.depthBufferSharingEnabled");
-            if (property != null && property.boolValue)
-            {
-                return true;
-            }
+                var playerSettings = GetSettingsObject("PlayerSettings");
+                var property = playerSettings?.FindProperty("vrSettings.hololens.depthBufferSharingEnabled");
+                if (property != null && property.boolValue)
+                {
+                    return true;
+                }
 #endif
+            }
 
             return false;
         }
 
         public static void SetDepthBufferSharing(bool enableDepthBuffer)
         {
-            PlayerSettings.VROculus.sharedDepthBuffer = enableDepthBuffer;
-
+            if (IsBuildTargetOpenVR())
+            {
+                PlayerSettings.VROculus.sharedDepthBuffer = enableDepthBuffer;
+            }
+            else if (IsBuildTargetWMR())
+            {
 #if UNITY_2019
-        PlayerSettings.VRWindowsMixedReality.depthBufferSharingEnabled = enableDepthBuffer;
+                PlayerSettings.VRWindowsMixedReality.depthBufferSharingEnabled = enableDepthBuffer;
+#else
+                var playerSettings = GetSettingsObject("PlayerSettings");
+                ChangeProperty(playerSettings,
+                    "vrSettings.hololens.depthBufferSharingEnabled",
+                    property => property.boolValue = enableDepthBuffer);
+#endif
+            }
+        }
+
+        public static bool IsWMRDepthBufferFormat16bit()
+        {
+#if UNITY_2019_1_OR_NEWER
+            return PlayerSettings.VRWindowsMixedReality.depthBufferFormat == PlayerSettings.VRWindowsMixedReality.DepthBufferFormat.DepthBufferFormat16Bit;
 #else
             var playerSettings = GetSettingsObject("PlayerSettings");
-            ChangeProperty(playerSettings,
-                "vrSettings.hololens.depthBufferSharingEnabled",
-                property => property.boolValue = enableDepthBuffer);
+            var property = playerSettings?.FindProperty("vrSettings.hololens.depthFormat");
+            return property != null && property.intValue == 0;
 #endif
         }
 
@@ -73,6 +94,43 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 "vrSettings.hololens.depthFormat",
                 property => property.intValue = depthFormat);
 #endif
+        }
+
+        public static bool IsRealtimeGlobalIlluminationEnabled()
+        {
+            var lightmapSettings = GetLighmapSettings();
+            var property = lightmapSettings?.FindProperty("m_GISettings.m_EnableRealtimeLightmaps");
+            return property != null && property.boolValue;
+        }
+
+        public static void SetRealtimeGlobalIlluminationEnabled(bool enabled)
+        {
+            var lightmapSettings = GetLighmapSettings();
+            ChangeProperty(lightmapSettings, "m_GISettings.m_EnableRealtimeLightmaps", property => property.boolValue = enabled);
+        }
+
+        public static bool IsBakedGlobalIlluminationEnabled()
+        {
+            var lightmapSettings = GetLighmapSettings();
+            var property = lightmapSettings?.FindProperty("m_GISettings.m_EnableBakedLightmaps");
+            return property != null && property.boolValue;
+        }
+
+        public static void SetBakedGlobalIlluminationEnabled(bool enabled)
+        {
+            var lightmapSettings = GetLighmapSettings();
+            ChangeProperty(lightmapSettings, "m_GISettings.m_EnableBakedLightmaps", property => property.boolValue = enabled);
+        }
+
+        public static bool IsBuildTargetOpenVR()
+        {
+            return EditorUserBuildSettings.activeBuildTarget == BuildTarget.StandaloneWindows ||
+                EditorUserBuildSettings.activeBuildTarget == BuildTarget.StandaloneWindows64;
+        }
+
+        public static bool IsBuildTargetWMR()
+        {
+            return EditorUserBuildSettings.activeBuildTarget == BuildTarget.WSAPlayer;
         }
 
         public static void ChangeProperty(SerializedObject target, string name, Action<SerializedProperty> changer)

@@ -94,12 +94,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
         }
 
-        public static SimulatedHandData.HandJointDataGenerator GenerateHandPose(ArticulatedHandPose.GestureId gesture, Handedness handedness, Vector3 worldPosition)
+        public static SimulatedHandData.HandJointDataGenerator GenerateHandPose(ArticulatedHandPose.GestureId gesture, Handedness handedness, Vector3 worldPosition, Quaternion rotation)
         {
             return (jointsOut) =>
             {
                 ArticulatedHandPose gesturePose = ArticulatedHandPose.GetGesturePose(gesture);
-                Quaternion rotation = Quaternion.identity;
                 gesturePose.ComputeJointPoses(handedness, rotation, worldPosition, jointsOut);
             };
         }
@@ -112,6 +111,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             return inputSystem;
         }
 
+        /// <summary>
+        /// Utility function to simplify code for getting access to the running InputSimulationService
+        /// </summary>
+        /// <returns>Returns InputSimulationService registered for playmode test scene</returns>
         public static InputSimulationService GetInputSimulationService()
         {
             IMixedRealityInputSystem inputSystem = GetInputSystem();
@@ -255,7 +258,29 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 var handDataGenerator = GenerateHandPose(
                         gestureId,
                         handedness,
-                        handPos);
+                        handPos,
+                        Quaternion.identity);
+                SimulatedHandData handData = handedness == Handedness.Right ? inputSimulationService.HandDataRight : inputSimulationService.HandDataLeft;
+                handData.Update(true, isPinching, handDataGenerator);
+                yield return null;
+            }
+        }
+
+        internal static IEnumerator SetHandRotation(Quaternion fromRotation, Quaternion toRotation, Vector3 handPos, ArticulatedHandPose.GestureId gestureId,
+            Handedness handedness, int numSteps, InputSimulationService inputSimulationService)
+        {
+            Debug.Assert(handedness == Handedness.Right || handedness == Handedness.Left, "handedness must be either right or left");
+            bool isPinching = gestureId == ArticulatedHandPose.GestureId.Grab || gestureId == ArticulatedHandPose.GestureId.Pinch || gestureId == ArticulatedHandPose.GestureId.PinchSteadyWrist;
+
+            for (int i = 1; i <= numSteps; i++)
+            {
+                float t = i / (float)numSteps;
+                Quaternion handRotation = Quaternion.Lerp(fromRotation, toRotation, t);
+                var handDataGenerator = GenerateHandPose(
+                        gestureId,
+                        handedness,
+                        handPos,
+                        handRotation);
                 SimulatedHandData handData = handedness == Handedness.Right ? inputSimulationService.HandDataRight : inputSimulationService.HandDataLeft;
                 handData.Update(true, isPinching, handDataGenerator);
                 yield return null;
@@ -267,7 +292,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             SimulatedHandData handData = handedness == Handedness.Right ? inputSimulationService.HandDataRight : inputSimulationService.HandDataLeft;
-            handData.Update(false, false, GenerateHandPose(ArticulatedHandPose.GestureId.Open, handedness, Vector3.zero));
+            handData.Update(false, false, GenerateHandPose(ArticulatedHandPose.GestureId.Open, handedness, Vector3.zero, Quaternion.identity));
 
             // Wait one frame for the hand to actually disappear
             yield return null;
@@ -289,7 +314,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             SimulatedHandData handData = handedness == Handedness.Right ? inputSimulationService.HandDataRight : inputSimulationService.HandDataLeft;
-            handData.Update(true, false, GenerateHandPose(handPose, handedness, handLocation));
+            handData.Update(true, false, GenerateHandPose(handPose, handedness, handLocation, Quaternion.identity));
 
             // Wait one frame for the hand to actually appear
             yield return null;

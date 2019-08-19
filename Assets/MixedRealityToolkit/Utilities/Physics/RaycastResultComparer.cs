@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
     /// </summary>
     public class RaycastResultComparer : IComparer<ComparableRaycastResult>
     {
-        private static readonly List<Func<ComparableRaycastResult, ComparableRaycastResult, int>> Comparers = new List<Func<ComparableRaycastResult, ComparableRaycastResult, int>>
+        private static readonly List<Func<ComparableRaycastResult, ComparableRaycastResult, int>> comparers = new List<Func<ComparableRaycastResult, ComparableRaycastResult, int>>
         {
             CompareRaycastsByLayerMaskPrioritization,
             CompareRaycastsBySortingLayer,
@@ -19,6 +19,14 @@ namespace Microsoft.MixedReality.Toolkit.Physics
             CompareRaycastsByCanvasDepth,
             CompareRaycastsByDistance,
         };
+
+        protected virtual List<Func<ComparableRaycastResult, ComparableRaycastResult, int>> Comparers
+        {
+            get
+            {
+                return comparers;
+            }
+        }
 
         public int Compare(ComparableRaycastResult left, ComparableRaycastResult right)
         {
@@ -33,25 +41,25 @@ namespace Microsoft.MixedReality.Toolkit.Physics
             return 0;
         }
 
-        private static int CompareRaycastsByLayerMaskPrioritization(ComparableRaycastResult left, ComparableRaycastResult right)
+        protected static int CompareRaycastsByLayerMaskPrioritization(ComparableRaycastResult left, ComparableRaycastResult right)
         {
             // Lower is better, -1 is not relevant.
             return right.LayerMaskIndex.CompareTo(left.LayerMaskIndex);
         }
 
-        private static int CompareRaycastsBySortingLayer(ComparableRaycastResult left, ComparableRaycastResult right)
+        protected static int CompareRaycastsBySortingLayer(ComparableRaycastResult left, ComparableRaycastResult right)
         {
             // Higher is better.
             return left.RaycastResult.sortingLayer.CompareTo(right.RaycastResult.sortingLayer);
         }
 
-        private static int CompareRaycastsBySortingOrder(ComparableRaycastResult left, ComparableRaycastResult right)
+        protected static int CompareRaycastsBySortingOrder(ComparableRaycastResult left, ComparableRaycastResult right)
         {
             // Higher is better.
             return left.RaycastResult.sortingOrder.CompareTo(right.RaycastResult.sortingOrder);
         }
 
-        private static int CompareRaycastsByCanvasDepth(ComparableRaycastResult left, ComparableRaycastResult right)
+        protected static int CompareRaycastsByCanvasDepth(ComparableRaycastResult left, ComparableRaycastResult right)
         {
             // Module is the graphic raycaster on the canvases.
             if (left.RaycastResult.module.transform.IsParentOrChildOf(right.RaycastResult.module.transform))
@@ -62,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
             return 0;
         }
 
-        private static int CompareRaycastsByDistance(ComparableRaycastResult left, ComparableRaycastResult right)
+        protected static int CompareRaycastsByDistance(ComparableRaycastResult left, ComparableRaycastResult right)
         {
             // Lower is better.
             return right.RaycastResult.distance.CompareTo(left.RaycastResult.distance);

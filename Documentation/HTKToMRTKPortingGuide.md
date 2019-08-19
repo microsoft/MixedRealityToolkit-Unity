@@ -11,6 +11,7 @@
 | Configuration             | Configured in the Inspector, on each individual script in the scene. | Configured via the Mixed Reality Input System Profile and its related profile, listed below. |
 
 Related profiles:
+
 * Mixed Reality Controller Mapping Profile
 * Mixed Reality Controller Visualization Profile
 * Mixed Reality Gestures Profile
@@ -27,6 +28,7 @@ Platform support components (e.g., Windows Mixed Reality Device Manager) must be
 Some events no longer have unique events and now contain a [MixedRealityInputAction](Input/InputActions.md). These actions are specified in the Input Actions profile and mapped to specific controllers and platforms in the Controller Mapping profile. Events like `OnInputDown` should now check the MixedRealityInputAction type.
 
 Related input systems:
+
 * [Input Overview](/Input/Overview.md)
 * [Input Events](/Input/InputEvents.md)
 * [Input Pointers](/Input/Pointers.md)
@@ -110,6 +112,7 @@ Related input systems:
 | Configuration             | Configure the scene instances in the inspector. | In-progress |
 
 ## UX
+
 |                           | HTK 2017 |  MRTK v2  |
 |---------------------------|----------|-----------|
 | Button                     | [Interactable Objects](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit-Examples/UX/Readme/README_InteractableObjectExample.md) | [Button](README_Button.md) |
@@ -123,7 +126,6 @@ Related input systems:
 | Object Collection             | [Object Collection](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit-Examples/UX/Readme/README_ObjectCollection.md) | [Object Collection](README_ObjectCollection.md) |
 | Solver             | [Solver](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit-Examples/Utilities/Readme/README_SolverSystem.md) | [Solver](README_Solver.md) |
 
-
 ## Utilities
 
 Some Utilities have been reconciled as duplicates with the Solver system. Please file an issue if any of your needed scripts are missing.
@@ -135,4 +137,3 @@ Some Utilities have been reconciled as duplicates with the Solver system. Please
 | FixedAngularSize | [`ConstantViewSize`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.ConstantViewSize) [Solver](README_Solver.md) |
 | FpsDisplay | [Diagnostics System](Diagnostics/DiagnosticsSystemGettingStarted.md) (in Configuration Profile) |
 | NearFade | Built-in to [Mixed Reality Toolkit Standard shader](README_MRTKStandardShader.md) |
-

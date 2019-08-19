@@ -41,6 +41,13 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             ARM = 2,
         }
 
+        private enum PlatformToolset
+        {
+            Solution,
+            v141,
+            v142,
+        }
+
         #endregion Internal Types
 
         #region Constants and Readonly Values
@@ -515,6 +522,31 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             if (newBuildArchitectureString != currentArchitectureString)
             {
                 EditorUserBuildSettings.wsaArchitecture = newBuildArchitectureString;
+            }
+
+            // Platform Toolset (and save setting, if it's changed)
+            string currentPlatformToolsetString = UwpBuildDeployPreferences.PlatformToolset;
+
+            PlatformToolset platformToolset = PlatformToolset.Solution;
+            if (string.IsNullOrEmpty(currentPlatformToolsetString))
+            {
+                platformToolset = PlatformToolset.Solution;
+            }
+            else if(currentPlatformToolsetString.ToLower().Equals(PlatformToolset.v141.ToString().ToLower()))
+            {
+                platformToolset = PlatformToolset.v141;
+            }
+            else if (currentPlatformToolsetString.ToLower().Equals(PlatformToolset.v142.ToString().ToLower()))
+            {
+                platformToolset = PlatformToolset.v142;
+            }
+
+            platformToolset = (PlatformToolset)EditorGUILayout.EnumPopup("Platform Toolset", platformToolset, GUILayout.Width(HALF_WIDTH));
+
+            string platformToolsetString = platformToolset == PlatformToolset.Solution ? string.Empty : platformToolset.ToString();
+            if (platformToolsetString != currentPlatformToolsetString)
+            {
+                UwpBuildDeployPreferences.PlatformToolset = platformToolsetString;
             }
 
             // The 'Gaze Input' capability support was added for HL2 in the Windows SDK 18362, but 
@@ -1359,10 +1391,12 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             // Get the appx path
             FileInfo[] files = new DirectoryInfo(buildPath).GetFiles("*.appx");
             files = files.Length == 0 ? new DirectoryInfo(buildPath).GetFiles("*.appxbundle") : files;
+            files = files.Length == 0 ? new DirectoryInfo(buildPath).GetFiles("*.msix") : files;
+            files = files.Length == 0 ? new DirectoryInfo(buildPath).GetFiles("*.msixbundle") : files;
 
             if (files.Length == 0)
             {
-                Debug.LogErrorFormat("No APPX found in folder build folder ({0})", buildPath);
+                Debug.LogErrorFormat("No APPX or MSIX found in folder build folder ({0})", buildPath);
                 return;
             }
 

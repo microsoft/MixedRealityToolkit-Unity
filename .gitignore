@@ -74,7 +74,11 @@ Assets/StreamingAssets.meta
 # =============== #
 doc/
 
-# =========================================== #
-# Asset Script Reference Retargeter Generated #
-# =========================================== #
-NuGet/
+# ============================= #
+# NuGet Build Process Generated #
+# ============================= #
+/NuGet/*
+!/NuGet/BuildSource.proj
+/MRTKBuild/
+/MSBuild/
+/PackagesCopy/

@@ -2,10 +2,10 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections.Generic;
-using Boo.Lang;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
 {
@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         "Spatial Object Mesh Observer",
         "ObjectMeshObserver/Profiles/DefaultObjectMeshObserverProfile.asset",
         "MixedRealityToolkit.Providers")]
-    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
     public class SpatialObjectMeshObserver : 
         BaseSpatialObserver, 
         IMixedRealitySpatialAwarenessMeshObserver, 
@@ -42,6 +42,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         private bool sendObservations = true;
 
         private GameObject spatialMeshObject = null;
+
+        private MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> meshEventData = null;
 
         /// <summary>
         /// Reads the settings from the configuration profile.
@@ -90,12 +92,21 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         /// <inheritdoc />
         public override void Initialize()
         {
+            meshEventData = new MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>(EventSystem.current);
+
             ReadProfile();
 
             if (StartupBehavior == AutoStartBehavior.AutoStart)
             {
                 Resume();
             }
+        }
+
+        public override void Update()
+        {
+            if (!IsRunning) { return; }
+
+            SendMeshObjects();
         }
 
         /// <inheritdoc />
@@ -169,12 +180,33 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         public override void Resume()
         {
             if (IsRunning) { return; }
+            IsRunning = true;
+        }
+
+        /// <summary>
+        /// Event sent whenever a mesh is added.
+        /// </summary>
+        private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject>> OnMeshAdded =
+            delegate (IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject> handler, BaseEventData eventData)
+            {
+                MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>>(eventData);
+                handler.OnObservationAdded(spatialEventData);
+            };
+
+        /// <inheritdoc />
+        public override void Suspend()
+        {
+            if (!IsRunning) { return; }
+            IsRunning = false;
+        }
+
+        /// <summary>
+        /// Sends the observations using the mesh data contained within the configured 3D model.
+        /// </summary>
+        private void SendMeshObjects()
+        {
             if (!sendObservations) { return; }
 
-            // We are running.
-            IsRunning = true;
-
-            // Get the collection of MeshFilters
             if (spatialMeshObject != null)
             {
                 MeshFilter[] meshFilters = spatialMeshObject.GetComponentsInChildren<MeshFilter>();
@@ -194,35 +226,48 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
 
                     meshes.Add(currentMeshId, meshObject);
 
+                    meshEventData.Initialize(this, currentMeshId, meshObject);
+                    SpatialAwarenessSystem?.HandleEvent(meshEventData, OnMeshAdded);
+
                     currentMeshId++;
                 }
             }
+
             sendObservations = false;
         }
 
-        /// <inheritdoc />
-        public override void Suspend()
-        {
-            IsRunning = false;
-        }
-
-        private void RemoveMeshObject(int id)
+        /// <summary>
+        /// Removes an observation.
+        /// </summary>
+        /// <param name="meshId"></param>
+        private void RemoveMeshObject(int meshId)
         {
             SpatialAwarenessMeshObject meshObject = null;
 
-            if (meshes.TryGetValue(id, out meshObject))
+            if (meshes.TryGetValue(meshId, out meshObject))
             {
                 // Remove the mesh object from the collection.
-                meshes.Remove(id);
+                meshes.Remove(meshId);
                 if (meshObject != null)
                 {
                     SpatialAwarenessMeshObject.Cleanup(meshObject);
                 }
 
                 // Send the mesh removed event
-                SpatialAwarenessSystem?.RaiseMeshRemoved(this, id);
+                meshEventData.Initialize(this, meshId, null);
+                SpatialAwarenessSystem?.HandleEvent(meshEventData, OnMeshRemoved);
             }
         }
+
+        /// <summary>
+        /// Event sent whenever a mesh is discarded.
+        /// </summary>
+        private static readonly ExecuteEvents.EventFunction<IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject>> OnMeshRemoved =
+            delegate (IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject> handler, BaseEventData eventData)
+            {
+                MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>>(eventData);
+                handler.OnObservationRemoved(spatialEventData);
+            };
 
         #endregion IMixedRealitySpatialAwarenessObserver implementation
 

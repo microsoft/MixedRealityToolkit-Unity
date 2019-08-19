@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Input;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Input;
 
 #if WINDOWS_UWP
 using System.Threading.Tasks;
@@ -26,15 +26,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         [SerializeField]
         private DrawOnTexture[] heatmapRefs = null;
 
-        private StreamReader streamReader;
         private List<string> loggedLines;
 
 #if WINDOWS_UWP
-        private StorageFolder UWP_RootFolder = KnownFolders.MusicLibrary;
-        private string UWP_SubFolderName = "MRTK_ET_Demo\\tester";
-        private string UWP_FileName = "mrtk_log_mostRecentET.csv";
-        private StorageFolder UWP_LogSessionFolder;
-        private StorageFile UWP_LogFile;
+        private StorageFolder uwpRootFolder = KnownFolders.MusicLibrary;
+        private readonly string uwpSubFolderName = "MRTK_ET_Demo\\tester";
+        private readonly string uwpFileName = "mrtk_log_mostRecentET.csv";
+        private StorageFolder uwpLogSessionFolder;
+        private StorageFile uwpLogFile;
 #endif
 
         private void Start()
@@ -58,16 +57,16 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         public async Task<bool> UWP_LoadNewFile(string filename)
         {
             ResetCurrentStream();
-            bool fileExists = await UWP_FileExists(UWP_SubFolderName, UWP_FileName);
+            bool fileExists = await UWP_FileExists(uwpSubFolderName, uwpFileName);
 
             if (fileExists)
             {
-                txt_LoadingUpdate.text = "File exists: " + UWP_FileName;
-                await UWP_ReadData(UWP_LogFile);
+                txt_LoadingUpdate.text = "File exists: " + uwpFileName;
+                await UWP_ReadData(uwpLogFile);
             }
             else
             {
-                txt_LoadingUpdate.text = "Error: File does not exist! " + UWP_FileName;
+                txt_LoadingUpdate.text = "Error: File does not exist! " + uwpFileName;
                 return false;
             }
             
@@ -78,8 +77,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         {
             try
             {
-                UWP_LogSessionFolder = await UWP_RootFolder.GetFolderAsync(dir);
-                UWP_LogFile = await UWP_LogSessionFolder.GetFileAsync(filename);
+                uwpLogSessionFolder = await uwpRootFolder.GetFolderAsync(dir);
+                uwpLogFile = await uwpLogSessionFolder.GetFileAsync(filename);
                 
                 return true;
             }
@@ -147,7 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             }
         }
 
-#region Parsers
+        #region Parsers
         private Vector3 TryParseStringToVector3(string x, string y, string z, out bool isValid)
         {
             isValid = true;
@@ -181,9 +180,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
             return tval;
         }
-#endregion
+        #endregion
 
-#region Available player actions
+        #region Available player actions
         public void Load()
         {
 #if UNITY_EDITOR
@@ -291,7 +290,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
                 // Now let's populate the visualizer
                 for (int i = 0; i < loggedLines.Count; i++)
                 {
-                    string[] split = loggedLines[i].Split(new char[] { ',' });
+                    string[] split = loggedLines[i].Split(System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator.ToCharArray());
                     if (iType == InputSourceType.Eyes)
                         UpdateEyeGazeSignal(split, visualizer);
 
@@ -339,7 +338,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             if (txt_LoadingUpdate != null)
             {
                 LoadingStatus_Show();
-                txt_LoadingUpdate.text = String.Format($"Replay status: {((100f*now)/total):0}%");
+                txt_LoadingUpdate.text = String.Format($"Replay status: {((100f * now) / total):0}%");
             }
         }
 
@@ -362,7 +361,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             // Now let's populate the visualizer
             for (int i = 0; i < loggedLines.Count; i++)
             {
-                Ray? currentPointingRay = GetEyeRay(loggedLines[i].Split(new char[] { ',' }));
+                Ray? currentPointingRay = GetEyeRay(loggedLines[i].Split(System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator.ToCharArray()));
                 if (currentPointingRay.HasValue)
                 {
                     if (UnityEngine.Physics.Raycast(currentPointingRay.Value, out hit, maxTargetingDistInMeters))
@@ -418,9 +417,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             }
             return null;
         }
-#endregion
+        #endregion
 
-#region Handle data replay
+        #region Handle data replay
         private bool DataIsLoaded
         {
             get { return (loggedLines.Count > 0); }
@@ -520,7 +519,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             // Now let's populate the visualizer step by step
             if (replayIndex < loggedLines.Count)
             {
-                string[] split = loggedLines[replayIndex].Split(new char[] { ',' });
+                string[] split = loggedLines[replayIndex].Split(System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator.ToCharArray());
                 UpdateEyeGazeSignal(split, _EyeGazeVisualizer);
                 UpdateHeadGazeSignal(split, _HeadGazeVisualizer);
                 UpdateTimestampForNextReplay(split);
@@ -533,6 +532,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
                 replayNotStartedYet = true;
             }
         }
-#endregion
+        #endregion
     }
 }

@@ -3,8 +3,9 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -355,6 +356,8 @@ MonoBehaviour:
         Animation: {fileID: 0}
       ShaderName: Mixed Reality Toolkit/Standard
     History: []
+    CustomSettings: []
+    CustomHistory: []
     Easing:
       Enabled: 1
       Curve:

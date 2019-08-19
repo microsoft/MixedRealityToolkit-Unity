@@ -23,5 +23,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     wordWrap = true,
                     fontSize = 10,
         };
+
+        public static readonly GUIStyle BoldLargeTitleStyle = new GUIStyle()
+        {
+            fontSize = 12,
+            fontStyle = FontStyle.Bold,
+        };
     }
 }

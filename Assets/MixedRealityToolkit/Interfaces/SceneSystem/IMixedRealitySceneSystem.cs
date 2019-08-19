@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
     /// The scene actions provided improve on unity's SceneManagement events by ensuring that scenes
     /// are considered valid before the action is invoked.
     /// </summary>
-    public interface IMixedRealitySceneSystem : IMixedRealityEventSystem, IMixedRealityEventSource, IMixedRealityDataProvider
+    public interface IMixedRealitySceneSystem : IMixedRealityEventSystem, IMixedRealityEventSource
     {
         #region Actions
 

@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
     /// <summary>
     /// The Boundary system controls the presentation and display of the users boundary in a scene.
     /// </summary>
-    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Boundary/BoundarySystemGettingStarted.html")]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Boundary/BoundarySystemGettingStarted.html")]
     public class MixedRealityBoundarySystem : BaseCoreSystem, IMixedRealityBoundarySystem
     {
         public MixedRealityBoundarySystem(

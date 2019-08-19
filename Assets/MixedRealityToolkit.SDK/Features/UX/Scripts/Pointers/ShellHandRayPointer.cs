@@ -40,81 +40,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void OnPostSceneQuery()
         {
-            if (IsSelectPressed)
-            {
-                InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, Handedness);
-            }
+            base.OnPostSceneQuery();
 
-            Gradient lineColor = LineColorNoTarget;
-            BaseMixedRealityLineRenderer contextRenderer = null;
-
-            if (!IsActive)
+            if (!LineBase.enabled) 
             {
-                LineBase.enabled = false;
-                BaseCursor?.SetVisibility(false);
                 return;
             }
 
-            contextRenderer = lineRendererNoTarget;
-            LineBase.enabled = true;
-            BaseCursor?.SetVisibility(true);
+            BaseMixedRealityLineRenderer lineToShow = lineRendererNoTarget;
 
-            float clearWorldLength;
-            float cursorOffsetWorldLength = (BaseCursor != null) ? BaseCursor.SurfaceCursorDistance : 0;
-
-            // If we hit something
-            if (Result?.CurrentPointerTarget != null)
+            // Make the line solid when pressed
+            if (IsSelectPressed)
             {
-                clearWorldLength = Result.Details.RayDistance;
-
-                lineColor = LineColorValid;
-                contextRenderer = lineRendererSelected;
-            }
-            else
-            {
-                clearWorldLength = DefaultPointerExtent;
-
-                lineColor = IsSelectPressed ? LineColorSelected : LineColorNoTarget;
-                contextRenderer = IsSelectPressed ? lineRendererSelected : lineRendererNoTarget;
+                lineToShow = lineRendererSelected;
             }
 
-            if (IsFocusLocked)
-            {
-                lineColor = LineColorLockFocus;
-                contextRenderer = lineRendererSelected;
-            }
-
-            int maxClampLineSteps = LineCastResolution;
-
+            // Hide every line renderer except the contextual one
             foreach (BaseMixedRealityLineRenderer lineRenderer in LineRenderers)
             {
-                // Otherwise, enable the renderer we chose
-                if (lineRenderer == contextRenderer)
-                {
-                    lineRenderer.enabled = true;
-                    maxClampLineSteps = Mathf.Max(maxClampLineSteps, lineRenderer.LineStepCount);
-                }
-                else
-                {
-                    lineRenderer.enabled = false;
-                }
-
-                // Set colors on all line renderers regardless of context
-                lineRenderer.LineColor = lineColor;
-            }
-
-            // If focus and target point is locked, we're sticking to the target
-            // So don't clamp the world length
-            if (IsFocusLocked && IsTargetPositionLockedOnFocusLock)
-            {
-                float cursorOffsetLocalLength = LineBase.GetNormalizedLengthFromWorldLength(cursorOffsetWorldLength);
-                LineBase.LineEndClamp = 1 - cursorOffsetLocalLength;
-            }
-            else
-            {
-                // Otherwise clamp the line end by the clear distance
-                float clearLocalLength = LineBase.GetNormalizedLengthFromWorldLength(clearWorldLength - cursorOffsetWorldLength, maxClampLineSteps);
-                LineBase.LineEndClamp = clearLocalLength;
+                lineRenderer.enabled = lineRenderer == lineToShow;
             }
         }
 

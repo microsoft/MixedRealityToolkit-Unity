@@ -1,16 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.UI;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
-using Microsoft.MixedReality.Toolkit.Utilities;
 
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Editor;
@@ -27,8 +21,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public static class TestUtilities
     {
-        const float vector3DistanceEpsilon = 0.01f;
-
         const string primaryTestSceneTemporarySavePath = "Assets/__temp_primary_test_scene.unity";
         const string additiveTestSceneTemporarySavePath = "Assets/__temp_additive_test_scene_#.unity";
         public static Scene primaryTestScene;
@@ -144,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityToolkit(useDefaultProfile);
         }
 
-        public static void InitializeMixedRealityToolkit(bool useDefaultProfile = false)
+        public static void InitializeMixedRealityToolkit(MixedRealityToolkitConfigurationProfile configuration)
         {
             if (!MixedRealityToolkit.IsInitialized)
             {
@@ -153,25 +145,42 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 MixedRealityToolkit.ConfirmInitialized();
             }
 
-            // Tests
+            // Todo: this condition shouldn't be here.
+            // It's here due to some edit mode tests initializing Mrtk instance in Edit mode, causing some of 
+            // event handler registration to live over tests and cause next tests to fail.
+            // Exact reason requires investigation.
+            if (Application.isPlaying)
+            {
+                BaseEventSystem.enableDanglingHandlerDiagnostics = true;
+            }
+
             Assert.IsTrue(MixedRealityToolkit.IsInitialized);
             Assert.IsNotNull(MixedRealityToolkit.Instance);
-            if (!MixedRealityToolkit.Instance.HasActiveProfile)
-            {
-                var configuration = useDefaultProfile
-                    ? GetDefaultMixedRealityProfile<MixedRealityToolkitConfigurationProfile>()
-                    : ScriptableObject.CreateInstance<MixedRealityToolkitConfigurationProfile>();
 
-                Assert.IsTrue(configuration != null, "Failed to find the Default Mixed Reality Configuration Profile");
-                MixedRealityToolkit.Instance.ActiveProfile = configuration;
-                Assert.IsTrue(MixedRealityToolkit.Instance.ActiveProfile != null);
-            }
+
+            MixedRealityToolkit.Instance.ActiveProfile = configuration;
+            Assert.IsTrue(MixedRealityToolkit.Instance.ActiveProfile != null);
+        }
+
+        public static void InitializeMixedRealityToolkit(bool useDefaultProfile = false)
+        {
+            var configuration = useDefaultProfile
+                ? GetDefaultMixedRealityProfile<MixedRealityToolkitConfigurationProfile>()
+                : ScriptableObject.CreateInstance<MixedRealityToolkitConfigurationProfile>();
+
+            Assert.IsTrue(configuration != null, "Failed to find the Default Mixed Reality Configuration Profile");
+            InitializeMixedRealityToolkit(configuration);
         }
 
         public static void ShutdownMixedRealityToolkit()
         {
             MixedRealityToolkit.SetInstanceInactive(MixedRealityToolkit.Instance);
-            MixedRealityPlayspace.Destroy();
+            if (Application.isPlaying)
+            {
+                MixedRealityPlayspace.Destroy();
+            }
+
+            BaseEventSystem.enableDanglingHandlerDiagnostics = false;
         }
 
         private static T GetDefaultMixedRealityProfile<T>() where T : BaseMixedRealityProfile
@@ -183,10 +192,28 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 #endif
         }
 
-        public static void AssertAboutEqual(Vector3 actual, Vector3 expected, string message)
+        public static void AssertAboutEqual(Vector3 actual, Vector3 expected, string message, float tolerance = 0.01f)
         {
             var dist = (actual - expected).magnitude;
-            Debug.Assert(dist < vector3DistanceEpsilon, $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}");
+            Debug.Assert(dist < tolerance, $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}");
+        }
+
+        public static void AssertAboutEqual(Quaternion actual, Quaternion expected, string message, float tolerance = 0.01f)
+        {
+            var angle = Quaternion.Angle(actual, expected);
+            Debug.Assert(angle < tolerance, $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}");
+        }
+
+        public static void AssertNotAboutEqual(Vector3 val1, Vector3 val2, string message, float tolerance = 0.01f)
+        {
+            var dist = (val1 - val2).magnitude;
+            Debug.Assert(dist >= tolerance, $"{message}, val1 {val1.ToString("0.000")} almost equals val2 {val2.ToString("0.000")}");
+        }
+
+        public static void AssertNotAboutEqual(Quaternion val1, Quaternion val2, string message, float tolerance = 0.01f)
+        {
+            var angle = Quaternion.Angle(val1, val2);
+            Debug.Assert(angle >= tolerance, $"{message}, val1 {val1.ToString("0.000")} almost equals val2 {val2.ToString("0.000")}");
         }
     }
 }

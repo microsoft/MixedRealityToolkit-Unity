@@ -12,8 +12,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// The Mixed Reality Toolkit's specific implementation of the <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/>
     /// </summary>
-    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html")]
-    public class MixedRealityInputSystem : BaseCoreSystem, IMixedRealityInputSystem, IMixedRealityDataProviderAccess, IMixedRealityCapabilityCheck
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html")]
+    public class MixedRealityInputSystem : BaseDataProviderAccessCoreSystem, IMixedRealityInputSystem, IMixedRealityCapabilityCheck
     {
         public MixedRealityInputSystem(
             IMixedRealityServiceRegistrar registrar,
@@ -76,6 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public bool IsInputEnabled => disabledRefCount <= 0;
 
         private int disabledRefCount;
+        private bool isInputModuleAdded = false;
 
         private SourceStateEventData sourceStateEventData;
         private SourcePoseEventData<TrackingState> sourceTrackingEventData;
@@ -109,9 +110,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public bool CheckCapability(MixedRealityCapability capability)
         {
-            for (int i = 0; i < deviceManagers.Count; i++)
+            foreach (var deviceManager in GetDataProviders<IMixedRealityInputDeviceManager>())
             {
-                IMixedRealityCapabilityCheck capabilityChecker = deviceManagers[i] as IMixedRealityCapabilityCheck;
+                IMixedRealityCapabilityCheck capabilityChecker = deviceManager as IMixedRealityCapabilityCheck;
 
                 // If one of the running data providers supports the requested capability, 
                 // the application has the needed support to leverage the desired functionality.
@@ -145,16 +146,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return;
             }
 
-            // Ensure the camera starts at the origin.
-            CameraCache.Main.transform.position = Vector3.zero;
-            CameraCache.Main.transform.rotation = Quaternion.identity;
-
             BaseInputModule[] inputModules = UnityEngine.Object.FindObjectsOfType<BaseInputModule>();
 
             if (inputModules.Length == 0)
             {
                 // There is no input module attached to the camera, add one.
                 CameraCache.Main.gameObject.AddComponent<MixedRealityInputModule>();
+                isInputModuleAdded = true;
             }
             else if ((inputModules.Length == 1) && (inputModules[0] is MixedRealityInputModule))
             { /* Nothing to do, a MixedRealityInputModule was applied in the editor. */ }
@@ -227,14 +225,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             handTrackingInputEventData = new HandTrackingInputEventData(EventSystem.current);
         }
 
-        private List<IMixedRealityInputDeviceManager> deviceManagers = new List<IMixedRealityInputDeviceManager>();
-
         /// <inheritdoc />
         public override void Enable()
         {
             MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
 
-            if ((deviceManagers.Count == 0) && (profile != null))
+            if ((GetDataProviders().Count == 0) && (profile != null))
             {
                 // Register the input device managers.
                 for (int i = 0; i < profile.DataProviderConfigurations.Length; i++)
@@ -242,15 +238,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     MixedRealityInputDataProviderConfiguration configuration = profile.DataProviderConfigurations[i];
                     object[] args = { Registrar, this, configuration.ComponentName, configuration.Priority, configuration.DeviceManagerProfile };
 
-                    if (Registrar.RegisterDataProvider<IMixedRealityInputDeviceManager>(
+                    RegisterDataProvider<IMixedRealityInputDeviceManager>(
                         configuration.ComponentType.Type,
                         configuration.RuntimePlatform,
-                        args))
-                    {
-                        deviceManagers.Add(Registrar.GetDataProvider<IMixedRealityInputDeviceManager>(configuration.ComponentName));
-                    }
+                        args);
                 }
             }
+
+            // Ensure data providers are enabled (performed by the base class)
+            base.Enable();
 
             InputEnabled?.Invoke();
         }
@@ -258,6 +254,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void Reset()
         {
+            base.Reset();
             Disable();
             Initialize();
             Enable();
@@ -266,6 +263,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void Disable()
         {
+            base.Disable();
+
             // Input System adds a gaze provider component on the main camera, which needs to be removed when the input system is disabled/removed.
             // Otherwise the component would keep references to dead objects.
             // Unity's way to remove component is to destroy it.
@@ -273,6 +272,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (Application.isPlaying)
                 {
+                    GazeProvider.GazePointer.BaseCursor.Destroy();
                     UnityEngine.Object.Destroy(GazeProvider as Component);
                 }
                 else
@@ -283,84 +283,65 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 GazeProvider = null;
             }
 
-
-            if (deviceManagers.Count > 0)
+            foreach(var provider in GetDataProviders<IMixedRealityInputDeviceManager>())
             {
-                // Unregister the input device managers.
-                for (int i = 0; i < deviceManagers.Count; i++)
+                if (provider != null)
                 {
-                    if (deviceManagers[i] != null)
-                    {
-                        Registrar.UnregisterDataProvider<IMixedRealityInputDeviceManager>(deviceManagers[i]);
-                    }
+                    UnregisterDataProvider<IMixedRealityInputDeviceManager>(provider);
                 }
             }
-            deviceManagers.Clear();
 
             InputDisabled?.Invoke();
         }
 
-        #endregion IMixedRealityService Implementation
-
-        #region GetDataProvider(s) Implementation
-        /// <inheritdoc />
-        public IReadOnlyList<IMixedRealityDataProvider> GetDataProviders()
+        public override void Destroy()
         {
-            return new List<IMixedRealityInputDeviceManager>(deviceManagers) as IReadOnlyList<IMixedRealityInputDeviceManager>;
-        }
-
-        /// <inheritdoc />
-        public IReadOnlyList<T> GetDataProviders<T>() where T : IMixedRealityDataProvider
-        {
-            if (!typeof(IMixedRealityInputDeviceManager).IsAssignableFrom(typeof(T))) { return null; }
-
-            List<T> selected = new List<T>();
-
-            for (int i = 0; i < deviceManagers.Count; i++)
+            if (isInputModuleAdded)
             {
-                if (deviceManagers[i] is T)
+                var inputModule = CameraCache.Main.gameObject.GetComponent<MixedRealityInputModule>();
+                if (inputModule)
                 {
-                    selected.Add((T)deviceManagers[i]);
-                }
-            }
-
-            return selected;
-        }
-
-        /// <inheritdoc />
-        public IMixedRealityDataProvider GetDataProvider(string name)
-        {
-            for (int i = 0; i < deviceManagers.Count; i++)
-            {
-                if (deviceManagers[i].Name == name)
-                {
-                    return deviceManagers[i];
-                }
-            }
-
-            return null;
-        }
-
-        /// <inheritdoc />
-        public T GetDataProvider<T>(string name = null) where T : IMixedRealityDataProvider
-        {
-            if (!typeof(IMixedRealityInputDeviceManager).IsAssignableFrom(typeof(T))) { return default(T); }
-
-            for (int i = 0; i < deviceManagers.Count; i++)
-            {
-                if (deviceManagers[i] is T)
-                {
-                    if ((name == null) || (deviceManagers[i].Name == name))
+                    if (Application.isPlaying)
                     {
-                        return (T)deviceManagers[i];
+                        inputModule.DeactivateModule();
+                        UnityEngine.Object.Destroy(inputModule);
+                    }
+                    else
+                    {
+                        UnityEngine.Object.DestroyImmediate(inputModule);
                     }
                 }
             }
 
-            return default(T);
+            base.Destroy();
+        }
+        #endregion IMixedRealityService Implementation
+
+        #region IMixedRealityDataProviderAccess Implementation
+
+        /// <inheritdoc />
+        public override IReadOnlyList<T> GetDataProviders<T>()
+        {
+            if (!typeof(IMixedRealityInputDeviceManager).IsAssignableFrom(typeof(T)))
+            {
+                return null;
+            }
+
+            return base.GetDataProviders<T>();
         }
 
-        #endregion GetDataProvider(s) Implementation
+        /// <inheritdoc />
+        public override T GetDataProvider<T>(string name = null)
+        {
+            if (!typeof(IMixedRealityInputDeviceManager).IsAssignableFrom(typeof(T)))
+            {
+                return default(T);
+            }
+
+            return base.GetDataProvider<T>(name);
+        }
+
+        #endregion IMixedRealityDataProviderAccess Implementation
 
         #region IMixedRealityEventSystem Implementation
 
@@ -1026,7 +1007,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Pass handler through HandleEvent to perform modal/fallback logic
             HandlePointerEvent(pointerEventData, OnInputClickedEventHandler);
 
-            // NOTE: In Unity UI, a "click" happens on every pointer up, so we have RaisePointerUp call the pointerClickHandler.
+            // NOTE: In Unity UI, a "click" happens on every pointer up, so we have RaisePointerUp call the PointerHandler.
         }
 
         #endregion Pointer Click

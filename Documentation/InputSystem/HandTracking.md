@@ -1,4 +1,6 @@
-# Hand Tracking Profile
+# Hand Tracking
+
+## Hand Tracking Profile
 
 The _Hand Tracking profile_ is found under the _Input System profile_. It contains settings for customizing hand representation.
 
@@ -10,7 +12,8 @@ Joint prefabs are visualized using simple prefabs. The _Palm_ and _Index Finger_
 
 By default the hand joint prefabs are simple geometric primitives. These can be replaced if desired. If no prefab is specified at all, empty [GameObjects](href:https://docs.unity3d.com/ScriptReference/GameObject.html) are created instead.
 
-**Warning: Avoid using complex scripts or expensive rendering in joint prefabs, since joint objects are transformed on every frame and can have significant performance cost!**
+> [!WARNING]
+> Avoid using complex scripts or expensive rendering in joint prefabs, since joint objects are transformed on every frame and can have significant performance cost!
 
 <img src="../../Documentation/Images/InputSimulation/MRTK_Core_Input_Hands_JointVisualizerPrefabs.png" width="350px"  style="display:block;">
 
@@ -22,25 +25,24 @@ The hand mesh is used if fully defined mesh data is provided by the hand trackin
 
 Hand mesh display can have a noticeable performance impact, for this reason it can be disabled entirely by unchecking **Enable Hand Mesh Visualization** option.
 
-# Scripting
+## Scripting
 
-Position and rotation can be requested from the input system for each individual hand joint as a [MixedRealityPose](xref:Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose).
+Position and rotation can be requested from the input system for each individual hand joint as a [`MixedRealityPose`](xref:Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose).
 
 Alternatively the system allows access to [GameObjects](https://docs.unity3d.com/ScriptReference/GameObject.html) that follow the joints. This can be useful if another GameObject should track a joint continuously.
 
-| Note: Joint object are destroyed when hand tracking is lost! Make sure that any scripts using the joint object handle the `null` case gracefully to avoid errors! |
-| --- |
+Available joints are listed in the [`TrackedHandJoint`](xref:Microsoft.MixedReality.Toolkit.Utilities.TrackedHandJoint) enum.
 
-Available joints are listed in the [TrackedHandJoint](xref:Microsoft.MixedReality.Toolkit.Utilities.TrackedHandJoint) enum.
+> [!NOTE]
+> Joint object are destroyed when hand tracking is lost! Make sure that any scripts using the joint object handle the `null` case gracefully to avoid errors!
 
-## Accessing a given Hand Controller
+### Accessing a given Hand Controller
 
-A specific hand controller is often available, e.g. when handling input events. In this case the joint data can be requested directly from the device, using the [IMixedRealityHand](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand) interface.
+A specific hand controller is often available, e.g. when handling input events. In this case the joint data can be requested directly from the device, using the [`IMixedRealityHand`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand) interface.
 
-### Polling Joint Pose from Controller
+#### Polling Joint Pose from Controller
 
-<!-- [TryGetJoint](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand.TryGetJoint(TrackedHandJoint, MixedRealityPose)) -->
-The [TryGetJoint](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand.TryGetJoint*) function returns `false` if the requested joint is not available for some reason. In that case the resulting pose will be [MixedRealityPose.ZeroIdentity](xref:Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.ZeroIdentity).
+The [`TryGetJoint`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand.TryGetJoint*) function returns `false` if the requested joint is not available for some reason. In that case the resulting pose will be [`MixedRealityPose.ZeroIdentity`](xref:Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.ZeroIdentity).
 
 ```csharp
 public void OnSourceDetected(SourceStateEventData eventData)
@@ -56,7 +58,7 @@ public void OnSourceDetected(SourceStateEventData eventData)
 }
 ```
 
-### Joint Transform from Hand Visualizer
+#### Joint Transform from Hand Visualizer
 
 Joint objects can be requested from the [controller visualizer](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityController.Visualizer).
 
@@ -74,13 +76,13 @@ public void OnSourceDetected(SourceStateEventData eventData)
 }
 ```
 
-## Simplified joint data access
+### Simplified joint data access
 
 If no specific controller is given then utility classes are provided for convenient access to hand joint data. These functions request joint data from the first available hand device currently tracked.
 
-### Polling Joint Pose from HandJointUtils
+#### Polling Joint Pose from HandJointUtils
 
-[HandJointUtils](xref:Microsoft.MixedReality.Toolkit.Input.HandJointUtils) is a static class that queries the first active hand device.
+[`HandJointUtils`](xref:Microsoft.MixedReality.Toolkit.Input.HandJointUtils) is a static class that queries the first active hand device.
 
 ```csharp
   if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out MixedRealityPose pose))
@@ -89,9 +91,9 @@ If no specific controller is given then utility classes are provided for conveni
   }
 ```
 
-### Joint Transform from Hand Joint Service
+#### Joint Transform from Hand Joint Service
 
-[IMixedRealityHandJointService](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandJointService) keeps a persistent set of [GameObjects](https://docs.unity3d.com/ScriptReference/GameObject.html) for tracking joints.
+[`IMixedRealityHandJointService`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandJointService) keeps a persistent set of [GameObjects](https://docs.unity3d.com/ScriptReference/GameObject.html) for tracking joints.
 
 ```csharp
   var handJointService = MixedRealityToolkit.Instance.GetService<IMixedRealityHandJointService>();
@@ -103,13 +105,13 @@ If no specific controller is given then utility classes are provided for conveni
 }
 ```
 
-## Hand Tracking Events
+### Hand Tracking Events
 
 The input system provides events as well, if polling data from controllers directly is not desirable.
 
-### Joint Events
+#### Joint Events
 
-[IMixedRealityHandJointHandler](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandJointHandler) handles updates of joint positions.
+[`IMixedRealityHandJointHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandJointHandler) handles updates of joint positions.
 
 ```csharp
 public class MyHandJointEventHandler : IMixedRealityHandJointHandler
@@ -129,9 +131,9 @@ public class MyHandJointEventHandler : IMixedRealityHandJointHandler
 }
 ```
 
-### Mesh Events
+#### Mesh Events
 
-[IMixedRealityHandMeshHandler](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandMeshHandler) handles changes of the articulated hand mesh.
+[`IMixedRealityHandMeshHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHandMeshHandler) handles changes of the articulated hand mesh.
 
 Note that hand meshes are not enabled by default.
 
@@ -157,5 +159,43 @@ public class MyHandMeshEventHandler : IMixedRealityHandMeshHandler
       // ...
     }
   }
+}
+```
+
+## Known Issues
+
+### .NET Native
+
+There is currently a known issue with Master builds using the .NET backend. In .NET Native, `IInspectable` pointers cannot be marshaled from native to managed code using `Marshal.GetObjectForIUnknown`. The MRTK uses this to obtain the `SpatialCoordinateSystem` in order to receive hand and eye data from the platform.
+
+We've provided DLL source as a workaround for this issue, in [the native Mixed Reality Toolkit repo](https://github.com/microsoft/MixedRealityToolkit/tree/master/DotNetNativeWorkaround). Please follow the instructions in the README there and copy the resulting binaries into a Plugins folder in your Unity assets. After that, the WindowsMixedRealityUtilities script provided in the MRTK will resolve the workaround for you.
+
+If you want to create your own DLL or include this workaround in an existing one, the core of the workaround is:
+
+```c++
+extern "C" __declspec(dllexport) void __stdcall MarshalIInspectable(IUnknown* nativePtr, IUnknown** inspectable)
+{
+    *inspectable = nativePtr;
+}
+```
+
+And its use in your C# Unity code:
+
+```c#
+[DllImport("DotNetNativeWorkaround.dll", EntryPoint = "MarshalIInspectable")]
+private static extern void GetSpatialCoordinateSystem(IntPtr nativePtr, out SpatialCoordinateSystem coordinateSystem);
+
+private static SpatialCoordinateSystem GetSpatialCoordinateSystem(IntPtr nativePtr)
+{
+    try
+    {
+        GetSpatialCoordinateSystem(nativePtr, out SpatialCoordinateSystem coordinateSystem);
+        return coordinateSystem;
+    }
+    catch
+    {
+        UnityEngine.Debug.LogError("Call to the DotNetNativeWorkaround plug-in failed. The plug-in is required for correct behavior when using .NET Native compilation");
+        return Marshal.GetObjectForIUnknown(nativePtr) as SpatialCoordinateSystem;
+    }
 }
 ```

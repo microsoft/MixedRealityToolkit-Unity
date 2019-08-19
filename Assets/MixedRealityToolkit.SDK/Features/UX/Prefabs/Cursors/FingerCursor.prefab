@@ -82,13 +82,12 @@ MonoBehaviour:
   rotationLerpTime: 0.1
   lookRotationBlend: 0.5
   PrimaryCursorVisual: {fileID: 7521151737680088869}
-  IsPointerDown: 0
+  SourceDownIds: 
   defaultCursorDistance: 2
   checkForGrabbables: 0
   skinSurfaceOffset: 0.01
   alignWithSurfaceDistance: 0.1
   indexFingerRingRenderer: {fileID: 7442314219999054210}
-  thumbRingRenderer: {fileID: 0}
 --- !u!1 &8395867636657464059
 GameObject:
   m_ObjectHideFlags: 0
@@ -137,9 +136,9 @@ MonoBehaviour:
     farRadius: 0.2
     nearDistance: 0.02
     minNearSizePercentage: 0.35
-    centerColor: {r: 0.078431375, g: 0.4745098, b: 0.98039216, a: 0}
-    middleColor: {r: 0.011764706, g: 0.43529412, b: 1, a: 0.32941177}
-    outerColor: {r: 1.372549, g: 0, b: 3.745098, a: 1}
+    centerColor: {r: 0.21176471, g: 0.5568628, b: 0.98039216, a: 0}
+    middleColor: {r: 0.18431373, g: 0.5176471, b: 1, a: 0.2}
+    outerColor: {r: 0.9647059, g: 0.3647059, b: 2.2470589, a: 1}
 --- !u!1001 &7442314219997024738
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -150,6 +149,26 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
       propertyPath: m_Name
       value: MRTK_FingerTipRing_Index
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -194,26 +213,6 @@ PrefabInstance:
     - target: {fileID: 400000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2300000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
-      propertyPath: m_LightProbeUsage
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2300000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
-      propertyPath: m_ReflectionProbeUsage
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2300000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
-      propertyPath: m_CastShadows
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2300000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
-      propertyPath: m_ReceiveShadows
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2300000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
-      propertyPath: m_MotionVectors
-      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}

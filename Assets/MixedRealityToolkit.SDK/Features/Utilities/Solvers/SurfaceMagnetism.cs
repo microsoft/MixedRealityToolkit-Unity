@@ -2,7 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Physics;
+using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 {
@@ -19,17 +21,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         public enum RaycastDirectionMode
         {
             /// <summary>
-            /// Cast from head in facing direction
+            /// Cast from Tracked Target in facing direction
             /// </summary>
-            CameraFacing = 0,
+            TrackedTargetForward = 0,
 
             /// <summary>
-            /// Cast from head to object position
+            /// Cast from Tracked Target position to this object's position
             /// </summary>
             ToObject,
 
             /// <summary>
-            /// Cast from head to linked solver position
+            /// Cast from Tracked Target Position to linked solver position
             /// </summary>
             ToLinkedPosition
         }
@@ -45,19 +47,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             None = 0,
 
             /// <summary>
-            /// Face head, but always oriented up or down
+            /// Face the tracked transform
             /// </summary>
-            Vertical,
+            TrackedTarget = 1,
 
             /// <summary>
             /// Aligned to surface normal completely
             /// </summary>
-            Full,
+            SurfaceNormal = 2,
 
             /// <summary>
-            /// Blend between head and surface orientation
+            /// Blend between tracked transform and the surface normal orientation
             /// </summary>
-            Blended
+            Blended = 3,
         }
         #endregion
 
@@ -77,28 +79,50 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         [SerializeField]
         [Tooltip("Max distance for raycast to check for surfaces")]
-        private float maxDistance = 3.0f;
+        [FormerlySerializedAs("maxDistance")]
+        private float maxRaycastDistance = 50.0f;
 
         /// <summary>
         /// Max distance for raycast to check for surfaces
         /// </summary>
+        public float MaxRaycastDistance
+        {
+            get { return maxRaycastDistance; }
+            set { maxRaycastDistance = value; }
+        }
+
+        /// <summary>
+        /// Max distance for raycast to check for surfaces
+        /// </summary>
+        [Obsolete("Use MaxRaycastDistance instead")]
         public float MaxDistance
         {
-            get { return maxDistance; }
-            set { maxDistance = value; }
+            get { return maxRaycastDistance; }
+            set { maxRaycastDistance = value; }
         }
 
         [SerializeField]
         [Tooltip("Closest distance to bring object")]
-        private float closeDistance = 0.5f;
+        [FormerlySerializedAs("closeDistance")]
+        private float closestDistance = 0.5f;
 
         /// <summary>
         /// Closest distance to bring object
         /// </summary>
+        public float ClosestDistance
+        {
+            get { return closestDistance; }
+            set { closestDistance = value; }
+        }
+
+        /// <summary>
+        /// Closest distance to bring object
+        /// </summary>
+        [Obsolete("Use ClosestDistance instead")]
         public float CloseDistance
         {
-            get { return closeDistance; }
-            set { closeDistance = value; }
+            get { return closestDistance; }
+            set { closestDistance = value; }
         }
 
         [SerializeField]
@@ -227,11 +251,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         [SerializeField]
-        [Tooltip("Raycast direction. Can cast from head in facing direction, or cast from head to object position")]
-        private RaycastDirectionMode currentRaycastDirectionMode = RaycastDirectionMode.ToLinkedPosition;
+        [Tooltip("Raycast direction type. Default is forward direction of Tracked Target transform")]
+        private RaycastDirectionMode currentRaycastDirectionMode = RaycastDirectionMode.TrackedTargetForward;
 
         /// <summary>
-        /// Raycast direction. Can cast from head in facing direction, or cast from head to object position
+        /// Raycast direction type. Default is forward direction of Tracked Target transform
         /// </summary>
         public RaycastDirectionMode CurrentRaycastDirectionMode
         {
@@ -240,11 +264,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         [SerializeField]
-        [Tooltip("Orientation mode. None = no orienting, Vertical = Face head, but always oriented up/down, Full = Aligned to surface normal completely")]
-        private OrientationMode orientationMode = OrientationMode.Vertical;
+        [Tooltip("How solver will orient model. None = no orienting, TrackedTarget = Face tracked target transform, SurfaceNormal = Aligned to surface normal completely, Blended = blend between tracked transform and surface orientation")]
+        private OrientationMode orientationMode = OrientationMode.TrackedTarget;
 
         /// <summary>
-        /// Orientation mode. None = no orienting, Vertical = Face head, but always oriented up/down, Full = Aligned to surface normal completely
+        /// How solver will orient model. See OrientationMode enum for possible modes. When mode=Blended, use OrientationBlend property to define ratio for blending
         /// </summary>
         public OrientationMode CurrentOrientationMode
         {
@@ -253,16 +277,29 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         [SerializeField]
-        [Tooltip("Orientation Blend Value where 0.0 = All head and 1.0 = All surface")]
+        [Tooltip("Value used for when OrientationMode=Blended. If 0.0 orientation is driven as if in TrackedTarget mode, and if 1.0 orientation is driven as if in SurfaceNormal mode")]
         private float orientationBlend = 0.65f;
 
         /// <summary>
-        /// Orientation Blend Value where 0.0 = All head and 1.0 = All surface
+        /// Value used for when Orientation Mode=Blended. If 0.0 orientation is driven all by TrackedTarget mode and if 1.0 orientation is driven all by SurfaceNormal mode
         /// </summary>
         public float OrientationBlend
         {
             get { return orientationBlend; }
             set { orientationBlend = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("If true, ensures object is kept vertical for TrackedTarget, SurfaceNormal, and Blended Orientation Modes")]
+        private bool keepOrientationVertical = true;
+
+        /// <summary>
+        /// If true, ensures object is kept vertical for TrackedTarget, SurfaceNormal, and Blended Orientation Modes
+        /// </summary>
+        public bool KeepOrientationVertical
+        {
+            get { return keepOrientationVertical; }
+            set { keepOrientationVertical = value; }
         }
 
         [SerializeField]
@@ -305,8 +342,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
                 switch (CurrentRaycastDirectionMode)
                 {
-                    case RaycastDirectionMode.CameraFacing:
-                        endPoint = SolverHandler.TransformTarget.position + SolverHandler.TransformTarget.forward;
+                    case RaycastDirectionMode.TrackedTargetForward:
+                        if (SolverHandler != null && SolverHandler.TransformTarget != null)
+                        {
+                            endPoint = SolverHandler.TransformTarget.position + SolverHandler.TransformTarget.forward;
+                        }
                         break;
 
                     case RaycastDirectionMode.ToObject:
@@ -331,7 +371,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             {
                 Vector3 direction = Vector3.forward;
 
-                if (CurrentRaycastDirectionMode == RaycastDirectionMode.CameraFacing)
+                if (CurrentRaycastDirectionMode == RaycastDirectionMode.TrackedTargetForward)
                 {
                     if (SolverHandler.TransformTarget != null)
                     {
@@ -353,40 +393,32 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         private float ScaleOverride => useLinkedAltScaleOverride ? SolverHandler.AltScale.Current.magnitude : volumeCastSizeOverride;
 
         /// <summary>
-        /// Calculates how the object should orient to the surface.  May be none to pass shared orientation through,
-        /// oriented to the surface but fully vertical, fully oriented to the surface normal, or a slerped blend
-        /// of the vertical orientation and the pass-through rotation.
+        /// Calculates how the object should orient to the surface.
         /// </summary>
-        /// <param name="direction"></param>
-        /// <param name="surfaceNormal"></param>
+        /// <param name="direction">direction of tracked target</param>
+        /// <param name="surfaceNormal">normal of surface at hit point</param>
         /// <returns>Quaternion, the orientation to use for the object</returns>
         private Quaternion CalculateMagnetismOrientation(Vector3 direction, Vector3 surfaceNormal)
         {
-            // Calculate the surface rotation
-            Vector3 newDirection = -surfaceNormal;
-
-            if (IsNormalVertical(newDirection))
+            if (KeepOrientationVertical)
             {
-                newDirection = direction;
+                direction.y = 0;
+                surfaceNormal.y = 0;
             }
 
-            newDirection.y = 0;
-
-            var surfaceRot = Quaternion.LookRotation(newDirection, Vector3.up);
+            var trackedReferenceRotation = Quaternion.LookRotation(-direction, Vector3.up);
+            var surfaceReferenceRotation = Quaternion.LookRotation(-surfaceNormal, Vector3.up);
 
             switch (CurrentOrientationMode)
             {
                 case OrientationMode.None:
                     return SolverHandler.GoalRotation;
-
-                case OrientationMode.Vertical:
-                    return surfaceRot;
-
-                case OrientationMode.Full:
-                    return Quaternion.LookRotation(-surfaceNormal, Vector3.up);
-
+                case OrientationMode.TrackedTarget:
+                    return trackedReferenceRotation;
+                case OrientationMode.SurfaceNormal:
+                    return surfaceReferenceRotation;
                 case OrientationMode.Blended:
-                    return Quaternion.Slerp(SolverHandler.GoalRotation, surfaceRot, orientationBlend);
+                    return Quaternion.Slerp(trackedReferenceRotation, surfaceReferenceRotation, orientationBlend);
                 default:
                     return Quaternion.identity;
             }
@@ -420,11 +452,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 case SceneQueryType.SphereCast:
                     SphereRaycastStepUpdate(ref this.currentRayStep);
                     break;
+                case SceneQueryType.SphereOverlap:
+                    Debug.LogError("Raycast mode set to SphereOverlap which is not valid for SurfaceMagnetism component. Disabling update solvers...");
+                    SolverHandler.UpdateSolvers = false;
+                    break;
             }
-
-            // Do frame to frame updates of transform, smoothly toward the goal, if desired
-            UpdateWorkingPositionToGoal();
-            UpdateWorkingRotationToGoal();
         }
 
         /// <summary>
@@ -437,7 +469,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             RaycastHit result;
 
             // Do the cast!
-            isHit = MixedRealityRaycaster.RaycastSimplePhysicsStep(rayStep, maxDistance, magneticSurfaces, out result);
+            isHit = MixedRealityRaycaster.RaycastSimplePhysicsStep(rayStep, maxRaycastDistance, magneticSurfaces, false, out result);
 
             OnSurface = isHit;
 
@@ -445,9 +477,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             Vector3 hitDelta = result.point - rayStep.Origin;
             float length = hitDelta.magnitude;
 
-            if (length < closeDistance)
+            if (length < closestDistance)
             {
-                result.point = rayStep.Origin + rayStep.Direction * closeDistance;
+                result.point = rayStep.Origin + rayStep.Direction * closestDistance;
             }
 
             // Apply results
@@ -469,7 +501,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
             // Do the cast!
             float size = ScaleOverride > 0 ? ScaleOverride : transform.lossyScale.x * sphereSize;
-            isHit = MixedRealityRaycaster.RaycastSpherePhysicsStep(rayStep, size, maxDistance, magneticSurfaces, out result);
+            isHit = MixedRealityRaycaster.RaycastSpherePhysicsStep(rayStep, size, maxRaycastDistance, magneticSurfaces, false, out result);
 
             OnSurface = isHit;
 
@@ -477,9 +509,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             Vector3 hitDelta = result.point - rayStep.Origin;
             float length = hitDelta.magnitude;
 
-            if (length < closeDistance)
+            if (length < closestDistance)
             {
-                result.point = rayStep.Origin + rayStep.Direction * closeDistance;
+                result.point = rayStep.Origin + rayStep.Direction * closestDistance;
             }
 
             // Apply results
@@ -517,7 +549,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             Vector3[] normals;
             bool[] hits;
 
-            if (MixedRealityRaycaster.RaycastBoxPhysicsStep(rayStep, extents, transform.position, targetMatrix, maxDistance, magneticSurfaces, boxRaysPerEdge, orthographicBoxCast, out positions, out normals, out hits))
+            if (MixedRealityRaycaster.RaycastBoxPhysicsStep(rayStep, extents, transform.position, targetMatrix, maxRaycastDistance, magneticSurfaces, boxRaysPerEdge, orthographicBoxCast, false, out positions, out normals, out hits))
             {
                 Plane plane;
                 float distance;
@@ -537,7 +569,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 float boxSurfaceOffset = targetMatrix.MultiplyVector(new Vector3(0, 0, extents.z * 0.5f)).magnitude;
 
                 // Apply boxSurfaceOffset to ray direction and not surface normal direction to reduce sliding
-                GoalPosition = rayStep.Origin + rayStep.Direction * Mathf.Max(closeDistance, distance + surfaceRayOffset + boxSurfaceOffset + verticalCorrectionOffset) + plane.normal * (0 * boxSurfaceOffset + surfaceNormalOffset);
+                GoalPosition = rayStep.Origin + rayStep.Direction * Mathf.Max(closestDistance, distance + surfaceRayOffset + boxSurfaceOffset + verticalCorrectionOffset) + plane.normal * (0 * boxSurfaceOffset + surfaceNormalOffset);
                 GoalRotation = CalculateMagnetismOrientation(rayStep.Direction, plane.normal);
                 OnSurface = true;
             }

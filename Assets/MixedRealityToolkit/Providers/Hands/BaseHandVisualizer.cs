@@ -91,10 +91,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         void IMixedRealityHandJointHandler.OnHandJointsUpdated(InputEventData<IDictionary<TrackedHandJoint, MixedRealityPose>> eventData)
         {
-            if (eventData.Handedness != Controller?.ControllerHandedness)
+            if (eventData.InputSource.SourceId != Controller.InputSource.SourceId)
             {
                 return;
             }
+            Debug.Assert(eventData.Handedness == Controller.ControllerHandedness);
 
             MixedRealityHandTrackingProfile handTrackingProfile = InputSystem?.InputSystemProfile.HandTrackingProfile;
             if (handTrackingProfile != null && !handTrackingProfile.EnableHandJointVisualization)

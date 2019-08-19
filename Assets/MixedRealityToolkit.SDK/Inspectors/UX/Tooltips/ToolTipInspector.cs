@@ -78,6 +78,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         public override void OnInspectorGUI()
         {
+            if (target != null)
+            {
+                InspectorUIUtility.RenderHelpURL(target.GetType());
+            }
+
             serializedObject.Update();
 
             toolTipText = serializedObject.FindProperty("toolTipText");

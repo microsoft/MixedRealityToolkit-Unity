@@ -29,10 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("Renderer representing the ring attached to the index finger using an MRTK/Standard material with the round corner feature enabled.")]
         protected Renderer indexFingerRingRenderer;
 
-        [SerializeField]
-        [Tooltip("Renderer representing the ring attached to the thumb using an MRTK/Standard material with the round corner feature enabled.")]
-        protected Renderer thumbRingRenderer;
-
         private MaterialPropertyBlock materialPropertyBlock;
         private int proximityDistanceID;
         private readonly Quaternion fingerPadRotation = Quaternion.Euler(90.0f, 0.0f, 0.0f);
@@ -66,12 +62,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     indexFingerRotation = transform.rotation;
                 }
 
-                Vector3 thumbPosition;
-                Quaternion thumbRotation;
-                if (!TryGetJoint(TrackedHandJoint.ThumbTip, out thumbPosition, out thumbRotation))
+                Vector3 indexKnucklePosition;
+                if (!TryGetJoint(TrackedHandJoint.IndexKnuckle, out indexKnucklePosition, out _)) // knuckle rotation not used
                 {
-                    thumbPosition = transform.position;
-                    thumbRotation = transform.rotation;
+                    indexKnucklePosition = transform.position;
                 }
 
                 if (nearPointer.IsNearObject)
@@ -87,47 +81,35 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     if (indexFingerRingRenderer != null)
                     {
-                        TranslateToFinger(indexFingerRingRenderer.transform, deltaTime, indexFingerPosition, indexFingerRotation, false);
+                        TranslateToFinger(indexFingerRingRenderer.transform, deltaTime, indexFingerPosition, indexKnucklePosition);
 
                         Vector3 surfaceNormal;
                         if ((distance < alignWithSurfaceDistance) &&
                             nearPointer.TryGetNormalToNearestSurface(out surfaceNormal))
                         {
-                            RotateToSurfaceNormal(indexFingerRingRenderer.transform, surfaceNormal, indexFingerRotation, distance, false);
+                            RotateToSurfaceNormal(indexFingerRingRenderer.transform, surfaceNormal, indexFingerRotation, distance);
                         }
                         else
                         {
-                            RotateToFinger(indexFingerRingRenderer.transform, deltaTime, indexFingerRotation, false);
+                            RotateToFinger(indexFingerRingRenderer.transform, deltaTime, indexFingerRotation);
                         }
 
                         UpdateVisuals(indexFingerRingRenderer, distance, true);
                     }
-
-                    if (thumbRingRenderer != null)
-                    {
-                        UpdateVisuals(thumbRingRenderer, distance, false);
-                    }
                 }
                 else
                 {
-                    // If the pointer is near a grabbable object position and rotate the primary ring to the index finger pad and 
-                    // position and rotate the secondary ring to the thumb pad, else move both rings to a "default" location and hide them.
+                    // If the pointer is near a grabbable object position and rotate the ring to the default, 
+                    // else hide it.
 
-                    bool nearGrabbable = checkForGrabbables && IsNearGrabbableObject();
-                    float distance = (indexFingerPosition - thumbPosition).magnitude;
+                    float distance = 0;
+                    bool nearGrabbable = checkForGrabbables && IsNearGrabbableObject(out distance);
 
                     if (indexFingerRingRenderer != null)
                     {
-                        TranslateToFinger(indexFingerRingRenderer.transform, deltaTime, indexFingerPosition, indexFingerRotation, nearGrabbable);
-                        RotateToFinger(indexFingerRingRenderer.transform, deltaTime, indexFingerRotation, nearGrabbable);
+                        TranslateToFinger(indexFingerRingRenderer.transform, deltaTime, indexFingerPosition, indexKnucklePosition);
+                        RotateToFinger(indexFingerRingRenderer.transform, deltaTime, indexFingerRotation);
                         UpdateVisuals(indexFingerRingRenderer, distance, nearGrabbable);
-                    }
-
-                    if (thumbRingRenderer != null)
-                    {
-                        TranslateToFinger(thumbRingRenderer.transform, deltaTime, thumbPosition, thumbRotation, true);
-                        RotateToFinger(thumbRingRenderer.transform, deltaTime, thumbRotation, true);
-                        UpdateVisuals(thumbRingRenderer, distance, nearGrabbable);
                     }
                 }
             }
@@ -154,7 +136,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Gets if the associated sphere pointer on this controller is near any grabbable objects.
         /// </summary>
         /// <returns>True if associated sphere pointer is near any grabbable objects, else false.</returns>
-        protected virtual bool IsNearGrabbableObject()
+        /// <param name="dist">Out parameter gets the distance to the grabbable.</param>
+        protected virtual bool IsNearGrabbableObject(out float dist)
         {
             var focusProvider = InputSystem?.FocusProvider;
             if (focusProvider != null)
@@ -167,12 +150,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         var focusObject = focusProvider.GetFocusedObject(spherePointer);
                         if (focusObject != null)
                         {
-                            return true;
+                            return spherePointer.TryGetDistanceToNearestSurface(out dist);
                         }
                     }
                 }
             }
 
+            dist = -1;
             return false;
         }
 
@@ -187,14 +171,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <returns></returns>
         protected bool TryGetJoint(TrackedHandJoint joint, out Vector3 position, out Quaternion rotation)
         {
-            if (Pointer != null && Pointer.Controller != null)
+            if (Pointer != null)
             {
-                if (HandJointUtils.TryGetJointPose(joint, Pointer.Controller.ControllerHandedness, out MixedRealityPose handJoint))
+                var hand = Pointer.Controller as IMixedRealityHand;
+                if (hand != null)
                 {
-                    position = handJoint.Position;
-                    rotation = handJoint.Rotation;
+                    if (hand.TryGetJoint(joint, out MixedRealityPose handJoint))
+                    {
+                        position = handJoint.Position;
+                        rotation = handJoint.Rotation;
 
-                    return true;
+                        return true;
+                    }
                 }
             }
 
@@ -204,25 +192,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return false;
         }
 
-        private void TranslateToFinger(Transform target, float deltaTime, Vector3 fingerPosition, Quaternion fingerRoation, bool useFingerPad)
+        private void TranslateToFinger(Transform target, float deltaTime, Vector3 fingerPosition, Vector3 knucklePosition)
         {
-            var targetPosition = (useFingerPad) ? fingerPosition + (fingerRoation * -Vector3.up) * skinSurfaceOffset :
-                                                      fingerPosition + (fingerRoation * Vector3.forward) * skinSurfaceOffset;
+            var targetPosition = fingerPosition + (fingerPosition - knucklePosition).normalized * skinSurfaceOffset;
             target.position = Vector3.Lerp(target.position, targetPosition, deltaTime / PositionLerpTime);
         }
 
-        private void RotateToFinger(Transform target, float deltaTime, Quaternion pointerRotation, bool useFingerPad)
+        private void RotateToFinger(Transform target, float deltaTime, Quaternion pointerRotation)
         {
-            var targetRotation = (useFingerPad) ? pointerRotation * fingerPadRotation : pointerRotation;
-            target.rotation = Quaternion.Lerp(target.rotation, targetRotation, deltaTime / RotationLerpTime);
+            target.rotation = Quaternion.Lerp(target.rotation, pointerRotation, deltaTime / RotationLerpTime);
         }
 
-        private void RotateToSurfaceNormal(Transform target, Vector3 surfaceNormal, Quaternion pointerRotation, float distance, bool useFingerPad)
+        private void RotateToSurfaceNormal(Transform target, Vector3 surfaceNormal, Quaternion pointerRotation, float distance)
         {
             var t = distance / alignWithSurfaceDistance;
-            var initialRotation = (useFingerPad) ? pointerRotation * fingerPadRotation : pointerRotation;
             var targetRotation = Quaternion.LookRotation(-surfaceNormal);
-            target.rotation = Quaternion.Slerp(targetRotation, initialRotation, t);
+            target.rotation = Quaternion.Slerp(targetRotation, pointerRotation, t);
         }
     }
 }
