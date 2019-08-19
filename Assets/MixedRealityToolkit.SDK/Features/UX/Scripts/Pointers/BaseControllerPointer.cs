@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Physics;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections;
 using UnityEngine;
 
@@ -303,9 +302,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private bool overrideGlobalPointerExtent = false;
 
         [SerializeField]
+        [Tooltip("Maximum distance at which all pointers can collide with a GameObject, unless it has an override extent.")]
         private float pointerExtent = 10f;
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Maximum distance at which all pointers can collide with a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>, unless it has an override extent.
+        /// </summary>
         public float PointerExtent
         {
             get
@@ -328,6 +330,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         [SerializeField]
+        [Tooltip("The length of the pointer when nothing is hit")]
         private float defaultPointerExtent = 10f;
 
         /// <summary>
