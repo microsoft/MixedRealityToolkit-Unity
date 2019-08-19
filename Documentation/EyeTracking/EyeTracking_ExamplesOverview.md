@@ -64,8 +64,8 @@ We provide basic examples for logging and loading eye tracking data and examples
 
 ### Prerequisites
 
-Note that using the eye tracking samples on device requires a device that supports
-eye tracking and a sample app package that is built with the "Gaze Input" capability
+Note that using the eye tracking samples on device requires a HoloLens 2
+and a sample app package that is built with the "Gaze Input" capability
 on the package's AppXManifest.
 
 In order to use these eye tracking samples on device, make sure to follow
