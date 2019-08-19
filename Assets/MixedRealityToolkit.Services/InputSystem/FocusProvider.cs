@@ -468,19 +468,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 return Pointer != null ? Pointer.GetHashCode() : 0;
             }
-
-            /// <summary>
-            /// Overrides existing focus details with the specified parameters.
-            /// </summary>
-            internal void SetFocusPoint(GameObject gameObject, Vector3 point, float distance, Vector3 normal)
-            {
-                focusDetails.Object = gameObject;
-                focusDetails.RayDistance = distance;
-                focusDetails.Point = point;
-                focusDetails.Normal = normal;
-                focusDetails.PointLocalSpace = gameObject.transform.InverseTransformPoint(point);
-                focusDetails.NormalLocalSpace = gameObject.transform.InverseTransformDirection(normal);
-            }
         }
 
         private readonly GazePointerVisibilityStateMachine gazePointerStateMachine = new GazePointerVisibilityStateMachine();
