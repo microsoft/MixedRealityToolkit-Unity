@@ -155,18 +155,26 @@ when building for OpenVR.</p>
 <p><img src="Images/getting_started/MRTK_GettingStarted_TMPro.png" alt="TMP Essentials"></p>
 <p>If you get such a prompt, select &quot;Import TMP essentials&quot; button. &quot;TMP Essentials&quot; refers to Text Mesh Pro plugin, which some of the MRTK examples use for improved text rendering. (See <a href="https://docs.microsoft.com/en-us/windows/mixed-reality/text-in-unity">Text in Unity</a> for more detailed information)</p>
 <ol start="4">
-<li><p>Close the TMP dialog. After this you need to reload the scene. You can do this by opening other example scene and open HandInteractionExamples scene again.</p>
+<li><p>Close the TMP dialog. After this you need to reload the scene. You can do this by double clicking the scene in the project tab.</p>
 </li>
 <li><p>Press the play button.</p>
 </li>
 </ol>
-<p>Have fun exploring the scene! You can use simulated hands to interact in editor. You can:</p>
+<h2 id="using-the-in-editor-hand-input-simulation-to-test-a-scene">Using the In-Editor Hand Input Simulation to test a scene</h2>
+<p>The in-editor input simulation allows you to test virtual object behavior given a specific type of input such as <a href="InputSimulation/InputSimulationService.html#hand-simulation">hands</a> or [eyes] (EyeTracking/EyeTracking_BasicSetup.md#simulating-eye-tracking-in-the-unity-editor).</p>
+<p>How to move around in the scene:</p>
 <ul>
-<li>Press WASD keys to fly / move.</li>
-<li>Press and hold right mouse to look around.</li>
-<li>Press and hold space bar to use a simulated hand.</li>
+<li>Use W/A/S/D keys to move the camera forward/left/back/right.</li>
+<li>Press and hold the right mouse to rotate the camera.</li>
 </ul>
-<p>There's quite a bit to explore here. You can learn more about the UI controls <a href="README_HandInteractionExamples.html">in the hand interaction examples guide</a>. Also, read through <a href="InputSimulation/InputSimulationService.html">input simulation docs</a> to learn more about in-editor hand input simulation in MRTK.</p>
+<p>How to simulate hand input:</p>
+<ul>
+<li>Press and hold the space bar to enable the right hand.</li>
+<li>While holding the space bar, move your mouse to move the hand.</li>
+<li>Use the middle mouse scroll to adjust the depth of the hand.</li>
+<li>Click the left mouse to switch gestures.</li>
+</ul>
+<p>Have fun exploring the scene! You can learn more about the UI controls <a href="README_HandInteractionExamples.html">in the hand interaction examples guide</a>. Also, read through <a href="InputSimulation/InputSimulationService.html">input simulation docs</a> to learn more about in-editor hand input simulation in MRTK.</p>
 <p>Congratulations, you just used your first MRTK scene. Now onto creating your own experiences...</p>
 <h2 id="add-mrtk-to-a-new-scene-or-new-project">Add MRTK to a new scene or new project</h2>
 <ol>
@@ -319,7 +327,7 @@ it means you have to install <a href="https://developer.microsoft.com/en-us/wind
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/2.0.0_stabilization/Documentation/GettingStartedWithTheMRTK.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/GettingStartedWithTheMRTK.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
