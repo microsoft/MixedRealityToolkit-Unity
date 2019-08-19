@@ -11,7 +11,7 @@ the right set of [permissions and setup](../EyeTracking/EyeTracking_BasicSetup.m
 has not been performed.
 
 Head gaze is usually associated with HoloLens 1 style interactions involving looking at object by
-placing it in the center of the FOV and then performing the air tap gesture.
+placing it in the center of the Holographic Frame and then performing the air tap gesture.
 
 ## Eye gaze
 
