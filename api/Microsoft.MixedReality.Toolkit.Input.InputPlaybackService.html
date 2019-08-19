@@ -95,8 +95,7 @@
     <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html">BaseService</a></div>
     <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseDataProvider.html">BaseDataProvider</a></div>
     <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager.html">BaseInputDeviceManager</a></div>
-    <div class="level4"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.html">BaseInputSimulationService</a></div>
-    <div class="level5"><span class="xref">InputPlaybackService</span></div>
+    <div class="level4"><span class="xref">InputPlaybackService</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -109,28 +108,13 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.html#Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_GetActiveControllers">BaseInputSimulationService.GetActiveControllers()</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.html#Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_UpdateHandDevice_Microsoft_MixedReality_Toolkit_Input_HandSimulationMode_Handedness_Microsoft_MixedReality_Toolkit_Input_SimulatedHandData_">BaseInputSimulationService.UpdateHandDevice(HandSimulationMode, Handedness, SimulatedHandData)</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.html#Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_GetHandDevice_Handedness_">BaseInputSimulationService.GetHandDevice(Handedness)</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.html#Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_GetOrAddHandDevice_Handedness_Microsoft_MixedReality_Toolkit_Input_HandSimulationMode_">BaseInputSimulationService.GetOrAddHandDevice(Handedness, HandSimulationMode)</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.html#Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_RemoveHandDevice_Handedness_">BaseInputSimulationService.RemoveHandDevice(Handedness)</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputSimulationService.html#Microsoft_MixedReality_Toolkit_Input_BaseInputSimulationService_RemoveAllHandDevices">BaseInputSimulationService.RemoveAllHandDevices()</a>
-    </div>
-    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager.html#Microsoft_MixedReality_Toolkit_Input_BaseInputDeviceManager_InputSystem">BaseInputDeviceManager.InputSystem</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager.html#Microsoft_MixedReality_Toolkit_Input_BaseInputDeviceManager_InputSystemProfile">BaseInputDeviceManager.InputSystemProfile</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager.html#Microsoft_MixedReality_Toolkit_Input_BaseInputDeviceManager_GetActiveControllers">BaseInputDeviceManager.GetActiveControllers()</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager.html#Microsoft_MixedReality_Toolkit_Input_BaseInputDeviceManager_RequestPointers_Microsoft_MixedReality_Toolkit_Input_SupportedControllerType_Handedness_">BaseInputDeviceManager.RequestPointers(SupportedControllerType, Handedness)</a>
@@ -207,7 +191,7 @@
   <h5 id="Microsoft_MixedReality_Toolkit_Input_InputPlaybackService_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[MixedRealityDataProvider(typeof(IMixedRealityInputSystem), null, &quot;Input Playback Service&quot;)]
-public class InputPlaybackService : BaseInputSimulationService, IMixedRealityInputPlaybackService, IMixedRealityInputDeviceManager, IMixedRealityDataProvider, IMixedRealityService, IDisposable</code></pre>
+public class InputPlaybackService : BaseInputDeviceManager, IMixedRealityInputPlaybackService, IMixedRealityInputDeviceManager, IMixedRealityDataProvider, IMixedRealityService, IDisposable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -320,58 +304,6 @@ public class InputPlaybackService : BaseInputSimulationService, IMixedRealityInp
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Input_InputPlaybackService_HandDataLeft_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputPlaybackService.HandDataLeft*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_InputPlaybackService_HandDataLeft" data-uid="Microsoft.MixedReality.Toolkit.Input.InputPlaybackService.HandDataLeft">HandDataLeft</h4>
-  <div class="markdown level1 summary"><p>Pose data for the left hand.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public SimulatedHandData HandDataLeft { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SimulatedHandData.html">SimulatedHandData</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_InputPlaybackService_HandDataRight_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputPlaybackService.HandDataRight*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_InputPlaybackService_HandDataRight" data-uid="Microsoft.MixedReality.Toolkit.Input.InputPlaybackService.HandDataRight">HandDataRight</h4>
-  <div class="markdown level1 summary"><p>Pose data for the right hand.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public SimulatedHandData HandDataRight { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SimulatedHandData.html">SimulatedHandData</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_Input_InputPlaybackService_IsPlaying_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputPlaybackService.IsPlaying*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_InputPlaybackService_IsPlaying" data-uid="Microsoft.MixedReality.Toolkit.Input.InputPlaybackService.IsPlaying">IsPlaying</h4>
   <div class="markdown level1 summary"><p>True if the animation is currently playing.</p>
@@ -424,48 +356,6 @@ public class InputPlaybackService : BaseInputSimulationService, IMixedRealityInp
   </table>
   <h3 id="methods">Methods
   </h3>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_InputPlaybackService_CheckCapability_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputPlaybackService.CheckCapability*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_InputPlaybackService_CheckCapability_Microsoft_MixedReality_Toolkit_MixedRealityCapability_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputPlaybackService.CheckCapability(Microsoft.MixedReality.Toolkit.MixedRealityCapability)">CheckCapability(MixedRealityCapability)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool CheckCapability(MixedRealityCapability capability)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.MixedRealityCapability.html">MixedRealityCapability</a></td>
-        <td><span class="parametername">capability</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_InputPlaybackService_LoadInputAnimation_" data-uid="Microsoft.MixedReality.Toolkit.Input.InputPlaybackService.LoadInputAnimation*"></a>
