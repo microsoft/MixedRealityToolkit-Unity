@@ -7,20 +7,20 @@ The Input Simulation Service emulates the behaviour of devices and platforms tha
 
 Users can use a conventional keyboard and mouse combination to control simulated devices at runtime. This allows testing of interactions in the Unity editor without first deploying to a device.
 
-  | __Warning__: This does not work when using Unity's XR Holographic Emulation -> Emulation Mode = "Simulate in Editor". Unity's in-editor simulation will take control away from MRTK's input simulation. In order to use the MRTK input simulation service, you will need to set XR Holographic Emulation to Emulation Mode = "None"|
-  | --- |
+> [!WARNING]
+> This does not work when using Unity's XR Holographic Emulation > Emulation Mode = "Simulate in Editor". Unity's in-editor simulation will take control away from MRTK's input simulation. In order to use the MRTK input simulation service, you will need to set XR Holographic Emulation to Emulation Mode = *"None"*
 
 ## Enabling the Input Simulation Service
 
 Input simulation is enabled by default in MRTK.
 
-Input simulation is an optional [Mixed Reality service](../MixedRealityServices.md). It can be added as a data provider in the [Input System profile](../TODO.md).
+Input simulation is an optional [Mixed Reality service](../MixedRealityServices.md). It can be added as a data provider in the [Input System profile](../Input/InputProviders.md).
 * __Type__ must be _Microsoft.MixedReality.Toolkit.Input > InputSimulationService_.
 * __Platform(s)__ should always be _Windows Editor_ since the service depends on keyboard and mouse input.
 * __Profile__ has all settings for input simulation.
 
-  | __Warning__: Any type of profile can be assigned to services at the time of this writing. If you assign a different profile to the service, make sure to use a profile of type _Input Simulation_ or it will not work! |
-  | --- |
+> [!WARNING]
+> Any type of profile can be assigned to services at the time of this writing. If you assign a different profile to the service, make sure to use a profile of type _Input Simulation_ or it will not work!
 
 <a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_InputSystemDataProviders.png">
   <img src="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_InputSystemDataProviders.png" title="Full Hand Mesh" width="80%" class="center" />
@@ -57,7 +57,7 @@ Press and hold the movement keys (W/A/S/D for forward/left/back/right).
 
 # Hand Simulation
 
-The input simulation supports emulated hand devices. These virtual hands can interact with any object that supports regular hand devices, such as buttons or grabable objects.
+The input simulation supports emulated hand devices. These virtual hands can interact with any object that supports regular hand devices, such as buttons or grabbable objects.
 
 <a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandSimulationMode.png">
   <img src="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandSimulationMode.png" title="Full Hand Mesh" width="80%" class="center" />
@@ -67,13 +67,13 @@ The __Hand Simulation Mode__ switches between two distinct input models.
 
 * _Articulated Hands_: Simulates a fully articulated hand device with joint position data.
 
-   Emulates Hololens 2 interaction model.
+   Emulates HoloLens 2 interaction model.
 
    Interactions that are based on precise positioning of the hand or use touching can be simulated in this mode.
 
 * _Gestures_: Simulates a simplified hand model with air tap and basic gestures.
 
-   Emulates [Hololens interaction model](https://docs.microsoft.com/en-us/windows/mixed-reality/gestures).
+   Emulates [HoloLens interaction model](https://docs.microsoft.com/en-us/windows/mixed-reality/gestures).
 
    Focus is controlled using the Gaze pointer. The _Air Tap_ gesture is used to interact with buttons.
 
@@ -133,8 +133,8 @@ Hand gestures such as pinching, grabbing, poking, etc. can also be simulated.
 
 Each of the mouse buttons can be mapped to transform the hand shape into a different gesture using the _Left/Middle/Right Mouse Hand Gesture_ settings. The _Default Hand Gesture_ is the shape of the hand when no button is pressed.
 
-| Note: The _Pinch_ gesture is the only gesture that performs the "Select" action at this point. |
-| --- |
+> [!NOTE]
+> The _Pinch_ gesture is the only gesture that performs the "Select" action at this point.
 
 ## One-Hand Manipulation
 

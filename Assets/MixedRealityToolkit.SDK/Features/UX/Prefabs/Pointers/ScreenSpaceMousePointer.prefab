@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6637649805407279968}
   - component: {fileID: 7661837136392462874}
   m_Layer: 0
-  m_Name: DefaultMousePointer
+  m_Name: ScreenSpaceMousePointer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

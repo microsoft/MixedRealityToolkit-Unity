@@ -352,6 +352,8 @@ MonoBehaviour:
         Animation: {fileID: 0}
       ShaderName: Mixed Reality Toolkit/Standard
     History: []
+    CustomSettings: []
+    CustomHistory: []
     Easing:
       Enabled: 1
       Curve:

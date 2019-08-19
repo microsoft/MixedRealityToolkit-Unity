@@ -21,6 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public Transform transform;
         public Vector2 lightmapCoord;
         public bool raycastValid;
+        public Collider collider;
 
         public MixedRealityRaycastHit(bool raycastValid, RaycastHit hitInfo)
         {
@@ -36,6 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 textureCoord2 = hitInfo.textureCoord2;
                 transform = hitInfo.transform;
                 lightmapCoord = hitInfo.lightmapCoord;
+                collider = hitInfo.collider;
             }
             else
             {
@@ -48,6 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 textureCoord2 = Vector2.zero;
                 transform = null;
                 lightmapCoord = Vector2.zero;
+                collider = null;
             }
         }
     }

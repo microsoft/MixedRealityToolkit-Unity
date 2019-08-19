@@ -1,0 +1,52 @@
+<Project>
+  <PropertyGroup>
+    <AssemblySearchPaths>$(AssemblySearchPaths);<!--PLATFORM_COMMON_ASSEMBLY_SEARCH_PATHS_TOKEN-->;C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETCore\v4.5;$(UnityEditorInstallFolder)Data\PlaybackEngines\MetroSupport\Managed\UAP\</AssemblySearchPaths>
+    <TargetFramework>uap10.0</TargetFramework>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <DefineConstants>$(DefineConstants);<!--PLATFORM_COMMON_DEFINE_CONSTANTS-->;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NugetTargetMoniker>UAP,Version=v10.0</NugetTargetMoniker>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetPlatformVersion><!--UWP_TARGET_PLATFORM_VERSION_TOKEN--></TargetPlatformVersion>
+    <TargetPlatformMinVersion><!--UWP_MIN_PLATFORM_VERSION_TOKEN--></TargetPlatformMinVersion>
+    <TargetFrameworkIdentifier>.NETCore</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <!-- This is for succesful building step from dotnet cli -->
+  <Choose>
+    <When Condition="'$(MSBuildExtensionsPathOverride)'!= ''">
+      <PropertyGroup>
+        <LanguageTargets>$(MSBuildExtensionsPathOverride)\Microsoft\WindowsXaml\v15.0\Microsoft.Windows.UI.Xaml.CSharp.targets</LanguageTargets>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <LanguageTargets>$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v15.0\Microsoft.Windows.UI.Xaml.CSharp.targets</LanguageTargets>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+
+  <ItemGroup Condition="'$(IsEditorOnlyTarget)' == 'false' OR '$(IsEditorOnlyTarget)' == ''">
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="5.0.0" />
+    <Reference Include="System.Runtime.WindowsRuntime">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETCore\v4.5\System.Runtime.WindowsRuntime.dll</HintPath>
+    </Reference>
+
+    <Reference Include="WinRTLegacy">
+      <HintPath>$(UnityEditorInstallFolder)Data\PlaybackEngines\MetroSupport\Managed\UAP\WinRTLegacy.dll</HintPath>
+    </Reference>
+
+    <Reference Include="Windows">
+      <HintPath>C:\Program Files (x86)\Windows Kits\10\UnionMetadata\$(TargetPlatformVersion)\windows.winmd</HintPath>
+    </Reference>
+
+<!--PLATFORM_COMMON_REFERENCE_TEMPLATE_START-->
+    <Reference Include="##REFERENCE_TOKEN##">
+      <Private>false</Private>
+      <HintPath><!--HINT_PATH_TOKEN--></HintPath>
+    </Reference>
+<!--PLATFORM_COMMON_REFERENCE_TEMPLATE_END-->
+  </ItemGroup>
+</Project>

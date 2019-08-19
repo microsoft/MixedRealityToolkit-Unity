@@ -2,10 +2,12 @@
 
 The Mixed Reality Toolkit (MRTK) is a collection of packages that enable cross platform Mixed Reality application development by providing support for Mixed Reality hardware and platforms.
 
-The MRTK currently has two packages:
+The MRTK ships via the following packages:
 
 - [Foundation](#foundation-package)
+- [Extensions](#extensions-package)
 - [Examples](#examples-package)
+- [Tools](#tools-package)
 
 ## Foundation Package
 
@@ -126,6 +128,12 @@ Feature Assets are collections of related functionality delivered as Unity asset
 - Standard Assets
 - more
 
+## Extensions Package
+
+The extensions package contains additional services and components that extend the functionality of the foundation package.
+
+- [Scene Transition Service](../Extensions/SceneTransitionService/SceneTransitionServiceOverview.md)
+
 ## Examples Package
 
 The examples package contains demos, sample scripts, and sample scenes that exercise functionality in the foundation package.
@@ -139,3 +147,13 @@ This package also contains eye tracking demos, which are [documented here](../Ey
 
 More generally, any new feature in the MRTK should contain a corresponding example in the examples package, roughly following
 the same folder structure and location.
+
+## Tools Package
+
+The tools package contains tools that are useful for creating mixed reality experiences whose code will ultimately not
+ship as part of an application.
+
+- [Dependency Window](../Tools/DependencyWindow.md)
+- [Extension Service Creation Wizard](../Tools/ExtensionServiceCreationWizard.md)
+- [Optimize Window](../Tools/OptimizeWindow.md)
+- [Screenshot Utility](../Tools/ScreenshotUtility.md)

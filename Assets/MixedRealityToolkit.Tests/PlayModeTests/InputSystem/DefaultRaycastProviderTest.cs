@@ -26,8 +26,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
             RayStep step = new RayStep(Vector3.zero, Vector3.up);
             LayerMask[] layerMasks = new LayerMask[] { UnityEngine.Physics.DefaultRaycastLayers };
             MixedRealityRaycastHit hitInfo;
-            Assert.IsFalse(defaultRaycastProvider.Raycast(step, layerMasks, out hitInfo));
+            Assert.IsFalse(defaultRaycastProvider.Raycast(step, layerMasks, false, out hitInfo));
             Assert.IsFalse(hitInfo.raycastValid);
+            Assert.IsFalse(hitInfo.collider != null);
             yield return null;
         }
 

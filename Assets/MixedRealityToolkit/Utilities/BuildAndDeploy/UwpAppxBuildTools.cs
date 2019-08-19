@@ -101,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             // Now that NuGet packages have been restored, we can run the actual build process.
             exitCode = await Run(msBuildPath, 
-                $"\"{solutionProjectPath}\" /t:{(buildInfo.RebuildAppx ? "Rebuild" : "Build")} /p:Configuration={buildInfo.Configuration} /p:Platform={buildInfo.BuildPlatform} {GetMSBuildLoggingCommand(buildInfo.LogDirectory, "buildAppx.log")}",
+                $"\"{solutionProjectPath}\" /t:{(buildInfo.RebuildAppx ? "Rebuild" : "Build")} /p:Configuration={buildInfo.Configuration} /p:Platform={buildInfo.BuildPlatform} {(string.IsNullOrEmpty(buildInfo.PlatformToolset) ? string.Empty : $"/p:PlatformToolset={buildInfo.PlatformToolset}")} {GetMSBuildLoggingCommand(buildInfo.LogDirectory, "buildAppx.log")}",
                 !Application.isBatchMode,
                 cancellationToken);
             AssetDatabase.SaveAssets();
@@ -163,7 +163,11 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private static async Task<string> FindMsBuildPathAsync()
         {
-            var result = await new Process().StartProcessAsync(
+            // Finding msbuild.exe involves different work depending on whether or not users
+            // have VS2017 or VS2019 installed.
+            foreach (VSWhereFindOption findOption in VSWhereFindOptions)
+            {
+                var result = await new Process().StartProcessAsync(
                 new ProcessStartInfo
                 {
                     FileName = "cmd.exe",
@@ -171,25 +175,30 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
-                    Arguments = $@"/C vswhere -all -products * -requires Microsoft.Component.MSBuild -property installationPath",
+                    Arguments = findOption.arguments,
                     WorkingDirectory = @"C:\Program Files (x86)\Microsoft Visual Studio\Installer"
                 });
 
-            foreach (var path in result.Output)
-            {
-                if (!string.IsNullOrEmpty(path))
+                foreach (var path in result.Output)
                 {
-                    string[] paths = path.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-
-                    if (paths.Length > 0)
+                    if (!string.IsNullOrEmpty(path))
                     {
-                        // if there are multiple visual studio installs,
-                        // prefer enterprise, then pro, then community
-                        string bestPath = paths.OrderBy(p => p.ToLower().Contains("enterprise"))
-                            .ThenBy(p => p.ToLower().Contains("professional"))
-                            .ThenBy(p => p.ToLower().Contains("community")).First();
+                        string[] paths = path.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
-                        return $@"{bestPath}\MSBuild\15.0\Bin\MSBuild.exe";
+                        if (paths.Length > 0)
+                        {
+                            // if there are multiple visual studio installs,
+                            // prefer enterprise, then pro, then community
+                            string bestPath = paths.OrderBy(p => p.ToLower().Contains("enterprise"))
+                                .ThenBy(p => p.ToLower().Contains("professional"))
+                                .ThenBy(p => p.ToLower().Contains("community")).First();
+
+                            string finalPath = $@"{bestPath}{findOption.pathSuffix}";
+                            if (File.Exists(finalPath))
+                            {
+                                return finalPath;
+                            }
+                        }
                     }
                 }
             }
@@ -398,5 +407,43 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             AddGazeInputCapability(rootElement);
             rootElement.Save(manifestFilePath);
         }
+
+        /// <summary>
+        /// This struct controls the behavior of the arguments that are used
+        /// when finding msbuild.exe.
+        /// </summary>
+        private struct VSWhereFindOption
+        {
+            public VSWhereFindOption(string args, string suffix)
+            {
+                arguments = args;
+                pathSuffix = suffix;
+            }
+
+            /// <summary>
+            /// Used to populate the Arguments of ProcessStartInfo when invoking
+            /// vswhere.
+            /// </summary>
+            public string arguments;
+
+            /// <summary>
+            /// This string is added as a suffix to the result of the vswhere path
+            /// search.
+            /// </summary>
+            public string pathSuffix;
+        }
+
+        private static VSWhereFindOption[] VSWhereFindOptions =
+        {
+            // This find option corresponds to the version of vswhere that ships with VS2019.
+            new VSWhereFindOption(
+                $@"/C vswhere -all -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe",
+                ""),
+            // This find option corresponds to the versin of vswhere that ships with VS2017 - this doesn't have
+            // support for the -find command switch.
+            new VSWhereFindOption(
+                $@"/C vswhere -all -products * -requires Microsoft.Component.MSBuild -property installationPath",
+                "\\MSBuild\\15.0\\Bin\\MSBuild.exe"),
+        };
     }
 }

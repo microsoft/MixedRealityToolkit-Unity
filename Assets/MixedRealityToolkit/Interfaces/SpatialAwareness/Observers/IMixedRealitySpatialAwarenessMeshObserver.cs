@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// Gets or sets the level of detail, in triangles per cubic meter, for the returned spatial mesh.
         /// </summary>
         /// <remarks>
-        /// When specifying Coarse or Fine for the <see cref="LevelOfDetail"/>, this value will be automatically overwritten with system default values.
+        /// When specifying a <see cref="LevelOfDetail"/> other than Custom, this value will be automatically overwritten with system default values.
         /// </remarks>
         int TrianglesPerCubicMeter { get; set; }
 
