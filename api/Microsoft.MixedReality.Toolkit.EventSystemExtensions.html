@@ -12,7 +12,7 @@
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
+    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -37,7 +37,7 @@
               </button>
               
               <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -129,14 +129,14 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_EventSystemExtensions_Raycast_" data-uid="Microsoft.MixedReality.Toolkit.EventSystemExtensions.Raycast*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_EventSystemExtensions_Raycast_EventSystem_PointerEventData_LayerMask___RaycastResultComparer_" data-uid="Microsoft.MixedReality.Toolkit.EventSystemExtensions.Raycast(EventSystem,PointerEventData,LayerMask[],RaycastResultComparer)">Raycast(EventSystem, PointerEventData, LayerMask[], RaycastResultComparer)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_EventSystemExtensions_Raycast_EventSystem_PointerEventData_LayerMask___" data-uid="Microsoft.MixedReality.Toolkit.EventSystemExtensions.Raycast(EventSystem,PointerEventData,LayerMask[])">Raycast(EventSystem, PointerEventData, LayerMask[])</h4>
   <div class="markdown level1 summary"><p>Executes a raycast all and returns the closest element.
 Fixes the current issue with Unity's raycast sorting which does not consider separate canvases.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static RaycastResult Raycast(this EventSystem eventSystem, PointerEventData pointerEventData, LayerMask[] layerMasks, RaycastResultComparer raycastResultComparer = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static RaycastResult Raycast(this EventSystem eventSystem, PointerEventData pointerEventData, LayerMask[] layerMasks)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -163,11 +163,6 @@ Fixes the current issue with Unity's raycast sorting which does not consider sep
         <td><span class="parametername">layerMasks</span></td>
         <td></td>
       </tr>
-      <tr>
-        <td><span class="xref">RaycastResultComparer</span></td>
-        <td><span class="parametername">raycastResultComparer</span></td>
-        <td></td>
-      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -186,10 +181,6 @@ Fixes the current issue with Unity's raycast sorting which does not consider sep
       </tr>
     </tbody>
   </table>
-  <h5 id="Microsoft_MixedReality_Toolkit_EventSystemExtensions_Raycast_EventSystem_PointerEventData_LayerMask___RaycastResultComparer__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Takes an optional RaycastResultComparer, which will be used to select the highest priority
-raycast result.</p>
-</div>
 </article>
           </div>
           

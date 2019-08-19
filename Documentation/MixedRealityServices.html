@@ -10,7 +10,7 @@
     <meta name="title" content="What makes a mixed reality feature | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
+    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -35,7 +35,7 @@
               </button>
               
               <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -86,9 +86,9 @@
 <p>The <code>MixedRealityToolkit</code> then coordinates all referencing between services and ensures that they receive all appropriate events (E.g. Awake/Initialize, Update, Destroy) as well as facilitating the finding of other services when needed.</p>
 <p>Additionally, the <code>MixedRealityToolkit</code> also maintains the active VR/XR/AR SDK in use in the running project, to initialize the active device based on attached hardware and instigate proper operation.</p>
 <h2 id="a-service">A service</h2>
-<p>An individual service can be any functionality that needs to be implemented in the project. Traditionally some projects use <em>singletons</em> which need to be alive in the scene, but this pattern has its advantages and disadvantages. We've decided to break away from this pattern in favor of a hybrid approach that brings several benefits over the traditional singleton implementations with <code>MonoBehaviours</code>, namely:</p>
+<p>An individual service can be any functionality that needs to be implemented in the project. Traditionally some projects use <em>singletons</em> which need to be alive in the scene, but this pattern has its advantages and disadvantages. We've decided to break away from this pattern in favor of a hybrid approach that brings several benefits over the traditional singleton implementations with MonoBehaviours, namely:</p>
 <ul>
-<li>Performance - without the overhead of a <code>MonoBehaviour</code>, <a href="https://blogs.unity3d.com/2015/12/23/1k-update-calls/">script updates are approximately 80% faster and don't require a <code>GameObject</code> to live in the scene</a>.</li>
+<li>Performance - without the overhead of a MonoBehaviour, <a href="https://blogs.unity3d.com/2015/12/23/1k-update-calls/">script updates are approximately 80% faster and don't require a <code>GameObject</code> to live in the scene</a>.</li>
 <li>Reference-ability - services can be discovered from the <code>MixedRealityToolkit</code> a lot faster and easier than searching <code>GameObjects</code> in a scene or using <code>FindObjectsOfType&lt;T&gt;</code>.</li>
 <li>No type dependency - though a method similar to dependency injection, services can be decoupled from their type, this means the concrete implementation can be swapped out at any time without adversely affecting code that consumes it (e.g. replacing the default InputSystem with your custom one, so long as you've fully implemented each interface).</li>
 <li>Multi-scene usage - if a service does need to know about a <code>transform</code> position in a scene, it can simply reference, or create, a <code>GameObject</code> <em>rather than be a component attached to it</em>. This makes it a lot easier to find and use the service when the project spans multiple scenes.</li>
@@ -97,15 +97,14 @@
 <p>The <em>service</em> container uses a predefined <em>interface</em> type for storage and retrieval of any service, this ensures there are no hard dependencies within the Mixed Reality Toolkit, so that each subsystem can easily be swapped out with another (so long as it conforms to the interface).</p>
 <p>Current system interfaces provided by the Mixed Reality Toolkit include:</p>
 <ul>
-<li><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem.html"><code>IMixedRealityInputSystem</code></a></li>
-<li><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Boundary.IMixedRealityBoundarySystem.html"><code>IMixedRealityBoundarySystem</code></a></li>
-<li><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Teleport.IMixedRealityTeleportSystem.html"><code>IMixedRealityTeleportSystem</code></a></li>
+<li>IMixedRealityInputSystem</li>
+<li>IMixedRealityBoundarySystem</li>
+<li>IMixedRealityTeleportSystem</li>
 </ul>
 <p>When creating your own implementations of these systems, you must ensure each complies with the interfaces provided by the Mixed Reality Toolkit (e.g. if you replace the InputSystem with another of your own design).</p>
-<div class="NOTE">
-<h5>Note</h5>
-<p>All services must also inherit from the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.BaseService.html"><code>BaseService</code></a> class or implement <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.IMixedRealityService.html"><code>IMixedRealityService</code></a>, to implement the functions required by the <code>MixedRealityToolkit</code> so their life-cycles are handled appropriately. (E.G. Initialize, Update, Destroy are called correctly.)</p>
-</div>
+<blockquote>
+<p>All services must also inherit from the <strong>BaseService</strong> class or implement <code>IMixedRealityService</code>, to implement the functions required by the <code>MixedRealityToolkit</code> so their life-cycles are handled appropriately. (E.G. Initialize, Update, Destroy are called correctly.)</p>
+</blockquote>
 </article>
           </div>
           
@@ -114,7 +113,7 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/MixedRealityServices.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Documentation/MixedRealityServices.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

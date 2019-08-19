@@ -10,7 +10,7 @@
     <meta name="title" content="Tooltip | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
+    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -35,7 +35,7 @@
               </button>
               
               <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -83,17 +83,20 @@
 <h1 id="tooltip">Tooltip</h1>
 
 <p><img src="Images/Tooltip/MRTK_Tooltip_Main.png" alt="Tooltip"></p>
-<p>Tooltips are usually used to convey a hint or extra information upon closer inspection of an object. Tooltips can be used to annotate objects in the physical environment.</p>
+<p>This example scene demonstrates an implementation of the tooltip user interface element. Tooltips are usually used to convey a hint or extra information upon closer inspection of an object. Tooltips can be used to explain button inputs on the motion controllers or to label objects in the physical environment.</p>
+<h2 id="demo-video">Demo video</h2>
+<p>The <a href="https://gfycat.com/WarmOblongBilby">example scene</a> demonstrates two ways to display a tooltip on an object.</p>
 <h2 id="how-to-use-a-tooltip">How to use a tooltip</h2>
 <p>A tooltip can be added directly to the hierarchy and targeted to an object.</p>
-<p>To use this method simply add a game object and one of the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Tooltips">tooltip prefabs</a> to the scene hierarchy. In the prefab's inspector panel, expand the <em>Tool Tip</em> (script). Select a tip state and configure the tooltip.  Enter the respective text for the tool tip in the text field. Expand the <em>ToolTipConnector</em> (Script) and drag the object that is to have the tooltip from the hierarchy into the field labelled <em>Target</em>. This attaches the tooltip to the object.
-<img src="Images/Tooltip/MRTK_Tooltip_Connector.png" alt="Tooltip"></p>
+<p>To use this method simply add a game object and one of the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Tooltips">tooltip prefabs</a> to the scene hierarchy. In the prefab's inspector panel, expand the <em>Tool Tip</em> (script). Select a tip state and configure the tooltip.  Enter the respective text for the tool tip in the text field. Expand the <em>ToolTipConnector</em> (Script) and drag the object that is to have the tooltip from the hierarchy into the field labelled <em>Target</em>. This attaches the tooltip to the object.</p>
 <p>This use assumes a tooltip that is always showing or that is shown / hidden via script by changing the tooltip state property of the tooltip component.</p>
 <h2 id="dynamically-spawning-tooltips">Dynamically spawning tooltips</h2>
 <p>A tooltip can be dynamically added to an object at runtime as well as pre-set to show and hide on a tap or focus. Simply add the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Tooltips/ToolTipSpawner.cs"><code>ToolTipSpawner</code></a> script to any game object. Delays for appearing and disappearing can be set in the scripts inspector as well as a lifetime so that the tooltip will disappear after a set duration. Tooltips also feature style properties such as background visuals in the spawner script. By default the tooltip will be anchored to the object with the spawner script. This can be changed by assigning a GameObject to the anchor field.</p>
+<h2 id="tooltips-on-motion-controllers">Tooltips on motion controllers</h2>
+<p>Tooltips can also be assigned to motion controllers, for example to explain the assigned actions of buttons. The example scene below also includes two tooltip groups on the bottom. These are layed out to match position of the buttons on the motion controllers. When motion controllers are detected, these tooltips will be attached automatically to the controllers, using the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Utilities/Solvers/AttachToController.cs"><code>AttachToController.cs</code></a> script.</p>
 <h2 id="example-scene">Example scene</h2>
-<p>In the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/UX/Tooltips/Scenes">example scene files</a>, you will be able to find various examples of tooltips.</p>
-<p><img src="Images/Tooltip/MRTK_Tooltip_Examples.png" alt="Tooltip"></p>
+<p>In the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/UX/Tooltips/Scenes">example scene files</a>, you will be able to find various examples of tooltips. First group on the left demonstrates the static tooltips examples that are always visible. In the center, you can see the example of using multiple tooltips on a single object. Each tooltip has different child object as a target object which works as an anchor. The group on the right shows the examples of dynamically spawning tooltips.</p>
+<img src="Images/ManipulationHandler/MRTK_Manipulation_Main.png" width="600">
 </article>
           </div>
           
@@ -102,7 +105,7 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/README_Tooltip.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Documentation/README_Tooltip.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

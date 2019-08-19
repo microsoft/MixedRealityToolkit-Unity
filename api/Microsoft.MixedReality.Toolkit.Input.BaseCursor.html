@@ -12,7 +12,7 @@
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
+    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -37,7 +37,7 @@
               </button>
               
               <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -92,13 +92,14 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">BaseCursor</span></div>
-      <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.AnimatedCursor.html">AnimatedCursor</a></div>
-      <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.FingerCursor.html">FingerCursor</a></div>
-      <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InteractiveMeshCursor.html">InteractiveMeshCursor</a></div>
-      <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.MeshCursor.html">MeshCursor</a></div>
-      <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ObjectCursor.html">ObjectCursor</a></div>
-      <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SpriteCursor.html">SpriteCursor</a></div>
+    <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.html">InputSystemGlobalListener</a></div>
+    <div class="level2"><span class="xref">BaseCursor</span></div>
+      <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.AnimatedCursor.html">AnimatedCursor</a></div>
+      <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.FingerCursor.html">FingerCursor</a></div>
+      <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InteractiveMeshCursor.html">InteractiveMeshCursor</a></div>
+      <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.MeshCursor.html">MeshCursor</a></div>
+      <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ObjectCursor.html">ObjectCursor</a></div>
+      <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SpriteCursor.html">SpriteCursor</a></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -108,14 +109,50 @@
     <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler.html">IMixedRealityPointerHandler</a></div>
     <div><span class="xref">IEventSystemHandler</span></div>
   </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.html#Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalListener_InputSystem">InputSystemGlobalListener.InputSystem</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.html#Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalListener_Start">InputSystemGlobalListener.Start()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.html#Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalListener_EnsureInputSystemValid">InputSystemGlobalListener.EnsureInputSystemValid()</a>
+    </div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.html">Microsoft.MixedReality.Toolkit.Input</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class BaseCursor : MonoBehaviour, IMixedRealityCursor, IMixedRealityFocusChangedHandler, IMixedRealitySourceStateHandler, IMixedRealityPointerHandler, IEventSystemHandler</code></pre>
+    <pre><code class="lang-csharp hljs">public class BaseCursor : InputSystemGlobalListener, IMixedRealityCursor, IMixedRealityFocusChangedHandler, IMixedRealitySourceStateHandler, IMixedRealityPointerHandler, IEventSystemHandler</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_IsPointerDown" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.IsPointerDown">IsPointerDown</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsPointerDown</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_PrimaryCursorVisual" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.PrimaryCursorVisual">PrimaryCursorVisual</h4>
@@ -136,30 +173,6 @@
     <tbody>
       <tr>
         <td><span class="xref">Transform</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_SourceDownIds" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.SourceDownIds">SourceDownIds</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public List&lt;uint&gt; SourceDownIds</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">List</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.uint32">UInt32</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -188,105 +201,8 @@
       </tr>
     </tbody>
   </table>
-  
-  
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_targetPosition" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.targetPosition">targetPosition</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Vector3 targetPosition</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Vector3</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_targetRotation" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.targetRotation">targetRotation</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Quaternion targetRotation</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Quaternion</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_targetScale" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.targetScale">targetScale</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Vector3 targetScale</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Vector3</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="properties">Properties
   </h3>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_CursorContext_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.CursorContext*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_CursorContext" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.CursorContext">CursorContext</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public CursorContextEnum CursorContext { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.CursorContextEnum.html">CursorContextEnum</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_CursorState_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.CursorState*"></a>
@@ -362,83 +278,6 @@
         <td><span class="xref">GameObject</span></td>
         <td><p>The <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</a> this <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityCursor.html">IMixedRealityCursor</a> component is attached to.</p>
 </td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_InputSystem_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.InputSystem*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_InputSystem" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.InputSystem">InputSystem</h4>
-  <div class="markdown level1 summary"><p>The active instance of the input system.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected IMixedRealityInputSystem InputSystem { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem.html">IMixedRealityInputSystem</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_IsPointerDown_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.IsPointerDown*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_IsPointerDown" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.IsPointerDown">IsPointerDown</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsPointerDown { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_IsPointerValid_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.IsPointerValid*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_IsPointerValid" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.IsPointerValid">IsPointerValid</h4>
-  <div class="markdown level1 summary"><p>Checks whether the associated pointer is null, and if the pointer is a UnityEngine.Object it also checks whether it has been destroyed.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected bool IsPointerValid { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
       </tr>
     </tbody>
   </table>
@@ -807,32 +646,6 @@
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_CheckCursorContext_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.CheckCursorContext*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_CheckCursorContext" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.CheckCursorContext">CheckCursorContext()</h4>
-  <div class="markdown level1 summary"><p>Virtual function for checking cursor context changes.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual CursorContextEnum CheckCursorContext()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.CursorContextEnum.html">CursorContextEnum</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_CheckCursorState_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.CheckCursorState*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_CheckCursorState" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.CheckCursorState">CheckCursorState()</h4>
   <div class="markdown level1 summary"><p>Virtual function for checking state changes.</p>
@@ -857,30 +670,6 @@
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_Destroy_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.Destroy*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_Destroy" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.Destroy">Destroy()</h4>
-  <div class="markdown level1 summary"><p>Utility method to destroy cursor dependencies (e.g. event subscriptions) in the system
-explicitly in the middle update loop. This is a &quot;replacement&quot; of Unity OnDestroy.
-Relying on Unity OnDestroy may cause event handler subscription to
-become invalid at the point of destroying.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual void Destroy()</code></pre>
-  </div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_LerpToTargetTransform_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.LerpToTargetTransform*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_LerpToTargetTransform" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.LerpToTargetTransform">LerpToTargetTransform()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void LerpToTargetTransform()</code></pre>
-  </div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_OnBeforeFocusChange_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.OnBeforeFocusChange*"></a>
@@ -912,34 +701,6 @@ become invalid at the point of destroying.</p>
   <h5 id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_OnBeforeFocusChange_Microsoft_MixedReality_Toolkit_Input_FocusEventData__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Useful for logic that needs to take place before focus changes.</p>
 </div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_OnCursorContextChange_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.OnCursorContextChange*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_OnCursorContextChange_Microsoft_MixedReality_Toolkit_Input_CursorContextEnum_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.OnCursorContextChange(Microsoft.MixedReality.Toolkit.Input.CursorContextEnum)">OnCursorContextChange(CursorContextEnum)</h4>
-  <div class="markdown level1 summary"><p>Change the cursor context state to the new context.  Override in cursor implementations.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual void OnCursorContextChange(CursorContextEnum context)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.CursorContextEnum.html">CursorContextEnum</a></td>
-        <td><span class="parametername">context</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_OnCursorStateChange_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.OnCursorStateChange*"></a>
@@ -976,8 +737,10 @@ become invalid at the point of destroying.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual void OnDisable()</code></pre>
+    <pre><code class="lang-csharp hljs">protected override void OnDisable()</code></pre>
   </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.html#Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalListener_OnDisable">InputSystemGlobalListener.OnDisable()</a></div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_OnEnable_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.OnEnable*"></a>
@@ -986,8 +749,10 @@ become invalid at the point of destroying.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual void OnEnable()</code></pre>
+    <pre><code class="lang-csharp hljs">protected override void OnEnable()</code></pre>
   </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.html#Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalListener_OnEnable">InputSystemGlobalListener.OnEnable()</a></div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_OnFocusChanged_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.OnFocusChanged*"></a>
@@ -1244,26 +1009,6 @@ become invalid at the point of destroying.</p>
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_SnapToTargetTransform_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.SnapToTargetTransform*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_SnapToTargetTransform" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.SnapToTargetTransform">SnapToTargetTransform()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void SnapToTargetTransform()</code></pre>
-  </div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_Start_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.Start*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_Start" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.Start">Start()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual void Start()</code></pre>
-  </div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_UnregisterManagers_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.UnregisterManagers*"></a>

@@ -12,7 +12,7 @@
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
+    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -37,7 +37,7 @@
               </button>
               
               <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -100,28 +100,23 @@ Passes state information and input data on to receivers that detect patterns and
     <h5>Implements</h5>
     <div><span class="xref">IMixedRealityFocusChangedHandler</span></div>
     <div><span class="xref">IMixedRealityFocusHandler</span></div>
-    <div><span class="xref">IMixedRealityInputHandler</span></div>
+    <div><span class="xref">IMixedRealityPointerHandler</span></div>
     <div><span class="xref">IMixedRealitySpeechHandler</span></div>
     <div><span class="xref">IMixedRealityTouchHandler</span></div>
-    <div><span class="xref">IMixedRealityInputHandler</span>&lt;<span class="xref">Vector2</span>&gt;</div>
-    <div><span class="xref">IMixedRealityInputHandler</span>&lt;<span class="xref">Vector3</span>&gt;</div>
-    <div><span class="xref">IMixedRealityInputHandler</span>&lt;<span class="xref">MixedRealityPose</span>&gt;</div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.UI.html">Microsoft.MixedReality.Toolkit.UI</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_UI_Interactable_syntax">Syntax</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">[Serializable]
-public class Interactable : MonoBehaviour, IMixedRealityFocusChangedHandler, IMixedRealityFocusHandler, IMixedRealityInputHandler, IMixedRealitySpeechHandler, IMixedRealityTouchHandler, IMixedRealityInputHandler&lt;Vector2&gt;, IMixedRealityInputHandler&lt;Vector3&gt;, IMixedRealityInputHandler&lt;MixedRealityPose&gt;</code></pre>
+public class Interactable : MonoBehaviour, IMixedRealityFocusChangedHandler, IMixedRealityFocusHandler, IMixedRealityPointerHandler, IMixedRealitySpeechHandler, IMixedRealityTouchHandler</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
   
   
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_CanDeselect" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.CanDeselect">CanDeselect</h4>
-  <div class="markdown level1 summary"><p>Can the user deselect a toggle?
-A radial button or tab should set this to false</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -145,9 +140,7 @@ A radial button or tab should set this to false</p>
   
   
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_CanSelect" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.CanSelect">CanSelect</h4>
-  <div class="markdown level1 summary"><p>Is the interactive selectable?
-When a multi-dimension button, can the user initiate switching dimensions?</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -164,30 +157,6 @@ When a multi-dimension button, can the user initiate switching dimensions?</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_clickCount" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.clickCount">clickCount</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected int clickCount</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -212,30 +181,6 @@ When a multi-dimension button, can the user initiate switching dimensions?</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_clickValidTimer" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.clickValidTimer">clickValidTimer</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Coroutine clickValidTimer</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Coroutine</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -267,8 +212,7 @@ When a multi-dimension button, can the user initiate switching dimensions?</p>
   
   
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_Dimensions" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.Dimensions">Dimensions</h4>
-  <div class="markdown level1 summary"><p>A way of adding more layers of states for controls like toggles</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -291,35 +235,8 @@ When a multi-dimension button, can the user initiate switching dimensions?</p>
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_dragStartPosition" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.dragStartPosition">dragStartPosition</h4>
-  <div class="markdown level1 summary"><p>The position of the controller when input down occurs.
-Used to determine when controller has moved far enough to trigger gesture</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Vector3? dragStartPosition</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<span class="xref">Vector3</span>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_Enabled" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.Enabled">Enabled</h4>
-  <div class="markdown level1 summary"><p>Is the interactable enabled?</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -343,8 +260,7 @@ Used to determine when controller has moved far enough to trigger gesture</p>
   
   
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_Events" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.Events">Events</h4>
-  <div class="markdown level1 summary"><p>List of events added to this interactable</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -361,30 +277,6 @@ Used to determine when controller has moved far enough to trigger gesture</p>
     <tbody>
       <tr>
         <td><span class="xref">List</span>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableEvent.html">InteractableEvent</a>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_focusingPointers" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.focusingPointers">focusingPointers</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected readonly List&lt;IMixedRealityPointer&gt; focusingPointers</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">List</span>&lt;<span class="xref">IMixedRealityPointer</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -415,12 +307,12 @@ Used to determine when controller has moved far enough to trigger gesture</p>
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_globalFeedbackClickTime" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.globalFeedbackClickTime">globalFeedbackClickTime</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_GlobalClickOrder" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.GlobalClickOrder">GlobalClickOrder</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected float globalFeedbackClickTime</code></pre>
+    <pre><code class="lang-csharp hljs">protected int[] GlobalClickOrder</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -432,7 +324,7 @@ Used to determine when controller has moved far enough to trigger gesture</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>[]</td>
         <td></td>
       </tr>
     </tbody>
@@ -488,8 +380,7 @@ Used to determine when controller has moved far enough to trigger gesture</p>
   
   
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_InputAction" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.InputAction">InputAction</h4>
-  <div class="markdown level1 summary"><p>Which action is this interactable listening for</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -536,13 +427,12 @@ Used to determine when controller has moved far enough to trigger gesture</p>
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_IsGlobal" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.IsGlobal">IsGlobal</h4>
-  <div class="markdown level1 summary"><p>Is the interactable listening to global events (input only)</p>
-</div>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_inputTimer" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.inputTimer">inputTimer</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsGlobal</code></pre>
+    <pre><code class="lang-csharp hljs">protected Coroutine inputTimer</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -554,19 +444,19 @@ Used to determine when controller has moved far enough to trigger gesture</p>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">Coroutine</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_isGlobalValueCheck" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.isGlobalValueCheck">isGlobalValueCheck</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_IsGlobal" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.IsGlobal">IsGlobal</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected bool isGlobalValueCheck</code></pre>
+    <pre><code class="lang-csharp hljs">public bool IsGlobal</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -610,8 +500,7 @@ Used to determine when controller has moved far enough to trigger gesture</p>
   
   
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnClick" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnClick">OnClick</h4>
-  <div class="markdown level1 summary"><p>Base onclick event</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -634,12 +523,12 @@ Used to determine when controller has moved far enough to trigger gesture</p>
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_pressingInputSources" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.pressingInputSources">pressingInputSources</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_pointerInputAction" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.pointerInputAction">pointerInputAction</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected readonly HashSet&lt;IMixedRealityInputSource&gt; pressingInputSources</code></pre>
+    <pre><code class="lang-csharp hljs">protected MixedRealityInputAction pointerInputAction</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -651,7 +540,31 @@ Used to determine when controller has moved far enough to trigger gesture</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">HashSet</span>&lt;<span class="xref">IMixedRealityInputSource</span>&gt;</td>
+        <td><span class="xref">MixedRealityInputAction</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_pointers" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.pointers">pointers</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected List&lt;IMixedRealityPointer&gt; pointers</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">List</span>&lt;<span class="xref">IMixedRealityPointer</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -659,8 +572,7 @@ Used to determine when controller has moved far enough to trigger gesture</p>
   
   
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_Profiles" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.Profiles">Profiles</h4>
-  <div class="markdown level1 summary"><p>List of profiles can match themes with gameObjects</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -684,37 +596,11 @@ Used to determine when controller has moved far enough to trigger gesture</p>
   
   
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_RequiresFocus" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.RequiresFocus">RequiresFocus</h4>
-  <div class="markdown level1 summary"><p>Does the voice command require this to have focus?
-Registers as a global listener for speech commands, ignores input events</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool RequiresFocus</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_requiresFocusValueCheck" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.requiresFocusValueCheck">requiresFocusValueCheck</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected bool requiresFocusValueCheck</code></pre>
+    <pre><code class="lang-csharp hljs">public bool RequiresFocus</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -806,9 +692,7 @@ Registers as a global listener for speech commands, ignores input events</p>
   
   
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_runningThemesList" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.runningThemesList">runningThemesList</h4>
-  <div class="markdown level1 summary"><p>The list of running theme instances to receive state changes
-When the dimension index changes, the list of themes that are updated changes to those assigned to that dimension.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -832,8 +716,7 @@ When the dimension index changes, the list of themes that are updated changes to
   
   
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_StateManager" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.StateManager">StateManager</h4>
-  <div class="markdown level1 summary"><p>The state logic for comparing state</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -857,8 +740,7 @@ When the dimension index changes, the list of themes that are updated changes to
   
   
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_States" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.States">States</h4>
-  <div class="markdown level1 summary"><p>A collection of states and basic state logic</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -882,8 +764,7 @@ When the dimension index changes, the list of themes that are updated changes to
   
   
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_VoiceCommand" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.VoiceCommand">VoiceCommand</h4>
-  <div class="markdown level1 summary"><p>A voice command to fire a click event</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -956,33 +837,6 @@ When the dimension index changes, the list of themes that are updated changes to
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_ClickCount_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.ClickCount*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_ClickCount" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.ClickCount">ClickCount</h4>
-  <div class="markdown level1 summary"><p>how many times this interactable was clicked
-good for checking when a click event occurs.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int ClickCount { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_FocusEnabled_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.FocusEnabled*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_FocusEnabled" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.FocusEnabled">FocusEnabled</h4>
   <div class="markdown level1 summary"><p>Does this interactable require focus</p>
@@ -1009,14 +863,13 @@ good for checking when a click event occurs.</p>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_FocusingPointers_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.FocusingPointers*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_FocusingPointers" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.FocusingPointers">FocusingPointers</h4>
-  <div class="markdown level1 summary"><p>Pointers that are focusing the interactable</p>
-</div>
+  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_Focusers_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.Focusers*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_Focusers" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.Focusers">Focusers</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public List&lt;IMixedRealityPointer&gt; FocusingPointers { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public List&lt;IMixedRealityPointer&gt; Focusers { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1037,8 +890,7 @@ good for checking when a click event occurs.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_HasCollision_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.HasCollision*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_HasCollision" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.HasCollision">HasCollision</h4>
-  <div class="markdown level1 summary"><p>Interactable is touching another object - custom: not set by Interactable</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1063,8 +915,7 @@ good for checking when a click event occurs.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_HasCustom_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.HasCustom*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_HasCustom" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.HasCustom">HasCustom</h4>
-  <div class="markdown level1 summary"><p>Misc - custom: not set by Interactable</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1089,8 +940,7 @@ good for checking when a click event occurs.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_HasFocus_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.HasFocus*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_HasFocus" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.HasFocus">HasFocus</h4>
-  <div class="markdown level1 summary"><p>Has focus</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1115,8 +965,7 @@ good for checking when a click event occurs.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_HasGesture_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.HasGesture*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_HasGesture" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.HasGesture">HasGesture</h4>
-  <div class="markdown level1 summary"><p>Currently pressed and some movement has occurred</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1141,8 +990,7 @@ good for checking when a click event occurs.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_HasGestureMax_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.HasGestureMax*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_HasGestureMax" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.HasGestureMax">HasGestureMax</h4>
-  <div class="markdown level1 summary"><p>Gesture reached max threshold or limits - custom: not set by Interactable</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1165,36 +1013,9 @@ good for checking when a click event occurs.</p>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_HasGrab_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.HasGrab*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_HasGrab" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.HasGrab">HasGrab</h4>
-  <div class="markdown level1 summary"><p>A near interaction grabbable is actively being grabbed/</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool HasGrab { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_HasObservation_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.HasObservation*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_HasObservation" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.HasObservation">HasObservation</h4>
-  <div class="markdown level1 summary"><p>No focus, finger down - custom: not set by Interactable</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1219,8 +1040,7 @@ good for checking when a click event occurs.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_HasObservationTargeted_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.HasObservationTargeted*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_HasObservationTargeted" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.HasObservationTargeted">HasObservationTargeted</h4>
-  <div class="markdown level1 summary"><p>Has focus, finger down - custom: not set by Interactable</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1245,8 +1065,7 @@ good for checking when a click event occurs.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_HasPhysicalTouch_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.HasPhysicalTouch*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_HasPhysicalTouch" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.HasPhysicalTouch">HasPhysicalTouch</h4>
-  <div class="markdown level1 summary"><p>A near interaction touchable is actively being touched</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1271,8 +1090,7 @@ good for checking when a click event occurs.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_HasPress_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.HasPress*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_HasPress" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.HasPress">HasPress</h4>
-  <div class="markdown level1 summary"><p>Currently being pressed</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1297,9 +1115,7 @@ good for checking when a click event occurs.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_HasVoiceCommand_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.HasVoiceCommand*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_HasVoiceCommand" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.HasVoiceCommand">HasVoiceCommand</h4>
-  <div class="markdown level1 summary"><p>A voice command has occurred, this does not automatically reset
-Can be reset using the SetVoiceCommand(bool) method.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1349,8 +1165,7 @@ Can be reset using the SetVoiceCommand(bool) method.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_IsDisabled_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.IsDisabled*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_IsDisabled" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.IsDisabled">IsDisabled</h4>
-  <div class="markdown level1 summary"><p>Is disabled</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1375,8 +1190,7 @@ Can be reset using the SetVoiceCommand(bool) method.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_IsInteractive_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.IsInteractive*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_IsInteractive" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.IsInteractive">IsInteractive</h4>
-  <div class="markdown level1 summary"><p>No focus, finger is up - custom: not set by Interactable</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1401,8 +1215,7 @@ Can be reset using the SetVoiceCommand(bool) method.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_IsTargeted_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.IsTargeted*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_IsTargeted" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.IsTargeted">IsTargeted</h4>
-  <div class="markdown level1 summary"><p>Has focus, finger up - custom: not set by Interactable</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1427,8 +1240,7 @@ Can be reset using the SetVoiceCommand(bool) method.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_IsToggled_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.IsToggled*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_IsToggled" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.IsToggled">IsToggled</h4>
-  <div class="markdown level1 summary"><p>True if SelectionMode is &quot;Toggle&quot; (Dimensions == 2) and the dimension index is not zero.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1453,8 +1265,7 @@ Can be reset using the SetVoiceCommand(bool) method.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_IsVisited_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.IsVisited*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_IsVisited" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.IsVisited">IsVisited</h4>
-  <div class="markdown level1 summary"><p>The Interactable has been clicked</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1475,40 +1286,13 @@ Can be reset using the SetVoiceCommand(bool) method.</p>
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_PressingInputSources_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.PressingInputSources*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_PressingInputSources" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.PressingInputSources">PressingInputSources</h4>
-  <div class="markdown level1 summary"><p>Input sources that are pressing the interactable</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public HashSet&lt;IMixedRealityInputSource&gt; PressingInputSources { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">HashSet</span>&lt;<span class="xref">IMixedRealityInputSource</span>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="methods">Methods
   </h3>
   
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_AddHandler_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.AddHandler*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_AddHandler_Microsoft_MixedReality_Toolkit_UI_IInteractableHandler_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.AddHandler(Microsoft.MixedReality.Toolkit.UI.IInteractableHandler)">AddHandler(IInteractableHandler)</h4>
-  <div class="markdown level1 summary"><p>Register OnClick extra handlers</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1588,16 +1372,6 @@ Can be reset using the SetVoiceCommand(bool) method.</p>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected void FilterThemesByDimensions()</code></pre>
-  </div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_ForceUpdateThemes_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.ForceUpdateThemes*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_ForceUpdateThemes" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.ForceUpdateThemes">ForceUpdateThemes()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void ForceUpdateThemes()</code></pre>
   </div>
   
   
@@ -1955,13 +1729,13 @@ Can be reset using the SetVoiceCommand(bool) method.</p>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnInputChanged_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnInputChanged*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnInputChanged_InputEventData_MixedRealityPose__" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnInputChanged(InputEventData{MixedRealityPose})">OnInputChanged(InputEventData&lt;MixedRealityPose&gt;)</h4>
+  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnPointerClicked_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnPointerClicked*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnPointerClicked_MixedRealityPointerEventData_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnPointerClicked(MixedRealityPointerEventData)">OnPointerClicked(MixedRealityPointerEventData)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnInputChanged(InputEventData&lt;MixedRealityPose&gt; eventData)</code></pre>
+    <pre><code class="lang-csharp hljs">public void OnPointerClicked(MixedRealityPointerEventData eventData)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1974,7 +1748,7 @@ Can be reset using the SetVoiceCommand(bool) method.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">InputEventData</span>&lt;<span class="xref">MixedRealityPose</span>&gt;</td>
+        <td><span class="xref">MixedRealityPointerEventData</span></td>
         <td><span class="parametername">eventData</span></td>
         <td></td>
       </tr>
@@ -1982,13 +1756,14 @@ Can be reset using the SetVoiceCommand(bool) method.</p>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnInputChanged_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnInputChanged*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnInputChanged_InputEventData_Vector2__" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnInputChanged(InputEventData{Vector2})">OnInputChanged(InputEventData&lt;Vector2&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnPointerDown_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnPointerDown*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnPointerDown_MixedRealityPointerEventData_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnPointerDown(MixedRealityPointerEventData)">OnPointerDown(MixedRealityPointerEventData)</h4>
+  <div class="markdown level1 summary"><p>Pointer down event has fired</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnInputChanged(InputEventData&lt;Vector2&gt; eventData)</code></pre>
+    <pre><code class="lang-csharp hljs">public void OnPointerDown(MixedRealityPointerEventData eventData)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2001,7 +1776,7 @@ Can be reset using the SetVoiceCommand(bool) method.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">InputEventData</span>&lt;<span class="xref">Vector2</span>&gt;</td>
+        <td><span class="xref">MixedRealityPointerEventData</span></td>
         <td><span class="parametername">eventData</span></td>
         <td></td>
       </tr>
@@ -2009,13 +1784,13 @@ Can be reset using the SetVoiceCommand(bool) method.</p>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnInputChanged_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnInputChanged*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnInputChanged_InputEventData_Vector3__" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnInputChanged(InputEventData{Vector3})">OnInputChanged(InputEventData&lt;Vector3&gt;)</h4>
+  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnPointerDragged_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnPointerDragged*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnPointerDragged_MixedRealityPointerEventData_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnPointerDragged(MixedRealityPointerEventData)">OnPointerDragged(MixedRealityPointerEventData)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnInputChanged(InputEventData&lt;Vector3&gt; eventData)</code></pre>
+    <pre><code class="lang-csharp hljs">public void OnPointerDragged(MixedRealityPointerEventData eventData)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2028,7 +1803,7 @@ Can be reset using the SetVoiceCommand(bool) method.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">InputEventData</span>&lt;<span class="xref">Vector3</span>&gt;</td>
+        <td><span class="xref">MixedRealityPointerEventData</span></td>
         <td><span class="parametername">eventData</span></td>
         <td></td>
       </tr>
@@ -2036,13 +1811,14 @@ Can be reset using the SetVoiceCommand(bool) method.</p>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnInputDown_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnInputDown*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnInputDown_InputEventData_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnInputDown(InputEventData)">OnInputDown(InputEventData)</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnPointerUp_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnPointerUp*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnPointerUp_MixedRealityPointerEventData_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnPointerUp(MixedRealityPointerEventData)">OnPointerUp(MixedRealityPointerEventData)</h4>
+  <div class="markdown level1 summary"><p>pointer up event has fired</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnInputDown(InputEventData eventData)</code></pre>
+    <pre><code class="lang-csharp hljs">public void OnPointerUp(MixedRealityPointerEventData eventData)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2055,34 +1831,7 @@ Can be reset using the SetVoiceCommand(bool) method.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">InputEventData</span></td>
-        <td><span class="parametername">eventData</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnInputUp_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnInputUp*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnInputUp_InputEventData_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnInputUp(InputEventData)">OnInputUp(InputEventData)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnInputUp(InputEventData eventData)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">InputEventData</span></td>
+        <td><span class="xref">MixedRealityPointerEventData</span></td>
         <td><span class="parametername">eventData</span></td>
         <td></td>
       </tr>
@@ -2146,91 +1895,9 @@ requires isGlobal</p>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnTouchCompleted_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnTouchCompleted*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnTouchCompleted_HandTrackingInputEventData_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnTouchCompleted(HandTrackingInputEventData)">OnTouchCompleted(HandTrackingInputEventData)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnTouchCompleted(HandTrackingInputEventData eventData)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">HandTrackingInputEventData</span></td>
-        <td><span class="parametername">eventData</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnTouchStarted_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnTouchStarted*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnTouchStarted_HandTrackingInputEventData_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnTouchStarted(HandTrackingInputEventData)">OnTouchStarted(HandTrackingInputEventData)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnTouchStarted(HandTrackingInputEventData eventData)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">HandTrackingInputEventData</span></td>
-        <td><span class="parametername">eventData</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnTouchUpdated_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnTouchUpdated*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_OnTouchUpdated_HandTrackingInputEventData_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.OnTouchUpdated(HandTrackingInputEventData)">OnTouchUpdated(HandTrackingInputEventData)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnTouchUpdated(HandTrackingInputEventData eventData)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">HandTrackingInputEventData</span></td>
-        <td><span class="parametername">eventData</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_RemoveHandler_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.RemoveHandler*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_RemoveHandler_Microsoft_MixedReality_Toolkit_UI_IInteractableHandler_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.RemoveHandler(Microsoft.MixedReality.Toolkit.UI.IInteractableHandler)">RemoveHandler(IInteractableHandler)</h4>
-  <div class="markdown level1 summary"><p>Remove onClick handlers</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -2253,28 +1920,6 @@ requires isGlobal</p>
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_ResetAllStates_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.ResetAllStates*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_ResetAllStates" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.ResetAllStates">ResetAllStates()</h4>
-  <div class="markdown level1 summary"><p>Reset all states in the Interactable and pointer information</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void ResetAllStates()</code></pre>
-  </div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_ResetBaseStates_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.ResetBaseStates*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_ResetBaseStates" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.ResetBaseStates">ResetBaseStates()</h4>
-  <div class="markdown level1 summary"><p>Reset the basic interaction states</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void ResetBaseStates()</code></pre>
-  </div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_ResolveInputAction_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.ResolveInputAction*"></a>
@@ -2388,8 +2033,7 @@ requires isGlobal</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetCollision_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetCollision*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetCollision_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetCollision(System.Boolean)">SetCollision(Boolean)</h4>
-  <div class="markdown level1 summary"><p>Change the collision state</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -2416,8 +2060,7 @@ requires isGlobal</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetCustom_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetCustom*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetCustom_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetCustom(System.Boolean)">SetCustom(Boolean)</h4>
-  <div class="markdown level1 summary"><p>Change the custom state</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -2472,8 +2115,7 @@ requires isGlobal</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetDisabled_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetDisabled*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetDisabled_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetDisabled(System.Boolean)">SetDisabled(Boolean)</h4>
-  <div class="markdown level1 summary"><p>Change the disabled state, will override the Enabled property</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -2528,8 +2170,7 @@ requires isGlobal</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetGesture_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetGesture*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetGesture_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetGesture(System.Boolean)">SetGesture(Boolean)</h4>
-  <div class="markdown level1 summary"><p>Change the gesture state</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -2556,8 +2197,7 @@ requires isGlobal</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetGestureMax_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetGestureMax*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetGestureMax_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetGestureMax(System.Boolean)">SetGestureMax(Boolean)</h4>
-  <div class="markdown level1 summary"><p>Change the gesture max state</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -2582,62 +2222,9 @@ requires isGlobal</p>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetGrab_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetGrab*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetGrab_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetGrab(System.Boolean)">SetGrab(Boolean)</h4>
-  <div class="markdown level1 summary"><p>Change the grab state</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual void SetGrab(bool grab)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">grab</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetInputDown_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetInputDown*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetInputDown" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetInputDown">SetInputDown()</h4>
-  <div class="markdown level1 summary"><p>Public method that can be used to set state of interactable
-corresponding to an input going down (select button, menu button, touch)</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SetInputDown()</code></pre>
-  </div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetInputUp_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetInputUp*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetInputUp" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetInputUp">SetInputUp()</h4>
-  <div class="markdown level1 summary"><p>Public method that can be used to set state of interactable
-corresponding to an input going up.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SetInputUp()</code></pre>
-  </div>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetInteractive_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetInteractive*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetInteractive_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetInteractive(System.Boolean)">SetInteractive(Boolean)</h4>
-  <div class="markdown level1 summary"><p>Change the Interactive state</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -2664,8 +2251,7 @@ corresponding to an input going up.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetObservation_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetObservation*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetObservation_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetObservation(System.Boolean)">SetObservation(Boolean)</h4>
-  <div class="markdown level1 summary"><p>Change the observation state</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -2692,8 +2278,7 @@ corresponding to an input going up.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetObservationTargeted_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetObservationTargeted*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetObservationTargeted_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetObservationTargeted(System.Boolean)">SetObservationTargeted(Boolean)</h4>
-  <div class="markdown level1 summary"><p>Change the observation targeted state</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -2720,8 +2305,7 @@ corresponding to an input going up.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetPhysicalTouch_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetPhysicalTouch*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetPhysicalTouch_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetPhysicalTouch(System.Boolean)">SetPhysicalTouch(Boolean)</h4>
-  <div class="markdown level1 summary"><p>Change the physical touch state</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -2748,8 +2332,7 @@ corresponding to an input going up.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetPress_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetPress*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetPress_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetPress(System.Boolean)">SetPress(Boolean)</h4>
-  <div class="markdown level1 summary"><p>Change the press state</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -2809,8 +2392,7 @@ corresponding to an input going up.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetTargeted_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetTargeted*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetTargeted_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetTargeted(System.Boolean)">SetTargeted(Boolean)</h4>
-  <div class="markdown level1 summary"><p>Change the targeted state</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -2837,8 +2419,7 @@ corresponding to an input going up.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetToggled_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetToggled*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetToggled_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetToggled(System.Boolean)">SetToggled(Boolean)</h4>
-  <div class="markdown level1 summary"><p>Change the toggled state</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -2898,8 +2479,7 @@ corresponding to an input going up.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetVisited_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetVisited*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetVisited_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetVisited(System.Boolean)">SetVisited(Boolean)</h4>
-  <div class="markdown level1 summary"><p>Change the visited state</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -2926,8 +2506,7 @@ corresponding to an input going up.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetVoiceCommand_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetVoiceCommand*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_SetVoiceCommand_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.SetVoiceCommand(System.Boolean)">SetVoiceCommand(Boolean)</h4>
-  <div class="markdown level1 summary"><p>Change the voice command state</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -2952,14 +2531,14 @@ corresponding to an input going up.</p>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_ShouldListenToUpDownEvent_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.ShouldListenToUpDownEvent*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_ShouldListenToUpDownEvent_InputEventData_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.ShouldListenToUpDownEvent(InputEventData)">ShouldListenToUpDownEvent(InputEventData)</h4>
-  <div class="markdown level1 summary"><p>Based on inputAction and state, should interactable listen to this up/down event.</p>
+  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_ShouldListen_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.ShouldListen*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_ShouldListen_MixedRealityInputAction_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.ShouldListen(MixedRealityInputAction)">ShouldListen(MixedRealityInputAction)</h4>
+  <div class="markdown level1 summary"><p>Based on inputAction and state, should this interaction listen to this input?</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual bool ShouldListenToUpDownEvent(InputEventData data)</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual bool ShouldListen(MixedRealityInputAction action)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2972,8 +2551,8 @@ corresponding to an input going up.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">InputEventData</span></td>
-        <td><span class="parametername">data</span></td>
+        <td><span class="xref">MixedRealityInputAction</span></td>
+        <td><span class="parametername">action</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -2989,49 +2568,6 @@ corresponding to an input going up.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_Start_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.Start*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_Start" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.Start">Start()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual void Start()</code></pre>
-  </div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_StartClickTimer_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.StartClickTimer*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_StartClickTimer_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.StartClickTimer(System.Boolean)">StartClickTimer(Boolean)</h4>
-  <div class="markdown level1 summary"><p>Starts a timer to check if input is in progress</p>
-<ul>
-<li>Make sure global pointer events are not double firing</li>
-<li>Make sure Global Input events are not double firing</li>
-<li>Make sure pointer events are not duplicating an input event</li>
-</ul>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void StartClickTimer(bool isFromInputDown = false)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">isFromInputDown</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -3066,31 +2602,42 @@ corresponding to an input going up.</p>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_StopClickTimer_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.StopClickTimer*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_StopClickTimer" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.StopClickTimer">StopClickTimer()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void StopClickTimer()</code></pre>
-  </div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_TriggerOnClick_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.TriggerOnClick*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_TriggerOnClick" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.TriggerOnClick">TriggerOnClick()</h4>
-  <div class="markdown level1 summary"><p>A public way to trigger or route an onClick event from an external source, like PressableButton</p>
+  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_StartInputTimer_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.StartInputTimer*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_StartInputTimer_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.StartInputTimer(System.Boolean)">StartInputTimer(Boolean)</h4>
+  <div class="markdown level1 summary"><p>Starts a timer to check if input is in progress</p>
+<ul>
+<li>Make sure global pointer events are not double firing</li>
+<li>Make sure Global Input events are not double firing</li>
+<li>Make sure pointer events are not duplicating an input event</li>
+</ul>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void TriggerOnClick()</code></pre>
+    <pre><code class="lang-csharp hljs">protected void StartInputTimer(bool isInput = false)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">isInput</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_TryGetInputActions_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.TryGetInputActions*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_TryGetInputActions_System_String____" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.TryGetInputActions(System.String[]@)">TryGetInputActions(out String[])</h4>
-  <div class="markdown level1 summary"><p>Get a list of Mixed Reality Input Actions from the input actions profile.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -3109,93 +2656,6 @@ corresponding to an input going up.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>[]</td>
         <td><span class="parametername">descriptionsArray</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_TryGetMixedRealitySpeechCommands_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.TryGetMixedRealitySpeechCommands*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_TryGetMixedRealitySpeechCommands_SpeechCommands____" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.TryGetMixedRealitySpeechCommands(SpeechCommands[]@)">TryGetMixedRealitySpeechCommands(out SpeechCommands[])</h4>
-  <div class="markdown level1 summary"><p>Try to get a list of speech commands from the MRTK/Input/SpeechCommands profile</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool TryGetMixedRealitySpeechCommands(out SpeechCommands[] commands)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">SpeechCommands</span>[]</td>
-        <td><span class="parametername">commands</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_TryGetSpeechKeywords_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.TryGetSpeechKeywords*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_TryGetSpeechKeywords_System_String____" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.TryGetSpeechKeywords(System.String[]@)">TryGetSpeechKeywords(out String[])</h4>
-  <div class="markdown level1 summary"><p>Look for speech commands in the MRTK Speech Command profile
-Adds a blank value at index zero so the developer can turn the feature off.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool TryGetSpeechKeywords(out string[] keywords)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>[]</td>
-        <td><span class="parametername">keywords</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -3244,22 +2704,13 @@ Adds a blank value at index zero so the developer can turn the feature off.</p>
       <span class="xref">IMixedRealityFocusHandler</span>
   </div>
   <div>
-      <span class="xref">IMixedRealityInputHandler</span>
+      <span class="xref">IMixedRealityPointerHandler</span>
   </div>
   <div>
       <span class="xref">IMixedRealitySpeechHandler</span>
   </div>
   <div>
       <span class="xref">IMixedRealityTouchHandler</span>
-  </div>
-  <div>
-      <span class="xref">IMixedRealityInputHandler&lt;&gt;</span>
-  </div>
-  <div>
-      <span class="xref">IMixedRealityInputHandler&lt;&gt;</span>
-  </div>
-  <div>
-      <span class="xref">IMixedRealityInputHandler&lt;&gt;</span>
   </div>
 </article>
           </div>

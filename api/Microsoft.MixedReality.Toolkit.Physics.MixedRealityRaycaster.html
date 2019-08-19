@@ -12,7 +12,7 @@
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
+    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -37,7 +37,7 @@
               </button>
               
               <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -154,13 +154,13 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_Physics_MixedRealityRaycaster_RaycastBoxPhysicsStep_" data-uid="Microsoft.MixedReality.Toolkit.Physics.MixedRealityRaycaster.RaycastBoxPhysicsStep*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Physics_MixedRealityRaycaster_RaycastBoxPhysicsStep_Microsoft_MixedReality_Toolkit_Physics_RayStep_Vector3_Vector3_Matrix4x4_System_Single_LayerMask___System_Int32_System_Boolean_System_Boolean_Vector3____Vector3____System_Boolean____" data-uid="Microsoft.MixedReality.Toolkit.Physics.MixedRealityRaycaster.RaycastBoxPhysicsStep(Microsoft.MixedReality.Toolkit.Physics.RayStep,Vector3,Vector3,Matrix4x4,System.Single,LayerMask[],System.Int32,System.Boolean,System.Boolean,Vector3[]@,Vector3[]@,System.Boolean[]@)">RaycastBoxPhysicsStep(RayStep, Vector3, Vector3, Matrix4x4, Single, LayerMask[], Int32, Boolean, Boolean, out Vector3[], out Vector3[], out Boolean[])</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Physics_MixedRealityRaycaster_RaycastBoxPhysicsStep_Microsoft_MixedReality_Toolkit_Physics_RayStep_Vector3_Vector3_Matrix4x4_System_Single_LayerMask___System_Int32_System_Boolean_Vector3____Vector3____System_Boolean____" data-uid="Microsoft.MixedReality.Toolkit.Physics.MixedRealityRaycaster.RaycastBoxPhysicsStep(Microsoft.MixedReality.Toolkit.Physics.RayStep,Vector3,Vector3,Matrix4x4,System.Single,LayerMask[],System.Int32,System.Boolean,Vector3[]@,Vector3[]@,System.Boolean[]@)">RaycastBoxPhysicsStep(RayStep, Vector3, Vector3, Matrix4x4, Single, LayerMask[], Int32, Boolean, out Vector3[], out Vector3[], out Boolean[])</h4>
   <div class="markdown level1 summary"><p>Box raycasts each physics <a class="xref" href="Microsoft.MixedReality.Toolkit.Physics.RayStep.html">RayStep</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool RaycastBoxPhysicsStep(RayStep step, Vector3 extents, Vector3 targetPosition, Matrix4x4 matrix, float maxDistance, LayerMask[] prioritizedLayerMasks, int raysPerEdge, bool isOrthographic, bool focusIndividualCompoundCollider, out Vector3[] points, out Vector3[] normals, out bool[] hits)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool RaycastBoxPhysicsStep(RayStep step, Vector3 extents, Vector3 targetPosition, Matrix4x4 matrix, float maxDistance, LayerMask[] prioritizedLayerMasks, int raysPerEdge, bool isOrthographic, out Vector3[] points, out Vector3[] normals, out bool[] hits)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -210,11 +210,6 @@
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">isOrthographic</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">focusIndividualCompoundCollider</span></td>
         <td></td>
       </tr>
       <tr>
@@ -307,13 +302,13 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_Physics_MixedRealityRaycaster_RaycastSimplePhysicsStep_" data-uid="Microsoft.MixedReality.Toolkit.Physics.MixedRealityRaycaster.RaycastSimplePhysicsStep*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Physics_MixedRealityRaycaster_RaycastSimplePhysicsStep_Microsoft_MixedReality_Toolkit_Physics_RayStep_LayerMask___System_Boolean_RaycastHit__" data-uid="Microsoft.MixedReality.Toolkit.Physics.MixedRealityRaycaster.RaycastSimplePhysicsStep(Microsoft.MixedReality.Toolkit.Physics.RayStep,LayerMask[],System.Boolean,RaycastHit@)">RaycastSimplePhysicsStep(RayStep, LayerMask[], Boolean, out RaycastHit)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Physics_MixedRealityRaycaster_RaycastSimplePhysicsStep_Microsoft_MixedReality_Toolkit_Physics_RayStep_LayerMask___RaycastHit__" data-uid="Microsoft.MixedReality.Toolkit.Physics.MixedRealityRaycaster.RaycastSimplePhysicsStep(Microsoft.MixedReality.Toolkit.Physics.RayStep,LayerMask[],RaycastHit@)">RaycastSimplePhysicsStep(RayStep, LayerMask[], out RaycastHit)</h4>
   <div class="markdown level1 summary"><p>Simple raycasts each physics <a class="xref" href="Microsoft.MixedReality.Toolkit.Physics.RayStep.html">RayStep</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool RaycastSimplePhysicsStep(RayStep step, LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out RaycastHit physicsHit)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool RaycastSimplePhysicsStep(RayStep step, LayerMask[] prioritizedLayerMasks, out RaycastHit physicsHit)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -333,11 +328,6 @@
       <tr>
         <td><span class="xref">LayerMask</span>[]</td>
         <td><span class="parametername">prioritizedLayerMasks</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">focusIndividualCompoundCollider</span></td>
         <td></td>
       </tr>
       <tr>
@@ -366,13 +356,13 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_Physics_MixedRealityRaycaster_RaycastSimplePhysicsStep_" data-uid="Microsoft.MixedReality.Toolkit.Physics.MixedRealityRaycaster.RaycastSimplePhysicsStep*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Physics_MixedRealityRaycaster_RaycastSimplePhysicsStep_Microsoft_MixedReality_Toolkit_Physics_RayStep_System_Single_LayerMask___System_Boolean_RaycastHit__" data-uid="Microsoft.MixedReality.Toolkit.Physics.MixedRealityRaycaster.RaycastSimplePhysicsStep(Microsoft.MixedReality.Toolkit.Physics.RayStep,System.Single,LayerMask[],System.Boolean,RaycastHit@)">RaycastSimplePhysicsStep(RayStep, Single, LayerMask[], Boolean, out RaycastHit)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Physics_MixedRealityRaycaster_RaycastSimplePhysicsStep_Microsoft_MixedReality_Toolkit_Physics_RayStep_System_Single_LayerMask___RaycastHit__" data-uid="Microsoft.MixedReality.Toolkit.Physics.MixedRealityRaycaster.RaycastSimplePhysicsStep(Microsoft.MixedReality.Toolkit.Physics.RayStep,System.Single,LayerMask[],RaycastHit@)">RaycastSimplePhysicsStep(RayStep, Single, LayerMask[], out RaycastHit)</h4>
   <div class="markdown level1 summary"><p>Simple raycasts each physics <a class="xref" href="Microsoft.MixedReality.Toolkit.Physics.RayStep.html">RayStep</a> within a specified maximum distance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool RaycastSimplePhysicsStep(RayStep step, float maxDistance, LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out RaycastHit physicsHit)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool RaycastSimplePhysicsStep(RayStep step, float maxDistance, LayerMask[] prioritizedLayerMasks, out RaycastHit physicsHit)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -397,11 +387,6 @@
       <tr>
         <td><span class="xref">LayerMask</span>[]</td>
         <td><span class="parametername">prioritizedLayerMasks</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">focusIndividualCompoundCollider</span></td>
         <td></td>
       </tr>
       <tr>
@@ -430,13 +415,13 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_Physics_MixedRealityRaycaster_RaycastSpherePhysicsStep_" data-uid="Microsoft.MixedReality.Toolkit.Physics.MixedRealityRaycaster.RaycastSpherePhysicsStep*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Physics_MixedRealityRaycaster_RaycastSpherePhysicsStep_Microsoft_MixedReality_Toolkit_Physics_RayStep_System_Single_LayerMask___System_Boolean_RaycastHit__" data-uid="Microsoft.MixedReality.Toolkit.Physics.MixedRealityRaycaster.RaycastSpherePhysicsStep(Microsoft.MixedReality.Toolkit.Physics.RayStep,System.Single,LayerMask[],System.Boolean,RaycastHit@)">RaycastSpherePhysicsStep(RayStep, Single, LayerMask[], Boolean, out RaycastHit)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Physics_MixedRealityRaycaster_RaycastSpherePhysicsStep_Microsoft_MixedReality_Toolkit_Physics_RayStep_System_Single_LayerMask___RaycastHit__" data-uid="Microsoft.MixedReality.Toolkit.Physics.MixedRealityRaycaster.RaycastSpherePhysicsStep(Microsoft.MixedReality.Toolkit.Physics.RayStep,System.Single,LayerMask[],RaycastHit@)">RaycastSpherePhysicsStep(RayStep, Single, LayerMask[], out RaycastHit)</h4>
   <div class="markdown level1 summary"><p>Sphere raycasts each physics <a class="xref" href="Microsoft.MixedReality.Toolkit.Physics.RayStep.html">RayStep</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool RaycastSpherePhysicsStep(RayStep step, float radius, LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out RaycastHit physicsHit)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool RaycastSpherePhysicsStep(RayStep step, float radius, LayerMask[] prioritizedLayerMasks, out RaycastHit physicsHit)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -461,11 +446,6 @@
       <tr>
         <td><span class="xref">LayerMask</span>[]</td>
         <td><span class="parametername">prioritizedLayerMasks</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">focusIndividualCompoundCollider</span></td>
         <td></td>
       </tr>
       <tr>
@@ -494,13 +474,13 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_Physics_MixedRealityRaycaster_RaycastSpherePhysicsStep_" data-uid="Microsoft.MixedReality.Toolkit.Physics.MixedRealityRaycaster.RaycastSpherePhysicsStep*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Physics_MixedRealityRaycaster_RaycastSpherePhysicsStep_Microsoft_MixedReality_Toolkit_Physics_RayStep_System_Single_System_Single_LayerMask___System_Boolean_RaycastHit__" data-uid="Microsoft.MixedReality.Toolkit.Physics.MixedRealityRaycaster.RaycastSpherePhysicsStep(Microsoft.MixedReality.Toolkit.Physics.RayStep,System.Single,System.Single,LayerMask[],System.Boolean,RaycastHit@)">RaycastSpherePhysicsStep(RayStep, Single, Single, LayerMask[], Boolean, out RaycastHit)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Physics_MixedRealityRaycaster_RaycastSpherePhysicsStep_Microsoft_MixedReality_Toolkit_Physics_RayStep_System_Single_System_Single_LayerMask___RaycastHit__" data-uid="Microsoft.MixedReality.Toolkit.Physics.MixedRealityRaycaster.RaycastSpherePhysicsStep(Microsoft.MixedReality.Toolkit.Physics.RayStep,System.Single,System.Single,LayerMask[],RaycastHit@)">RaycastSpherePhysicsStep(RayStep, Single, Single, LayerMask[], out RaycastHit)</h4>
   <div class="markdown level1 summary"><p>Sphere raycasts each physics <a class="xref" href="Microsoft.MixedReality.Toolkit.Physics.RayStep.html">RayStep</a> within a specified maximum distance.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool RaycastSpherePhysicsStep(RayStep step, float radius, float maxDistance, LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out RaycastHit physicsHit)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool RaycastSpherePhysicsStep(RayStep step, float radius, float maxDistance, LayerMask[] prioritizedLayerMasks, out RaycastHit physicsHit)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -530,11 +510,6 @@
       <tr>
         <td><span class="xref">LayerMask</span>[]</td>
         <td><span class="parametername">prioritizedLayerMasks</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">focusIndividualCompoundCollider</span></td>
         <td></td>
       </tr>
       <tr>
@@ -563,13 +538,13 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_Physics_MixedRealityRaycaster_TryGetPrioritizedPhysicsHit_" data-uid="Microsoft.MixedReality.Toolkit.Physics.MixedRealityRaycaster.TryGetPrioritizedPhysicsHit*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Physics_MixedRealityRaycaster_TryGetPrioritizedPhysicsHit_RaycastHit___LayerMask___System_Boolean_RaycastHit__" data-uid="Microsoft.MixedReality.Toolkit.Physics.MixedRealityRaycaster.TryGetPrioritizedPhysicsHit(RaycastHit[],LayerMask[],System.Boolean,RaycastHit@)">TryGetPrioritizedPhysicsHit(RaycastHit[], LayerMask[], Boolean, out RaycastHit)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Physics_MixedRealityRaycaster_TryGetPrioritizedPhysicsHit_RaycastHit___LayerMask___RaycastHit__" data-uid="Microsoft.MixedReality.Toolkit.Physics.MixedRealityRaycaster.TryGetPrioritizedPhysicsHit(RaycastHit[],LayerMask[],RaycastHit@)">TryGetPrioritizedPhysicsHit(RaycastHit[], LayerMask[], out RaycastHit)</h4>
   <div class="markdown level1 summary"><p>Tries to get the prioritized physics raycast hit based on the prioritized layer masks.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool TryGetPrioritizedPhysicsHit(RaycastHit[] hits, LayerMask[] priorityLayers, bool focusIndividualCompoundCollider, out RaycastHit raycastHit)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool TryGetPrioritizedPhysicsHit(RaycastHit[] hits, LayerMask[] priorityLayers, out RaycastHit raycastHit)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -589,11 +564,6 @@
       <tr>
         <td><span class="xref">LayerMask</span>[]</td>
         <td><span class="parametername">priorityLayers</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">focusIndividualCompoundCollider</span></td>
         <td></td>
       </tr>
       <tr>
@@ -619,7 +589,7 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Microsoft_MixedReality_Toolkit_Physics_MixedRealityRaycaster_TryGetPrioritizedPhysicsHit_RaycastHit___LayerMask___System_Boolean_RaycastHit___remarks">Remarks</h5>
+  <h5 id="Microsoft_MixedReality_Toolkit_Physics_MixedRealityRaycaster_TryGetPrioritizedPhysicsHit_RaycastHit___LayerMask___RaycastHit___remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>Sorts all hit objects first by layerMask, then by distance.</p>
 </div>
 </article>

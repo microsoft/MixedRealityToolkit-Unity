@@ -12,7 +12,7 @@
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
+    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -37,7 +37,7 @@
               </button>
               
               <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -120,6 +120,8 @@ The FOV of the HoloLens is about 1 meter wide at 2 meters from the user meaning 
 designer can assume an image area of 2048 x 1184 pixels at 2 meters from the user.
 The designer or engineer can take pixel based redlines and create UI at 1:1 scale.</p>
 </section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ButtonBackgroundSizeGizmo.html">ButtonBackgroundSizeGizmo</a></h4>
+      <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ButtonBackgroundSizeOffset.html">ButtonBackgroundSizeOffset</a></h4>
       <section><p>Scales an object relative the scale of the Anchor Transform
 Works best when using with Layout3DPixelSize, but not required - See LayoutPixelSize for more info
@@ -145,14 +147,13 @@ Good for responsive buttons that can stretch and object realign</p>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ButtonSizeOffset.html">ButtonSizeOffset</a></h4>
       <section><p>Scales an object relative the scale of the AnchorTransform</p>
 </section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.CursorContextManipulationHandler.html">CursorContextManipulationHandler</a></h4>
-      <section><p>This script provides cursor context for the manipulation handler</p>
-</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.CustomInteractablesReceiver.html">CustomInteractablesReceiver</a></h4>
       <section><p>Example of building a custom receiver that can be loaded as part of the events on the Interactable or
 in InteractableReceiverList or InteractableReceiver</p>
 <p>Extend ReceiverBaseMonoBehavior to build external event components</p>
 </section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.DragEnabler.html">DragEnabler</a></h4>
+      <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.FollowMeToggle.html">FollowMeToggle</a></h4>
       <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.GazeHandHelper.html">GazeHandHelper</a></h4>
@@ -163,18 +164,6 @@ in InteractableReceiverList or InteractableReceiver</p>
 The eventData received on inputdown has the point on the target that was hit by the gaze;
 the mixedrealitypose - eventdata received on input changed contains the handposition in eventdata.inputdata.position
 It also contains useful retrieval functions.</p>
-</section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.HandInteractionPanZoom.html">HandInteractionPanZoom</a></h4>
-      <section></section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.HandInteractionPanZoom.HandPanData.html">HandInteractionPanZoom.HandPanData</a></h4>
-      <section><p>Internal data stored for each hand or pointer.</p>
-</section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.HandPanEventData.html">HandPanEventData</a></h4>
-      <section><p>Information associated with a particular hand pan event.</p>
-</section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InputRecordingControls.html">InputRecordingControls</a></h4>
-      <section><p>Utility class to make input recording service accessible through game objects.
-Hook up buttons to the public functions to start and stop recording input.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.Interactable.html">Interactable</a></h4>
       <section><p>Uses input and action data to declare a set of states
@@ -194,19 +183,10 @@ Passes state information and input data on to receivers that detect patterns and
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableColorChildrenTheme.html">InteractableColorChildrenTheme</a></h4>
       <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme.html">InteractableColorTheme</a></h4>
-      <section><p>A color theme that can set colors on renderers or common text objects
-This theme will try to set color on text objects first, if none can be found,
-then we fall back to renderer color setting using the parent class.</p>
-</section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableCustomSetting.html">InteractableCustomSetting</a></h4>
-      <section><p>A simple property with name value and type, used for serialization
-The custom settings are used in themes to expose properties needed to enhance theme functionality</p>
-</section>
+      <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableEvent.html">InteractableEvent</a></h4>
       <section><p>Event base class for events attached to Interactables.</p>
 </section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableGrabScaleTheme.html">InteractableGrabScaleTheme</a></h4>
-      <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableHighlight.html">InteractableHighlight</a></h4>
       <section><p>Adds or removes materials to target renderer for highlighting Focused <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</a>s.</p>
 </section>
@@ -217,15 +197,8 @@ The custom settings are used in themes to expose properties needed to enhance th
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableOnClickReceiver.html">InteractableOnClickReceiver</a></h4>
       <section><p>A basic receiver for detecting clicks</p>
 </section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableOnFocus.html">InteractableOnFocus</a></h4>
-      <section><p>Adds or removes materials to target renderer for highlighting Focused <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</a>s.</p>
-</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableOnFocusReceiver.html">InteractableOnFocusReceiver</a></h4>
       <section><p>A basic focus event receiver</p>
-</section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableOnGrabReceiver.html">InteractableOnGrabReceiver</a></h4>
-      <section><p>A basic grab event receiver for detecting grab events (OnGrab, OnRelease) or grab state changes from Interactable
-When the grab states change, on or off, these events are triggered</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableOnHoldReceiver.html">InteractableOnHoldReceiver</a></h4>
       <section><p>Basic hold event receiver</p>
@@ -235,10 +208,6 @@ When the grab states change, on or off, these events are triggered</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableOnToggleReceiver.html">InteractableOnToggleReceiver</a></h4>
       <section><p>a receiver that listens to toggle events</p>
-</section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableOnTouchReceiver.html">InteractableOnTouchReceiver</a></h4>
-      <section><p>A basic touch event receiver for detecting Physical Touch state changes in the Interactable
-When the physical touch states change, these events are triggered.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractablePointerSimulator.html">InteractablePointerSimulator</a></h4>
       <section><p>A way to test button state feedback while in the editor</p>
@@ -302,6 +271,10 @@ Interactable types that populate the various state, theme, and event inspectors.
       <section><p>A convenience class that holds arrays of class names, fully qualified assembly names
 and their corresponding actual types.</p>
 </section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractionReceiver.html">InteractionReceiver</a></h4>
+      <section><p>An interaction receiver is simply a component that attached to a list of interactable objects and does something
+based on events from those interactable objects. This is the base abstract class to extend from.</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.LoaderController.html">LoaderController</a></h4>
       <section><p>Controls how the standard indeterminate loader moves and behaves over time.</p>
 </section>
@@ -316,9 +289,6 @@ and their corresponding actual types.</p>
 You may also configure the script on only enable certain manipulations. The script works with
 both HoloLens' gesture input and immersive headset's motion controller input.</p>
 </section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.PanUnityEvent.html">PanUnityEvent</a></h4>
-      <section><p>Unity event for a pan / zoom event. Contains the hand pan event data</p>
-</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.PinchSlider.html">PinchSlider</a></h4>
       <section><p>A slider that can be moved by grabbing / pinching a slider thumb</p>
 </section>
@@ -328,17 +298,6 @@ You can use <a class="xref" href="Microsoft.MixedReality.Toolkit.Examples.Demos.
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.PressableButtonHoloLens2.html">PressableButtonHoloLens2</a></h4>
       <section><p>HoloLens 2 shell's style button specific elements</p>
-</section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ProgressIndicatorLoadingBar.html">ProgressIndicatorLoadingBar</a></h4>
-      <section><p>Displays progress bar and (optionally) percentage text.</p>
-</section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ProgressIndicatorObjectDisplay.html">ProgressIndicatorObjectDisplay</a></h4>
-      <section><p>This class manages how a gameobject rotates and/or scales
-when activated as part of a Progress Indicator effect.</p>
-</section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ProgressIndicatorOrbsRotator.html">ProgressIndicatorOrbsRotator</a></h4>
-      <section><p>This class manages the 'rotating circle of dots' effect
-that is used as a Progress Indicator effect.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ReceiverBase.html">ReceiverBase</a></h4>
       <section><p>The base class for all receivers that attach to Interactables</p>
@@ -372,8 +331,6 @@ Extend this class to build new events or receivers from Interactables</p>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ThemeTarget.html">ThemeTarget</a></h4>
       <section><p>A way to cache some serializes values to pass between buttons and handlers</p>
 </section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ToggleHandVisualisation.html">ToggleHandVisualisation</a></h4>
-      <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ToolTip.html">ToolTip</a></h4>
       <section><p>Class for Tooltip object
 Creates a floating tooltip that is attached to an object and moves to stay in view as object rotates with respect to the view.</p>
@@ -407,13 +364,8 @@ finding ToolTip Attach point information.</p>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.TouchEvent.html">TouchEvent</a></h4>
       <section><p>A UnityEvent callback containing a TouchEventData payload.</p>
 </section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.TransformScaleHandler.html">TransformScaleHandler</a></h4>
-      <section><p>Component for setting the min/max scale values for ManipulationHandler
-or BoundingBox</p>
-</section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.VisualProfile.html">VisualProfile</a></h4>
-      <section><p>Profile container for theme and for loading theme settings</p>
-</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.TouchEventData.html">TouchEventData</a></h4>
+      <section></section>
     <h3 id="structs">Structs
   </h3>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableColorChildrenTheme.BlocksAndRenderer.html">InteractableColorChildrenTheme.BlocksAndRenderer</a></h4>
@@ -439,8 +391,6 @@ or BoundingBox</p>
   </h3>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.IInteractableHandler.html">IInteractableHandler</a></h4>
       <section></section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.IProgressIndicator.html">IProgressIndicator</a></h4>
-      <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.IToolTipBackground.html">IToolTipBackground</a></h4>
       <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.IToolTipHighlight.html">IToolTipHighlight</a></h4>
@@ -454,21 +404,9 @@ or BoundingBox</p>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.AppBar.ButtonTypeEnum.html">AppBar.ButtonTypeEnum</a></h4>
       <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.BoundingBox.BoundingBoxActivationType.html">BoundingBox.BoundingBoxActivationType</a></h4>
-      <section><p>This enum defines how the BoundingBox gets activated</p>
-</section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.BoundingBox.BoundsCalculationMethod.html">BoundingBox.BoundsCalculationMethod</a></h4>
-      <section><p>This enum defines what volume type the bound calculation depends on and its priority
-for it.</p>
-</section>
+      <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.BoundingBox.FlattenModeType.html">BoundingBox.FlattenModeType</a></h4>
       <section><p>Enum which describes how an object's boundingbox is to be flattened.</p>
-</section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.BoundingBox.HandleType.html">BoundingBox.HandleType</a></h4>
-      <section><p>Enum which describes whether a boundingbox handle which has been grabbed, is
-a Rotation Handle (sphere) or a Scale Handle( cube)</p>
-</section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.BoundingBox.RotationHandlePrefabCollider.html">BoundingBox.RotationHandlePrefabCollider</a></h4>
-      <section><p>This enum defines the type of collider in use when a rotation handle prefab is provided.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.BoundingBox.WireframeType.html">BoundingBox.WireframeType</a></h4>
       <section><p>This enum describes which primitive type the wireframe portion of the boundingbox
@@ -491,8 +429,6 @@ consists of.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableHighlight.HighlightedMaterialStyle.html">InteractableHighlight.HighlightedMaterialStyle</a></h4>
       <section></section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableOnPressReceiver.InteractionType.html">InteractableOnPressReceiver.InteractionType</a></h4>
-      <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableStates.InteractableStateEnum.html">InteractableStates.InteractableStateEnum</a></h4>
       <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableThemePropertyValueTypes.html">InteractableThemePropertyValueTypes</a></h4>
@@ -507,15 +443,9 @@ consists of.</p>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ManipulationHandler.TwoHandedManipulation.html">ManipulationHandler.TwoHandedManipulation</a></h4>
       <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.PressableButton.SpaceMode.html">PressableButton.SpaceMode</a></h4>
-      <section><p>Enum for defining space of plane distances.</p>
-</section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ProgressIndicatorState.html">ProgressIndicatorState</a></h4>
       <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ReceiverBaseMonoBehavior.SearchScopes.html">ReceiverBaseMonoBehavior.SearchScopes</a></h4>
       <section></section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.SelectionModes.html">SelectionModes</a></h4>
-      <section><p>Values for user-friendly dimensions settings</p>
-</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ShaderPropertyType.html">ShaderPropertyType</a></h4>
       <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ThemeEaseSettings.BasicEaseCurves.html">ThemeEaseSettings.BasicEaseCurves</a></h4>

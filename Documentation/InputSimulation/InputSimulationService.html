@@ -10,7 +10,7 @@
     <meta name="title" content="Input Simulation Service | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../../Documentation/Images/favicon.ico">
+    <link rel="shortcut icon" href="../../External/ReadMeImages/favicon.ico">
     <link rel="stylesheet" href="../../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../../styles/docfx.css">
     <link rel="stylesheet" href="../../styles/main.css">
@@ -35,7 +35,7 @@
               </button>
               
               <a class="navbar-brand" href="../../index.html">
-                <img id="logo" class="svg" src="../../Documentation/Images/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../../External/ReadMeImages/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -89,22 +89,24 @@
 <li>HoloLens 2 articulated hand tracking</li>
 </ul>
 <p>Users can use a conventional keyboard and mouse combination to control simulated devices at runtime. This allows testing of interactions in the Unity editor without first deploying to a device.</p>
-<div class="WARNING">
-<h5>Warning</h5>
-<p>This does not work when using Unity's XR Holographic Emulation &gt; Emulation Mode = &quot;Simulate in Editor&quot;. Unity's in-editor simulation will take control away from MRTK's input simulation. In order to use the MRTK input simulation service, you will need to set XR Holographic Emulation to Emulation Mode = <em>&quot;None&quot;</em></p>
-</div>
 <h2 id="enabling-the-input-simulation-service">Enabling the Input Simulation Service</h2>
 <p>Input simulation is enabled by default in MRTK.</p>
-<p>Input simulation is an optional <a href="../MixedRealityServices.html">Mixed Reality service</a>. It can be added as a data provider in the <a href="../Input/InputProviders.html">Input System profile</a>.</p>
+<p>Input simulation is an optional <a href="../MixedRealityServices.html">Mixed Reality service</a>. It can be added as a data provider in the <a href="../TODO.html">Input System profile</a>.</p>
 <ul>
-<li><strong>Type</strong> must be <em>Microsoft.MixedReality.Toolkit.Input &gt; InputSimulationService</em>.</li>
-<li><strong>Platform(s)</strong> should always be <em>Windows Editor</em> since the service depends on keyboard and mouse input.</li>
-<li><strong>Profile</strong> has all settings for input simulation.</li>
+<li><p><strong>Type</strong> must be <em>Microsoft.MixedReality.Toolkit.Input &gt; InputSimulationService</em>.</p>
+</li>
+<li><p><strong>Platform(s)</strong> should always be <em>Windows Editor</em> since the service depends on keyboard and mouse input.</p>
+</li>
+<li><p><strong>Profile</strong> has all settings for input simulation.</p>
+<table>
+<thead>
+<tr>
+<th><strong>Warning</strong>: Any type of profile can be assigned to services at the time of this writing. If you assign a different profile to the service, make sure to use a profile of type <em>Input Simulation</em> or it will not work!</th>
+</tr>
+</thead>
+</table>
+</li>
 </ul>
-<div class="WARNING">
-<h5>Warning</h5>
-<p>Any type of profile can be assigned to services at the time of this writing. If you assign a different profile to the service, make sure to use a profile of type <em>Input Simulation</em> or it will not work!</p>
-</div>
 <a target="_blank" href="../Images/InputSimulation/MRTK_InputSimulation_InputSystemDataProviders.png">
   <img src="../Images/InputSimulation/MRTK_InputSimulation_InputSystemDataProviders.png" title="Full Hand Mesh" width="80%" class="center">
 </a>
@@ -131,18 +133,18 @@
 <p>Press and hold the movement keys (W/A/S/D for forward/left/back/right).</p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Z7L4I1ET7GU" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
 <h1 id="hand-simulation">Hand Simulation</h1>
-<p>The input simulation supports emulated hand devices. These virtual hands can interact with any object that supports regular hand devices, such as buttons or grabbable objects.</p>
+<p>The input simulation supports emulated hand devices. These virtual hands can interact with any object that supports regular hand devices, such as buttons or grabable objects.</p>
 <a target="_blank" href="../Images/InputSimulation/MRTK_InputSimulation_HandSimulationMode.png">
   <img src="../Images/InputSimulation/MRTK_InputSimulation_HandSimulationMode.png" title="Full Hand Mesh" width="80%" class="center">
 </a>
 <p>The <strong>Hand Simulation Mode</strong> switches between two distinct input models.</p>
 <ul>
 <li><p><em>Articulated Hands</em>: Simulates a fully articulated hand device with joint position data.</p>
-<p>Emulates HoloLens 2 interaction model.</p>
+<p>Emulates Hololens 2 interaction model.</p>
 <p>Interactions that are based on precise positioning of the hand or use touching can be simulated in this mode.</p>
 </li>
 <li><p><em>Gestures</em>: Simulates a simplified hand model with air tap and basic gestures.</p>
-<p>Emulates <a href="https://docs.microsoft.com/en-us/windows/mixed-reality/gestures">HoloLens interaction model</a>.</p>
+<p>Emulates <a href="https://docs.microsoft.com/en-us/windows/mixed-reality/gestures">Hololens interaction model</a>.</p>
 <p>Focus is controlled using the Gaze pointer. The <em>Air Tap</em> gesture is used to interact with buttons.</p>
 </li>
 </ul>
@@ -155,18 +157,7 @@
 <a target="_blank" href="../Images/InputSimulation/MRTK_InputSimulation_HandPlacementSettings.png">
   <img src="../Images/InputSimulation/MRTK_InputSimulation_HandPlacementSettings.png" title="Full Hand Mesh" width="80%" class="center">
 </a>
-<p>Hands can be moved further or closer to the camera using the <em>mouse wheel</em>.
-By default the hand will move somewhat slowly in response to mouse scroll,
-and this can be made faster by changing the <em>Hand Depth Multiplier</em> to a
-larger number.</p>
-<p>The initial distance from the camera that the hand appears at is controlled by
-<em>Default Hand Distance.</em></p>
-<p>By default, the simulated hand joints will be perfectly still. Note that on devices there
-will always be some amount of jitter/noise due to the underlying hand tracking.
-You can see this on the device when you have hand mesh or joints enabled (and
-see how it has slightly jitter even if you have your hand perfectly still). It's possible
-to simulate jitter by changing <em>Hand Jitter Amount</em> to a positive value (for example, 0.1
-as is shown in the image above).</p>
+<p>Hands can be moved further or closer to the camera using the <em>mouse wheel</em>.</p>
 <a target="_blank" href="../Images/InputSimulation/MRTK_InputSimulation_HandRotationSettings.png">
   <img src="../Images/InputSimulation/MRTK_InputSimulation_HandRotationSettings.png" title="Full Hand Mesh" width="80%" class="center">
 </a>
@@ -190,10 +181,13 @@ as is shown in the image above).</p>
 </li>
 </ol>
 <p>Each of the mouse buttons can be mapped to transform the hand shape into a different gesture using the <em>Left/Middle/Right Mouse Hand Gesture</em> settings. The <em>Default Hand Gesture</em> is the shape of the hand when no button is pressed.</p>
-<div class="NOTE">
-<h5>Note</h5>
-<p>The <em>Pinch</em> gesture is the only gesture that performs the &quot;Select&quot; action at this point.</p>
-</div>
+<table>
+<thead>
+<tr>
+<th>Note: The <em>Pinch</em> gesture is the only gesture that performs the &quot;Select&quot; action at this point.</th>
+</tr>
+</thead>
+</table>
 <h2 id="one-hand-manipulation">One-Hand Manipulation</h2>
 <ol>
 <li>Press and hold hand control key (Space/Left Shift)</li>
@@ -237,7 +231,7 @@ as is shown in the image above).</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/InputSimulation/InputSimulationService.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Documentation/InputSimulation/InputSimulationService.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

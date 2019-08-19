@@ -12,7 +12,7 @@
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
+    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -37,7 +37,7 @@
               </button>
               
               <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -95,6 +95,9 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public enum SpatialAwarenessMeshLevelOfDetail</code></pre>
   </div>
+  <h5 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_SpatialAwarenessMeshLevelOfDetail_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>The integral values for these levels of detail generally map to triangle density, in triangles per cubic meter.</p>
+</div>
   <h3 id="fields">Fields
   </h3>
   <table class="table table-bordered table-striped table-condensed">
@@ -114,19 +117,13 @@ environmental features, such as floors and walls.</p>
       <tr>
         <td id="Microsoft_MixedReality_Toolkit_SpatialAwareness_SpatialAwarenessMeshLevelOfDetail_Custom">Custom</td>
         <td><p>The custom level of detail allows specifying a custom value for
-TrianglesPerCubicMeter.</p>
+MeshTrianglesPerCubicMeter.</p>
 </td>
       </tr>
       <tr>
         <td id="Microsoft_MixedReality_Toolkit_SpatialAwareness_SpatialAwarenessMeshLevelOfDetail_Fine">Fine</td>
         <td><p>The fine level of detail is well suited for using as an occlusion
 mesh.</p>
-</td>
-      </tr>
-      <tr>
-        <td id="Microsoft_MixedReality_Toolkit_SpatialAwareness_SpatialAwarenessMeshLevelOfDetail_Medium">Medium</td>
-        <td><p>The medium level of detail is often useful for experiences that
-continually scan the environment (ex: a virtual pet).</p>
 </td>
       </tr>
     </tbody>

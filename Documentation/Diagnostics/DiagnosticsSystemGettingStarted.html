@@ -10,7 +10,7 @@
     <meta name="title" content="Diagnostic System | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../../Documentation/Images/favicon.ico">
+    <link rel="shortcut icon" href="../../External/ReadMeImages/favicon.ico">
     <link rel="stylesheet" href="../../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../../styles/docfx.css">
     <link rel="stylesheet" href="../../styles/main.css">
@@ -35,7 +35,7 @@
               </button>
               
               <a class="navbar-brand" href="../../index.html">
-                <img id="logo" class="svg" src="../../Documentation/Images/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../../External/ReadMeImages/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -87,19 +87,21 @@ application to enable analysis of application issues.</p>
 <p>The first release of the diagnostics system contains the Visual Profiler to allow for analyzing
 performance issues while using the application.</p>
 <h2 id="getting-started">Getting Started</h2>
-<div class="IMPORTANT">
-<h5>Important</h5>
+<blockquote>
 <p>It is <strong><em>highly</em></strong> recommended that the diagnostics system be enabled throughout the entire product
 development cycle and disabled as the last change prior to building and releasing the final version.</p>
-</div>
+</blockquote>
 <ol>
 <li><a href="#enable-diagnostics">Enable</a> the diagnostic system</li>
 <li><a href="#configure-diagnostic-options">Configure</a> diagnostic options</li>
 <li><a href="#build-and-deploy">Build and deploy</a></li>
 </ol>
 <h3 id="enable-diagnostics">Enable Diagnostics</h3>
-<p>The diagnostics system is managed by the MixedRealityToolkit object (or another <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar.html">service registrar</a> component).</p>
+<p>The diagnostics system is managed by the MixedRealityToolkit object (or another
+<a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar.html">service registrar</a> component).</p>
+<blockquote>
 <p>The following steps presume use of the MixedRealityToolkit object. Steps required for other service registrars may be different.</p>
+</blockquote>
 <ol>
 <li>Select the MixedRealityToolkit object in the scene hierarchy.</li>
 </ol>
@@ -112,11 +114,10 @@ development cycle and disabled as the last change prior to building and releasin
 <li>Select the Diagnostics System implementation</li>
 </ol>
 <p><img src="../Images/Diagnostics/DiagnosticsSelectSystemType.png" alt="Select the Diagnostics System Implementation"></p>
-<div class="NOTE">
-<h5>Note</h5>
+<blockquote>
 <p>Users of the default profile (DefaultMixedRealityToolkitConfigurationProfile) will have the
 diagnostics system pre-configured to use the MixedRealityDiagnosticsSystem object.</p>
-</div>
+</blockquote>
 <h3 id="configure-diagnostic-options">Configure Diagnostic Options</h3>
 <p>The diagnostics system uses a configuration profile to specify which components are to be displayed
 and to configure their settings. Please see <a href="ConfiguringDiagnostics.html">Configuring the Diagnostics System</a>
@@ -125,11 +126,12 @@ for more information pertaining to the available component settings.</p>
 <h3 id="build-and-deploy">Build and Deploy</h3>
 <p>Once the diagnostic system is configured with the desired options, the project can be built
 and deployed to the target platform.</p>
-<div class="NOTE">
-<h5>Note</h5>
-<p>While it is possible to use Unity's Play Mode while developing applications without requiring the build and deploy steps, it is important to evaluate the diagnostics system results using a compiled application running on the target hardware and platform.</p>
-<p>Performance diagnostics, such as the Visual Profiler, may not accurately reflect actual application performance when run from within the editor.</p>
-</div>
+<blockquote>
+<p>While it is possible to use Unity's Play Mode while developing applications without requiring the build
+and deploy steps, it is important to evaluate the diagnostics system results using a compiled application
+running on the target hardware and platform. Performance diagnostics, such as the Visual Profiler, may not
+accurately reflect actual application performance when run from within the editor.</p>
+</blockquote>
 <h2 id="see-also">See Also</h2>
 <ul>
 <li><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Diagnostics.html">Diagnostics API documentation</a></li>
@@ -144,7 +146,7 @@ and deployed to the target platform.</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/Diagnostics/DiagnosticsSystemGettingStarted.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Documentation/Diagnostics/DiagnosticsSystemGettingStarted.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

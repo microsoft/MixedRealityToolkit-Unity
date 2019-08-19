@@ -12,7 +12,7 @@
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
+    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -37,7 +37,7 @@
               </button>
               
               <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -124,44 +124,6 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static class MixedRealityToolkitFiles</code></pre>
   </div>
-  <h5 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitFiles_remarks"><strong>Remarks</strong></h5>
-  <div class="markdown level0 remarks"><p>This class works by looking for sentinel files (following the pattern MRTK.*.sentinel,
-for example, MRTK.Core.sentinel) in order to identify where the MRTK is located
-within the project.</p>
-<p>If the MRTK is being consumed as code that sits within the Assets folder, the &quot;root&quot;
-MRTK folder must be at most three directories deep - this search code will only reason
-over MRTK folders that sit in a depth range [0, 3].</p>
-</div>
-  <h3 id="fields">Fields
-  </h3>
-  
-  
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitFiles_DirectorySearchDepth" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitFiles.DirectorySearchDepth">DirectorySearchDepth</h4>
-  <div class="markdown level1 summary"><p>Directory levels to search for MRTK folders below the root directory.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int DirectorySearchDepth = 3</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitFiles_DirectorySearchDepth_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>E.g. with level 3 and folders ROOT/A/B/C/D would seach A and B and C, but not D.</p>
-</div>
   <h3 id="properties">Properties
   </h3>
   
@@ -218,59 +180,6 @@ over MRTK folders that sit in a depth range [0, 3].</p>
   </table>
   <h3 id="methods">Methods
   </h3>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitFiles_FindMatchingModule_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitFiles.FindMatchingModule*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitFiles_FindMatchingModule_System_String_List_Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitModuleType___" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitFiles.FindMatchingModule(System.String,List{Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitModuleType}@)">FindMatchingModule(String, out List&lt;MixedRealityToolkitModuleType&gt;)</h4>
-  <div class="markdown level1 summary"><p>Try to find the matching modules associated with path by looking for the presence of
-MRTK sentinel files.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool FindMatchingModule(string path, out List&lt;MixedRealityToolkitModuleType&gt; result)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">path</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><span class="xref">List</span>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitModuleType.html">MixedRealityToolkitModuleType</a>&gt;</td>
-        <td><span class="parametername">result</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitFiles_FindMatchingModule_System_String_List_Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitModuleType____remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>In certain consumption situations, the content can be placed within the same folder,
-meaning it's possible for multiple sentinel values to exist within the same folder.</p>
-</div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitFiles_GetAssetDatabasePath_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitFiles.GetAssetDatabasePath*"></a>
@@ -458,48 +367,6 @@ meaning it's possible for multiple sentinel values to exist within the same fold
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitFiles_MapModulePath_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitFiles.MapModulePath*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitFiles_MapModulePath_Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitModuleType_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitFiles.MapModulePath(Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitModuleType)">MapModulePath(MixedRealityToolkitModuleType)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string MapModulePath(MixedRealityToolkitModuleType module)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitModuleType.html">MixedRealityToolkitModuleType</a></td>
-        <td><span class="parametername">module</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitFiles_MapRelativeFilePath_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitFiles.MapRelativeFilePath*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitFiles_MapRelativeFilePath_Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitModuleType_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitFiles.MapRelativeFilePath(Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitModuleType,System.String)">MapRelativeFilePath(MixedRealityToolkitModuleType, String)</h4>
   <div class="markdown level1 summary"><p>Maps a single relative path file to a concrete path from one of the MRTK folders, if found. Otherwise returns null.</p>
@@ -593,171 +460,6 @@ meaning it's possible for multiple sentinel values to exist within the same fold
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitFiles_MapRelativeFilePathToAbsolutePath_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitFiles.MapRelativeFilePathToAbsolutePath*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitFiles_MapRelativeFilePathToAbsolutePath_Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitModuleType_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitFiles.MapRelativeFilePathToAbsolutePath(Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitModuleType,System.String)">MapRelativeFilePathToAbsolutePath(MixedRealityToolkitModuleType, String)</h4>
-  <div class="markdown level1 summary"><p>Overload of MapRelativeFilePathToAbsolutePath which provides the ability to specify the module that the
-file belongs to.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string MapRelativeFilePathToAbsolutePath(MixedRealityToolkitModuleType module, string mrtkPathToFile)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitModuleType.html">MixedRealityToolkitModuleType</a></td>
-        <td><span class="parametername">module</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">mrtkPathToFile</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitFiles_MapRelativeFilePathToAbsolutePath_Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitModuleType_System_String__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>When searching for a resource that lives in the MixedRealityToolkit.SDK folder, this could be invoked
-in this way:
-MapRelativeFilePathToAbsolutePath(MixedRealityToolkitModuleType.SDK, mrtkPathToFile)</p>
-</div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitFiles_MapRelativeFilePathToAbsolutePath_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitFiles.MapRelativeFilePathToAbsolutePath*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitFiles_MapRelativeFilePathToAbsolutePath_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitFiles.MapRelativeFilePathToAbsolutePath(System.String)">MapRelativeFilePathToAbsolutePath(String)</h4>
-  <div class="markdown level1 summary"><p>Maps a single relative path file to MRTK folders to its absolute path, if found. Otherwise returns null.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string MapRelativeFilePathToAbsolutePath(string mrtkPathToFile)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">mrtkPathToFile</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitFiles_MapRelativeFilePathToAbsolutePath_System_String__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>For example, this will map &quot;Inspectors\Data\EditorWindowOptions.json&quot; to its full path like
-&quot;c:\project\Assets\Libs\MRTK\MixedRealityToolkit\Inspectors\Data\EditorWindowOptions.json&quot;.
-This assumes that the passed in mrtkPathToFile is found under the &quot;MixedRealityToolkit&quot; folder
-(instead of the MixedRealityToolkit.SDK, or any of the other folders).</p>
-</div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitFiles_MapRelativeFolderPathToAbsolutePath_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitFiles.MapRelativeFolderPathToAbsolutePath*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitFiles_MapRelativeFolderPathToAbsolutePath_Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitModuleType_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitFiles.MapRelativeFolderPathToAbsolutePath(Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitModuleType,System.String)">MapRelativeFolderPathToAbsolutePath(MixedRealityToolkitModuleType, String)</h4>
-  <div class="markdown level1 summary"><p>Similar to MapRelativeFilePathToAbsolutePath, except this checks for the existence of a folder instead of file.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string MapRelativeFolderPathToAbsolutePath(MixedRealityToolkitModuleType module, string mrtkPathToFolder)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitModuleType.html">MixedRealityToolkitModuleType</a></td>
-        <td><span class="parametername">module</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">mrtkPathToFolder</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitFiles_RefreshFolders_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitFiles.RefreshFolders*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitFiles_RefreshFolders" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityToolkitFiles.RefreshFolders">RefreshFolders()</h4>
-  <div class="markdown level1 summary"><p>This function is only exposed for testing purposes, and can change/be removed at any time.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void RefreshFolders()</code></pre>
-  </div>
-  <h5 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_MixedRealityToolkitFiles_RefreshFolders_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Syncronously refreshes the MRTK folder database.</p>
-</div>
 </article>
           </div>
           

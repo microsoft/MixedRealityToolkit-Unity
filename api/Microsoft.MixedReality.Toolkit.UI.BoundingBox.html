@@ -12,7 +12,7 @@
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
+    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -37,7 +37,7 @@
               </button>
               
               <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -95,6 +95,7 @@
   </div>
   <div classs="implements">
     <h5>Implements</h5>
+    <div><span class="xref">IMixedRealityPointerHandler</span></div>
     <div><span class="xref">IMixedRealitySourceStateHandler</span></div>
     <div><span class="xref">IMixedRealityFocusChangedHandler</span></div>
     <div><span class="xref">IMixedRealityFocusHandler</span></div>
@@ -103,7 +104,7 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class BoundingBox : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedRealityFocusChangedHandler, IMixedRealityFocusHandler</code></pre>
+    <pre><code class="lang-csharp hljs">public class BoundingBox : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealitySourceStateHandler, IMixedRealityFocusChangedHandler, IMixedRealityFocusHandler</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
@@ -258,8 +259,7 @@
   
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_BoundingBoxActivation_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.BoundingBoxActivation*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_BoundingBoxActivation" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.BoundingBoxActivation">BoundingBoxActivation</h4>
-  <div class="markdown level1 summary"><p>Type of activation method for showing/hiding bounding box handles and controls</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -282,36 +282,9 @@
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_BoundsOverride_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.BoundsOverride*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_BoundsOverride" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.BoundsOverride">BoundsOverride</h4>
-  <div class="markdown level1 summary"><p>For complex objects, automatic bounds calculation may not behave as expected. Use an existing Box Collider (even on a child object) to manually determine bounds of Bounding Box.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BoxCollider BoundsOverride { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">BoxCollider</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_BoxGrabbedMaterial_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.BoxGrabbedMaterial*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_BoxGrabbedMaterial" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.BoxGrabbedMaterial">BoxGrabbedMaterial</h4>
-  <div class="markdown level1 summary"><p>Material used to display the bounding box when grabbed. If set to null no change will occur when grabbed.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -336,8 +309,7 @@
   
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_BoxMaterial_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.BoxMaterial*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_BoxMaterial" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.BoxMaterial">BoxMaterial</h4>
-  <div class="markdown level1 summary"><p>Material used to display the bounding box. If set to null no bounding box will be displayed</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -362,8 +334,7 @@
   
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_BoxPadding_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.BoxPadding*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_BoxPadding" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.BoxPadding">BoxPadding</h4>
-  <div class="markdown level1 summary"><p>Extra padding added to the actual Target bounds</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -386,62 +357,9 @@
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_CalculationMethod_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.CalculationMethod*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_CalculationMethod" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.CalculationMethod">CalculationMethod</h4>
-  <div class="markdown level1 summary"><p>Defines the volume type and the priority for the bounds calculation</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BoundingBox.BoundsCalculationMethod CalculationMethod { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.BoundingBox.BoundsCalculationMethod.html">BoundingBox.BoundsCalculationMethod</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_CloseScale_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.CloseScale*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_CloseScale" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.CloseScale">CloseScale</h4>
-  <div class="markdown level1 summary"><p>A Proximity-enabled Handle scales by this amount when a hand moves into the Close Proximity range. Default is 1.5, larger handle size</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float CloseScale { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_DrawTetherWhenManipulating_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.DrawTetherWhenManipulating*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_DrawTetherWhenManipulating" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.DrawTetherWhenManipulating">DrawTetherWhenManipulating</h4>
-  <div class="markdown level1 summary"><p>Check to draw a tether point from the handles to the hand when manipulating.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -464,36 +382,9 @@
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_FarScale_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.FarScale*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_FarScale" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.FarScale">FarScale</h4>
-  <div class="markdown level1 summary"><p>A Proximity-enabled Handle scales by this amount when a hand moves out of range. Default is 0, invisible handle.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float FarScale { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_FlattenAxis_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.FlattenAxis*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_FlattenAxis" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.FlattenAxis">FlattenAxis</h4>
-  <div class="markdown level1 summary"><p>Flatten bounds in the specified axis or flatten the smallest one if 'auto' is selected</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -516,36 +407,9 @@
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_FlattenAxisDisplayScale_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.FlattenAxisDisplayScale*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_FlattenAxisDisplayScale" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.FlattenAxisDisplayScale">FlattenAxisDisplayScale</h4>
-  <div class="markdown level1 summary"><p>When an axis is flattened what value to set that axis's scale to for display.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float FlattenAxisDisplayScale { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_HandleGrabbedMaterial_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.HandleGrabbedMaterial*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_HandleGrabbedMaterial" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.HandleGrabbedMaterial">HandleGrabbedMaterial</h4>
-  <div class="markdown level1 summary"><p>Material applied to handles while they are a grabbed</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -570,8 +434,7 @@
   
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_HandleMaterial_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.HandleMaterial*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_HandleMaterial" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.HandleMaterial">HandleMaterial</h4>
-  <div class="markdown level1 summary"><p>Material applied to handles when they are not in a grabbed state</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -594,36 +457,9 @@
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_HandlesIgnoreCollider_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.HandlesIgnoreCollider*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_HandlesIgnoreCollider" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.HandlesIgnoreCollider">HandlesIgnoreCollider</h4>
-  <div class="markdown level1 summary"><p>Add a Collider here if you do not want the handle colliders to interact with another object's collider.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Collider HandlesIgnoreCollider { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Collider</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_HideElementsInInspector_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.HideElementsInInspector*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_HideElementsInInspector" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.HideElementsInInspector">HideElementsInInspector</h4>
-  <div class="markdown level1 summary"><p>Determines whether to hide GameObjects (i.e handles, links etc) created and managed by this component in the editor</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -646,144 +482,13 @@
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_MediumScale_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.MediumScale*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_MediumScale" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.MediumScale">MediumScale</h4>
-  <div class="markdown level1 summary"><p>A Proximity-enabled Handle scales by this amount when a hand moves into the Medium Proximity range. Default is 1.0, original handle size.</p>
-</div>
+  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_RotationHandleDiameter_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.RotationHandleDiameter*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_RotationHandleDiameter" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.RotationHandleDiameter">RotationHandleDiameter</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float MediumScale { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ProximityEffectActive_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ProximityEffectActive*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ProximityEffectActive" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ProximityEffectActive">ProximityEffectActive</h4>
-  <div class="markdown level1 summary"><p>Determines whether proximity feature (scaling and material toggling) for bounding box handles is activated</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool ProximityEffectActive { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_RotateHandleColliderPadding_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.RotateHandleColliderPadding*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_RotateHandleColliderPadding" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.RotateHandleColliderPadding">RotateHandleColliderPadding</h4>
-  <div class="markdown level1 summary"><p>Additional padding to apply to the collider on rotate handle to make handle easier to hit</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Vector3 RotateHandleColliderPadding { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Vector3</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_RotateMidpoints_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.RotateMidpoints*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_RotateMidpoints" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.RotateMidpoints">RotateMidpoints</h4>
-  <div class="markdown level1 summary"><p>Returns list of transforms pointing to the rotation handles of the bounding box.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IReadOnlyList&lt;Transform&gt; RotateMidpoints { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IReadOnlyList</span>&lt;<span class="xref">Transform</span>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_RotationHandlePrefabColliderType_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.RotationHandlePrefabColliderType*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_RotationHandlePrefabColliderType" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.RotationHandlePrefabColliderType">RotationHandlePrefabColliderType</h4>
-  <div class="markdown level1 summary"><p>Determines the type of collider that will surround the rotation handle prefab.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BoundingBox.RotationHandlePrefabCollider RotationHandlePrefabColliderType { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.BoundingBox.RotationHandlePrefabCollider.html">BoundingBox.RotationHandlePrefabCollider</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_RotationHandleSize_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.RotationHandleSize*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_RotationHandleSize" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.RotationHandleSize">RotationHandleSize</h4>
-  <div class="markdown level1 summary"><p>Radius of the handle geometry of rotation handles</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float RotationHandleSize { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public float RotationHandleDiameter { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -804,8 +509,7 @@
   
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_RotationHandleSlatePrefab_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.RotationHandleSlatePrefab*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_RotationHandleSlatePrefab" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.RotationHandleSlatePrefab">RotationHandleSlatePrefab</h4>
-  <div class="markdown level1 summary"><p>Prefab used to display rotation handles in the midpoint of each edge. Aligns the Y axis of the prefab with the pivot axis, and the X and Z axes pointing outward. If not set, spheres will be displayed instead</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -828,62 +532,9 @@
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ScaleCorners_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ScaleCorners*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ScaleCorners" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ScaleCorners">ScaleCorners</h4>
-  <div class="markdown level1 summary"><p>Returns list of transforms pointing to the scale handles of the bounding box.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IReadOnlyList&lt;Transform&gt; ScaleCorners { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IReadOnlyList</span>&lt;<span class="xref">Transform</span>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ScaleHandleColliderPadding_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ScaleHandleColliderPadding*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ScaleHandleColliderPadding" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ScaleHandleColliderPadding">ScaleHandleColliderPadding</h4>
-  <div class="markdown level1 summary"><p>Additional padding to apply to the collider on scale handle to make handle easier to hit</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Vector3 ScaleHandleColliderPadding { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Vector3</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ScaleHandlePrefab_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ScaleHandlePrefab*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ScaleHandlePrefab" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ScaleHandlePrefab">ScaleHandlePrefab</h4>
-  <div class="markdown level1 summary"><p>Prefab used to display scale handles in corners. If not set, boxes will be displayed instead</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -908,8 +559,7 @@
   
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ScaleHandleSize_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ScaleHandleSize*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ScaleHandleSize" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ScaleHandleSize">ScaleHandleSize</h4>
-  <div class="markdown level1 summary"><p>Size of the cube collidable used in scale handles</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -934,8 +584,7 @@
   
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ScaleHandleSlatePrefab_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ScaleHandleSlatePrefab*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ScaleHandleSlatePrefab" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ScaleHandleSlatePrefab">ScaleHandleSlatePrefab</h4>
-  <div class="markdown level1 summary"><p>Prefab used to display scale handles in corners for 2D slate. If not set, boxes will be displayed instead</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -966,8 +615,7 @@ Set this value with SetScaleLimits.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use a TransformScaleHandler.ScaleMinimum as it is the authoritative value for max scale&quot;)]
-public float ScaleMaximum { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public float ScaleMaximum { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -994,8 +642,7 @@ Set this value with SetScaleLimits.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use a TransformScaleHandler.ScaleMinimum as it is the authoritative value for min scale&quot;)]
-public float ScaleMinimum { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public float ScaleMinimum { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1016,8 +663,7 @@ public float ScaleMinimum { get; }</code></pre>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ShowRotationHandleForX_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ShowRotationHandleForX*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ShowRotationHandleForX" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ShowRotationHandleForX">ShowRotationHandleForX</h4>
-  <div class="markdown level1 summary"><p>Check to show rotation handles for the X axis</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1042,8 +688,7 @@ public float ScaleMinimum { get; }</code></pre>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ShowRotationHandleForY_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ShowRotationHandleForY*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ShowRotationHandleForY" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ShowRotationHandleForY">ShowRotationHandleForY</h4>
-  <div class="markdown level1 summary"><p>Check to show rotation handles for the Y axis</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1068,8 +713,7 @@ public float ScaleMinimum { get; }</code></pre>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ShowRotationHandleForZ_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ShowRotationHandleForZ*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ShowRotationHandleForZ" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ShowRotationHandleForZ">ShowRotationHandleForZ</h4>
-  <div class="markdown level1 summary"><p>Check to show rotation handles for the Z axis</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1121,8 +765,7 @@ This property can be set independent of the Rotate handles.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ShowWireFrame_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ShowWireFrame*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ShowWireFrame" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ShowWireFrame">ShowWireFrame</h4>
-  <div class="markdown level1 summary"><p>Show a wireframe around the bounding box when checked. Wireframe parameters below have no effect unless this is checked</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1172,8 +815,7 @@ This property can be set independent of the Rotate handles.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_TargetBounds_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.TargetBounds*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_TargetBounds" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.TargetBounds">TargetBounds</h4>
-  <div class="markdown level1 summary"><p>The collider reference tracking the bounds utilized by this component during runtime</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1198,8 +840,7 @@ This property can be set independent of the Rotate handles.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_WireframeEdgeRadius_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.WireframeEdgeRadius*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_WireframeEdgeRadius" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.WireframeEdgeRadius">WireframeEdgeRadius</h4>
-  <div class="markdown level1 summary"><p>Radius for wireframe edges</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1224,8 +865,7 @@ This property can be set independent of the Rotate handles.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_WireframeMaterial_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.WireframeMaterial*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_WireframeMaterial" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.WireframeMaterial">WireframeMaterial</h4>
-  <div class="markdown level1 summary"><p>Material used for wireframe display</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1250,8 +890,7 @@ This property can be set independent of the Rotate handles.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_WireframeShape_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.WireframeShape*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_WireframeShape" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.WireframeShape">WireframeShape</h4>
-  <div class="markdown level1 summary"><p>Shape used for wireframe display</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -1362,8 +1001,7 @@ when used in conjunction with this MonoBehavior.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use a TransformScaleHandler script rather than setting min/max scale on BoundingBox directly&quot;)]
-public void SetScaleLimits(float min, float max, bool relativeToInitialState = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public void SetScaleLimits(float min, float max, bool relativeToInitialState = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1406,6 +1044,9 @@ public void SetScaleLimits(float min, float max, bool relativeToInitialState = t
     <pre><code class="lang-csharp hljs">public void UnhighlightWires()</code></pre>
   </div>
   <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">IMixedRealityPointerHandler</span>
+  </div>
   <div>
       <span class="xref">IMixedRealitySourceStateHandler</span>
   </div>

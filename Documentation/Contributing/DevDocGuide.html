@@ -10,7 +10,7 @@
     <meta name="title" content="Developer portal generation guide | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../../Documentation/Images/favicon.ico">
+    <link rel="shortcut icon" href="../../External/ReadMeImages/favicon.ico">
     <link rel="stylesheet" href="../../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../../styles/docfx.css">
     <link rel="stylesheet" href="../../styles/main.css">
@@ -35,7 +35,7 @@
               </button>
               
               <a class="navbar-brand" href="../../index.html">
-                <img id="logo" class="svg" src="../../Documentation/Images/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../../External/ReadMeImages/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -82,7 +82,7 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="developer-portal-generation-guide">Developer portal generation guide</h1>
 
-<p>MRTK uses <a href="https://dotnet.github.io/docfx/index.html">docfx</a> to generate html documentation out of triple slash comments in code and .md files in the MRTK repository. Docfx documentation generation is automatically triggered by CI on completed PRs in the mrtk_development branch.
+<p>MRTK uses <a href="https://dotnet.github.io/docfx/index.html">docfx</a> to generate html documentation out of triple slash comments in code and .md files in the MRTK repository. Docfx documentation generation is automatically triggered by CI (soon) on completed PRs in the mrtk_development branch.
 The current state of the developer documentation can be found on the <a href="https://microsoft.github.io/MixedRealityToolkit-Unity/">MRTK github.io page</a></p>
 <p>Docfx supports DFM Docfx Flavored Markdown which includes GFM Github Flavored Markdown. The full documentation and feature list can be found <a href="https://dotnet.github.io/docfx/tutorial/docfx.exe_user_manual.html">here</a></p>
 <p>Docfx is not only converting but also checking all used local links in the documentation. If a path can't be resolved it won't be converted into it's html equivalent. Therefor it's important to only use relative paths when referring to other local files.</p>
@@ -103,14 +103,12 @@ The current state of the developer documentation can be found on the <a href="ht
 </ul>
 <p>Note that on executing the docfx command on the json build file docfx will show any broken links in the documentation as warning.
 Please make sure whenever you perform changes on any of the documentation files or API to update all links pointing to these articles or code.</p>
-<h2 id="verifying-docfx-on-github">Verifying docfx on github</h2>
-<p>Whenever a PR includes a change that might affect documentation CI has to be executed to run a check on docfx for broken links. This can be triggered by posting the command <code>/azp run mrtk_docs</code> into the PR if the user has sufficient rights to do so. The command will trigger a CI job which will add a docs build to the checks section of the PR.</p>
 <h2 id="using-crefs-and-hrefs-in--documented-code">Using crefs and hrefs in /// documented code</h2>
 <p>Docfx supports crefs in /// documented code. It will translate those references to links pointing to the generated api documentation or to external documentation websites.
 External xref services for resolving links to external libraries/apis can be added to the docfx.json build settings file in the property <em>xrefService</em>.</p>
 <p>For external apis that don't provide an xref service hrefs to the documentation website can be added to the comments.</p>
 <p>Examples:</p>
-<pre><code class="lang-csharp">/// Links to MRTK internal class SystemType
+<pre><code>/// Links to MRTK internal class SystemType
 ///&lt;see cref=&quot;Microsoft.MixedReality.Toolkit.Utilities.SystemType&quot;/&gt;
 
 /// Links to external API - link provided by xref service
@@ -128,26 +126,6 @@ as well as this short version: <a class="xref" href="../../api/Microsoft.MixedRe
 <pre><code>This links to the [BoundarySystem API](xref:Microsoft.MixedReality.Toolkit.Boundary)
 as well as this short version: @Microsoft.MixedReality.Toolkit.Boundary
 </code></pre>
-<h2 id="enumerating-available-xrefs">Enumerating available xrefs</h2>
-<p>Xref syntax can be difficult to remember - it's possible to enumerate all of the available xref IDs by first running
-docfx locally:</p>
-<blockquote>
-<p>docfx docfx.json</p>
-</blockquote>
-<p>This will generate an xrefmap.yml file, which will be located in docs/xrefmap.yml.</p>
-<p>For example, in order to link the following overload of HandleEvent, the syntax is fairly arcane:</p>
-<pre><code>- uid: Microsoft.MixedReality.Toolkit.BaseEventSystem.HandleEvent``1(BaseEventData,ExecuteEvents.EventFunction{``0})
-  name: HandleEvent&lt;T&gt;(BaseEventData, ExecuteEvents.EventFunction&lt;T&gt;)
-  href: api/Microsoft.MixedReality.Toolkit.BaseEventSystem.html#Microsoft_MixedReality_Toolkit_BaseEventSystem_HandleEvent__1_BaseEventData_ExecuteEvents_EventFunction___0__
-  commentId: M:Microsoft.MixedReality.Toolkit.BaseEventSystem.HandleEvent``1(BaseEventData,ExecuteEvents.EventFunction{``0})
-  name.vb: HandleEvent(Of T)(BaseEventData, ExecuteEvents.EventFunction(Of T))
-  fullName: Microsoft.MixedReality.Toolkit.BaseEventSystem.HandleEvent&lt;T&gt;(BaseEventData, ExecuteEvents.EventFunction&lt;T&gt;)
-  fullName.vb: Microsoft.MixedReality.Toolkit.BaseEventSystem.HandleEvent(Of T)(BaseEventData, ExecuteEvents.EventFunction(Of T))
-  nameWithType: BaseEventSystem.HandleEvent&lt;T&gt;(BaseEventData, ExecuteEvents.EventFunction&lt;T&gt;)
-  nameWithType.vb: BaseEventSystem.HandleEvent(Of T)(BaseEventData, ExecuteEvents.EventFunction(Of T))
-</code></pre>
-<p>It's easy, however, to search for the name and then use the entire <strong>uid field</strong> as the xref.</p>
-<p>In this example, the xref would look like: (xref:Microsoft.MixedReality.Toolkit.BaseEventSystem.HandleEvent<code>1(BaseEventData,ExecuteEvents.EventFunction{</code>0}))</p>
 <h2 id="adding-new-md-files-to-developer-docs">Adding new .md files to developer docs</h2>
 <p>Docfx will pick up any .md files in folders that are added as content files in the build section of the docfx.json and generate html files out of them. For new folders a corresponding entry in the build file needs to be added.</p>
 <h3 id="navigation-entries">Navigation entries</h3>
@@ -178,10 +156,10 @@ Depending on whether you want to have the &quot;Improve this doc&quot; to point 
 </code></pre>
 <p>If you don't set this up docfx will default to the branch and repo of the current folder you're calling docfx from.</p>
 <ol start="2">
-<li>Create your docfx docs by calling docfx docfx.json in the root of the repo</li>
-<li>Create a folder with the name of your version in the version folder of the gh-pages branch and copy the contents of the generated doc folder into that folder</li>
-<li>Add your version number into the versionArray in web/version.js</li>
-<li>Push the modified version.js to mrtk_development branch and the changes in gh-pages branch</li>
+<li>create your docfx docs by calling docfx docfx.json in the root of the repo</li>
+<li>create a folder with the name of your version in the version folder of the gh-pages branch and copy the contents of the generated doc folder into that folder</li>
+<li>add your version number into the versionArray in web/version.js</li>
+<li>push the modified version.js to mrtk_development branch and the changes in gh-pages branch</li>
 </ol>
 <p>CI will pick up the changes done to the version.js file and update the version dropdown automatically.</p>
 <h3 id="supporting-development-branches-on-ci">Supporting development branches on CI</h3>
@@ -202,11 +180,8 @@ Depending on whether you want to have the &quot;Improve this doc&quot; to point 
 <ul>
 <li>xml tag errors - docfx like any other xml parser can't handle malformed xml tags.</li>
 <li>typos in crefs</li>
-<li>incomplete namespace identifiers - docfx won't need the full namespace to the symbol you're referring to but the relative part of the namespace that's not included in the surrounding namespace of the cref.
-<ul>
-<li>Example: if you're in a namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput and the file you want to link in is Microsoft.MixedReality.Toolkit.Core.Interfaces.IMixedRealityServiceRegistrar your cref can look like this: cref=&quot;Interfaces.IMixedRealityServiceRegistrar&quot;</li>
-</ul>
-</li>
+<li>incomplete namespace identifiers - docfx won't need the full namespace to the symbol you're referring to but the relative part of the namespace that's not included in the surrounding namespace of the cref.<br>
+Example: if you're in a namespace Microsoft.MixedReality.Toolkit.Core.Providers.UnityInput and the file you want to link in is Microsoft.MixedReality.Toolkit.Core.Interfaces.IMixedRealityServiceRegistrar your cref can look like this: cref=&quot;Interfaces.IMixedRealityServiceRegistrar&quot;</li>
 <li>External crefs - As long as there's no xref service available (and listed in the docfx build file) crefs to external libraries won't work. If you still want to link to a specific external symbol that doesn't have xref service but an online api documentation you can use a href instead. Example: linking to EditorPrefs of Unity: <see href="https://docs.unity3d.com/ScriptReference/EditorPrefs.html">EditorPrefs</see></li>
 </ul>
 </li>
@@ -225,7 +200,7 @@ Depending on whether you want to have the &quot;Improve this doc&quot; to point 
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/Contributing/DevDocGuide.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Documentation/Contributing/DevDocGuide.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

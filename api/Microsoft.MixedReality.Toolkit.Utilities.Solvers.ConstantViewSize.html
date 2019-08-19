@@ -12,7 +12,7 @@
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
+    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -37,7 +37,7 @@
               </button>
               
               <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -98,21 +98,6 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_UpdateLinkedTransform">Solver.UpdateLinkedTransform</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_MoveLerpTime">Solver.MoveLerpTime</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_RotateLerpTime">Solver.RotateLerpTime</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_ScaleLerpTime">Solver.ScaleLerpTime</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_Smoothing">Solver.Smoothing</a>
-    </div>
-    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_SolverHandler">Solver.SolverHandler</a>
     </div>
     <div>
@@ -134,6 +119,9 @@
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_WorkingScale">Solver.WorkingScale</a>
     </div>
     <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_OnValidate">Solver.OnValidate()</a>
+    </div>
+    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_Awake">Solver.Awake()</a>
     </div>
     <div>
@@ -141,12 +129,6 @@
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_SolverUpdateEntry">Solver.SolverUpdateEntry()</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_SnapTo_Vector3_Quaternion_Vector3_">Solver.SnapTo(Vector3, Quaternion, Vector3)</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_SnapGoalTo_Vector3_Quaternion_Vector3_">Solver.SnapGoalTo(Vector3, Quaternion, Vector3)</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_SnapTo_Vector3_Quaternion_">Solver.SnapTo(Vector3, Quaternion)</a>
@@ -270,162 +252,6 @@ the final scale calculation, so this is the ratio of vertical fov to distance.</
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_ConstantViewSize_ManualObjectSize_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ConstantViewSize.ManualObjectSize*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_ConstantViewSize_ManualObjectSize" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ConstantViewSize.ManualObjectSize">ManualObjectSize</h4>
-  <div class="markdown level1 summary"><p>Overrides auto size calculation with provided manual size. If 0, solver calculates size</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float ManualObjectSize { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_ConstantViewSize_MaxDistance_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ConstantViewSize.MaxDistance*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_ConstantViewSize_MaxDistance" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ConstantViewSize.MaxDistance">MaxDistance</h4>
-  <div class="markdown level1 summary"><p>If the object is farther than MaxDistance, the distance used is clamped here</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float MaxDistance { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_ConstantViewSize_MaxScale_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ConstantViewSize.MaxScale*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_ConstantViewSize_MaxScale" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ConstantViewSize.MaxScale">MaxScale</h4>
-  <div class="markdown level1 summary"><p>Maximum scale value possible (world space scale)</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float MaxScale { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_ConstantViewSize_MinDistance_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ConstantViewSize.MinDistance*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_ConstantViewSize_MinDistance" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ConstantViewSize.MinDistance">MinDistance</h4>
-  <div class="markdown level1 summary"><p>If the object is closer than MinDistance, the distance used is clamped here</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float MinDistance { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_ConstantViewSize_MinScale_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ConstantViewSize.MinScale*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_ConstantViewSize_MinScale" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ConstantViewSize.MinScale">MinScale</h4>
-  <div class="markdown level1 summary"><p>Minimum scale value possible (world space scale)</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float MinScale { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_ConstantViewSize_ScaleBuffer_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ConstantViewSize.ScaleBuffer*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_ConstantViewSize_ScaleBuffer" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ConstantViewSize.ScaleBuffer">ScaleBuffer</h4>
-  <div class="markdown level1 summary"><p>Used for dead zone for scaling</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float ScaleBuffer { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_ConstantViewSize_ScaleState_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ConstantViewSize.ScaleState*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_ConstantViewSize_ScaleState" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ConstantViewSize.ScaleState">ScaleState</h4>
   <div class="markdown level1 summary"></div>
@@ -449,45 +275,8 @@ the final scale calculation, so this is the ratio of vertical fov to distance.</
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_ConstantViewSize_TargetViewPercentV_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ConstantViewSize.TargetViewPercentV*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_ConstantViewSize_TargetViewPercentV" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ConstantViewSize.TargetViewPercentV">TargetViewPercentV</h4>
-  <div class="markdown level1 summary"><p>The object take up this percent vertically in our view (not technically a percent use 0.5 for 50%)</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float TargetViewPercentV { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="methods">Methods
   </h3>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_ConstantViewSize_RecalculateBounds_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ConstantViewSize.RecalculateBounds*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_ConstantViewSize_RecalculateBounds" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ConstantViewSize.RecalculateBounds">RecalculateBounds()</h4>
-  <div class="markdown level1 summary"><p>Attempts to calculate the size of the bounds which contains all child renderers for attached gameobject. This information is used in the core solver calculations</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void RecalculateBounds()</code></pre>
-  </div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_ConstantViewSize_SolverUpdate_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ConstantViewSize.SolverUpdate*"></a>

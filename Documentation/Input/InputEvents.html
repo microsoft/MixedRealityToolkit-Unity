@@ -10,7 +10,7 @@
     <meta name="title" content="Input Events | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../../Documentation/Images/favicon.ico">
+    <link rel="shortcut icon" href="../../External/ReadMeImages/favicon.ico">
     <link rel="stylesheet" href="../../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../../styles/docfx.css">
     <link rel="stylesheet" href="../../styles/main.css">
@@ -35,7 +35,7 @@
               </button>
               
               <a class="navbar-brand" href="../../index.html">
-                <img id="logo" class="svg" src="../../Documentation/Images/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../../External/ReadMeImages/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -87,8 +87,8 @@
 <h5>Important</h5>
 <p>By default a script will receive events only while in focus by a pointer. To receive events while out of focus, in addition to implementing the desired handler interfaces, you have to do one of the following:</p>
 <ul>
-<li>(Preferred) Register the script as a global listener via <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.html"><code>MixedRealityToolkit.InputSystem.RegisterHandler</code></a> in <code>OnEnable</code> (<code>UnregisterHandler</code> explicitly in <code>OnDisable</code>). <code>RegisterHandler</code> needs to be called multiple times for listening to global input events on multiple interfaces. This method is preferred because <code>InputSystemGlobalHandlerListener</code> (see below) might be an unnecessary complication in most cases.</li>
-<li>Derive the script from <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.html"><code>InputSystemGlobalHandlerListener</code></a>. This component is provided primarily to ease migration from <code>InputSystemGlobalListener</code>. It should also be used if having an <code>InputSystem</code> property on the component is beneficial (it is used in the rest of component's logic). It requires implementing its abstract methods <code>RegisterHandlers</code> and <code>UnregisterHandlers</code>. In these implementations <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.html"><code>MixedRealityToolkit.InputSystem.RegisterHandler</code></a> should be used to list the interfaces the global events should be received for.</li>
+<li>Register the script's game object as a global listener via <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.html"><code>MixedRealityToolkit.InputSystem.Register</code></a>.</li>
+<li>Derive the script from <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.html"><code>InputSystemGlobalListener</code></a>.</li>
 </ul>
 </div>
 <table>
@@ -165,7 +165,7 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/Input/InputEvents.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Documentation/Input/InputEvents.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

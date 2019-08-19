@@ -12,7 +12,7 @@
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
+    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -37,7 +37,7 @@
               </button>
               
               <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -101,9 +101,6 @@
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseDataProvider.html">BaseDataProvider</a></h4>
       <section><p>The base data provider implements <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html">IMixedRealityDataProvider</a> and provides default properties for all data providers.</p>
 </section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseDataProviderAccessCoreSystem.html">BaseDataProviderAccessCoreSystem</a></h4>
-      <section><p>Abstract class for core MRTK system with functionality defined for managing and accessing IMixedRealityDataProviders</p>
-</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseEventSystem.html">BaseEventSystem</a></h4>
       <section><p>Base Event System that can be inherited from to give other system features event capabilities.</p>
 </section>
@@ -115,8 +112,6 @@
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseService.html">BaseService</a></h4>
       <section><p>The base service implements <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a> and provides default properties for all services.</p>
 </section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.BeginReadOnlyGroupAttribute.html">BeginReadOnlyGroupAttribute</a></h4>
-      <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.BoundsExtensions.html">BoundsExtensions</a></h4>
       <section><p>Extension methods for Unity's Bounds struct</p>
 </section>
@@ -139,10 +134,6 @@
       <section><p>Extensions methods for the Unity Component class.
 This also includes some component-related extensions for the GameObject class.</p>
 </section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.CoreServices.html">CoreServices</a></h4>
-      <section><p>Utility class to easily access references to core runtime Mixed Reality Toolkit Services
-If deallocating and re-allocating a new system at runtime, ResetCacheReferences() should be used to get a proper reference</p>
-</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.DocLinkAttribute.html">DocLinkAttribute</a></h4>
       <section><p>Defines a documentation link for a service.
 Used primarily by service inspector facades.</p>
@@ -150,8 +141,6 @@ Used primarily by service inspector facades.</p>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.DoubleExtensions.html">DoubleExtensions</a></h4>
       <section><p>Extension methods for the .Net Double struct</p>
 </section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.EndReadOnlyGroupAttribute.html">EndReadOnlyGroupAttribute</a></h4>
-      <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.EnumerableExtensions.html">EnumerableExtensions</a></h4>
       <section><p>Extension methods for the .Net IEnumerable class</p>
 </section>
@@ -240,15 +229,6 @@ The Profile can be swapped out at any time to meet the needs of your project.</p
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.RayExtensions.html">RayExtensions</a></h4>
       <section><p>Extension methods for Unity's Ray struct</p>
 </section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.ReadOnlyAttribute.html">ReadOnlyAttribute</a></h4>
-      <section></section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.SceneAssetReferenceAttribute.html">SceneAssetReferenceAttribute</a></h4>
-      <section><p>Attribute for using a SceneAssetReference property drawer.</p>
-</section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.SceneAssetReferenceAttributeDrawer.html">SceneAssetReferenceAttributeDrawer</a></h4>
-      <section><p>Draws an object field as a scene asset reference.
-This enables fields to store references to scene assets (which is an editor-only object) as unity objects (which work in both editor and runtime)</p>
-</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.ScenePickAttribute.html">ScenePickAttribute</a></h4>
       <section><p>Attribute to mark up an int field to be drawn using the
 ScenePickPropertyDrawer
@@ -282,15 +262,11 @@ a <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.SystemType.html
 </section>
     <h3 id="structs">Structs
   </h3>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseEventSystem.EventHandlerEntry.html">BaseEventSystem.EventHandlerEntry</a></h4>
-      <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.MixedRealityServiceConfiguration.html">MixedRealityServiceConfiguration</a></h4>
       <section><p>Defines a system, feature, or manager to be registered with as a <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityExtensionService.html">IMixedRealityExtensionService</a> on startup.</p>
 </section>
     <h3 id="interfaces">Interfaces
   </h3>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityCapabilityCheck.html">IMixedRealityCapabilityCheck</a></h4>
-      <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html">IMixedRealityDataProvider</a></h4>
       <section><p>Required interface for all Mixed Reality data providers. Data providers are the components
 that supply services with required information (ex: input controller state).</p>
@@ -337,9 +313,6 @@ that supply services with required information (ex: input controller state).</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.LineRotationMode.html">LineRotationMode</a></h4>
       <section><p>Defines how to calculate the line's rotation at any given point.</p>
-</section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.MixedRealityCapability.html">MixedRealityCapability</a></h4>
-      <section><p>Mixed reality platform capabilities.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.PointDistributionMode.html">PointDistributionMode</a></h4>
       <section><p>Defines how to get an interpolated point along a line</p>

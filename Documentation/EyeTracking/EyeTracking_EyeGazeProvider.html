@@ -5,12 +5,12 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Accessing eye tracking data in your Unity script | Mixed Reality Toolkit Documentation </title>
+    <title>Accessing Eye Tracking Data in your Unity Script | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Accessing eye tracking data in your Unity script | Mixed Reality Toolkit Documentation ">
+    <meta name="title" content="Accessing Eye Tracking Data in your Unity Script | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../../Documentation/Images/favicon.ico">
+    <link rel="shortcut icon" href="../../External/ReadMeImages/favicon.ico">
     <link rel="stylesheet" href="../../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../../styles/docfx.css">
     <link rel="stylesheet" href="../../styles/main.css">
@@ -35,7 +35,7 @@
               </button>
               
               <a class="navbar-brand" href="../../index.html">
-                <img id="logo" class="svg" src="../../Documentation/Images/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../../External/ReadMeImages/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -80,25 +80,19 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="accessing-eye-tracking-data-in-your-unity-script">Accessing eye tracking data in your Unity script</h1>
+<h1 id="accessing-eye-tracking-data-in-your-unity-script">Accessing Eye Tracking Data in your Unity Script</h1>
 
-<p>The following assumes that you followed the steps for setting up eye tracking in your MRTK scene (see <a href="EyeTracking_BasicSetup.html">Basic MRTK setup to use eye tracking</a>).
-To access eye tracking data in your MonoBehaviour scripts is easy! Simply use <em>MixedRealityToolkit.InputSystem.EyeGazeProvider</em>.</p>
+<p>The following assumes that you followed the steps for setting up Eye Tracking in your MRTK scene (see <a href="EyeTracking_BasicSetup.html">Basic MRTK Setup to use Eye Tracking</a>).</p>
+<p>To access Eye Tracking data in your MonoBehaviour scripts is easy! Simply use <em>MixedRealityToolkit.InputSystem.EyeGazeProvider</em>.</p>
 <h2 id="mixedrealitytoolkitinputsystemeyegazeprovider">MixedRealityToolkit.InputSystem.EyeGazeProvider</h2>
-<p>While the <em>MixedRealityToolkit.InputSystem.EyeGazeProvider</em> provides several helpful variables, the key ones for eye tracking input are the following:</p>
+<p>While the <em>MixedRealityToolkit.InputSystem.EyeGazeProvider</em> provides several helpful variables, the key ones for Eye Tracking input are the following:</p>
 <ul>
 <li><p><strong>UseEyeTracking</strong>:
-True if eye tracking hardware is available and the user has given permission to use eye tracking in the app.</p>
-</li>
-<li><p><strong>IsEyeCalibrationValid</strong>:
-Indicates whether the user's eye tracking calibration is valid or not.
-It returns 'null', if the value has not yet received data from the eye tracking system.
-It may be invalid, because the user skipped the eye tracking calibration.</p>
+True if Eye Tracking hardware is available and the user has given permission to use Eye Tracking in the app.</p>
 </li>
 <li><p><strong>IsEyeGazeValid</strong>:
-Indicates whether the current eye tracking data is valid.
-It may be invalid due to exceeded timeout (should be robust to the user blinking though) or lack of tracking hardware or permissions.
-Check out our <a href="EyeTracking_IsUserCalibrated.html">Missing eye calibration notification sample</a> that explains how to detect whether a user is eye calibrated and to show an appropriate notification.</p>
+Indicates whether the current Eye Tracking data is valid.
+It may be invalid due to exceeded timeout (should be robust to the user blinking though) or lack of tracking hardware or permissions.</p>
 </li>
 <li><p><strong>GazeOrigin</strong>:
 Origin of the gaze ray.
@@ -114,7 +108,8 @@ Again, if 'IsEyeGazeValid' is false, this will be based on the user's <em>head</
 </li>
 </ul>
 <h2 id="examples-for-using-mixedrealitytoolkitinputsystemeyegazeprovider">Examples for using MixedRealityToolkit.InputSystem.EyeGazeProvider</h2>
-<p>Here is an example from the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.FollowEyeGaze.html">FollowEyeGaze.cs</a>:</p>
+<p>Here is an example from the
+<a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.FollowEyeGaze.html">FollowEyeGaze.cs</a>:</p>
 <ul>
 <li>Get the point of a hologram that the user is looking at:</li>
 </ul>
@@ -126,11 +121,11 @@ gameObject.transform.position = MixedRealityToolkit.InputSystem.EyeGazeProvider.
 </ul>
 <pre><code class="lang-csharp">// If no target is hit, show the object at a default distance along the gaze ray.
 gameObject.transform.position = 
-MixedRealityToolkit.InputSystem.EyeGazeProvider.GazeOrigin +
+MixedRealityToolkit.InputSystem.EyeGazeProvider.GazeOrigin + 
 MixedRealityToolkit.InputSystem.EyeGazeProvider.GazeDirection.normalized * defaultDistanceInMeters;
 </code></pre>
 <hr>
-<p><a href="EyeTracking_Main.html">Back to &quot;Eye tracking in the MixedRealityToolkit&quot;</a></p>
+<p><a href="EyeTracking_Main.html">Back to &quot;Eye Tracking in the MixedRealityToolkit&quot;</a></p>
 </article>
           </div>
           
@@ -139,7 +134,7 @@ MixedRealityToolkit.InputSystem.EyeGazeProvider.GazeDirection.normalized * defau
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/EyeTracking/EyeTracking_EyeGazeProvider.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Documentation/EyeTracking/EyeTracking_EyeGazeProvider.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

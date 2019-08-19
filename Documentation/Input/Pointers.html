@@ -10,7 +10,7 @@
     <meta name="title" content="Pointers | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../../Documentation/Images/favicon.ico">
+    <link rel="shortcut icon" href="../../External/ReadMeImages/favicon.ico">
     <link rel="stylesheet" href="../../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../../styles/docfx.css">
     <link rel="stylesheet" href="../../styles/main.css">
@@ -35,7 +35,7 @@
               </button>
               
               <a class="navbar-brand" href="../../index.html">
-                <img id="logo" class="svg" src="../../Documentation/Images/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../../External/ReadMeImages/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -113,23 +113,22 @@
 </tr>
 <tr>
 <td>Touch Started / Updated / Completed</td>
-<td>Raised by touch-aware pointers like <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.PokePointer.html"><code>PokePointer</code></a> to report touch activity.</td>
+<td>Raised by touch-aware pointers like <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.PokePointer.html"><strong>PokePointer</strong></a> to report touch activity.</td>
 <td><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler.html"><code>IMixedRealityTouchHandler</code></a></td>
 </tr>
 </tbody>
 </table>
-<p>To handle them the corresponding interface must be implemented. Additionally there's the option to receive the events raised on all game objects instead of just the ones on itself and its children. This requires to register as a global event listener calling <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.html#Microsoft_MixedReality_Toolkit_IMixedRealityEventSystem_RegisterHandler_"><code>RegisterHandler</code></a> on the input system with the corresponding interface(s).</p>
-<div class="NOTE">
-<h5>Note</h5>
-<p><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusChangedHandler.html"><code>IMixedRealityFocusChangedHandler</code></a> and <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusHandler.html"><code>IMixedRealityFocusHandler</code></a> should be handled in the objects they are raised on. It is possible to receive focus events globally but, unlike other input events, global event handler won't block receiving events based on focus (the event will be received by both global handler and a corresponding object in focus).</p>
+<p>To handle them you must implement the corresponding interface in your script. Aditionally, if you want your game object to receive the events raised on all game objects instead of just the ones raised on itself and its children, you must register as a global event listener calling <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.html#Microsoft_MixedReality_Toolkit_IMixedRealityEventSystem_Register_"><code>Register</code></a> on the input system.</p>
+<div class="WARNING">
+<h5>Warning</h5>
+<p><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusChangedHandler.html"><code>IMixedRealityFocusChangedHandler</code></a> and <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusHandler.html"><code>IMixedRealityFocusHandler</code></a> are not raised as global events. You can only handle them in the objects they are raised on.</p>
 </div>
-<p>Alternatively, there's the possibility to derive the handler script from <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.html"><code>InputSystemGlobalHandlerListener</code></a> for global registration or from <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.BaseInputHandler.html"><code>BaseInputHandler</code></a> for choosing in the inspector whether to register as global listener or not. In both cases the abstract methods <code>RegisterHandlers</code> and <code>UnregisterHandlers</code> which specify the interfaces to listen to, need to be implemented.</p>
-<p>For pointer events, i.e. the ones handled by <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler.html"><code>IMixedRealityPointerHandler</code></a>, we provide further convenience in the form of <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.PointerHandler.html"><code>PointerHandler</code></a>. This script allows you to handle pointer events directly via Unity Events.</p>
+<p>Alternatively, you can derive your handler script from <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.html"><code>InputSystemGlobalListener</code></a> if you require global registration or from <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.BaseInputHandler.html"><code>BaseInputHandler</code></a> if you want to choose in the inspector whether to register as global listener.</p>
+<p>For pointer events, i.e. the ones handled by <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler.html"><code>IMixedRealityPointerHandler</code></a>, we provide further conveniency in the form of <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.PointerHandler.html"><code>PointerHandler</code></a>. This script allows you to handle pointer events directly via Unity Events.</p>
 <img src="../Images/Input/PointerHandler.PNG" style="max-width:100%;">
 <h2 id="pointer-result">Pointer Result</h2>
 <p>The pointer <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityPointer_Result"><code>Result</code></a> property contains the current result for the scene query used to determine the object with focus. For a raycast pointer, like the ones created by default for motion controllers, gaze input and hand rays, it will contain the location and normal of the raycast hit.</p>
-<h2 id="example-scene">Example Scene</h2>
-<p>The <strong>Pointer Result Example</strong> in <code>MixedRealityToolkit.Examples\Demos\Input\Scenes\PointerResult</code> shows how to use the pointer Result to spawn an object at the hit location.</p>
+<p>The <em>Pointer Result Example</em> in <code>MixedRealityToolkit.Examples\Demos\Input\Scenes\PointerResult</code> shows how to use the pointer Result to spawn an object at the hit location.</p>
 <img src="../Images/Input/PointerResultExample.png" style="max-width:100%;">
 </article>
           </div>
@@ -139,7 +138,7 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/Input/Pointers.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Documentation/Input/Pointers.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
