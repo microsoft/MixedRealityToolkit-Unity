@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEngine;
@@ -25,6 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private const string SessionKey = "_MixedRealityToolkit_Editor_ShownSettingsPrompts";
         private const string MSFT_AudioSpatializerPlugin = "MS HRTF Spatializer";
+        private const int SpatialAwarenessDefaultLayer = 31;
 
         [Obsolete("Use the 'MixedRealityToolkitFiles' APIs.")]
         public static string MixedRealityToolkit_AbsoluteFolderPath
@@ -87,38 +89,46 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             if (!MixedRealityPreferences.IgnoreSettingsPrompt)
             {
-                var message = "The Mixed Reality Toolkit needs to apply the following settings to your project:\n\n";
+                StringBuilder builder = new StringBuilder();
+                builder.Append("The Mixed Reality Toolkit needs to apply the following settings to your project:\n\n");
 
                 var forceTextSerialization = EditorSettings.serializationMode == SerializationMode.ForceText;
 
                 if (!forceTextSerialization)
                 {
-                    message += "- Force Text Serialization\n";
+                    builder.AppendLine("- Force Text Serialization");
                 }
 
                 var visibleMetaFiles = EditorSettings.externalVersionControl.Equals("Visible Meta Files");
 
                 if (!visibleMetaFiles)
                 {
-                    message += "- Visible meta files\n";
+                    builder.AppendLine("- Visible meta files");
                 }
 
                 if (!PlayerSettings.virtualRealitySupported)
                 {
-                    message += "- Enable XR Settings for your current platform\n";
+                    builder.AppendLine("- Enable XR Settings for your current platform");
                 }
 
                 var usingSinglePassInstancing = PlayerSettings.stereoRenderingPath == StereoRenderingPath.Instancing;
                 if (!usingSinglePassInstancing)
                 {
-                    message += "- Set Single Pass Instanced rendering path\n";
+                    builder.AppendLine("- Set Single Pass Instanced rendering path");
                 }
 
-                message += "\nWould you like to make this change?";
-
-                if (!forceTextSerialization || !visibleMetaFiles || !PlayerSettings.virtualRealitySupported || !usingSinglePassInstancing)
+                // Only make change if not already set. Regardless of whether it is already SpatialAwareness or something user set
+                var isSpatialLayerAvailable = string.IsNullOrEmpty(LayerMask.LayerToName(SpatialAwarenessDefaultLayer));
+                if (isSpatialLayerAvailable)
                 {
-                    var choice = EditorUtility.DisplayDialogComplex("Apply Mixed Reality Toolkit Default Settings?", message, "Apply", "Ignore", "Later");
+                    builder.AppendLine("- Set Default Spatial Awareness Layer");
+                }
+
+                builder.Append("\nWould you like to make this change?");
+
+                if (!forceTextSerialization || !visibleMetaFiles || !PlayerSettings.virtualRealitySupported || !usingSinglePassInstancing || isSpatialLayerAvailable)
+                {
+                    var choice = EditorUtility.DisplayDialogComplex("Apply Mixed Reality Toolkit Default Settings?", builder.ToString(), "Apply", "Ignore", "Later");
 
                     switch (choice)
                     {
@@ -127,6 +137,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                             EditorSettings.externalVersionControl = "Visible Meta Files";
                             ApplyXRSettings();
                             PlayerSettings.stereoRenderingPath = StereoRenderingPath.Instancing;
+                            if (isSpatialLayerAvailable)
+                            {
+                                CreateLayer(SpatialAwarenessDefaultLayer, "Spatial Awareness");
+                            }
                             refresh = true;
                             break;
                         case 1:
@@ -294,6 +308,33 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     Debug.LogWarning("<b>Audio Spatializer Plugin</b> not currently set to <i>" + MSFT_AudioSpatializerPlugin + "</i>. Switch to <i>" + MSFT_AudioSpatializerPlugin + "</i> under <i>Project Settings</i> > <i>Audio</i> > <i>Spatializer Plugin</i>");
                 }
             }
+        }
+
+        
+        /// <summary>
+        /// Helper method to update the a layer name at given index in the related project asset file
+        /// </summary>
+        /// <param name="layerNumber">index of layer to modify. Should be between 8 and 31</param>
+        /// <param name="layerName">Name of layer to set</param>
+        private static void CreateLayer(int layerNumber, string layerName)
+        {
+            SerializedObject tagManager = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/TagManager.asset")[0]);
+
+            SerializedProperty layers = tagManager.FindProperty("layers");
+            if (layers == null || !layers.isArray)
+            {
+                Debug.LogWarning("Can't set up the layers.  It's possible the format of the layers and tags data has changed in this version of Unity.");
+                Debug.LogWarning("Layers is null: " + (layers == null));
+                return;
+            }
+
+            SerializedProperty layerSP = layers.GetArrayElementAtIndex(layerNumber);
+            if (layerSP.stringValue != layerName)
+            {
+                layerSP.stringValue = layerName;
+            }
+
+            tagManager.ApplyModifiedProperties();
         }
 
         /// <inheritdoc />
