@@ -76,13 +76,8 @@ public class TeleportHandlerExample : MonoBehaviour, IMixedRealityTeleportHandle
     void OnDisable()
     {
         // Unregistering when disabled is important, otherwise this class will continue
-        // to recieve teleportation events.
+        // to receive teleportation events.
         CoreServices.TeleportSystem.UnregisterHandler<IMixedRealityTeleportHandler>(this);
-    }
-
-    void Update()
-    {
-        // Do fun stuff in Update
     }
 }
 ```
