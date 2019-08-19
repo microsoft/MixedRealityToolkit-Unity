@@ -109,27 +109,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private LayerMask[] focusLayerMasks = null;
 
-        /// <summary>
-        /// Sets the focus point of the specified pointer, overriding the focus point that was currently set. This can be used to change
-        /// the focus point when focus is locked.
-        /// </summary>
-        /// <returns>
-        /// True if the pointer focus point was set successfully. False if not,
-        /// which can happen if the pointer is not associated with the FocusProvider
-        /// </returns>
-        public bool TrySetFocusPoint(IMixedRealityPointer pointer, GameObject gameObject, Vector3 focusPoint, Vector3 focusNormal)
-        {
-            if (TryGetPointerData(pointer, out PointerData pointerData))
-            {
-                pointerData.SetFocusPoint(gameObject, focusPoint, (pointer.Position - focusPoint).magnitude, focusNormal);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         /// <inheritdoc />
         public LayerMask[] FocusLayerMasks
         {
@@ -297,7 +276,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
             public Vector3 StartPoint { get; private set; }
 
             /// <inheritdoc />
-            public FocusDetails Details => focusDetails;
+            public FocusDetails Details
+            {
+                get
+                {
+                    return focusDetails;
+                }
+                set
+                {
+                    focusDetails = value;
+                }
+            }
 
             /// <inheritdoc />
             public GameObject CurrentPointerTarget => focusDetails.Object;
@@ -614,6 +603,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             focusDetails = default(FocusDetails);
             return false;
+        }
+
+        /// <inheritdoc />
+        public bool TryOverrideFocusDetails(IMixedRealityPointer pointer, FocusDetails focusDetails)
+        {
+            if (TryGetPointerData(pointer, out PointerData pointerData))
+            {
+                pointerData.Details = focusDetails;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         #endregion Focus Details by IMixedRealityPointer
