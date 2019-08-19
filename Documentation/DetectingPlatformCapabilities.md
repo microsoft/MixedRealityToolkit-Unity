@@ -1,4 +1,4 @@
-# Determining platform capabilities
+# Detecting platform capabilities
 
 A common question asked of the MRTK involves knowing which specific device (ex: Microsoft HoloLens 2) is being
 used to run an application. Identifying the exact hardware can be challenging on different platforms. The MRTK
