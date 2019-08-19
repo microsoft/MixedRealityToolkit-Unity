@@ -84,17 +84,25 @@ The [hand interaction examples scene](README_HandInteractionExamples.md) is a gr
 
 If you get such a prompt, select "Import TMP essentials" button. "TMP Essentials" refers to Text Mesh Pro plugin, which some of the MRTK examples use for improved text rendering. (See [Text in Unity](https://docs.microsoft.com/en-us/windows/mixed-reality/text-in-unity) for more detailed information)
 
-4. Close the TMP dialog. After this you need to reload the scene. You can do this by opening other example scene and open HandInteractionExamples scene again.
+4. Close the TMP dialog. After this you need to reload the scene. You can do this by double clicking the scene in the project tab.
 
 5. Press the play button.
 
-Have fun exploring the scene! You can use simulated hands to interact in editor. You can:
+## Using the In-Editor Hand Input Simulation to test a scene
 
-- Press WASD keys to fly / move.
-- Press and hold right mouse to look around.
-- Press and hold space bar to use a simulated hand.
+The in-editor input simulation allows you to test virtual object behavior given a specific type of input such as [hands](InputSimulation/InputSimulationService.md#hand-simulation) or [eyes] (EyeTracking/EyeTracking_BasicSetup.md#simulating-eye-tracking-in-the-unity-editor).
 
-There's quite a bit to explore here. You can learn more about the UI controls [in the hand interaction examples guide](README_HandInteractionExamples.md). Also, read through [input simulation docs](InputSimulation/InputSimulationService.md) to learn more about in-editor hand input simulation in MRTK.
+How to move around in the scene: 
+- Use W/A/S/D keys to move the camera forward/left/back/right.
+- Press and hold the right mouse to rotate the camera.
+
+How to simulate hand input:
+- Press and hold the space bar to enable the right hand. 
+- While holding the space bar, move your mouse to move the hand.
+- Use the middle mouse scroll to adjust the depth of the hand.
+- Click the left mouse to switch gestures.
+
+Have fun exploring the scene! You can learn more about the UI controls [in the hand interaction examples guide](README_HandInteractionExamples.md). Also, read through [input simulation docs](InputSimulation/InputSimulationService.md) to learn more about in-editor hand input simulation in MRTK.
 
 Congratulations, you just used your first MRTK scene. Now onto creating your own experiences...
 
