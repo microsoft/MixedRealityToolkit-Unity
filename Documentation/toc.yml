@@ -115,6 +115,8 @@
       href: SceneSystem/SceneSystemLoadProgress.md
     - name: Lighting Scene Operations
       href: SceneSystem/SceneSystemLightingScenes.md
+  - name: Teleport System
+    href: TeleportSystem/Overview.md
   - name: Boundary System
     items:
     - name: Boundary System Overview
