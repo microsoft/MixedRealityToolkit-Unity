@@ -10,7 +10,7 @@
     <meta name="title" content="Slate | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
+    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -35,7 +35,7 @@
               </button>
               
               <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -83,7 +83,7 @@
 <h1 id="slate">Slate</h1>
 
 <p><img src="Images/Slate/MRTK_Slate_Main.png" alt="Slate"></p>
-<p>The <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Prefabs/Slate.prefab"><code>Slate.prefab</code></a> offers a thin window style control for displaying 2D content, for example plain text or articles including media. It offers a grabbable title bar as well as <em>Follow Me</em> and <em>Close</em> functionality. The content window can be scrolled via articulated hand input.</p>
+<p>The Slate prefab offers a thin window style control for displaying 2D content, for example plain text or articles including media. It offers a grabbable title bar as well as <em>Follow Me</em> and <em>Close</em> functionality. The content window can be scrolled via articulated hand input.</p>
 <h2 id="how-to-use-a-slate-control">How to use a slate control</h2>
 <p>A slate control is composed of the following elements:</p>
 <ul>
@@ -109,18 +109,12 @@
 <p>In general, the <code>NearInteractionTouchable.cs</code> script must be attached to any object that is intended to receive touch events from the <code>IMixedRealityTouchHandler</code>.</p>
 <img src="Images/Slate/MRTK_Slate_Scripts.png">
 <ul>
-<li><p><a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Slate/HandInteractionPan.cs"><code>HandInteractionPan.cs</code></a>: This script handles articulated hand input for touching and moving the content on the slate's <em>ContentQuad</em>.</p>
+<li><p><code>HandInteractionPan.cs</code> This script handles articulated hand input for touching and moving the content on the slate's <em>ContentQuad</em>.</p>
 </li>
-<li><p><a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Slate/HandInteractionPanZoom.cs"><code>HandInteractionPanZoom.cs</code></a>: In addition to the panning interaction, this script supports two-handed zooming.</p>
+<li><p><code>HandInteractionPanZoom.cs</code>: In addition to the panning interaction, this script supports two-handed zooming.</p>
 </li>
 </ul>
 <img src="Images/Slate/MRTK_Slate_PanZoom.png" width="500">
-<ul>
-<li><p><a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Slate/SlateEnabler.cs"><code>SlateEnabler.cs</code></a>: This script is intended to be used with DragEnabler. These two scripts allow the slate and another object - for instance a title bar - to toggle their active status so that the touch action only affects one at a time. This prevents interacting with the slate to accidentally trigger the title bar behavior and vice versa. The slate enabler script is put on the game object that is not the slate. Once attached it toggles interaction with the slate when the game object is being dragged or touched.</p>
-</li>
-<li><p><a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Slate/DragEnabler.cs"><code>DragEnabler.cs</code></a>: This script is intended to be used with SlateEnabler. These two scripts allow the slate and another object - for instance a title bar - to toggle their active status so that the touch action only affects one at a time. The drag enabler script is put on the slate. Once attached, it toggles interaction with an accompanying object such as a title bar while the slate is being touched.</p>
-</li>
-</ul>
 </article>
           </div>
           
@@ -129,7 +123,7 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Documentation/README_Slate.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/README_Slate.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

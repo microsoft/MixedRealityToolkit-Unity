@@ -12,7 +12,7 @@
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
+    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -37,7 +37,7 @@
               </button>
               
               <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -96,6 +96,14 @@
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.ControllerFinder.html">ControllerFinder</a></h4>
       <section><p>ControllerFinder is a base class providing simple event handling for getting/releasing MotionController Transforms.</p>
 </section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html">HandConstraint</a></h4>
+      <section><p>Provides a solver that constrains the target to a region safe for hand constrained interactive content.
+This solver is intended to work with <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand.html">IMixedRealityHand</a> but also works with <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityController.html">IMixedRealityController</a>.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.html">HandConstraintPalmUp</a></h4>
+      <section><p>Augments the HandConstraint to also check if the palm is facing the user before activation. This solver only works
+with <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand.html">IMixedRealityHand</a> controllers, with other <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityController.html">IMixedRealityController</a> types this solver will behave just like it's base class.</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.InBetween.html">InBetween</a></h4>
       <section><p>InBetween solver positions an object in-between two tracked transforms.</p>
 </section>
@@ -120,7 +128,23 @@ as long as updateLinkedTransform is false.</p>
       <section><p>This class handles the solver components that are attached to this <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</a></p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.html">SurfaceMagnetism</a></h4>
-      <section><p>SurfaceMagnetism casts rays to Surfaces in the world align the object to the surface.</p>
+      <section><p>SurfaceMagnetism casts rays to Surfaces in the world and aligns the object to the hit surface.</p>
+</section>
+    <h3 id="enums">Enums
+  </h3>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.SolverRotationBehavior.html">HandConstraint.SolverRotationBehavior</a></h4>
+      <section><p>Specifies how the solver should rotate when tracking the hand.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.SolverSafeZone.html">HandConstraint.SolverSafeZone</a></h4>
+      <section><p>Specifies a zone that is safe for the constraint to solve to without intersecting the hand.
+Safe zones may differ slightly from motion controller to motion controller, it's recommended to
+pick the safe zone best suited for your intended controller and application.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.OrientationMode.html">SurfaceMagnetism.OrientationMode</a></h4>
+      <section><p>Orientation mode for solver</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.RaycastDirectionMode.html">SurfaceMagnetism.RaycastDirectionMode</a></h4>
+      <section><p>Raycast direction mode for solver</p>
 </section>
 </article>
           </div>

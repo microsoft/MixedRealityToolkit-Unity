@@ -12,7 +12,7 @@
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
+    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -37,7 +37,7 @@
               </button>
               
               <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -1090,6 +1090,47 @@
       <tr>
         <td><span class="xref">Bounds</span></td>
         <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_BoundsExtensions_GetColliderBoundsPoints_" data-uid="Microsoft.MixedReality.Toolkit.BoundsExtensions.GetColliderBoundsPoints*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_BoundsExtensions_GetColliderBoundsPoints_Collider_List_Vector3__LayerMask_" data-uid="Microsoft.MixedReality.Toolkit.BoundsExtensions.GetColliderBoundsPoints(Collider,List{Vector3},LayerMask)">GetColliderBoundsPoints(Collider, List&lt;Vector3&gt;, LayerMask)</h4>
+  <div class="markdown level1 summary"><p>Method to get bounds from a single Collider</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void GetColliderBoundsPoints(Collider collider, List&lt;Vector3&gt; boundsPoints, LayerMask ignoreLayers)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Collider</span></td>
+        <td><span class="parametername">collider</span></td>
+        <td><p>Target collider</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">List</span>&lt;<span class="xref">Vector3</span>&gt;</td>
+        <td><span class="parametername">boundsPoints</span></td>
+        <td><p>array reference that gets filled with points</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">LayerMask</span></td>
+        <td><span class="parametername">ignoreLayers</span></td>
+        <td><p>layerMask to simplify search</p>
+</td>
       </tr>
     </tbody>
   </table>

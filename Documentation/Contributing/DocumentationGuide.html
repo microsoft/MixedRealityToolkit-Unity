@@ -10,7 +10,7 @@
     <meta name="title" content="Documentation guidelines | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../../External/ReadMeImages/favicon.ico">
+    <link rel="shortcut icon" href="../../Documentation/Images/favicon.ico">
     <link rel="stylesheet" href="../../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../../styles/docfx.css">
     <link rel="stylesheet" href="../../styles/main.css">
@@ -35,7 +35,7 @@
               </button>
               
               <a class="navbar-brand" href="../../index.html">
-                <img id="logo" class="svg" src="../../External/ReadMeImages/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../../Documentation/Images/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -123,10 +123,31 @@
 }
 </code></pre>
 <p>When mentioning code within a sentence <code>use a single backtick</code>.</p>
-<h3 id="todo-comments">TODO comments</h3>
-<p>To mark areas in the documentation that need to be revisited later again, please use the following comment style, to make it easy to find those places again:</p>
-<p>&lt;!-- TODO: add more details --&gt;</p>
-<p>Also consider adding pages with TODOs to the <a href="DocsToDo.html">documentation TODO list</a>.</p>
+<h3 id="todos">TODOs</h3>
+<p>Avoid using TODOS in docs, as over time these TODOs (like code TODOs) tend to accumulate
+and information about how they should be updated and why gets lost.</p>
+<p>If it is absolutely necessary to add a TODO, follow these steps:</p>
+<ol>
+<li>File a new issue on Github describing the context behind the TODO, and provide enough
+background that another contributor would be able to understand and then address the
+TODO.</li>
+<li>Reference the issue URL in the todo in the docs.</li>
+</ol>
+<p>&lt;!-- TODO(<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/ISSUE_NUMBER_HERE">https://github.com/microsoft/MixedRealityToolkit-Unity/issues/ISSUE_NUMBER_HERE</a>): A brief blurb on the issue --&gt;</p>
+<h3 id="highlighted-sections">Highlighted sections</h3>
+<p>To highlight specific points to the reader, use <em>&gt; [!NOTE]</em> , <em>&gt; [!WARNING]</em> , and <em>&gt; [!IMPORTANT]</em> to produce the following styles. It is recommended to use notes for general points and warning/important points only for special relevant cases.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Example of a note</p>
+</div>
+<div class="WARNING">
+<h5>Warning</h5>
+<p>Example of a warning</p>
+</div>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>Example of an important comment</p>
+</div>
 <h2 id="page-layout">Page layout</h2>
 <h3 id="introduction">Introduction</h3>
 <p>The part right after the main chapter title should serve as a short introduction what the chapter is about. Do not make this too long, instead add sub headlines. These allow to link to sections and can be saved as bookmarks.</p>
@@ -197,7 +218,6 @@ There can be a toc file for every subfolder in the documentation folder which ca
 <p>When documenting a list of properties, use bold text to highlight the property name, then line breaks and regular text to describe them. Do not use sub-chapters or bullet point lists.</p>
 <p>Also, don't forget to finish all sentences with a period.</p>
 <h2 id="when-you-are-finished-with-a-page">When you are finished with a page</h2>
-<p>First off, it is ok for a 'finished' page to contain <a href="#todo-comments">TODO comments</a>. However, once you stop working on a page, please do the following:</p>
 <ol>
 <li>Make sure you followed the guidelines in this document.</li>
 <li>Browse the document structure and see if your new document could be mentioned under the <a href="#see-also">See also</a> section of other pages.</li>
@@ -318,7 +338,7 @@ No known breaking changes
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Documentation/Contributing/DocumentationGuide.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/Contributing/DocumentationGuide.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

@@ -12,7 +12,7 @@
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
+    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -37,7 +37,7 @@
               </button>
               
               <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -101,6 +101,12 @@
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.html#Microsoft_MixedReality_Toolkit_IMixedRealityEventSystem_Unregister_GameObject_">IMixedRealityEventSystem.Unregister(GameObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.html#Microsoft_MixedReality_Toolkit_IMixedRealityEventSystem_RegisterHandler__1_IEventSystemHandler_">IMixedRealityEventSystem.RegisterHandler&lt;T&gt;(IEventSystemHandler)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityEventSystem.html#Microsoft_MixedReality_Toolkit_IMixedRealityEventSystem_UnregisterHandler__1_IEventSystemHandler_">IMixedRealityEventSystem.UnregisterHandler&lt;T&gt;(IEventSystemHandler)</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html#Microsoft_MixedReality_Toolkit_IMixedRealityService_Name">IMixedRealityService.Name</a>
@@ -200,14 +206,71 @@
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessSystem_CreateSpatialAwarenessObjectParent_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSystem.CreateSpatialAwarenessObjectParent*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessSystem_CreateSpatialAwarenessObjectParent_System_String_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSystem.CreateSpatialAwarenessObjectParent(System.String)">CreateSpatialAwarenessObjectParent(String)</h4>
-  <div class="markdown level1 summary"><p>Creates the a parent, that is a child if the Spatial Awareness System parent so that the scene hierarchy does not get overly cluttered.</p>
+  <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessSystem_ClearObservations_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSystem.ClearObservations*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessSystem_ClearObservations" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSystem.ClearObservations">ClearObservations()</h4>
+  <div class="markdown level1 summary"><p>Clears all registered observers' observations.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">GameObject CreateSpatialAwarenessObjectParent(string name)</code></pre>
+    <pre><code class="lang-csharp hljs">void ClearObservations()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessSystem_ClearObservations_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSystem.ClearObservations*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessSystem_ClearObservations__1_System_String_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSystem.ClearObservations``1(System.String)">ClearObservations&lt;T&gt;(String)</h4>
+  <div class="markdown level1 summary"><p>Clears the observations of the specified observer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void ClearObservations&lt;T&gt;(string name = null)
+    where T : IMixedRealitySpatialAwarenessObserver</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name of the observer.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The observer type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessSystem_CreateSpatialAwarenessObservationParent_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSystem.CreateSpatialAwarenessObservationParent*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessSystem_CreateSpatialAwarenessObservationParent_System_String_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSystem.CreateSpatialAwarenessObservationParent(System.String)">CreateSpatialAwarenessObservationParent(String)</h4>
+  <div class="markdown level1 summary"><p>Creates the a parent, that is a child of the Spatial Awareness System parent so that the scene hierarchy does not get overly cluttered.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">GameObject CreateSpatialAwarenessObservationParent(string name)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -242,8 +305,9 @@
       </tr>
     </tbody>
   </table>
-  <h5 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessSystem_CreateSpatialAwarenessObjectParent_System_String__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>This method is to be called by implementations of the <a class="xref" href="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver.html">IMixedRealitySpatialAwarenessObserver</a> interface, not by application code.</p>
+  <h5 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessSystem_CreateSpatialAwarenessObservationParent_System_String__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This method is to be called by implementations of the <a class="xref" href="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver.html">IMixedRealitySpatialAwarenessObserver</a> interface, not by application code. It
+is used to enable observations to be grouped by observer.</p>
 </div>
   
   
@@ -284,7 +348,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;GetObserver will be removed in a future release. Check to see if the instance implements IMixedRealityDataProviderAccess and call GetDataProvider.&quot;)]
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;GetObserver will be removed in a future release. Cast to IMixedRealityDataProviderAccess and call GetDataProvider instead&quot;)]
 IMixedRealitySpatialAwarenessObserver GetObserver(string name)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
@@ -333,7 +397,7 @@ IMixedRealitySpatialAwarenessObserver GetObserver(string name)</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;GetObserver&lt;T&gt; will be removed in a future release. Check to see if the instance implements IMixedRealityDataProviderAccess and call GetDataProvider&lt;T&gt;.&quot;)]
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;GetObserver&lt;T&gt; will be removed in a future release. Cast to IMixedRealityDataProviderAccess and call GetDataProvider&lt;T&gt; instead&quot;)]
 T GetObserver&lt;T&gt;(string name = null)
     where T : IMixedRealitySpatialAwarenessObserver</code></pre>
   </div>
@@ -399,7 +463,7 @@ T GetObserver&lt;T&gt;(string name = null)
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;GetObservers will be removed in a future release. Check to see if the instance implements IMixedRealityDataProviderAccess and call GetDataProviders.&quot;)]
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;GetObservers will be removed in a future release. Cast to IMixedRealityDataProviderAccess and call GetDataProviders instead&quot;)]
 IReadOnlyList&lt;IMixedRealitySpatialAwarenessObserver&gt; GetObservers()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
@@ -427,7 +491,7 @@ IReadOnlyList&lt;IMixedRealitySpatialAwarenessObserver&gt; GetObservers()</code>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;GetObservers&lt;T&gt; will be removed in a future release. Check to see if the instance implements IMixedRealityDataProviderAccess and call GetDataProviders&lt;T&gt;.&quot;)]
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;GetObservers&lt;T&gt; will be removed in a future release. Cast to IMixedRealityDataProviderAccess and call GetDataProviders&lt;T&gt; instead&quot;)]
 IReadOnlyList&lt;T&gt; GetObservers&lt;T&gt;()
     where T : IMixedRealitySpatialAwarenessObserver</code></pre>
   </div>
@@ -463,132 +527,6 @@ IReadOnlyList&lt;T&gt; GetObservers&lt;T&gt;()
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessSystem_RaiseMeshAdded_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSystem.RaiseMeshAdded*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessSystem_RaiseMeshAdded_Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessObserver_System_Int32_Microsoft_MixedReality_Toolkit_SpatialAwareness_SpatialAwarenessMeshObject_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSystem.RaiseMeshAdded(Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver,System.Int32,Microsoft.MixedReality.Toolkit.SpatialAwareness.SpatialAwarenessMeshObject)">RaiseMeshAdded(IMixedRealitySpatialAwarenessObserver, Int32, SpatialAwarenessMeshObject)</h4>
-  <div class="markdown level1 summary"><p><a class="xref" href="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessMeshObserver.html">IMixedRealitySpatialAwarenessMeshObserver</a>'s should call this method to indicate a mesh has been added.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">void RaiseMeshAdded(IMixedRealitySpatialAwarenessObserver observer, int meshId, SpatialAwarenessMeshObject meshObject)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver.html">IMixedRealitySpatialAwarenessObserver</a></td>
-        <td><span class="parametername">observer</span></td>
-        <td><p>The observer raising the event.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td><span class="parametername">meshId</span></td>
-        <td><p>Value identifying the mesh.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.SpatialAwareness.SpatialAwarenessMeshObject.html">SpatialAwarenessMeshObject</a></td>
-        <td><span class="parametername">meshObject</span></td>
-        <td><p>The mesh <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessSystem_RaiseMeshAdded_Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessObserver_System_Int32_Microsoft_MixedReality_Toolkit_SpatialAwareness_SpatialAwarenessMeshObject__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>This method is to be called by implementations of the <a class="xref" href="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver.html">IMixedRealitySpatialAwarenessObserver</a> interface, not by application code.</p>
-</div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessSystem_RaiseMeshRemoved_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSystem.RaiseMeshRemoved*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessSystem_RaiseMeshRemoved_Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessObserver_System_Int32_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSystem.RaiseMeshRemoved(Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver,System.Int32)">RaiseMeshRemoved(IMixedRealitySpatialAwarenessObserver, Int32)</h4>
-  <div class="markdown level1 summary"><p><a class="xref" href="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessMeshObserver.html">IMixedRealitySpatialAwarenessMeshObserver</a>'s should call this method to indicate an existing mesh has been removed.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">void RaiseMeshRemoved(IMixedRealitySpatialAwarenessObserver observer, int meshId)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver.html">IMixedRealitySpatialAwarenessObserver</a></td>
-        <td><span class="parametername">observer</span></td>
-        <td><p>The observer raising the event.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td><span class="parametername">meshId</span></td>
-        <td><p>Value identifying the mesh.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessSystem_RaiseMeshRemoved_Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessObserver_System_Int32__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>This method is to be called by implementations of the <a class="xref" href="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver.html">IMixedRealitySpatialAwarenessObserver</a> interface, not by application code.</p>
-</div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessSystem_RaiseMeshUpdated_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSystem.RaiseMeshUpdated*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessSystem_RaiseMeshUpdated_Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessObserver_System_Int32_Microsoft_MixedReality_Toolkit_SpatialAwareness_SpatialAwarenessMeshObject_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSystem.RaiseMeshUpdated(Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver,System.Int32,Microsoft.MixedReality.Toolkit.SpatialAwareness.SpatialAwarenessMeshObject)">RaiseMeshUpdated(IMixedRealitySpatialAwarenessObserver, Int32, SpatialAwarenessMeshObject)</h4>
-  <div class="markdown level1 summary"><p><a class="xref" href="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessMeshObserver.html">IMixedRealitySpatialAwarenessMeshObserver</a>'s should call this method to indicate an existing mesh has been updated.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">void RaiseMeshUpdated(IMixedRealitySpatialAwarenessObserver observer, int meshId, SpatialAwarenessMeshObject meshObject)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver.html">IMixedRealitySpatialAwarenessObserver</a></td>
-        <td><span class="parametername">observer</span></td>
-        <td><p>The observer raising the event.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td><span class="parametername">meshId</span></td>
-        <td><p>Value identifying the mesh.</p>
-</td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.SpatialAwareness.SpatialAwarenessMeshObject.html">SpatialAwarenessMeshObject</a></td>
-        <td><span class="parametername">meshObject</span></td>
-        <td><p>The mesh <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessSystem_RaiseMeshUpdated_Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessObserver_System_Int32_Microsoft_MixedReality_Toolkit_SpatialAwareness_SpatialAwarenessMeshObject__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>This method is to be called by implementations of the <a class="xref" href="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver.html">IMixedRealitySpatialAwarenessObserver</a> interface, not by application code.</p>
-</div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_SpatialAwareness_IMixedRealitySpatialAwarenessSystem_ResumeObserver_" data-uid="Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSystem.ResumeObserver*"></a>

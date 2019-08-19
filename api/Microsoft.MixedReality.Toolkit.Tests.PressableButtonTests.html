@@ -12,7 +12,7 @@
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
+    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -37,7 +37,7 @@
               </button>
               
               <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -93,35 +93,11 @@
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">PressableButtonTests</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
-    </div>
-    <div>
-      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.html">Microsoft.MixedReality.Toolkit.Tests</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Tests_PressableButtonTests_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class PressableButtonTests</code></pre>
+    <pre><code class="lang-csharp hljs">public class PressableButtonTests : IPrebuildSetup</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
@@ -134,6 +110,86 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public IEnumerator ButtonInstantiate()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PressableButtonTests_PressButtonFast_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PressableButtonTests.PressButtonFast*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PressableButtonTests_PressButtonFast" data-uid="Microsoft.MixedReality.Toolkit.Tests.PressableButtonTests.PressButtonFast">PressButtonFast()</h4>
+  <div class="markdown level1 summary"><p>This test reproduces P0 issue 4566 which didn't trigger a button with enabled backpressprotection
+if hands were moving too fast in low framerate</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator PressButtonFast()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PressableButtonTests_PressButtonWithHand_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PressableButtonTests.PressButtonWithHand*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PressableButtonTests_PressButtonWithHand" data-uid="Microsoft.MixedReality.Toolkit.Tests.PressableButtonTests.PressButtonWithHand">PressButtonWithHand()</h4>
+  <div class="markdown level1 summary"><p>This test reproduces P0 issue 4263 which caused null pointers when pressing buttons
+See <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4683">https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4683</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator PressButtonWithHand()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PressableButtonTests_ReleaseButton_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PressableButtonTests.ReleaseButton*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PressableButtonTests_ReleaseButton" data-uid="Microsoft.MixedReality.Toolkit.Tests.PressableButtonTests.ReleaseButton">ReleaseButton()</h4>
+  <div class="markdown level1 summary"><p>This tests the release behavior of a button</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator ReleaseButton()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -202,6 +258,16 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PressableButtonTests_Setup_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PressableButtonTests.Setup*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PressableButtonTests_Setup" data-uid="Microsoft.MixedReality.Toolkit.Tests.PressableButtonTests.Setup">Setup()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Setup()</code></pre>
+  </div>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Tests_PressableButtonTests_SwitchWorldToLocalDistanceMode_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PressableButtonTests.SwitchWorldToLocalDistanceMode*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_PressableButtonTests_SwitchWorldToLocalDistanceMode" data-uid="Microsoft.MixedReality.Toolkit.Tests.PressableButtonTests.SwitchWorldToLocalDistanceMode">SwitchWorldToLocalDistanceMode()</h4>
   <div class="markdown level1 summary"></div>
@@ -209,6 +275,52 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public IEnumerator SwitchWorldToLocalDistanceMode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PressableButtonTests_TearDown_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PressableButtonTests.TearDown*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PressableButtonTests_TearDown" data-uid="Microsoft.MixedReality.Toolkit.Tests.PressableButtonTests.TearDown">TearDown()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void TearDown()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PressableButtonTests_TestSetup_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PressableButtonTests.TestSetup*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PressableButtonTests_TestSetup" data-uid="Microsoft.MixedReality.Toolkit.Tests.PressableButtonTests.TestSetup">TestSetup()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void TestSetup()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PressableButtonTests_TriggerButtonFarInteraction_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PressableButtonTests.TriggerButtonFarInteraction*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PressableButtonTests_TriggerButtonFarInteraction" data-uid="Microsoft.MixedReality.Toolkit.Tests.PressableButtonTests.TriggerButtonFarInteraction">TriggerButtonFarInteraction()</h4>
+  <div class="markdown level1 summary"><p>This test verifies that buttons will trigger with far interaction</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator TriggerButtonFarInteraction()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">

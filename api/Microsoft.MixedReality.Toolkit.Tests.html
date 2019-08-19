@@ -12,7 +12,7 @@
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
+    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -37,7 +37,7 @@
               </button>
               
               <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -90,17 +90,73 @@
   <div class="markdown level0 remarks"></div>
     <h3 id="classes">Classes
   </h3>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.BaseCursorTests.html">BaseCursorTests</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.BasePlayModeTests.html">BasePlayModeTests</a></h4>
+      <section><p>Base class to handle typical code setup/teardown and test utilities</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.BoundingBoxTests.html">BoundingBoxTests</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.CoreServicesTests.html">CoreServicesTests</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.FocusedObjectEventCatcher-1.html">FocusedObjectEventCatcher&lt;T&gt;</a></h4>
+      <section><p>Base class for counting events raised on the focused object.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.FocusProviderRaycastTests.html">FocusProviderRaycastTests</a></h4>
+      <section><p>This class is used to test that <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.FocusProvider.html">FocusProvider</a> raycasts are selecting the correct focus object.</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.FocusProviderTests.html">FocusProviderTests</a></h4>
       <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.FocusRaycastTestProxy.html">FocusRaycastTestProxy</a></h4>
+      <section><p>Used by <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.FocusProviderRaycastTests.html">FocusProviderRaycastTests</a> to represent a single raycast test.
+This is used to set any necessary values on the <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TestPointer.html">TestPointer</a> for performing the test,
+including positioning (through <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.FocusRaycastTestProxy.html#Microsoft_MixedReality_Toolkit_Tests_FocusRaycastTestProxy_RayLineData">RayLineData</a>), as well as the GameObject that the test author expects to be selected
+as the pointer's new focus target after the values are set on the <a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TestPointer.html">TestPointer</a>, and it is updated by the <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.FocusProvider.html">FocusProvider</a>.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.GlobalEventCatcher-1.html">GlobalEventCatcher&lt;T&gt;</a></h4>
+      <section><p>Base class for counting global events.</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.ManipulationHandlerTests.html">ManipulationHandlerTests</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.NearInteractionTouchableTests.html">NearInteractionTouchableTests</a></h4>
       <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.html">PlayModeTestUtilities</a></h4>
       <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.PointerEventsTests.html">PointerEventsTests</a></h4>
+      <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.PressableButtonTests.html">PressableButtonTests</a></h4>
       <section></section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.SimplePlayModeTests.html">SimplePlayModeTests</a></h4>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.ProfileTests.html">ProfileTests</a></h4>
       <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.SlateTests.html">SlateTests</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.SolverTests.html">SolverTests</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.SolverTests.SetupData.html">SolverTests.SetupData</a></h4>
+      <section><p>Internal class used to store data for setup</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.SpeechTests.html">SpeechTests</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.SpherePointerTests.html">SpherePointerTests</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TestPointer.html">TestPointer</a></h4>
+      <section><p>A simple pointer that is just used for Unity play mode tests. It doesn't update anything itself -
+it is expected that any test using it will manually update data as necessary.
+If you would like to setup pointer parameters in data (e.g. a prefab), you can use
+<a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.FocusRaycastTestProxy.html">FocusRaycastTestProxy</a>.</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TestUtilities.html">TestUtilities</a></h4>
+      <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.TouchEventCatcher.html">TouchEventCatcher</a></h4>
+      <section><p>Utility for counting touch events.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.UnityButtonEventCatcher.html">UnityButtonEventCatcher</a></h4>
+      <section><p>Base class for counting Unity button events.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.UnityToggleEventCatcher.html">UnityToggleEventCatcher</a></h4>
+      <section><p>Base class for counting Unity button events.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.UnityUiUtilities.html">UnityUiUtilities</a></h4>
       <section></section>
 </article>
           </div>

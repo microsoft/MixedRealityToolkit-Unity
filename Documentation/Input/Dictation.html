@@ -10,7 +10,7 @@
     <meta name="title" content="Dictation | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../../External/ReadMeImages/favicon.ico">
+    <link rel="shortcut icon" href="../../Documentation/Images/favicon.ico">
     <link rel="stylesheet" href="../../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../../styles/docfx.css">
     <link rel="stylesheet" href="../../styles/main.css">
@@ -35,7 +35,7 @@
               </button>
               
               <a class="navbar-brand" href="../../index.html">
-                <img id="logo" class="svg" src="../../External/ReadMeImages/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../../Documentation/Images/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -82,7 +82,16 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="dictation">Dictation</h1>
 
-<p>Dictation allows users to record audio clips and obtain a transcription. To use it make sure that a dictation system is registered in the <em>Input System Profile</em>. <strong>Windows Dictation Input Provider</strong> is the dication system provided out of the box but alternative dictation systems can be created implementing <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityDictationSystem.html"><code>IMixedRealityDictationSystem</code></a>.</p>
+<p>Dictation allows users to record audio clips and obtain a transcription. To use it make sure that a dictation system is registered in the <em>Input System Profile</em>. <strong>Windows Dictation Input Provider</strong> is the dictation system provided out of the box but alternative dictation systems can be created implementing <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityDictationSystem.html"><code>IMixedRealityDictationSystem</code></a>.</p>
+<h2 id="requirements">Requirements</h2>
+<p>The dictation system uses Unity's <a href="https://docs.unity3d.com/ScriptReference/Windows.Speech.DictationRecognizer.html">DictationRecognizer</a>
+which itself uses the underlying Windows speech APIs for handling dictation. Note that this
+implies that this feature is only present on Windows-based platforms.</p>
+<p>Usage of the Dictation system requires both the &quot;Internet Client&quot; and &quot;Microphone&quot; application
+capabilities in the <a href="https://docs.unity3d.com/Manual/class-PlayerSettingsWSA.html#Capabilities">PlayerSettings - Capabilities section</a>.
+See <a href="https://docs.microsoft.com/en-us/windows/mixed-reality/voice-input-in-unity#dictation">Windows Mixed Reality Documentation</a>
+for more details on voice input in Unity.</p>
+<h2 id="configuration">Configuration</h2>
 <img src="../Images/Input/DictationDataProvider.png" width="80%" class="center">
 <p>Once you have a dictation service set up, you can use the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.DictationHandler.html"><code>DictationHandler</code></a> script to start and stop recording sessions and obtain the transcription results via UnityEvents.</p>
 <img src="../Images/Input/DictationHandler.png" width="80%" class="center">
@@ -92,7 +101,8 @@
 <li><strong>Dictation Complete</strong> is raised at the end of the recording session with the full, final transcription of the audio.</li>
 <li><strong>Dictation Error</strong> is raised to inform of errors in the dictation service. The transcription in this case contains a description of the error.</li>
 </ul>
-<p>Have a look at <code>MixedRealityToolkit.Examples\Demos\Input\Scenes\Dictation</code> to see the <code>DictationHandler</code> script in use. If you need more control, you can either extend this script or create your own implementing <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityDictationHandler.html"><code>IMixedRealityDictationHandler</code></a> to receive dictation events directly.</p>
+<h2 id="example-scene">Example Scene</h2>
+<p><strong>Dictation</strong> scene in <code>MixedRealityToolkit.Examples\Demos\Input\Scenes\Dictation</code> shows the <code>DictationHandler</code> script in use. If you need more control, you can either extend this script or create your own implementing <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityDictationHandler.html"><code>IMixedRealityDictationHandler</code></a> to receive dictation events directly.</p>
 <img src="../Images/Input/DictationDemo.png" width="80%" class="center">
 </article>
           </div>
@@ -102,7 +112,7 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Documentation/Input/Dictation.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/Input/Dictation.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

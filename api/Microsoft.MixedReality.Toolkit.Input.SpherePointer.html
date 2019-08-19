@@ -12,7 +12,7 @@
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
+    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -37,7 +37,7 @@
               </button>
               
               <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -91,7 +91,7 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.html">InputSystemGlobalListener</a></div>
+    <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.html">InputSystemGlobalHandlerListener</a></div>
     <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html">ControllerPoseSynchronizer</a></div>
     <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html">BaseControllerPointer</a></div>
     <div class="level4"><span class="xref">SpherePointer</span></div>
@@ -242,6 +242,12 @@
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_PoseAction">ControllerPoseSynchronizer.PoseAction</a>
     </div>
     <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_RegisterHandlers">ControllerPoseSynchronizer.RegisterHandlers()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_UnregisterHandlers">ControllerPoseSynchronizer.UnregisterHandlers()</a>
+    </div>
+    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_OnSourceDetected_Microsoft_MixedReality_Toolkit_Input_SourceStateEventData_">ControllerPoseSynchronizer.OnSourceDetected(SourceStateEventData)</a>
     </div>
     <div>
@@ -275,10 +281,10 @@
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_OnInputChanged_Microsoft_MixedReality_Toolkit_Input_InputEventData_MixedRealityPose__">ControllerPoseSynchronizer.OnInputChanged(InputEventData&lt;MixedRealityPose&gt;)</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.html#Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalListener_InputSystem">InputSystemGlobalListener.InputSystem</a>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.html#Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_InputSystem">InputSystemGlobalHandlerListener.InputSystem</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.html#Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalListener_EnsureInputSystemValid">InputSystemGlobalListener.EnsureInputSystemValid()</a>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.html#Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_EnsureInputSystemValid">InputSystemGlobalHandlerListener.EnsureInputSystemValid()</a>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.html">Microsoft.MixedReality.Toolkit.Input</a></h6>
@@ -346,6 +352,64 @@ to grab events.</p>
       </tr>
     </tbody>
   </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_SpherePointer_NearObjectMargin_" data-uid="Microsoft.MixedReality.Toolkit.Input.SpherePointer.NearObjectMargin*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_SpherePointer_NearObjectMargin" data-uid="Microsoft.MixedReality.Toolkit.Input.SpherePointer.NearObjectMargin">NearObjectMargin</h4>
+  <div class="markdown level1 summary"><p>Additional distance between <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_SphereCastRadius">SphereCastRadius</a> and <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SpherePointer.html#Microsoft_MixedReality_Toolkit_Input_SpherePointer_NearObjectRadius">NearObjectRadius</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float NearObjectMargin { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Input_SpherePointer_NearObjectMargin_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This creates a dead zone in which far interaction is disabled before objects become grabbable.</p>
+</div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_SpherePointer_NearObjectRadius_" data-uid="Microsoft.MixedReality.Toolkit.Input.SpherePointer.NearObjectRadius*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_SpherePointer_NearObjectRadius" data-uid="Microsoft.MixedReality.Toolkit.Input.SpherePointer.NearObjectRadius">NearObjectRadius</h4>
+  <div class="markdown level1 summary"><p>Distance at which the pointer is considered &quot;near&quot; an object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float NearObjectRadius { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Input_SpherePointer_NearObjectRadius_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Sum of <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_SphereCastRadius">SphereCastRadius</a> and <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SpherePointer.html#Microsoft_MixedReality_Toolkit_Input_SpherePointer_NearObjectMargin">NearObjectMargin</a>. Entering the <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SpherePointer.html#Microsoft_MixedReality_Toolkit_Input_SpherePointer_NearObjectRadius">NearObjectRadius</a> disables far interaction.</p>
+</div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_SpherePointer_SceneQueryType_" data-uid="Microsoft.MixedReality.Toolkit.Input.SpherePointer.SceneQueryType*"></a>
@@ -439,8 +503,8 @@ to grab events.</p>
   <a id="Microsoft_MixedReality_Toolkit_Input_SpherePointer_TryGetNearGraspPoint_" data-uid="Microsoft.MixedReality.Toolkit.Input.SpherePointer.TryGetNearGraspPoint*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_SpherePointer_TryGetNearGraspPoint_Vector3__" data-uid="Microsoft.MixedReality.Toolkit.Input.SpherePointer.TryGetNearGraspPoint(Vector3@)">TryGetNearGraspPoint(out Vector3)</h4>
   <div class="markdown level1 summary"><p>Gets the position of where grasp happens
-For sixdof it's just the pointer origin
-for hand it's the average of index and thumb.</p>
+For IMixedRealityHand it's the average of index and thumb.
+For any other IMixedRealityController, return just the pointer origin</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>

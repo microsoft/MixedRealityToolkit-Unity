@@ -10,7 +10,7 @@
     <meta name="title" content="Configuring the Diagnostics System | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../../External/ReadMeImages/favicon.ico">
+    <link rel="shortcut icon" href="../../Documentation/Images/favicon.ico">
     <link rel="stylesheet" href="../../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../../styles/docfx.css">
     <link rel="stylesheet" href="../../styles/main.css">
@@ -35,7 +35,7 @@
               </button>
               
               <a class="navbar-brand" href="../../index.html">
-                <img id="logo" class="svg" src="../../External/ReadMeImages/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../../Documentation/Images/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -91,9 +91,16 @@
 <p><img src="../Images/Diagnostics/DiagnosticsGeneralSettings.png" alt="Diagnostics General Settings"></p>
 <h3 id="show-diagnostics">Show Diagnostics</h3>
 <p>Indicates whether or not the diagnostics system is to display the configured diagnostic options.</p>
-<blockquote>
 <p>When disabled, all configured diagnostic options will be hidden.</p>
-</blockquote>
+<h4 id="programmatically-controlling-the-diagnostics-system">Programmatically controlling the Diagnostics System</h4>
+<p>It's also possible to toggle the visibility of the diagnostics system and the profiler at runtime.
+For example, the code below will hide the diagnostics system and profiler.</p>
+<pre><code class="lang-C#">if (MixedRealityServiceRegistry.TryGetService&lt;IMixedRealityDiagnosticsSystem&gt;(out var service))
+{
+    service.ShowDiagnostics = false;
+    service.ShowProfiler = false;
+}
+</code></pre>
 <h2 id="profiler-settings">Profiler Settings</h2>
 <p><img src="../Images/Diagnostics/DiagnosticsProfilerSettings.png" alt="Diagnostics Profiler Settings"></p>
 <h3 id="show-profiler">Show Profiler</h3>
@@ -122,7 +129,7 @@ of the <a href="#window-anchor">Window Anchor</a>.</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Documentation/Diagnostics/ConfiguringDiagnostics.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/Diagnostics/ConfiguringDiagnostics.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

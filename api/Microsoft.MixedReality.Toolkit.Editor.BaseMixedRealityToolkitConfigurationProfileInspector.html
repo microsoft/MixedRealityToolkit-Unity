@@ -12,7 +12,7 @@
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
+    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -37,7 +37,7 @@
               </button>
               
               <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -96,6 +96,7 @@
     <div class="level2"><span class="xref">BaseMixedRealityToolkitConfigurationProfileInspector</span></div>
       <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.Editor.MixedRealityCameraProfileInspector.html">MixedRealityCameraProfileInspector</a></div>
       <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.Editor.MixedRealityRegisteredServiceProviderProfileInspector.html">MixedRealityRegisteredServiceProviderProfileInspector</a></div>
+      <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.Editor.MixedRealitySceneSystemProfileInspector.html">MixedRealitySceneSystemProfileInspector</a></div>
       <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.Editor.MixedRealitySpeechCommandsProfileInspector.html">MixedRealitySpeechCommandsProfileInspector</a></div>
       <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.Editor.MixedRealityToolkitConfigurationProfileInspector.html">MixedRealityToolkitConfigurationProfileInspector</a></div>
       <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.Editor.SpatialAwareness.MixedRealitySpatialAwarenessMeshObserverProfileInspector.html">MixedRealitySpatialAwarenessMeshObserverProfileInspector</a></div>
@@ -112,10 +113,7 @@
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.html#Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_RenderProfile_SerializedProperty_System_Type_System_Boolean_System_Boolean_System_Type_">BaseMixedRealityProfileInspector.RenderProfile(SerializedProperty, Type, Boolean, Boolean, Type)</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.html#Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_RenderFoldout_System_Boolean__System_String_System_Action_">BaseMixedRealityProfileInspector.RenderFoldout(Boolean, String, Action)</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.html#Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_CreateCustomProfile_Microsoft_MixedReality_Toolkit_BaseMixedRealityProfile_">BaseMixedRealityProfileInspector.CreateCustomProfile(BaseMixedRealityProfile)</a>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.html#Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_RenderFoldout_System_Boolean__System_String_System_Action_System_String_">BaseMixedRealityProfileInspector.RenderFoldout(Boolean, String, Action, String)</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityProfileInspector.html#Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityProfileInspector_IsProfileLock_Microsoft_MixedReality_Toolkit_BaseMixedRealityProfile_">BaseMixedRealityProfileInspector.IsProfileLock(BaseMixedRealityProfile)</a>
@@ -191,6 +189,44 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected virtual void Awake()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityToolkitConfigurationProfileInspector_CheckEditorPlayMode_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityToolkitConfigurationProfileInspector.CheckEditorPlayMode*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityToolkitConfigurationProfileInspector_CheckEditorPlayMode" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityToolkitConfigurationProfileInspector.CheckEditorPlayMode">CheckEditorPlayMode()</h4>
+  <div class="markdown level1 summary"><p>If application is playing, then show warning to the user and disable inspector GUI</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool CheckEditorPlayMode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>true if application is playing, false otherwise</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityToolkitConfigurationProfileInspector_CheckMixedRealityInputActions_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityToolkitConfigurationProfileInspector.CheckMixedRealityInputActions*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityToolkitConfigurationProfileInspector_CheckMixedRealityInputActions" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityToolkitConfigurationProfileInspector.CheckMixedRealityInputActions">CheckMixedRealityInputActions()</h4>
+  <div class="markdown level1 summary"><p>Check if various input settings are set correctly to read the input actions for the active MRTK instance. If any failures, show appropriate error message</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void CheckMixedRealityInputActions()</code></pre>
   </div>
   
   
@@ -314,15 +350,32 @@ because it may produce an inaccurate combination of settings.</p>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityToolkitConfigurationProfileInspector_RenderMixedRealityInputConfigured_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityToolkitConfigurationProfileInspector.RenderMixedRealityInputConfigured*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityToolkitConfigurationProfileInspector_RenderMixedRealityInputConfigured" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityToolkitConfigurationProfileInspector.RenderMixedRealityInputConfigured">RenderMixedRealityInputConfigured()</h4>
-  <div class="markdown level1 summary"><p>If MRTK is in scene and input system is disabled, then show error message</p>
+  <a id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityToolkitConfigurationProfileInspector_RenderDocumentation_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityToolkitConfigurationProfileInspector.RenderDocumentation*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityToolkitConfigurationProfileInspector_RenderDocumentation_System_Object_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityToolkitConfigurationProfileInspector.RenderDocumentation(System.Object)">RenderDocumentation(Object)</h4>
+  <div class="markdown level1 summary"><p>Draws a documentation link for the service.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void RenderMixedRealityInputConfigured()</code></pre>
+    <pre><code class="lang-csharp hljs">protected void RenderDocumentation(object profileObject)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></td>
+        <td><span class="parametername">profileObject</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityToolkitConfigurationProfileInspector_RenderMRTKLogo_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityToolkitConfigurationProfileInspector.RenderMRTKLogo*"></a>

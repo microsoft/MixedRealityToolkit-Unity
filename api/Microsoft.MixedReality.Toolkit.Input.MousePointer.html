@@ -12,7 +12,7 @@
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
+    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -37,7 +37,7 @@
               </button>
               
               <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -86,16 +86,19 @@
   
   <h1 id="Microsoft_MixedReality_Toolkit_Input_MousePointer" data-uid="Microsoft.MixedReality.Toolkit.Input.MousePointer" class="text-break">Class MousePointer
   </h1>
-  <div class="markdown level0 summary"><p>Internal Touch Pointer Implementation.</p>
+  <div class="markdown level0 summary"><p>The MousePointer represents a mouse cursor in world space.
+It uses spherical movement around the camera.
+Its movement is bound to screenspace, but based in the delta movement of the computer mouse.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.html">InputSystemGlobalListener</a></div>
+    <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.html">InputSystemGlobalHandlerListener</a></div>
     <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html">ControllerPoseSynchronizer</a></div>
     <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html">BaseControllerPointer</a></div>
-    <div class="level4"><span class="xref">MousePointer</span></div>
+    <div class="level4"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseMousePointer.html">BaseMousePointer</a></div>
+    <div class="level5"><span class="xref">MousePointer</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
@@ -116,6 +119,42 @@
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseMousePointer.html#Microsoft_MixedReality_Toolkit_Input_BaseMousePointer_timeoutTimer">BaseMousePointer.timeoutTimer</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseMousePointer.html#Microsoft_MixedReality_Toolkit_Input_BaseMousePointer_isDisabled">BaseMousePointer.isDisabled</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseMousePointer.html#Microsoft_MixedReality_Toolkit_Input_BaseMousePointer_HideCursorWhenInactive">BaseMousePointer.HideCursorWhenInactive</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseMousePointer.html#Microsoft_MixedReality_Toolkit_Input_BaseMousePointer_MovementThresholdToUnHide">BaseMousePointer.MovementThresholdToUnHide</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseMousePointer.html#Microsoft_MixedReality_Toolkit_Input_BaseMousePointer_HideTimeout">BaseMousePointer.HideTimeout</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseMousePointer.html#Microsoft_MixedReality_Toolkit_Input_BaseMousePointer_IsInteractionEnabled">BaseMousePointer.IsInteractionEnabled</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseMousePointer.html#Microsoft_MixedReality_Toolkit_Input_BaseMousePointer_Controller">BaseMousePointer.Controller</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseMousePointer.html#Microsoft_MixedReality_Toolkit_Input_BaseMousePointer_Position">BaseMousePointer.Position</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseMousePointer.html#Microsoft_MixedReality_Toolkit_Input_BaseMousePointer_OnSourceDetected_Microsoft_MixedReality_Toolkit_Input_SourceStateEventData_">BaseMousePointer.OnSourceDetected(SourceStateEventData)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseMousePointer.html#Microsoft_MixedReality_Toolkit_Input_BaseMousePointer_OnSourceLost_Microsoft_MixedReality_Toolkit_Input_SourceStateEventData_">BaseMousePointer.OnSourceLost(SourceStateEventData)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseMousePointer.html#Microsoft_MixedReality_Toolkit_Input_BaseMousePointer_OnInputDown_Microsoft_MixedReality_Toolkit_Input_InputEventData_">BaseMousePointer.OnInputDown(InputEventData)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseMousePointer.html#Microsoft_MixedReality_Toolkit_Input_BaseMousePointer_OnInputUp_Microsoft_MixedReality_Toolkit_Input_InputEventData_">BaseMousePointer.OnInputUp(InputEventData)</a>
+    </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_DisableCursorOnStart">BaseControllerPointer.DisableCursorOnStart</a>
     </div>
@@ -228,6 +267,12 @@
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_PoseAction">ControllerPoseSynchronizer.PoseAction</a>
     </div>
     <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_RegisterHandlers">ControllerPoseSynchronizer.RegisterHandlers()</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_UnregisterHandlers">ControllerPoseSynchronizer.UnregisterHandlers()</a>
+    </div>
+    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_OnSourcePoseChanged_Microsoft_MixedReality_Toolkit_Input_SourcePoseEventData_Microsoft_MixedReality_Toolkit_TrackingState__">ControllerPoseSynchronizer.OnSourcePoseChanged(SourcePoseEventData&lt;TrackingState&gt;)</a>
     </div>
     <div>
@@ -252,85 +297,29 @@
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_OnInputChanged_Microsoft_MixedReality_Toolkit_Input_InputEventData_Quaternion__">ControllerPoseSynchronizer.OnInputChanged(InputEventData&lt;Quaternion&gt;)</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.html#Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalListener_InputSystem">InputSystemGlobalListener.InputSystem</a>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.html#Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_InputSystem">InputSystemGlobalHandlerListener.InputSystem</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalListener.html#Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalListener_EnsureInputSystemValid">InputSystemGlobalListener.EnsureInputSystemValid()</a>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.html#Microsoft_MixedReality_Toolkit_Input_InputSystemGlobalHandlerListener_EnsureInputSystemValid">InputSystemGlobalHandlerListener.EnsureInputSystemValid()</a>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.html">Microsoft.MixedReality.Toolkit.Input</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Input_MousePointer_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class MousePointer : BaseControllerPointer, IMixedRealityControllerPoseSynchronizer, IMixedRealitySourcePoseHandler, IMixedRealitySourceStateHandler, IMixedRealityInputHandler, IMixedRealityBaseInputHandler, IMixedRealityInputHandler&lt;float&gt;, IMixedRealityInputHandler&lt;Vector2&gt;, IMixedRealityInputHandler&lt;Vector3&gt;, IMixedRealityInputHandler&lt;Quaternion&gt;, IMixedRealityInputHandler&lt;MixedRealityPose&gt;, IEventSystemHandler, IMixedRealityMousePointer, IMixedRealityPointer, IEqualityComparer</code></pre>
+    <pre><code class="lang-csharp hljs">public class MousePointer : BaseMousePointer, IMixedRealityControllerPoseSynchronizer, IMixedRealitySourcePoseHandler, IMixedRealitySourceStateHandler, IMixedRealityInputHandler, IMixedRealityBaseInputHandler, IMixedRealityInputHandler&lt;float&gt;, IMixedRealityInputHandler&lt;Vector2&gt;, IMixedRealityInputHandler&lt;Vector3&gt;, IMixedRealityInputHandler&lt;Quaternion&gt;, IMixedRealityInputHandler&lt;MixedRealityPose&gt;, IEventSystemHandler, IMixedRealityMousePointer, IMixedRealityPointer, IEqualityComparer</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Input_MousePointer_Controller_" data-uid="Microsoft.MixedReality.Toolkit.Input.MousePointer.Controller*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_MousePointer_Controller" data-uid="Microsoft.MixedReality.Toolkit.Input.MousePointer.Controller">Controller</h4>
-  <div class="markdown level1 summary"><p>The current controller reference.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override IMixedRealityController Controller { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityController.html">IMixedRealityController</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_Controller">BaseControllerPointer.Controller</a></div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_MousePointer_IsInteractionEnabled_" data-uid="Microsoft.MixedReality.Toolkit.Input.MousePointer.IsInteractionEnabled*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_MousePointer_IsInteractionEnabled" data-uid="Microsoft.MixedReality.Toolkit.Input.MousePointer.IsInteractionEnabled">IsInteractionEnabled</h4>
-  <div class="markdown level1 summary"><p>Is the pointer active and have the conditions for the interaction been satisfied to enable the interaction?</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override bool IsInteractionEnabled { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_IsInteractionEnabled">BaseControllerPointer.IsInteractionEnabled</a></div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_MousePointer_Position_" data-uid="Microsoft.MixedReality.Toolkit.Input.MousePointer.Position*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_MousePointer_Position" data-uid="Microsoft.MixedReality.Toolkit.Input.MousePointer.Position">Position</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Input_MousePointer_ControllerName_" data-uid="Microsoft.MixedReality.Toolkit.Input.MousePointer.ControllerName*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_MousePointer_ControllerName" data-uid="Microsoft.MixedReality.Toolkit.Input.MousePointer.ControllerName">ControllerName</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override Vector3 Position { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">protected override string ControllerName { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -342,13 +331,13 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Vector3</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_Position">BaseControllerPointer.Position</a></div>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseMousePointer.html#Microsoft_MixedReality_Toolkit_Input_BaseMousePointer_ControllerName">BaseMousePointer.ControllerName</a></div>
   <h3 id="methods">Methods
   </h3>
   
@@ -411,70 +400,9 @@
   <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_OnInputChanged_Microsoft_MixedReality_Toolkit_Input_InputEventData_Vector2__">ControllerPoseSynchronizer.OnInputChanged(InputEventData&lt;Vector2&gt;)</a></div>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Input_MousePointer_OnInputDown_" data-uid="Microsoft.MixedReality.Toolkit.Input.MousePointer.OnInputDown*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_MousePointer_OnInputDown_Microsoft_MixedReality_Toolkit_Input_InputEventData_" data-uid="Microsoft.MixedReality.Toolkit.Input.MousePointer.OnInputDown(Microsoft.MixedReality.Toolkit.Input.InputEventData)">OnInputDown(InputEventData)</h4>
-  <div class="markdown level1 summary"><p>Input Down updates from Interactions, Keys, or any other simple input.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void OnInputDown(InputEventData eventData)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputEventData.html">InputEventData</a></td>
-        <td><span class="parametername">eventData</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_OnInputDown_Microsoft_MixedReality_Toolkit_Input_InputEventData_">BaseControllerPointer.OnInputDown(InputEventData)</a></div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_MousePointer_OnInputUp_" data-uid="Microsoft.MixedReality.Toolkit.Input.MousePointer.OnInputUp*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_MousePointer_OnInputUp_Microsoft_MixedReality_Toolkit_Input_InputEventData_" data-uid="Microsoft.MixedReality.Toolkit.Input.MousePointer.OnInputUp(Microsoft.MixedReality.Toolkit.Input.InputEventData)">OnInputUp(InputEventData)</h4>
-  <div class="markdown level1 summary"><p>Input Up updates from Interactions, Keys, or any other simple input.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void OnInputUp(InputEventData eventData)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputEventData.html">InputEventData</a></td>
-        <td><span class="parametername">eventData</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_OnInputUp_Microsoft_MixedReality_Toolkit_Input_InputEventData_">BaseControllerPointer.OnInputUp(InputEventData)</a></div>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_Input_MousePointer_OnPreSceneQuery_" data-uid="Microsoft.MixedReality.Toolkit.Input.MousePointer.OnPreSceneQuery*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_MousePointer_OnPreSceneQuery" data-uid="Microsoft.MixedReality.Toolkit.Input.MousePointer.OnPreSceneQuery">OnPreSceneQuery()</h4>
-  <div class="markdown level1 summary"><p>Called before performing the scene query.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -484,14 +412,13 @@
   <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_OnPreSceneQuery">BaseControllerPointer.OnPreSceneQuery()</a></div>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Input_MousePointer_OnSourceDetected_" data-uid="Microsoft.MixedReality.Toolkit.Input.MousePointer.OnSourceDetected*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_MousePointer_OnSourceDetected_Microsoft_MixedReality_Toolkit_Input_SourceStateEventData_" data-uid="Microsoft.MixedReality.Toolkit.Input.MousePointer.OnSourceDetected(Microsoft.MixedReality.Toolkit.Input.SourceStateEventData)">OnSourceDetected(SourceStateEventData)</h4>
-  <div class="markdown level1 summary"><p>Raised when a source is detected.</p>
-</div>
+  <a id="Microsoft_MixedReality_Toolkit_Input_MousePointer_SetVisibility_" data-uid="Microsoft.MixedReality.Toolkit.Input.MousePointer.SetVisibility*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_MousePointer_SetVisibility_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Input.MousePointer.SetVisibility(System.Boolean)">SetVisibility(Boolean)</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void OnSourceDetected(SourceStateEventData eventData)</code></pre>
+    <pre><code class="lang-csharp hljs">protected override void SetVisibility(bool visible)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -504,44 +431,14 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SourceStateEventData.html">SourceStateEventData</a></td>
-        <td><span class="parametername">eventData</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">visible</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ControllerPoseSynchronizer.html#Microsoft_MixedReality_Toolkit_Input_ControllerPoseSynchronizer_OnSourceDetected_Microsoft_MixedReality_Toolkit_Input_SourceStateEventData_">ControllerPoseSynchronizer.OnSourceDetected(SourceStateEventData)</a></div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_MousePointer_OnSourceLost_" data-uid="Microsoft.MixedReality.Toolkit.Input.MousePointer.OnSourceLost*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_MousePointer_OnSourceLost_Microsoft_MixedReality_Toolkit_Input_SourceStateEventData_" data-uid="Microsoft.MixedReality.Toolkit.Input.MousePointer.OnSourceLost(Microsoft.MixedReality.Toolkit.Input.SourceStateEventData)">OnSourceLost(SourceStateEventData)</h4>
-  <div class="markdown level1 summary"><p>Raised when a source is lost.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void OnSourceLost(SourceStateEventData eventData)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SourceStateEventData.html">SourceStateEventData</a></td>
-        <td><span class="parametername">eventData</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_OnSourceLost_Microsoft_MixedReality_Toolkit_Input_SourceStateEventData_">BaseControllerPointer.OnSourceLost(SourceStateEventData)</a></div>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseMousePointer.html#Microsoft_MixedReality_Toolkit_Input_BaseMousePointer_SetVisibility_System_Boolean_">BaseMousePointer.SetVisibility(Boolean)</a></div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_MousePointer_Start_" data-uid="Microsoft.MixedReality.Toolkit.Input.MousePointer.Start*"></a>
@@ -553,87 +450,7 @@
     <pre><code class="lang-csharp hljs">protected override void Start()</code></pre>
   </div>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_Start">BaseControllerPointer.Start()</a></div>
-  <h3 id="eii">Explicit Interface Implementations
-  </h3>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_MousePointer_Microsoft_MixedReality_Toolkit_Input_IMixedRealityMousePointer_HideCursorWhenInactive_" data-uid="Microsoft.MixedReality.Toolkit.Input.MousePointer.Microsoft#MixedReality#Toolkit#Input#IMixedRealityMousePointer#HideCursorWhenInactive*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_MousePointer_Microsoft_MixedReality_Toolkit_Input_IMixedRealityMousePointer_HideCursorWhenInactive" data-uid="Microsoft.MixedReality.Toolkit.Input.MousePointer.Microsoft#MixedReality#Toolkit#Input#IMixedRealityMousePointer#HideCursorWhenInactive">IMixedRealityMousePointer.HideCursorWhenInactive</h4>
-  <div class="markdown level1 summary"><p>Should the mouse cursor be hidden when no active input is received?</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">bool IMixedRealityMousePointer.HideCursorWhenInactive { get; }</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_MousePointer_Microsoft_MixedReality_Toolkit_Input_IMixedRealityMousePointer_HideTimeout_" data-uid="Microsoft.MixedReality.Toolkit.Input.MousePointer.Microsoft#MixedReality#Toolkit#Input#IMixedRealityMousePointer#HideTimeout*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_MousePointer_Microsoft_MixedReality_Toolkit_Input_IMixedRealityMousePointer_HideTimeout" data-uid="Microsoft.MixedReality.Toolkit.Input.MousePointer.Microsoft#MixedReality#Toolkit#Input#IMixedRealityMousePointer#HideTimeout">IMixedRealityMousePointer.HideTimeout</h4>
-  <div class="markdown level1 summary"><p>How long should it take before the mouse cursor is hidden?</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">float IMixedRealityMousePointer.HideTimeout { get; }</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_MousePointer_Microsoft_MixedReality_Toolkit_Input_IMixedRealityMousePointer_MovementThresholdToUnHide_" data-uid="Microsoft.MixedReality.Toolkit.Input.MousePointer.Microsoft#MixedReality#Toolkit#Input#IMixedRealityMousePointer#MovementThresholdToUnHide*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_MousePointer_Microsoft_MixedReality_Toolkit_Input_IMixedRealityMousePointer_MovementThresholdToUnHide" data-uid="Microsoft.MixedReality.Toolkit.Input.MousePointer.Microsoft#MixedReality#Toolkit#Input#IMixedRealityMousePointer#MovementThresholdToUnHide">IMixedRealityMousePointer.MovementThresholdToUnHide</h4>
-  <div class="markdown level1 summary"><p>What is the movement threshold to reach before un-hiding mouse cursor?</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">float IMixedRealityMousePointer.MovementThresholdToUnHide { get; }</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseMousePointer.html#Microsoft_MixedReality_Toolkit_Input_BaseMousePointer_Start">BaseMousePointer.Start()</a></div>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityControllerPoseSynchronizer.html">IMixedRealityControllerPoseSynchronizer</a>

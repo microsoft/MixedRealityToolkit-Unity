@@ -12,7 +12,7 @@
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
+    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -37,7 +37,7 @@
               </button>
               
               <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -92,12 +92,6 @@
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourceStateHandler.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealitySourceStateHandler_OnSourceDetected_Microsoft_MixedReality_Toolkit_Input_SourceStateEventData_">IMixedRealitySourceStateHandler.OnSourceDetected(SourceStateEventData)</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourceStateHandler.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealitySourceStateHandler_OnSourceLost_Microsoft_MixedReality_Toolkit_Input_SourceStateEventData_">IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData)</a>
-    </div>
-    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html#Microsoft_MixedReality_Toolkit_IMixedRealityService_Name">IMixedRealityService.Name</a>
     </div>
     <div>
@@ -131,6 +125,12 @@
       <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable.dispose#System_IDisposable_Dispose">IDisposable.Dispose()</a>
     </div>
     <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourceStateHandler.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealitySourceStateHandler_OnSourceDetected_Microsoft_MixedReality_Toolkit_Input_SourceStateEventData_">IMixedRealitySourceStateHandler.OnSourceDetected(SourceStateEventData)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourceStateHandler.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealitySourceStateHandler_OnSourceLost_Microsoft_MixedReality_Toolkit_Input_SourceStateEventData_">IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData)</a>
+    </div>
+    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealitySpeechHandler_OnSpeechKeywordRecognized_Microsoft_MixedReality_Toolkit_Input_SpeechEventData_">IMixedRealitySpeechHandler.OnSpeechKeywordRecognized(SpeechEventData)</a>
     </div>
   </div>
@@ -138,7 +138,7 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityFocusProvider_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IMixedRealityFocusProvider : IMixedRealitySourceStateHandler, IMixedRealityDataProvider, IMixedRealityService, IDisposable, IMixedRealitySpeechHandler, IMixedRealityBaseInputHandler, IEventSystemHandler</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IMixedRealityFocusProvider : IMixedRealityService, IDisposable, IMixedRealitySourceStateHandler, IMixedRealitySpeechHandler, IMixedRealityBaseInputHandler, IEventSystemHandler</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -190,6 +190,32 @@
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityFocusProvider_PrimaryPointer_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider.PrimaryPointer*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityFocusProvider_PrimaryPointer" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider.PrimaryPointer">PrimaryPointer</h4>
+  <div class="markdown level1 summary"><p>Current primary pointer. Determined by the primary pointer selector in use (see MixedRealityPointerProfile.PrimaryPointerSelector).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IMixedRealityPointer PrimaryPointer { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.html">IMixedRealityPointer</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -431,6 +457,42 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityFocusProvider_SubscribeToPrimaryPointerChanged_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider.SubscribeToPrimaryPointerChanged*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityFocusProvider_SubscribeToPrimaryPointerChanged_Microsoft_MixedReality_Toolkit_Input_PrimaryPointerChangedHandler_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider.SubscribeToPrimaryPointerChanged(Microsoft.MixedReality.Toolkit.Input.PrimaryPointerChangedHandler,System.Boolean)">SubscribeToPrimaryPointerChanged(PrimaryPointerChangedHandler, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Subscribes to primary pointer changes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void SubscribeToPrimaryPointerChanged(PrimaryPointerChangedHandler handler, bool invokeHandlerWithCurrentPointer)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.PrimaryPointerChangedHandler.html">PrimaryPointerChangedHandler</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>Handler to be called when the primary pointer changes</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">invokeHandlerWithCurrentPointer</span></td>
+        <td><p>When true, the passed in handler will be invoked immediately with the current primary pointer
+before subscribing. This is useful to avoid having to manually poll the current value.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityFocusProvider_TryGetFocusDetails_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider.TryGetFocusDetails*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityFocusProvider_TryGetFocusDetails_Microsoft_MixedReality_Toolkit_Input_IMixedRealityPointer_FocusDetails__" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider.TryGetFocusDetails(Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer,FocusDetails@)">TryGetFocusDetails(IMixedRealityPointer, out FocusDetails)</h4>
   <div class="markdown level1 summary"><p>Gets the currently focused object for the pointing source.</p>
@@ -517,6 +579,35 @@
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><p>True, if the pointer was unregistered, false if the pointer was not registered.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityFocusProvider_UnsubscribeFromPrimaryPointerChanged_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider.UnsubscribeFromPrimaryPointerChanged*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_IMixedRealityFocusProvider_UnsubscribeFromPrimaryPointerChanged_Microsoft_MixedReality_Toolkit_Input_PrimaryPointerChangedHandler_" data-uid="Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider.UnsubscribeFromPrimaryPointerChanged(Microsoft.MixedReality.Toolkit.Input.PrimaryPointerChangedHandler)">UnsubscribeFromPrimaryPointerChanged(PrimaryPointerChangedHandler)</h4>
+  <div class="markdown level1 summary"><p>Unsubscribes from primary pointer changes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void UnsubscribeFromPrimaryPointerChanged(PrimaryPointerChangedHandler handler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.PrimaryPointerChangedHandler.html">PrimaryPointerChangedHandler</a></td>
+        <td><span class="parametername">handler</span></td>
+        <td><p>Handler to unsubscribe</p>
 </td>
       </tr>
     </tbody>

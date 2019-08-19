@@ -10,7 +10,7 @@
     <meta name="title" content="Manipulation handler | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
+    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -35,7 +35,7 @@
               </button>
               
               <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -87,6 +87,7 @@
 <h2 id="how-to-use-the-manipulation-handler">How to use the manipulation handler</h2>
 <p>Add the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/ManipulationHandler.cs"><code>ManipulationHandler.cs</code></a> component to a GameObject.</p>
 <p>Make sure to also add a collidable to the object, matching its grabbable bounds. To make the object respond to near articulated hand input, add the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Services/InputSystem/NearInteractionGrabbable.cs"><code>NearInteractionGrabbable.cs</code></a> script as well. </p>
+<p>If you wish to set minimum or maximum values for the object's scale, you can add a <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/TransformScaleHandler.cs"><code>TransformScaleHandler</code></a> script.</p>
 <p><img src="Images/ManipulationHandler/MRTK_ManipulationHandler_Howto.png" alt="Manipulation Handler"></p>
 <h2 id="inspector-properties">Inspector properties</h2>
 <img src="Images/ManipulationHandler/MRTK_ManipulationHandler_Structure.png" width="450">
@@ -119,7 +120,7 @@ Specifies how the object will behave when it is being grabbed with one hand / co
 Specifies how the object will rotate when it is being grabbed with one hand.</p>
 <ul>
 <li><em>Maintain original rotation</em>: Does not rotate object as it is being moved</li>
-<li><em>Maintain rotation to user</em>: Maintains the object's original rotation to the user</li>
+<li><em>Maintain rotation to user</em>: Maintains the object's original rotation for X/Y axis to the user</li>
 <li><em>Gravity aligned maintain rotation to user</em>: Maintains object's original rotation to user, but makes the object vertical. Useful for bounding boxes.</li>
 <li><em>Face user</em>: Ensures object always faces the user. Useful for slates/panels.</li>
 <li><em>Face away from user</em>: Ensures object always faces away from user. Useful for slates/panels that are configured backwards.</li>
@@ -167,7 +168,7 @@ Amount of smoothing to apply to the movement, scale, rotation. Smoothing of 0 m
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Documentation/README_ManipulationHandler.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/README_ManipulationHandler.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

@@ -12,7 +12,7 @@
    | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
-    <link rel="shortcut icon" href="../External/ReadMeImages/favicon.ico">
+    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
@@ -37,7 +37,7 @@
               </button>
               
               <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../External/ReadMeImages/mrt_logo_icon.png" alt="">
+                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -127,13 +127,27 @@
   </h3>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_EnsureInputModule_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.EnsureInputModule*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_EnsureInputModule" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.EnsureInputModule">EnsureInputModule()</h4>
+  <div class="markdown level1 summary"><p>Make sure there is a MixedRealityInputModule on the main camera, which is needed for using Unity UI with MRTK.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void EnsureInputModule()</code></pre>
+  </div>
+  <h5 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_EnsureInputModule_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Workaround for #5061</p>
+</div>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_GenerateHandPose_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.GenerateHandPose*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_GenerateHandPose_ArticulatedHandPose_GestureId_Handedness_Vector3_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.GenerateHandPose(ArticulatedHandPose.GestureId,Handedness,Vector3)">GenerateHandPose(ArticulatedHandPose.GestureId, Handedness, Vector3)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_GenerateHandPose_ArticulatedHandPose_GestureId_Handedness_Vector3_Quaternion_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.GenerateHandPose(ArticulatedHandPose.GestureId,Handedness,Vector3,Quaternion)">GenerateHandPose(ArticulatedHandPose.GestureId, Handedness, Vector3, Quaternion)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static SimulatedHandData.HandJointDataGenerator GenerateHandPose(ArticulatedHandPose.GestureId gesture, Handedness handedness, Vector3 screenPosition)</code></pre>
+    <pre><code class="lang-csharp hljs">public static SimulatedHandData.HandJointDataGenerator GenerateHandPose(ArticulatedHandPose.GestureId gesture, Handedness handedness, Vector3 worldPosition, Quaternion rotation)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -157,7 +171,12 @@
       </tr>
       <tr>
         <td><span class="xref">Vector3</span></td>
-        <td><span class="parametername">screenPosition</span></td>
+        <td><span class="parametername">worldPosition</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Quaternion</span></td>
+        <td><span class="parametername">rotation</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -177,6 +196,114 @@
       </tr>
     </tbody>
   </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_GetInputSimulationService_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.GetInputSimulationService*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_GetInputSimulationService" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.GetInputSimulationService">GetInputSimulationService()</h4>
+  <div class="markdown level1 summary"><p>Utility function to simplify code for getting access to the running InputSimulationService</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static InputSimulationService GetInputSimulationService()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">InputSimulationService</span></td>
+        <td><p>Returns InputSimulationService registered for playmode test scene</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_GetInputSystem_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.GetInputSystem*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_GetInputSystem" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.GetInputSystem">GetInputSystem()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IMixedRealityInputSystem GetInputSystem()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IMixedRealityInputSystem</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_PopHandSimulationProfile_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.PopHandSimulationProfile*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_PopHandSimulationProfile" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.PopHandSimulationProfile">PopHandSimulationProfile()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void PopHandSimulationProfile()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_PushHandSimulationProfile_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.PushHandSimulationProfile*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_PushHandSimulationProfile" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.PushHandSimulationProfile">PushHandSimulationProfile()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void PushHandSimulationProfile()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_Setup_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.Setup*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_Setup" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.Setup">Setup()</h4>
+  <div class="markdown level1 summary"><p>Creates a play mode test scene, creates an MRTK instance, initializes playspace.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Setup()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_TearDown_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.TearDown*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_TearDown" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.TearDown">TearDown()</h4>
+  <div class="markdown level1 summary"><p>Destroys all objects in the play mode test scene, if it has been loaded, and shuts down MRTK instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void TearDown()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_TeardownInputModule_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.TeardownInputModule*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_TeardownInputModule" data-uid="Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.TeardownInputModule">TeardownInputModule()</h4>
+  <div class="markdown level1 summary"><p>Destroy the input module to ensure it gets initialized cleanly for the next test.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void TeardownInputModule()</code></pre>
+  </div>
+  <h5 id="Microsoft_MixedReality_Toolkit_Tests_PlayModeTestUtilities_TeardownInputModule_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Workaround for #5116</p>
+</div>
 </article>
           </div>
           
