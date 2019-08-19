@@ -105,10 +105,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             MixedRealityInspectorUtility.RenderMixedRealityToolkitLogo();
 
             // Render Title
-            EditorGUILayout.BeginHorizontal();
+            using (new EditorGUILayout.HorizontalScope())
+            {
                 EditorGUILayout.LabelField("Mixed Reality Toolkit Optimize Window", MixedRealityStylesUtility.BoldLargeTitleStyle);
-                InspectorUIUtility.RenderDocLinkButton(OptimizeWindow_URL);
-            EditorGUILayout.EndHorizontal();
+                InspectorUIUtility.RenderDocumentationButton(OptimizeWindow_URL);
+            }
 
             EditorGUILayout.LabelField("This tool automates the process of updating your project, currently open scene, and material assets to recommended settings for Mixed Reality", EditorStyles.wordWrappedLabel);
             EditorGUILayout.Space();
@@ -347,7 +348,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     }
                 });
 
-                bool is16BitDepthFormat = MixedRealityOptimizeUtils.IsHololensDepthBufferFormat16bit();
+                bool is16BitDepthFormat = MixedRealityOptimizeUtils.IsWMRDepthBufferFormat16bit();
                 BuildSection("Depth Buffer Format", DepthBufferFormat_URL, GetTitleIcon(is16BitDepthFormat), () =>
                 {
                     EditorGUILayout.LabelField("If sharing the depth buffer with the underlying mixed reality platform, it is generally recommended to utilize a 16-bit depth format buffer to save on performance.", EditorStyles.wordWrappedLabel);
@@ -491,7 +492,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Section Title
             EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(new GUIContent(title, titleIcon), EditorStyles.boldLabel);
-                InspectorUIUtility.RenderDocLinkButton(url);
+                InspectorUIUtility.RenderDocumentationButton(url);
             EditorGUILayout.EndHorizontal();
         }
 

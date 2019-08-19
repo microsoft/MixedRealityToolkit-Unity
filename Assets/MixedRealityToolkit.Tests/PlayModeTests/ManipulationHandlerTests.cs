@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         /// <returns></returns>
         [UnityTest]
-        public IEnumerator Test01_ManipulationHandlerInstantiate()
+        public IEnumerator ManipulationHandlerInstantiate()
         {
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one * 0.2f;
@@ -63,9 +63,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         /// <returns></returns>
         [UnityTest]
-        public IEnumerator Test02_ManipulationHandlerGazeHover()
+        public IEnumerator ManipulationHandlerGazeHover()
         {
-
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one * 0.2f;
 
@@ -697,6 +696,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Collect data for unmodified cube
             OriginOffsetTest expectedTest = new OriginOffsetTest();
             yield return expectedTest.RecordTransformValues(testObject);
+            yield return null;
 
             // Modify cube mesh so origin is offset from centre
             Vector3 offset = Vector3.one * 5;
@@ -718,6 +718,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Collect data for modified cube
             OriginOffsetTest actualTest = new OriginOffsetTest();
             yield return actualTest.RecordTransformValues(testObject);
+            yield return null;
 
             // Test that the results of both tests are equal
             var expectedData = expectedTest.data;
@@ -732,8 +733,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 TestUtilities.AssertAboutEqual(expectedData[i].scale, actualData[i].scale, $"Failed for scale of object for {actualData[i].manipDescription}");
             }
         }
-		
-		/// <summary>
+
+        /// <summary>
         /// This tests the minimum and maximum scaling for manipulation.
         /// This test will scale a cube with two hand manipulation and ensure that
         /// maximum and minimum scales are not exceeded.
@@ -798,6 +799,62 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Assert scale at min
             Assert.AreEqual(Vector3.one * scaleHandler.ScaleMinimum, testObject.transform.localScale);
+        }
+
+        /// <summary>
+        /// This test rotates the head without moving the hand.
+        /// This test is set up to test using the Gestures input simulation mode as this is
+        /// where we observed issues with this.
+        /// If the head rotates, without moving the hand, the grabbed object should not move.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ManipulationHandlerRotateHeadGGV()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // Switch to Gestures
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldIsp = iss.InputSimulationProfile;
+            var isp = ScriptableObject.CreateInstance<MixedRealityInputSimulationProfile>();
+            isp.HandSimulationMode = HandSimulationMode.Gestures;
+            iss.InputSimulationProfile = isp;
+
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.2f;
+            Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
+            Quaternion initialObjectRotation = testObject.transform.rotation;
+            testObject.transform.position = initialObjectPosition;
+
+            var manipHandler = testObject.AddComponent<ManipulationHandler>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+            
+            Vector3 originalHandPosition = new Vector3(0, 0, 0.5f);
+            TestHand hand = new TestHand(Handedness.Right);
+            const int numHandSteps = 1;
+
+            // Grab cube
+            yield return hand.Show(originalHandPosition);
+            yield return null;
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            // Rotate Head and readjust hand
+            int numRotations = 10;
+            for (int i = 0; i < numRotations; i++)
+            {
+                MixedRealityPlayspace.Transform.Rotate(Vector3.up, 180 / numRotations);
+                yield return hand.MoveTo(originalHandPosition, numHandSteps);
+                yield return null;
+
+                // Test Object hasn't moved
+                TestUtilities.AssertAboutEqual(initialObjectPosition, testObject.transform.position, "Object moved while rotating head");
+                TestUtilities.AssertAboutEqual(initialObjectRotation, testObject.transform.rotation, "Object rotated while rotating head", 0.25f);
+            }
+
+            // Restore the input simulation profile
+            iss.InputSimulationProfile = oldIsp;
+            yield return null;
         }
     }
 }

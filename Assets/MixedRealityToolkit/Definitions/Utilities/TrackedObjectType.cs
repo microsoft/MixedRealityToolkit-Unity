@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
+
 namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     public enum TrackedObjectType
@@ -9,21 +11,39 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// Calculates position and orientation from the main camera.
         /// </summary>
         Head = 0,
+
         /// <summary>
-        /// Calculates position and orientation from the left motion-tracked controller.
+        /// (Obsolete) Calculates position and orientation from the left motion-tracked controller.
         /// </summary>
-        MotionControllerLeft,
+        [Obsolete("Use TrackedObjectType.MotionController and TrackedHandedness instead")]
+        MotionControllerLeft = 1,
         /// <summary>
-        /// Calculates position and orientation from the right motion-tracked controller.
+        /// (Obsolete) Calculates position and orientation from the right motion-tracked controller.
         /// </summary>
-        MotionControllerRight,
+        [Obsolete("Use TrackedObjectType.MotionController and TrackedHandedness instead")]
+        MotionControllerRight = 2,
         /// <summary>
-        /// Calculates position and orientation from a tracked hand joint on the left hand.
+        /// (Obsolete) Calculates position and orientation from a tracked hand joint on the left hand.
         /// </summary>
-        HandJointLeft,
+        [Obsolete("Use TrackedObjectType.HandJoint and TrackedHandedness instead")]
+        HandJointLeft = 3,
         /// <summary>
-        /// Calculates position and orientation from a tracked hand joint on the right hand.
+        /// (Obsolete) Calculates position and orientation from a tracked hand joint on the right hand.
         /// </summary>
-        HandJointRight
+        [Obsolete("Use TrackedObjectType.HandJoint and TrackedHandedness instead")]
+        HandJointRight = 4,
+
+        /// <summary>
+        /// Calculates position and orientation from the motion-tracked controller.
+        /// </summary>
+        MotionController = 5,
+        /// <summary>
+        /// Calculates position and orientation from a tracked hand joint
+        /// </summary>
+        HandJoint = 6,
+        /// <summary>
+        /// Calculates position and orientation from a tracked hand joint
+        /// </summary>
+        CustomOverride = 7,
     }
 }

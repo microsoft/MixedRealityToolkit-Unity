@@ -42,13 +42,19 @@ int SampleFunction(int i)
 
 When mentioning code within a sentence `use a single backtick`.
 
-### TODO comments
+### TODOs
 
-To mark areas in the documentation that need to be revisited later again, please use the following comment style, to make it easy to find those places again:
+Avoid using TODOS in docs, as over time these TODOs (like code TODOs) tend to accumulate
+and information about how they should be updated and why gets lost.
 
-\<\!-- TODO: add more details --\>
+If it is absolutely necessary to add a TODO, follow these steps:
 
-Also consider adding pages with TODOs to the [documentation TODO list](DocsToDo.md).
+1. File a new issue on Github describing the context behind the TODO, and provide enough
+   background that another contributor would be able to understand and then address the
+   TODO.
+2. Reference the issue URL in the todo in the docs.
+
+\<\!-- TODO(https://github.com/microsoft/MixedRealityToolkit-Unity/issues/ISSUE_NUMBER_HERE): A brief blurb on the issue --\>
 
 ### Highlighted sections
 
@@ -163,13 +169,10 @@ Also, don't forget to finish all sentences with a period.
 
 ## When you are finished with a page
 
-First off, it is ok for a 'finished' page to contain [TODO comments](#todo-comments). However, once you stop working on a page, please do the following:
-
 1. Make sure you followed the guidelines in this document.
 1. Browse the document structure and see if your new document could be mentioned under the [See also](#see-also) section of other pages.
 1. If available, have someone with knowledge of the topic proof-read the page for technical correctness.
 1. Have someone proof-read your page for style and formatting. This can be someone unfamiliar with the topic, which is also a good idea to get feedback about how understandable the documentation is.
-
 
 ## Source documentation
 API documentation will be generated automatically from the MRTK source files. To facilitate this, source files are required to contain the following: 

@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -9,24 +10,25 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
 {
     [CustomEditor(typeof(SolverHandler))]
     [CanEditMultipleObjects]
-    public class SolverHandlerInspector : ControllerFinderInspector
+    public class SolverHandlerInspector : UnityEditor.Editor
     {
-        private SerializedProperty trackedObjectProperty;
+        private SerializedProperty trackedTargetProperty;
+        private SerializedProperty trackedHandnessProperty;
         private SerializedProperty trackedHandJointProperty;
-        private SerializedProperty transformTargetProperty;
+        private SerializedProperty transformOverrideProperty;
         private SerializedProperty additionalOffsetProperty;
         private SerializedProperty additionalRotationProperty;
         private SerializedProperty updateSolversProperty;
         private SolverHandler solverHandler;
-        private readonly GUIContent trackedTransformGUIContent = new GUIContent("Tracked Transform");
 
-        protected override void OnEnable()
+        private static readonly GUIContent TrackedTypeLabel = new GUIContent("Tracked Target Type");
+
+        protected void OnEnable()
         {
-            base.OnEnable();
-
-            trackedObjectProperty = serializedObject.FindProperty("trackedObjectToReference");
+            trackedTargetProperty = serializedObject.FindProperty("trackedTargetType");
+            trackedHandnessProperty = serializedObject.FindProperty("trackedHandness");
             trackedHandJointProperty = serializedObject.FindProperty("trackedHandJoint");
-            transformTargetProperty = serializedObject.FindProperty("transformTarget");
+            transformOverrideProperty = serializedObject.FindProperty("transformOverride");
             additionalOffsetProperty = serializedObject.FindProperty("additionalOffset");
             additionalRotationProperty = serializedObject.FindProperty("additionalRotation");
             updateSolversProperty = serializedObject.FindProperty("updateSolvers");
@@ -37,42 +39,56 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
-            EditorGUILayout.Space();
+
+            if (target != null)
+            {
+                InspectorUIUtility.RenderHelpURL(target.GetType());
+            }
 
             bool trackedObjectChanged = false;
 
-            if (transformTargetProperty.objectReferenceValue == null || Application.isPlaying)
+            EditorGUI.BeginChangeCheck();
+
+            InspectorUIUtility.DrawEnumSerializedProperty(trackedTargetProperty, TrackedTypeLabel, solverHandler.TrackedTargetType);
+
+            if (!SolverHandler.IsValidTrackedObjectType(solverHandler.TrackedTargetType))
             {
-                EditorGUI.BeginChangeCheck();
-                EditorGUILayout.PropertyField(trackedObjectProperty);
-                if (trackedObjectProperty.enumValueIndex == (int)TrackedObjectType.HandJointLeft ||
-                trackedObjectProperty.enumValueIndex == (int)TrackedObjectType.HandJointRight)
-                {
-                    EditorGUILayout.PropertyField(trackedHandJointProperty);
-                }
-                trackedObjectChanged = EditorGUI.EndChangeCheck();
+                InspectorUIUtility.DrawWarning(" Current Tracked Target Type value of \"" 
+                    + Enum.GetName(typeof(TrackedObjectType), solverHandler.TrackedTargetType) 
+                    + "\" is obsolete. Select MotionController or HandJoint values instead");
             }
 
-            EditorGUILayout.PropertyField(transformTargetProperty, trackedTransformGUIContent);
+            if (trackedTargetProperty.enumValueIndex == (int)TrackedObjectType.HandJoint ||
+                trackedTargetProperty.enumValueIndex == (int)TrackedObjectType.MotionController)
+            {
+                EditorGUILayout.PropertyField(trackedHandnessProperty);
+                if (trackedHandnessProperty.enumValueIndex > (int)Handedness.Both)
+                {
+                    InspectorUIUtility.DrawWarning("Only Handedness values of None, Left, Right, and Both are valid");
+                }
+            }
 
-            EditorGUI.BeginChangeCheck();
+            if (trackedTargetProperty.enumValueIndex == (int)TrackedObjectType.HandJoint)
+            {
+                EditorGUILayout.PropertyField(trackedHandJointProperty);
+            }
+            else if (trackedTargetProperty.enumValueIndex == (int)TrackedObjectType.CustomOverride)
+            {
+                EditorGUILayout.PropertyField(transformOverrideProperty);
+            }
+
             EditorGUILayout.PropertyField(additionalOffsetProperty);
             EditorGUILayout.PropertyField(additionalRotationProperty);
-            bool additionalOffsetChanged = EditorGUI.EndChangeCheck();
+
+            trackedObjectChanged = EditorGUI.EndChangeCheck();
 
             EditorGUILayout.PropertyField(updateSolversProperty);
 
             serializedObject.ApplyModifiedProperties();
 
-            if (Application.isPlaying && trackedObjectChanged)
+            if (EditorApplication.isPlaying && trackedObjectChanged)
             {
                 solverHandler.RefreshTrackedObject();
-            }
-
-            if (Application.isPlaying && additionalOffsetChanged)
-            {
-                solverHandler.AdditionalOffset = additionalOffsetProperty.vector3Value;
-                solverHandler.AdditionalRotation = additionalRotationProperty.vector3Value;
             }
         }
     }

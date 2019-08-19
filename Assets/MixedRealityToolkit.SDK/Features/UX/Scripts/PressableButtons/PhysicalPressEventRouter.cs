@@ -48,11 +48,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         public void OnHandPressUntouched()
         {
-            if (InteractableOnClick == PhysicalPressEventBehavior.EventOnTouch &&
-                routingTarget != null)
+            if (routingTarget != null)
             {
                 routingTarget.SetPhysicalTouch(false);
-                routingTarget.SetPress(true);
+                if (InteractableOnClick == PhysicalPressEventBehavior.EventOnTouch)
+                {
+                    routingTarget.SetPress(true);
+                }
             }
         }
 
@@ -80,6 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                     routingTarget.TriggerOnClick();
                 }
                 routingTarget.SetPress(false);
+                routingTarget.SetPhysicalTouch(false);
             }
         }
     }

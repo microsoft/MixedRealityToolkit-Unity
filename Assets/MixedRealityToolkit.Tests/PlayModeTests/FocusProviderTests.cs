@@ -40,24 +40,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestGazeCursorArticulated()
         {
-            IMixedRealityInputSystem inputSystem;
-            MixedRealityServiceRegistry.TryGetService(out inputSystem);
-            Assert.IsNotNull(inputSystem, "MixedRealityInputSystem is null!");
-
+            IMixedRealityInputSystem inputSystem = PlayModeTestUtilities.GetInputSystem();
             yield return null;
+
             // Verify that the gaze cursor is visible at the start
             Assert.IsTrue(inputSystem.GazeProvider.GazePointer.IsInteractionEnabled, "Gaze cursor should be visible at start");
 
             // raise hand up -- gaze cursor should no longer be visible
             // disable user input
-            InputSimulationService inputSimulationService = (inputSystem as IMixedRealityDataProviderAccess).GetDataProvider<InputSimulationService>();
-            Assert.IsNotNull(inputSimulationService, "InputSimulationService is null!");
-
+            InputSimulationService inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
             inputSimulationService.UserInputEnabled = false;
+
             ArticulatedHandPose gesturePose = ArticulatedHandPose.GetGesturePose(ArticulatedHandPose.GestureId.Open);
             var handOpenPose = PlayModeTestUtilities.GenerateHandPose(ArticulatedHandPose.GestureId.Open, Handedness.Right, Vector3.forward * 0.1f, Quaternion.identity);
             inputSimulationService.HandDataRight.Update(true, false, handOpenPose);
             yield return null;
+
             // Gaze cursor should not be visible
             Assert.IsFalse(inputSystem.GazeProvider.GazePointer.IsInteractionEnabled, "Gaze cursor should not be visible when one articulated hand is up");
             inputSimulationService.HandDataRight.Update(false, false, handOpenPose);
@@ -85,13 +83,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return null;
 
-            Assert.NotNull(MixedRealityToolkit.InputSystem.GazeProvider.GazeTarget, "GazeProvider target is null when looking at an object");
+            Assert.NotNull(CoreServices.InputSystem.GazeProvider.GazeTarget, "GazeProvider target is null when looking at an object");
 
             TestHand h = new TestHand(Handedness.Right);
             yield return h.Show(Vector3.forward * 0.2f);
             yield return null;
 
-            Assert.NotNull(MixedRealityToolkit.InputSystem.GazeProvider.GazeTarget, "GazeProvider target is null when looking at an object with hand raised");
+            Assert.NotNull(CoreServices.InputSystem.GazeProvider.GazeTarget, "GazeProvider target is null when looking at an object with hand raised");
         }
     }
 }

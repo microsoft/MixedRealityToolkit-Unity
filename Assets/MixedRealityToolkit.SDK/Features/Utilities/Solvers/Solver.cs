@@ -12,23 +12,60 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     /// as long as updateLinkedTransform is false.
     /// </summary>
     [RequireComponent(typeof(SolverHandler))]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Solver.html")]
     public abstract class Solver : MonoBehaviour
     {
         [SerializeField]
         [Tooltip("If true, the position and orientation will be calculated, but not applied, for other components to use")]
         private bool updateLinkedTransform = false;
 
+        /// <summary>
+        /// If true, the position and orientation will be calculated, but not applied, for other components to use
+        /// </summary>
+        public bool UpdateLinkedTransform
+        {
+            get => updateLinkedTransform;
+            set => updateLinkedTransform = value;
+        }
+
         [SerializeField]
         [Tooltip("If 0, the position will update immediately.  Otherwise, the greater this attribute the slower the position updates")]
         private float moveLerpTime = 0.1f;
+
+        /// <summary>
+        /// If 0, the position will update immediately.  Otherwise, the greater this attribute the slower the position updates
+        /// </summary>
+        public float MoveLerpTime
+        {
+            get => moveLerpTime;
+            set => moveLerpTime = value;
+        }
 
         [SerializeField]
         [Tooltip("If 0, the rotation will update immediately.  Otherwise, the greater this attribute the slower the rotation updates")]
         private float rotateLerpTime = 0.1f;
 
+        /// <summary>
+        /// If 0, the rotation will update immediately.  Otherwise, the greater this attribute the slower the rotation updates")]
+        /// </summary>
+        public float RotateLerpTime
+        {
+            get => rotateLerpTime;
+            set => rotateLerpTime = value;
+        }
+
         [SerializeField]
         [Tooltip("If 0, the scale will update immediately.  Otherwise, the greater this attribute the slower the scale updates")]
         private float scaleLerpTime = 0;
+
+        /// <summary>
+        /// If 0, the scale will update immediately.  Otherwise, the greater this attribute the slower the scale updates
+        /// </summary>
+        public float ScaleLerpTime
+        {
+            get => scaleLerpTime;
+            set => scaleLerpTime = value;
+        }
 
         [SerializeField]
         [Tooltip("If true, the Solver will respect the object's original scale values")]
@@ -38,6 +75,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         [Tooltip("If true, updates are smoothed to the target. Otherwise, they are snapped to the target")]
         private bool smoothing = true;
 
+        /// <summary>
+        /// If true, updates are smoothed to the target. Otherwise, they are snapped to the target
+        /// </summary>
         public bool Smoothing
         {
             get => smoothing;
@@ -53,7 +93,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <summary>
         /// The handler reference for this solver that's attached to this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>
         /// </summary>
-        [SerializeField]
         [HideInInspector]
         protected SolverHandler SolverHandler;
 
@@ -154,16 +193,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         #region MonoBehaviour Implementation
 
-        protected virtual void OnValidate()
+        protected virtual void Awake()
         {
             if (SolverHandler == null)
             {
                 SolverHandler = GetComponent<SolverHandler>();
             }
-        }
 
-        protected virtual void Awake()
-        {
             if (updateLinkedTransform && SolverHandler == null)
             {
                 Debug.LogError("No SolverHandler component found on " + name + " when UpdateLinkedTransform was set to true! Disabling UpdateLinkedTransform.");

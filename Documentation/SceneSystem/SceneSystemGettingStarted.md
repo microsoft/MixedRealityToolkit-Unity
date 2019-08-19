@@ -1,6 +1,3 @@
-> [!IMPORTANT]
-> This feature is currently available in the [**mrtk_development**](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development) branch.
-
 # Scene system overview
 
 ## When to use the scene system

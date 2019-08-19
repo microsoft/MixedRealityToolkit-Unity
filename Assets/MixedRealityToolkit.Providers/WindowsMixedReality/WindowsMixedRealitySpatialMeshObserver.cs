@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         "Windows Mixed Reality Spatial Mesh Observer",
         "Profiles/DefaultMixedRealitySpatialAwarenessMeshObserverProfile.asset", 
         "MixedRealityToolkit.SDK")]
-    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
     public class WindowsMixedRealitySpatialMeshObserver : 
         BaseSpatialObserver, 
         IMixedRealitySpatialAwarenessMeshObserver, 
@@ -679,20 +679,31 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// </summary>
         private void ConfigureObserverVolume()
         {
+            if (MixedRealityPlayspace.Transform == null)
+            {
+                Debug.LogError("Unexpected failure acquiring MixedRealityPlayspace.");
+                return;
+            }
+
+            // The observer's origin is in world space, we need it in the camera's parent's space
+            // to set the volume. The MixedRealityPlayspace provides that space that the camera/head moves around in.
+            Vector3 observerOriginPlayspace = MixedRealityPlayspace.InverseTransformPoint(ObserverOrigin);
+            Quaternion observerRotationPlayspace = Quaternion.Inverse(MixedRealityPlayspace.Rotation) * ObserverRotation;
+
             // Update the observer
             switch(ObserverVolumeType)
             {
                 case VolumeType.AxisAlignedCube:
-                    observer.SetVolumeAsAxisAlignedBox(ObserverOrigin, ObservationExtents);
+                    observer.SetVolumeAsAxisAlignedBox(observerOriginPlayspace, ObservationExtents);
                     break;
 
                 case VolumeType.Sphere:
                     // We use the x value of the extents as the sphere radius
-                    observer.SetVolumeAsSphere(ObserverOrigin, ObservationExtents.x);
+                    observer.SetVolumeAsSphere(observerOriginPlayspace, ObservationExtents.x);
                     break;
 
                 case VolumeType.UserAlignedCube:
-                    observer.SetVolumeAsOrientedBox(ObserverOrigin, ObservationExtents, ObserverRotation);
+                    observer.SetVolumeAsOrientedBox(observerOriginPlayspace, ObservationExtents, observerRotationPlayspace);
                     break;
 
                 default:
@@ -737,13 +748,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
 
             if (outstandingMeshObject == null)
             {
-                Debug.LogWarning($"OnDataReady called for mesh id {cookedData.id.handle} while no request was outstanding.");
                 return;
             }
 
             if (!outputWritten)
             {
-                Debug.LogWarning($"OnDataReady reported no data written for mesh id {cookedData.id.handle}");
                 ReclaimMeshObject(outstandingMeshObject);
                 outstandingMeshObject = null;
                 return;

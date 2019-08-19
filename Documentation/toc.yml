@@ -9,6 +9,8 @@
     href: Performance/PerfGettingStarted.md
   - name: Hologram Stabilization
     href: Hologram-Stabilization.md
+  - name: Known Issues
+    href: KnownIssues.md
 - name: Architecture
   items:
   - name: Overview
@@ -87,6 +89,8 @@
       href: README_HandInteractionExamples.md
     - name: Eye Tracking Interaction Example
       href: EyeTracking/EyeTracking_ExamplesOverview.md
+  - name: Detecting Platform Capabilities
+    href: DetectingPlatformCapabilities.md
   - name: MRTK Standard Shader
     href: README_MRTKStandardShader.md
   - name: Spatial Awareness
@@ -95,6 +99,8 @@
       href: SpatialAwareness/SpatialAwarenessGettingStarted.md
     - name: Configuring the Spatial Awareness Mesh Observer
       href: SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.md
+    - name: Spatial Object Mesh Observer
+      href: SpatialAwareness/SpatialObjectMeshObserver.md
     - name: Usage Guide
       href: SpatialAwareness/UsageGuide.md
   - name: Multi Scene System
@@ -124,7 +130,11 @@
     - name: Using the Visual Profiler
       href: Diagnostics/UsingVisualProfiler.md
   - name: Services
-    href: MixedRealityServices.md
+    items:
+    - name: What makes a mixed reality feature
+      href: MixedRealityServices.md
+    - name: What are the MixedRealityServiceRegistry and IMixedRealityServiceRegistrar
+      href: ServiceUtilities/MixedRealityServiceRegistryAndIMixedRealityServiceRegistrar.md
   - name: Packages
     items:
     - name: MRTK Packages
@@ -133,8 +143,6 @@
       href: Packaging/MRTK_Modularization.md
   - name: Tools
     items:
-    - name: Build Window
-      href: Tools/BuildWindow.md
     - name: Dependency Window
       href: Tools/DependencyWindow.md
     - name: Optimize Window
@@ -150,10 +158,6 @@
     href: Extensions/SceneTransitionService/SceneTransitionServiceOverview.md
   - name: Experimental Features
     href: ExperimentalFeatures.md
-  - name: Advanced topics
-    items:
-    - name: Shared Experiences
-      href: TODO.md
 - name: Contributing
   items:
   - name: Contributing Overview

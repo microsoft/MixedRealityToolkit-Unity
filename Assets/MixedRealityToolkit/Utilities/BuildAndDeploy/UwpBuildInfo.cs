@@ -25,6 +25,11 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         public bool RebuildAppx { get; set; } = false;
 
         /// <summary>
+        /// VC Platform Toolset used building the appx bundle
+        /// </summary>
+        public string PlatformToolset { get; set; }
+
+        /// <summary>
         /// If true, the 'Gaze Input' capability will be added to the AppX
         /// manifest after the Unity build.
         /// </summary>

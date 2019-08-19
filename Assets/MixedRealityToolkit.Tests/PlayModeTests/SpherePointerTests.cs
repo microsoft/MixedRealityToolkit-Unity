@@ -62,6 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Show hand far enough from the test collider
             Vector3 idlePos = new Vector3(0.05f, 0, 1.0f);
             yield return rightHand.Show(idlePos);
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
 
             var pointer = rightHand.GetPointer<SpherePointer>();
             Assert.IsNotNull(pointer, "Expected to find SpherePointer in the hand controller");

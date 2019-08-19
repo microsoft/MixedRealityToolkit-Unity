@@ -72,17 +72,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <summary>
         /// Draws a documentation link for the service.
         /// </summary>
-        protected void RenderDocLink(Object profileObject)
+        protected void RenderDocumentation(Object profileObject)
         {
             if (profileObject == null)
             {   // Can't proceed if profile is null.
                 return;
             }
 
-            DocLinkAttribute docLink = profileObject.GetType().GetCustomAttribute<DocLinkAttribute>();
-            if (docLink != null)
+            HelpURLAttribute helpURL = profileObject.GetType().GetCustomAttribute<HelpURLAttribute>();
+            if (helpURL != null)
             {
-                InspectorUIUtility.RenderDocLinkButton(docLink.URL);
+                InspectorUIUtility.RenderDocumentationButton(helpURL.URL);
             }
         }
 
@@ -159,7 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 if (!profile.IsCustomProfile)
                 {
                     EditorGUILayout.HelpBox("Default MRTK profiles cannot be edited. Create a clone of this profile to modify settings.", MessageType.Warning);
-                    if (InspectorUIUtility.RenderIndentedButton(new GUIContent("Clone"), EditorStyles.miniButton))
+                    if (GUILayout.Button(new GUIContent("Clone")))
                     {
                         MixedRealityProfileCloneWindow.OpenWindow(null, (BaseMixedRealityProfile)target, null);
                     }
@@ -198,7 +198,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(new GUIContent(title, description), EditorStyles.boldLabel, GUILayout.ExpandWidth(true));
-                RenderDocLink(selectionObject);
+                RenderDocumentation(selectionObject);
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.LabelField(string.Empty, GUI.skin.horizontalSlider);
