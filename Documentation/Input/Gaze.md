@@ -29,7 +29,7 @@ in the *Pointer* section of the input system profile:
 ![Gaze Configuration Entrypoint](../../Documentation/Images/Input/GazeConfigurationEntrypoint.png)
 
 Like other sources of input, the gaze provider interacts with objects in the scene
-through use of a [pointer](), but in the case of the gaze provider, its pointer is an [internal
+through use of a pointer, but in the case of the gaze provider, its pointer is an [internal
 implementation detail](xref:Microsoft.MixedReality.Toolkit.Input.GazeProvider.InternalGazePointer)
 instead of a pointer that is configured through a profile.
 
