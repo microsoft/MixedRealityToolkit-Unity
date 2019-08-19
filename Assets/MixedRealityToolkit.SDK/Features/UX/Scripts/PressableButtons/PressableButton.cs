@@ -50,8 +50,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 // Convert world to local distances and vice versa whenever we switch the mode
                 if (value != distanceSpaceMode)
                 {
-                    // NOTE: This code is copied/pasted in PressableButtonInspector because
-                    // the inspector can only modify the serialized field and not the property
                     distanceSpaceMode = value;
                     float scale = (distanceSpaceMode == SpaceMode.Local) ? WorldToLocalScale : LocalToWorldScale;
                     startPushDistance *= scale;
@@ -215,7 +213,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Transform for world to local space in the world direction of press
         /// Multiply world scale positions by this value to convert to local space
         /// </summary>
-        public float WorldToLocalScale
+        private float WorldToLocalScale
         {
             get
             {
@@ -227,7 +225,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Transform for local to world space in the world direction of a press
         /// Multiply local scale positions by this value to convert to world space
         /// </summary>
-        public float LocalToWorldScale
+        private float LocalToWorldScale
         {
             get
             {

@@ -262,16 +262,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (EditorGUI.EndChangeCheck() && currentMode != distanceSpaceMode.intValue)
             {
                 // Changing the DistanceSpaceMode requires updating the plane distance values so they stay in the same relative ratio positions
-                // NOTE: This is redundant code with the PressableButton.DistanceSpaceMode setter
-                // Unfortunately, the SerializedObject modifies the private serialized field and not the setter so we have to do the scaling manually
-                float scale = ((PressableButton.SpaceMode)distanceSpaceMode.enumValueIndex == PressableButton.SpaceMode.Local) ? button.WorldToLocalScale : button.LocalToWorldScale;
-
-                startPushDistance.floatValue *= scale;
-                maxPushDistance.floatValue *= scale;
-                pressDistance.floatValue *= scale;
-                releaseDistanceDelta.floatValue *= scale;
-
-                serializedObject.ApplyModifiedProperties();
+                Undo.RecordObject(target, string.Concat("Trigger Plane Distance Conversion of ", button.name));
+                button.DistanceSpaceMode = (PressableButton.SpaceMode)distanceSpaceMode.enumValueIndex;
+                serializedObject.Update();
             }
 
             DrawPropertiesExcluding(serializedObject, excludeProperties);
