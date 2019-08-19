@@ -110,18 +110,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private LayerMask[] focusLayerMasks = null;
 
         /// <summary>
-        /// Sets the focus point of the specified pointer, overriding whatever focus point was currently set. This can be used to change
+        /// Sets the focus point of the specified pointer, overriding the focus point that was currently set. This can be used to change
         /// the focus point when focus is locked.
         /// </summary>
         /// <returns>
         /// True if the pointer focus point was set successfully. False if not,
         /// which can happen if the pointer is not associated with the FocusProvider
         /// </returns>
-        public bool TrySetFocusPoint(IMixedRealityPointer pointer, GameObject gameObject, Vector3 focusPoint)
+        public bool TrySetFocusPoint(IMixedRealityPointer pointer, GameObject gameObject, Vector3 focusPoint, Vector3 focusNormal)
         {
             if (TryGetPointerData(pointer, out PointerData pointerData))
             {
-                pointerData.SetFocusPoint(gameObject, focusPoint, (pointer.Position - focusPoint).magnitude);
+                pointerData.SetFocusPoint(gameObject, focusPoint, (pointer.Position - focusPoint).magnitude, focusNormal);
                 return true;
             }
             else
@@ -480,12 +480,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return Pointer != null ? Pointer.GetHashCode() : 0;
             }
 
-            internal void SetFocusPoint(GameObject gameObject, Vector3 point, float distance)
+            /// <summary>
+            /// Overrides existing focus details with the specified parameters.
+            /// </summary>
+            internal void SetFocusPoint(GameObject gameObject, Vector3 point, float distance, Vector3 normal)
             {
                 focusDetails.Object = gameObject;
                 focusDetails.RayDistance = distance;
                 focusDetails.Point = point;
-                focusDetails.PointLocalSpace = focusDetails.Object.transform.InverseTransformPoint(point);
+                focusDetails.Normal = normal;
+                focusDetails.PointLocalSpace = gameObject.transform.InverseTransformPoint(point);
+                focusDetails.NormalLocalSpace = gameObject.transform.InverseTransformDirection(normal);
             }
         }
 
