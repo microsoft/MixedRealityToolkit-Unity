@@ -115,7 +115,7 @@ Useful Sphere Pointer properties:
 
 ### Pointer event interfaces
 
-MonoBehaviors that implement one or more of the following interfaces and are assigned to a GameObject with a `Collider` will receive Pointer interactions events as defined by the associated interface. 
+MonoBehaviors that implement one or more of the following interfaces and are assigned to a GameObject with a `Collider` will receive Pointer interactions events as defined by the associated interface.
 
 | Event | Description | Handler |
 | --- | --- | --- |
@@ -126,6 +126,19 @@ Touch Started / Updated / Completed | Raised by touch-aware pointers like [`Poke
 
 > [!NOTE]
 > [`IMixedRealityFocusChangedHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusChangedHandler) and [`IMixedRealityFocusHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusHandler) should be handled in the objects they are raised on. It is possible to receive focus events globally but, unlike other input events, global event handler won't block receiving events based on focus (the event will be received by both global handler and a corresponding object in focus).
+
+#### Pointer input events in action
+
+1. The MRTK input system recognizes an input event has occurred
+1. The MRTK input system fires the relevant interface function for the input event to all registered global input handlers
+1. The input system determines which GameObject is in focus for the pointer that fired the event
+    1. The input system utilizes the [Unity's Event System](https://docs.unity3d.com/Manual/EventSystem.html) to fire the relevant interface function for all matching components on the focused GameObject
+        - Example: Components implementing the interface [`IMixedRealityFocusHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler) will be searched for a GameObject gains or loses focus
+        - Note: The Unity Event System will bubble up to search the parent GameObject if no components matching the desired interface are found on the current GameObject..
+1. If no global input handlers are registered and no GameObject is found with a matching component/interface, then the input system will call each fallback registered input handlers
+
+> [!NOTE]
+> [Pointer input events](#pointer-event-interfaces) are handled in a slightly different manner than [regular input event interfaces](InputEvents.md). In particular, pointer input events are handled only by the GameObject in focus by the pointer that fired the input event - as well as any global input handlers. Regular input events are handled by GameObjects in focus for all active pointers.
 
 #### Example
 
