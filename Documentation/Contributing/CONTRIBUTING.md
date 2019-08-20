@@ -40,7 +40,7 @@ To get started, simply follow these steps:
 1. Fork the repository. Click on the "Fork" button on the top right of the page and follow the flow.
 1. Create a branch in your fork (off of the [mrtk_development](https://github.com/microsoft/mixedrealitytoolkit-unity/tree/mrtk_development) branch) to make it easier for you to isolate your fork.
     - For the legacy HoloToolkit use the [htk_development](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/htk_development) branch
-1. Instructions for writing and running tests are at [UnitTests](UnitTests.md)
+1. Instructions for writing and running tests are at [UnitTests](UnitTests.md).
 1. Instructions for building and deploying MRTK are at [BuildAndDeploy](../BuildAndDeploy.md). 
 1. Make **small and frequent** commits that include tests which could be a unity scene showing usage of your feature.
 1. Make sure that all the tests continue to pass.
@@ -64,9 +64,9 @@ A comment in the PR will let you know if you do.
 When you are ready:
 * Start a GitHub pull request to merge your topic branch targeting the [mrtk_development](https://github.com/microsoft/mixedrealitytoolkit-unity/tree/mrtk_development) branch.
 * Ensure you fill in all details required by the Pull Request template, ensuring you reference any Issue / Feature Request or Task the PR relates to.
-* Validate that you are only checking in files / changes related to the PR
-* Check your documentation is up to date and included (unless submitted in a previous PR)
-* If adding a new feature, check that tests are included to validate the feature (see [UnitTests](UnitTests.md))
+* Validate that you are only checking in files / changes related to the PR.
+* Check your documentation is up to date and included (unless submitted in a previous PR).
+* If adding a new feature, check that tests are included to validate the feature (see [UnitTests](UnitTests.md)).
 * If fixing a bug, please write a test to catch the bug. This is to make sure your fix does not regress in the future.
 
 The project maintainers will review your changes. We aim to review all changes within three business days. Please address any review comments, push to your topic branch, and post a comment letting us know that there's new stuff to review.
