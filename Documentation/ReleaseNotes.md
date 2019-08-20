@@ -8,7 +8,7 @@
 - [What's new](#whats-new-in-200)
 - [Known issues](#known-issues-in-200)
 
-This release of the Microsoft Mixed Reality Toolkit 2.0.0 supports the following devices and platforms.
+This release of the Microsoft Mixed Reality Toolkit supports the following devices and platforms.
 
 - Microsoft HoloLens 2
 - Microsoft HoloLens (1st gen)
@@ -24,7 +24,7 @@ The following software is required.
 ### Upgrading projects to 2.0.0
 
 Since the RC2 release, there have been several changes that may impact application projects,
-including some files moving to new folder locations. Breaking change details, including mitigation guidance, can be found in the [**Updating from RC2 to 2.0.0**](Updating.md) article.
+including some files moving to new folder locations. Breaking change details, including mitigation guidance, can be found in the [**Updating from RC2**](Updating.md) article.
 
 For the smoothest upgrade path, please use the following steps.
 
@@ -51,7 +51,7 @@ For the smoothest upgrade path, please use the following steps.
     - Select **MixedRealityToolkit -> Add to Scene and Configure**
 
 > [!Important]
-> Some profiles have been changed (properties have been added) in 2.0.0. If the project has custom
+> Some profiles have been changed (properties have been added) in this release. If the project has custom
 profiles, please open them to verify that all of the updated properties are correctly configured.
 
 ### What's new in 2.0.0
@@ -83,8 +83,6 @@ The [CoreServices](xref:Microsoft.MixedReality.Toolkit.CoreServices) static clas
 MixedRealityServiceRegistry to provide applications with a fast and convenient mechanism to acquire instances of core
 services (ex: Input System).
 
-To access extension service instances, use `MixedRealityServiceRegistry.TryGetService<T>`.
-
 **Default HoloLens (1st gen) profile**
 
 We have added a new profile for HoloLens (1st gen) development that includes some of the
@@ -100,6 +98,11 @@ Mixed Reality Toolkit's **Active Profile** to **DefaultHoloLens1ConfigurationPro
 A [dependency window](Tools/DependencyWindow.md) has been added which displays how assets reference and depend on each other.
 This tool can be used to easily determine which assets within a project are not being used.
 
+**Example: Launch applications from within your Unity app**
+
+See the HandInteractionExamples scene in the Examples package (Demos\HandInteraction\Scenes\HandInteractionDemos.unity) for a
+demonstration of using the LaunchUri script to start an external application.
+
 **Extension Service Creation Wizard**
 
 Making the transition from singletons to services can be difficult. The [Extension Service Creation Wizard](Tools/ExtensionServiceCreationWizard.md)
@@ -111,7 +114,8 @@ The fingertip cursor has been updated to better match the HoloLens 2 shell.
 
 **Hand Menu Graduated from Experimental**
 
-The HandConstraint and HandConstraintPalmUp solvers are now an official feature (no longer experimental) and have improved documentation.
+The [HandConstraint](Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) and [HandConstraintPalmUp](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp)
+solvers are now an official feature (no longer experimental) and have improved documentation.
 
 The HandConstraintPalmUp solver now has a toggle to enforce the hand’s fingers are coplanar before activating.
 
@@ -138,15 +142,8 @@ Specify the desired raycast provider in the Input System's configuration profile
 
 **Input Animation Recording**
  
-MRTK 2.0.0 features a [recording system](InputSimulation/InputAnimationRecording.md) by which head movement and hand tracking
+MRTK features a [recording system](InputSimulation/InputAnimationRecording.md) by which head movement and hand tracking
 data can be stored in animation files. The recorded data can then be played back using the [input simulation system](InputSimulation/InputSimulationService.md).
-
-**Launch applications from within your Unity app**
-
-On HoloLens 2 and Windows Mixed Reality Immersive applications, you can now launch applications
-from within your Uniity application. See the HandInteractionExamples scene in the Examples package
-(Demos\HandInteraction\Scenes\HandInteractionDemos.unity) for a demonstration of using the LaunchUri script
-to start an external application.
 
 **MRTK Standard Shader**
 
@@ -170,11 +167,13 @@ configuring a mixed reality project for best performance in Unity.
 
 **Radial Solver**
 
-There have been improvements on vertical positioning. Check ‘Use Fixed Vertical Position’ to lock the vertical movement to achieve shell-style tag-along behavior. You can see the example of lazy-following tag-along behavior in the ‘ToggleFeaturesPanel’ prefab .
+There have been improvements on vertical positioning. Check ‘Use Fixed Vertical Position’ to lock the vertical movement
+to achieve shell-style tag-along behavior. You can see the example of lazy-following tag-along behavior in the
+‘ToggleFeaturesPanel’ prefab .
 
 **SceneSystem**
 
-MRTK 2.0.0 has added the [Scene System](SceneSystem/SceneSystemGettingStarted.md) to help with
+The [Scene System](SceneSystem/SceneSystemGettingStarted.md) has been added to help with
 applications that contain more than once scene.
 
 **Service managers (experimental)**
@@ -227,8 +226,7 @@ clear color for use in easy post compositing of images for documentation or medi
 
 **UX controls**
 
-The following UX controls have been added and/or improved in version 2.0.0. In addition, those in the
-following list can now be instantiated and configured from code.
+The following UX controls in the following list can now be instantiated and configured from code.
 
 - BoundingBox
 - ManipulationHandler
@@ -237,12 +235,11 @@ following list can now be instantiated and configured from code.
 
 **Updated architecture documentation**
 
-The [archtecture documentation](Architecture/Overview.md) is all new for version 2.0.0.
+The [archtecture documentation](Architecture/Overview.md) is all new for this version.
 
 ### Known issues in 2.0.0
 
-The sections below highlight some of the known issues in the Microsoft Mixed Reality Toolkit
-2.0.0.
+The sections below highlight some of the known issues in the Microsoft Mixed Reality Toolkit.
 
 **Extension service wizard**
 
