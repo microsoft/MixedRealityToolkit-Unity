@@ -130,24 +130,7 @@ If you need to move the players start point, then **move the scene content and N
 6. Hit play and test out hand simulation by pressing spacebar.
 
 
-You are now ready to start building your project!
-
-## Builing and Deploying MRTK
-When you're ready to run your app on HoloLens as a standalone app, build and deploy your project. You build and deploy your MRTK project just like any other Unity project, using Unity's Build window. Learn more at [Publishing Builds](https://docs.unity3d.com/Manual/PublishingBuilds.html).
-
-### Building and Deploying MRTK to HoloLens 1 and HoloLens 2 (UWP)
-On HoloLens, building the MRTK is just like building any other UWP app, there's nothing MRTK specific. Follow instructions at https://docs.microsoft.com/en-us/windows/mixed-reality/mrlearning-base-ch1 for more information on how to build and deploy your app to HloLens.
-
-**Tip:** When building for WMR, HoloLens 1, or HoloLens 2, it is recommended that your build settings "Target SDK Version"
-and "Minimum Platform Version" look like they do in the picture below:
-
-![](../Documentation/Images/getting_started/BuildWindow.png)
-
-The other settings can be different (for example, Build Configuration/Architecture/Build Type and others can always
-be changed inside the Visual Studio solution).
-
-Make sure that you click on "Target SDK Version" and that it has the option "10.0.18362.0" - if this is missing,
-it means you have to install [the latest Windows SDK](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk).
+You are now ready to build and deploy to device! Follow the steps instructions at [Build and Deploy MRTK](BuildAndDeploy.md).
 
 ## Next steps
 
