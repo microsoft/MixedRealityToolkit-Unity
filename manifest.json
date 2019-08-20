@@ -470,6 +470,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/BuildAndDeploy.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/BuildAndDeploy.html",
+          "hash": "N5bEYEddRT+b94WBuXQI4w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/Contributing/BreakingChanges.md",
       "output": {
         ".html": {
@@ -486,7 +498,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/CONTRIBUTING.html",
-          "hash": "3W9J8dxQURglGq0U/0VF2Q=="
+          "hash": "dLUDnvFr2lrAfxbIHfErww=="
         }
       },
       "is_incremental": false,
@@ -762,7 +774,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/GettingStartedWithTheMRTK.html",
-          "hash": "JgRI8N32L3njvm07gaZxHQ=="
+          "hash": "S9K+9XF4F4V3YNNISGFPxA=="
         }
       },
       "is_incremental": false,
@@ -5581,7 +5593,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "VTF7QrfOiYhPwywfYS7aCA=="
+          "hash": "IYt5z1lIBsMZNudEsrFmzw=="
         }
       },
       "is_incremental": false,
@@ -18707,16 +18719,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 116,
-          "skipped_file_count": 0
-        },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 1086,
+          "skipped_file_count": 0
+        },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 117,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
