@@ -145,20 +145,7 @@ If you need to move the players start point, then **move the scene content and N
 
 6. Hit play and test out hand simulation by pressing spacebar.
 
-You are now ready to start building your project!
-
-## Recommended build settings (UWP)
-
-When building for WMR, HoloLens 1, or HoloLens 2, it is recommended that your build settings "Target SDK Version"
-and "Minimum Platform Version" look like they do in the picture below:
-
-![Build Window](../Documentation/Images/getting_started/BuildWindow.png)
-
-The other settings can be different (for example, Build Configuration/Architecture/Build Type and others can always
-be changed inside the Visual Studio solution).
-
-Make sure that you click on "Target SDK Version" and that it has the option "10.0.18362.0" - if this is missing,
-it means you have to install [the latest Windows SDK](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk).
+You are now ready to build and deploy to device! Follow the steps instructions at [Build and Deploy MRTK](BuildAndDeploy.md).
 
 ## Next steps
 

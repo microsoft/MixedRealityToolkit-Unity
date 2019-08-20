@@ -45,14 +45,15 @@ To get started, simply follow these steps
 1. Fork the repository. Click on the "Fork" button on the top right of the page and follow the flow.
 2. Create a branch in your fork (off of the [mrtk_development](https://github.com/microsoft/mixedrealitytoolkit-unity/tree/mrtk_development) branch) to make it easier for you to isolate your fork.
     - For the legacy HoloToolkit use the [htk_development](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/htk_development) branch
-3. Instructions for getting the project building and running the tests are in the [README](../../README.md). 
-4. Make **small and frequent** commits that include tests which could be a unity scene showing usage of your feature.
-5. Make sure that all the tests continue to pass.
-6. Follow the [Coding Guidelines](CodingGuidelines.md).
-7. Ensure the code and feature(s) are documented as described in the [Documentation Guidelines](DocumentationGuide.md).
-8. Ensure the code works as intended on all [platforms](#supported-platforms).
+3. Instructions for running tests are at [UnitTests](UnitTests.md)
+4. Instructions for building and deploying MRTK are at [BuildAndDeploy](../BuildAndDeploy.md). 
+5. Make **small and frequent** commits that include tests which could be a unity scene showing usage of your feature.
+6. Make sure that all the tests continue to pass.
+7. Follow the [Coding Guidelines](CodingGuidelines.md).
+8. Ensure the code and feature(s) are documented as described in the [Documentation Guidelines](DocumentationGuide.md).
+9. Ensure the code works as intended on all [platforms](#supported-platforms).
     - For Windows UWP projects, your code must be [WACK compliant](https://developer.microsoft.com/en-us/windows/develop/app-certification-kit). To do this, generate a Visual Studio solution, right click on project; *Store* > *Create App Packages*. Follow the prompts and run WACK tests. Make sure they all succeed.
-9. Update the documentation with additional information as needed.
+10. Update the documentation with additional information as needed.
 
 
 # Pull request

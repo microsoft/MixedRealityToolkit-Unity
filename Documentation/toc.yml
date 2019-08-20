@@ -3,6 +3,8 @@
   items:
   - name: Upgrading from HTK
     href: HTKToMRTKPortingGuide.md
+  - name: Building and Deploying MRTK
+    href: BuildAndDeploy.md
   - name: Updating from RC2 to GA
     href: UpdatingToGA.md
   - name: Performance
