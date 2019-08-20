@@ -12,5 +12,5 @@ and "Minimum Platform Version" look like they do in the picture below:
 The other settings can be different (for example, Build Configuration/Architecture/Build Type and others can always
 be changed inside the Visual Studio solution).
 
-Make sure that you click on "Target SDK Version" and that it has the option "10.0.18362.0" - if this is missing,
+Make sure that the "Target SDK Version" dropdown includes the option "10.0.18362.0" - if this is missing,
 it means you have to install [the latest Windows SDK](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk).
