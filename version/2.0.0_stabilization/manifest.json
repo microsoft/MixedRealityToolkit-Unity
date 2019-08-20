@@ -438,7 +438,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Authors.html",
-          "hash": "/I9rhMKRmgITtTcw2lh1HA=="
+          "hash": "+R2utEoqIFsF6GeiNf0q4g=="
         }
       },
       "is_incremental": false,
@@ -498,7 +498,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/CONTRIBUTING.html",
-          "hash": "evcMl1O6ZaNCmXpaksDfRQ=="
+          "hash": "kggG5hz0q5NjThxno6QkSg=="
         }
       },
       "is_incremental": false,
@@ -1480,6 +1480,17 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/Button/MRTK_PressableButtonCubeRun4.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Contributing/SelectIssueType.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Contributing/SelectIssueType.png"
         }
       },
       "is_incremental": false,
@@ -4226,6 +4237,50 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/ReleaseNotes/AdjustContentHeight.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ReleaseNotes/AdjustContentHeight.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ReleaseNotes/DefaultHoloLens1ConfigurationProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ReleaseNotes/DefaultHoloLens1ConfigurationProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ReleaseNotes/SelectRaycastProvider.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ReleaseNotes/SelectRaycastProvider.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ReleaseNotes/UnableToRegisterRaycastProvider.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ReleaseNotes/UnableToRegisterRaycastProvider.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/SceneSystem/MRTK_SceneSystemBuildSettings.png",
       "output": {
         "resource": {
@@ -5208,18 +5263,6 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "Documentation/KnownIssues.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/KnownIssues.html",
-          "hash": "wJiknTJOmNZaePKAl8v50w=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
       "source_relative_path": "Documentation/Legal/NOTICE.md",
       "output": {
         ".html": {
@@ -5508,6 +5551,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/ReleaseNotes.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/ReleaseNotes.html",
+          "hash": "MncyxXSC4TonPAuOzs1MlQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/SceneSystem/SceneSystemContentLoading.md",
       "output": {
         ".html": {
@@ -5688,11 +5743,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "Documentation/UpdatingToGA.md",
+      "source_relative_path": "Documentation/Updating.md",
       "output": {
         ".html": {
-          "relative_path": "Documentation/UpdatingToGA.html",
-          "hash": "dDJBjPDuKGpesONU375D3Q=="
+          "relative_path": "Documentation/Updating.html",
+          "hash": "KZn5wAoK6TN+neLWlBIBNQ=="
         }
       },
       "is_incremental": false,
@@ -5716,7 +5771,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "UKUea1eqeOt+ioGWXS8/SA=="
+          "hash": "CtyhGg7Q6FdZBvKEUxX1JQ=="
         }
       },
       "is_incremental": false,

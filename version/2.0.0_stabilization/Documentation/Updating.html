@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Updating to the General Availability (GA) Release | Mixed Reality Toolkit Documentation </title>
+    <title>Updating from RC2 to 2.0.0 | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Updating to the General Availability (GA) Release | Mixed Reality Toolkit Documentation ">
+    <meta name="title" content="Updating from RC2 to 2.0.0 | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.44.0.0">
     
     <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
@@ -80,28 +80,37 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="updating-to-the-general-availability-ga-release">Updating to the General Availability (GA) Release</h1>
+<h1 id="updating-from-rc2-to-200">Updating from RC2 to 2.0.0</h1>
 
-<p>Between the RC2 and GA releases of the Microsoft Mixed Reality Toolkit, changes were made that may impact existing projects. This document describes those changes and how to update projects to the GA release.</p>
+<p>Between the RC2 and 2.0.0 releases of the Microsoft Mixed Reality Toolkit, changes were made that may impact existing projects. This document describes those changes and how to update projects to the 2.0.0 release.</p>
 <ul>
 <li><a href="#api-changes">API changes</a></li>
 <li><a href="#assembly-name-changes">Assembly name changes</a></li>
 </ul>
 <h2 id="api-changes">API changes</h2>
-<p>Since the release of RC2, there have been a number of API changes including some that may break existing projects. The following sections describe the changes that have occurred between the RC2 and GA releases.</p>
+<p>Since the release of RC2, there have been a number of API changes including some that may break existing projects. The following sections describe the changes that have occurred between the RC2 and 2.0.0 releases.</p>
 <ul>
 <li><a href="#mixedrealitytoolkit">MixedRealityToolkit</a></li>
+<li><a href="#coreservices">CoreServices</a></li>
+<li><a href="#imixedrealityraycastprovider">IMixedRealityRaycastProvider</a></li>
 <li><a href="#event-system">Event System</a></li>
 <li><a href="#spatial-awareness">Spatial Awareness</a></li>
 <li><a href="#solvers">Solvers</a></li>
+<li><a href="#buttons">Buttons</a></li>
 <li><a href="#clipping-sphere">Clipping Sphere</a></li>
+<li><a href="#nearinteractiontouchable-and-pokepointer">NearInteractionTouchable and PokePointer</a></li>
+<li><a href="#readonlyattribute">ReadOnlyAttribute</a></li>
+<li><a href="#pointerclickhandler">PointerClickHandler</a></li>
+<li><a href="#hololens-clicker-support">HoloLens Clicker Support</a></li>
+<li><a href="#interactablehighlight">InteractableHighlight</a></li>
+<li><a href="#handinteractionpanzoom">HandInteractionPanZoom</a></li>
 </ul>
 <h3 id="mixedrealitytoolkit">MixedRealityToolkit</h3>
 <p>The following public properties on the MixedRealityToolkit object have been deprecated.</p>
 <ul>
 <li><code>RegisteredMixedRealityServices</code> no longer contains the collection of registered extensions services and data providers.</li>
 </ul>
-<p>To access extension services, use [<code>MixedRealityServiceRegistry.TryGetService&lt;T&gt;</code>]. To access data providers, cast the service instance to <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess.html"><code>IMixedRealityDataProviderAccess</code></a> and use <code>GetDataProvider&lt;T&gt;</code>.</p>
+<p>To access extension services, use <code>MixedRealityServiceRegistry.TryGetService&lt;T&gt;</code>. To access data providers, cast the service instance to <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess.html"><code>IMixedRealityDataProviderAccess</code></a> and use <code>GetDataProvider&lt;T&gt;</code>.</p>
 <p>Use <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.MixedRealityServiceRegistry.html"><code>MixedRealityServiceRegistry</code></a> or <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.CoreServices.html"><code>CoreServices</code></a> instead for the following deprecated properties</p>
 <ul>
 <li><code>ActiveSystems</code></li>
@@ -113,6 +122,25 @@
 <li><code>DiagnosticsSystem</code></li>
 <li><code>SceneSystem</code></li>
 </ul>
+<h3 id="coreservices">CoreServices</h3>
+<p>The <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.CoreServices.html"><code>CoreServices</code></a> class is the replacement for the static system accessors (ex: BoundarySystem) found in the <code>MixedRealityToolkit</code> object.</p>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>The <code>MixedRealityToolkit</code> system accessors have been deprecated in version 2.0.0 and will be removed in a future release of the MRTK.</p>
+</div>
+<p>The following code example illustrates the old and the new pattern.</p>
+<pre><code class="lang-c#">// Old
+GameObject playAreaVisualization = MixedRealityToolkit.BoundarySystem?.GetPlayAreaVisualization();
+
+// New
+GameObject playAreaVisualization = CoreServices.BoundarySystem?.GetPlayAreaVisualization();
+</code></pre>
+<p>Using the new CoreSystem class will ensure that your application code will not need updating if you change the application to use a different service registrar (ex: one of the experimental service managers).</p>
+<h3 id="imixedrealityraycastprovider">IMixedRealityRaycastProvider</h3>
+<p>With the addition of the IMixedRealityRaycastProvider, the input system configuration profile was changed. If you have a custom profile, you may receive the errors in the following image when you run your application.</p>
+<p><img src="Images/ReleaseNotes/UnableToRegisterRaycastProvider.png" alt="Selecting the Raycast provider"></p>
+<p>To fix these, please add an IMixedRealityRaycastProvider instance to your input system profile.</p>
+<p><img src="Images/ReleaseNotes/SelectRaycastProvider.png" alt="Selecting the Raycast provider"></p>
 <h3 id="event-system">Event System</h3>
 <p><strong>Changes</strong></p>
 <ul>
@@ -215,14 +243,14 @@ class SampleHandler2 : MonoBehaviour, IMixedRealitySpeechHandler
 <h4 id="changes">Changes</h4>
 <p>The following method(s) have been renamed to better describe their usage.</p>
 <ul>
-<li>IMixedRealitySpatialAwarenessSystem.CreateSpatialObjectParent has been renamed to IMixedRealitySpatialAwarenessSystem.CreateSpatialAwarenessObservationParent to clarify its usage.</li>
+<li><code>IMixedRealitySpatialAwarenessSystem.CreateSpatialObjectParent</code> has been renamed to <code>IMixedRealitySpatialAwarenessSystem.CreateSpatialAwarenessObservationParent</code> to clarify its usage.</li>
 </ul>
 <h4 id="additions">Additions</h4>
 <p>Based on customer feedback, support for easy removal of previously observed spatial awareness data has been added.</p>
 <ul>
-<li>IMixedRealitySpatialAwarenessSystem.ClearObservations()</li>
-<li>IMixedRealitySpatialAwarenessSystem.ClearObservations&lt;T&gt;(string name)</li>
-<li>IMixedRealitySpatialAwarenessObserver.ClearObservations()</li>
+<li><code>IMixedRealitySpatialAwarenessSystem.ClearObservations()</code></li>
+<li><code>IMixedRealitySpatialAwarenessSystem.ClearObservations&lt;T&gt;(string name)</code></li>
+<li><code>IMixedRealitySpatialAwarenessObserver.ClearObservations()</code></li>
 </ul>
 <h3 id="solvers">Solvers</h3>
 <p>Some solver components and the SolverHandler manager class has changed to fix various bugs and for more intuitive usage.</p>
@@ -267,23 +295,23 @@ This makes it clear that PokeThreshold is the counterpart to DebounceThreshold. 
 <h3 id="pointerclickhandler">PointerClickHandler</h3>
 <p>The <code>PointerClickHandler</code> class has been deprecated. The <code>PointerHandler</code> should be used instead, it provides the same functionality.</p>
 <h3 id="hololens-clicker-support">HoloLens clicker support</h3>
-<p>The HoloLens clicker's controller mappings have changed from being an unhanded <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityController.html"><code>WindowsMixedRealityController</code></a> to being an unhanded <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityGGVHand.html"><code>WindowsMixedRealityGGVHand</code></a>. To account for this, an automatic updater will run the first time you open your ControllerMapping profile. Please open any custom profiles at least once after upgrading to GA in order to trigger this one-time migration step.</p>
+<p>The HoloLens clicker's controller mappings have changed from being an unhanded <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityController.html"><code>WindowsMixedRealityController</code></a> to being an unhanded <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityGGVHand.html"><code>WindowsMixedRealityGGVHand</code></a>. To account for this, an automatic updater will run the first time you open your ControllerMapping profile. Please open any custom profiles at least once after upgrading to 2.0.0 in order to trigger this one-time migration step.</p>
 <h3 id="interactablehighlight">InteractableHighlight</h3>
 <p>The <code>InteractableHighlight</code> class has been deprecated. The <code>InteractableOnFocus</code> class and <code>FocusInteractableStates</code> asset should be used instead. To create a new <code>Theme</code> asset for the <code>InteractableOnFocus</code>, right click in the project window and select <em>Create</em> &gt; <em>Mixed Reality Toolkit</em> &gt; <em>Interactable</em> &gt; <em>Theme</em>.</p>
 <h3 id="handinteractionpanzoom">HandInteractionPanZoom</h3>
 <p><code>HandInteractionPanZoom</code> has been moved to the UI namespace as it was not an input component. <code>HandPanEventData</code> has also been moved into this namespace, and simplified to correspond with other UI event data.</p>
 <h2 id="assembly-name-changes">Assembly name changes</h2>
-<p>In The GA release, all of the official Mixed Reality Toolkit assembly names and their associated assembly definition (.asmdef) files have been updated to fit the following pattern.</p>
+<p>In The 2.0.0 release, all of the official Mixed Reality Toolkit assembly names and their associated assembly definition (.asmdef) files have been updated to fit the following pattern.</p>
 <pre><code class="lang-c#">Microsoft.MixedReality.Toolkit[.&lt;name&gt;]
 </code></pre>
 <p>In some instances, multiple assemblies have been merged to create better unity of their contents. If your project uses custom .asmdef files, they may require updating.</p>
-<p>The following tables describe how the RC2 .asmdef file names map to the GA release. All assembly names match the .asmdef file name.</p>
+<p>The following tables describe how the RC2 .asmdef file names map to the 2.0.0 release. All assembly names match the .asmdef file name.</p>
 <h3 id="mixedrealitytoolkit-1">MixedRealityToolkit</h3>
 <table>
 <thead>
 <tr>
 <th>RC2</th>
-<th>GA</th>
+<th>2.0.0</th>
 </tr>
 </thead>
 <tbody>
@@ -334,7 +362,7 @@ This makes it clear that PokeThreshold is the counterpart to DebounceThreshold. 
 <thead>
 <tr>
 <th>RC2</th>
-<th>GA</th>
+<th>2.0.0</th>
 </tr>
 </thead>
 <tbody>
@@ -357,7 +385,7 @@ This makes it clear that PokeThreshold is the counterpart to DebounceThreshold. 
 <thead>
 <tr>
 <th>RC2</th>
-<th>GA</th>
+<th>2.0.0</th>
 </tr>
 </thead>
 <tbody>
@@ -408,7 +436,7 @@ This makes it clear that PokeThreshold is the counterpart to DebounceThreshold. 
 <thead>
 <tr>
 <th>RC2</th>
-<th>GA</th>
+<th>2.0.0</th>
 </tr>
 </thead>
 <tbody>
@@ -427,7 +455,7 @@ This makes it clear that PokeThreshold is the counterpart to DebounceThreshold. 
 <thead>
 <tr>
 <th>RC2</th>
-<th>GA</th>
+<th>2.0.0</th>
 </tr>
 </thead>
 <tbody>
@@ -465,7 +493,7 @@ This makes it clear that PokeThreshold is the counterpart to DebounceThreshold. 
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/2.0.0_stabilization/Documentation/UpdatingToGA.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/2.0.0_stabilization/Documentation/Updating.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
