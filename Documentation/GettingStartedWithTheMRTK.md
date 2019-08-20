@@ -132,9 +132,13 @@ If you need to move the players start point, then **move the scene content and N
 
 You are now ready to start building your project!
 
-## Recommended build settings (UWP)
+## Builing and Deploying MRTK
+When you're ready to run your app on HoloLens as a standalone app, build and deploy your project. You build and deploy your MRTK project just like any other Unity project, using Unity's Build window. Learn more at [Publishing Builds](https://docs.unity3d.com/Manual/PublishingBuilds.html).
 
-When building for WMR, HoloLens 1, or HoloLens 2, it is recommended that your build settings "Target SDK Version"
+### Building and Deploying MRTK to HoloLens 1 and HoloLens 2 (UWP)
+On HoloLens, building the MRTK is just like building any other UWP app, there's nothing MRTK specific. Follow instructions at https://docs.microsoft.com/en-us/windows/mixed-reality/mrlearning-base-ch1 for more information on how to build and deploy your app to HloLens.
+
+**Tip:** When building for WMR, HoloLens 1, or HoloLens 2, it is recommended that your build settings "Target SDK Version"
 and "Minimum Platform Version" look like they do in the picture below:
 
 ![](../Documentation/Images/getting_started/BuildWindow.png)
