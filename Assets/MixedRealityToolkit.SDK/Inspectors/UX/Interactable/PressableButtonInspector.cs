@@ -254,23 +254,18 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.PropertyField(movingButtonVisuals);
             EditorGUILayout.LabelField("Press Settings", EditorStyles.boldLabel);
 
-            var pos = EditorGUILayout.GetControlRect();
-            // Utilize EditorGUI.BeginProperty to keep prefab bolding and other editor field tracking
-            EditorGUI.BeginProperty(pos, DistanceSpaceModeLabel, distanceSpaceMode);
+            EditorGUI.BeginChangeCheck();
+            var currentMode = distanceSpaceMode.intValue;
+            EditorGUILayout.PropertyField(distanceSpaceMode);
+            // EndChangeCheck returns true when something was selected in the dropdown, but
+            // doesn't necessarily mean that the value itself changed. Check for that too.
+            if (EditorGUI.EndChangeCheck() && currentMode != distanceSpaceMode.intValue)
             {
-                PressableButton.SpaceMode currentMode = button.DistanceSpaceMode;
-                // If user changes space mode, we want to call the property which will update the distance value appropriately
-                var spaceMode = (PressableButton.SpaceMode)EditorGUI.EnumPopup(pos, DistanceSpaceModeLabel, currentMode);
-                if (spaceMode != currentMode)
-                {
-                    button.DistanceSpaceMode = spaceMode;
-                    distanceSpaceMode.enumValueIndex = (int)spaceMode;
-                }
+                // Changing the DistanceSpaceMode requires updating the plane distance values so they stay in the same relative ratio positions
+                Undo.RecordObject(target, string.Concat("Trigger Plane Distance Conversion of ", button.name));
+                button.DistanceSpaceMode = (PressableButton.SpaceMode)distanceSpaceMode.enumValueIndex;
+                serializedObject.Update();
             }
-            EditorGUI.EndProperty();
-
-            // Leveraging button.DistanceSpaceMode setter modifies other component properties that need to be refreshed
-            serializedObject.Update();
 
             DrawPropertiesExcluding(serializedObject, excludeProperties);
 
