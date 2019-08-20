@@ -253,7 +253,7 @@ When using the extension service wizard,  *Generate Inspector* and/or *Generate 
 
 Current workaround steps:
 
-1. Ignore error message in Extension Service Wizard
+1. Ignore error message in extension service wizard
 1. Open up the *ExtensionService.cs file created and remove reference to the non-existent profile.
 
 Issue [#5654](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5654) is tracking this problem.
