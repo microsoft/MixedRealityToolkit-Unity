@@ -118,7 +118,7 @@ The fingertip cursor has been updated to better match the HoloLens 2 shell.
 
 **Hand Menu Graduated from Experimental**
 
-The [HandConstraint](Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) and [HandConstraintPalmUp](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp)
+The [HandConstraint](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) and [HandConstraintPalmUp](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp)
 solvers are now an official feature (no longer experimental) and have improved documentation.
 
 The HandConstraintPalmUp solver now has a toggle to enforce the hand’s fingers are coplanar before activating.
