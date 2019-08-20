@@ -23,12 +23,13 @@ The following software is required.
 
 ### Upgrading projects to 2.0.0
 
-Since the RC2 release, there have been several changes that may impact your application projects,
-including some files moving to new folder locations. For the smoothest upgrade path in your
-projects, please use the following steps.
+Since the RC2 release, there have been several changes that may impact application projects,
+including some files moving to new folder locations. Breaking change details, including mitigation guidance, can be found in the [**Updating from RC2 to 2.0.0**](Updating.md) article.
+
+For the smoothest upgrade path, please use the following steps.
 
 1. Close Unity
-1. Delete all **MixedRealityToolkit** (you may not have all listed folders)
+1. Delete **MixedRealityToolkit** (the project may not have all listed folders)
     - MixedRealityToolkit
     - MixedRealityToolkit.Examples
     - MixedRealityToolkit.Extensions
@@ -36,19 +37,21 @@ projects, please use the following steps.
     - MixedRealityToolkit.SDK
     - MixedRealityToolkit.Services
     - MixedRealityToolkit.Tools
-1. Delete your **Library** folder
-1. Re-open your project in Unity
+    > [!Important]
+    > Do NOT delete the **MixedRealityToolkit.Generated** folder.
+1. Delete the **Library** folder
+1. Re-open the project in Unity
 1. Import the new unity packages
     - Foundation - _Import this package first_
     - (Optional) Tools
-    - (Optional) Extensions,
-    - (Optional) Examples are optional)
-1. For each scene in your project
+    - (Optional) Extensions
+    - (Optional) Examples
+1. For each scene in the project
     - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy
     - Select **MixedRealityToolkit -> Add to Scene and Configure**
 
 > [!Important]
-> Some profiles have been changed (properties have been added) in 2.0.0. If you have created custom
+> Some profiles have been changed (properties have been added) in 2.0.0. If the project has custom
 profiles, please open them to verify that all of the updated properties are correctly configured.
 
 ### What's new in 2.0.0
@@ -62,12 +65,12 @@ profiles, please open them to verify that all of the updated properties are corr
 - New features
     - Animated handle by proximity
     - Match the HoloLens 2 shell behavior
-    - You can now make the handles appear only when your hand is close to them
+    - Handles can be configured to appear only when a hand is close to them
 - New example scene
     - The BoundingBoxExample scene shows various types of configurations
 
 > [!Important] 
-> Normalized asset handle size and scaling logic require updated handle scale values. With this change, the existing bounding box handle will be displayed in a very large size. Please refer to the **Bounding box handle styles** section in the [Bounding Box](README_BoundingBox.md) documentation for updated recommended values for the handle size. You can also find handle configuration examples in the **BoundingBoxExamples** scene. 
+> Normalized asset handle size and scaling logic require updated handle scale values. With this change, the existing bounding box handle will be displayed in a very large size. Please refer to the **Bounding box handle styles** section in the [Bounding Box](README_BoundingBox.md) documentation for updated recommended values for the handle size. Handle configuration examples can be found in the **BoundingBoxExamples** scene. 
 <img src="../Documentation/Images/BoundingBox/MRTK_BoundingBox_HandleStyles2.png" width="450">
 
 **Clipping Example**
@@ -87,7 +90,7 @@ To access extension service instances, use `MixedRealityServiceRegistry.TryGetSe
 We have added a new profile for HoloLens (1st gen) development that includes some of the
 recommended MRTK configurations for best performance.
 
-To configure your application for HoloLens (1st gen) optimized settings, set the
+To configure the application for HoloLens (1st gen) optimized settings, set the
 Mixed Reality Toolkit's **Active Profile** to **DefaultHoloLens1ConfigurationProfile**.
 
 ![Default HoloLens (1st gen) Configuration Profile](./Images/ReleaseNotes/DefaultHoloLens1ConfigurationProfile.png)
@@ -127,9 +130,9 @@ This release updates the MRTK to better mirror the featires. behaviors and visua
 
 **IMixedRealityRaycastProvider**
 
-The Input System was modified to add a reference to an IMixedRealityRaycastProvider.
+The input system was updated to allow for raycast customization, via custom implementations of [`IMixedRealityRaycastProvider`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityRaycastProvider).
 
-Specify your desired raycast provider in the Input System's configuration profile. 
+Specify the desired raycast provider in the Input System's configuration profile. 
 
 ![Selecting the Raycast provider](Images/ReleaseNotes/SelectRaycastProvider.png)
 
@@ -213,14 +216,8 @@ with the Spatial Awareness system. This observer reads mesh data from imported 3
 and uses them to simulate environmental data from devices such as Microsoft HoloLens 2.
 
 SpatialObjectMeshObserver is not enabled in the default profiles, please see the
-[Spatial Awareness Gettniving Started](SpatialAwareness/SpatialAwarenessGettingStarted.md) article
-for more information on configuring your application. 
-
-**System Keyboard**
-
-The system keyboard can now be used on all platforms. See the HandInteractionExamples scene in the Examples
-package (Demos\HandInteraction\Scenes\HandInteractionDemos.unity) for a demonstration of using the
-SystemKeyboardExample script.
+[Spatial Awareness Getting Started](SpatialAwareness/SpatialAwarenessGettingStarted.md) article
+for more information on how to use this feature. 
 
 **Take Screenshot**
 
@@ -258,10 +255,25 @@ Current workaround steps:
 
 Issue [#5654](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5654) is tracking this problem.
 
+**Long paths**
+
+When building on Windows, there is a MAX_PATH limit of 255 characters. Unity is affected by these limits and may fail to build a binary if its resolved output path is longer than 255 characters.
+
+This can manifest as CS0006 errors in Visual Studio that look like:
+
+> CS0006: Metadata file 'C:\path\to\longer\file\that\is\longer\than\255\characters\mrtk.long.binary.name.dll' could not be found.
+
+This can be worked around by moving your Unity project folder closer to the root of the drive:
+
+> C:\src\project
+
+Please see [this issue](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5469) for more background information. 
+
 **Runtime profile swapping**
 
-MRTK 2.0.0 does not fully support profile swapping at runtime. This feature is being
-investigated for a future release.
+MRTK fully support profile swapping at runtime. This feature is being investigated for a future release. Please see issues [4289](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4289),
+[5465](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5465) and
+[5466](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5466) for more information.
 
 **Text overflow in the some of the scroll view example when deployed with 16-bit depth buffer**
 
@@ -277,7 +289,7 @@ To work around the issues, please check for a newer version or roll back to vers
 
 **VR/Immersive devices: Content in some demo scenes is placed below the user**
 
-Some demo scenes contained in the Examples package are optimized for HoloLens devices(headset's y position is 0). These scenes
-may place objects below the user when run on VR/Immersive devices(headset's Y position is the distance from the floor). To work around this issue, select the **Scene Content** object, in the Hierarchy, and set the Transform's Position Y value to **1.5**(1.5 meters, or your preferred headset height).
+Some demo scenes contained in the Examples package are optimized for HoloLens device's (headset's y position is 0). These scenes
+may place objects below the user when run on VR/Immersive device's (headset's Y position is the distance from the floor). To work around this issue, select the **Scene Content** object, in the Hierarchy, and set the Transform's Position Y value to **1.5** (1.5 meters, or your preferred headset height).
 
 ![Adjusting Scene Content Height](Images/ReleaseNotes/AdjustContentHeight.png)
