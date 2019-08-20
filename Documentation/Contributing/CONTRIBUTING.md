@@ -35,7 +35,7 @@ Please review the [Feature Contribution Process](Feature_Contribution_Process.md
 > If you wish to work on something that already exists on our backlog, you can use that work item as your proposal. Be sure to also comment on the task notifying maintainers that you're working towards completing it.
 
 # Beginning development
-To get started, simply follow these steps
+To get started, simply follow these steps:
 
 1. Fork the repository. Click on the "Fork" button on the top right of the page and follow the flow.
 1. Create a branch in your fork (off of the [mrtk_development](https://github.com/microsoft/mixedrealitytoolkit-unity/tree/mrtk_development) branch) to make it easier for you to isolate your fork.
