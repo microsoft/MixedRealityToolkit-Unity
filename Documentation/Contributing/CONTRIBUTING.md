@@ -40,7 +40,7 @@ To get started, simply follow these steps
 1. Fork the repository. Click on the "Fork" button on the top right of the page and follow the flow.
 1. Create a branch in your fork (off of the [mrtk_development](https://github.com/microsoft/mixedrealitytoolkit-unity/tree/mrtk_development) branch) to make it easier for you to isolate your fork.
     - For the legacy HoloToolkit use the [htk_development](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/htk_development) branch
-1. Instructions for running tests are at [UnitTests](UnitTests.md)
+1. Instructions for writing and running tests are at [UnitTests](UnitTests.md)
 1. Instructions for building and deploying MRTK are at [BuildAndDeploy](../BuildAndDeploy.md). 
 1. Make **small and frequent** commits that include tests which could be a unity scene showing usage of your feature.
 1. Make sure that all the tests continue to pass.
@@ -52,3 +52,24 @@ To get started, simply follow these steps
 
 If you are new to to the Git workflow, [check out this introduction from Github](https://guides.github.com/activities/hello-world/).
 
+# Pull request
+Please ensure all PR's are small and concise, DO NOT include other files / changes not related to the subject of the PR.
+
+If you haven't contributed to a Microsoft project before, you may be asked to sign a [contribution license agreement](https://cla.microsoft.com/). 
+A comment in the PR will let you know if you do.
+
+> [!IMPORTANT]
+> If you are a Microsoft employee and are not a member of the [Microsoft organization on GitHub](https://github.com/Microsoft), please link your Microsoft and GitHub accounts on corpnet by visiting [Open Source at Microsoft](https://opensource.microsoft.com/) before you start your pull request. There's some process stuff you'll need to do ahead of time.
+
+When you are ready:
+* Start a GitHub pull request to merge your topic branch targeting the [mrtk_development](https://github.com/microsoft/mixedrealitytoolkit-unity/tree/mrtk_development) branch.
+* Ensure you fill in all details required by the Pull Request template, ensuring you reference any Issue / Feature Request or Task the PR relates to.
+* Validate that you are only checking in files / changes related to the PR
+* Check your documentation is up to date and included (unless submitted in a previous PR)
+* If adding a new feature, check that tests are included to validate the feature (see [UnitTests](UnitTests.md))
+* If fixing a bug, please write a test to catch the bug. This is to make sure your fix does not regress in the future.
+
+The project maintainers will review your changes. We aim to review all changes within three business days. Please address any review comments, push to your topic branch, and post a comment letting us know that there's new stuff to review.
+
+> [!NOTE]
+> All PR's submitted to the project will also be vetted according to the [MRTK coding standards guide](CodingGuidelines.md), so please review these before submitting your PR to ensure a smooth process.
