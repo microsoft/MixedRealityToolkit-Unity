@@ -40,7 +40,7 @@ The MRTK contains several example scenes that can be used to try features and le
 1. Open **HandTracking\Scenes\HandInteractionExamples**)
 1. Build and deploy the project
 -or-
-1. Enter play mode and use [**InputSimulation**](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/InputSimulation/InputSimulationService.html) from within the editor.
+1. Enter play mode and use [**InputSimulation**](/Documentation/InputSimulation/InputSimulationService.html) from within the editor.
 
 # Feature Areas
 
