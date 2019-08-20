@@ -1,0 +1,174 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Pointers | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Pointers | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.44.0.0">
+    
+    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="pointers">Pointers</h1>
+
+<p><img src="Images/Pointers/MRTK_Pointer_Main.png" alt="Pointer"></p>
+<p>A <a href="Input/Pointers.html">pointer</a> is something attached to a controller that gives focus and dispatches <a href="Input/Overview.html">inputs</a> to the game object it is pointing to.</p>
+<p>For a game object to be able to receive focus it must have a collider (so it can be hit by physics raycasts) and belong to one of the layers defined in the pointer raycast layer masks in the pointer profile.</p>
+<p>Pointers are instantiated automatically at runtime when a new controller is detected. The pointers that are created for each controller type are defined in the <em>pointer options</em> in the <em>pointer profile</em>. You can have more than one pointer attached to a controller; for example, with the default pointer profile, WMR controllers get both a line and a parabolic pointer for normal selection and teleportation respectively. Pointers communicate with each other to decide which one is active.</p>
+<p>MRTK provides a set of pointer prefabs in <em>Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Pointers</em>. You can use your own prefabs as long as they contain one of the pointer scripts in <em>Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Pointers</em> or any other script implementing <code>IMixedRealityPointer</code>.</p>
+<p><img src="Images/Pointers/MRTK_PointerProfile.jpg" alt="Pointer Profile"></p>
+<h2 id="mrtk-pointer-prefabs">MRTK pointer prefabs</h2>
+<p><strong>Line pointer</strong>
+A line pointer is a ray attached to a controller. The line starts at the controller's base, and its pointing direction matches the pointing direction of the controller.</p>
+<img src="Images/Pointers/MRTK_Pointers_Line.png" width="600">
+<p>Line pointers are commonly used when you have two controllers which have a position, and a pointing direction.</p>
+<p>For motion controllers like in Oculus, Vive, Windows Mixed Reality, the rotation will match the rotation of the controller.</p>
+<p>For other controllers like HoloLens 2 articulated hands, the rotation matches the system-provided pointing pose of the hand.</p>
+<p><strong>GGV pointer</strong>
+GGV stands for &quot;Gaze, Gesture, Voice&quot;<sup><a href="https://docs.microsoft.com/en-us/windows/mixed-reality/gaze">2</a></sup>. The GGV pointer's position and direction is driven by the head's position and rotation. The pointer is used to provide input that matches the HoloLens V1 input style of head gaze + airtap<sup><a href="https://docs.microsoft.com/en-us/windows/mixed-reality/gestures">3</a></sup>.</p>
+<p>In the pointer profile you can see that the HoloLens V1 input system is provided for you via the mapping of &quot;GGVHand&quot; (V1 HoloLens hand) to the GGVPointer.</p>
+<img src="Images/Pointers/MRTK_GGVPointer_HL1.jpg" width="600">
+<p>You can also simulate the V1 HoloLens GGV behavior on HoloLens 2 by mapping the articulated hand to the GGVPointer.</p>
+<img src="Images/Pointers/MRTK_GGVPointer_HL2.jpg" width="600">
+<p><strong>Grab pointer / sphere pointer</strong>
+Grab pointer is used for near interactions, specifically for grabbing items near the hand / controller.</p>
+<img src="Images/Pointers/MRTK_GrabPointer.jpg" width="600">
+<p><strong>NOTE:</strong> Only items with <em>Near Interaction Grabbable</em> components will respond to the sphere pointer.</p>
+<p>Sphere pointer properties:</p>
+<ul>
+<li><em>Sphere Cast Radius</em>: The radius for the sphere used to query for grabbable objects.</li>
+<li><em>Debug Mode</em>: If true, draw the sphere that is used to query for grabbable objects.</li>
+</ul>
+<p><strong>Poke pointer</strong>
+Poke pointer is for near interactions, specifically for touching objects via the hand / controller.</p>
+<img src="Images/Pointers/MRTK_PokePointer.jpg" width="600">
+<p>Only items with <em>Near Interaction Touchable</em> components will respond to the poke pointer. When configuring your <em>Near Interaction Touchable</em>, make sure to configure the <em>localForward</em> parameter to point out of the front of the button or other object you wish to make touchable. Also make sure that the touchable's <em>bounds</em> matches the bounds of your touchable object.</p>
+<p>Poke pointer properties:</p>
+<ul>
+<li><em>distBack</em>: How far input point can go behind surface before release event occurs.</li>
+<li><em>distFront</em>: How far input point needs to be in front of surface before press event occurs.</li>
+<li><em>debounceThreshold</em>: Once touching, the distance back hand needs to be pulled from surface before a touch release occurs.</li>
+</ul>
+<p>Other parameters:</p>
+<ul>
+<li><em>eventsToReceive</em>: If set to touch, the object will receive <em>OnTouchDown</em> <em>OnTouchUpdate</em> and <em>OnTouchUp</em> events. If set to pointer, the object will receive <em>OnPointerDown</em> and <em>OnPointerUp</em> events.</li>
+<li><em>touchableSurface</em>: Use this to help compute the bounds of the surface. Bounds will automatically adjust to the attached box collider, Unity UI element, or can be set manually by adjusting <em>bounds</em>.</li>
+<li><em>visuals</em>: Game object used to render finger tip visual (the ring on finger, by default).</li>
+<li><em>line</em>: Optional line to draw from fingertip to the active input surface.</li>
+</ul>
+<p><strong>Mouse pointer</strong>
+Mouse pointer is used for interacting with the mouse. This pointer will only be used if the active input is a mouse. By default, the MRTK profile does not provide a mouse as an input provider, as mouse input is instead used to simulate hand input. You may add a mouse in your MRTK profile by modifying the <em>Registered Service Providers</em> in your MRTK profile.</p>
+<p><img src="Images/Pointers/MRTK_MousePointer.jpg" alt="Mouse pointer"></p>
+<p><strong>Teleport pointer</strong>
+Teleport pointer is used for teleportation. This pointer will only be active when using a controller that supports teleportation (such as a motion controller like in Oculus, Vive, Windows Mixed Reality).</p>
+<img src="Images/Pointers/MRTK_Pointers_Parabolic.png" width="600">
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/2.0.0_stabilization/Documentation/README_Pointers.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
