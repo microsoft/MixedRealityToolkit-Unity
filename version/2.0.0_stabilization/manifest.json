@@ -378,7 +378,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Architecture/InputSystem/ControllersPointersAndFocus.html",
-          "hash": "OKtMqb8xTrHFHsSQbB7Y9g=="
+          "hash": "hJrPmhGrAqZVXgcELmH+xA=="
         }
       },
       "is_incremental": false,
@@ -762,7 +762,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/GettingStartedWithTheMRTK.html",
-          "hash": "4jAvIdpHmN+L9pLBRCbI+A=="
+          "hash": "oW8SQ7CMUSFT8oHb9H1mqg=="
         }
       },
       "is_incremental": false,
@@ -2311,32 +2311,43 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/Input/PointerHandler.PNG",
-      "output": {
-        "resource": {
-          "relative_path": "Documentation/Images/Input/PointerHandler.PNG"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "Documentation/Images/Input/PointerProfile.png",
-      "output": {
-        "resource": {
-          "relative_path": "Documentation/Images/Input/PointerProfile.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
       "source_relative_path": "Documentation/Images/Input/PointerResultExample.png",
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/Input/PointerResultExample.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Input/Pointers/MRTK_Pointers.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Input/Pointers/MRTK_Pointers.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Input/Pointers/PointerOptionsProfile.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Input/Pointers/PointerOptionsProfile.PNG"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Input/Pointers/PointerProfile.PNG",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Input/Pointers/PointerProfile.PNG"
         }
       },
       "is_incremental": false,
@@ -4104,10 +4115,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/Pointers/MRTK_MousePointer.jpg",
+      "source_relative_path": "Documentation/Images/Pointers/MRTK_MousePointer.png",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/Pointers/MRTK_MousePointer.jpg"
+          "relative_path": "Documentation/Images/Pointers/MRTK_MousePointer.png"
         }
       },
       "is_incremental": false,
@@ -4159,10 +4170,32 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/Pointers/MRTK_PokePointer.jpg",
+      "source_relative_path": "Documentation/Images/Pointers/MRTK_PokePointer.png",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/Pointers/MRTK_PokePointer.jpg"
+          "relative_path": "Documentation/Images/Pointers/MRTK_PokePointer.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Pointers/PointerHandler.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Pointers/PointerHandler.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Pointers/PrimaryPointerExample.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Pointers/PrimaryPointerExample.png"
         }
       },
       "is_incremental": false,
@@ -5083,7 +5116,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/Overview.html",
-          "hash": "qpRqoOtL2IFlWQeHw7QBKw=="
+          "hash": "DBGOjuzNL2sdFY0iOw2esw=="
         }
       },
       "is_incremental": false,
@@ -5095,7 +5128,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/Pointers.html",
-          "hash": "zFDILGKWWR87M7Hfn2oAWQ=="
+          "hash": "7blMb8z2YB1Sn8Mku0yM5w=="
         }
       },
       "is_incremental": false,
@@ -5383,7 +5416,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Pointers.html",
-          "hash": "P0MROwzv68re5GVZp9kPyQ=="
+          "hash": "7OomDfhGs4I+acXJhPlJfQ=="
         }
       },
       "is_incremental": false,
@@ -5671,7 +5704,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "Sapu4PkCVsB+MONsV1dk/Q=="
+          "hash": "DEvxbbkyoayeFtgDju60RQ=="
         }
       },
       "is_incremental": false,
@@ -5683,7 +5716,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "UgmLjArzxYYLrvObFNP9pg=="
+          "hash": "1WrUS70U1WSjg8iSjEKHow=="
         }
       },
       "is_incremental": false,
@@ -9150,7 +9183,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html",
-          "hash": "MZ/7PzR+QJwrD3/202fuFQ=="
+          "hash": "EztIPwPva7S63+xJ0SYFDg=="
         }
       },
       "is_incremental": false,
@@ -18670,10 +18703,11 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ManagedReferenceDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 1076,
+          "total_file_count": 0,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
@@ -18682,18 +18716,17 @@
           "total_file_count": 118,
           "skipped_file_count": 0
         },
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1076,
           "skipped_file_count": 0
         }
       }
