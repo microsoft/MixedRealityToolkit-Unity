@@ -209,6 +209,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get { return movingButtonVisuals != null ? movingButtonVisuals.transform : transform; }
         }
 
+        /// <summary>
+        /// Transform for world to local space in the world direction of press
+        /// Multiply world scale positions by this value to convert to local space
+        /// </summary>
         private float WorldToLocalScale
         {
             get
@@ -217,6 +221,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        /// <summary>
+        /// Transform for local to world space in the world direction of a press
+        /// Multiply local scale positions by this value to convert to world space
+        /// </summary>
         private float LocalToWorldScale
         {
             get
