@@ -1,0 +1,83 @@
+# =============== #
+# Unity generated #
+# =============== #
+[Tt]emp/
+[Oo]bj/
+[Bb]in/
+[Bb]uilds/
+[Bb]uild/
+[Ll]ibrary/
+[Aa]pp/
+UWP/
+WindowsStoreApp/
+UnityGenerated/
+UnityPackageManager/
+.out/
+project.json
+project.lock.json
+*.package
+
+# ============ #
+# Certificates #
+# ============ #
+*.cert
+*.privkey
+*.pfx
+*.pfx.meta
+
+# ===================================== #
+# Visual Studio / MonoDevelop generated #
+# ===================================== #
+.vs/
+ExportedObj/
+obj/
+*.svd
+*.userprefs
+/*.csproj
+*.csproj
+*.pidb
+*.suo
+/*.sln
+*.sln
+*.user
+*.unityproj
+*.ipch
+*.opensdf
+*.sdf
+*.tlog
+*.log
+*.idb
+*.opendb
+
+# ============================ #
+# Visual Studio Code Generated #
+# ============================ #
+.vscode/
+
+# ===================== #
+# Project Specific List #
+# ===================== #
+artifacts/
+Assets/ThirdParty/
+Assets/ThirdParty.meta
+Assets/TextMesh Pro.meta
+Assets/TextMesh Pro/
+--Version/
+Assets/StreamingAssets/GltfModels/
+Assets/StreamingAssets/GltfModels.meta
+Assets/StreamingAssets.meta
+
+/mrtk_log_mostRecentET.csv
+
+# =============== #
+# DocFX Generated #
+# =============== #
+doc/
+
+# ============================= #
+# NuGet Build Process Generated #
+# ============================= #
+/NuGet/
+/MRTKBuild/
+/MSBuild/
+/PackagesCopy/
