@@ -88,7 +88,6 @@ MonoBehaviour:
   skinSurfaceOffset: 0.01
   alignWithSurfaceDistance: 0.1
   indexFingerRingRenderer: {fileID: 7442314219999054210}
-  thumbRingRenderer: {fileID: 0}
 --- !u!1 &8395867636657464059
 GameObject:
   m_ObjectHideFlags: 0
@@ -151,6 +150,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: MRTK_FingerTipRing_Index
       objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2300000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
+      propertyPath: m_MotionVectors
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
@@ -194,26 +213,6 @@ PrefabInstance:
     - target: {fileID: 400000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2300000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
-      propertyPath: m_LightProbeUsage
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2300000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
-      propertyPath: m_ReflectionProbeUsage
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2300000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
-      propertyPath: m_CastShadows
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2300000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
-      propertyPath: m_ReceiveShadows
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2300000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}
-      propertyPath: m_MotionVectors
-      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 53f3b56542efab947876d4aae08d36c2, type: 3}

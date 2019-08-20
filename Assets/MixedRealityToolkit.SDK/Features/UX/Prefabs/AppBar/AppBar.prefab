@@ -137,81 +137,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4691479528535670}
     m_Modifications:
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: movingButtonVisuals
-      value: 
-      objectReference: {fileID: 5875670466894062925}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: TouchBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 5875670466455260718}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: TouchEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 5875670466455260718}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 5875670466455260718}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 5875670466455260721}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Target
-      value: 
-      objectReference: {fileID: 114050950401502068}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
-      value: OnButtonPressed
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgument
-      value: 
-      objectReference: {fileID: 3260291379440523098}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: Microsoft.MixedReality.Toolkit.UI.AppBarButton, Microsoft.MixedReality.Toolkit.SDK
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonReleased.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 5875670466455260718}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonReleased.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 5875670466455260721}
-    - target: {fileID: 8985933138729378336, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: routingTarget
-      value: 
-      objectReference: {fileID: 3947857685051957395}
     - target: {fileID: 8985933138729378366, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
       propertyPath: m_Name
@@ -272,6 +197,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378336, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: routingTarget
+      value: 
+      objectReference: {fileID: 3947857685051957395}
     - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
       propertyPath: button
       value: 
@@ -384,21 +314,6 @@ PrefabInstance:
       propertyPath: m_renderer
       value: 
       objectReference: {fileID: 5875670467076251583}
-    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_text
-      value: Done
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_inputSource
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_renderer
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 277021452963295588, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
       propertyPath: m_text
@@ -422,6 +337,91 @@ PrefabInstance:
     - target: {fileID: 8985933139182662576, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
       propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: movingButtonVisuals
+      value: 
+      objectReference: {fileID: 5875670466894062925}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: TouchBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5875670466455260718}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: TouchEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5875670466455260718}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5875670466455260718}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 5875670466455260721}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 114050950401502068}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: OnButtonPressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 3260291379440523098}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: Microsoft.MixedReality.Toolkit.UI.AppBarButton, Microsoft.MixedReality.Toolkit.SDK
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonReleased.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5875670466455260718}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonReleased.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 5875670466455260721}
+    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_text
+      value: Done
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_inputSource
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_renderer
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8985933140441656736, guid: 88586ad49c144a14695ecab6882c1c46,
@@ -576,81 +576,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4691479528535670}
     m_Modifications:
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: movingButtonVisuals
-      value: 
-      objectReference: {fileID: 5875670466145020634}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: TouchBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 5875670466718024121}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: TouchEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 5875670466718024121}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 5875670466718024121}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 5875670466718024102}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Target
-      value: 
-      objectReference: {fileID: 114050950401502068}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
-      value: OnButtonPressed
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgument
-      value: 
-      objectReference: {fileID: 3260291379652761805}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: Microsoft.MixedReality.Toolkit.UI.AppBarButton, Microsoft.MixedReality.Toolkit.SDK
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonReleased.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 5875670466718024121}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonReleased.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 5875670466718024102}
-    - target: {fileID: 8985933138729378336, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: routingTarget
-      value: 
-      objectReference: {fileID: 3947857685348347652}
     - target: {fileID: 8985933138729378366, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
       propertyPath: m_Name
@@ -711,6 +636,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378336, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: routingTarget
+      value: 
+      objectReference: {fileID: 3947857685348347652}
     - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
       propertyPath: primaryLabels.Array.size
       value: 1
@@ -827,21 +757,6 @@ PrefabInstance:
       propertyPath: m_renderer
       value: 
       objectReference: {fileID: 5875670466231783464}
-    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_text
-      value: Adjust
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_inputSource
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_renderer
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 277021452963295588, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
       propertyPath: m_text
@@ -860,6 +775,91 @@ PrefabInstance:
     - target: {fileID: 8985933139182662576, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
       propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: movingButtonVisuals
+      value: 
+      objectReference: {fileID: 5875670466145020634}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: TouchBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5875670466718024121}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: TouchEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5875670466718024121}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5875670466718024121}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 5875670466718024102}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 114050950401502068}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: OnButtonPressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 3260291379652761805}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: Microsoft.MixedReality.Toolkit.UI.AppBarButton, Microsoft.MixedReality.Toolkit.SDK
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonReleased.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5875670466718024121}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonReleased.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 5875670466718024102}
+    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_text
+      value: Adjust
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_inputSource
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_renderer
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8985933140441656736, guid: 88586ad49c144a14695ecab6882c1c46,
@@ -1014,81 +1014,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4691479528535670}
     m_Modifications:
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: movingButtonVisuals
-      value: 
-      objectReference: {fileID: 5875670467141923854}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: TouchBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 5875670467843972973}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: TouchEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 5875670467843972973}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 5875670467843972973}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 5875670467843972978}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Target
-      value: 
-      objectReference: {fileID: 114050950401502068}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
-      value: OnButtonPressed
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgument
-      value: 
-      objectReference: {fileID: 3260291378513708569}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: Microsoft.MixedReality.Toolkit.UI.AppBarButton, Microsoft.MixedReality.Toolkit.SDK
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonReleased.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 5875670467843972973}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonReleased.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 5875670467843972978}
-    - target: {fileID: 8985933138729378336, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: routingTarget
-      value: 
-      objectReference: {fileID: 3947857684192522704}
     - target: {fileID: 8985933138729378366, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
       propertyPath: m_Name
@@ -1149,6 +1074,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378336, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: routingTarget
+      value: 
+      objectReference: {fileID: 3947857684192522704}
     - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
       propertyPath: primaryLabels.Array.size
       value: 1
@@ -1270,21 +1200,6 @@ PrefabInstance:
       propertyPath: m_renderer
       value: 
       objectReference: {fileID: 5875670467222916860}
-    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_text
-      value: Show
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_inputSource
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_renderer
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 277021452963295588, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
       propertyPath: m_text
@@ -1308,6 +1223,91 @@ PrefabInstance:
     - target: {fileID: 8985933139182662576, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
       propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: movingButtonVisuals
+      value: 
+      objectReference: {fileID: 5875670467141923854}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: TouchBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5875670467843972973}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: TouchEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5875670467843972973}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5875670467843972973}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 5875670467843972978}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 114050950401502068}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: OnButtonPressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 3260291378513708569}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: Microsoft.MixedReality.Toolkit.UI.AppBarButton, Microsoft.MixedReality.Toolkit.SDK
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonReleased.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5875670467843972973}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonReleased.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 5875670467843972978}
+    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_text
+      value: Show
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_inputSource
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_renderer
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8985933140441656736, guid: 88586ad49c144a14695ecab6882c1c46,
@@ -1462,81 +1462,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4691479528535670}
     m_Modifications:
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: movingButtonVisuals
-      value: 
-      objectReference: {fileID: 5875670467363757845}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: TouchBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 5875670468132926582}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: TouchEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 5875670468132926582}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 5875670468132926582}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 5875670468132926569}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Target
-      value: 
-      objectReference: {fileID: 114050950401502068}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
-      value: OnButtonPressed
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgument
-      value: 
-      objectReference: {fileID: 3260291378836614402}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: Microsoft.MixedReality.Toolkit.UI.AppBarButton, Microsoft.MixedReality.Toolkit.SDK
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonReleased.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 5875670468132926582}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonReleased.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 5875670468132926569}
-    - target: {fileID: 8985933138729378336, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: routingTarget
-      value: 
-      objectReference: {fileID: 3947857684447910603}
     - target: {fileID: 8985933138729378366, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
       propertyPath: m_Name
@@ -1597,6 +1522,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378336, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: routingTarget
+      value: 
+      objectReference: {fileID: 3947857684447910603}
     - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
       propertyPath: button
       value: 
@@ -1709,21 +1639,6 @@ PrefabInstance:
       propertyPath: m_renderer
       value: 
       objectReference: {fileID: 5875670467545949671}
-    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_text
-      value: Hide
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_inputSource
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_renderer
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 277021452963295588, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
       propertyPath: m_text
@@ -1747,6 +1662,91 @@ PrefabInstance:
     - target: {fileID: 8985933139182662576, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
       propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: movingButtonVisuals
+      value: 
+      objectReference: {fileID: 5875670467363757845}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: TouchBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5875670468132926582}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: TouchEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5875670468132926582}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5875670468132926582}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 5875670468132926569}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 114050950401502068}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: OnButtonPressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 3260291378836614402}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: Microsoft.MixedReality.Toolkit.UI.AppBarButton, Microsoft.MixedReality.Toolkit.SDK
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonReleased.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5875670468132926582}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonReleased.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 5875670468132926569}
+    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_text
+      value: Hide
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_inputSource
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_renderer
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8985933140441656736, guid: 88586ad49c144a14695ecab6882c1c46,
@@ -1901,6 +1901,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3260291379586419104}
     m_Modifications:
+    - target: {fileID: 538639403742340272, guid: 9215a7c858170d74fb2257375d5feaf1,
+        type: 3}
+      propertyPath: m_Name
+      value: BackgroundBar
+      objectReference: {fileID: 0}
     - target: {fileID: 586303850521236049, guid: 9215a7c858170d74fb2257375d5feaf1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1961,11 +1966,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.x
       value: 0.032
       objectReference: {fileID: 0}
-    - target: {fileID: 538639403742340272, guid: 9215a7c858170d74fb2257375d5feaf1,
-        type: 3}
-      propertyPath: m_Name
-      value: BackgroundBar
-      objectReference: {fileID: 0}
     - target: {fileID: 3958481853798167113, guid: 9215a7c858170d74fb2257375d5feaf1,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -1997,81 +1997,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4691479528535670}
     m_Modifications:
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: movingButtonVisuals
-      value: 
-      objectReference: {fileID: 3260291378494408096}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: TouchBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 3260291377988447939}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: TouchEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 3260291377988447939}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 3260291377988447939}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 3260291377988447964}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Target
-      value: 
-      objectReference: {fileID: 114050950401502068}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
-      value: OnButtonPressed
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgument
-      value: 
-      objectReference: {fileID: 5875670467301799863}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: Microsoft.MixedReality.Toolkit.UI.AppBarButton, Microsoft.MixedReality.Toolkit.SDK
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonReleased.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 3260291377988447939}
-    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: ButtonReleased.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 3260291377988447964}
-    - target: {fileID: 8985933138729378336, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: routingTarget
-      value: 
-      objectReference: {fileID: 5367702728871346302}
     - target: {fileID: 8985933138729378366, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
       propertyPath: m_Name
@@ -2132,6 +2057,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378336, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: routingTarget
+      value: 
+      objectReference: {fileID: 5367702728871346302}
     - target: {fileID: 1088682836, guid: 88586ad49c144a14695ecab6882c1c46, type: 3}
       propertyPath: button
       value: 
@@ -2239,16 +2169,6 @@ PrefabInstance:
       propertyPath: m_renderer
       value: 
       objectReference: {fileID: 3260291378575425362}
-    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_text
-      value: Remove
-      objectReference: {fileID: 0}
-    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
-        type: 3}
-      propertyPath: m_renderer
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 277021452963295588, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
       propertyPath: m_text
@@ -2267,6 +2187,86 @@ PrefabInstance:
     - target: {fileID: 8985933139182662576, guid: 88586ad49c144a14695ecab6882c1c46,
         type: 3}
       propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: movingButtonVisuals
+      value: 
+      objectReference: {fileID: 3260291378494408096}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: TouchBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 3260291377988447939}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: TouchEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 3260291377988447939}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 3260291377988447939}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 3260291377988447964}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 114050950401502068}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: OnButtonPressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 5875670467301799863}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: Microsoft.MixedReality.Toolkit.UI.AppBarButton, Microsoft.MixedReality.Toolkit.SDK
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonPressed.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonReleased.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 3260291377988447939}
+    - target: {fileID: 8985933138729378337, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: ButtonReleased.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 3260291377988447964}
+    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_text
+      value: Remove
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985933139734583791, guid: 88586ad49c144a14695ecab6882c1c46,
+        type: 3}
+      propertyPath: m_renderer
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8985933140441656736, guid: 88586ad49c144a14695ecab6882c1c46,

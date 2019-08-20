@@ -2,7 +2,7 @@
 
 ![Bounding box](../Documentation/Images/BoundingBox/MRTK_BoundingBox_Main.png)
 
-The [`BoundingBox.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/BoundingBox/BoundingBox.cs) script provides basic functionality for transforming objects in mixed reality. A bounding box will show a cube around the hologramm to indicate that it can be interacted with. Handles on the corners and edges of the cube allow scaling or rotating the object. The bounding box also reacts to user input. On HoloLens 2 for example the bounding box responds to finger proximity, providing visual feedback to help perceive the distance from the object. All interactions and visuals can be easily customized. 
+The [`BoundingBox.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/BoundingBox/BoundingBox.cs) script provides basic functionality for transforming objects in mixed reality. A bounding box will show a cube around the hologram to indicate that it can be interacted with. Handles on the corners and edges of the cube allow scaling or rotating the object. The bounding box also reacts to user input. On HoloLens 2 for example the bounding box responds to finger proximity, providing visual feedback to help perceive the distance from the object. All interactions and visuals can be easily customized. 
 
 For more information please see [App Bar and Bounding Box](https://docs.microsoft.com/en-us/windows/mixed-reality/app-bar-and-bounding-box) on Windows Dev Center.
 
@@ -18,8 +18,6 @@ To enable a bounding box around an object, simply assign the `BoundingBox` scrip
 ![Bounding Box](../Documentation/Images/BoundingBox/MRTK_BoundingBox_Assign.png)
 
 ## Inspector properties ##
-
-![Bounding Box](../Documentation/Images/BoundingBox/MRTK_BoundingBox_Structure.png)
 
 **Target Object**
 This property specifies which object will get transformed by the bounding box manipulation. If no object is set, the bounding box defaults to the owner object.
@@ -69,24 +67,26 @@ Below are the prefabs, materials, and the scaling values for the HoloLens 2 styl
 
 <img src="../Documentation/Images/BoundingBox/MRTK_BoundingBox_HandleStyles2.png" width="450">
 
-### Handles
+### Handles (Setup for HoloLens 2 style)
 - **Handle Material**: BoundingBoxHandleWhite
 - **Handle Grabbed Material**: BoundingBoxHandleBlueGrabbed
-- **Scale Handle Prefab**: MRTK_BoundingBox_ScaleWidget_1m
-- **Scale Handle Slate Prefab**: MRTK_BoundingBox_ScaleWidget_Slate_1m
+- **Scale Handle Prefab**: MRTK_BoundingBox_ScaleWidget
+- **Scale Handle Slate Prefab**: MRTK_BoundingBox_ScaleWidget_Slate
 - **Scale Handle Size**: 0.016 (1.6cm)
 - **Scale Handle Collider Padding**: 0.016 (makes the grabbable collider slightly bigger than handle visual)
-- **Rotation Handle Prefab**: MRTK_BoundingBox_RotateWidget_1m
+- **Rotation Handle Prefab**: MRTK_BoundingBox_RotateWidget
 - **Rotation Handle Size**: 0.016
 - **Rotation Handle Collider Padding**: 0.016 (makes the grabbable collider slightly bigger than handle visual)
 
-### Proximity
+### Proximity (Setup for HoloLens 2 style)
 Show and hide the handles with animation based on the distance to the hands. It has two-step scaling animation.
+
+<img src="../Documentation/Images/BoundingBox/MRTK_BoundingBox_Proximity.png">
 
 - **Proximity Effect Active**: Enable proximity-based handle activation 
 - **Handle Medium Proximity**: Distance for the 1st step scaling
 - **Handle Close Proximity**: Distance for the 2nd step scaling
-- **Far Scale**: Default scale value of the handle asset when the hands are out of the range of Bounding Box interaction(distance defined above by 'Handle Medium Proximity'. Use 0 to hide handle in default)
+- **Far Scale**: Default scale value of the handle asset when the hands are out of the range of Bounding Box interaction(distance defined above by 'Handle Medium Proximity'. Use 0 to hide handle by default)
 - **Medium Scale**: Scale value of the handle asset when the hands are within the range of the Bounding Box interaction(distance defined above by 'Handle Close Proximity'. Use 1 to show normal size)
 - **Close Scale**: Scale value of the handle asset when the hands are within the grab interaction(distance defined above by 'Handle Close Proximity'. Use 1.x to show bigger size)
 

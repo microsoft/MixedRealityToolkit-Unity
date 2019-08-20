@@ -191,40 +191,37 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // instantiate scene and button
             GameObject testButton = InstantiateDefaultPressableButton();
             yield return null;
-            PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
-            Assert.IsNotNull(buttonComponent);
 
-            testButton.transform.Translate(new Vector3(10.0f, 5.0f, 20.0f));
+            PressableButton button = testButton.GetComponent<PressableButton>();
+            Assert.IsNotNull(button);
 
-            PressableButton.SpaceMode distanceMode = buttonComponent.DistanceSpaceMode;
-            // check default value -> default must be using world space to not introduce a breaking change to the button
-            Assert.IsTrue(distanceMode == PressableButton.SpaceMode.World, "Pressable button default value is using local space distances which introduces a breaking change for existing projects");
+            // check default value -> default must be using local space in order for the button to scale and function correctly
+            Assert.IsTrue(button.DistanceSpaceMode == PressableButton.SpaceMode.Local);
 
-            // make sure there's no scale on our button
-            testButton.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-
-            // set start distance -> default is zero
-            buttonComponent.StartPushDistance = 0.00003f;
+            // Ensure uniform scale, non-zero start push distance, and world space distance
+            testButton.transform.localScale = Vector3.one;
+            button.DistanceSpaceMode = PressableButton.SpaceMode.World;
+            button.StartPushDistance = 0.00003f;
 
             // get the buttons default values for the push planes
-            float startPushDistance = buttonComponent.StartPushDistance;
-            float maxPushDistance = buttonComponent.MaxPushDistance;
-            float pressDistance = buttonComponent.PressDistance;
-            float releaseDistance = pressDistance - buttonComponent.ReleaseDistanceDelta;
+            float startPushDistance = button.StartPushDistance;
+            float maxPushDistance = button.MaxPushDistance;
+            float pressDistance = button.PressDistance;
+            float releaseDistance = pressDistance - button.ReleaseDistanceDelta;
 
-            Vector3 startPushDistanceWorld = buttonComponent.GetWorldPositionAlongPushDirection(startPushDistance);
-            Vector3 maxPushDistanceWorld = buttonComponent.GetWorldPositionAlongPushDirection(maxPushDistance);
-            Vector3 pressDistanceWorld = buttonComponent.GetWorldPositionAlongPushDirection(pressDistance);
-            Vector3 releaseDistanceWorld = buttonComponent.GetWorldPositionAlongPushDirection(releaseDistance);
+            Vector3 startPushDistanceWorld = button.GetWorldPositionAlongPushDirection(startPushDistance);
+            Vector3 maxPushDistanceWorld = button.GetWorldPositionAlongPushDirection(maxPushDistance);
+            Vector3 pressDistanceWorld = button.GetWorldPositionAlongPushDirection(pressDistance);
+            Vector3 releaseDistanceWorld = button.GetWorldPositionAlongPushDirection(releaseDistance);
 
             // scale the button in z direction
             // scaling the button while in world space shouldn't influence our button plane distances
             testButton.transform.localScale = new Vector3(1.0f, 1.0f, 2.0f);
 
-            Vector3 startPushDistanceWorldScaled = buttonComponent.GetWorldPositionAlongPushDirection(startPushDistance);
-            Vector3 maxPushDistanceWorldScaled = buttonComponent.GetWorldPositionAlongPushDirection(maxPushDistance);
-            Vector3 pressDistanceWorldScaled = buttonComponent.GetWorldPositionAlongPushDirection(pressDistance);
-            Vector3 releaseDistanceWorldScaled = buttonComponent.GetWorldPositionAlongPushDirection(releaseDistance);
+            Vector3 startPushDistanceWorldScaled = button.GetWorldPositionAlongPushDirection(startPushDistance);
+            Vector3 maxPushDistanceWorldScaled = button.GetWorldPositionAlongPushDirection(maxPushDistance);
+            Vector3 pressDistanceWorldScaled = button.GetWorldPositionAlongPushDirection(pressDistance);
+            Vector3 releaseDistanceWorldScaled = button.GetWorldPositionAlongPushDirection(releaseDistance);
 
             // compare our distances
             Assert.IsTrue(startPushDistanceWorld == startPushDistanceWorldScaled, "Start Distance was modified while scaling button gameobject");
@@ -243,37 +240,36 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // instantiate scene and button
             GameObject testButton = InstantiateDefaultPressableButton();
             yield return null;
-            PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
-            Assert.IsNotNull(buttonComponent);
 
-            PressableButton.SpaceMode distanceMode = buttonComponent.DistanceSpaceMode;
-            // check default value -> default must be using world space to not introduce a breaking change to the button
-            Assert.IsTrue(distanceMode == PressableButton.SpaceMode.World, "Pressable button default value is using local space distances which introduces a breaking change for existing projects");
+            PressableButton button = testButton.GetComponent<PressableButton>();
+            Assert.IsNotNull(button);
+
+            // check default value -> default must be using local space in order for the button to scale and function correctly
+            Assert.IsTrue(button.DistanceSpaceMode == PressableButton.SpaceMode.Local);
 
             // add scale to our button so we can compare world to local distances
             testButton.transform.localScale = new Vector3(1.0f, 1.0f, 2.0f);
-
-            // set start distance -> default is zero
-            buttonComponent.StartPushDistance = 0.00003f;
+            button.StartPushDistance = 0.00003f;
 
             // get the buttons default values for the push planes
-            float startPushDistance = buttonComponent.StartPushDistance;
-            float maxPushDistance = buttonComponent.MaxPushDistance;
-            float pressDistance = buttonComponent.PressDistance;
-            float releaseDistance = pressDistance - buttonComponent.ReleaseDistanceDelta;
+            float startPushDistanceLocal = button.StartPushDistance;
+            float maxPushDistanceLocal = button.MaxPushDistance;
+            float pressDistanceLocal = button.PressDistance;
+            float releaseDistanceLocal = pressDistanceLocal - button.ReleaseDistanceDelta;
 
-            Vector3 startPushDistanceWorld = buttonComponent.GetWorldPositionAlongPushDirection(startPushDistance);
-            Vector3 maxPushDistanceWorld = buttonComponent.GetWorldPositionAlongPushDirection(maxPushDistance);
-            Vector3 pressDistanceWorld = buttonComponent.GetWorldPositionAlongPushDirection(pressDistance);
-            Vector3 releaseDistanceWorld = buttonComponent.GetWorldPositionAlongPushDirection(releaseDistance);
+            // get world space positions for local distances
+            Vector3 startPushDistanceWorldLocal = button.GetWorldPositionAlongPushDirection(startPushDistanceLocal);
+            Vector3 maxPushDistanceWorldLocal = button.GetWorldPositionAlongPushDirection(maxPushDistanceLocal);
+            Vector3 pressDistanceWorldLocal = button.GetWorldPositionAlongPushDirection(pressDistanceLocal);
+            Vector3 releaseDistanceWorldLocal = button.GetWorldPositionAlongPushDirection(releaseDistanceLocal);
 
-            // switch to local space
-            buttonComponent.DistanceSpaceMode = PressableButton.SpaceMode.Local;
+            // switch to world space
+            button.DistanceSpaceMode = PressableButton.SpaceMode.World;
 
-            float startPushDistanceLocal = buttonComponent.StartPushDistance;
-            float maxPushDistanceLocal = buttonComponent.MaxPushDistance;
-            float pressDistanceLocal = buttonComponent.PressDistance;
-            float releaseDistanceLocal = pressDistanceLocal - buttonComponent.ReleaseDistanceDelta;
+            float startPushDistance = button.StartPushDistance;
+            float maxPushDistance = button.MaxPushDistance;
+            float pressDistance = button.PressDistance;
+            float releaseDistance = pressDistance - button.ReleaseDistanceDelta;
 
             // check if distances have changed
             Assert.IsFalse(startPushDistance == startPushDistanceLocal, "Switching from world to local space distances didn't adjust the plane coords");
@@ -282,10 +278,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsFalse(releaseDistance == releaseDistanceLocal, "Switching from world to local space distances didn't adjust the plane coords");
 
             // get world space positions for local distances
-            Vector3 startPushDistanceWorldLocal = buttonComponent.GetWorldPositionAlongPushDirection(startPushDistanceLocal);
-            Vector3 maxPushDistanceWorldLocal = buttonComponent.GetWorldPositionAlongPushDirection(maxPushDistanceLocal);
-            Vector3 pressDistanceWorldLocal = buttonComponent.GetWorldPositionAlongPushDirection(pressDistanceLocal);
-            Vector3 releaseDistanceWorldLocal = buttonComponent.GetWorldPositionAlongPushDirection(releaseDistanceLocal);
+            Vector3 startPushDistanceWorld = button.GetWorldPositionAlongPushDirection(startPushDistance);
+            Vector3 maxPushDistanceWorld = button.GetWorldPositionAlongPushDirection(maxPushDistance);
+            Vector3 pressDistanceWorld = button.GetWorldPositionAlongPushDirection(pressDistance);
+            Vector3 releaseDistanceWorld = button.GetWorldPositionAlongPushDirection(releaseDistance);
 
             // compare world space distances -> local and world space mode should return us the same world space positions 
             Assert.IsTrue(startPushDistanceWorld == startPushDistanceWorldLocal, "World and Local World positions don't match after switching pressable button distance mode");
@@ -293,15 +289,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(pressDistanceWorld == pressDistanceWorldLocal, "World and Local World positions don't match after switching pressable button distance mode");
             Assert.IsTrue(releaseDistanceWorld == releaseDistanceWorldLocal, "World and Local World positions don't match after switching pressable button distance mode");
 
-            // switch back to world space
-            buttonComponent.DistanceSpaceMode = PressableButton.SpaceMode.World;
+            // switch back to local space
+            button.DistanceSpaceMode = PressableButton.SpaceMode.Local;
 
             // distances must match up with original values 
-            Assert.IsTrue(startPushDistance == buttonComponent.StartPushDistance, "Conversion from local to world distances didn't return the correct world distances");
-            Assert.IsTrue(maxPushDistance == buttonComponent.MaxPushDistance, "Conversion from local to world distances didn't return the correct world distances");
-            Assert.IsTrue(pressDistance == buttonComponent.PressDistance, "Conversion from local to world distances didn't return the correct world distances");
-            float newReleaseDistance = buttonComponent.PressDistance - buttonComponent.ReleaseDistanceDelta;
-            Assert.IsTrue(releaseDistance == newReleaseDistance, "Conversion from local to world distances didn't return the correct world distances");
+            Assert.IsTrue(startPushDistanceLocal == button.StartPushDistance, "Conversion from local to world distances didn't return the correct world distances");
+            Assert.IsTrue(maxPushDistanceLocal == button.MaxPushDistance, "Conversion from local to world distances didn't return the correct world distances");
+            Assert.IsTrue(pressDistanceLocal == button.PressDistance, "Conversion from local to world distances didn't return the correct world distances");
+            float newReleaseDistance = button.PressDistance - button.ReleaseDistanceDelta;
+            Assert.IsTrue(releaseDistanceLocal == newReleaseDistance, "Conversion from local to world distances didn't return the correct world distances");
 
             Object.Destroy(testButton);
             // Wait for a frame to give Unity a change to actually destroy the object
@@ -314,50 +310,38 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // instantiate scene and button
             GameObject testButton = InstantiateDefaultPressableButton();
             yield return null;
-            PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
-            Assert.IsNotNull(buttonComponent);
 
-            testButton.transform.Translate(new Vector3(10.0f, 5.0f, 20.0f));
-            PressableButton.SpaceMode distanceMode = buttonComponent.DistanceSpaceMode;
-            // check default value -> default must be using world space to not introduce a breaking change to the button
-            Assert.IsTrue(distanceMode == PressableButton.SpaceMode.World, "Pressable button default value is using local space distances which introduces a breaking change for existing projects");
+            PressableButton button = testButton.GetComponent<PressableButton>();
+            Assert.IsNotNull(button);
 
-            // make sure there's no scale on our button
-            testButton.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+            // check default value -> default must be using local space in order for the button to scale and function correctly
+            Assert.IsTrue(button.DistanceSpaceMode == PressableButton.SpaceMode.Local);
 
-            // change into local space distances
-            buttonComponent.DistanceSpaceMode = PressableButton.SpaceMode.Local;
-
-            // set start distance -> default is zero
-            buttonComponent.StartPushDistance = 0.00003f;
+            // make sure there's no scale on our button and non-zero to start push distance
+            testButton.transform.localScale = Vector3.one;
+            button.StartPushDistance = 0.00003f;
 
             // get the buttons default values for the push planes
-            float startPushDistance = buttonComponent.StartPushDistance;
-            float maxPushDistance = buttonComponent.MaxPushDistance;
-            float pressDistance = buttonComponent.PressDistance;
-            float releaseDistance = pressDistance - buttonComponent.ReleaseDistanceDelta;
-
-            Vector3 startPushDistanceWorld = buttonComponent.GetWorldPositionAlongPushDirection(startPushDistance);
-            Vector3 maxPushDistanceWorld = buttonComponent.GetWorldPositionAlongPushDirection(maxPushDistance);
-            Vector3 pressDistanceWorld = buttonComponent.GetWorldPositionAlongPushDirection(pressDistance);
-            Vector3 releaseDistanceWorld = buttonComponent.GetWorldPositionAlongPushDirection(releaseDistance);
+            float startPushDistanceWorld = button.GetWorldPositionAlongPushDirection(button.StartPushDistance).z;
+            float maxPushDistanceWorld = button.GetWorldPositionAlongPushDirection(button.MaxPushDistance).z;
+            float pressDistanceWorld = button.GetWorldPositionAlongPushDirection(button.PressDistance).z;
+            float releaseDistanceWorld = button.GetWorldPositionAlongPushDirection(button.PressDistance - button.ReleaseDistanceDelta).z;
 
             // scale the button in z direction
-            // scaling the button while in local space will alter the world space distances
-            Vector3 zScale = new Vector3(1.0f, 1.0f, 2.0f);
+            // scaling the button while in local space should keep plane distance ratios mantained
+            Vector3 zScale = new Vector3(1.0f, 1.0f, 3.6f);
             testButton.transform.localScale = zScale;
+            yield return null;
 
-            Vector3 startPushDistanceWorldScaled = buttonComponent.GetWorldPositionAlongPushDirection(startPushDistance);
-            Vector3 maxPushDistanceWorldScaled = buttonComponent.GetWorldPositionAlongPushDirection(maxPushDistance);
-            Vector3 pressDistanceWorldScaled = buttonComponent.GetWorldPositionAlongPushDirection(pressDistance);
-            Vector3 releaseDistanceWorldScaled = buttonComponent.GetWorldPositionAlongPushDirection(releaseDistance);
+            float startPushDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.StartPushDistance).z;
+            float maxPushDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.MaxPushDistance).z;
+            float pressDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.PressDistance).z;
+            float releaseDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.PressDistance - button.ReleaseDistanceDelta).z;
 
-            // check if the local plane distances have scaled with the gameobject transform scale
-            Vector3 initialPosition = buttonComponent.GetWorldPositionAlongPushDirection(0);
-            Assert.IsTrue(((startPushDistanceWorld - initialPosition).Mul(zScale)) == ((startPushDistanceWorldScaled - initialPosition)), "Plane distance didn't scale with object while in local mode"); ;
-            Assert.IsTrue(((maxPushDistanceWorld - initialPosition).Mul(zScale)) == ((maxPushDistanceWorldScaled - initialPosition)), "Plane distance didn't scale with object while in local mode"); ;
-            Assert.IsTrue(((pressDistanceWorld - initialPosition).Mul(zScale)) == ((pressDistanceWorldScaled - initialPosition)), "Plane distance didn't scale with object while in local mode"); ;
-            Assert.IsTrue(((releaseDistanceWorld - initialPosition).Mul(zScale)) == ((releaseDistanceWorldScaled - initialPosition)), "Plane distance didn't scale with object while in local mode"); ;
+            Assert.IsTrue(Mathf.Approximately(startPushDistanceWorld * zScale.z, startPushDistanceWorld_Scaled), "Start push distance plane did not scale correctly");
+            Assert.IsTrue(Mathf.Approximately(maxPushDistanceWorld * zScale.z, maxPushDistanceWorld_Scaled), "Max push distance plane did not scale correctly");
+            Assert.IsTrue(Mathf.Approximately(pressDistanceWorld * zScale.z, pressDistanceWorld_Scaled), "Press distance plane did not scale correctly");
+            Assert.IsTrue(Mathf.Approximately(releaseDistanceWorld * zScale.z, releaseDistanceWorld_Scaled), "Release distance plane did not scale correctly");
 
             Object.Destroy(testButton);
             // Wait for a frame to give Unity a change to actually destroy the object
@@ -388,10 +372,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 buttonReleased = true;
             });
 
-            Vector3 startHand = new Vector3(0, 0, 0);
-            Vector3 inButtonOnPress = new Vector3(0, 0, 0.01f); // press plane of mrtk pressablebutton prefab
-            Vector3 rightOfButtonPress = new Vector3(1.0f, 0, 0.01f); // right of press plane, outside button
-            Vector3 inButtonOnRelease = new Vector3(0, 0, 0.005f); // release plane of mrtk pressablebutton prefab
+            Vector3 startHand = new Vector3(0, 0, -0.008f);
+            Vector3 inButtonOnPress = new Vector3(0, 0, 0.002f); // past press plane of mrtk pressablebutton prefab
+            Vector3 rightOfButtonPress = new Vector3(1.0f, 0, 0.002f); // right of press plane, outside button
+            Vector3 inButtonOnRelease = new Vector3(0, 0, -0.0015f); // release plane of mrtk pressablebutton prefab
             TestHand hand = new TestHand(Handedness.Right);
 
             // test scenarios in normal and low framerate

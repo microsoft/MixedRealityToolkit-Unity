@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     // TODO: Make sure all shader values are batched by theme
 
     [System.Serializable]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Interactable.html")]
     public class Interactable :
         MonoBehaviour,
         IMixedRealityFocusChangedHandler,
@@ -199,9 +199,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public bool IsVisited { get; private set; }
 
         /// <summary>
-        /// The dimension index is not zero, in a toggled state
+        /// True if SelectionMode is "Toggle" (Dimensions == 2) and the dimension index is not zero.
         /// </summary>
-        public bool IsToggled { get; private set; }
+        public bool IsToggled { get { return Dimensions == 2 && dimensionIndex > 0; } }
 
         /// <summary>
         /// Currently pressed and some movement has occurred
@@ -377,7 +377,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         /// <param name="keywords"></param>
         /// <returns></returns>
-        public static bool TryGetSpeechKeywords(out GUIContent[] keywords)
+        public static bool TryGetSpeechKeywords(out string[] keywords)
         {
             SpeechCommands[] commands;
             if (!TryGetMixedRealitySpeechCommands(out commands))
@@ -386,13 +386,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return false;
             }
 
-            List<GUIContent> keys = new List<GUIContent>();
+            List<string> keys = new List<string>
+            {
+                "(No Selection)"
+            };
+
             for (var i = 0; i < commands.Length; i++)
             {
-                keys.Add(new GUIContent(commands[i].Keyword));
+                keys.Add(commands[i].Keyword);
             }
 
-            keys.Insert(0, new GUIContent("(No Selection)"));
             keywords = keys.ToArray();
             return true;
         }
@@ -452,6 +455,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (focusingPointers.Count == 0)
             {
                 ResetBaseStates();
+                ForceUpdateThemes();
             }
         }
 
@@ -749,7 +753,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <param name="toggled"></param>
         public virtual void SetToggled(bool toggled)
         {
-            IsToggled = toggled;
             SetState(InteractableStates.InteractableStateEnum.Toggled, toggled);
 
             // if in toggle mode
@@ -893,7 +896,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             SetObservation(false);
             SetObservationTargeted(false);
             SetInteractive(false);
-            SetCustom(false);
             SetTargeted(false);
             SetToggled(false);
             SetVisited(false);
@@ -939,11 +941,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public void OnFocusEnter(FocusEventData eventData)
         {
-            Debug.Assert(focusingPointers.Count > 0,
-                "OnFocusEnter called but focusingPointers == 0. Most likely caused by the presence of a child object " +
-                "that is handling IMixedRealityFocusChangedHandler");
             if (CanInteract())
             {
+                Debug.Assert(focusingPointers.Count > 0,
+                    "OnFocusEnter called but focusingPointers == 0. Most likely caused by the presence of a child object " +
+                    "that is handling IMixedRealityFocusChangedHandler");
                 SetFocus(true);
             }
         }
@@ -1197,7 +1199,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return false;
             }
 
-            if (Dimensions > 1 && ((dimensionIndex != Dimensions - 1 & !CanSelect) || (dimensionIndex == Dimensions - 1 & !CanDeselect)))
+            if (Dimensions > 1 && ((dimensionIndex != Dimensions - 1 && !CanSelect) || (dimensionIndex == Dimensions - 1 && !CanDeselect)))
             {
                 return false;
             }
