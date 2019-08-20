@@ -9,7 +9,7 @@ All changes be they small or large, need to adhere to the [MRTK coding standards
 If you have any questions, please reach out on [Stack Overflow](https://stackoverflow.com/questions/tagged/mrtk) or the [HoloDevelopers slack](https://holodevelopers.slack.com/). You can join the Slack community via the [automatic invitation sender](https://holodevelopersslack.azurewebsites.net/).
 
 # Submission process
-We provide several paths to enable developers to contribute to the Mixed Reality Toolkit, all starting with [creating a new Issue](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues/new/choose)
+We provide several paths to enable developers to contribute to the Mixed Reality Toolkit, all starting with [creating a new Issue](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues/new/choose).
 
 ![Select Issue Type](../Images/Contributing/SelectIssueType.png)
 
@@ -39,7 +39,7 @@ To get started, simply follow these steps:
 
 1. Fork the repository. Click on the "Fork" button on the top right of the page and follow the flow.
 1. Create a branch in your fork (off of the [mrtk_development](https://github.com/microsoft/mixedrealitytoolkit-unity/tree/mrtk_development) branch) to make it easier for you to isolate your fork.
-    - For the legacy HoloToolkit use the [htk_development](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/htk_development) branch
+    - For the legacy HoloToolkit use the [htk_development](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/htk_development) branch.
 1. Instructions for writing and running tests are at [UnitTests](UnitTests.md).
 1. Instructions for building and deploying MRTK are at [BuildAndDeploy](../BuildAndDeploy.md). 
 1. Make **small and frequent** commits that include tests which could be a unity scene showing usage of your feature.
