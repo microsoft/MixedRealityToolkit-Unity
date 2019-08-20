@@ -67,15 +67,19 @@ profiles, please open them to verify that all of the updated properties are corr
     - Match the HoloLens 2 shell behavior
     - Handles can be configured to appear only when a hand is close to them
 - New example scene
-    - The BoundingBoxExample scene shows various types of configurations
+    - The BoundingBoxExample scene, in the Examples package (Demos\UX\BoundingBox\Scenes\BoundingBoxExamples.unity), shows various types of configurations
 
 > [!Important] 
-> Normalized asset handle size and scaling logic require updated handle scale values. With this change, the existing bounding box handle will be displayed in a very large size. Please refer to the **Bounding box handle styles** section in the [Bounding Box](README_BoundingBox.md) documentation for updated recommended values for the handle size. Handle configuration examples can be found in the **BoundingBoxExamples** scene. 
+> Normalized asset handle size and scaling logic require updated handle scale values. With this change, the existing bounding box
+handle will be displayed in a very large size. Please refer to the **Bounding box handle styles** section in the [Bounding Box](README_BoundingBox.md)
+documentation for updated recommended values for the handle size. Handle configuration examples can be found in the **BoundingBoxExamples** scene.
+
 <img src="../Documentation/Images/BoundingBox/MRTK_BoundingBox_HandleStyles2.png" width="450">
 
 **Clipping Example**
 
-The ClippingExamples scene, demonstates using the MRTK Standard Shader’s new clipping feature.
+The ClippingExamples scene, in the Examples package (Demos\StandardShader\Scenes\ClippingExamples.unity), demonstrates using the MRTK
+Standard Shader’s new clipping feature.
 
 **CoreServices**
 
@@ -98,9 +102,9 @@ Mixed Reality Toolkit's **Active Profile** to **DefaultHoloLens1ConfigurationPro
 A [dependency window](Tools/DependencyWindow.md) has been added which displays how assets reference and depend on each other.
 This tool can be used to easily determine which assets within a project are not being used.
 
-**Example: Launch applications from within your Unity app**
+**Example: Launch applications from within a Unity app**
 
-See the HandInteractionExamples scene in the Examples package (Demos\HandInteraction\Scenes\HandInteractionDemos.unity) for a
+See the HandInteractionExamples scene, in the Examples package (Demos\HandInteraction\Scenes\HandInteractionDemos.unity), for a
 demonstration of using the LaunchUri script to start an external application.
 
 **Extension Service Creation Wizard**
@@ -168,8 +172,8 @@ configuring a mixed reality project for best performance in Unity.
 **Radial Solver**
 
 There have been improvements on vertical positioning. Check ‘Use Fixed Vertical Position’ to lock the vertical movement
-to achieve shell-style tag-along behavior. You can see the example of lazy-following tag-along behavior in the
-‘ToggleFeaturesPanel’ prefab .
+to achieve shell-style tag-along behavior. An example of lazy-following tag-along behavior can be seen in the
+‘ToggleFeaturesPanel’ prefab (SDK\Features\UX\Prefabs\ToggleFeaturesPanel.prefab).
 
 **SceneSystem**
 
@@ -193,12 +197,12 @@ Service manager prefabs are provided for the following services.
 - SpatialAwarenessSystem
 - TeleportSystem (requires the Input System)
 
-To use, drag and drop the desired prefab into your heirarchy and select the configuration
+To use, drag and drop the desired prefab into the heirarchy and select the configuration
 profile. 
 
 > [!Note]
 > These service managers are currently experimental, may have issues and
-are subject to change. Please file any and all issues you encounter on GitHub
+are subject to change. Please file any and all issues that are encountered on GitHub
 
 **Slate**
 
@@ -260,7 +264,7 @@ This can manifest as CS0006 errors in Visual Studio that look like:
 
 > CS0006: Metadata file 'C:\path\to\longer\file\that\is\longer\than\255\characters\mrtk.long.binary.name.dll' could not be found.
 
-This can be worked around by moving your Unity project folder closer to the root of the drive:
+This can be worked around by moving the Unity project folder closer to the root of the drive, for example:
 
 > C:\src\project
 
@@ -279,7 +283,7 @@ Examples made with Unity's scroll view show text overflow on the device when it 
 **Unity 2019: Could not copy the file HolographicAppRemoting.dll**
 
 There is a known issue with version 3.0.0 of the Windows Mixed Reality package for Unity 2019. If
-your project has this version installed, you will see the following error when compiling in Microsoft
+the project has this version installed, the following error will be encountered when compiling in Microsoft
 Visual Studio.
 
 To work around the issues, please check for a newer version or roll back to version 3.0.2 using Window > Package Manager in the Unity editor.
@@ -287,6 +291,6 @@ To work around the issues, please check for a newer version or roll back to vers
 **VR/Immersive devices: Content in some demo scenes is placed below the user**
 
 Some demo scenes contained in the Examples package are optimized for HoloLens device's (headset's y position is 0). These scenes
-may place objects below the user when run on VR/Immersive device's (headset's Y position is the distance from the floor). To work around this issue, select the **Scene Content** object, in the Hierarchy, and set the Transform's Position Y value to **1.5** (1.5 meters, or your preferred headset height).
+may place objects below the user when run on VR/Immersive device's (headset's Y position is the distance from the floor). To work around this issue, select the **Scene Content** object, in the Hierarchy, and set the Transform's Position Y value to **1.5** (1.5 meters, or the preferred headset height).
 
 ![Adjusting Scene Content Height](Images/ReleaseNotes/AdjustContentHeight.png)
