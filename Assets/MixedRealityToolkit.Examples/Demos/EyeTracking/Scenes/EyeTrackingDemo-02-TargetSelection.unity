@@ -52,7 +52,7 @@ LightmapSettings:
     m_AlbedoBoost: 1
     m_EnvironmentLightingMode: 0
     m_EnableBakedLightmaps: 1
-    m_EnableRealtimeLightmaps: 1
+    m_EnableRealtimeLightmaps: 0
   m_LightmapEditorSettings:
     serializedVersion: 10
     m_Resolution: 2
@@ -159,6 +159,24 @@ PrefabInstance:
     - target: {fileID: 4892019426743882, guid: 427730042d0a7ac41b1d81947f081754, type: 3}
       propertyPath: m_RootOrder
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 224474001465818384, guid: 427730042d0a7ac41b1d81947f081754,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -322.79544
+      objectReference: {fileID: 0}
+    - target: {fileID: 224367413309412084, guid: 427730042d0a7ac41b1d81947f081754,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -322.80963
+      objectReference: {fileID: 0}
+    - target: {fileID: 114924912107220086, guid: 427730042d0a7ac41b1d81947f081754,
+        type: 3}
+      propertyPath: m_Text
+      value: "\nDestroy gems as fast as you can.\n\nSimply do one of the following:
+        \n   -   Look and air-tap\n   -   Look and say \"Select\"\n   -   Look and
+        say \"Explode\" \n\nIt is <color=#FCFF94>fast</color>\nIt is <color=#FCFF94>effortless</color>\nIt
+        is <color=#FCFF94>eye-supported target selection</color>\n"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 427730042d0a7ac41b1d81947f081754, type: 3}
@@ -827,11 +845,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 1432764269}
@@ -1112,7 +1130,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_textAlignment: 264
+  m_textAlignment: 257
   m_isAlignmentEnumConverted: 1
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -1154,11 +1172,11 @@ MonoBehaviour:
     lineCount: 6
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 1760202123}
@@ -1628,21 +1646,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1420004700468430834, guid: 499768ed6e537bd498b9fdc4689708a3,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1420004700468430828, guid: 499768ed6e537bd498b9fdc4689708a3,
-        type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1420004700468430828, guid: 499768ed6e537bd498b9fdc4689708a3,
-        type: 3}
-      propertyPath: m_isInputParsingRequired
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1420004698951824090, guid: 499768ed6e537bd498b9fdc4689708a3,
         type: 3}
       propertyPath: m_Mesh
@@ -1654,6 +1657,21 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1420004698951824084, guid: 499768ed6e537bd498b9fdc4689708a3,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1420004700468430834, guid: 499768ed6e537bd498b9fdc4689708a3,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1420004700468430828, guid: 499768ed6e537bd498b9fdc4689708a3,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1420004700468430828, guid: 499768ed6e537bd498b9fdc4689708a3,
         type: 3}
       propertyPath: m_isInputParsingRequired
       value: 1

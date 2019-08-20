@@ -1,7 +1,8 @@
 {
     "name": "Microsoft.MixedReality.Toolkit.Demos.Gltf.Inspectors",
     "references": [
-        "Microsoft.MixedReality.Toolkit.Demos.Gltf"
+        "Microsoft.MixedReality.Toolkit.Demos.Gltf",
+        "Microsoft.MixedReality.Toolkit.Editor.Utilities"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [

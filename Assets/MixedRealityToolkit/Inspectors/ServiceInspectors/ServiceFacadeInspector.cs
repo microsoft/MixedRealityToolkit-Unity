@@ -110,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             // Profiles include doc links by default now
             if (!drawProfile)
             {
-                DrawDocLink(facade.ServiceType);
+                InspectorUIUtility.RenderHelpURL(facade.ServiceType);
             }
 
             bool drewSomething = drawProfile | drawInspector | drawDataProviders;
@@ -124,35 +124,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
         }
 
         /// <summary>
-        /// Draws button linking to documentation.
-        /// </summary>
-        /// <param name="serviceType">type of service to target</param>
-        /// <returns>true if doc link is found, false otherwise</returns>
-        private bool DrawDocLink(Type serviceType)
-        {
-            DocLinkAttribute docLink = serviceType.GetCustomAttribute<DocLinkAttribute>();
-            if (docLink != null)
-            {
-                GUILayout.BeginHorizontal();
-                GUILayout.FlexibleSpace();
-
-                InspectorUIUtility.RenderDocLinkButton(docLink.URL);
-
-                GUILayout.FlexibleSpace();
-                GUILayout.EndHorizontal();
-                EditorGUILayout.Space();
-                return true;
-            }
-            return false;
-        }
-
-        /// <summary>
         /// Draws a list of services that use this as a data provider
         /// </summary>
         /// <param name="serviceType"></param>
         /// <returns></returns>
         private bool DrawDataProviders(Type serviceType)
-        {  
+        {
             // If this is a data provider being used by other services, mention that now
             dataProviderList.Clear();
             foreach (MixedRealityDataProviderAttribute dataProviderAttribute in serviceType.GetCustomAttributes(typeof(MixedRealityDataProviderAttribute), true))

@@ -17,6 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// You may also configure the script on only enable certain manipulations. The script works with 
     /// both HoloLens' gesture input and immersive headset's motion controller input.
     /// </summary>
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_ManipulationHandler.html")]
     public class ManipulationHandler : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusChangedHandler
     {
         #region Public Enums
@@ -224,21 +225,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 get
                 {
-                    if (IsNearPointer())
-                    {
-                        return pointer.Position;
-                    }
-                    else
-                    {
-                        return (pointer.Rotation * initialGrabPointInPointer) + pointer.Position;
-                    }
+                    return (pointer.Rotation * initialGrabPointInPointer) + pointer.Position;
                 }
             }
         }
         private Dictionary<uint, PointerData> pointerIdToPointerMap = new Dictionary<uint, PointerData>();
         private Quaternion objectToHandRotation;
-        private Vector3 objectToHandTranslation;
-        private Vector3 hostLocalGrabPoint;
         private bool isNearManipulation;
         // This can probably be consolidated so that we use same for one hand and two hands
         private Quaternion targetRotationTwoHands;
@@ -250,28 +242,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Quaternion startObjectRotationFlatCameraSpace;
         private Quaternion hostWorldRotationOnManipulationStart;
 
+        private TransformScaleHandler scaleHandler;
+
         #endregion
 
         #region MonoBehaviour Functions
 
-        /// <summary>
-        /// Releases the object that is currently manipulated
-        /// </summary>
-        public void ForceEndManipulation()
-        {
-            // release rigidbody and clear pointers
-            ReleaseRigidBody();
-            pointerIdToPointerMap.Clear();
-
-            // end manipulation
-            State newState = State.Start;
-            InvokeStateUpdateFunctions(currentState, newState);
-            currentState = newState;
-        }
-
         private void Awake()
         {
-            moveLogic = new TwoHandMoveLogic(constraintOnMovement);
+            moveLogic = new TwoHandMoveLogic();
             rotateLogic = new TwoHandRotateLogic();
             scaleLogic = new TwoHandScaleLogic();
         }
@@ -281,6 +260,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 hostTransform = transform;
             }
+
+            scaleHandler = this.GetComponent<TransformScaleHandler>();
         }
         #endregion MonoBehaviour Functions
 
@@ -295,6 +276,29 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 count++;
             }
             return sum / Math.Max(1, count);
+        }
+
+        private MixedRealityPose GetAveragePointerPose()
+        {
+            Vector3 sumPos = Vector3.zero;
+            Vector3 sumDir = Vector3.zero;
+            int count = 0;
+            foreach (var p in pointerIdToPointerMap.Values)
+            {
+                sumPos += p.pointer.Position;
+                sumDir += p.pointer.Rotation * Vector3.forward;
+                count++;
+            }
+
+            MixedRealityPose pose = new MixedRealityPose();
+
+            if (count > 0)
+            {
+                pose.Position = sumPos / count;
+                pose.Rotation = Quaternion.LookRotation(sumDir / count);
+            }
+
+            return pose;
         }
 
         private Vector3 GetPointersVelocity()
@@ -466,6 +470,36 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
         #endregion Private Methods
 
+        #region Public Methods
+
+        /// <summary>
+        /// Releases the object that is currently manipulated
+        /// </summary>
+        public void ForceEndManipulation()
+        {
+            // release rigidbody and clear pointers
+            ReleaseRigidBody();
+            pointerIdToPointerMap.Clear();
+
+            // end manipulation
+            State newState = State.Start;
+            InvokeStateUpdateFunctions(currentState, newState);
+            currentState = newState;
+        }
+
+        /// <summary>
+        /// Gets the grab point for the given pointer id.
+        /// Only use if you know that your given pointer id corresponds to a pointer that has grabbed
+        /// this component.
+        /// </summary>
+        public Vector3 GetPointerGrabPoint(uint pointerId)
+        {
+            Assert.IsTrue(pointerIdToPointerMap.ContainsKey(pointerId));
+            return pointerIdToPointerMap[pointerId].GrabPoint;
+        }
+
+        #endregion Public Methods
+
         #region Hand Event Handlers
 
         /// <inheritdoc />
@@ -545,11 +579,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             var targetPosition = hostTransform.position;
             var targetScale = hostTransform.localScale;
 
-            if ((currentState & State.Moving) > 0)
-            {
-                targetPosition = moveLogic.Update(GetPointersCentroid(), IsNearManipulation());
-            }
-
             var handPositionMap = GetHandPositionMap();
 
             if ((currentState & State.Rotating) > 0)
@@ -561,10 +590,21 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 targetScale = scaleLogic.UpdateMap(handPositionMap);
             }
 
+            if ((currentState & State.Moving) > 0)
+            {
+                MixedRealityPose pose = GetAveragePointerPose();
+                targetPosition = moveLogic.Update(pose, targetRotationTwoHands, targetScale, IsNearManipulation(), true, constraintOnMovement);
+            }
+
             float lerpAmount = GetLerpAmount();
             hostTransform.position = Vector3.Lerp(hostTransform.position, targetPosition, lerpAmount);
             // Currently the two hand rotation algorithm doesn't allow for lerping, but it should. Fix this.
             hostTransform.rotation = Quaternion.Lerp(hostTransform.rotation, targetRotationTwoHands, lerpAmount);
+
+            if (scaleHandler != null)
+            {
+                targetScale = scaleHandler.ClampScale(targetScale);
+            }
             hostTransform.localScale = Vector3.Lerp(hostTransform.localScale, targetScale, lerpAmount);
         }
 
@@ -631,16 +671,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             targetRotation = ApplyConstraints(targetRotation);
-            Vector3 targetPosition;
-            if (IsNearManipulation())
-            {
-                // Compute the host position such that the grab point falls on the pointer
-                targetPosition = pointerData.GrabPoint - targetRotation * hostLocalGrabPoint;
-            }
-            else
-            {
-                targetPosition = moveLogic.Update(pointerData.GrabPoint, false);
-            }
+            MixedRealityPose pointerPose = new MixedRealityPose(pointer.Position, pointer.Rotation);
+            Vector3 targetPosition = moveLogic.Update(pointerPose, targetRotation, hostTransform.localScale, IsNearManipulation(), rotateInOneHandType != RotateInOneHandType.RotateAboutObjectCenter, constraintOnMovement);
 
             float lerpAmount = GetLerpAmount();
             Quaternion smoothedRotation = Quaternion.Lerp(hostTransform.rotation, targetRotation, lerpAmount);
@@ -657,9 +689,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 rotateLogic.Setup(handPositionMap, hostTransform, ConstraintOnRotation);
             }
-            if ((newState & State.Moving) > 0)
+            if ((newState & State.Moving) > 0) 
             {
-                moveLogic.Setup(GetPointersCentroid(), hostTransform.position);
+                MixedRealityPose pointerPose = GetAveragePointerPose();
+                MixedRealityPose hostPose = new MixedRealityPose(hostTransform.position, hostTransform.rotation);
+                moveLogic.Setup(pointerPose, GetPointersCentroid(), hostPose, hostTransform.localScale);
             }
             if ((newState & State.Scaling) > 0)
             {
@@ -673,7 +707,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Assert.IsTrue(pointerIdToPointerMap.Count == 1);
             PointerData pointerData = GetFirstPointer();
             IMixedRealityPointer pointer = pointerData.pointer;
-            moveLogic.Setup(pointerData.GrabPoint, hostTransform.position);
 
             // cache objects rotation on start to have a reference for constraint calculations
             // if we don't cache this on manipulation start the near rotation might drift off the hand
@@ -683,11 +716,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             // Calculate relative transform from object to hand.
             Quaternion worldToPalmRotation = Quaternion.Inverse(pointer.Rotation);
             objectToHandRotation = worldToPalmRotation * hostTransform.rotation;
-            objectToHandTranslation = worldToPalmRotation * (hostTransform.position - pointer.Position);
+
+            MixedRealityPose pointerPose = new MixedRealityPose(pointer.Position, pointer.Rotation);
+            MixedRealityPose hostPose = new MixedRealityPose(hostTransform.position, hostTransform.rotation);
+            moveLogic.Setup(pointerPose, pointerData.GrabPoint, hostPose, hostTransform.localScale);
 
             Vector3 worldGrabPoint = pointerData.GrabPoint;
-            // Compute the grab point in local space of the host
-            hostLocalGrabPoint = Quaternion.Inverse(hostTransform.rotation) * (worldGrabPoint - hostTransform.position);
 
             startObjectRotationCameraSpace = Quaternion.Inverse(CameraCache.Main.transform.rotation) * hostTransform.rotation;
             var cameraFlat = CameraCache.Main.transform.forward;

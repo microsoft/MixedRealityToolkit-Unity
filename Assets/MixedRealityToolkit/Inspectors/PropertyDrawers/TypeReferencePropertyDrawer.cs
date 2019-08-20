@@ -68,13 +68,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static List<Type> GetFilteredTypes(SystemTypeAttribute filter)
         {
             var types = new List<Type>();
-            var assemblies = CompilationPipeline.GetAssemblies();
             var excludedTypes = ExcludedTypeCollectionGetter?.Invoke();
 
+            // We prefer using this over CompilationPipeline.GetAssemblies() because
+            // some types may come from plugins and other sources that have already
+            // been compiled.
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             foreach (var assembly in assemblies)
             {
-                Assembly compiledAssembly = Assembly.Load(assembly.name);
-                FilterTypes(compiledAssembly, filter, excludedTypes, types);
+                FilterTypes(assembly, filter, excludedTypes, types);
             }
 
             types.Sort((a, b) => string.Compare(a.FullName, b.FullName, StringComparison.Ordinal));
@@ -237,7 +239,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         GUI.Label(new Rect(position.width, position.y, position.width, position.height), errorContent);
 
                         Rect dropdownPosition = new Rect(position.x, position.y, position.width - 90, position.height);
-                        Rect buttonPosition = new Rect(position.width - 75, position.y, 75, position.height);
+                        Rect buttonPosition = new Rect(position.x + position.width - 75, position.y, 75, position.height);
 
                         property.stringValue = DrawTypeSelectionControl(dropdownPosition, label, property.stringValue, filter, false);
 

@@ -11,8 +11,7 @@ using Windows.UI.ViewManagement;
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
     /// <summary>
-    /// Class that can launch and hide a system keyboard specifically for Windows Mixed Reality
-    /// devices (HoloLens 2, Windows Mixed Reality).
+    /// Class that can launch and hide a system keyboard specifically for HoloLens 2.
     /// 
     /// Implements a workaround for UWP TouchScreenKeyboard bug which prevents
     /// UWP keyboard from showing up again after it is closed.
@@ -124,11 +123,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         public void ShowKeyboard()
         {
-            if (state == KeyboardState.Showing)
-            {
-                Debug.Log($"MixedRealityKeyboard.ShowKeyboard called but keyboard already visible");
-                return;
-            }
+            // 2019/08/14: We show the keyboard even when the keyboard is already visible because on HoloLens 1
+            // and WMR the events OnKeyboardShowing and OnKeyboardHiding do not fire
+            //if (state == KeyboardState.Showing)
+            //{
+            //    Debug.Log($"MixedRealityKeyboard.ShowKeyboard called but keyboard already visible.");
+            //    return;
+            //}
 
             State = KeyboardState.Showing;
 

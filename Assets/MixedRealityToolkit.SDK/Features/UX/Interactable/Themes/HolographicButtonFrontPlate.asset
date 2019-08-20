@@ -750,6 +750,8 @@ MonoBehaviour:
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
       ShaderName: 
+    CustomSettings: []
+    CustomHistory: []
     Easing:
       Enabled: 0
       Curve:
@@ -1224,6 +1226,8 @@ MonoBehaviour:
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
       ShaderName: 
+    CustomSettings: []
+    CustomHistory: []
     Easing:
       Enabled: 0
       Curve:

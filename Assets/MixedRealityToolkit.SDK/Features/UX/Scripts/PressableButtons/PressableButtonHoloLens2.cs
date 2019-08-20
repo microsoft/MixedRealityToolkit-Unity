@@ -114,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 // Compress the button visuals by the push amount.
                 Vector3 scale = compressableButtonVisuals.transform.localScale;
-                float pressPercentage = Mathf.Max(minCompressPercentage, (1.0f - (currentPushDistance - startPushDistance) / MaxPushDistance));
+                float pressPercentage = Mathf.Max(minCompressPercentage, (1.0f - (CurrentPushDistance - startPushDistance) / MaxPushDistance));
                 scale.z = initialCompressableButtonVisualsLocalScale.z * pressPercentage;
                 compressableButtonVisuals.transform.localScale = scale;
             }
@@ -122,7 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (movingButtonIconText != null)
             {
                 // Always move relative to startPushDistance
-                movingButtonIconText.transform.position = GetWorldPositionAlongPushDirection((currentPushDistance - startPushDistance) / 2);
+                movingButtonIconText.transform.position = GetWorldPositionAlongPushDirection((CurrentPushDistance - startPushDistance) / 2);
             }
         }
 
