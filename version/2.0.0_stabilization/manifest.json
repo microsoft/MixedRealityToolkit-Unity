@@ -3774,6 +3774,83 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollectionCylinder.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollectionCylinder.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollectionPlane.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollectionPlane.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollectionRadial.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollectionRadial.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollectionScattered.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollectionScattered.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollectionScript.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollectionScript.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollectionSphere.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollectionSphere.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollectionTileGrid.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollectionTileGrid.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollection_3DObjects.jpg",
       "output": {
         "resource": {
@@ -3800,6 +3877,17 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollection_Layout_2DImages.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollection_Main.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollection_Main.jpg"
         }
       },
       "is_incremental": false,
@@ -5283,7 +5371,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_ObjectCollection.html",
-          "hash": "brINs62xkgchIWEKNsigfA=="
+          "hash": "k7ikbR2qtspnJKrHxob61w=="
         }
       },
       "is_incremental": false,
@@ -18582,11 +18670,10 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ResourceDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 1076,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
@@ -18602,10 +18689,11 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
+        "ResourceDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 1076,
+          "total_file_count": 0,
           "skipped_file_count": 0
         }
       }
