@@ -110,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         private InputSimulationService inputSim;
-        IMixedRealityInputSystem inputSystem;
+        private IMixedRealityInputSystem inputSystem;
 
         private T CreateTouchable<T>(float scale) where T : BaseNearInteractionTouchable
         {
