@@ -15,12 +15,11 @@ jobs:
     - COG-UnityCache-WUS2-01
     - SDK_18362 -equals TRUE
   steps:
-  - template: templates/common.yml
+  - template: templates/compilemsbuild.yml
   - task: PublishBuildArtifacts@1
     inputs:
       PathtoPublish: '$(Build.SourcesDirectory)\NuGet'
       ArtifactName: 'NuGet'
-  - template: templates/releasesigning.yml
   - template: templates/end.yml
 
 - job: ReleaseSigning
@@ -39,6 +38,13 @@ jobs:
       $Authorization = "Basic " + [System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes('$(scriptsRepoVSTSuser):$(scriptsRepoPAT)'))
       git clone -c http.extraheader="AUTHORIZATION: $Authorization" -b mrtk $(scriptsRepoURL) $(Build.ArtifactStagingDirectory)\scripts
     displayName: "Clone release scripts"
+
+  # required for code signing
+  - task: ComponentGovernanceComponentDetection@0
+    inputs:
+      scanType: 'Register'
+      verbosity: 'Verbose'
+      alertWarningLevel: 'High'
 
   # sign all DLLs
   - template: templates/tasks/signing.yml

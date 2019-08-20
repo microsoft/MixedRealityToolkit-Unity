@@ -12,7 +12,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private SerializedProperty height;
         private SerializedProperty endPoint;
         private SerializedProperty upDirection;
-        private SerializedProperty endPointPosition;
 
         protected override void OnEnable()
         {
@@ -44,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         protected override void OnSceneGUI()
         {
             base.OnSceneGUI();
-        
+
             serializedObject.Update();
 
             var rotation = endPoint.FindPropertyRelative("rotation");

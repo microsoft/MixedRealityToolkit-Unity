@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using TMPro;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples
@@ -11,11 +12,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         public GameObject HoldIndicator = null;
         public GameObject ManipulationIndicator = null;
         public GameObject NavigationIndicator = null;
+        public GameObject SelectIndicator = null;
 
         public Material DefaultMaterial = null;
         public Material HoldMaterial = null;
         public Material ManipulationMaterial = null;
         public Material NavigationMaterial = null;
+        public Material SelectMaterial = null;
 
         public GameObject RailsAxisX = null;
         public GameObject RailsAxisY = null;
@@ -57,6 +60,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples
                 SetIndicator(NavigationIndicator, $"Navigation: started {Vector3.zero}", NavigationMaterial, Vector3.zero);
                 ShowRails(Vector3.zero);
             }
+            
+            SetIndicator(SelectIndicator, "Select:", DefaultMaterial);
         }
 
         public void OnGestureUpdated(InputEventData eventData)
@@ -94,6 +99,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             if (action == "Hold Action")
             {
                 SetIndicator(HoldIndicator, "Hold: completed", DefaultMaterial);
+            }
+            else if (action == "Select")
+            {
+                SetIndicator(SelectIndicator, "Select: completed", SelectMaterial);
             }
         }
 
@@ -142,7 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
                 {
                     renderer.material = material;
                 }
-                var text = indicator.GetComponentInChildren<TextMesh>();
+                var text = indicator.GetComponentInChildren<TextMeshPro>();
                 if (text)
                 {
                     text.text = label;

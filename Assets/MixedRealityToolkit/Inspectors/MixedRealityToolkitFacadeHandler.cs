@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Input;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
@@ -95,15 +96,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             }
 
             servicesToSort.Clear();
+            servicesToSort.AddRange(MixedRealityServiceRegistry.GetAllServices());
 
-            foreach (IMixedRealityService service in MixedRealityToolkit.Instance.ActiveSystems.Values)
+            IMixedRealityInputSystem inputSystem;
+            MixedRealityServiceRegistry.TryGetService(out inputSystem);
+            if (inputSystem != null)
             {
-                servicesToSort.Add(service);
-            }
-
-            foreach (Tuple<Type, IMixedRealityService> registeredService in MixedRealityToolkit.Instance.RegisteredMixedRealityServices)
-            {
-                servicesToSort.Add(registeredService.Item2);
+                servicesToSort.AddRange((inputSystem as IMixedRealityDataProviderAccess).GetDataProviders());
             }
 
             servicesToSort.Sort(

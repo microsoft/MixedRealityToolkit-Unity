@@ -99,6 +99,7 @@ Shader "Mixed Reality Toolkit/Standard"
         [Enum(UnityEngine.Rendering.CullMode)] _CullMode("Cull Mode", Float) = 2                     // "Back"
         _RenderQueueOverride("Render Queue Override", Range(-1.0, 5000)) = -1
         [Toggle(_INSTANCED_COLOR)] _InstancedColor("Instanced Color", Float) = 0.0
+        [Toggle(_IGNORE_Z_SCALE)] _IgnoreZScale("Ignore Z Scale", Float) = 0.0
         [Toggle(_STENCIL)] _Stencil("Enable Stencil Testing", Float) = 0.0
         _StencilReference("Stencil Reference", Range(0, 255)) = 0
         [Enum(UnityEngine.Rendering.CompareFunction)]_StencilComparison("Stencil Comparison", Int) = 0
@@ -253,6 +254,7 @@ Shader "Mixed Reality Toolkit/Standard"
             #pragma shader_feature _IRIDESCENCE
             #pragma shader_feature _ENVIRONMENT_COLORING
             #pragma shader_feature _INSTANCED_COLOR
+            #pragma shader_feature _IGNORE_Z_SCALE
 
             #define IF(a, b, c) lerp(b, c, step((fixed) (a), 0.0)); 
 
@@ -706,7 +708,11 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined(_SCALE)
                 o.scale.x = length(mul(unity_ObjectToWorld, float4(1.0, 0.0, 0.0, 0.0)));
                 o.scale.y = length(mul(unity_ObjectToWorld, float4(0.0, 1.0, 0.0, 0.0)));
+#if defined(_IGNORE_Z_SCALE)
+                o.scale.z = o.scale.x;
+#else
                 o.scale.z = length(mul(unity_ObjectToWorld, float4(0.0, 0.0, 1.0, 0.0)));
+#endif
 #endif
 
 #if defined(_BORDER_LIGHT) || defined(_ROUND_CORNERS)
@@ -922,6 +928,44 @@ Shader "Mixed Reality Toolkit/Standard"
                 albedo.rgb += i.iridescentColor;
 #endif
 
+                // Normal calculation.
+#if defined(_NORMAL)
+                fixed3 worldViewDir = normalize(UnityWorldSpaceViewDir(i.worldPosition.xyz));
+#if defined(_REFLECTIONS) || defined(_ENVIRONMENT_COLORING)
+                fixed3 incident = -worldViewDir;
+#endif
+                fixed3 worldNormal;
+
+#if defined(_NORMAL_MAP)
+#if defined(_TRIPLANAR_MAPPING)
+                fixed3 tangentNormalX = UnpackScaleNormal(tex2D(_NormalMap, uvX), _NormalMapScale);
+                fixed3 tangentNormalY = UnpackScaleNormal(tex2D(_NormalMap, uvY), _NormalMapScale);
+                fixed3 tangentNormalZ = UnpackScaleNormal(tex2D(_NormalMap, uvZ), _NormalMapScale);
+                tangentNormalX.x *= axisSign.x;
+                tangentNormalY.x *= axisSign.y;
+                tangentNormalZ.x *= -axisSign.z;
+
+                // Swizzle world normals to match tangent space and apply Whiteout normal blend.
+                tangentNormalX = fixed3(tangentNormalX.xy + i.worldNormal.zy, tangentNormalX.z * i.worldNormal.x);
+                tangentNormalY = fixed3(tangentNormalY.xy + i.worldNormal.xz, tangentNormalY.z * i.worldNormal.y);
+                tangentNormalZ = fixed3(tangentNormalZ.xy + i.worldNormal.xy, tangentNormalZ.z * i.worldNormal.z);
+
+                // Swizzle tangent normals to match world normal and blend together.
+                worldNormal = normalize(tangentNormalX.zyx * triplanarBlend.x +
+                                        tangentNormalY.xzy * triplanarBlend.y +
+                                        tangentNormalZ.xyz * triplanarBlend.z);
+#else
+                fixed3 tangentNormal = UnpackScaleNormal(tex2D(_NormalMap, i.uv), _NormalMapScale);
+                worldNormal.x = dot(i.tangentX, tangentNormal);
+                worldNormal.y = dot(i.tangentY, tangentNormal);
+                worldNormal.z = dot(i.tangentZ, tangentNormal);
+                worldNormal = normalize(worldNormal) * facing;
+#endif
+#else
+                worldNormal = normalize(i.worldNormal) * facing;
+#endif
+#endif
+
                 fixed pointToLight = 1.0;
                 fixed3 fluentLightColor = fixed3(0.0, 0.0, 0.0);
 
@@ -954,7 +998,7 @@ Shader "Mixed Reality Toolkit/Standard"
                 {
                     int dataIndex = proximityLightIndex * PROXIMITY_LIGHT_DATA_SIZE;
                     fixed colorValue;
-                    fixed proximityValue = ProximityLight(_ProximityLightData[dataIndex], _ProximityLightData[dataIndex + 1], _ProximityLightData[dataIndex + 2], i.worldPosition.xyz, i.worldNormal, colorValue);
+                    fixed proximityValue = ProximityLight(_ProximityLightData[dataIndex], _ProximityLightData[dataIndex + 1], _ProximityLightData[dataIndex + 2], i.worldPosition.xyz, worldNormal, colorValue);
                     pointToLight += proximityValue;
 #if defined(_PROXIMITY_LIGHT_COLOR_OVERRIDE)
                     fixed3 proximityColor = MixProximityLightColor(_ProximityLightCenterColorOverride, _ProximityLightMiddleColorOverride, _ProximityLightOuterColorOverride, colorValue);
@@ -1015,44 +1059,6 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
                 clip(albedo.a - _Cutoff);
                 albedo.a = 1.0;
-#endif
-
-#if defined(_NORMAL)
-                fixed3 worldViewDir = normalize(UnityWorldSpaceViewDir(i.worldPosition.xyz));
-#if defined(_REFLECTIONS) || defined(_ENVIRONMENT_COLORING)
-                fixed3 incident = -worldViewDir;
-#endif
-                fixed3 worldNormal;
-
-                // Normal calculation.
-#if defined(_NORMAL_MAP)
-#if defined(_TRIPLANAR_MAPPING)
-                fixed3 tangentNormalX = UnpackScaleNormal(tex2D(_NormalMap, uvX), _NormalMapScale);
-                fixed3 tangentNormalY = UnpackScaleNormal(tex2D(_NormalMap, uvY), _NormalMapScale);
-                fixed3 tangentNormalZ = UnpackScaleNormal(tex2D(_NormalMap, uvZ), _NormalMapScale);
-                tangentNormalX.x *= axisSign.x;
-                tangentNormalY.x *= axisSign.y;
-                tangentNormalZ.x *= -axisSign.z;
-
-                // Swizzle world normals to match tangent space and apply Whiteout normal blend.
-                tangentNormalX = fixed3(tangentNormalX.xy + i.worldNormal.zy, tangentNormalX.z * i.worldNormal.x);
-                tangentNormalY = fixed3(tangentNormalY.xy + i.worldNormal.xz, tangentNormalY.z * i.worldNormal.y);
-                tangentNormalZ = fixed3(tangentNormalZ.xy + i.worldNormal.xy, tangentNormalZ.z * i.worldNormal.z);
-
-                // Swizzle tangent normals to match world normal and blend together.
-                worldNormal = normalize(tangentNormalX.zyx * triplanarBlend.x +
-                                        tangentNormalY.xzy * triplanarBlend.y +
-                                        tangentNormalZ.xyz * triplanarBlend.z);
-#else
-                fixed3 tangentNormal = UnpackScaleNormal(tex2D(_NormalMap, i.uv), _NormalMapScale);
-                worldNormal.x = dot(i.tangentX, tangentNormal);
-                worldNormal.y = dot(i.tangentY, tangentNormal);
-                worldNormal.z = dot(i.tangentZ, tangentNormal);
-                worldNormal = normalize(worldNormal) * facing;
-#endif
-#else
-                worldNormal = normalize(i.worldNormal) * facing;
-#endif
 #endif
 
                 // Blinn phong lighting.

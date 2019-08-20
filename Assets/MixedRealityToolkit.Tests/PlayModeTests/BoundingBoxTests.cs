@@ -130,13 +130,63 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
             int numSteps = 30;
             var delta = new Vector3(0.1f, 0.1f, 0f);
-            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService, ArticulatedHandPose.GestureId.Open, initialHandPosition);
-            yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, frontRightCornerPos, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService, ArticulatedHandPose.GestureId.OpenSteadyGrabPoint, initialHandPosition);
+            yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, frontRightCornerPos, numSteps, ArticulatedHandPose.GestureId.OpenSteadyGrabPoint, Handedness.Right, inputSimulationService);
             yield return PlayModeTestUtilities.MoveHandFromTo(frontRightCornerPos, frontRightCornerPos + delta, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService);
 
             var endBounds = bbox.GetComponent<BoxCollider>().bounds;
             TestUtilities.AssertAboutEqual(endBounds.center, new Vector3(0.033f, 0.033f, 1.467f), "endBounds incorrect center");
             TestUtilities.AssertAboutEqual(endBounds.size, Vector3.one * .567f, "endBounds incorrect size");
+
+            GameObject.Destroy(bbox.gameObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+
+        }
+
+        /// <summary>
+        /// This tests the minimum and maximum scaling for the bounding box.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ScaleMinMax()
+        {
+            float minScale = 0.5f;
+            float maxScale = 2f;
+
+            var bbox = InstantiateSceneAndDefaultBbox();
+            var scaleHandler = bbox.EnsureComponent<TransformScaleHandler>();
+            scaleHandler.ScaleMinimum = minScale;
+            scaleHandler.ScaleMaximum = maxScale;
+            yield return null;
+
+            Vector3 initialScale = bbox.transform.localScale;
+
+            const int numHandSteps = 1;
+
+            Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
+            var frontRightCornerPos = bbox.ScaleCorners[3].transform.position; // front right corner is corner 3
+            TestHand hand = new TestHand(Handedness.Right);
+
+            // Hands grab object at initial position
+            yield return hand.Show(initialHandPosition);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
+            yield return hand.MoveTo(frontRightCornerPos, numHandSteps);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            // No change to scale yet
+            Assert.AreEqual(initialScale, bbox.transform.localScale);
+
+            // Move hands beyond max scale limit
+            yield return hand.MoveTo(new Vector3(scaleHandler.ScaleMaximum * 2, scaleHandler.ScaleMaximum * 2, 0) + frontRightCornerPos, numHandSteps);
+
+            // Assert scale at max
+            Assert.AreEqual(Vector3.one * scaleHandler.ScaleMaximum, bbox.transform.localScale);
+
+            // Move hands beyond min scale limit
+            yield return hand.MoveTo(new Vector3(-scaleHandler.ScaleMinimum * 2, -scaleHandler.ScaleMinimum * 2, 0) + frontRightCornerPos, numHandSteps);
+
+            // Assert scale at min
+            Assert.AreEqual(Vector3.one * scaleHandler.ScaleMinimum, bbox.transform.localScale);
 
             GameObject.Destroy(bbox.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object
@@ -178,7 +228,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var endBounds = bbox.GetComponent<BoxCollider>().bounds;
             TestUtilities.AssertAboutEqual(endBounds.center, new Vector3(0.033f, 0.033f, 1.467f), "endBounds incorrect center");
-            TestUtilities.AssertAboutEqual(endBounds.size, Vector3.one * .567f, "endBounds incorrect size");
+            TestUtilities.AssertAboutEqual(endBounds.size, Vector3.one * .561f, "endBounds incorrect size", 0.02f);
 
             GameObject.Destroy(bbox.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object

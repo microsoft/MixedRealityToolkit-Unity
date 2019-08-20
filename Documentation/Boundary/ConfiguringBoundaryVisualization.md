@@ -86,6 +86,7 @@ Indicates the material that should be used when creating the boundary wall plane
 
 The layer on which the boundary walls should be set. The default value is the Ignore Raycast layer.
 
+> [!NOTE]
 > Setting the boundary wall component to a physics layer other than Ignore Raycast may prevent users from interacting with objects within the scene.
 
 ## Boundary Ceiling Settings
@@ -104,9 +105,9 @@ Indicates the material that should be used when creating the boundary ceiling pl
 
 The layer on which the boundary walls should be set. The default value is the Ignore Raycast layer.
 
+> [!NOTE]
 > Setting the boundary ceiling component to a physics layer other than Ignore Raycast may prevent users from interacting with objects within the scene.
 
 ## See Also
 
 - [Boundary System](BoundarySystemGettingStarted.md)
-- [Using Boundaries in an Application](../TODO.md)

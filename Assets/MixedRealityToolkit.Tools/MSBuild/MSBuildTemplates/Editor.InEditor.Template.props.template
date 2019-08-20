@@ -1,0 +1,15 @@
+<Project>
+  <PropertyGroup>
+    <AssemblySearchPaths>$(AssemblySearchPaths);<!--PLATFORM_COMMON_ASSEMBLY_SEARCH_PATHS_TOKEN--></AssemblySearchPaths>
+    <DefineConstants>$(DefineConstants);<!--PLATFORM_COMMON_DEFINE_CONSTANTS--></DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+<!--PLATFORM_COMMON_REFERENCE_TEMPLATE_START-->
+    <Reference Include="##REFERENCE_TOKEN##">
+      <Private>false</Private>
+      <HintPath><!--HINT_PATH_TOKEN--></HintPath>
+    </Reference>
+<!--PLATFORM_COMMON_REFERENCE_TEMPLATE_END-->
+  </ItemGroup>
+</Project>

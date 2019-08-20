@@ -17,3 +17,4 @@ jobs:
   - template: templates/ci-common.yml
     parameters:
       packagingEnabled: true
+      packagePublishing: true
