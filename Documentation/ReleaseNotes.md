@@ -34,7 +34,7 @@ For the smoothest upgrade path, please use the following steps.
     - MixedRealityToolkit.Examples
     - MixedRealityToolkit.Extensions
     > [!Note]
-    > If additional extensions have been installed, please take care when deleting this folder.
+    > If additional extensions have been installed, please make a backup prior to deleting this folder.
     - MixedRealityToolkit.Providers
     - MixedRealityToolkit.SDK
     - MixedRealityToolkit.Services
@@ -153,6 +153,8 @@ Specify the desired raycast provider in the Input System's configuration profile
 Solvers can now be controlled by the first available hand/controller instead of being locked to left or right handedness. Old value types of *Tracked Target Type* need to be updated to the new non-obsolete values.
 
 ![Solver](../Documentation/Images/Solver/TrackedObjectType-Example.gif)
+
+Please review the **Solvers** section of [Updating from RC2 to 2.0.0](Updating.md) for additional changes and mitigation details.
 
 **Input Animation Recording**
  
