@@ -44,7 +44,7 @@ projects, please use the following steps.
     - (Optional) Extensions,
     - (Optional) Examples are optional)
 1. For each scene in your project
-    - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the Hierarchy
+    - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy
     - Select **MixedRealityToolkit -> Add to Scene and Configure**
 
 > [!Important]
