@@ -238,7 +238,7 @@ following list can now be instantiated and configured from code.
 - HandInteractionPanZoom
 - Interactable (basic features)
 
-**Updated Architecture Documentation**
+**Updated architecture documentation**
 
 The [archtecture documentation](Architecture/Overview.md) is all new for version 2.0.0.
 
