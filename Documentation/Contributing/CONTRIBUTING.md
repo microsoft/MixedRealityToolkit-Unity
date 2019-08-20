@@ -35,12 +35,9 @@ Please review the [Feature Contribution Process](Feature_Contribution_Process.md
 > If you wish to work on something that already exists on our backlog, you can use that work item as your proposal. Be sure to also comment on the task notifying maintainers that you're working towards completing it.
 
 # Beginning development
-Working with Git, the contribution process is quite simple (provided you have installed a good Git Client such as TortoiseGit or SourceTree)
-
-
-> If you are new to to the Git workflow, [check out this tutorial on Pluralsight](https://www.pluralsight.com/blog/software-development/github-tutorial)
-
 To get started, simply follow these steps
+
+> If you are new to to the Git workflow, [check out this introduction from Github](https://guides.github.com/activities/hello-world/).
 
 1. Fork the repository. Click on the "Fork" button on the top right of the page and follow the flow.
 1. Create a branch in your fork (off of the [mrtk_development](https://github.com/microsoft/mixedrealitytoolkit-unity/tree/mrtk_development) branch) to make it easier for you to isolate your fork.
@@ -54,3 +51,5 @@ To get started, simply follow these steps
 1. Ensure the code works as intended on all [platforms](#supported-platforms).
     - For Windows UWP projects, your code must be [WACK compliant](https://developer.microsoft.com/en-us/windows/develop/app-certification-kit). To do this, generate a Visual Studio solution, right click on project; *Store* > *Create App Packages*. Follow the prompts and run WACK tests. Make sure they all succeed.
 10. Update the documentation with additional information as needed.
+
+
