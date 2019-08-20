@@ -94,7 +94,7 @@ Mixed Reality Toolkit's **Active Profile** to **DefaultHoloLens1ConfigurationPro
 
 **Dependency window**
 
-A [Dependency Window](Tools/DependencyWindow.md) has been added which displays how assets reference and depend on each other.
+A [dependency window](Tools/DependencyWindow.md) has been added which displays how assets reference and depend on each other.
 This tool can be used to easily determine which assets within a project are not being used.
 
 **Extension Service Creation Wizard**
