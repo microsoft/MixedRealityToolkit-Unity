@@ -30,6 +30,18 @@ MRTK-Unity is a Microsoft driven project that provides a set of components and f
 | :--- | :--- | :--- | :--- |
 | To build apps with MRTK v2, you need the Windows 10 May 2019 Update SDK. <br> To run apps for immersive headsets, you need the Windows 10 Fall Creators Update. | The Unity 3D engine provides support for building mixed reality projects in Windows 10 | Visual Studio is used for code editing, deploying and building UWP app packages | The Emulators allow you test your app without the device in a simulated environment |
 
+# Trying out the example scenes
+
+The MRTK contains several example scenes that can be used to try features and learn how to use them. The following steps describe how to run the HandInteractionExample scene after cloning the repository. These steps can be repeated for the other examples in the MRTK.
+
+1. Open Unity
+1. Open the folder containing the repository clone (ex: C:\MixedRealityToolkit-Unity)
+1. In the project panel, navigate to **Assets\MixedRealityToolkit.Examples\Demos**
+1. Open **HandTracking\Scenes\HandInteractionExamples**)
+1. Build and deploy the project
+-or-
+1. Enter play mode and use [**InputSimulation**](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/InputSimulation/InputSimulationService.html) from within the editor.
+
 # Feature Areas
 
 | ![Input System](Documentation/Images/MRTK_Icon_InputSystem.png) [Input System](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html)<br/>&nbsp;  | ![Hand Tracking<br/> (HoloLens 2)](Documentation/Images/MRTK_Icon_HandTracking.png) [Hand Tracking<br/> (HoloLens 2)](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/InputSystem/HandTracking.html) | ![Eye Tracking<br/> (HoloLens 2)](Documentation/Images/MRTK_Icon_EyeTracking.png) [Eye Tracking<br/> (HoloLens 2)](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/EyeTracking/EyeTracking_Main.html) | ![Profiles](Documentation/Images/MRTK_Icon_Profiles.png) [Profiles](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html)<br/>&nbsp; | ![Gaze + Gesture<br/> (HoloLens)](Documentation/Images/MRTK_Icon_GazeSelect.png) [Gaze + Gesture<br/> (HoloLens)](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Gestures.html) |
