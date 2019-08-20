@@ -228,7 +228,7 @@ A Take Screenshot utility menu item (Mixed Reality Toolkit > Utilities > Take Sc
 to capture high resolution screenshots within the editor. Screenshots can be captured with a transparent
 clear color for use in easy post compositing of images for documentation or media.
 
-**UX Controls**
+**UX controls**
 
 The following UX controls have been added and/or improved in version 2.0.0. In addition, those in the
 following list can now be instantiated and configured from code.
