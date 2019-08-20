@@ -48,7 +48,7 @@ For the smoothest upgrade path, please use the following steps.
     - (Optional) Tools
     - (Optional) Extensions
     > [!Note]
-    > If additional extensions had been installed, they may need to be re-inported.
+    > If additional extensions had been installed, they may need to be re-imported.
     - (Optional) Examples
 1. For each scene in the project
     - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy
