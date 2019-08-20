@@ -247,7 +247,7 @@ The [archtecture documentation](Architecture/Overview.md) is all new for version
 The sections below highlight some of the known issues in the Microsoft Mixed Reality Toolkit
 2.0.0.
 
-**Extension Service Wizard**
+**Extension service wizard**
 
 When using the Extension Service Wizard,  *Generate Inspector* and/or *Generate Profile* are not actually optional. Trying to create an extension service with either of these deselected will result in an error on the following page. Furthermore, the extension service created for the user will create a property for the ScriptableObject profile that was not actually created. This results in a compiler error until the property line is removed. 
 
