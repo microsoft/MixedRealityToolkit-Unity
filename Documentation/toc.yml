@@ -3,16 +3,16 @@
   items:
   - name: Upgrading from HTK
     href: HTKToMRTKPortingGuide.md
+  - name: Updating from RC2
+    href: Updating.md
+  - name: Release Notes
+    href: ReleaseNotes.md
   - name: Building and Deploying MRTK
     href: BuildAndDeploy.md
-  - name: Updating from RC2 to GA
-    href: UpdatingToGA.md
   - name: Performance
     href: Performance/PerfGettingStarted.md
   - name: Hologram Stabilization
     href: Hologram-Stabilization.md
-  - name: Known Issues
-    href: KnownIssues.md
 - name: Architecture
   items:
   - name: Overview
