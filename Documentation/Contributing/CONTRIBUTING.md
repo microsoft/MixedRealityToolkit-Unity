@@ -34,3 +34,23 @@ Please review the [Feature Contribution Process](Feature_Contribution_Process.md
 > [!NOTE]
 > If you wish to work on something that already exists on our backlog, you can use that work item as your proposal. Be sure to also comment on the task notifying maintainers that you're working towards completing it.
 
+# Beginning development
+Working with Git, the contribution process is quite simple (provided you have installed a good Git Client such as TortoiseGit or SourceTree)
+
+
+> If you are new to to the Git workflow, [check out this tutorial on Pluralsight](https://www.pluralsight.com/blog/software-development/github-tutorial)
+
+To get started, simply follow these steps
+
+1. Fork the repository. Click on the "Fork" button on the top right of the page and follow the flow.
+1. Create a branch in your fork (off of the [mrtk_development](https://github.com/microsoft/mixedrealitytoolkit-unity/tree/mrtk_development) branch) to make it easier for you to isolate your fork.
+    - For the legacy HoloToolkit use the [htk_development](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/htk_development) branch
+1. Instructions for running tests are at [UnitTests](UnitTests.md)
+1. Instructions for building and deploying MRTK are at [BuildAndDeploy](../BuildAndDeploy.md). 
+1. Make **small and frequent** commits that include tests which could be a unity scene showing usage of your feature.
+1. Make sure that all the tests continue to pass.
+1. Follow the [Coding Guidelines](CodingGuidelines.md).
+1. Ensure the code and feature(s) are documented as described in the [Documentation Guidelines](DocumentationGuide.md).
+1. Ensure the code works as intended on all [platforms](#supported-platforms).
+    - For Windows UWP projects, your code must be [WACK compliant](https://developer.microsoft.com/en-us/windows/develop/app-certification-kit). To do this, generate a Visual Studio solution, right click on project; *Store* > *Create App Packages*. Follow the prompts and run WACK tests. Make sure they all succeed.
+10. Update the documentation with additional information as needed.
