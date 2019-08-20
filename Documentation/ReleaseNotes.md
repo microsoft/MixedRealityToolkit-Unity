@@ -60,7 +60,7 @@ profiles, please open them to verify that all of the updated properties are corr
     - The handle asset is now sized to 1-meter
     - Default values and examples are updated
 - New features
-    - Animated Handle by Proximity
+    - Animated handle by proximity
     - Match the HoloLens 2 shell behavior
     - You can now make the handles appear only when your hand is close to them
 - New example scene
