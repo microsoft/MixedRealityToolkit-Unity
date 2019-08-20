@@ -13,4 +13,4 @@ The other settings can be different (for example, Build Configuration/Architectu
 be changed inside the Visual Studio solution).
 
 Make sure that the "Target SDK Version" dropdown includes the option "10.0.18362.0" - if this is missing,
-it means you have to install [the latest Windows SDK](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk).
+[the latest Windows SDK](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk) needs to be installed.
