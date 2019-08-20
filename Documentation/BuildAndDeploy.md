@@ -1,4 +1,4 @@
-# Builing and Deploying MRTK
+# Building and Deploying MRTK
 When you're ready to run your app on your device a standalone app (for HoloLens, Android, iOS, etc.), you need to build and deploy your project. Building an deploying an app that uses MRTK is just like building and deploying any other Unity app. There are no MRTK-specific instructions. Read below for detailed steps on how to build and deploy a Unity app for HoloLens.  Learn more about building for other platforms at [Publishing Builds](https://docs.unity3d.com/Manual/PublishingBuilds.html).
 
 ### Building and Deploying MRTK to HoloLens 1 and HoloLens 2 (UWP)
