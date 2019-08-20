@@ -120,6 +120,12 @@ supplements documentation and sample code by enabling devs to create new service
 
 The fingertip cursor has been updated to better match the HoloLens 2 shell.
 
+**Improved Solvers**
+
+Solvers can now be controlled by the first available hand/controller instead of being locked to left or right handedness. Old value types of *Tracked Target Type* need to be updated to the new non-obsolete values.
+
+![Solver](../Documentation/Images/Solver/TrackedObjectType-Example.gif)
+
 **Hand Menu Graduated from Experimental**
 
 The [HandConstraint](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) and [HandConstraintPalmUp](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp)
