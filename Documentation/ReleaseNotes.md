@@ -33,6 +33,8 @@ For the smoothest upgrade path, please use the following steps.
     - MixedRealityToolkit
     - MixedRealityToolkit.Examples
     - MixedRealityToolkit.Extensions
+    > [!Note]
+    > If additional extensions have been installed, please take care when deleting this folder.
     - MixedRealityToolkit.Providers
     - MixedRealityToolkit.SDK
     - MixedRealityToolkit.Services
@@ -45,6 +47,8 @@ For the smoothest upgrade path, please use the following steps.
     - Foundation - _Import this package first_
     - (Optional) Tools
     - (Optional) Extensions
+    > [!Note]
+    > If additional extensions had been installed, they may need to be re-inported.
     - (Optional) Examples
 1. For each scene in the project
     - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy
