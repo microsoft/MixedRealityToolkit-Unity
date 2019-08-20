@@ -38,7 +38,7 @@ The MRTK contains several example scenes that can be used to try features and le
 1. Open the folder containing the repository clone (ex: C:\MixedRealityToolkit-Unity)
 1. In the project panel, navigate to **Assets\MixedRealityToolkit.Examples\Demos**
 1. Open **HandTracking\Scenes\HandInteractionExamples**)
-1. Build and deploy the project
+1. [Build and deploy](https://docs.microsoft.com/en-us/windows/mixed-reality/exporting-and-building-a-unity-visual-studio-solution) the project
 -or-
 1. Enter play mode and use [**InputSimulation**](/Documentation/InputSimulation/InputSimulationService.html) from within the editor.
 
