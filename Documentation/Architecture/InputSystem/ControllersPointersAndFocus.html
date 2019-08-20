@@ -82,146 +82,62 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="controllers-pointers-and-focus">Controllers, Pointers, and Focus</h1>
 
-<p>Controllers, pointers, and focus are higher level concepts that build upon the foundation established
-by the core input system. Together they provide a large portion of the mechanism for interacting
-with objects in the scene.</p>
+<p>Controllers, pointers, and focus are higher level concepts that build upon the foundation established by the core input system. Together they provide a large portion of the mechanism for interacting with objects in the scene.</p>
 <h2 id="controllers">Controllers</h2>
-<p>Controllers are representations of a physical controller (6-degree of freedom, articulated hand, etc).
-They are created by device managers, and are responsible for communicating with the corresponding
-underlying system and translating that data into MRTK-shaped data and events.</p>
-<p>For example, on the Windows Mixed Reality platform, the
-<a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityArticulatedHand.html">WindowsMixedRealityArticulatedHand</a>
-is a controller that is responsible for interfacing with the underlying Windows
-<a href="https://docs.microsoft.com/en-us/uwp/api/windows.ui.input.spatial.spatialinteractionsourcestate">hand tracking APIs</a> to get
-information about the joints, pose, and other properties of the hand. It is responsible for turning this data into relevant
-MRTK events (for example, by calling RaisePoseInputChanged or RaiseHandJointsUpdated) and by updating its own internal
-state so that queries for <a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.HandJointUtils.html#Microsoft_MixedReality_Toolkit_Input_HandJointUtils_TryGetJointPose_TrackedHandJoint_Handedness_MixedRealityPose__">TryGetJointPose</a>
-will return correct data.</p>
+<p>Controllers are representations of a physical controller (6-degree of freedom, articulated hand, etc). They are created by device managers, and are responsible for communicating with the corresponding underlying system and translating that data into MRTK-shaped data and events.</p>
+<p>For example, on the Windows Mixed Reality platform, the <a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityArticulatedHand.html"><code>WindowsMixedRealityArticulatedHand</code></a> is a controller that is responsible for interfacing with the underlying Windows <a href="https://docs.microsoft.com/en-us/uwp/api/windows.ui.input.spatial.spatialinteractionsourcestate">hand tracking APIs</a> to get information about the joints, pose, and other properties of the hand. It is responsible for turning this data into relevant MRTK events (for example, by calling RaisePoseInputChanged or RaiseHandJointsUpdated) and by updating its own internal state so that queries for <a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.HandJointUtils.html#Microsoft_MixedReality_Toolkit_Input_HandJointUtils_TryGetJointPose_TrackedHandJoint_Handedness_MixedRealityPose__"><code>TryGetJointPose</code></a> will return correct data.</p>
 <p>Generally, a controller's lifecycle will involve:</p>
 <ol>
-<li>A controller gets created by a device manager upon detection of a new source (for example, the
-detects and starts tracking a hand).</li>
-<li>In the controller's Update() loop, it calls into its underlying API system.</li>
-<li>In the same update loop, it raises input event changes by calling directly into the
-core input system itself (for example, raising HandMeshUpdated, or HandJointsUpdated).</li>
+<li><p>A controller gets created by a device manager upon detection of a new source(for example, the detects and starts tracking a hand).</p>
+</li>
+<li><p>In the controller's Update() loop, it calls into its underlying API system.</p>
+</li>
+<li><p>In the same update loop, it raises input event changes by calling directly into the core input system itself (for example, raising HandMeshUpdated, or HandJointsUpdated).</p>
+</li>
 </ol>
 <h2 id="pointers-and-focus">Pointers and focus</h2>
-<p>Pointers are used to interact with game objects. This section describes how pointers are created,
-how they get updated, and how they determine the object(s) that are in focus. It will
-also cover the different types of pointers that exist and the scenarios in which they are active.</p>
+<p>Pointers are used to interact with game objects. This section describes how pointers are created, how they get updated, and how they determine the object(s) that are in focus. It will also cover the different types of pointers that exist and the scenarios in which they are active.</p>
 <h3 id="pointer-categories">Pointer categories</h3>
 <p>Pointers generally fall into one of the following categories:</p>
 <ul>
-<li><p>Far pointers</p>
-<p>These types of pointers are used to interact with objects that are far away from the user (where
-far away is defined as simply “not near”). These types of pointers generally cast lines that
-can go far into the world and allow the user the interact with and manipulate objects that
-aren’t immediately next to them.</p>
+<li><p><strong>Far pointers</strong></p>
+<p>These types of pointers are used to interact with objects that are far away from the user (where far away is defined as simply “not near”). These types of pointers generally cast lines that can go far into the world and allow the user the interact with and manipulate objects that are not immediately next to them.</p>
 </li>
-<li><p>Near pointers</p>
-<p>These types of pointers are used to interact with objects that are close enough to the user to
-grab, touch, and manipulate. Generally these types of pointers interact with objects by looking
-for objects in the nearby vicinity (either by doing raycasting at small distances, doing spherical
-casting looking for objects in the vicinity, or enumerating lists of objects that are considered
-grabbable/touchable).</p>
+<li><p><strong>Near pointers</strong></p>
+<p>These types of pointers are used to interact with objects that are close enough to the user to grab, touch, and manipulate. Generally these types of pointers interact with objects by looking for objects in the nearby vicinity (either by doing raycasting at small distances, doing spherical casting looking for objects in the vicinity, or enumerating lists of objects that are considered grabbable/touchable).</p>
 </li>
-<li><p>Teleport pointers</p>
-<p>These types of pointers plug into the teleportation system to handle moving the user to the location
-targeted by the pointer.</p>
+<li><p><strong>Teleport pointers</strong></p>
+<p>These types of pointers plug into the teleportation system to handle moving the user to the location targeted by the pointer.</p>
 </li>
 </ul>
-<h2 id="far-pointers">Far pointers</h2>
-<p>The following are far pointers that come with the MRTK:</p>
-<h3 id="shellhandraypointer">ShellHandRayPointer</h3>
-<p><a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.ShellHandRayPointer.html">This pointer</a> shoots a line from
-the palm of the hand of the articulated hand controller.</p>
-<h3 id="ggvpointer">GGVPointer</h3>
-<p>The <a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.GGVPointer.html">Gaze/Gesture/Voice pointer</a>
-(aka HoloLens 1 pointer). This is the pointer that powers HoloLens 1-style look and tap interactions.</p>
-<h3 id="touchpointer">TouchPointer</h3>
-<p><a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.TouchPointer.html">This pointer</a> is responsible for working
-with Unity Touch input (i.e. touchscreen). These are 'far interactions' because the act of touching
-the screen will cast a ray from the camera to a potentially far location in the scene.</p>
-<h3 id="mousepointer">MousePointer</h3>
-<p><a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.MousePointer.html">This pointer</a> powers a screen to world raycast for far interactions, but for mouse instead of touch.</p>
-<h3 id="linepointer">LinePointer</h3>
-<p><a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.MousePointer.html">A base pointer class</a> that draws lines from the source of the input (i.e. the controller) in the pointer direction. This is also used by other things like the Shell Hand Ray Pointer and the teleport pointers (which also draw lines to indicate where teleportation will end up at).</p>
-<h2 id="near-pointers">Near pointers</h2>
-<h3 id="pokepointer">PokePointer</h3>
-<p><a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.PokePointer.html">A pointer</a> that is used to interact with game objects
-that support “near interaction touchable.” GameObjects support &quot;near interaction touchable&quot; when they
-have attach the <a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.html">NearInteractionTouchable</a> script.
-The PokePointer uses a SphereCast to determine the closest touchable (or in the case of interaction with
-UnityUI, enumerate through the list of NearInteractionTouchableUnityUIs). This type of pointer/NearInteractionTouchable combination is used to power things like the pressable buttons and the piano
-keys (in the hand interaction examples scene).</p>
-<h3 id="spherepointer">SpherePointer</h3>
-<p><a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.SpherePointer.html">A pointer</a> that uses
-<a href="https://docs.unity3d.com/ScriptReference/Physics.OverlapSphere.html">UnityEngine.Physics.OverlapSphere</a>
-in order to identify the closest <a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable.html">NearInteractionGrabbable</a>
-object that should be interacted with. Similar to the PokePointer/NearInteractionTouchable functional
-pair, in order to be interactable with the Sphere Pointer, the game object must contain a component that
-is the NearInteractionGrabbable script. This type of pointer/NearInteractionGrabbable combination is used
-to power higher level scripts like the ManipulationHandler (which provides rotate/resize/translate
-capabilities).</p>
-<h2 id="teleport-pointers">Teleport pointers</h2>
-<h3 id="teleportpointer-and-parabolicteleportpointer">TeleportPointer and ParabolicTeleportPointer</h3>
-<p>Both are pointers which, when action is taken (i.e. the teleport button is pressed) will raise a teleport request with the teleport system in order to move the user.</p>
 <h2 id="pointer-mediation">Pointer Mediation</h2>
-<p>Because a single controller can have multiple pointers (for example, the articulated hand can have both
-near and far interaction pointers), there exists a component that is responsible for mediating which
-pointer should be active.</p>
-<p>For example, as the user’s hand approaches a pressable button, the ShellHandRayPointer should stop
-showing, and the PokePointer should be engaged.</p>
-<p>This is handled by the <a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.DefaultPointerMediator.html">DefaultPointerMediator</a>,
-which is responsible for determining which pointers based on the state of all pointers.
-One of the key things this does is <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Pointers/DefaultPointerMediator.cs#L127">disable far pointers when a near pointer is close to an
-object</a></p>
-<p>It's possible to provide an alternate implementation of the pointer mediator by changing the
-<a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.MixedRealityPointerProfile.html#Microsoft_MixedReality_Toolkit_Input_MixedRealityPointerProfile_PointerMediator">PointerMediator</a>
-property on the pointer profile.</p>
+<p>Because a single controller can have multiple pointers (for example, the articulated hand can have both near and far interaction pointers), there exists a component that is responsible for mediating which pointer should be active.</p>
+<p>For example, as the user’s hand approaches a pressable button, the <a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.ShellHandRayPointer.html"><code>ShellHandRayPointer</code></a> should stop showing, and the <a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.PokePointer.html"><code>PokePointer</code></a> should be engaged.</p>
+<p>This is handled by the <a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.DefaultPointerMediator.html"><code>DefaultPointerMediator</code></a>,
+which is responsible for determining which pointers based on the state of all pointers. One of the key things this does is <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Pointers/DefaultPointerMediator.cs#L127">disable far pointers when a near pointer is close to an object</a></p>
+<p>It's possible to provide an alternate implementation of the pointer mediator by changing the <a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.MixedRealityPointerProfile.html#Microsoft_MixedReality_Toolkit_Input_MixedRealityPointerProfile_PointerMediator"><code>PointerMediator</code></a> property on the pointer profile.</p>
 <h3 id="focusprovider">FocusProvider</h3>
-<p><a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.FocusProvider.html">This is the workhorse</a> that is responsible for
+<p>The <a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.FocusProvider.html"><code>FocusProvider</code></a> is the workhorse that is responsible for
 iterating over the list of all pointers and figuring out what the focused object is for each pointer.</p>
-<p>In each Update() call, this will:</p>
+<p>In each <code>Update()</code> call, this will:</p>
 <ol>
-<li>Update all of the pointers, by raycasting and doing hit detection as-configured by the pointer itself
-(for example, the sphere pointer could specify the SphereOverlap raycastMode, so FocusProvider will do a sphere-based collision)</li>
-<li>Update the focused object on a per-pointer basis (i.e. if an object gained focus, it would also trigger
-events to those object, if an object lost focus, it would trigger focus lost, etc).</li>
+<li><p>Update all of the pointers, by raycasting and doing hit detection as-configured by the pointer itself (for example, the sphere pointer could specify the SphereOverlap raycastMode, so FocusProvider will do a sphere-based collision)</p>
+</li>
+<li><p>Update the focused object on a per-pointer basis (i.e. if an object gained focus, it would also trigger events to those object, if an object lost focus, it would trigger focus lost, etc).</p>
+</li>
 </ol>
 <h3 id="pointer-configuration-and-lifecycle">Pointer configuration and lifecycle</h3>
-<p>Pointers can be figured in the <strong>Pointers</strong> section of the input system profile:</p>
-<p><img src="../../Images/Input/PointerProfile.png" alt=""></p>
-<p>A pointer is defined by the following set of data:</p>
+<p><a href="../../Input/Pointers.html">Pointers can be configured</a> in the <em>Pointers</em> section of the input system profile.</p>
+<p>The lifetime of a pointer is generally the following:</p>
 <ol>
-<li>The set of controllers that a pointer is valid for. For example, the PokePointer
-is responsible for &quot;poking&quot; objects with a finger, and is, by default, marked as
-only supporting the articulated hand controller type.</li>
-<li>The handedness that the pointer supports. All inbox pointers are configured to
-work with any hand - it's possible to restrict a pointer to only being instantiated
-for a specific hand (left/right) by changing its handedness configuration.</li>
-<li>The actual pointer prefab that will be instantiated when a controller matching the
-specified controller type and handedness starts being tracked.</li>
-</ol>
-<p>It is possible to have multiple pointers associated with a controller. For example,
-in the <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/HoloLens2/DefaultHoloLens2InputSystemProfile.asset">default HoloLens 2 profile</a>
-the articulated hand controller is associated with the PokePointer, GrabPointer, and the
-DefaultControllerPointer (which has hand rays).</p>
-<p>The lifetime of a pointer generally looks like:</p>
-<ol>
-<li><p>A device manager will detect the presence of a controller - this device manager will
-then create the set of pointers associated with the controller (via a call to
-<a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager.html">RequestPointers</a>).</p>
+<li><p>A device manager will detect the presence of a controller - this device manager will then create the set of pointers associated with the controller via a call to <a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager.html"><code>RequestPointers</code></a>.</p>
 </li>
-<li><p>The FocusProvider, in its Update() loop, will iterate over all of the valid pointers
-and do the associated raycast or hit detection logic - this is used to determine
-the object that is focused by each particular pointer.</p>
-<p>Because it's possible to have multiple sources of input active at the same time (for example,
-two hands active present), it's also possible to have multiple objects that have focus at the
-same time.</p>
+<li><p>The FocusProvider, in its Update() loop, will iterate over all of the valid pointers and do the associated raycast or hit detection logic - this is used to determine the object that is focused by each particular pointer.</p>
+<ul>
+<li>Because it's possible to have multiple sources of input active at the same time (for example, two hands active present), it's also possible to have multiple objects that have focus at the same time.</li>
+</ul>
 </li>
-<li><p>The device manager, upon discovering that a controller source was lost, will tear down
-the pointers associated with the lost controller.</p>
+<li><p>The device manager, upon discovering that a controller source was lost, will tear down the pointers associated with the lost controller.</p>
 </li>
 </ol>
 </article>
@@ -232,7 +148,7 @@ the pointers associated with the lost controller.</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/2.0.0_stabilization/Documentation/Architecture/InputSystem/ControllersPointersAndFocus.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/Architecture/InputSystem/ControllersPointersAndFocus.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>

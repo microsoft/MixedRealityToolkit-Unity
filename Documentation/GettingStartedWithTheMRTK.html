@@ -82,7 +82,7 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="getting-started-with-mrtk">Getting Started with MRTK</h1>
 
-<p><img src="Images/MRTK_Logo_Rev.png" alt=""></p>
+<p><img src="Images/MRTK_Logo_Rev.png" alt="MRTK Logo"></p>
 <p>The Mixed Reality Toolkit (MRTK) is a cross-platform toolkit for building Mixed Reality experiences for Virtual Reality (VR) and Augmented Reality (AR).</p>
 <h2 id="prerequisites">Prerequisites</h2>
 <p>To get started with the Mixed Reality Toolkit you will need:</p>
@@ -99,10 +99,10 @@
 when building for OpenVR.</p>
 </li>
 </ul>
-<h1 id="getting-started-tutorials">Getting started tutorials</h1>
+<h2 id="getting-started-tutorials">Getting started tutorials</h2>
 <p>If you are new to MRTK, or MR development, we recommend you check out the <a href="https://docs.microsoft.com/en-us/windows/mixed-reality/mrlearning-base">Getting started tutorials</a> which uses MRTK v2.</p>
-<h1 id="add-mrtk-to-your-unity-project">Add MRTK to your Unity Project</h1>
-<h2 id="get-the-latest-mrtk-unity-packages">Get the latest MRTK Unity packages</h2>
+<h2 id="add-mrtk-to-your-unity-project">Add MRTK to your Unity Project</h2>
+<h3 id="get-the-latest-mrtk-unity-packages">Get the latest MRTK Unity packages</h3>
 <ol>
 <li>Go to the  <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/releases">MRTK release page</a>.</li>
 <li>Under Assets, download
@@ -115,7 +115,7 @@ when building for OpenVR.</p>
 </li>
 </ol>
 <p>For additional delivery mechanisms, please see <a href="DownloadingTheMRTK.html">Downloading the MRTK</a>.</p>
-<h2 id="switch-your-unity-project-to-the-target-platform">Switch your Unity project to the target platform</h2>
+<h3 id="switch-your-unity-project-to-the-target-platform">Switch your Unity project to the target platform</h3>
 <p>The next step <strong>Import MRTK packages into your Unity project</strong> will apply changes to your project specifically for the platform that is selected in the project at that moment you import them.</p>
 <p>You should make sure that you select the correct platform before following the next step.</p>
 <p>For instance, if you want to create a HoloLens application, switch to Universal Windows Platform:</p>
@@ -124,7 +124,7 @@ when building for OpenVR.</p>
 <li>Select <strong>Universal Windows Platform</strong> in the <strong>Platform</strong> list</li>
 <li>Click on the <strong>Switch Platform</strong> button</li>
 </ul>
-<h2 id="import-mrtk-packages-into-your-unity-project">Import MRTK packages into your Unity project</h2>
+<h3 id="import-mrtk-packages-into-your-unity-project">Import MRTK packages into your Unity project</h3>
 <ol>
 <li>Create a new Unity project, or open an existing project. When creating a project, make sure to select &quot;3D&quot; as the template type.</li>
 <li>Import the <code>Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage</code> you downloaded by going into &quot;Asset -&gt; Import Package -&gt; Custom Package&quot;, selecting the .unitypackage file, ensure all items to import are checked, and then selecting &quot;Import&quot;.</li>
@@ -133,7 +133,7 @@ when building for OpenVR.</p>
 <li>Import the <code>Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage</code> following the same steps as for the foundation package. The extensions package provides a set of useful optional components for the MRTK.</li>
 </ol>
 <p>After importing the Foundation package, you may see a setup prompt like the following:</p>
-<p><img src="Images/MRTK_UnitySetupPrompt.png" alt=""></p>
+<p><img src="Images/MRTK_UnitySetupPrompt.png" alt="UnitySetupPrompt"></p>
 <p>MRTK is attempting to set up your project for building Mixed Reality solutions by doing the following:</p>
 <ul>
 <li>Enable XR Settings for your current platform (enabling the XR checkbox).</li>
@@ -141,7 +141,7 @@ when building for OpenVR.</p>
 </ul>
 <p>Accepting these options is completely optional, but recommended.</p>
 <p>Some prefabs and assets require TextMesh Pro, meaning you have to have the TextMesh Pro package installed and the assets in your project (Window -&gt; TextMeshPro -&gt; Import TMP Essential Resources). <strong>After you import TMP Essentials Resources, you need to restart Unity to see changes</strong>.</p>
-<h2 id="open-and-run-the-handinteractionexamples-scene-in-editor">Open and run the HandInteractionExamples scene in editor</h2>
+<h3 id="open-and-run-the-handinteractionexamples-scene-in-editor">Open and run the HandInteractionExamples scene in editor</h3>
 <p><a href="README_HandInteractionExamples.html"><img src="Images/MRTK_Examples.png" alt="HandInteractionExample scene"></a></p>
 <p>The <a href="README_HandInteractionExamples.html">hand interaction examples scene</a> is a great place to get started because it shows a wide variety of UX controls and interactions in MRTK. To get started we will import MRTK, open the example scene, and explore the scene in the editor.</p>
 <ol>
@@ -155,20 +155,28 @@ when building for OpenVR.</p>
 <p><img src="Images/getting_started/MRTK_GettingStarted_TMPro.png" alt="TMP Essentials"></p>
 <p>If you get such a prompt, select &quot;Import TMP essentials&quot; button. &quot;TMP Essentials&quot; refers to Text Mesh Pro plugin, which some of the MRTK examples use for improved text rendering. (See <a href="https://docs.microsoft.com/en-us/windows/mixed-reality/text-in-unity">Text in Unity</a> for more detailed information)</p>
 <ol start="4">
-<li><p>Close the TMP dialog. After this you need to reload the scene. You can do this by opening other example scene and open HandInteractionExamples scene again.</p>
+<li><p>Close the TMP dialog. After this you need to reload the scene. You can do this by double clicking the scene in the project tab.</p>
 </li>
 <li><p>Press the play button.</p>
 </li>
 </ol>
-<p>Have fun exploring the scene! You can use simulated hands to interact in editor. You can:</p>
+<h2 id="using-the-in-editor-hand-input-simulation-to-test-a-scene">Using the In-Editor Hand Input Simulation to test a scene</h2>
+<p>The in-editor input simulation allows you to test virtual object behavior given a specific type of input such as <a href="InputSimulation/InputSimulationService.html#hand-simulation">hands</a> or [eyes] (EyeTracking/EyeTracking_BasicSetup.md#simulating-eye-tracking-in-the-unity-editor).</p>
+<p>How to move around in the scene:</p>
 <ul>
-<li>Press WASD keys to fly / move.</li>
-<li>Press and hold right mouse to look around.</li>
-<li>Press and hold space bar to use a simulated hand.</li>
+<li>Use W/A/S/D keys to move the camera forward/left/back/right.</li>
+<li>Press and hold the right mouse to rotate the camera.</li>
 </ul>
-<p>There's quite a bit to explore here. You can learn more about the UI controls <a href="README_HandInteractionExamples.html">in the hand interaction examples guide</a>. Also, read through <a href="InputSimulation/InputSimulationService.html">input simulation docs</a> to learn more about in-editor hand input simulation in MRTK.</p>
+<p>How to simulate hand input:</p>
+<ul>
+<li>Press and hold the space bar to enable the right hand.</li>
+<li>While holding the space bar, move your mouse to move the hand.</li>
+<li>Use the middle mouse scroll to adjust the depth of the hand.</li>
+<li>Click the left mouse to switch gestures.</li>
+</ul>
+<p>Have fun exploring the scene! You can learn more about the UI controls <a href="README_HandInteractionExamples.html">in the hand interaction examples guide</a>. Also, read through <a href="InputSimulation/InputSimulationService.html">input simulation docs</a> to learn more about in-editor hand input simulation in MRTK.</p>
 <p>Congratulations, you just used your first MRTK scene. Now onto creating your own experiences...</p>
-<h2 id="add-mrtk-to-a-new-scene-or-new-project">Add MRTK to a new scene or new project</h2>
+<h3 id="add-mrtk-to-a-new-scene-or-new-project">Add MRTK to a new scene or new project</h3>
 <ol>
 <li><p>Create a new Unity project, or start a new scene in your current project.</p>
 </li>
@@ -177,23 +185,23 @@ when building for OpenVR.</p>
 <li><p>From the menu bar, select Mixed Reality Toolkit -&gt; Add to Scene and Configure</p>
 </li>
 </ol>
-<p><img src="Images/MRTK_ConfigureScene.png" alt=""></p>
+<p><img src="Images/MRTK_ConfigureScene.png" alt="Configure to scene"></p>
 <ol start="4">
 <li>You will see a prompt like this:</li>
 </ol>
-<p><img src="Images/MRTK_ConfigureDialog.png" alt=""></p>
+<p><img src="Images/MRTK_ConfigureDialog.png" alt="MRTK Configure Dialog"></p>
 <p>Click &quot;OK&quot;.</p>
 <ol start="5">
 <li>You will then be prompted to choose an MRTK Configuration profile. Double click &quot;DefaultMixedRealityToolkitConfigurationProfile&quot;.</li>
 </ol>
-<p><img src="Images/MRTK_SelectConfigurationDialog.png" alt=""></p>
+<p><img src="Images/MRTK_SelectConfigurationDialog.png" alt="MRTK Select Configure Dialog"></p>
 <blockquote>
 <p><strong>NOTE</strong>: Note that if you are getting started on the HoloLens 2, you should choose the &quot;DefaultHoloLens2ConfigurationProfile&quot; instead.
 See the <a href="Profiles/Profiles.html#hololens-2-profile">profiles</a> for more information on the differences between
 DefaultMixedRealityToolkitConfigurationProfile and DefaultHoloLens2ConfigurationProfile.</p>
 </blockquote>
 <p>You will then see the following in your Scene hierarchy:</p>
-<p><img src="Images/MRTK_SceneSetup.png" alt=""></p>
+<p><img src="Images/MRTK_SceneSetup.png" alt="MRTK Scene Setup"></p>
 <p>Which contains the following:</p>
 <ul>
 <li>Mixed Reality Toolkit - The toolkit itself, providing the central configuration entry point for the entire framework.</li>
@@ -209,7 +217,7 @@ If you need to move the players start point, then <strong>move the scene content
 <h2 id="recommended-build-settings-uwp">Recommended build settings (UWP)</h2>
 <p>When building for WMR, HoloLens 1, or HoloLens 2, it is recommended that your build settings &quot;Target SDK Version&quot;
 and &quot;Minimum Platform Version&quot; look like they do in the picture below:</p>
-<p><img src="Images/getting_started/BuildWindow.png" alt=""></p>
+<p><img src="Images/getting_started/BuildWindow.png" alt="Build Window"></p>
 <p>The other settings can be different (for example, Build Configuration/Architecture/Build Type and others can always
 be changed inside the Visual Studio solution).</p>
 <p>Make sure that you click on &quot;Target SDK Version&quot; and that it has the option &quot;10.0.18362.0&quot; - if this is missing,
@@ -260,7 +268,7 @@ it means you have to install <a href="https://developer.microsoft.com/en-us/wind
 </tr>
 <tr>
 <td style="text-align: left;"><a href="README_AppBar.html"><img src="Images/AppBar/MRTK_AppBar_Main.png" alt="App Bar"></a> <a href="README_AppBar.html">App Bar</a></td>
-<td style="text-align: left;"><a href="README_Pointers.html"><img src="Images/Pointers/MRTK_Pointer_Main.png" alt="Pointers"></a> <a href="README_Pointers.html">Pointers</a></td>
+<td style="text-align: left;"><a href="/Input/Pointers.md"><img src="Images/Pointers/MRTK_Pointer_Main.png" alt="Pointers"></a> <a href="/Input/Pointers.md">Pointers</a></td>
 <td style="text-align: left;"><a href="README_FingertipVisualization.html"><img src="Images/Fingertip/MRTK_FingertipVisualization_Main.png" alt="Fingertip Visualization"></a> <a href="README_FingertipVisualization.html">Fingertip Visualization</a></td>
 </tr>
 <tr>
@@ -290,26 +298,11 @@ it means you have to install <a href="https://developer.microsoft.com/en-us/wind
 </tr>
 </tbody>
 </table>
-<h1 id="tools">Tools</h1>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;"><a href="Tools/OptimizeWindow.html"><img src="Images/MRTK_Icon_OptimizeWindow.png" alt="Optimize Window"></a> <a href="Tools/OptimizeWindow.html">Optimize Window</a></th>
-<th style="text-align: left;"><a href="Tools/DependencyWindow.html"><img src="Images/MRTK_Icon_DependencyWindow.png" alt="Dependency Window"></a> <a href="Tools/DependencyWindow.html">Dependency Window</a></th>
-<th style="text-align: left;"><img src="Images/MRTK_Icon_BuildWindow.png" alt="Build Window"> Build Window</th>
-<th style="text-align: left;"><a href="InputSimulation/InputAnimationRecording.html"><img src="Images/MRTK_Icon_InputRecording.png" alt="Input recording"></a> <a href="InputSimulation/InputAnimationRecording.html">Input recording</a></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;">Automate configuration of Mixed Reality projects for performance optimizations</td>
-<td style="text-align: left;">Analyze dependencies between assets and identify unused assets</td>
-<td style="text-align: left;">Configure and execute end-to-end build process for Mixed Reality applications</td>
-<td style="text-align: left;">Record and playback head movement and hand tracking data in-editor</td>
-</tr>
-</tbody>
-</table>
-<h1 id="upgrading-from-the-holotoolkit-htkmrtk-v1">Upgrading from the HoloToolkit (HTK/MRTK v1)</h1>
+<h2 id="tools">Tools</h2>
+<p>|  <a href="Tools/OptimizeWindow.html"><img src="Images/MRTK_Icon_OptimizeWindow.png" alt="Optimize Window"></a> <a href="Tools/OptimizeWindow.html">Optimize Window</a> | <a href="Tools/DependencyWindow.html"><img src="Images/MRTK_Icon_DependencyWindow.png" alt="Dependency Window"></a> <a href="Tools/DependencyWindow.html">Dependency Window</a> | <img src="Images/MRTK_Icon_BuildWindow.png" alt="Build Window"> Build Window | <a href="InputSimulation/InputAnimationRecording.html"><img src="Images/MRTK_Icon_InputRecording.png" alt="Input recording"></a> <a href="InputSimulation/InputAnimationRecording.html">Input recording</a> |</p>
+<p>| :--- | :--- | :--- | :--- |
+| Automate configuration of Mixed Reality projects for performance optimizations | Analyze dependencies between assets and identify unused assets |  Configure and execute end-to-end build process for Mixed Reality applications | Record and playback head movement and hand tracking data in-editor |</p>
+<h2 id="upgrading-from-the-holotoolkit-htkmrtk-v1">Upgrading from the HoloToolkit (HTK/MRTK v1)</h2>
 <p>There is not a direct upgrade path from the HoloToolkit to Mixed Reality Toolkit v2 due to the rebuilt framework. However, it is possible to import the MRTK into your HoloToolkit project and migrate your implementation. For more information please see the <a href="HTKToMRTKPortingGuide.html">HoloToolkit to Mixed Reality Toolkit Porting Guide</a></p>
 </article>
           </div>
@@ -319,7 +312,7 @@ it means you have to install <a href="https://developer.microsoft.com/en-us/wind
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/2.0.0_stabilization/Documentation/GettingStartedWithTheMRTK.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/GettingStartedWithTheMRTK.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
