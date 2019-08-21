@@ -33,6 +33,8 @@ For the smoothest upgrade path, please use the following steps.
     - MixedRealityToolkit
     - MixedRealityToolkit.Examples
     - MixedRealityToolkit.Extensions
+    > [!Note]
+    > If additional extensions have been installed, please make a backup prior to deleting this folder.
     - MixedRealityToolkit.Providers
     - MixedRealityToolkit.SDK
     - MixedRealityToolkit.Services
@@ -45,6 +47,8 @@ For the smoothest upgrade path, please use the following steps.
     - Foundation - _Import this package first_
     - (Optional) Tools
     - (Optional) Extensions
+    > [!Note]
+    > If additional extensions had been installed, they may need to be re-imported.
     - (Optional) Examples
 1. For each scene in the project
     - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy
@@ -144,7 +148,15 @@ Specify the desired raycast provider in the Input System's configuration profile
 
 ![Selecting the Raycast provider](Images/ReleaseNotes/SelectRaycastProvider.png)
 
-**Input Animation Recording**
+**Improved solvers**
+
+Solvers can now be controlled by the first available hand/controller instead of being locked to left or right handedness. Old value types of *Tracked Target Type* need to be updated to the new non-obsolete values.
+
+![Solver](../Documentation/Images/Solver/TrackedObjectType-Example.gif)
+
+Please review the **solvers** section of [Updating from RC2 to 2.0.0](Updating.md#solvers) for additional changes and mitigation details.
+
+**Input animation recording**
  
 MRTK features a [recording system](InputSimulation/InputAnimationRecording.md) by which head movement and hand tracking
 data can be stored in animation files. The recorded data can then be played back using the [input simulation system](InputSimulation/InputSimulationService.md).
