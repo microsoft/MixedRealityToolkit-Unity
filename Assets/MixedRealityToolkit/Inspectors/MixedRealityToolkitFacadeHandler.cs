@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Input;
-using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -16,9 +14,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
     public static class MixedRealityToolkitFacadeHandler
     {
         private static List<Transform> childrenToDelete = new List<Transform>();
-        private static List<IMixedRealityService> servicesToSort = new List<IMixedRealityService>();
         private static MixedRealityToolkit previousActiveInstance;
         private static long previousFrameCount;
+        private static short editorUpdateTicks;
+        private const short EditorUpdateTickInterval = 15;
 
         static MixedRealityToolkitFacadeHandler()
         {
@@ -40,7 +39,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
 
         private static void OnUpdate()
         {
-            UpdateServiceFacades();
+            editorUpdateTicks++;
+            if (editorUpdateTicks > EditorUpdateTickInterval)
+            {
+                editorUpdateTicks = 0;
+                UpdateServiceFacades();
+            }
         }
 
         [UnityEditor.Callbacks.DidReloadScripts]
@@ -65,133 +69,148 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
 
         #endregion
 
+        private static HashSet<IMixedRealityService> GetAllServices()
+        {
+            HashSet<IMixedRealityService> serviceList = new HashSet<IMixedRealityService>();
+            foreach (var svc in MixedRealityServiceRegistry.GetAllServices())
+            {
+                serviceList.Add(svc);
+            }
+
+            // These are core systems that are likely out-of-box services and known to have register DataProviders
+            // Search for any dataproviders that service facades can be created for
+            var inputSystem_dataProviderAccess = CoreServices.InputSystem as IMixedRealityDataProviderAccess;
+            if (inputSystem_dataProviderAccess != null)
+            {
+                foreach (var dataProvider in inputSystem_dataProviderAccess.GetDataProviders())
+                {
+                    serviceList.Add(dataProvider);
+                }
+            }
+
+            var spatialAwarenessSystem_dataProviderAccess = CoreServices.SpatialAwarenessSystem as IMixedRealityDataProviderAccess;
+            if (spatialAwarenessSystem_dataProviderAccess != null)
+            {
+                foreach (var dataProvider in spatialAwarenessSystem_dataProviderAccess.GetDataProviders())
+                {
+                    serviceList.Add(dataProvider);
+                }
+            }
+
+            return serviceList;
+        }
+
         private static void UpdateServiceFacades()
         {
-            if (!MixedRealityToolkit.IsInitialized)
-            {   // Nothing to do here.
-                return;
-            }
-
+            // If compiling, don't modify service facades
             if (EditorApplication.isCompiling)
-            {   // Wait for compilation to complete before creating or destroying facades
-                return;
-            }
-
-            if (Application.isPlaying && Time.frameCount == previousFrameCount)
-            {   // Only update once per frame (SceneGUI + Update may result in multiple calls)
-                return;
-            }
-
-            previousFrameCount = Time.frameCount;
-
-            if (previousActiveInstance != null && MixedRealityToolkit.Instance != previousActiveInstance)
-            {   // We've changed active instances. Destroy all children in the previous instance.
-                DestroyAllChildren(previousActiveInstance);
-            }
-
-            if (MixedRealityToolkit.Instance.HasActiveProfile && !MixedRealityToolkit.Instance.ActiveProfile.UseServiceInspectors)
-            {   // If we're not using inspectors, destroy them all now
-                DestroyAllChildren(MixedRealityToolkit.Instance);
-                return;
-            }
-
-            servicesToSort.Clear();
-            servicesToSort.AddRange(MixedRealityServiceRegistry.GetAllServices());
-
-            IMixedRealityInputSystem inputSystem;
-            MixedRealityServiceRegistry.TryGetService(out inputSystem);
-            if (inputSystem != null)
             {
-                servicesToSort.AddRange((inputSystem as IMixedRealityDataProviderAccess).GetDataProviders());
+                return;
             }
 
-            servicesToSort.Sort(
-                delegate (IMixedRealityService s1, IMixedRealityService s2)
+            // If MRTK has no active instance
+            // or there is no active profile for the active instance
+            // or we are instructed to not use service inspectors
+            // Return early and clean up any facade instances
+            if (!MixedRealityToolkit.IsInitialized ||
+                !MixedRealityToolkit.Instance.HasActiveProfile ||
+                !MixedRealityToolkit.Instance.ActiveProfile.UseServiceInspectors)
+            {
+                DestroyFacades();
+                return;
+            }
+
+            var mrtkTransform = MixedRealityToolkit.Instance.transform;
+            bool newMRTKActiveInstance = previousActiveInstance != null && MixedRealityToolkit.Instance != previousActiveInstance;
+
+            var serviceSet = GetAllServices();
+
+            // Update existing service facade GameObjects
+            for (int i = ServiceFacade.ActiveFacadeObjects.Count - 1; i >= 0; i--)
+            {
+                var facade = ServiceFacade.ActiveFacadeObjects[i];
+
+                // if this facade is no longer valid, remove item
+                if (facade == null)
                 {
-                    string s1Name = s1.GetType().Name;
-                    string s2Name = s2.GetType().Name;
-
-                    if (s1Name == s2Name)
-                    {
-                        return s1.Priority.CompareTo(s2.Priority);
-                    }
-
-                    return s1Name.CompareTo(s2Name);
-                });
-
-            for (int i = 0; i < servicesToSort.Count; i++)
-            {
-                CreateFacade(MixedRealityToolkit.Instance.transform, servicesToSort[i], i);
-            }
-
-            // Delete any stragglers
-            childrenToDelete.Clear();
-            for (int i = servicesToSort.Count; i < MixedRealityToolkit.Instance.transform.childCount; i++)
-            {
-                childrenToDelete.Add(MixedRealityToolkit.Instance.transform.GetChild(i));
-            }
-
-            foreach (Transform childToDelete in childrenToDelete)
-            {
-                if (Application.isPlaying)
+                    ServiceFacade.ActiveFacadeObjects.RemoveAt(i);
+                }
+                //If service facade is not part of the current service list, then remove item and destroy GameObject
+                else if (!serviceSet.Contains(facade.Service))
                 {
-                    GameObject.Destroy(childToDelete.gameObject);
+                    DestroyGameObject(facade.gameObject);
+                    ServiceFacade.ActiveFacadeObjects.RemoveAt(i);
                 }
                 else
                 {
-                    GameObject.DestroyImmediate(childToDelete.gameObject);
-                }
-            }
+                    // Else item is valid and exists in our list. Remove from list
+                    serviceSet.Remove(facade.Service);
 
-            try
-            {
-                // Update all self-registered facades
-                foreach (ServiceFacade facade in ServiceFacade.ActiveFacadeObjects)
-                {
-                    if (facade == null)
+                    // If there is a new MRTK active instance, then migrate service facade to be child of that GameObject
+                    if (newMRTKActiveInstance)
                     {
-                        continue;
+                        facade.transform.parent = mrtkTransform;
                     }
-
-                    facade.CheckIfStillValid();
                 }
             }
-            catch(Exception)
+
+            // Remaining services need to be created and added into scene
+            foreach (var service in serviceSet)
             {
-                Debug.LogWarning("Service Facades should remain parented under the MixedRealityToolkit instance.");
+                // Find where we need to place service based on name ordering
+                int idx = 0;
+                for (; idx < mrtkTransform.childCount; idx++)
+                {
+                    if (mrtkTransform.GetChild(idx).name.CompareTo(service.GetType().Name) >= 0)
+                    {
+                        break;
+                    }
+                }
+
+                CreateFacade(mrtkTransform, service, idx);
             }
 
             previousActiveInstance = MixedRealityToolkit.Instance;
         }
 
-        private static void CreateFacade(Transform parent, IMixedRealityService service, int facadeIndex)
+        /// <summary>
+        /// Destroys gameobject appropriately depending if in edit or playmode
+        /// </summary>
+        /// <param name="gameObject">gameobject to destroy</param>
+        /// <param name="t">time at which to destroy GameObject if applicable</param>
+        public static void DestroyGameObject(this GameObject gameObject, float t = 0.0f)
         {
-            ServiceFacade facade = null;
-            if (facadeIndex > parent.transform.childCount - 1)
+            if (Application.isPlaying)
             {
-                GameObject facadeObject = new GameObject();
-                facadeObject.transform.parent = parent;
-                facade = facadeObject.AddComponent<ServiceFacade>();
+                GameObject.Destroy(gameObject, t);
             }
             else
             {
-                Transform child = parent.GetChild(facadeIndex);
-                facade = child.GetComponent<ServiceFacade>();
-                if (facade == null)
+                GameObject.DestroyImmediate(gameObject);
+            }
+        }
+
+        private static void DestroyFacades()
+        {
+            foreach (var facade in ServiceFacade.ActiveFacadeObjects)
+            {
+                if (facade != null)
                 {
-                    facade = child.gameObject.AddComponent<ServiceFacade>();
+                    DestroyGameObject(facade.gameObject);
                 }
             }
 
-            if (facade.transform.hasChanged)
-            {
-                facade.transform.localPosition = Vector3.zero;
-                facade.transform.localRotation = Quaternion.identity;
-                facade.transform.localScale = Vector3.one;
-                facade.transform.hasChanged = false;
-            }
+            ServiceFacade.ActiveFacadeObjects.Clear();
+        }
 
-            facade.SetService(service, parent);
+        private static void CreateFacade(Transform parent, IMixedRealityService service, int facadeIndex)
+        {
+            GameObject facadeObject = new GameObject();
+            facadeObject.transform.parent = parent;
+            facadeObject.transform.SetSiblingIndex(facadeIndex);
+
+            ServiceFacade facade = facadeObject.AddComponent<ServiceFacade>();
+            facade.SetService(service);
         }
 
         private static void DestroyAllChildren(MixedRealityToolkit instance)
@@ -212,11 +231,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
 
             foreach (Transform child in childrenToDelete)
             {
-                GameObject.DestroyImmediate(child.gameObject);
+                DestroyGameObject(child.gameObject);
             }
 
             childrenToDelete.Clear();
-            servicesToSort.Clear();
         }
     }
 }
