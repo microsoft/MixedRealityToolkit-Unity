@@ -237,7 +237,16 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 rootNode.Add(propertyGroupNode);
             }
 
-            propertyGroupNode.Add(new XElement(defaultNamespace + "ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch", "None"));
+            var newNode = propertyGroupNode.Element(defaultNamespace + "ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch");
+            if (newNode != null)
+            {
+                // If this setting already exists in the project, ensure it's value is "None"
+                newNode.Value = "None";
+            }
+            else
+            {
+                propertyGroupNode.Add(new XElement(defaultNamespace + "ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch", "None"));
+            }
 
             rootNode.Save(projectFilePath);
 
