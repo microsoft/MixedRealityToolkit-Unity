@@ -469,17 +469,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// 1. The PokePointer uses the DistanceToTouchable to determine the closest touchable. This distance value is also used compared to PokePointer.TouchableDistance to determine the set of eligible touchables in the first place.
         ///     There is no explicit spec which space this distance is computed in, although it should be in world space. Due to the way touchables convert pointer position into local space first and then do a scale-only inverse transform there may be errors.
         /// 1. After the PokePointer has selected the closest touchable, it then performs a raycast against either the collider or the UnityUI canvas, depending on type. The (world space) length of that ray is then used as the actual distance for triggering touch events.
-        ///     When the ray length is _less_ than the PokeThreshold the TouchDown event is raised and the touchable is "down".
-        ///     When the touchable is "down" and the ray length is _greater_ than PokeThreshold + DebounceThreshold (!) the TouchUp event is raised and the touchable is released.
+        ///     When the ray length is negative the TouchDown event is raised and the touchable is "down".
+        ///     When the touchable is "down" and the ray length is _greater_ than DebounceThreshold the TouchUp event is raised and the touchable is released.
         /// 
         /// The normal vector for performing the ray cast, however, is still the one returned by the first distance calculation.
         /// 
         /// NearInteractionTouchable also calculates distance from the object center, but the raycast ignores this and uses distance from the collider.
         /// UnityUI OTOH does a raycast against a flat canvas, so the two distance values _should_ match (but it's not guaranteed).
-        /// 
-        /// Default PokeThreshold is larger than the TouchableDistance, so we have to reduce it in the tests below to avoid dropping the active touchable before exceeding the DebounceThreshold.
-        /// 
-        /// The ray in the second step starts at Position - PokeThreshold, but this is not taken into account when raising events. So effectively one has to move the pointer right up to the collider in order to trigger a touch, regardless of the PokeThreshold. This may be intentional or not, it's not documented at all.
         /// </remarks>
         [UnityTest]
         public IEnumerator NearInteractionTouchableDistance()
@@ -540,9 +536,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsNotNull(pokePointer);
             float touchableDistance = pokePointer.TouchableDistance;
 
-            float pokeThreshold = 0.14f;
             float debounceThreshold = 0.01f;
-            touchable.PokeThreshold = pokeThreshold;
             touchable.DebounceThreshold = debounceThreshold;
 
             Vector3 center = touchable.transform.position;
@@ -550,8 +544,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             float margin = 0.001f;
             Vector3 pStart = center + new Vector3(0, 0, -touchableDistance - 0.5f);
             Vector3 pTouch = center + new Vector3(0, 0, -touchableDistance + margin);
-            Vector3 pPoke = center + new Vector3(0, 0, -colliderThickness - touchable.PokeThreshold + margin);
-            Vector3 pDebounce = center + new Vector3(0, 0, -colliderThickness - touchable.PokeThreshold - touchable.DebounceThreshold - margin);
+            Vector3 pPoke = center + new Vector3(0, 0, -colliderThickness + margin);
+            Vector3 pDebounce = center + new Vector3(0, 0, -colliderThickness - touchable.DebounceThreshold - margin);
             Vector3 pEnd = center + new Vector3(0, 0, touchableDistance + 0.5f);
 
             // Test return beyond DebounceThreshold

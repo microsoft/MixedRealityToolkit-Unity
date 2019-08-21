@@ -14,8 +14,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
     ///
     /// If a poke pointer has no [CurrentTouchableObjectDown](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer.CurrentTouchableObjectDown), then it will try to select one from the Reachable Objects based on:
     /// 1. Layer mask priority: Lower-priority layer masks will only be considered if higher-priority layers don't contain any Reachable Objects.
-    /// 1. Distance: the closest object in the highest priority layers is selected based on [DistanceToTouchable](xref:Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.DistanceToTouchable*).
-    /// 1. Poke Threshold: The object becomes the [CurrentTouchableObjectDown](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer.CurrentTouchableObjectDown) once it crosses the [PokeThreshold](xref:Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.PokeThreshold) distance (behind the surface). At this point the [OnTouchStarted](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler.OnTouchStarted*) or [OnPointerDown](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler.OnPointerDown*) event is raised.
+    /// 1. Touchable Distance: the closest object in the highest priority layers is selected based on [DistanceToTouchable](xref:Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.DistanceToTouchable*).
+    /// 1. Ray Distance: The object becomes the [CurrentTouchableObjectDown](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer.CurrentTouchableObjectDown) once the ray cast distance becomes negative (behind the surface). At this point the [OnTouchStarted](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler.OnTouchStarted*) or [OnPointerDown](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler.OnPointerDown*) event is raised.
     ///
     /// If a poke pointer _does_  have a [CurrentTouchableObjectDown](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer.CurrentTouchableObjectDown) it will not consider any other object, until the [DistanceToTouchable](xref:Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.DistanceToTouchable*) exceeds the [DebounceThreshold](xref:Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.DebounceThreshold) (in front of the surface). At this point the active object is cleared and the [OnTouchCompleted](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler.OnTouchCompleted*) or [OnPointerUp](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler.OnPointerUp*) event is raised.
     /// </remarks>
@@ -138,8 +138,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (newClosestTouchable != null)
             {
                 // Build ray (poke from in front to the back of the pointer position)
-                Vector3 start = Position - newClosestTouchable.PokeThreshold * -closestNormal;
-                Vector3 end = Position + touchableDistance * -closestNormal;
+                Vector3 start = Position + touchableDistance * closestNormal;
+                Vector3 end = Position - touchableDistance * closestNormal;
                 Rays[0].UpdateRayStep(ref start, ref end);
 
                 line.SetPosition(0, Position);
@@ -217,10 +217,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (Result?.CurrentPointerTarget != null && closestProximityTouchable != null)
             {
-                // Start position of the ray is offset by PokeThreshold, subtract to get distance between surface and pointer position.
-                float distToFront = Vector3.Distance(Result.StartPoint, Result.Details.Point) - closestProximityTouchable.PokeThreshold;
-                bool newIsDown = (distToFront < closestProximityTouchable.PokeThreshold);
-                bool newIsUp = (distToFront > closestProximityTouchable.PokeThreshold + closestProximityTouchable.DebounceThreshold);
+                // Start position of the ray is offset by TouchableDistance, subtract to get distance between surface and pointer position.
+                float distToFront = Vector3.Distance(Result.StartPoint, Result.Details.Point) - touchableDistance;
+                bool newIsDown = (distToFront < 0.0f);
+                bool newIsUp = (distToFront > closestProximityTouchable.DebounceThreshold);
 
                 if (newIsDown)
                 {
