@@ -323,8 +323,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             SerializedProperty layers = tagManager.FindProperty("layers");
             if (layers == null || !layers.isArray)
             {
-                Debug.LogWarning("Can't set up the layers.  It's possible the format of the layers and tags data has changed in this version of Unity.");
-                Debug.LogWarning("Layers is null: " + (layers == null));
+                Debug.LogWarning(string.Format($"Can't modify project layers. It's possible the format of the layers and tags data has changed in this version of Unity. Set layer {layerNumber} to \"{layerName}\" manually via Project Settings > Tags and Layers window."));
                 return;
             }
 
