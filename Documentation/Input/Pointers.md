@@ -129,13 +129,13 @@ Touch Started / Updated / Completed | Raised by touch-aware pointers like [`Poke
 
 #### Pointer input events in action
 
-Pointer input events are recognized and handled by the MRTK input system in a similar way as [regular input events](InputEvents.md#input_events_in_action). The difference being that pointer input events are handled only by the GameObject in focus by the pointer that fired the input event - as well as any global input handlers. Regular input events are handled by GameObjects in focus for all active pointers.
+Pointer input events are recognized and handled by the MRTK input system in a similar way as [regular input events](InputEvents.md#input-events-in-action). The difference being that pointer input events are handled only by the GameObject in focus by the pointer that fired the input event - as well as any global input handlers. Regular input events are handled by GameObjects in focus for all active pointers.
 
 1. The MRTK input system recognizes an input event has occurred
 1. The MRTK input system fires the relevant interface function for the input event to all registered global input handlers
 1. The input system determines which GameObject is in focus for the pointer that fired the event
     1. The input system utilizes the [Unity's Event System](https://docs.unity3d.com/Manual/EventSystem.html) to fire the relevant interface function for all matching components on the focused GameObject
-    1. If at any point an input event has been [marked as used](#how-to-stop-input-events), the process will end and no further GameObjects will receive callbacks.
+    1. If at any point an input event has been [marked as used](inputevents.md#how-to-stop-input-events), the process will end and no further GameObjects will receive callbacks.
         - Example: Components implementing the interface [`IMixedRealityFocusHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler) will be searched for a GameObject gains or loses focus
         - Note: The Unity Event System will bubble up to search the parent GameObject if no components matching the desired interface are found on the current GameObject..
 1. If no global input handlers are registered and no GameObject is found with a matching component/interface, then the input system will call each fallback registered input handlers
