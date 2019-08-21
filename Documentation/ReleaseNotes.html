@@ -115,6 +115,12 @@ including some files moving to new folder locations. Breaking change details, in
 <li>MixedRealityToolkit</li>
 <li>MixedRealityToolkit.Examples</li>
 <li>MixedRealityToolkit.Extensions</li>
+</ul>
+<div class="NOTE">
+<h5>Note</h5>
+<p>If additional extensions have been installed, please make a backup prior to deleting this folder.</p>
+</div>
+<ul>
 <li>MixedRealityToolkit.Providers</li>
 <li>MixedRealityToolkit.SDK</li>
 <li>MixedRealityToolkit.Services</li>
@@ -132,6 +138,12 @@ including some files moving to new folder locations. Breaking change details, in
 <li>Foundation - <em>Import this package first</em></li>
 <li>(Optional) Tools</li>
 <li>(Optional) Extensions</li>
+</ul>
+<div class="NOTE">
+<h5>Note</h5>
+<p>If additional extensions had been installed, they may need to be re-imported.</p>
+</div>
+<ul>
 <li>(Optional) Examples</li>
 </ul>
 </li>
@@ -223,7 +235,11 @@ solvers are now an official feature (no longer experimental) and have improved d
 <p>The input system was updated to allow for raycast customization, via custom implementations of <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityRaycastProvider.html"><code>IMixedRealityRaycastProvider</code></a>.</p>
 <p>Specify the desired raycast provider in the Input System's configuration profile.</p>
 <p><img src="Images/ReleaseNotes/SelectRaycastProvider.png" alt="Selecting the Raycast provider"></p>
-<p><strong>Input Animation Recording</strong></p>
+<p><strong>Improved solvers</strong></p>
+<p>Solvers can now be controlled by the first available hand/controller instead of being locked to left or right handedness. Old value types of <em>Tracked Target Type</em> need to be updated to the new non-obsolete values.</p>
+<p><img src="Images/Solver/TrackedObjectType-Example.gif" alt="Solver"></p>
+<p>Please review the <strong>solvers</strong> section of <a href="Updating.html#solvers">Updating from RC2 to 2.0.0</a> for additional changes and mitigation details.</p>
+<p><strong>Input animation recording</strong></p>
 <p>MRTK features a <a href="InputSimulation/InputAnimationRecording.html">recording system</a> by which head movement and hand tracking
 data can be stored in animation files. The recorded data can then be played back using the <a href="InputSimulation/InputSimulationService.html">input simulation system</a>.</p>
 <p><strong>MRTK Standard Shader</strong></p>
