@@ -20,7 +20,7 @@ The list below outlines all available input event interfaces to be implemented b
 
 At the script level, input events can be consumed by implementing one of the event handler interfaces shown in the table above. When an input event fires via an user interaction, the following takes place:
 
-1. The MRTK input system recognizes that an input event has occurred
+1. The MRTK input system recognizes that an input event has occurred.
 1. The MRTK input system fires the relevant interface function of the input event to all registered global input handlers
 1. For every active pointer registered with the input system
     1. The input system determines which GameObject is in focus for the current pointer
