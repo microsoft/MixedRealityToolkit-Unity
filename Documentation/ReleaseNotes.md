@@ -154,7 +154,7 @@ Solvers can now be controlled by the first available hand/controller instead of 
 
 ![Solver](../Documentation/Images/Solver/TrackedObjectType-Example.gif)
 
-Please review the **Solvers** section of [Updating from RC2 to 2.0.0](Updating.md) for additional changes and mitigation details.
+Please review the **solvers** section of [Updating from RC2 to 2.0.0](Updating.md) for additional changes and mitigation details.
 
 **Input Animation Recording**
  
