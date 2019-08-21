@@ -3,6 +3,8 @@
   items:
   - name: Upgrading from HTK
     href: HTKToMRTKPortingGuide.md
+  - name: Building and Deploying MRTK
+    href: BuildAndDeploy.md
   - name: Updating from RC2 to GA
     href: UpdatingToGA.md
   - name: Performance
@@ -75,8 +77,6 @@
       href: README_AppBar.md
     - name: Object Collection
       href: README_ObjectCollection.md
-    - name: Pointers
-      href: README_Pointers.md
     - name: Slate
       href: README_Slate.md
     - name: System Keyboard
