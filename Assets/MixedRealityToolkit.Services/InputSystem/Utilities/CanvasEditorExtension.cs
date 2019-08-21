@@ -42,7 +42,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
             m_ShaderChannels = serializedObject.FindProperty("m_AdditionalShaderChannelsFlag");
 
             sortingLayerField = typeof(EditorGUILayout).GetMethod("SortingLayerField", BindingFlags.Static | BindingFlags.NonPublic, null, CallingConventions.Standard, new System.Type[] { typeof(GUIContent), typeof(SerializedProperty), typeof(GUIStyle) }, null);
-            CreateCachedEditor(target, typeof(TransformUtils).Assembly.GetType("UnityEditor.CanvasEditor"), ref editor);
+            System.Type canvasEditorType = typeof(TransformUtils).Assembly.GetType("UnityEditor.CanvasEditor");
+            if (canvasEditorType != null)
+            {
+                CreateCachedEditor(target, typeof(TransformUtils).Assembly.GetType("UnityEditor.CanvasEditor"), ref editor);
+            }
         }
 
         public override void OnInspectorGUI()
