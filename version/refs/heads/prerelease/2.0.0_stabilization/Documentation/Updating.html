@@ -1,0 +1,526 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Updating from RC2 to 2.0.0 | Mixed Reality Toolkit Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Updating from RC2 to 2.0.0 | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.44.0.0">
+    
+    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
+              </a>
+            </div>
+          
+          <div class="version-dropdown" id="versionDropdown">
+           </div>
+         
+          <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="updating-from-rc2-to-200">Updating from RC2 to 2.0.0</h1>
+
+<p>Between the RC2 and 2.0.0 releases of the Microsoft Mixed Reality Toolkit, changes were made that may impact existing projects. This document describes those changes and how to update projects to the 2.0.0 release.</p>
+<ul>
+<li><a href="#api-changes">API changes</a></li>
+<li><a href="#assembly-name-changes">Assembly name changes</a></li>
+</ul>
+<h2 id="api-changes">API changes</h2>
+<p>Since the release of RC2, there have been a number of API changes including some that may break existing projects. The following sections describe the changes that have occurred between the RC2 and 2.0.0 releases.</p>
+<ul>
+<li><a href="#mixedrealitytoolkit">MixedRealityToolkit</a></li>
+<li><a href="#coreservices">CoreServices</a></li>
+<li><a href="#imixedrealityraycastprovider">IMixedRealityRaycastProvider</a></li>
+<li><a href="#event-system">Event System</a></li>
+<li><a href="#spatial-awareness">Spatial Awareness</a></li>
+<li><a href="#solvers">Solvers</a></li>
+<li><a href="#buttons">Buttons</a></li>
+<li><a href="#clipping-sphere">Clipping Sphere</a></li>
+<li><a href="#nearinteractiontouchable-and-pokepointer">NearInteractionTouchable and PokePointer</a></li>
+<li><a href="#readonlyattribute">ReadOnlyAttribute</a></li>
+<li><a href="#pointerclickhandler">PointerClickHandler</a></li>
+<li><a href="#hololens-clicker-support">HoloLens Clicker Support</a></li>
+<li><a href="#interactablehighlight">InteractableHighlight</a></li>
+<li><a href="#handinteractionpanzoom">HandInteractionPanZoom</a></li>
+</ul>
+<h3 id="mixedrealitytoolkit">MixedRealityToolkit</h3>
+<p>The following public properties on the MixedRealityToolkit object have been deprecated.</p>
+<ul>
+<li><code>RegisteredMixedRealityServices</code> no longer contains the collection of registered extensions services and data providers.</li>
+</ul>
+<p>To access extension services, use <code>MixedRealityServiceRegistry.TryGetService&lt;T&gt;</code>. To access data providers, cast the service instance to <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess.html"><code>IMixedRealityDataProviderAccess</code></a> and use <code>GetDataProvider&lt;T&gt;</code>.</p>
+<p>Use <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.MixedRealityServiceRegistry.html"><code>MixedRealityServiceRegistry</code></a> or <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.CoreServices.html"><code>CoreServices</code></a> instead for the following deprecated properties</p>
+<ul>
+<li><code>ActiveSystems</code></li>
+<li><code>InputSystem</code></li>
+<li><code>BoundarySystem</code></li>
+<li><code>CameraSystem</code></li>
+<li><code>SpatialAwarenessSystem</code></li>
+<li><code>TeleportSystem</code></li>
+<li><code>DiagnosticsSystem</code></li>
+<li><code>SceneSystem</code></li>
+</ul>
+<h3 id="coreservices">CoreServices</h3>
+<p>The <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.CoreServices.html"><code>CoreServices</code></a> class is the replacement for the static system accessors (ex: BoundarySystem) found in the <code>MixedRealityToolkit</code> object.</p>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>The <code>MixedRealityToolkit</code> system accessors have been deprecated in version 2.0.0 and will be removed in a future release of the MRTK.</p>
+</div>
+<p>The following code example illustrates the old and the new pattern.</p>
+<pre><code class="lang-c#">// Old
+GameObject playAreaVisualization = MixedRealityToolkit.BoundarySystem?.GetPlayAreaVisualization();
+
+// New
+GameObject playAreaVisualization = CoreServices.BoundarySystem?.GetPlayAreaVisualization();
+</code></pre>
+<p>Using the new CoreSystem class will ensure that your application code will not need updating if you change the application to use a different service registrar (ex: one of the experimental service managers).</p>
+<h3 id="imixedrealityraycastprovider">IMixedRealityRaycastProvider</h3>
+<p>With the addition of the IMixedRealityRaycastProvider, the input system configuration profile was changed. If you have a custom profile, you may receive the errors in the following image when you run your application.</p>
+<p><img src="Images/ReleaseNotes/UnableToRegisterRaycastProvider.png" alt="Selecting the Raycast provider"></p>
+<p>To fix these, please add an IMixedRealityRaycastProvider instance to your input system profile.</p>
+<p><img src="Images/ReleaseNotes/SelectRaycastProvider.png" alt="Selecting the Raycast provider"></p>
+<h3 id="event-system">Event System</h3>
+<p><strong>Changes</strong></p>
+<ul>
+<li>The <code>IMixedRealityEventSystem</code> old API methods <code>Register</code> and <code>Unregister</code> have been marked as obsolete. They are preserved for backwards compatibility.</li>
+<li><code>InputSystemGlobalListener</code> has been marked as obsolete. Its functionality has not changed.</li>
+<li><code>BaseInputHandler</code> base class has been changed from <code>InputSystemGlobalListener</code> to <code>InputSystemGlobalHandlerListener</code>. This is a breaking change for any descendants of <code>BaseInputHandler</code>.</li>
+</ul>
+<p><strong>Motivation behind the change</strong></p>
+<p>The old event system API <code>Register</code> and <code>Unregister</code> could potentially cause multiple issues in runtime, main being:</p>
+<ul>
+<li>If a component registers for global events, it would receive global input events of <em>all</em> types.</li>
+<li>If one of the components on an object registers for global input events, all components on this object will receive global input events of <em>all</em> types.</li>
+<li>If two components on the same object register to global events, and then one is disabled in runtime, the second one stops receiving global events.</li>
+</ul>
+<p>New API <code>RegisterHandler</code> and <code>UnregisterHandler</code>:</p>
+<ul>
+<li>Provides an explicit and granular control over which input events should be listened to globally and which should be focused-based.</li>
+<li>Allows multiple components on the same object to listen to global events independently on each other.</li>
+</ul>
+<p><strong>How to migrate</strong></p>
+<ul>
+<li>If you have been calling <code>Register</code>/<code>Unregister</code> API directly before, replace these calls with calls to <code>RegisterHandler</code>/<code>UnregisterHandler</code>. Use handler interfaces you implement as generic parameters. If you implement multiple interfaces, and several of them listen to global input events, call <code>RegisterHandler</code> multiple times.</li>
+<li>If you have been inheriting from <code>InputSystemGlobalListener</code>, change inheritance to <code>InputSystemGlobalHandlerListener</code>. Implement <code>RegisterHandlers</code> and <code>UnregisterHandlers</code> abstract methods. In the implementation call <code>inputSystem.RegisterHandler</code> (<code>inputSystem.UnregisterHandler</code>) to register on all handler interfaces you want to listen global events for.</li>
+<li>If you have been inheriting from <code>BaseInputHandler</code>, implement <code>RegisterHandlers</code> and <code>UnregisterHandlers</code> abstract methods (same as for <code>InputSystemGlobalListener</code>).</li>
+</ul>
+<p><strong>Examples of migration</strong></p>
+<pre><code class="lang-csharp">// Old
+class SampleHandler : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedRealityHandJointHandler
+{
+    private void OnEnable()
+    {
+        InputSystem?.Register(gameObject);
+    }
+
+    private void OnDisable()
+    {
+        InputSystem?.Unregister(gameObject);
+    }
+}
+
+// Migrated
+class SampleHandler : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedRealityHandJointHandler
+{
+    private void OnEnable()
+    {
+        InputSystem?.RegisterHandler&lt;IMixedRealitySourceStateHandler&gt;(this);
+        InputSystem?.RegisterHandler&lt;IMixedRealityHandJointHandler&gt;(this);
+    }
+
+    private void OnDisable()
+    {
+        InputSystem?.UnregisterHandler&lt;IMixedRealitySourceStateHandler&gt;(this);
+        InputSystem?.UnregisterHandler&lt;IMixedRealityHandJointHandler&gt;(this);
+    }
+}
+</code></pre>
+<pre><code class="lang-csharp">// Old
+class SampleHandler2 : InputSystemGlobalListener, IMixedRealitySpeechHandler
+{
+}
+
+// Migrated
+class SampleHandler2 : InputSystemGlobalHandlerListener, IMixedRealitySpeechHandler
+{
+    private void RegisterHandlers()
+    {
+        InputSystem?.RegisterHandler&lt;IMixedRealitySpeechHandler&gt;(this);
+    }
+
+    private void UnregisterHandlers()
+    {
+        InputSystem?.UnregisterHandler&lt;IMixedRealitySpeechHandler&gt;(this);
+    }
+}
+
+// Alternative migration
+class SampleHandler2 : MonoBehaviour, IMixedRealitySpeechHandler
+{
+    private void OnEnable()
+    {
+        IMixedRealityInputSystem inputSystem;
+        if (MixedRealityServiceRegistry.TryGetService&lt;IMixedRealityInputSystem&gt;(out inputSystem))
+        {
+            inputSystem?.RegisterHandler&lt;IMixedRealitySpeechHandler&gt;(this);
+        }
+    }
+
+    private void OnDisable()
+    {
+        IMixedRealityInputSystem inputSystem;
+        if (MixedRealityServiceRegistry.TryGetService&lt;IMixedRealityInputSystem&gt;(out inputSystem))
+        {
+            inputSystem?.UnregisterHandler&lt;IMixedRealitySpeechHandler&gt;(this);
+        }
+    }
+}
+</code></pre>
+<h3 id="spatial-awareness">Spatial Awareness</h3>
+<p>The IMixedRealitySpatialAwarenessSystem and IMixedRealitySpatialAwarenessObserver interfaces have taken multiple breaking changes as described below.</p>
+<h4 id="changes">Changes</h4>
+<p>The following method(s) have been renamed to better describe their usage.</p>
+<ul>
+<li><code>IMixedRealitySpatialAwarenessSystem.CreateSpatialObjectParent</code> has been renamed to <code>IMixedRealitySpatialAwarenessSystem.CreateSpatialAwarenessObservationParent</code> to clarify its usage.</li>
+</ul>
+<h4 id="additions">Additions</h4>
+<p>Based on customer feedback, support for easy removal of previously observed spatial awareness data has been added.</p>
+<ul>
+<li><code>IMixedRealitySpatialAwarenessSystem.ClearObservations()</code></li>
+<li><code>IMixedRealitySpatialAwarenessSystem.ClearObservations&lt;T&gt;(string name)</code></li>
+<li><code>IMixedRealitySpatialAwarenessObserver.ClearObservations()</code></li>
+</ul>
+<h3 id="solvers">Solvers</h3>
+<p>Some solver components and the SolverHandler manager class has changed to fix various bugs and for more intuitive usage.</p>
+<h4 id="solverhandler">SolverHandler</h4>
+<ul>
+<li>Class no longer extends from <code>ControllerFinder</code></li>
+<li><code>TrackedObjectToReference</code> public property deprecated and has been renamed to <code>TrackedTargetType</code></li>
+<li><code>TrackedObjectType</code> deprecates left &amp; right controller values. Instead use <code>MotionController</code> or <code>HandJoint</code> values and update new <code>TrackedHandedness</code> property to limit tracking to left or right controller</li>
+</ul>
+<h4 id="inbetween">InBetween</h4>
+<ul>
+<li><code>TrackedObjectForSecondTransform</code> public property deprecated and has been renamed to <code>SecondTrackedObjectType</code></li>
+<li><code>AttachSecondTransformToNewTrackedObject()</code> has been removed. To update the solver, modify the public properties (i.e <code>SecondTrackedObjectType</code>)</li>
+</ul>
+<h5 id="surfacemagnetism">SurfaceMagnetism</h5>
+<ul>
+<li><code>MaxDistance</code> public property deprecated and has been renamed to <code>MaxRaycastDistance</code></li>
+<li><code>CloseDistance</code> public property deprecated and has been renamed to <code>ClosestDistance</code></li>
+<li>Default value for <code>RaycastDirectionMode</code> is now <code>TrackedTargetForward</code> which raycasts in the direction of the tracked target transform forward</li>
+<li><code>OrientationMode</code> enum values, <code>Vertical</code> and <code>Full</code>, have been renamed to <code>TrackedTarget</code> and <code>SurfaceNormal</code> respectively</li>
+<li><code>KeepOrientationVertical</code> public property has been added to control whether orientation of associated GameObject remains vertical</li>
+</ul>
+<h3 id="buttons">Buttons</h3>
+<ul>
+<li><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.PressableButton.html"><code>PressableButton</code></a> now has <code>DistanceSpaceMode</code> property set to <code>Local</code> as default. This allows buttons to be scaled while still be pressable</li>
+</ul>
+<h3 id="clipping-sphere">Clipping Sphere</h3>
+<p>The ClippingSphere interface has changed to mirror the APIs found in the ClippingBox and ClippingPlane.</p>
+<h4 id="changes-1">Changes</h4>
+<p>The ClippingSphere's Radius property is now implicitly calculated based on the transform scale. Before developers would have to specify the radius of the ClippingSphere in the inspector. If you want to change the radius, just update the transform scale of the transform as you normally would.</p>
+<h3 id="nearinteractiontouchable-and-pokepointer">NearInteractionTouchable and PokePointer</h3>
+<ul>
+<li>NearInteractionTouchable does not handle Unity UI canvas touching any longer. The NearInteractionTouchableUnityUI class must be used for Unity UI touchables now.</li>
+<li>ColliderNearInteractionTouchable is the new base class for touchables based on colliders, i.e. every touchable except NearInteractionTouchableUnityUI.</li>
+<li>BaseNearInteractionTouchable.DistFront has been moved and renamed to PokePointer.TouchableDistance
+This is the distance and which the PokePointer can interact with touchables. Previously each touchable had it's own maximum interaction distance, but now this is defined in the PokePointer which allows better optimization.</li>
+<li>BaseNearInteractionTouchable.DistBack has been renamed to PokeThreshold
+This makes it clear that PokeThreshold is the counterpart to DebounceThreshold. A touchable is activated when the PokeThreshold is crossed, and released when DebounceThreshold is crossed.</li>
+</ul>
+<h3 id="readonlyattribute">ReadOnlyAttribute</h3>
+<p>The <code>Microsoft.MixedReality.Toolkit</code> namespace has been added to <code>ReadOnlyAttribute</code>, <code>BeginReadOnlyGroupAttribute</code>, and <code>EndReadOnlyGroupAttribute</code>.</p>
+<h3 id="pointerclickhandler">PointerClickHandler</h3>
+<p>The <code>PointerClickHandler</code> class has been deprecated. The <code>PointerHandler</code> should be used instead, it provides the same functionality.</p>
+<h3 id="hololens-clicker-support">HoloLens clicker support</h3>
+<p>The HoloLens clicker's controller mappings have changed from being an unhanded <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityController.html"><code>WindowsMixedRealityController</code></a> to being an unhanded <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityGGVHand.html"><code>WindowsMixedRealityGGVHand</code></a>. To account for this, an automatic updater will run the first time you open your ControllerMapping profile. Please open any custom profiles at least once after upgrading to 2.0.0 in order to trigger this one-time migration step.</p>
+<h3 id="interactablehighlight">InteractableHighlight</h3>
+<p>The <code>InteractableHighlight</code> class has been deprecated. The <code>InteractableOnFocus</code> class and <code>FocusInteractableStates</code> asset should be used instead. To create a new <code>Theme</code> asset for the <code>InteractableOnFocus</code>, right click in the project window and select <em>Create</em> &gt; <em>Mixed Reality Toolkit</em> &gt; <em>Interactable</em> &gt; <em>Theme</em>.</p>
+<h3 id="handinteractionpanzoom">HandInteractionPanZoom</h3>
+<p><code>HandInteractionPanZoom</code> has been moved to the UI namespace as it was not an input component. <code>HandPanEventData</code> has also been moved into this namespace, and simplified to correspond with other UI event data.</p>
+<h2 id="assembly-name-changes">Assembly name changes</h2>
+<p>In The 2.0.0 release, all of the official Mixed Reality Toolkit assembly names and their associated assembly definition (.asmdef) files have been updated to fit the following pattern.</p>
+<pre><code class="lang-c#">Microsoft.MixedReality.Toolkit[.&lt;name&gt;]
+</code></pre>
+<p>In some instances, multiple assemblies have been merged to create better unity of their contents. If your project uses custom .asmdef files, they may require updating.</p>
+<p>The following tables describe how the RC2 .asmdef file names map to the 2.0.0 release. All assembly names match the .asmdef file name.</p>
+<h3 id="mixedrealitytoolkit-1">MixedRealityToolkit</h3>
+<table>
+<thead>
+<tr>
+<th>RC2</th>
+<th>2.0.0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MixedRealityToolkit.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Core.BuildAndDeploy.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Editor.BuildAndDeploy.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Core.Definitions.Utilities.Editor.asmdef</td>
+<td>Removed, use Microsoft.MixedReality.Toolkit.Editor.Utilities.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Core.Extensions.EditorClassExtensions.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Editor.ClassExtensions.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Core.Inspectors.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Editor.Inspectors.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Core.Inspectors.ServiceInspectors.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Editor.ServiceInspectors.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Core.UtilitiesAsync.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Async.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Core.Utilities.Editor.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Editor.Utilities.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Utilities.Gltf.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Gltf.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Utilities.Gltf.Importers.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Gltf.Importers.asmdef</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mixedrealitytoolkitproviders">MixedRealityToolkit.Providers</h3>
+<table>
+<thead>
+<tr>
+<th>RC2</th>
+<th>2.0.0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MixedRealityToolkit.Providers.OpenVR.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Providers.OpenVR.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Providers.WindowsMixedReality.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Providers.WindowsVoiceInput.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput.asmdef</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mixedrealitytoolkitservices">MixedRealityToolkit.Services</h3>
+<table>
+<thead>
+<tr>
+<th>RC2</th>
+<th>2.0.0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MixedRealityToolkit.Services.BoundarySystem.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Services.BoundarySystem.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Services.CameraSystem.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Services.CameraSystem.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Services.DiagnosticsSystem.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Services.InputSimulation.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Services.InputSimulation.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Services.InputSimulation.Editor.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Services.InputSimulation.Editor.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Services.InputSystem.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Services.InputSystem.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Services.Inspectors.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Services.InputSystem.Editor.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Services.SceneSystem.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Services.SceneSystem.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Services.SpatialAwarenessSystem.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Services.TeleportSystem.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Services.TeleportSystem.asmdef</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mixedrealitytoolkitsdk">MixedRealityToolkit.SDK</h3>
+<table>
+<thead>
+<tr>
+<th>RC2</th>
+<th>2.0.0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MixedRealityToolkit.SDK.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.SDK.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.SDK.Inspectors.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.SDK.Inspectors.asmdef</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mixedrealitytoolkitexamples">MixedRealityToolkit.Examples</h3>
+<table>
+<thead>
+<tr>
+<th>RC2</th>
+<th>2.0.0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MixedRealityToolkit.Examples.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Examples.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Examples.Demos.Gltf.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Demos.Gltf.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Examples.Demos.StandardShader.Inspectors.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Demos.StandardShader.Inspectors.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Examples.Demos.Utilities.InspectorFields.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Demos.InspectorFields.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Examples.Demos.Utilities.InspectorFields.Inspectors.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Demos.InspectorFields.Inspectors.asmdef</td>
+</tr>
+<tr>
+<td>MixedRealityToolkit.Examples.Demos.UX.Interactables.asmdef</td>
+<td>Microsoft.MixedReality.Toolkit.Demos.UX.Interactables.asmdef</td>
+</tr>
+</tbody>
+</table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/2.0.0_stabilization/Documentation/Updating.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
