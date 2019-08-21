@@ -124,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     builder.AppendLine("- Set Default Spatial Awareness Layer");
                 }
 
-                builder.Append("\nWould you like to make this change?");
+                builder.Append("\nWould you like to make these changes?");
 
                 if (!forceTextSerialization || !visibleMetaFiles || !PlayerSettings.virtualRealitySupported || !usingSinglePassInstancing || isSpatialLayerAvailable)
                 {
@@ -139,7 +139,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                             PlayerSettings.stereoRenderingPath = StereoRenderingPath.Instancing;
                             if (isSpatialLayerAvailable)
                             {
-                                CreateLayer(SpatialAwarenessDefaultLayer, "Spatial Awareness");
+                                if (EditorLayerExtensions.SetupLayer(SpatialAwarenessDefaultLayer, "Spatial Awareness"))
+                                {
+                                    Debug.LogWarning(string.Format($"Can't modify project layers. It's possible the format of the layers and tags data has changed in this version of Unity. Set layer {SpatialAwarenessDefaultLayer} to \"Spatial Awareness\" manually via Project Settings > Tags and Layers window."));
+                                }
                             }
                             refresh = true;
                             break;
@@ -308,32 +311,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     Debug.LogWarning("<b>Audio Spatializer Plugin</b> not currently set to <i>" + MSFT_AudioSpatializerPlugin + "</i>. Switch to <i>" + MSFT_AudioSpatializerPlugin + "</i> under <i>Project Settings</i> > <i>Audio</i> > <i>Spatializer Plugin</i>");
                 }
             }
-        }
-
-        
-        /// <summary>
-        /// Helper method to update the a layer name at given index in the related project asset file
-        /// </summary>
-        /// <param name="layerNumber">index of layer to modify. Should be between 8 and 31</param>
-        /// <param name="layerName">Name of layer to set</param>
-        private static void CreateLayer(int layerNumber, string layerName)
-        {
-            SerializedObject tagManager = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/TagManager.asset")[0]);
-
-            SerializedProperty layers = tagManager.FindProperty("layers");
-            if (layers == null || !layers.isArray)
-            {
-                Debug.LogWarning(string.Format($"Can't modify project layers. It's possible the format of the layers and tags data has changed in this version of Unity. Set layer {layerNumber} to \"{layerName}\" manually via Project Settings > Tags and Layers window."));
-                return;
-            }
-
-            SerializedProperty layerSP = layers.GetArrayElementAtIndex(layerNumber);
-            if (layerSP.stringValue != layerName)
-            {
-                layerSP.stringValue = layerName;
-            }
-
-            tagManager.ApplyModifiedProperties();
         }
 
         /// <inheritdoc />
