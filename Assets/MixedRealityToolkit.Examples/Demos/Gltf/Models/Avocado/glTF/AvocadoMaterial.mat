@@ -71,6 +71,7 @@ Material:
     - _FadeMinValue: 0
     - _FluentLightIntensity: 1
     - _HoverLight: 1
+    - _IgnoreZScale: 0
     - _InnerGlow: 0
     - _InnerGlowPower: 4
     - _InstancedColor: 0

@@ -15,4 +15,10 @@ jobs:
     - SDK_18362 -equals TRUE
   steps:
   - template: templates/common.yml
+    parameters:
+      # For mrtk_pr builds, don't build all flavors to reduce the amount of time
+      # taken for each validation run. Note that this flavor is still checked in
+      # the ongoing rolling CI build. This build in particular is highly correlated
+      # the .NET x86 build and ARM IL2CPP build.
+      buildUWPX86: false
   - template: templates/end.yml

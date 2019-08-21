@@ -3,14 +3,16 @@
   items:
   - name: Upgrading from HTK
     href: HTKToMRTKPortingGuide.md
-  - name: Updating from RC2 to GA
-    href: UpdatingToGA.md
+  - name: Updating from RC2
+    href: Updating.md
+  - name: Release Notes
+    href: ReleaseNotes.md
+  - name: Building and Deploying MRTK
+    href: BuildAndDeploy.md
   - name: Performance
     href: Performance/PerfGettingStarted.md
   - name: Hologram Stabilization
     href: Hologram-Stabilization.md
-  - name: Known Issues
-    href: KnownIssues.md
 - name: Architecture
   items:
   - name: Overview
@@ -53,6 +55,8 @@
       href: Input/Dictation.md
     - name: Hands
       href: InputSystem/HandTracking.md
+    - name: Gaze
+      href: Input/Gaze.md
     - name: Eyes
       href: EyeTracking/EyeTracking_Main.md
   - name: In-Editor Input Simulation
@@ -75,8 +79,6 @@
       href: README_AppBar.md
     - name: Object Collection
       href: README_ObjectCollection.md
-    - name: Pointers
-      href: README_Pointers.md
     - name: Slate
       href: README_Slate.md
     - name: System Keyboard
@@ -89,6 +91,8 @@
       href: README_HandInteractionExamples.md
     - name: Eye Tracking Interaction Example
       href: EyeTracking/EyeTracking_ExamplesOverview.md
+  - name: Detecting Platform Capabilities
+    href: DetectingPlatformCapabilities.md
   - name: MRTK Standard Shader
     href: README_MRTKStandardShader.md
   - name: Spatial Awareness
@@ -113,6 +117,8 @@
       href: SceneSystem/SceneSystemLoadProgress.md
     - name: Lighting Scene Operations
       href: SceneSystem/SceneSystemLightingScenes.md
+  - name: Teleport System
+    href: TeleportSystem/Overview.md
   - name: Boundary System
     items:
     - name: Boundary System Overview
@@ -141,8 +147,6 @@
       href: Packaging/MRTK_Modularization.md
   - name: Tools
     items:
-    - name: Build Window
-      href: Tools/BuildWindow.md
     - name: Dependency Window
       href: Tools/DependencyWindow.md
     - name: Optimize Window
@@ -158,10 +162,6 @@
     href: Extensions/SceneTransitionService/SceneTransitionServiceOverview.md
   - name: Experimental Features
     href: ExperimentalFeatures.md
-  - name: Advanced topics
-    items:
-    - name: Shared Experiences
-      href: TODO.md
 - name: Contributing
   items:
   - name: Contributing Overview

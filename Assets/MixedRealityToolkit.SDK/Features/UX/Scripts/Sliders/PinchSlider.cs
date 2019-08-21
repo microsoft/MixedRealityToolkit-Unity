@@ -2,18 +2,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
-using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.Events;
+
 using Microsoft.MixedReality.Toolkit.Input;
 using System;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// A slider that can be moved by grabbing / pinching a slider thumb
     /// </summary>
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Sliders.html")]
     public class PinchSlider : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusHandler
     {
         #region Serialized Fields and Properties

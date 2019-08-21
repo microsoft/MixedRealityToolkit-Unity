@@ -10,7 +10,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     public class SimpleLineDataProviderInspector : BaseLineDataProviderInspector
     {
         private SerializedProperty endPoint;
-        private SerializedProperty endPointPosition;
 
         protected override void OnEnable()
         {

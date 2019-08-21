@@ -196,12 +196,14 @@ MonoBehaviour:
   pointerExtent: 10
   defaultPointerExtent: 10
   sphereCastRadius: 0.15
-  pointerOrientation: 0
-  distBack: 0.25
-  distFront: 0.2
-  debounceThreshold: 0.01
   line: {fileID: 120444991250561320}
   visuals: {fileID: 1733798232924774}
+  touchableDistance: 0.2
+  sceneQueryBufferSize: 64
+  pokeLayerMasks:
+  - serializedVersion: 2
+    m_Bits: 4294967291
+  triggerInteraction: 0
 --- !u!1 &1733798232924774
 GameObject:
   m_ObjectHideFlags: 0

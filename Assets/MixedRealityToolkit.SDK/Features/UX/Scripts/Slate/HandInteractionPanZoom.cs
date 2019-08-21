@@ -681,13 +681,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             StartTouch(data.touchingSource.SourceId);
         }
+
         private bool TryGetHandPositionFromController(IMixedRealityController controller, TrackedHandJoint joint, out Vector3 position)
         {
-            if (controller != null &&
-                HandJointUtils.TryGetJointPose(joint, controller.ControllerHandedness, out MixedRealityPose pose))
-            {
-                position = pose.Position;
-                return true;
+            var hand = controller as IMixedRealityHand;
+            if (hand != null)
+            { 
+                if (hand.TryGetJoint(joint, out MixedRealityPose pose))
+                {
+                    position = pose.Position;
+                    return true;
+                }
             }
 
             position = Vector3.zero;

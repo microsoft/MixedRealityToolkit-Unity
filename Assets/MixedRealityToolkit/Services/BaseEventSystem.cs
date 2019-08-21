@@ -126,6 +126,9 @@ namespace Microsoft.MixedReality.Toolkit
                         Unregister(obj.Item2);
                     }
                 }
+
+                postponedActions.Clear();
+                postponedObjectActions.Clear();
             }
         }
 

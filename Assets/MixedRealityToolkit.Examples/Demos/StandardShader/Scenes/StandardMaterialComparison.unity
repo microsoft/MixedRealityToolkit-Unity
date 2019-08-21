@@ -17862,14 +17862,6 @@ PrefabInstance:
         avg math (8..56)\n // Stats for Fragment shader:\n //      d3d11: 47 avg math
         (1..89), 0 avg texture (0..1)\n\n\n"
       objectReference: {fileID: 0}
-    - target: {fileID: 1149545904682892, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1171793634254456, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 114121190672569774, guid: a900c08743a94c328074df8bbe3eb63c,
         type: 3}
       propertyPath: m_Text
@@ -17884,6 +17876,14 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0.025
+      objectReference: {fileID: 0}
+    - target: {fileID: 1149545904682892, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1171793634254456, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
