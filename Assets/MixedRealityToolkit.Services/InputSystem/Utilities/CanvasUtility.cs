@@ -3,6 +3,7 @@
 
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Utilities
 {
@@ -38,10 +39,39 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
                     }
                 }
 
-                if (CanSupportMrtkInput(canvas) && (canvas.GetComponentInChildren<NearInteractionTouchableUnityUI>() == null))
+                if (canvas.GetComponent<GraphicRaycaster>() == null)
+                {
+                    UnityEditor.EditorGUILayout.HelpBox($"For Mixed Reality Toolkit input support add a {typeof(GraphicRaycaster).Name} component", UnityEditor.MessageType.Info);
+                    if (GUILayout.Button($"Add {typeof(GraphicRaycaster).Name}"))
+                    {
+                        GraphicRaycaster graphicRaycaster = UnityEditor.Undo.AddComponent<GraphicRaycaster>(canvas.gameObject);
+
+                        Component[] components = canvas.GetComponents<Component>();
+                        int canvasUtilIndex = 0;
+                        int raycasterIndex = 0;
+
+                        for (int i = 0; i < components.Length; i++)
+                        {
+                            if (components[i] is CanvasUtility)
+                                canvasUtilIndex = i;
+
+                            if (components[i] == graphicRaycaster)
+                                raycasterIndex = i;
+                        }
+
+                        if (raycasterIndex > canvasUtilIndex)
+                        {
+                            for (int i = 0; i < raycasterIndex - canvasUtilIndex; i++)
+                            {
+                                UnityEditorInternal.ComponentUtility.MoveComponentUp(graphicRaycaster);
+                            }
+                        }
+                    }
+                }
+                else if (CanSupportMrtkInput(canvas) && (canvas.GetComponentInChildren<NearInteractionTouchableUnityUI>() == null))
                 {
                     UnityEditor.EditorGUILayout.HelpBox($"Canvas does not contain any {typeof(NearInteractionTouchableUnityUI).Name} components for supporting near interaction.", UnityEditor.MessageType.Warning);
-                    if (GUILayout.Button("Add NearInteractionTouchable"))
+                    if (GUILayout.Button($"Add {typeof(NearInteractionTouchableUnityUI).Name}"))
                     {
                         UnityEditor.Undo.AddComponent<NearInteractionTouchableUnityUI>(canvas.gameObject);
                     }
@@ -98,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
             return (gameObject.scene.name != null);
         }
 
-        private static bool CanSupportMrtkInput(Canvas canvas)
+        public static bool CanSupportMrtkInput(Canvas canvas)
         {
             return (canvas.isRootCanvas && (canvas.renderMode == RenderMode.WorldSpace));
         }
