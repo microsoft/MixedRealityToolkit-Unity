@@ -151,7 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (!IsObjectPartOfTouchable(currentTouchableObjectDown, newClosestTouchable))
                 {
-                    TryRaisePokeUp(Result.CurrentPointerTarget, Position);
+                    TryRaisePokeUp();
                 }
             }
 
@@ -224,17 +224,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (newIsDown)
                 {
-                    TryRaisePokeDown(Result.CurrentPointerTarget, Position);
+                    TryRaisePokeDown();
                 }
                 else if (currentTouchableObjectDown != null)
                 {
                     if (newIsUp)
                     {
-                        TryRaisePokeUp(Result.CurrentPointerTarget, Position);
+                        TryRaisePokeUp();
                     }
                     else
                     {
-                        TryRaisePokeDown(Result.CurrentPointerTarget, Position);
+                        TryRaisePokeDown();
                     }
                 }
             }
@@ -263,8 +263,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             TryRaisePokeUp();
         }
 
-        private void TryRaisePokeDown(GameObject targetObject, Vector3 touchPosition)
+        private void TryRaisePokeDown()
         {
+            GameObject targetObject = Result.CurrentPointerTarget;
+
             if (currentTouchableObjectDown == null)
             {
                 // In order to get reliable up/down event behavior, only allow the closest touchable to be touched.
@@ -278,17 +280,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                     else if (closestProximityTouchable.EventsToReceive == TouchableEventType.Touch)
                     {
-                        InputSystem?.RaiseOnTouchStarted(InputSourceParent, Controller, Handedness, touchPosition);
+                        InputSystem?.RaiseOnTouchStarted(InputSourceParent, Controller, Handedness, Position);
                     }
                 }
             }
             else
             {
-                RaiseTouchUpdated(targetObject, touchPosition);
+                RaiseTouchUpdated(targetObject, Position);
             }
         }
 
-        private void TryRaisePokeUp(GameObject targetObject, Vector3 touchPosition)
+        private void TryRaisePokeUp()
         {
             if (currentTouchableObjectDown != null)
             {
@@ -301,18 +303,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
                 else if (closestProximityTouchable.EventsToReceive == TouchableEventType.Touch)
                 {
-                    InputSystem?.RaiseOnTouchCompleted(InputSourceParent, Controller, Handedness, touchPosition);
+                    InputSystem?.RaiseOnTouchCompleted(InputSourceParent, Controller, Handedness, Position);
                 }
 
                 currentTouchableObjectDown = null;
-            }
-        }
-
-        private void TryRaisePokeUp()
-        {
-            if (currentTouchableObjectDown != null)
-            {
-                TryRaisePokeUp(Result.CurrentPointerTarget, Position);
             }
         }
 
