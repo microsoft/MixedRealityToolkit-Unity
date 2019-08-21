@@ -72,10 +72,10 @@ The TouchPointer is responsible for working with Unity Touch input (i.e. touchsc
 
 The MousePointer powers a screen to world raycast for far interactions, but for mouse instead of touch.
 
+<img src="../../Documentation/Images/Pointers/MRTK_MousePointer.png" width="400">
+
 > [!NOTE]
 > Mouse support is not available by default in MRTK but can be enabled by adding a new *Input Data Provider* of type [`MouseDeviceManager`](xref:Microsoft.MixedReality.Toolkit.Input.UnityInput.MouseDeviceManager) to the MRTK input profile.
-
-<img src="../../Documentation/Images/Pointers/MRTK_MousePointer.png" width="400">
 
 #### Near pointers
 
@@ -119,7 +119,7 @@ MonoBehaviors that implement one or more of the following interfaces and are ass
 
 | Event | Description | Handler |
 | --- | --- | --- |
-| Before Focus Changed / Focus Changed | Raised on both the game object losing focus and the one gaining it every time a pointer changes focus. | `IMixedRealityFocusChangedHandler` [API](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusChangedHandler) |
+| Before Focus Changed / Focus Changed | Raised on both the game object losing focus and the one gaining it every time a pointer changes focus. | [`IMixedRealityFocusChangedHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusChangedHandler) |
 Focus Enter / Exit | Raised on the game object gaining focus when the first pointer enters it and on the one losing focus when the last pointer leaves it. | [`IMixedRealityFocusHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusHandler)
 Pointer Down / Dragged / Up / Clicked | Raised to report pointer press, drag and release. | [`IMixedRealityPointerHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler)
 Touch Started / Updated / Completed | Raised by touch-aware pointers like [`PokePointer`](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer) to report touch activity. | [`IMixedRealityTouchHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler)
@@ -129,52 +129,53 @@ Touch Started / Updated / Completed | Raised by touch-aware pointers like [`Poke
 
 #### Pointer input events in action
 
+Pointer input events are recognized and handled by the MRTK input system in a similar way as [regular input events](InputEvents.md#input_events_in_action). The difference being that pointer input events are handled only by the GameObject in focus by the pointer that fired the input event - as well as any global input handlers. Regular input events are handled by GameObjects in focus for all active pointers.
+
 1. The MRTK input system recognizes an input event has occurred
 1. The MRTK input system fires the relevant interface function for the input event to all registered global input handlers
 1. The input system determines which GameObject is in focus for the pointer that fired the event
     1. The input system utilizes the [Unity's Event System](https://docs.unity3d.com/Manual/EventSystem.html) to fire the relevant interface function for all matching components on the focused GameObject
+    1. If at any point an input event has been [marked as used](#how-to-stop-input-events), the process will end and no further GameObjects will receive callbacks.
         - Example: Components implementing the interface [`IMixedRealityFocusHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler) will be searched for a GameObject gains or loses focus
         - Note: The Unity Event System will bubble up to search the parent GameObject if no components matching the desired interface are found on the current GameObject..
 1. If no global input handlers are registered and no GameObject is found with a matching component/interface, then the input system will call each fallback registered input handlers
-
-> [!NOTE]
-> [Pointer input events](#pointer-event-interfaces) are handled in a slightly different manner than [regular input event interfaces](InputEvents.md). In particular, pointer input events are handled only by the GameObject in focus by the pointer that fired the input event - as well as any global input handlers. Regular input events are handled by GameObjects in focus for all active pointers.
 
 #### Example
 
 Below is an example script that changes the color of the attached renderer when a pointer takes or leaves focus or when a pointer selects the object.
 
 ```csharp
-  public class ColorTap : MonoBehaviour, IMixedRealityFocusHandler, IMixedRealityPointerHandler
+public class ColorTap : MonoBehaviour, IMixedRealityFocusHandler, IMixedRealityPointerHandler
+{
+    private Color color_IdleState = Color.cyan;
+    private Color color_OnHover = Color.white;
+    private Color color_OnSelect = Color.blue;
+    private Material material;
+
+    private void Awake()
     {
-        private Color color_IdleState = Color.cyan;
-        private Color color_OnHover = Color.white;
-        private Color color_OnSelect = Color.blue;
-        private Material material;
+        material = GetComponent<Renderer>().material;
+    }
 
-        private void Awake()
-        {
-            material = GetComponent<Renderer>().material;
-        }
+    void IMixedRealityFocusHandler.OnFocusEnter(FocusEventData eventData)
+    {
+        material.color = color_OnHover;
+    }
 
-        private void IMixedRealityFocusHandler.OnFocusEnter(FocusEventData eventData)
-        {
-            material.color = color_OnHover;
-        }
+    void IMixedRealityFocusHandler.OnFocusExit(FocusEventData eventData)
+    {
+        material.color = color_IdleState;
+    }
 
-        private void IMixedRealityFocusHandler.OnFocusExit(FocusEventData eventData)
-        {
-            material.color = color_IdleState;
-        }
+    void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData) { }
 
-        private void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData) {}
+    void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData) { }
 
-        private void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData) { }
-
-        private void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData) 
-        {
-            material.color = color_OnSelect;
-        }
+    void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData)
+    {
+        material.color = color_OnSelect;
+    }
+}
 ```
 
 ### Query Pointers
@@ -182,19 +183,19 @@ Below is an example script that changes the color of the attached renderer when 
 It is possible to gather all pointers currently active by looping through the available input sources (i.e controllers and inputs available) to discover which pointers are attached to them.
 
 ```csharp
-    HashSet<IMixedRealityPointer> pointers = new HashSet<IMixedRealityPointer>();
+HashSet<IMixedRealityPointer> pointers = new HashSet<IMixedRealityPointer>();
 
-    // Find all valid pointers
-    foreach (var inputSource in CoreServices.InputSystem.DetectedInputSources)
+// Find all valid pointers
+foreach (var inputSource in CoreServices.InputSystem.DetectedInputSources)
+{
+    foreach (var pointer in inputSource.Pointers)
     {
-        foreach (var pointer in inputSource.Pointers)
+        if (pointer.IsInteractionEnabled && !pointers.Contains(pointer))
         {
-            if (pointer.IsInteractionEnabled && !pointers.Contains(pointer))
-            {
-                pointers.Add(pointer);
-            }
+            pointers.Add(pointer);
         }
     }
+}
 ```
 
 #### Primary Pointer
@@ -202,22 +203,23 @@ It is possible to gather all pointers currently active by looping through the av
 Developers can subscribe to the FocusProviders PrimaryPointerChanged event to be notified when the primary pointer in focus has changed. This can be extremely useful to identify if the user is currently interacting with a scene via gaze or a hand ray or other input source.
 
 ```csharp
-    private void OnEnable()
-    {
-        CoreServices.InputSystem?.FocusProvider?.SubscribeToPrimaryPointerChanged(OnPrimaryPointerChanged, true);
-    }
+private void OnEnable()
+{
+    CoreServices.InputSystem?.FocusProvider?.SubscribeToPrimaryPointerChanged(OnPrimaryPointerChanged, true);
+}
 
-    private void OnPrimaryPointerChanged(IMixedRealityPointer oldPointer, IMixedRealityPointer newPointer)
-    {
-        ...
-    }
+private void OnPrimaryPointerChanged(IMixedRealityPointer oldPointer, IMixedRealityPointer newPointer)
+{
+    ...
+}
 
-    private void OnDisable()
-    {
-        CoreServices.InputSystem?.FocusProvider?.UnsubscribeFromPrimaryPointerChanged(OnPrimaryPointerChanged);
-        // This flushes out the current primary pointer
-        OnPrimaryPointerChanged(null, null);
-    }
+private void OnDisable()
+{
+    CoreServices.InputSystem?.FocusProvider?.UnsubscribeFromPrimaryPointerChanged(OnPrimaryPointerChanged);
+
+    // This flushes out the current primary pointer
+    OnPrimaryPointerChanged(null, null);
+}
 ```
 
 The [PrimaryPointerExample scene](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development/Assets/MixedRealityToolkit.Examples/Demos/Input/Scenes/PrimaryPointer/PrimaryPointerExample.unity) shows how to use the [`PrimaryPointerChangedHandler`](xref:Microsoft.MixedReality.Toolkit.Input.PrimaryPointerChangedHandler) for events to respond to a new primary pointer.
@@ -229,11 +231,11 @@ The [PrimaryPointerExample scene](https://github.com/microsoft/MixedRealityToolk
 The pointer [`Result`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.Result) property contains the current result for the scene query used to determine the object with focus. For a raycast pointer, like the ones created by default for motion controllers, gaze input and hand rays, it will contain the location and normal of the raycast hit.
 
 ```csharp
-    private void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData)
-    {
-        var result = eventData.Pointer.Result;
-        Instantiate(MyPrefab, result.Details.Point, Quaternion.LookRotation(result.Details.Normal));
-    }
+private void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData)
+{
+    var result = eventData.Pointer.Result;
+    Instantiate(MyPrefab, result.Details.Point, Quaternion.LookRotation(result.Details.Normal));
+}
 ```
 
 The [PointerResultExample scene](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development/Assets/MixedRealityToolkit.Examples/Demos/Input/Scenes/PointerResult/PointerResultExample.unity) shows how to use the pointer [`Result`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.Result) to spawn an object at the hit location.
@@ -249,3 +251,4 @@ For pointer events handled by [`IMixedRealityPointerHandler`](xref:Microsoft.Mix
 ## See Also
 
 - [Pointer Architecture](../Architecture/InputSystem/ControllersPointersAndFocus.md)
+- [Input Events](InputEvents.md)

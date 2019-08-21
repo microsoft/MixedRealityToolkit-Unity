@@ -2,8 +2,11 @@
 
 The list below outlines all available input event interfaces to be implemented by a custom MonoBehavior component. These interfaces will be called by the MRTK input system to handle custom app logic based on user input interactions. [Pointer input events](pointers.md#pointer-event-interfaces) are handled slightly differently than the standard input event types below.
 
+> [!IMPORTANT]
+> By default, a script will receive input events only if it is the GameObject in focus by a pointer or parent of a GameObject in focus.
+
 | Handler | Events | Description |
-| --- | :-----: | --- |
+| --- | :---: | --- |
 | [`IMixedRealitySourceStateHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourceStateHandler) | Source Detected / Lost | Raised when an input source is detected/lost, like when an articulated hand is detected or lost track of. |
 | [`IMixedRealitySourcePoseHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySourcePoseHandler) | Source Pose Changed | Raised on source pose changes. The source pose represents the general pose of the input source. Specific poses, like the grip or pointer pose in a six DOF controller, can be obtained via `IMixedRealityInputHandler<MixedRealityPose>`. |
 | [`IMixedRealityInputHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler) | Input Down / Up | Raised on changes to binary inputs like buttons. |
@@ -21,10 +24,11 @@ The list below outlines all available input event interfaces to be implemented b
 At the script level, input events can be consumed by implementing one of the event handler interfaces shown in the table above. When an input event fires via an user interaction, the following takes place:
 
 1. The MRTK input system recognizes that an input event has occurred.
-1. The MRTK input system fires the relevant interface function of the input event to all registered global input handlers
+1. The MRTK input system fires the relevant interface function of the input event to all [registered global input handlers](#register-for-global-input-events)
 1. For every active pointer registered with the input system
     1. The input system determines which GameObject is in focus for the current pointer.
     1. The input system utilizes [Unity's event system](https://docs.unity3d.com/Manual/EventSystem.html) to fire the relevant interface function for all matching components on the focused GameObject.
+    1. If at any point an input event has been [marked as used](#how-to-stop-input-events), the process will end and no further GameObjects will receive callbacks.
         - Example: Components implementing the interface [`IMixedRealitySpeechHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler) will be searched for when a speech command is recognized.
         - Note: The Unity event system will bubble up to search the parent GameObject if no components matching the desired interface are found on the current GameObject.
 1. If no global input handlers are registered and no GameObject is found with a matching component/interface, then the input system will call each fallback registered input handler
@@ -62,8 +66,7 @@ public class ShowHideSpeechHandler : MonoBehavior, IMixedRealitySpeechHandler
 
 To create a component that listens for global input events, disregarding what GameObject may be in focus, a component must register itself with the Input System. Once registered, any instances of this MonoBehavior will receive input events along with any GameObject(s) currently in focus and other global registered listeners.
 
-> [!IMPORTANT]
-> By default, a script will receive input events only if it is the GameObject in focus by a pointer or parent of a GameObject in focus.
+If an input event has been [marked as used](#how-to-stop-input-events), global registered handlers will still all receive callbacks. However, no focused GameObjects will receive the event.
 
 ### Global input registration example
 
