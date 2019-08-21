@@ -156,7 +156,7 @@ Solvers can now be controlled by the first available hand/controller instead of 
 
 Please review the **solvers** section of [Updating from RC2 to 2.0.0](Updating.md) for additional changes and mitigation details.
 
-**Input Animation Recording**
+**Input animation recording**
  
 MRTK features a [recording system](InputSimulation/InputAnimationRecording.md) by which head movement and hand tracking
 data can be stored in animation files. The recorded data can then be played back using the [input simulation system](InputSimulation/InputSimulationService.md).
