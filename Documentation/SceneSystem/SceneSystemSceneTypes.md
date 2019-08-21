@@ -2,7 +2,7 @@
 
 Scenes have been divided into three types, and each type has a different function.
 
-![](../Images/SceneSystem/MRTK_SceneSystemEditorSceneHeirarchy.png)
+![](../Images/SceneSystem/MRTK_SceneSystemEditorSceneHierarchy.png)
 
 ## Content Scenes
 These are the scenes you're used to dealing with. Any kind of content can be stored in them, and they can be loaded or unloaded in any combination.
@@ -21,7 +21,7 @@ ___
 ## Lighting Scenes
 A set of scenes which store lighting information and lighting objects. Only one can be loaded at a time, and their settings can be blended during loads for smooth lighting transitions.
 
-Unity's lighting settings - ambient light, skyboxes, etc - can be tricky to manage when using additive loading because they're tied to invidiual scenes and override behavior is not straightforward. In practice this can cause confusion when assets are authored in lighting conditions that don't obtain at runtime.
+Unity's lighting settings - ambient light, skyboxes, etc - can be tricky to manage when using additive loading because they're tied to individual scenes and override behavior is not straightforward. In practice this can cause confusion when assets are authored in lighting conditions that don't obtain at runtime.
 
 ![](../Images/SceneSystem/MRTK_SceneSystemLightingSettings.png)
 
@@ -29,7 +29,7 @@ The Scene System uses lighting scenes to ensure that these settings remain consi
 
 To enable this feature, check `Use Lighting Scene` in your profile and populate the `Lighting Scenes` array.
 
-### Cached Lighing Settings
+### Cached Lighting Settings
 Your profile stores cached copies of the lighting settings kept in your lighting scenes. If those settings change in your lighting scenes, you will need to update your cache to ensure lighting appears as expected in play mode. Your profile will display a warning when it suspects your cached settings are out of date. Clicking `Update Cached Lighting Settings` will load each of your lighting scenes, extract their settings, then store them in your profile.
 
 ![](../Images/SceneSystem/MRTK_SceneSystemCachedLightingSettings.png)

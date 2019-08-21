@@ -1,19 +1,28 @@
-# Updating to the General Availability (GA) Release
+# Updating from RC2 to 2.0.0
 
-Between the RC2 and GA releases of the Microsoft Mixed Reality Toolkit, changes were made that may impact existing projects. This document describes those changes and how to update projects to the GA release.
+Between the RC2 and 2.0.0 releases of the Microsoft Mixed Reality Toolkit, changes were made that may impact existing projects. This document describes those changes and how to update projects to the 2.0.0 release.
 
 - [API changes](#api-changes)
 - [Assembly name changes](#assembly-name-changes)
 
 ## API changes
 
-Since the release of RC2, there have been a number of API changes including some that may break existing projects. The following sections describe the changes that have occurred between the RC2 and GA releases.
+Since the release of RC2, there have been a number of API changes including some that may break existing projects. The following sections describe the changes that have occurred between the RC2 and 2.0.0 releases.
 
 - [MixedRealityToolkit](#mixedrealitytoolkit)
+- [CoreServices](#coreservices)
+- [IMixedRealityRaycastProvider](#imixedrealityraycastprovider)
 - [Event System](#event-system)
 - [Spatial Awareness](#spatial-awareness)
 - [Solvers](#solvers)
+- [Buttons](#buttons)
 - [Clipping Sphere](#clipping-sphere)
+- [NearInteractionTouchable and PokePointer](#nearinteractiontouchable-and-pokepointer)
+- [ReadOnlyAttribute](#readonlyattribute)
+- [PointerClickHandler](#pointerclickhandler)
+- [HoloLens Clicker Support](#hololens-clicker-support)
+- [InteractableHighlight](#interactablehighlight)
+- [HandInteractionPanZoom](#handinteractionpanzoom)
 
 ### MixedRealityToolkit
 
@@ -21,7 +30,7 @@ The following public properties on the MixedRealityToolkit object have been depr
 
 - `RegisteredMixedRealityServices` no longer contains the collection of registered extensions services and data providers.
 
-To access extension services, use [`MixedRealityServiceRegistry.TryGetService<T>`]. To access data providers, cast the service instance to [`IMixedRealityDataProviderAccess`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess) and use `GetDataProvider<T>`.
+To access extension services, use `MixedRealityServiceRegistry.TryGetService<T>`. To access data providers, cast the service instance to [`IMixedRealityDataProviderAccess`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess) and use `GetDataProvider<T>`.
 
 Use [`MixedRealityServiceRegistry`](xref:Microsoft.MixedReality.Toolkit.MixedRealityServiceRegistry) or [`CoreServices`](xref:Microsoft.MixedReality.Toolkit.CoreServices) instead for the following deprecated properties
 
@@ -33,6 +42,35 @@ Use [`MixedRealityServiceRegistry`](xref:Microsoft.MixedReality.Toolkit.MixedRea
 - `TeleportSystem`
 - `DiagnosticsSystem`
 - `SceneSystem`
+
+### CoreServices
+
+The [`CoreServices`](xref:Microsoft.MixedReality.Toolkit.CoreServices) class is the replacement for the static system accessors (ex: BoundarySystem) found in the `MixedRealityToolkit` object.
+
+>[!Important]
+>The `MixedRealityToolkit` system accessors have been deprecated in version 2.0.0 and will be removed in a future release of the MRTK.
+
+The following code example illustrates the old and the new pattern.
+
+``` c#
+// Old
+GameObject playAreaVisualization = MixedRealityToolkit.BoundarySystem?.GetPlayAreaVisualization();
+
+// New
+GameObject playAreaVisualization = CoreServices.BoundarySystem?.GetPlayAreaVisualization();
+```
+
+Using the new CoreSystem class will ensure that your application code will not need updating if you change the application to use a different service registrar (ex: one of the experimental service managers).
+
+### IMixedRealityRaycastProvider
+
+With the addition of the IMixedRealityRaycastProvider, the input system configuration profile was changed. If you have a custom profile, you may receive the errors in the following image when you run your application.
+
+![Selecting the Raycast provider](Images/ReleaseNotes/UnableToRegisterRaycastProvider.png)
+
+To fix these, please add an IMixedRealityRaycastProvider instance to your input system profile.
+
+![Selecting the Raycast provider](Images/ReleaseNotes/SelectRaycastProvider.png)
 
 ### Event System
 
@@ -146,15 +184,15 @@ The IMixedRealitySpatialAwarenessSystem and IMixedRealitySpatialAwarenessObserve
 
 The following method(s) have been renamed to better describe their usage.
 
-- IMixedRealitySpatialAwarenessSystem.CreateSpatialObjectParent has been renamed to IMixedRealitySpatialAwarenessSystem.CreateSpatialAwarenessObservationParent to clarify its usage.
+- `IMixedRealitySpatialAwarenessSystem.CreateSpatialObjectParent` has been renamed to `IMixedRealitySpatialAwarenessSystem.CreateSpatialAwarenessObservationParent` to clarify its usage.
 
 #### Additions
 
 Based on customer feedback, support for easy removal of previously observed spatial awareness data has been added.
 
-- IMixedRealitySpatialAwarenessSystem.ClearObservations()
-- IMixedRealitySpatialAwarenessSystem.ClearObservations\<T\>(string name)
-- IMixedRealitySpatialAwarenessObserver.ClearObservations()
+- `IMixedRealitySpatialAwarenessSystem.ClearObservations()`
+- `IMixedRealitySpatialAwarenessSystem.ClearObservations<T>(string name)`
+- `IMixedRealitySpatialAwarenessObserver.ClearObservations()`
 
 ### Solvers
 
@@ -164,7 +202,7 @@ Some solver components and the SolverHandler manager class has changed to fix va
 
 - Class no longer extends from `ControllerFinder`
 - `TrackedObjectToReference` public property deprecated and has been renamed to `TrackedTargetType`
-- `TrackedObjectType` deprecates left & right controller values. Instead use `MotionController` or `HandJoint` values and update new `TrackedHandness` property to limit tracking to left or right controller
+- `TrackedObjectType` deprecates left & right controller values. Instead use `MotionController` or `HandJoint` values and update new `TrackedHandedness` property to limit tracking to left or right controller
 
 #### InBetween
 
@@ -210,7 +248,7 @@ The `PointerClickHandler` class has been deprecated. The `PointerHandler` should
 
 ### HoloLens clicker support
 
-The HoloLens clicker's controller mappings have changed from being an unhanded [`WindowsMixedRealityController`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityController) to being an unhanded [`WindowsMixedRealityGGVHand`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityGGVHand). To account for this, an automatic updater will run the first time you open your ControllerMapping profile. Please open any custom profiles at least once after upgrading to GA in order to trigger this one-time migration step.
+The HoloLens clicker's controller mappings have changed from being an unhanded [`WindowsMixedRealityController`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityController) to being an unhanded [`WindowsMixedRealityGGVHand`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityGGVHand). To account for this, an automatic updater will run the first time you open your ControllerMapping profile. Please open any custom profiles at least once after upgrading to 2.0.0 in order to trigger this one-time migration step.
 
 ### InteractableHighlight
 
@@ -222,7 +260,7 @@ The `InteractableHighlight` class has been deprecated. The `InteractableOnFocus`
 
 ## Assembly name changes
 
-In The GA release, all of the official Mixed Reality Toolkit assembly names and their associated assembly definition (.asmdef) files have been updated to fit the following pattern.
+In The 2.0.0 release, all of the official Mixed Reality Toolkit assembly names and their associated assembly definition (.asmdef) files have been updated to fit the following pattern.
 
 ```c#
 Microsoft.MixedReality.Toolkit[.<name>]
@@ -230,11 +268,11 @@ Microsoft.MixedReality.Toolkit[.<name>]
 
 In some instances, multiple assemblies have been merged to create better unity of their contents. If your project uses custom .asmdef files, they may require updating.
 
-The following tables describe how the RC2 .asmdef file names map to the GA release. All assembly names match the .asmdef file name.
+The following tables describe how the RC2 .asmdef file names map to the 2.0.0 release. All assembly names match the .asmdef file name.
 
 ### MixedRealityToolkit
 
-| RC2 | GA |
+| RC2 | 2.0.0 |
 | --- | --- |
 | MixedRealityToolkit.asmdef | Microsoft.MixedReality.Toolkit.asmdef |
 | MixedRealityToolkit.Core.BuildAndDeploy.asmdef | Microsoft.MixedReality.Toolkit.Editor.BuildAndDeploy.asmdef |
@@ -249,7 +287,7 @@ The following tables describe how the RC2 .asmdef file names map to the GA relea
 
 ### MixedRealityToolkit.Providers
 
-| RC2 | GA |
+| RC2 | 2.0.0 |
 | --- | --- |
 | MixedRealityToolkit.Providers.OpenVR.asmdef | Microsoft.MixedReality.Toolkit.Providers.OpenVR.asmdef |
 | MixedRealityToolkit.Providers.WindowsMixedReality.asmdef | Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality.asmdef |
@@ -257,7 +295,7 @@ The following tables describe how the RC2 .asmdef file names map to the GA relea
 
 ### MixedRealityToolkit.Services
 
-| RC2 | GA |
+| RC2 | 2.0.0 |
 | --- | --- |
 | MixedRealityToolkit.Services.BoundarySystem.asmdef | Microsoft.MixedReality.Toolkit.Services.BoundarySystem.asmdef |
 | MixedRealityToolkit.Services.CameraSystem.asmdef | Microsoft.MixedReality.Toolkit.Services.CameraSystem.asmdef |
@@ -272,14 +310,14 @@ The following tables describe how the RC2 .asmdef file names map to the GA relea
 
 ### MixedRealityToolkit.SDK
 
-| RC2 | GA |
+| RC2 | 2.0.0 |
 | --- | --- |
 | MixedRealityToolkit.SDK.asmdef | Microsoft.MixedReality.Toolkit.SDK.asmdef |
 | MixedRealityToolkit.SDK.Inspectors.asmdef | Microsoft.MixedReality.Toolkit.SDK.Inspectors.asmdef |
 
 ### MixedRealityToolkit.Examples
 
-| RC2 | GA |
+| RC2 | 2.0.0 |
 | --- | --- |
 | MixedRealityToolkit.Examples.asmdef | Microsoft.MixedReality.Toolkit.Examples.asmdef |
 | MixedRealityToolkit.Examples.Demos.Gltf.asmdef | Microsoft.MixedReality.Toolkit.Demos.Gltf.asmdef |

@@ -1739,7 +1739,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     }
                     else
                     {
-                        continue;
+                        colliderByTransform = new KeyValuePair<Transform, Collider>();
                     }
                 }
 
@@ -1752,7 +1752,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     }
                     else
                     {
-                        continue;
+                        rendererBoundsByTransform = new KeyValuePair<Transform, Bounds>();
                     }
                 }
 
@@ -1793,6 +1793,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void AddRendererBoundsToTarget(KeyValuePair<Transform, Bounds> rendererBoundsByTarget)
         {
+            if (rendererBoundsByTarget.Key == null) { return; }
+
             Vector3[] cornersToWorld = null;
             rendererBoundsByTarget.Value.GetCornerPositions(rendererBoundsByTarget.Key, ref cornersToWorld);
             totalBoundsCorners.AddRange(cornersToWorld);
@@ -1800,7 +1802,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void AddColliderBoundsToTarget(KeyValuePair<Transform, Collider> colliderByTransform)
         {
-            BoundsExtensions.GetColliderBoundsPoints(colliderByTransform.Value, totalBoundsCorners, 0);
+            if (colliderByTransform.Key != null)
+            {
+                BoundsExtensions.GetColliderBoundsPoints(colliderByTransform.Value, totalBoundsCorners, 0);
+            }
         }
 
         private void SetMaterials()
