@@ -1,6 +1,6 @@
 # Input events
 
-The list below outlines all available input event interfaces to be implemented by a custom MonoBehavior component. These interfaces will be called by the MRTK Input System to handle custom app logic based on user input interactions. [Pointer input events](pointers.md#pointer-event-interfaces) are handled slightly differently than the standard input event types below.
+The list below outlines all available input event interfaces to be implemented by a custom MonoBehavior component. These interfaces will be called by the MRTK input system to handle custom app logic based on user input interactions. [Pointer input events](pointers.md#pointer-event-interfaces) are handled slightly differently than the standard input event types below.
 
 | Handler | Events | Description |
 | --- | :-----: | --- |
