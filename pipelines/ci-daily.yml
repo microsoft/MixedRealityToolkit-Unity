@@ -7,17 +7,29 @@ variables:
   packagingEnabled: false
 
 jobs:
-- job: CIDeveloperValidation
+- job: DailyUnity2019Validation
+  timeoutInMinutes: 120
+  pool:
+    name: On-Prem Unity
+    demands:
+    - Unity2019.2.0f1
+    - COG-UnityCache-WUS2-01
+    - SDK_18362 -equals TRUE
+  steps:
+  - template: templates/common-Unity2019.yml
+    parameters:
+      packagingEnabled: false
+
+- job: DailyUnity2018Validation
   timeoutInMinutes: 120
   pool:
     name: On-Prem Unity
     demands:
     - Unity2018.3.7f1
-    - Unity2019.2.0f1
     - COG-UnityCache-WUS2-01
     - SDK_18362 -equals TRUE
   steps:
   - template: templates/ci-common.yml
     parameters:
       packagingEnabled: false
-      daily: true
+      

@@ -2,12 +2,9 @@
 parameters:
   packagingEnabled: true
   packagePublishing: true
-  daily: false
 
 steps:
 - template: common.yml
-- ${{ if eq(parameters.daily, true) }}:
-  - template: daily.yml
 - template: compilemsbuild.yml
 - ${{ if eq(parameters.packagingEnabled, true) }}:
   - template: tasks/unitypackages.yml
