@@ -438,7 +438,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Authors.html",
-          "hash": "VDFKlpuDRitmvMmIFJZSjw=="
+          "hash": "PlVgUfiMpUM3tQMlk56QHA=="
         }
       },
       "is_incremental": false,
@@ -498,7 +498,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Contributing/CONTRIBUTING.html",
-          "hash": "dLUDnvFr2lrAfxbIHfErww=="
+          "hash": "9dqvpOYSfolNmO4lNre4+w=="
         }
       },
       "is_incremental": false,
@@ -678,7 +678,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/EyeTracking/EyeTracking_ExamplesOverview.html",
-          "hash": "AGTevvpXfEXPEVrgNG8Z6g=="
+          "hash": "e7BTAIa6tcLpV5VcNcRL9Q=="
         }
       },
       "is_incremental": false,
@@ -774,7 +774,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/GettingStartedWithTheMRTK.html",
-          "hash": "S9K+9XF4F4V3YNNISGFPxA=="
+          "hash": "rF8c8IFDIoUBb3woa9jLrA=="
         }
       },
       "is_incremental": false,
@@ -1480,6 +1480,17 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/Button/MRTK_PressableButtonCubeRun4.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Contributing/SelectIssueType.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Contributing/SelectIssueType.png"
         }
       },
       "is_incremental": false,
@@ -2206,6 +2217,17 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/Input/DictationHandler.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Input/GazeConfigurationEntrypoint.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Input/GazeConfigurationEntrypoint.png"
         }
       },
       "is_incremental": false,
@@ -3786,6 +3808,83 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollectionCylinder.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollectionCylinder.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollectionPlane.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollectionPlane.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollectionRadial.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollectionRadial.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollectionScattered.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollectionScattered.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollectionScript.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollectionScript.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollectionSphere.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollectionSphere.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollectionTileGrid.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollectionTileGrid.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollection_3DObjects.jpg",
       "output": {
         "resource": {
@@ -3812,6 +3911,17 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollection_Layout_2DImages.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollection_Main.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollection_Main.jpg"
         }
       },
       "is_incremental": false,
@@ -4120,6 +4230,50 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/Profiles/input_profile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ReleaseNotes/AdjustContentHeight.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ReleaseNotes/AdjustContentHeight.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ReleaseNotes/DefaultHoloLens1ConfigurationProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ReleaseNotes/DefaultHoloLens1ConfigurationProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ReleaseNotes/SelectRaycastProvider.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ReleaseNotes/SelectRaycastProvider.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ReleaseNotes/UnableToRegisterRaycastProvider.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ReleaseNotes/UnableToRegisterRaycastProvider.png"
         }
       },
       "is_incremental": false,
@@ -4965,6 +5119,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/Input/Gaze.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Input/Gaze.html",
+          "hash": "45yMC58F1HQI7HaStQTSvA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/Input/Gestures.md",
       "output": {
         ".html": {
@@ -5077,7 +5243,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/InputSimulation/InputSimulationService.html",
-          "hash": "i8Ifq4vSuQyThBIaQEpeuA=="
+          "hash": "XbDEg0e8S4O7E8EgfE2mgg=="
         }
       },
       "is_incremental": false,
@@ -5090,18 +5256,6 @@
         ".html": {
           "relative_path": "Documentation/InputSystem/HandTracking.html",
           "hash": "LI7lkFYJza87yDy1mWi1Qg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Documentation/KnownIssues.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/KnownIssues.html",
-          "hash": "1iOp94FHmpyReKApu0H5Yg=="
         }
       },
       "is_incremental": false,
@@ -5305,7 +5459,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_ObjectCollection.html",
-          "hash": "HX5j4Nwvo++skK2f13Rwcg=="
+          "hash": "teEoTdtRGYcdWG5gLoxn5w=="
         }
       },
       "is_incremental": false,
@@ -5390,6 +5544,18 @@
         ".html": {
           "relative_path": "Documentation/README_Tooltip.html",
           "hash": "WPW0LtwKw8+vOjN+VmMrsw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/ReleaseNotes.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/ReleaseNotes.html",
+          "hash": "N1InGSYfPAgYmOrXCQENNg=="
         }
       },
       "is_incremental": false,
@@ -5517,6 +5683,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/TeleportSystem/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/TeleportSystem/Overview.html",
+          "hash": "7EM9RWQxjVB3dKWC204rDQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/Tools/DependencyWindow.md",
       "output": {
         ".html": {
@@ -5565,11 +5743,11 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "Documentation/UpdatingToGA.md",
+      "source_relative_path": "Documentation/Updating.md",
       "output": {
         ".html": {
-          "relative_path": "Documentation/UpdatingToGA.html",
-          "hash": "o+tFgtqLB4SALwRhg1nqtA=="
+          "relative_path": "Documentation/Updating.html",
+          "hash": "LovKXfccXNdQct8zP0/E7A=="
         }
       },
       "is_incremental": false,
@@ -5593,7 +5771,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "IYt5z1lIBsMZNudEsrFmzw=="
+          "hash": "CtyhGg7Q6FdZBvKEUxX1JQ=="
         }
       },
       "is_incremental": false,
@@ -5605,7 +5783,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "dv4esZGuX9kVTfaehr+0nQ=="
+          "hash": "8jKdAvFjHljsyYdJAC7xLA=="
         }
       },
       "is_incremental": false,
@@ -18712,11 +18890,17 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "TocDocumentProcessor": {
+        "ResourceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 119,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
@@ -18725,15 +18909,9 @@
           "total_file_count": 1086,
           "skipped_file_count": 0
         },
-        "ConceptualDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 117,
-          "skipped_file_count": 0
-        },
-        "ResourceDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
