@@ -9,7 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: PanContent
   m_Shader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
-  m_ShaderKeywords: _HOVER_LIGHT _SPECULAR_HIGHLIGHTS
+  m_ShaderKeywords: _HOVER_LIGHT _PROXIMITY_LIGHT _PROXIMITY_LIGHT_COLOR_OVERRIDE
+    _PROXIMITY_LIGHT_SUBTRACTIVE _PROXIMITY_LIGHT_TWO_SIDED _SPECULAR_HIGHLIGHTS
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -86,7 +87,7 @@ Material:
     - _ClippingPlane: 0
     - _ClippingSphere: 0
     - _ColorWriteMask: 15
-    - _CullMode: 2
+    - _CullMode: 0
     - _CustomMode: 0
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
@@ -98,6 +99,7 @@ Material:
     - _EnableHoverColorOverride: 0
     - _EnableLocalSpaceTriplanarMapping: 0
     - _EnableNormalMap: 0
+    - _EnableProximityLightColorOverride: 1
     - _EnableTriplanarMapping: 0
     - _EnvironmentColorIntensity: 0.5
     - _EnvironmentColorThreshold: 1.5
@@ -123,8 +125,9 @@ Material:
     - _NormalMapScale: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _ProximityLight: 0
-    - _ProximityLightTwoSided: 0
+    - _ProximityLight: 1
+    - _ProximityLightSubtractive: 1
+    - _ProximityLightTwoSided: 1
     - _Reflections: 0
     - _Refraction: 0
     - _RefractiveIndex: 0
@@ -162,4 +165,9 @@ Material:
     - _EnvironmentColorZ: {r: 0, g: 0, b: 1, a: 1}
     - _HoverColorOverride: {r: 1, g: 1, b: 1, a: 1}
     - _InnerGlowColor: {r: 1, g: 1, b: 1, a: 0.75}
+    - _ProximityLightCenterColorOverride: {r: 0, g: 0, b: 0, a: 0}
+    - _ProximityLightMiddleColorOverride: {r: 0.39215687, g: 0.39215687, b: 0.39215687,
+        a: 0.5}
+    - _ProximityLightOuterColorOverride: {r: 0.39215687, g: 0.39215687, b: 0.39215687,
+        a: 1}
     - _RimColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}

@@ -18,6 +18,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // indent tracker
         protected static int indentOnSectionStart = 0;
 
+        private static readonly GUIContent SelectEventLabel = new GUIContent("Select Event Type", "Select the event type from the list");
+
         protected virtual void OnEnable()
         {
             eventList = ((InteractableReceiverList)target).Events;
@@ -48,7 +50,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         removeEventRef = RemoveEvent;
                     }
 
-                    RenderEventSettings(eventItem, i, eventOptions, ChangeEvent, removeEventRef);
+                    if (RenderEventSettings(eventItem, i, eventOptions, ChangeEvent, removeEventRef))
+                    {
+                        // If removed, skip rendering rest of list till next redraw
+                        break;
+                    }
                 }
 
                 if (eventOptions.ClassNames.Length > 1)
@@ -125,55 +131,77 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        public static void RenderEventSettings(SerializedProperty eventItem, int index, InteractableTypesContainer options, InspectorUIUtility.MultiListButtonEvent changeEvent, InspectorUIUtility.ListButtonEvent removeEvent)
+        /// <summary>
+        /// Render event properties for the given event item. If item has been removed, returns true. False otherwise
+        /// </summary>
+        /// <param name="eventItem">serialized property of the event item to render properties from</param>
+        /// <param name="index">index of event item in higher order list</param>
+        /// <param name="options">Event type options</param>
+        /// <param name="changeEvent">Function to call if event properties have changed</param>
+        /// <param name="removeEvent">Function to call if event requested to be removed</param>
+        /// <returns>If item has been removed, returns true. False otherwise</returns>
+        public static bool RenderEventSettings(SerializedProperty eventItem, int index, InteractableTypesContainer options, InspectorUIUtility.MultiListButtonEvent changeEvent, InspectorUIUtility.ListButtonEvent removeEvent)
         {
-            EditorGUILayout.BeginVertical("Box");
-            SerializedProperty uEvent = eventItem.FindPropertyRelative("Event");
-            SerializedProperty eventName = eventItem.FindPropertyRelative("Name");
-            SerializedProperty className = eventItem.FindPropertyRelative("ClassName");
-            SerializedProperty assemblyQualifiedName = eventItem.FindPropertyRelative("AssemblyQualifiedName");
-            SerializedProperty hideEvents = eventItem.FindPropertyRelative("HideUnityEvents");
-
-            // show event dropdown
-            int id = InspectorUIUtility.ReverseLookup(className.stringValue, options.ClassNames);
-            int newId = EditorGUILayout.Popup("Select Event Type", id, options.ClassNames);
-
-            if (id != newId || String.IsNullOrEmpty(className.stringValue))
+            using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
             {
-                className.stringValue = options.ClassNames[newId];
-                assemblyQualifiedName.stringValue = options.AssemblyQualifiedNames[newId];
+                SerializedProperty uEvent = eventItem.FindPropertyRelative("Event");
+                SerializedProperty eventName = eventItem.FindPropertyRelative("Name");
+                SerializedProperty className = eventItem.FindPropertyRelative("ClassName");
+                SerializedProperty assemblyQualifiedName = eventItem.FindPropertyRelative("AssemblyQualifiedName");
+                SerializedProperty hideEvents = eventItem.FindPropertyRelative("HideUnityEvents");
 
-                changeEvent(new int[] { index, newId }, eventItem);
-            }
+                // show event dropdown
+                int id = InspectorUIUtility.ReverseLookup(className.stringValue, options.ClassNames);
 
-            if (!hideEvents.boolValue)
-            {
-                EditorGUILayout.PropertyField(uEvent, new GUIContent(eventName.stringValue));
-            }
-
-            // show event properties
-            EditorGUI.indentLevel = indentOnSectionStart + 1;
-            SerializedProperty eventSettings = eventItem.FindPropertyRelative("Settings");
-            for (int j = 0; j < eventSettings.arraySize; j++)
-            {
-                SerializedProperty propertyField = eventSettings.GetArrayElementAtIndex(j);
-                bool isEvent = InspectorFieldsUtility.IsPropertyType(propertyField, InspectorField.FieldTypes.Event);
-
-                if (!hideEvents.boolValue || !isEvent)
+                using (new EditorGUILayout.HorizontalScope())
                 {
-                    InspectorFieldsUtility.DisplayPropertyField(eventSettings.GetArrayElementAtIndex(j));
+                    Rect position = EditorGUILayout.GetControlRect();
+                    EditorGUI.BeginProperty(position, SelectEventLabel, className);
+                    {
+                        int newId = EditorGUI.Popup(position, id, options.ClassNames);
+
+                        if (id != newId || String.IsNullOrEmpty(className.stringValue))
+                        {
+                            className.stringValue = options.ClassNames[newId];
+                            assemblyQualifiedName.stringValue = options.AssemblyQualifiedNames[newId];
+
+                            changeEvent(new int[] { index, newId }, eventItem);
+                        }
+
+                    }
+                    EditorGUI.EndProperty();
+
+                    if (removeEvent != null)
+                    {
+                        if (InspectorUIUtility.FlexButton(new GUIContent("Remove Event"), index, removeEvent))
+                        {
+                            return true;
+                        }
+                    }
+
+                }
+                EditorGUILayout.Space();
+
+                if (!hideEvents.boolValue)
+                {
+                    EditorGUILayout.PropertyField(uEvent, new GUIContent(eventName.stringValue));
+                }
+
+                // show event properties
+                SerializedProperty eventSettings = eventItem.FindPropertyRelative("Settings");
+                for (int j = 0; j < eventSettings.arraySize; j++)
+                {
+                    SerializedProperty propertyField = eventSettings.GetArrayElementAtIndex(j);
+                    bool isEvent = InspectorFieldsUtility.IsPropertyType(propertyField, InspectorField.FieldTypes.Event);
+
+                    if (!hideEvents.boolValue || !isEvent)
+                    {
+                        InspectorFieldsUtility.DisplayPropertyField(eventSettings.GetArrayElementAtIndex(j));
+                    }
                 }
             }
-            EditorGUI.indentLevel = indentOnSectionStart;
 
-            EditorGUILayout.Space();
-
-            if(removeEvent != null)
-            {
-                InspectorUIUtility.FlexButton(new GUIContent("Remove Event"), index, removeEvent);
-            }
-
-            EditorGUILayout.EndVertical();
+            return false;
         }
         
         protected virtual void SetupEventOptions()

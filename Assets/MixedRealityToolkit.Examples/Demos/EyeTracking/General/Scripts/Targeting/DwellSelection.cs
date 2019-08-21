@@ -67,7 +67,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         private DateTime startTime_dwellFeedback;
 
         private Interactable routingTarget;
-        private EyeTrackingTarget etTarget;
 
         void Start()
         {
@@ -125,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 {
                     if (routingTarget != null)
                     {
-                        routingTarget.OnPointerClicked(null);
+                        routingTarget.TriggerOnClick();
                     }
                     ResetDwellFeedback();
                 }

@@ -47,12 +47,15 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         Vector3 ObservationExtents { get; set; }
 
         /// <summary>
-        /// Gets or sets the orientation of the volume.
+        /// Gets or sets the orientation of the volume in World Space. 
         /// </summary>
+        /// <remarks>
+        /// This is only used when <see cref="ObserverVolumeType"/> is set to <see cref="Microsoft.MixedReality.Toolkit.Utilities.VolumeType.UserAlignedCube"/>
+        /// </remarks>
         Quaternion ObserverRotation { get; set; }
 
         /// <summary>
-        /// Gets or sets the origin of the observer.
+        /// Gets or sets the origin, in World Space, of the observer.
         /// </summary>
         /// <remarks>
         /// Moving the observer origin allows the spatial awareness system to locate and discard meshes as the user
@@ -74,5 +77,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// Stop | pause the observer
         /// </summary>
         void Suspend();
+
+        /// <summary>
+        /// Clears the observer's collection of observations.
+        /// </summary>
+        /// <remarks>
+        /// If the observer is currently running, calling ClearObservations will suspend it.
+        /// </remarks>
+        void ClearObservations();
     }
 }

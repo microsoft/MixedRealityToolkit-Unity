@@ -71,6 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             if (!Enabled) { return; }
 
             UpdateSourceData(interactionSourceState);
+            UpdateVelocity(interactionSourceState);
 
             if (Interactions == null)
             {
@@ -102,6 +103,20 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             LastSourceStateReading = interactionSourceState;
         }
 
+        public void UpdateVelocity(InteractionSourceState interactionSourceState)
+        {
+            Vector3 newVelocity;
+            if (interactionSourceState.sourcePose.TryGetVelocity(out newVelocity))
+            {
+                Velocity = newVelocity;
+            }
+            Vector3 newAngularVelocity;
+            if (interactionSourceState.sourcePose.TryGetAngularVelocity(out newAngularVelocity))
+            {
+                AngularVelocity = newAngularVelocity;
+            }
+        }
+
         /// <summary>
         /// Update the source input from the device.
         /// </summary>
@@ -130,6 +145,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 }
 
                 IsRotationAvailable = interactionSourceState.sourcePose.TryGetRotation(out currentSourceRotation);
+
+                // We want the source to follow the Playspace, so fold in the playspace transform here to 
+                // put the source pose into world space.
+                currentSourcePosition = MixedRealityPlayspace.TransformPoint(currentSourcePosition);
+                currentSourceRotation = MixedRealityPlayspace.Rotation * currentSourceRotation;
 
                 // Devices are considered tracked if we receive position OR rotation data from the sensors.
                 TrackingState = (IsPositionAvailable || IsRotationAvailable) ? TrackingState.Tracked : TrackingState.NotTracked;
@@ -206,11 +226,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             {
                 case AxisType.SixDof:
                 {
-                    interactionSourceState.sourcePose.TryGetPosition(out currentGripPosition, InteractionSourceNode.Grip);
-                    interactionSourceState.sourcePose.TryGetRotation(out currentGripRotation, InteractionSourceNode.Grip);
-
-                    currentGripPose.Position = MixedRealityPlayspace.TransformPoint(currentGripPosition);
-                    currentGripPose.Rotation = Quaternion.Euler(MixedRealityPlayspace.TransformDirection(currentGripRotation.eulerAngles));
+                    // The data queried in UpdateSourceData is the grip pose.
+                    // Reuse that data to save two method calls and transforms.
+                    currentGripPose.Position = currentSourcePosition;
+                    currentGripPose.Rotation = currentSourceRotation;
 
                     // Update the interaction data source
                     interactionMapping.PoseData = currentGripPose;
@@ -325,7 +344,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         private bool GetSelectPressedWorkaround(InteractionSourceState interactionSourceState)
         {
             bool selectPressed = interactionSourceState.selectPressed;
-            if (interactionSourceState.source.kind == InteractionSourceKind.Hand && 
+            if (interactionSourceState.source.kind == InteractionSourceKind.Hand &&
                 UnityEngine.XR.WSA.HolographicRemoting.ConnectionState == UnityEngine.XR.WSA.HolographicStreamerConnectionState.Connected)
             {
                 // This workaround is safe as long as all these assumptions hold:

@@ -8,7 +8,7 @@ steps:
    $outDir = "$(Build.ArtifactStagingDirectory)\build"
    $logFile = New-Item -Path "$outDir\build\retargeting_log.log" -ItemType File -Force
    
-   $proc = Start-Process -FilePath "$editor" -ArgumentList "-projectPath $(Get-Location) -batchmode -executeMethod Microsoft.MixedReality.Toolkit.Build.Editor.AssetScriptReferenceRetargeter.RetargetAssets -logFile $($logFile.FullName) -nographics -quit" -PassThru
+   $proc = Start-Process -FilePath "$editor" -ArgumentList "-projectPath $(Get-Location) -batchmode -executeMethod Microsoft.MixedReality.Toolkit.MSBuild.AssetScriptReferenceRetargeter.RetargetAssets -logFile $($logFile.FullName) -nographics -quit" -PassThru
    $ljob = Start-Job -ScriptBlock { param($log) Get-Content "$log" -Wait } -ArgumentList $logFile.FullName
    
    while (-not $proc.HasExited -and $ljob.HasMoreData)
@@ -22,10 +22,41 @@ steps:
    
    Remove-Job $ljob
    Stop-Process $proc
+
+   Write-Output '====================================================='
+   Write-Output '           Unity Build Player Finished               '
+   Write-Output '====================================================='
+
+   $unityLogFileName = '$(Build.ArtifactStagingDirectory)\build\build\retargeting_log.log'
+   If (Test-Path $unityLogFileName)
+   {
+      Write-Output '====================================================='
+      Write-Output '           Begin Unity Player Log                    '
+      Write-Output '====================================================='
+
+      Get-Content $unityLogFileName
+
+      Write-Output '====================================================='
+      Write-Output '           End Unity Player Log                      '
+      Write-Output '====================================================='
+   }
+   Else
+   {
+      Write-Output 'Unity Player Log missing!'
+   }
+
+   Write-Output '====================================================='
+   Write-Output '           Begin Retargeted Directory                '
+   Write-Output '====================================================='
+
+   cmd /r dir /s/b NuGet
+
+   Write-Output '====================================================='
+   Write-Output '           End Retargeted Directory                  '
+   Write-Output '====================================================='
+   
+   if ($proc.ExitCode -ne 0)
+   {
+       exit $proc.ExitCode
+   }
   displayName: 'Run Asset Retargetting'
-
-- script: 'Type %Build_ArtifactStagingDirectory%\build\build\retargeting_log.log'
-  displayName: 'Print Unity Log'
-
-- script: 'dir /s/b NuGet'
-  displayName: 'Print Retargeted Directory'

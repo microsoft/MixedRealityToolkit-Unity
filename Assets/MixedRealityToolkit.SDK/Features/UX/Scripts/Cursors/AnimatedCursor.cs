@@ -15,7 +15,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         [Header("Animated Cursor State Data")]
         [Tooltip("Cursor state data to use for its various states.")]
-        private AnimatedCursorData[] cursorStateData = null;
+        private AnimatedCursorStateData[] cursorStateData = null;
+
+        [SerializeField]
+        [Header("Animated Cursor Context Data")]
+        [Tooltip("Cursor context data to use for its various contextual states.")]
+        private AnimatedCursorContextData[] cursorContextData = null;
 
         [SerializeField]
         [Tooltip("Animator parameter to set when input is enabled.")]
@@ -54,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.OnFocusChanged(eventData);
 
-            if (Pointer.CursorModifier != null)
+            if (((Pointer is UnityEngine.Object) ? ((Pointer as UnityEngine.Object) != null) : (Pointer != null)) && Pointer.CursorModifier != null)
             {
                 if ((Pointer.CursorModifier.CursorParameters != null) && (Pointer.CursorModifier.CursorParameters.Length > 0))
                 {
@@ -87,6 +92,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (cursorStateData[i].CursorState == state)
                 {
                     SetAnimatorParameter(cursorStateData[i].Parameter);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Override OnCursorContext change to set the correct animation state for the cursor.
+        /// </summary>
+        /// <param name="context"></param>
+        public override void OnCursorContextChange(CursorContextEnum context)
+        {
+            base.OnCursorContextChange(context);
+
+            if (context == CursorContextEnum.Contextual) { return; }
+
+            for (int i = 0; i < cursorContextData.Length; i++)
+            {
+                if (cursorContextData[i].CursorState == context)
+                {
+                    SetAnimatorParameter(cursorContextData[i].Parameter);
                 }
             }
         }

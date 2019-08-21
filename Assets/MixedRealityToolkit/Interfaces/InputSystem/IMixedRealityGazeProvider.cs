@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// HitInfo property gives access to information at the object being gazed at, if any.
         /// </summary>
-        RaycastHit HitInfo { get; }
+        MixedRealityRaycastHit HitInfo { get; }
 
         /// <summary>
         /// Position at which the gaze manager hit an object.
@@ -81,5 +81,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Get the GameObject reference for this Gaze Provider.
         /// </summary>
         GameObject GameObjectReference { get; }
+
+        /// <summary>
+        /// Notifies this gaze provider of its new hit details.
+        /// </summary>
+        /// <remarks>
+        /// For components that care where the user's looking, we need
+        /// to separately update the gaze info even if gaze isn't used for focus.
+        /// </remarks>
+        void UpdateGazeInfoFromHit(MixedRealityRaycastHit raycastHit);
     }
 }

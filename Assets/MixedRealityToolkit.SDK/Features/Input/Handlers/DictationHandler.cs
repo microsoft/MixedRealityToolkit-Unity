@@ -75,6 +75,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        #region InputSystemGlobalHandlerListener Implementation
+
+        protected override void RegisterHandlers()
+        {
+            InputSystem?.RegisterHandler<IMixedRealityDictationHandler>(this);
+        }
+
+        protected override void UnregisterHandlers()
+        {
+            InputSystem?.UnregisterHandler<IMixedRealityDictationHandler>(this);
+        }
+
+        #endregion InputSystemGlobalHandlerListener Implementation
+
         #region IMixedRealityDictationHandler implementation
 
         void IMixedRealityDictationHandler.OnDictationHypothesis(DictationEventData eventData)

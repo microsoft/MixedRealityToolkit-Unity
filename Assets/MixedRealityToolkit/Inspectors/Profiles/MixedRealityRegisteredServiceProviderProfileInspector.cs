@@ -47,6 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             var profile = target as BaseMixedRealityProfile;
 
             return MixedRealityToolkit.IsInitialized && profile != null &&
+                   MixedRealityToolkit.Instance.HasActiveProfile &&
                    MixedRealityToolkit.Instance.ActiveProfile.RegisteredServiceProvidersProfile == profile;
         }
 

@@ -4,20 +4,24 @@ The Input Simulation Service emulates the behaviour of devices and platforms tha
 * HoloLens or VR device head tracking
 * HoloLens hand gestures
 * HoloLens 2 articulated hand tracking
+* HoloLens 2 eye tracking
 
 Users can use a conventional keyboard and mouse combination to control simulated devices at runtime. This allows testing of interactions in the Unity editor without first deploying to a device.
+
+> [!WARNING]
+> This does not work when using Unity's XR Holographic Emulation > Emulation Mode = "Simulate in Editor". Unity's in-editor simulation will take control away from MRTK's input simulation. In order to use the MRTK input simulation service, you will need to set XR Holographic Emulation to Emulation Mode = *"None"*
 
 ## Enabling the Input Simulation Service
 
 Input simulation is enabled by default in MRTK.
 
-Input simulation is an optional [Mixed Reality service](../MixedRealityServices.md). It can be added as a data provider in the [Input System profile](../TODO.md).
+Input simulation is an optional [Mixed Reality service](../MixedRealityServices.md). It can be added as a data provider in the [Input System profile](../Input/InputProviders.md).
 * __Type__ must be _Microsoft.MixedReality.Toolkit.Input > InputSimulationService_.
 * __Platform(s)__ should always be _Windows Editor_ since the service depends on keyboard and mouse input.
 * __Profile__ has all settings for input simulation.
 
-  | __Warning__: Any type of profile can be assigned to services at the time of this writing. If you assign a different profile to the service, make sure to use a profile of type _Input Simulation_ or it will not work! |
-  | --- |
+> [!WARNING]
+> Any type of profile can be assigned to services at the time of this writing. If you assign a different profile to the service, make sure to use a profile of type _Input Simulation_ or it will not work!
 
 <a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_InputSystemDataProviders.png">
   <img src="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_InputSystemDataProviders.png" title="Full Hand Mesh" width="80%" class="center" />
@@ -54,7 +58,7 @@ Press and hold the movement keys (W/A/S/D for forward/left/back/right).
 
 # Hand Simulation
 
-The input simulation supports emulated hand devices. These virtual hands can interact with any object that supports regular hand devices, such as buttons or grabable objects.
+The input simulation supports emulated hand devices. These virtual hands can interact with any object that supports regular hand devices, such as buttons or grabbable objects.
 
 <a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandSimulationMode.png">
   <img src="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandSimulationMode.png" title="Full Hand Mesh" width="80%" class="center" />
@@ -64,13 +68,13 @@ The __Hand Simulation Mode__ switches between two distinct input models.
 
 * _Articulated Hands_: Simulates a fully articulated hand device with joint position data.
 
-   Emulates Hololens 2 interaction model.
+   Emulates HoloLens 2 interaction model.
 
    Interactions that are based on precise positioning of the hand or use touching can be simulated in this mode.
 
 * _Gestures_: Simulates a simplified hand model with air tap and basic gestures.
 
-   Emulates [Hololens interaction model](https://docs.microsoft.com/en-us/windows/mixed-reality/gestures).
+   Emulates [HoloLens interaction model](https://docs.microsoft.com/en-us/windows/mixed-reality/gestures).
 
    Focus is controlled using the Gaze pointer. The _Air Tap_ gesture is used to interact with buttons.
 
@@ -89,6 +93,19 @@ Once the manipulation key is released the hands will disappear after a short _Ha
 </a>
 
 Hands can be moved further or closer to the camera using the _mouse wheel_.
+By default the hand will move somewhat slowly in response to mouse scroll,
+and this can be made faster by changing the *Hand Depth Multiplier* to a
+larger number.
+
+The initial distance from the camera that the hand appears at is controlled by
+*Default Hand Distance.*
+
+By default, the simulated hand joints will be perfectly still. Note that on devices there
+will always be some amount of jitter/noise due to the underlying hand tracking.
+You can see this on the device when you have hand mesh or joints enabled (and
+see how it has slightly jitter even if you have your hand perfectly still). It's possible
+to simulate jitter by changing *Hand Jitter Amount* to a positive value (for example, 0.1
+as is shown in the image above).
 
 <a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandRotationSettings.png">
   <img src="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandRotationSettings.png" title="Full Hand Mesh" width="80%" class="center" />
@@ -117,8 +134,8 @@ Hand gestures such as pinching, grabbing, poking, etc. can also be simulated.
 
 Each of the mouse buttons can be mapped to transform the hand shape into a different gesture using the _Left/Middle/Right Mouse Hand Gesture_ settings. The _Default Hand Gesture_ is the shape of the hand when no button is pressed.
 
-| Note: The _Pinch_ gesture is the only gesture that performs the "Select" action at this point. |
-| --- |
+> [!NOTE]
+> The _Pinch_ gesture is the only gesture that performs the "Select" action at this point.
 
 ## One-Hand Manipulation
 
@@ -158,3 +175,9 @@ For manipulating objects with two hands at the same time the persistent hand mod
 5. Rotate the camera again to manipulate the object
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/6841rRMdqWw" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
+
+## Eye tracking
+
+[Eye tracking simulation](../EyeTracking/EyeTracking_BasicSetup.md#simulating-eye-tracking-in-the-unity-editor) can be enabled by checking the __Simulate Eye Position__ option in the
+[Input Simulation Profile](#enabling-the-input-simulation-service). This should not be used with GGV
+style interactions (so ensure that __Hand Simulation Mode__ is set to _Articulated_).

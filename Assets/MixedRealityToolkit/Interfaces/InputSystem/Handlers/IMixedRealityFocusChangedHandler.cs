@@ -8,6 +8,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Interface to implement to react to focus changed events.
     /// </summary>
+    /// <remarks>
+    /// The events on this interface are related to those of <see cref="IMixedRealityFocusHandler"/>, whose event have
+    /// a known ordering with this interface:
+    ///
+    /// IMixedRealityFocusChangedHandler::OnBeforeFocusChange
+    /// IMixedRealityFocusHandler::OnFocusEnter
+    /// IMixedRealityFocusHandler::OnFocusExit
+    /// IMixedRealityFocusChangedHandler::OnFocusChanged
+    ///
+    /// Because these two interfaces are different, consumers must be wary about having nested
+    /// heirarchies where some game objects will implement both interfaces, and more deeply nested
+    /// object within the same parent-child chain that implement a single one of these - such
+    /// a presence can lead to scenarios where one interface is invoked on the child object, and then
+    /// the other interface is invoked on the parent object (thus, the parent would "miss" getting
+    /// the event that the child had already processed).
+    /// </remarks>
     public interface IMixedRealityFocusChangedHandler : IEventSystemHandler
     {
         /// <summary>

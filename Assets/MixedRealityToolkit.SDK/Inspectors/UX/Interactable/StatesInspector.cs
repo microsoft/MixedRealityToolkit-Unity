@@ -53,6 +53,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 assemblyQualifiedName.stringValue = stateOptions.AssemblyQualifiedNames[newLogic];
             }
 
+            stateList = serializedObject.FindProperty("StateList");
+
             int bitCount = 0;
             for (int i = 0; i < stateList.arraySize; i++)
             {
@@ -69,20 +71,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 SerializedProperty stateItem = stateList.GetArrayElementAtIndex(i);
 
                 SerializedProperty name = stateItem.FindPropertyRelative("Name");
-                SerializedProperty index = stateItem.FindPropertyRelative("ActiveIndex");
+                SerializedProperty activeIndex = stateItem.FindPropertyRelative("ActiveIndex");
                 SerializedProperty bit = stateItem.FindPropertyRelative("Bit");
-
-                index.intValue = i;
-
+                SerializedProperty index = stateItem.FindPropertyRelative("Index");
+                
+                activeIndex.intValue = i;
+                
                 EditorGUILayout.BeginHorizontal();
                 string[] stateEnums = GetStateOptions();
                 int enumIndex = States.ReverseLookup(name.stringValue, stateEnums);
 
                 int newEnumIndex = EditorGUILayout.Popup(name.stringValue + " (" + bitCount + ")", enumIndex, stateEnums);
-                if (enumIndex != newEnumIndex)
-                {
-                    name.stringValue = stateEnums[newEnumIndex];
-                }
+                
+                name.stringValue = stateEnums[newEnumIndex];
+                index.intValue = newEnumIndex;
 
                 InspectorUIUtility.SmallButton(new GUIContent(InspectorUIUtility.Minus, "Remove State"), i, RemoveState);
                 

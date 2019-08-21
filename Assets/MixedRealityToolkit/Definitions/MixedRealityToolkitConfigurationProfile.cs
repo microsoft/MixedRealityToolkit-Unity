@@ -5,11 +5,10 @@ using Microsoft.MixedReality.Toolkit.Boundary;
 using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.SceneSystem;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Teleport;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -21,7 +20,8 @@ namespace Microsoft.MixedReality.Toolkit
     /// <summary>
     /// Configuration profile settings for the Mixed Reality Toolkit.
     /// </summary>
-    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Mixed Reality Toolkit Configuration Profile", fileName = "MixedRealityToolkitConfigurationProfile", order = (int)CreateProfileMenuItemIndices.Configuration)]
+    [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Toolkit Configuration Profile", fileName = "MixedRealityToolkitConfigurationProfile", order = (int)CreateProfileMenuItemIndices.Configuration)]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html")]
     public class MixedRealityToolkitConfigurationProfile : BaseMixedRealityProfile
     {
         #region Mixed Reality Toolkit configurable properties
@@ -266,6 +266,46 @@ namespace Microsoft.MixedReality.Toolkit
         {
             get { return diagnosticsSystemType; }
             internal set { diagnosticsSystemType = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Profile for configuring scene system components.")]
+        private MixedRealitySceneSystemProfile sceneSystemProfile;
+
+        /// <summary>
+        /// Active profile for scene configuration
+        /// </summary>
+        public MixedRealitySceneSystemProfile SceneSystemProfile
+        {
+            get { return sceneSystemProfile; }
+            internal set { sceneSystemProfile = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Enable scene system")]
+        private bool enableSceneSystem = false;
+
+        /// <summary>
+        /// Is the Scene System enabled?
+        /// </summary>
+        public bool IsSceneSystemEnabled
+        {
+            get { return enableSceneSystem && SceneSystemSystemType?.Type != null && sceneSystemProfile != null; }
+            internal set { enableSceneSystem = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Scene System class to instantiate at runtime.")]
+        [Implements(typeof(IMixedRealitySceneSystem), TypeGrouping.ByNamespaceFlat)]
+        private SystemType sceneSystemType;
+
+        /// <summary>
+        /// Scene System Script File to instantiate at runtime
+        /// </summary>
+        public SystemType SceneSystemSystemType
+        {
+            get { return sceneSystemType; }
+            internal set { sceneSystemType = value; }
         }
 
         [SerializeField]

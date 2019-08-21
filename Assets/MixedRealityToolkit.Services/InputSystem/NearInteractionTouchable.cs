@@ -12,97 +12,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Add a NearInteractionTouchable to your scene and configure a touchable surface
     /// in order to get PointerDown and PointerUp events whenever a PokePointer touches this surface.
-    ///
-    /// Technical details:
-    /// Provides a listing of near field touch proximity bounds.
-    /// This is used to detect if a contact point is near an object to turn on near field interactions
     /// </summary>
-    public class NearInteractionTouchable : MonoBehaviour
+    public class NearInteractionTouchable : ColliderNearInteractionTouchable
     {
-#if UNITY_EDITOR
-        [UnityEditor.CustomEditor(typeof(NearInteractionTouchable))]
-        public class Editor : UnityEditor.Editor
-        {
-            private readonly Color handleColor = Color.white;
-            private readonly Color fillColor = new Color(0, 0, 0, 0);
-
-            protected virtual void OnSceneGUI()
-            {
-                NearInteractionTouchable t = (NearInteractionTouchable)target;
-
-                if (Event.current.type == EventType.Repaint)
-                {
-                    UnityEditor.Handles.color = handleColor;
-
-                    Vector3 center = t.transform.TransformPoint(t.localCenter);
-
-                    float arrowSize = UnityEditor.HandleUtility.GetHandleSize(center) * 0.75f;
-                    UnityEditor.Handles.ArrowHandleCap(0, center, Quaternion.LookRotation(t.transform.rotation * t.localForward), arrowSize, EventType.Repaint);
-
-                    Vector3 rightDelta = t.transform.localToWorldMatrix.MultiplyVector(t.LocalRight * t.bounds.x / 2);
-                    Vector3 upDelta = t.transform.localToWorldMatrix.MultiplyVector(t.localUp * t.bounds.y / 2);
-
-                    Vector3[] points = new Vector3[4];
-                    points[0] = center + rightDelta + upDelta;
-                    points[1] = center - rightDelta + upDelta;
-                    points[2] = center - rightDelta - upDelta;
-                    points[3] = center + rightDelta - upDelta;
-
-                    UnityEditor.Handles.DrawSolidRectangleWithOutline(points, fillColor, handleColor);
-                }
-            }
-
-            public override void OnInspectorGUI()
-            {
-                base.OnInspectorGUI();
-
-                NearInteractionTouchable t = (NearInteractionTouchable)target;
-                RectTransform rt = t.GetComponent<RectTransform>();
-                if (rt != null)
-                {
-                    // Resize Helper
-                    if (rt.sizeDelta != t.bounds)
-                    {
-                        UnityEditor.EditorGUILayout.HelpBox("Bounds do not match the RectTransform size", UnityEditor.MessageType.Warning);
-                        if (GUILayout.Button("Fix Bounds"))
-                        {
-                            UnityEditor.Undo.RecordObject(t, "Fix Bounds");
-                            t.bounds = rt.sizeDelta;
-                        }
-                    }
-
-                    if (t.GetComponentInParent<Canvas>() != null && t.localForward != new Vector3(0, 0, -1))
-                    {
-                        UnityEditor.EditorGUILayout.HelpBox("Unity UI generally has forward facing away from the front. The LocalForward direction specified does not match the expected forward direction.", UnityEditor.MessageType.Warning);
-                        if (GUILayout.Button("Fix Forward Direction"))
-                        {
-                            UnityEditor.Undo.RecordObject(t, "Fix Forward Direction");
-                            t.localForward = new Vector3(0, 0, -1);
-                        }
-                    }
-                }
-            }
-        }
-#endif
-
-        private enum TouchableSurface
-        {
-            BoxCollider,
-            UnityUI,
-            Custom = 100
-        }
-
-        public static IReadOnlyCollection<NearInteractionTouchable> Instances { get { return instances.AsReadOnly(); } }
-        private static readonly List<NearInteractionTouchable> instances = new List<NearInteractionTouchable>();
-
-        public bool ColliderEnabled { get { return !usesCollider || touchableCollider.enabled && touchableCollider.gameObject.activeInHierarchy; } }
-
         /// <summary>
         /// Local space forward direction
         /// </summary>
         [SerializeField]
         protected Vector3 localForward = Vector3.forward;
-
         public Vector3 LocalForward { get => localForward; }
 
         /// <summary>
@@ -110,97 +27,77 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         [SerializeField]
         protected Vector3 localUp = Vector3.up;
-
         public Vector3 LocalUp { get => localUp; }
+
+        /// <summary>
+        /// Returns true if the LocalForward and LocalUp vectors are orthogonal.
+        /// </summary>
+        /// <remarks>
+        /// LocalRight is computed using the cross product and is always orthogonal to LocalForward and LocalUp.
+        /// </remarks>
+        public bool AreLocalVectorsOrthogonal => Vector3.Dot(localForward, localUp) == 0;
 
         /// <summary>
         /// Local space object center
         /// </summary>
         [SerializeField]
         protected Vector3 localCenter = Vector3.zero;
+        public Vector3 LocalCenter { get => localCenter; set { localCenter = value; } }
 
-        [SerializeField]
-        private TouchableEventType eventsToReceive = TouchableEventType.Touch;
-
-        /// <summary>
-        /// The type of event to receive.
-        /// </summary>
-        public TouchableEventType EventsToReceive => eventsToReceive;
-
-        [SerializeField]
-        [Tooltip("The type of surface to calculate the touch point on.")]
-        private TouchableSurface touchableSurface = TouchableSurface.BoxCollider;
-
-        public Vector3 LocalRight => Vector3.Cross(localUp, localForward);
+        public Vector3 LocalRight
+        {
+            get
+            {
+                Vector3 cross = Vector3.Cross(localUp, localForward);
+                if (cross == Vector3.zero)
+                {
+                    // vectors are collinear return default right
+                    return Vector3.right;
+                }
+                else
+                {
+                    return cross;
+                }
+            }
+        }
 
         public Vector3 Forward => transform.TransformDirection(localForward);
+
+        public void SetLocalForward(Vector3 newLocalForward)
+        {
+            localForward = newLocalForward;
+            localUp = Vector3.Cross(localForward, LocalRight).normalized;
+        }
+
+        public void SetLocalUp(Vector3 newLocalUp)
+        {
+            localUp = newLocalUp;
+            localForward = Vector3.Cross(LocalRight, localUp).normalized;
+        }
 
         /// <summary>
         /// Local space forward direction
         /// </summary>
         [SerializeField]
         protected Vector2 bounds = Vector2.zero;
+        public Vector2 Bounds { get => bounds; set { bounds = value; } }
 
-        /// <summary>
-        /// False if no collider is found on validate.
-        /// This is used to avoid the perf cost of a null check with the collider.
-        /// </summary>
-        private bool usesCollider = false;
-
-        /// <summary>
-        /// The collider used by this touchable.
-        /// </summary>
-        [SerializeField]
-        [FormerlySerializedAs("collider")]
-        private Collider touchableCollider;
-
-        protected void OnEnable()
+        protected new void OnValidate()
         {
-            instances.Add(this);
-        }
+            if (Application.isPlaying)
+            {   // Don't validate during play mode
+                return;
+            }
 
-        protected void OnDisable()
-        {
-            instances.Remove(this);
-        }
+            base.OnValidate();
 
-        protected void OnValidate()
-        {
             Debug.Assert(localForward.magnitude > 0);
             Debug.Assert(localUp.magnitude > 0);
             string hierarchy = gameObject.transform.EnumerateAncestors(true).Aggregate("", (result, next) => next.gameObject.name + "=>" + result);
-            Debug.Assert(Vector3.Angle(localForward, localUp) > 80, $"localForward and localUp not perpendicular for object {hierarchy}. Did you set Local Forward correctly?");
-
-            // Check initial setup
-            if (bounds == Vector2.zero)
+            if (localUp.sqrMagnitude == 1 && localForward.sqrMagnitude == 1)
             {
-                if (touchableSurface == TouchableSurface.UnityUI)
-                {
-                    RectTransform rt = GetComponent<RectTransform>();
-                    if (rt != null)
-                    {
-                        // Initialize bounds to RectTransform SizeDelta
-                        bounds = rt.sizeDelta;
-                        localForward = new Vector3(0, 0, -1);
-                    }
-                }
+                Debug.Assert(Vector3.Dot(localForward, localUp) == 0, $"localForward and localUp not perpendicular for object {hierarchy}. Did you set Local Forward correctly?");
             }
-
-            if (touchableSurface == TouchableSurface.BoxCollider)
-            {
-                BoxCollider bc = GetComponent<BoxCollider>();
-                if (bc != null)
-                {
-                    float x = Vector3.Project(bc.size, LocalRight).magnitude;
-                    float y = Vector3.Project(bc.size, localUp).magnitude;
-
-                    bounds = new Vector2(x, y);
-                    localCenter = bc.center + Vector3.Scale(bc.size / 2.0f, localForward);
-                }
-            }
-
-            touchableCollider = GetComponent<Collider>();
-            usesCollider = touchableCollider != null;
 
             localForward = localForward.normalized;
             localUp = localUp.normalized;
@@ -209,8 +106,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             bounds.y = Mathf.Max(bounds.y, 0);
         }
 
-        public virtual float DistanceToSurface(Vector3 samplePoint)
+        public override float DistanceToTouchable(Vector3 samplePoint, out Vector3 normal)
         {
+            normal = Forward;
+
             Vector3 localPoint = transform.InverseTransformPoint(samplePoint) - localCenter;
 
             // Get surface coordinates
@@ -234,6 +133,5 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             return Math.Abs(planeSpacePoint.z);
         }
-
     }
 }

@@ -14,6 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Creates a floating tooltip that is attached to an object and moves to stay in view as object rotates with respect to the view.
     /// </summary>
     [ExecuteAlways]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Tooltip.html")]
     public class ToolTip : MonoBehaviour
     {
         [SerializeField]
@@ -140,10 +141,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             set
             {
-                if (value != toolTipText)
-                {
-                    toolTipText = value;
-                    RefreshLocalContent();                   
+                toolTipText = value;
+                if (!Application.isPlaying)
+                {   // Only force refresh in edit mode
+                    RefreshLocalContent();
                 }
             }
             get { return toolTipText; }
@@ -176,7 +177,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set
             {
                 contentScale = value;
-                RefreshLocalContent();
+                if (!Application.isPlaying)
+                {   // Only force refresh in edit mode
+                    RefreshLocalContent();
+                }
             }
         }
 
@@ -184,6 +188,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Range(10, 60)]
         [Tooltip("The font size of the tooltip.")]
         private int fontSize = 30;
+
+        /// <summary>
+        /// The font size of the tooltip.
+        /// </summary>
+        public int FontSize
+        {
+            get { return fontSize; }
+            set
+            {
+                fontSize = value;
+                if (!Application.isPlaying)
+                {   // Only force refresh in edit mode
+                    RefreshLocalContent();
+                }
+            }
+        }
 
         [SerializeField]
         [Tooltip("Determines where the line will attach to the tooltip content.")]
@@ -239,6 +259,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private TextMeshPro cachedLabelText;
         private int prevTextLength = -1;
         private int prevTextHash = -1;
+        private int prevFontSize = -1;
 
         /// <summary>
         /// point about which ToolTip pivots to face camera
@@ -336,20 +357,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        protected virtual void OnValidate()
-        {
-            ValidateHeirarchy();
-
-            label.EnsureComponent<TextMeshPro>();
-            gameObject.EnsureComponent<ToolTipConnector>();
-        }
-
         /// <summary>
         /// virtual functions
         /// </summary>
         protected virtual void OnEnable()
         {
             ValidateHeirarchy();
+
+            label.EnsureComponent<TextMeshPro>();
+            gameObject.EnsureComponent<ToolTipConnector>();
 
             // Get our line if it exists
             if (toolTipLine == null)
@@ -370,8 +386,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 highlights.Add(highlight);
             }
-
-            RefreshLocalContent();
 
             contentParent.SetActive(false);
             ShowBackground = showBackground;
@@ -420,15 +434,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
             // Set the content using a text mesh by default
             // This function can be overridden for tooltips that use Unity UI
 
-            // Has content changed?
+            // Has content or fontSize changed?
             int currentTextLength = toolTipText.Length;
             int currentTextHash = toolTipText.GetHashCode();
+            int currentFontSize = fontSize;
 
             // If it has, update the content
-            if (currentTextLength != prevTextLength || currentTextHash != prevTextHash)
+            if (currentTextLength != prevTextLength || currentTextHash != prevTextHash || currentFontSize != prevFontSize)
             {
                 prevTextHash = currentTextHash;
                 prevTextLength = currentTextLength;
+                prevFontSize = currentFontSize;
 
                 if (cachedLabelText == null)
                     cachedLabelText = label.GetComponent<TextMeshPro>();

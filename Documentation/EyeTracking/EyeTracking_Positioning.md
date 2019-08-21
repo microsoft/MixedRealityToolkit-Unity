@@ -1,6 +1,6 @@
 ![MRTK](../Images/EyeTracking/mrtk_et_positioning.png)
 
-# Eye-Supported Target Positioning in MRTK
+# Eye-supported target positioning in MRTK
 
 <!-- TODO: Add content -->
 _We're currently restructuring and improving the MRTK documentation. 
@@ -10,4 +10,4 @@ If you have any questions regarding this section please post in our MRTK slack c
 ![MRTK](../Images/EyeTracking/mrtk_et_positioning_slider.png)
 
 ---
-[Back to "Eye Tracking in the MixedRealityToolkit"](EyeTracking_Main.md)
+[Back to "Eye tracking in the MixedRealityToolkit"](EyeTracking_Main.md)

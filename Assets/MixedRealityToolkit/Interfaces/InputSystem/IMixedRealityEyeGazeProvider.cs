@@ -17,6 +17,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         bool IsEyeGazeValid { get; }
 
         /// <summary>
+        /// Whether the user is eye calibrated. It returns 'null', if the value has not yet received data from the eye tracking system.
+        /// </summary>
+        bool? IsEyeCalibrationValid { get; }
+
+        /// <summary>
         /// If true, eye-based tracking will be used when available.
         /// </summary>
         /// <remarks>
@@ -41,5 +46,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// This method is to be called by implementations of the <see cref="IMixedRealityEyeGazeDataProvider"/> interface, not by application code.
         /// </remarks>
         void UpdateEyeGaze(IMixedRealityEyeGazeDataProvider provider, Ray eyeRay, DateTime timestamp);
+
+        /// <summary>
+        /// Tells the eye gaze provider about the eye tracking status (e.g., whether the user is calibrated);
+        /// </summary>
+        /// <param name="provider">The provider raising the event.</param>
+        /// <param name="userIsEyeCalibrated">Boolean whether the user is eye calibrated or not.</param>
+        void UpdateEyeTrackingStatus(IMixedRealityEyeGazeDataProvider provider, bool userIsEyeCalibrated);
     }
 }

@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
@@ -10,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Waits for a controller to be initialized, then synchronizes its transform position to a specified handedness.
     /// </summary>
-    public class ControllerPoseSynchronizer : InputSystemGlobalListener, IMixedRealityControllerPoseSynchronizer
+    public class ControllerPoseSynchronizer : InputSystemGlobalHandlerListener, IMixedRealityControllerPoseSynchronizer
     {
         #region IMixedRealityControllerPoseSynchronizer Implementation
 
@@ -88,6 +87,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion IMixedRealityControllerPoseSynchronizer Implementation
 
+        #region InputSystemGlobalHandlerListener Implementation
+
+        protected override void RegisterHandlers()
+        {
+            InputSystem?.RegisterHandler<IMixedRealityControllerPoseSynchronizer>(this);
+        }
+
+        protected override void UnregisterHandlers()
+        {
+            InputSystem?.UnregisterHandler<IMixedRealityControllerPoseSynchronizer>(this);
+        }
+
+        #endregion InputSystemGlobalHandlerListener Implementation
+
         #region IMixedRealitySourcePoseHandler Implementation
 
         /// <inheritdoc />
@@ -143,8 +156,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 TrackingState = eventData.Controller.TrackingState;
                 IsTracked = (TrackingState == TrackingState.Tracked);
-                transform.localPosition = eventData.SourceData.Position;
-                transform.localRotation = eventData.SourceData.Rotation;
+                transform.position = eventData.SourceData.Position;
+                transform.rotation = eventData.SourceData.Rotation;
             }
         }
 

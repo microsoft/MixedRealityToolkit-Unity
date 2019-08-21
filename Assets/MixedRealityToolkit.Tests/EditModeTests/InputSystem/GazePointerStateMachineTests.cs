@@ -11,6 +11,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 {
     class GazePointerStateMachineTests
     {
+        [TearDown]
+        public void TearDown()
+        {
+            TestUtilities.ShutdownMixedRealityToolkit();
+        }
+
         [Test]
         public void TestHeadGazeHandAndSpeechBehaviour()
         {
@@ -127,27 +133,26 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             var gsm = new GazePointerVisibilityStateMachine();
             Assert.IsTrue(gsm.IsGazePointerActive, "Eye gaze pointer should be visible on start");
 
-            // With the hand raised, eye gaze pointer should still exist because only far interaction causes the 
-            // eye gaze pointer to go away.
+            // With one hand is raised and being in near touch mode, the eye gaze pointer should be disabled.
             gsm.UpdateState(1 /*numNearPointersActive*/, 0 /*numFarPointersActive*/, 0 /*numFarPointersWithoutCursorActive*/, true);
-            Assert.IsTrue(gsm.IsGazePointerActive, "With near interaction, eye gaze pointer should continue to exist");
+            Assert.IsFalse(gsm.IsGazePointerActive, "When hands are in near interaction mode, the eye gaze pointer should be disabled");
 
-            // With far interaction active, eye gaze pointer should be hidden.
+            // With far interaction active, the eye gaze pointer should be hidden.
             gsm.UpdateState(0 /*numNearPointersActive*/, 1 /*numFarPointersActive*/, 0 /*numFarPointersWithoutCursorActive*/, true);
-            Assert.IsFalse(gsm.IsGazePointerActive, "With far interaction, eye gaze pointer should go away");
+            Assert.IsFalse(gsm.IsGazePointerActive, "When hand rays are active, the eye gaze pointer should be disabled");
 
             // Reset the state and validate that it goes back to being visible.
             gsm.UpdateState(0 /*numNearPointersActive*/, 0 /*numFarPointersActive*/, 0 /*numFarPointersWithoutCursorActive*/, true);
-            Assert.IsTrue(gsm.IsGazePointerActive, "Eye gaze pointer should be visible when no near or far pointers");
+            Assert.IsTrue(gsm.IsGazePointerActive, "Eye gaze pointer should be active when there are no other near or far pointers");
 
-            // Saying "select" should have no impact on the state of eye gaze-based interactions.
+            // Saying "select" should have no impact on the state of eye gaze pointer.
             FireSelectKeyword(gsm);
-            Assert.IsTrue(gsm.IsGazePointerActive, "Saying 'select' should have no impact on eye gaze");
+            Assert.IsTrue(gsm.IsGazePointerActive, "Saying 'select' should have no impact on the eye gaze pointer");
 
-            // With far and near interaction active, eye gaze pointer should be hidden (because far interaction wins over
+            // With both far and near interaction active, eye gaze pointer should be disabled (because far interaction wins over
             // the eye gaze regardless of near interaction state).
             gsm.UpdateState(1 /*numNearPointersActive*/, 1 /*numFarPointersActive*/, 0 /*numFarPointersWithoutCursorActive*/, true);
-            Assert.IsFalse(gsm.IsGazePointerActive, "With far and near interaction, gaze pointer should go away");
+            Assert.IsFalse(gsm.IsGazePointerActive, "With both far and near interaction active, the eye gaze pointer should be disabled");
         }
 
         [Test]
@@ -159,15 +164,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             var gsm = new GazePointerVisibilityStateMachine();
             Assert.IsTrue(gsm.IsGazePointerActive, "Gaze pointer should be visible on start");
 
-            // With the hand raised, eye gaze pointer should still exist because only far interaction causes the
-            // eye gaze pointer to go away.
+            // With one hand is raised and being in near touch mode, the eye gaze pointer should be disabled.
             gsm.UpdateState(1 /*numNearPointersActive*/, 0 /*numFarPointersActive*/, 0 /*numFarPointersWithoutCursorActive*/, true);
-            Assert.IsTrue(gsm.IsGazePointerActive, "With near interaction, gaze pointer should continue to exist");
+            Assert.IsFalse(gsm.IsGazePointerActive, "When hands are in near interaction mode, the eye gaze pointer should be disabled");
 
-            // With far interaction active, eye gaze pointer should be hidden.
+            // With far interaction active, the eye gaze pointer should be hidden.
             gsm.UpdateState(0 /*numNearPointersActive*/, 1 /*numFarPointersActive*/, 0 /*numFarPointersWithoutCursorActive*/, true);
-            Assert.IsFalse(gsm.IsGazePointerActive, "With far interaction, gaze pointer should go away");
+            Assert.IsFalse(gsm.IsGazePointerActive, "When hand rays are active, the eye gaze pointer should be disabled");
 
+            // Saying "select" should have no impact on the state of eye gaze pointer. 
             // Send a "select" command right now, to show that this cached select value doesn't affect the
             // state machine once eye gaze degrades into head gaze.
             FireSelectKeyword(gsm);
@@ -196,14 +201,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             var gsm = new GazePointerVisibilityStateMachine();
             Assert.IsTrue(gsm.IsGazePointerActive, "Gaze pointer should be visible on start");
 
-            // The eye pointer should go away because a hand was raised and head gaze is active.
+            // The eye pointer should go away because a hand was raised and eye gaze is inactive defaulting back to head gaze.
             gsm.UpdateState(1 /*numNearPointersActive*/, 0 /*numFarPointersActive*/, 0 /*numFarPointersWithoutCursorActive*/, false);
             Assert.IsFalse(gsm.IsGazePointerActive, "With near interaction and head gaze, gaze pointer should be inactive");
 
-            // After transitioning to eye gaze, the gaze pointer should now be active because near interaction
-            // doesn't affect the visibility of eye-gaze style pointers.
+            // After transitioning to eye gaze, the gaze pointer should still be inactive because there is at least one hand 
+            // in near interaction mode.
             gsm.UpdateState(1 /*numNearPointersActive*/, 0 /*numFarPointersActive*/, 0 /*numFarPointersWithoutCursorActive*/, true);
-            Assert.IsTrue(gsm.IsGazePointerActive, "With near interaction and eye gaze, gaze pointer should be active");
+            Assert.IsFalse(gsm.IsGazePointerActive, "With near interaction and eye gaze, gaze pointer should be inactive");
+
+            // With far interaction active, the eye gaze pointer should be hidden.
+            gsm.UpdateState(0 /*numNearPointersActive*/, 1 /*numFarPointersActive*/, 0 /*numFarPointersWithoutCursorActive*/, true);
+            Assert.IsFalse(gsm.IsGazePointerActive, "When hand rays are active, the eye gaze pointer should be disabled");
+
+            // With no other near or far pointer active, the eye gaze pointer should be active.
+            gsm.UpdateState(0 /*numNearPointersActive*/, 0 /*numFarPointersActive*/, 0 /*numFarPointersWithoutCursorActive*/, true);
+            Assert.IsTrue(gsm.IsGazePointerActive, "Eye gaze pointer should be active when there are no other near or far pointers");
         }
 
         private static void FireSelectKeyword(GazePointerVisibilityStateMachine gsm)

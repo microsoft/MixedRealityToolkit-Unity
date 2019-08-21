@@ -99,9 +99,9 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                 gravityDistorter = GetComponent<DistorterGravity>();
             }
 
-            if (MixedRealityToolkit.IsInitialized && TeleportSystem != null && !lateRegisterTeleport)
+            if (!lateRegisterTeleport)
             {
-                TeleportSystem.Register(gameObject);
+                TeleportSystem?.RegisterHandler<IMixedRealityTeleportHandler>(this);
             }
         }
 
@@ -109,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         {
             base.Start();
 
-            if (lateRegisterTeleport && MixedRealityToolkit.Instance.ActiveProfile.IsTeleportSystemEnabled)
+            if (lateRegisterTeleport)
             {
                 if (TeleportSystem == null)
                 {
@@ -128,9 +128,8 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                         return;
                     }
                 }
-
                 lateRegisterTeleport = false;
-                TeleportSystem.Register(gameObject);
+                TeleportSystem.RegisterHandler<IMixedRealityTeleportHandler>(this);
             }
         }
 
@@ -138,7 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         {
             base.OnDisable();
 
-            TeleportSystem?.Unregister(gameObject);
+            TeleportSystem?.UnregisterHandler<IMixedRealityTeleportHandler>(this);
         }
 
         private Vector2 currentInputPosition = Vector2.zero;
@@ -321,7 +320,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         public override void OnInputChanged(InputEventData<Vector2> eventData)
         {
             // Don't process input if we've got an active teleport request in progress.
-            if (isTeleportRequestActive || !MixedRealityToolkit.IsTeleportSystemEnabled)
+            if (isTeleportRequestActive || TeleportSystem == null)
             {
                 return;
             }

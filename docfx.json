@@ -23,7 +23,7 @@
       {
         // generate html for conceptual docs
         "files": ["*.md", "*.yml", //root dir md and toc files
-                "Documentation/**/*.md", "Assets/**/*.md", "External/Documentation/**/*.md", "External/HowTo/**/*.md", // conceptual docs subfolders md files
+                "Documentation/**/*.md", "Assets/**/*.md",
 				"Documentation/**/*.yml", "Assets/**/*.yml" // conceptual docs subfolders toc yml files
                 ]
       }
@@ -49,13 +49,15 @@
       "_appTitle": "Mixed Reality Toolkit Documentation",
       "_enableSearch": true,
       "_disableNavbar": false,
-      "_appLogoPath": "External/ReadMeImages/mrt_logo_icon.png",
-      "_appFaviconPath": "External/ReadMeImages/favicon.ico"
-      // re-add this section if you want to publish a version of the docs that keeps the "improve this doc" link pointing to mrtk_development branch
-      //"_gitContribute": {
-      //  "repo": "https://github.com/Microsoft/MixedRealityToolkit-Unity",
-      //  "branch": "mrtk_development"
-      //}
+      "_appLogoPath": "Documentation/Images/mrt_logo_icon.png",
+      "_appFaviconPath": "Documentation/Images/favicon.ico",
+      // section contribute start
+	  // remove this section if you want to restore default behavior which publishes a version of the docs that keeps the "improve this doc" link pointing to the publishing branch
+      "_gitContribute": {
+        "repo": "https://github.com/Microsoft/MixedRealityToolkit-Unity",
+        "branch": "mrtk_development"
+      }
+	  // section contribute end
     },
     "markdownEngineName": "markdig",
     "dest": "doc",

@@ -27,28 +27,33 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         public Material HeatmapOverlayMaterialTemplate;
 
-        private IMixedRealityInputSystem inputSystem = null;
+        private EyeTrackingTarget eyeTarget = null;
 
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        private IMixedRealityInputSystem InputSystem
+        private EyeTrackingTarget EyeTarget
         {
             get
             {
-                if (inputSystem == null)
+                if (eyeTarget == null)
                 {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+                    eyeTarget = this.GetComponent<EyeTrackingTarget>();
                 }
-                return inputSystem;
+                return eyeTarget;
             }
         }
 
-        private void Update()
+        private void Start()
         {
-            if (UseLiveInputStream && InputSystem?.EyeGazeProvider?.GazeTarget == gameObject && InputSystem.EyeGazeProvider.IsEyeGazeValid)
+            if (EyeTarget != null)
             {
-                DrawAtThisHitPos(InputSystem.EyeGazeProvider.HitPosition);
+                EyeTarget.WhileLookingAtTarget.AddListener(OnLookAt);
+            }
+        }
+
+        public void OnLookAt()
+        {
+            if (UseLiveInputStream && (EyeTarget != null) && (EyeTarget.IsLookedAt))
+            {
+                DrawAtThisHitPos(EyeTrackingTarget.LookedAtPoint);
             }
         }
 

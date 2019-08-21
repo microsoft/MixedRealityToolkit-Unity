@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 {
     public class ControllerPopupWindow : EditorWindow
     {
-        private const string EditorWindowOptionsPath = "/MixedRealityToolkit/Inspectors/Data/EditorWindowOptions.json";
+        private const string EditorWindowOptionsPath = "Inspectors/Data/EditorWindowOptions.json";
         private const float InputActionLabelWidth = 128f;
 
         /// <summary>
@@ -202,7 +202,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             window.currentInteractionList = interactionsList;
             isMouseInRects = new bool[interactionsList.arraySize];
 
-            if (!File.Exists($"{Application.dataPath}{EditorWindowOptionsPath}"))
+            string editorWindowOptionsPath = ResolveEditorWindowOptionsPath();
+            if (!File.Exists(editorWindowOptionsPath))
             {
                 var empty = new ControllerInputActionOptions
                 {
@@ -218,12 +219,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     }
                 };
 
-                File.WriteAllText($"{Application.dataPath}{EditorWindowOptionsPath}", JsonUtility.ToJson(empty));
+                File.WriteAllText(editorWindowOptionsPath, JsonUtility.ToJson(empty));
                 AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
             }
             else
             {
-                controllerInputActionOptions = JsonUtility.FromJson<ControllerInputActionOptions>(File.ReadAllText($"{Application.dataPath}{EditorWindowOptionsPath}"));
+                controllerInputActionOptions = JsonUtility.FromJson<ControllerInputActionOptions>(File.ReadAllText(editorWindowOptionsPath));
 
                 if (controllerInputActionOptions.Controllers.Any(option => option.Controller == controllerMapping.SupportedControllerType && option.Handedness == handedness))
                 {
@@ -332,9 +333,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                 if (EditorGUI.EndChangeCheck())
                 {
+                    string editorWindowOptionsPath = ResolveEditorWindowOptionsPath();
                     if (!editInputActionPositions)
                     {
-                        File.WriteAllText($"{Application.dataPath}{EditorWindowOptionsPath}", JsonUtility.ToJson(controllerInputActionOptions));
+                        File.WriteAllText(editorWindowOptionsPath, JsonUtility.ToJson(controllerInputActionOptions));
                     }
                     else
                     {
@@ -359,7 +361,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                         option.Controller == 0));
                             }
 
-                            File.WriteAllText($"{Application.dataPath}{EditorWindowOptionsPath}", JsonUtility.ToJson(controllerInputActionOptions));
+                            File.WriteAllText(editorWindowOptionsPath, JsonUtility.ToJson(controllerInputActionOptions));
                         }
                     }
                 }
@@ -603,26 +605,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     {
                         bool skip = false;
                         var description = interactionDescription.stringValue;
-                        if (currentControllerMapping.SupportedControllerType == SupportedControllerType.WindowsMixedReality
+                        if (currentControllerMapping.SupportedControllerType == SupportedControllerType.GGVHand
                             && currentControllerMapping.Handedness == Handedness.None)
                         {
-                            if (description == "Grip Press" ||
-                                description == "Trigger Position" ||
-                                description == "Trigger Touch" ||
-                                description == "Touchpad Position" ||
-                                description == "Touchpad Touch" ||
-                                description == "Touchpad Press" ||
-                                description == "Menu Press" ||
-                                description == "Thumbstick Position" ||
-                                description == "Thumbstick Press"
-                                )
+                            if (description != "Select")
                             {
                                 skip = true;
-                            }
-
-                            if (description == "Trigger Press (Select)")
-                            {
-                                description = "Air Tap (Select)";
                             }
                         }
 
@@ -750,6 +738,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     }
                 }
             }
+        }
+
+        private static string ResolveEditorWindowOptionsPath()
+        {
+            return MixedRealityToolkitFiles.MapRelativeFilePathToAbsolutePath(EditorWindowOptionsPath);
         }
     }
 }

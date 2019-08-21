@@ -59,8 +59,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             var buildInfo = new UwpBuildInfo
             {
                 OutputDirectory = buildDirectory,
-                Scenes = EditorBuildSettings.scenes.Where(scene => scene.enabled).Select(scene => scene.path),
+                Scenes = EditorBuildSettings.scenes.Where(scene => scene.enabled && !string.IsNullOrEmpty(scene.path)).Select(scene => scene.path),
                 BuildAppx = !showDialog,
+                BuildPlatform = EditorUserBuildSettings.wsaArchitecture,
+                GazeInputCapabilityEnabled = UwpBuildDeployPreferences.GazeInputCapabilityEnabled,
 
                 // Configure a post build action that will compile the generated solution
                 PostBuildAction = PostBuildAction
@@ -74,13 +76,19 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 }
                 else
                 {
+                    var uwpBuildInfo = innerBuildInfo as UwpBuildInfo;
+                    Debug.Assert(uwpBuildInfo != null);
+                    if (uwpBuildInfo.GazeInputCapabilityEnabled)
+                    {
+                        UwpAppxBuildTools.AddGazeInputCapability(uwpBuildInfo);
+                    }
+
                     if (showDialog &&
                         !EditorUtility.DisplayDialog(PlayerSettings.productName, "Build Complete", "OK", "Build AppX"))
                     {
-                        var _buildInfo = innerBuildInfo as UwpBuildInfo;
-                        Debug.Assert(_buildInfo != null);
+                        
                         EditorAssemblyReloadManager.LockReloadAssemblies = true;
-                        await UwpAppxBuildTools.BuildAppxAsync(_buildInfo, cancellationToken);
+                        await UwpAppxBuildTools.BuildAppxAsync(uwpBuildInfo, cancellationToken);
                         EditorAssemblyReloadManager.LockReloadAssemblies = false;
                     }
                 }

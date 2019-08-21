@@ -186,7 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                     }
                 }
             }
-            catch (MissingReferenceException)
+            catch (System.Exception)
             {
                 // Just ignore. Usually happens after the game object already got destroyed, but the update sequence had already been started.
             }
@@ -220,7 +220,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 // Go through renderers in children objects
                 Renderers_ChangeTransparency(gobj.GetComponentsInChildren<Renderer>(), transparency, ref originalTransparency);
             }
-            catch (MissingReferenceException)
+            catch (System.Exception)
             {
                 // Just ignore; Usually happens after the game object already got destroyed, but the update sequence had already be started
             }

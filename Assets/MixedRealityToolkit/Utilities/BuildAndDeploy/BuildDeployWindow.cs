@@ -51,8 +51,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private const string EMPTY_IP_ADDRESS = "0.0.0.0";
 
-        private const float UPDATE_BUILDS_PERIOD = 1.0f;
-
         private readonly string[] tabNames = { "Unity Build Options", "Appx Build Options", "Deploy Options" };
 
         private readonly string[] scriptingBackendNames = { "IL2CPP", ".NET" };
@@ -76,6 +74,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private readonly GUIContent buildDirectoryLabel = new GUIContent("Build Directory", "It's recommended to use 'UWP'");
 
         private readonly GUIContent useCSharpProjectsLabel = new GUIContent("Generate C# Debug", "Generate C# Project References for debugging.\nOnly available in .NET Scripting runtime.");
+        
+        private readonly GUIContent gazeInputCapabilityLabel =
+            new GUIContent("Gaze Input Capability", 
+                           "If checked, the 'Gaze Input' capability will be added to the AppX manifest after the Unity build.");
 
         private readonly GUIContent autoIncrementLabel = new GUIContent("Auto Increment", "Increases Version Build Number");
 
@@ -167,6 +169,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private Vector2 scrollPosition;
 
         private BuildDeployTab currentTab = BuildDeployTab.UnityBuildOptions;
+        private BuildDeployTab lastTab = BuildDeployTab.UnityBuildOptions;
 
         private static bool isBuilding;
         private static bool isAppRunning;
@@ -292,7 +295,13 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             #endregion Quick Options
 
+            lastTab = currentTab;
             currentTab = (BuildDeployTab)GUILayout.Toolbar(SessionState.GetInt("_BuildWindow_Tab", (int)currentTab), tabNames);
+            if (currentTab != lastTab && currentTab == BuildDeployTab.DeployOptions)
+            {
+                UpdateBuilds();
+            }
+
             SessionState.SetInt("_BuildWindow_Tab", (int)currentTab);
 
             GUILayout.Space(10);
@@ -311,16 +320,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-        }
-
-        private void Update()
-        {
-            if (Time.realtimeSinceStartup - timeLastUpdatedBuilds > UPDATE_BUILDS_PERIOD)
-            {
-                UpdateBuilds();
-            }
-
-            Repaint();
         }
 
         private static void OpenPlayerSettingsGUI()
@@ -518,6 +517,18 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 EditorUserBuildSettings.wsaArchitecture = newBuildArchitectureString;
             }
 
+            // The 'Gaze Input' capability support was added for HL2 in the Windows SDK 18362, but 
+            // existing versions of Unity don't have support for automatically adding the capability to the generated
+            // AppX manifest during the build. This option provides a mechanism for people using the
+            // MRTK build tools to auto-append this capability if desired, instead of having to manually
+            // do this each time on their own.
+            bool curGazeInputCapabilityEnabled = UwpBuildDeployPreferences.GazeInputCapabilityEnabled;
+            bool newGazeInputCapabilityEnabled = EditorGUILayout.Toggle(gazeInputCapabilityLabel, curGazeInputCapabilityEnabled);
+            if (newGazeInputCapabilityEnabled != curGazeInputCapabilityEnabled)
+            {
+                UwpBuildDeployPreferences.GazeInputCapabilityEnabled = newGazeInputCapabilityEnabled;
+            }
+            
             GUILayout.BeginHorizontal();
 
             var prevFieldWidth = EditorGUIUtility.fieldWidth;
@@ -776,6 +787,13 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             GUILayout.EndHorizontal();
 
+            GUILayout.Space(10f);
+
+            if (GUILayout.Button("Refresh builds", GUILayout.Width(128f)))
+            {
+                UpdateBuilds();
+            }
+
             // Build list
             if (Builds.Count == 0)
             {
@@ -796,7 +814,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
                     GUILayout.Space(2);
                     EditorGUILayout.BeginHorizontal();
-                    GUILayout.Space(12);
 
                     GUI.enabled = CanInstall;
                     if (GUILayout.Button("Install", GUILayout.Width(96)))
@@ -1342,10 +1359,12 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             // Get the appx path
             FileInfo[] files = new DirectoryInfo(buildPath).GetFiles("*.appx");
             files = files.Length == 0 ? new DirectoryInfo(buildPath).GetFiles("*.appxbundle") : files;
+            files = files.Length == 0 ? new DirectoryInfo(buildPath).GetFiles("*.msix") : files;
+            files = files.Length == 0 ? new DirectoryInfo(buildPath).GetFiles("*.msixbundle") : files;
 
             if (files.Length == 0)
             {
-                Debug.LogErrorFormat("No APPX found in folder build folder ({0})", buildPath);
+                Debug.LogErrorFormat("No APPX or MSIX found in folder build folder ({0})", buildPath);
                 return;
             }
 

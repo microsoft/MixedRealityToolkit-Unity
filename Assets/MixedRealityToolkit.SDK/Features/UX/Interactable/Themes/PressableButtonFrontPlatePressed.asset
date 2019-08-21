@@ -15,6 +15,7 @@ MonoBehaviour:
   Name: 
   Settings:
   - Name: InteractableShaderTheme
+    AssemblyQualifiedName: 
     Properties:
     - Name: Shader
       Type: 3
@@ -685,6 +686,8 @@ MonoBehaviour:
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
       ShaderName: 
+    CustomSettings: []
+    CustomHistory: []
     Easing:
       Enabled: 0
       Curve:

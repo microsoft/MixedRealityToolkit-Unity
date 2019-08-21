@@ -403,8 +403,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             // Check whether the user is still looking within the proximity of the target
             float distanceBetweenTargetAndCurrHitPos = Angle_ToCurrHitTarget(gameObject);
 
-            // ToDo: It would be better to make this dependent on the target's boundary instead of its center. 
-            // The way it is implemented right now may cause problems for large-scale targets.
+            // **Note for potential improvement**: It would be better to make this dependent on the target's boundary 
+            // instead of its center. The way it is implemented right now may cause problems for large-scale targets.
             if (distanceBetweenTargetAndCurrHitPos > minLookAwayDistToEnableEyeWarp)
             {
                 return true;
@@ -650,10 +650,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 {
                     head_deltaDirf = deltaDir * head_smoothf + head_deltaDirf * (1 - head_smoothf);
 
-                    if (head_deltaDirf > head_deltaDirThresh) // TODO: Combined metric of head location and rotation?
+                    if (head_deltaDirf > head_deltaDirThresh)
+                    {
                         head_isInMotion = true;
+                    }
                     else
+                    {
                         head_isInMotion = false;
+                    }
                 }
             }
             else

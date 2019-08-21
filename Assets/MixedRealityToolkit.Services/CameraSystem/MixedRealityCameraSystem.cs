@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
     /// <summary>
     /// The Camera system controls the settings of the main camera.
     /// </summary>
-    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#camera")]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#camera")]
     public class MixedRealityCameraSystem : BaseCoreSystem, IMixedRealityCameraSystem
     {
         private enum DisplayType
@@ -80,6 +80,14 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             {
                 ApplySettingsForTransparentDisplay();
             }
+
+            // Ensure the camera is parented to the playspace which starts, unrotated, at the origin.
+            MixedRealityPlayspace.Position = Vector3.zero;
+            MixedRealityPlayspace.Rotation = Quaternion.identity;
+            if (CameraCache.Main.transform.position != Vector3.zero)
+            {
+                Debug.LogWarning($"The main camera is not positioned at the origin ({Vector3.zero}), immersive experiences may not behave as expected.");
+            }
         }
 
         /// <inheritdoc />
@@ -107,6 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         {
             CameraCache.Main.clearFlags = CameraProfile.CameraClearFlagsOpaqueDisplay;
             CameraCache.Main.nearClipPlane = CameraProfile.NearClipPlaneOpaqueDisplay;
+            CameraCache.Main.farClipPlane = CameraProfile.FarClipPlaneOpaqueDisplay;
             CameraCache.Main.backgroundColor = CameraProfile.BackgroundColorOpaqueDisplay;
             QualitySettings.SetQualityLevel(CameraProfile.OpaqueQualityLevel, false);
         }
@@ -119,6 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             CameraCache.Main.clearFlags = CameraProfile.CameraClearFlagsTransparentDisplay;
             CameraCache.Main.backgroundColor = CameraProfile.BackgroundColorTransparentDisplay;
             CameraCache.Main.nearClipPlane = CameraProfile.NearClipPlaneTransparentDisplay;
+            CameraCache.Main.farClipPlane = CameraProfile.FarClipPlaneTransparentDisplay;
             QualitySettings.SetQualityLevel(CameraProfile.HoloLensQualityLevel, false);
         }
 

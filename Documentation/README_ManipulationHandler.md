@@ -10,6 +10,8 @@ Add the [`ManipulationHandler.cs`](https://github.com/Microsoft/MixedRealityTool
 
 Make sure to also add a collidable to the object, matching its grabbable bounds. To make the object respond to near articulated hand input, add the [`NearInteractionGrabbable.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Services/InputSystem/NearInteractionGrabbable.cs) script as well. 
 
+If you wish to set minimum or maximum values for the object's scale, you can add a [`TransformScaleHandler`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/TransformScaleHandler.cs) script.
+
 ![Manipulation Handler](../Documentation/Images/ManipulationHandler/MRTK_ManipulationHandler_Howto.png)
 
 ## Inspector properties ##
@@ -50,7 +52,7 @@ Specifies how the object will behave when it is being grabbed with one hand / co
 Specifies how the object will rotate when it is being grabbed with one hand.
 
 * *Maintain original rotation*: Does not rotate object as it is being moved
-* *Maintain rotation to user*: Maintains the object's original rotation to the user
+* *Maintain rotation to user*: Maintains the object's original rotation for X/Y axis to the user
 * *Gravity aligned maintain rotation to user*: Maintains object's original rotation to user, but makes the object vertical. Useful for bounding boxes.
 * *Face user*: Ensures object always faces the user. Useful for slates/panels.
 * *Face away from user*: Ensures object always faces away from user. Useful for slates/panels that are configured backwards.

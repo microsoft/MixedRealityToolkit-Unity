@@ -54,10 +54,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         private static void RenderList(SerializedProperty list)
         {
-            EditorGUILayout.Space();
             GUILayout.BeginVertical();
 
-                if (MixedRealityEditorUtility.RenderIndentedButton(AddButtonContent, EditorStyles.miniButton))
+                if (InspectorUIUtility.RenderIndentedButton(AddButtonContent, EditorStyles.miniButton))
                 {
                     list.arraySize += 1;
                     var inputAction = list.GetArrayElementAtIndex(list.arraySize - 1);
@@ -67,8 +66,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     inputActionConstraint.intValue = 0;
                     inputActionDescription.stringValue = $"New Action {inputActionId.intValue = list.arraySize}";
                 }
-
-                GUILayout.Space(12f);
 
                 GUILayout.BeginVertical();
 
@@ -81,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 EditorGUIUtility.labelWidth = labelWidth;
                 GUILayout.EndHorizontal();
 
-                scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
+                scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition,GUILayout.Height(100f));
 
                 for (int i = 0; i < list.arraySize; i++)
                 {
@@ -106,6 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 EditorGUILayout.EndScrollView();
                 GUILayout.EndVertical();
             GUILayout.EndVertical();
+            EditorGUILayout.Space();
         }
     }
 }

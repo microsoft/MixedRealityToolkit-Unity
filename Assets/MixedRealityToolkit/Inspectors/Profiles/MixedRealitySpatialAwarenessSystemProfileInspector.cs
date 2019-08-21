@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
         private static readonly GUIContent RemoveObserverContent = new GUIContent("-", "Remove Spatial Observer");
 
         private static readonly GUIContent ComponentTypeContent = new GUIContent("Type");
-        private static readonly GUIContent RuntimePlatformContent = new GUIContent("Platform(s)");
+        private static readonly GUIContent RuntimePlatformContent = new GUIContent("Supported Platform(s)");
 
         private SerializedProperty observerConfigurations;
 
@@ -58,6 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
         {
             var profile = target as BaseMixedRealityProfile;
             return MixedRealityToolkit.IsInitialized && profile != null &&
+                   MixedRealityToolkit.Instance.HasActiveProfile &&
                    profile == MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessSystemProfile;
         }
 
@@ -67,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
 
             using (new EditorGUILayout.VerticalScope())
             {
-                if (MixedRealityEditorUtility.RenderIndentedButton(AddObserverContent, EditorStyles.miniButton))
+                if (InspectorUIUtility.RenderIndentedButton(AddObserverContent, EditorStyles.miniButton))
                 {
                     list.InsertArrayElementAtIndex(list.arraySize);
                     SerializedProperty observer = list.GetArrayElementAtIndex(list.arraySize - 1);

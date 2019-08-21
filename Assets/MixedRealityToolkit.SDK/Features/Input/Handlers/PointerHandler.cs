@@ -17,22 +17,36 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Unity event raised on pointer down.
         /// </summary>
-        public PointerUnityEvent OnPointerDown;
+        public PointerUnityEvent OnPointerDown = new PointerUnityEvent();
 
         /// <summary>
         /// Unity event raised on pointer up.
         /// </summary>
-        public PointerUnityEvent OnPointerUp;
+        public PointerUnityEvent OnPointerUp = new PointerUnityEvent();
 
         /// <summary>
         /// Unity event raised on pointer clicked.
         /// </summary>
-        public PointerUnityEvent OnPointerClicked;
+        public PointerUnityEvent OnPointerClicked = new PointerUnityEvent();
 
         /// <summary>
         /// Unity event raised every frame the pointer is down.
         /// </summary>
-        public PointerUnityEvent OnPointerDragged;
+        public PointerUnityEvent OnPointerDragged = new PointerUnityEvent();
+
+        #region InputSystemGlobalHandlerListener Implementation
+
+        protected override void RegisterHandlers()
+        {
+            InputSystem?.RegisterHandler<IMixedRealityPointerHandler>(this);
+        }
+
+        protected override void UnregisterHandlers()
+        {
+            InputSystem?.UnregisterHandler<IMixedRealityPointerHandler>(this);
+        }
+
+        #endregion InputSystemGlobalHandlerListener Implementation
 
         #region IMixedRealityPointerHandler
 

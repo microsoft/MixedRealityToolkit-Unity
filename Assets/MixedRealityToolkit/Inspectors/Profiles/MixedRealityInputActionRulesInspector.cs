@@ -82,15 +82,13 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 ResetCriteria();
             }
 
-            if (!MixedRealityToolkit.IsInitialized ||
-                !MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled ||
-                 MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null ||
-                 MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionRulesProfile != thisProfile )
+            if (!IsProfileInActiveInstance()
+                || MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
             {
                 return;
             }
 
-            var inputActions = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions;
+            var inputActions = GetInputActions();
             baseActionLabels = inputActions.Where(action => action.AxisConstraint != AxisType.None && action.AxisConstraint != AxisType.Raw)
                                             .Select(action => action.Description).ToArray();
 
@@ -104,17 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         {
             RenderProfileHeader(ProfileTitle, ProfileDescription, target, isInitialized, BackProfileType.Input);
 
-            RenderMixedRealityInputConfigured();
-
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
-            {
-                return;
-            }
-
-            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
-            {
-                EditorGUILayout.HelpBox("No Input Actions profile was specified.", MessageType.Error);
-            }
+            CheckMixedRealityInputActions();
 
             using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target), false))
             {
@@ -144,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                 using (new GUIEnabledWrapper(addButtonEnable, false))
                 {
-                    if (MixedRealityEditorUtility.RenderIndentedButton(RuleAddButtonContent, EditorStyles.miniButton))
+                    if (InspectorUIUtility.RenderIndentedButton(RuleAddButtonContent, EditorStyles.miniButton))
                     {
                         AddRule();
                         ResetCriteria();
@@ -172,6 +160,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         {
             var profile = target as BaseMixedRealityProfile;
             return MixedRealityToolkit.IsInitialized && profile != null &&
+                   MixedRealityToolkit.Instance.HasActiveProfile &&
                    MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile != null &&
                    profile == MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionRulesProfile;
         }
@@ -220,7 +209,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         private static void GetCompatibleActions(MixedRealityInputAction baseAction)
         {
-            var inputActions = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions;
+            var inputActions = GetInputActions();
+
             ruleActionLabels = inputActions.Where(inputAction => inputAction.AxisConstraint == baseAction.AxisConstraint && inputAction.Id != baseAction.Id)
                 .Select(action => action.Description).ToArray();
 
@@ -454,7 +444,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     baseActionId = EditorGUILayout.IntPopup(baseActionId, baseActionLabels, baseActionIds, GUILayout.ExpandWidth(true));
                 }
 
-                var inputActions = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions;
+                var inputActions = GetInputActions();
                 for (int i = 0; i < inputActions.Length; i++)
                 {
                     if (baseActionId == (int)inputActions[i].Id)
@@ -487,11 +477,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             EditorGUI.BeginChangeCheck();
             ruleActionId = EditorGUILayout.IntPopup(ruleActionId, ruleActionLabels, ruleActionIds, GUILayout.ExpandWidth(true));
 
-            for (int i = 0; i < MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions.Length; i++)
+            var inputActions = GetInputActions();
+            for (int i = 0; i < inputActions.Length; i++)
             {
-                if (ruleActionId == (int)MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions[i].Id)
+                if (ruleActionId == (int)inputActions[i].Id)
                 {
-                    action = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions[i];
+                    action = inputActions[i];
                 }
             }
 
@@ -556,6 +547,19 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                 EditorGUILayout.Space();
             }
+        }
+
+        private static MixedRealityInputAction[] GetInputActions()
+        {
+            if (!MixedRealityToolkit.IsInitialized ||
+                !MixedRealityToolkit.Instance.HasActiveProfile ||
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile == null ||
+                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile == null)
+            {
+                return new MixedRealityInputAction[0];
+            }
+
+            return MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions;
         }
     }
 }

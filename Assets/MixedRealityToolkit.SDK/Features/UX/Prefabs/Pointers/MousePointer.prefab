@@ -72,4 +72,3 @@ MonoBehaviour:
   hideCursorWhenInactive: 1
   movementThresholdToUnHide: 0.5
   hideTimeout: 3
-  speed: 3.38

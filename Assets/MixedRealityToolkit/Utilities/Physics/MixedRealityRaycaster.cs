@@ -16,9 +16,9 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <param name="prioritizedLayerMasks"></param>
         /// <param name="physicsHit"></param>
         /// <returns>Whether or not the raycast hit something.</returns>
-        public static bool RaycastSimplePhysicsStep(RayStep step, LayerMask[] prioritizedLayerMasks, out RaycastHit physicsHit)
+        public static bool RaycastSimplePhysicsStep(RayStep step, LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out RaycastHit physicsHit)
         {
-            return RaycastSimplePhysicsStep(step, step.Length, prioritizedLayerMasks, out physicsHit);
+            return RaycastSimplePhysicsStep(step, step.Length, prioritizedLayerMasks, focusIndividualCompoundCollider, out physicsHit);
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <param name="prioritizedLayerMasks"></param>
         /// <param name="physicsHit"></param>
         /// <returns>Whether or not the raycast hit something.</returns>
-        public static bool RaycastSimplePhysicsStep(RayStep step, float maxDistance, LayerMask[] prioritizedLayerMasks, out RaycastHit physicsHit)
+        public static bool RaycastSimplePhysicsStep(RayStep step, float maxDistance, LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out RaycastHit physicsHit)
         {
             Debug.Assert(maxDistance > 0, "Length must be longer than zero!");
             Debug.Assert(step.Direction != Vector3.zero, "Invalid step direction!");
@@ -38,14 +38,14 @@ namespace Microsoft.MixedReality.Toolkit.Physics
                 // If there is only one priority, don't prioritize
                 ? UnityEngine.Physics.Raycast(step.Origin, step.Direction, out physicsHit, maxDistance, prioritizedLayerMasks[0])
                 // Raycast across all layers and prioritize
-                : TryGetPrioritizedPhysicsHit(UnityEngine.Physics.RaycastAll(step.Origin, step.Direction, maxDistance, UnityEngine.Physics.AllLayers), prioritizedLayerMasks, out physicsHit);
+                : TryGetPrioritizedPhysicsHit(UnityEngine.Physics.RaycastAll(step.Origin, step.Direction, maxDistance, UnityEngine.Physics.AllLayers), prioritizedLayerMasks, focusIndividualCompoundCollider, out physicsHit);
         }
 
         /// <summary>
         /// Box raycasts each physics <see cref="Microsoft.MixedReality.Toolkit.Physics.RayStep"/>.
         /// </summary>
         /// <returns>Whether or not the raycast hit something.</returns>
-        public static bool RaycastBoxPhysicsStep(RayStep step, Vector3 extents, Vector3 targetPosition, Matrix4x4 matrix, float maxDistance, LayerMask[] prioritizedLayerMasks, int raysPerEdge, bool isOrthographic, out Vector3[] points, out Vector3[] normals, out bool[] hits)
+        public static bool RaycastBoxPhysicsStep(RayStep step, Vector3 extents, Vector3 targetPosition, Matrix4x4 matrix, float maxDistance, LayerMask[] prioritizedLayerMasks, int raysPerEdge, bool isOrthographic, bool focusIndividualCompoundCollider, out Vector3[] points, out Vector3[] normals, out bool[] hits)
         {
             if (Application.isEditor && DebugEnabled)
             {
@@ -80,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
                     }
 
                     RaycastHit rayHit;
-                    hits[index] = RaycastSimplePhysicsStep(new RayStep(origin, direction.normalized * maxDistance), prioritizedLayerMasks, out rayHit);
+                    hits[index] = RaycastSimplePhysicsStep(new RayStep(origin, direction.normalized * maxDistance), prioritizedLayerMasks, focusIndividualCompoundCollider, out rayHit);
 
                     if (hits[index])
                     {
@@ -116,9 +116,70 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <param name="prioritizedLayerMasks"></param>
         /// <param name="physicsHit"></param>
         /// <returns>Whether or not the raycast hit something.</returns>
-        public static bool RaycastSpherePhysicsStep(RayStep step, float radius, LayerMask[] prioritizedLayerMasks, out RaycastHit physicsHit)
+        public static bool RaycastSpherePhysicsStep(RayStep step, float radius, LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out RaycastHit physicsHit)
         {
-            return RaycastSpherePhysicsStep(step, radius, step.Length, prioritizedLayerMasks, out physicsHit);
+            return RaycastSpherePhysicsStep(step, radius, step.Length, prioritizedLayerMasks, focusIndividualCompoundCollider, out physicsHit);
+        }
+
+        /// <summary>
+        /// Sphere raycasts each physics <see cref="Microsoft.MixedReality.Toolkit.Physics.RayStep"/> within a specified maximum distance.
+        /// </summary>
+        /// <param name="step"></param>
+        /// <param name="radius"></param>
+        /// <param name="maxDistance"></param>
+        /// <param name="prioritizedLayerMasks"></param>
+        /// <param name="physicsHit"></param>
+        /// <returns>Whether or not the raycast hit something.</returns>
+        public static bool RaycastSpherePhysicsStep(RayStep step, float radius, float maxDistance, LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out RaycastHit physicsHit)
+        {
+            return prioritizedLayerMasks.Length == 1
+                // If there is only one priority, don't prioritize
+                ? UnityEngine.Physics.SphereCast(step.Origin, radius, step.Direction, out physicsHit, maxDistance, prioritizedLayerMasks[0])
+                // Raycast across all layers and prioritize
+                : TryGetPrioritizedPhysicsHit(UnityEngine.Physics.SphereCastAll(step.Origin, radius, step.Direction, maxDistance, UnityEngine.Physics.AllLayers), prioritizedLayerMasks, focusIndividualCompoundCollider, out physicsHit);
+        }
+
+        /// <summary>
+        /// Tries to get the prioritized physics raycast hit based on the prioritized layer masks.
+        /// </summary>
+        /// <remarks>Sorts all hit objects first by layerMask, then by distance.</remarks>
+        /// <param name="hits"></param>
+        /// <param name="priorityLayers"></param>
+        /// <param name="raycastHit"></param>
+        /// <returns>The minimum distance hit within the first layer that has hits.</returns>
+        public static bool TryGetPrioritizedPhysicsHit(RaycastHit[] hits, LayerMask[] priorityLayers, bool focusIndividualCompoundCollider, out RaycastHit raycastHit)
+        {
+            raycastHit = default(RaycastHit);
+
+            if (hits.Length == 0)
+            {
+                return false;
+            }
+
+            for (int layerMaskIdx = 0; layerMaskIdx < priorityLayers.Length; layerMaskIdx++)
+            {
+                RaycastHit? minHit = null;
+
+                for (int hitIdx = 0; hitIdx < hits.Length; hitIdx++)
+                {
+                    RaycastHit hit = hits[hitIdx];
+                    GameObject targetGameObject = focusIndividualCompoundCollider ? hit.collider.gameObject : hit.transform.gameObject;
+
+                    if (targetGameObject.layer.IsInLayerMask(priorityLayers[layerMaskIdx]) &&
+                        (minHit == null || hit.distance < minHit.Value.distance))
+                    {
+                        minHit = hit;
+                    }
+                }
+
+                if (minHit != null)
+                {
+                    raycastHit = minHit.Value;
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -137,66 +198,6 @@ namespace Microsoft.MixedReality.Toolkit.Physics
             }
 
             hitPoint = Vector3.zero;
-            return false;
-        }
-
-        /// <summary>
-        /// Sphere raycasts each physics <see cref="Microsoft.MixedReality.Toolkit.Physics.RayStep"/> within a specified maximum distance.
-        /// </summary>
-        /// <param name="step"></param>
-        /// <param name="radius"></param>
-        /// <param name="maxDistance"></param>
-        /// <param name="prioritizedLayerMasks"></param>
-        /// <param name="physicsHit"></param>
-        /// <returns>Whether or not the raycast hit something.</returns>
-        public static bool RaycastSpherePhysicsStep(RayStep step, float radius, float maxDistance, LayerMask[] prioritizedLayerMasks, out RaycastHit physicsHit)
-        {
-            return prioritizedLayerMasks.Length == 1
-                // If there is only one priority, don't prioritize
-                ? UnityEngine.Physics.SphereCast(step.Origin, radius, step.Direction, out physicsHit, maxDistance, prioritizedLayerMasks[0])
-                // Raycast across all layers and prioritize
-                : TryGetPrioritizedPhysicsHit(UnityEngine.Physics.SphereCastAll(step.Origin, radius, step.Direction, maxDistance, UnityEngine.Physics.AllLayers), prioritizedLayerMasks, out physicsHit);
-        }
-
-
-        /// <summary>
-        /// Tries to get the prioritized physics raycast hit based on the prioritized layer masks.
-        /// </summary>
-        /// <remarks>Sorts all hit objects first by layerMask, then by distance.</remarks>
-        /// <param name="hits"></param>
-        /// <param name="priorityLayers"></param>
-        /// <param name="raycastHit"></param>
-        /// <returns>The minimum distance hit within the first layer that has hits.</returns>
-        public static bool TryGetPrioritizedPhysicsHit(RaycastHit[] hits, LayerMask[] priorityLayers, out RaycastHit raycastHit)
-        {
-            raycastHit = default(RaycastHit);
-
-            if (hits.Length == 0)
-            {
-                return false;
-            }
-
-            for (int layerMaskIdx = 0; layerMaskIdx < priorityLayers.Length; layerMaskIdx++)
-            {
-                RaycastHit? minHit = null;
-
-                for (int hitIdx = 0; hitIdx < hits.Length; hitIdx++)
-                {
-                    RaycastHit hit = hits[hitIdx];
-                    if (hit.transform.gameObject.layer.IsInLayerMask(priorityLayers[layerMaskIdx]) &&
-                        (minHit == null || hit.distance < minHit.Value.distance))
-                    {
-                        minHit = hit;
-                    }
-                }
-
-                if (minHit != null)
-                {
-                    raycastHit = minHit.Value;
-                    return true;
-                }
-            }
-
             return false;
         }
     }

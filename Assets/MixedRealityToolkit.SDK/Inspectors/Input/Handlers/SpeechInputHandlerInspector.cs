@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private static readonly GUIContent AddButtonContent = new GUIContent("+", "Add keyword");
         private static readonly GUILayoutOption MiniButtonWidth = GUILayout.Width(20.0f);
 
-        private string[] registeredKeywords;
+        private string[] distinctRegisteredKeywords;
 
         private SerializedProperty keywordsProperty;
         private SerializedProperty persistentKeywordsProperty;
@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
             if (MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
             {
-                registeredKeywords = RegisteredKeywords().Distinct().ToArray();
+                distinctRegisteredKeywords = GetDistinctRegisteredKeywords();
             }
         }
 
@@ -38,34 +38,46 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         {
             base.OnInspectorGUI();
 
-            if (!MixedRealityInspectorUtility.CheckMixedRealityConfigured(false))
+            bool enabled = CheckMixedRealityToolkit();
+            if (enabled)
             {
-                return;
+                if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
+                {
+                    EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Warning);
+                }
+
+                if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile == null)
+                {
+                    EditorGUILayout.HelpBox("No Input System Profile Found, be sure to specify a profile in the main configuration profile.", MessageType.Error);
+                    enabled = false;
+                }
+                else if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile == null)
+                {
+                    EditorGUILayout.HelpBox("No Speech Commands profile Found, be sure to specify a profile in the Input System's configuration profile.", MessageType.Error);
+                    enabled = false;
+                }
             }
 
-            if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled)
-            {
-                EditorGUILayout.HelpBox("No input system is enabled, or you need to specify the type in the main configuration profile.", MessageType.Error);
-                return;
-            }
+            bool validKeywords = distinctRegisteredKeywords != null && distinctRegisteredKeywords.Length != 0;
 
-            if (MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile == null)
+            // If we should be enabled but there are no valid keywords, alert developer
+            if (enabled && !validKeywords)
             {
-                EditorGUILayout.HelpBox("No Speech Commands Profile Found, be sure to specify a profile in the Input System's configuration profile.", MessageType.Error);
-                return;
+                distinctRegisteredKeywords = GetDistinctRegisteredKeywords();
+                EditorGUILayout.HelpBox("No keywords registered. Some properties may not be editable.\n\nKeywords can be registered via Speech Commands Profile on the Mixed Reality Toolkit's Configuration Profile.", MessageType.Error);
             }
-
-            if (registeredKeywords == null || registeredKeywords.Length == 0)
-            {
-                registeredKeywords = RegisteredKeywords().Distinct().ToArray();
-                EditorGUILayout.HelpBox("No keywords registered.\n\nKeywords can be registered via Speech Commands Profile on the Mixed Reality Toolkit's Configuration Profile.", MessageType.Error);
-                return;
-            }
+            enabled = enabled && validKeywords;
 
             serializedObject.Update();
             EditorGUILayout.PropertyField(persistentKeywordsProperty);
 
+            bool wasGUIEnabled = GUI.enabled;
+            GUI.enabled = enabled;
+
             ShowList(keywordsProperty);
+
+            GUI.enabled = wasGUIEnabled;
+
             serializedObject.ApplyModifiedProperties();
 
             // error and warning messages
@@ -96,9 +108,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             var handler = (SpeechInputHandler)target;
             var availableKeywords = new string[0];
 
-            if (handler.Keywords != null)
+            if (handler.Keywords != null && distinctRegisteredKeywords != null)
             {
-                availableKeywords = registeredKeywords.Except(handler.Keywords.Select(keywordAndResponse => keywordAndResponse.Keyword)).ToArray();
+                availableKeywords = distinctRegisteredKeywords.Except(handler.Keywords.Select(keywordAndResponse => keywordAndResponse.Keyword)).ToArray();
             }
 
             // keyword rows
@@ -106,13 +118,13 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             {
                 // the element
                 SerializedProperty speechCommandProperty = list.GetArrayElementAtIndex(index);
-                EditorGUILayout.BeginHorizontal();
-                bool elementExpanded = EditorGUILayout.PropertyField(speechCommandProperty);
-                GUILayout.FlexibleSpace();
-                // the remove element button
-                bool elementRemoved = GUILayout.Button(RemoveButtonContent, EditorStyles.miniButton, MiniButtonWidth);
+                GUILayout.BeginHorizontal();
+                    bool elementExpanded = EditorGUILayout.PropertyField(speechCommandProperty);
+                    GUILayout.FlexibleSpace();
+                    // the remove element button
+                    bool elementRemoved = GUILayout.Button(RemoveButtonContent, EditorStyles.miniButton, MiniButtonWidth);
 
-                EditorGUILayout.EndHorizontal();
+                GUILayout.EndHorizontal();
 
                 if (elementRemoved)
                 {
@@ -128,12 +140,15 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 SerializedProperty keywordProperty = speechCommandProperty.FindPropertyRelative("keyword");
 
                 bool invalidKeyword = true;
-                foreach (string keyword in registeredKeywords)
+                if (distinctRegisteredKeywords != null)
                 {
-                    if (keyword == keywordProperty.stringValue)
+                    foreach (string keyword in distinctRegisteredKeywords)
                     {
-                        invalidKeyword = false;
-                        break;
+                        if (keyword == keywordProperty.stringValue)
+                        {
+                            invalidKeyword = false;
+                            break;
+                        }
                     }
                 }
 
@@ -176,19 +191,25 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             EditorGUI.indentLevel--;
         }
 
-        private static IEnumerable<string> RegisteredKeywords()
+        private static string[] GetDistinctRegisteredKeywords()
         {
-            if (!MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled ||
+            if (!MixedRealityToolkit.IsInitialized ||
+                !MixedRealityToolkit.Instance.HasActiveProfile ||
+                !MixedRealityToolkit.Instance.ActiveProfile.IsInputSystemEnabled ||
                 MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile == null ||
                 MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands.Length == 0)
             {
-                yield break;
+                return null;
             }
 
-            for (var i = 0; i < MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands.Length; i++)
+            List<string> keywords = new List<string>();
+            var speechCommands = MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands;
+            for (var i = 0; i < speechCommands.Length; i++)
             {
-                yield return MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.SpeechCommandsProfile.SpeechCommands[i].Keyword;
+                keywords.Add(speechCommands[i].Keyword);
             }
+
+            return keywords.Distinct().ToArray();
         }
     }
 }

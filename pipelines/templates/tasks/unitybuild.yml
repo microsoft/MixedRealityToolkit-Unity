@@ -17,7 +17,8 @@ steps:
    # each build will have a fresh destination folder.
    $outDir = "$(Build.ArtifactStagingDirectory)\build\${{ parameters.Platform }}_${{ parameters.Arch }}_${{ parameters.ScriptingBackend }}"
    $logFile = New-Item -Path "$outDir\build\build.log" -ItemType File -Force
-   
+   $logDirectory = "$outDir\logs"
+
    $sceneList = "Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes\HandInteractionExamples.unity"
    
    $extraArgs = ''
@@ -40,7 +41,7 @@ steps:
        $extraArgs += " -scriptingBackend 2"
    }
 
-   $proc = Start-Process -FilePath "$editor" -ArgumentList "-projectPath $(Get-Location) -executeMethod Microsoft.MixedReality.Toolkit.Build.Editor.UnityPlayerBuildTools.StartCommandLineBuild -sceneList $sceneList -logFile $($logFile.FullName) -batchMode -${{ parameters.Arch }} -buildOutput $outDir $extraArgs -CacheServerIPAddress $(Unity.CacheServer.Address)" -PassThru
+   $proc = Start-Process -FilePath "$editor" -ArgumentList "-projectPath $(Get-Location) -executeMethod Microsoft.MixedReality.Toolkit.Build.Editor.UnityPlayerBuildTools.StartCommandLineBuild -sceneList $sceneList -logFile $($logFile.FullName) -batchMode -${{ parameters.Arch }} -buildOutput $outDir $extraArgs -CacheServerIPAddress $(Unity.CacheServer.Address) -logDirectory $logDirectory" -PassThru
    $ljob = Start-Job -ScriptBlock { param($log) Get-Content "$log" -Wait } -ArgumentList $logFile.FullName
    
    while (-not $proc.HasExited -and $ljob.HasMoreData)
@@ -54,6 +55,72 @@ steps:
    
    Remove-Job $ljob
    Stop-Process $proc
+
+   Write-Output '====================================================='
+   Write-Output '           Unity Build Player Finished               '
+   Write-Output '====================================================='
+
+   If (Test-Path $logFile.FullName)
+   {
+      Write-Output '====================================================='
+      Write-Output '           Begin Unity Player Log                    '
+      Write-Output '====================================================='
+
+      Get-Content $logFile.FullName
+
+      Write-Output '====================================================='
+      Write-Output '           End Unity Player Log                      '
+      Write-Output '====================================================='
+   }
+   Else
+   {
+      Write-Output 'Unity Player Log Missing!'
+   }
+
+   # The NuGet and AppX logs are only relevant for UWP builds.
+   If ("${{ parameters.Platform }}" -eq "UWP")
+   {
+        $nugetRestoreLogFileName = "$logDirectory\nugetRestore.log"
+        If (Test-Path $nugetRestoreLogFileName)
+        {
+            Write-Output '====================================================='
+            Write-Output '           Begin NuGet Restore Log                   '
+            Write-Output '====================================================='
+
+            Get-Content $nugetRestoreLogFileName
+
+            Write-Output '====================================================='
+            Write-Output '           End NuGet Restore Log                     '
+            Write-Output '====================================================='
+        }
+        Else
+        {
+            Write-Output "NuGet Restore Log Missing $nugetRestoreLogFileName!"
+        }
+
+        $appxBuildLogFileName = "$logDirectory\buildAppx.log"
+        If (Test-Path $appxBuildLogFileName)
+        {
+            Write-Output '====================================================='
+            Write-Output '           Begin AppX Build Log                      '
+            Write-Output '====================================================='
+
+            Get-Content $appxBuildLogFileName
+
+            Write-Output '====================================================='
+            Write-Output '           End AppX Build Log                        '
+            Write-Output '====================================================='
+        }
+        Else
+        {
+            Write-Output "AppX Build Log Missing $appxBuildLogFileName!"
+        }
+   }
+
+   If ($proc.ExitCode -ne 0)
+   {
+       exit $proc.ExitCode
+   }
   displayName: "Build ${{ parameters.Platform }} ${{ parameters.Arch }} ${{ parameters.ScriptingBackend }}"
 
 - task: PublishBuildArtifacts@1

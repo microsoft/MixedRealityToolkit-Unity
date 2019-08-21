@@ -7,14 +7,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     public class DefaultPointerMediator : IMixedRealityPointerMediator
     {
-        private readonly HashSet<IMixedRealityPointer> allPointers = new HashSet<IMixedRealityPointer>();
-        private readonly HashSet<IMixedRealityPointer> farInteractPointers = new HashSet<IMixedRealityPointer>();
-        private readonly HashSet<IMixedRealityNearPointer> nearInteractPointers = new HashSet<IMixedRealityNearPointer>();
-        private readonly HashSet<IMixedRealityTeleportPointer> teleportPointers = new HashSet<IMixedRealityTeleportPointer>();
-        private readonly HashSet<IMixedRealityPointer> unassignedPointers = new HashSet<IMixedRealityPointer>();
-        private readonly Dictionary<IMixedRealityInputSource, HashSet<IMixedRealityPointer>> pointerByInputSourceParent = new Dictionary<IMixedRealityInputSource, HashSet<IMixedRealityPointer>>();
+        protected readonly HashSet<IMixedRealityPointer> allPointers = new HashSet<IMixedRealityPointer>();
+        protected readonly HashSet<IMixedRealityPointer> farInteractPointers = new HashSet<IMixedRealityPointer>();
+        protected readonly HashSet<IMixedRealityNearPointer> nearInteractPointers = new HashSet<IMixedRealityNearPointer>();
+        protected readonly HashSet<IMixedRealityTeleportPointer> teleportPointers = new HashSet<IMixedRealityTeleportPointer>();
+        protected readonly HashSet<IMixedRealityPointer> unassignedPointers = new HashSet<IMixedRealityPointer>();
+        protected readonly Dictionary<IMixedRealityInputSource, HashSet<IMixedRealityPointer>> pointerByInputSourceParent = new Dictionary<IMixedRealityInputSource, HashSet<IMixedRealityPointer>>();
 
-        public void RegisterPointers(IMixedRealityPointer[] pointers)
+        public virtual void RegisterPointers(IMixedRealityPointer[] pointers)
         {
             for (int i = 0; i < pointers.Length; i++)
             {
@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        public void UnregisterPointers(IMixedRealityPointer[] pointers)
+        public virtual void UnregisterPointers(IMixedRealityPointer[] pointers)
         {
             for (int i = 0; i < pointers.Length; i++)
             {
@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        public void UpdatePointers()
+        public virtual void UpdatePointers()
         {
             // If there's any teleportation going on, disable all pointers except the teleporter
             foreach (IMixedRealityTeleportPointer pointer in teleportPointers)

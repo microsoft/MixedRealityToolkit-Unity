@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Adds or removes materials to target renderer for highlighting Focused <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>s.
     /// </summary>
     /// <remarks>Useful with focusable <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>s</remarks>
+    [System.Obsolete("This component is no longer supported", true)]
     public class InteractableHighlight : BaseFocusHandler
     {
         [Flags]
@@ -110,6 +111,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Dictionary<Renderer, List<Material>> materialsBeforeFocus;
 
         #region MonoBehaviour Implementation
+
+        private void Awake()
+        {
+            Debug.LogError(this.GetType().Name + " is deprecated");
+        }
 
         public virtual void OnEnable()
         {

@@ -47,6 +47,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public InteractableThemeBase Theme;
         public List<InteractableThemeProperty> Properties;
         public List<InteractableThemeProperty> History;
+        public List<InteractableCustomSetting> CustomSettings;
+        public List<InteractableCustomSetting> CustomHistory;
         public Easing Easing;
         public bool NoEasing;
         public bool IsValid;

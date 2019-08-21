@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -18,9 +20,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         public static readonly Color ColorTint50 = new Color(0.5f, 0.5f, 0.5f);
         public static readonly Color ColorTint25 = new Color(0.25f, 0.25f, 0.25f);
 
-        // default text sizes
+        // default UI sizes
         public const int TitleFontSize = 14;
         public const int DefaultFontSize = 10;
+        public const float DocLinkWidth = 175f;
 
         // special characters
         public static readonly string Minus = "\u2212";
@@ -34,6 +37,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         public static readonly string Heart = "\u2661";
         public static readonly string Star = "\u2606";
         public static readonly string Emoji = "\u263A";
+
+        public static readonly Texture HelpIcon = EditorGUIUtility.IconContent("_Help").image;
+        public static readonly Texture SuccessIcon = EditorGUIUtility.IconContent("Collab").image;
+        public static readonly Texture WarningIcon = EditorGUIUtility.IconContent("console.warnicon").image;
+        public static readonly Texture InfoIcon = EditorGUIUtility.IconContent("console.infoicon").image;
 
         /// <summary>
         /// A data container for managing scrolling lists or nested drawers in custom inspectors.
@@ -87,6 +95,111 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         /// <summary>
+        /// Helper function to render buttons correctly indented according to EditorGUI.indentLevel since GUILayout component don't respond naturally
+        /// </summary>
+        /// <param name="buttonText">text to place in button</param>
+        /// <param name="options">layout options</param>
+        /// <returns>true if button clicked, false if otherwise</returns>
+        public static bool RenderIndentedButton(string buttonText, params GUILayoutOption[] options)
+        {
+            return RenderIndentedButton(() => { return GUILayout.Button(buttonText, options); });
+        }
+
+        /// <summary>
+        /// Helper function to render buttons correctly indented according to EditorGUI.indentLevel since GUILayout component don't respond naturally
+        /// </summary>
+        /// <param name="content">What to draw in button</param>
+        /// <param name="style">Style configuration for button</param>
+        /// <param name="options">layout options</param>
+        /// <returns>true if button clicked, false if otherwise</returns>
+        public static bool RenderIndentedButton(GUIContent content, GUIStyle style, params GUILayoutOption[] options)
+        {
+            return RenderIndentedButton(() => { return GUILayout.Button(content, style, options); });
+        }
+
+        /// <summary>
+        /// Helper function to support primary overloaded version of this functionality
+        /// </summary>
+        /// <param name="renderButton">The code to render button correctly based on parameter types passed</param>
+        /// <returns>true if button clicked, false if otherwise</returns>
+        public static bool RenderIndentedButton(Func<bool> renderButton)
+        {
+            bool result = false;
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(EditorGUI.indentLevel * 15);
+            result = renderButton();
+            GUILayout.EndHorizontal();
+            return result;
+        }
+
+        /// <summary>
+        /// Render documentation button routing to revelant URI
+        /// </summary>
+        /// <param name="docURL">documentation URL to open on button click</param>
+        /// <returns>true if button clicked, false otherwise</returns>
+        public static bool RenderDocumentationButton(string docURL)
+        {
+            if (!string.IsNullOrEmpty(docURL))
+            {
+                var buttonContent = new GUIContent()
+                {
+                    image = HelpIcon,
+                    text = " Documentation",
+                    tooltip = docURL,
+                };
+
+                if (GUILayout.Button(buttonContent, EditorStyles.miniButton, GUILayout.MaxWidth(DocLinkWidth)))
+                {
+                    Application.OpenURL(docURL);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Render a documentation header with button if Object contains HelpURLAttribute
+        /// </summary>
+        /// <param name="targetType">Type to test for HelpURLAttribute</param>
+        /// <returns>true if object drawn and button clicked, false otherwise</returns>
+        public static bool RenderHelpURL(Type targetType)
+        {
+            bool result = false;
+
+            if (targetType != null)
+            {
+                HelpURLAttribute helpURL = targetType.GetCustomAttribute<HelpURLAttribute>();
+                if (helpURL != null)
+                {
+                    result = RenderDocumentationSection(helpURL.URL);
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Render a documentation header with button for given url value
+        /// </summary>
+        /// <param name="url">Url to open if button is clicked</param>
+        /// <returns>true if object drawn and button clicked, false otherwise</returns>
+        public static bool RenderDocumentationSection(string url)
+        {
+            bool result = false;
+            if (!string.IsNullOrEmpty(url))
+            {
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    GUILayout.FlexibleSpace();
+                    result = RenderDocumentationButton(url);
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// A button that is as wide as the label
         /// </summary>
         /// <param name="label"></param>
@@ -96,23 +209,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <returns></returns>
         public static bool FlexButton(GUIContent label, int index, ListButtonEvent callback, SerializedProperty prop = null)
         {
-            // delete button
-            GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
-
-            float buttonWidth = GUI.skin.button.CalcSize(label).x;
-
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-
-            bool triggered = false;
-            if (GUILayout.Button(label, buttonStyle, GUILayout.Width(buttonWidth)))
+            if (FlexButton(label))
             {
                 callback(index, prop);
-                triggered = true;
+                return true;
             }
 
-            EditorGUILayout.EndHorizontal();
-            return triggered;
+            return false;
         }
 
         /// <summary>
@@ -122,26 +225,39 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <param name="indexArr"></param>
         /// <param name="callback"></param>
         /// <param name="prop"></param>
-        /// <returns></returns>
+        /// <returns>true if button clicked, false otherwise</returns>
         public static bool FlexButton(GUIContent label, int[] indexArr, MultiListButtonEvent callback, SerializedProperty prop = null)
         {
-            // delete button
-            GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
-
-            float buttonWidth = GUI.skin.button.CalcSize(label).x;
-
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-
-            bool triggered = false;
-            if (GUILayout.Button(label, buttonStyle, GUILayout.Width(buttonWidth)))
+            if (FlexButton(label))
             {
                 callback(indexArr, prop);
-                triggered = true;
+                return true;
             }
 
-            EditorGUILayout.EndHorizontal();
-            return triggered;
+            return false;
+        }
+
+        /// <summary>
+        /// A button that is as wide as the label
+        /// </summary>
+        /// <param name="label">content for button</param>
+        /// <returns>true if button clicked, false otherwise</returns>
+        public static bool FlexButton(GUIContent label)
+        {
+            GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
+            float buttonWidth = GUI.skin.button.CalcSize(label).x;
+
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                GUILayout.FlexibleSpace();
+
+                if (GUILayout.Button(label, buttonStyle, GUILayout.Width(buttonWidth)))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -158,18 +274,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             GUIStyle addStyle = new GUIStyle(GUI.skin.button);
             addStyle.fixedHeight = 25;
             float addButtonWidth = GUI.skin.button.CalcSize(label).x * padding;
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-
             bool triggered = false;
-            if (GUILayout.Button(label, addStyle, GUILayout.Width(addButtonWidth)))
+
+            using (new EditorGUILayout.HorizontalScope())
             {
-                callback(index, prop);
-                triggered = true;
+                GUILayout.FlexibleSpace();
+
+                if (GUILayout.Button(label, addStyle, GUILayout.Width(addButtonWidth)))
+                {
+                    callback(index, prop);
+                    triggered = true;
+                }
+
+                GUILayout.FlexibleSpace();
             }
 
-            GUILayout.FlexibleSpace();
-            EditorGUILayout.EndHorizontal();
             return triggered;
         }
 
@@ -187,64 +306,78 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             GUIStyle addStyle = new GUIStyle(GUI.skin.button);
             addStyle.fixedHeight = 25;
             float addButtonWidth = GUI.skin.button.CalcSize(label).x * padding;
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-
             bool triggered = false;
-            if (GUILayout.Button(label, addStyle, GUILayout.Width(addButtonWidth)))
+
+            using (new EditorGUILayout.HorizontalScope())
             {
-                callback(indexArr, prop);
-                triggered = true;
+                GUILayout.FlexibleSpace();
+
+                if (GUILayout.Button(label, addStyle, GUILayout.Width(addButtonWidth)))
+                {
+                    callback(indexArr, prop);
+                    triggered = true;
+                }
+
+                GUILayout.FlexibleSpace();
             }
 
-            GUILayout.FlexibleSpace();
-            EditorGUILayout.EndHorizontal();
             return triggered;
         }
 
         /// <summary>
-        /// A small button, good for a single icon like + or -
+        /// A small button, good for a single icon like + or - with single index callback events
         /// </summary>
-        /// <param name="label"></param>
+        /// <param name="label">content to place in the button</param>
         /// <param name="index"></param>
         /// <param name="callback"></param>
         /// <param name="prop"></param>
-        /// <returns></returns>
+        /// <returns>true if button selected, false otherwise</returns>
         public static bool SmallButton(GUIContent label, int index, ListButtonEvent callback, SerializedProperty prop = null)
         {
-
-            GUIStyle smallButton = new GUIStyle(EditorStyles.miniButton);
-            float smallButtonWidth = GUI.skin.button.CalcSize(new GUIContent(label)).x;
-
-            bool triggered = false;
-            if (GUILayout.Button(label, smallButton, GUILayout.Width(smallButtonWidth)))
+            if (SmallButton(label))
             {
                 callback(index, prop);
-                triggered = true;
+                return true;
             }
-            return triggered;
+
+            return false;
+        }
+
+        /// <summary>
+        /// A small button, good for a single icon like + or - with multi-index callback events
+        /// </summary>
+        /// <param name="label">content to place in the button</param>
+        /// <param name="indexArr"></param>
+        /// <param name="callback"></param>
+        /// <param name="prop"></param>
+        /// <returns>true if button selected, false otherwise</returns>
+        public static bool SmallButton(GUIContent label, int[] indexArr, MultiListButtonEvent callback, SerializedProperty prop = null)
+        {
+            if (SmallButton(label))
+            {
+                callback(indexArr, prop);
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
         /// A small button, good for a single icon like + or -
         /// </summary>
-        /// <param name="label"></param>
-        /// <param name="indexArr"></param>
-        /// <param name="callback"></param>
-        /// <param name="prop"></param>
-        /// <returns></returns>
-        public static bool SmallButton(GUIContent label, int[] indexArr, MultiListButtonEvent callback, SerializedProperty prop = null)
+        /// <param name="label">content to place in the button</param>
+        /// <returns>true if button selected, false otherwise</returns>
+        public static bool SmallButton(GUIContent label)
         {
             GUIStyle smallButton = new GUIStyle(EditorStyles.miniButton);
             float smallButtonWidth = GUI.skin.button.CalcSize(label).x;
 
-            bool triggered = false;
             if (GUILayout.Button(label, smallButton, GUILayout.Width(smallButtonWidth)))
             {
-                callback(indexArr, prop);
-                triggered = true;
+                return true;
             }
-            return triggered;
+
+            return false;
         }
 
         /// <summary>
@@ -340,11 +473,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         public static void DrawDivider()
         {
-            GUIStyle styleHR = new GUIStyle(GUI.skin.box);
-            styleHR.stretchWidth = true;
-            styleHR.fixedHeight = 1;
-            styleHR.border = new RectOffset(1, 1, 1, 0);
-            GUILayout.Box("", styleHR);
+            EditorGUILayout.LabelField(string.Empty, GUI.skin.horizontalSlider);
         }
 
         /// <summary>
@@ -357,7 +486,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <param name="open"></param>
         /// <param name="size"></param>
         /// <returns></returns>
-        public static bool DrawSectionStart(string headerName, int indent, bool open = true, FontStyle style = FontStyle.Bold, bool toUpper = true, int size = 0)
+        public static bool DrawSectionFoldout(string headerName, bool open = true, FontStyle style = FontStyle.Bold, int size = 0)
         {
             GUIStyle sectionStyle = new GUIStyle(EditorStyles.foldout);
             sectionStyle.fontStyle = style;
@@ -366,30 +495,51 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 sectionStyle.fontSize = size;
                 sectionStyle.fixedHeight = size * 2;
             }
-            Color tColor = GUI.color;
-            GUI.color = MixedRealityInspectorUtility.SectionColor;
-
-            if (toUpper)
-            {
-                headerName = headerName.ToUpper();
-            }
 
             bool drawSection = false;
-            drawSection = EditorGUILayout.Foldout(open, headerName, true, sectionStyle);
-            EditorGUILayout.BeginVertical();
-            GUI.color = tColor;
-            EditorGUI.indentLevel = indent;
+
+            // To make foldout render properly, indent only this control
+            using (new EditorGUI.IndentLevelScope())
+            {
+                drawSection = EditorGUILayout.Foldout(open, headerName, true, sectionStyle);
+            }
 
             return drawSection;
         }
 
         /// <summary>
-        /// Draws section end (initiated by next Header attribute)
+        /// Draws a popup UI with PropertyField type features.
+        /// Displays prefab pending updates
         /// </summary>
-        public static void DrawSectionEnd(int indent)
+        /// <param name="prop">serialized property corresponding to Enum</param>
+        /// <param name="label">label for property</param>
+        /// <param name="propValue">Current enum value for property</param>
+        /// <returns>New enum value after draw</returns>
+        public static Enum DrawEnumSerializedProperty(SerializedProperty prop, GUIContent label, Enum propValue)
         {
-            EditorGUILayout.EndVertical();
-            EditorGUI.indentLevel = indent;
+            return DrawEnumSerializedProperty(EditorGUILayout.GetControlRect(), prop, label, propValue);
+        }
+
+        /// <summary>
+        /// Draws a popup UI with PropertyField type features.
+        /// Displays prefab pending updates
+        /// </summary>
+        /// <param name="position">position to render the serialized property</param>
+        /// <param name="prop">serialized property corresponding to Enum</param>
+        /// <param name="label">label for property</param>
+        /// <param name="propValue">Current enum value for property</param>
+        /// <returns>New enum value after draw</returns>
+        public static Enum DrawEnumSerializedProperty(Rect position, SerializedProperty prop, GUIContent label, Enum propValue)
+        {
+            Enum result = propValue;
+            EditorGUI.BeginProperty(position, label, prop);
+            {
+                result = EditorGUI.EnumPopup(position, label, propValue);
+                prop.enumValueIndex = Convert.ToInt32(result);
+            }
+            EditorGUI.EndProperty();
+
+            return result;
         }
 
         /// <summary>

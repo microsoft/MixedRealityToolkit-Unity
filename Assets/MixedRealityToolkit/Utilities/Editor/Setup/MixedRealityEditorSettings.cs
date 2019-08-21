@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Editor;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEditor;
@@ -21,8 +23,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             callbackOrder = 0;
         }
 
-        private const string IgnoreKey = "_MixedRealityToolkit_Editor_IgnoreSettingsPrompts";
         private const string SessionKey = "_MixedRealityToolkit_Editor_ShownSettingsPrompts";
+        private const string MSFT_AudioSpatializerPlugin = "MS HRTF Spatializer";
 
         [Obsolete("Use the 'MixedRealityToolkitFiles' APIs.")]
         public static string MixedRealityToolkit_AbsoluteFolderPath
@@ -56,17 +58,34 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         static MixedRealityEditorSettings()
         {
+            // Detect when we enter player mode so we can try checking for optimal configuration
+            EditorApplication.playModeStateChanged += OnPlayStateModeChanged;
+
             if (!IsNewSession || Application.isPlaying)
             {
                 return;
             }
 
+            ShowSettingsDialog();
+        }
+
+        private static void OnPlayStateModeChanged(PlayModeStateChange state)
+        {
+            if (state == PlayModeStateChange.EnteredPlayMode && MixedRealityPreferences.RunOptimalConfiguration)
+            {
+                CheckOptimalConfiguration();
+            }
+        }
+
+        /// <summary>
+        /// On load, show dialog to confirm MRTK can apply useful settings 
+        /// </summary>
+        private static void ShowSettingsDialog()
+        {
             bool refresh = false;
             bool restart = false;
 
-            var ignoreSettings = EditorPrefs.GetBool(IgnoreKey, false);
-
-            if (!ignoreSettings)
+            if (!MixedRealityPreferences.IgnoreSettingsPrompt)
             {
                 var message = "The Mixed Reality Toolkit needs to apply the following settings to your project:\n\n";
 
@@ -89,9 +108,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     message += "- Enable XR Settings for your current platform\n";
                 }
 
+                var usingSinglePassInstancing = PlayerSettings.stereoRenderingPath == StereoRenderingPath.Instancing;
+                if (!usingSinglePassInstancing)
+                {
+                    message += "- Set Single Pass Instanced rendering path\n";
+                }
+
                 message += "\nWould you like to make this change?";
 
-                if (!forceTextSerialization || !visibleMetaFiles || !PlayerSettings.virtualRealitySupported)
+                if (!forceTextSerialization || !visibleMetaFiles || !PlayerSettings.virtualRealitySupported || !usingSinglePassInstancing)
                 {
                     var choice = EditorUtility.DisplayDialogComplex("Apply Mixed Reality Toolkit Default Settings?", message, "Apply", "Ignore", "Later");
 
@@ -100,11 +125,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                         case 0:
                             EditorSettings.serializationMode = SerializationMode.ForceText;
                             EditorSettings.externalVersionControl = "Visible Meta Files";
-                            PlayerSettings.virtualRealitySupported = true;
+                            ApplyXRSettings();
+                            PlayerSettings.stereoRenderingPath = StereoRenderingPath.Instancing;
                             refresh = true;
                             break;
                         case 1:
-                            EditorPrefs.SetBool(IgnoreKey, true);
+                            MixedRealityPreferences.IgnoreSettingsPrompt = true;
                             break;
                         case 2:
                             break;
@@ -112,11 +138,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 }
             }
 
+#if !UNITY_2019_3_OR_NEWER
             if (PlayerSettings.scriptingRuntimeVersion != ScriptingRuntimeVersion.Latest)
             {
                 PlayerSettings.scriptingRuntimeVersion = ScriptingRuntimeVersion.Latest;
                 restart = true;
             }
+#endif
 
             if (refresh || restart)
             {
@@ -127,6 +155,29 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             if (restart)
             {
                 EditorApplication.OpenProject(Directory.GetParent(Application.dataPath).ToString());
+            }
+        }
+
+        /// <summary>
+        /// Discover and set the appropriate XR Settings for the current build target.
+        /// </summary>
+        private static void ApplyXRSettings()
+        {
+            BuildTargetGroup targetGroup = EditorUserBuildSettings.selectedBuildTargetGroup;
+
+            List<string> targetSDKs = new List<string>();
+            foreach (string sdk in PlayerSettings.GetAvailableVirtualRealitySDKs(targetGroup))
+            {
+                if (sdk.Contains("OpenVR") || sdk.Contains("Windows"))
+                {
+                    targetSDKs.Add(sdk);
+                }
+            }
+
+            if (targetSDKs.Count != 0)
+            {
+                PlayerSettings.SetVirtualRealitySDKs(targetGroup, targetSDKs.ToArray());
+                PlayerSettings.SetVirtualRealitySupported(targetGroup, true);
             }
         }
 
@@ -206,40 +257,43 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         [Obsolete("Use MixedRealityToolkitFiles.GetAssetDatabasePath instead.")]
         internal static string MakePathRelativeToProject(string absolutePath) => MixedRealityToolkitFiles.GetAssetDatabasePath(absolutePath);
 
-        private static void SetIconTheme()
+
+        /// <summary>
+        /// Checks project critical project settings and suggests changes to optimize performance via logged warnings
+        /// </summary>
+        private static void CheckOptimalConfiguration()
         {
-            if (!MixedRealityToolkitFiles.AreFoldersAvailable)
+            if (!PlayerSettings.virtualRealitySupported)
             {
-                Debug.LogError("Unable to find the Mixed Reality Toolkit's directory!");
-                return;
+                Debug.LogWarning("<b>Virtual reality supported</b> not enabled. Check <i>XR Settings</i> under <i>Player Settings</i>");
             }
 
-            var icons = MixedRealityToolkitFiles.GetFiles("StandardAssets/Icons");
-            var icon = new Texture2D(2, 2);
-            var iconColor = new Color32(4, 165, 240, 255);
-
-            for (int i = 0; i < icons.Length; i++)
+            if (PlayerSettings.stereoRenderingPath != StereoRenderingPath.Instancing)
             {
-                icons[i] = icons[i].Replace("/", "\\");
-                if (icons[i].Contains(".meta")) { continue; }
+                Debug.LogWarning("XR stereo rendering mode not set to <b>Single Pass Instanced</b>. See <i>Mixed Reality Toolkit</i> > <i>Utilities</i> > <i>Optimize Window</i> tool for more information to improve performance");
+            }
 
-                var imageData = File.ReadAllBytes(icons[i]);
-                icon.LoadImage(imageData, false);
-
-                var pixels = icon.GetPixels32();
-                for (int j = 0; j < pixels.Length; j++)
+            // If targeting Windows Mixed Reality platform
+            if (MixedRealityOptimizeUtils.IsBuildTargetWMR())
+            {
+                if (!MixedRealityOptimizeUtils.IsDepthBufferSharingEnabled())
                 {
-                    pixels[j].r = iconColor.r;
-                    pixels[j].g = iconColor.g;
-                    pixels[j].b = iconColor.b;
+                    // If depth buffer sharing not enabled, advise to enable setting
+                    Debug.LogWarning("<b>Depth Buffer Sharing</b> is not enabled to improve hologram stabilization. See <i>Mixed Reality Toolkit</i> > <i>Utilities</i> > <i>Optimize Window</i> tool for more information to improve performance");
                 }
 
-                icon.SetPixels32(pixels);
-                File.WriteAllBytes(icons[i], icon.EncodeToPNG());
-            }
+                if (!MixedRealityOptimizeUtils.IsWMRDepthBufferFormat16bit())
+                {
+                    // If depth format is 24-bit, advise to consider 16-bit for performance.
+                    Debug.LogWarning("<b>Depth Buffer Sharing</b> has 24-bit depth format selected. Consider using 16-bit for performance. See <i>Mixed Reality Toolkit</i> > <i>Utilities</i> > <i>Optimize Window</i> tool for more information to improve performance");
+                }
 
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
+                if (!AudioSettings.GetSpatializerPluginName().Equals(MSFT_AudioSpatializerPlugin))
+                {
+                    // If using UWP, developers should use the Microsoft Audio Spatilizer plugin
+                    Debug.LogWarning("<b>Audio Spatializer Plugin</b> not currently set to <i>" + MSFT_AudioSpatializerPlugin + "</i>. Switch to <i>" + MSFT_AudioSpatializerPlugin + "</i> under <i>Project Settings</i> > <i>Audio</i> > <i>Spatializer Plugin</i>");
+                }
+            }
         }
 
         /// <inheritdoc />

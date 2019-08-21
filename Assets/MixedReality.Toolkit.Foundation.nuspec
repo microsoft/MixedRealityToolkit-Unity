@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Microsoft.MixedReality.Toolkit.Foundation</id>
+    <version>$version$</version>
+    <authors>Microsoft</authors>
+    <owners>Microsoft,MixedReality</owners>
+    <licenseUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/License.txt</licenseUrl>
+    <projectUrl>https://github.com/Microsoft/MixedRealityToolkit-Unity</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>The Mixed Reality Toolkit is a collection of scripts and components intended to accelerate development of applications targeting Microsoft HoloLens and Windows Mixed Reality headsets.</description>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <releaseNotes>$releaseNotes$</releaseNotes>
+    <tags>Unity MixedReality</tags>
+  </metadata>
+  <files>
+    <file src="MixedRealityToolkit\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta" target="MRTK\" />
+    <file src="MixedRealityToolkit.Providers\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta" target="MRTK\" />
+    <file src="MixedRealityToolkit.SDK\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta" target="MRTK\" />
+    <file src="MixedRealityToolkit.Services\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta" target="MRTK\" />
+
+    <file src="MixedRealityToolkit\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Foundation.targets" />
+
+    <!-- Assemblies that are built from the MixedRealityToolkit folder -->
+    <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.Editor.*" target="Plugins\" />
+    <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.Async.*" target="Plugins\" />
+    <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.dll*" target="Plugins\" />
+	<file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.pdb*" target="Plugins\" />
+    <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.Gltf.*" target="Plugins\" />
+
+    <!-- Assemblies that are built from the MixedRealityToolkit.Providers folder -->
+    <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.Providers.*" target="Plugins\" />
+
+    <!-- Assemblies that are built from the MixedRealityToolkit.SDK folder -->
+    <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.SDK.*" target="Plugins\" />
+    <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.SDK.Inspectors.*" target="Plugins\" />
+
+    <!-- Assemblies that are built from the MixedRealityToolkit.Services folder -->
+    <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.*" target="Plugins\" />
+
+    <!-- 
+      link.xml is copied to the root location, so that it can catch IL2CPP
+      bytecode stripping issues for all scripts included in this package.
+    -->
+    <file src="link.xml" target="" />
+    <file src="link.xml.meta" target="" />
+  </files>
+</package>

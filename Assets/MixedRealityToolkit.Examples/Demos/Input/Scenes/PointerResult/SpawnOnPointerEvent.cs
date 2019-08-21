@@ -1,17 +1,20 @@
 ﻿using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 
-// Example script that spawns a prefab at the pointer hit location.
-public class SpawnOnPointerEvent : MonoBehaviour
+namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
-    public GameObject PrefabToSpawn;
-
-    public void Spawn(MixedRealityPointerEventData eventData)
+    // Example script that spawns a prefab at the pointer hit location.
+    public class SpawnOnPointerEvent : MonoBehaviour
     {
-        if (PrefabToSpawn != null)
+        public GameObject PrefabToSpawn;
+
+        public void Spawn(MixedRealityPointerEventData eventData)
         {
-            var result = eventData.Pointer.Result;
-            Instantiate(PrefabToSpawn, result.Details.Point, Quaternion.LookRotation(result.Details.Normal));
+            if (PrefabToSpawn != null)
+            {
+                var result = eventData.Pointer.Result;
+                Instantiate(PrefabToSpawn, result.Details.Point, Quaternion.LookRotation(result.Details.Normal));
+            }
         }
     }
 }

@@ -8,11 +8,13 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
+    using SpatialAwarenessHandler = IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject>;
+
     /// <summary>
     /// This class is an example of the <see cref="SpatialAwareness.IMixedRealitySpatialAwarenessObservationHandler{T}"/> interface. It keeps track
     /// of the IDs of each mesh and tracks the number of updates they have received.
     /// </summary>
-    public class DemoSpatialMeshHandler : MonoBehaviour, IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject>
+    public class DemoSpatialMeshHandler : MonoBehaviour, SpatialAwarenessHandler
     {
         private IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
 
@@ -27,20 +29,59 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 return spatialAwarenessSystem;
             }
         }
+
         /// <summary>
         /// Collection that tracks the IDs and count of updates for each active spatial awareness mesh.
         /// </summary>
         private Dictionary<int, uint> meshUpdateData = new Dictionary<int, uint>();
 
-        private async void OnEnable()
+        /// <summary>
+        /// Value indicating whether or not this script has registered for spatial awareness events.
+        /// </summary>
+        private bool isRegistered = false;
+
+        private void Start()
         {
-            await new WaitUntil(() => SpatialAwarenessSystem != null);
-            SpatialAwarenessSystem.Register(gameObject);
+            RegisterEventHandlers();
+        }
+
+        private void OnEnable()
+        {
+            RegisterEventHandlers();
         }
 
         private void OnDisable()
         {
-            SpatialAwarenessSystem?.Unregister(gameObject);
+            UnregisterEventHandlers();
+        }
+
+        private void OnDestroy()
+        {
+            UnregisterEventHandlers();
+        }
+
+        /// <summary>
+        /// Registers for the spatial awareness system events.
+        /// </summary>
+        private void RegisterEventHandlers()
+        {
+            if (!isRegistered && (SpatialAwarenessSystem != null))
+            {
+                SpatialAwarenessSystem.RegisterHandler<SpatialAwarenessHandler>(this);
+                isRegistered = true;
+            }
+        }
+
+        /// <summary>
+        /// Unregisters from the spatial awareness system events.
+        /// </summary>
+        private void UnregisterEventHandlers()
+        {
+            if (isRegistered && (SpatialAwarenessSystem != null))
+            {
+                SpatialAwarenessSystem.UnregisterHandler<SpatialAwarenessHandler>(this);
+                isRegistered = false;
+            }
         }
 
         /// <inheritdoc />

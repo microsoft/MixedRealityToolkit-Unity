@@ -4,7 +4,8 @@
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -12,12 +13,13 @@ MonoBehaviour:
   m_Name: DefaultMixedRealityCameraProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 0
-  isCameraPersistent: 0
   nearClipPlaneOpaqueDisplay: 0.1
+  farClipPlaneOpaqueDisplay: 1000
   cameraClearFlagsOpaqueDisplay: 1
   backgroundColorOpaqueDisplay: {r: 0, g: 0, b: 0, a: 1}
   opaqueQualityLevel: 5
   nearClipPlaneTransparentDisplay: 0.1
+  farClipPlaneTransparentDisplay: 50
   cameraClearFlagsTransparentDisplay: 2
   backgroundColorTransparentDisplay: {r: 0, g: 0, b: 0, a: 0}
   holoLensQualityLevel: 0

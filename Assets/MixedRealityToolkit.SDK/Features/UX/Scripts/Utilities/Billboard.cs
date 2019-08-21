@@ -27,7 +27,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// The target we will orient to. If no target is specified, the main camera will be used.
         /// </summary>
-        public Transform TargetTransform => targetTransform;
+        public Transform TargetTransform
+        {
+            get { return targetTransform; }
+            set { targetTransform = value; }
+        }
 
         [Tooltip("Specifies the target we will orient to. If no target is specified, the main camera will be used.")]
         [SerializeField]

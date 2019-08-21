@@ -17,8 +17,30 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     /// </summary>
     public static class MixedRealityInspectorUtility
     {
+        #region Colors
+
+        public static readonly Color DisabledColor = new Color(0.6f, 0.6f, 0.6f);
+        public static readonly Color WarningColor = new Color(1f, 0.85f, 0.6f);
+        public static readonly Color ErrorColor = new Color(1f, 0.55f, 0.5f);
+        public static readonly Color SuccessColor = new Color(0.8f, 1f, 0.75f);
+        public static readonly Color SectionColor = new Color(0.85f, 0.9f, 1f);
+        public static readonly Color DarkColor = new Color(0.1f, 0.1f, 0.1f);
+        public static readonly Color HandleColorSquare = new Color(0.0f, 0.9f, 1f);
+        public static readonly Color HandleColorCircle = new Color(1f, 0.5f, 1f);
+        public static readonly Color HandleColorSphere = new Color(1f, 0.5f, 1f);
+        public static readonly Color HandleColorAxis = new Color(0.0f, 1f, 0.2f);
+        public static readonly Color HandleColorRotation = new Color(0.0f, 1f, 0.2f);
+        public static readonly Color HandleColorTangent = new Color(0.1f, 0.8f, 0.5f, 0.7f);
+        public static readonly Color LineVelocityColor = new Color(0.9f, 1f, 0f, 0.8f);
+
+        #endregion Colors
+
         public const float DottedLineScreenSpace = 4.65f;
         public const string DefaultConfigProfileName = "DefaultMixedRealityToolkitConfigurationProfile";
+
+        public static readonly Texture2D LogoLightTheme = (Texture2D)AssetDatabase.LoadAssetAtPath(MixedRealityToolkitFiles.MapRelativeFilePath("StandardAssets/Textures/MRTK_Logo_Black.png"), typeof(Texture2D));
+
+        public static readonly Texture2D LogoDarkTheme = (Texture2D)AssetDatabase.LoadAssetAtPath(MixedRealityToolkitFiles.MapRelativeFilePath("StandardAssets/Textures/MRTK_Logo_White.png"), typeof(Texture2D));
 
         /// <summary>
         /// Check and make sure we have a Mixed Reality Toolkit and an active profile.
@@ -59,6 +81,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     newInstance.ActiveProfile = configProfile;
                 }
             }
+        }
+
+        /// <summary>
+        /// Render the Mixed Reality Toolkit Logo.
+        /// </summary>
+        public static void RenderMixedRealityToolkitLogo()
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            GUILayout.Label(EditorGUIUtility.isProSkin ? LogoDarkTheme : LogoLightTheme, GUILayout.MaxHeight(96f));
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+            GUILayout.Space(3f);
         }
 
         /// <summary>
@@ -125,24 +160,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             pos.y = main.y + h;
             window.position = pos;
         }
-
-        #region Colors
-
-        public static readonly Color DisabledColor = new Color(0.6f, 0.6f, 0.6f);
-        public static readonly Color WarningColor = new Color(1f, 0.85f, 0.6f);
-        public static readonly Color ErrorColor = new Color(1f, 0.55f, 0.5f);
-        public static readonly Color SuccessColor = new Color(0.8f, 1f, 0.75f);
-        public static readonly Color SectionColor = new Color(0.85f, 0.9f, 1f);
-        public static readonly Color DarkColor = new Color(0.1f, 0.1f, 0.1f);
-        public static readonly Color HandleColorSquare = new Color(0.0f, 0.9f, 1f);
-        public static readonly Color HandleColorCircle = new Color(1f, 0.5f, 1f);
-        public static readonly Color HandleColorSphere = new Color(1f, 0.5f, 1f);
-        public static readonly Color HandleColorAxis = new Color(0.0f, 1f, 0.2f);
-        public static readonly Color HandleColorRotation = new Color(0.0f, 1f, 0.2f);
-        public static readonly Color HandleColorTangent = new Color(0.1f, 0.8f, 0.5f, 0.7f);
-        public static readonly Color LineVelocityColor = new Color(0.9f, 1f, 0f, 0.8f);
-
-        #endregion Colors
 
         #region Handles
 

@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8953170493194829522
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6637649805407279968}
+  - component: {fileID: 7661837136392462874}
+  m_Layer: 0
+  m_Name: ScreenSpaceMousePointer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6637649805407279968
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8953170493194829522}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.3931317, y: -0.30549917, z: 14.1622095}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7661837136392462874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8953170493194829522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ed39100d613bee41823729209166c9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handedness: 0
+  destroyOnSourceLost: 0
+  useSourcePoseData: 1
+  poseAction:
+    id: 12
+    description: Mouse Delta
+    axisConstraint: 4
+  cursorPrefab: {fileID: 1114071904148380692, guid: 7682ceab055e4ff4eb2f73d245c55eea,
+    type: 3}
+  disableCursorOnStart: 0
+  setCursorVisibilityOnSourceDetected: 0
+  raycastOrigin: {fileID: 0}
+  activeHoldAction:
+    id: 0
+    description: None
+    axisConstraint: 0
+  pointerAction:
+    id: 1
+    description: Select
+    axisConstraint: 2
+  requiresHoldAction: 0
+  requiresActionBeforeEnabling: 1
+  overrideGlobalPointerExtent: 0
+  pointerExtent: 10
+  defaultPointerExtent: 10
+  sphereCastRadius: 0.1
+  hideCursorWhenInactive: 1
+  movementThresholdToUnHide: 0.1
+  hideTimeout: 3

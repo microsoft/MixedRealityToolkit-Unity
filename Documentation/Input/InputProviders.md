@@ -2,7 +2,7 @@
 
 Input providers are registered in the **Registered Service Providers Profile**, found in the Mixed Reality Toolkit component:
 
-<img src="../../Documentation/Images/Input/RegisteredServiceProviders.png" style="max-width:100%;">
+<img src="../../Documentation/Images/Input/RegisteredServiceProviders.PNG" width="650px" style="display:block;">
 
 These are the input providers available out of the box, together with their corresponding controllers:
 
@@ -17,6 +17,6 @@ Windows Dictation Input Provider | *None* *
 Windows Mixed Reality Device Manager | WMR Articulated Hand, WMR Controller, WMR GGV Hand
 Windows Speech Input Provider | *None* *
 
-\* Dictation and Speech providers don't create any controllers, they raise their own specialized input events directly.
+Dictation and Speech providers don't create any controllers, they raise their own specialized input events directly.
 
 Custom input providers can be created implementing the [`IMixedRealityInputDeviceManager`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputDeviceManager) interface.

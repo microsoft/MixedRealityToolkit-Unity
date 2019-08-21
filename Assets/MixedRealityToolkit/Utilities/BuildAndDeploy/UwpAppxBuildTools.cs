@@ -89,7 +89,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             // Building the solution requires first restoring NuGet packages - when built through
             // Visual Studio, VS does this automatically - when building via msbuild like we're doing here,
             // we have to do that step manually.
-            int exitCode = await Run(msBuildPath, $"\"{solutionProjectPath}\" /t:restore", !Application.isBatchMode, cancellationToken);
+            int exitCode = await Run(msBuildPath,
+                $"\"{solutionProjectPath}\" /t:restore {GetMSBuildLoggingCommand(buildInfo.LogDirectory, "nugetRestore.log")}",
+                !Application.isBatchMode,
+                cancellationToken);
             if (exitCode != 0)
             {
                 IsBuilding = false;
@@ -98,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             // Now that NuGet packages have been restored, we can run the actual build process.
             exitCode = await Run(msBuildPath, 
-                $"\"{solutionProjectPath}\" /t:{(buildInfo.RebuildAppx ? "Rebuild" : "Build")} /p:Configuration={buildInfo.Configuration} /p:Platform={buildInfo.BuildPlatform} /verbosity:m",
+                $"\"{solutionProjectPath}\" /t:{(buildInfo.RebuildAppx ? "Rebuild" : "Build")} /p:Configuration={buildInfo.Configuration} /p:Platform={buildInfo.BuildPlatform} {GetMSBuildLoggingCommand(buildInfo.LogDirectory, "buildAppx.log")}",
                 !Application.isBatchMode,
                 cancellationToken);
             AssetDatabase.SaveAssets();
@@ -160,7 +163,11 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private static async Task<string> FindMsBuildPathAsync()
         {
-            var result = await new Process().StartProcessAsync(
+            // Finding msbuild.exe involves different work depending on whether or not users
+            // have VS2017 or VS2019 installed.
+            foreach (VSWhereFindOption findOption in VSWhereFindOptions)
+            {
+                var result = await new Process().StartProcessAsync(
                 new ProcessStartInfo
                 {
                     FileName = "cmd.exe",
@@ -168,25 +175,30 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
-                    Arguments = $@"/C vswhere -all -products * -requires Microsoft.Component.MSBuild -property installationPath",
+                    Arguments = findOption.arguments,
                     WorkingDirectory = @"C:\Program Files (x86)\Microsoft Visual Studio\Installer"
                 });
 
-            foreach (var path in result.Output)
-            {
-                if (!string.IsNullOrEmpty(path))
+                foreach (var path in result.Output)
                 {
-                    string[] paths = path.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-
-                    if (paths.Length > 0)
+                    if (!string.IsNullOrEmpty(path))
                     {
-                        // if there are multiple visual studio installs,
-                        // prefer enterprise, then pro, then community
-                        string bestPath = paths.OrderBy(p => p.ToLower().Contains("enterprise"))
-                            .ThenBy(p => p.ToLower().Contains("professional"))
-                            .ThenBy(p => p.ToLower().Contains("community")).First();
+                        string[] paths = path.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
-                        return $@"{bestPath}\MSBuild\15.0\Bin\MSBuild.exe";
+                        if (paths.Length > 0)
+                        {
+                            // if there are multiple visual studio installs,
+                            // prefer enterprise, then pro, then community
+                            string bestPath = paths.OrderBy(p => p.ToLower().Contains("enterprise"))
+                                .ThenBy(p => p.ToLower().Contains("professional"))
+                                .ThenBy(p => p.ToLower().Contains("community")).First();
+
+                            string finalPath = $@"{bestPath}{findOption.pathSuffix}";
+                            if (File.Exists(finalPath))
+                            {
+                                return finalPath;
+                            }
+                        }
                     }
                 }
             }
@@ -196,29 +208,19 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private static bool UpdateAppxManifest(IBuildInfo buildInfo)
         {
-            var fullPathOutputDirectory = Path.GetFullPath(buildInfo.OutputDirectory);
-            Debug.Log($"Searching for appx manifest in {fullPathOutputDirectory}...");
-
-            // Find the manifest, assume the one we want is the first one
-            string[] manifests = Directory.GetFiles(fullPathOutputDirectory, "Package.appxmanifest", SearchOption.AllDirectories);
-
-            if (manifests.Length == 0)
+            string manifestFilePath = GetManifestFilePath(buildInfo);
+            if (manifestFilePath == null)
             {
-                Debug.LogError($"Unable to find Package.appxmanifest file for build (in path - {fullPathOutputDirectory})");
+                // Error has already been logged
                 return false;
             }
 
-            if (manifests.Length > 1)
-            {
-                Debug.LogWarning("Found more than one appxmanifest in the target build folder!");
-            }
-
-            var rootNode = XElement.Load(manifests[0]);
+            var rootNode = XElement.Load(manifestFilePath);
             var identityNode = rootNode.Element(rootNode.GetDefaultNamespace() + "Identity");
 
             if (identityNode == null)
             {
-                Debug.LogError($"Package.appxmanifest for build (in path - {fullPathOutputDirectory}) is missing an <Identity /> node");
+                Debug.LogError($"Package.appxmanifest for build (in path - {manifestFilePath}) is missing an <Identity /> node");
                 return false;
             }
 
@@ -226,11 +228,19 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             if (dependencies == null)
             {
-                Debug.LogError($"Package.appxmanifest for build (in path - {fullPathOutputDirectory}) is missing <Dependencies /> node.");
+                Debug.LogError($"Package.appxmanifest for build (in path - {manifestFilePath}) is missing <Dependencies /> node.");
                 return false;
             }
 
             UpdateDependenciesElement(dependencies, rootNode.GetDefaultNamespace());
+
+            // The gaze input capability might already exist - this is okay, it will
+            // only add it if required and it's not already present.
+            var uwpBuildInfo = buildInfo as UwpBuildInfo;
+            if (uwpBuildInfo != null && uwpBuildInfo.GazeInputCapabilityEnabled)
+            {
+                AddGazeInputCapability(rootNode);
+            }
 
             // We use XName.Get instead of string -> XName implicit conversion because
             // when we pass in the string "Version", the program doesn't find the attribute.
@@ -239,7 +249,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             if (versionAttr == null)
             {
-                Debug.LogError($"Package.appxmanifest for build (in path - {fullPathOutputDirectory}) is missing a Version attribute in the <Identity /> node.");
+                Debug.LogError($"Package.appxmanifest for build (in path - {manifestFilePath}) is missing a Version attribute in the <Identity /> node.");
                 return false;
             }
 
@@ -252,8 +262,33 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             PlayerSettings.WSA.packageVersion = newVersion;
             versionAttr.Value = newVersion.ToString();
-            rootNode.Save(manifests[0]);
+            rootNode.Save(manifestFilePath);
             return true;
+        }
+
+        /// <summary>
+        /// Gets the AppX manifest path in the project output directory.
+        /// </summary>
+        private static string GetManifestFilePath(IBuildInfo buildInfo)
+        {
+            var fullPathOutputDirectory = Path.GetFullPath(buildInfo.OutputDirectory);
+            Debug.Log($"Searching for appx manifest in {fullPathOutputDirectory}...");
+
+            // Find the manifest, assume the one we want is the first one
+            string[] manifests = Directory.GetFiles(fullPathOutputDirectory, "Package.appxmanifest", SearchOption.AllDirectories);
+
+            if (manifests.Length == 0)
+            {
+                Debug.LogError($"Unable to find Package.appxmanifest file for build (in path - {fullPathOutputDirectory})");
+                return null;
+            }
+
+            if (manifests.Length > 1)
+            {
+                Debug.LogWarning("Found more than one appxmanifest in the target build folder!");
+            }
+
+            return manifests[0];
         }
 
         private static void UpdateDependenciesElement(XElement dependencies, XNamespace defaultNamespace)
@@ -305,5 +340,110 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     new XAttribute("MaxVersionTested", maxVersionTested)));
             }
         }
+
+        /// Gets the subpart of the msbuild.exe command to save log information
+        /// in the given logFileName.
+        /// </summary>
+        /// <remarks>
+        /// Will return an empty string if logDirectory is not set.
+        /// </remarks>
+        private static string GetMSBuildLoggingCommand(string logDirectory, string logFileName)
+        {
+            if (String.IsNullOrEmpty(logDirectory))
+            {
+                Debug.Log($"Not logging {logFileName} because no logDirectory was provided");
+                return "";
+            }
+
+            return $"-fl -flp:logfile={Path.Combine(logDirectory, logFileName)};verbosity=detailed";
+        }
+
+        /// <summary>
+        /// Adds the 'Gaze Input' capability to the manifest.
+        /// </summary>
+        /// <remarks>
+        /// This is a workaround for versions of Unity which don't have native support
+        /// for the 'Gaze Input' capability in its Player Settings preference location.
+        /// Note that this function is only public to poke a hole for testing - do not
+        /// take a dependency on this function.
+        /// </remarks>
+        public static void AddGazeInputCapability(XElement rootNode)
+        {
+            // If the capabilities container tag is missing, make sure it gets added.
+            var capabilitiesTag = rootNode.GetDefaultNamespace() + "Capabilities";
+            XElement capabilitiesNode = rootNode.Element(capabilitiesTag);
+            if (capabilitiesNode == null)
+            {
+                capabilitiesNode = new XElement(capabilitiesTag);
+                rootNode.Add(capabilitiesNode);
+            }
+
+            var gazeInputCapability = rootNode.GetDefaultNamespace() + "DeviceCapability";
+            XElement existingGazeInputCapability = capabilitiesNode.Elements(gazeInputCapability)
+                .FirstOrDefault(element => element.Attribute("Name")?.Value == "gazeInput");
+
+            // Only add the capability if isn't there already.
+            if (existingGazeInputCapability == null)
+            {
+                capabilitiesNode.Add(
+                    new XElement(gazeInputCapability, new XAttribute("Name", "gazeInput")));
+            }
+        }
+
+        /// <summary>
+        /// An overload of AddGazeInputCapability that will read the AppX manifest from
+        /// the build output and update the manifest file with the gazeInput capability.
+        /// </summary>
+        /// <param name="buildInfo">An IBuildInfo containing a valid OutputDirectory</param>
+        public static void AddGazeInputCapability(IBuildInfo buildInfo)
+        {
+            string manifestFilePath = GetManifestFilePath(buildInfo);
+            if (manifestFilePath == null)
+            {
+                throw new FileNotFoundException("Unable to find manifest file");
+            }
+
+            var rootElement = XElement.Load(manifestFilePath);
+            AddGazeInputCapability(rootElement);
+            rootElement.Save(manifestFilePath);
+        }
+
+        /// <summary>
+        /// This struct controls the behavior of the arguments that are used
+        /// when finding msbuild.exe.
+        /// </summary>
+        private struct VSWhereFindOption
+        {
+            public VSWhereFindOption(string args, string suffix)
+            {
+                arguments = args;
+                pathSuffix = suffix;
+            }
+
+            /// <summary>
+            /// Used to populate the Arguments of ProcessStartInfo when invoking
+            /// vswhere.
+            /// </summary>
+            public string arguments;
+
+            /// <summary>
+            /// This string is added as a suffix to the result of the vswhere path
+            /// search.
+            /// </summary>
+            public string pathSuffix;
+        }
+
+        private static VSWhereFindOption[] VSWhereFindOptions =
+        {
+            // This find option corresponds to the version of vswhere that ships with VS2019.
+            new VSWhereFindOption(
+                $@"/C vswhere -all -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe",
+                ""),
+            // This find option corresponds to the versin of vswhere that ships with VS2017 - this doesn't have
+            // support for the -find command switch.
+            new VSWhereFindOption(
+                $@"/C vswhere -all -products * -requires Microsoft.Component.MSBuild -property installationPath",
+                "\\MSBuild\\15.0\\Bin\\MSBuild.exe"),
+        };
     }
 }

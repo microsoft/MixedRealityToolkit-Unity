@@ -14,6 +14,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public override SceneQueryType SceneQueryType { get { return raycastMode; } set { raycastMode = value; } }
 
         [SerializeField]
+        [Min(0.0f)]
+        [Tooltip("Additional distance between SphereCastRadius and NearObjectRadius")]
+        private float nearObjectMargin = 0.2f;
+        /// <summary>
+        /// Additional distance between <see cref="BaseControllerPointer.SphereCastRadius"/> and <see cref="NearObjectRadius"/>.
+        /// </summary>
+        /// <remarks>
+        /// This creates a dead zone in which far interaction is disabled before objects become grabbable.
+        /// </remarks>
+        public float NearObjectMargin => nearObjectMargin;
+
+        /// <summary>
+        /// Distance at which the pointer is considered "near" an object.
+        /// </summary>
+        /// <remarks>
+        /// Sum of <see cref="BaseControllerPointer.SphereCastRadius"/> and <see cref="NearObjectMargin"/>. Entering the <see cref="NearObjectRadius"/> disables far interaction.
+        /// </remarks>
+        public float NearObjectRadius => SphereCastRadius + NearObjectMargin;
+
+        [SerializeField]
         private bool debugMode = false;
 
         private Transform debugSphere;
@@ -29,17 +49,31 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get
             {
-                Vector3 position;
-                if (TryGetNearGraspPoint(out position))
+                if (TryGetNearGraspPoint(out Vector3 position))
                 {
-                    return UnityEngine.Physics.CheckSphere(position, SphereCastRadius + 0.05f, ~UnityEngine.Physics.IgnoreRaycastLayer);
+                    return UnityEngine.Physics.CheckSphere(position, NearObjectRadius, ~UnityEngine.Physics.IgnoreRaycastLayer);
                 }
 
                 return false;
             }
         }
 
-        public override bool IsInteractionEnabled => IsFocusLocked || (IsNearObject && base.IsInteractionEnabled);
+        public override bool IsInteractionEnabled
+        {
+            get
+            {
+                if (IsFocusLocked)
+                {
+                    return true;
+                }
+                else if (base.IsInteractionEnabled && TryGetNearGraspPoint(out Vector3 position))
+                {
+                    return UnityEngine.Physics.CheckSphere(position, SphereCastRadius, ~UnityEngine.Physics.IgnoreRaycastLayer);
+                }
+
+                return false;
+            }
+        }
 
         /// <inheritdoc />
         public override void OnPreSceneQuery()
@@ -71,23 +105,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <summary>
         /// Gets the position of where grasp happens
-        /// For sixdof it's just the pointer origin
-        /// for hand it's the average of index and thumb.
+        /// For IMixedRealityHand it's the average of index and thumb.
+        /// For any other IMixedRealityController, return just the pointer origin
         /// </summary>
         public bool TryGetNearGraspPoint(out Vector3 result)
         {
-            // For now, assume that anything that is a sphere pointer is a hand
-            // TODO: have a way to determine if this is a fully articulated hand and return 
-            // ray origin if it's a sixdof
+            // If controller is of kind IMixedRealityHand, return average of index and thumb
             if (Controller != null && Controller is IMixedRealityHand)
             {
-                HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Controller.ControllerHandedness, out MixedRealityPose index);
-                HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Controller.ControllerHandedness, out MixedRealityPose thumb);
-                if (index != null && thumb != null)
+                var hand = Controller as IMixedRealityHand;
+                hand.TryGetJoint(TrackedHandJoint.IndexTip, out MixedRealityPose index);
+                if (index != null)
                 {
-                    // result = 0.5f * (index.position + thumb.position);
-                    result = index.Position;
-                    return true;
+                    hand.TryGetJoint(TrackedHandJoint.ThumbTip, out MixedRealityPose thumb);
+                    if (thumb != null)
+                    {
+                        result = 0.5f * (index.Position + thumb.Position);
+                        return true;
+                    }
                 }
             }
             else
@@ -110,6 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (focusProvider.TryGetFocusDetails(this, out focusDetails))
                 {
                     distance = focusDetails.RayDistance;
+                    return true;
                 }
             }
 
@@ -127,6 +163,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (focusProvider.TryGetFocusDetails(this, out focusDetails))
                 {
                     normal = focusDetails.Normal;
+                    return true;
                 }
             }
 

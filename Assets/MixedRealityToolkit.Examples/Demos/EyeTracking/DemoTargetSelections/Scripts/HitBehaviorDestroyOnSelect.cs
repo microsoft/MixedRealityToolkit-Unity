@@ -32,6 +32,18 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         [SerializeField]
         private TargetGroupIterator targetIterator = null;
 
+
+        private EyeTrackingTarget myEyeTrackingTarget = null;
+
+        private void Start()
+        {
+            myEyeTrackingTarget = this.GetComponent<EyeTrackingTarget>();
+            if (myEyeTrackingTarget != null) // Shouldn't be null since we use RequireComponent(), but just to be sure.
+            {
+                myEyeTrackingTarget.OnSelected.AddListener(TargetSelected);
+            }
+        }
+
         /// <summary>
         /// Internal audio source associated with the game object.
         /// </summary>

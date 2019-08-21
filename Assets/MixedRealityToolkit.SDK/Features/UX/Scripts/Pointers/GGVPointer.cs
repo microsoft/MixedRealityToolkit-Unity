@@ -1,15 +1,26 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-using System.Collections;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Teleport;
 using Microsoft.MixedReality.Toolkit.Physics;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using System.Collections;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    public class GGVPointer : InputSystemGlobalListener, IMixedRealityPointer, IMixedRealityInputHandler, IMixedRealityInputHandler<MixedRealityPose>, IMixedRealitySourcePoseHandler, IMixedRealitySourceStateHandler
+    /// <summary>
+    /// This class allows for HoloLens 1 style input, using a far gaze ray
+    /// for focus with hand and gesture-based input and interaction across it.
+    /// </summary>
+    /// <remarks>
+    /// This pointer's position is given by hand position (grip pose),
+    /// and the input focus is given by head gaze.
+    /// </remarks>
+    public class GGVPointer : InputSystemGlobalHandlerListener,
+        IMixedRealityPointer,
+        IMixedRealityInputHandler,
+        IMixedRealityInputHandler<MixedRealityPose>,
+        IMixedRealitySourceStateHandler
     {
         [Header("Pointer")]
         [SerializeField]
@@ -17,16 +28,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         private MixedRealityInputAction poseAction = MixedRealityInputAction.None;
 
-
         private GazeProvider gazeProvider;
         private Vector3 sourcePosition;
         private bool isSelectPressed;
         private Handedness lastControllerHandedness;
 
         #region IMixedRealityPointer
-        private IMixedRealityController controller;
-        private IMixedRealityInputSource inputSourceParent;
 
+        private IMixedRealityController controller;
 
         /// <inheritdoc />
         public IMixedRealityController Controller
@@ -40,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     gameObject.name = $"{Controller.ControllerHandedness}_GGVPointer";
                     pointerName = gameObject.name;
-                    inputSourceParent = controller.InputSource;
+                    InputSourceParent = controller.InputSource;
                 }
             }
         }
@@ -77,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        public IMixedRealityInputSource InputSourceParent => inputSourceParent;
+        public IMixedRealityInputSource InputSourceParent { get; private set; }
 
         public IMixedRealityCursor BaseCursor { get; set; }
 
@@ -175,25 +184,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Rays[0].UpdateRayStep(ref newGazeOrigin, ref endPoint);
         }
 
-        public void OnPreCurrentPointerTargetChange()
-        {
-        }
+        public void OnPreCurrentPointerTargetChange() { }
 
         /// <inheritdoc />
-        public virtual Vector3 Position
-        {
-            get
-            {
-                return sourcePosition;
-            }
-        }
+        public virtual Vector3 Position => sourcePosition;
 
         /// <inheritdoc />
         public virtual Quaternion Rotation
         {
             get
             {
-                return Quaternion.LookRotation(gazeProvider.GazePointer.Rays[0].Direction);
+                // Previously we were simply returning the InternalGazeProvider rotation here.
+                // This caused issues when the head rotated, but the hand stayed where it was.
+                // Now we're returning a rotation based on the vector from the camera position
+                // to the hand. This rotation is not affected by rotating your head.
+                //
+                // The y value is set to 0 here as we want the rotation to be about the y axis.
+                // Without this, one-hand manipulating an object would give it unwanted x/z 
+                // rotations as you move your hand up and down.
+                Vector3 look = Position - CameraCache.Main.transform.position;
+                look.y = 0;
+                return Quaternion.LookRotation(look);
             }
         }
 
@@ -214,10 +225,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         BaseCursor c = gazeProvider.GazePointer.BaseCursor as BaseCursor;
                         if (c != null)
                         {
-                            c.IsPointerDown = false;
+                            c.SourceDownIds.Remove(eventData.SourceId);
                         }
                         InputSystem.RaisePointerClicked(this, selectAction, 0, Controller.ControllerHandedness);
                         InputSystem.RaisePointerUp(this, selectAction, Controller.ControllerHandedness);
+
+                        // For GGV, the gaze pointer does not set this value itself. 
+                        // See comment in OnInputDown for more details.
+                        gazeProvider.GazePointer.IsFocusLocked = false;
                     }
                 }
             }
@@ -237,9 +252,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         BaseCursor c = gazeProvider.GazePointer.BaseCursor as BaseCursor;
                         if (c != null)
                         {
-                            c.IsPointerDown = true;
+                            c.SourceDownIds.Add(eventData.SourceId);
                         }
                         InputSystem.RaisePointerDown(this, selectAction, Controller.ControllerHandedness);
+
+                        // For GGV, the gaze pointer does not set this value itself as it does not receive input 
+                        // events from the hands. Because this value is important for certain gaze behavior, 
+                        // such as positioning the gaze cursor, it is necessary to set it here.
+                        gazeProvider.GazePointer.IsFocusLocked = (gazeProvider.GazePointer.Result?.Details.Object != null);
                     }
                 }
             }
@@ -247,10 +267,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion  IMixedRealityInputHandler Implementation
 
-        protected override void Start()
+        protected override void OnEnable()
         {
-            base.Start();
-            this.gazeProvider = InputSystem.GazeProvider as GazeProvider;
+            base.OnEnable();
+            gazeProvider = InputSystem.GazeProvider as GazeProvider;
             BaseCursor c = gazeProvider.GazePointer.BaseCursor as BaseCursor;
             if (c != null)
             {
@@ -258,62 +278,65 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        #region IMixedRealitySourcePoseHandler
-
-        public void OnInputPressed(InputEventData<float> eventData)
+        protected override void OnDisable()
         {
+            base.OnDisable();
+            if (gazeProvider != null)
+            {
+                BaseCursor c = gazeProvider.GazePointer.BaseCursor as BaseCursor;
+                if (c != null)
+                {
+                    c.VisibleSourcesCount--;
+                }
+            }
         }
 
-        public void OnPositionInputChanged(InputEventData<Vector2> eventData)
+        #region InputSystemGlobalHandlerListener Implementation
+
+        protected override void RegisterHandlers()
         {
+            InputSystem?.RegisterHandler<IMixedRealityInputHandler>(this);
+            InputSystem?.RegisterHandler<IMixedRealityInputHandler<MixedRealityPose>>(this);
+            InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
         }
 
-        public void OnSourcePoseChanged(SourcePoseEventData<TrackingState> eventData)
+        protected override void UnregisterHandlers()
         {
+            InputSystem?.UnregisterHandler<IMixedRealityInputHandler>(this);
+            InputSystem?.UnregisterHandler<IMixedRealityInputHandler<MixedRealityPose>>(this);
+            InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
         }
 
-        public void OnSourcePoseChanged(SourcePoseEventData<Vector2> eventData)
-        {
-        }
+        #endregion InputSystemGlobalHandlerListener Implementation
 
-        public void OnSourcePoseChanged(SourcePoseEventData<Vector3> eventData)
-        {
-        }
+        #region IMixedRealitySourceStateHandler
 
-        public void OnSourcePoseChanged(SourcePoseEventData<Quaternion> eventData)
-        {
-        }
+        /// <inheritdoc />
+        public void OnSourceDetected(SourceStateEventData eventData) { }
 
-        public void OnSourcePoseChanged(SourcePoseEventData<MixedRealityPose> eventData)
-        {
-        }
-
-
-        public void OnSourceDetected(SourceStateEventData eventData)
-        {
-        }
-
+        /// <inheritdoc />
         public void OnSourceLost(SourceStateEventData eventData)
         {
             if (eventData.SourceId == InputSourceParent.SourceId)
             {
+                BaseCursor c = gazeProvider.GazePointer.BaseCursor as BaseCursor;
+                if (c != null)
+                {
+                    c.SourceDownIds.Remove(eventData.SourceId);
+                }
+
                 if (isSelectPressed)
                 {
                     // Raise OnInputUp if pointer is lost while select is pressed
                     InputSystem.RaisePointerUp(this, selectAction, lastControllerHandedness);
+
+                    // For GGV, the gaze pointer does not set this value itself. 
+                    // See comment in OnInputDown for more details.
+                    gazeProvider.GazePointer.IsFocusLocked = false;
                 }
 
-                if (gazeProvider != null)
-                {
-                    BaseCursor c = gazeProvider.GazePointer as BaseCursor;
-                    if (c != null)
-                    {
-                        c.VisibleSourcesCount--;
-                    }
-                }
-                
                 // Destroy the pointer since nobody else is destroying us
-                if (Application.isEditor)
+                if (!Application.isPlaying)
                 {
                     DestroyImmediate(gameObject);
                 }
@@ -322,19 +345,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     Destroy(gameObject);
                 }
             }
-
-
         }
 
+        #endregion IMixedRealitySourceStateHandler
+
+        #region IMixedRealityInputHandler<MixedRealityPose>
+
+        /// <inheritdoc />
         public void OnInputChanged(InputEventData<MixedRealityPose> eventData)
         {
             if (eventData.SourceId == Controller?.InputSource.SourceId &&
-                eventData.Handedness == Controller?.ControllerHandedness && 
+                eventData.Handedness == Controller?.ControllerHandedness &&
                 eventData.MixedRealityInputAction == poseAction)
             {
                 sourcePosition = eventData.InputData.Position;
             }
         }
-        #endregion
+
+        #endregion IMixedRealityInputHandler<MixedRealityPose>
     }
 }

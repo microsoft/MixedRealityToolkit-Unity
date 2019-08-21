@@ -37,12 +37,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void OnEnable()
         {
-            InputSystem?.Register(gameObject);
+            InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
+            InputSystem?.RegisterHandler<IMixedRealityHandJointHandler>(this);
+            InputSystem?.RegisterHandler<IMixedRealityHandMeshHandler>(this);
         }
 
         private void OnDisable()
         {
-            InputSystem?.Unregister(gameObject);
+            InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
+            InputSystem?.UnregisterHandler<IMixedRealityHandJointHandler>(this);
+            InputSystem?.UnregisterHandler<IMixedRealityHandMeshHandler>(this);
         }
 
         private void OnDestroy()
@@ -115,14 +119,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
                 else
                 {
-                    GameObject prefab = InputSystem.InputSystemProfile.HandTrackingProfile.JointPrefab;
-                    if (handJoint == TrackedHandJoint.Palm)
+                    GameObject prefab;
+                    if (handJoint == TrackedHandJoint.None)
+                    {
+                        // No visible mesh for the "None" joint
+                        prefab = null;
+                    }
+                    else if (handJoint == TrackedHandJoint.Palm)
                     {
                         prefab = InputSystem.InputSystemProfile.HandTrackingProfile.PalmJointPrefab;
                     }
                     else if (handJoint == TrackedHandJoint.IndexTip)
                     {
                         prefab = InputSystem.InputSystemProfile.HandTrackingProfile.FingerTipPrefab;
+                    }
+                    else
+                    {
+                        prefab = InputSystem.InputSystemProfile.HandTrackingProfile.JointPrefab;
                     }
 
                     GameObject jointObject;

@@ -169,38 +169,50 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             SerializedProperty intValue = prop.FindPropertyRelative("IntValue");
             SerializedProperty stringValue = prop.FindPropertyRelative("StringValue");
+
+            Rect position;
+            GUIContent propLabel = new GUIContent(label.stringValue, tooltip.stringValue);
             switch ((InspectorField.FieldTypes)type.intValue)
             {
                 case InspectorField.FieldTypes.Float:
                     SerializedProperty floatValue = prop.FindPropertyRelative("FloatValue");
-                    floatValue.floatValue = EditorGUILayout.FloatField(new GUIContent(label.stringValue, tooltip.stringValue), floatValue.floatValue);
+                    EditorGUILayout.PropertyField(floatValue, new GUIContent(label.stringValue, tooltip.stringValue));
                     break;
                 case InspectorField.FieldTypes.Int:
-                    intValue.intValue = EditorGUILayout.IntField(new GUIContent(label.stringValue, tooltip.stringValue), intValue.intValue);
+                    EditorGUILayout.PropertyField(intValue, new GUIContent(label.stringValue, tooltip.stringValue));
                     break;
                 case InspectorField.FieldTypes.String:
-                    stringValue.stringValue = EditorGUILayout.TextField(new GUIContent(label.stringValue, tooltip.stringValue), stringValue.stringValue);
+                    EditorGUILayout.PropertyField(stringValue, new GUIContent(label.stringValue, tooltip.stringValue));
                     break;
                 case InspectorField.FieldTypes.Bool:
                     SerializedProperty boolValue = prop.FindPropertyRelative("BoolValue");
-                    boolValue.boolValue = EditorGUILayout.Toggle(new GUIContent(label.stringValue, tooltip.stringValue), boolValue.boolValue);
+                    EditorGUILayout.PropertyField(boolValue, new GUIContent(label.stringValue, tooltip.stringValue));
                     break;
                 case InspectorField.FieldTypes.Color:
                     SerializedProperty colorValue = prop.FindPropertyRelative("ColorValue");
-                    colorValue.colorValue = EditorGUILayout.ColorField(new GUIContent(label.stringValue, tooltip.stringValue), colorValue.colorValue);
+                    EditorGUILayout.PropertyField(colorValue, new GUIContent(label.stringValue, tooltip.stringValue));
                     break;
                 case InspectorField.FieldTypes.DropdownInt:
-                    intValue.intValue = EditorGUILayout.Popup(label.stringValue, intValue.intValue, InspectorUIUtility.GetOptions(options));
+                    position = EditorGUILayout.GetControlRect();
+                    EditorGUI.BeginProperty(position, propLabel, intValue);
+                    {
+                        intValue.intValue = EditorGUI.Popup(position, label.stringValue, intValue.intValue, InspectorUIUtility.GetOptions(options));
+                    }
                     break;
                 case InspectorField.FieldTypes.DropdownString:
                     string[] stringOptions = InspectorUIUtility.GetOptions(options);
                     int selection = InspectorUIUtility.GetOptionsIndex(options, stringValue.stringValue);
-                    int newIndex = EditorGUILayout.Popup(label.stringValue, selection, stringOptions);
-                    if (selection != newIndex)
+                    position = EditorGUILayout.GetControlRect();
+                    EditorGUI.BeginProperty(position, propLabel, intValue);
                     {
-                        stringValue.stringValue = stringOptions[newIndex];
-                        intValue.intValue = newIndex;
+                        int newIndex = EditorGUI.Popup(position, label.stringValue, selection, stringOptions);
+                        if (selection != newIndex)
+                        {
+                            stringValue.stringValue = stringOptions[newIndex];
+                            intValue.intValue = newIndex;
+                        }
                     }
+                    EditorGUI.EndProperty();
                     break;
                 case InspectorField.FieldTypes.GameObject:
                     SerializedProperty gameObjectValue = prop.FindPropertyRelative("GameObjectValue");
@@ -224,25 +236,30 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     break;
                 case InspectorField.FieldTypes.Vector2:
                     SerializedProperty vector2Value = prop.FindPropertyRelative("Vector2Value");
-                    vector2Value.vector2Value = EditorGUILayout.Vector2Field(new GUIContent(label.stringValue, tooltip.stringValue), vector2Value.vector2Value);
+                    EditorGUILayout.PropertyField(vector2Value, new GUIContent(label.stringValue, tooltip.stringValue));
                     break;
                 case InspectorField.FieldTypes.Vector3:
                     SerializedProperty vector3Value = prop.FindPropertyRelative("Vector3Value");
-                    vector3Value.vector3Value = EditorGUILayout.Vector3Field(new GUIContent(label.stringValue, tooltip.stringValue), vector3Value.vector3Value);
+                    EditorGUILayout.PropertyField(vector3Value, new GUIContent(label.stringValue, tooltip.stringValue));
                     break;
                 case InspectorField.FieldTypes.Vector4:
                     SerializedProperty vector4Value = prop.FindPropertyRelative("Vector4Value");
-                    vector4Value.vector4Value = EditorGUILayout.Vector4Field(new GUIContent(label.stringValue, tooltip.stringValue), vector4Value.vector4Value);
+                    EditorGUILayout.PropertyField(vector4Value, new GUIContent(label.stringValue, tooltip.stringValue));
                     break;
                 case InspectorField.FieldTypes.Curve:
                     SerializedProperty curveValue = prop.FindPropertyRelative("CurveValue");
-                    curveValue.animationCurveValue = EditorGUILayout.CurveField(new GUIContent(label.stringValue, tooltip.stringValue), curveValue.animationCurveValue);
+                    EditorGUILayout.PropertyField(curveValue, new GUIContent(label.stringValue, tooltip.stringValue));
                     break;
                 case InspectorField.FieldTypes.Quaternion:
                     SerializedProperty quaternionValue = prop.FindPropertyRelative("QuaternionValue");
                     Vector4 vect4 = new Vector4(quaternionValue.quaternionValue.x, quaternionValue.quaternionValue.y, quaternionValue.quaternionValue.z, quaternionValue.quaternionValue.w);
-                    vect4 = EditorGUILayout.Vector4Field(new GUIContent(label.stringValue, tooltip.stringValue), vect4);
-                    quaternionValue.quaternionValue = new Quaternion(vect4.x, vect4.y, vect4.z, vect4.w);
+                    position = EditorGUILayout.GetControlRect();
+                    EditorGUI.BeginProperty(position, propLabel, quaternionValue);
+                    {
+                        vect4 = EditorGUI.Vector4Field(position, propLabel, vect4);
+                        quaternionValue.quaternionValue = new Quaternion(vect4.x, vect4.y, vect4.z, vect4.w);
+                    }
+                    EditorGUI.EndProperty();
                     break;
                 case InspectorField.FieldTypes.AudioClip:
                     SerializedProperty audioClip = prop.FindPropertyRelative("AudioClipValue");
