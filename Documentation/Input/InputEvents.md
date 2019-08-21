@@ -24,7 +24,7 @@ At the script level, input events can be consumed by implementing one of the eve
 1. The MRTK input system fires the relevant interface function of the input event to all registered global input handlers
 1. For every active pointer registered with the input system
     1. The input system determines which GameObject is in focus for the current pointer.
-    1. The input system utilizes [Unity's Event System](https://docs.unity3d.com/Manual/EventSystem.html) to fire the relevant interface function for all matching components on the focused GameObject
+    1. The input system utilizes [Unity's event system](https://docs.unity3d.com/Manual/EventSystem.html) to fire the relevant interface function for all matching components on the focused GameObject.
         - Example: Components implementing the interface [`IMixedRealitySpeechHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler) will be searched for when a speech command is recognized.
         - Note: The Unity Event System will bubble up to search the parent GameObject if no components matching the desired interface are found on the current GameObject.
 1. If no global input handlers are registered and no GameObject is found with a matching component/interface, then the input system will call each fallback registered input handler
