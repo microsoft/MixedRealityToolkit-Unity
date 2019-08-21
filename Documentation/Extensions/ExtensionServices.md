@@ -34,7 +34,7 @@ The service can also be manually registered using the Mixed Reality Toolkit conf
 
 If the extension service uses a profile, please ensure that it is specified in the inspector.
 
-![Configured extension service](../Images/Profiles/ConfigureExtensionService.png)
+![Configured extension service](../Images/Profiles/ConfiguredExtensionService.png)
 
 The component name and priority can also be adjusted.
 
