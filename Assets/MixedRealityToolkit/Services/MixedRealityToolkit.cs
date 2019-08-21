@@ -677,7 +677,14 @@ namespace Microsoft.MixedReality.Toolkit
             // Update instance's Name so it's clear who is the active instance
             for (int i = toolkitInstances.Count - 1; i >= 0; i--)
             {
-                toolkitInstances[i].name = toolkitInstances[i].IsActiveInstance ? activeInstanceGameObjectName : inactiveInstanceGameObjectName;
+                if (toolkitInstances[i] == null)
+                {
+                    toolkitInstances.RemoveAt(i);
+                }
+                else
+                {
+                    toolkitInstances[i].name = toolkitInstances[i].IsActiveInstance ? activeInstanceGameObjectName : inactiveInstanceGameObjectName;
+                }
             }
         }
 
