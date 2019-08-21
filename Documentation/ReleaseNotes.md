@@ -148,13 +148,13 @@ Specify the desired raycast provider in the Input System's configuration profile
 
 ![Selecting the Raycast provider](Images/ReleaseNotes/SelectRaycastProvider.png)
 
-**Improved Solvers**
+**Improved solvers**
 
 Solvers can now be controlled by the first available hand/controller instead of being locked to left or right handedness. Old value types of *Tracked Target Type* need to be updated to the new non-obsolete values.
 
 ![Solver](../Documentation/Images/Solver/TrackedObjectType-Example.gif)
 
-Please review the **solvers** section of [Updating from RC2 to 2.0.0](Updating.md) for additional changes and mitigation details.
+Please review the **solvers** section of [Updating from RC2 to 2.0.0](Updating.md#solvers) for additional changes and mitigation details.
 
 **Input animation recording**
  
