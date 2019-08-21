@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
             System.Type canvasEditorType = typeof(TransformUtils).Assembly.GetType("UnityEditor.CanvasEditor");
             if (canvasEditorType != null)
             {
-                CreateCachedEditor(target, typeof(TransformUtils).Assembly.GetType("UnityEditor.CanvasEditor"), ref editor);
+                CreateCachedEditor(target, canvasEditorType, ref editor);
             }
         }
 
