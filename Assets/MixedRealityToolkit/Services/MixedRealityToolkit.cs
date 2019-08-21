@@ -673,6 +673,12 @@ namespace Microsoft.MixedReality.Toolkit
                 activeInstance.DestroyAllServices();
                 activeInstance.InitializeInstance();
             }
+
+            // Update instance's Name so it's clear who is the active instance
+            for (int i = toolkitInstances.Count - 1; i >= 0; i--)
+            {
+                toolkitInstances[i].name = toolkitInstances[i].IsActiveInstance ? activeInstanceGameObjectName : inactiveInstanceGameObjectName;
+            }
         }
 
         private static void UnregisterInstance(MixedRealityToolkit toolkitInstance)
@@ -1346,23 +1352,24 @@ namespace Microsoft.MixedReality.Toolkit
                         for (int i = toolkitInstances.Count - 1; i >= 0; i--)
                         {
                             if (toolkitInstances[i] == null)
-                            {   // If it has been destroyed, remove it
+                            {
+                                // If it has been destroyed, remove it
                                 toolkitInstances.RemoveAt(i);
                             }
                         }
 
                         // If the active instance is null, it may not have been set, or it may have been deleted.
                         if (activeInstance == null)
-                        {   // Do a search for a new active instance
+                        {
+                            // Do a search for a new active instance
                             MixedRealityToolkit instanceCheck = Instance;
                         }
                     }
 
                     for (int i = toolkitInstances.Count - 1; i >= 0; i--)
-                    {  // Make sure it's not parented under anything
+                    {
+                        // Make sure MRTK is not parented under anything
                         Debug.Assert(toolkitInstances[i].transform.parent == null, "MixedRealityToolkit instances should not be parented under any other GameObject.");
-                        // Name instances so it's clear when it's the active instance
-                        toolkitInstances[i].name = toolkitInstances[i].IsActiveInstance ? MixedRealityToolkit.activeInstanceGameObjectName : MixedRealityToolkit.inactiveInstanceGameObjectName;
                     }
                 };
             }
