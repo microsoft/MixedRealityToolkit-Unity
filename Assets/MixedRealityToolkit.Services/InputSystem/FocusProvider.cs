@@ -37,9 +37,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private readonly int maxQuerySceneResults = 128;
         private bool focusIndividualCompoundCollider = false;
 
-        /// <inheritdoc/>
-        public override string Name { get; protected set; } = "Focus Provider";
-
         public IReadOnlyDictionary<uint, IMixedRealityPointerMediator> PointerMediators => pointerMediators;
 
         /// <summary>
@@ -88,8 +85,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region IFocusProvider Properties
 
-        /// <inheritdoc />
-        public override string Name => "Focus Provider";
+        /// <inheritdoc/>
+        public override string Name { get; protected set; } = "Focus Provider";
 
         /// <inheritdoc />
         public override uint Priority => 2;
