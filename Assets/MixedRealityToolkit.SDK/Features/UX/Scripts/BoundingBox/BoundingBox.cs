@@ -2063,7 +2063,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void UpdateRigHandles()
         {
-            if (rigRoot != null && Target != null)
+            if (rigRoot != null && Target != null && TargetBounds != null)
             {
                 // We move the rigRoot to the scene root to ensure that non-uniform scaling performed
                 // anywhere above the rigRoot does not impact the position of rig corners / edges
