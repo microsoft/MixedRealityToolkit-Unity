@@ -5,12 +5,12 @@
 param(
     # Path to your Unity project
     [Parameter(Position=0)]
-    [ValidateScript({Test-Path $_ -PathType ‘Container’})]
+    [ValidateScript({Test-Path $_ -PathType Container})]
     [string]
     $projectPath = "$PSScriptRoot/../../",
     # Folder that will contain test results output and logs
     [string]
-    [ValidateScript({Test-Path $_ -PathType ‘Container’})]
+    [ValidateScript({Test-Path $_ -PathType Container})]
     $outFolder = "$PSScriptRoot/out/",
     # Path to your Unity Executable
     [ValidateScript({[System.IO.File]::Exists($_) -and $_.EndsWith(".exe") })]
