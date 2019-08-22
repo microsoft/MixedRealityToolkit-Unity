@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e721f74104fc5e498856a7c337d6632, type: 3}
   m_Name: DefaultMixedRealityInputRecordingProfile
   m_EditorClassIdentifier: 
-  isCustomProfile: 1
+  isCustomProfile: 0
   jointPositionThreshold: 0.001
   jointRotationThreshold: 0.02
   cameraPositionThreshold: 0.002

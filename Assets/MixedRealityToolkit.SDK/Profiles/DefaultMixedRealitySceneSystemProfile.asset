@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b81dae1d46879b444aa9847f7961649f, type: 3}
   m_Name: DefaultMixedRealitySceneSystemProfile
   m_EditorClassIdentifier: 
-  isCustomProfile: 1
+  isCustomProfile: 0
   useManagerScene: 1
   managerScene:
     Name: DefaultManagerScene
