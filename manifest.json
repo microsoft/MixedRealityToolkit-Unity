@@ -650,6 +650,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/Extensions/ExtensionServices.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Extensions/ExtensionServices.html",
+          "hash": "FbQfydw6h7YczfqlEUDlYQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/Extensions/SceneTransitionService/SceneTransitionServiceOverview.md",
       "output": {
         ".html": {
@@ -1678,6 +1690,39 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/Diagnostics/VisualProfilerMissedFrames.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ExtensionWizard/ExtensionServiceComponents.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ExtensionWizard/ExtensionServiceComponents.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ExtensionWizard/ExtensionServiceCreationWizard.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ExtensionWizard/ExtensionServiceCreationWizard.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ExtensionWizard/ExtensionServiceWizardRegister.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ExtensionWizard/ExtensionServiceWizardRegister.png"
         }
       },
       "is_incremental": false,
@@ -4219,6 +4264,28 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/Pointers/PrimaryPointerExample.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Profiles/ConfiguredExtensionService.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Profiles/ConfiguredExtensionService.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Profiles/RegisterExtensionService.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Profiles/RegisterExtensionService.png"
         }
       },
       "is_incremental": false,
@@ -18900,7 +18967,13 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 119,
+          "total_file_count": 120,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1086,
           "skipped_file_count": 0
         },
         "TocDocumentProcessor": {
@@ -18908,12 +18981,6 @@
           "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1086,
           "skipped_file_count": 0
         }
       }
