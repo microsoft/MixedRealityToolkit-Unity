@@ -424,6 +424,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
         }
 
+        /// <inheritdoc />
         public override void SolverUpdate()
         {
             // Pass-through by default

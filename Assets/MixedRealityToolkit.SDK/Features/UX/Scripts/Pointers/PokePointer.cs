@@ -110,6 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             get { return (closestProximityTouchable != null); }
         }
 
+        /// <inheritdoc />
         public override void OnPreSceneQuery()
         {
             if (Rays == null)
@@ -202,6 +203,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return closest != null;
         }
 
+        /// <inheritdoc />
         public override void OnPostSceneQuery()
         {
             base.OnPostSceneQuery();
@@ -250,6 +252,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             PreviousPosition = Position;
         }
 
+        /// <inheritdoc />
         public override void OnPreCurrentPointerTargetChange()
         {
             // We need to raise the event now, since the pointer's focused object or touchable will change
@@ -363,18 +366,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
             base.OnSourceLost(eventData);
         }
 
+        /// <inheritdoc />
         public override void OnSourceDetected(SourceStateEventData eventData)
         {
             base.OnSourceDetected(eventData);
             PreviousPosition = Position;
         }
 
+        /// <inheritdoc />
         public override void OnInputDown(InputEventData eventData)
         {
             // Poke pointer should not respond when a button is pressed or hand is pinched
             // It should only dispatch events based on collision with touchables.
         }
 
+        /// <inheritdoc />
         public override void OnInputUp(InputEventData eventData)
         {
             // Poke pointer should not respond when a button is released or hand is un-pinched

@@ -85,8 +85,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region IFocusProvider Properties
 
-        /// <inheritdoc />
-        public override string Name => "Focus Provider";
+        /// <inheritdoc/>
+        public override string Name { get; protected set; } = "Focus Provider";
 
         /// <inheritdoc />
         public override uint Priority => 2;
@@ -498,6 +498,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
         public override void Destroy()
         {
             if (primaryPointerSelector != null)

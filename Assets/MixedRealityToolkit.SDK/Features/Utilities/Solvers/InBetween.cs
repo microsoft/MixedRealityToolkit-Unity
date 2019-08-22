@@ -102,6 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             UpdateSecondSolverHandler();
         }
 
+        /// <inheritdoc />
         public override void SolverUpdate()
         {
             if (SolverHandler != null && secondSolverHandler != null)

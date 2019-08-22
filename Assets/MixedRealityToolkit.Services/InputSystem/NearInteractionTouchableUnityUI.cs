@@ -24,6 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             rectTransform = GetComponent<RectTransform>();
         }
 
+        /// <inheritdoc />
         public override float DistanceToTouchable(Vector3 samplePoint, out Vector3 normal)
         {
             normal = -transform.forward;
