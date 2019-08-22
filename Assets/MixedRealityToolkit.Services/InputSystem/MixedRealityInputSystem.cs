@@ -25,6 +25,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc/>
+        public override string Name { get; protected set; } = "Mixed Reality Input System";
+
         /// <inheritdoc />
         public event Action InputEnabled;
 
