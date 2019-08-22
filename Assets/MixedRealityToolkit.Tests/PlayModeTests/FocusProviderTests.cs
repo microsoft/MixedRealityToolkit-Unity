@@ -93,8 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Ensure that the gaze provider hit result is not null when looking at an object,
-        /// even when the hand is up
+        /// Ensure FocusProvider's FocusDetails can be overridden.
         /// </summary>
         /// <returns></returns>
         [UnityTest]
