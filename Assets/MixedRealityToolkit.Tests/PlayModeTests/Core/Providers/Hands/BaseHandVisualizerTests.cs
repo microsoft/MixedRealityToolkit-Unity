@@ -91,16 +91,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestOnHandMeshUpdated()
         {
             // First invoke OnHandMeshUpdated with a hand mesh corresponding
-            // to a triangle, and then invoke it again with a hand mesh
-            // corresponding to a quad. The intent to is to verify that
+            // to a quad, and then invoke it again with a hand mesh
+            // corresponding to a triangle. The intent to is to verify that
             // the hand visualizer can be called with different sized
             // input meshes and not crash (which is required on some platforms)
             var baseHandVisualizer = new BaseHandVisualizer
             {
                 Controller = new MockController()
             };
-            baseHandVisualizer.OnHandMeshUpdated(CreateTriangleInputEventData());
             baseHandVisualizer.OnHandMeshUpdated(CreateQuadInputEventData());
+            baseHandVisualizer.OnHandMeshUpdated(CreateTriangleInputEventData());
             yield return null;
         }
 
