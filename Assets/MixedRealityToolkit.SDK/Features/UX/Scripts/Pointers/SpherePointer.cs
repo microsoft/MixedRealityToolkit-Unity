@@ -34,6 +34,37 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public float NearObjectRadius => SphereCastRadius + NearObjectMargin;
 
         [SerializeField]
+        [Tooltip("The LayerMasks, in prioritized order, that are used to determine the grabble objects. Only NearInteractionGrabbables in one of the LayerMasks will raise events.")]
+        private LayerMask[] grabLayerMasks = { UnityEngine.Physics.DefaultRaycastLayers };
+        /// <summary>
+        /// The LayerMasks, in prioritized order, that are used to determine the touchable objects.
+        /// </summary>
+        /// <remarks>
+        /// Only [NearInteractionGrabbables](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable) in one of the LayerMasks will raise events.
+        /// </remarks>
+        public LayerMask[] GrabLayerMasks => grabLayerMasks;
+
+        [SerializeField]
+        [Tooltip("Specify whether queries for grabbable objects hit triggers.")]
+        protected QueryTriggerInteraction triggerInteraction = QueryTriggerInteraction.UseGlobal;
+        /// <summary>
+        /// Specify whether queries for grabbable objects hit triggers.
+        /// </summary>
+        public QueryTriggerInteraction TriggerInteraction => triggerInteraction;
+
+
+        [SerializeField]
+        [Tooltip("Maximum number of colliders that can be detected in a scene query.")]
+        [Min(1)]
+        private int sceneQueryBufferSize = 64;
+        /// <summary>
+        /// Maximum number of colliders that can be detected in a scene query.
+        /// </summary>
+        public int SceneQueryBufferSize => sceneQueryBufferSize;
+        private Collider[] queryBuffer;
+
+
+        [SerializeField]
         private bool debugMode = false;
 
         private Transform debugSphere;
@@ -49,12 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get
             {
-                if (TryGetNearGraspPoint(out Vector3 position))
-                {
-                    return UnityEngine.Physics.CheckSphere(position, NearObjectRadius, ~UnityEngine.Physics.IgnoreRaycastLayer);
-                }
-
-                return false;
+               return IsGrabbableWithinRadius(NearObjectRadius);
             }
         }
 
@@ -66,13 +92,52 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     return true;
                 }
-                else if (base.IsInteractionEnabled && TryGetNearGraspPoint(out Vector3 position))
-                {
-                    return UnityEngine.Physics.CheckSphere(position, SphereCastRadius, ~UnityEngine.Physics.IgnoreRaycastLayer);
-                }
+                return base.IsInteractionEnabled && IsGrabbableWithinRadius(SphereCastRadius);
+            }
+        }
 
+        private bool IsGrabbableWithinRadius(float radius)
+        {
+            if (TryGetNearGraspPoint(out Vector3 position))
+            {
+                var layerMasks = PrioritizedLayerMasksOverride ?? GrabLayerMasks;
+                for (int i = 0; i < layerMasks.Length; i++)
+                {
+                    if (FindGrabbableForLayerMask(layerMasks[i], radius, position))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        private bool FindGrabbableForLayerMask(LayerMask mask, float radius, Vector3 position)
+        {
+            if (queryBuffer == null)
+            {
                 return false;
             }
+
+            int numColliders = UnityEngine.Physics.OverlapSphereNonAlloc(Position, radius, queryBuffer, mask, triggerInteraction);
+            if (numColliders == queryBuffer.Length)
+            {
+                Debug.LogWarning($"Maximum number of {numColliders} colliders found in SpherePointer overlap query. Consider increasing the query buffer size in the pointer profile.");
+            }
+            for (int j = 0; j < numColliders; j++)
+            {
+                if (queryBuffer[j].GetComponent<NearInteractionGrabbable>())
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        protected override void Start()
+        {
+            base.Start();
+            queryBuffer = new Collider[sceneQueryBufferSize];
         }
 
         /// <inheritdoc />
@@ -88,19 +153,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (debugMode)
                 {
-                    if (debugSphere == null)
-                    {
-                        debugSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere).transform;
-                        debugSphere.localScale = Vector3.one * SphereCastRadius * 2;
-                        Destroy(debugSphere.gameObject.GetComponent<Collider>());
-                    }
-
-                    debugSphere.position = pointerPosition;
+                    DrawDebugSphere(pointerPosition);
                 }
 
                 Vector3 endPoint = Vector3.forward * SphereCastRadius;
                 Rays[0].UpdateRayStep(ref pointerPosition, ref endPoint);
             }
+        }
+
+        private void DrawDebugSphere(Vector3 pointerPosition)
+        {
+            if (debugSphere == null)
+            {
+                debugSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere).transform;
+                debugSphere.localScale = Vector3.one * SphereCastRadius * 2;
+                Destroy(debugSphere.gameObject.GetComponent<Collider>());
+            }
+
+            debugSphere.position = pointerPosition;
         }
 
         /// <summary>
