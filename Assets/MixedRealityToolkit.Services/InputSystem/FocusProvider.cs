@@ -498,6 +498,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
         public override void Destroy()
         {
             if (primaryPointerSelector != null)

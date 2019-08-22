@@ -31,6 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 });
         }
 
+        /// <inheritdoc />
         public override void Init(GameObject host, InteractableThemePropertySettings settings)
         {
             base.Init(host, settings);
@@ -50,6 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             renderer = Host.GetComponent<Renderer>();
         }
 
+        /// <inheritdoc />
         public override void SetValue(InteractableThemeProperty property, int index, float percentage)
         {
             if (Host == null)
@@ -80,6 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             renderer.SetPropertyBlock(propertyBlock);
         }
 
+        /// <inheritdoc />
         public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
         {
             if (Host == null)

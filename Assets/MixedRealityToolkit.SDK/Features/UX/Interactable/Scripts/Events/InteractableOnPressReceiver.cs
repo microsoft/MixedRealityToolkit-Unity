@@ -53,6 +53,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
         }
+
+        /// <inheritdoc />
         public override void OnUpdate(InteractableStates state, Interactable source)
         {
             bool changed = state.CurrentState() != lastState;
