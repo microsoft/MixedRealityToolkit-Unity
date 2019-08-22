@@ -21,20 +21,20 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
         [Range(0, 2)]
         private float dwellIntentDelay = 0;
 
-        [Tooltip("Delay in seconds until dwell feedback is started to be shown.")]
+        [Tooltip("Delay in seconds until DwellStarted event is invoked.")]
         [SerializeField]
         [Range(0, 5)]
         private float dwellStartDelay = 0.5f;
 
-        [Tooltip("Additional time in seconds (not including the dwellStartDelay) the user needs to keep looking at the UI to trigger select on it.")]
+        [Tooltip("Additional time in seconds (not including the dwellStartDelay) the user needs to keep looking at the UI to trigger select on it. Raises DwellCompleted event.")]
         [SerializeField]
         [Range(0, 20)]
         private float timeToCompleteDwell = 4;
 
-        [Tooltip("Time in seconds when gaze can fall off the target and come back to resume an ongoing dwell.Thisonly comes into play afetr DwellStarted state is reached.")]
+        [Tooltip("Time in seconds when focus can fall off the target and come back to resume an ongoing dwell.This only comes into play after DwellStarted state but before DwellCompleted is invoked.")]
         [SerializeField]
         [Range(0, 20)]
-        private float timeToAllowDwellResume = 1;
+        private float timeToAllowDwellResume = 0;
 
         public InputSourceType DwellPointerType
         {

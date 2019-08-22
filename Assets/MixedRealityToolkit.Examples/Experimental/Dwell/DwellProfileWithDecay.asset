@@ -18,4 +18,4 @@ MonoBehaviour:
   timeToCompleteDwell: 5
   timeToAllowDwellResume: 5
   allowDwellDecayOnCancel: 1
-  timeToAllowDwellDecay: 4
+  timeToAllowDwellDecay: 5
