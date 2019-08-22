@@ -15,7 +15,7 @@ param(
     # Path to your Unity Executable
     [ValidateScript({[System.IO.File]::Exists($_) -and $_.EndsWith(".exe") })]
     [string]
-    $unityExePath = "C:\Program Files\Unity\Hub\Editor\2018.4.1f1\Editor\Unity.exe"
+    $unityExePath = "C:\Program Files\Unity\Hub\Editor\2018.4.6f1\Editor\Unity.exe"
 )
 $dateStr = Get-Date -format "yyyy_MM_dd-HHmmss"
 if (-not (Test-Path $outFolder))
