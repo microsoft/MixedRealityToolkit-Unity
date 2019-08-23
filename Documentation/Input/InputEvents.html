@@ -158,7 +158,7 @@
 <ol>
 <li>The MRTK input system recognizes that an input event has occurred.</li>
 <li>The MRTK input system fires the relevant interface function of the input event to all <a href="#register-for-global-input-events">registered global input handlers</a></li>
-<li>For every active pointer registered with the input system
+<li>For every active pointer registered with the input system:
 <ol>
 <li>The input system determines which GameObject is in focus for the current pointer.</li>
 <li>The input system utilizes <a href="https://docs.unity3d.com/Manual/EventSystem.html">Unity's event system</a> to fire the relevant interface function for all matching components on the focused GameObject.</li>
@@ -182,7 +182,7 @@
 {
     ...
 
-    public void IMixedRealitySpeechHandler.OnSpeechKeywordRecognized(SpeechEventData eventData)
+    void IMixedRealitySpeechHandler.OnSpeechKeywordRecognized(SpeechEventData eventData)
     {
         if (eventData.Command.Keyword == &quot;smaller&quot;)
         {
@@ -217,7 +217,8 @@
 
     private void OnDisable()
     {
-        // We are being destroyed so instruct the Input System to disregard us for input event handling
+        // This component is being destroyed
+        // Instruct the Input System to disregard us for input event handling
         CoreServices.InputSystem?.UnregisterHandler&lt;IMixedRealitySourceStateHandler&gt;(this);
         CoreServices.InputSystem?.UnregisterHandler&lt;IMixedRealityHandJointHandler&gt;(this);
     }
@@ -245,7 +246,8 @@
         }
     }
 
-    public void OnHandJointsUpdated(InputEventData&lt;IDictionary&lt;TrackedHandJoint, MixedRealityPose&gt;&gt; eventData)
+    public void OnHandJointsUpdated(
+                InputEventData&lt;IDictionary&lt;TrackedHandJoint, MixedRealityPose&gt;&gt; eventData)
     {
         MixedRealityPose palmPose;
         if (eventData.InputData.TryGetValue(TrackedHandJoint.Palm, out palmPose))
@@ -259,7 +261,7 @@
 <p>Fallback input handlers are similar to registered global input handlers but are treated as a last resort for input event handling. Only if no global input handlers were found and no GameObjects are in focus will fallback input handlers be leveraged.</p>
 <h3 id="fallback-input-handler-example">Fallback input handler example</h3>
 <pre><code class="lang-csharp">public class GlobalHandListenerExample : MonoBehaviour,
-    IMixedRealitySourceStateHandler, // Handle source detected and lost
+    IMixedRealitySourceStateHandler // Handle source detected and lost
 {
     private void OnEnable()
     {
@@ -284,8 +286,8 @@
 }
 </code></pre>
 <h2 id="how-to-stop-input-events">How to stop input events</h2>
-<p>Every input event interface provides a [<code>BaseInputEventData</code>](xref: Microsoft.MixedReality.Toolkit.Input.BaseInputEventData) data object as a parameter to each function on the interface. This event data object extends from Unity's own <a href="https://docs.unity3d.com/2019.1/Documentation/ScriptReference/EventSystems.AbstractEventData.html"><code>AbstractEventData</code></a>.</p>
-<p>In order to stop an input event from propagating through it's execution <a href="#input-events-in-action">as outlined</a>, a component can call <a href="https://docs.unity3d.com/2019.1/Documentation/ScriptReference/EventSystems.AbstractEventData.Use.html"><code>AbstractEventData.Use()</code></a> to mark the event as used. This will stop any other GameObjects from receiving the current input event.</p>
+<p>Every input event interface provides a <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.BaseInputEventData.html"><code>BaseInputEventData</code></a> data object as a parameter to each function on the interface. This event data object extends from Unity's own <a href="https://docs.unity3d.com/2019.1/Documentation/ScriptReference/EventSystems.AbstractEventData.html"><code>AbstractEventData</code></a>.</p>
+<p>In order to stop an input event from propagating through it's execution <a href="#input-events-in-action">as outlined</a>, a component can call <a href="https://docs.unity3d.com/2019.1/Documentation/ScriptReference/EventSystems.AbstractEventData.Use.html"><code>AbstractEventData.Use()</code></a> to mark the event as used. This will stop any other GameObjects from receiving the current input event, with the exception of global input handlers.</p>
 <div class="NOTE">
 <h5>Note</h5>
 <p>A component that calls the <code>Use()</code> method will stop other GameObjects from receiving it. However, other components on the current GameObject will still receive the input event and fire any related interface functions.</p>

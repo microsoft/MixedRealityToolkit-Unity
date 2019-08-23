@@ -90,8 +90,10 @@
 <li><em>VR Standalone</em> are mobile-class devices such as the Oculus Go or Quest</li>
 <li><em>VR Tethered</em> are PC-powered devices such as the Samsung Odyssey, Oculus Rift or HTC Vive etc.</li>
 </ul>
+<p><img src="../Images/Performance/OptimizeWindowPerformanceTarget.jpg" alt="MRTK Optimize Window Performance Target"></p>
 <h2 id="setting-optimizations">Setting optimizations</h2>
 <p>The settings optimization tab covers some of the important rendering configurations for a Unity project. This section can help automate and inform what settings should be changed for the best performing results.</p>
+<p>A green check icon means that an optimal value has been configured in the project/scene for this particular setting. A yellow warning icon indicates the current configuration can be improved. Clicking the associated button in a given section will auto-configure that setting in the Unity project/scene to a more optimal value.</p>
 <p><img src="../Images/Performance/OptimizeWindow_Settings.png" alt="MRTK Optimize Window Settings"></p>
 <h3 id="single-pass-instanced-rendering">Single Pass Instanced Rendering</h3>
 <p><a href="https://docs.unity3d.com/Manual/SinglePassInstancing.html">Single Pass instanced rendering</a> is the most efficient rendering path for mixed reality applications. This configuration ensures the render pipeline is executed only once for both eyes and that draw calls are instanced across both eyes.</p>
@@ -101,9 +103,10 @@
 <p>Furthermore, for <em>AR Headsets</em>, it is recommended to utilize a 16-bit depth format when enabling depth buffer sharing compared to 24-bit. This means lower precision but saves on performance. If <a href="https://en.wikipedia.org/wiki/Z-fighting">z-fighting</a> occurs because there is less precision in calculating depth for pixels, then it is recommended to move the <a href="https://docs.unity3d.com/Manual/class-Camera.html">far clip plane</a> closer to the camera (ex: 50m instead of 1000m).</p>
 <h3 id="real-time-global-illumination">Real-time Global Illumination</h3>
 <p><a href="https://docs.unity3d.com/Manual/GIIntro.html">Real-time Global illumination</a> in Unity can provide fantastic aesthetic results but at a very high cost. Global illumination lighting is very expensive in mixed reality and thus it is recommended to disable this feature in development.</p>
-<blockquote>
-<p>Note: This value is set per-scene in Unity and not once across the entire project.</p>
-</blockquote>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Global illumination settings in Unity are set per-scene and not once across the entire project.</p>
+</div>
 <h2 id="scene-analysis">Scene analysis</h2>
 <p>The <em>Scene Analysis</em> tab is designed to inform developers what elements currently in the scene will likely have the biggest impact on performance.</p>
 <p><img src="../Images/Performance/OptimizeWindow_SceneAnalysis.png" alt="MRTK Optimize Window Settings"></p>
@@ -115,6 +118,11 @@
 <p>The <a href="https://docs.unity3d.com/Manual/shader-StandardShader.html">Unity Standard shader</a> can produce very high quality visual results for games but is not generally best suited for the performance needs of mixed reality applications, especially since such applications are generally GPU bounded. Thus, it is recommended to developers to utilize the <a href="../README_MRTKStandardShader.html">MRTK Standard shader</a> to balance aesthetics &amp; graphical features with performance.</p>
 <p>The <em>Shader Analysis</em> tab scans the current project's Asset folder for materials using the Unity Standard shader or if desired, all materials not using Mixed Reality Toolkit provided shaders. Once discovered, developers can convert all materials or convert individually using the appropriate buttons.</p>
 <p><img src="../Images/Performance/OptimizeWindow_ShaderAnalysis.png" alt="MRTK Optimize Window Settings"></p>
+<h2 id="see-also">See Also</h2>
+<ul>
+<li><a href="../Performance/PerfGettingStarted.html">Performance</a></li>
+<li><a href="../hologram-stabilization.html">Hologram Stabilization</a></li>
+</ul>
 </article>
           </div>
           

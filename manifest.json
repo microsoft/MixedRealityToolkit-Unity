@@ -4095,6 +4095,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/Performance/OptimizeWindowPerformanceTarget.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Performance/OptimizeWindowPerformanceTarget.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/Performance/OptimizeWindow_SceneAnalysis.png",
       "output": {
         "resource": {
@@ -5226,7 +5237,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/InputEvents.html",
-          "hash": "ulLLril1LnL7lPF0HYnSXQ=="
+          "hash": "F86Ey9ebrLm/YCL1x0z2Lw=="
         }
       },
       "is_incremental": false,
@@ -5790,7 +5801,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Tools/OptimizeWindow.html",
-          "hash": "2t0Mn18P7UNFKA7EU38u8g=="
+          "hash": "XTrxDlfLLSeEPqn/l9tkIQ=="
         }
       },
       "is_incremental": false,
