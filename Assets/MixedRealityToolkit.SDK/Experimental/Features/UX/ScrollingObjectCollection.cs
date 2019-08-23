@@ -2368,14 +2368,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         ///</inheritdoc>
         void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
         {
-            //Quick check for the global listener to bail if the object is not in the list
-            if(!ContainsNode(eventData.selectedObject.transform))
-            {
-                return;
-            }
 
             if (TryGetPokePointer(eventData.InputSource.Pointers, out currentPointer))
             {
+                //Quick check for the global listener to bail if the object is not in the list
+                if (!ContainsNode(currentPointer.Result.CurrentPointerTarget.transform))
+                {
+                    return;
+                }
+
 
                 StopAllCoroutines();
                 animatingToPosition = false;
@@ -2420,9 +2421,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         ///</inheritdoc>
         void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData)
         {
+
             //Quick check for the global listener to bail if the object is not in the list
-            if (!ContainsNode(eventData.selectedObject.transform))
+            if (!ContainsNode(currentPointer.Result.CurrentPointerTarget.transform))
             {
+                if(isDragging)
+                {
+                    eventData.Use();                
+                }
+
                 return;
             }
 
@@ -2450,16 +2457,27 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         ///</inheritdoc>
         void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData)
         {
-            //Quick check for the global listener to bail if the object is not in the list
-            if (!ContainsNode(eventData.selectedObject.transform))
-            {
-                return;
-            }
-
             if (TryGetPokePointer(eventData.InputSource.Pointers, out IMixedRealityPointer p))
             {
-                if (!isDragging & p == currentPointer)
+                //Quick check for the global listener to bail if the object is not in the list
+                if (!ContainsNode(p.Result.CurrentPointerTarget.transform))
                 {
+                    return;
+                }
+
+                if (p == currentPointer)
+                {
+                    if(!isDragging)
+                    {
+
+                    }
+                    else
+                    {
+                        eventData.Use(); 
+                    }
+
+                }
+
                     //TODO: Send input back down to child with a new sender so PassThroughMode knows to handle it properly
                     /*
 
@@ -2488,7 +2506,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                         scrollChild.OnTouchUpdated(newTouchData);
                     }
                     */
-                }
             }
         }
 
