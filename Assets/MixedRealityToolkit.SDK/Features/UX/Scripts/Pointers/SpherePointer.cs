@@ -64,11 +64,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Collider[] queryBuffer;
 
 
-        [SerializeField]
-        private bool debugMode = false;
-
-        private Transform debugSphere;
-
         /// <summary>
         /// Currently performs a sphere check.
         /// Currently anything that has a collider is considered "Grabbable".
@@ -145,26 +140,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Vector3 pointerPosition;
             if (TryGetNearGraspPoint(out pointerPosition))
             {
-                if (debugMode)
-                {
-                    DrawDebugSphere(pointerPosition);
-                }
-
                 Vector3 endPoint = Vector3.forward * SphereCastRadius;
                 Rays[0].UpdateRayStep(ref pointerPosition, ref endPoint);
             }
-        }
-
-        private void DrawDebugSphere(Vector3 pointerPosition)
-        {
-            if (debugSphere == null)
-            {
-                debugSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere).transform;
-                debugSphere.localScale = Vector3.one * SphereCastRadius * 2;
-                Destroy(debugSphere.gameObject.GetComponent<Collider>());
-            }
-
-            debugSphere.position = pointerPosition;
         }
 
         /// <summary>
@@ -233,14 +211,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             normal = Vector3.forward;
             return false;
-        }
-
-        private void OnDestroy()
-        {
-            if (debugSphere)
-            {
-                Destroy(debugSphere.gameObject);
-            }
         }
     }
 }
