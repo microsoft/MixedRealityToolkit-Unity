@@ -46,7 +46,7 @@ To get started, simply follow these steps
 2. Create a branch in your fork (off of the [mrtk_development](https://github.com/microsoft/mixedrealitytoolkit-unity/tree/mrtk_development) branch) to make it easier for you to isolate your fork.
     - For the legacy HoloToolkit use the [htk_development](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/htk_development) branch
 3. Instructions for running tests are at [UnitTests](UnitTests.md)
-4. Instructions for building and deploying MRTK are at [BuildAndDeploy](../../BuildAndDeploy.md). 
+4. Instructions for building and deploying MRTK are at [BuildAndDeploy](../BuildAndDeploy.md). 
 5. Make **small and frequent** commits that include tests which could be a unity scene showing usage of your feature.
 6. Make sure that all the tests continue to pass.
 7. Follow the [Coding Guidelines](CodingGuidelines.md).
