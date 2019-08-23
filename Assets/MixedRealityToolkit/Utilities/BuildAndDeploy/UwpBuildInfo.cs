@@ -34,5 +34,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// manifest after the Unity build.
         /// </summary>
         public bool GazeInputCapabilityEnabled { get; set; } = false;
+
+        /// <summary>
+        /// Use multiple cores for building the appx bundle?
+        /// </summary>
+        public bool Multicore { get; set; } = false;
     }
 }

@@ -63,6 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 BuildAppx = !showDialog,
                 BuildPlatform = EditorUserBuildSettings.wsaArchitecture,
                 GazeInputCapabilityEnabled = UwpBuildDeployPreferences.GazeInputCapabilityEnabled,
+                Multicore = UwpBuildDeployPreferences.MulticoreAppxBuildEnabled,
 
                 // Configure a post build action that will compile the generated solution
                 PostBuildAction = PostBuildAction
