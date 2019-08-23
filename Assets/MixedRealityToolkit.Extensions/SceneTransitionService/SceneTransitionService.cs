@@ -14,7 +14,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Extensions/SceneTransitionService/SceneTransitionServiceOverview.html")]
     public class SceneTransitionService : BaseExtensionService, ISceneTransitionService, IMixedRealityExtensionService
     {
-        public SceneTransitionService(IMixedRealityServiceRegistrar registrar, string name, uint priority, BaseMixedRealityProfile profile) : base(registrar, name, priority, profile)
+        public SceneTransitionService(IMixedRealityServiceRegistrar registrar, 
+            string name,
+            uint priority,
+            BaseMixedRealityProfile profile) : base(registrar, name, priority, profile)
         {
             sceneTransitionServiceProfile = (SceneTransitionServiceProfile)profile;
         }
