@@ -114,11 +114,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private bool FindGrabbableForLayerMask(LayerMask mask, float radius, Vector3 position)
         {
-            if (queryBuffer == null)
-            {
-                return false;
-            }
-
             int numColliders = UnityEngine.Physics.OverlapSphereNonAlloc(position, radius, queryBuffer, mask, triggerInteraction);
             if (numColliders == queryBuffer.Length)
             {
@@ -134,9 +129,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return false;
         }
 
-        protected override void Start()
+        private void Awake()
         {
-            base.Start();
             queryBuffer = new Collider[sceneQueryBufferSize];
         }
 
