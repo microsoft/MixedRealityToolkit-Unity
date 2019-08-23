@@ -616,7 +616,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             state.UsesProfile = true;
             state.UsesInspector = true;
             state.Stage = CreationStage.SelectNameAndPlatform;
-            state.Platforms = SupportedPlatforms.LinuxStandalone | SupportedPlatforms.MacStandalone | SupportedPlatforms.WindowsStandalone | SupportedPlatforms.WindowsUniversal;
+            state.Platforms = SupportedPlatforms.LinuxStandalone | SupportedPlatforms.MacStandalone | SupportedPlatforms.WindowsStandalone 
+                | SupportedPlatforms.WindowsUniversal | SupportedPlatforms.WindowsEditor | SupportedPlatforms.MacEditor | SupportedPlatforms.LinuxEditor;
         }
 
         private bool AssetExists(string assetPath, string assetName, string extension)

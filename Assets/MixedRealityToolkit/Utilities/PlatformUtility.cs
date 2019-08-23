@@ -20,8 +20,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             switch (runtimePlatform)
             {
                 case RuntimePlatform.WindowsPlayer:
-                case RuntimePlatform.WindowsEditor:
                     supportedPlatforms |= SupportedPlatforms.WindowsStandalone;
+                    break;
+                case RuntimePlatform.WindowsEditor:
+                    supportedPlatforms |= SupportedPlatforms.WindowsEditor;
                     break;
                 case RuntimePlatform.WSAPlayerARM:
                 case RuntimePlatform.WSAPlayerX86:
@@ -29,12 +31,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     supportedPlatforms |= SupportedPlatforms.WindowsUniversal;
                     break;
                 case RuntimePlatform.OSXPlayer:
-                case RuntimePlatform.OSXEditor:
                     supportedPlatforms |= SupportedPlatforms.MacStandalone;
                     break;
+                case RuntimePlatform.OSXEditor:
+                    supportedPlatforms |= SupportedPlatforms.MacEditor;
+                    break;
                 case RuntimePlatform.LinuxPlayer:
-                case RuntimePlatform.LinuxEditor:
                     supportedPlatforms |= SupportedPlatforms.LinuxStandalone;
+                    break;
+                case RuntimePlatform.LinuxEditor:
+                    supportedPlatforms |= SupportedPlatforms.LinuxEditor;
                     break;
                 case RuntimePlatform.Android:
                     supportedPlatforms |= SupportedPlatforms.Android;
