@@ -20,9 +20,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         protected List<ObjectCollectionNode> NodeList { get; } = new List<ObjectCollectionNode>();
 
+        /// <summary>
+        /// Read only list of objects in the collection with generated data on the object.
+        /// </summary>
+        public IReadOnlyList<ObjectCollectionNode> CollectionNodes => new List<ObjectCollectionNode>(NodeList) as IReadOnlyList<ObjectCollectionNode>;
+
+
         [Tooltip("Whether to include space for inactive transforms in the layout")]
         [SerializeField]
-        private bool ignoreInactiveTransforms = true;
+        private bool ignoreInactiveTransforms = false;
 
         /// <summary>
         /// Whether to include space for inactive transforms in the layout
