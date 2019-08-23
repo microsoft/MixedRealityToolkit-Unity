@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Min(0.0f)]
-        [Tooltip("Additional distance between SphereCastRadius and NearObjectRadius")]
+        [Tooltip("Additional distance on top of sphere cast radius when pointer is considered 'near' an object and far interaction will turn off")]
         private float nearObjectMargin = 0.2f;
         /// <summary>
         /// Additional distance between <see cref="BaseControllerPointer.SphereCastRadius"/> and <see cref="NearObjectRadius"/>.
@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public float NearObjectRadius => SphereCastRadius + NearObjectMargin;
 
         [SerializeField]
-        [Tooltip("The LayerMasks, in prioritized order, that are used to determine the grabble objects. Only NearInteractionGrabbables in one of the LayerMasks will raise events.")]
+        [Tooltip("The LayerMasks, in prioritized order, that are used to determine the grabble objects. Remember to also add NearInteractionGrabbable! Only collidables with NearInteractionGrabbable will raise events.")]
         private LayerMask[] grabLayerMasks = { UnityEngine.Physics.DefaultRaycastLayers };
         /// <summary>
         /// The LayerMasks, in prioritized order, that are used to determine the touchable objects.
@@ -119,7 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return false;
             }
 
-            int numColliders = UnityEngine.Physics.OverlapSphereNonAlloc(Position, radius, queryBuffer, mask, triggerInteraction);
+            int numColliders = UnityEngine.Physics.OverlapSphereNonAlloc(position, radius, queryBuffer, mask, triggerInteraction);
             if (numColliders == queryBuffer.Length)
             {
                 Debug.LogWarning($"Maximum number of {numColliders} colliders found in SpherePointer overlap query. Consider increasing the query buffer size in the pointer profile.");
