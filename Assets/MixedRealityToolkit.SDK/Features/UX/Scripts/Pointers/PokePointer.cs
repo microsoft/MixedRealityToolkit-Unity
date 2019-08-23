@@ -90,10 +90,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// the same current closest touchable component's changes (e.g. Unity UI control elements).
         public GameObject CurrentTouchableObjectDown => currentTouchableObjectDown;
 
-        protected override void Start()
+        private void Awake()
         {
-            base.Start();
-
             queryBuffer = new Collider[sceneQueryBufferSize];
         }
 
@@ -163,12 +161,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             closest = null;
             closestDistance = float.PositiveInfinity;
             closestNormal = Vector3.zero;
-
-            if (queryBuffer == null)
-            {
-                // queryBuffer can be null if FindClosestTouchable is called somehow after Start().
-                return false;
-            }
 
             int numColliders = UnityEngine.Physics.OverlapSphereNonAlloc(Position, touchableDistance, queryBuffer, layerMask, triggerInteraction);
             if (numColliders == queryBuffer.Length)
