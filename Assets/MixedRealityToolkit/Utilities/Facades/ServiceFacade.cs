@@ -64,14 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
         {
             if (service == null || transform.parent != facadeParent)
             {
-                if (Application.isPlaying)
-                {
-                    GameObject.Destroy(gameObject);
-                }
-                else
-                {
-                    GameObject.DestroyImmediate(gameObject);
-                }
+                GameObjectExtensions.DestroyGameObject(gameObject);
             }
         }
 
