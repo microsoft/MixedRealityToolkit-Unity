@@ -446,7 +446,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         private GameObject focusedObject;
 
         //The Touchable in the list currently being interacted with
-        private IMixedRealityTouchHandler scrollChild;
+        //private IMixedRealityTouchHandler scrollChild;
 
         //A list of new child nodes that have new child renderers that need to be added to the clippingBox
         private List<ObjectCollectionNode> nodesToClip = new List<ObjectCollectionNode>();
@@ -1003,7 +1003,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                     TouchEnded?.Invoke(focusedObject);
 
                     focusedObject = null;
-                    scrollChild = null;
+                    //scrollChild = null;
 
                     //Clear our states
                     isTouched = false;
