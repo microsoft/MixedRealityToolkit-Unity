@@ -61,8 +61,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Maximum number of colliders that can be detected in a scene query.
         /// </summary>
         public int SceneQueryBufferSize => sceneQueryBufferSize;
-        private Collider[] queryBuffer;
-
+        private class QueryBufferInfo
+        {
+            public int NumColliders { get; set; }
+            public Collider[] QueryBuffer { get; set;  }
+            public float QueryRadius { get; set; }
+        }
+        private QueryBufferInfo queryBufferNearObjectRadius;
+        private QueryBufferInfo queryBufferSphereCastRadius;
 
         /// <summary>
         /// Currently performs a sphere check.
@@ -95,19 +101,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (TryGetNearGraspPoint(out Vector3 position))
             {
-                var layerMasks = PrioritizedLayerMasksOverride ?? GrabLayerMasks;
-                for (int i = 0; i < layerMasks.Length; i++)
-                {
-                    if (FindGrabbableForLayerMask(layerMasks[i], radius, position))
-                    {
-                        return true;
-                    }
-                }
+
             }
             return false;
         }
 
-        private bool FindGrabbableForLayerMask(LayerMask mask, float radius, Vector3 position)
+        private bool TryUpdateQueryBufferForLayerMask(LayerMask mask, float radius, Vector3 position)
         {
             int numColliders = UnityEngine.Physics.OverlapSphereNonAlloc(position, radius, queryBuffer, mask, triggerInteraction);
             if (numColliders == queryBuffer.Length)
@@ -126,7 +125,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void Awake()
         {
-            queryBuffer = new Collider[sceneQueryBufferSize];
+            queryBufferNearObjectRadius = new QueryBufferInfo
+            {
+                NumColliders = 0,
+                QueryBuffer = new Collider[sceneQueryBufferSize]
+            };
+            queryBufferSphereCastRadius = new QueryBufferInfo
+            {
+                NumColliders = 0,
+                QueryBuffer = new Collider[sceneQueryBufferSize]
+            };
         }
 
         /// <inheritdoc />
@@ -142,6 +150,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 Vector3 endPoint = Vector3.forward * SphereCastRadius;
                 Rays[0].UpdateRayStep(ref pointerPosition, ref endPoint);
+
+                var layerMasks = PrioritizedLayerMasksOverride ?? GrabLayerMasks;
+                var toQuery = new QueryBufferInfo[] { queryBufferNearObjectRadius, queryBufferSphereCastRadius };
+                for (int j = 0; j < toQuery.Length; j++)
+                {
+                    for (int i = 0; i < layerMasks.Length; i++)
+                    {
+                        if (TryUpdateQueryBufferForLayerMask(layerMasks[i], toQuery[j].QueryRadius, pointerPosition))
+                        {
+                            continue;
+                        }
+                    }
+                }
+
+
             }
         }
 
