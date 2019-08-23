@@ -18,6 +18,8 @@ using the [SpatialObjectMeshObserver](SpatialObjectMeshObserver.md) as the examp
 
 ### Observation change notifications
 
+### Decorate the observer
+
 ## Register the observer
 
 ## See also
