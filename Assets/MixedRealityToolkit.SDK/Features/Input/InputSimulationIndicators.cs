@@ -32,7 +32,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public Sprite iconHandUntrackedRight = null;
 
         private IInputSimulationService inputSimService = null;
-        private IInputSimulationService InputSimService => inputSimService ?? (inputSimService = MixedRealityToolkit.Instance.GetService<IInputSimulationService>());
+        private IInputSimulationService InputSimService
+        {
+            get
+            {
+                if (inputSimService == null)
+                {
+                    if (MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out IMixedRealityInputSystem inputSystem))
+                    {
+                        inputSimService = (inputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IInputSimulationService>();
+                    }
+                }
+                return inputSimService;
+            }
+        }
 
         /// <inheritdoc />
         void Update()
