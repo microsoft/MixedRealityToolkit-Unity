@@ -36,26 +36,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public bool IsAlwaysVisibleHandLeft
         {
-            get => handDataProvider != null ? handDataProvider.IsAlwaysVisibleLeft : false;
-            set
-            {
-                if (handDataProvider != null)
-                {
-                    handDataProvider.IsAlwaysVisibleLeft = value;
-                }
-            }
+            get { return handDataProvider != null ? handDataProvider.IsAlwaysVisibleLeft : false; }
+            set { if (handDataProvider != null) { handDataProvider.IsAlwaysVisibleLeft = value; } }
         }
         /// <inheritdoc />
         public bool IsAlwaysVisibleHandRight
         {
-            get => handDataProvider != null ? handDataProvider.IsAlwaysVisibleRight : false;
-            set
-            {
-                if (handDataProvider != null)
-                {
-                    handDataProvider.IsAlwaysVisibleRight = value;
-                }
-            }
+            get { return handDataProvider != null ? handDataProvider.IsAlwaysVisibleRight : false; }
+            set { if (handDataProvider != null) { handDataProvider.IsAlwaysVisibleRight = value; } }
+        }
+
+        /// <inheritdoc />
+        public Vector3 RotationLeft
+        {
+            get { return handDataProvider != null ? handDataProvider.HandStateLeft.ViewportRotation : Vector3.zero; }
+            set { if (handDataProvider != null) { handDataProvider.HandStateLeft.ViewportRotation = value; } }
+        }
+
+        /// <inheritdoc />
+        public Vector3 RotationRight
+        {
+            get { return handDataProvider != null ? handDataProvider.HandStateRight.ViewportRotation : Vector3.zero; }
+            set { if (handDataProvider != null) { handDataProvider.HandStateRight.ViewportRotation = value; } }
         }
 
         /// <inheritdoc />

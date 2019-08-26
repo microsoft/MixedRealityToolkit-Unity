@@ -11,7 +11,7 @@ using System.IO;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Tools for recording and playing back input animation in the Unity editor.
+    /// Tools for simulating and recording input as well as playing back input animation in the Unity editor.
     /// </summary>
     public class InputSimulationWindow : EditorWindow
     {
@@ -122,7 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             DrawSimulationGUI();
 
-            EditorGUILayout.Space();
+            EditorGUILayout.Separator();
 
             string[] modeStrings = Enum.GetNames(typeof(ToolMode));
             Mode = (ToolMode)GUILayout.SelectionGrid((int)Mode, modeStrings, modeStrings.Length);
@@ -176,30 +176,38 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 DrawHandGUI(
                     "Left",
-                    SimulationService.IsAlwaysVisibleHandLeft,
-                    v => SimulationService.IsAlwaysVisibleHandLeft = v,
+                    SimulationService.IsAlwaysVisibleHandLeft, v => SimulationService.IsAlwaysVisibleHandLeft = v,
+                    SimulationService.RotationLeft, v => SimulationService.RotationLeft = v,
                     SimulationService.ResetHandLeft);
 
                 DrawHandGUI(
                     "Right",
-                    SimulationService.IsAlwaysVisibleHandRight,
-                    v => SimulationService.IsAlwaysVisibleHandRight = v,
+                    SimulationService.IsAlwaysVisibleHandRight, v => SimulationService.IsAlwaysVisibleHandRight = v,
+                    SimulationService.RotationRight, v => SimulationService.RotationRight = v,
                     SimulationService.ResetHandRight);
             }
         }
 
-        private void DrawHandGUI(string name, bool isAlwaysVisible, Action<bool> setAlwaysVisible, Action reset)
+        private void DrawHandGUI(string name,
+            bool isAlwaysVisible, Action<bool> setAlwaysVisible,
+            Vector3 rotation, Action<Vector3> setRotation,
+            Action reset)
         {
             using (new GUILayout.VerticalScope(EditorStyles.helpBox))
             {
                 GUILayout.Label($"{name} Hand:");
 
                 bool newIsAlwaysVisible = EditorGUILayout.Toggle("Always Visible", isAlwaysVisible);
+                Vector3 newRotation = DrawRotationGUI("Rotation", rotation);
                 bool resetHand = GUILayout.Button("Reset");
 
                 if (newIsAlwaysVisible != isAlwaysVisible)
                 {
                     setAlwaysVisible(newIsAlwaysVisible);
+                }
+                if (newRotation != rotation)
+                {
+                    setRotation(newRotation);
                 }
                 if (resetHand)
                 {
@@ -351,6 +359,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     GUILayout.Label("No animation loaded");
                 }
             }
+        }
+
+        private Vector3 DrawRotationGUI(string label, Vector3 rotation)
+        {
+            Vector3 newRotation = EditorGUILayout.Vector3Field(label, rotation);
+
+            return newRotation;
         }
 
         private void SaveAnimation(bool loadAfterExport)

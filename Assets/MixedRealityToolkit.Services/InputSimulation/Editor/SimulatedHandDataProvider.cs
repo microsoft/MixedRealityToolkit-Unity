@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // Position of the hand in viewport space
         public Vector3 ViewportPosition = Vector3.zero;
         // Rotation of the hand relative to the camera
-        public Quaternion ViewportRotation = Quaternion.identity;
+        public Vector3 ViewportRotation = Vector3.zero;
         // Random offset to simulate tracking inaccuracy
         public Vector3 JitterOffset = Vector3.zero;
 
@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             newWorldPoint += CameraCache.Main.transform.forward * mouseDelta.z;
             ViewportPosition = CameraCache.Main.WorldToViewportPoint(newWorldPoint);
 
-            ViewportRotation = Quaternion.Euler(ViewportRotation.eulerAngles + rotationDeltaEulerAngles);
+            ViewportRotation = ViewportRotation + rotationDeltaEulerAngles;
 
             JitterOffset = UnityEngine.Random.insideUnitSphere * noiseAmount;
         }
@@ -113,7 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             Vector3 screenPosition = CameraCache.Main.ViewportToScreenPoint(ViewportPosition);
             Vector3 worldPosition = CameraCache.Main.ScreenToWorldPoint(screenPosition + JitterOffset);
-            Quaternion worldRotation = CameraCache.Main.transform.rotation * ViewportRotation;
+            Quaternion worldRotation = CameraCache.Main.transform.rotation * Quaternion.Euler(ViewportRotation);
             pose.ComputeJointPoses(handedness, worldRotation, worldPosition, jointsOut);
         }
     }
@@ -370,7 +370,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 state.ViewportPosition = new Vector3(0.5f, 0.5f, profile.DefaultHandDistance);
             }
 
-            state.ViewportRotation = Quaternion.identity;
+            state.ViewportRotation = Vector3.zero;
 
             state.Gesture = profile.DefaultHandGesture;
             state.ResetGesture();
