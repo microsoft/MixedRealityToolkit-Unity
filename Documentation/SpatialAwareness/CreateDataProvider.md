@@ -4,7 +4,9 @@ The Mixed Reality Toolkit spatial awareness system is a flexible and extensible 
 with data about real world environments.
 
 This article describes how to create custom data providers, also called observers, for the spatial awareness system. The example code shown here is
-from the [SpatialObjectMeshObserver](SpatialObjectMeshObserver.md).
+from the [`SpatialObjectMeshObserver`](xref:Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver).
+
+> The complete source code used in this example can be found in the MixedRealityToolkit.Providers\ObjectMeshObserver folder.
 
 ## Define the spatial data object
 
@@ -20,6 +22,8 @@ The Mixed Reality Toolkit foundation provides the following spatial objects that
 - [`SpatialAwarenessPlanarObject`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.SpatialAwarenessPlanarObject)
 
 ## Implement the observer
+
+> The complete code for the examples in this section are from the MixedRealityToolkit.Providers\ObjectMeshObserver\SpatialObjectMeshObserver.cs file.
 
 ### Specify interface and/or base class inheritance
 
@@ -56,58 +60,58 @@ Coninuing with the example of the [`SpatialObjectMeshObserver`](xref:Microsoft.M
 code illustrates simple implementations of [`IMixedRealityDataProvider`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider).
 
 ``` c#
-        public override void Initialize()
-        {
-            meshEventData = new MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>(EventSystem.current);
+public override void Initialize()
+{
+    meshEventData = new MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>(EventSystem.current);
 
-            ReadProfile();
+    ReadProfile();
 
-            if (StartupBehavior == AutoStartBehavior.AutoStart)
-            {
-                Resume();
-            }
-        }
+    if (StartupBehavior == AutoStartBehavior.AutoStart)
+    {
+        Resume();
+    }
+}
 
-        public override void Update()
-        {
-            if (!IsRunning) { return; }
+public override void Update()
+{
+    if (!IsRunning) { return; }
 
-            SendMeshObjects();
-        }
+    SendMeshObjects();
+}
 
-        public override void Reset()
-        {
-            CleanupObserver();
-            Initialize();
-        }
+public override void Reset()
+{
+    CleanupObserver();
+    Initialize();
+}
 
-        public override void Enable()
-        {
-            // Resume iff we are not running and had been disabled while running.
-            if (!IsRunning && autoResume)
-            {
-                Resume();
-            }
-        }
+public override void Enable()
+{
+    // Resume iff we are not running and had been disabled while running.
+    if (!IsRunning && autoResume)
+    {
+        Resume();
+    }
+}
 
-        public override void Disable()
-        {
-            // Remember if we are currently running when Disable is called.
-            autoResume = IsRunning;
+public override void Disable()
+{
+    // Remember if we are currently running when Disable is called.
+    autoResume = IsRunning;
 
-            // If we are disbled while running...
-            if (IsRunning)
-            {
-                // Suspend the observer
-                Suspend();
-            }
-        }
+    // If we are disbled while running...
+    if (IsRunning)
+    {
+        // Suspend the observer
+        Suspend();
+    }
+}
 
-        public override void Destroy()
-        {
-            Disable();
-            CleanupObserver();
-        }
+public override void Destroy()
+{
+    Disable();
+    CleanupObserver();
+}
 ```
 
 > [!Note]
@@ -186,21 +190,70 @@ The final step of creating a spatial awareness data provider is to apply the [`M
 attribute to the class. This is an optional step that allows for setting the default profile and platform(s) for the observer, when selected in the spatial awareness profile.
 
 ``` c#
-    [MixedRealityDataProvider(
-        typeof(IMixedRealitySpatialAwarenessSystem),
-        SupportedPlatforms.WindowsEditor | SupportedPlatforms.MacEditor | SupportedPlatforms.LinuxEditor,
-        "Spatial Object Mesh Observer",
-        "ObjectMeshObserver/Profiles/DefaultObjectMeshObserverProfile.asset",
-        "MixedRealityToolkit.Providers")]
-    public class SpatialObjectMeshObserver : BaseSpatialObserver, IMixedRealitySpatialAwarenessMeshObserver, IMixedRealityCapabilityCheck
-    { } 
+[MixedRealityDataProvider(
+    typeof(IMixedRealitySpatialAwarenessSystem),
+    SupportedPlatforms.WindowsEditor | SupportedPlatforms.MacEditor | SupportedPlatforms.LinuxEditor,
+    "Spatial Object Mesh Observer",
+    "ObjectMeshObserver/Profiles/DefaultObjectMeshObserverProfile.asset",
+    "MixedRealityToolkit.Providers")]
+public class SpatialObjectMeshObserver : BaseSpatialObserver, IMixedRealitySpatialAwarenessMeshObserver, IMixedRealityCapabilityCheck
+{ } 
 ```
 
 ## Create the profile and inspector
 
-## Define the assemblies
+In the Mixed Reality Toolkit, data providers are configured using profiles. These are serialized objects that can easily be shared between applications by simply copying and
+pasting a .asset file.
+
+### Define the profile
+
+> The complete code for the example in this section are from the MixedRealityToolkit.Providers\ObjectMeshObserver\SpatialObjectMeshObserverProfilex.cs file.
+
+Profile contents should mirror the accessible properties of the observer (ex: update interval). All of the user configurable properties defined in each
+interface should be contained with the profile.
+
+Base classes are encouraged if a new observer extends an existing data provider. For example, the [`SpatialObjectMeshObserverProfile`](Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserverProfile)
+extends the [`MixedRealitySpatialAwarenessMeshObserverProfile`](Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessMeshObserverProfile) to enable
+customers to provide a 3D model to be used as the environment data.
+
+``` c#
+[CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Spatial Object Mesh Observer Profile", fileName = "SpatialObjectMeshObserverProfile", order = 100)]
+public class SpatialObjectMeshObserverProfile : MixedRealitySpatialAwarenessMeshObserverProfile
+{
+    [SerializeField]
+    [Tooltip("The model containing the desired mesh data.")]
+    private GameObject spatialMeshObject = null;
+
+    /// <summary>
+    /// The model containing the desired mesh data.
+    /// </summary>
+    public GameObject SpatialMeshObject => spatialMeshObject;
+}
+```
+
+The `CreateAssetMenu` attribute can be applied to the profile class to enable customers to create a profile instance using the 
+**Create > Assets > Mixed Reality Toolkit > Profiles** menu.
+
+### Implement the inspector
+
+> The complete code for the example in this section are from the MixedRealityToolkit.Providers\ObjectMeshObserver\SpatialObjectMeshObserverProfileInspector.cs file.
+
+Profile inspectors are the user interface for configuring and viewing profile contents. Each profile inspector should extend the
+[`BaseMixedRealityToolkitConfigurationProfileInspector]() class.
+
+The `CustomEditor` attribute informs Unity the type of asset to which the imspector applies.
+
+``` c#
+[CustomEditor(typeof(SpatialObjectMeshObserverProfile))]
+public class SpatialObjectMeshObserverProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
+{ }
+```
 
 ## Register the observer
+
+Once created, the observer can be registered with the spatial awareness system be used in the application.
+
+![Selecting the spatial object mesh observer](../Images/SpatialAwreness/SelectObjectObserver.png)
 
 ## See also
 
