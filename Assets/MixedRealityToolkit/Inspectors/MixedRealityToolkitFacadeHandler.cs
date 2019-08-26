@@ -71,29 +71,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
 
         private static HashSet<IMixedRealityService> GetAllServices()
         {
-            HashSet<IMixedRealityService> serviceList = new HashSet<IMixedRealityService>();
-            foreach (var svc in MixedRealityServiceRegistry.GetAllServices())
-            {
-                serviceList.Add(svc);
-            }
+            HashSet<IMixedRealityService> serviceList = new HashSet<IMixedRealityService>(MixedRealityServiceRegistry.GetAllServices());
 
             // These are core systems that are likely out-of-box services and known to have register DataProviders
             // Search for any dataproviders that service facades can be created for
-            var inputSystem_dataProviderAccess = CoreServices.InputSystem as IMixedRealityDataProviderAccess;
-            if (inputSystem_dataProviderAccess != null)
+            var dataProviderManagers = new IMixedRealityService[]{CoreServices.InputSystem, CoreServices.SpatialAwarenessSystem};
+            foreach (var system in dataProviderManagers)
             {
-                foreach (var dataProvider in inputSystem_dataProviderAccess.GetDataProviders())
+                var dataProviderAccess = system as IMixedRealityDataProviderAccess;
+                if (dataProviderAccess != null)
                 {
-                    serviceList.Add(dataProvider);
-                }
-            }
-
-            var spatialAwarenessSystem_dataProviderAccess = CoreServices.SpatialAwarenessSystem as IMixedRealityDataProviderAccess;
-            if (spatialAwarenessSystem_dataProviderAccess != null)
-            {
-                foreach (var dataProvider in spatialAwarenessSystem_dataProviderAccess.GetDataProviders())
-                {
-                    serviceList.Add(dataProvider);
+                    foreach (var dataProvider in dataProviderAccess.GetDataProviders())
+                    {
+                        serviceList.Add(dataProvider);
+                    }
                 }
             }
 
@@ -133,21 +124,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
                 // if this facade is no longer valid, remove item
                 if (facade == null)
                 {
-                    ServiceFacade.ActiveFacadeObjects.RemoveAt(i);
+                    ServiceFacade.ActiveFacadeObjects.Remove(facade);
                 }
-                //If service facade is not part of the current service list, then remove item and destroy GameObject
+                // If service facade is not part of the current service list,
+                // Remove from the list so that the facade is not-duply-created in the following serviceSet enumeration loop
                 else if (!serviceSet.Contains(facade.Service))
                 {
+                    ServiceFacade.ActiveFacadeObjects.Remove(facade);
                     DestroyGameObject(facade.gameObject);
-                    ServiceFacade.ActiveFacadeObjects.RemoveAt(i);
                 }
                 else
                 {
                     // Else item is valid and exists in our list. Remove from list
                     serviceSet.Remove(facade.Service);
 
-                    // If there is a new MRTK active instance, then migrate service facade to be child of that GameObject
-                    if (newMRTKActiveInstance)
+                    //Ensure valid facades are parented under the current MRTK active instance
+                    if (facade.transform.parent != mrtkTransform)
                     {
                         facade.transform.parent = mrtkTransform;
                     }
