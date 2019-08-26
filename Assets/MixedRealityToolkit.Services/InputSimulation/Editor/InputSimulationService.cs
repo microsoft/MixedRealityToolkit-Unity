@@ -47,14 +47,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
-        public Vector3 RotationLeft
+        public Vector3 HandPositionLeft
+        {
+            get { return handDataProvider != null ? handDataProvider.HandStateLeft.ViewportPosition : Vector3.zero; }
+            set { if (handDataProvider != null) { handDataProvider.HandStateLeft.ViewportPosition = value; } }
+        }
+
+        /// <inheritdoc />
+        public Vector3 HandPositionRight
+        {
+            get { return handDataProvider != null ? handDataProvider.HandStateRight.ViewportPosition : Vector3.zero; }
+            set { if (handDataProvider != null) { handDataProvider.HandStateRight.ViewportPosition = value; } }
+        }
+
+        /// <inheritdoc />
+        public Vector3 HandRotationLeft
         {
             get { return handDataProvider != null ? handDataProvider.HandStateLeft.ViewportRotation : Vector3.zero; }
             set { if (handDataProvider != null) { handDataProvider.HandStateLeft.ViewportRotation = value; } }
         }
 
         /// <inheritdoc />
-        public Vector3 RotationRight
+        public Vector3 HandRotationRight
         {
             get { return handDataProvider != null ? handDataProvider.HandStateRight.ViewportRotation : Vector3.zero; }
             set { if (handDataProvider != null) { handDataProvider.HandStateRight.ViewportRotation = value; } }

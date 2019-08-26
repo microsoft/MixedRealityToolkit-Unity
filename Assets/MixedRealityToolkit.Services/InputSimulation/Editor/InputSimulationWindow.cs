@@ -177,19 +177,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 DrawHandGUI(
                     "Left",
                     SimulationService.IsAlwaysVisibleHandLeft, v => SimulationService.IsAlwaysVisibleHandLeft = v,
-                    SimulationService.RotationLeft, v => SimulationService.RotationLeft = v,
+                    SimulationService.HandPositionLeft, v => SimulationService.HandPositionLeft = v,
+                    SimulationService.HandRotationLeft, v => SimulationService.HandRotationLeft = v,
                     SimulationService.ResetHandLeft);
 
                 DrawHandGUI(
                     "Right",
                     SimulationService.IsAlwaysVisibleHandRight, v => SimulationService.IsAlwaysVisibleHandRight = v,
-                    SimulationService.RotationRight, v => SimulationService.RotationRight = v,
+                    SimulationService.HandPositionRight, v => SimulationService.HandPositionRight = v,
+                    SimulationService.HandRotationRight, v => SimulationService.HandRotationRight = v,
                     SimulationService.ResetHandRight);
             }
         }
 
         private void DrawHandGUI(string name,
             bool isAlwaysVisible, Action<bool> setAlwaysVisible,
+            Vector3 position, Action<Vector3> setPosition,
             Vector3 rotation, Action<Vector3> setRotation,
             Action reset)
         {
@@ -198,12 +201,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 GUILayout.Label($"{name} Hand:");
 
                 bool newIsAlwaysVisible = EditorGUILayout.Toggle("Always Visible", isAlwaysVisible);
+                Vector3 newPosition = EditorGUILayout.Vector3Field("Position", position);
                 Vector3 newRotation = DrawRotationGUI("Rotation", rotation);
                 bool resetHand = GUILayout.Button("Reset");
 
                 if (newIsAlwaysVisible != isAlwaysVisible)
                 {
                     setAlwaysVisible(newIsAlwaysVisible);
+                }
+                if (newPosition != position)
+                {
+                    setPosition(newPosition);
                 }
                 if (newRotation != rotation)
                 {

@@ -45,13 +45,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
         bool IsAlwaysVisibleHandRight { get; set; }
 
         /// <summary>
+        /// Position of the left hand in view space.
+        /// </summary>
+        Vector3 HandPositionLeft { get; set; }
+        /// <summary>
+        /// Position of the right hand in view space.
+        /// </summary>
+        Vector3 HandPositionRight { get; set; }
+
+        /// <summary>
         /// Rotation euler angles of the left hand in view space.
         /// </summary>
-        Vector3 RotationLeft { get; set; }
+        Vector3 HandRotationLeft { get; set; }
         /// <summary>
         /// Rotation euler angles of the right hand in view space.
         /// </summary>
-        Vector3 RotationRight { get; set; }
+        Vector3 HandRotationRight { get; set; }
 
         /// <summary>
         /// Reset the left hand.
