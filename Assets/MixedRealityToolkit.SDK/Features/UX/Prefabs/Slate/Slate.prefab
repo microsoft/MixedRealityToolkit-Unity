@@ -236,7 +236,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: Microsoft.MixedReality.Toolkit.Input.PanUnityEvent, Microsoft.MixedReality.Toolkit.SDK,
+    m_TypeName: Microsoft.MixedReality.Toolkit.UI.PanUnityEvent, Microsoft.MixedReality.Toolkit.SDK,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   PanStopped:
     m_PersistentCalls:
@@ -253,12 +253,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: Microsoft.MixedReality.Toolkit.Input.PanUnityEvent, Microsoft.MixedReality.Toolkit.SDK,
+    m_TypeName: Microsoft.MixedReality.Toolkit.UI.PanUnityEvent, Microsoft.MixedReality.Toolkit.SDK,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   PanUpdated:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: Microsoft.MixedReality.Toolkit.Input.PanUnityEvent, Microsoft.MixedReality.Toolkit.SDK,
+    m_TypeName: Microsoft.MixedReality.Toolkit.UI.PanUnityEvent, Microsoft.MixedReality.Toolkit.SDK,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
 --- !u!82 &6890004885709557393
 AudioSource:
@@ -1022,12 +1022,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handedness: 0
-  trackedObjectToReference: 0
+  trackedTargetType: 0
+  trackedHandness: 3
   trackedHandJoint: 2
+  transformOverride: {fileID: 0}
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
-  transformTarget: {fileID: 0}
   updateSolvers: 1
 --- !u!114 &6131755083299501832
 MonoBehaviour:
@@ -1048,7 +1048,6 @@ MonoBehaviour:
   maintainScale: 1
   smoothing: 1
   lifetime: 0
-  SolverHandler: {fileID: 7779420039263858274}
   referenceDirection: 1
   minDistance: 0.4
   maxDistance: 1
@@ -1087,9 +1086,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetObject: {fileID: 7779420039263858270}
   boundsOverride: {fileID: 7779420039263858272}
+  boundsCalculationMethod: 0
   activation: 3
-  scaleMaximum: 5
   scaleMinimum: 0.3
+  scaleMaximum: 5
   flattenAxis: 4
   flattenAxisDisplayScale: 0.35
   boxPadding: {x: 0, y: 0, z: 0}
@@ -1102,13 +1102,13 @@ MonoBehaviour:
   handleMaterial: {fileID: 2100000, guid: 986558eab447a9847bbe138149edc1b4, type: 2}
   handleGrabbedMaterial: {fileID: 2100000, guid: bf37b5eab60b288498d02fd524325d10,
     type: 2}
-  scaleHandlePrefab: {fileID: 9134652625222899238, guid: 6cf8f9d89a23d5446a85086a373dbd21,
+  scaleHandlePrefab: {fileID: 1361136173122186969, guid: ba9083550f965e545a628b53bfa80c9e,
     type: 3}
-  scaleHandleSlatePrefab: {fileID: 3149951711952774397, guid: 21e62edc2485ae94d99e2732627b62db,
+  scaleHandleSlatePrefab: {fileID: 1134031327877807717, guid: c45e552a6d92491468c421c35c5dd63d,
     type: 3}
   scaleHandleSize: 0.016
   scaleHandleColliderPadding: {x: 0.016, y: 0.016, z: 0.016}
-  rotationHandlePrefab: {fileID: 1104240504292045578, guid: 00b3339e8f9ea63469792068ce7b2d67,
+  rotationHandlePrefab: {fileID: 3868891704370700786, guid: 969c9b04d1b1848489de0d6efe6250fc,
     type: 3}
   rotationHandleSize: 0.016
   rotateHandleColliderPadding: {x: 0.016, y: 0.016, z: 0.016}

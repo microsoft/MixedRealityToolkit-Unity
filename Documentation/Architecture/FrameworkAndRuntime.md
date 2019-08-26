@@ -7,7 +7,7 @@ To add one use the menu option: Mixed Reality Toolkit -> Add to Scene and Config
 instance is responsible for registering, updating and tearing down services. It's also
 where your configuration profile is chosen.
 
-Apart form adding the MRTK gameobject to the scene the menu option will also:
+Apart form adding the MRTK GameObject to the scene the menu option will also:
 
 - Add the MixedRealityPlayspace, which is used by many other MRTK components to reason over
   world and local space transformations.

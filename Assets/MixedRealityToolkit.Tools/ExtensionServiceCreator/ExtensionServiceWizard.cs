@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly Color enabledColor = Color.white;
         private static readonly Color disabledColor = Color.gray;
         private static readonly Color readOnlyColor = Color.Lerp(enabledColor, Color.clear, 0.5f);
-        private static readonly string servicesDocumentationURL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Utilities/ExtensionServiceCreationWizard.html";
+        private static readonly string servicesDocumentationURL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Tools/ExtensionServiceCreationWizard.html";
         private static readonly Vector2 minWindowSize = new Vector2(500, 0);
         private const int docLinkWidth = 200;
 
@@ -43,7 +43,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private void ResetCreator()
         {
             if (creator == null)
+            {
                 creator = new ExtensionServiceCreator();
+            }
 
             creator.ResetState();
         }
@@ -51,7 +53,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private void OnEnable()
         {
             if (creator == null)
+            {
                 creator = new ExtensionServiceCreator();
+            }
 
             creator.LoadStoredState();
         }
@@ -239,11 +243,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Draw crude working indicator so we know it hasn't frozen
             numEllipses++;
             if (numEllipses > 10)
+            {
                 numEllipses = 0;
+            }
 
             string workingIndicator = ".";
             for (int i = 0; i < numEllipses; i++)
+            {
                 workingIndicator += ".";
+            }
 
             EditorGUILayout.LabelField(workingIndicator, EditorStyles.boldLabel);
 

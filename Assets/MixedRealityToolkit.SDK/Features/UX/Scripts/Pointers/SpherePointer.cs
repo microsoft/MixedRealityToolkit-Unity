@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         private SceneQueryType raycastMode = SceneQueryType.SphereOverlap;
 
+        /// <inheritdoc />
         public override SceneQueryType SceneQueryType { get { return raycastMode; } set { raycastMode = value; } }
 
         [SerializeField]
@@ -58,6 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
         public override bool IsInteractionEnabled
         {
             get
@@ -105,23 +107,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <summary>
         /// Gets the position of where grasp happens
-        /// For sixdof it's just the pointer origin
-        /// for hand it's the average of index and thumb.
+        /// For IMixedRealityHand it's the average of index and thumb.
+        /// For any other IMixedRealityController, return just the pointer origin
         /// </summary>
         public bool TryGetNearGraspPoint(out Vector3 result)
         {
-            // For now, assume that anything that is a sphere pointer is a hand
-            // TODO: have a way to determine if this is a fully articulated hand and return 
-            // ray origin if it's a sixdof
+            // If controller is of kind IMixedRealityHand, return average of index and thumb
             if (Controller != null && Controller is IMixedRealityHand)
             {
-                HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Controller.ControllerHandedness, out MixedRealityPose index);
-                HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Controller.ControllerHandedness, out MixedRealityPose thumb);
-                if (index != null && thumb != null)
+                var hand = Controller as IMixedRealityHand;
+                hand.TryGetJoint(TrackedHandJoint.IndexTip, out MixedRealityPose index);
+                if (index != null)
                 {
-                    // result = 0.5f * (index.position + thumb.position);
-                    result = index.Position;
-                    return true;
+                    hand.TryGetJoint(TrackedHandJoint.ThumbTip, out MixedRealityPose thumb);
+                    if (thumb != null)
+                    {
+                        result = 0.5f * (index.Position + thumb.Position);
+                        return true;
+                    }
                 }
             }
             else

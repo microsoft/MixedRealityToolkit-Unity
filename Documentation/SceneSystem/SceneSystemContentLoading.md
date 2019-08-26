@@ -1,6 +1,3 @@
-> [!IMPORTANT]
-> This feature is currently available in the [**mrtk_development**](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development) branch.
-
 # Content Scene Loading
 All content load operations are asynchronous, and by default all content loading is additive. Manager and lighting scenes are never affected by content loading operations. For information about monitoring load progress and scene activation, see [Monitoring Content Loading.](SceneSystemLoadProgress.md)
 
@@ -73,7 +70,7 @@ if (prevSceneRequested)
 ## Loading by Tag
 ![MRTK_SceneSystemLoadingByTag](../Images/SceneSystem/MRTK_SceneSystemLoadingByTag.png)
 
-It's sometimes desirable to load content scenes in groups. Eg, a stage of an experience may be composed of multiple scenes, all of which must be loaded simultanously to function. To facilitate this, you can tag your scenes and then load them or unload them with that tag.
+It's sometimes desirable to load content scenes in groups. Eg, a stage of an experience may be composed of multiple scenes, all of which must be loaded simultaneously to function. To facilitate this, you can tag your scenes and then load them or unload them with that tag.
 
 ```
 IMixedRealitySceneSystem sceneSystem = MixedRealityToolkit.Instance.GetService<IMixedRealitySceneSystem>();
@@ -120,6 +117,6 @@ Trees | Vegetation | •
 ---
 
 ## Editor Behavior
-You can perform all these operations in editor and in play mode by using the Scene System's [service inspector.](../MixedRealityConfigurationGuide.md#inspectors) In edit mode scene loads will be instantaeous, while in play mode you can observe loading progress and use [activation tokens.](SceneSystemLoadProgress.md)
+You can perform all these operations in editor and in play mode by using the Scene System's [service inspector.](../MixedRealityConfigurationGuide.md#inspectors) In edit mode scene loads will be instantaneous, while in play mode you can observe loading progress and use [activation tokens.](SceneSystemLoadProgress.md)
 
 ![MRTK_SceneSystemServiceInspector](../Images/SceneSystem/MRTK_SceneSystemServiceInspector.PNG)

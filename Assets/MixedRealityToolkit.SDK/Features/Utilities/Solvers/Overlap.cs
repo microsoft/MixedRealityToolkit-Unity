@@ -8,10 +8,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     /// </summary>
     public class Overlap : Solver
     {
+        /// <inheritdoc />
         public override void SolverUpdate()
         {
-            GoalPosition = SolverHandler.TransformTarget.position;
-            GoalRotation = SolverHandler.TransformTarget.rotation;
+            var target = SolverHandler.TransformTarget;
+            if (target != null)
+            {
+                GoalPosition = target.position;
+                GoalRotation = target.rotation;
+            }
         }
     }
 }

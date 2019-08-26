@@ -17,24 +17,32 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// </remarks>
     public class SystemKeyboardExample : MonoBehaviour
     {
+#if WINDOWS_UWP
         private MixedRealityKeyboard wmrKeyboard;
+#elif UNITY_IOS || UNITY_ANDROID
         private TouchScreenKeyboard touchscreenKeyboard;
-        public static string keyboardText = "";
-        public TextMeshPro debugMessage;
+#endif
+
+        public static string KeyboardText = "";
+
+        [SerializeField]
+        private TextMeshPro debugMessage = null;
 
         private void Start()
         {
-#if !UNITY_EDITOR && UNITY_WSA
+#if WINDOWS_UWP
             // Windows mixed reality keyboard initialization goes here
             wmrKeyboard = gameObject.AddComponent<MixedRealityKeyboard>();
 #elif UNITY_IOS || UNITY_ANDROID
             // non-Windows mixed reality keyboard initialization goes here
+#else
+            debugMessage.text = "Keyboard not supported on this platform.";
 #endif
         }
 
         public void OpenSystemKeyboard()
         {
-#if !UNITY_EDITOR && UNITY_WSA
+#if WINDOWS_UWP
             wmrKeyboard.ShowKeyboard();
 #elif UNITY_IOS || UNITY_ANDROID
             touchscreenKeyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default, false, false, false, false);
@@ -43,22 +51,31 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         private void Update()
         {
-#if !UNITY_EDITOR && UNITY_WSA
+#if WINDOWS_UWP
             // Windows mixed reality keyboard update goes here
-            keyboardText = wmrKeyboard.Text;
+            KeyboardText = wmrKeyboard.Text;
             if (wmrKeyboard.Visible)
             {
-                debugMessage.text = "typing... " + keyboardText;
+                if (debugMessage != null)
+                {
+                    debugMessage.text = "typing... " + KeyboardText;
+                }
             }
             else
             {
-                if (keyboardText == null || keyboardText.Length == 0)
+                if (KeyboardText == null || KeyboardText.Length == 0)
                 {
-                    debugMessage.text = "open keyboard to type text";
+                    if (debugMessage != null)
+                    {
+                        debugMessage.text = "open keyboard to type text";
+                    }
                 }
                 else
                 {
-                    debugMessage.text = "typed " + keyboardText;
+                    if (debugMessage != null)
+                    {
+                        debugMessage.text = "typed " + KeyboardText;
+                    }
                 }
             }
 #elif UNITY_IOS || UNITY_ANDROID
@@ -69,14 +86,21 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             // Unity bug tracking the issue https://fogbugz.unity3d.com/default.asp?1137074_rttdnt8t1lccmtd3
             if (touchscreenKeyboard != null)
             {
-                keyboardText = touchscreenKeyboard.text;
+                KeyboardText = touchscreenKeyboard.text;
                 if (TouchScreenKeyboard.visible)
                 {
-                    debugMessage.text = "typing... " + keyboardText;
+                    if (debugMessage != null)
+                    {
+                        debugMessage.text = "typing... " + KeyboardText;
+                    }
                 }
                 else
                 {
-                    debugMessage.text = "typed " + keyboardText;
+                    if (debugMessage != null)
+                    {
+                        debugMessage.text = "typed " + KeyboardText;
+                    }
+
                     touchscreenKeyboard = null;
                 }
             }

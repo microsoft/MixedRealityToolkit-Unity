@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
     /// <summary>
     /// The Boundary system controls the presentation and display of the users boundary in a scene.
     /// </summary>
-    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Boundary/BoundarySystemGettingStarted.html")]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Boundary/BoundarySystemGettingStarted.html")]
     public class MixedRealityBoundarySystem : BaseCoreSystem, IMixedRealityBoundarySystem
     {
         public MixedRealityBoundarySystem(
@@ -28,6 +28,9 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         #region IMixedRealityService Implementation
 
         private BoundaryEventData boundaryEventData = null;
+
+        /// <inheritdoc/>
+        public override string Name { get; protected set; } = "Mixed Reality Boundary System";
 
         /// <inheritdoc/>
         public override void Initialize()

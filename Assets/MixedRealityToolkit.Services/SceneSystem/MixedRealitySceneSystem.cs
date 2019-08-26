@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
     /// Because so much of this service's functionality is editor-only, it has been split into a partial class.
     /// This part handles the runtime parts of the service.
     /// </summary>
-    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SceneSystem/SceneSystemGettingStarted.html")]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SceneSystem/SceneSystemGettingStarted.html")]
     public partial class MixedRealitySceneSystem : BaseCoreSystem, IMixedRealitySceneSystem
     {
         /// <summary>
@@ -54,6 +54,9 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         private SceneContentTracker contentTracker;
         // Lighting executor instance
         private SceneLightingExecutor lightingExecutor;
+
+        /// <inheritdoc/>
+        public override string Name { get; protected set; } = "Mixed Reality Scene System";
 
         #region Actions
 

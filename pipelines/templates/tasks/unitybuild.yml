@@ -123,6 +123,14 @@ steps:
    }
   displayName: "Build ${{ parameters.Platform }} ${{ parameters.Arch }} ${{ parameters.ScriptingBackend }}"
 
+- task: PowerShell@2
+  displayName: 'Validate build logs'
+  inputs:
+    targetType: filePath
+    filePath: ./scripts/ci/validatebuildlog.ps1
+    arguments: >
+      -LogFile: '$(Build.ArtifactStagingDirectory)\build\${{ parameters.Platform }}_${{ parameters.Arch }}_${{ parameters.ScriptingBackend }}\build\build.log'
+
 - task: PublishBuildArtifacts@1
   enabled: ${{ parameters.PublishArtifacts }}
   displayName: 'Publish ${{ parameters.Platform }} ${{ parameters.Arch }} (${{ parameters.PackagingDir }}) ${{ parameters.ScriptingBackend }}'

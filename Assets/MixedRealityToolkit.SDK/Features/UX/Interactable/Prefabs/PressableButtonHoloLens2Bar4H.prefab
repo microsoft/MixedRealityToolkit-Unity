@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 4857302741068522055, guid: 13a98fb31f16fe6459056db9f73a215d,
         type: 3}
       propertyPath: m_Name
-      value: PressableButtonHoloLens2Bar4H Variant
+      value: PressableButtonHoloLens2Bar4H
       objectReference: {fileID: 0}
     - target: {fileID: 4857302741068522056, guid: 13a98fb31f16fe6459056db9f73a215d,
         type: 3}
@@ -65,16 +65,6 @@ PrefabInstance:
     - target: {fileID: 4857302741068522056, guid: 13a98fb31f16fe6459056db9f73a215d,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5425257713417334719, guid: 13a98fb31f16fe6459056db9f73a215d,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 5425257713417334719, guid: 13a98fb31f16fe6459056db9f73a215d,
-        type: 3}
-      propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7066097616981774345, guid: 13a98fb31f16fe6459056db9f73a215d,
@@ -165,6 +155,16 @@ PrefabInstance:
     - target: {fileID: 4857302740589287467, guid: 13a98fb31f16fe6459056db9f73a215d,
         type: 3}
       propertyPath: m_isInputParsingRequired
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5425257713417334719, guid: 13a98fb31f16fe6459056db9f73a215d,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5425257713417334719, guid: 13a98fb31f16fe6459056db9f73a215d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

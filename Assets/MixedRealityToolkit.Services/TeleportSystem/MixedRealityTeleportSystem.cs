@@ -38,6 +38,9 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
         #region IMixedRealityService Implementation
 
+        /// <inheritdoc/>
+        public override string Name { get; protected set; } = "Mixed Reality Teleport System";
+
         /// <inheritdoc />
         public override void Initialize()
         {

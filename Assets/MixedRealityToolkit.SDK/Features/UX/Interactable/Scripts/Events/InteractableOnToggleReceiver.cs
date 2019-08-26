@@ -20,11 +20,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Name = "OnSelect";
         }
 
+        /// <inheritdoc />
         public override void OnUpdate(InteractableStates state, Interactable source)
         {
             // using onClick 
         }
 
+        /// <inheritdoc />
         public override void OnClick(InteractableStates state, Interactable source, IMixedRealityPointer pointer = null)
         {
             int currentIndex = source.GetDimensionIndex();

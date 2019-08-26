@@ -33,8 +33,6 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         /// </summary>
         public static TemplateFiles Instance => instance ?? (instance = new TemplateFiles());
 
-        private string generatedCSMetaTemplateText;
-
         /// <summary>
         /// Gets the MSBuild Solution file (.sln) template path.
         /// </summary>

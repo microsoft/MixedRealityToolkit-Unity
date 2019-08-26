@@ -12,12 +12,14 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
     {
         public static Version MIN_SDK_VERSION = new Version("10.0.18362.0");
         private const string EDITOR_PREF_BUILD_CONFIG = "BuildDeployWindow_BuildConfig";
+        private const string EDITOR_PREF_PLATFORM_TOOLSET = "BuildDeployWindow_PlatformToolset";
         private const string EDITOR_PREF_FORCE_REBUILD = "BuildDeployWindow_ForceRebuild";
         private const string EDITOR_PREF_CONNECT_INFOS = "BuildDeployWindow_DeviceConnections";
         private const string EDITOR_PREF_FULL_REINSTALL = "BuildDeployWindow_FullReinstall";
         private const string EDITOR_PREF_USE_SSL = "BuildDeployWindow_UseSSL";
         private const string EDITOR_PREF_PROCESS_ALL = "BuildDeployWindow_ProcessAll";
         private const string EDITOR_PREF_GAZE_INPUT_CAPABILITY_ENABLED = "BuildDeployWindow_GazeInputCapabilityEnabled";
+        private const string EDITOR_PREF_MULTICORE_APPX_BUILD_ENABLED = "BuildDeployWindow_MulticoreAppxBuildEnabled";
 
         /// <summary>
         /// The current Build Configuration. (Debug, Release, or Master)
@@ -26,6 +28,15 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         {
             get => EditorPreferences.Get(EDITOR_PREF_BUILD_CONFIG, "master");
             set => EditorPreferences.Set(EDITOR_PREF_BUILD_CONFIG, value.ToLower());
+        }
+
+        /// <summary>
+        /// The current Build Configuration. (Debug, Release, or Master)
+        /// </summary>
+        public static string PlatformToolset
+        {
+            get => EditorPreferences.Get(EDITOR_PREF_PLATFORM_TOOLSET, string.Empty);
+            set => EditorPreferences.Set(EDITOR_PREF_PLATFORM_TOOLSET, value.ToLower());
         }
 
         /// <summary>
@@ -85,6 +96,16 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         {
             get => EditorPreferences.Get(EDITOR_PREF_GAZE_INPUT_CAPABILITY_ENABLED, false);
             set => EditorPreferences.Set(EDITOR_PREF_GAZE_INPUT_CAPABILITY_ENABLED, value);
+        }
+
+        /// <summary>
+        /// If true, the appx will be build with multicore support enabled in the
+        /// msbuild process.
+        /// </summary>
+        public static bool MulticoreAppxBuildEnabled
+        {
+            get => EditorPreferences.Get(EDITOR_PREF_MULTICORE_APPX_BUILD_ENABLED, false);
+            set => EditorPreferences.Set(EDITOR_PREF_MULTICORE_APPX_BUILD_ENABLED, value);
         }
     }
 }
