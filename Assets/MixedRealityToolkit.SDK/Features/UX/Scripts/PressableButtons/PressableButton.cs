@@ -365,7 +365,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
         {
-            if (touchPoints.ContainsKey(eventData.Controller) && !eventData.used)
+            if (touchPoints.ContainsKey(eventData.Controller))
             {
                 return;
             }
@@ -390,7 +390,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData)
         {
-            if (touchPoints.ContainsKey(eventData.Controller) && !eventData.used)
+            if (touchPoints.ContainsKey(eventData.Controller))
             {
                 touchPoints[eventData.Controller] = eventData.InputData;
                 eventData.Use();
@@ -399,7 +399,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData)
         {
-            if (touchPoints.ContainsKey(eventData.Controller) && !eventData.used)
+            if (touchPoints.ContainsKey(eventData.Controller))
             {
                 touchPoints.Remove(eventData.Controller);
                 currentInputSources.Remove(eventData.InputSource);

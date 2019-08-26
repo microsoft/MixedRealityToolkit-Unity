@@ -86,6 +86,21 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             set => dragTimeThreshold = value;
         }
 
+
+        /// <summary>
+        /// Determines whether a near scroll gesture is released outside of the viewable area.
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Determines whether a near scroll gesture is released outside of the viewable area.")]
+        private bool useNearScrollBoundary = false;
+
+        public bool UseNearScrollBoundary
+        {
+            get => useNearScrollBoundary;
+            set => useNearScrollBoundary = value;
+        }
+
+
         /// <summary>
         /// The direction in which content should scroll 
         /// </summary>
@@ -939,7 +954,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 handDelta = initialHandPos - currentPointerPos;
 
                 //Lets see if this is gonna be a click or a drag
-                //Check the var's state to prevent resetting calculation
+                //Check the scroller's length state to prevent resetting calculation
                 if (!isDragging && nodeLengthCheck)
                 {
                     //grab the delta value we care about
@@ -961,11 +976,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 }
 
                 //get a point in front of the scrollContainer to use for the dot product check
-                finalOffset = (AxisOrientationToTransformDirection(collectionForward) * -1.0f) * thresholdOffset;
-                thresholdPoint = transform.InverseTransformPoint(transform.localPosition - finalOffset);
+                finalOffset = AxisOrientationToTransformDirection(collectionForward) * thresholdOffset;
+                thresholdPoint = transform.TransformVector(transform.localPosition - finalOffset);
 
-                //Make sure we're actually (near) touched and not a pointer event, do a dot product check
-                if (isTouched && DetectScrollRelease((AxisOrientationToTransformDirection(collectionForward) * 1), thresholdPoint, currentPointerPos, clippingObject.transform, transform.worldToLocalMatrix, scrollDirection))
+                //Make sure we're actually (near) touched and not a pointer event, do a dot product check            
+                bool scrollRelease = UseNearScrollBoundary ? DetectScrollRelease(AxisOrientationToTransformDirection(collectionForward), thresholdPoint, currentPointerPos, clippingObject.transform, transform.worldToLocalMatrix, scrollDirection)
+                                                           : DetectScrollRelease(AxisOrientationToTransformDirection(collectionForward), thresholdPoint, currentPointerPos, null, null, null);
+
+                if (isTouched && scrollRelease)
                 {
                     //We're on the other side of the original touch position. This is a release.
                     if (!isDragging)
@@ -1533,10 +1551,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         }
 
         /// <summary>
-        /// Checks to see if the engaged joint is a release
+        /// Checks to see if the engaged joint has released the scrollable list
         /// </summary>
-        /// <returns><see cref="true"/> if released</returns>
-        private static bool DetectScrollRelease(Vector3 initialDirection, Vector3 initialPosition, Vector3 pointToCompare, Transform clippingObj, Matrix4x4 transformMatrix, ScrollDirectionType direction)
+        /// <param name="initialDirection">The plane normal direction.</param>
+        /// <param name="initialPosition">The point representing the plane's origin.</param>
+        /// <param name="pointToCompare">The point compared to the normal and origin.</param>
+        /// <param name="clippingObj">The object representing the maximum scrollable area.</param>
+        /// <param name="transformMatrix">The world Matrix for the scrollable area to be compared in.</param>
+        /// <param name="direction"><see cref="ScrollDirectionType"/> the list is scrolling in.</param>
+        /// <returns><see cref="true"/> if released.</returns>
+        private static bool DetectScrollRelease(Vector3 initialDirection, Vector3 initialPosition, Vector3 pointToCompare, Transform clippingObj = null, Matrix4x4? transformMatrix = null, ScrollDirectionType? direction = null)
         {
             //true if finger is on the other side (Z) of the initial contact point of the collection
             if (TouchPassedThreshold(initialDirection, initialPosition, pointToCompare))
@@ -1544,20 +1568,25 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 return true;
             }
 
-            bool hasPassedBoundry;
-            Vector3 posToClip = clippingObj.localPosition - transformMatrix.MultiplyPoint3x4(pointToCompare);
-            Vector3 halfScale = clippingObj.localScale * 0.5f;
-
-            if (direction == ScrollDirectionType.UpAndDown)
+            bool hasPassedBoundary = false;
+            
+            if (clippingObj != null && transformMatrix != null && direction != null)
             {
-                hasPassedBoundry = (posToClip.y > halfScale.y || posToClip.y < -halfScale.y) ? true : false;
-            }
-            else
-            {
-                hasPassedBoundry = (posToClip.x > halfScale.x || posToClip.x < -halfScale.x) ? true : false;
+                Matrix4x4 tMat = (Matrix4x4)transformMatrix;
+                Vector3 posToClip = tMat.MultiplyPoint3x4(pointToCompare) - clippingObj.localPosition;
+                Vector3 halfScale = clippingObj.localScale * 0.5f;
+
+                if (direction == ScrollDirectionType.UpAndDown)
+                {
+                    hasPassedBoundary = (posToClip.y > halfScale.y || posToClip.y < -halfScale.y) ? true : false;
+                }
+                else
+                {
+                    hasPassedBoundary = (posToClip.x > halfScale.x || posToClip.x < -halfScale.x) ? true : false;
+                }
             }
 
-            return hasPassedBoundry;
+            return hasPassedBoundary;
         }
 
         /// <summary>
@@ -2160,7 +2189,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         {
             //Debug.Log(pointToCompare.ToString("F5") + ", " + initialPosition.ToString("F5") + ", " + initialDirection.ToString("F5"));
             Vector3 delta = pointToCompare - initialPosition;
-            float dot = Vector3.Dot(delta, initialDirection);
+            float dot = Vector3.Dot(delta.normalized, initialDirection);
 
             return (dot > 0) ? true : false;
         }
@@ -2286,7 +2315,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData)
         {
             //Quick check for the global listener to bail if the object is not in the list
-            if (!ContainsNode(eventData.selectedObject.transform))
+            if (eventData.Pointer.Result.CurrentPointerTarget == null || !ContainsNode(eventData.Pointer.Result.CurrentPointerTarget.transform))
             {
                 return;
             }
@@ -2306,38 +2335,35 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 isTouched = false;
                 isEngaged = false;
                 isDragging = false;
-
             }
         }
 
         ///</inheritdoc>
         void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData)
         {
-            //Quick check for the global listener to bail if the object is not in the list
-            if (!ContainsNode(eventData.selectedObject.transform))
-            {
-                return;
-            }
-
             //Do a check to prevent a new touch event from overriding our current touch values
             if (!isEngaged && !animatingToPosition)
             {
                 if (eventData.Pointer.Controller.IsPositionAvailable)
                 {
-                    //create the offset for our thesholdCalculation -- grab the first item in the list
-                    //TryGetObjectAlignedBoundsSize(NodeList[FirstItemInView].Transform, collectionForward, out thresholdOffset);
+                    //Quick check for the global listener to bail if the object is not in the list
+                    if (eventData.Pointer.Result.CurrentPointerTarget == null || !ContainsNode(eventData.Pointer.Result.CurrentPointerTarget.transform))
+                    {
+                        return;
+                    }
 
                     currentPointer = eventData.Pointer;
+                    currentPointer.IsFocusLocked = true;
 
                     IMixedRealityControllerVisualizer controllerViz = eventData.Pointer.Controller.Visualizer as IMixedRealityControllerVisualizer;
                     currentPointerTransform = controllerViz.GameObjectProxy.transform;
 
-                    currentPointer.IsFocusLocked = true;
-
                     pointerHitPoint = currentPointer.Result.Details.Point;
 
-                    focusedObject = eventData.selectedObject;
+                    focusedObject = eventData.Pointer.Result.CurrentPointerTarget;
 
+
+                    //Reset the scroll state
                     scrollVelocity = 0.0f;
 
                     initialHandPos = currentPointerPos;
@@ -2351,7 +2377,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 else
                 {
                     //not sure what to do with this pointer
-                    Debug.Log(gameObject.name + "'s " + name + " intercepted a pointer, " + eventData.Pointer.PointerName + ", but don't know what to do with it.");
+                    Debug.Log(name + " intercepted a pointer from " + gameObject.name + ". " + eventData.Pointer.PointerName + ", but don't know what to do with it.");
                 }
             }
         }
@@ -2361,6 +2387,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         {
             //we ignore this event and calculate click in the Update() loop;
         }
+
         #endregion IMixedRealityPointerHandler implementation
 
         #region IMixedRealityTouchHandler implementation
@@ -2368,7 +2395,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         ///</inheritdoc>
         void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
         {
-
             if (TryGetPokePointer(eventData.InputSource.Pointers, out currentPointer))
             {
                 //Quick check for the global listener to bail if the object is not in the list
@@ -2377,45 +2403,31 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                     return;
                 }
 
-
                 StopAllCoroutines();
                 animatingToPosition = false;
 
-                if (focusedObject != currentPointer.Result.CurrentPointerTarget || focusedObject == null)
-                {
-                    //TODO: Send input back down to child with a new sender so PassThroughMode knows to handle it properly
-                    /*
-                    HandTrackingInputEventData newTouchData = eventData;
-                    newTouchData.Sender = this;
+                focusedObject = currentPointer.Result.CurrentPointerTarget;
 
-                    //We don't know if this is a scroll or not so we're going to pass the event along to the child
-                    scrollChild = currentPointer.Result.CurrentPointerTarget.GetComponentInChildren<IMixedRealityTouchHandler>();
-                    if (scrollChild != null)
-                    {
-                        scrollChild.OnTouchStarted(newTouchData);
-                    }
-                    */
+                //Let everyone know the scroller has been engaged
+                TouchStarted?.Invoke(focusedObject);
+
+                if (focusedObject != currentPointer.Result.CurrentPointerTarget || focusedObject == null) { }
+
+                if (!isTouched && !isEngaged)
+                {
+                    currentHand = eventData.Controller.ControllerHandedness;
+
+                    initialHandPos = UpdateFingerPosition(TrackedHandJoint.IndexTip, eventData.Controller.ControllerHandedness);
+                    initialPressTime = Time.time;
+
+                    initialScrollerPos = scrollContainer.transform.localPosition;
+
+                    isTouched = true;
+                    isEngaged = true;
+                    isDragging = false;
                 }
             }
 
-            focusedObject = currentPointer.Result.CurrentPointerTarget;
-
-            //Let everyone know the scroller has been engaged
-            TouchStarted?.Invoke(focusedObject);
-
-            if (!isTouched && !isEngaged)
-            {
-                currentHand = eventData.Controller.ControllerHandedness;
-
-                initialHandPos = UpdateFingerPosition(TrackedHandJoint.IndexTip, eventData.Controller.ControllerHandedness);
-                initialPressTime = Time.time;
-
-                initialScrollerPos = scrollContainer.transform.localPosition;
-
-                isTouched = true;
-                isEngaged = true;
-                isDragging = false;
-            }
         }
 
         ///</inheritdoc>
@@ -2425,9 +2437,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             //Quick check for the global listener to bail if the object is not in the list
             if (!ContainsNode(currentPointer.Result.CurrentPointerTarget.transform))
             {
-                if(isDragging)
+                if (isDragging)
                 {
-                    eventData.Use();                
+                    eventData.Use();
                 }
 
                 return;
@@ -2467,45 +2479,45 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
                 if (p == currentPointer)
                 {
-                    if(!isDragging)
+                    if (!isDragging)
                     {
 
                     }
                     else
                     {
-                        eventData.Use(); 
+                        eventData.Use();
                     }
 
                 }
 
-                    //TODO: Send input back down to child with a new sender so PassThroughMode knows to handle it properly
-                    /*
+                //TODO: Send input back down to child with a new sender so PassThroughMode knows to handle it properly
+                /*
 
-                    HandTrackingInputEventData newTouchData = eventData;
-                    newTouchData.Sender = this;
+                HandTrackingInputEventData newTouchData = eventData;
+                newTouchData.Sender = this;
 
-                    if (focusedObject != p.Result.CurrentPointerTarget)
-                    {
-                        scrollChild = currentPointer.Result.CurrentPointerTarget.GetComponentInChildren<IMixedRealityTouchHandler>();
+                if (focusedObject != p.Result.CurrentPointerTarget)
+                {
+                    scrollChild = currentPointer.Result.CurrentPointerTarget.GetComponentInChildren<IMixedRealityTouchHandler>();
 
-                        //the finger moved enough we have a mismatch in our focused object, we need to make sure we call touch started first
-                        //and update our focusedObject as well
+                    //the finger moved enough we have a mismatch in our focused object, we need to make sure we call touch started first
+                    //and update our focusedObject as well
 
-                        if (scrollChild != null)
-                        {
-                            scrollChild.OnTouchStarted(newTouchData);
-                        }
-
-                        focusedObject = currentPointer.Result.CurrentPointerTarget;
-                    }
-                    scrollChild = focusedObject.GetComponentInChildren<IMixedRealityTouchHandler>();
-
-                    //now call OnTouchUpdated
                     if (scrollChild != null)
                     {
-                        scrollChild.OnTouchUpdated(newTouchData);
+                        scrollChild.OnTouchStarted(newTouchData);
                     }
-                    */
+
+                    focusedObject = currentPointer.Result.CurrentPointerTarget;
+                }
+                scrollChild = focusedObject.GetComponentInChildren<IMixedRealityTouchHandler>();
+
+                //now call OnTouchUpdated
+                if (scrollChild != null)
+                {
+                    scrollChild.OnTouchUpdated(newTouchData);
+                }
+                */
             }
         }
 
@@ -2513,9 +2525,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
         #region IMixedRealitySourceStateHandler implementation
 
-        void IMixedRealitySourceStateHandler.OnSourceDetected(SourceStateEventData eventData)
-        { /* */
-        }
+        void IMixedRealitySourceStateHandler.OnSourceDetected(SourceStateEventData eventData) { }
 
         void IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {
@@ -2553,10 +2563,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             }
         }
 
-        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData)
-        {
-            //--
-        }
+        void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData) { }
 
         #endregion IMixedRealitySourceStateHandler implementation
     }
