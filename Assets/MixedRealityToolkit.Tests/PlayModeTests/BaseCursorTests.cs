@@ -228,7 +228,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForFixedUpdate();
             yield return null;
 
-            // Move cube back to original postion (described above)
+            // Move cube back to original position (described above)
             cube.transform.localPosition = new Vector3(0, 0, 2);
             yield return new WaitForFixedUpdate();
             yield return null;
