@@ -1,15 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEngine;
-using UnityEngine.Playables;
-using UnityEngine.SceneManagement;
 using UnityEditor;
 using System;
 using System.IO;
-using System.Text.RegularExpressions;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -25,6 +22,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         private string loadedFilePath = "";
+
+        private IInputSimulationService simulationService = null;
+        private IInputSimulationService SimulationService
+        {
+            get
+            {
+                if (simulationService == null)
+                {
+                    if (MixedRealityServiceRegistry.TryGetService(out IMixedRealityInputSystem inputSystem))
+                    {
+                        simulationService = (inputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IInputSimulationService>();
+                    }
+                }
+                return simulationService;
+            }
+        }
 
         private IMixedRealityInputRecordingService recordingService = null;
         private IMixedRealityInputRecordingService RecordingService
@@ -101,6 +114,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             LoadIcons();
 
+            if (!Application.isPlaying)
+            {
+                EditorGUILayout.HelpBox("Input simulation is only available in play mode", MessageType.Info);
+                return;
+            }
+
+            DrawSimulationGUI();
+
+            EditorGUILayout.Space();
+
             string[] modeStrings = Enum.GetNames(typeof(ToolMode));
             Mode = (ToolMode)GUILayout.SelectionGrid((int)Mode, modeStrings, modeStrings.Length);
 
@@ -136,13 +159,57 @@ namespace Microsoft.MixedReality.Toolkit.Input
 #endif
         }
 
-        private void DrawRecordingGUI()
+        private void DrawSimulationGUI()
         {
-            if (!Application.isPlaying)
+            if (SimulationService == null)
             {
-                EditorGUILayout.HelpBox("Input test recording is only available in play mode", MessageType.Info);
+                EditorGUILayout.HelpBox("No input simulation service found", MessageType.Info);
                 return;
             }
+
+            DrawHandsGUI();
+        }
+
+        private void DrawHandsGUI()
+        {
+            using (new GUILayout.HorizontalScope())
+            {
+                DrawHandGUI(
+                    "Left",
+                    SimulationService.IsAlwaysVisibleHandLeft,
+                    v => SimulationService.IsAlwaysVisibleHandLeft = v,
+                    SimulationService.ResetHandLeft);
+
+                DrawHandGUI(
+                    "Right",
+                    SimulationService.IsAlwaysVisibleHandRight,
+                    v => SimulationService.IsAlwaysVisibleHandRight = v,
+                    SimulationService.ResetHandRight);
+            }
+        }
+
+        private void DrawHandGUI(string name, bool isAlwaysVisible, Action<bool> setAlwaysVisible, Action reset)
+        {
+            using (new GUILayout.VerticalScope(EditorStyles.helpBox))
+            {
+                GUILayout.Label($"{name} Hand:");
+
+                bool newIsAlwaysVisible = EditorGUILayout.Toggle("Always Visible", isAlwaysVisible);
+                bool resetHand = GUILayout.Button("Reset");
+
+                if (newIsAlwaysVisible != isAlwaysVisible)
+                {
+                    setAlwaysVisible(newIsAlwaysVisible);
+                }
+                if (resetHand)
+                {
+                    reset();
+                }
+            }
+        }
+
+        private void DrawRecordingGUI()
+        {
             if (RecordingService == null)
             {
                 EditorGUILayout.HelpBox("No input recording service found", MessageType.Info);
@@ -192,12 +259,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void DrawPlaybackGUI()
         {
-            if (!Application.isPlaying)
-            {
-                EditorGUILayout.HelpBox("Input test playback is only available in play mode", MessageType.Info);
-                return;
-            }
-
             DrawAnimationInfo();
 
             using (new GUILayout.HorizontalScope())
