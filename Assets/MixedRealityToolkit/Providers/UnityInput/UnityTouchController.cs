@@ -17,6 +17,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         }
 
         /// <summary>
+        /// Time delta, in seconds, below which a click even will not be raised.
+        /// </summary>
+        private const float ContactEpsilon = 1.0f / 30.0f;
+
+        /// <summary>
         /// Time in seconds to determine if the contact registers as a tap or a hold
         /// </summary>
         public float MaxTapContactTime { get; set; } = 0.5f;
@@ -159,7 +164,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                         isManipulating = false;
                     }
 
-                    InputSystem?.RaisePointerClicked(InputSource.Pointers[0], Interactions[2].MixedRealityInputAction, TouchData.tapCount);
+                    if (Lifetime > ContactEpsilon)
+                    {
+                        InputSystem?.RaisePointerClicked(InputSource.Pointers[0], Interactions[2].MixedRealityInputAction, TouchData.tapCount);
+                    }
                 }
 
                 if (isHolding)
