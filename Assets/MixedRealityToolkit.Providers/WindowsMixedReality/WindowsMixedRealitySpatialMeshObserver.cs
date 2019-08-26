@@ -478,7 +478,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// </summary>
         private void UpdateObserver()
         {
-            if (SpatialAwarenessSystem == null || HolographicSettings.IsDisplayOpaque || !XRSettings.isDeviceActive) { return; }
+            if (SpatialAwarenessSystem == null || HolographicSettings.IsDisplayOpaque || !XRDevice.isPresent) { return; }
 
             // Only update the observer if it is running.
             if (IsRunning && (outstandingMeshObject == null))
@@ -683,7 +683,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             }
 
             // If we aren't using a HoloLens or there isn't an XR device present, return.
-            if (observer == null || HolographicSettings.IsDisplayOpaque || !XRSettings.isDeviceActive) { return; }
+            if (observer == null || HolographicSettings.IsDisplayOpaque || !XRDevice.isPresent) { return; }
 
             // The observer's origin is in world space, we need it in the camera's parent's space
             // to set the volume. The MixedRealityPlayspace provides that space that the camera/head moves around in.
