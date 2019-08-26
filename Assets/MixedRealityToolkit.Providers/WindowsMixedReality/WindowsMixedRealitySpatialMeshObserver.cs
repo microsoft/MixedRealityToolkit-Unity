@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 #if UNITY_WSA
+using UnityEngine.XR;
 using UnityEngine.XR.WSA;
 #endif // UNITY_WSA
 
@@ -683,6 +684,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                 Debug.LogError("Unexpected failure acquiring MixedRealityPlayspace.");
                 return;
             }
+
+            // If we aren't using a HoloLens or there isn't an XR device present, return.
+            if (observer == null || HolographicSettings.IsDisplayOpaque || !XRSettings.isDeviceActive) { return; }
 
             // The observer's origin is in world space, we need it in the camera's parent's space
             // to set the volume. The MixedRealityPlayspace provides that space that the camera/head moves around in.
