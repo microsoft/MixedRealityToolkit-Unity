@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         private SceneQueryType raycastMode = SceneQueryType.SphereOverlap;
 
+        /// <inheritdoc />
         public override SceneQueryType SceneQueryType { get { return raycastMode; } set { raycastMode = value; } }
 
         [SerializeField]
@@ -58,6 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
         public override bool IsInteractionEnabled
         {
             get

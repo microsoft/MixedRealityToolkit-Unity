@@ -3,10 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -18,7 +14,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         "Profiles/DefaultMixedRealityInputSimulationProfile.asset",
         "MixedRealityToolkit.SDK")]
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/InputSimulation/InputSimulationService.html")]
-    public class InputSimulationService : BaseInputDeviceManager, IInputSimulationService, IMixedRealityEyeGazeDataProvider, IMixedRealityCapabilityCheck
+    public class InputSimulationService :
+        BaseInputSimulationService,
+        IInputSimulationService,
+        IMixedRealityEyeGazeDataProvider,
+        IMixedRealityCapabilityCheck
     {
         private ManualCameraControl cameraControl = null;
         private SimulatedHandDataProvider handDataProvider = null;
@@ -36,16 +36,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// If true then keyboard and mouse input are used to simulate hands.
         /// </summary>
         public bool UserInputEnabled { get; set; } = true;
-
-        /// <summary>
-        /// Dictionary to capture all active hands detected
-        /// </summary>
-        private readonly Dictionary<Handedness, SimulatedHand> trackedHands = new Dictionary<Handedness, SimulatedHand>();
-
-        /// <summary>
-        /// Active controllers
-        /// </summary>
-        private IMixedRealityController[] activeControllers = new IMixedRealityController[0];
 
         /// <summary>
         /// Timestamp of the last hand device update
@@ -81,17 +71,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
-        public override IMixedRealityController[] GetActiveControllers()
-        {
-            return activeControllers;
-        }
-
-        /// <inheritdoc />
         public override void Initialize()
         {
             ArticulatedHandPose.LoadGesturePoses();
         }
 
+        /// <inheritdoc />
         public override void Destroy()
         {
             ArticulatedHandPose.ResetGesturePoses();
@@ -161,7 +146,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // Apply hand data in LateUpdate to ensure external changes are applied.
             // HandDataLeft/Right can be modified after the services Update() call.
-            if (profile.HandSimulationMode != HandSimulationMode.Disabled)
+            if (profile.HandSimulationMode == HandSimulationMode.Disabled)
+            {
+                RemoveAllHandDevices();
+            }
+            else
             {
                 DateTime currentTime = DateTime.UtcNow;
                 double msSinceLastHandUpdate = currentTime.Subtract(new DateTime(lastHandUpdateTimestamp)).TotalMilliseconds;
@@ -170,11 +159,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     if (HandDataLeft.Timestamp > lastHandUpdateTimestamp)
                     {
-                        UpdateHandInputSource(Handedness.Left, HandDataLeft);
+                        UpdateHandDevice(profile.HandSimulationMode, Handedness.Left, HandDataLeft);
                     }
                     if (HandDataRight.Timestamp > lastHandUpdateTimestamp)
                     {
-                        UpdateHandInputSource(Handedness.Right, HandDataRight);
+                        UpdateHandDevice(profile.HandSimulationMode, Handedness.Right, HandDataRight);
                     }
 
                     lastHandUpdateTimestamp = currentTime.Ticks;
@@ -241,126 +230,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 handDataProvider = null;
             }
-        }
-
-        // Register input sources for hands based on changes of the data provider
-        private void UpdateHandInputSource(Handedness handedness, SimulatedHandData handData)
-        {
-            var profile = InputSimulationProfile;
-
-            if (profile.HandSimulationMode == HandSimulationMode.Disabled)
-            {
-                RemoveAllHandDevices();
-            }
-            else
-            {
-                if (handData != null && handData.IsTracked)
-                {
-                    SimulatedHand controller = GetOrAddHandDevice(handedness, profile.HandSimulationMode);
-                    controller.UpdateState(handData);
-                }
-                else
-                {
-                    RemoveHandDevice(handedness);
-                }
-            }
-        }
-
-        public SimulatedHand GetHandDevice(Handedness handedness)
-        {
-            if (trackedHands.TryGetValue(handedness, out SimulatedHand controller))
-            {
-                return controller;
-            }
-            return null;
-        }
-
-        private SimulatedHand GetOrAddHandDevice(Handedness handedness, HandSimulationMode simulationMode)
-        {
-            var controller = GetHandDevice(handedness);
-            if (controller != null)
-            {
-                if (controller.SimulationMode == simulationMode)
-                {
-                    return controller;
-                }
-                else
-                {
-                    // Remove and recreate hand device if simulation mode doesn't match
-                    RemoveHandDevice(handedness);
-                }
-            }
-
-            SupportedControllerType st = simulationMode == HandSimulationMode.Gestures ? SupportedControllerType.GGVHand : SupportedControllerType.ArticulatedHand;
-            IMixedRealityPointer[] pointers = RequestPointers(st, handedness);
-
-            var inputSource = InputSystem?.RequestNewGenericInputSource($"{handedness} Hand", pointers, InputSourceType.Hand);
-            switch (simulationMode)
-            {
-                case HandSimulationMode.Articulated:
-                    controller = new SimulatedArticulatedHand(TrackingState.Tracked, handedness, inputSource);
-                    break;
-                case HandSimulationMode.Gestures:
-                    controller = new SimulatedGestureHand(TrackingState.Tracked, handedness, inputSource);
-                    break;
-                default:
-                    controller = null;
-                    break;
-            }
-
-            System.Type controllerType = simulationMode == HandSimulationMode.Gestures ? typeof(SimulatedGestureHand) : typeof(SimulatedArticulatedHand);
-            if (controller == null)
-            {
-                Debug.LogError($"Failed to create {controllerType} controller");
-                return null;
-            }
-
-            if (!controller.SetupConfiguration(controllerType, InputSourceType.Hand))
-            {
-                // Controller failed to be setup correctly.
-                Debug.LogError($"Failed to Setup {controllerType} controller");
-                // Return null so we don't raise the source detected.
-                return null;
-            }
-
-            for (int i = 0; i < controller.InputSource?.Pointers?.Length; i++)
-            {
-                controller.InputSource.Pointers[i].Controller = controller;
-            }
-
-            InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
-
-            trackedHands.Add(handedness, controller);
-            UpdateActiveControllers();
-
-            return controller;
-        }
-
-        private void RemoveHandDevice(Handedness handedness)
-        {
-            var controller = GetHandDevice(handedness);
-            if (controller != null)
-            {
-                InputSystem?.RaiseSourceLost(controller.InputSource, controller);
-
-                trackedHands.Remove(handedness);
-                UpdateActiveControllers();
-            }
-        }
-
-        private void RemoveAllHandDevices()
-        {
-            foreach (var controller in trackedHands.Values)
-            {
-                InputSystem?.RaiseSourceLost(controller.InputSource, controller);
-            }
-            trackedHands.Clear();
-            UpdateActiveControllers();
-        }
-
-        private void UpdateActiveControllers()
-        {
-            activeControllers = trackedHands.Values.ToArray<IMixedRealityController>();
         }
     }
 }

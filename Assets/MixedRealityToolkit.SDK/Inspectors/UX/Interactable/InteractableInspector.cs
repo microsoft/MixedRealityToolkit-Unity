@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             dimensionIndex = serializedObject.FindProperty("dimensionIndex");
             dimensions = serializedObject.FindProperty("Dimensions");
 
-            showProfiles = EditorPrefs.GetBool(ShowProfilesPrefKey, showProfiles);
+            showProfiles = SessionState.GetBool(ShowProfilesPrefKey, showProfiles);
 
             SetupEventOptions();
             SetupThemeOptions();
@@ -130,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             if (showProfiles != isProfilesOpen)
             {
                 showProfiles = isProfilesOpen;
-                EditorPrefs.SetBool(ShowProfilesPrefKey, showProfiles);
+                SessionState.SetBool(ShowProfilesPrefKey, showProfiles);
             }
 
             if (profileList.arraySize < 1)
@@ -178,11 +178,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                                 hadDefault.boolValue = true;
 
                                 string prefKey = themeItem.objectReferenceValue.name + "Profiles" + i + "_Theme" + t + "_Edit";
-                                bool showSettingsPref = EditorPrefs.GetBool(prefKey, true);
+                                bool showSettingsPref = SessionState.GetBool(prefKey, true);
                                 bool show = InspectorUIUtility.DrawSectionFoldout(themeItem.objectReferenceValue.name + " (Click to edit)", showSettingsPref, FontStyle.Normal);
                                 if (show != showSettingsPref)
                                 {
-                                    EditorPrefs.SetBool(prefKey, show);
+                                    SessionState.SetBool(prefKey, show);
                                 }
 
                                 if (show)
@@ -307,7 +307,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             if (showEvents != isEventsOpen)
             {
                 showEvents = isEventsOpen;
-                EditorPrefs.SetBool(ShowEventsPrefKey, showEvents);
+                SessionState.SetBool(ShowEventsPrefKey, showEvents);
             }
 
             EditorGUILayout.Space();

@@ -16,10 +16,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
         (SupportedPlatforms)(-1), // Supported on all platforms
         "Input Playback Service")]
     public class InputPlaybackService :
-        BaseInputDeviceManager,
+        BaseInputSimulationService,
         IMixedRealityInputPlaybackService
     {
         private static readonly int jointCount = Enum.GetNames(typeof(TrackedHandJoint)).Length;
+
+        /// <summary>
+        /// Pose data for the left hand.
+        /// </summary>
+        public SimulatedHandData HandDataLeft { get; } = new SimulatedHandData();
+        /// <summary>
+        /// Pose data for the right hand.
+        /// </summary>
+        public SimulatedHandData HandDataRight { get; } = new SimulatedHandData();
 
         /// <summary>
         /// Constructor.
@@ -37,23 +46,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
             BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, name, priority, profile)
         {}
 
-#if UNITY_EDITOR
-        private IInputSimulationService inputSimService = null;
-        private IInputSimulationService InputSimService
+        /// <inheritdoc />
+        public bool CheckCapability(MixedRealityCapability capability)
         {
-            get
+            switch (capability)
             {
-                if (inputSimService == null)
-                {
-                    if (MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out IMixedRealityInputSystem inputSystem))
-                    {
-                        inputSimService = (inputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IInputSimulationService>();
-                    }
-                }
-                return inputSimService;
+                case MixedRealityCapability.ArticulatedHand:
+                    return true;
+                case MixedRealityCapability.GGVHand:
+                    return true;
             }
+
+            return false;
         }
-#endif
 
         private InputAnimation animation = null;
         /// <inheritdoc />
@@ -132,14 +137,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void SetPlaying(bool playing)
         {
             isPlaying = playing;
-
-#if UNITY_EDITOR
-            if (InputSimService != null)
-            {
-                // Disable user input while playing animation
-                InputSimService.UserInputEnabled = !isPlaying;
-            }
-#endif
         }
 
         /// Evaluate the animation and update the simulation service to apply input.
@@ -158,30 +155,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 CameraCache.Main.transform.SetPositionAndRotation(cameraPose.Position, cameraPose.Rotation);
             }
 
-#if UNITY_EDITOR
-            if (InputSimService != null)
-            {
-                EvaluateHandData(InputSimService.HandDataLeft, Handedness.Left);
-                EvaluateHandData(InputSimService.HandDataRight, Handedness.Right);
-            }
-#endif
+            EvaluateHandData(HandDataLeft, Handedness.Left);
+            EvaluateHandData(HandDataRight, Handedness.Right);
         }
 
-#if UNITY_EDITOR
         private void EvaluateHandData(SimulatedHandData handData, Handedness handedness)
         {
             animation.EvaluateHandState(localTime, handedness, out bool isTracked, out bool isPinching);
 
-            handData.Update(isTracked, isPinching,
+            if (handData.Update(isTracked, isPinching,
                 (MixedRealityPose[] joints) =>
                 {
                     for (int i = 0; i < jointCount; ++i)
                     {
                         joints[i] = animation.EvaluateHandJoint(localTime, handedness, (TrackedHandJoint)i);
                     }
-                });
+                }))
+            {
+                UpdateHandDevice(HandSimulationMode.Articulated, handedness, handData);
+            }
         }
-#endif
 
         /// <inheritdoc />
         public bool LoadInputAnimation(string filepath)

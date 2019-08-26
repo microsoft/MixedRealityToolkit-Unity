@@ -1225,7 +1225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03daa81ea5f685f4ebf6e32038d058ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hostTransform: {fileID: 0}
+  hostTransform: {fileID: 2126597302}
   manipulationType: 2
   twoHandedManipulationType: 5
   allowFarManipulation: 1
@@ -5458,7 +5458,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23f9be7a3cb53794ead8b55e784b65aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetObject: {fileID: 409178425}
+  targetObject: {fileID: 2126597301}
   boundsOverride: {fileID: 409178428}
   activation: 0
   scaleMinimum: 0.2

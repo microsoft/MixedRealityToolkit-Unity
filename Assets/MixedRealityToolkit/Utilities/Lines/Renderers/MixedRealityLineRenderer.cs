@@ -86,6 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             lineRenderer.enabled = false;
         }
 
+        /// <inheritdoc />
         protected override void UpdateLine()
         {
             if (LineDataSource == null)
