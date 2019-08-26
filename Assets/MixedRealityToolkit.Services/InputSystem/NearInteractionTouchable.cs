@@ -2,10 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -13,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// Add a NearInteractionTouchable to your scene and configure a touchable surface
     /// in order to get PointerDown and PointerUp events whenever a PokePointer touches this surface.
     /// </summary>
-    public class NearInteractionTouchable : ColliderNearInteractionTouchable
+    public class NearInteractionTouchable : ColliderNearInteractionTouchable, INearInteractionTouchable
     {
         /// <summary>
         /// Local space forward direction
@@ -82,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected Vector2 bounds = Vector2.zero;
         public Vector2 Bounds { get => bounds; set { bounds = value; } }
 
-        protected new void OnValidate()
+        protected override void OnValidate()
         {
             if (Application.isPlaying)
             {   // Don't validate during play mode

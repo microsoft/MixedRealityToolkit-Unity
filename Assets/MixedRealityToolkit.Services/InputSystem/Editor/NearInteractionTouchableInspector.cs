@@ -2,50 +2,22 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    [UnityEditor.CustomEditor(typeof(NearInteractionTouchableUnityUI), true)]
+    public class NearInteractionTouchableUnityUIInspector : NearInteractionTouchableInspectorBase
+    { }
+
     [UnityEditor.CustomEditor(typeof(NearInteractionTouchable), true)]
-    public class NearInteractionTouchableInspector : UnityEditor.Editor
+    public class NearInteractionTouchableInspector : NearInteractionTouchableInspectorBase
     {
-        private readonly Color handleColor = Color.white;
-        private readonly Color fillColor = new Color(0, 0, 0, 0);
-
-        protected virtual void OnSceneGUI()
-        {
-            NearInteractionTouchable t = (NearInteractionTouchable)target;
-
-            if (Event.current.type == EventType.Repaint)
-            {
-                UnityEditor.Handles.color = handleColor;
-
-                Vector3 center = t.transform.TransformPoint(t.LocalCenter);
-
-                float arrowSize = UnityEditor.HandleUtility.GetHandleSize(center) * 0.75f;
-                UnityEditor.Handles.ArrowHandleCap(0, center, Quaternion.LookRotation(t.transform.rotation * t.LocalForward), arrowSize, EventType.Repaint);
-
-                Vector3 rightDelta = t.transform.localToWorldMatrix.MultiplyVector(t.LocalRight * t.Bounds.x / 2);
-                Vector3 upDelta = t.transform.localToWorldMatrix.MultiplyVector(t.LocalUp * t.Bounds.y / 2);
-
-                Vector3[] points = new Vector3[4];
-                points[0] = center + rightDelta + upDelta;
-                points[1] = center - rightDelta + upDelta;
-                points[2] = center - rightDelta - upDelta;
-                points[3] = center + rightDelta - upDelta;
-
-                UnityEditor.Handles.DrawSolidRectangleWithOutline(points, fillColor, handleColor);
-            }
-        }
-
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
 
-            NearInteractionTouchable t = (NearInteractionTouchable)target;
+            var t = (NearInteractionTouchable)target;
             BoxCollider bc = t.GetComponent<BoxCollider>();
             RectTransform rt = t.GetComponent<RectTransform>();
             if (bc != null)
@@ -115,6 +87,38 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     UnityEditor.Undo.RecordObject(t, "Fix Local Forward");
                     t.SetLocalUp(t.LocalUp);
                 }
+            }
+        }
+    }
+
+    public class NearInteractionTouchableInspectorBase : UnityEditor.Editor
+    {
+        private readonly Color handleColor = Color.white;
+        private readonly Color fillColor = new Color(0, 0, 0, 0);
+
+        protected virtual void OnSceneGUI()
+        {
+            var t = (INearInteractionTouchable)target;
+
+            if (Event.current.type == EventType.Repaint)
+            {
+                UnityEditor.Handles.color = handleColor;
+
+                Vector3 center = t.transform.TransformPoint(t.LocalCenter);
+
+                float arrowSize = UnityEditor.HandleUtility.GetHandleSize(center) * 0.75f;
+                UnityEditor.Handles.ArrowHandleCap(0, center, Quaternion.LookRotation(t.transform.rotation * t.LocalForward), arrowSize, EventType.Repaint);
+
+                Vector3 rightDelta = t.transform.localToWorldMatrix.MultiplyVector(t.LocalRight * t.Bounds.x / 2);
+                Vector3 upDelta = t.transform.localToWorldMatrix.MultiplyVector(t.LocalUp * t.Bounds.y / 2);
+
+                Vector3[] points = new Vector3[4];
+                points[0] = center + rightDelta + upDelta;
+                points[1] = center - rightDelta + upDelta;
+                points[2] = center - rightDelta - upDelta;
+                points[3] = center + rightDelta - upDelta;
+
+                UnityEditor.Handles.DrawSolidRectangleWithOutline(points, fillColor, handleColor);
             }
         }
     }

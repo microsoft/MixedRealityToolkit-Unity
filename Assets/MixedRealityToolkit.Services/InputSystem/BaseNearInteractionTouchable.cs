@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public abstract class BaseNearInteractionTouchable : MonoBehaviour
     {
         [SerializeField]
-        protected TouchableEventType eventsToReceive = TouchableEventType.Touch;
+        private TouchableEventType eventsToReceive = TouchableEventType.Touch;
 
         /// <summary>
         /// The type of event to receive.
@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("Distance behind the surface at which you will receive a touch started event")]
         [SerializeField]
         [FormerlySerializedAs("distBack")]
-        protected float pokeThreshold = 0.25f;
+        private float pokeThreshold = 0.25f;
         /// <summary>
         /// Distance behind the surface at which the touchable becomes active.
         /// </summary>
@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [Tooltip("Distance in front of the surface at which you will receive a touch completed event")]
         [SerializeField]
-        protected float debounceThreshold = 0.01f;
+        private float debounceThreshold = 0.01f;
         /// <summary>
         /// Distance in front of the surface at which you will receive a touch completed event.
         /// </summary>
@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </remarks>
         public float DebounceThreshold => debounceThreshold;
 
-        protected void OnValidate()
+        protected virtual void OnValidate()
         {
             pokeThreshold = Math.Max(pokeThreshold, 0);
             debounceThreshold = Math.Max(debounceThreshold, 0);
@@ -76,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Collider touchableCollider;
         public Collider TouchableCollider => touchableCollider;
 
-        protected new void OnValidate()
+        protected override void OnValidate()
         {
             base.OnValidate();
 

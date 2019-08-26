@@ -3,17 +3,21 @@
 
 using Microsoft.MixedReality.Toolkit.UI;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     ///<summary>
-    /// This class exists to route <see cref="Microsoft.MixedReality.Toolkit.UI.PressableButton"/> events through to Interactable.
+    /// This class exists to route <see cref="Microsoft.MixedReality.Toolkit.UI.PressableButton"/> events through to <see cref="Interactable"/> and/or <see cref="UnityEngine.UI.Button"/>.
     /// The result is being able to have physical touch call Interactable.OnPointerClicked.
     ///</summary>
     public class PhysicalPressEventRouter : MonoBehaviour
     {
         [Tooltip("Interactable to which the press events are being routed. Defaults to the object of the component.")]
         public Interactable routingTarget;
+
+        [Tooltip("Unity UI Button to invoke on press of PressableButton")]
+        public Button uiButton;
 
         /// Enum specifying which button event causes a Click to be raised.
         public enum PhysicalPressEventBehavior
@@ -30,6 +34,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             {
                 routingTarget = GetComponent<Interactable>();
             }
+
+            if (uiButton == null)
+            {
+                uiButton = GetComponent<Button>();
+            }
         }
 
         public void OnHandPressTouched()
@@ -43,6 +52,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                     routingTarget.TriggerOnClick();
                     routingTarget.SetPress(false);
                 }
+            }
+
+            if (uiButton != null && InteractableOnClick == PhysicalPressEventBehavior.EventOnTouch)
+            {
+                uiButton.onClick.Invoke();
             }
         }
 
@@ -69,6 +83,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                     routingTarget.TriggerOnClick();
                 }
             }
+
+            if (uiButton != null && InteractableOnClick == PhysicalPressEventBehavior.EventOnPress)
+            {
+                uiButton.onClick.Invoke();
+            }
         }
 
         public void OnHandPressCompleted()
@@ -83,6 +102,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 }
                 routingTarget.SetPress(false);
                 routingTarget.SetPhysicalTouch(false);
+            }
+
+            if (uiButton != null && InteractableOnClick == PhysicalPressEventBehavior.EventOnClickCompletion)
+            {
+                uiButton.onClick.Invoke();
             }
         }
     }

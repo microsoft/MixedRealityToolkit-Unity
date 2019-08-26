@@ -11,23 +11,39 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// Use a Unity UI RectTransform as touchable surface.
     /// </summary>
     [RequireComponent(typeof(RectTransform))]
-    public class NearInteractionTouchableUnityUI : BaseNearInteractionTouchable
+    public class NearInteractionTouchableUnityUI : BaseNearInteractionTouchable, INearInteractionTouchable
     {
         private RectTransform rectTransform;
 
         public static IReadOnlyList<NearInteractionTouchableUnityUI> Instances => instances;
+
+        public Vector3 Forward => transform.TransformDirection(LocalForward);
+
+        // UnityUI forward is the direction you are looking when looking at it.  Near Interaction forward is the direction the button or control faces, so the opposite of UnityUI forward.
+        public Vector3 LocalForward => -Vector3.forward;
+
+        public Vector3 LocalUp => Vector3.up;
+
+        // See comment for LocalForward.  NearInteraction directions are rotated 180 degrees from UnityUI directions.
+        public Vector3 LocalRight => -Vector3.right;
+
+        public Vector3 LocalCenter => Vector3.zero;
+
+        public Vector2 Bounds => rectTransform.rect.size;
+
         private static readonly List<NearInteractionTouchableUnityUI> instances = new List<NearInteractionTouchableUnityUI>();
 
-        /// <inheritdoc />
-        void Start()
+        protected override void OnValidate()
         {
+            base.OnValidate();
+
             rectTransform = GetComponent<RectTransform>();
         }
 
         /// <inheritdoc />
         public override float DistanceToTouchable(Vector3 samplePoint, out Vector3 normal)
         {
-            normal = -transform.forward;
+            normal = Forward;
 
             Vector3 localPoint = transform.InverseTransformPoint(samplePoint);
 

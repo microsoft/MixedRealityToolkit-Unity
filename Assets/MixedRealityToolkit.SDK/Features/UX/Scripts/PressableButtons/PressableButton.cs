@@ -14,7 +14,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// A button that can be pushed via direct touch.
     /// You can use <see cref="Microsoft.MixedReality.Toolkit.Examples.Demos.PhysicalPressEventRouter"/> to route these events to <see cref="Interactable"/>.
     ///</summary>
-    [RequireComponent(typeof(BoxCollider))]
     public class PressableButton : MonoBehaviour, IMixedRealityTouchHandler
     {
         const string InitialMarkerTransformName = "Initial Marker";
@@ -188,13 +187,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public bool IsPressing { get; private set; }
 
         /// <summary>
-        /// The press direction of the button as defined by a NearInteractionTouchable.
+        /// The press direction of the button as defined by an INearInteractionTouchable.
         /// </summary>
         private Vector3 WorldSpacePressDirection
         {
             get
             {
-                var nearInteractionTouchable = GetComponent<NearInteractionTouchable>();
+                var nearInteractionTouchable = GetComponent<INearInteractionTouchable>();
                 if (nearInteractionTouchable != null)
                 {
                     return -1.0f * nearInteractionTouchable.Forward;
