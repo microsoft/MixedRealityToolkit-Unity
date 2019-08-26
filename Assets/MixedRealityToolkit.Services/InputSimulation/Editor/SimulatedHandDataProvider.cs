@@ -113,7 +113,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             Vector3 screenPosition = CameraCache.Main.ViewportToScreenPoint(ViewportPosition);
             Vector3 worldPosition = CameraCache.Main.ScreenToWorldPoint(screenPosition + JitterOffset);
-            Quaternion worldRotation = CameraCache.Main.transform.rotation * Quaternion.Euler(ViewportRotation);
+
+            // Apply rotation relative to the wrist joint
+            Quaternion rotationRef = pose.GetLocalJointPose(TrackedHandJoint.Wrist, handedness).Rotation;
+            Vector3 forwardRef = rotationRef * Vector3.forward;
+
+            Quaternion turntable = Quaternion.Euler(ViewportRotation.x, ViewportRotation.y, 0);
+            Quaternion roll = Quaternion.AngleAxis(ViewportRotation.z, turntable * forwardRef);
+            Quaternion localRotation = roll * turntable;
+
+            Quaternion worldRotation = CameraCache.Main.transform.rotation * localRotation;
             pose.ComputeJointPoses(handedness, worldRotation, worldPosition, jointsOut);
         }
     }
