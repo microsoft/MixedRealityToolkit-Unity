@@ -15,6 +15,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
         [SerializeField]
         protected Image dwellVisualImage = null;
 
+        [SerializeField]
+        protected Button targetButton = null;
+
         protected DwellHandler dwellHandler;
 
         public bool isDwelling = false;
@@ -30,7 +33,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
 
         public virtual void DwellCanceled(IMixedRealityPointer pointer) { isDwelling = false; }
         
-        public virtual void DwellCompleted(IMixedRealityPointer pointer) { isDwelling = false; ButtonExecute(); }
+        public virtual void DwellCompleted(IMixedRealityPointer pointer)
+        {
+            isDwelling = false;
+            if (targetButton != null)
+            {
+                targetButton.onClick?.Invoke();
+            }
+        }
 
         public virtual void ButtonExecute() { }
     }

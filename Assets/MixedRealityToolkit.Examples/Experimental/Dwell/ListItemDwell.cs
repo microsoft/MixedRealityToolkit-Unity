@@ -34,6 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
         {
             base.DwellCompleted(pointer);
             dwellVisualImage.fillAmount = 0;
+            ButtonExecute();
         }
 
         public override void ButtonExecute()

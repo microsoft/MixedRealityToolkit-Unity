@@ -64,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
                     case DwellStateType.DwellCompleted:
                         return 1;
                     case DwellStateType.DwellCanceled:
-                        if (dwellProfile.TimeToAllowDwellResume > 0)
+                        if (dwellProfile.TimeToAllowDwellResume.Ticks > 0)
                         {
                             return GetCurrentDwellProgress();
                         }
@@ -130,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
 
             if (HasFocus && CurrentDwellState != DwellStateType.DwellCompleted)
             {
-                double focusDuration = (DateTime.UtcNow - this.focusEnterTime).TotalSeconds;
+                TimeSpan focusDuration = (DateTime.UtcNow - this.focusEnterTime);
 
                 if (CurrentDwellState == DwellStateType.FocusGained && focusDuration >= dwellProfile.DwellIntentDelay)
                 {
@@ -152,7 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
 
         private float GetCurrentDwellProgress()
         {
-            return Mathf.Clamp(FillTimer / dwellProfile.TimeToCompleteDwell, 0f, 1f);
+            return Mathf.Clamp(FillTimer / (float)dwellProfile.TimeToCompleteDwell.TotalSeconds, 0f, 1f);
         }
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
                     break;
                 case DwellStateType.DwellCanceled:
                     // this is a conditional state transition and can be overriden by the deriving class as per profile settings.
-                    if ((DateTime.UtcNow - focusExitTime).TotalSeconds > dwellProfile.TimeToAllowDwellResume)
+                    if ((DateTime.UtcNow - focusExitTime) > dwellProfile.TimeToAllowDwellResume)
                     {
                         FillTimer = 0;
                         CurrentDwellState = DwellStateType.None;
@@ -196,7 +196,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
                 // check intent to resume
                 if (CurrentDwellState == DwellStateType.DwellCanceled
                     && pointer.InputSourceParent.SourceId == eventData.Pointer.InputSourceParent.SourceId //make sure the returning pointer id is the same
-                    && (DateTime.UtcNow - focusExitTime).TotalSeconds <= dwellProfile.TimeToAllowDwellResume)
+                    && (DateTime.UtcNow - focusExitTime) <= dwellProfile.TimeToAllowDwellResume)
                 {
                     // Add the time duration focus was away since this is a dwell resume and we need to account for the time that focus was lost for the target.
                     // Assigning this the current time would restart computation for dwell progress.

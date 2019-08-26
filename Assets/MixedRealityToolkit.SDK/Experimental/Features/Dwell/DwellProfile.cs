@@ -44,35 +44,35 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
             }
         }
 
-        public float DwellIntentDelay
+        public TimeSpan DwellIntentDelay
         {
             get
             {
-                return dwellIntentDelay;
+                return TimeSpan.FromSeconds(dwellIntentDelay);
             }
         }
 
-        public float DwellStartDelay
+        public TimeSpan DwellStartDelay
         {
             get
             {
-                return dwellStartDelay;
+                return TimeSpan.FromSeconds(dwellStartDelay);
             }
         }
 
-        public float TimeToCompleteDwell
+        public TimeSpan TimeToCompleteDwell
         {
             get
             {
-                return timeToCompleteDwell;
+                return TimeSpan.FromSeconds(timeToCompleteDwell);
             }
         }
 
-        public float TimeToAllowDwellResume
+        public TimeSpan TimeToAllowDwellResume
         {
             get
             {
-                return timeToAllowDwellResume;
+                return TimeSpan.FromSeconds(timeToAllowDwellResume);
             }
         }
     }
