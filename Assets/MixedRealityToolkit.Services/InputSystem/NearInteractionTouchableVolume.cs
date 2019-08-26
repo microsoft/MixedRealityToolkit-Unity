@@ -19,6 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [UnityEditor.CustomEditor(typeof(NearInteractionTouchableVolume))]
         public class Editor : UnityEditor.Editor
         {
+            /// <inheritdoc />
             public override void OnInspectorGUI()
             {
                 base.OnInspectorGUI();
@@ -33,6 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 #endif
 
+        /// <inheritdoc />
         public override float DistanceToTouchable(Vector3 samplePoint, out Vector3 normal)
         {
             Vector3 closest = TouchableCollider.ClosestPoint(samplePoint);

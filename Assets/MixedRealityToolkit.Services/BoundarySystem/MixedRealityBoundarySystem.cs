@@ -30,6 +30,9 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         private BoundaryEventData boundaryEventData = null;
 
         /// <inheritdoc/>
+        public override string Name { get; protected set; } = "Mixed Reality Boundary System";
+
+        /// <inheritdoc/>
         public override void Initialize()
         {
             if (!Application.isPlaying) { return; }

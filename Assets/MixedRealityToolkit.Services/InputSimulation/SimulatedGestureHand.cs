@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         new[] { Handedness.Left, Handedness.Right })]
     public class SimulatedGestureHand : SimulatedHand
     {
+        /// <inheritdoc />
         public override HandSimulationMode SimulationMode => HandSimulationMode.Gestures;
 
         private bool initializedFromProfile = false;
@@ -111,11 +112,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             new MixedRealityInteractionMapping(1, "Grip Pose", AxisType.SixDof, DeviceInputType.SpatialGrip, MixedRealityInputAction.None),
         };
 
+        /// <inheritdoc />
         public override void SetupDefaultInteractions(Handedness controllerHandedness)
         {
             AssignControllerMappings(DefaultInteractions);
         }
 
+        /// <inheritdoc />
         protected override void UpdateInteractions(SimulatedHandData handData)
         {
             EnsureProfileSettings();

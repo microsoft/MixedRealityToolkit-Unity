@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         private Vector2 lastMousePosition;
 
+        /// <inheritdoc />
         protected override string ControllerName => "ScreenSpace Mouse Pointer";
 
         /// <inheritdoc />
@@ -45,6 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             transform.rotation = Quaternion.LookRotation(ray.direction);
         }
 
+        /// <inheritdoc />
         protected override void SetVisibility(bool visible)
         {
             base.SetVisibility(visible);

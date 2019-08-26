@@ -136,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return GetState((int)state);
         }
 
-        // compares all the state values and returns a state based on bitwise comparison
+        /// <inheritdoc />
         public override State CompareStates()
         {
             int bit = GetBit();

@@ -4,6 +4,7 @@ The Input Simulation Service emulates the behaviour of devices and platforms tha
 * HoloLens or VR device head tracking
 * HoloLens hand gestures
 * HoloLens 2 articulated hand tracking
+* HoloLens 2 eye tracking
 
 Users can use a conventional keyboard and mouse combination to control simulated devices at runtime. This allows testing of interactions in the Unity editor without first deploying to a device.
 
@@ -174,3 +175,9 @@ For manipulating objects with two hands at the same time the persistent hand mod
 5. Rotate the camera again to manipulate the object
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/6841rRMdqWw" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
+
+## Eye tracking
+
+[Eye tracking simulation](../EyeTracking/EyeTracking_BasicSetup.md#simulating-eye-tracking-in-the-unity-editor) can be enabled by checking the __Simulate Eye Position__ option in the
+[Input Simulation Profile](#enabling-the-input-simulation-service). This should not be used with GGV
+style interactions (so ensure that __Hand Simulation Mode__ is set to _Articulated_).

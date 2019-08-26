@@ -224,14 +224,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             bool state = currentState;
             if (isValidPreferenceKey)
             {
-                state = EditorPrefs.GetBool(preferenceKey, currentState);
+                state = SessionState.GetBool(preferenceKey, currentState);
             }
 
             currentState = EditorGUILayout.Foldout(state, title, true, MixedRealityStylesUtility.BoldFoldoutStyle);
 
             if (isValidPreferenceKey && currentState != state)
             {
-                EditorPrefs.SetBool(preferenceKey, currentState);
+                SessionState.SetBool(preferenceKey, currentState);
             }
 
             if (currentState)

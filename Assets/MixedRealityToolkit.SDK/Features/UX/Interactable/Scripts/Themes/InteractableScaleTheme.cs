@@ -32,6 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 });
         }
 
+        /// <inheritdoc />
         public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
         {
             InteractableThemePropertyValue start = new InteractableThemePropertyValue();
@@ -39,6 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return start;
         }
 
+        /// <inheritdoc />
         public override void SetValue(InteractableThemeProperty property, int index, float percentage)
         {
             hostTransform.localScale = Vector3.Lerp(property.StartValue.Vector3, property.Values[index].Vector3, percentage);

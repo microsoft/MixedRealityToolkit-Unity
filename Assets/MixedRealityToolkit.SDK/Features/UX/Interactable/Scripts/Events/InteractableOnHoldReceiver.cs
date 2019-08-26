@@ -24,6 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Name = "OnHold";
         }
 
+        /// <inheritdoc />
         public override void OnUpdate(InteractableStates state, Interactable source)
         {
             if (state.GetState(InteractableStates.InteractableStateEnum.Pressed).Value > 0 && !hasDown)
