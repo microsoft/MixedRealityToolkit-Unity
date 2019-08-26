@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Tools for recording and playing back input animation in the Unity editor.
     /// </summary>
-    public class InputRecordingWindow : EditorWindow
+    public class InputSimulationWindow : EditorWindow
     {
         private InputAnimation animation
         {
@@ -88,11 +88,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Texture2D iconJumpBack = null;
         private Texture2D iconJumpFwd = null;
 
-        [MenuItem("Mixed Reality Toolkit/Utilities/Input Recording")]
+        [MenuItem("Mixed Reality Toolkit/Utilities/Input Simulation")]
         private static void ShowWindow()
         {
-            InputRecordingWindow window = GetWindow<InputRecordingWindow>();
-            window.titleContent = new GUIContent("Input Recording");
+            InputSimulationWindow window = GetWindow<InputSimulationWindow>();
+            window.titleContent = new GUIContent("Input Simulation");
             window.minSize = new Vector2(380.0f, 680.0f);
             window.Show();
         }
