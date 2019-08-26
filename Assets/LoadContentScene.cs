@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+#define SCENE_TRANSITIONS_ENABLED
 using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.SceneSystem;
 #if SCENE_TRANSITIONS_ENABLED
