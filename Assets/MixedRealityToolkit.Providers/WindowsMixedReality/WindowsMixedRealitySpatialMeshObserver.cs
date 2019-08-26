@@ -478,10 +478,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// </summary>
         private void UpdateObserver()
         {
-            if (SpatialAwarenessSystem == null)
-            {
-                return;
-            }
+            if (SpatialAwarenessSystem == null || HolographicSettings.IsDisplayOpaque || !XRSettings.isDeviceActive) { return; }
 
             // Only update the observer if it is running.
             if (IsRunning && (outstandingMeshObject == null))
