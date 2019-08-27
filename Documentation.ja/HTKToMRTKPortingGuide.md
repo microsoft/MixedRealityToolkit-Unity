@@ -110,7 +110,7 @@ Windows Mixed Reality Device Managerなどのプラットフォームサポー�
 
 |                           | HTK 2017 |  MRTK v2  |
 |---------------------------|----------|-----------|
-| 設定                     | Sharing service の場合: Sharing プレハブをシーンに追加します。 UNet の場合: SharingWithUNET example を使用してください。 | 更新中の状態です。 |
+| 設定                     | Sharing service の場合: Sharing プレハブをシーンに追加します。<br>UNet の場合: SharingWithUNET example を使用してください。 | 更新中の状態です。 |
 | 構成             | インスペクタ内でシーンインスタンスを設定します。 | 更新中の状態です。 |
 
 ## UX
