@@ -48,6 +48,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public GameObject HandMeshPrefab => handMeshPrefab;
 
+        /// <summary>
+        /// The hand mesh visualization enable/disable state of the current application mode.
+        /// </summary>
+        /// <remarks>
+        /// If this property is called while in-editor, this will only affect the in-editor settings
+        /// (i.e. the SupportedApplicationModes.Editor flag of HandMeshVisualizationModes).
+        /// If this property is called while in-player, this will only affect the in-player settings
+        /// (i.e. the SupportedApplicationModes.Player flag of HandMeshVisualizationModes).
+        /// </remarks>
         public bool EnableHandMeshVisualization
         {
             get
@@ -61,6 +70,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// The hand joint visualization enable/disable state of the current application mode.
+        /// </summary>
+        /// <remarks>
+        /// If this property is called while in-editor, this will only affect the in-editor settings
+        /// (i.e. the SupportedApplicationModes.Editor flag of HandJointVisualizationModes).
+        /// If this property is called while in-player, this will only affect the in-player settings
+        /// (i.e. the SupportedApplicationModes.Player flag of HandJointVisualizationModes).
+        /// </remarks>
         public bool EnableHandJointVisualization
         {
             get
