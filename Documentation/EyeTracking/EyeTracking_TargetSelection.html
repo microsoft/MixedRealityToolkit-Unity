@@ -143,7 +143,7 @@ For example, adding the <em>IMixedRealityPointerHandler</em> will make them reac
 The <em>IMixedRealityPointerHandler</em> interface requires implementing the following three interface members:
 <em>OnPointerUp</em>, <em>OnPointerDown</em>, and <em>OnPointerClicked</em>.</p>
 <p>In the example below, we change the color of a hologram by looking at it and pinching or saying &quot;select&quot;.
-The required action to trigger the event is defined by <code>eventData.MixedRealityInputAction == selectAction</code> whereby we can set the type of <code>selectAction</code> in the Unity Editor - by default it's the &quot;Select&quot; action. The types of available <a href="https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/InputActions.html">MixedRealityInputActions</a> can be configured in the MRTK Profile via <em>MRTK Configuration Profile</em> -&gt; <em>Input</em> -&gt; <em>Input Actions</em>.</p>
+The required action to trigger the event is defined by <code>eventData.MixedRealityInputAction == selectAction</code> whereby we can set the type of <code>selectAction</code> in the Unity Editor - by default it's the &quot;Select&quot; action. The types of available <a href="../Input/InputActions.html">MixedRealityInputActions</a> can be configured in the MRTK Profile via <em>MRTK Configuration Profile</em> -&gt; <em>Input</em> -&gt; <em>Input Actions</em>.</p>
 <pre><code class="lang-csharp">   public class ColorTap : MonoBehaviour, IMixedRealityFocusHandler, IMixedRealityPointerHandler
     {
         // Allow for editing the type of select action in the Unity Editor.
