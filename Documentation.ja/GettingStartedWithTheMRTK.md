@@ -1,4 +1,4 @@
-# MRTKを始める
+# MRTK を始める
 
 ![MRTK Logo](../Documentation/Images/MRTK_Logo_Rev.png)
 
@@ -16,7 +16,7 @@ Mixed Reality Toolkit を始めるには、次のものが必要です。
 * [最新の MRTK release](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases)
 * [Windows SDK 18362+](https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk).
 
-  これは WMR、HoloLens 1、または HoloLens 2 向けのUWPアプリを構築する場合に必要です。OpenVR向けに構築する場合は不要です。
+  これは WMR、HoloLens 1、または HoloLens 2 向けの UWPアプリを構築する場合に必要です。OpenVR 向けに構築する場合は不要です。
 
 ## チュートリアルを始める
 
@@ -41,7 +41,7 @@ MRTK、またはMR開発が初めての場合は、MRTKv2を使った [チュー
 
 次のステップへ進む前に、正しいプラットフォームを選択していることを確認してください。
 
-例えば、HoloLensアプリケーションを作成する場合は、Universal Windows Platform に切り替えます。
+例えば、HoloLens アプリケーションを作成する場合は、Universal Windows Platform に切り替えます。
 
 * File > Build Settings からメニューを開きます。
 * **Platform** の一覧から、**Universal Windows Platform** を選択します。
@@ -52,7 +52,7 @@ MRTK、またはMR開発が初めての場合は、MRTKv2を使った [チュー
 1. 新しい Unity プロジェクトを作成するか、既存のプロジェクトを開きます。新しいプロジェクトを作成する場合は、テンプレートタイプに "3D" が選択されていることを確認してください。
 1. ダウンロードした `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage` をインポートします。「Asset -> Import Package -> Custom Package」から, .unitypackage ファイルを選択し, インポートする全ての項目がチェックされていることを確認してから、「Import」を選択します.
 1. `Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage` も上記と同様の手順でインポートします。examples のパッケージは、オプションであり、現在の MRTK の機能の有用なデモシーンが含まれています。
-1. `Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage` も Foundaiton パッケージと同様にインポートします。tools のパッケージは、オプションで、MRTK 開発者のエクスペリエンスを向上させる、ExtensionServiceCreator などの便利なツールが含まれています。
+1. `Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage` も Foundaiton パッケージと同様にインポートします。tools のパッケージは、オプションであり、MRTK 開発者のエクスペリエンスを向上させる、ExtensionServiceCreator などの便利なツールが含まれています。
 1. Import the `Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage` も Foundaiton パッケージと同様にインポートします。 extensions パッケージは、オプションで、 MRTK の便利なオプションコンポーネントのセットを提供します。
 
 Foundation パッケージをインポートすると、次のようなセットアッププロンプトが表示される場合があります。
