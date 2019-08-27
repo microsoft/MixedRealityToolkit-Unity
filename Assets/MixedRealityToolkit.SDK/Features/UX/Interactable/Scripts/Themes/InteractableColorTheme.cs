@@ -38,11 +38,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 });
         }
 
+        /// <inheritdoc />
         public override void Init(GameObject host, InteractableThemePropertySettings settings)
         {
             base.Init(host, settings);
         }
 
+        /// <inheritdoc />
         public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
         {
             InteractableThemePropertyValue color = new InteractableThemePropertyValue();
@@ -88,6 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        /// <inheritdoc />
         public override void SetValue(InteractableThemeProperty property, int index, float percentage)
         {
             Color color = Color.Lerp(property.StartValue.Color, property.Values[index].Color, percentage);

@@ -750,7 +750,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
 
         #region BaseFocusHandler Methods
+        
+        /// <inheritdoc />
         public override void OnFocusEnter(FocusEventData eventData) { }
+
+        /// <inheritdoc />
         public override void OnFocusExit(FocusEventData eventData)
         {
             EndAllTouches();

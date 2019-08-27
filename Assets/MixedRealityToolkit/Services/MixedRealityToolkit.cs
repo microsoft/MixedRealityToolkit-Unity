@@ -370,9 +370,6 @@ namespace Microsoft.MixedReality.Toolkit
             // If the Spatial Awareness system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsSpatialAwarenessSystemEnabled)
             {
-#if UNITY_EDITOR
-                LayerExtensions.SetupLayer(31, "Spatial Awareness");
-#endif
                 object[] args = { this, ActiveProfile.SpatialAwarenessSystemProfile };
                 if (!RegisterService<IMixedRealitySpatialAwarenessSystem>(ActiveProfile.SpatialAwarenessSystemSystemType, args: args) && CoreServices.SpatialAwarenessSystem != null)
                 {

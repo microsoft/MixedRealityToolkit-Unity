@@ -30,8 +30,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
         protected override string ControllerName => "Spatial Mouse Pointer";
 
+        /// <inheritdoc />
         public override void OnPreSceneQuery()
         {
             // screenspace to ray conversion
@@ -67,6 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
         public override void OnInputChanged(InputEventData<MixedRealityPose> eventData)
         {
             if (eventData.SourceId == Controller?.InputSource.SourceId)
@@ -114,6 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Cursor.lockState = CursorLockMode.Locked;
         }
 
+        /// <inheritdoc />
         protected override void SetVisibility(bool visible)
         {
             base.SetVisibility(visible);

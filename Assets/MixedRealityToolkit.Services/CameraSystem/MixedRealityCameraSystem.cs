@@ -25,6 +25,9 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         {
         }
 
+        /// <inheritdoc/>
+        public override string Name { get; protected set; } = "Mixed Reality Camera System";
+
         /// <summary>
         /// Is the current camera displaying on an Opaque (AR) device or a VR / immersive device
         /// </summary>
