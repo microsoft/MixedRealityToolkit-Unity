@@ -104,7 +104,7 @@ Editor 内の入力シミュレーション を使って、[手](InputSimulation
 * 中央のマウススクロールを使用して、手の奥行を調整します。
 * 左マウスをクリックして、ジェスチャーを切り替えます。
 
-シーンの探索を楽しんでください！ UI コントロールの詳細については、[ハンドインタラクションのサンプルガイド](README_HandInteractionExamples.md) で学ぶことができます。また、[入力シミュレーションのドキュメント](InputSimulation/InputSimulationService.md)を読んで、MRTK のEditor 内の手の入力シミュレーションの詳細を確認してください。
+シーンの探索を楽しんでください！ UI コントロールの詳細については、[ハンドインタラクションのサンプルガイド](README_HandInteractionExamples.md) で学ぶことができます。また、[入力シミュレーションのドキュメント](InputSimulation/InputSimulationService.md)を読んで、MRTK の Editor 内の手の入力シミュレーションの詳細を確認してください。
 
 おめでとうございます、最初の MRTK のシーンを使うことができました。これであなた自身のエクスペリエンスを創りはじめることができます。
 
@@ -162,17 +162,17 @@ Editor 内の入力シミュレーション を使って、[手](InputSimulation
 
 |  [![Button](../Documentation/Images/Button/MRTK_Button_Main.png)](../Documentation/README_Button.md) [Button](../Documentation/README_Button.md) | [![Bounding Box](../Documentation/Images/BoundingBox/MRTK_BoundingBox_Main.png)](../Documentation/README_BoundingBox.md) [Bounding Box](../Documentation/README_BoundingBox.md) | [![Manipulation Handler](../Documentation/Images/ManipulationHandler/MRTK_Manipulation_Main.png)](../Documentation/README_ManipulationHandler.md) [Manipulation Handler](../Documentation/README_ManipulationHandler.md) |
 |:--- | :--- | :--- |
-| HoloLen 2 の関節式の手を含む様々な入力方法をサポートするボタンコントロール | 3D空間でオブジェクトを操作するための標準UI | 片手、または両手でオブジェクトを操作するためのスクリプト |
+| HoloLen 2 の関節式の手を含む様々な入力方法をサポートするボタンコントロール | 3D 空間でオブジェクトを操作するための標準UI | 片手、または両手でオブジェクトを操作するためのスクリプト |
 |  [![Slate](../Documentation/Images/Slate/MRTK_Slate_Main.png)](../Documentation/README_Slate.md) [Slate](../Documentation/README_Slate.md) | [![System Keyboard](../Documentation/Images/SystemKeyboard/MRTK_SystemKeyboard_Main.png)](../Documentation/README_SystemKeyboard.md) [System Keyboard](../Documentation/README_SystemKeyboard.md) | [![Interactable](../Documentation/Images/Interactable/InteractableExamples.png)](../Documentation/README_Interactable.md) [Interactable](../Documentation/README_Interactable.md) |
 | 関節式の手の入力によるスクロールをサポートする2D スタイル平面 | Unity でシステムキーボードを使用するスクリプトのサンプル  | 視覚的にオブジェクトと対話可能にするためのスクリプトとテーマサポート |
 |  [![Solver](../Documentation/Images/Solver/MRTK_Solver_Main.png)](../Documentation/README_Solver.md) [Solver](../Documentation/README_Solver.md) | [![Object Collection](../Documentation/Images/ObjectCollection/MRTK_ObjectCollection_Main.png)](../Documentation/README_ObjectCollection.md) [Object Collection](../Documentation/README_ObjectCollection.md) | [![Tooltip](../Documentation/Images/Tooltip/MRTK_Tooltip_Main.png)](../Documentation/README_Tooltip.md) [Tooltip](../Documentation/README_Tooltip.md) |
-| tag-along、body-lock、constant view size、 surface magnetism のような様々なオブジェクト配置動作 |  オブジェクトの配列を3次元にレイアウトするためのスクリプト |モーションコントローラーとオブジェクトのラベル付けに使用できる柔軟なアンカー/ピボットシステムを備えた注釈UI。 |
+| tag-along、body-lock、constant view size、 surface magnetism のような様々なオブジェクト配置動作 |  オブジェクトの配列を3次元にレイアウトするためのスクリプト |モーションコントローラーとオブジェクトのラベル付けに使用できる柔軟なアンカー/ピボットシステムを備えた注釈 UI。 |
 |  [![App Bar](../Documentation/Images/AppBar/MRTK_AppBar_Main.png)](../Documentation/README_AppBar.md) [App Bar](../Documentation/README_AppBar.md) | [![Pointers](../Documentation/Images/Pointers/MRTK_Pointer_Main.png)](../Documentation/Input/Pointers.md) [Pointers](../Documentation/Input/Pointers.md) | [![Fingertip Visualization](../Documentation/Images/Fingertip/MRTK_FingertipVisualization_Main.png)](../Documentation/README_FingertipVisualization.md) [Fingertip Visualization](../Documentation/README_FingertipVisualization.md) |
-| Bounding Box の手動で有効化するUI | 様々なタイプのポインターについて学ぶ | 直接的なインタラクションの信頼性を向上させる、指先の視覚的アフォーダンス |
+| Bounding Box の手動で有効化する UI | 様々なタイプのポインターについて学ぶ | 直接的なインタラクションの信頼性を向上させる、指先の視覚的アフォーダンス |
 |  [![Slider](../Documentation/Images/Slider/MRTK_UX_Slider_Main.jpg)](../Documentation/README_Sliders.md) [Slider](../Documentation/README_Sliders.md) | [![MRTK Standard Shader](../Documentation/Images/MRTKStandardShader/MRTK_StandardShader.jpg)](../Documentation/README_MRTKStandardShader.md) [MRTK Standard Shader](../Documentation/README_MRTKStandardShader.md) | [![Hand Joint Chaser](../Documentation/Images/HandJointChaser/MRTK_HandJointChaser_Main.jpg)](../Documentation/README_HandJointChaser.md) [Hand Joint Chaser](../Documentation/README_HandJointChaser.md) |
 | 直接的な手を使ったインタラクションをサポートする値を調整するためのスライダー | フルーエントデザインの要素をサポートし、パフォーマンスの良い MRTK の標準シェーダー | ソルバーを使用してオブジェクトを手の関節にアタッチする方法のデモ |
 |  [![Eye Tracking: Target Selection](../Documentation/Images/EyeTracking/mrtk_et_targetselect.png)](../Documentation/EyeTracking/EyeTracking_TargetSelection.md) [Eye Tracking: Target Selection](../Documentation/EyeTracking/EyeTracking_TargetSelection.md) | [![Eye Tracking: Navigation](../Documentation/Images/EyeTracking/mrtk_et_navigation.png)](../Documentation/EyeTracking/EyeTracking_Navigation.md) [Eye Tracking: Navigation](../Documentation/EyeTracking/EyeTracking_Navigation.md) | [![Eye Tracking: Heat Map](../Documentation/Images/EyeTracking/mrtk_et_heatmaps.png)](EyeTracking/EyeTracking_ExamplesOverview.md#visualization-of-visual-attention) [Eye Tracking: Heat Map](../Documentation/EyeTracking/EyeTracking_ExamplesOverview.md#visualization-of-visual-attention) |
-| 目、音声、手の入力を組み合わせて、シーン内のhologramsを簡単に選択する | 見ている場所に基づいてテキストを自動スクロールする方法やフォーカスされたコンテンツをズームする方法を学ぶ | アプリでユーザーが見ているものを記録、読み込み、視覚化するサンプル |
+| 目、音声、手の入力を組み合わせて、シーン内の holograms を簡単に選択する | 見ている場所に基づいてテキストを自動スクロールする方法やフォーカスされたコンテンツをズームする方法を学ぶ | アプリでユーザーが見ているものを記録、読み込み、視覚化するサンプル |
 
 ## ツール
 
