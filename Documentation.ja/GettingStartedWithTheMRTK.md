@@ -1,73 +1,73 @@
-# Getting Started with MRTK
+# MRTKを始める
 
 ![MRTK Logo](../Documentation/Images/MRTK_Logo_Rev.png)
 
-The Mixed Reality Toolkit (MRTK) is a cross-platform toolkit for building Mixed Reality experiences for Virtual Reality (VR) and Augmented Reality (AR).
+Mixed Reality Toolkit (MRTK) は、Virtual Reality (VR) 及び Augmented Reality (AR) の Mixed Reality エクスペリエンス を構築するためのクロスプラットフォームツールキットです。
 
-## Prerequisites
+## 前提条件
 
-To get started with the Mixed Reality Toolkit you will need:
+Mixed Reality Toolkit を始めるには、次のものが必要です。
 
 * [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/)
 * [Unity 2018.4.x, 2019.1.x or 2019.2.x](https://unity3d.com/get-unity/download/archive)
 
-  MRTK supports both IL2CPP and .NET scripting backends on Unity 2018
+  MRTKは、 Unity 2018 で IL2CPP と .NET scripting backends の両方をサポートします。
 
-* [Latest MRTK release](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases)
+* [最新の MRTK release](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases)
 * [Windows SDK 18362+](https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk).
 
-  This is necessary if you are building a UWP app for WMR, HoloLens 1, or HoloLens 2. This is not necessary
-  when building for OpenVR.
+  これは WMR、HoloLens 1、または HoloLens 2 向けのUWPアプリを構築する場合に必要です。OpenVR向けに構築する場合は不要です。
 
-## Getting started tutorials
+## チュートリアルを始める
 
-If you are new to MRTK, or MR development, we recommend you check out the [Getting started tutorials](https://docs.microsoft.com/en-us/windows/mixed-reality/mrlearning-base) which uses MRTK v2.
+MRTK、またはMR開発が初めての場合は、MRTKv2を使った [チュートリアルを始める](https://docs.microsoft.com/en-us/windows/mixed-reality/mrlearning-base)をチェックすることをお勧めします。
 
-## Add MRTK to your Unity Project
+## MRTK を Unity Projectに追加する
 
-### Get the latest MRTK Unity packages
+### 最新の MRTK Unity パッケージを取得する
 
-1. Go to the  [MRTK release page](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases).
-1. Under Assets, download
+1. [MRTK のリリースページ](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases) を開きます。
+2. Assets の下から以下をダウンロードします。
     - `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage`
     - `Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage`
     - `Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage`
     - `Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage`
 
-For additional delivery mechanisms, please see [Downloading the MRTK](DownloadingTheMRTK.md).
+より詳細な配布の仕組みは、[MRTKをダウンロードする](DownloadingTheMRTK.md)を参照して下さい。
 
-### Switch your Unity project to the target platform
+### Unity プロジェクトをターゲットプラットフォームに切り替える
 
-The next step **Import MRTK packages into your Unity project** will apply changes to your project specifically for the platform that is selected in the project at that moment you import them.
+次のステップで、**MRTK のパッケージ を Unity プロジェクトへインポート** すると、インポートした時点でプロジェクトで選択されているプラットフォームに応じた変更がプロジェクトに適応されます。
 
-You should make sure that you select the correct platform before following the next step.
+次のステップへ進む前に、正しいプラットフォームを選択していることを確認してください。
 
-For instance, if you want to create a HoloLens application, switch to Universal Windows Platform:
+例えば、HoloLensアプリケーションを作成する場合は、Universal Windows Platform に切り替えます。
 
-- Open menu : File > Build Settings
-- Select **Universal Windows Platform** in the **Platform** list
-- Click on the **Switch Platform** button
+- File > Build Settings からメニューを開きます。
+- **Platform** の一覧から、**Universal Windows Platform** を選択します。
+- **Switch Platform** ボタンを押します。
 
-### Import MRTK packages into your Unity project
+### MRTK のパッケージを Unity プロジェクトにインポートする
 
-1. Create a new Unity project, or open an existing project. When creating a project, make sure to select "3D" as the template type.
-1. Import the `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage` you downloaded by going into "Asset -> Import Package -> Custom Package", selecting the .unitypackage file, ensure all items to import are checked, and then selecting "Import".
-1. Import the `Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage` following the same steps as above. The examples package is optional and contains useful demonstration scenes for current MRTK features.
-1. Import the `Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage` following the same steps as for the foundation package. These tools package is optional and contains useful tools, such as the ExtensionServiceCreator, that enhance the MRTK developer experience.
-1. Import the `Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage` following the same steps as for the foundation package. The extensions package provides a set of useful optional components for the MRTK.
+1. 新しい Unity プロジェクトを作成するか、既存のプロジェクトを開きます。新しいプロジェクトを作成する場合は、テンプレートタイプに "3D" が選択されていることを確認してください。
+1. ダウンロードした `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage` をインポートします。「Asset -> Import Package -> Custom Package」から, .unitypackage ファイルを選択し, インポートする全ての項目がチェックされていることを確認してから、「Import」を選択します.
+1. `Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage` も上記と同様の手順でインポートします。examples のパッケージは、オプションであり、現在の MRTK の機能の有用なデモシーンが含まれています。
+1. `Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage` も Foundaiton パッケージと同様にインポートします。tools のパッケージは、オプションで、MRTK 開発者のエクスペリエンスを向上させる、ExtensionServiceCreator などの便利なツールが含まれています。
+1. Import the `Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage` も Foundaiton パッケージと同様にインポートします。 extensions パッケージは、オプションで、 MRTK の便利なオプションコンポーネントのセットを提供します。
 
-After importing the Foundation package, you may see a setup prompt like the following:
+Foundation パッケージをインポートすると、次のようなセットアッププロンプトが表示される場合があります。
 
 ![UnitySetupPrompt](../Documentation/Images/MRTK_UnitySetupPrompt.png)
 
-MRTK is attempting to set up your project for building Mixed Reality solutions by doing the following:
+MRTK は、以下を実行することで Mixed Reality ソリューションを構築するためのプロジェクトをセットアップします。
 
- * Enable XR Settings for your current platform (enabling the XR checkbox).
- * Force Text Serialization / Visible Meta files (recommended for Unity projects using source control).
+ * 現在のプラットフォームで XR Settings を有効にします (XR チェックボックスを有効にします)。
+ * テキストのシリアライズを強制 / メタファイルの可視化 （ソース管理をする　Unity プロジェクトに推奨）。
 
-Accepting these options is completely optional, but recommended.
+これらのオプションを適応するかは選択的ですが、推奨されています。
 
-Some prefabs and assets require TextMesh Pro, meaning you have to have the TextMesh Pro package installed and the assets in your project (Window -> TextMeshPro -> Import TMP Essential Resources). **After you import TMP Essentials Resources, you need to restart Unity to see changes**.
+一部のプレハブ、及びアセットには、TextMesh Pro が必要です。つまり、TextMesh Pro のパッケージをインストールし、アセットがプロジェクト内にあることが必要です。（Window -> TextMeshPro -> Import TMP Essential Resources）
+ **TMP Essentials Resources をインポートした後、変更を確認するには Unity を再起動する必要があります**。
 
 ### Open and run the HandInteractionExamples scene in editor
 
