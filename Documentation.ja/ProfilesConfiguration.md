@@ -7,27 +7,25 @@
 
 **このガイドは、ツールキットで現在使用できる、設定プロファイル画面の簡単なチュートリアルです。**
 
-
-
 # Mixed Reality Toolkit主な設定プロファイル
 
 シーンの_MixedRealityToolkit_ GameObject にアタッチされている主な設定プロファイル(Congifuration Profile)は、ツールキットの第一のエントリーポイントです。
 
 ## NOTE
+
 Mixed Reality Toolkitは、プロジェクトの共通のスタートポイントを常に持たせるように、デフォルトの設定画面を「ロック」しています。そして、プロジェクトの進捗に合わせて独自の設定の定義を行うことをお勧めします。MRTKの設定はプレイモード中は編集できません。
 
 ![enter image description here](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ActiveConfiguration.png)
 
 Mixed Reality Toolkitのすべての「デフォルト」プロファイルは、フォルダAssets\MixedRealityToolkit.SDK\Profiles内のSDKプロジェクトにあります。
 
-### IMPORTANT
-デフォルトのHoloLens2の設定プロファイルは、HoloLens 2用に最適化されています.  [Profiles](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Profiles/Profiles.html)  にご確認ください。
+## IMPORTANT
 
+デフォルトのHoloLens2の設定プロファイルは、HoloLens 2用に最適化されています.  [Profiles](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Profiles/Profiles.html)  にご確認ください。
 
 メインのMixed Reality Toolkit設定プロファイルを開くと、インスペクタに次の画面が表示されます。
 
 ![enter image description here](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_MixedRealityToolkitConfigurationScreen.png)
-
 
 シーン内で MixedRealityToolkit を使用せずに MixedRealityToolkitConfigurationProfile アセットを選択すると、MRTK がシーンを自動的に設定するかどうかを確認するメッセージが表示されます。これはオプションですが、すべての設定画面にアクセスするには、シーン内にアクティブな MixedRealityToolkit オブジェクトが存在する必要があります。
 
@@ -39,36 +37,31 @@ Mixed Reality Toolkitのすべての「デフォルト」プロファイルは�
 
 ここから、MRTK のすべての設定プロファイルに移動できます。
 
--   [Experience settings](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#experience)
--   [Camera settings](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#camera)
--   [Input system settings](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#input-system-settings)
--   [Boundary settings](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#boundary)
--   [Teleporting settings](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#teleportation)
--   [Spatial awareness settings](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#spatialawareness)
--   [Diagnostics settings](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#diagnostic)
--   [Scene system settings](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#scenesystem)
--   [Additional services settings](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#services)
--   [Input actions settings](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#inputactions)
--   [Input actions rules](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#inputactionrules)
--   [Pointer configuration](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#pointer)
--   [Gestures configuration](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#gestures)
--   [Speech commands](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#speech)
--   [Controller mapping configuration](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#mapping)
--   [Controller visualization settings](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#visualization)
--   [Service Inspectors](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#inspectors)
-
+-[Experience settings](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#experience)
+-[Camera settings](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#camera)
+-[Input system settings](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#input-system-settings)
+-[Boundary settings](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#boundary)
+-[Teleporting settings](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#teleportation)
+-[Spatial awareness settings](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#spatialawareness)
+-[Diagnostics settings](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#diagnostic)
+-[Scene system settings](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#scenesystem)
+-[Additional services settings](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#services)
+-[Input actions settings](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#inputactions)
+-[Input actions rules](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#inputactionrules)
+-[Pointer configuration](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#pointer)
+-[Gestures configuration](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#gestures)
+-[Speech commands](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#speech)
+-[Controller mapping configuration](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#mapping)
+-[Controller visualization settings](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#visualization)
+-[Service Inspectors](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#inspectors)
 
 これらの設定プロファイルについては、以下の関連セクションで詳しく説明します。
 
-
-
 # エクスペリエンス設定
-
 
 MixedRealityToolkitのメイン設定ページにあるこの項目では、プロジェクトの複合現実環境の既定の操作が定義されます。
 
 ![enter image description here](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ExperienceSettings.png)
-
 
 # カメラの設定
 
@@ -76,30 +69,26 @@ MixedRealityToolkitのメイン設定ページにあるこの項目では、プ�
 
 ![enter image description here](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_CameraProfile.png)
 
-
 # 入力システム設定
 
 複合現実プロジェクトは、デフォルトの設定で、すべての入力イベントを連結するための堅牢で十分にトレーニングされてきた入力システムを提供します。
 
 ![enter image description here](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputSystemSelection.png)
 
-
 MRTKが提供する入力システムの裏には、マルチプラットフォーム/複合現実フレームワークの複雑さを抽象化するために必要な複雑な絡み合わせを駆動し、管理するのに役立ちます。
 
 ![enter image description here](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputSystemProfile.png)
 
-
 個々のプロファイルの詳細は以下のとおりです。
 
--   Focus Settings
--   [Input actions settings](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#input-actions-settings)
--   [Input actions rules](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#inputactionrules)
--   [Pointer configuration](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#pointer)
--   [Gestures configuration](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#gestures)
--   [Speech commands](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#speech)
--   [Controller mapping configuration](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#mapping)
--   [Controller visualization settings](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#visualization)
-
+- Focus Settings
+- [Input actions settings](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#input-actions-settings)
+- [Input actions rules](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#inputactionrules)
+- [Pointer configuration](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#pointer)
+- [Gestures configuration](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#gestures)
+- [Speech commands](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#speech)
+- [Controller mapping configuration](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#mapping)
+- [Controller visualization settings](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#visualization)
 
 # 境界(Boundary)可視化の設定
 
@@ -107,14 +96,11 @@ MRTKが提供する入力システムの裏には、マルチプラットフォ�
 
 ![enter image description here](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_BoundaryVisualizationProfile.png)
 
-
-
 # テレポーテーションシステムの選択
 
 複合現実プロジェクトは、デフォルトで選択されたプロジェクトのテレポーテーションイベントを管理するための完全な機能を備えています。
 
-![](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_TeleportationSystemSelection.png)
-
+![mrtk](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_TeleportationSystemSelection.png)
 
 # 空間認識設定
 
@@ -122,19 +108,15 @@ MRTKが提供する入力システムの裏には、マルチプラットフォ�
 
 ![enter image description here](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpatialAwarenessSystemSelection.png)
 
-
 Mixed Reality Toolkitの空間認識設定を使用すると、アプリケーションの起動時に自動的に行うか、プログラムで後で行うか、また視野の範囲を設定するかどうかにかかわらず、システムの起動方法を調整できます。
 
 また、メッシュとサーフェスの設定を行い、プロジェクトが周囲の環境をどのように理解するかをさらにカスタマイズすることもできます。
 
 これは、スキャンされた環境を提供できるデバイスにのみ適用されます。
 
-
 ![enter image description here](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpatialAwarenessProfile.png)
 
-
 # 診断設定
-
 
 オプションですが、MRTKに非常に便利な機能は、プラグイン診断機能です。これにより、シーンへのデバッグログのスタイルが表示されます。
 
@@ -144,16 +126,13 @@ Mixed Reality Toolkitの空間認識設定を使用すると、アプリケー�
 
 ![enter image description here](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsProfile.png)
 
-
 # シーンシステム設定
 
 MRTK は、複雑なシーンの読み込み(loading)/アンロード(unloading)の管理に役立つオプションを提供します。シーンシステムがプロジェクトに適しているかどうかを判断するには、[シーン システムの開始ガイド](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SceneSystem/SceneSystemGettingStarted.html)を参照してください。
 
 ![enter image description here](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SceneSystemProfile.png)
 
-
 # その他のサービス設定
-
 
 Mixed Reality Toolkitのより高度な領域の1つは、フレームワークとの任意の「サービス」の登録を可能にする[サービスロケータパターン](https://en.wikipedia.org/wiki/Service_locator_pattern)の実装です。これにより、フレームワークを新しい機能/システムで簡単に拡張できますし、プロジェクトはこれらの機能を利用して独自のランタイムコンポーネントも登録できます。
 
@@ -163,17 +142,11 @@ Mixed Reality Toolkitのより高度な領域の1つは、フレームワーク�
 
 ![enter image description here](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProfidersProfile.png)
 
-
-
-
-#  入力アクションの設定
-
+# 入力アクションの設定
 
 入力アクションを使用すると、ランタイムプロジェクトからの物理的なインタラクションや入力を真似ることができます。すべての物理入力(コントローラ/手/マウス等)は、ランタイムプロジェクトで使用するための論理入力アクションに変換されます。これにより、入力元に関係なく、プロジェクトはシーン内でこれらのアクションを"行う操作" または "これとインタラクション" として実装するだけでできます。
 
 新しい入力アクションを作成するには、[Add a new Action] ボタンをクリックし、その内容にわかりやすいテキスト名を入力します。次に、アクションの軸 (データの１種類) のみを選択するか、物理コントローラの場合は、それがアタッチできる物理入力タイプを選択するだけです。
-
-
 
 |     軸拘束              |     データ型                                    |     説明                                                                                         |     使用例                                                   |
 |-------------------------|-------------------------------------------------|--------------------------------------------------------------------------------------------------|--------------------------------------------------------------|
@@ -186,18 +159,15 @@ Mixed Reality Toolkitのより高度な領域の1つは、フレームワーク�
 |    3 つのドフ回転       |    Quaternion                                     |    4つの浮動軸を持つ回転のみの入力                                                               |    3度スタイルのコントローラ、例えばOculus Goコントローラ    |
 |   Six Dof       |    複合現実ポーズ(Vector3, Quaternion)    |    Vector3 コンポーネントと Quaternion コンポーネントの両方を使用した位置と回転スタイルの入力    |    モーション コントローラまたはPointer                     |
 
-
 入力アクションを利用するイベントは物理コントローラに限定されず、プロジェクト内で実行時に新しいアクションを生成できます。
 
+## NOTE
 
-## 注意
 入力アクションは、実行時に編集できない数少ないコンポーネントの 1 つであり、設計時のみ変更できます。このプロファイルは、各アクションに対して生成された ID に対するフレームワーク (およびプロジェクト) の依存関係により、プロジェクトの実行中に入れ替えをしないでください。
 
 ![enter image description here](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionsProfile.png)
 
-
 # Input Action Rulesプロフィール
-
 
 Input Action Rulesを使用すると、1 つの入力アクションに対して発生したイベントを、そのデータ値に基づいて別のアクションに自動的に変換できます。これらはフレームワーク内でシームレスに管理され、パフォーマンスコストは発生しません。
 
@@ -209,15 +179,13 @@ Input Action Rulesは、使用可能な入力軸のいずれかに対して設�
 
 ![enter image description here](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionRulesProfile.png)
 
-
 # Pointers 設定
 
 Pointersは、任意の入力デバイスからシーン内のインタラクティブ性を駆動するために使用され、シーン内の任意のオブジェクト (コライダがアタッチされている、または UI コンポーネント) を持つ方向とヒットテストの両方を提供します。Pointers は、デフォルトでは、コントローラ、ヘッドセット(視線/フォーカス)、マウス/タッチ入力用に自動的に設定されます。
 
 Pointersは、Mixed Reality Toolkitによって提供される多くのラインコンポーネントの 1 つを使用してアクティブシーン内で視覚化することも、MRTK IMixedRealityPointer インターフェイスを実装している場合は独自の要素を使用して可視化することもできます。
 
-![](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputPointerProfile.png)
-
+![Mrtk](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputPointerProfile.png)
 
 - Pointing Extent : 注視を含むすべてのポインターのグローバルポインティング範囲を決定。
 
@@ -231,65 +199,51 @@ Pointersは、Mixed Reality Toolkitによって提供される多くのライン
 
 必要に応じて、Gaze Providerにすばやく移り、Gaze の特定の値をオーバーライドするための追加のヘルパーボタンがあります。
 
-
 # ジェスチャ設定
 
 ジェスチャは、さまざまな SDK (HoloLens など) によって提供されるさまざまな "ジェスチャ" 入力メソッドに入力アクションを割り当てることができるシステム固有の実装です。
 
-## 注意
+## NOTE
 
 現在のジェスチャの実装は HoloLens 専用で、将来ツールキットに追加される他のシステムに対して拡張されます (日付はまだわかりません)。
 
-
 ![enter image description here](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_GesturesProfile.png)
-
 
 # 音声コマンド
 
 ジェスチャと同様に、一部のランタイムプラットフォームでは、Unity プロジェクトで受信できるコマンドを生成する機能を備えたインテリジェントな "Speech to Text" 機能も提供します。この設定プロファイルを使用すると、登録済みの 「単語」を設定し、プロジェクトで受信できる入力アクションに変換できます。必要に応じて、キーボードアクションにアタッチすることもできます。
 
-## 重要
+## IMPORTANT
 
 このシステムは現在、HoloLens や Windows 10 デスクトップなどの Windows 10 プラットフォームで実行されている場合にのみ音声認識をサポートしており、将来 MRTK に追加される他のシステムでも拡張される予定です (日付はまだありません)。
 
-
-![](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpeechCommandsProfile.png)
-
-
-
+![mrtk](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpeechCommandsProfile.png)
 
 # コントローラ マッピング設定
-
 
 Mixed Reality Toolkitの主要な設定画面の1つは、プロジェクトで使用できるさまざまな種類のコントローラを設定およびマップする機能です。
 
 以下の設定画面では、ツールキットで現在使われているコントローラのいずれかを設定できます。
 
-
 ![enter image description here](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerMappingProfile.png)
-
-
 
 MRTK は、次のコントローラ/システムのデフォルト設定を提供します。
 
--   マウス(3D空間マウスのサポートを含む)
--   タッチスクリーン
--   Xbox コントローラー
--   Windows Mixed Reality コントローラ
--   HoloLens ジェスチャー
--   HTC Vive ワンド コントローラー
--   Oculus Touch コントローラー
--   Oculus Remote コントローラー
--   汎用 OpenVR デバイス (上級ユーザーのみ)
-
+- マウス(3D空間マウスのサポートを含む)
+- タッチスクリーン
+- Xbox コントローラー
+- Windows Mixed Reality コントローラ
+- HoloLens ジェスチャー
+- HTC Vive ワンド コントローラー
+- Oculus Touch コントローラー
+- Oculus Remote コントローラー
+- 汎用 OpenVR デバイス (上級ユーザーのみ)
 
 あらかじめ構築されたコントローラシステムのいずれかの画像をクリックすると、対応するすべての入力に対して単一の入力アクションを設定できます(以下の Oculus Touch コントローラーの設定画面を参照)。
 
 ![enter image description here](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_OculusTouchConfigScreen.png)
 
-
 上記で識別されていない他の OpenVR または Unity 入力コントローラを設定するための高度な画面もあります。
-
 
 # コントローラの視覚化設定
 
@@ -297,29 +251,24 @@ MRTK は、次のコントローラ/システムのデフォルト設定を提�
 
 これは、「Global」(特定のハンド用コントローラのすべてのインスタンス)または個々のコントローラタイプ/ハンドに固有の設定が可能です。
 
+## IMPORTANT
 
-### 重要
 MRTK は現在、Unityが提供されていない、数多くのネイティブSDKのコントローラーのモデルの gLTF モデルをロード/レンダリングする機能をサポートしていません。これは、使用可能なときに追加されます。
 
 シーン内のコントローラリプレゼンテーションを物理コントローラの位置からオフセットする必要がある場合は、コントローラモデルのプレハブに対してオフセットを設定するだけです(例えば、コントローラプレハブの変換位置をオフセット位置で設定します)。
 
 ![enter image description here](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerVisualizationProfile.png)
 
-
-
 # Service Inspectors
 
 サービスインスペクタは、シーン内オブジェクトを生成する、エディタ上のみの機能です。これらのオブジェクトを選択すると、ドキュメントリンクを提供するインスペクタが表示され、エディタの視覚情報を制御し、サービスの状態に関する情報が表示されます。
 
-
-![](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ServiceInspectors.PNG)
-
+![mrtk](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ServiceInspectors.PNG)
 
 Configuration Profile の Editor Settings の Use Service Inspectorsをオンにすると、サービスインスペクタを有効にできます。
 
-![](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_EnableServiceInspectors.PNG)
+![mrtk](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_EnableServiceInspectors.PNG)
 
 サービスインスペクタの有効にする
-
 
 > Written with [StackEdit](https://stackedit.io/).
