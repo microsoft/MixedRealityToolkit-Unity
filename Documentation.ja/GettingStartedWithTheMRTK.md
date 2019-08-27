@@ -49,7 +49,7 @@ MRTK、またはMR開発が初めての場合は、MRTKv2を使った [チュー
 
 ### MRTK のパッケージを Unity プロジェクトにインポートする
 
-1. 新しい Unity プロジェクトを作成するか、既存のプロジェクトを開きます。新しいプロジェクトを作成する場合は、テンプレートタイプに "3D" が選択されていることを確認してください。
+1. 新しい Unity プロジェクトを作成するか、既存のプロジェクトを開きます。新しいプロジェクトを作成する場合は、テンプレートタイプに 「3D」 が選択されていることを確認してください。
 1. ダウンロードした `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage` をインポートします。「Asset -> Import Package -> Custom Package」から, .unitypackage ファイルを選択し, インポートする全ての項目がチェックされていることを確認してから、「Import」を選択します.
 1. `Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage` も上記と同様の手順でインポートします。examples のパッケージは、オプションであり、現在の MRTK の機能の有用なデモシーンが含まれています。
 1. `Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage` も Foundaiton パッケージと同様にインポートします。tools のパッケージは、オプションであり、MRTK 開発者のエクスペリエンスを向上させる、ExtensionServiceCreator などの便利なツールが含まれています。
