@@ -174,11 +174,11 @@ Editor内の入力シミュレーション を使って、[手](InputSimulation/
 | 目、音声、手の入力を組み合わせて、シーン内のhologramsを簡単に選択する | 見ている場所に基づいてテキストを自動スクロールする方法やフォーカスされたコンテンツをズームする方法を学ぶ | アプリでユーザーが見ているものを記録、読み込み、視覚化するサンプル |
 
 
-## Tools
+## ツール
 |  [![Optimize Window](../Documentation/Images/MRTK_Icon_OptimizeWindow.png)](../Documentation/Tools/OptimizeWindow.md) [Optimize Window](../Documentation/Tools/OptimizeWindow.md) | [![Dependency Window](../Documentation/Images/MRTK_Icon_DependencyWindow.png)](../Documentation/Tools/DependencyWindow.md) [Dependency Window](../Documentation/Tools/DependencyWindow.md) | ![Build Window](../Documentation/Images/MRTK_Icon_BuildWindow.png) Build Window | [![Input recording](../Documentation/Images/MRTK_Icon_InputRecording.png)](../Documentation/InputSimulation/InputAnimationRecording.md) [Input recording](../Documentation/InputSimulation/InputAnimationRecording.md) |
 | :--- | :--- | :--- | :--- |
 | パフォーマンスの最適化のための Mixed Reality プロジェクトの構成の自動化 | アセット間の依存関係を分析し、未使用のアセットを特定する | Mixed Reality アプリケーションのエンドツーエンドのビルドプロセスを構成および実行する | エディターでのヘッドの動きとハンドトラッキングデータの記録と再生 |
 
-## Upgrading from the HoloToolkit (HTK/MRTK v1)
+## HoloToolkit (HTK/MRTK v1) からアップグレードする
 
-There is not a direct upgrade path from the HoloToolkit to Mixed Reality Toolkit v2 due to the rebuilt framework. However, it is possible to import the MRTK into your HoloToolkit project and migrate your implementation. For more information please see the [HoloToolkit to Mixed Reality Toolkit Porting Guide](../Documentation/HTKToMRTKPortingGuide.md)
+フレームワークが再構築されたため、Holotoolkit から Mixed Reality Toolkit v2 への直接的なアップグレードパスはありません。ただし、MRTK を HoloToolkit プロジェクトにインポートし、実装を移行することは可能です。詳細については、 [HoloToolkit to Mixed Reality Toolkit Porting Guide](../Documentation/HTKToMRTKPortingGuide.md) を参照してください。
