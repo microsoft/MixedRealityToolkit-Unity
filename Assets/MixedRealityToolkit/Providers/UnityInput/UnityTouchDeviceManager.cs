@@ -149,6 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 return;
             }
 
+            ActiveTouches.Remove(touch.fingerId);
             controller.TouchData = touch;
             controller.EndTouch();
             IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;

@@ -119,10 +119,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
                 Interactions[1].PoseData = lastPose;
 
-                //if (Interactions[1].Changed)
-                //{
-                //    InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, Interactions[1].MixedRealityInputAction, lastPose);
-                //}
+                if (Interactions[1].Changed)
+                {
+                    InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, Interactions[1].MixedRealityInputAction, lastPose);
+                }
 
                 if (!isManipulating)
                 {
