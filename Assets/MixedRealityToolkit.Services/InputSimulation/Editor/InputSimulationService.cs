@@ -23,6 +23,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private ManualCameraControl cameraControl = null;
         private SimulatedHandDataProvider handDataProvider = null;
 
+        private HandSimulationMode handSimulationMode;
+        /// <inheritdoc />
+        public HandSimulationMode HandSimulationMode
+        {
+            get => handSimulationMode;
+            set
+            {
+                handSimulationMode = value;
+            }
+        }
+
         /// <inheritdoc />
         public SimulatedHandData HandDataLeft { get; } = new SimulatedHandData();
         /// <inheritdoc />
@@ -121,11 +132,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             switch (capability)
             {
                 case MixedRealityCapability.ArticulatedHand:
-                    return (InputSimulationProfile.HandSimulationMode == HandSimulationMode.Articulated);
+                    return (HandSimulationMode == HandSimulationMode.Articulated);
 
                 case MixedRealityCapability.GGVHand:
                     // If any hand simulation is enabled, GGV interactions are supported.
-                    return (InputSimulationProfile.HandSimulationMode != HandSimulationMode.Disabled);
+                    return (HandSimulationMode != HandSimulationMode.Disabled);
 
                 case MixedRealityCapability.EyeTracking:
                     return InputSimulationProfile.SimulateEyePosition;
@@ -138,6 +149,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public override void Initialize()
         {
             ArticulatedHandPose.LoadGesturePoses();
+
+            HandSimulationMode = InputSimulationProfile.DefaultHandSimulationMode;
         }
 
         /// <inheritdoc />
@@ -196,7 +209,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 InputSystem?.EyeGazeProvider?.UpdateEyeGaze(this, new Ray(CameraCache.Main.transform.position, CameraCache.Main.transform.forward), DateTime.UtcNow);
             }
 
-            switch (profile.HandSimulationMode)
+            switch (HandSimulationMode)
             {
                 case HandSimulationMode.Disabled:
                     DisableHandSimulation();
@@ -221,7 +234,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // Apply hand data in LateUpdate to ensure external changes are applied.
             // HandDataLeft/Right can be modified after the services Update() call.
-            if (profile.HandSimulationMode == HandSimulationMode.Disabled)
+            if (HandSimulationMode == HandSimulationMode.Disabled)
             {
                 RemoveAllHandDevices();
             }
@@ -234,11 +247,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     if (HandDataLeft.Timestamp > lastHandUpdateTimestamp)
                     {
-                        UpdateHandDevice(profile.HandSimulationMode, Handedness.Left, HandDataLeft);
+                        UpdateHandDevice(HandSimulationMode, Handedness.Left, HandDataLeft);
                     }
                     if (HandDataRight.Timestamp > lastHandUpdateTimestamp)
                     {
-                        UpdateHandDevice(profile.HandSimulationMode, Handedness.Right, HandDataRight);
+                        UpdateHandDevice(HandSimulationMode, Handedness.Right, HandDataRight);
                     }
 
                     lastHandUpdateTimestamp = currentTime.Ticks;

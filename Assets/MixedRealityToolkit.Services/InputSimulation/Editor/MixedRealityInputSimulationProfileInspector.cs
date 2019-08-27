@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private SerializedProperty rollCameraCWKey;
         private SerializedProperty rollCameraCCWKey;
 
-        private SerializedProperty handSimulationMode;
+        private SerializedProperty defaultHandSimulationMode;
 
         private SerializedProperty simulateEyePosition;
 
@@ -93,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             rollCameraCWKey = serializedObject.FindProperty("rollCameraCWKey");
             rollCameraCCWKey = serializedObject.FindProperty("rollCameraCCWKey");
 
-            handSimulationMode = serializedObject.FindProperty("handSimulationMode");
+            defaultHandSimulationMode = serializedObject.FindProperty("defaultHandSimulationMode");
 
             simulateEyePosition = serializedObject.FindProperty("simulateEyePosition");
 
@@ -167,46 +167,43 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 EditorGUILayout.PropertyField(simulateEyePosition);
 
                 EditorGUILayout.Space();
-                EditorGUILayout.PropertyField(handSimulationMode);
+                EditorGUILayout.PropertyField(defaultHandSimulationMode);
                 {
                     EditorGUILayout.BeginVertical("Label");
-                    bool isHandSimEnabled = (handSimulationMode.enumValueIndex != (int)HandSimulationMode.Disabled);
-                    using (new GUIEnabledWrapper(isHandSimEnabled))
-                    {
-                        EditorGUILayout.PropertyField(toggleLeftHandKey);
-                        EditorGUILayout.PropertyField(toggleRightHandKey);
-                        EditorGUILayout.PropertyField(handHideTimeout);
-                        EditorGUILayout.PropertyField(leftHandManipulationKey);
-                        EditorGUILayout.PropertyField(rightHandManipulationKey);
-                        EditorGUILayout.Space();
 
-                        EditorGUILayout.PropertyField(defaultHandGesture);
-                        EditorGUILayout.PropertyField(leftMouseHandGesture);
-                        EditorGUILayout.PropertyField(middleMouseHandGesture);
-                        EditorGUILayout.PropertyField(rightMouseHandGesture);
-                        EditorGUILayout.PropertyField(handGestureAnimationSpeed);
-                        EditorGUILayout.Space();
+                    EditorGUILayout.PropertyField(toggleLeftHandKey);
+                    EditorGUILayout.PropertyField(toggleRightHandKey);
+                    EditorGUILayout.PropertyField(handHideTimeout);
+                    EditorGUILayout.PropertyField(leftHandManipulationKey);
+                    EditorGUILayout.PropertyField(rightHandManipulationKey);
+                    EditorGUILayout.Space();
 
-                        EditorGUILayout.PropertyField(holdStartDuration);
-                        EditorGUILayout.PropertyField(navigationStartThreshold);
-                        EditorGUILayout.Space();
+                    EditorGUILayout.PropertyField(defaultHandGesture);
+                    EditorGUILayout.PropertyField(leftMouseHandGesture);
+                    EditorGUILayout.PropertyField(middleMouseHandGesture);
+                    EditorGUILayout.PropertyField(rightMouseHandGesture);
+                    EditorGUILayout.PropertyField(handGestureAnimationSpeed);
+                    EditorGUILayout.Space();
 
-                        EditorGUILayout.PropertyField(defaultHandDistance);
-                        EditorGUILayout.PropertyField(handDepthMultiplier);
-                        EditorGUILayout.PropertyField(handJitterAmount);
-                        EditorGUILayout.Space();
+                    EditorGUILayout.PropertyField(holdStartDuration);
+                    EditorGUILayout.PropertyField(navigationStartThreshold);
+                    EditorGUILayout.Space();
 
-                        EditorGUILayout.PropertyField(yawHandCWKey);
-                        EditorGUILayout.PropertyField(yawHandCCWKey);
-                        EditorGUILayout.PropertyField(pitchHandCWKey);
-                        EditorGUILayout.PropertyField(pitchHandCCWKey);
-                        EditorGUILayout.PropertyField(rollHandCWKey);
-                        EditorGUILayout.PropertyField(rollHandCCWKey);
-                        EditorGUILayout.PropertyField(handRotationSpeed);
-                        EditorGUILayout.Space();
+                    EditorGUILayout.PropertyField(defaultHandDistance);
+                    EditorGUILayout.PropertyField(handDepthMultiplier);
+                    EditorGUILayout.PropertyField(handJitterAmount);
+                    EditorGUILayout.Space();
 
-                        EditorGUILayout.EndVertical();
-                    }
+                    EditorGUILayout.PropertyField(yawHandCWKey);
+                    EditorGUILayout.PropertyField(yawHandCCWKey);
+                    EditorGUILayout.PropertyField(pitchHandCWKey);
+                    EditorGUILayout.PropertyField(pitchHandCCWKey);
+                    EditorGUILayout.PropertyField(rollHandCWKey);
+                    EditorGUILayout.PropertyField(rollHandCCWKey);
+                    EditorGUILayout.PropertyField(handRotationSpeed);
+                    EditorGUILayout.Space();
+
+                    EditorGUILayout.EndVertical();
                 }
 
                 serializedObject.ApplyModifiedProperties();

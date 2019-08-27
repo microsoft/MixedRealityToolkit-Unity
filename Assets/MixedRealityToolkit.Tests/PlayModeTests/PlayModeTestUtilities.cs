@@ -234,9 +234,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         internal static void SetHandSimulationMode(HandSimulationMode mode)
         {
             var iss = GetInputSimulationService();
-            var isp = ScriptableObject.CreateInstance<MixedRealityInputSimulationProfile>();
-            isp.HandSimulationMode = mode;
-            iss.InputSimulationProfile = isp;
+            iss.HandSimulationMode = mode;
         }
 
         internal static IEnumerator SetHandState(Vector3 handPos, ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)

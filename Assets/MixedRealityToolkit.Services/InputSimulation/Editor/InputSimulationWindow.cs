@@ -172,6 +172,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void DrawHandsGUI()
         {
+            HandSimulationMode newHandSimMode = (HandSimulationMode)EditorGUILayout.EnumPopup("Hand Simulation Mode", SimulationService.HandSimulationMode);
+
+            if (newHandSimMode != SimulationService.HandSimulationMode)
+            {
+                SimulationService.HandSimulationMode = newHandSimMode;
+            }
+
             using (new GUILayout.HorizontalScope())
             {
                 DrawHandGUI(

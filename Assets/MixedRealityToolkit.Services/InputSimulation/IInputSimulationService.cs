@@ -13,6 +13,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         MixedRealityInputSimulationProfile InputSimulationProfile { get; }
 
         /// <summary>
+        /// Simulated hand behavior.
+        /// </summary>
+        HandSimulationMode HandSimulationMode { get; set; }
+
+        /// <summary>
         /// Pose data for the left hand.
         /// </summary>
         SimulatedHandData HandDataLeft { get; }
