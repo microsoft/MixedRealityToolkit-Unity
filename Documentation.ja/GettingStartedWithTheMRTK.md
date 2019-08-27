@@ -28,12 +28,12 @@ MRTK、またはMR開発が初めての場合は、MRTKv2を使った [チュー
 
 1. [MRTK のリリースページ](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases) を開きます。
 2. Assets の下から以下をダウンロードします。
-    - `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage`
-    - `Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage`
-    - `Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage`
-    - `Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage`
+    * `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage`
+    * `Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage`
+    * `Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage`
+    * `Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage`
 
-より詳細な配布の仕組みは、[MRTKをダウンロードする](DownloadingTheMRTK.md)を参照して下さい。
+より詳細な配布の仕組みは、[MRTK をダウンロードする](DownloadingTheMRTK.md)を参照して下さい。
 
 ### Unity プロジェクトをターゲットプラットフォームに切り替える
 
@@ -43,9 +43,9 @@ MRTK、またはMR開発が初めての場合は、MRTKv2を使った [チュー
 
 例えば、HoloLensアプリケーションを作成する場合は、Universal Windows Platform に切り替えます。
 
-- File > Build Settings からメニューを開きます。
-- **Platform** の一覧から、**Universal Windows Platform** を選択します。
-- **Switch Platform** ボタンを押します。
+* File > Build Settings からメニューを開きます。
+* **Platform** の一覧から、**Universal Windows Platform** を選択します。
+* **Switch Platform** ボタンを押します。
 
 ### MRTK のパッケージを Unity プロジェクトにインポートする
 
@@ -61,8 +61,8 @@ Foundation パッケージをインポートすると、次のようなセット
 
 MRTK は、以下を実行することで Mixed Reality ソリューションを構築するためのプロジェクトをセットアップします。
 
- * 現在のプラットフォームで XR Settings を有効にします (XR チェックボックスを有効にします)。
- * テキストのシリアライズを強制 / メタファイルの可視化 （ソース管理をする　Unity プロジェクトに推奨）。
+* 現在のプラットフォームで XR Settings を有効にします (XR チェックボックスを有効にします)。
+* テキストのシリアライズを強制 / メタファイルの可視化 （ソース管理をする　Unity プロジェクトに推奨）。
 
 これらのオプションを適応するかは選択的ですが、推奨されています。
 
@@ -79,28 +79,30 @@ MRTK は、以下を実行することで Mixed Reality ソリューションを
 2. `Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes\HandInteractionExamples` の下の HandInteractionExamples　のシーンを開きます。
 
 3. 「TMP Essentials」をインポートするかを尋ねるプロンプトが表示されます。
-
-![TMP Essentials](../Documentation/Images/getting_started/MRTK_GettingStarted_TMPro.png)
-
-このようなプロンプトが表示された場合は、「Import TMP essentials」 ボタンを選択します。「TMP Essentials」とは、Text Mesh プライグインを指し、MRTK のサンプルの一部はテキストレンダリングを改善するために使用しています。(詳細については、[Unity のテキスト](https://docs.microsoft.com/en-us/windows/mixed-reality/text-in-unity)を参照してください。)
+  
+    ![TMP Essentials](../Documentation/Images/getting_started/MRTK_GettingStarted_TMPro.png)
+  
+    このようなプロンプトが表示された場合は、「Import TMP essentials」 ボタンを選択します。「TMP Essentials」とは、Text Mesh プライグインを指し、MRTK のサンプルの一部はテキストレンダリングを改善するために使用しています。(詳細については、[Unity のテキスト](https://docs.microsoft.com/en-us/windows/mixed-reality/text-in-unity)を参照してください。)
 
 4. TMP ダイアログを閉じます。この後、シーンをリロードする必要があります。これを行うには、プロジェクトタブでシーンをダブルクリックします。
 
-5. Playボタンを押します。
+5. Play ボタンを押します。
 
 ## In-Editor Hand Input Simulation を使ってシーンをテストする
 
 Editor内の入力シミュレーション を使って、[手](InputSimulation/InputSimulationService.md#hand-simulation)や[目](EyeTracking/EyeTracking_BasicSetup.md#simulating-eye-tracking-in-the-unity-editor)などの特定のタイプの入力に対しバーチャルなオブジェクトの動作をテストすることができます。
 
 シーン内を移動する：
-- W/A/S/D キーを使用して、カメラを前後/左右に移動します。
-- 右マウスを押したままにして、カメラを回転させます。
+
+* W/A/S/D キーを使用して、カメラを前後/左右に移動します。
+* 右マウスを押したままにして、カメラを回転させます。
 
 手の入力をシミュレートする：
-- スペースキーを押し続けて、右手を有効にします。
-- スペースキーを押しながら、マウスを動かして手を動かします。
-- 中央のマウススクロールを使用して、手の奥行を調整します。
-- 左マウスをクリックして、ジェスチャーを切り替えます。
+
+* スペースキーを押し続けて、右手を有効にします。
+* スペースキーを押しながら、マウスを動かして手を動かします。
+* 中央のマウススクロールを使用して、手の奥行を調整します。
+* 左マウスをクリックして、ジェスチャーを切り替えます。
 
 シーンの探索を楽しんでください！ UI コントロールの詳細については、[ハンドインタラクションのサンプルガイド](README_HandInteractionExamples.md) で学ぶことができます。また、[入力シミュレーションのドキュメント](InputSimulation/InputSimulationService.md)を読んで、MRTK のEditor ないの手の入力シミュレーションの詳細を確認してください。
 
@@ -114,33 +116,33 @@ Editor内の入力シミュレーション を使って、[手](InputSimulation/
 
 3. メニューバーから、Mixed Reality Toolkit -> Add to Scene and Configure　を選択します。
 
-![Configure to scene](../Documentation/Images/MRTK_ConfigureScene.png)
+      ![Configure to scene](../Documentation/Images/MRTK_ConfigureScene.png)
 
 4. 次のようなプロンプトが表示されます。
 
-![MRTK Configure Dialog](../Documentation/Images/MRTK_ConfigureDialog.png)
+      ![MRTK Configure Dialog](../Documentation/Images/MRTK_ConfigureDialog.png)
 
-「OK」を押します。  
+    「OK」を押します。  
 
 5. その後、MRTK Configuration profile を選択するよう求められます。「DefaultMixedRealityToolkitConfigurationProfile」をダブルクリックします。
 
-![MRTK Select Configure Dialog](../Documentation/Images/MRTK_SelectConfigurationDialog.png)
+    ![MRTK Select Configure Dialog](../Documentation/Images/MRTK_SelectConfigurationDialog.png)
 
-> **注意**： HoloLens 2 で始める場合は、「DefaultHoloLens2ConfigurationProfile」を選択することを推奨します。
-> DefaultMixedRealityToolkitConfigurationProfile と DefaultHoloLens2ConfigurationProfile の違いは、
-> [プロファイル](Profiles/Profiles.md#hololens-2-profile) を参照してください。
+    > **注意**： HoloLens 2 で始める場合は、「DefaultHoloLens2ConfigurationProfile」を選択することを推奨します。
+    > DefaultMixedRealityToolkitConfigurationProfile と DefaultHoloLens2ConfigurationProfile の違いは、
+    > [プロファイル](Profiles/Profiles.md#hololens-2-profile) を参照してください。
 
-シーンの階層が以下のようになります。
+    シーンの階層が以下のようになります。
 
-![MRTK Scene Setup](../Documentation/Images/MRTK_SceneSetup.png)
+    ![MRTK Scene Setup](../Documentation/Images/MRTK_SceneSetup.png)
 
-階層には以下のものが含まれます。
+    階層には以下のものが含まれます。
 
-* Mixed Reality Toolkit - フレームワーク全体へ中心の設定のエントリポイントを提供します。
-* MixedRealityPlayspace - ヘッドセットの親オブジェクト。ヘッドセット / コントローラ及びその他の必要なシステムがシーンで正しく管理されるようにします。
-* Playspace の下に移動した Main Camera - プレイスペースがSDKと連動してカメラを管理できるようにします。
+    * Mixed Reality Toolkit - フレームワーク全体へ中心の設定のエントリポイントを提供します。
+    * MixedRealityPlayspace - ヘッドセットの親オブジェクト。ヘッドセット / コントローラ及びその他の必要なシステムがシーンで正しく管理されるようにします。
+    * Playspace の下に移動した Main Camera - プレイスペースがSDKと連動してカメラを管理できるようにします。
 
-**注意** シーンで作業している間、シーンの原点 (0,0,0) から **Main Camera を動かさないでください** (または playspace)。これは MRTK と アクティブな SDK によって制御されます。player を初期位置から動かしたい場合は、**カメラではなくシーンのコンテンツを移動してください**！
+    > **注意**: シーンで作業している間、シーンの原点 (0,0,0) から **Main Camera を動かさないでください** (または playspace)。これは MRTK と アクティブな SDK によって制御されます。player を初期位置から動かしたい場合は、**カメラではなくシーンのコンテンツを移動してください**！
 
 6. Play を押して再生し、スペースキーを押して、ハンドシミュレーションでテストします。
 
@@ -172,8 +174,8 @@ Editor内の入力シミュレーション を使って、[手](InputSimulation/
 |  [![Eye Tracking: Target Selection](../Documentation/Images/EyeTracking/mrtk_et_targetselect.png)](../Documentation/EyeTracking/EyeTracking_TargetSelection.md) [Eye Tracking: Target Selection](../Documentation/EyeTracking/EyeTracking_TargetSelection.md) | [![Eye Tracking: Navigation](../Documentation/Images/EyeTracking/mrtk_et_navigation.png)](../Documentation/EyeTracking/EyeTracking_Navigation.md) [Eye Tracking: Navigation](../Documentation/EyeTracking/EyeTracking_Navigation.md) | [![Eye Tracking: Heat Map](../Documentation/Images/EyeTracking/mrtk_et_heatmaps.png)](EyeTracking/EyeTracking_ExamplesOverview.md#visualization-of-visual-attention) [Eye Tracking: Heat Map](../Documentation/EyeTracking/EyeTracking_ExamplesOverview.md#visualization-of-visual-attention) |
 | 目、音声、手の入力を組み合わせて、シーン内のhologramsを簡単に選択する | 見ている場所に基づいてテキストを自動スクロールする方法やフォーカスされたコンテンツをズームする方法を学ぶ | アプリでユーザーが見ているものを記録、読み込み、視覚化するサンプル |
 
-
 ## ツール
+
 |  [![Optimize Window](../Documentation/Images/MRTK_Icon_OptimizeWindow.png)](../Documentation/Tools/OptimizeWindow.md) [Optimize Window](../Documentation/Tools/OptimizeWindow.md) | [![Dependency Window](../Documentation/Images/MRTK_Icon_DependencyWindow.png)](../Documentation/Tools/DependencyWindow.md) [Dependency Window](../Documentation/Tools/DependencyWindow.md) | ![Build Window](../Documentation/Images/MRTK_Icon_BuildWindow.png) Build Window | [![Input recording](../Documentation/Images/MRTK_Icon_InputRecording.png)](../Documentation/InputSimulation/InputAnimationRecording.md) [Input recording](../Documentation/InputSimulation/InputAnimationRecording.md) |
 | :--- | :--- | :--- | :--- |
 | パフォーマンスの最適化のための Mixed Reality プロジェクトの構成の自動化 | アセット間の依存関係を分析し、未使用のアセットを特定する | Mixed Reality アプリケーションのエンドツーエンドのビルドプロセスを構成および実行する | エディターでのヘッドの動きとハンドトラッキングデータの記録と再生 |
