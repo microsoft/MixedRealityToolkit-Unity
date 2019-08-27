@@ -1,6 +1,7 @@
 # Microsoft Mixed Reality Toolkit Release Notes
 
 - [Version 2.0.1](#version-201)
+- [Version 2.0.0](#version-200)
 
 ## Version 2.0.1
 
