@@ -37,7 +37,7 @@ MRTK、またはMR開発が初めての場合は、MRTKv2を使った [チュー
 
 ### Unity プロジェクトをターゲットプラットフォームに切り替える
 
-次のステップで、**MRTK のパッケージ を Unity プロジェクトへインポート** すると、インポートした時点でプロジェクトで選択されているプラットフォームに応じた変更がプロジェクトに適応されます。
+次のステップ **MRTK のパッケージ を Unity プロジェクトへインポート** するでは、インポートした時点でプロジェクトで選択されているプラットフォームに応じた変更がプロジェクトに適応されます。
 
 次のステップへ進む前に、正しいプラットフォームを選択していることを確認してください。
 
@@ -73,7 +73,7 @@ MRTK は、以下を実行することで Mixed Reality ソリューションを
 
 [![HandInteractionExample scene](../Documentation/Images/MRTK_Examples.png)](README_HandInteractionExamples.md)
 
-[Hand Interaction のサンプルシーン](README_HandInteractionExamples.md) は、MRTK の様々なUXコントロールとインタラクションを公開しているため、MRTK を始めるには最適な場所です。はじめに、MRTK をインポートし、サンプルシーンを開いて、Editor でシーンを探索します。
+[Hand Interaction のサンプルシーン](README_HandInteractionExamples.md) は、MRTK の様々なUX コントロールとインタラクションを公開しているため、MRTK を始めるには最適な場所です。はじめに、MRTK をインポートし、サンプルシーンを開いて、Editor でシーンを探索します。
 
 1. 新しい Unity プロジェクトを作成し、[上記の手順](#import-mrtk-packages-into-your-unity-project) に従って、**Foundation** と **Examples** の Unity パッケージの両方をインポートします。
 1. `Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes\HandInteractionExamples` の下の HandInteractionExamples　のシーンを開きます。
