@@ -33,7 +33,7 @@ MRTK、またはMR開発が初めての場合は、MRTKv2を使った [チュー
     * `Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage`
     * `Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage`
 
-より詳細な配布の仕組みは、[MRTK をダウンロードする](../Documentation/DownloadingTheMRTK.md)を参照して下さい。
+より詳細な配布の仕組みは、[MRTK をダウンロードする](DownloadingTheMRTK.md)を参照して下さい。
 
 ### Unity プロジェクトをターゲットプラットフォームに切り替える
 
@@ -71,9 +71,9 @@ MRTK は、以下を実行することで Mixed Reality ソリューションを
 
 ### HandInteractionExamples のシーンを Editor で開いて実行する
 
-[![HandInteractionExample scene](../Documentation/Images/MRTK_Examples.png)](../Documentation/README_HandInteractionExamples.md)
+[![HandInteractionExample scene](../Documentation/Images/MRTK_Examples.png)](README_HandInteractionExamples.md)
 
-[Hand Interaction のサンプルシーン](../Documentation/EADME_HandInteractionExamples.md) は、MRTK の様々なUX コントロールとインタラクションを公開しているため、MRTK を始めるには最適な場所です。はじめに、MRTK をインポートし、サンプルシーンを開いて、Editor でシーンを探索します。
+[Hand Interaction のサンプルシーン](README_HandInteractionExamples.md) は、MRTK の様々なUX コントロールとインタラクションを公開しているため、MRTK を始めるには最適な場所です。はじめに、MRTK をインポートし、サンプルシーンを開いて、Editor でシーンを探索します。
 
 1. 新しい Unity プロジェクトを作成し、[上記の手順](#import-mrtk-packages-into-your-unity-project) に従って、**Foundation** と **Examples** の Unity パッケージの両方をインポートします。
 1. `Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes\HandInteractionExamples` の下の HandInteractionExamples　のシーンを開きます。
@@ -90,7 +90,7 @@ MRTK は、以下を実行することで Mixed Reality ソリューションを
 
 ## In-Editor Hand Input Simulation を使ってシーンをテストする
 
-Editor 内の入力シミュレーション を使って、[手](../Documentation/InputSimulation/InputSimulationService.md#hand-simulation)や[目](../Documentation/EyeTracking/EyeTracking_BasicSetup.md#simulating-eye-tracking-in-the-unity-editor)などの特定のタイプの入力に対しバーチャルなオブジェクトの動作をテストすることができます。
+Editor 内の入力シミュレーション を使って、[手](InputSimulation/InputSimulationService.md#hand-simulation)や[目](EyeTracking/EyeTracking_BasicSetup.md#simulating-eye-tracking-in-the-unity-editor)などの特定のタイプの入力に対しバーチャルなオブジェクトの動作をテストすることができます。
 
 シーン内を移動する：
 
@@ -104,7 +104,7 @@ Editor 内の入力シミュレーション を使って、[手](../Documentatio
 * 中央のマウススクロールを使用して、手の奥行を調整します。
 * 左マウスをクリックして、ジェスチャーを切り替えます。
 
-シーンの探索を楽しんでください！ UI コントロールの詳細については、[ハンドインタラクションのサンプルガイド](../Documentation/README_HandInteractionExamples.md) で学ぶことができます。また、[入力シミュレーションのドキュメント](../Documentation/InputSimulation/InputSimulationService.md)を読んで、MRTK の Editor 内の手の入力シミュレーションの詳細を確認してください。
+シーンの探索を楽しんでください！ UI コントロールの詳細については、[ハンドインタラクションのサンプルガイド](README_HandInteractionExamples.md) で学ぶことができます。また、[入力シミュレーションのドキュメント](InputSimulation/InputSimulationService.md)を読んで、MRTK の Editor 内の手の入力シミュレーションの詳細を確認してください。
 
 おめでとうございます、最初の MRTK のシーンを使うことができました。これであなた自身のエクスペリエンスを創りはじめることができます。
 
@@ -130,7 +130,7 @@ Editor 内の入力シミュレーション を使って、[手](../Documentatio
 
     > **注意**： HoloLens 2 で始める場合は、「DefaultHoloLens2ConfigurationProfile」を選択することを推奨します。
     > DefaultMixedRealityToolkitConfigurationProfile と DefaultHoloLens2ConfigurationProfile の違いは、
-    > [プロファイル](../Documentation/Profiles/Profiles.md#hololens-2-profile) を参照してください。
+    > [プロファイル](Profiles/Profiles.md#hololens-2-profile) を参照してください。
 
     シーンの階層が以下のようになります。
 
@@ -146,40 +146,40 @@ Editor 内の入力シミュレーション を使って、[手](../Documentatio
 
 1. Play を押して再生し、スペースキーを押して、ハンドシミュレーションでテストします。
 
-これで、デバイスにビルドしてデプロイする準備ができました！[MRTK のビルドとデプロイ](../Documentation/BuildAndDeploy.md) の手順に従ってください。
+これで、デバイスにビルドしてデプロイする準備ができました！[MRTK のビルドとデプロイ](BuildAndDeploy.md) の手順に従ってください。
 
 ## 次のステップ
 
 お勧めの次のステップを紹介します。
 
-* [PressableButton](../Documentation/README_Button.md) をシーンに追加する。(最初は、 `PressableButtonPlated` プレハブを使うことを推奨します。)
-* キューブをシーンに追加して、それを [ManipulationHandler](../DocumentationREADME_ManipulationHandler.md) コンポーネントを使って動かせるようにする。
+* [PressableButton](README_Button.md) をシーンに追加する。(最初は、 `PressableButtonPlated` プレハブを使うことを推奨します。)
+* キューブをシーンに追加して、それを [ManipulationHandler](README_ManipulationHandler.md) コンポーネントを使って動かせるようにする。
 * [building blocks for UI and interactions](#UIとインタラクションのビルディングブロック) で UX コントロール について学ぶ。
-* [入力シミュレーションのガイド](../Documentaition/InputSimulation/InputSimulationService.md) を読んで、Editor 内で手の入力をシミュレートする方法を学ぶ。)
-* [Mixed Reality 設定ガイド](../Documentation/MixedRealityConfigurationGuide.md) で MRTK Configuration profile の使い方を学ぶ。
+* [入力シミュレーションのガイド](InputSimulation/InputSimulationService.md) を読んで、Editor 内で手の入力をシミュレートする方法を学ぶ。)
+* [Mixed Reality 設定ガイド](MixedRealityConfigurationGuide.md) で MRTK Configuration profile の使い方を学ぶ。
 
 ## UIとインタラクションのビルディングブロック
 
-|  [![Button](../Documentation/Images/Button/MRTK_Button_Main.png)](../Documentation/README_Button.md) [Button](../Documentation/README_Button.md) | [![Bounding Box](../Documentation/Images/BoundingBox/MRTK_BoundingBox_Main.png)](../Documentation/README_BoundingBox.md) [Bounding Box](../Documentation/README_BoundingBox.md) | [![Manipulation Handler](../Documentation/Images/ManipulationHandler/MRTK_Manipulation_Main.png)](../Documentation/README_ManipulationHandler.md) [Manipulation Handler](../Documentation/README_ManipulationHandler.md) |
+|  [![Button](../Documentation/Images/Button/MRTK_Button_Main.png)](README_Button.md) [Button](README_Button.md) | [![Bounding Box](../Documentation/Images/BoundingBox/MRTK_BoundingBox_Main.png)](README_BoundingBox.md) [Bounding Box](README_BoundingBox.md) | [![Manipulation Handler](../Documentation/Images/ManipulationHandler/MRTK_Manipulation_Main.png)](README_ManipulationHandler.md) [Manipulation Handler](README_ManipulationHandler.md) |
 |:--- | :--- | :--- |
 | HoloLen 2 の関節式の手を含む様々な入力方法をサポートするボタンコントロール | 3D 空間でオブジェクトを操作するための標準UI | 片手、または両手でオブジェクトを操作するためのスクリプト |
-|  [![Slate](../Documentation/Images/Slate/MRTK_Slate_Main.png)](../Documentation/README_Slate.md) [Slate](../Documentation/README_Slate.md) | [![System Keyboard](../Documentation/Images/SystemKeyboard/MRTK_SystemKeyboard_Main.png)](../Documentation/README_SystemKeyboard.md) [System Keyboard](../Documentation/README_SystemKeyboard.md) | [![Interactable](../Documentation/Images/Interactable/InteractableExamples.png)](../Documentation/README_Interactable.md) [Interactable](../Documentation/README_Interactable.md) |
+|  [![Slate](../Documentation/Images/Slate/MRTK_Slate_Main.png)](README_Slate.md) [Slate](README_Slate.md) | [![System Keyboard](../Documentation/Images/SystemKeyboard/MRTK_SystemKeyboard_Main.png)](README_SystemKeyboard.md) [System Keyboard](README_SystemKeyboard.md) | [![Interactable](../Documentation/Images/Interactable/InteractableExamples.png)](README_Interactable.md) [Interactable](README_Interactable.md) |
 | 関節式の手の入力によるスクロールをサポートする2D スタイル平面 | Unity でシステムキーボードを使用するスクリプトのサンプル  | 視覚的にオブジェクトと対話可能にするためのスクリプトとテーマサポート |
-|  [![Solver](../Documentation/Images/Solver/MRTK_Solver_Main.png)](../Documentation/README_Solver.md) [Solver](../Documentation/README_Solver.md) | [![Object Collection](../Documentation/Images/ObjectCollection/MRTK_ObjectCollection_Main.png)](../Documentation/README_ObjectCollection.md) [Object Collection](../Documentation/README_ObjectCollection.md) | [![Tooltip](../Documentation/Images/Tooltip/MRTK_Tooltip_Main.png)](../Documentation/README_Tooltip.md) [Tooltip](../Documentation/README_Tooltip.md) |
+|  [![Solver](../Documentation/Images/Solver/MRTK_Solver_Main.png)](README_Solver.md) [Solver](README_Solver.md) | [![Object Collection](../Documentation/Images/ObjectCollection/MRTK_ObjectCollection_Main.png)](README_ObjectCollection.md) [Object Collection](README_ObjectCollection.md) | [![Tooltip](../Documentation/Images/Tooltip/MRTK_Tooltip_Main.png)](README_Tooltip.md) [Tooltip](README_Tooltip.md) |
 | tag-along、body-lock、constant view size、 surface magnetism のような様々なオブジェクト配置動作 |  オブジェクトの配列を3次元にレイアウトするためのスクリプト |モーションコントローラーとオブジェクトのラベル付けに使用できる柔軟なアンカー/ピボットシステムを備えた注釈 UI。 |
-|  [![App Bar](../Documentation/Images/AppBar/MRTK_AppBar_Main.png)](../Documentation/README_AppBar.md) [App Bar](../Documentation/README_AppBar.md) | [![Pointers](../Documentation/Images/Pointers/MRTK_Pointer_Main.png)](../Documentation/Input/Pointers.md) [Pointers](../Documentation/Input/Pointers.md) | [![Fingertip Visualization](../Documentation/Images/Fingertip/MRTK_FingertipVisualization_Main.png)](../Documentation/README_FingertipVisualization.md) [Fingertip Visualization](../Documentation/README_FingertipVisualization.md) |
+|  [![App Bar](../Documentation/Images/AppBar/MRTK_AppBar_Main.png)](README_AppBar.md) [App Bar](README_AppBar.md) | [![Pointers](../Documentation/Images/Pointers/MRTK_Pointer_Main.png)](Input/Pointers.md) [Pointers](Input/Pointers.md) | [![Fingertip Visualization](../Documentation/Images/Fingertip/MRTK_FingertipVisualization_Main.png)](README_FingertipVisualization.md) [Fingertip Visualization](README_FingertipVisualization.md) |
 | Bounding Box の手動で有効化する UI | 様々なタイプのポインターについて学ぶ | 直接的なインタラクションの信頼性を向上させる、指先の視覚的アフォーダンス |
-|  [![Slider](../Documentation/Images/Slider/MRTK_UX_Slider_Main.jpg)](../Documentation/README_Sliders.md) [Slider](../Documentation/README_Sliders.md) | [![MRTK Standard Shader](../Documentation/Images/MRTKStandardShader/MRTK_StandardShader.jpg)](../Documentation/README_MRTKStandardShader.md) [MRTK Standard Shader](../Documentation/README_MRTKStandardShader.md) | [![Hand Joint Chaser](../Documentation/Images/HandJointChaser/MRTK_HandJointChaser_Main.jpg)](../Documentation/README_HandJointChaser.md) [Hand Joint Chaser](../Documentation/README_HandJointChaser.md) |
+|  [![Slider](../Documentation/Images/Slider/MRTK_UX_Slider_Main.jpg)](README_Sliders.md) [Slider](README_Sliders.md) | [![MRTK Standard Shader](../Documentation/Images/MRTKStandardShader/MRTK_StandardShader.jpg)](README_MRTKStandardShader.md) [MRTK Standard Shader](README_MRTKStandardShader.md) | [![Hand Joint Chaser](../Documentation/Images/HandJointChaser/MRTK_HandJointChaser_Main.jpg)](README_HandJointChaser.md) [Hand Joint Chaser](README_HandJointChaser.md) |
 | 直接的な手を使ったインタラクションをサポートする値を調整するためのスライダー | フルーエントデザインの要素をサポートし、パフォーマンスの良い MRTK の標準シェーダー | ソルバーを使用してオブジェクトを手の関節にアタッチする方法のデモ |
-|  [![Eye Tracking: Target Selection](../Documentation/Images/EyeTracking/mrtk_et_targetselect.png)](../Documentation/EyeTracking/EyeTracking_TargetSelection.md) [Eye Tracking: Target Selection](../Documentation/EyeTracking/EyeTracking_TargetSelection.md) | [![Eye Tracking: Navigation](../Documentation/Images/EyeTracking/mrtk_et_navigation.png)](../Documentation/EyeTracking/EyeTracking_Navigation.md) [Eye Tracking: Navigation](../Documentation/EyeTracking/EyeTracking_Navigation.md) | [![Eye Tracking: Heat Map](../Documentation/Images/EyeTracking/mrtk_et_heatmaps.png)](../Documentation/EyeTracking/EyeTracking_ExamplesOverview.md#visualization-of-visual-attention) [Eye Tracking: Heat Map](../Documentation/EyeTracking/EyeTracking_ExamplesOverview.md#visualization-of-visual-attention) |
+|  [![Eye Tracking: Target Selection](../Documentation/Images/EyeTracking/mrtk_et_targetselect.png)](EyeTracking/EyeTracking_TargetSelection.md) [Eye Tracking: Target Selection](EyeTracking/EyeTracking_TargetSelection.md) | [![Eye Tracking: Navigation](../Documentation/Images/EyeTracking/mrtk_et_navigation.png)](EyeTracking/EyeTracking_Navigation.md) [Eye Tracking: Navigation](EyeTracking/EyeTracking_Navigation.md) | [![Eye Tracking: Heat Map](../Documentation/Images/EyeTracking/mrtk_et_heatmaps.png)](EyeTracking/EyeTracking_ExamplesOverview.md#visualization-of-visual-attention) [Eye Tracking: Heat Map](EyeTracking/EyeTracking_ExamplesOverview.md#visualization-of-visual-attention) |
 | 目、音声、手の入力を組み合わせて、シーン内の holograms を簡単に選択する | 見ている場所に基づいてテキストを自動スクロールする方法やフォーカスされたコンテンツをズームする方法を学ぶ | アプリでユーザーが見ているものを記録、読み込み、視覚化するサンプル |
 
 ## ツール
 
-|  [![Optimize Window](../Documentation/Images/MRTK_Icon_OptimizeWindow.png)](../Documentation/Tools/OptimizeWindow.md) [Optimize Window](../Documentation/Tools/OptimizeWindow.md) | [![Dependency Window](../Documentation/Images/MRTK_Icon_DependencyWindow.png)](../Documentation/Tools/DependencyWindow.md) [Dependency Window](../Documentation/Tools/DependencyWindow.md) | ![Build Window](../Documentation/Images/MRTK_Icon_BuildWindow.png) Build Window | [![Input recording](../Documentation/Images/MRTK_Icon_InputRecording.png)](../Documentation/InputSimulation/InputAnimationRecording.md) [Input recording](../Documentation/InputSimulation/InputAnimationRecording.md) |
+|  [![Optimize Window](../Documentation/Images/MRTK_Icon_OptimizeWindow.png)](Tools/OptimizeWindow.md) [Optimize Window](Tools/OptimizeWindow.md) | [![Dependency Window](../Documentation/Images/MRTK_Icon_DependencyWindow.png)](Tools/DependencyWindow.md) [Dependency Window](Tools/DependencyWindow.md) | ![Build Window](../Documentation/Images/MRTK_Icon_BuildWindow.png) Build Window | [![Input recording](../Documentation/Images/MRTK_Icon_InputRecording.png)](InputSimulation/InputAnimationRecording.md) [Input recording](InputSimulation/InputAnimationRecording.md) |
 | :--- | :--- | :--- | :--- |
 | パフォーマンスの最適化のための Mixed Reality プロジェクトの構成の自動化 | アセット間の依存関係を分析し、未使用のアセットを特定する | Mixed Reality アプリケーションのエンドツーエンドのビルドプロセスを構成および実行する | エディターでのヘッドの動きとハンドトラッキングデータの記録と再生 |
 
 ## HoloToolkit (HTK/MRTK v1) からアップグレードする
 
-フレームワークが再構築されたため、HoloToolkit から Mixed Reality Toolkit v2 への直接的なアップグレードパスはありません。ただし、MRTK を HoloToolkit プロジェクトにインポートし、実装を移行することは可能です。詳細については、 [HoloToolkit to Mixed Reality Toolkit Porting Guide](../Documentation/HTKToMRTKPortingGuide.md) を参照してください。
+フレームワークが再構築されたため、HoloToolkit から Mixed Reality Toolkit v2 への直接的なアップグレードパスはありません。ただし、MRTK を HoloToolkit プロジェクトにインポートし、実装を移行することは可能です。詳細については、 [HoloToolkit to Mixed Reality Toolkit Porting Guide](HTKToMRTKPortingGuide.md) を参照してください。
