@@ -220,6 +220,110 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 11539938}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &189761436
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 779914303111114550, guid: 271778f6c957b524981067a81d238394,
+        type: 3}
+      propertyPath: m_Name
+      value: SpeechConfirmationLabel
+      objectReference: {fileID: 0}
+    - target: {fileID: 774922017504275548, guid: 271778f6c957b524981067a81d238394,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 774922017504275548, guid: 271778f6c957b524981067a81d238394,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 774922017504275548, guid: 271778f6c957b524981067a81d238394,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 774922017504275548, guid: 271778f6c957b524981067a81d238394,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 774922017504275548, guid: 271778f6c957b524981067a81d238394,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 774922017504275548, guid: 271778f6c957b524981067a81d238394,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 774922017504275548, guid: 271778f6c957b524981067a81d238394,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 774922017504275548, guid: 271778f6c957b524981067a81d238394,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 774922017504275548, guid: 271778f6c957b524981067a81d238394,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 774922017504275548, guid: 271778f6c957b524981067a81d238394,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 774922017504275548, guid: 271778f6c957b524981067a81d238394,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 780353081939047444, guid: 271778f6c957b524981067a81d238394,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8561849664089461633, guid: 271778f6c957b524981067a81d238394,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7893089286403012701, guid: 271778f6c957b524981067a81d238394,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7893089286403012701, guid: 271778f6c957b524981067a81d238394,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7893089286403012701, guid: 271778f6c957b524981067a81d238394,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7893089286403012701, guid: 271778f6c957b524981067a81d238394,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7893089286403012701, guid: 271778f6c957b524981067a81d238394,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 271778f6c957b524981067a81d238394, type: 3}
 --- !u!1 &242212957
 GameObject:
   m_ObjectHideFlags: 0
