@@ -89,95 +89,93 @@ MRTK は、以下を実行することで Mixed Reality ソリューションを
 
 5. Playボタンを押します。
 
-## Using the In-Editor Hand Input Simulation to test a scene
+## In-Editor Hand Input Simulation を使ってシーンをテストする
 
-The in-editor input simulation allows you to test virtual object behavior given a specific type of input such as [hands](InputSimulation/InputSimulationService.md#hand-simulation) or [eyes](EyeTracking/EyeTracking_BasicSetup.md#simulating-eye-tracking-in-the-unity-editor).
+Editor内の入力シミュレーション を使って、[手](InputSimulation/InputSimulationService.md#hand-simulation)や[目](EyeTracking/EyeTracking_BasicSetup.md#simulating-eye-tracking-in-the-unity-editor)などの特定のタイプの入力に対しバーチャルなオブジェクトの動作をテストすることができます。
 
-How to move around in the scene: 
-- Use W/A/S/D keys to move the camera forward/left/back/right.
-- Press and hold the right mouse to rotate the camera.
+シーン内を移動する：
+- W/A/S/D キーを使用して、カメラを前後/左右に移動します。
+- 右マウスを押したままにして、カメラを回転させます。
 
-How to simulate hand input:
-- Press and hold the space bar to enable the right hand. 
-- While holding the space bar, move your mouse to move the hand.
-- Use the middle mouse scroll to adjust the depth of the hand.
-- Click the left mouse to switch gestures.
+手の入力をシミュレートする：
+- スペースキーを押し続けて、右手を有効にします。
+- スペースキーを押しながら、マウスを動かして手を動かします。
+- 中央のマウススクロールを使用して、手の奥行を調整します。
+- 左マウスをクリックして、ジェスチャーを切り替えます。
 
-Have fun exploring the scene! You can learn more about the UI controls [in the hand interaction examples guide](README_HandInteractionExamples.md). Also, read through [input simulation docs](InputSimulation/InputSimulationService.md) to learn more about in-editor hand input simulation in MRTK.
+シーンの探索を楽しんでください！ UI コントロールの詳細については、[ハンドインタラクションのサンプルガイド](README_HandInteractionExamples.md) で学ぶことができます。また、[入力シミュレーションのドキュメント](InputSimulation/InputSimulationService.md)を読んで、MRTK のEditor ないの手の入力シミュレーションの詳細を確認してください。
 
-Congratulations, you just used your first MRTK scene. Now onto creating your own experiences...
+おめでとうございます、最初の MRTK のシーンを使うことができました。これであなた自身のエクスペリエンスを創りはじめることができます。
 
-### Add MRTK to a new scene or new project
+### MRTK を新しいシーン、または新しいプロジェクトに追加する
 
-1. Create a new Unity project, or start a new scene in your current project. 
+1. 新規のプロジェクトを作成する、あるいは新しいシーンを現在のプロジェクトに作成します。
 
-2. Make sure you have imported the MRTK packages (we recommend both Foundation and Examples, though Examples is not required) following [the steps above](#import-mrtk-packages-into-your-unity-project).
+2. MRTK のパッケージが[上記の手順](#MRTK-のパッケージを-Unity-プロジェクトにインポートする) に従ってインポートされていることを確認します。(Examples は必須ではありませんが、 Foundation と Examles の両方をインポートすることを推奨します。 )
 
-3. From the menu bar, select Mixed Reality Toolkit -> Add to Scene and Configure
+3. メニューバーから、Mixed Reality Toolkit -> Add to Scene and Configure　を選択します。
 
 ![Configure to scene](../Documentation/Images/MRTK_ConfigureScene.png)
 
-4. You will see a prompt like this:
+4. 次のようなプロンプトが表示されます。
 
 ![MRTK Configure Dialog](../Documentation/Images/MRTK_ConfigureDialog.png)
 
-Click "OK".
+「OK」を押します。  
 
-5. You will then be prompted to choose an MRTK Configuration profile. Double click "DefaultMixedRealityToolkitConfigurationProfile".
+5. その後、MRTK Configuration profile を選択するよう求められます。「DefaultMixedRealityToolkitConfigurationProfile」をダブルクリックします。
 
 ![MRTK Select Configure Dialog](../Documentation/Images/MRTK_SelectConfigurationDialog.png)
 
-> **NOTE**: Note that if you are getting started on the HoloLens 2, you should choose the "DefaultHoloLens2ConfigurationProfile" instead.
-> See the [profiles](Profiles/Profiles.md#hololens-2-profile) for more information on the differences between 
-> DefaultMixedRealityToolkitConfigurationProfile and DefaultHoloLens2ConfigurationProfile.
+> **注意**： HoloLens 2 で始める場合は、「DefaultHoloLens2ConfigurationProfile」を選択することを推奨します。
+> DefaultMixedRealityToolkitConfigurationProfile と DefaultHoloLens2ConfigurationProfile の違いは、
+> [プロファイル](Profiles/Profiles.md#hololens-2-profile) を参照してください。
 
-You will then see the following in your Scene hierarchy:
+シーンの階層が以下のようになります。
 
 ![MRTK Scene Setup](../Documentation/Images/MRTK_SceneSetup.png)
 
-Which contains the following:
+階層には以下のものが含まれます。
 
-* Mixed Reality Toolkit - The toolkit itself, providing the central configuration entry point for the entire framework.
-* MixedRealityPlayspace - The parent object for the headset, which ensures the headset / controllers and other required systems are managed correctly in the scene.
-* The Main Camera is moved as a child to the Playspace - Which allows the playspace to manage the camera in conjunction with the SDKs
+* Mixed Reality Toolkit - フレームワーク全体へ中心の設定のエントリポイントを提供します。
+* MixedRealityPlayspace - ヘッドセットの親オブジェクト。ヘッドセット / コントローラ及びその他の必要なシステムがシーンで正しく管理されるようにします。
+* Playspace の下に移動した Main Camera - プレイスペースがSDKと連動してカメラを管理できるようにします。
 
-**Note** While working in your scene, **DO NOT move the Main Camera** (or the playspace) from the scene origin (0,0,0).  This is controlled by the MRTK and the active SDK.
-If you need to move the players start point, then **move the scene content and NOT the camera**!
+**注意** シーンで作業している間、シーンの原点 (0,0,0) から **Main Camera を動かさないでください** (または playspace)。これは MRTK と アクティブな SDK によって制御されます。player を初期位置から動かしたい場合は、**カメラではなくシーンのコンテンツを移動してください**！
 
-6. Hit play and test out hand simulation by pressing spacebar.
+6. Play を押して再生し、スペースキーを押して、ハンドシミュレーションでテストします。
 
-You are now ready to build and deploy to device! Follow the steps instructions at [Build and Deploy MRTK](BuildAndDeploy.md).
+これで、デバイスにビルドしてデプロイする準備ができました！[MRTK のビルドとデプロイ](BuildAndDeploy.md) の手順に従ってください。
 
-## Next steps
+## 次のステップ
 
-Here are some suggested next steps:
+お勧めの次のステップを紹介します。
 
-* Add a [PressableButton](README_Button.md) to your scene (we recommend using the `PressableButtonPlated` prefab to start)).
-* Add a cube to your scene, then make it movable using the [ManipulationHandler](README_ManipulationHandler.md) component.
-* Learn about the UX controls available in MRTK in [building blocks for UI and interactions](#building-blocks-for-ui-and-interactions).
-* Read through [input simulation guide](InputSimulation/InputSimulationService.md) to learn how to simulate hand input in editor.
-* Learn how to work with the MRTK Configuration profile in the [mixed reality configuration guide](MixedRealityConfigurationGuide.md).
+* [PressableButton](../Documentation/README_Button.md) をシーンに追加する。(最初は、 `PressableButtonPlated` プレハブを使うことを推奨する。)
+* キューブをシーンに追加して、それを [ManipulationHandler](../DocumentationREADME_ManipulationHandler.md) コンポーネントを使って動かせるようにする。
+* [building blocks for UI and interactions](#building-blocks-for-ui-and-interactions) で UX コントロール について学ぶ。
+* [入力シミュレーションのガイド](../Documentaition/InputSimulation/InputSimulationService.md) を読んで、Editor 内で手の入力をシミュレートする方法を学ぶ。)
+* [Mixed Reality 設定ガイド](../Documentation/MixedRealityConfigurationGuide.md) で MRTK Configuration profile の使い方を学ぶ。
 
 ## Building blocks for UI and interactions
 
-|  [![Button](Images/Button/MRTK_Button_Main.png)](README_Button.md) [Button](README_Button.md) | [![Bounding Box](Images/BoundingBox/MRTK_BoundingBox_Main.png)](README_BoundingBox.md) [Bounding Box](README_BoundingBox.md) | [![Manipulation Handler](Images/ManipulationHandler/MRTK_Manipulation_Main.png)](README_ManipulationHandler.md) [Manipulation Handler](README_ManipulationHandler.md) |
+|  [![Button](../Documentation/Images/Button/MRTK_Button_Main.png)](README_Button.md) [Button](README_Button.md) | [![Bounding Box](../Documentation/Images/BoundingBox/MRTK_BoundingBox_Main.png)](README_BoundingBox.md) [Bounding Box](README_BoundingBox.md) | [![Manipulation Handler](../Documentation/Images/ManipulationHandler/MRTK_Manipulation_Main.png)](README_ManipulationHandler.md) [Manipulation Handler](README_ManipulationHandler.md) |
 |:--- | :--- | :--- |
 | A button control which supports various input methods including HoloLens 2's articulated hand | Standard UI for manipulating objects in 3D space | Script for manipulating objects with one or two hands |
-|  [![Slate](Images/Slate/MRTK_Slate_Main.png)](README_Slate.md) [Slate](README_Slate.md) | [![System Keyboard](Images/SystemKeyboard/MRTK_SystemKeyboard_Main.png)](README_SystemKeyboard.md) [System Keyboard](README_SystemKeyboard.md) | [![Interactable](Images/Interactable/InteractableExamples.png)](README_Interactable.md) [Interactable](README_Interactable.md) |
+|  [![Slate](../Documentation/Images/Slate/MRTK_Slate_Main.png)](README_Slate.md) [Slate](README_Slate.md) | [![System Keyboard](../Documentation/Images/SystemKeyboard/MRTK_SystemKeyboard_Main.png)](README_SystemKeyboard.md) [System Keyboard](README_SystemKeyboard.md) | [![Interactable](../Documentation/Images/Interactable/InteractableExamples.png)](README_Interactable.md) [Interactable](README_Interactable.md) |
 | 2D style plane which supports scrolling with articulated hand input | Example script of using the system keyboard in Unity  | A script for making objects interactable with visual states and theme support |
-|  [![Solver](Images/Solver/MRTK_Solver_Main.png)](README_Solver.md) [Solver](README_Solver.md) | [![Object Collection](Images/ObjectCollection/MRTK_ObjectCollection_Main.png)](README_ObjectCollection.md) [Object Collection](README_ObjectCollection.md) | [![Tooltip](Images/Tooltip/MRTK_Tooltip_Main.png)](README_Tooltip.md) [Tooltip](README_Tooltip.md) |
+|  [![Solver](../Documentation/Images/Solver/MRTK_Solver_Main.png)](README_Solver.md) [Solver](README_Solver.md) | [![Object Collection](../Documentation/Images/ObjectCollection/MRTK_ObjectCollection_Main.png)](README_ObjectCollection.md) [Object Collection](README_ObjectCollection.md) | [![Tooltip](../Documentation/Images/Tooltip/MRTK_Tooltip_Main.png)](README_Tooltip.md) [Tooltip](README_Tooltip.md) |
 | Various object positioning behaviors such as tag-along, body-lock, constant view size and surface magnetism | Script for lay out an array of objects in a three-dimensional shape | Annotation UI with flexible anchor/pivot system which can be used for labeling motion controllers and object. |
-|  [![App Bar](Images/AppBar/MRTK_AppBar_Main.png)](README_AppBar.md) [App Bar](README_AppBar.md) | [![Pointers](Images/Pointers/MRTK_Pointer_Main.png)](/Input/Pointers.md) [Pointers](/Input/Pointers.md) | [![Fingertip Visualization](Images/Fingertip/MRTK_FingertipVisualization_Main.png)](README_FingertipVisualization.md) [Fingertip Visualization](README_FingertipVisualization.md) |
+|  [![App Bar](../Documentation/Images/AppBar/MRTK_AppBar_Main.png)](README_AppBar.md) [App Bar](README_AppBar.md) | [![Pointers](../Documentation/Images/Pointers/MRTK_Pointer_Main.png)](/Input/Pointers.md) [Pointers](/Input/Pointers.md) | [![Fingertip Visualization](../Documentation/Images/Fingertip/MRTK_FingertipVisualization_Main.png)](README_FingertipVisualization.md) [Fingertip Visualization](README_FingertipVisualization.md) |
 | UI for Bounding Box's manual activation | Learn about various types of pointers | Visual affordance on the fingertip which improves the confidence for the direct interaction |
-|  [![Slider](Images/Slider/MRTK_UX_Slider_Main.jpg)](README_Sliders.md) [Slider](README_Sliders.md) | [![MRTK Standard Shader](Images/MRTKStandardShader/MRTK_StandardShader.jpg)](README_MRTKStandardShader.md) [MRTK Standard Shader](README_MRTKStandardShader.md) | [![Hand Joint Chaser](Images/HandJointChaser/MRTK_HandJointChaser_Main.jpg)](README_HandJointChaser.md) [Hand Joint Chaser](README_HandJointChaser.md) |
+|  [![Slider](../Documentation/Images/Slider/MRTK_UX_Slider_Main.jpg)](README_Sliders.md) [Slider](README_Sliders.md) | [![MRTK Standard Shader](../Documentation/Images/MRTKStandardShader/MRTK_StandardShader.jpg)](README_MRTKStandardShader.md) [MRTK Standard Shader](README_MRTKStandardShader.md) | [![Hand Joint Chaser](../Documentation/Images/HandJointChaser/MRTK_HandJointChaser_Main.jpg)](README_HandJointChaser.md) [Hand Joint Chaser](README_HandJointChaser.md) |
 | Slider UI for adjusting values supporting direct hand tracking interaction | MRTK's standard shader supports various fluent design elements with performance | Demonstrates how to use solver to attach objects to the hand joints |
-|  [![Eye Tracking: Target Selection](Images/EyeTracking/mrtk_et_targetselect.png)](EyeTracking/EyeTracking_TargetSelection.md) [Eye Tracking: Target Selection](EyeTracking/EyeTracking_TargetSelection.md) | [![Eye Tracking: Navigation](Images/EyeTracking/mrtk_et_navigation.png)](EyeTracking/EyeTracking_Navigation.md) [Eye Tracking: Navigation](EyeTracking/EyeTracking_Navigation.md) | [![Eye Tracking: Heat Map](Images/EyeTracking/mrtk_et_heatmaps.png)](EyeTracking/EyeTracking_ExamplesOverview.md#visualization-of-visual-attention) [Eye Tracking: Heat Map](EyeTracking/EyeTracking_ExamplesOverview.md#visualization-of-visual-attention) |
+|  [![Eye Tracking: Target Selection](../Documentation/Images/EyeTracking/mrtk_et_targetselect.png)](EyeTracking/EyeTracking_TargetSelection.md) [Eye Tracking: Target Selection](EyeTracking/EyeTracking_TargetSelection.md) | [![Eye Tracking: Navigation](../Documentation/Images/EyeTracking/mrtk_et_navigation.png)](EyeTracking/EyeTracking_Navigation.md) [Eye Tracking: Navigation](EyeTracking/EyeTracking_Navigation.md) | [![Eye Tracking: Heat Map](../Documentation/Images/EyeTracking/mrtk_et_heatmaps.png)](EyeTracking/EyeTracking_ExamplesOverview.md#visualization-of-visual-attention) [Eye Tracking: Heat Map](EyeTracking/EyeTracking_ExamplesOverview.md#visualization-of-visual-attention) |
 | Combine eyes, voice and hand input to quickly and effortlessly select holograms across your scene | Learn how to auto scroll text or fluently zoom into focused content based on what you are looking at| Examples for logging, loading and visualizing what users have been looking at in your app |
 
 
 ## Tools
-|  [![Optimize Window](Images/MRTK_Icon_OptimizeWindow.png)](Tools/OptimizeWindow.md) [Optimize Window](Tools/OptimizeWindow.md) | [![Dependency Window](Images/MRTK_Icon_DependencyWindow.png)](Tools/DependencyWindow.md) [Dependency Window](Tools/DependencyWindow.md) | ![Build Window](Images/MRTK_Icon_BuildWindow.png) Build Window | [![Input recording](Images/MRTK_Icon_InputRecording.png)](InputSimulation/InputAnimationRecording.md) [Input recording](InputSimulation/InputAnimationRecording.md) |
-
+|  [![Optimize Window](../Documentation/Images/MRTK_Icon_OptimizeWindow.png)](Tools/OptimizeWindow.md) [Optimize Window](Tools/OptimizeWindow.md) | [![Dependency Window](../Documentation/Images/MRTK_Icon_DependencyWindow.png)](Tools/DependencyWindow.md) [Dependency Window](Tools/DependencyWindow.md) | ![Build Window](../Documentation/Images/MRTK_Icon_BuildWindow.png) Build Window | [![Input recording](../Documentation/Images/MRTK_Icon_InputRecording.png)](InputSimulation/InputAnimationRecording.md) [Input recording](InputSimulation/InputAnimationRecording.md) |
 | :--- | :--- | :--- | :--- |
 | Automate configuration of Mixed Reality projects for performance optimizations | Analyze dependencies between assets and identify unused assets |  Configure and execute end-to-end build process for Mixed Reality applications | Record and playback head movement and hand tracking data in-editor |
 
