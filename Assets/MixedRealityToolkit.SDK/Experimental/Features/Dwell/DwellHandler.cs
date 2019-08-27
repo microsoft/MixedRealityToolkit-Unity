@@ -64,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
                     case DwellStateType.DwellCompleted:
                         return 1;
                     case DwellStateType.DwellCanceled:
-                        if (dwellProfile.TimeToAllowDwellResume.Ticks > 0)
+                        if (dwellProfile.TimeToAllowDwellResume > TimeSpan.Zero)
                         {
                             return GetCurrentDwellProgress();
                         }
@@ -97,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
 
         /// <summary>
         /// Abstracted value for the how long the dwelled object still needs to be focused to complete the dwell action
-        /// Value ranges from 0 to "TimeToCompleteDwell" setting in the dwellprofile. This picks up the same unity as TimeToCompleteDwell
+        /// Value ranges from 0 to "TimeToCompleteDwell" setting in the dwellprofile. This picks up the same unit as TimeToCompleteDwell
         /// </summary>
         protected float FillTimer = 0;
 

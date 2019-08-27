@@ -2,12 +2,14 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
-using System;
 using TMPro;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
 {
+    /// <summary>
+    /// Dwell sample with no DwellIntended delay
+    /// </summary>
     public class InstantDwellSample : BaseDwellSample
     {
         [SerializeField]

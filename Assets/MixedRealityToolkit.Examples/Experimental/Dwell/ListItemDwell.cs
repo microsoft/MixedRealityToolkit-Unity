@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
 {
+    /// <summary>
+    /// Dwell sample to work on a list of dwell targets
+    /// </summary>
     public class ListItemDwell : BaseDwellSample
     {
         [SerializeField]
