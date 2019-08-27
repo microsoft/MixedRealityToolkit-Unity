@@ -1,5 +1,5 @@
 ﻿
-# Mixed Reality Toolkitプロファイル設定ガイド
+# Mixed Reality Toolkit プロファイル設定ガイド
 
 ![enter image description here](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MRTK_Logo_Rev.png)
 
@@ -7,23 +7,23 @@
 
 **このガイドは、ツールキットで現在使用できる、設定プロファイル画面の簡単なチュートリアルです。**
 
-# Mixed Reality Toolkit主な設定プロファイル
+# Mixed Reality Toolkit 主な設定プロファイル
 
-シーンの_MixedRealityToolkit_ GameObject にアタッチされている主な設定プロファイル(Congifuration Profile)は、ツールキットの第一のエントリーポイントです。
+シーンの _MixedRealityToolkit_ GameObject にアタッチされている主な設定プロファイル(Congifuration Profile)は、ツールキットの第一のエントリーポイントです。
 
 ## NOTE
 
-Mixed Reality Toolkitは、プロジェクトの共通のスタートポイントを常に持たせるように、デフォルトの設定画面を「ロック」しています。そして、プロジェクトの進捗に合わせて独自の設定の定義を行うことをお勧めします。MRTKの設定はプレイモード中は編集できません。
+Mixed Reality Toolkit は、プロジェクトの共通のスタートポイントを常に持たせるように、デフォルトの設定画面を「ロック」しています。そして、プロジェクトの進捗に合わせて独自の設定の定義を行うことをお勧めします。MRTKの設定はプレイモード中は編集できません。
 
 ![enter image description here](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ActiveConfiguration.png)
 
-Mixed Reality Toolkitのすべての「デフォルト」プロファイルは、フォルダAssets\MixedRealityToolkit.SDK\Profiles内のSDKプロジェクトにあります。
+Mixed Reality Toolkitのすべての「デフォルト」プロファイルは、フォルダ Assets\MixedRealityToolkit.SDK\Profiles 内の SDK プロジェクトにあります。
 
 ## IMPORTANT
 
-デフォルトのHoloLens2の設定プロファイルは、HoloLens 2用に最適化されています.  [Profiles](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Profiles/Profiles.html)  にご確認ください。
+デフォルトの HoloLens2 の設定プロファイルは、HoloLens2 用に最適化されています.  [Profiles](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Profiles/Profiles.html)  にご確認ください。
 
-メインのMixed Reality Toolkit設定プロファイルを開くと、インスペクタに次の画面が表示されます。
+メインの Mixed Reality Toolkit 設定プロファイルを開くと、インスペクタに次の画面が表示されます。
 
 ![enter image description here](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_MixedRealityToolkitConfigurationScreen.png)
 
@@ -59,7 +59,7 @@ Mixed Reality Toolkitのすべての「デフォルト」プロファイルは�
 
 # エクスペリエンス設定
 
-MixedRealityToolkitのメイン設定ページにあるこの項目では、プロジェクトの複合現実環境の既定の操作が定義されます。
+Mixed Reality Toolkit のメイン設定ページにあるこの項目では、プロジェクトの複合現実環境の既定の操作が定義されます。
 
 ![enter image description here](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ExperienceSettings.png)
 
@@ -108,7 +108,7 @@ MRTKが提供する入力システムの裏には、マルチプラットフォ�
 
 ![enter image description here](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpatialAwarenessSystemSelection.png)
 
-Mixed Reality Toolkitの空間認識設定を使用すると、アプリケーションの起動時に自動的に行うか、プログラムで後で行うか、また視野の範囲を設定するかどうかにかかわらず、システムの起動方法を調整できます。
+Mixed Reality Toolkit の空間認識設定を使用すると、アプリケーションの起動時に自動的に行うか、プログラムで後で行うか、また視野の範囲を設定するかどうかにかかわらず、システムの起動方法を調整できます。
 
 また、メッシュとサーフェスの設定を行い、プロジェクトが周囲の環境をどのように理解するかをさらにカスタマイズすることもできます。
 
@@ -118,7 +118,7 @@ Mixed Reality Toolkitの空間認識設定を使用すると、アプリケー�
 
 # 診断設定
 
-オプションですが、MRTKに非常に便利な機能は、プラグイン診断機能です。これにより、シーンへのデバッグログのスタイルが表示されます。
+オプションですが、MRTK に非常に便利な機能は、プラグイン診断機能です。これにより、シーンへのデバッグログのスタイルが表示されます。
 
 ![enter image description here](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsSystemSelection.png)
 
@@ -134,11 +134,11 @@ MRTK は、複雑なシーンの読み込み(loading)/アンロード(unloading)
 
 # その他のサービス設定
 
-Mixed Reality Toolkitのより高度な領域の1つは、フレームワークとの任意の「サービス」の登録を可能にする[サービスロケータパターン](https://en.wikipedia.org/wiki/Service_locator_pattern)の実装です。これにより、フレームワークを新しい機能/システムで簡単に拡張できますし、プロジェクトはこれらの機能を利用して独自のランタイムコンポーネントも登録できます。
+Mixed Reality Toolkit のより高度な領域の1つは、フレームワークとの任意の「サービス」の登録を可能にする[サービスロケータパターン](https://en.wikipedia.org/wiki/Service_locator_pattern)の実装です。これにより、フレームワークを新しい機能/システムで簡単に拡張できますし、プロジェクトはこれらの機能を利用して独自のランタイムコンポーネントも登録できます。
 
 [Stephen Hodgsonの複合現実フレームワークに関する記事](https://medium.com/@stephen_hodgson/the-mixed-reality-framework-6fdb5c11feb2)で、基礎となるフレームワークとその実装についての詳細を読むことができます。
 
-登録済みのサービスは、MonoBehaviour または不格好なシングルトンパターンを実装するオーバーヘッドとコストなしで、すべての Unity イベントを最大限に活用できます。これにより、フォアグラウンド（foreground）プロセスとバックグラウンド（background）プロセス(スポーンシステム、ランタイムゲームロジックなど)の両方を実行するためのシーンオーバーヘッドのない純粋なC# コンポーネントを使用できます。
+登録済みのサービスは、MonoBehaviour または不格好なシングルトンパターンを実装するオーバーヘッドとコストなしで、すべての Unity イベントを最大限に活用できます。これにより、フォアグラウンド（foreground）プロセスとバックグラウンド(background)プロセス(スポーンシステム、ランタイムゲームロジックなど)の両方を実行するためのシーンオーバーヘッドのない純粋な C# コンポーネントを使用できます。
 
 ![enter image description here](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProfidersProfile.png)
 
@@ -175,29 +175,29 @@ Input Action Rulesを使用すると、1 つの入力アクションに対して
 
 これは、独自のコードで行うこともできます。しかし、これは非常に一般的なパターンであったので、フレームワークはこれをそとから変更できるメカニズムを提供します。
 
-Input Action Rulesは、使用可能な入力軸のいずれかに対して設定できます。ただし、1 つの軸タイプからの入力アクションは、同じ軸タイプの別の入力アクションに変換できます。二重軸アクションを別の二重軸アクションにマップできますが、デジタルアクションまたはアクションなしにはマップできません。
+Input Action Rules は、使用可能な入力軸のいずれかに対して設定できます。ただし、1 つの軸タイプからの入力アクションは、同じ軸タイプの別の入力アクションに変換できます。二重軸アクションを別の二重軸アクションにマップできますが、デジタルアクションまたはアクションなしにはマップできません。
 
 ![enter image description here](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionRulesProfile.png)
 
 # Pointers 設定
 
-Pointersは、任意の入力デバイスからシーン内のインタラクティブ性を駆動するために使用され、シーン内の任意のオブジェクト (コライダがアタッチされている、または UI コンポーネント) を持つ方向とヒットテストの両方を提供します。Pointers は、デフォルトでは、コントローラ、ヘッドセット(視線/フォーカス)、マウス/タッチ入力用に自動的に設定されます。
+Pointers は、任意の入力デバイスからシーン内のインタラクティブ性を駆動するために使用され、シーン内の任意のオブジェクト (コライダがアタッチされている、または UI コンポーネント) を持つ方向とヒットテストの両方を提供します。Pointers は、デフォルトでは、コントローラ、ヘッドセット(視線/フォーカス)、マウス/タッチ入力用に自動的に設定されます。
 
-Pointersは、Mixed Reality Toolkitによって提供される多くのラインコンポーネントの 1 つを使用してアクティブシーン内で視覚化することも、MRTK IMixedRealityPointer インターフェイスを実装している場合は独自の要素を使用して可視化することもできます。
+Pointers は、Mixed Reality Toolkit によって提供される多くのラインコンポーネントの 1 つを使用してアクティブシーン内で視覚化することも、 MRTK IMixedRealityPointer インターフェイスを実装している場合は独自の要素を使用して可視化することもできます。
 
 ![Mrtk](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputPointerProfile.png)
 
 - Pointing Extent : 注視を含むすべてのポインターのグローバルポインティング範囲を決定。
 
-- Pointing Raycast Layer Masks: レイキャストに対してどのレイキャストを行うレイヤーを決定します。
+- Pointing Raycast Layer Masks : レイキャストに対してどのレイキャストを行うレイヤーを決定します。
 
-- Debug Draw Pointing Rays: レイキャストに使用されるレイを視覚化するためのデバッグヘルパー。
+- Debug Draw Pointing Rays : レイキャストに使用されるレイを視覚化するためのデバッグヘルパー。
 
-- Debug Draw Pointing Rays Colors: 視覚化に使用する一連の色。
+- Debug Draw Pointing Rays Colors : 視覚化に使用する一連の色。
 
-- Gaze cursor prefab: 任意のシーンにグローバルな視線カーソルを簡単に指定できます。
+- Gaze cursor prefab : 任意のシーンにグローバルな視線カーソルを簡単に指定できます。
 
-必要に応じて、Gaze Providerにすばやく移り、Gaze の特定の値をオーバーライドするための追加のヘルパーボタンがあります。
+必要に応じて、Gaze Provider にすばやく移り、Gaze の特定の値をオーバーライドするための追加のヘルパーボタンがあります。
 
 # ジェスチャ設定
 
@@ -221,7 +221,7 @@ Pointersは、Mixed Reality Toolkitによって提供される多くのライン
 
 # コントローラ マッピング設定
 
-Mixed Reality Toolkitの主要な設定画面の1つは、プロジェクトで使用できるさまざまな種類のコントローラを設定およびマップする機能です。
+Mixed Reality Toolkit の主要な設定画面の1つは、プロジェクトで使用できるさまざまな種類のコントローラを設定およびマップする機能です。
 
 以下の設定画面では、ツールキットで現在使われているコントローラのいずれかを設定できます。
 
@@ -229,7 +229,7 @@ Mixed Reality Toolkitの主要な設定画面の1つは、プロジェクトで�
 
 MRTK は、次のコントローラ/システムのデフォルト設定を提供します。
 
-- マウス(3D空間マウスのサポートを含む)
+- マウス(3D 空間マウスのサポートを含む)
 - タッチスクリーン
 - Xbox コントローラー
 - Windows Mixed Reality コントローラ
@@ -253,7 +253,7 @@ MRTK は、次のコントローラ/システムのデフォルト設定を提�
 
 ## IMPORTANT
 
-MRTK は現在、Unityが提供されていない、数多くのネイティブSDKのコントローラーのモデルの gLTF モデルをロード/レンダリングする機能をサポートしていません。これは、使用可能なときに追加されます。
+MRTK は現在、Unity が提供されていない、数多くのネイティブSDKのコントローラーのモデルの gLTF モデルをロード/レンダリングする機能をサポートしていません。これは、使用可能なときに追加されます。
 
 シーン内のコントローラリプレゼンテーションを物理コントローラの位置からオフセットする必要がある場合は、コントローラモデルのプレハブに対してオフセットを設定するだけです(例えば、コントローラプレハブの変換位置をオフセット位置で設定します)。
 
@@ -265,7 +265,7 @@ MRTK は現在、Unityが提供されていない、数多くのネイティブS
 
 ![mrtk](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ServiceInspectors.PNG)
 
-Configuration Profile の Editor Settings の Use Service Inspectorsをオンにすると、サービスインスペクタを有効にできます。
+Configuration Profile の Editor Settings の Use Service Inspectors をオンにすると、サービスインスペクタを有効にできます。
 
 ![mrtk](https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_EnableServiceInspectors.PNG)
 
