@@ -47,8 +47,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81c169a39f8e430d869bbc5d938b0e5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineStartClamp: 0
-  lineEndClamp: 1
+  lineStartClamp: 0.0001
+  lineEndClamp: 0.9999
   customLineTransform: {fileID: 0}
   loops: 0
   transformMode: 0
@@ -134,21 +134,7 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: 0, y: 0, z: 1.1920929e-11}
-  - {x: 0, y: 0, z: 0.0032517451}
-  - {x: 0, y: 0, z: 0.023423482}
-  - {x: 0, y: 0, z: 0.0704557}
-  - {x: 0, y: 0, z: 0.14670977}
-  - {x: 0, y: 0, z: 0.2469679}
-  - {x: 0, y: 0, z: 0.35843328}
-  - {x: 0, y: 0, z: 0.46072987}
-  - {x: 0, y: 0, z: 0.5333267}
-  - {x: 0, y: 0, z: 0.59998}
-  - {x: 0, y: 0, z: 0.66663337}
-  - {x: 0, y: 0, z: 0.7332867}
-  - {x: 0, y: 0, z: 0.79994}
-  - {x: 0, y: 0, z: 0.8665933}
-  - {x: 0, y: 0, z: 0.9332467}
+  - {x: 0, y: 0, z: 0.0001}
   - {x: 0, y: 0, z: 0.9999}
   m_Parameters:
     serializedVersion: 3
@@ -284,7 +270,7 @@ MonoBehaviour:
   colorOffset: 0
   widthOffset: 0
   stepMode: 0
-  lineStepCount: 16
+  lineStepCount: 2
   pointDistributionMode: 1
   customPointDistributionLength: 0.1
   customPointDistributionCurve:
@@ -371,7 +357,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handedness: 0
-  destroyOnSourceLost: 0
+  destroyOnSourceLost: 1
   useSourcePoseData: 1
   poseAction:
     id: 0
