@@ -9,13 +9,16 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
     /// <summary>
     /// The default implementation of the <see cref="Microsoft.MixedReality.Toolkit.Diagnostics.IMixedRealityDiagnosticsSystem"/>
     /// </summary>
-    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Diagnostics/DiagnosticsSystemGettingStarted.html")]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Diagnostics/DiagnosticsSystemGettingStarted.html")]
     public class MixedRealityDiagnosticsSystem : BaseCoreSystem, IMixedRealityDiagnosticsSystem
     {
         public MixedRealityDiagnosticsSystem(
             IMixedRealityServiceRegistrar registrar,
             MixedRealityDiagnosticsProfile profile) : base(registrar, profile)
         { }
+
+        /// <inheritdoc/>
+        public override string Name { get; protected set; } = "Mixed Reality Diagnostics System";
 
         /// <summary>
         /// The parent object under which all visualization game objects will be placed.

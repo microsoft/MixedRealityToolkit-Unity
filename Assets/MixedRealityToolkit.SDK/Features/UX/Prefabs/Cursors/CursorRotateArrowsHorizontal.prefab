@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2087522883947575285}
   - component: {fileID: 2087522883946476853}
   m_Layer: 0
-  m_Name: Cursor_RotateArrows_geo
+  m_Name: CursorRotateArrowsHorizontal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

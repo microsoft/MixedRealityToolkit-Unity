@@ -2,7 +2,7 @@
 
 variables:
   UnityVersion: Unity2018.3.7f1
-  MRTKVersion: 2.0.0  # Major.Minor.Patch
+  MRTKVersion: 2.0.1  # Major.Minor.Patch
   MRTKReleaseTag: ''  # final version component, e.g. 'RC2.1' or empty string
 
 jobs:
@@ -20,7 +20,6 @@ jobs:
     inputs:
       PathtoPublish: '$(Build.SourcesDirectory)\NuGet'
       ArtifactName: 'NuGet'
-  - template: templates/releasesigning.yml
   - template: templates/end.yml
 
 - job: ReleaseSigning
@@ -39,6 +38,13 @@ jobs:
       $Authorization = "Basic " + [System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes('$(scriptsRepoVSTSuser):$(scriptsRepoPAT)'))
       git clone -c http.extraheader="AUTHORIZATION: $Authorization" -b mrtk $(scriptsRepoURL) $(Build.ArtifactStagingDirectory)\scripts
     displayName: "Clone release scripts"
+
+  # required for code signing
+  - task: ComponentGovernanceComponentDetection@0
+    inputs:
+      scanType: 'Register'
+      verbosity: 'Verbose'
+      alertWarningLevel: 'High'
 
   # sign all DLLs
   - template: templates/tasks/signing.yml

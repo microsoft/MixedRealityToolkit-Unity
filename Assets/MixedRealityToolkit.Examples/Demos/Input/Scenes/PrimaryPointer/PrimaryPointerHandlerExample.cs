@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         private void OnEnable()
         {
-            MixedRealityToolkit.InputSystem?.FocusProvider?.SubscribeToPrimaryPointerChanged(OnPrimaryPointerChanged, true);
+            CoreServices.InputSystem?.FocusProvider?.SubscribeToPrimaryPointerChanged(OnPrimaryPointerChanged, true);
         }
 
         private void OnPrimaryPointerChanged(IMixedRealityPointer oldPointer, IMixedRealityPointer newPointer)
@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         private void OnDisable()
         {
-            MixedRealityToolkit.InputSystem?.FocusProvider?.UnsubscribeFromPrimaryPointerChanged(OnPrimaryPointerChanged);
+            CoreServices.InputSystem?.FocusProvider?.UnsubscribeFromPrimaryPointerChanged(OnPrimaryPointerChanged);
             OnPrimaryPointerChanged(null, null);
         }
     }

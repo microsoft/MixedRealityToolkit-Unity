@@ -23,6 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Name = "OnGrab";
         }
 
+        /// <inheritdoc />
         public override void OnUpdate(InteractableStates state, Interactable source)
         {
             bool hasGrab = state.GetState(InteractableStates.InteractableStateEnum.Grab).Value > 0;

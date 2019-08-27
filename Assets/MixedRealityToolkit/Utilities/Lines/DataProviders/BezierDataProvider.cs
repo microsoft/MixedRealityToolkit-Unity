@@ -25,6 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             public Vector3 Point4;
         }
 
+        /// <inheritdoc />
         public override int PointCount { get { return 4; } }
 
         [Header("Bezier Settings")]
@@ -37,6 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         private Vector3 localOffset;
 
+        /// <inheritdoc />
         protected override Vector3 GetPointInternal(int pointIndex)
         {
             switch (pointIndex)
@@ -97,12 +99,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     break;
             }
         }
-
+        
+        /// <inheritdoc />
         protected override Vector3 GetPointInternal(float normalizedDistance)
         {
             return LineUtility.InterpolateBezierPoints(controlPoints.Point1, controlPoints.Point2, controlPoints.Point3, controlPoints.Point4, normalizedDistance);
         }
 
+        /// <inheritdoc />
         protected override float GetUnClampedWorldLengthInternal()
         {
             float distance = 0f;
@@ -115,6 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             return distance;
         }
 
+        /// <inheritdoc />
         protected override Vector3 GetUpVectorInternal(float normalizedLength)
         {
             // Bezier up vectors just use transform up

@@ -106,13 +106,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movingButtonVisuals: {fileID: 289694440342955792}
+  distanceSpaceMode: 0
   startPushDistance: -0.028911967
   maxPushDistance: -0.010880634
   pressDistance: -0.015197545
   releaseDistanceDelta: 0.003592139
   returnSpeed: 25
+  releaseOnTouchEnd: 1
   enforceFrontPush: 1
-  distanceSpaceMode: 0
   TouchBegin:
     m_PersistentCalls:
       m_Calls: []
@@ -145,10 +146,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c748f3768ab714a8449b60fb9edc5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eventsToReceive: 0
+  pokeThreshold: 0.25
+  debounceThreshold: 0.01
+  touchableCollider: {fileID: 289694440342955798}
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
   localCenter: {x: 0, y: 0, z: -0.5}
-  eventsToReceive: 0
-  touchableSurface: 0
   bounds: {x: 1, y: 1}
-  touchableCollider: {fileID: 289694440342955798}

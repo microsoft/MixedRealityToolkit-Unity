@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3c1af9621e40064b907d18085e21fb7, type: 3}
   m_Name: DefaultObjectMeshObserverProfile
   m_EditorClassIdentifier: 
-  isCustomProfile: 1
+  isCustomProfile: 0
   startupBehavior: 0
   isStationaryObserver: 0
   observationExtents: {x: 3, y: 3, z: 3}

@@ -126,6 +126,9 @@ namespace Microsoft.MixedReality.Toolkit
                         Unregister(obj.Item2);
                     }
                 }
+
+                postponedActions.Clear();
+                postponedObjectActions.Clear();
             }
         }
 
@@ -250,6 +253,7 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
+        /// <inheritdoc />
         public override void Destroy()
         {
             if(!enableDanglingHandlerDiagnostics)

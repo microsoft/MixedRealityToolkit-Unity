@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Input System Profile", fileName = "MixedRealityInputSystemProfile", order = (int)CreateProfileMenuItemIndices.Input)]
     [MixedRealityServiceProfile(typeof(IMixedRealityInputSystem))]
-    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html")]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html")]
     public class MixedRealityInputSystemProfile : BaseMixedRealityProfile
     {
         [SerializeField]
@@ -65,6 +65,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Range(1, 2048)]
         [Tooltip("Maximum number of colliders that can be detected in a SphereOverlap scene query.")]
         private int focusQueryBufferSize = 128;
+
+        [SerializeField]
+        [Tooltip("In case of a compound collider, does the individual collider receive focus")]
+        private bool focusIndividualCompoundCollider = false;
+
+        /// <summary>
+        /// In case of a compound collider, does the individual collider receive focus
+        /// </summary>
+        public bool FocusIndividualCompoundCollider
+        {
+            get { return focusIndividualCompoundCollider; }
+            internal set { focusIndividualCompoundCollider = value; }
+        }
 
         [SerializeField]
         [Tooltip("Input System Action Mapping profile for wiring up Controller input to Actions.")]

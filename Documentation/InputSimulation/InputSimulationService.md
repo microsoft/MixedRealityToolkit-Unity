@@ -4,6 +4,7 @@ The Input Simulation Service emulates the behaviour of devices and platforms tha
 * HoloLens or VR device head tracking
 * HoloLens hand gestures
 * HoloLens 2 articulated hand tracking
+* HoloLens 2 eye tracking
 
 Users can use a conventional keyboard and mouse combination to control simulated devices at runtime. This allows testing of interactions in the Unity editor without first deploying to a device.
 
@@ -14,7 +15,7 @@ Users can use a conventional keyboard and mouse combination to control simulated
 
 Input simulation is enabled by default in MRTK.
 
-Input simulation is an optional [Mixed Reality service](../MixedRealityServices.md). It can be added as a data provider in the [Input System profile](../TODO.md).
+Input simulation is an optional [Mixed Reality service](../MixedRealityServices.md). It can be added as a data provider in the [Input System profile](../Input/InputProviders.md).
 * __Type__ must be _Microsoft.MixedReality.Toolkit.Input > InputSimulationService_.
 * __Platform(s)__ should always be _Windows Editor_ since the service depends on keyboard and mouse input.
 * __Profile__ has all settings for input simulation.
@@ -57,7 +58,7 @@ Press and hold the movement keys (W/A/S/D for forward/left/back/right).
 
 # Hand Simulation
 
-The input simulation supports emulated hand devices. These virtual hands can interact with any object that supports regular hand devices, such as buttons or grabable objects.
+The input simulation supports emulated hand devices. These virtual hands can interact with any object that supports regular hand devices, such as buttons or grabbable objects.
 
 <a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandSimulationMode.png">
   <img src="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandSimulationMode.png" title="Full Hand Mesh" width="80%" class="center" />
@@ -67,13 +68,13 @@ The __Hand Simulation Mode__ switches between two distinct input models.
 
 * _Articulated Hands_: Simulates a fully articulated hand device with joint position data.
 
-   Emulates Hololens 2 interaction model.
+   Emulates HoloLens 2 interaction model.
 
    Interactions that are based on precise positioning of the hand or use touching can be simulated in this mode.
 
 * _Gestures_: Simulates a simplified hand model with air tap and basic gestures.
 
-   Emulates [Hololens interaction model](https://docs.microsoft.com/en-us/windows/mixed-reality/gestures).
+   Emulates [HoloLens interaction model](https://docs.microsoft.com/en-us/windows/mixed-reality/gestures).
 
    Focus is controlled using the Gaze pointer. The _Air Tap_ gesture is used to interact with buttons.
 
@@ -174,3 +175,9 @@ For manipulating objects with two hands at the same time the persistent hand mod
 5. Rotate the camera again to manipulate the object
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/6841rRMdqWw" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
+
+## Eye tracking
+
+[Eye tracking simulation](../EyeTracking/EyeTracking_BasicSetup.md#simulating-eye-tracking-in-the-unity-editor) can be enabled by checking the __Simulate Eye Position__ option in the
+[Input Simulation Profile](#enabling-the-input-simulation-service). This should not be used with GGV
+style interactions (so ensure that __Hand Simulation Mode__ is set to _Articulated_).

@@ -55,10 +55,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         // Editor settings
         private SerializedProperty useServiceInspectors;
 
-        private MixedRealityToolkitConfigurationProfile configurationProfile;
         private Func<bool>[] RenderProfileFuncs;
 
-        private static string[] ProfileTabTitles = { "Camera", "Input", "Boundary", "Teleport", "Spatial Awareness", "Diagnostics", "Scene System", "Extensions", "Editor" };
+        private static readonly string[] ProfileTabTitles = { "Camera", "Input", "Boundary", "Teleport", "Spatial Awareness", "Diagnostics", "Scene System", "Extensions", "Editor" };
         private static int SelectedProfileTab = 0;
         private const string SelectedTabPreferenceKey = "SelectedProfileTab";
 
@@ -110,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Editor settings
             useServiceInspectors = serializedObject.FindProperty("useServiceInspectors");
 
-            SelectedProfileTab = EditorPrefs.GetInt(SelectedTabPreferenceKey, SelectedProfileTab);
+            SelectedProfileTab = SessionState.GetInt(SelectedTabPreferenceKey, SelectedProfileTab);
 
             if (this.RenderProfileFuncs == null)
             {
@@ -190,7 +189,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     },
                     () => {
                         // Note: cannot use mrtkConfigProfile.Is*SystemEnabled because property checks multiple parameters
-                        CheckSystemConfiguration("Scene System System", enableSceneSystem.boolValue,
+                        CheckSystemConfiguration("Scene System", enableSceneSystem.boolValue,
                             mrtkConfigProfile.SceneSystemSystemType,
                             mrtkConfigProfile.SceneSystemProfile != null);
 
@@ -287,11 +286,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.BeginVertical(EditorStyles.helpBox, GUILayout.Width(100));
             GUI.enabled = true; // Force enable so we can view profile defaults
 
-            int prefsSelectedTab = EditorPrefs.GetInt(SelectedTabPreferenceKey);
+            int prefsSelectedTab = SessionState.GetInt(SelectedTabPreferenceKey, 0);
             SelectedProfileTab = GUILayout.SelectionGrid(prefsSelectedTab, ProfileTabTitles, 1, EditorStyles.boldLabel, GUILayout.MaxWidth(125));
             if (SelectedProfileTab != prefsSelectedTab)
             {
-                EditorPrefs.SetInt(SelectedTabPreferenceKey, SelectedProfileTab);
+                SessionState.SetInt(SelectedTabPreferenceKey, SelectedProfileTab);
             }
 
             GUI.enabled = isGUIEnabled;

@@ -1086,6 +1086,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetObject: {fileID: 7779420039263858270}
   boundsOverride: {fileID: 7779420039263858272}
+  boundsCalculationMethod: 0
   activation: 3
   scaleMinimum: 0.3
   scaleMaximum: 5

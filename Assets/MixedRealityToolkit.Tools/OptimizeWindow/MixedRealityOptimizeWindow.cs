@@ -72,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             "Suggest performance optimizations for mobile VR devices with mobile class specifications",
             "Suggest performance optimizations for VR devices tethered to a PC" };
 
-        private const string OptimizeWindow_URL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Utilities/OptimizeWindow.html";
+        private const string OptimizeWindow_URL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Tools/OptimizeWindow.html";
         private const string SinglePassInstanced_URL = "https://docs.unity3d.com/Manual/SinglePassInstancing.html";
         private const string DepthBufferSharing_URL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Hologram-Stabilization.html#Depth-Buffer-Sharing";
         private const string DepthBufferFormat_URL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Hologram-Stabilization.html#depth-buffer-format";
@@ -105,10 +105,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             MixedRealityInspectorUtility.RenderMixedRealityToolkitLogo();
 
             // Render Title
-            EditorGUILayout.BeginHorizontal();
+            using (new EditorGUILayout.HorizontalScope())
+            {
                 EditorGUILayout.LabelField("Mixed Reality Toolkit Optimize Window", MixedRealityStylesUtility.BoldLargeTitleStyle);
-                InspectorUIUtility.RenderDocLinkButton(OptimizeWindow_URL);
-            EditorGUILayout.EndHorizontal();
+                InspectorUIUtility.RenderDocumentationButton(OptimizeWindow_URL);
+            }
 
             EditorGUILayout.LabelField("This tool automates the process of updating your project, currently open scene, and material assets to recommended settings for Mixed Reality", EditorStyles.wordWrappedLabel);
             EditorGUILayout.Space();
@@ -491,7 +492,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Section Title
             EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(new GUIContent(title, titleIcon), EditorStyles.boldLabel);
-                InspectorUIUtility.RenderDocLinkButton(url);
+                InspectorUIUtility.RenderDocumentationButton(url);
             EditorGUILayout.EndHorizontal();
         }
 

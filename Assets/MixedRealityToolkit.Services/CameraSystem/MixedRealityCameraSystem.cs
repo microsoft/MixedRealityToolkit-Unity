@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
     /// <summary>
     /// The Camera system controls the settings of the main camera.
     /// </summary>
-    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#camera")]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#camera")]
     public class MixedRealityCameraSystem : BaseCoreSystem, IMixedRealityCameraSystem
     {
         private enum DisplayType
@@ -24,6 +24,9 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             BaseMixedRealityProfile profile = null) : base(registrar, profile)
         {
         }
+
+        /// <inheritdoc/>
+        public override string Name { get; protected set; } = "Mixed Reality Camera System";
 
         /// <summary>
         /// Is the current camera displaying on an Opaque (AR) device or a VR / immersive device

@@ -5,11 +5,11 @@ using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 using System.Collections.Generic;
-using System.Globalization;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 #if UNITY_WSA
+using UnityEngine.XR;
 using UnityEngine.XR.WSA;
 #endif // UNITY_WSA
 
@@ -23,12 +23,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         typeof(IMixedRealitySpatialAwarenessSystem),
         SupportedPlatforms.WindowsUniversal,
         "Windows Mixed Reality Spatial Mesh Observer",
-        "Profiles/DefaultMixedRealitySpatialAwarenessMeshObserverProfile.asset", 
+        "Profiles/DefaultMixedRealitySpatialAwarenessMeshObserverProfile.asset",
         "MixedRealityToolkit.SDK")]
-    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
-    public class WindowsMixedRealitySpatialMeshObserver : 
-        BaseSpatialObserver, 
-        IMixedRealitySpatialAwarenessMeshObserver, 
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
+    public class WindowsMixedRealitySpatialMeshObserver :
+        BaseSpatialObserver,
+        IMixedRealitySpatialAwarenessMeshObserver,
         IMixedRealityCapabilityCheck
     {
         /// <summary>
@@ -254,7 +254,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         {
             int triangleDensity = 0;
 
-            switch(levelOfDetail)
+            switch (levelOfDetail)
             {
                 case SpatialAwarenessMeshLevelOfDetail.Coarse:
                     triangleDensity = 0;
@@ -361,7 +361,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                 Debug.LogWarning("The Windows Mixed Reality spatial observer is currently running.");
                 return;
             }
-            
+
             // We want the first update immediately.
             lastUpdated = 0;
 
@@ -478,10 +478,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// </summary>
         private void UpdateObserver()
         {
-            if (SpatialAwarenessSystem == null)
-            {
-                return;
-            }
+            if (SpatialAwarenessSystem == null || HolographicSettings.IsDisplayOpaque || !XRDevice.isPresent) { return; }
 
             // Only update the observer if it is running.
             if (IsRunning && (outstandingMeshObject == null))
@@ -561,9 +558,9 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             if (spareMeshObject == null)
             {
                 newMesh = SpatialAwarenessMeshObject.Create(
-                    null, 
-                    MeshPhysicsLayer, 
-                    meshName, 
+                    null,
+                    MeshPhysicsLayer,
+                    meshName,
                     surfaceId.handle,
                     ObservedObjectParent);
 
@@ -679,20 +676,34 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// </summary>
         private void ConfigureObserverVolume()
         {
+            if (MixedRealityPlayspace.Transform == null)
+            {
+                Debug.LogError("Unexpected failure acquiring MixedRealityPlayspace.");
+                return;
+            }
+
+            // If we aren't using a HoloLens or there isn't an XR device present, return.
+            if (observer == null || HolographicSettings.IsDisplayOpaque || !XRDevice.isPresent) { return; }
+
+            // The observer's origin is in world space, we need it in the camera's parent's space
+            // to set the volume. The MixedRealityPlayspace provides that space that the camera/head moves around in.
+            Vector3 observerOriginPlayspace = MixedRealityPlayspace.InverseTransformPoint(ObserverOrigin);
+            Quaternion observerRotationPlayspace = Quaternion.Inverse(MixedRealityPlayspace.Rotation) * ObserverRotation;
+
             // Update the observer
-            switch(ObserverVolumeType)
+            switch (ObserverVolumeType)
             {
                 case VolumeType.AxisAlignedCube:
-                    observer.SetVolumeAsAxisAlignedBox(ObserverOrigin, ObservationExtents);
+                    observer.SetVolumeAsAxisAlignedBox(observerOriginPlayspace, ObservationExtents);
                     break;
 
                 case VolumeType.Sphere:
                     // We use the x value of the extents as the sphere radius
-                    observer.SetVolumeAsSphere(ObserverOrigin, ObservationExtents.x);
+                    observer.SetVolumeAsSphere(observerOriginPlayspace, ObservationExtents.x);
                     break;
 
                 case VolumeType.UserAlignedCube:
-                    observer.SetVolumeAsOrientedBox(ObserverOrigin, ObservationExtents, ObserverRotation);
+                    observer.SetVolumeAsOrientedBox(observerOriginPlayspace, ObservationExtents, observerRotationPlayspace);
                     break;
 
                 default:
@@ -737,13 +748,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
 
             if (outstandingMeshObject == null)
             {
-                Debug.LogWarning($"OnDataReady called for mesh id {cookedData.id.handle} while no request was outstanding.");
                 return;
             }
 
             if (!outputWritten)
             {
-                Debug.LogWarning($"OnDataReady reported no data written for mesh id {cookedData.id.handle}");
                 ReclaimMeshObject(outstandingMeshObject);
                 outstandingMeshObject = null;
                 return;

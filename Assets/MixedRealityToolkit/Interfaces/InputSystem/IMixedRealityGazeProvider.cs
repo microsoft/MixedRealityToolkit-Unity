@@ -81,5 +81,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Get the GameObject reference for this Gaze Provider.
         /// </summary>
         GameObject GameObjectReference { get; }
+
+        /// <summary>
+        /// Notifies this gaze provider of its new hit details.
+        /// </summary>
+        /// <remarks>
+        /// For components that care where the user's looking, we need
+        /// to separately update the gaze info even if gaze isn't used for focus.
+        /// </remarks>
+        void UpdateGazeInfoFromHit(MixedRealityRaycastHit raycastHit);
     }
 }
