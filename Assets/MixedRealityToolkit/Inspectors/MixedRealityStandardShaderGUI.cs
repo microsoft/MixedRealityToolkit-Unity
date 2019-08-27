@@ -720,7 +720,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         protected bool ScaleRequired()
         {
-            return PropertyEnabled(roundCorners) || 
+            return PropertyEnabled(vertexExtrusion) || 
+                   PropertyEnabled(roundCorners) || 
                    PropertyEnabled(borderLight) ||
                    (PropertyEnabled(enableTriplanarMapping) && PropertyEnabled(enableLocalSpaceTriplanarMapping));
         }

@@ -298,7 +298,7 @@ Shader "Mixed Reality Toolkit/Standard"
             #undef _TRANSPARENT
 #endif
 
-#if defined(_ROUND_CORNERS) || defined(_BORDER_LIGHT)
+#if defined(_VERTEX_EXTRUSION) || defined(_ROUND_CORNERS) || defined(_BORDER_LIGHT)
             #define _SCALE
 #else
             #undef _SCALE
@@ -671,6 +671,16 @@ Shader "Mixed Reality Toolkit/Standard"
                 float3 worldVertexPosition = mul(unity_ObjectToWorld, vertexPosition).xyz;
 #endif
 
+#if defined(_SCALE)
+                o.scale.x = length(mul(unity_ObjectToWorld, float4(1.0, 0.0, 0.0, 0.0)));
+                o.scale.y = length(mul(unity_ObjectToWorld, float4(0.0, 1.0, 0.0, 0.0)));
+#if defined(_IGNORE_Z_SCALE)
+                o.scale.z = o.scale.x;
+#else
+                o.scale.z = length(mul(unity_ObjectToWorld, float4(0.0, 0.0, 1.0, 0.0)));
+#endif
+#endif
+
                 fixed3 localNormal = v.normal;
 
 #if defined(_NORMAL) || defined(_VERTEX_EXTRUSION)
@@ -679,7 +689,7 @@ Shader "Mixed Reality Toolkit/Standard"
 
 #if defined(_VERTEX_EXTRUSION)
 #if defined(_VERTEX_EXTRUSION_SMOOTH_NORMALS)
-                worldVertexPosition += UnityObjectToWorldNormal(v.smoothNormal) * _VertexExtrusionValue;
+                worldVertexPosition += UnityObjectToWorldNormal(v.smoothNormal * o.scale) * _VertexExtrusionValue;
 #else
                 worldVertexPosition += worldNormal * _VertexExtrusionValue;
 #endif
@@ -714,16 +724,6 @@ Shader "Mixed Reality Toolkit/Standard"
                 float fadeDistance = -UnityObjectToViewPos(vertexPosition).z;
 #endif
                 o.worldPosition.w = max(saturate(mad(fadeDistance, rangeInverse, -_FadeCompleteDistance * rangeInverse)), _FadeMinValue);
-#endif
-
-#if defined(_SCALE)
-                o.scale.x = length(mul(unity_ObjectToWorld, float4(1.0, 0.0, 0.0, 0.0)));
-                o.scale.y = length(mul(unity_ObjectToWorld, float4(0.0, 1.0, 0.0, 0.0)));
-#if defined(_IGNORE_Z_SCALE)
-                o.scale.z = o.scale.x;
-#else
-                o.scale.z = length(mul(unity_ObjectToWorld, float4(0.0, 0.0, 1.0, 0.0)));
-#endif
 #endif
 
 #if defined(_BORDER_LIGHT) || defined(_ROUND_CORNERS)

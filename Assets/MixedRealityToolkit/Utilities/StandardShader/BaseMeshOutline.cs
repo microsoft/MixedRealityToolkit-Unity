@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     {
         /// <summary>
         /// The material used to render the outline. Outline materials should normal have "Depth Write" set to Off and "Vertex Extrusion" enabled.
-        /// Most MRTK/Standard features should work as an outline material, but it is recommended to use a simple unlit material.
+        /// Most MRTK/Standard features should work as an outline material, but it is recommended to keep the outline material as simple as possible.
         /// </summary>
         public Material OutlineMaterial
         {
