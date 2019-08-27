@@ -76,21 +76,21 @@ MRTK は、以下を実行することで Mixed Reality ソリューションを
 [Hand Interaction のサンプルシーン](README_HandInteractionExamples.md) は、MRTK の様々なUXコントロールとインタラクションを公開しているため、MRTK を始めるには最適な場所です。はじめに、MRTK をインポートし、サンプルシーンを開いて、Editor でシーンを探索します。
 
 1. 新しい Unity プロジェクトを作成し、[上記の手順](#import-mrtk-packages-into-your-unity-project) に従って、**Foundation** と **Examples** の Unity パッケージの両方をインポートします。
-2. `Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes\HandInteractionExamples` の下の HandInteractionExamples　のシーンを開きます。
+1. `Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes\HandInteractionExamples` の下の HandInteractionExamples　のシーンを開きます。
 
-3. 「TMP Essentials」をインポートするかを尋ねるプロンプトが表示されます。
+1. 「TMP Essentials」をインポートするかを尋ねるプロンプトが表示されます。
   
     ![TMP Essentials](../Documentation/Images/getting_started/MRTK_GettingStarted_TMPro.png)
   
     このようなプロンプトが表示された場合は、「Import TMP essentials」 ボタンを選択します。「TMP Essentials」とは、Text Mesh プライグインを指し、MRTK のサンプルの一部はテキストレンダリングを改善するために使用しています。(詳細については、[Unity のテキスト](https://docs.microsoft.com/en-us/windows/mixed-reality/text-in-unity)を参照してください。)
 
-4. TMP ダイアログを閉じます。この後、シーンをリロードする必要があります。これを行うには、プロジェクトタブでシーンをダブルクリックします。
+1. TMP ダイアログを閉じます。この後、シーンをリロードする必要があります。これを行うには、プロジェクトタブでシーンをダブルクリックします。
 
-5. Play ボタンを押します。
+1. Play ボタンを押します。
 
 ## In-Editor Hand Input Simulation を使ってシーンをテストする
 
-Editor内の入力シミュレーション を使って、[手](InputSimulation/InputSimulationService.md#hand-simulation)や[目](EyeTracking/EyeTracking_BasicSetup.md#simulating-eye-tracking-in-the-unity-editor)などの特定のタイプの入力に対しバーチャルなオブジェクトの動作をテストすることができます。
+Editor 内の入力シミュレーション を使って、[手](InputSimulation/InputSimulationService.md#hand-simulation)や[目](EyeTracking/EyeTracking_BasicSetup.md#simulating-eye-tracking-in-the-unity-editor)などの特定のタイプの入力に対しバーチャルなオブジェクトの動作をテストすることができます。
 
 シーン内を移動する：
 
@@ -112,19 +112,19 @@ Editor内の入力シミュレーション を使って、[手](InputSimulation/
 
 1. 新規のプロジェクトを作成する、あるいは新しいシーンを現在のプロジェクトに作成します。
 
-2. MRTK のパッケージが[上記の手順](#MRTK-のパッケージを-Unity-プロジェクトにインポートする) に従ってインポートされていることを確認します。(Examples は必須ではありませんが、 Foundation と Examles の両方をインポートすることを推奨します。 )
+1. MRTK のパッケージが[上記の手順](#MRTK-のパッケージを-Unity-プロジェクトにインポートする) に従ってインポートされていることを確認します。(Examples は必須ではありませんが、 Foundation と Examles の両方をインポートすることを推奨します。 )
 
-3. メニューバーから、Mixed Reality Toolkit -> Add to Scene and Configure　を選択します。
+1. メニューバーから、Mixed Reality Toolkit -> Add to Scene and Configure　を選択します。
 
       ![Configure to scene](../Documentation/Images/MRTK_ConfigureScene.png)
 
-4. 次のようなプロンプトが表示されます。
+1. 次のようなプロンプトが表示されます。
 
       ![MRTK Configure Dialog](../Documentation/Images/MRTK_ConfigureDialog.png)
 
     「OK」を押します。  
 
-5. その後、MRTK Configuration profile を選択するよう求められます。「DefaultMixedRealityToolkitConfigurationProfile」をダブルクリックします。
+1. その後、MRTK Configuration profile を選択するよう求められます。「DefaultMixedRealityToolkitConfigurationProfile」をダブルクリックします。
 
     ![MRTK Select Configure Dialog](../Documentation/Images/MRTK_SelectConfigurationDialog.png)
 
@@ -144,7 +144,7 @@ Editor内の入力シミュレーション を使って、[手](InputSimulation/
 
     > **注意**: シーンで作業している間、シーンの原点 (0,0,0) から **Main Camera を動かさないでください** (または playspace)。これは MRTK と アクティブな SDK によって制御されます。player を初期位置から動かしたい場合は、**カメラではなくシーンのコンテンツを移動してください**！
 
-6. Play を押して再生し、スペースキーを押して、ハンドシミュレーションでテストします。
+1. Play を押して再生し、スペースキーを押して、ハンドシミュレーションでテストします。
 
 これで、デバイスにビルドしてデプロイする準備ができました！[MRTK のビルドとデプロイ](BuildAndDeploy.md) の手順に従ってください。
 
