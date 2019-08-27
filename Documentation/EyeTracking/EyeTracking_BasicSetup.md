@@ -127,7 +127,7 @@ Finally, please don't forget to run through the eye calibration on your HoloLens
 The eye tracking system will not return any input if the user is not calibrated. 
 Easiest way to get to the calibration is by flipping up the visor and back down. 
 A system notification should appear welcoming you as a new user and asking you to go through the eye calibration.
-Alternatively you can find the eye calibration in the system settings: Settings -> System -> Utilities -> Open Calibration.
+Alternatively you can find the eye calibration in the system settings: Settings -> System -> Calibration -> Run eye calibration. 
 
 #### Do you see the eye tracking permission prompt?
 When starting the app on your HoloLens 2 for the first time, a prompt should pop up asking the user for permission to use eye tracking. 
