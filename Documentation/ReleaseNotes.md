@@ -11,7 +11,8 @@ This hotfix release of Mixed Reality Toolkit fixes a couple of small bugs when c
 
 ### Upgrading projects to 2.0.1
 
-For non-NuGet package cases, the upgrade is simply importing the new .unitypackages; however, the fixes in this releases don't have an effect when consuming Mixed Reality Toolkit as .unitypackages or source.
+For non-NuGet package cases, the upgrade from 2.0.0 should not have an effect when consuming Mixed Reality Toolkit as .unitypackages or source. To upgrade your Unity project to 2.0.1 from before 2.0.0, follow the same instructions as:
+- [Upgrading projects](#upgrading-projects-to-200)
 
 Currently, the upgrade path from non-NuGet package to NuGet package version of Mixed Reality Toolkit is not officially supported. Look out for that in the coming releases.
 
