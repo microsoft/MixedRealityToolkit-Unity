@@ -97,6 +97,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        public void ResetRotation()
+        {
+            // Use wrist joint rotation as the default
+            Quaternion rotationRef = pose.GetLocalJointPose(TrackedHandJoint.Wrist, handedness).Rotation;
+            ViewportRotation = rotationRef.eulerAngles;
+        }
+
         internal void FillCurrentFrame(MixedRealityPose[] jointsOut)
         {
             ArticulatedHandPose gesturePose = ArticulatedHandPose.GetGesturePose(gesture);
@@ -116,11 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // Apply rotation relative to the wrist joint
             Quaternion rotationRef = pose.GetLocalJointPose(TrackedHandJoint.Wrist, handedness).Rotation;
-            Vector3 forwardRef = rotationRef * Vector3.forward;
-
-            Quaternion turntable = Quaternion.Euler(ViewportRotation.x, ViewportRotation.y, 0);
-            Quaternion roll = Quaternion.AngleAxis(ViewportRotation.z, turntable * forwardRef);
-            Quaternion localRotation = roll * turntable;
+            Quaternion localRotation = Quaternion.Euler(ViewportRotation) * Quaternion.Inverse(rotationRef);
 
             Quaternion worldRotation = CameraCache.Main.transform.rotation * localRotation;
             pose.ComputeJointPoses(handedness, worldRotation, worldPosition, jointsOut);
@@ -379,10 +382,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 state.ViewportPosition = new Vector3(0.5f, 0.5f, profile.DefaultHandDistance);
             }
 
-            state.ViewportRotation = Vector3.zero;
-
             state.Gesture = profile.DefaultHandGesture;
             state.ResetGesture();
+            state.ResetRotation();
         }
 
         /// <summary>
