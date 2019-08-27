@@ -69,24 +69,26 @@ MRTK は、以下を実行することで Mixed Reality ソリューションを
 一部のプレハブ、及びアセットには、TextMesh Pro が必要です。つまり、TextMesh Pro のパッケージをインストールし、アセットがプロジェクト内にあることが必要です。（Window -> TextMeshPro -> Import TMP Essential Resources）
  **TMP Essentials Resources をインポートした後、変更を確認するには Unity を再起動する必要があります**。
 
-### Open and run the HandInteractionExamples scene in editor
+### HandInteractionExamples のシーンを Editor で開いて実行する
 
 [![HandInteractionExample scene](../Documentation/Images/MRTK_Examples.png)](README_HandInteractionExamples.md)
 
-The [hand interaction examples scene](README_HandInteractionExamples.md) is a great place to get started because it shows a wide variety of UX controls and interactions in MRTK. To get started we will import MRTK, open the example scene, and explore the scene in the editor.
+[Hand Interaction のサンプルシーン](README_HandInteractionExamples.md) は、MRTK の様々なUXコントロールとインタラクションを公開しているため、MRTK を始めるには最適な場所です。はじめに、MRTK をインポートし、サンプルシーンを開いて、Editor でシーンを探索します。
 
-1. Create a new Unity project and then import both the **Foundation** and **Examples** unity packages following [the steps above](#import-mrtk-packages-into-your-unity-project).
-2. Open the HandInteractionExamples scene under `Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes\HandInteractionExamples`
+1. 新しい Unity プロジェクトを作成し、[上記の手順](#import-mrtk-packages-into-your-unity-project) に従って、**Foundation** と **Examples** の Unity パッケージの両方をインポートします。
+2. `Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes\HandInteractionExamples` の下の HandInteractionExamples　のシーンを開きます。
 
-3. You may get a prompt asking you to import "TMP Essentials".
+3. 「TMP Essentials」をインポートするかを尋ねるプロンプトが表示されます。
 
 ![TMP Essentials](../Documentation/Images/getting_started/MRTK_GettingStarted_TMPro.png)
 
 If you get such a prompt, select "Import TMP essentials" button. "TMP Essentials" refers to Text Mesh Pro plugin, which some of the MRTK examples use for improved text rendering. (See [Text in Unity](https://docs.microsoft.com/en-us/windows/mixed-reality/text-in-unity) for more detailed information)
+このようなプロンプトが表示された場合は、「Import TMP essentials」 ボタンを選択します。「TMP Essentials」とは、Text Mesh プライグインを指し、MRTK のサンプルの一部はテキストレンダリングを改善するために使用しています。(詳細については、[Unity のテキスト](https://docs.microsoft.com/en-us/windows/mixed-reality/text-in-unity)を参照してください。)
 
 4. Close the TMP dialog. After this you need to reload the scene. You can do this by double clicking the scene in the project tab.
+4. TMP ダイアログを閉じます。この後、シーンをリロードする必要があります。これを行うには、プロジェクトタブでシーンをダブルクリックします。
 
-5. Press the play button.
+5. Playボタンを押します。
 
 ## Using the In-Editor Hand Input Simulation to test a scene
 
