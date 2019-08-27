@@ -29,7 +29,7 @@ PrefabInstance:
     - target: {fileID: 8219002942482847169, guid: 247dc8aebe30ca2408e8293a883c75df,
         type: 3}
       propertyPath: m_Name
-      value: SpeechConfirmationLabel Variant
+      value: SpeechConfirmationLabel
       objectReference: {fileID: 0}
     - target: {fileID: 8222481329602893483, guid: 247dc8aebe30ca2408e8293a883c75df,
         type: 3}
@@ -121,6 +121,16 @@ PrefabInstance:
       propertyPath: m_fontColor32.rgba
       value: 16777215
       objectReference: {fileID: 0}
+    - target: {fileID: 8222863950748663225, guid: 247dc8aebe30ca2408e8293a883c75df,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.21304053
+      objectReference: {fileID: 0}
+    - target: {fileID: 8239404905434933495, guid: 247dc8aebe30ca2408e8293a883c75df,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 33bd7ed5b0c7fbf458af3e21dc58c192, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 247dc8aebe30ca2408e8293a883c75df, type: 3}
 --- !u!1 &779914303111114550 stripped
