@@ -83,8 +83,37 @@
 <h1 id="microsoft-mixed-reality-toolkit-release-notes">Microsoft Mixed Reality Toolkit Release Notes</h1>
 
 <ul>
+<li><a href="#version-201">Version 2.0.1</a></li>
 <li><a href="#version-200">Version 2.0.0</a></li>
 </ul>
+<h2 id="version-201">Version 2.0.1</h2>
+<ul>
+<li><a href="#upgrading-projects-to-201">Upgrading projects</a></li>
+<li><a href="#whats-new-in-201">What's new</a></li>
+</ul>
+<p>This hotfix release of Mixed Reality Toolkit fixes a couple of small bugs when consuming Mixed Reality Toolkit in NuGet package form. In addition, this release introduce the NuGet package as a release mechanism for Mixed Reality Toolkit.</p>
+<h3 id="upgrading-projects-to-201">Upgrading projects to 2.0.1</h3>
+<p>For non-NuGet package cases, the upgrade from 2.0.0 should not have an effect when consuming Mixed Reality Toolkit as .unitypackages or source. To upgrade your Unity project to 2.0.1 from before 2.0.0, follow the same instructions as:</p>
+<ul>
+<li><a href="#upgrading-projects-to-200">Upgrading projects</a></li>
+</ul>
+<p>Currently, the upgrade path from non-NuGet package to NuGet package version of Mixed Reality Toolkit is not officially supported. Look out for that in the coming releases.</p>
+<p>To add Mixed Reality Toolkit to your project in the form of a NuGet package, do the following:</p>
+<ol>
+<li>Download the latest <a href="https://github.com/GlitchEnzo/NuGetForUnity/releases">NuGet For Unity</a> .unitypackage</li>
+<li>Import the .unitypackage into your Unity Project.</li>
+<li>Click on the <code>NuGet &gt; Manage NuGet Packages</code> menu.</li>
+<li>Search for <code>Microsoft.MixedReality.Toolkit</code>, and press <code>Install</code> on the packages you wish to bring-in:
+<ul>
+<li><strong>Microsoft.MixedReality.Toolkit.Foundation:</strong> This package contains everything needed to work with Mixed Reality Toolkit.</li>
+<li><strong>Microsoft.MixedReality.Toolkit.Examples:</strong> This package contains example scenes of Mixed Reality Toolkit functionality.</li>
+<li><strong>Microsoft.MixedReality.Toolkit.Extensions:</strong> This package contains extensions to Mixed Reality Toolkit.</li>
+<li><strong>Microsoft.MixedReality.Toolkit.Tools:</strong> This package contains useful tooling for Unity.</li>
+</ul>
+</li>
+</ol>
+<h3 id="whats-new-in-201">What's new in 2.0.1</h3>
+<p>Consuming Mixed Reality Toolkit as a NuGet package will reduce compilation time, the ammount of .csproj files when editing code, and allow for a simple update mechanism for future versions.</p>
 <h2 id="version-200">Version 2.0.0</h2>
 <ul>
 <li><a href="#upgrading-projects-to-200">Upgrading projects</a></li>
