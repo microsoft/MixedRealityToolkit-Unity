@@ -40,12 +40,12 @@ that the class uses the [`BaseSpatialAwarenessObject`](xref:Microsoft.MixedReali
 [`IMixedRealitySpatialAwarenessMeshObserver`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessMeshObserver) and
 [`IMixedRealityCapabilityCheck`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityCapabilityCheck) interfaces.
 
-> `IMixedRealityCapabilityCheck` is used by the `SpatialObjectMeshObserver` to indicate that provides support for the SpatialAwarenessMesh capability.
-
 ``` c#
 public class SpatialObjectMeshObserver : BaseSpatialObserver, IMixedRealitySpatialAwarenessMeshObserver, IMixedRealityCapabilityCheck
 { }
 ```
+
+> `IMixedRealityCapabilityCheck` is used by the `SpatialObjectMeshObserver` to indicate that itprovides support for the SpatialAwarenessMesh capability.
 
 ### Implement the IMixedRealityDataProvider methods
 
@@ -53,71 +53,16 @@ Once the class has been defined, the next step is to provide the implementation 
 interface.
 
 > [!Note]
-> The `BaseSpatialObserver` class, does not provide the implementation for `IMixedRealityDataProvider`. The implementation of these methods
-is generally observer specific.
+> The `BaseSpatialObserver` class, via the `BaseService` class , provides only an empty implementations for `IMixedRealityDataProvider` methods. The details of these methods are generally data provider specific.
 
-Coninuing with the example of the [`SpatialObjectMeshObserver`](xref:Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver), the following
-code illustrates simple implementations of [`IMixedRealityDataProvider`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider).
+The methods that should be implemented by the data provider are:
 
-``` c#
-public override void Initialize()
-{
-    meshEventData = new MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>(EventSystem.current);
-
-    ReadProfile();
-
-    if (StartupBehavior == AutoStartBehavior.AutoStart)
-    {
-        Resume();
-    }
-}
-
-public override void Update()
-{
-    if (!IsRunning) { return; }
-
-    SendMeshObjects();
-}
-
-public override void Reset()
-{
-    CleanupObserver();
-    Initialize();
-}
-
-public override void Enable()
-{
-    // Resume iff we are not running and had been disabled while running.
-    if (!IsRunning && autoResume)
-    {
-        Resume();
-    }
-}
-
-public override void Disable()
-{
-    // Remember if we are currently running when Disable is called.
-    autoResume = IsRunning;
-
-    // If we are disbled while running...
-    if (IsRunning)
-    {
-        // Suspend the observer
-        Suspend();
-    }
-}
-
-public override void Destroy()
-{
-    Disable();
-    CleanupObserver();
-}
-```
-
-> [!Note]
-> The previous example uses two variables that are not defined; meshEventData and autoResume.
-`meshEventData` will be described in the [Observation change notifications](#observation-chang-notifications)
-section. `autoResume` is an implementation detail of the example observer and is not discussed in this artice.
+- `Destroy`
+- `Disable`
+- `Enable`
+- `Initialize`
+- `Reset`
+- `Update`
 
 ### Implement the observer logic
 
@@ -207,7 +152,7 @@ pasting a .asset file.
 
 ### Define the profile
 
-> The complete code for the example in this section are from the MixedRealityToolkit.Providers\ObjectMeshObserver\SpatialObjectMeshObserverProfilex.cs file.
+> The complete code for the example in this section are from the MixedRealityToolkit.Providers\ObjectMeshObserver\SpatialObjectMeshObserverProfile.cs file.
 
 Profile contents should mirror the accessible properties of the observer (ex: update interval). All of the user configurable properties defined in each
 interface should be contained with the profile.
