@@ -22,6 +22,31 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private static StringBuilder dropdownKeyBuilder = new StringBuilder();
 
+        private static readonly Dictionary<Type, Type> ProfileTypeForService;
+
+        // Static constructor initializes some static members
+        static BaseMixedRealityProfileInspector()
+        {
+            ProfileTypeForService = new Dictionary<Type, Type>();
+
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                foreach (var type in assembly.GetTypes())
+                {
+                    if (type.IsSubclassOf(typeof(BaseMixedRealityProfile)))
+                    {
+                        foreach (MixedRealityServiceProfileAttribute serviceProfileAttribute in type.GetCustomAttributes(typeof(MixedRealityServiceProfileAttribute), true))
+                        {
+                            if (!ProfileTypeForService.ContainsKey(serviceProfileAttribute.ServiceType))
+                            {
+                                ProfileTypeForService.Add(serviceProfileAttribute.ServiceType, type);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         protected virtual void OnEnable()
         {
             if (target == null)
@@ -125,7 +150,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 // However in the case where there is just a single profile type for the service, we can improve
                 // upon the user experience by limiting the set of things that show in the picker by restricting
                 // the set of profiles listed to only that type.
-                profileType = GetProfileTypesForService(serviceType).FirstOrDefault();
+                if (!ProfileTypeForService.TryGetValue(serviceType, out profileType))
+                {
+                    profileType = null;
+                }
             }
 
             // If the profile type is still null, just set it to base profile type
@@ -255,35 +283,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             dropdownKeyBuilder.Append("_");
             dropdownKeyBuilder.Append(property.objectReferenceValue.GetType().Name);
             return dropdownKeyBuilder.ToString();
-        }
-
-        /// <summary>
-        /// Given a service type, finds all sub-classes of BaseMixedRealityProfile that are
-        /// designed to configure that service.
-        /// </summary>
-        private static IReadOnlyCollection<Type> GetProfileTypesForService(Type serviceType)
-        {
-            if (serviceType == null)
-            {
-                return Array.Empty<Type>();
-            }
-
-            // This is a little inefficient in that it has to enumerate all of the mixed reality
-            // profiles in order to make this enumeration. It would be possible to cache the results
-            // of this, but then it would be necessary to listen to file/asset creation/destruction
-            // events in order to refresh the cache. If this ends up being a perf bottleneck
-            // in inspectors this would be one possible way to alleviate the issue.
-            HashSet<Type> allTypes = new HashSet<Type>();
-            BaseMixedRealityProfile[] allProfiles = ScriptableObjectExtensions.GetAllInstances<BaseMixedRealityProfile>();
-            for (int i = 0; i < allProfiles.Length; i++)
-            {
-                BaseMixedRealityProfile profile = allProfiles[i];
-                if (IsProfileForService(profile.GetType(), serviceType))
-                {
-                    allTypes.Add(profile.GetType());
-                }
-            }
-            return allTypes.ToReadOnlyCollection();
         }
 
         /// <summary>
