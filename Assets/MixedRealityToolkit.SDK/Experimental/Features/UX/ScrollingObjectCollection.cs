@@ -367,7 +367,27 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         private Vector2 HalfCell;
 
         //Maximum amount the scroller can travel (vertically)
-        private float maxY => NodeList.Count != 0 ? ((StepMultiplier(NodeList.Count, Tiers) + ModuloCheck(NodeList.Count, Tiers) - ViewableArea) * CellHeight) : 0.0f;
+        //private float maxY => NodeList.Count != 0 ? ((StepMultiplier(NodeList.Count, Tiers) + ModuloCheck(NodeList.Count, Tiers) - ViewableArea) * CellHeight) : 0.0f;
+
+        private float maxY
+        {
+            get
+            {
+                if(NodeList.Count != 0)
+                {
+                    var modCheck = ModuloCheck(NodeList.Count, Tiers);
+                    var mult = StepMultiplier(NodeList.Count + (Tiers - modCheck), Tiers);
+
+                    Debug.Log(NodeList.Count);
+
+                    return ((StepMultiplier(NodeList.Count + Tiers - ModuloCheck(NodeList.Count, Tiers), Tiers) - ViewableArea) * CellHeight);
+                }
+                else
+                {
+                    return 0.0f;
+                }
+            }
+        }
 
         //Minimum amount the scroller can travel (vertically) - this will always be zero. Here for readability
         private readonly float minY = 0.0f;
@@ -459,9 +479,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
         //The node in the list currently being interacted with
         private GameObject focusedObject;
-
-        //The Touchable in the list currently being interacted with
-        //private IMixedRealityTouchHandler scrollChild;
 
         //A list of new child nodes that have new child renderers that need to be added to the clippingBox
         private List<ObjectCollectionNode> nodesToClip = new List<ObjectCollectionNode>();
@@ -896,9 +913,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         private void OnEnable()
         {
             //Register for global input events
-            CoreServices.InputSystem.RegisterHandler<IMixedRealityTouchHandler>(this);
-            CoreServices.InputSystem.RegisterHandler<IMixedRealityPointerHandler>(this);
-
+            MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out IMixedRealityInputSystem inputSys);
+            inputSys.RegisterHandler<IMixedRealityTouchHandler>(this);
+            inputSys.RegisterHandler<IMixedRealityPointerHandler>(this);
 
             if (useOnPreRender)
             {
@@ -1078,8 +1095,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         private void OnDisable()
         {
             //Unregister global input events
-            CoreServices.InputSystem.UnregisterHandler<IMixedRealityTouchHandler>(this);
-            CoreServices.InputSystem.UnregisterHandler<IMixedRealityPointerHandler>(this);
+            MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out IMixedRealityInputSystem inputSys);
+            inputSys.UnregisterHandler<IMixedRealityTouchHandler>(this);
+            inputSys.UnregisterHandler<IMixedRealityPointerHandler>(this);
 
             if (useOnPreRender && cameraMethods != null)
             {
