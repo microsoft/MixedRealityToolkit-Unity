@@ -11,6 +11,7 @@
 // play mode tests in this check.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
+using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -23,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private readonly Vector3 LightDirection = new Vector3(-0.5f, -0.5f, 0.0f);
 
         /// <summary>
-        /// Tests if the MeshOutline component can be added an manipulated at runtime.
+        /// Tests if the MeshOutline component can be added and manipulated at runtime.
         /// </summary>
         /// <returns></returns>
         [UnityTest]
@@ -32,11 +33,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var light = InstantiateDirectionalLight(LightDirection);
             var gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
 
+            var outlineColor = Color.red;
             var meshOutline = gameObject.AddComponent<MeshOutline>();
-            meshOutline.OutlineMaterial = InstantiateStandardShaderOutlineMaterial(Color.red);
-            meshOutline.OutlineWidth = 0.02f;
+            meshOutline.OutlineMaterial = InstantiateStandardShaderOutlineMaterial(outlineColor);
+            meshOutline.OutlineWidth = 0.1f;
 
             yield return new WaitForSeconds(VisualizatonWaitTime);
+
+            Assert.True(ColorExistsInFrame(outlineColor, 16, 16), "Outline color could not be found in frame.");
 
             Object.Destroy(meshOutline.OutlineMaterial);
             Object.Destroy(gameObject);
@@ -44,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Tests if the MeshOutlineHierarchy component can be added an manipulated at runtime.
+        /// Tests if the MeshOutlineHierarchy component can be added and manipulated at runtime.
         /// </summary>
         /// <returns></returns>
         [UnityTest]
@@ -61,11 +65,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 sphere.transform.parent = gameObject.transform;
             }
 
+            var outlineColor = Color.blue;
             var meshOutlineHierarchy = gameObject.AddComponent<MeshOutlineHierarchy>();
-            meshOutlineHierarchy.OutlineMaterial = InstantiateStandardShaderOutlineMaterial(Color.blue);
-            meshOutlineHierarchy.OutlineWidth = 0.02f;
+            meshOutlineHierarchy.OutlineMaterial = InstantiateStandardShaderOutlineMaterial(outlineColor);
+            meshOutlineHierarchy.OutlineWidth = 0.1f;
 
             yield return new WaitForSeconds(VisualizatonWaitTime);
+
+            Assert.True(ColorExistsInFrame(outlineColor, 16, 16), "Outline color could not be found in frame.");
 
             Object.Destroy(meshOutlineHierarchy.OutlineMaterial);
             Object.Destroy(gameObject);
@@ -118,8 +125,53 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             material.SetFloat("_ZWrite", 0);
             material.EnableKeyword("_VERTEX_EXTRUSION");
             material.EnableKeyword("_VERTEX_EXTRUSION_SMOOTH_NORMALS");
+            material.DisableKeyword("_DIRECTIONAL_LIGHT");
+            material.DisableKeyword("_REFLECTIONS");
 
             return material;
+        }
+
+        private static Texture2D CaptureFrame(Camera camera, int width, int height, int depth = 24, RenderTextureFormat format = RenderTextureFormat.ARGB32)
+        {
+            var renderTexture = RenderTexture.GetTemporary(width, height, depth, format);
+
+            // Apply the render texture and render a frame.
+            var previousTexture = camera.targetTexture;
+            camera.targetTexture = renderTexture;
+            camera.Render();
+            camera.targetTexture = previousTexture;
+
+            // Blit the render from into a texture.
+            var outputTexture = new Texture2D(width, height, TextureFormat.ARGB32, false);
+            RenderTexture previousRenderTexture = RenderTexture.active;
+            RenderTexture.active = renderTexture;
+            outputTexture.ReadPixels(new Rect(0.0f, 0.0f, width, height), 0, 0);
+            outputTexture.Apply();
+            RenderTexture.active = previousRenderTexture;
+            RenderTexture.ReleaseTemporary(renderTexture);
+
+            return outputTexture;
+        }
+
+        private bool ColorExistsInFrame(Color color, int width, int height)
+        {
+            var frameCapture = CaptureFrame(Camera.main, width, height);
+
+            Assert.NotNull(frameCapture, "Frame capture is null.");
+
+            var pixels = frameCapture.GetPixels();
+
+            Assert.NotZero(pixels.Length, "Frame capture is empty.");
+
+            foreach (Color pixel in pixels)
+            {
+                if (pixel == color)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         #endregion
