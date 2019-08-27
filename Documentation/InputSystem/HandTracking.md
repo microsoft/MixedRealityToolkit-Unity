@@ -25,6 +25,17 @@ The hand mesh is used if fully defined mesh data is provided by the hand trackin
 
 Hand mesh display can have a noticeable performance impact, for this reason it can be disabled entirely by unchecking **Enable Hand Mesh Visualization** option.
 
+## Hand Visualization Settings
+
+The hand mesh and hand joint visualizations can be turned off or on via the *Hand Mesh Visualization Modes*
+setting and *Hand Joint Visualization Modes* respectively. These settings are application-mode specific,
+meaning it is possible to turn on some features while in editor (to see joints with in-editor simulation, for
+example) while having the same features turned off when deployed to device (in player builds).
+
+Note that it's generally recommended to have hand joint visualization turned on in editor (so that in-editor
+simulation will show where the hand joints are), and to have both hand joint visualization and hand mesh
+visualization turned off in player (because they incur a performance hit).
+
 ## Scripting
 
 Position and rotation can be requested from the input system for each individual hand joint as a [`MixedRealityPose`](xref:Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose).
