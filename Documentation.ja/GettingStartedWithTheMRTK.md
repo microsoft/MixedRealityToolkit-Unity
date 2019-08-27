@@ -82,7 +82,6 @@ MRTK は、以下を実行することで Mixed Reality ソリューションを
 
 ![TMP Essentials](../Documentation/Images/getting_started/MRTK_GettingStarted_TMPro.png)
 
-If you get such a prompt, select "Import TMP essentials" button. "TMP Essentials" refers to Text Mesh Pro plugin, which some of the MRTK examples use for improved text rendering. (See [Text in Unity](https://docs.microsoft.com/en-us/windows/mixed-reality/text-in-unity) for more detailed information)
 このようなプロンプトが表示された場合は、「Import TMP essentials」 ボタンを選択します。「TMP Essentials」とは、Text Mesh プライグインを指し、MRTK のサンプルの一部はテキストレンダリングを改善するために使用しています。(詳細については、[Unity のテキスト](https://docs.microsoft.com/en-us/windows/mixed-reality/text-in-unity)を参照してください。)
 
 4. Close the TMP dialog. After this you need to reload the scene. You can do this by double clicking the scene in the project tab.
