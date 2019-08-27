@@ -22,7 +22,7 @@
 [Gaze Provider](xref:Microsoft.MixedReality.Toolkit.Input.GazeProvider) 
  の設定はシーン内の Main Camera オブジェクト上で変更されています。
 
-プラットフォームサポートコンポーネント（ Windows Mixed Reality Device Managerなど ）は、対応するサービスのデータプロバイダーに追加する必要があります。
+Windows Mixed Reality Device Managerなどのプラットフォームサポートコンポーネントは、対応するサービスのデータプロバイダーに追加する必要があります。
 
 ### インターフェースおよびイベントの紐付け
 
@@ -66,7 +66,7 @@
 
 |                           | HTK 2017 |  MRTK v2  |
 |---------------------------|----------|-----------|
-| 設定                     | SpeechInputSource をシーンに追加してください。 | キーワードサービス (e.g., Windows Speech Input Manager) が入力システムのデータプロバイダに追加されている必要があります。|
+| 設定                     | SpeechInputSource をシーンに追加してください。 | Windows Speech Input Manager などのキーワードサービスが入力システムのデータプロバイダに追加されている必要があります。|
 | 構成             | 認識するキーワードをSpeechInputSource のインスペクタで設定します。| キーワードは [Mixed Reality Speech Commands Profile](Input/Speech.md) で設定されます。 |
 | イベントハンドラ            | `ISpeechHandler` | [`IMixedRealitySpeechHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler) |
 
