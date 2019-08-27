@@ -195,21 +195,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion
 
         #region Private Properties
-
-        [System.Flags]
-        private enum State
-        {
-            Start = 0x000,
-            Moving = 0x001,
-            Scaling = 0x010,
-            Rotating = 0x100,
-            MovingRotating = Moving | Rotating,
-            MovingScaling = Moving | Scaling,
-            RotatingScaling = Rotating | Scaling,
-            MovingRotatingScaling = Moving | Rotating | Scaling
-        };
-
-        private State currentState = State.Start;
+        
         private ManipulationMoveLogic moveLogic;
         private TwoHandScaleLogic scaleLogic;
         private TwoHandRotateLogic rotateLogic;
@@ -245,6 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Dictionary<uint, PointerData> pointerIdToPointerMap = new Dictionary<uint, PointerData>();
         private Quaternion objectToHandRotation;
         private bool isNearManipulation;
+        private bool isManipulationStarted;
         // This can probably be consolidated so that we use same for one hand and two hands
         private Quaternion targetRotationTwoHands;
 
@@ -361,119 +348,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             return false;
         }
-
-        private void UpdateStateMachine()
-        {
-            var handsPressedCount = pointerIdToPointerMap.Count;
-            State newState = currentState;
-            // early out for no hands or one hand if TwoHandedOnly is active
-            if (handsPressedCount == 0 || (handsPressedCount == 1 && manipulationType == HandMovementType.TwoHanded))
-            {
-                newState = State.Start;
-            }
-            else
-            {
-                switch (currentState)
-                {
-                    case State.Start:
-                    case State.Moving:
-                        if (handsPressedCount == 1)
-                        {
-                            newState = State.Moving;
-                        }
-                        else if (handsPressedCount > 1 && manipulationType != HandMovementType.OneHanded)
-                        {
-                            if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Move))
-                            {
-                                newState |= State.Moving;
-                            }
-                            if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Rotate))
-                            {
-                                newState |= State.Rotating;
-                            }
-                            if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Scale))
-                            {
-                                newState |= State.Scaling;
-                            }
-                        }
-                        break;
-                    case State.Scaling:
-                    case State.Rotating:
-                    case State.MovingScaling:
-                    case State.MovingRotating:
-                    case State.RotatingScaling:
-                    case State.MovingRotatingScaling:
-                        // one hand only supports move for now
-                        if (handsPressedCount == 1)
-                        {
-                            newState = State.Moving;
-                        }
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            }
-
-            InvokeStateUpdateFunctions(currentState, newState);
-            currentState = newState;
-        }
-
-        private void InvokeStateUpdateFunctions(State oldState, State newState)
-        {
-            if (newState != oldState)
-            {
-                switch (newState)
-                {
-                    case State.Moving:
-                        HandleOneHandMoveStarted();
-                        break;
-                    case State.Start:
-                        HandleManipulationEnded();
-                        break;
-                    case State.RotatingScaling:
-                    case State.MovingRotating:
-                    case State.MovingRotatingScaling:
-                    case State.Scaling:
-                    case State.Rotating:
-                    case State.MovingScaling:
-                        HandleTwoHandManipulationStarted(newState);
-                        break;
-                }
-                switch (oldState)
-                {
-                    case State.Start:
-                        HandleManipulationStarted();
-                        break;
-                    case State.Scaling:
-                    case State.Rotating:
-                    case State.RotatingScaling:
-                    case State.MovingRotating:
-                    case State.MovingRotatingScaling:
-                    case State.MovingScaling:
-                        HandleTwoHandManipulationEnded();
-                        break;
-                }
-            }
-            else
-            {
-                switch (newState)
-                {
-                    case State.Moving:
-                        HandleOneHandMoveUpdated();
-                        break;
-                    case State.Scaling:
-                    case State.Rotating:
-                    case State.RotatingScaling:
-                    case State.MovingRotating:
-                    case State.MovingRotatingScaling:
-                    case State.MovingScaling:
-                        HandleTwoHandManipulationUpdated();
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
         #endregion Private Methods
 
         #region Public Methods
@@ -488,9 +362,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             pointerIdToPointerMap.Clear();
 
             // end manipulation
-            State newState = State.Start;
-            InvokeStateUpdateFunctions(currentState, newState);
-            currentState = newState;
+            if (isManipulationStarted)
+            {
+                HandleManipulationEnded();
+            }
         }
 
         /// <summary>
@@ -538,7 +413,24 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     Vector3 initialGrabPoint = Quaternion.Inverse(eventData.Pointer.Rotation) * (eventData.Pointer.Result.Details.Point - eventData.Pointer.Position);
                     pointerIdToPointerMap.Add(id, new PointerData(eventData.Pointer, initialGrabPoint));
 
-                    UpdateStateMachine();
+                    // Call manipulation started handlers
+                    var handsPressedCount = pointerIdToPointerMap.Count;
+                    if (manipulationType.HasFlag(HandMovementType.TwoHanded) && handsPressedCount > 1)
+                    {
+                        if (!isManipulationStarted)
+                        {
+                            HandleManipulationStarted();
+                        }
+                        HandleTwoHandManipulationStarted();
+                    }
+                    else if (manipulationType.HasFlag(HandMovementType.OneHanded) && handsPressedCount == 1)
+                    {
+                        if (!isManipulationStarted)
+                        {
+                            HandleManipulationStarted();
+                        }
+                        HandleOneHandMoveStarted();
+                    }
                 }
             }
 
@@ -552,10 +444,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         public void OnPointerDragged(MixedRealityPointerEventData eventData)
-        {
-            if (currentState != State.Start)
+        {                    
+            // Call manipulation updated handlers
+            var handsPressedCount = pointerIdToPointerMap.Count;
+            if (manipulationType.HasFlag(HandMovementType.OneHanded) && handsPressedCount == 1)
             {
-                UpdateStateMachine();
+                if (isManipulationStarted)
+                {
+                    HandleOneHandMoveUpdated();
+                }
+            }
+            else if (manipulationType.HasFlag(HandMovementType.TwoHanded) && handsPressedCount > 1)
+            {
+                if (isManipulationStarted)
+                {
+                    HandleTwoHandManipulationUpdated();
+                }
             }
         }
 
@@ -573,7 +477,27 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 pointerIdToPointerMap.Remove(id);
             }
 
-            UpdateStateMachine();
+            // Call manipulation ended handlers
+            var handsPressedCount = pointerIdToPointerMap.Count;
+            if (manipulationType.HasFlag(HandMovementType.TwoHanded) && handsPressedCount == 1)
+            {
+                if (manipulationType.HasFlag(HandMovementType.OneHanded))
+                {
+                    HandleOneHandMoveStarted();
+                }
+                else if (isManipulationStarted)
+                {
+                    HandleManipulationEnded();
+                }
+            }
+            else if (handsPressedCount == 0)
+            {
+                if (isManipulationStarted)
+                {
+                    HandleManipulationEnded();
+                }
+            }
+
             eventData.Use();
         }
 
@@ -587,16 +511,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             var handPositionMap = GetHandPositionMap();
 
-            if ((currentState & State.Rotating) > 0)
+            if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Rotate))
             {
                 targetRotationTwoHands = rotateLogic.Update(handPositionMap, targetRotationTwoHands, constraintOnRotation, useLocalSpaceForConstraint);
             }
-            if ((currentState & State.Scaling) > 0)
+            if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Scale))
             {
                 targetScale = scaleLogic.UpdateMap(handPositionMap);
             }
 
-            if ((currentState & State.Moving) > 0)
+            if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Move))
             {
                 MixedRealityPose pose = GetAveragePointerPose();
                 targetPosition = moveLogic.Update(pose, targetRotationTwoHands, targetScale, IsNearManipulation(), true, constraintOnMovement);
@@ -688,27 +612,26 @@ namespace Microsoft.MixedReality.Toolkit.UI
             hostTransform.SetPositionAndRotation(smoothedPosition, smoothedRotation);
         }
 
-        private void HandleTwoHandManipulationStarted(State newState)
+        private void HandleTwoHandManipulationStarted()
         {
             var handPositionMap = GetHandPositionMap();
             targetRotationTwoHands = hostTransform.rotation;
 
-            if ((newState & State.Rotating) > 0)
+            if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Rotate))
             {
                 rotateLogic.Setup(handPositionMap, hostTransform, ConstraintOnRotation);
             }
-            if ((newState & State.Moving) > 0)
+            if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Move)) 
             {
                 MixedRealityPose pointerPose = GetAveragePointerPose();
                 MixedRealityPose hostPose = new MixedRealityPose(hostTransform.position, hostTransform.rotation);
                 moveLogic.Setup(pointerPose, GetPointersCentroid(), hostPose, hostTransform.localScale);
             }
-            if ((newState & State.Scaling) > 0)
+            if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Scale))
             {
                 scaleLogic.Setup(handPositionMap, hostTransform);
             }
         }
-        private void HandleTwoHandManipulationEnded() { }
 
         private void HandleOneHandMoveStarted()
         {
@@ -742,6 +665,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void HandleManipulationStarted()
         {
+            isManipulationStarted = true;
             isNearManipulation = IsNearManipulation();
             // TODO: If we are on HoloLens 1, push and pop modal input handler so that we can use old
             // gaze/gesture/voice manipulation. For HoloLens 2, we don't want to do this.
@@ -760,6 +684,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void HandleManipulationEnded()
         {
+            isManipulationStarted = false;
             // TODO: If we are on HoloLens 1, push and pop modal input handler so that we can use old
             // gaze/gesture/voice manipulation. For HoloLens 2, we don't want to do this.
             if (OnManipulationEnded != null)
