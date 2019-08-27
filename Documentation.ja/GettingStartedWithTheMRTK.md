@@ -182,4 +182,4 @@ Editor 内の入力シミュレーション を使って、[手](../Documentatio
 
 ## HoloToolkit (HTK/MRTK v1) からアップグレードする
 
-フレームワークが再構築されたため、Holotoolkit から Mixed Reality Toolkit v2 への直接的なアップグレードパスはありません。ただし、MRTK を HoloToolkit プロジェクトにインポートし、実装を移行することは可能です。詳細については、 [HoloToolkit to Mixed Reality Toolkit Porting Guide](../Documentation/HTKToMRTKPortingGuide.md) を参照してください。
+フレームワークが再構築されたため、HoloToolkit から Mixed Reality Toolkit v2 への直接的なアップグレードパスはありません。ただし、MRTK を HoloToolkit プロジェクトにインポートし、実装を移行することは可能です。詳細については、 [HoloToolkit to Mixed Reality Toolkit Porting Guide](../Documentation/HTKToMRTKPortingGuide.md) を参照してください。
