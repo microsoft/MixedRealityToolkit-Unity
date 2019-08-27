@@ -67,7 +67,7 @@ The next step is to add the logic for managing the input devices, including any 
 ### Raise notification events
 
 To enable applications to respond to input from the user, the data provider raises notification events corresponding to controller state changes as defined in the [`IMixedRealityInputHandler`1`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler)
-and [`IMixedRealityInputHandler<T>`](<<link>>) interfaces.
+and [`IMixedRealityInputHandler<T>`](Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler`1) interfaces.
 
 > The complete source code for the examples in this section can be found in the MixedRealityToolkit.Providers\WindowsMixedReality\WindowsMixedRealityController.cs file.
 
@@ -131,4 +131,5 @@ Once created, the device manager can be registered with the input system be used
 - [IMixedRealityInputDeviceManager interface](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputDeviceManager)
 - [IMixedRealityDataProvider interface](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider)
 - [IMixedRealityInputHandler interface](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler)
+< links, mark them as code >
 
