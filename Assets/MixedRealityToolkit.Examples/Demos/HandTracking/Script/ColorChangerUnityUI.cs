@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
+    /// <summary>
+    /// Change the color of the material on a UnityUI Graphic (ex. Image).  Useful for visualizing button presses.
+    /// </summary>
     class ColorChangerUnityUI : MonoBehaviour
     {
         [SerializeField]
@@ -19,6 +22,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             }
         }
 
+        /// <summary>
+        /// Sets a random color on the renderer's material.
+        /// </summary>
         public void ChangeColor()
         {
             graphic.color = UnityEngine.Random.ColorHSV();
