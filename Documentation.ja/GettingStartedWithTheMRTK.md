@@ -104,7 +104,7 @@ Editor 内の入力シミュレーション を使って、[手](InputSimulation
 * 中央のマウススクロールを使用して、手の奥行を調整します。
 * 左マウスをクリックして、ジェスチャーを切り替えます。
 
-シーンの探索を楽しんでください！ UI コントロールの詳細については、[ハンドインタラクションのサンプルガイド](README_HandInteractionExamples.md) で学ぶことができます。また、[入力シミュレーションのドキュメント](InputSimulation/InputSimulationService.md)を読んで、MRTK のEditor ないの手の入力シミュレーションの詳細を確認してください。
+シーンの探索を楽しんでください！ UI コントロールの詳細については、[ハンドインタラクションのサンプルガイド](README_HandInteractionExamples.md) で学ぶことができます。また、[入力シミュレーションのドキュメント](InputSimulation/InputSimulationService.md)を読んで、MRTK のEditor 内の手の入力シミュレーションの詳細を確認してください。
 
 おめでとうございます、最初の MRTK のシーンを使うことができました。これであなた自身のエクスペリエンスを創りはじめることができます。
 
