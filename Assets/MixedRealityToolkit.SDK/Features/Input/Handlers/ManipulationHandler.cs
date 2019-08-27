@@ -21,20 +21,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
     public class ManipulationHandler : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusChangedHandler
     {
         #region Public Enums
+        [System.Flags]
         public enum HandMovementType
         {
-            OneHandedOnly = 0,
-            TwoHandedOnly,
-            OneAndTwoHanded
+            OneHanded = 1 << 0,
+            TwoHanded = 1 << 1,
         }
+        [System.Flags]
         public enum TwoHandedManipulation
         {
-            Scale,
-            Rotate,
-            MoveScale,
-            MoveRotate,
-            RotateScale,
-            MoveRotateScale
+            Move = 1 << 0,
+            Rotate = 1 << 1,
+            Scale = 1 << 2
         };
         public enum RotateInOneHandType
         {
@@ -68,8 +66,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         [Header("Manipulation")]
         [SerializeField]
+        [EnumFlags]
         [Tooltip("Can manipulation be done only with one hand, only with two hands, or with both?")]
-        private HandMovementType manipulationType = HandMovementType.OneAndTwoHanded;
+        private HandMovementType manipulationType = HandMovementType.OneHanded | HandMovementType.TwoHanded;
 
         public HandMovementType ManipulationType
         {
@@ -78,8 +77,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [SerializeField]
+        [EnumFlags]
         [Tooltip("What manipulation will two hands perform?")]
-        private TwoHandedManipulation twoHandedManipulationType = TwoHandedManipulation.MoveRotateScale;
+        private TwoHandedManipulation twoHandedManipulationType = TwoHandedManipulation.Move | TwoHandedManipulation.Rotate | TwoHandedManipulation.Scale;
 
         public TwoHandedManipulation TwoHandedManipulationType
         {
@@ -367,7 +367,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             var handsPressedCount = pointerIdToPointerMap.Count;
             State newState = currentState;
             // early out for no hands or one hand if TwoHandedOnly is active
-            if (handsPressedCount == 0 || (handsPressedCount == 1 && manipulationType == HandMovementType.TwoHandedOnly))
+            if (handsPressedCount == 0 || (handsPressedCount == 1 && manipulationType == HandMovementType.TwoHanded))
             {
                 newState = State.Start;
             }
@@ -381,30 +381,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         {
                             newState = State.Moving;
                         }
-                        else if (handsPressedCount > 1 && manipulationType != HandMovementType.OneHandedOnly)
+                        else if (handsPressedCount > 1 && manipulationType != HandMovementType.OneHanded)
                         {
-                            switch (twoHandedManipulationType)
+                            if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Move))
                             {
-                                case TwoHandedManipulation.Scale:
-                                    newState = State.Scaling;
-                                    break;
-                                case TwoHandedManipulation.Rotate:
-                                    newState = State.Rotating;
-                                    break;
-                                case TwoHandedManipulation.MoveRotate:
-                                    newState = State.MovingRotating;
-                                    break;
-                                case TwoHandedManipulation.MoveScale:
-                                    newState = State.MovingScaling;
-                                    break;
-                                case TwoHandedManipulation.RotateScale:
-                                    newState = State.RotatingScaling;
-                                    break;
-                                case TwoHandedManipulation.MoveRotateScale:
-                                    newState = State.MovingRotatingScaling;
-                                    break;
-                                default:
-                                    throw new ArgumentOutOfRangeException();
+                                newState |= State.Moving;
+                            }
+                            if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Rotate))
+                            {
+                                newState |= State.Rotating;
+                            }
+                            if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Scale))
+                            {
+                                newState |= State.Scaling;
                             }
                         }
                         break;
@@ -528,7 +517,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             // If we only allow one handed manipulations, check there is no hand interacting yet. 
-            if (manipulationType != HandMovementType.OneHandedOnly || pointerIdToPointerMap.Count == 0)
+            if (manipulationType != HandMovementType.OneHanded || pointerIdToPointerMap.Count == 0)
             {
                 uint id = eventData.Pointer.PointerId;
                 // Ignore poke pointer events
