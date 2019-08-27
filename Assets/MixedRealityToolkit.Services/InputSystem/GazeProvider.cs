@@ -120,6 +120,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public GameObject GazeCursorPrefab { private get; set; }
 
         /// <inheritdoc />
+        public bool? GazeCursorVisibilityOverride
+        {
+            // Note that set doesn't call GazeCursor.SetVisible because visibility
+            // of the gaze cursor is reevaluated on each Update() tick.
+            get; set;
+        } = null;
+
+        /// <inheritdoc />
         public IMixedRealityCursor GazeCursor => GazePointer.BaseCursor;
 
         /// <inheritdoc />
@@ -354,11 +362,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 Debug.DrawRay(GazeOrigin, (HitPosition - GazeOrigin), Color.white);
             }
+            UpdateGazeCursorVisibility();
+        }
 
+        private void UpdateGazeCursorVisibility()
+        {
+            // If the gaze cursor visibility is currently overridden, honor that over other
+            // gaze cursor visibility states.
+            if (GazeCursorVisibilityOverride != null)
+            {
+                GazeCursor.SetVisibility(GazeCursorVisibilityOverride.Value);
+            }
             // If flagged to do so (setCursorInvisibleWhenFocusLocked) and active (IsInteractionEnabled), set the visibility to !IsFocusLocked,
             // but don't touch the visibility when not active or not flagged.
-            if (setCursorInvisibleWhenFocusLocked && gazePointer != null &&
-                gazePointer.IsInteractionEnabled && GazeCursor != null && gazePointer.IsFocusLocked == GazeCursor.IsVisible)
+            else if (setCursorInvisibleWhenFocusLocked && gazePointer != null &&
+                     gazePointer.IsInteractionEnabled && GazeCursor != null && gazePointer.IsFocusLocked == GazeCursor.IsVisible)
             {
                 GazeCursor.SetVisibility(!gazePointer.IsFocusLocked);
             }

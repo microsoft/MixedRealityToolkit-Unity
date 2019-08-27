@@ -33,7 +33,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The Gaze Cursor for the provider.
         /// </summary>
+        /// <remarks>
+        /// Note that calling GazeCursor.SetVisibility will not do anything, because the eye gaze provider
+        /// controls the visibility of the gaze cursor based on its own internal business logic.
+        /// In order to override this behavior use the GazeCursorVisibilityOverride property.
+        /// </remarks>
         IMixedRealityCursor GazeCursor { get; }
+
+        /// <summary>
+        /// The override for the GazeCursor visibility
+        /// </summary>
+        /// <remarks>
+        /// If null, there is no override for the GazeCursor visibility, and the visibility of the cursor
+        /// will be driven by the gaze provider's internal state machine.
+        /// If true, the gaze cursor will always be visible.
+        /// If false, the gaze cursor will always be hidden.
+        /// </remarks>
+        bool? GazeCursorVisibilityOverride { get; set; }
 
         /// <summary>
         /// The game object that is currently being gazed at, if any.

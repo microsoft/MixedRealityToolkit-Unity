@@ -73,3 +73,26 @@ void LogGazeDirectionOrigin()
 }
 ```
 
+### How to override the gaze cursor visibility
+
+The visibility of the gaze cursor is driven by the internal state machine of the GazeProvider itself.
+As a result, calling GazeCursor.SetVisibility(true) doesn't accomplish anything because the visibility
+state will be erased on the next update loop.
+
+The sample below shows how to force the gaze cursor to always be hidden (or always be visible)
+
+```csharp
+void HideGazeCursorAlways()
+{
+    CoreServices.InputSystem.GazeProvider.GazeCursorVisibilityOverride = false;
+}
+
+void ShowGazeCursorAlways()
+{
+    CoreServices.InputSystem.GazeProvider.GazeCursorVisibilityOverride = true;
+}
+```
+
+This will not cause the cursor to immediately show/hide - it will show/hide on the next update tick.
+
+For more examples of how this is used, see the [`GazeProviderTests`](xref:Microsoft.MixedReality.Toolkit.Tests.Input.GazeProviderTests)
