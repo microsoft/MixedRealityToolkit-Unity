@@ -1,3 +1,6 @@
+- name: Guides (Japanese)
+  href: Documentation.ja/
+  homepage: Documentation.ja/GettingStartedWithTheMRTK.md
 - name: Guides
   href: Documentation/
   homepage: Documentation/GettingStartedWithTheMRTK.md
