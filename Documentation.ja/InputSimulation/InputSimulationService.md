@@ -1,35 +1,35 @@
-# インプットシミュレーションサービス
+# 入力シミュレーションサービス(Input Simulation Service)
 
-インプットシミュレーションサービスは、Unity Editor 上で使用できない場合があるデバイスやプラットフォームをエミュレートします。例：
+入力シミュレーションサービスは、Unity Editor 上で使用できない場合があるデバイスやプラットフォームをエミュレートします。例：
 
-* HoloLens または VRデバイスのハンドトラッキング
+* HoloLens または VR デバイスのヘッドトラッキング
 * HoloLens のハンドジェスチャー
-* HoloLens 2 の詳細なハンドトラッキング
+* HoloLens 2 の多関節ハンドトラッキング
 * HoloLens 2 のアイトラッキング
 
-ユーザーは、従来のキーボードやマウスの組み合わせで実行時に操作をシミュレーションすることができます。それにより、デバイスに配布する前にUnity Editor 上でインタラクションをテストすることができます。
+ユーザーは、従来のキーボードやマウスの組み合わせで実行時に操作をシミュレーションすることができます。それにより、デバイスにデプロイする前に Unity Editor 上でインタラクションをテストすることができます。
 
 > [!警告]
-> これは、Unityの XR Holographic Emulation > Emulation Mode = "Simulate in Editor" では動作しません。Unity Editor 内でのシミュレーションは、MRTK のインプットシミュレーションの制御を奪い取ります。MRTKのインプットシミュレーションサービスを使用するには、XR Holographic Emulationを、Emulation Mode = *"None"*にセットする必要があります。
+> これは、Unity の XR Holographic Emulation > Emulation Mode = "Simulate in Editor" では動作しません。Unity Editor 内でのシミュレーションは、MRTK の入力シミュレーションの制御を奪い取ります。MRTK の入力シミュレーションサービスを使用するには、XR Holographic Emulation を、Emulation Mode = *"None"* にセットする必要があります。
 
-## インプットシミュレーションサービスの有効化
+## 入力シミュレーションサービスの有効化
 
-MRTK では、インプットシミュレーションはデフォルトで有効化されています。
+MRTK では、入力シミュレーションはデフォルトで有効化されています。
 
-インプットシミュレーションサービスは、[Mixed Reality service](../MixedRealityServices.md) のオプションです。データプロバイダーとして、[Input System profile](../Input/InputProviders.md) に追加することができます。
+入力シミュレーションサービスは、[Mixed Reality service](../MixedRealityServices.md) のオプションです。データプロバイダーとして、[Input System profile](../Input/InputProviders.md) に追加することができます。
 
 * __Type__ は、_Microsoft.MixedReality.Toolkit.Input > InputSimulationService_ である必要があります
 * __Platform(s)__ は、サービスがキーボードとマウスの入力に依存しているため、常に _Windows Editor_ である必要があります
-* __Profile__ は、インプットシミュレーションの全ての設定を保持しています。
+* __Profile__ は、入力シミュレーションの全ての設定を保持しています。
 
 > [!警告]
-> 現時点では、どのタイプのプロファイルもアサインすることができます。別のプロファイルをサービスにアサインする場合は、必ず_Input Simulation_ タイプのプロファイルを使用してください。そうしないと機能しません。
+> 現時点では、どのタイプのプロファイルもアサインすることができます。別のプロファイルをサービスにアサインする場合は、必ず _Input Simulation_ タイプのプロファイルを使用してください。そうしないと機能しません。
 
 <a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_InputSystemDataProviders.png">
   <img src="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_InputSystemDataProviders.png" title="Full Hand Mesh" width="80%" class="center" />
 </a>
 
-リンクされたプロファイルを開くことでインプットシミュレーションの設定にアクセスすることができます。
+リンクされたプロファイルを開くことで入力シミュレーションの設定にアクセスすることができます。
 
 <a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_InputSimulationProfile.png">
   <img src="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_InputSimulationProfile.png" title="Full Hand Mesh" width="80%" class="center" />
@@ -37,7 +37,7 @@ MRTK では、インプットシミュレーションはデフォルトで有効
 
 # カメラコントロール
 
-頭の動きはインプットシミュレーションサービスでエミュレートされます。
+頭の動きは入力シミュレーションサービスでエミュレートされます。
 
 <a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_CameraControlSettings.png">
   <img src="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_CameraControlSettings.png" title="Full Hand Mesh" width="80%" class="center" />
@@ -60,7 +60,7 @@ MRTK では、インプットシミュレーションはデフォルトで有効
 
 # ハンドシミュレーション
 
-インプットシミュレーションサービスは、ハンドデバイスをサポートします。バーチャルハンドは、ボタンやグラブ可能オブジェクトなどの、ハンドデバイスをサポートしたオブジェクトと対話することができます。
+入力シミュレーションサービスは、ハンドデバイスをサポートします。バーチャルハンドは、ボタンやグラブ可能オブジェクトなどの、通常のハンドデバイスをサポートしたオブジェクトとインタラクションできます。
 
 <a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandSimulationMode.png">
   <img src="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandSimulationMode.png" title="Full Hand Mesh" width="80%" class="center" />
@@ -68,7 +68,7 @@ MRTK では、インプットシミュレーションはデフォルトで有効
 
 __Hand Simulation Mode__ は、２つの異なる入力モデルを切り替えて使用できます。
 
-* _Articulated Hands_: 関節の位置を持った関節式の手をシミュレートします
+* _Articulated Hands_: 関節の位置のデータを持った多関節ハンドをシミュレートします
 
    HoloLens 2 のインタラクションモデルをエミュレートします
 
@@ -100,7 +100,7 @@ Manipuration キーが押されなくなると、手は短い _Hand Hide Timeout
 
 初期状態のカメラと手が表示される距離は、*Default Hand Distance.* で制御できます。
 
-デフォルトでは、シミュレートされた手の関節は完全に静的なものです。実機デバイスでは、ハンドトラッキングの根本として、いくらかのジッターやノイズが発生することに注意してください。
+デフォルトでは、シミュレートされた手の関節は完全に静的なものです。実機デバイスでは、ハンドトラッキングの原理的な特性として、いくらかのジッターやノイズが発生することに注意してください。
 実機デバイスでは手のメッシュや関節が有効になっているのを見ることができます（そして、手を完全に静止させていても少しジッターが発生するのがわかります）。*Hand Jitter Amount* をプラスの値（例として上の画像にあるように 0.1 程度）にすることにより、ジッターのシミュレーションを行うことができます。
 
 <a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandRotationSettings.png">
@@ -129,7 +129,7 @@ Manipuration キーが押されなくなると、手は短い _Hand Hide Timeout
 
 2. 操作の間、マウスボタンを押し続けることによってハンドジェスチャーを実行することができます
 
-_Left/Middle/Right Mouse Hand Gesture_ 設定を使用して、各マウスボタンを、手の形が異なるジェスチャーにマップすることができます。
+_Left/Middle/Right Mouse Hand Gesture_ 設定を使用して、各マウスボタンを、手の形が異なるジェスチャーにマップすることができます。 _Default Hand Gesture_ は、どのボタンも押されていないときの手の形です。
 
 > [!注意]
 > _Pinch_ ジェスチャーは、この時点では "Select" アクションを発生させる唯一のジェスチャーです
@@ -154,19 +154,19 @@ _Left/Middle/Right Mouse Hand Gesture_ 設定を使用して、各マウスボ�
    2. グラブしたいオブジェクトに手を動かします
    3. マウスボタンを押して _Pinch_ ジェスチャーを有効にします。永続化モードではマウスボタンを離すまでジェスチャーが有効になります
 3. 同じ手順をもう片方の手で繰り返します。同じオブジェクトの別のポイントをグラブします
-4. これで両手で同じオブジェクトをグラブした状態になるので、それぞれの手を動かして両手での操作を行います
+4. これで両手で同じオブジェクトをグラブした状態になるので、どちらかの手を動かして両手での操作を行います
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Qol5OFNfN14" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 
 ## GGV インタラクション
 
-1. [Input Simulation Profile](#enabling-the-input-simulation-service) で、__Hand Simulation Mode__ を _Gestures_ にすることにより、GGVのシミュレーションに切り替えることができます
+1. [Input Simulation Profile](#enabling-the-input-simulation-service) で、__Hand Simulation Mode__ を _Gestures_ にすることにより、GGV のシミュレーションに切り替えることができます
 
     <a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_SwitchToGGV.png">
       <img src="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_SwitchToGGV.png" title="Full Hand Mesh" width="80%" class="center" />
     </a>
 
-2. カメラを回転させて、視線カーソルを対話可能なオブジェクトにポイントします（左マウスボタンを使用）
+2. カメラを回転させて、視線カーソルをインタラクション可能なオブジェクトにポイントします（右マウスボタンを使用）
 3. _Space_ を押し続けて、右手を操作します
 4. _left mouse button_ を押し続けてインタラクションします
 5. 再度カメラを回転させてオブジェクトを操作します
@@ -175,4 +175,4 @@ _Left/Middle/Right Mouse Hand Gesture_ 設定を使用して、各マウスボ�
 
 ## アイトラッキング
 
-[Eye tracking simulation](../EyeTracking/EyeTracking_BasicSetup.md#simulating-eye-tracking-in-the-unity-editor) は、[Input Simulation Profile](#enabling-the-input-simulation-service) の __Simulate Eye Position__ オプションをチェックすることで有効になります。これは GGV スタイルのインタラクションでは使用できません（ですので、 __Hand Simulation Mode__ が _Articulated_ にセットされていることを確認してください）
+[Eye tracking simulation](../EyeTracking/EyeTracking_BasicSetup.md#simulating-eye-tracking-in-the-unity-editor) は、[Input Simulation Profile](#enabling-the-input-simulation-service) の __Simulate Eye Position__ オプションをチェックすることで有効になります。これは GGV スタイルのインタラクションでは使用すべきではありません（ですので、 __Hand Simulation Mode__ が _Articulated_ にセットされていることを確認してください）
