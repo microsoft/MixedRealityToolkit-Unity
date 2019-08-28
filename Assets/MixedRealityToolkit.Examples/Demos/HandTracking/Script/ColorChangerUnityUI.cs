@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// <summary>
         /// Sets a random color on the renderer's material.
         /// </summary>
-        public void ChangeColor()
+        public void RandomColor()
         {
             graphic.color = UnityEngine.Random.ColorHSV();
         }
