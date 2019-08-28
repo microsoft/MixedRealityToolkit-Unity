@@ -1,34 +1,44 @@
-# Hand interaction examples scene #
+# ハンドインタラクションのサンプルシーン #
 
 ![Hand Interaction Examples](../Documentation/Images/MRTK_Examples.png)
 
-The [HandInteractionExamples.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity) example scene contains various types of interactions and UI controls that highlight articulated hand input.
+[HandInteractionExamples.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity) のサンプルシーンには、関節式の手 (articulated hand) の入力をハイライトした様々なタイプのインタラクションと UI コントロールが含まれています。
 
-> [!NOTE]
-> This example scene uses *TextMesh Pro*. To open the scene, please click *'Import TMP Essentials'* when the respective prompt is shown during the import of the scene. Unity will then import TextMesh Pro packages.
+> [!注意]
+> このサンプルシーンは、*TextMesh Pro* を使用しています。シーンのインポート中にプロンプトが表示された場合、シーンを開くために *「Import TMP Essentials」* をクリックしてください。 Unity は TextMesh Pro のパッケージをインポートします。
 
 <img src="../Documentation/Images/HandInteractionExamples/MRTK_Examples_TMP2.png" width="450">
 
-If you see big text after the TextMesh Pro import, please open another Unity scene and then open the example scene again.
+TextMesh Pro のインポート後に大きなテキストが表示される場合は、別の Unity シーンを開いてから、サンプルシーンをもう一度開いてください。
 
 <img src="../Documentation/Images/HandInteractionExamples/MRTK_Examples_TMP1.png" width="350">
 
-## Pressable button ##
-See [button](README_Button.md) page for the details.
+## 押しボタン (Pressable button) ##
+
+詳細は、[ボタン (button)](README_Button.md) のページを参照してください。
+
 ![Hand Interaction Examples](../Documentation/Images/HandInteractionExamples/MRTK_Examples_PressTouch.png)
 
-## Bounding box ##
-See [bounding box](README_BoundingBox.md) page for the details.
+## バウンディングボックス (Bounding box) ##
+
+詳細は、 [バウンディングボックス (bounding box)](README_BoundingBox.md) のページを参照してください。
+
 ![Hand Interaction Examples](../Documentation/Images/HandInteractionExamples/MRTK_Examples_BoundingBox.png)
 
-## Manipulation handler ##
-See [manipulation handler](README_ManipulationHandler.md) page for the details.
+## マニピュレーションハンドラ (Manipulation handler) ##
+
+詳細は、 [マニピュレーションハンドラ (manipulation handler)](README_ManipulationHandler.md) のページを参照してください。
+
 ![Hand Interaction Examples](../Documentation/Images/HandInteractionExamples/MRTK_Examples_Manipulation.png)
 
-## Slate ##
-See [slate](README_Slate.md) page for the details.
+## スレート (Slate) ##
+
+詳細は、 [スレート (slate)](README_Slate.md) のページを参照してください。
+
 ![Hand Interaction Examples](../Documentation/Images/HandInteractionExamples/MRTK_Examples_Slate.png)
 
-## System keyboard ##
-See [system keyboard](README_SystemKeyboard.md) page for the details.
+## システムキーボード (System keyboard) ##
+
+詳細は、 [システムキーボード (system keyboard)](README_SystemKeyboard.md) のページを参照してください。
+
 ![Hand Interaction Examples](../Documentation/Images/HandInteractionExamples/MRTK_Examples_Keyboard.png)
