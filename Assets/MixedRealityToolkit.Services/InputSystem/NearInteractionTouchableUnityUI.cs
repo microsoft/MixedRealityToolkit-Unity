@@ -33,10 +33,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private static readonly List<NearInteractionTouchableUnityUI> instances = new List<NearInteractionTouchableUnityUI>();
 
-        protected override void OnValidate()
+        private void Awake()
         {
-            base.OnValidate();
-
             rectTransform = GetComponent<RectTransform>();
         }
 
