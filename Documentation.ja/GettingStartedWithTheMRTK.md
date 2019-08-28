@@ -16,7 +16,7 @@ Mixed Reality Toolkit を始めるには、次のものが必要です。
 * [最新の MRTK release](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases)
 * [Windows SDK 18362+](https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk).
 
-  これは WMR、HoloLens 1、または HoloLens 2 向けの UWPアプリを構築する場合に必要です。OpenVR 向けに構築する場合は不要です。
+  これは WMR、HoloLens 1、または HoloLens 2 向けの UWP アプリを構築する場合に必要です。OpenVR 向けに構築する場合は不要です。
 
 ## チュートリアルを始める
 
