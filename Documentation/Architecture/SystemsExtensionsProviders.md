@@ -6,7 +6,7 @@ primary categories; systems, extension services and data providers.
 ## Systems
 
 Systems are services that provide the core functionality of the Mixed Reality Toolkit. All systems are implementations of the
-[`IMixedRealityService`](xref:Microsoft.MixedRealityToolkit.IMixedRealityService) interface.
+[`IMixedRealityService`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityService) interface.
 
 - [BoundarySystem](../Boundary/BoundarySystemGettingStarted.md)
 - CameraSystem
@@ -21,7 +21,7 @@ Each of the listed systems are surfaced in the MixedRealityToolkit component's c
 ## Extensions
 
 Extension services are components that extend the functionality of the Mixed Reality Toolkit. All extension services must specify
-that they implement the [`IMixedRealityExtensionService`](xref:Microsoft.MixedRealityToolkit.IMixedRealityExtensionService) interface.
+that they implement the [`IMixedRealityExtensionService`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityExtensionService) interface.
 
 To be accessible to the MRTK, extension services are registered and configured using the Extensions section of the MixedRealityToolkit
 component's configuration profile.
@@ -31,7 +31,7 @@ component's configuration profile.
 ## Data Providers
 
 Data providers are components that, per their name, provide data to a Mixed Reality Toolkit service. All data providers must specify that
-they implement the [`IMixedRealityDataProvider`](xref:Microsoft.MixedRealityToolkit.IMixedRealityDataProvider) interface.
+they implement the [`IMixedRealityDataProvider`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider) interface.
 
 > [!Note]
 > Not all services will require data providers. Of the MixedRealityToolkit's systems, the Input and Spatial Awareness systems are the
@@ -118,7 +118,7 @@ For more information, please see [creating a spatial awareness system data provi
 - [Extension services](../Extensions/ExtensionServices.md)
 - [Creating an input system data provider](../Input/CreateDataProvider.md)
 - [Creating a spatial awareness system system data provider](../SpatialAwareness/CreateDataProvider.md)
-- [IMixedRealityService interface](xref:Microsoft.MixedRealityToolkit.IMixedRealityService)
-- [IMixedRealityDataProvider interface](xref:Microsoft.MixedRealityToolkit.IMixedRealityDataProvider)
-- [IMixedRealityExtensionService interface](xref:Microsoft.MixedRealityToolkit.IMixedRealityExtensionService)
+- [IMixedRealityService interface](xref:Microsoft.MixedReality.Toolkit.IMixedRealityService)
+- [IMixedRealityDataProvider interface](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider)
+- [IMixedRealityExtensionService interface](xref:Microsoft.MixedReality.Toolkit.IMixedRealityExtensionService)
 - [IMixedRealitySpatialAwarenessObserver](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver)

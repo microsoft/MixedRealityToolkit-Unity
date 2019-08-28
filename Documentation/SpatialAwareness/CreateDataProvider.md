@@ -181,7 +181,7 @@ The `CreateAssetMenu` attribute can be applied to the profile class to enable cu
 
 ### Implement the inspector
 
-> The complete code for the example in this section are from the MixedRealityToolkit.Providers\ObjectMeshObserver\SpatialObjectMeshObserverProfileInspector.cs file.
+> The complete code for the example in this section are from the MixedRealityToolkit.Services\InputSimulation\Editor\MixedRealityInputSimulationProfileInspector.cs file.
 
 Profile inspectors are the user interface for configuring and viewing profile contents. Each profile inspector should extend the
 [`BaseMixedRealityToolkitConfigurationProfileInspector]() class.
@@ -211,3 +211,4 @@ Once created, the observer can be registered with the spatial awareness system b
 - [`BaseSpatialObserver` class](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver)
 - [`IMixedRealitySpatialAwarenessMeshObserver` interface](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessMeshObserver)
 - [`IMixedRealityDataProvider` interface](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider)
+- [`IMixedRealityCapabilityCheck` interface](xref:Microsoft.MixedReality.Toolkit.IMixedRealityCapabilityCheck)

@@ -110,13 +110,39 @@ public class WindowsMixedRealityDeviceManager : BaseInputDeviceManager, IMixedRe
 In the Mixed Reality Toolkit, data providers are configured using profiles. These are serialized objects that can easily be shared between applications by simply copying and
 pasting a .asset file.
 
+Data providers with additional configuration options (ex: [InputSimulationService](../InputSimulation/InputSimulationService.md)) should create a profile and inspector to allow
+customers to modify the behavior to best suit the needs of the application.
+
 ### Define the profile
 
-<<
+> The complete code for the example in this section are from the MixedRealityToolkit.Services\InputSimulation\MixedRealityInputSimulationProfile.cs file.
+
+Profile contents should mirror the accessible properties of the observer (ex: update interval). All of the user configurable properties defined in each
+interface should be contained with the profile.
+
+``` c#
+[CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Simulated Input Profile", fileName = "MixedRealityInputSimulationProfile", order = (int)CreateProfileMenuItemIndices.InputSimulation)]
+public class MixedRealityInputSimulationProfile : BaseMixedRealityProfile
+{ }
+```
+
+The `CreateAssetMenu` attribute can be applied to the profile class to enable customers to create a profile instance using the 
+**Create > Assets > Mixed Reality Toolkit > Profiles** menu.
 
 ### Implement the inspector
 
-<<
+> The complete code for the example in this section are from the MixedRealityToolkit.Providers\ObjectMeshObserver\SpatialObjectMeshObserverProfileInspector.cs file.
+
+Profile inspectors are the user interface for configuring and viewing profile contents. Each profile inspector should extend the
+[`BaseMixedRealityToolkitConfigurationProfileInspector]() class.
+
+``` c#
+[CustomEditor(typeof(MixedRealityInputSimulationProfile))]
+public class MixedRealityInputSimulationProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
+{ }
+```
+
+The `CustomEditor` attribute informs Unity the type of asset to which the imspector applies.
 
 ## Register the device manager
 
@@ -129,6 +155,7 @@ Once created, the device manager can be registered with the input system be used
 - [Input system](Overview.md)
 - [`BaseInputDeviceManager` class](xref:Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager)
 - [`IMixedRealityInputDeviceManager` interface](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputDeviceManager)
-- [`IMixedRealityDataProvider` interface](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider)
 - [`IMixedRealityInputHandler` interface](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler)
 - [`IMixedRealityInputHandler<T>` interface](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler`1)
+- [`IMixedRealityDataProvider` interface](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider)
+- [`IMixedRealityCapabilityCheck` interface](xref:Microsoft.MixedReality.Toolkit.IMixedRealityCapabilityCheck)
