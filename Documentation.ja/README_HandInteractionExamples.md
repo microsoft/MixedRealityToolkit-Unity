@@ -9,7 +9,7 @@
 
 <img src="../Documentation/Images/HandInteractionExamples/MRTK_Examples_TMP2.png" width="450">
 
-TextMesh Proのインポート後に大きなテキストが表示される場合は、別のUnityシーンを開いてから、サンプルシーンをもう一度開いてください。
+TextMesh Pro のインポート後に大きなテキストが表示される場合は、別の Unity シーンを開いてから、サンプルシーンをもう一度開いてください。
 
 <img src="../Documentation/Images/HandInteractionExamples/MRTK_Examples_TMP1.png" width="350">
 
