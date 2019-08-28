@@ -89,9 +89,9 @@ MRTK は、以下を実行することで Mixed Reality ソリューションを
 
 1. Play ボタンを押します。
 
-## In-Editor Hand Input Simulation を使ってシーンをテストする
+## Editor 内ハンド入力シミュレーションを使ってシーンをテストする
 
-Editor 内の入力シミュレーション を使って、[手](InputSimulation/InputSimulationService.md#hand-simulation)や[目](EyeTracking/EyeTracking_BasicSetup.md#simulating-eye-tracking-in-the-unity-editor)などの特定のタイプの入力に対しバーチャルなオブジェクトの動作をテストすることができます。
+Editor 内の入力シミュレーション を使って、[手](InputSimulation/InputSimulationService.md#hand-simulation)や[目](EyeTracking/EyeTracking_BasicSetup.md#simulating-eye-tracking-in-the-unity-editor)などの特定のタイプの入力に対し、バーチャルなオブジェクトの動作をテストすることができます。
 
 シーン内を移動する：
 
@@ -139,7 +139,7 @@ Editor 内の入力シミュレーション を使って、[手](InputSimulation
 
     ヒエラルキーには以下のものが含まれます。
 
-    * Mixed Reality Toolkit - フレームワーク全体へ中心の設定のエントリポイントを提供します。
+    * Mixed Reality Toolkit - フレームワーク全体に対する中心的な設定のエントリポイントを提供します。
     * MixedRealityPlayspace - ヘッドセットの親オブジェクト。ヘッドセット / コントローラ及びその他の必要なシステムがシーンで正しく管理されるようにします。
     * Playspace の下に移動した Main Camera - プレイスペースが SDK と連動してカメラを管理できるようにします。
 
