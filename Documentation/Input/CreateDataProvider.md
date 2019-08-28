@@ -67,7 +67,7 @@ The next step is to add the logic for managing the input devices, including any 
 ### Raise notification events
 
 To enable applications to respond to input from the user, the data provider raises notification events corresponding to controller state changes as defined in the [`IMixedRealityInputHandler`1`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler)
-and [`IMixedRealityInputHandler<T>`](Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler`1) interfaces.
+and [`IMixedRealityInputHandler<T>`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler`1) interfaces.
 
 > The complete source code for the examples in this section can be found in the MixedRealityToolkit.Providers\WindowsMixedReality\WindowsMixedRealityController.cs file.
 
@@ -93,7 +93,7 @@ InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, intera
 
 ### Apply the MixedRealityDataProvider attribute
 
-The final step of creating an input system data provider is to apply the [`MixedRealityDataProvider`](Microsoft.MixedReality.Toolkit.MixedRealityDataProviderAttribute)
+The final step of creating an input system data provider is to apply the [`MixedRealityDataProvider`](xref:Microsoft.MixedReality.Toolkit.MixedRealityDataProviderAttribute)
 attribute to the class. This is an optional step that allows for setting the default profile and platform(s) for the provider, when selected in the input system profile.
 
 ``` c#
@@ -131,4 +131,4 @@ Once created, the device manager can be registered with the input system be used
 - [`IMixedRealityInputDeviceManager` interface](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputDeviceManager)
 - [`IMixedRealityDataProvider` interface](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider)
 - [`IMixedRealityInputHandler` interface](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler)
-- [`IMixedRealityInputHandler<T>` interface](Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler`1)
+- [`IMixedRealityInputHandler<T>` interface](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler`1)
