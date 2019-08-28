@@ -1,6 +1,7 @@
 # インプットシミュレーションサービス
 
 インプットシミュレーションサービスは、Unity Editor 上で使用できない場合があるデバイスやプラットフォームをエミュレートします。例：
+
 * HoloLens または VRデバイスのハンドトラッキング
 * HoloLens のハンドジェスチャー
 * HoloLens 2 の詳細なハンドトラッキング
@@ -16,6 +17,7 @@
 MRTK では、インプットシミュレーションは標準で有効化されています。
 
 インプットシミュレーションサービスは、[Mixed Reality service](../MixedRealityServices.md) のオプションです。データプロバイダーとして、[Input System profile](../Input/InputProviders.md) に追加することができます。
+
 * __Type__ は、_Microsoft.MixedReality.Toolkit.Input > InputSimulationService_ である必要があります
 * __Platform(s)__ は、サービスがキーボードとマウスの入力に依存しているため、常に _Windows Editor_ である必要があります
 * __Profile__ は、インプットシミュレーションの全ての設定を保持しています。
@@ -54,9 +56,7 @@ MRTK では、インプットシミュレーションは標準で有効化され
 
 移動キーを押し続けます（W/A/S/D が 前/左/後/右 に対応します）
 
-<!---
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Z7L4I1ET7GU" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
---->
 
 # ハンドシミュレーション
 
@@ -113,9 +113,7 @@ Manipuration キーが押されなくなると、手は短い _Hand Hide Timeout
 * ピッチ : X軸回転 (標準では F/R キーが  時計回り/反時計回り回転に対応)
 * ロール : Z軸回転 (標準では X/Z キーが  時計回り/反時計回り回転に対応)
 
-<!--
 <iframe width="560" height="315" src="https://www.youtube.com/embed/uRYfwuqsjBQ" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
--->
 
 ## ハンドジェスチャー
 
@@ -141,12 +139,10 @@ _Left/Middle/Right Mouse Hand Gesture_ 設定を使用して、各マウスボ�
 1. 手をコントロールするキー（Space/左Shift）を押し続けてください
 2. オブジェクトをポイントしてください
 3. マウスボタンを押し続けるとピンチ操作となります
-4. マウスでオブジェクトをうごかしてください
-5. マウスボタンを離すと操作が終了します　
+4. マウスでオブジェクトを動かしてください
+5. マウスボタンを離すと操作が終了します
 
-<!--
 <iframe width="560" height="315" src="https://www.youtube.com/embed/rM0xaHam6wM" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
--->
 
 ## 両手での操作
 
@@ -154,34 +150,29 @@ _Left/Middle/Right Mouse Hand Gesture_ 設定を使用して、各マウスボ�
 
 1. Toggle キー（T/Y）を押すことで両手の表示を切り替えることができます
 2. １回に１つの手を操作します
-  1. _Space_ を押し続けて右手を操作します
-  2. グラブしたいオブジェクトに手を動かします
-  3. マウスボタンを押して _Pinch_ ジェスチャーを有効にします。永続化モードではマウスボタンを離すまでジェスチャーが有効になります
+   1. _Space_ を押し続けて右手を操作します
+   2. グラブしたいオブジェクトに手を動かします
+   3. マウスボタンを押して _Pinch_ ジェスチャーを有効にします。永続化モードではマウスボタンを離すまでジェスチャーが有効になります
 3. 同じ手順をもう片方の手で繰り返します。同じオブジェクトの別のポイントをグラブします
 4. これで両手で同じオブジェクトをグラブした状態になるので、それぞれの手を動かして両手での操作を行います
 
-<!--
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Qol5OFNfN14" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
--->
 
 ## GGV インタラクション
 
 1. [Input Simulation Profile](#enabling-the-input-simulation-service) で、__Hand Simulation Mode__ を _Gestures_ にすることにより、GGVのシミュレーションに切り替えることができます
 
-<a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_SwitchToGGV.png">
-  <img src="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_SwitchToGGV.png" title="Full Hand Mesh" width="80%" class="center" />
-</a>
+    <a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_SwitchToGGV.png">
+      <img src="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_SwitchToGGV.png" title="Full Hand Mesh" width="80%" class="center" />
+    </a>
 
 2. カメラを回転させて、視線カーソルを対話可能なオブジェクトにポイントします（左マウスボタンを使用）
 3. _Space_ を押し続けて、右手を操作します
 4. _left mouse button_ を押し続けてインタラクションします
 5. 再度カメラを回転させてオブジェクトを操作します
 
-<!--
 <iframe width="560" height="315" src="https://www.youtube.com/embed/6841rRMdqWw" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
--->
 
 ## アイトラッキング
 
-[Eye tracking simulation](../EyeTracking/EyeTracking_BasicSetup.md#simulating-eye-tracking-in-the-unity-editor) は、[Input Simulation Profile](#enabling-the-input-simulation-service) の __Simulate Eye Position__ オプションをチェックすることで有効になります
-これは GGV スタイルのインタラクションでは使用できません（ですので、 __Hand Simulation Mode__ が _Articulated_ にセットされていることを確認してください）
+[Eye tracking simulation](../EyeTracking/EyeTracking_BasicSetup.md#simulating-eye-tracking-in-the-unity-editor) は、[Input Simulation Profile](#enabling-the-input-simulation-service) の __Simulate Eye Position__ オプションをチェックすることで有効になります。これは GGV スタイルのインタラクションでは使用できません（ですので、 __Hand Simulation Mode__ が _Articulated_ にセットされていることを確認してください）
