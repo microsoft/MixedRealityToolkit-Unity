@@ -16,11 +16,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Name = "OnClick";
         }
 
+        /// <inheritdoc />
         public override void OnUpdate(InteractableStates state, Interactable source)
         {
             // using onClick
         }
 
+        /// <inheritdoc />
         public override void OnClick(InteractableStates state, Interactable source, IMixedRealityPointer pointer = null)
         {
             uEvent.Invoke();

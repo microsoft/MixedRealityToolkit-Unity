@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         private readonly Quaternion inverseRotation = Quaternion.Euler(0f, 180f, 0f);
 
+        /// <inheritdoc />
         public override void OnSourcePoseChanged(SourcePoseEventData<MixedRealityPose> eventData)
         {
             if (UseSourcePoseData &&

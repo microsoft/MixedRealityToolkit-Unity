@@ -89,11 +89,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region InputSystemGlobalHandlerListener Implementation
 
+        /// <inheritdoc />
         protected override void RegisterHandlers()
         {
             InputSystem?.RegisterHandler<IMixedRealityControllerPoseSynchronizer>(this);
         }
 
+        /// <inheritdoc />
         protected override void UnregisterHandlers()
         {
             InputSystem?.UnregisterHandler<IMixedRealityControllerPoseSynchronizer>(this);

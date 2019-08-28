@@ -46,11 +46,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             new MixedRealityInteractionMapping(4, "Index Finger Pose", AxisType.SixDof, DeviceInputType.IndexFinger, MixedRealityInputAction.None),
         };
 
+        /// <inheritdoc />
         public override void SetupDefaultInteractions(Handedness controllerHandedness)
         {
             AssignControllerMappings(DefaultInteractions);
         }
 
+        /// <inheritdoc />
         protected override void UpdateInteractions(SimulatedHandData handData)
         {
             lastPointerPose = currentPointerPose;

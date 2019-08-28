@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78a4b02a0d9e7044fa19c6d432d0cafa, type: 3}
   m_Name: DefaultHoloLens1InputSimulationProfile
   m_EditorClassIdentifier: 
-  isCustomProfile: 1
+  isCustomProfile: 0
   isCameraControlEnabled: 1
   extraMouseSensitivityScale: 3
   defaultMouseSensitivity: 0.1

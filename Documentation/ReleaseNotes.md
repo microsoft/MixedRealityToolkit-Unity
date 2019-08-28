@@ -1,6 +1,36 @@
 # Microsoft Mixed Reality Toolkit Release Notes
 
+- [Version 2.0.1](#version-201)
 - [Version 2.0.0](#version-200)
+
+## Version 2.0.1
+
+- [Upgrading projects](#upgrading-projects-to-201)
+- [What's new](#whats-new-in-201)
+
+This hotfix release of Mixed Reality Toolkit fixes a couple of small bugs when consuming Mixed Reality Toolkit in NuGet package form. In addition, this release introduce the NuGet package as a release mechanism for Mixed Reality Toolkit.
+
+### Upgrading projects to 2.0.1
+
+For non-NuGet package cases, the upgrade from 2.0.0 should not have an effect when consuming Mixed Reality Toolkit as .unitypackages or source. To upgrade your Unity project to 2.0.1 from before 2.0.0, follow the same instructions as:
+- [Upgrading projects](#upgrading-projects-to-200)
+
+Currently, the upgrade path from non-NuGet package to NuGet package version of Mixed Reality Toolkit is not officially supported. Look out for that in the coming releases.
+
+To add Mixed Reality Toolkit to your project in the form of a NuGet package, do the following:
+
+1. Download the latest [NuGet For Unity](https://github.com/GlitchEnzo/NuGetForUnity/releases) .unitypackage
+1. Import the .unitypackage into your Unity Project.
+1. Click on the `NuGet > Manage NuGet Packages` menu.
+1. Search for `Microsoft.MixedReality.Toolkit`, and press `Install` on the packages you wish to bring-in:
+    - **Microsoft.MixedReality.Toolkit.Foundation:** This package contains everything needed to work with Mixed Reality Toolkit.
+    - **Microsoft.MixedReality.Toolkit.Examples:** This package contains example scenes of Mixed Reality Toolkit functionality.
+    - **Microsoft.MixedReality.Toolkit.Extensions:** This package contains extensions to Mixed Reality Toolkit.
+    - **Microsoft.MixedReality.Toolkit.Tools:** This package contains useful tooling for Unity.
+
+### What's new in 2.0.1
+
+Consuming Mixed Reality Toolkit as a NuGet package will reduce compilation time, the ammount of .csproj files when editing code, and allow for a simple update mechanism for future versions.
 
 ## Version 2.0.0
 
@@ -33,6 +63,8 @@ For the smoothest upgrade path, please use the following steps.
     - MixedRealityToolkit
     - MixedRealityToolkit.Examples
     - MixedRealityToolkit.Extensions
+    > [!Note]
+    > If additional extensions have been installed, please make a backup prior to deleting this folder.
     - MixedRealityToolkit.Providers
     - MixedRealityToolkit.SDK
     - MixedRealityToolkit.Services
@@ -45,6 +77,8 @@ For the smoothest upgrade path, please use the following steps.
     - Foundation - _Import this package first_
     - (Optional) Tools
     - (Optional) Extensions
+    > [!Note]
+    > If additional extensions had been installed, they may need to be re-imported.
     - (Optional) Examples
 1. For each scene in the project
     - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy
@@ -144,7 +178,15 @@ Specify the desired raycast provider in the Input System's configuration profile
 
 ![Selecting the Raycast provider](Images/ReleaseNotes/SelectRaycastProvider.png)
 
-**Input Animation Recording**
+**Improved solvers**
+
+Solvers can now be controlled by the first available hand/controller instead of being locked to left or right handedness. Old value types of *Tracked Target Type* need to be updated to the new non-obsolete values.
+
+![Solver](../Documentation/Images/Solver/TrackedObjectType-Example.gif)
+
+Please review the **solvers** section of [Updating from RC2 to 2.0.0](Updating.md#solvers) for additional changes and mitigation details.
+
+**Input animation recording**
  
 MRTK features a [recording system](InputSimulation/InputAnimationRecording.md) by which head movement and hand tracking
 data can be stored in animation files. The recorded data can then be played back using the [input simulation system](InputSimulation/InputSimulationService.md).

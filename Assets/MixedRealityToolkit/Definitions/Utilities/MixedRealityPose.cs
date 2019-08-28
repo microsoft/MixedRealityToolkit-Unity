@@ -128,6 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             return obj is MixedRealityPose ? ((MixedRealityPose)obj).GetHashCode() : 0;
         }
 
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             return base.GetHashCode();

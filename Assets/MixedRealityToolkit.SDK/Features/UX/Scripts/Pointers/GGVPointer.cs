@@ -158,6 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return obj.GetHashCode();
         }
 
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             unchecked
@@ -293,6 +294,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region InputSystemGlobalHandlerListener Implementation
 
+        /// <inheritdoc />
         protected override void RegisterHandlers()
         {
             InputSystem?.RegisterHandler<IMixedRealityInputHandler>(this);
@@ -300,6 +302,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
         }
 
+        /// <inheritdoc />
         protected override void UnregisterHandlers()
         {
             InputSystem?.UnregisterHandler<IMixedRealityInputHandler>(this);

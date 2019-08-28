@@ -634,6 +634,16 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 UwpBuildDeployPreferences.ForceRebuild = newForceRebuildAppx;
             }
 
+            // Multicore Appx Build
+            EditorGUIUtility.labelWidth = 90;
+            bool curMulticoreAppxBuildEnabled = UwpBuildDeployPreferences.MulticoreAppxBuildEnabled;
+            bool newMulticoreAppxBuildEnabled = EditorGUILayout.Toggle("Multicore Build", curMulticoreAppxBuildEnabled);
+
+            if (newMulticoreAppxBuildEnabled != curMulticoreAppxBuildEnabled)
+            {
+                UwpBuildDeployPreferences.MulticoreAppxBuildEnabled = newMulticoreAppxBuildEnabled;
+            }
+
             // Restore previous label width
             EditorGUIUtility.labelWidth = previousLabelWidth;
 
@@ -1070,6 +1080,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 BuildPlatform = EditorUserBuildSettings.wsaArchitecture,
                 OutputDirectory = BuildDeployPreferences.BuildDirectory,
                 AutoIncrement = BuildDeployPreferences.IncrementBuildVersion,
+                Multicore = UwpBuildDeployPreferences.MulticoreAppxBuildEnabled,
             };
 
             EditorAssemblyReloadManager.LockReloadAssemblies = true;

@@ -260,6 +260,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
+            /// <inheritdoc />
             public override void OnPreCurrentPointerTargetChange() { }
 
             /// <inheritdoc />
@@ -313,6 +314,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -324,6 +326,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
         protected override async void Start()
         {
             base.Start();
@@ -399,6 +402,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
         protected override void OnDisable()
         {
             base.OnDisable();
@@ -415,11 +419,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region InputSystemGlobalHandlerListener Implementation
 
+        /// <inheritdoc />
         protected override void RegisterHandlers()
         {
             InputSystem?.RegisterHandler<IMixedRealityInputHandler>(this);
         }
 
+        /// <inheritdoc />
         protected override void UnregisterHandlers()
         {
             InputSystem?.UnregisterHandler<IMixedRealityInputHandler>(this);

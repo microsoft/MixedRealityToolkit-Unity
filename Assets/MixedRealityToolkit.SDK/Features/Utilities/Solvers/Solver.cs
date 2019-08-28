@@ -222,6 +222,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             currentLifetime = 0;
         }
 
+        protected virtual void Start()
+        {
+            if (SolverHandler != null)
+            {
+                SolverHandler.RegisterSolver(this);
+            }
+        }
+        protected virtual void OnDestroy()
+        {
+            if (SolverHandler != null)
+            {
+                SolverHandler.UnregisterSolver(this);
+            }
+        }
+
         #endregion MonoBehaviour Implementation
 
         /// <summary>
