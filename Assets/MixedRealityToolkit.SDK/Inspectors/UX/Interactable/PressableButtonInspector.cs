@@ -159,7 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             // MAX PUSH
-            Handles.color = Color.red;
+            Handles.color = new Color(0.28f, 0.0f, 0.69f); //Purple
             float newMaxPushDistance = DrawPlaneAndHandle(endPlaneVertices, info.PlaneExtents * 0.5f, info.MaxPushDistance, info, "Max Push Distance", editingEnabled);
             if (editingEnabled && newMaxPushDistance != info.MaxPushDistance)
             {
