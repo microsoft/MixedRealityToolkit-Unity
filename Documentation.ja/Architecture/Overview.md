@@ -1,3 +1,13 @@
+# アーキテクチャの全体像
+
+このセクションでは、MRTKのアーキテクチャの全体像について説明します。なお、アーキテクチャのドキュメント全体を通して以下の内容を理解することを目的としています。
+
+- MRTKの各構成要素と、それらの接続方法
+- Untiyにはない、MRTKが取り入れている設計思想
+- 入力などの大掛かりな仕組みがどのように動作するのか
+
+このセクションでは、MRTKの動作方法を説明することは意図しておらず、MRTKがどのような構造で作られているのか、またそのような構造となった理由を説明すること目的としています。
+
 # Architecture overview
 
 The goal of this architectural overview is to give the reader an overall survey of what is
