@@ -34,9 +34,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private float defaultMouseSensitivity = 0.1f;
         public float DefaultMouseSensitivity => defaultMouseSensitivity;
         [SerializeField]
-        [Tooltip("Controls how mouse look control is activated.")]
-        private InputSimulationMouseButton mouseLookButton = InputSimulationMouseButton.Right;
-        public InputSimulationMouseButton MouseLookButton => mouseLookButton;
+        [Tooltip("Controls how mouse look control is activated")]
+        private KeyBinding mouseLookButton = KeyBinding.FromMouseButton(KeyBinding.MouseButton.Right);
+        public KeyBinding MouseLookButton => mouseLookButton;
+        [SerializeField]
+        [Tooltip("Toggle mouse look on with with the mouse look button, press escape to release")]
+        private bool mouseLookToggle = false;
+        public bool MouseLookToggle => mouseLookToggle;
         [SerializeField]
         private bool isControllerLookInverted = true;
         public bool IsControllerLookInverted => isControllerLookInverted;

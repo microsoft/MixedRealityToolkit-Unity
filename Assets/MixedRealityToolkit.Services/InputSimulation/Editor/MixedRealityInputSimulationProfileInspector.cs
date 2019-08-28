@@ -19,6 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private SerializedProperty extraMouseSensitivityScale;
         private SerializedProperty defaultMouseSensitivity;
         private SerializedProperty mouseLookButton;
+        private SerializedProperty mouseLookToggle;
         private SerializedProperty isControllerLookInverted;
         private SerializedProperty currentControlMode;
         private SerializedProperty fastControlKey;
@@ -79,6 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             extraMouseSensitivityScale = serializedObject.FindProperty("extraMouseSensitivityScale");
             defaultMouseSensitivity = serializedObject.FindProperty("defaultMouseSensitivity");
             mouseLookButton = serializedObject.FindProperty("mouseLookButton");
+            mouseLookToggle = serializedObject.FindProperty("mouseLookToggle");
             isControllerLookInverted = serializedObject.FindProperty("isControllerLookInverted");
             currentControlMode = serializedObject.FindProperty("currentControlMode");
             fastControlKey = serializedObject.FindProperty("fastControlKey");
@@ -145,6 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         EditorGUILayout.PropertyField(extraMouseSensitivityScale);
                         EditorGUILayout.PropertyField(defaultMouseSensitivity);
                         EditorGUILayout.PropertyField(mouseLookButton);
+                        EditorGUILayout.PropertyField(mouseLookToggle);
                         EditorGUILayout.PropertyField(isControllerLookInverted);
                         EditorGUILayout.PropertyField(currentControlMode);
                         EditorGUILayout.PropertyField(fastControlKey);

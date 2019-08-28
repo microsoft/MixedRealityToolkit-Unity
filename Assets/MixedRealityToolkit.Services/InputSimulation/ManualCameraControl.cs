@@ -141,12 +141,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void OnStartMouseLook()
         {
-            if (profile.MouseLookButton <= InputSimulationMouseButton.Middle)
+            if (profile.MouseLookButton.GetKeyType() == KeyBinding.KeyType.MouseButton)
             {
                 // if mousebutton is either left, right or middle
                 SetWantsMouseJumping(true);
             }
-            else if (profile.MouseLookButton <= InputSimulationMouseButton.Focused)
+            else if (profile.MouseLookButton.GetKeyType() == KeyBinding.KeyType.Key)
             {
                 // if mousebutton is either control, shift or focused
                 UnityEngine.Cursor.lockState = CursorLockMode.Locked;
@@ -160,12 +160,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void OnEndMouseLook()
         {
-            if (profile.MouseLookButton <= InputSimulationMouseButton.Middle)
+            if (profile.MouseLookButton.GetKeyType() == KeyBinding.KeyType.MouseButton)
             {
                 // if mousebutton is either left, right or middle
                 SetWantsMouseJumping(false);
             }
-            else if (profile.MouseLookButton <= InputSimulationMouseButton.Focused)
+            else if (profile.MouseLookButton.GetKeyType() == KeyBinding.KeyType.Key)
             {
                 // if mousebutton is either control, shift or focused
                 UnityEngine.Cursor.lockState = CursorLockMode.None;
@@ -208,37 +208,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     return false;
                 }
-                else if (profile.MouseLookButton == InputSimulationMouseButton.None)
+                else
                 {
-                    return true;
-                }
-                else if (profile.MouseLookButton <= InputSimulationMouseButton.Middle)
-                {
-                    return UnityEngine.Input.GetMouseButton((int)profile.MouseLookButton);
-                }
-                else if (profile.MouseLookButton == InputSimulationMouseButton.Control)
-                {
-                    return UnityEngine.Input.GetKey(KeyCode.LeftControl) || UnityEngine.Input.GetKey(KeyCode.RightControl);
-                }
-                else if (profile.MouseLookButton == InputSimulationMouseButton.Shift)
-                {
-                    return UnityEngine.Input.GetKey(KeyCode.LeftShift) || UnityEngine.Input.GetKey(KeyCode.RightShift);
-                }
-                else if (profile.MouseLookButton == InputSimulationMouseButton.Focused)
-                {
-                    if (!this.wasLooking)
+                    if (profile.MouseLookToggle)
                     {
-                        // any kind of click will capture focus
-                        return UnityEngine.Input.GetMouseButtonDown((int)InputSimulationMouseButton.Left) || UnityEngine.Input.GetMouseButtonDown((int)InputSimulationMouseButton.Right) || UnityEngine.Input.GetMouseButtonDown((int)InputSimulationMouseButton.Middle);
+                        if (this.wasLooking)
+                        {
+                            // pressing escape will stop capture
+                            return !UnityEngine.Input.GetKeyDown(KeyCode.Escape);
+                        }
+                        else
+                        {
+                            // any kind of click will capture focus
+                            return KeyInputSystem.GetKeyDown(profile.MouseLookButton);
+                        }
                     }
                     else
                     {
-                        // pressing escape will stop capture
-                        return !UnityEngine.Input.GetKeyDown(KeyCode.Escape);
+                        return KeyInputSystem.GetKey(profile.MouseLookButton);
                     }
                 }
-
-                return false;
             }
         }
 
