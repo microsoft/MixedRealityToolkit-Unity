@@ -52,9 +52,9 @@ MRTK、または MR 開発が初めての場合は、MRTKv2 を使った [チュ
 
 1. 新しい Unity プロジェクトを作成するか、既存のプロジェクトを開きます。新しいプロジェクトを作成する場合は、テンプレートタイプに 「3D」 が選択されていることを確認してください。
 1. ダウンロードした `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage` をインポートします。「Asset -> Import Package -> Custom Package」から, .unitypackage ファイルを選択し, インポートする全ての項目がチェックされていることを確認してから、「Import」を選択します.
-1. `Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage` も上記と同様の手順でインポートします。examples のパッケージは、オプションであり、現在の MRTK の機能の有用なデモシーンが含まれています。
-1. `Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage` も Foundaiton パッケージと同様にインポートします。tools のパッケージは、オプションであり、MRTK 開発者のエクスペリエンスを向上させる、ExtensionServiceCreator などの便利なツールが含まれています。
-1. Import the `Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage` も Foundaiton パッケージと同様にインポートします。 extensions パッケージは、オプションで、 MRTK の便利なオプションコンポーネントのセットを提供します。
+1. `Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage` も上記と同様の手順でインポートします。Examples のパッケージは、オプションであり、現在の MRTK の機能の有用なデモシーンが含まれています。
+1. `Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage` も Foundaiton パッケージと同様にインポートします。Tools のパッケージは、オプションであり、MRTK 開発者のエクスペリエンスを向上させる、ExtensionServiceCreator などの便利なツールが含まれています。
+1. `Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage` も Foundaiton パッケージと同様にインポートします。 extensions パッケージは、オプションで、 MRTK の便利なオプションコンポーネントのセットを提供します。
 
 Foundation パッケージをインポートすると、次のようなセットアッププロンプトが表示される場合があります。
 
@@ -63,18 +63,18 @@ Foundation パッケージをインポートすると、次のようなセット
 MRTK は、以下を実行することで Mixed Reality ソリューションを構築するためのプロジェクトをセットアップします。
 
 * 現在のプラットフォームで XR Settings を有効にします (XR チェックボックスを有効にします)。
-* テキストのシリアライズを強制 / メタファイルの可視化 （ソース管理をする　Unity プロジェクトに推奨）。
+* テキストのシリアライズを強制 / メタファイルの可視化をします （ソース管理をする　Unity プロジェクトに推奨）。
 
 これらのオプションを適用するかは選択的ですが、推奨されています。
 
-一部のプレハブ、及びアセットには、TextMesh Pro が必要です。つまり、TextMesh Pro のパッケージをインストールし、アセットがプロジェクト内にあることが必要です。（Window -> TextMeshPro -> Import TMP Essential Resources）
+一部のプレハブ、及びアセットには、TextMesh Pro が必要です。つまり、TextMesh Pro のパッケージをインストールし、アセットがプロジェクト内にあることが必要です。(Window -> TextMeshPro -> Import TMP Essential Resources)
  **TMP Essentials Resources をインポートした後、変更を確認するには Unity を再起動する必要があります**。
 
 ### HandInteractionExamples のシーンを Editor で開いて実行する
 
 [![HandInteractionExample scene](../Documentation/Images/MRTK_Examples.png)](README_HandInteractionExamples.md)
 
-[Hand Interaction のサンプルシーン](README_HandInteractionExamples.md) は、MRTK の様々なUX コントロールとインタラクションを公開しているため、MRTK を始めるには最適な場所です。はじめに、MRTK をインポートし、サンプルシーンを開いて、Editor でシーンを探索します。
+[Hand Interaction のサンプルシーン](README_HandInteractionExamples.md) は、MRTK の様々な UX コントロールとインタラクションを紹介しているため、MRTK を始めるには最適な場所です。はじめに、MRTK をインポートし、サンプルシーンを開いて、Editor でシーンを探索します。
 
 1. 新しい Unity プロジェクトを作成し、[上記の手順](#import-mrtk-packages-into-your-unity-project) に従って、**Foundation** と **Examples** の Unity パッケージの両方をインポートします。
 1. `Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes\HandInteractionExamples` の下の HandInteractionExamples　のシーンを開きます。
@@ -96,14 +96,14 @@ Editor 内の入力シミュレーション を使って、[手](InputSimulation
 シーン内を移動する：
 
 * W/A/S/D キーを使用して、カメラを前後/左右に移動します。
-* 右マウスを押したままにして、カメラを回転させます。
+* マウスの右ボタンを押したままにして、カメラを回転させます。
 
 手の入力をシミュレートする：
 
 * スペースキーを押し続けて、右手を有効にします。
 * スペースキーを押しながら、マウスを動かして手を動かします。
 * 中央のマウススクロールを使用して、手の奥行を調整します。
-* 左マウスをクリックして、ジェスチャーを切り替えます。
+* マウスの左ボタンをクリックして、ジェスチャーを切り替えます。
 
 シーンの探索を楽しんでください！ UI コントロールの詳細については、[ハンドインタラクションのサンプルガイド](README_HandInteractionExamples.md) で学ぶことができます。また、[入力シミュレーションのドキュメント](InputSimulation/InputSimulationService.md)を読んで、MRTK の Editor 内の手の入力シミュレーションの詳細を確認してください。
 
@@ -133,11 +133,11 @@ Editor 内の入力シミュレーション を使って、[手](InputSimulation
     > DefaultMixedRealityToolkitConfigurationProfile と DefaultHoloLens2ConfigurationProfile の違いは、
     > [プロファイル](Profiles/Profiles.md#hololens-2-profile) を参照してください。
 
-    シーンの階層が以下のようになります。
+    シーンのヒエラルキーが以下のようになります。
 
     ![MRTK Scene Setup](../Documentation/Images/MRTK_SceneSetup.png)
 
-    階層には以下のものが含まれます。
+    ヒエラルキーには以下のものが含まれます。
 
     * Mixed Reality Toolkit - フレームワーク全体へ中心の設定のエントリポイントを提供します。
     * MixedRealityPlayspace - ヘッドセットの親オブジェクト。ヘッドセット / コントローラ及びその他の必要なシステムがシーンで正しく管理されるようにします。
