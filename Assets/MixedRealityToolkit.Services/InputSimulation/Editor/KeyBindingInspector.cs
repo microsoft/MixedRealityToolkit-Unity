@@ -4,12 +4,22 @@
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
+using System;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     [CustomPropertyDrawer(typeof(KeyBinding))]
     public class KeyBindingInspector : PropertyDrawer
     {
+        private static KeyBinding.KeyType[] KeyTypeValues = (KeyBinding.KeyType[])Enum.GetValues(typeof(KeyBinding.KeyType));
+        private static string[] KeyTypeNames = Enum.GetNames(typeof(KeyBinding.KeyType));
+
+        private static KeyCode[] KeyCodeValues = (KeyCode[])Enum.GetValues(typeof(KeyCode));
+        private static string[] KeyCodeNames = Enum.GetNames(typeof(KeyCode));
+
+        private static KeyBinding.MouseButton[] MouseButtonValues = (KeyBinding.MouseButton[])Enum.GetValues(typeof(KeyBinding.MouseButton));
+        private static string[] MouseButtonNames = Enum.GetNames(typeof(KeyBinding.MouseButton));
+
         // Draw the property inside the given rect
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
@@ -21,13 +31,53 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // Draw label
             position = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
+            Rect autoBindPosition = new Rect(position.x + position.width - 20.0f, position.y, 20.0f, position.height);
+            float width = (position.width - 22.0f) / 2.0f;
+            Rect keyTypePosition = new Rect(position.x, position.y, width, position.height);
+            Rect keyCodePosition = new Rect(position.x + width + 2, position.y, width, position.height);
 
             // Don't make child fields be indented
             var indent = EditorGUI.indentLevel;
             EditorGUI.indentLevel = 0;
 
-            // var x = target as KeyBinding;
-            if (GUI.Button(position, KeyBinding.CodeToString(code.intValue)))
+            KeyBinding.GetKeyTypeAndCode(code.intValue, out var keyType, out int keyCode);
+
+            KeyBinding.KeyType newKeyType;
+            {
+                int keyTypeIndex = Array.FindIndex(KeyTypeValues, kt => kt == keyType);
+                int newKeyTypeIndex = EditorGUI.Popup(keyTypePosition, keyTypeIndex, KeyTypeNames);
+                newKeyType = KeyTypeValues[newKeyTypeIndex];
+            }
+
+            int newKeyCode;
+            switch (keyType)
+            {
+                case KeyBinding.KeyType.Key:
+                    int keyCodeIndex = Array.FindIndex(KeyCodeValues, kc => kc == (KeyCode)keyCode);
+                    int newKeyCodeIndex = EditorGUI.Popup(keyCodePosition, keyCodeIndex, KeyCodeNames);
+                    newKeyCode = (int)KeyCodeValues[newKeyCodeIndex];
+                    break;
+                case KeyBinding.KeyType.MouseButton:
+                    int buttonIndex = Array.FindIndex(MouseButtonValues, kc => kc == (KeyBinding.MouseButton)keyCode);
+                    int newButtonIndex = EditorGUI.Popup(keyCodePosition, buttonIndex, MouseButtonNames);
+                    newKeyCode = (int)MouseButtonValues[newButtonIndex];
+                    break;
+                default:
+                    newKeyCode = keyCode;
+                    break;
+            }
+
+            if (newKeyType != keyType)
+            {
+                code.intValue = (int)newKeyType;
+            }
+            if (newKeyCode != keyCode)
+            {
+                code.intValue = (int)keyType + newKeyCode;
+            }
+
+            // if (GUI.Button(position, KeyBinding.CodeToString(code.intValue)))
+            if (GUI.Button(autoBindPosition, ""))
             {
                 KeyBindingPopupWindow.Show(property);
             }
@@ -36,6 +86,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             EditorGUI.indentLevel = indent;
 
             EditorGUI.EndProperty();
+
+            property.serializedObject.ApplyModifiedProperties();
         }
     }
 
@@ -43,8 +95,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         private static KeyBindingPopupWindow window;
 
-        private SerializedProperty keyBinding;
-        private SerializedProperty code;
+        private SerializedProperty keyBindingProp;
+        private SerializedProperty codeProp;
+
+        private int newCode;
 
         public static void Show(SerializedProperty keyBinding)
         {
@@ -57,8 +111,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             window = CreateInstance<KeyBindingPopupWindow>();
             window.titleContent = new GUIContent($"Key Binding : {keyBinding.name}");
-            window.keyBinding = keyBinding;
-            window.code = keyBinding.FindPropertyRelative("code");
+            window.keyBindingProp = keyBinding;
+            window.codeProp = keyBinding.FindPropertyRelative("code");
+            window.newCode = window.codeProp.intValue;
 
             var windowSize = new Vector2(256f, 128f);
             window.maxSize = windowSize;
@@ -70,25 +125,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void OnGUI()
         {
             Event evt = Event.current;
-            KeyBinding kb;
             switch (evt.type)
             {
-                case EventType.KeyDown:
-                    kb = KeyBinding.FromKey(evt.keyCode);
-                    code.intValue = kb.Code;
-                    keyBinding.serializedObject.ApplyModifiedProperties();
-
-                    Close();
+                case EventType.KeyUp:
+                    newCode = KeyBinding.FromKey(evt.keyCode).Code;
+                    ApplyAndClose();
                     break;
 
-                case EventType.MouseDown:
-                    kb = KeyBinding.FromMouseButton(evt.button);
-                    code.intValue = kb.Code;
-                    keyBinding.serializedObject.ApplyModifiedProperties();
-
-                    Close();
+                case EventType.MouseUp:
+                    newCode = KeyBinding.FromMouseButton(evt.button).Code;
+                    ApplyAndClose();
                     break;
             }
+        }
+
+        private void ApplyAndClose()
+        {
+            codeProp.intValue = newCode;
+            keyBindingProp.serializedObject.ApplyModifiedProperties();
+
+            Close();
         }
     }
 }

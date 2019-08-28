@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Convert an encoded key binding value into a combination of <see cref="KeyType"/> and the actual key code.
         /// </summary>
-        private static void GetKeyTypeAndCode(int code, out KeyType keyType, out int keyCode)
+        public static void GetKeyTypeAndCode(int code, out KeyType keyType, out int keyCode)
         {
             for (int i = KeyTypeValues.Length - 1; i >= 0; --i)
             {
