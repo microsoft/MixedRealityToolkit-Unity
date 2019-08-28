@@ -1,4 +1,4 @@
-# 入力シミュレーションサービス(Input Simulation Service)
+# 入力シミュレーションサービス (Input Simulation Service)
 
 入力シミュレーションサービスは、Unity Editor 上で使用できない場合があるデバイスやプラットフォームをエミュレートします。例：
 
