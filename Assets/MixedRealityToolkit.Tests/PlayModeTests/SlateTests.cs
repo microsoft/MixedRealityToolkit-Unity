@@ -158,6 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private void InstantiateFromCode(Vector3 pos)
         {
             panObject = GameObject.CreatePrimitive(PrimitiveType.Quad);
+            panObject.EnsureComponent<BoxCollider>();
             panObject.transform.position = pos;
             panZoom = panObject.AddComponent<HandInteractionPanZoom>();
             panObject.AddComponent<NearInteractionTouchable>();
