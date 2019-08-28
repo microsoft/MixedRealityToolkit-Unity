@@ -13,6 +13,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
     [ExecuteAlways]
     public class ServiceFacade : MonoBehaviour
     {
+        private const string DESTROYED = "(Destroyed)";
+
         public static Dictionary<Type, ServiceFacade> FacadeServiceLookup = new Dictionary<Type, ServiceFacade>();
         public static List<ServiceFacade> ActiveFacadeObjects = new List<ServiceFacade>();
 
@@ -33,7 +35,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             if (service == null)
             {
                 serviceType = null;
-                name = "(Destroyed)";
+                if (!name.Equals(DESTROYED))
+                {
+                    name = DESTROYED;
+                }
                 gameObject.SetActive(false);
                 return;
             }
@@ -41,7 +46,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             {
                 this.serviceType = service.GetType();
 
-                name = serviceType.Name;
+                if (!name.Equals(serviceType.Name))
+                {
+                    name = serviceType.Name;
+                }
+
                 gameObject.SetActive(true);
 
                 if (!FacadeServiceLookup.ContainsKey(serviceType))

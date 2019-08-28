@@ -1356,10 +1356,19 @@ namespace Microsoft.MixedReality.Toolkit
                     }
 
                     for (int i = toolkitInstances.Count - 1; i >= 0; i--)
-                    {  // Make sure it's not parented under anything
-                        Debug.Assert(toolkitInstances[i].transform.parent == null, "MixedRealityToolkit instances should not be parented under any other GameObject.");
+                    {
+                        MixedRealityToolkit currentInstance = toolkitInstances[i];
+
+                        // Make sure it's not parented under anything
+                        Debug.Assert(currentInstance.transform.parent == null, "MixedRealityToolkit instances should not be parented under any other GameObject.");
+
                         // Name instances so it's clear when it's the active instance
-                        toolkitInstances[i].name = toolkitInstances[i].IsActiveInstance ? MixedRealityToolkit.activeInstanceGameObjectName : MixedRealityToolkit.inactiveInstanceGameObjectName;
+                        string instanceName = currentInstance.IsActiveInstance ? activeInstanceGameObjectName : inactiveInstanceGameObjectName;
+
+                        if (!currentInstance.name.Equals(instanceName))
+                        {
+                            currentInstance.name = instanceName;
+                        }
                     }
                 };
             }
