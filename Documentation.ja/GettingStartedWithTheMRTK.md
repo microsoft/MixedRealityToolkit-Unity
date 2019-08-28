@@ -29,10 +29,10 @@ MRTK、または MR 開発が初めての場合は、MRTKv2 を使った [チュ
 1. [MRTK のリリースページ](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases) を開きます。
 2. Assets の下から以下をダウンロードします。
 
-* `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage`
-* `Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage`
-* `Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage`
-* `Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage`
+    * `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage`
+    * `Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage`
+    * `Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage`
+    * `Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage`
 
 より詳細な配布の仕組みは、[MRTK をダウンロードする](DownloadingTheMRTK.md)を参照して下さい。
 
