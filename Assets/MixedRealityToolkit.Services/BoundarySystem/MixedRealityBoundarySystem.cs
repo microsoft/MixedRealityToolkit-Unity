@@ -30,9 +30,12 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         private BoundaryEventData boundaryEventData = null;
 
         /// <inheritdoc/>
+        public override string Name { get; protected set; } = "Mixed Reality Boundary System";
+
+        /// <inheritdoc/>
         public override void Initialize()
         {
-            if (!Application.isPlaying) { return; }
+            if (!Application.isPlaying || !XRDevice.isPresent) { return; }
 
             MixedRealityBoundaryVisualizationProfile profile = ConfigurationProfile as MixedRealityBoundaryVisualizationProfile;
             if (profile == null) { return; }
@@ -87,7 +90,6 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
             // and clean up the parent.
             if (boundaryVisualizationParent != null)
             {
-
                 if (Application.isEditor)
                 {
                     Object.DestroyImmediate(boundaryVisualizationParent);
@@ -181,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// </summary>
         private void RaiseBoundaryVisualizationChanged()
         {
-            if (!Application.isPlaying) { return; }
+            if (!Application.isPlaying || boundaryEventData == null) { return; }
             boundaryEventData.Initialize(this, ShowFloor, ShowPlayArea, ShowTrackedArea, ShowBoundaryWalls, ShowBoundaryCeiling);
             HandleEvent(boundaryEventData, OnVisualizationChanged);
         }
@@ -290,7 +292,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         private int ignoreRaycastLayerValue = 2;
 
         private MixedRealityBoundaryVisualizationProfile boundaryVisualizationProfile = null;
-        
+
         /// <inheritdoc/>
         public MixedRealityBoundaryVisualizationProfile BoundaryVisualizationProfile
         {

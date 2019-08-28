@@ -24,8 +24,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     Default = new InteractableThemePropertyValue() { Bool = true }
                 });
         }
-        
 
+        /// <inheritdoc />
         public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
         {
             InteractableThemePropertyValue start = new InteractableThemePropertyValue();
@@ -33,6 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return start;
         }
 
+        /// <inheritdoc />
         public override void SetValue(InteractableThemeProperty property, int index, float percentage)
         {
             Host.SetActive(property.Values[index].Bool);

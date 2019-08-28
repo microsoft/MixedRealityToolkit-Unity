@@ -55,6 +55,9 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         // Lighting executor instance
         private SceneLightingExecutor lightingExecutor;
 
+        /// <inheritdoc/>
+        public override string Name { get; protected set; } = "Mixed Reality Scene System";
+
         #region Actions
 
         /// <inheritdoc />

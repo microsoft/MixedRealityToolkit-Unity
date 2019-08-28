@@ -209,6 +209,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
             }
         }
 
+        /// <inheritdoc />
         public override void OnPreSceneQuery()
         {
             if (LineBase == null)
@@ -240,6 +241,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
             GravityDistorter.enabled = (TeleportSurfaceResult == TeleportSurfaceResult.HotSpot);
         }
 
+        /// <inheritdoc />
         public override void OnPostSceneQuery()
         {
             if (IsSelectPressed)

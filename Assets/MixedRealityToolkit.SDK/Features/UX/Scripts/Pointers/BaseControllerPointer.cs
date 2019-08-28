@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// Base Pointer class for pointers that exist in the scene as GameObjects.
     /// </summary>
     [DisallowMultipleComponent]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Pointers.html")]
     public abstract class BaseControllerPointer : ControllerPoseSynchronizer, IMixedRealityPointer
     {
         [SerializeField]

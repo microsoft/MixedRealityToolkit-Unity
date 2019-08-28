@@ -53,8 +53,6 @@ From here you can navigate to all the configuration profiles for the MRTK, inclu
 
 These configuration profiles are detailed below in their relevant sections:
 
-From here you can navigate to all the configuration profiles for the MRTK, including:
-
 ---
 <a name="experience"/>
 
