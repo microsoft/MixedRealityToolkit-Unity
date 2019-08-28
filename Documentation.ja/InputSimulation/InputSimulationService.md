@@ -14,7 +14,7 @@
 
 ## インプットシミュレーションサービスの有効化
 
-MRTK では、インプットシミュレーションは標準で有効化されています。
+MRTK では、インプットシミュレーションはデフォルトで有効化されています。
 
 インプットシミュレーションサービスは、[Mixed Reality service](../MixedRealityServices.md) のオプションです。データプロバイダーとして、[Input System profile](../Input/InputProviders.md) に追加することができます。
 
@@ -49,7 +49,7 @@ MRTK では、インプットシミュレーションは標準で有効化され
 
    _ボタンを押しても動作しない場合、ウインドウのクリックが必要な場合があります_
 
-2. __Mouse Look Button__ (標準ではマウスの右クリック)を押したままにします
+2. __Mouse Look Button__ (デフォルトではマウスの右クリック)を押したままにします
 3. マウスをウインドウ内で動かしてカメラを回転させます
 
 ## カメラの移動
@@ -86,21 +86,21 @@ __Hand Simulation Mode__ は、２つの異なる入力モデルを切り替え�
   <img src="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandControlSettings.png" title="Full Hand Mesh" width="80%" class="center" />
 </a>
 
-_Left/Right Hand Manipulation Key_ （標準では 左Shift/Space がそれぞれ 左手/右手 に対応）を押し続けてそれぞれの手をコントロールします。キーを押し続けている間、手が表示されます。マウスの動きで手を移動できます。
+_Left/Right Hand Manipulation Key_ （デフォルトでは 左Shift/Space がそれぞれ 左手/右手 に対応）を押し続けてそれぞれの手をコントロールします。キーを押し続けている間、手が表示されます。マウスの動きで手を移動できます。
 
 Manipuration キーが押されなくなると、手は短い _Hand Hide Timeout_ の後に表示されなくなります。
-手の表示を永続的に切り替えるには、 _Toggle Left/Right Hand Key_ （標準では T/Y が 左手/右手 に対応）を押してください。Toggle キーを再度押すと、再度手の表示を消すことができます。
+手の表示を永続的に切り替えるには、 _Toggle Left/Right Hand Key_ （デフォルトでは T/Y が 左手/右手 に対応）を押してください。Toggle キーを再度押すと、再度手の表示を消すことができます。
 
 <a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandPlacementSettings.png">
   <img src="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandPlacementSettings.png" title="Full Hand Mesh" width="80%" class="center" />
 </a>
 
 手は、_mouse wheel_ を使って遠ざけたり近づけたりすることができます。
-標準では、手はマウスのスクロールに応じてややゆっくり動きますが、*Hand Depth Multiplier* に大きな数字を入れることによって動きを速くすることができます。
+デフォルトでは、手はマウスのスクロールに応じてややゆっくり動きますが、*Hand Depth Multiplier* に大きな数字を入れることによって動きを速くすることができます。
 
 初期状態のカメラと手が表示される距離は、*Default Hand Distance.* で制御できます。
 
-標準では、シミュレートされた手の関節は完全に静的なものです。実機デバイスでは、ハンドトラッキングの根本として、いくらかのジッターやノイズが発生することに注意してください。
+デフォルトでは、シミュレートされた手の関節は完全に静的なものです。実機デバイスでは、ハンドトラッキングの根本として、いくらかのジッターやノイズが発生することに注意してください。
 実機デバイスでは手のメッシュや関節が有効になっているのを見ることができます（そして、手を完全に静止させていても少しジッターが発生するのがわかります）。*Hand Jitter Amount* をプラスの値（例として上の画像にあるように 0.1 程度）にすることにより、ジッターのシミュレーションを行うことができます。
 
 <a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandRotationSettings.png">
@@ -109,9 +109,9 @@ Manipuration キーが押されなくなると、手は短い _Hand Hide Timeout
 
 正確な方向が必要な場合、手を回転させることができます。
 
-* ヨー : Y軸回転 (標準では E/Q キーが  時計回り/反時計回り回転に対応)
-* ピッチ : X軸回転 (標準では F/R キーが  時計回り/反時計回り回転に対応)
-* ロール : Z軸回転 (標準では X/Z キーが  時計回り/反時計回り回転に対応)
+* ヨー : Y軸回転 (デフォルトでは E/Q キーが  時計回り/反時計回り回転に対応)
+* ピッチ : X軸回転 (デフォルトでは F/R キーが  時計回り/反時計回り回転に対応)
+* ロール : Z軸回転 (デフォルトでは X/Z キーが  時計回り/反時計回り回転に対応)
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/uRYfwuqsjBQ" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 
