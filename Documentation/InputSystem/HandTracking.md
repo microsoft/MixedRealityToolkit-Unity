@@ -25,7 +25,7 @@ The hand mesh is used if fully defined mesh data is provided by the hand trackin
 
 Hand mesh display can have a noticeable performance impact, for this reason it can be disabled entirely by unchecking **Enable Hand Mesh Visualization** option.
 
-## Hand Visualization Settings
+## Hand visualization settings
 
 The hand mesh and hand joint visualizations can be turned off or on via the *Hand Mesh Visualization Modes*
 setting and *Hand Joint Visualization Modes* respectively. These settings are application-mode specific,
