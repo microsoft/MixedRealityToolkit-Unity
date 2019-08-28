@@ -300,27 +300,32 @@ PrefabInstance:
     - target: {fileID: 7893089286403012701, guid: 271778f6c957b524981067a81d238394,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 0
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 7893089286403012701, guid: 271778f6c957b524981067a81d238394,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7893089286403012701, guid: 271778f6c957b524981067a81d238394,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7893089286403012701, guid: 271778f6c957b524981067a81d238394,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7893089286403012701, guid: 271778f6c957b524981067a81d238394,
         type: 3}
       propertyPath: m_textInfo.pageCount
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7893089286403012701, guid: 271778f6c957b524981067a81d238394,
+        type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 16777215
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 271778f6c957b524981067a81d238394, type: 3}
@@ -1095,6 +1100,17 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 1
           m_CallState: 2
+        - m_Target: {fileID: 1992501928}
+          m_MethodName: SetTrigger
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Confirmed
+            m_BoolArgument: 1
+          m_CallState: 2
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
   persistentKeywords: 0
@@ -1449,3 +1465,9 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!95 &1992501928 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 7788073934848418371, guid: 271778f6c957b524981067a81d238394,
+    type: 3}
+  m_PrefabInstance: {fileID: 189761436}
+  m_PrefabAsset: {fileID: 0}
