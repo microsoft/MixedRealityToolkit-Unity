@@ -116,7 +116,7 @@ Editor 内の入力シミュレーション を使って、[手](InputSimulation
 
 1. メニューバーから、Mixed Reality Toolkit -> Add to Scene and Configure　を選択します。
 
-      ![Configure to scene](../Documentation/Images/MRTK_ConfigureScene.png)
+    ![Configure to scene](../Documentation/Images/MRTK_ConfigureScene.png)
 
 1. 次のようなプロンプトが表示されます。
 
@@ -158,7 +158,7 @@ Editor 内の入力シミュレーション を使って、[手](InputSimulation
 * [入力シミュレーションのガイド](InputSimulation/InputSimulationService.md) を読んで、Editor 内で手の入力をシミュレートする方法を学ぶ。)
 * [Mixed Reality 設定ガイド](MixedRealityConfigurationGuide.md) で MRTK Configuration profile の使い方を学ぶ。
 
-## UIとインタラクションのビルディングブロック
+## UI とインタラクションのビルディングブロック
 
 |  [![Button](../Documentation/Images/Button/MRTK_Button_Main.png)](README_Button.md) [Button](README_Button.md) | [![Bounding Box](../Documentation/Images/BoundingBox/MRTK_BoundingBox_Main.png)](README_BoundingBox.md) [Bounding Box](README_BoundingBox.md) | [![Manipulation Handler](../Documentation/Images/ManipulationHandler/MRTK_Manipulation_Main.png)](README_ManipulationHandler.md) [Manipulation Handler](README_ManipulationHandler.md) |
 |:--- | :--- | :--- |
