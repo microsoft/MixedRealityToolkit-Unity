@@ -98,6 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             public bool TryUpdateQueryBufferForLayerMask(LayerMask layerMask, Vector3 pointerPosition, QueryTriggerInteraction triggerInteraction)
             {
+                Grabbable = null;
                 NumColliders = UnityEngine.Physics.OverlapSphereNonAlloc(
                     pointerPosition, 
                     QueryRadius,
