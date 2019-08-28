@@ -120,7 +120,7 @@ Editor 内の入力シミュレーション を使って、[手](InputSimulation
 
 1. 次のようなプロンプトが表示されます。
 
-      ![MRTK Configure Dialog](../Documentation/Images/MRTK_ConfigureDialog.png)
+    ![MRTK Configure Dialog](../Documentation/Images/MRTK_ConfigureDialog.png)
 
     「OK」を押します。  
 
