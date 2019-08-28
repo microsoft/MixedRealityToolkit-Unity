@@ -90,10 +90,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// the same current closest touchable component's changes (e.g. Unity UI control elements).
         public GameObject CurrentTouchableObjectDown => currentTouchableObjectDown;
 
-        protected override void Start()
+        private void Awake()
         {
-            base.Start();
-
             queryBuffer = new Collider[sceneQueryBufferSize];
         }
 
