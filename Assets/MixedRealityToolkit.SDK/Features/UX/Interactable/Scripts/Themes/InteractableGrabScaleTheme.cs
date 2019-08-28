@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 {
     public class InteractableGrabScaleTheme : InteractableThemeBase
     {
-        protected InteractableThemePropertyValue startScaleValue = new InteractableThemePropertyValue();
+        protected ThemePropertyValue startScaleValue = new ThemePropertyValue();
 
         protected float timer = 0;
         protected bool hasGrab;
@@ -20,42 +20,54 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Types = new Type[] { typeof(Transform) };
             Name = "Grab Scale Theme";
-            ThemeProperties = new List<InteractableThemeProperty>()
-            {
-                new InteractableThemeProperty()
-                {
-                    Name = "Scale",
-                    Type = InteractableThemePropertyValueTypes.Vector3,
-                    Values = new List<InteractableThemePropertyValue>(),
-                    Default = new InteractableThemePropertyValue(){ Vector3 = Vector3.one}
-                }
-            };
+            StateProperties = GetDefaultStateProperties();
 
             // adding a custom value and not showing Theme Properties for this theme
-            CustomSettings = new List<InteractableCustomSetting>()
+            Properties = GetDefaultThemeProperties();
+        }
+
+        /// <inheritdoc />
+        public override List<ThemeStateProperty> GetDefaultStateProperties()
+        {
+            return new List<ThemeStateProperty>()
             {
-                new InteractableCustomSetting()
+                new ThemeStateProperty()
                 {
-                    Name = "ScaleMagnifier",
-                    Type = InteractableThemePropertyValueTypes.Vector3,
-                    Value = new InteractableThemePropertyValue() { Vector3 = Vector3.one }
+                    Name = "Scale",
+                    Type = ThemePropertyTypes.Vector3,
+                    Values = new List<ThemePropertyValue>(),
+                    Default = new ThemePropertyValue(){ Vector3 = Vector3.one}
                 },
-                new InteractableCustomSetting()
-                {
-                    Name = "GrabTimer",
-                    Type = InteractableThemePropertyValueTypes.Float,
-                    Value = new InteractableThemePropertyValue() { Float = 0.3f }
-                }
             };
         }
 
         /// <inheritdoc />
-        public override void Init(GameObject host, InteractableThemePropertySettings settings)
+        public override List<ThemeProperty> GetDefaultThemeProperties()
+        {
+            return new List<ThemeProperty>()
+            {
+                new ThemeProperty()
+                {
+                    Name = "ScaleMagnifier",
+                    Type = ThemePropertyTypes.Vector3,
+                    Value = new ThemePropertyValue() { Vector3 = Vector3.one }
+                },
+                new ThemeProperty()
+                {
+                    Name = "GrabTimer",
+                    Type = ThemePropertyTypes.Float,
+                    Value = new ThemePropertyValue() { Float = 0.3f }
+                },
+            };
+        }
+
+        /// <inheritdoc />
+        public override void Init(GameObject host, ThemeDefinition settings)
         {
             base.Init(host, settings);
             if (host != null)
             {
-                startScaleValue = new InteractableThemePropertyValue();
+                startScaleValue = new ThemePropertyValue();
                 startScaleValue.Vector3 = host.transform.localScale;
             }
 
@@ -63,14 +75,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <inheritdoc />
-        public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
+        public override ThemePropertyValue GetProperty(ThemeStateProperty property)
         {
             if (Host == null)
             {
                 return startScaleValue;
             }
 
-            InteractableThemePropertyValue prop = new InteractableThemePropertyValue();
+            ThemePropertyValue prop = new ThemePropertyValue();
             prop.Vector3 = Host.transform.localScale;
 
             return prop;
@@ -86,8 +98,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return;
             }
             
-            Vector3 maxGrabScale = CustomSettings[0].Value.Vector3;
-            float grabTime = CustomSettings[1].Value.Float;
+            Vector3 maxGrabScale = Properties[0].Value.Vector3;
+            float grabTime = Properties[1].Value.Float;
             Vector3 grabScale = Vector3.Scale(startScaleValue.Vector3, maxGrabScale);
             
             if (source.HasGrab)
@@ -132,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <inheritdoc />
-        public override void SetValue(InteractableThemeProperty property, int index, float percentage)
+        public override void SetValue(ThemeStateProperty property, int index, float percentage)
         {
             if (!hasGrab && Host != null)
             {

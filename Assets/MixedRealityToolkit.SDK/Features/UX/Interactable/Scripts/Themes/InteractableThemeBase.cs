@@ -16,8 +16,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
     {
         public Type[] Types;
         public string Name = "Base Theme";
-        public List<InteractableThemeProperty> ThemeProperties = new List<InteractableThemeProperty>();
-        public List<InteractableCustomSetting> CustomSettings = new List<InteractableCustomSetting>();
+        public List<ThemeStateProperty> StateProperties = new List<ThemeStateProperty>();
+        public List<ThemeProperty> Properties = new List<ThemeProperty>();
         public GameObject Host;
         public Easing Ease;
         public bool NoEasing;
@@ -31,32 +31,44 @@ namespace Microsoft.MixedReality.Toolkit.UI
         //! find a way to set the default values of the properties, like scale should be Vector3.one
         // these should be custom, per theme
 
-        public abstract void SetValue(InteractableThemeProperty property, int index, float percentage);
+        public abstract void SetValue(ThemeStateProperty property, int index, float percentage);
 
-        public abstract InteractableThemePropertyValue GetProperty(InteractableThemeProperty property);
+        public abstract ThemePropertyValue GetProperty(ThemeStateProperty property);
 
-        public virtual void Init(GameObject host, InteractableThemePropertySettings settings)
+        /// <summary>
+        /// Get list of default theme properties that are given values per-state
+        /// </summary>
+        /// <returns></returns>
+        public abstract List<ThemeStateProperty> GetDefaultStateProperties();
+
+        /// <summary>
+        /// Get list of default theme properties that are configuration for the entire theme engine
+        /// </summary>
+        /// <returns></returns>
+        public abstract List<ThemeProperty> GetDefaultThemeProperties();
+
+        public virtual void Init(GameObject host, ThemeDefinition settings)
         {
             Host = host;
 
-            for (int i = 0; i < settings.Properties.Count; i++)
+            for (int i = 0; i < settings.StateProperties.Count; i++)
             {
-                InteractableThemeProperty prop = ThemeProperties[i];
-                prop.ShaderOptionNames = settings.Properties[i].ShaderOptionNames;
-                prop.ShaderOptions = settings.Properties[i].ShaderOptions;
-                prop.PropId = settings.Properties[i].PropId;
-                prop.Values = settings.Properties[i].Values;
+                ThemeStateProperty prop = StateProperties[i];
+                prop.ShaderOptionNames = settings.StateProperties[i].ShaderOptionNames;
+                prop.ShaderOptions = settings.StateProperties[i].ShaderOptions;
+                prop.PropId = settings.StateProperties[i].PropId;
+                prop.Values = settings.StateProperties[i].Values;
                 
-                ThemeProperties[i] = prop;
+                StateProperties[i] = prop;
             }
 
-            for (int i = 0; i < settings.CustomSettings.Count; i++)
+            for (int i = 0; i < settings.CustomProperties.Count; i++)
             {
-                InteractableCustomSetting setting = CustomSettings[i];
-                setting.Name = settings.CustomSettings[i].Name;
-                setting.Type = settings.CustomSettings[i].Type;
-                setting.Value = settings.CustomSettings[i].Value;
-                CustomSettings[i] = setting;
+                ThemeProperty setting = Properties[i];
+                setting.Name = settings.CustomProperties[i].Name;
+                setting.Type = settings.CustomProperties[i].Type;
+                setting.Value = settings.CustomProperties[i].Value;
+                Properties[i] = setting;
             }
 
             Ease = CopyEase(settings.Easing);
@@ -90,10 +102,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (state != lastState || force)
             {
-                int themePropCount = ThemeProperties.Count;
+                int themePropCount = StateProperties.Count;
                 for (int i = 0; i < themePropCount; i++)
                 {
-                    InteractableThemeProperty current = ThemeProperties[i];
+                    ThemeStateProperty current = StateProperties[i];
                     current.StartValue = GetProperty(current);
                     if (hasFirstState || force)
                     {
@@ -109,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                             hasFirstState = true;
                         }
                     }
-                    ThemeProperties[i] = current;
+                    StateProperties[i] = current;
                 }
 
                 lastState = state;
@@ -117,10 +129,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             else if (Ease.Enabled && Ease.IsPlaying())
             {
                 Ease.OnUpdate();
-                int themePropCount = ThemeProperties.Count;
+                int themePropCount = StateProperties.Count;
                 for (int i = 0; i < themePropCount; i++)
                 {
-                    InteractableThemeProperty current = ThemeProperties[i];
+                    ThemeStateProperty current = StateProperties[i];
                     SetValue(current, state, Ease.GetCurved());
                 }
             }

@@ -3,19 +3,22 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Theme scriptableObject for loading theme settings
     /// </summary>
-
     [CreateAssetMenu(fileName = "Theme", menuName = "Mixed Reality Toolkit/Interactable/Theme", order = 1)]
     public class Theme : ScriptableObject
     {
         public string Name;
-        public List<InteractableThemePropertySettings> Settings;
-        public List<InteractableThemePropertyValue> CustomSettings;
+
+        [FormerlySerializedAs("Settings")]
+        public List<ThemeDefinition> Definitions;
+
+        //public List<ThemePropertyValue> CustomSettings;
         public States States;
 
         public State[] GetStates()

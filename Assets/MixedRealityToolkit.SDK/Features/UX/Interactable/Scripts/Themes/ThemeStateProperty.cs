@@ -11,16 +11,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
 
     [System.Serializable]
-    public class InteractableThemeProperty
+    public class ThemeStateProperty
     {
         public string Name;
-        public InteractableThemePropertyValueTypes Type;
-        public List<InteractableThemePropertyValue> Values;
-        public InteractableThemePropertyValue StartValue;
+        public ThemePropertyTypes Type;
+        public List<ThemePropertyValue> Values;
+        public ThemePropertyValue StartValue;
+        //public ThemePropertyValue Default;
+
+
         public int PropId; // i.e OptionIndex
         public List<ShaderProperties> ShaderOptions;
         public List<string> ShaderOptionNames;
-        public InteractableThemePropertyValue Default;
+        public ThemePropertyValue Default;
         public string ShaderName;
 
         private List<int> ShaderPropertyIDs = null;

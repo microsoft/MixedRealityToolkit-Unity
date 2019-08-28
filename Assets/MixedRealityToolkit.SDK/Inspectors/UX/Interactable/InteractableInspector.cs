@@ -188,7 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                                 if (show)
                                 {
                                     SerializedObject themeObj = new SerializedObject(themeItem.objectReferenceValue);
-                                    SerializedProperty themeObjSettings = themeObj.FindProperty("Settings");
+                                    SerializedProperty themeDefinitions = themeObj.FindProperty("Definitions");
 
                                     GUILayout.Space(5);
 
@@ -200,8 +200,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                                     State[] states = GetStates();
 
                                     themeObj.Update();
-                                    ThemeInspector.RenderThemeSettings(themeObjSettings, themeOptions, gameObject, states, ThemePropertiesBoxMargin);
-                                    ThemeInspector.RenderThemeStates(themeObjSettings, states, ThemePropertiesBoxMargin);
+                                    ThemeInspector.RenderThemeSettings(themeDefinitions, themeOptions, gameObject, states, ThemePropertiesBoxMargin);
+                                    ThemeInspector.RenderThemeStates(themeDefinitions, states, ThemePropertiesBoxMargin);
                                     themeObj.ApplyModifiedProperties();
                                 }
 

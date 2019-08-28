@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
 
     [System.Serializable]
-    public class InteractableThemePropertyValue
+    public class ThemePropertyValue
     {
         public string Name;
         public string String;
@@ -19,6 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public float Float;
         public Texture Texture;
         public Material Material;
+        public Shader Shader;
         public GameObject GameObject;
         public Vector2 Vector2;
         public Vector3 Vector3;
@@ -37,6 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Float = 0;
             Texture = null;
             Material = null;
+            Shader = null;
             GameObject = null;
             Vector2 = default(Vector2);
             Vector3 = default(Vector3);

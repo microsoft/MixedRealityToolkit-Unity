@@ -18,8 +18,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
     {
         // caching methods to set and get colors from text object
         // this will avoid 4 if statements for every set or get - also during animation
-        private delegate bool SetColorOnText(Color color, InteractableThemeProperty property, int index, float percentage);
-        private delegate bool GetColorFromText(InteractableThemeProperty property, out Color color);
+        private delegate bool SetColorOnText(Color color, ThemeStateProperty property, int index, float percentage);
+        private delegate bool GetColorFromText(ThemeStateProperty property, out Color color);
         private SetColorOnText SetColorValue = null;
         private GetColorFromText GetColorValue = null;
 
@@ -27,27 +27,27 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Types = new Type[] { typeof(Renderer), typeof(TextMesh), typeof(Text), typeof(TextMeshPro), typeof(TextMeshProUGUI) };
             Name = "Color Theme";
-            ThemeProperties = new List<InteractableThemeProperty>();
-            ThemeProperties.Add(
-                new InteractableThemeProperty()
+            StateProperties = new List<ThemeStateProperty>();
+            StateProperties.Add(
+                new ThemeStateProperty()
                 {
                     Name = "Color",
-                    Type = InteractableThemePropertyValueTypes.Color,
-                    Values = new List<InteractableThemePropertyValue>(),
-                    Default = new InteractableThemePropertyValue() { Color = Color.white}
+                    Type = ThemePropertyTypes.Color,
+                    Values = new List<ThemePropertyValue>(),
+                    Default = new ThemePropertyValue() { Color = Color.white}
                 });
         }
 
         /// <inheritdoc />
-        public override void Init(GameObject host, InteractableThemePropertySettings settings)
+        public override void Init(GameObject host, ThemeDefinition settings)
         {
             base.Init(host, settings);
         }
 
         /// <inheritdoc />
-        public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
+        public override ThemePropertyValue GetProperty(ThemeStateProperty property)
         {
-            InteractableThemePropertyValue color = new InteractableThemePropertyValue();
+            ThemePropertyValue color = new ThemePropertyValue();
 
             // check if a text object exists and get the color,
             // set the delegate to bypass these checks in the future.
@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <inheritdoc />
-        public override void SetValue(InteractableThemeProperty property, int index, float percentage)
+        public override void SetValue(ThemeStateProperty property, int index, float percentage)
         {
             Color color = Color.Lerp(property.StartValue.Color, property.Values[index].Color, percentage);
 
@@ -139,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         /// <param name="color"></param>
         /// <returns></returns>
-        protected bool TryGetTextColor(InteractableThemeProperty property, out Color color)
+        protected bool TryGetTextColor(ThemeStateProperty property, out Color color)
         {
             Color colour = Color.white;
             Text text = Host.GetComponent<Text>();
@@ -158,7 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         /// <param name="color"></param>
         /// <returns></returns>
-        protected bool TryGetTextMeshColor(InteractableThemeProperty property, out Color color)
+        protected bool TryGetTextMeshColor(ThemeStateProperty property, out Color color)
         {
             Color colour = Color.white;
             TextMesh mesh = Host.GetComponent<TextMesh>();
@@ -177,7 +177,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         /// <param name="color"></param>
         /// <returns></returns>
-        protected bool TryGetTextMeshProColor(InteractableThemeProperty property, out Color color)
+        protected bool TryGetTextMeshProColor(ThemeStateProperty property, out Color color)
         {
             Color colour = Color.white;
             TextMeshPro tmp = Host.GetComponent<TextMeshPro>();
@@ -196,7 +196,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         /// <param name="color"></param>
         /// <returns></returns>
-        protected bool TryGetTextMeshProUGUIColor(InteractableThemeProperty property, out Color color)
+        protected bool TryGetTextMeshProUGUIColor(ThemeStateProperty property, out Color color)
         {
             Color colour = Color.white;
             TextMeshProUGUI tmp = Host.GetComponent<TextMeshProUGUI>();
@@ -217,7 +217,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         /// <param name="color"></param>
         /// <returns></returns>
-        protected bool TryGetRendererColor(InteractableThemeProperty property, out Color color)
+        protected bool TryGetRendererColor(ThemeStateProperty property, out Color color)
         {
             color = base.GetProperty(property).Color;
             return true;
@@ -229,7 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         /// <param name="colour"></param>
         /// <returns></returns>
-        protected bool TrySetTextColor(Color colour, InteractableThemeProperty property, int index, float percentage)
+        protected bool TrySetTextColor(Color colour, ThemeStateProperty property, int index, float percentage)
         {
             Text text = Host.GetComponent<Text>();
             if (text != null)
@@ -247,7 +247,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         /// <param name="colour"></param>
         /// <returns></returns>
-        protected bool TrySetTextMeshColor(Color colour, InteractableThemeProperty property, int index, float percentage)
+        protected bool TrySetTextMeshColor(Color colour, ThemeStateProperty property, int index, float percentage)
         {
             TextMesh mesh = Host.GetComponent<TextMesh>();
             if (mesh != null)
@@ -265,7 +265,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         /// <param name="colour"></param>
         /// <returns></returns>
-        protected bool TrySetTextMeshProColor(Color colour, InteractableThemeProperty property, int index, float percentage)
+        protected bool TrySetTextMeshProColor(Color colour, ThemeStateProperty property, int index, float percentage)
         {
             TextMeshPro tmp = Host.GetComponent<TextMeshPro>();
             if (tmp)
@@ -283,7 +283,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         /// <param name="colour"></param>
         /// <returns></returns>
-        protected bool TrySetTextMeshProUGUIColor(Color colour, InteractableThemeProperty property, int index, float percentage)
+        protected bool TrySetTextMeshProUGUIColor(Color colour, ThemeStateProperty property, int index, float percentage)
         {
             TextMeshProUGUI tmp = Host.GetComponent<TextMeshProUGUI>();
             if (tmp)
@@ -301,7 +301,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         /// <param name="colour"></param>
         /// <returns></returns>
-        protected bool TrySetRendererColor(Color colour, InteractableThemeProperty property, int index, float percentage)
+        protected bool TrySetRendererColor(Color colour, ThemeStateProperty property, int index, float percentage)
         {
             base.SetValue(property, index, percentage);
             return true;

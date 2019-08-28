@@ -21,26 +21,26 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Types = new Type[] {  };
             Name = "Color Children Theme";
-            ThemeProperties = new List<InteractableThemeProperty>();
-            ThemeProperties.Add(
-                new InteractableThemeProperty()
+            StateProperties = new List<ThemeStateProperty>();
+            StateProperties.Add(
+                new ThemeStateProperty()
                 {
                     Name = "Color",
-                    Type = InteractableThemePropertyValueTypes.Color,
-                    Values = new List<InteractableThemePropertyValue>(),
-                    Default = new InteractableThemePropertyValue() { Color = Color.white}
+                    Type = ThemePropertyTypes.Color,
+                    Values = new List<ThemePropertyValue>(),
+                    Default = new ThemePropertyValue() { Color = Color.white}
                 });
         }
 
         /// <inheritdoc />
-        public override void Init(GameObject host, InteractableThemePropertySettings settings)
+        public override void Init(GameObject host, ThemeDefinition settings)
         {
             base.Init(host, settings);
 
             shaderProperties = new List<ShaderProperties>();
-            for (int i = 0; i < ThemeProperties.Count; i++)
+            for (int i = 0; i < StateProperties.Count; i++)
             {
-                InteractableThemeProperty prop = ThemeProperties[i];
+                ThemeStateProperty prop = StateProperties[i];
                 if (prop.ShaderOptions.Count > 0)
                 {
                     shaderProperties.Add(prop.ShaderOptions[prop.PropId]);
@@ -61,9 +61,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <inheritdoc />
-        public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
+        public override ThemePropertyValue GetProperty(ThemeStateProperty property)
         {
-            InteractableThemePropertyValue color = new InteractableThemePropertyValue();
+            ThemePropertyValue color = new ThemePropertyValue();
 
             int propId = property.GetShaderPropertyId();
 
@@ -77,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <inheritdoc />
-        public override void SetValue(InteractableThemeProperty property, int index, float percentage)
+        public override void SetValue(ThemeStateProperty property, int index, float percentage)
         {
             Color color = Color.Lerp(property.StartValue.Color, property.Values[index].Color, percentage);
 

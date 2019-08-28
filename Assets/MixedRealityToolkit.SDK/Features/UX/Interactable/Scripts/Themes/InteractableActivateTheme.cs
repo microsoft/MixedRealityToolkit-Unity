@@ -15,26 +15,40 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Types = new Type[] { typeof(Transform) };
             Name = "Activate Theme";
             NoEasing = true;
-            ThemeProperties.Add(
-                new InteractableThemeProperty()
-                {
-                    Name = "Activate",
-                    Type = InteractableThemePropertyValueTypes.Bool,
-                    Values = new List<InteractableThemePropertyValue>(),
-                    Default = new InteractableThemePropertyValue() { Bool = true }
-                });
+            StateProperties = GetDefaultStateProperties();
         }
 
         /// <inheritdoc />
-        public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
+        public override List<ThemeStateProperty> GetDefaultStateProperties()
         {
-            InteractableThemePropertyValue start = new InteractableThemePropertyValue();
+            return new List<ThemeStateProperty>()
+            {
+                new ThemeStateProperty()
+                {
+                    Name = "Activate",
+                    Type = ThemePropertyTypes.Bool,
+                    Values = new List<ThemePropertyValue>(),
+                    Default = new ThemePropertyValue() { Bool = true }
+                },
+            };
+        }
+
+        /// <inheritdoc />
+        public override List<ThemeProperty> GetDefaultThemeProperties()
+        {
+            return new List<ThemeProperty>();
+        }
+
+        /// <inheritdoc />
+        public override ThemePropertyValue GetProperty(ThemeStateProperty property)
+        {
+            ThemePropertyValue start = new ThemePropertyValue();
             start.Bool = Host.activeSelf;
             return start;
         }
 
         /// <inheritdoc />
-        public override void SetValue(InteractableThemeProperty property, int index, float percentage)
+        public override void SetValue(ThemeStateProperty property, int index, float percentage)
         {
             Host.SetActive(property.Values[index].Bool);
         }

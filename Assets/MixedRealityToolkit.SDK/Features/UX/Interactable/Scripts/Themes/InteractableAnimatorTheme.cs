@@ -19,33 +19,47 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Types = new Type[] { typeof(Transform) };
             Name = "AnimatorTheme";
-            ThemeProperties.Add(
-                new InteractableThemeProperty()
-                {
-                    Name = "Animator Trigger",
-                    Type = InteractableThemePropertyValueTypes.AnimatorTrigger,
-                    Values = new List<InteractableThemePropertyValue>(),
-                    Default = new InteractableThemePropertyValue() { String = "Default" }
-                });
+            StateProperties = GetDefaultStateProperties();
         }
 
         /// <inheritdoc />
-        public override void Init(GameObject host, InteractableThemePropertySettings settings)
+        public override List<ThemeStateProperty> GetDefaultStateProperties()
+        {
+            return new List<ThemeStateProperty>()
+            {
+                new ThemeStateProperty()
+                {
+                    Name = "Animator Trigger",
+                    Type = ThemePropertyTypes.AnimatorTrigger,
+                    Values = new List<ThemePropertyValue>(),
+                    Default = new ThemePropertyValue() { String = "Default" }
+                },
+            };
+        }
+
+        /// <inheritdoc />
+        public override List<ThemeProperty> GetDefaultThemeProperties()
+        {
+            return new List<ThemeProperty>();
+        }
+
+        /// <inheritdoc />
+        public override void Init(GameObject host, ThemeDefinition settings)
         {
             base.Init(host, settings);
             controller = Host.GetComponent<Animator>();
         }
 
         /// <inheritdoc />
-        public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
+        public override ThemePropertyValue GetProperty(ThemeStateProperty property)
         {
-            InteractableThemePropertyValue start = new InteractableThemePropertyValue();
+            ThemePropertyValue start = new ThemePropertyValue();
             start.String = property.Values[lastIndex].String;
             return start;
         }
 
         /// <inheritdoc />
-        public override void SetValue(InteractableThemeProperty property, int index, float percentage)
+        public override void SetValue(ThemeStateProperty property, int index, float percentage)
         {
             if(lastIndex != index)
             {

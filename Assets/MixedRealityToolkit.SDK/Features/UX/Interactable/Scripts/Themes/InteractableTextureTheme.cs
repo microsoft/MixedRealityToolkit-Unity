@@ -17,18 +17,32 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Types = new Type[] { typeof(Renderer) };
             Name = "Texture Theme";
             NoEasing = true;
-            ThemeProperties.Add(
-                new InteractableThemeProperty()
-                {
-                    Name = "Texture",
-                    Type = InteractableThemePropertyValueTypes.Texture,
-                    Values = new List<InteractableThemePropertyValue>(),
-                    Default = new InteractableThemePropertyValue() { Texture = null }
-                });
+            StateProperties = GetDefaultStateProperties();
         }
 
         /// <inheritdoc />
-        public override void Init(GameObject host, InteractableThemePropertySettings settings)
+        public override List<ThemeStateProperty> GetDefaultStateProperties()
+        {
+            return new List<ThemeStateProperty>()
+            {
+                new ThemeStateProperty()
+                {
+                    Name = "Texture",
+                    Type = ThemePropertyTypes.Texture,
+                    Values = new List<ThemePropertyValue>(),
+                    Default = new ThemePropertyValue() { Texture = null }
+                },
+            };
+        }
+
+        /// <inheritdoc />
+        public override List<ThemeProperty> GetDefaultThemeProperties()
+        {
+            return new List<ThemeProperty>();
+        }
+
+        /// <inheritdoc />
+        public override void Init(GameObject host, ThemeDefinition settings)
         {
             base.Init(host, settings);
             propertyBlock = InteractableThemeShaderUtils.GetMaterialPropertyBlock(host, new ShaderProperties[0]);
@@ -36,15 +50,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <inheritdoc />
-        public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
+        public override ThemePropertyValue GetProperty(ThemeStateProperty property)
         {
-            InteractableThemePropertyValue start = new InteractableThemePropertyValue();
+            ThemePropertyValue start = new ThemePropertyValue();
             start.Texture = propertyBlock.GetTexture("_MainTex");
             return start;
         }
 
         /// <inheritdoc />
-        public override void SetValue(InteractableThemeProperty property, int index, float percentage)
+        public override void SetValue(ThemeStateProperty property, int index, float percentage)
         {
             propertyBlock.SetTexture("_MainTex", property.Values[index].Texture);
             renderer.SetPropertyBlock(propertyBlock);

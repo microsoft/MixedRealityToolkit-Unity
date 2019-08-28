@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected Vector3 startScale;
         protected Transform hostTransform;
 
-        public override void Init(GameObject host, InteractableThemePropertySettings settings)
+        public override void Init(GameObject host, ThemeDefinition settings)
         {
             base.Init(host, settings);
             hostTransform = Host.transform;
@@ -26,36 +26,36 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Types = new Type[] { typeof(Transform), typeof(TextMesh), typeof(TextMesh), typeof(TextMeshPro), typeof(TextMeshProUGUI), typeof(Renderer) };
             Name = "Default: Scale, Offset, Color";
-            ThemeProperties = new List<InteractableThemeProperty>();
-            ThemeProperties.Add(
-                new InteractableThemeProperty()
+            StateProperties = new List<ThemeStateProperty>();
+            StateProperties.Add(
+                new ThemeStateProperty()
                 {
                     Name = "Scale",
-                    Type = InteractableThemePropertyValueTypes.Vector3,
-                    Values = new List<InteractableThemePropertyValue>(),
-                    Default = new InteractableThemePropertyValue() { Vector3 = Vector3.one }
+                    Type = ThemePropertyTypes.Vector3,
+                    Values = new List<ThemePropertyValue>(),
+                    Default = new ThemePropertyValue() { Vector3 = Vector3.one }
                 });
-            ThemeProperties.Add(
-                new InteractableThemeProperty()
+            StateProperties.Add(
+                new ThemeStateProperty()
                 {
                     Name = "Offset",
-                    Type = InteractableThemePropertyValueTypes.Vector3,
-                    Values = new List<InteractableThemePropertyValue>(),
-                    Default = new InteractableThemePropertyValue() { Vector3 = Vector3.zero }
+                    Type = ThemePropertyTypes.Vector3,
+                    Values = new List<ThemePropertyValue>(),
+                    Default = new ThemePropertyValue() { Vector3 = Vector3.zero }
                 });
-            ThemeProperties.Add(
-                new InteractableThemeProperty()
+            StateProperties.Add(
+                new ThemeStateProperty()
                 {
                     Name = "Color",
-                    Type = InteractableThemePropertyValueTypes.Color,
-                    Values = new List<InteractableThemePropertyValue>(),
-                    Default = new InteractableThemePropertyValue() { Color = Color.white }
+                    Type = ThemePropertyTypes.Color,
+                    Values = new List<ThemePropertyValue>(),
+                    Default = new ThemePropertyValue() { Color = Color.white }
                 });
         }
 
-        public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
+        public override ThemePropertyValue GetProperty(ThemeStateProperty property)
         {
-            InteractableThemePropertyValue start = new InteractableThemePropertyValue();
+            ThemePropertyValue start = new ThemePropertyValue();
 
             switch (property.Name)
             {
@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return start;
         }
 
-        public override void SetValue(InteractableThemeProperty property, int index, float percentage)
+        public override void SetValue(ThemeStateProperty property, int index, float percentage)
         {
             switch (property.Name)
             {

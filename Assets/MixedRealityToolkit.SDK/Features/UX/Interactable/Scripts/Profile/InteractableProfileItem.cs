@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <param name="host"></param>
         /// <param name="lists"></param>
         /// <returns></returns>
-        public static InteractableThemeBase GetTheme(InteractableThemePropertySettings settings, GameObject host)
+        public static InteractableThemeBase GetTheme(ThemeDefinition settings, GameObject host)
         {
             Type themeType = Type.GetType(settings.AssemblyQualifiedName);
             InteractableThemeBase theme = (InteractableThemeBase)Activator.CreateInstance(themeType);

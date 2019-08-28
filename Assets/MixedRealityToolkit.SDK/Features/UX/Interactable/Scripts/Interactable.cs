@@ -613,16 +613,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     ThemeSettings themeSettings = new ThemeSettings();
                     if (Profiles[i].Target != null && theme != null)
                     {
-                        List<InteractableThemePropertySettings> tempSettings = new List<InteractableThemePropertySettings>();
-                        for (int n = 0; n < theme.Settings.Count; n++)
+                        List<ThemeDefinition> tempSettings = new List<ThemeDefinition>();
+                        for (int n = 0; n < theme.Definitions.Count; n++)
                         {
-                            InteractableThemePropertySettings settings = theme.Settings[n];
-                            settings.Theme = InteractableProfileItem.GetTheme(settings, Profiles[i].Target);
+                            ThemeDefinition settings = theme.Definitions[n];
+                            // TODO: Troy
+                            //settings.Theme = InteractableProfileItem.GetTheme(settings, Profiles[i].Target);
 
                             // add themes to theme list based on dimension
                             if (j == dimensionIndex)
                             {
-                                runningThemesList.Add(settings.Theme);
+                                // TODO: Troy
+                                //runningThemesList.Add(settings.Theme);
                             }
 
                             tempSettings.Add(settings);
@@ -1123,7 +1125,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 ThemeSettings themeSettings = settings.ThemeSettings[dimensionIndex];
                 for (int j = 0; j < themeSettings.Settings.Count; j++)
                 {
-                    runningThemesList.Add(themeSettings.Settings[j].Theme);
+                    // TODO: Troy
+                    //runningThemesList.Add(themeSettings.Settings[j].Theme);
                 }
             }
         }

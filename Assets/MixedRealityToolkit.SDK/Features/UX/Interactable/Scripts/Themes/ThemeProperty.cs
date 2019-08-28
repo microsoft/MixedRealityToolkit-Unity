@@ -5,9 +5,11 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
+    // TODO: Troy -> Remove these containers* => Mark obsolete
     /// <summary>
     /// list of theme settings to virtualize theme values
     /// </summary>
@@ -21,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     public struct ThemeSettings
     {
-        public List<InteractableThemePropertySettings> Settings;
+        public List<ThemeDefinition> Settings;
     }
 
     /// <summary>
@@ -30,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     [System.Serializable]
     public class ThemeTarget
     {
-        public List<InteractableThemeProperty> Properties;
+        public List<ThemeStateProperty> Properties;
         public GameObject Target;
         public State[] States;
     }
@@ -39,19 +41,31 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// The main settings found in Themes
     /// </summary>
     [System.Serializable]
-    public struct InteractableThemePropertySettings
+    public struct ThemeDefinition
     {
         public string Name;
         public string AssemblyQualifiedName;
         public Type Type;
-        public InteractableThemeBase Theme;
-        public List<InteractableThemeProperty> Properties;
-        public List<InteractableThemeProperty> History;
-        public List<InteractableCustomSetting> CustomSettings;
-        public List<InteractableCustomSetting> CustomHistory;
+
+        //public InteractableThemeBase Theme;
+
+        /// <summary>
+        /// Per state properties
+        /// </summary>
+        [FormerlySerializedAs("Properties")]
+        public List<ThemeStateProperty> StateProperties;
+        //public List<ThemeProperty> History;
+
+        [FormerlySerializedAs("CustomSettings")]
+        public List<ThemeProperty> CustomProperties;
+        //public List<InteractableCustomSetting> CustomHistory;
+
         public Easing Easing;
         public bool NoEasing;
+
+        // TODO: Troy - what is this?
         public bool IsValid;
-        public ThemeTarget ThemeTarget;
+
+        //public ThemeTarget ThemeTarget;
     }
 }
