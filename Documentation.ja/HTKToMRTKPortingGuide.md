@@ -1,14 +1,14 @@
-﻿# HTK2017 から MRTK v2への移植ガイド
+﻿# HTK2017 から MRTK v2 への移植ガイド
 
 ## コントローラー入力およびハンド入力
 
-### 設定と構成
+### セットアップと設定
 
 |                           | HTK 2017 |  MRTK v2  |
 |---------------------------|----------|-----------|
 | 型                      | 関連する入力タイプの情報を含む、ボタンに対する特定のイベント | イベントを介して渡される、動作 / ジェスチャ ベースの入力|
-| 設定                     | シーン内に InputManager を配置します。 | [Configuration Profile](MixedRealityConfigurationGuide.md) 内の input system を有効にし、 input system type の詳細を設定します。|
-| 構成             | シーン内の個々のスクリプト上でインスペクタ内に構成されています。 | 以下に示す Mixed Reality Input System プロファイルおよび関連するプロファイルが構成されています。 |
+| セットアップ                     | シーン内に InputManager を配置します。 | [Configuration Profile](MixedRealityConfigurationGuide.md) 内の input system を有効にし、 input system type の詳細を設定します。|
+| 設定             | シーン内の個々のスクリプト上でインスペクタ内に構成されています。 | 以下に示す Mixed Reality Input System プロファイルおよび関連するプロファイルが構成されています。 |
 
 関連するプロファイル:
 
@@ -19,10 +19,9 @@
 * Mixed Reality Input Action Rules Profile
 * Mixed Reality Pointer Profile
 
-[Gaze Provider](xref:Microsoft.MixedReality.Toolkit.Input.GazeProvider) 
- の設定はシーン内の Main Camera オブジェクト上で変更されています。
+[Gaze Provider](xref:Microsoft.MixedReality.Toolkit.Input.GazeProvider) の設定はシーン内の Main Camera オブジェクト上で変更されています。
 
-Windows Mixed Reality Device Managerなどのプラットフォームサポートコンポーネントは、対応するサービスのデータプロバイダーに追加する必要があります。
+Windows Mixed Reality Device Manager などのプラットフォームサポートコンポーネントは、対応するサービスのデータプロバイダに追加する必要があります。
 
 ### インターフェースおよびイベントの紐付け
 
@@ -57,85 +56,85 @@ Windows Mixed Reality Device Managerなどのプラットフォームサポー�
 
 |                           | HTK 2017 |  MRTK v2  |
 |---------------------------|----------|-----------|
-| 設定                     | Main Camera を削除し、MixedRealityCameraParent / MixedRealityCamera / HoloLensCamera プレハブをシーンに追加します。 **あるいは**  Mixed Reality Toolkit > Configure > Apply Mixed Reality Scene Settings というメニューを使用します。 | Main camera オブジェクトの親オブジェクトが MixedRealityPlayspace となるように、 Mixed Reality Toolkit > Add to Scene and Configure ... を使用します。 |
-| 構成             | Camera settings の構成がプレハブインスタンスで実行されます。 | [Mixed Reality Camera Profile](xref:Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile) にて Camera settings が構成されます。 |
+| セットアップ                     | Main Camera を削除し、MixedRealityCameraParent / MixedRealityCamera / HoloLensCamera プレハブをシーンに追加します。 **あるいは**  Mixed Reality Toolkit > Configure > Apply Mixed Reality Scene Settings というメニューを使用します。 | Main camera オブジェクトの親オブジェクトが MixedRealityPlayspace となるように、 Mixed Reality Toolkit > Add to Scene and Configure... を使用します。 |
+| 設定             | Camera settings の構成がプレハブインスタンスで実行されます。 | [Mixed Reality Camera Profile](xref:Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile) にて Camera settings が構成されます。 |
 
-## 音声認識( Speech )
+## 音声認識(Speech)
 
 ### キーワード認識
 
 |                           | HTK 2017 |  MRTK v2  |
 |---------------------------|----------|-----------|
-| 設定                     | SpeechInputSource をシーンに追加してください。 | Windows Speech Input Manager などのキーワードサービスが入力システムのデータプロバイダに追加されている必要があります。|
-| 構成             | 認識するキーワードをSpeechInputSource のインスペクタで設定します。| キーワードは [Mixed Reality Speech Commands Profile](Input/Speech.md) で設定されます。 |
+| セットアップ                     | SpeechInputSource をシーンに追加してください。 | Windows Speech Input Manager などのキーワードサービスが入力システムのデータプロバイダに追加されている必要があります。|
+| 設定             | 認識するキーワードをSpeechInputSource のインスペクタで設定します。| キーワードは [Mixed Reality Speech Commands Profile](Input/Speech.md) で設定されます。 |
 | イベントハンドラ            | `ISpeechHandler` | [`IMixedRealitySpeechHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler) |
 
-### 音声ディクテーション( Dictation )
+### 音声ディクテーション(Dictation)
 
 |                           | HTK 2017 |  MRTK v2  |
 |---------------------------|----------|-----------|
-| 設定                     | DictationInputManager をシーンに追加してください。 | Dictation のサポートには、Windows Dictation Input Manager などのサービスを、input system のデータプロバイダーに追加する必要があります。 |
+| セットアップ                     | DictationInputManager をシーンに追加してください。 | Dictation のサポートには、Windows Dictation Input Manager などのサービスを、input system のデータプロバイダに追加する必要があります。 |
 | イベントハンドラ            | `IDictationHandler` | `IMixedRealityDictationHandler`[`IMixedRealitySpeechHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler) |
 
 ## 空間認識・空間マッピング
 
-### メッシュ( Mesh )
+### メッシュ(Mesh)
 
 |                           | HTK 2017 |  MRTK v2  |
 |---------------------------|----------|-----------|
-| 設定                     | SpatialMapping プレハブをシーンに追加します。 | Configuration Profile 内の Spatial Awareness System を有効にし、 Windows Mixed Reality Spatial Mesh Observer などの空間オブザーバーを Spatial Awareness System のデータプロバイダーに追加します。|
-| 構成             | インスペクタ内でシーンインスタンスを設定します。| それぞれの空間オブザーバーのプロファイルを設定します。 |
+| セットアップ                     | SpatialMapping プレハブをシーンに追加します。 | Configuration Profile 内の Spatial Awareness System を有効にし、 Windows Mixed Reality Spatial Mesh Observer などの空間オブザーバーを Spatial Awareness System のデータプロバイダに追加します。|
+| 設定             | インスペクタ内でシーンインスタンスを設定します。| それぞれの空間オブザーバーのプロファイルを設定します。 |
 
-### 平面( Plane )
-
-|                           | HTK 2017 |  MRTK v2  |
-|---------------------------|----------|-----------|
-| 設定                     | `SurfaceMeshesToPlanes` スクリプトを使用します。 | 未実装の状態です。 |
-
-### 空間理解( Spatial Awareness)
+### 平面(Plane)
 
 |                           | HTK 2017 |  MRTK v2  |
 |---------------------------|----------|-----------|
-| 設定                     | SpatialUnderstanding プレハブをシーンに追加します。 | 未実装の状態です。 |
-| 構成             | インスペクタ内でシーンインスタンスを設定します。 | 未実装の状態です。 |
+| セットアップ                     | `SurfaceMeshesToPlanes` スクリプトを使用します。 | 未実装の状態です。 |
 
-## 移動境界( Boundary )
+### 空間理解(Spatial Awareness)
 
 |                           | HTK 2017 |  MRTK v2  |
 |---------------------------|----------|-----------|
-| 設定                     | `BoundaryManager` スクリプトをシーンに追加します。 | Configuration Profile 内の Boundary Systemを有効にします。|
-| 構成             | インスペクタ内でシーンインスタンスを設定します。 | Boundary Visualization profile 内にて設定します。 |
+| セットアップ                     | SpatialUnderstanding プレハブをシーンに追加します。 | 未実装の状態です。 |
+| 設定             | インスペクタ内でシーンインスタンスを設定します。 | 未実装の状態です。 |
+
+## 移動境界(Boundary)
+
+|                           | HTK 2017 |  MRTK v2  |
+|---------------------------|----------|-----------|
+| セットアップ                     | `BoundaryManager` スクリプトをシーンに追加します。 | Configuration Profile 内の Boundary Systemを有効にします。|
+| 設定             | インスペクタ内でシーンインスタンスを設定します。 | Boundary Visualization profile 内にて設定します。 |
 
 ## シェアリング(Sharing)
 
 |                           | HTK 2017 |  MRTK v2  |
 |---------------------------|----------|-----------|
-| 設定                     | Sharing service の場合: Sharing プレハブをシーンに追加します。<br>UNet の場合: SharingWithUNET example を使用してください。 | 更新中の状態です。 |
-| 構成             | インスペクタ内でシーンインスタンスを設定します。 | 更新中の状態です。 |
+| セットアップ                     | Sharing service の場合: Sharing プレハブをシーンに追加します。<br>UNet の場合: SharingWithUNET example を使用してください。 | 更新中の状態です。 |
+| 設定             | インスペクタ内でシーンインスタンスを設定します。 | 更新中の状態です。 |
 
 ## UX
 
 |                           | HTK 2017 |  MRTK v2  |
 |---------------------------|----------|-----------|
-| ボタン( Button )                     | [Interactable Objects](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit-Examples/UX/Readme/README_InteractableObjectExample.md) | [Button](README_Button.md) |
+| ボタン(Button)                     | [Interactable Objects](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit-Examples/UX/Readme/README_InteractableObjectExample.md) | [Button](README_Button.md) |
 | Interactable                     | [Interactable Objects](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit-Examples/UX/Readme/README_InteractableObjectExample.md) | [Interactable](README_Interactable.md) |
-| バウンディングボックス( Bounding Box )             | [Bounding Box](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit-Examples/UX/Readme/README_BoundingBoxGizmoExample.md) | [Bounding Box](README_BoundingBox.md) |
+| バウンディングボックス(Bounding Box)             | [Bounding Box](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit-Examples/UX/Readme/README_BoundingBoxGizmoExample.md) | [Bounding Box](README_BoundingBox.md) |
 | App Bar             | [App Bar](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit-Examples/UX/Readme/README_BoundingBoxGizmoExample.md) | [App Bar](README_AppBar.md) |
-| 片手操作 (掴む( Grab )、 移動( Move ))   | [HandDraggable](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit/Input/Scripts/Utilities/Interactions/HandDraggable.cs) | [Manipulation Handler](README_ManipulationHandler.md) |
-| 両手操作 (掴む( Grab )/移動( Move )/回転( Rotate )/拡大縮小( Scale ))             | [TwoHandManipulatable](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit/Input/Scripts/Utilities/Interactions/TwoHandManipulatable.cs) | [Manipulation Handler](README_ManipulationHandler.md) |
+| 片手操作 (掴む(Grab)、 移動(Move))   | [HandDraggable](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit/Input/Scripts/Utilities/Interactions/HandDraggable.cs) | [Manipulation Handler](README_ManipulationHandler.md) |
+| 両手操作 (掴む(Grab)/移動(Move)/回転(Rotate)/拡大縮小(Scale))             | [TwoHandManipulatable](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit/Input/Scripts/Utilities/Interactions/TwoHandManipulatable.cs) | [Manipulation Handler](README_ManipulationHandler.md) |
 | キーボード             | [Keyboard prefab]() | [System Keyboard](README_SystemKeyboard.md) |
-| ツールチップ( Tooltip )             | [Tooltip](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit-Examples/UX/Readme/README_TooltipExample.md) | [Tooltip](README_Tooltip.md) |
+| ツールチップ(Tooltip)             | [Tooltip](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit-Examples/UX/Readme/README_TooltipExample.md) | [Tooltip](README_Tooltip.md) |
 | オブジェクト選択             | [Object Collection](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit-Examples/UX/Readme/README_ObjectCollection.md) | [Object Collection](README_ObjectCollection.md) |
 | ソルバー            | [Solver](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/htk_release/Assets/HoloToolkit-Examples/Utilities/Readme/README_SolverSystem.md) | [Solver](README_Solver.md) |
 
-## ユーティリティ( Utilities )
+## ユーティリティ(Utilities)
 
 一部のユーティリティは、ソルバーシステムと重複するように調整されています。 必要なスクリプトが見つからない場合は、問題を報告してください。
 
 | HTK 2017 |  MRTK v2  |
 |----------|-----------|
-| ビルボード( Billboard ) | [`Billboard`](xref:Microsoft.MixedReality.Toolkit.UI.Billboard) |
-| タガロング( Tagalong ) | [`RadialView`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.RadialView) あるいは [`Orbital`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.Orbital) [Solver](README_Solver.md) |
+| ビルボード(Billboard) | [`Billboard`](xref:Microsoft.MixedReality.Toolkit.UI.Billboard) |
+| タグアロング(Tagalong) | [`RadialView`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.RadialView) あるいは [`Orbital`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.Orbital) [Solver](README_Solver.md) |
 | FixedAngularSize | [`ConstantViewSize`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.ConstantViewSize) [Solver](README_Solver.md) |
-| FPS表示( FpsDisplay ) | [Diagnostics System](Diagnostics/DiagnosticsSystemGettingStarted.md) (Configuration Profile 内にて) |
+| FPS表示(FpsDisplay) | [Diagnostics System](Diagnostics/DiagnosticsSystemGettingStarted.md) (Configuration Profile 内にて) |
 | NearFade | [Mixed Reality Toolkit Standard shader](README_MRTKStandardShader.md) に含まれています。|
