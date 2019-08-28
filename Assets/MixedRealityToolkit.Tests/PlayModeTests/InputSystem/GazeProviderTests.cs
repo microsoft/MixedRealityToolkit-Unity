@@ -93,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
 
             // Set the override to true, and then wait a frame in order for the
             // internal state machine to reconcile this property change.
-            CoreServices.InputSystem.GazeProvider.GazeCursorVisibilityOverride = false;
+            CoreServices.InputSystem.GazeProvider.GazeCursorVisibilityOverride = true;
             yield return null;
             Assert.IsTrue(CoreServices.InputSystem.GazeProvider.GazeCursor.IsVisible);
 
