@@ -131,7 +131,7 @@ example of raising an updated event for an observed mesh.
 
 ### Apply the MixedRealityDataProvider attribute
 
-The final step of creating a spatial awareness data provider is to apply the [`MixedRealityDataProvider`](Microsoft.MixedReality.Toolkit.MixedRealityDataProviderAttribute)
+The final step of creating a spatial awareness data provider is to apply the [`MixedRealityDataProvider`](xref:Microsoft.MixedReality.Toolkit.MixedRealityDataProviderAttribute)
 attribute to the class. This is an optional step that allows for setting the default profile and platform(s) for the observer, when selected in the spatial awareness profile.
 
 ``` c#
@@ -157,8 +157,8 @@ pasting a .asset file.
 Profile contents should mirror the accessible properties of the observer (ex: update interval). All of the user configurable properties defined in each
 interface should be contained with the profile.
 
-Base classes are encouraged if a new observer extends an existing data provider. For example, the [`SpatialObjectMeshObserverProfile`](Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserverProfile)
-extends the [`MixedRealitySpatialAwarenessMeshObserverProfile`](Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessMeshObserverProfile) to enable
+Base classes are encouraged if a new observer extends an existing data provider. For example, the [`SpatialObjectMeshObserverProfile`](xref:Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserverProfile)
+extends the [`MixedRealitySpatialAwarenessMeshObserverProfile`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessMeshObserverProfile) to enable
 customers to provide a 3D model to be used as the environment data.
 
 ``` c#
@@ -198,16 +198,16 @@ public class SpatialObjectMeshObserverProfileInspector : BaseMixedRealityToolkit
 
 Once created, the observer can be registered with the spatial awareness system be used in the application.
 
-![Selecting the spatial object mesh observer](../Images/SpatialAwreness/SelectObjectObserver.png)
+![Selecting the spatial object mesh observer](../Images/SpatialAwareness/SelectObjectObserver.png)
 
 ## See also
 
 - [Spatial awarenes system](SpatialAwarenessGettingStarted.md)
-- [IMixedRealitySpatialAwarenessObject interface](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObject)
-- [BaseSpatialAwarenessObject class](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialAwarenessObject)
-- [SpatialAwarenessMeshObject class](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.SpatialAwarenessMeshObject)
-- [SpatialAwarenessPlanarObject class](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.SpatialAwarenessPlanarObject)
-- [IMixedRealitySpatialAwarenessObserver interface](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver)
-- [BaseSpatialObserver class](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver)
-- [IMixedRealitySpatialAwarenessMeshObserver interface](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessMeshObserver)
-- [IMixedRealityDataProvider](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider)
+- [`IMixedRealitySpatialAwarenessObject` interface](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObject)
+- [`BaseSpatialAwarenessObject` class](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialAwarenessObject)
+- [`SpatialAwarenessMeshObject` class](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.SpatialAwarenessMeshObject)
+- [`SpatialAwarenessPlanarObject` class](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.SpatialAwarenessPlanarObject)
+- [`IMixedRealitySpatialAwarenessObserver` interface](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver)
+- [`BaseSpatialObserver` class](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver)
+- [`IMixedRealitySpatialAwarenessMeshObserver` interface](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessMeshObserver)
+- [`IMixedRealityDataProvider` interface](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider)

@@ -10,7 +10,7 @@ Systems are services that provide the core functionality of the Mixed Reality To
 
 - [BoundarySystem](../Boundary/BoundarySystemGettingStarted.md)
 - CameraSystem
-- [DiagnosticsSystem](../Diagnostics/DiagnosticsSystemGettingStarted.ms)
+- [DiagnosticsSystem](../Diagnostics/DiagnosticsSystemGettingStarted.md)
 - [InputSystem](../Input/Overview.md)
 - [SceneSystem](../SceneSystem/SceneSystemGettingStarted.md)
 - [SpatialAwarenessSystem](../SpatialAwareness/SpatialAwarenessGettingStarted.md)
@@ -49,7 +49,7 @@ query the appropriate service.
 
 ### Input
 
-The MRTK input system utilizes only data providers that implement the [`IMixedRealityInputDeviceManager`](Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputDeviceManager).
+The MRTK input system utilizes only data providers that implement the [`IMixedRealityInputDeviceManager`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputDeviceManager).
 
 ![Input system data providers](../Images/Input/RegisteredServiceProviders.PNG)
 

@@ -127,9 +127,8 @@ Once created, the device manager can be registered with the input system be used
 ## See also
 
 - [Input system](Overview.md)
-- [BaseInputDeviceManager class](xref:Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager)
-- [IMixedRealityInputDeviceManager interface](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputDeviceManager)
-- [IMixedRealityDataProvider interface](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider)
-- [IMixedRealityInputHandler interface](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler)
-< links, mark them as code >
-
+- [`BaseInputDeviceManager` class](xref:Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager)
+- [`IMixedRealityInputDeviceManager` interface](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputDeviceManager)
+- [`IMixedRealityDataProvider` interface](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider)
+- [`IMixedRealityInputHandler` interface](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler)
+- [`IMixedRealityInputHandler<T>` interface](Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler`1)
