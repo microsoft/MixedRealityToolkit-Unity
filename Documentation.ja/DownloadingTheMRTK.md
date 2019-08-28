@@ -2,7 +2,7 @@
 
 ![MRTK Logo](../Documentation/Images/MRTK_Logo_Rev.png)
 
-MRTK は次の方法で利用できます。方法に関するフィードバック、または追加の配布リクエストについては、[Github に問題を投稿する](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues/new/choose) を参照してください。
+MRTK は以下の方法で利用できます。方法に関するフィードバック、または追加の配布リクエストについては、[Github に問題を投稿する](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues/new/choose) を参照してください。
 
 ## MRTK GitHub のサイトからダウンロード可能な Unity アセット
 
