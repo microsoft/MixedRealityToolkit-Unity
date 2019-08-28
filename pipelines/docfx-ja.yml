@@ -7,6 +7,8 @@ trigger:
 - feature/mrtk_documentation_ja
 # - feature/mrtk_documentation_ja_docfx
 
+pr: none
+
 pool:
   vmImage: 'windows-latest'
 
