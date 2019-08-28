@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
@@ -62,14 +63,73 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Maximum number of colliders that can be detected in a scene query.
         /// </summary>
         public int SceneQueryBufferSize => sceneQueryBufferSize;
+
+        /// <summary>
+        /// Helper class for storing and managing near grabbables close to a point
+        /// </summary>
         private class QueryBufferInfo
         {
-            public int NumColliders { get; set; }
-            public Collider[] QueryBuffer { get; set;  }
-            public float QueryRadius { get; set; }
+            /// <summary>
+            /// How many colliders are near the point from the latest call to TryUpdateQueryBufferForLayerMask 
+            /// </summary>
+            private int NumColliders { get; set; }
+
+            /// <summary>
+            /// Fixed-length array used to story physics queries
+            /// </summary>
+            private Collider[] QueryBuffer { get; set;  }
+
+            /// <summary>
+            /// Distance for performing queries.
+            /// </summary>
+            private float QueryRadius { get; set; }
+
+            /// <summary>
+            /// The grabbable near the QueryRadius. 
+            /// </summary>
+            private NearInteractionGrabbable Grabbable { get; set; }
+
+            public QueryBufferInfo(int bufferSize, float radius)
+            {
+                NumColliders = 0;
+                QueryBuffer = new Collider[bufferSize];
+                QueryRadius = radius;
+            }
+
+            public bool TryUpdateQueryBufferForLayerMask(LayerMask layerMask, Vector3 pointerPosition, QueryTriggerInteraction triggerInteraction)
+            {
+                NumColliders = UnityEngine.Physics.OverlapSphereNonAlloc(
+                    pointerPosition, 
+                    QueryRadius,
+                    QueryBuffer, 
+                    layerMask, 
+                    triggerInteraction);
+
+                if (NumColliders == QueryBuffer.Length)
+                {
+                    Debug.LogWarning($"Maximum number of {NumColliders} colliders found in SpherePointer overlap query. Consider increasing the query buffer size in the pointer profile.");
+                }
+
+                for (int i = 0; i < NumColliders; i++)
+                {
+                    if(Grabbable = QueryBuffer[i].GetComponent<NearInteractionGrabbable>())
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            /// <summary>
+            /// Returns true if any of the objects inside QueryBuffer contain a grabbable
+            /// </summary>
+            /// <returns></returns>
+            public bool ContainsGrabbable()
+            {
+                return Grabbable != null;
+            }
         }
         private QueryBufferInfo queryBufferNearObjectRadius;
-        private QueryBufferInfo queryBufferSphereCastRadius;
+        private QueryBufferInfo queryBufferInteractionRadius;
 
         /// <summary>
         /// Currently performs a sphere check.
@@ -82,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get
             {
-               return IsGrabbableWithinRadius(NearObjectRadius);
+                return queryBufferNearObjectRadius.ContainsGrabbable();
             }
         }
 
@@ -95,48 +155,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     return true;
                 }
-                return base.IsInteractionEnabled && IsGrabbableWithinRadius(SphereCastRadius);
+                return base.IsInteractionEnabled && queryBufferInteractionRadius.ContainsGrabbable();
             }
-        }
-
-        private bool IsGrabbableWithinRadius(float radius)
-        {
-            if (TryGetNearGraspPoint(out Vector3 position))
-            {
-
-            }
-            return false;
-        }
-
-        private bool TryUpdateQueryBufferForLayerMask(LayerMask mask, float radius, Vector3 position)
-        {
-            int numColliders = UnityEngine.Physics.OverlapSphereNonAlloc(position, radius, queryBuffer, mask, triggerInteraction);
-            if (numColliders == queryBuffer.Length)
-            {
-                Debug.LogWarning($"Maximum number of {numColliders} colliders found in SpherePointer overlap query. Consider increasing the query buffer size in the pointer profile.");
-            }
-            for (int j = 0; j < numColliders; j++)
-            {
-                if (queryBuffer[j].GetComponent<NearInteractionGrabbable>())
-                {
-                    return true;
-                }
-            }
-            return false;
         }
 
         private void Awake()
         {
-            queryBufferNearObjectRadius = new QueryBufferInfo
-            {
-                NumColliders = 0,
-                QueryBuffer = new Collider[sceneQueryBufferSize]
-            };
-            queryBufferSphereCastRadius = new QueryBufferInfo
-            {
-                NumColliders = 0,
-                QueryBuffer = new Collider[sceneQueryBufferSize]
-            };
+            queryBufferNearObjectRadius = new QueryBufferInfo(sceneQueryBufferSize, NearObjectRadius);
+            queryBufferInteractionRadius = new QueryBufferInfo(sceneQueryBufferSize, SphereCastRadius);
         }
 
         /// <inheritdoc />
@@ -154,19 +180,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Rays[0].UpdateRayStep(ref pointerPosition, ref endPoint);
 
                 var layerMasks = PrioritizedLayerMasksOverride ?? GrabLayerMasks;
-                var toQuery = new QueryBufferInfo[] { queryBufferNearObjectRadius, queryBufferSphereCastRadius };
+                var toQuery = new QueryBufferInfo[] { queryBufferNearObjectRadius, queryBufferInteractionRadius };
                 for (int j = 0; j < toQuery.Length; j++)
                 {
                     for (int i = 0; i < layerMasks.Length; i++)
                     {
-                        if (TryUpdateQueryBufferForLayerMask(layerMasks[i], toQuery[j].QueryRadius, pointerPosition))
+                        if (toQuery[j].TryUpdateQueryBufferForLayerMask(layerMasks[i], pointerPosition, triggerInteraction))
                         {
-                            continue;
+                            break;
                         }
                     }
                 }
-
-
             }
         }
 
