@@ -49,12 +49,12 @@ jobs:
   - ${{ if eq(variables['MRTKReleaseTag'], '') }}:
     - template: templates/package.yml
       parameters:
-        version: '$(MRTKVersion)-$(Build.BuildNumber).prerelease'
+        version: '$(MRTKVersion)-$(Build.BuildNumber)'
         packDestination: '$(Build.SourcesDirectory)\artifacts\prerelease'
   - ${{ if ne(variables['MRTKReleaseTag'], '') }}:
     - template: templates/package.yml
       parameters:
-        version: '$(MRTKVersion)-$(Build.BuildNumber).prerelease.$(MRTKReleaseTag)'
+        version: '$(MRTKVersion)-$(Build.BuildNumber).$(MRTKReleaseTag)'
         packDestination: '$(Build.SourcesDirectory)\artifacts\prerelease'
 
   # Create release packages
