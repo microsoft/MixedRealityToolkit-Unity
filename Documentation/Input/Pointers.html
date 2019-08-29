@@ -307,6 +307,16 @@ private void OnDisable()
 <h2 id="pointer-interactions-via-editor">Pointer interactions via editor</h2>
 <p>For pointer events handled by <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler.html"><code>IMixedRealityPointerHandler</code></a>, MRTK provides further convenience in the form of the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.PointerHandler.html"><code>PointerHandler</code></a> component which allows pointer events to be handled directly via Unity Events.</p>
 <img src="../Images/Pointers/PointerHandler.png" style="max-width:100%;">
+<h2 id="pointer-extent">Pointer Extent</h2>
+<p>Far pointers have settings which limit how far they will raycast and interact with other objects in the scene.
+By default, this value is set to 10 meters. This value was chosen to remain consistent with the behavior
+of the HoloLens shell.</p>
+<p>This can be changed by updating the <code>DefaultControllerPointer</code> prefab's
+<a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.ShellHandRayPointer.html"><code>ShellHandRayPointer</code></a> component's
+fields:</p>
+<p><strong>Pointer Extent</strong> - This controls the maximum distance that pointers will interact with.
+<strong>Default Pointer Extent</strong> - This controls the length of the pointer ray/line that will
+render when the pointer is not interacting with anything.</p>
 <h2 id="see-also">See Also</h2>
 <ul>
 <li><a href="../Architecture/InputSystem/ControllersPointersAndFocus.html">Pointer Architecture</a></li>
