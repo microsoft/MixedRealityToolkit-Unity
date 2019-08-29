@@ -141,12 +141,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void OnStartMouseLook()
         {
-            if (profile.MouseLookButton.GetKeyType() == KeyBinding.KeyType.MouseButton)
+            if (profile.MouseLookButton.BindingType == KeyBinding.KeyType.Mouse)
             {
                 // if mousebutton is either left, right or middle
                 SetWantsMouseJumping(true);
             }
-            else if (profile.MouseLookButton.GetKeyType() == KeyBinding.KeyType.Key)
+            else if (profile.MouseLookButton.BindingType == KeyBinding.KeyType.Key)
             {
                 // if mousebutton is either control, shift or focused
                 UnityEngine.Cursor.lockState = CursorLockMode.Locked;
@@ -160,12 +160,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void OnEndMouseLook()
         {
-            if (profile.MouseLookButton.GetKeyType() == KeyBinding.KeyType.MouseButton)
+            if (profile.MouseLookButton.BindingType == KeyBinding.KeyType.Mouse)
             {
                 // if mousebutton is either left, right or middle
                 SetWantsMouseJumping(false);
             }
-            else if (profile.MouseLookButton.GetKeyType() == KeyBinding.KeyType.Key)
+            else if (profile.MouseLookButton.BindingType == KeyBinding.KeyType.Key)
             {
                 // if mousebutton is either control, shift or focused
                 UnityEngine.Cursor.lockState = CursorLockMode.None;

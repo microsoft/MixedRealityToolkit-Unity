@@ -3,7 +3,10 @@
 
 using UnityEngine;
 using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Services.InputSimulation.Editor")]
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
@@ -18,17 +21,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The type of value encoded in the <see cref="code"/> property.
         /// </summary>
-        /// <remarks>
-        /// The actual KeyCode or button index is added to the base type value.
-        /// </remarks>
         public enum KeyType : int
         {
             None = 0,
-            MouseButton = 1000,
-            Key = 2000,
+            Mouse = 1,
+            Key = 2,
         }
-        private static KeyType[] KeyTypeValues = (KeyType[])Enum.GetValues(typeof(KeyType));
-        private static string[] KeyTypeNames = Enum.GetNames(typeof(KeyType));
 
         /// <summary>
         /// Enum for interpreting the mouse button integer index.
@@ -44,70 +42,80 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Button6 = 6,
             Button7 = 7,
         }
-        private static MouseButton[] MouseButtonValues = (MouseButton[])Enum.GetValues(typeof(MouseButton));
-        private static string[] MouseButtonNames = Enum.GetNames(typeof(MouseButton));
+
+        // Array of names to use for a combined enum selection.
+        internal static readonly string[] AllCodeNames;
+        // Maps (KeyType, code) combination onto the contiguous index used for enums.
+        // Value can be used as index in AllCodeNames array.
+        internal static readonly Dictionary<Tuple<KeyType, int>, int> KeyBindingToEnumMap;
+        // Maps enum index to a KeyBinding, for assignment after selecting an enum value.
+        internal static readonly Dictionary<int, KeyBinding> EnumToKeyBindingMap;
+
+        // Static constructor to initialize static fields
+        static KeyBinding()
+        {
+            KeyCode[] KeyCodeValues = (KeyCode[])Enum.GetValues(typeof(KeyCode));
+            string[] KeyCodeNames = Enum.GetNames(typeof(KeyCode));
+            MouseButton[] MouseButtonValues = (MouseButton[])Enum.GetValues(typeof(MouseButton));
+            string[] MouseButtonNames = Enum.GetNames(typeof(MouseButton));
+
+            // Build maps for converting between int enum value and KeyBinding values
+            {
+                KeyBindingToEnumMap = new Dictionary<Tuple<KeyType, int>, int>();
+                EnumToKeyBindingMap = new Dictionary<int, KeyBinding>();
+                List<string> names = new List<string>();
+
+                int index = 0;
+                Action<KeyType, int> AddEnumValue = (bindingType, code) =>
+                {
+                    var kb = new KeyBinding() { bindingType=bindingType, code=code };
+                    names.Add(kb.ToString());
+                    EnumToKeyBindingMap[index] = kb;
+                    KeyBindingToEnumMap[Tuple.Create(bindingType, code)] = index;
+
+                    ++index;
+                };
+
+                AddEnumValue(KeyType.None, 0);
+
+                foreach (MouseButton mb in MouseButtonValues)
+                {
+                    AddEnumValue(KeyType.Mouse, (int)mb);
+                }
+
+                foreach (KeyCode kc in KeyCodeValues)
+                {
+                    AddEnumValue(KeyType.Key, (int)kc);
+                }
+
+                AllCodeNames = names.ToArray();
+            }
+        }
 
         [SerializeField]
+        private KeyType bindingType;
+        public KeyType BindingType => bindingType;
+        [SerializeField]
         private int code;
-        /// <summary>
-        /// The internal value that encodes the key binding.
-        /// </summary>
-        public int Code => code;
-
-        /// <summary>
-        /// Get a string representation of an internal code value.
-        /// </summary>
-        public static string CodeToString(int code)
-        {
-            string s = "";
-
-            GetKeyTypeAndCode(code, out KeyType keyType, out int keyCode);
-            s += keyType.ToString();
-
-            switch (keyType)
-            {
-                case KeyType.Key:
-                    s += ": " + ((KeyCode)keyCode).ToString();
-                    break;
-                case KeyType.MouseButton:
-                    s += ": " + ((MouseButton)keyCode).ToString();
-                    break;
-            }
-            return s;
-        }
+        internal int Code => code;
 
         /// <inheritdoc />
         public override string ToString()
         {
-            return CodeToString(code);
-        }
+            string s = "";
 
-        /// <summary>
-        /// Convert an encoded key binding value into a combination of <see cref="KeyType"/> and the actual key code.
-        /// </summary>
-        public static void GetKeyTypeAndCode(int code, out KeyType keyType, out int keyCode)
-        {
-            for (int i = KeyTypeValues.Length - 1; i >= 0; --i)
+            s += bindingType.ToString();
+
+            switch (bindingType)
             {
-                if (code >= (int)KeyTypeValues[i])
-                {
-                    keyType = KeyTypeValues[i];
-                    keyCode = code - (int)KeyTypeValues[i];
-                    return;
-                }
+                case KeyType.Key:
+                    s += ": " + ((KeyCode)code).ToString();
+                    break;
+                case KeyType.Mouse:
+                    s += ": " + ((MouseButton)code).ToString();
+                    break;
             }
-
-            keyType = KeyType.None;
-            keyCode = 0;
-        }
-
-        /// <summary>
-        /// Get the type of binding encoded by value.
-        /// </summary>
-        public KeyType GetKeyType()
-        {
-            GetKeyTypeAndCode(code, out KeyType keyType, out int keyCode);
-            return keyType;
+            return s;
         }
 
         /// <summary>
@@ -116,9 +124,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <returns>True if the binding is a keyboard key</returns>
         public bool TryGetKeyCode(out KeyCode keyCode)
         {
-            GetKeyTypeAndCode(code, out KeyType keyType, out int iKeyCode);
-            keyCode = (KeyCode)iKeyCode;
-            return keyType == KeyType.Key;
+            keyCode = (KeyCode)code;
+            return bindingType == KeyType.Key;
         }
 
         /// <summary>
@@ -127,8 +134,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <returns>True if the binding is a mouse button</returns>
         public bool TryGetMouseButton(out int mouseButton)
         {
-            GetKeyTypeAndCode(code, out KeyType keyType, out mouseButton);
-            return keyType == KeyType.MouseButton;
+            mouseButton = code;
+            return bindingType == KeyType.Mouse;
         }
 
         /// <summary>
@@ -139,14 +146,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (TryGetMouseButton(out int iMouseButton))
             {
-                foreach (MouseButton mb in MouseButtonValues)
-                {
-                    if (iMouseButton == (int)mb)
-                    {
-                        mouseButton = mb;
-                        return true;
-                    }
-                }
+                mouseButton = (MouseButton)iMouseButton;
+                return true;
             }
             mouseButton = MouseButton.Left;
             return false;
@@ -159,7 +160,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public static KeyBinding Unbound()
         {
             KeyBinding kb = new KeyBinding();
-            kb.code = (int)KeyType.None;
+            kb.bindingType = KeyType.None;
+            kb.code = 0;
             return kb;
         }
 
@@ -169,7 +171,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public static KeyBinding FromKey(KeyCode keyCode)
         {
             KeyBinding kb = new KeyBinding();
-            kb.code = (int)KeyType.Key + (int)keyCode;
+            kb.bindingType = KeyType.Key;
+            kb.code = (int)keyCode;
             return kb;
         }
 
@@ -179,7 +182,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public static KeyBinding FromMouseButton(int mouseButton)
         {
             KeyBinding kb = new KeyBinding();
-            kb.code = (int)KeyType.MouseButton + mouseButton;
+            kb.bindingType = KeyType.Mouse;
+            kb.code = mouseButton;
             return kb;
         }
 
