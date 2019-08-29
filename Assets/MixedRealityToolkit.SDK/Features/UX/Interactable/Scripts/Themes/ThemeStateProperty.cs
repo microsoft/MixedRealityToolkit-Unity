@@ -17,13 +17,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public ThemePropertyTypes Type;
         public List<ThemePropertyValue> Values;
         public ThemePropertyValue StartValue;
-        //public ThemePropertyValue Default;
+        public ThemePropertyValue Default;
 
 
         public int PropId; // i.e OptionIndex
         public List<ShaderProperties> ShaderOptions;
         public List<string> ShaderOptionNames;
-        public ThemePropertyValue Default;
         public string ShaderName;
 
         private List<int> ShaderPropertyIDs = null;

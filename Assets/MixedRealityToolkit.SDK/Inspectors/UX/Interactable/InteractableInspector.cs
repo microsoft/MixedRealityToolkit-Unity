@@ -187,9 +187,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
                                 if (show)
                                 {
+                                    UnityEditor.Editor themeEditor = UnityEditor.Editor.CreateEditor(themeItem.objectReferenceValue);
+                                    themeEditor.OnInspectorGUI();
+                                    /*
                                     SerializedObject themeObj = new SerializedObject(themeItem.objectReferenceValue);
                                     SerializedProperty themeDefinitions = themeObj.FindProperty("Definitions");
-
                                     GUILayout.Space(5);
 
                                     if (InspectorUIUtility.FlexButton(AddThemePropertyLabel))
@@ -205,6 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                                     ThemeInspector.RenderThemeSettings(theme, themeDefinitions, states, ThemePropertiesBoxMargin);
                                     ThemeInspector.RenderThemeStates(themeDefinitions, states, ThemePropertiesBoxMargin);
                                     themeObj.ApplyModifiedProperties();
+                                    */
                                 }
 
                                 validProfileCnt++;

@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 new ThemeStateProperty()
                 {
-                    Name = "Shader",
+                    Name = "Shader Value",
                     Type = ThemePropertyTypes.ShaderFloat,
                     Values = new List<ThemePropertyValue>(),
                     Default = new ThemePropertyValue() { Float = 0}

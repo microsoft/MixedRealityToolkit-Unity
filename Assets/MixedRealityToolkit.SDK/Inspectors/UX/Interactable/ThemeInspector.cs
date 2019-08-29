@@ -4,11 +4,9 @@
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization.Formatters.Binary;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.UI.Editor
 {
@@ -38,28 +36,22 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderCustomInspector();
-        }
+            serializedObject.Update();
 
-        protected virtual void RenderBaseInspector()
-        {
-            base.OnInspectorGUI();
-        }
-
-        public virtual void RenderCustomInspector()
-        {
             theme = target as Theme;
-
-
-            // TODO: Troy Make this all a static function that can be called*
+            boxStyle = InspectorUIUtility.Box(0);
 
             themeDefinitions = serializedObject.FindProperty("Definitions");
             states = serializedObject.FindProperty("States");
+            themeStates = theme.GetStates();
 
-            serializedObject.Update();
+            RenderTheme();
 
-            boxStyle = InspectorUIUtility.Box(0);
+            serializedObject.ApplyModifiedProperties();
+        }
 
+        public virtual void RenderTheme()
+        {
             using (new EditorGUILayout.VerticalScope(boxStyle))
             {
                 if (!RenderStates())
@@ -76,11 +68,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                 return;
             }
 
-            RenderThemeSettings(theme, themeDefinitions, GetStates());
+            RenderThemeSettings();
 
-            RenderThemeStates(themeDefinitions, GetStates(), 0);
-
-            serializedObject.ApplyModifiedProperties();
+            RenderThemeStates();
         }
 
         /// <summary>
@@ -90,6 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         /// <returns></returns>
         protected bool RenderStates()
         {
+            // TODO: Troy - don't use this
             // If states value is not provided, try to use Default states type
             if (states.objectReferenceValue == null)
             {
@@ -100,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             EditorGUILayout.PropertyField(states, new GUIContent("States", "The States this Interactable is based on"));
             GUI.enabled = true;
 
-            if (states.objectReferenceValue == null || GetStates().Length < 1)
+            if (states.objectReferenceValue == null || themeStates.Length < 1)
             {
                 InspectorUIUtility.DrawError("Please assign a valid States object!");
                 return false;
@@ -109,67 +100,100 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             return true;
         }
 
-        /// <summary>
-        /// Get the list of states from the theme
-        /// </summary>
-        /// <returns></returns>
-        protected virtual State[] GetStates()
-        {
-            Theme theme = (Theme)target;
-
-            // TODO: Troy Move this function out to here?
-            themeStates = theme.GetStates();
-            return themeStates;
-        }
-
         protected virtual void AddThemeDefinition()
         {
             // TODO: Troy - Harden this code
             var themeOptions = InteractableProfileItem.GetThemeTypes();
             var defaultType = themeOptions.Types[0];
 
-            theme.Definitions.Add(CreateThemeDefinition(theme.GetStates(), defaultType));
+            ThemeDefinition newDefinition = CreateThemeDefinition(defaultType);
+            ValidateThemeDefinition(ref newDefinition, theme.GetStates());
+
+            theme.Definitions.Add(newDefinition);
+            theme.History.Add(new Dictionary<Type, ThemeDefinition>());
 
             serializedObject.Update();
+            EditorUtility.SetDirty(theme);
         }
 
-        private static string BuildPreferenceKey(Theme target, int index, Type definitionClassType)
+        protected void DeleteThemeDefinition(uint index)
         {
-            return target.name + "_" + index + "_" + definitionClassType.Name;
-        }
-
-        protected static void ClearThemeDefinitions(Theme target, int index)
-        {
-            var themeOptions = InteractableProfileItem.GetThemeTypes();
-
-            foreach(var type in themeOptions.Types)
+            if (!(theme != null && theme.Definitions != null && index < theme.Definitions.Count))
             {
-                string prefKey = BuildPreferenceKey(target, index, type);
-                SessionState.EraseString(prefKey);
+                // TOOD: Troy - log errro
+                return;
             }
+
+            theme.Definitions.RemoveAt((int)index);
         }
 
-        protected static void SaveThemeDefinition(Theme target, int index, Type definitionClassType)
+        protected void ClearHistoryCache(int index)
         {
-            if (target == null || target.Definitions == null 
-                || index < 0 || target.Definitions.Count < index)
+            if (theme == null || theme.History == null || index > theme.History.Count)
+            {
+                // TOOD: Troy - log errro
+                return;
+            }
+
+            theme.History.RemoveAt(index);
+        }
+
+
+        /// <summary>
+        /// Check that access for the provided index is valid into the definitions and history of the provided Theme
+        /// </summary>
+        /// <param name="target">Theme container object to inspector</param>
+        /// <param name="index">index of ThemeDefinintion and History cache to access</param>
+        /// <returns>true if access at index is possible, false otherwise</returns>
+        private static bool ValidThemeHistoryAccess(Theme target, uint index)
+        {
+            return target != null && target.History != null && target.Definitions != null
+                    && index < target.Definitions.Count;
+        }
+
+        protected void SaveThemeDefinitionHistory(int index, Type definitionClassType)
+        {
+            if (theme == null || theme.History == null || theme.Definitions == null)
             {
                 // TODO: Troy - File warning/error?
                 return;
             }
 
-            string prefKey = BuildPreferenceKey(target, index, definitionClassType);
+            // If cache list is out of sync for some reason, wipe and start fresh
+            if (theme.History.Count != theme.Definitions.Count)
+            {
+                theme.History.Clear();
+                for (int i = 0; i < theme.Definitions.Count; i++)
+                {
+                    theme.History.Add(new Dictionary<Type, ThemeDefinition>());
+                }
+            }
 
-            var definition = target.Definitions[index];
-            string jsonDefinition = JsonUtility.ToJson(definition);
+            var definition = theme.Definitions[index];
+            var cache = theme.History[index];
+            cache[definitionClassType] = definition;
 
-            SessionState.SetString(prefKey, jsonDefinition);
-
-            Debug.Log(jsonDefinition);
         }
 
-        protected static void LoadThemeDefinition(Theme target, int index, Type newDefinitionClassType)
+        protected ThemeDefinition? LoadThemeDefinitionHistory(int index, Type newDefinitionClassType)
         {
+            if (!ValidThemeHistoryAccess(theme, (uint)index))
+            {
+                // TODO: Troy - File warning/error?
+                return null;
+            }
+
+            var cache = theme.History[index];
+            if (cache.ContainsKey(newDefinitionClassType))
+            {
+                return cache[newDefinitionClassType];
+            }
+            else
+            {
+                return null;
+            }
+
+            /*
             string prefKey = BuildPreferenceKey(target, index, newDefinitionClassType);
             var historyJSON = SessionState.GetString(prefKey, string.Empty);
 
@@ -182,10 +206,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             {
                 // TODO: Troy - Add comments, 
                 target.Definitions[index] = CreateThemeDefinition(target.GetStates(), newDefinitionClassType);
-            }
+            }*/
         }
 
-        private static ThemeDefinition CreateThemeDefinition(State[] states, Type newDefinitionClassType)
+        private static ThemeDefinition CreateThemeDefinition(Type newDefinitionClassType)
         {
             InteractableThemeBase themeBase = (InteractableThemeBase)Activator.CreateInstance(newDefinitionClassType);
 
@@ -199,16 +223,35 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                 CustomProperties = themeBase.GetDefaultThemeProperties(),
             };
 
-            // TODO: Troy - Create comment here
-            foreach (ThemeStateProperty p in newDefinition.StateProperties)
+            return newDefinition;
+        }
+
+        protected static void ValidateThemeDefinition(ref ThemeDefinition definition, State[] states)
+        {
+            // For each theme property with values per possible state
+            // ensure the number of values matches the number of states
+            foreach (ThemeStateProperty p in definition.StateProperties)
             {
-                foreach (State s in states)
+                if (p.Values.Count != states.Length)
                 {
-                    p.Values.Add(p.Default.Copy());
+                    // Need to fill property with default values to match number of states
+                    if (p.Values.Count < states.Length)
+                    {
+                        for (int i = p.Values.Count - 1; i < states.Length; i++)
+                        {
+                            p.Values.Add(p.Default.Copy());
+                        }
+                    }
+                    else
+                    {
+                        // Too many property values, remove to match number of states
+                        for (int i = p.Values.Count - 1; i >= states.Length; i--)
+                        {
+                            p.Values.RemoveAt(i);
+                        }
+                    }
                 }
             }
-
-            return newDefinition;
         }
 
         /*
@@ -846,10 +889,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             return copyTo;
         }
 
-        public static void RenderThemeSettings(Theme target,
-            SerializedProperty themeDefinitions, 
-            State[] states,
-            int margin = 0)
+        public void RenderThemeSettings(int margin = 0)
         {
             GUIStyle box = InspectorUIUtility.Box(margin);
 
@@ -875,12 +915,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                         {
                             if (InspectorUIUtility.SmallButton(RemoveThemePropertyContent))
                             {
-                                //ClearThemeDefinitions(target, index);
+                                ClearHistoryCache(index);
+                                DeleteThemeDefinition((uint)index);
 
-                                target.Definitions.RemoveAt(index);
-                                //target.IDs.RemoveAt(index);
+                                serializedObject.Update();
+                                EditorUtility.SetDirty(theme);
 
-                                themeDefinitions.serializedObject.Update();
                                 // TODO: Troy - Need to call delete themedefinition button
                                 //themeDefinitions.DeleteArrayElementAtIndex(index);
                                 return;
@@ -894,12 +934,24 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                             Type newType = themeOptions.Types[newId];
 
                             // Save theme definition to cache
-                            SaveThemeDefinition(target, index, oldType);
+                            SaveThemeDefinitionHistory(index, oldType);
 
-                            // Load new theme definition or grab last state from cache
-                            LoadThemeDefinition(target, index, newType);
+                            // Try to load theme from history cache
+                            ThemeDefinition? definition = LoadThemeDefinitionHistory(index, newType);
+                            if (definition == null)
+                            {
+                                // if not available, then create a new one
+                                definition = CreateThemeDefinition(newType);
+                            }
+
+                            ThemeDefinition newDefinition = definition.Value;
+                            ValidateThemeDefinition(ref newDefinition, theme.GetStates());
+
+                            theme.Definitions[index] = newDefinition;
 
                             themeDefinitions.serializedObject.Update();
+                            EditorUtility.SetDirty(theme);
+
                             return;
 
                             // TODO: Troy 
@@ -1255,65 +1307,100 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                 case ThemePropertyTypes.AnimatorTrigger:
                     stringValue.stringValue = EditorGUILayout.TextField(name, stringValue.stringValue);
                     break;
-                // TODO: Troy - Render ShaderProperty here
+                case ThemePropertyTypes.Shader:
+                    SerializedProperty shaderObjectValue = item.FindPropertyRelative("Shader");
+                    EditorGUILayout.PropertyField(shaderObjectValue, new GUIContent(name, ""), false);
+                    break;
+                case ThemePropertyTypes.ShaderProperty:
+                    SerializedProperty shaderPropertyObjectValue = item.FindPropertyRelative("Shader");
+                    EditorGUILayout.PropertyField(shaderPropertyObjectValue, new GUIContent(name, ""), false);
+
+                    var propertyList = GetShaderPropertyList(shaderPropertyObjectValue.objectReferenceValue as Shader);
+                    int selectedIndex = propertyList.IndexOf(stringValue.stringValue);
+                    int newIndex = EditorGUILayout.Popup(string.Empty, selectedIndex, propertyList.ToArray());
+                    if (newIndex != selectedIndex)
+                    {
+                        stringValue.stringValue = propertyList[newIndex];
+                    }
+                    break;
                 default:
                     break;
             }
         }
 
-        public static void RenderThemeStates(SerializedProperty settings, State[] states, int margin = 0)
+        // TODO: Troy - Consolidate with GetShaderProperties shaderinfo
+        private static List<string> GetShaderPropertyList(Shader shader)
+        {
+            List<string> results = new List<string>();
+
+            if (shader == null) return results;
+
+            int count = ShaderUtil.GetPropertyCount(shader);
+            results.Capacity = count;
+
+            for (int i = 0; i < count; i++)
+            {
+                if (!ShaderUtil.IsShaderPropertyHidden(shader, i))
+                {
+                    results.Add(ShaderUtil.GetPropertyName(shader, i));
+                }
+            }
+
+            return results;
+        }
+
+        public void RenderThemeStates(int margin = 0)
         {
             GUIStyle box = InspectorUIUtility.Box(margin);
 
-            EditorGUILayout.BeginVertical(box);
-
-                for (int n = 0; n < states.Length; n++)
+            using (new EditorGUILayout.VerticalScope(box))
+            {
+                for (int n = 0; n < themeStates.Length; n++)
                 {
-                    InspectorUIUtility.DrawLabel(states[n].Name, (int)(InspectorUIUtility.DefaultFontSize * ThemeStateFontScale), InspectorUIUtility.ColorTint50);
+                    InspectorUIUtility.DrawLabel(themeStates[n].Name, (int)(InspectorUIUtility.DefaultFontSize * ThemeStateFontScale), InspectorUIUtility.ColorTint50);
 
-                    for (int j = 0; j < settings.arraySize; j++)
+                    for (int j = 0; j < themeDefinitions.arraySize; j++)
                     {
-                        SerializedProperty settingsItem = settings.GetArrayElementAtIndex(j);
-
-                        SerializedProperty properties = settingsItem.FindPropertyRelative("StateProperties");
+                        SerializedProperty themeDefinition = themeDefinitions.GetArrayElementAtIndex(j);
+                        SerializedProperty stateProperties = themeDefinition.FindPropertyRelative("StateProperties");
                         using (new EditorGUI.IndentLevelScope())
                         {
-                            for (int i = 0; i < properties.arraySize; i++)
+                            for (int i = 0; i < stateProperties.arraySize; i++)
                             {
-                                SerializedProperty propertyItem = properties.GetArrayElementAtIndex(i);
-                                SerializedProperty name = propertyItem.FindPropertyRelative("Name");
-                                SerializedProperty type = propertyItem.FindPropertyRelative("Type");
+                                SerializedProperty propertyItem = stateProperties.GetArrayElementAtIndex(i);
                                 SerializedProperty values = propertyItem.FindPropertyRelative("Values");
+
+                                if (n >= values.arraySize)
+                                {
+                                    // This property does not have the correct number of state values*
+                                    // TODO: Troy - Auto-populate?
+                                    continue;
+                                }
+
                                 //SerializedProperty shaderNames = propertyItem.FindPropertyRelative("ShaderOptionNames");
                                 //SerializedProperty propId = propertyItem.FindPropertyRelative("PropId");
 
                                 // TODO: Troy - Delete
                                 /*
                                 string shaderPropName = "Shader";
-
                                 if (shaderNames.arraySize > propId.intValue)
                                 {
                                     SerializedProperty propName = shaderNames.GetArrayElementAtIndex(propId.intValue);
                                     shaderPropName = propName.stringValue.Substring(1);
                                 }*/
 
-                                if (n >= values.arraySize)
-                                {
-                                    // the state values for this theme were not created yet
-                                    continue;
-                                }
-
-                                SerializedProperty item = values.GetArrayElementAtIndex(n);
+                                SerializedProperty name = propertyItem.FindPropertyRelative("Name");
+                                SerializedProperty type = propertyItem.FindPropertyRelative("Type");
+                                SerializedProperty statePropertyValue = values.GetArrayElementAtIndex(n);
                                 // TODO: Troy - Fix shaderPorpName
                                 //RenderValue(item, name.stringValue, shaderPropName, (ThemePropertyTypes)type.intValue);
-                                RenderValue(item, name.stringValue, name.stringValue, (ThemePropertyTypes)type.intValue);
+                                RenderValue(statePropertyValue, name.stringValue, name.stringValue, (ThemePropertyTypes)type.intValue);
                             }
                         }
                     }
                 }
                 GUILayout.Space(5);
-
-            EditorGUILayout.EndVertical();
+            }
             GUILayout.Space(5);
         }
 

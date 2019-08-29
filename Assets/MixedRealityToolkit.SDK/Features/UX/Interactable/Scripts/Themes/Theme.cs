@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -19,7 +20,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public List<ThemeDefinition> Definitions;
 
         //public List<ThemePropertyValue> CustomSettings;
+
         public States States;
+
+        // TODO: Troy - Add comment here
+        public List<Dictionary<Type, ThemeDefinition>> History = new List<Dictionary<Type, ThemeDefinition>>();
 
         public State[] GetStates()
         {
