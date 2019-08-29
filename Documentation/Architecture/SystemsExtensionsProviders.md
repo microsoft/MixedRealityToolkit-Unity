@@ -79,7 +79,7 @@ if (CoreServices.InputSystem != null)
 > The input system returns only data providers that are supported for the platform on which the 
 application is running.
 
-For more information, please see [creating an input system data provider](../Input/CreateDataProvider.md).
+For information on writing a data provider for the MRTK input system, please see [creating an input system data provider](../Input/CreateDataProvider.md).
 
 ### Spatial Awareness
 
@@ -112,7 +112,7 @@ if (CoreServices.SpatialAwarenessSystem != null)
 > The spatial awareness system returns only data providers that are supported for the platform on which the 
 application is running.
 
-For more information, please see [creating a spatial awareness system data provider](../SpatialAwareness/CreateDataProvider.md).
+For information on writing a data provider for the MRTK spatial awareness system, please see [creating a spatial awareness system data provider](../SpatialAwareness/CreateDataProvider.md).
 
 ## See Also
 
