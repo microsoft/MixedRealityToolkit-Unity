@@ -22,7 +22,7 @@ Mixed Reality Toolkit を始めるには、次のものが必要です。
 
 MRTK、または MR 開発が初めての場合は、MRTKv2 を使った [チュートリアルを始める](https://docs.microsoft.com/en-us/windows/mixed-reality/mrlearning-base)をチェックすることをお勧めします。
 
-## MRTK を Unity Projectに追加する
+## MRTK を Unity Project に追加する
 
 ### 最新の MRTK Unity パッケージを取得する
 
