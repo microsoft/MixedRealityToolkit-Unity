@@ -1,7 +1,7 @@
 # Creating an input system data provider
 
 The Mixed Reality Toolkit input system is an extensible system for enabling input device support. To add support for a new hardware platform,
-an input data provider may be required.
+a custom input data provider may be required.
 
 This article describes how to create custom data providers, also called device managers, for the input system. The example code shown here is
 from the [`WindowsMixedRealityDeviceManager`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityDeviceManager).
