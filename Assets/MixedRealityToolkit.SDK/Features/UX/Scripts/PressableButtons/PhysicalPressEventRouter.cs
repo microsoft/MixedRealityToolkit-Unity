@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.UI;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit
@@ -15,9 +16,6 @@ namespace Microsoft.MixedReality.Toolkit
     {
         [Tooltip("Interactable to which the press events are being routed. Defaults to the object of the component.")]
         public Interactable routingTarget;
-
-        [Tooltip("Unity UI Button to invoke on press of PressableButton")]
-        public Button uiButton;
 
         /// Enum specifying which button event causes a Click to be raised.
         public enum PhysicalPressEventBehavior
@@ -35,10 +33,6 @@ namespace Microsoft.MixedReality.Toolkit
                 routingTarget = GetComponent<Interactable>();
             }
 
-            if (uiButton == null)
-            {
-                uiButton = GetComponent<Button>();
-            }
         }
 
         public void OnHandPressTouched()
@@ -52,11 +46,6 @@ namespace Microsoft.MixedReality.Toolkit
                     routingTarget.TriggerOnClick();
                     routingTarget.SetPress(false);
                 }
-            }
-
-            if (uiButton != null && InteractableOnClick == PhysicalPressEventBehavior.EventOnTouch)
-            {
-                uiButton.onClick.Invoke();
             }
         }
 
@@ -83,11 +72,6 @@ namespace Microsoft.MixedReality.Toolkit
                     routingTarget.TriggerOnClick();
                 }
             }
-
-            if (uiButton != null && InteractableOnClick == PhysicalPressEventBehavior.EventOnPress)
-            {
-                uiButton.onClick.Invoke();
-            }
         }
 
         public void OnHandPressCompleted()
@@ -102,11 +86,6 @@ namespace Microsoft.MixedReality.Toolkit
                 }
                 routingTarget.SetPress(false);
                 routingTarget.SetPhysicalTouch(false);
-            }
-
-            if (uiButton != null && InteractableOnClick == PhysicalPressEventBehavior.EventOnClickCompletion)
-            {
-                uiButton.onClick.Invoke();
             }
         }
     }
