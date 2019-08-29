@@ -179,7 +179,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: 'PressableButtonHololens2
 
-    <size=7>Compressable + Moving visual'
+    <size=7>Compressable + Moving Icon and Text'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: afc8299d5d5bbd440a0616c8ecbc7217, type: 2}
   m_sharedMaterial: {fileID: 21340371490990018, guid: afc8299d5d5bbd440a0616c8ecbc7217,
@@ -249,10 +249,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 15.509471}
   m_textInfo:
     textComponent: {fileID: 188267907573409032}
-    characterCount: 53
+    characterCount: 60
     spriteCount: 0
-    spaceCount: 4
-    wordCount: 4
+    spaceCount: 6
+    wordCount: 6
     linkCount: 0
     lineCount: 2
     pageCount: 1
