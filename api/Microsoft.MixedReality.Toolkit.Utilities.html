@@ -104,6 +104,9 @@ that make the most sense for the specific instruction type.</p>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.AwaiterExtensions.SimpleCoroutineAwaiter-1.html">AwaiterExtensions.SimpleCoroutineAwaiter&lt;T&gt;</a></h4>
       <section><p>Processes Coroutine and notifies completion with result.</p>
 </section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.BaseMeshOutline.html">BaseMeshOutline</a></h4>
+      <section><p>Abstract component to encapsulate common functionality around outline components.</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.BaseMixedRealityLineDataProvider.html">BaseMixedRealityLineDataProvider</a></h4>
       <section><p>Base class that provides data about a line.</p>
 </section>
@@ -181,6 +184,22 @@ object scale. This component should be used in conjunction with the
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.MeshLineRenderer.html">MeshLineRenderer</a></h4>
       <section><p>Creates instances of a mesh along the line</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.MeshOutline.html">MeshOutline</a></h4>
+      <section><p>Component which can be used to render an outline around a mesh renderer. Enabling this component introduces an additional render pass
+of the object being outlined, but is designed to run performantly on mobile Mixed Reality devices and does not utilize any post processes.
+This behavior is designed to be used in conjunction with the MRTK/Standard shader. Limitations of this effect include it not working well
+on objects which are not watertight (or required to be two sided) and depth sorting issues can occur on overlapping objects.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.MeshOutlineHierarchy.html">MeshOutlineHierarchy</a></h4>
+      <section><p>Component which can be used to render an outline around a hierarchy of mesh renderers using
+the <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.MeshOutline.html">MeshOutline</a> component.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.MeshSmoother.html">MeshSmoother</a></h4>
+      <section><p>Component which can be used to automatically generate smoothed normals on a mesh and pack
+those normals into a UV set. Smoothed normals can be used for a variety of effects including
+extruding disjoint meshes along a vertex normal. This behavior is designed to be used in conjunction
+with the MRTK/Standard shader which assumes smoothed normals are packed into the 3rd UV set.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.MixedRealityLineRenderer.html">MixedRealityLineRenderer</a></h4>
       <section><p>Implements Unity's built in line renderer component, and applies the line data to it.</p>
