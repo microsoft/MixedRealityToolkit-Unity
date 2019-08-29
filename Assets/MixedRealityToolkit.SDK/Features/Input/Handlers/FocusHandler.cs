@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -27,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("Event which is triggered when focus begins.")]
-        private UnityEvent onFocusEnterEvent = null;
+        private UnityEvent onFocusEnterEvent = new UnityEvent();
 
         /// <summary>
         /// Event which is triggered when focus begins.
@@ -40,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("Event which is triggered when focus ends.")]
-        private UnityEvent onFocusExitEvent = null;
+        private UnityEvent onFocusExitEvent = new UnityEvent();
 
         /// <summary>
         /// Event which is triggered when focus ends.
