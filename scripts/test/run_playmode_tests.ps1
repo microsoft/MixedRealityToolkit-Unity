@@ -61,7 +61,7 @@ $cnx = $cn["test-run"]
 Write-Output "passed: $($cnx.passed) failed: $($cnx.failed)"
 if ($cnx.failed -gt 0)
 {
-    Write-Output
+    Write-Output ""
     Write-Output "Failed tests:"
     $testcases = $cnx.GetElementsByTagName("test-case")
     foreach ($item in $testcases) {
