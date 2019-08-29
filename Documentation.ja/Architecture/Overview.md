@@ -1,30 +1,22 @@
 # アーキテクチャの全体像
 
-このセクションでは、MRTK のアーキテクチャの全体像について説明します。なお、アーキテクチャのドキュメント全体を通して以下の内容を理解することを目的としています。
+このセクションでは、MRTK のアーキテクチャの全体像について説明します。なお、アーキテクチャのドキュメント全体を通して以下の内容を理解してもらうことを目的としています。
 
 - MRTK の各構成要素と、それらの接続方法
 - Untiy にはない、MRTK が取り入れている設計思想
 - 入力システムといった大掛かりな仕組みがどのように動作するのか
 
-このセクションでは、MRTK の動作方法を説明することは意図しておらず、MRTK がどのような構造で作られているのか、またそのような構造となった理由を説明すること目的としています。
+このセクションでは、MRTK の使用方法を説明することは意図しておらず、MRTK がどのような構造で作られているのか、またそのような構造となった理由を説明すること目的としています。
 
-## Many audiences, one toolkit
+## 多くのユーザに1つにツールキットを
 
-The MRTK doesn't have a single, uniform audience - it's been written to support use cases
-ranging from first time hackathons, to people who are building complex, shared experiences
-for enterprise. Some code and APIs may have been written that have optimized for one more
-than the other (i.e. some parts of the MRTK seem more optimized for "one click configure"),
-but it's important to note that some of those are more for historical and resourcing
-reasons. As the MRTK evolves, the features that get built should be designed to scale to
-support the range of use cases.
+MRTK は特定のユーザに向けられたものではありません。初めてのハッカソンから、企業向けの複雑なユースケースまでもサポートするように作成されています。
+「ワンクリックで設定できる」といった、特定のケースに対して最適化されたコードや API がいくつか記述されていますが、それはこれまでの履歴やリソース上の理由があることを把握しておくことが重要です。
+MRTK が進化するにつれて、さまざまなユースケースをサポートするように拡張できるように機能を設計する必要があります。
 
-It's also important to note that the MRTK has requirements to gracefully scale across VR
-and AR experiences - it should be easy to build applications that gracefully
-fallback in behavior when deployed on a HoloLens 2 OR a HoloLens 1, and it should be
-simple to build application that target OpenVR and WMR (and other platforms). While at
-times the team may focus a particular iteration on a particular system or platform, the
-long term goal is to build a wide range of support for wherever people are building
-mixed reality experiences.
+また、MRTK は VR と AR の間を適切にスケーリングすることができるといった要件があることを知っておく必要があります。
+例えば、HoloLens2 または HoloLens1 にデプロイされたときに、デバイスに応じて動作が適切にフォールバックするアプリケーションを簡単に構築でき、また、OpenVR や WMR といった他のプラットフォーム向けのアプリケーションを簡単にビルドできるべきだということです。
+MRTK チームが特定のシステムまたはプラットフォームに特定の反復を集中することもありますが、長期的な目標は MR 体験が実現しようとするすべての人々に対する幅広いサポートを構築することです。
 
 ## MRTK のコンポーネントの大まかな分類
 
@@ -37,4 +29,3 @@ MRTK は以下の図のとおりにおおまかに分類することができま
 MRTK には、他の MRTK のコンポーネントにはほとんど依存しないユーティリティも含まれています（例えばビルドツール、ソルバー、オーディオインフルエンサー、スムージングユーティリティ、ラインレンダラーなど）。
 
 残りのアーキテクチャのドキュメントでは、フレームワークとランタイムの説明からはじめて、入力システムのようなより複雑な仕組みを段階的に説明します。 目次を参照し残りのアーキテクチャの概要を深掘りしてみてください。
-
