@@ -332,6 +332,7 @@ Shader "Mixed Reality Toolkit/Standard"
 #if defined (_VERTEX_EXTRUSION_SMOOTH_NORMALS)
                 fixed3 smoothNormal : TEXCOORD2;
 #endif
+                float2 scale : TEXCOORD3;
 #if defined(_VERTEX_COLORS)
                 fixed4 color : COLOR0;
 #endif
@@ -679,6 +680,13 @@ Shader "Mixed Reality Toolkit/Standard"
 #else
                 o.scale.z = length(mul(unity_ObjectToWorld, float4(0.0, 0.0, 1.0, 0.0)));
 #endif
+                // Scale will contain a negative value when rendered by UGUI.
+                if (v.scale.x < 0)
+                {
+                    o.scale.x *= -v.scale.x;
+                    o.scale.y *= -v.scale.y;
+                    o.scale.z = o.scale.x;
+                }
 #endif
 
                 fixed3 localNormal = v.normal;
