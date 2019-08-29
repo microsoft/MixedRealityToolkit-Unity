@@ -172,7 +172,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             var definition = theme.Definitions[index];
             var cache = theme.History[index];
             cache[definitionClassType] = definition;
-
         }
 
         protected ThemeDefinition? LoadThemeDefinitionHistory(int index, Type newDefinitionClassType)
@@ -192,38 +191,15 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             {
                 return null;
             }
-
-            /*
-            string prefKey = BuildPreferenceKey(target, index, newDefinitionClassType);
-            var historyJSON = SessionState.GetString(prefKey, string.Empty);
-
-            if (!string.IsNullOrEmpty(historyJSON))
-            {
-                ThemeDefinition savedDefinition = JsonUtility.FromJson<ThemeDefinition>(historyJSON);
-                target.Definitions[index] = savedDefinition;
-            }
-            else
-            {
-                // TODO: Troy - Add comments, 
-                target.Definitions[index] = CreateThemeDefinition(target.GetStates(), newDefinitionClassType);
-            }*/
         }
 
-        private static ThemeDefinition CreateThemeDefinition(Type newDefinitionClassType)
+        private static ThemeDefinition CreateThemeDefinition(Type themeClassType)
         {
-            InteractableThemeBase themeBase = (InteractableThemeBase)Activator.CreateInstance(newDefinitionClassType);
+            // TODO: Troy - Confirm themeClassType extends from InteractableThemeBase
 
-            ThemeDefinition newDefinition = new ThemeDefinition()
-            {
-                ClassName = newDefinitionClassType.Name,
-                AssemblyQualifiedName = newDefinitionClassType.AssemblyQualifiedName, // TODO: Troy - SystemType.GetReference(type);
-                Type = newDefinitionClassType,
-                NoEasing = themeBase.NoEasing,
-                StateProperties = themeBase.GetDefaultStateProperties(),
-                CustomProperties = themeBase.GetDefaultThemeProperties(),
-            };
+            InteractableThemeBase themeBase = (InteractableThemeBase)Activator.CreateInstance(themeClassType);
 
-            return newDefinition;
+            return themeBase.GetDefaultThemeDefinition();
         }
 
         protected static void ValidateThemeDefinition(ref ThemeDefinition definition, State[] states)
@@ -1312,24 +1288,48 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                     EditorGUILayout.PropertyField(shaderObjectValue, new GUIContent(name, ""), false);
                     break;
                 case ThemePropertyTypes.ShaderProperty:
-                    SerializedProperty shaderPropertyObjectValue = item.FindPropertyRelative("Shader");
-                    EditorGUILayout.PropertyField(shaderPropertyObjectValue, new GUIContent(name, ""), false);
-
-                    var propertyList = GetShaderPropertyList(shaderPropertyObjectValue.objectReferenceValue as Shader);
-                    int selectedIndex = propertyList.IndexOf(stringValue.stringValue);
-                    int newIndex = EditorGUILayout.Popup(string.Empty, selectedIndex, propertyList.ToArray());
-                    if (newIndex != selectedIndex)
-                    {
-                        stringValue.stringValue = propertyList[newIndex];
-                    }
+                case ThemePropertyTypes.ShaderPropertyColor:
+                case ThemePropertyTypes.ShaderPropertyFloat:
+                    RenderShaderPropertyValue(item, name, stringValue, type);
                     break;
                 default:
                     break;
             }
         }
 
+        private static void RenderShaderPropertyValue(SerializedProperty item, string fieldName, SerializedProperty propertyName, ThemePropertyTypes shaderPropertyType)
+        {
+            SerializedProperty shader = item.FindPropertyRelative("Shader");
+            EditorGUILayout.PropertyField(shader, new GUIContent(fieldName, ""), false);
+
+            var shaderPropertyTypeFilter = ConvertShaderPropertyType(shaderPropertyType);
+            var propertyList = GetShaderPropertyList(shader.objectReferenceValue as Shader, shaderPropertyTypeFilter);
+
+            int selectedIndex = propertyList.IndexOf(propertyName.stringValue);
+            int newIndex = EditorGUILayout.Popup(string.Empty, selectedIndex, propertyList.ToArray());
+            if (newIndex != selectedIndex)
+            {
+                propertyName.stringValue = propertyList[newIndex];
+            }
+        }
+
+        private static ShaderUtil.ShaderPropertyType? ConvertShaderPropertyType(ThemePropertyTypes shaderPropertyType)
+        {
+            ShaderUtil.ShaderPropertyType? shaderType = null;
+            switch (shaderPropertyType)
+            {
+                case ThemePropertyTypes.ShaderPropertyColor:
+                    shaderType = ShaderUtil.ShaderPropertyType.Color;
+                    break;
+                case ThemePropertyTypes.ShaderPropertyFloat:
+                    shaderType = ShaderUtil.ShaderPropertyType.Float;
+                    break;
+            }
+            return shaderType;
+        }
+
         // TODO: Troy - Consolidate with GetShaderProperties shaderinfo
-        private static List<string> GetShaderPropertyList(Shader shader)
+        private static List<string> GetShaderPropertyList(Shader shader, ShaderUtil.ShaderPropertyType? filterType = null)
         {
             List<string> results = new List<string>();
 
@@ -1340,7 +1340,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
             for (int i = 0; i < count; i++)
             {
-                if (!ShaderUtil.IsShaderPropertyHidden(shader, i))
+                bool isHidden = ShaderUtil.IsShaderPropertyHidden(shader, i);
+                bool isValidPropertyType = filterType == null || filterType.Value == ShaderUtil.GetPropertyType(shader, i);
+                if (!isHidden && isValidPropertyType)
                 {
                     results.Add(ShaderUtil.GetPropertyName(shader, i));
                 }

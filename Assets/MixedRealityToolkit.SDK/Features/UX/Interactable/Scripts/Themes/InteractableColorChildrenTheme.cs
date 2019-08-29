@@ -16,20 +16,48 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         private List<BlocksAndRenderer> propertyBlocks;
+        protected const string DefaultColorShaderProperty = "_Color";
 
         public InteractableColorChildrenTheme()
         {
             Types = new Type[] {  };
             Name = "Color Children Theme";
-            StateProperties = new List<ThemeStateProperty>();
-            StateProperties.Add(
-                new ThemeStateProperty()
+        }
+
+        /// <inheritdoc />
+        public override ThemeDefinition GetDefaultThemeDefinition()
+        {
+            Type t = GetType();
+            return new ThemeDefinition()
+            {
+                ClassName = t.Name,
+                AssemblyQualifiedName = t.AssemblyQualifiedName,
+                Type = t,
+                NoEasing = this.NoEasing,
+                StateProperties = new List<ThemeStateProperty>()
                 {
-                    Name = "Color",
-                    Type = ThemePropertyTypes.Color,
-                    Values = new List<ThemePropertyValue>(),
-                    Default = new ThemePropertyValue() { Color = Color.white}
-                });
+                    new ThemeStateProperty()
+                    {
+                        Name = "Color",
+                        Type = ThemePropertyTypes.Color,
+                        Values = new List<ThemePropertyValue>(),
+                        Default = new ThemePropertyValue() { Color = Color.white}
+                    }
+                },
+                CustomProperties = new List<ThemeProperty>()
+                {
+                    new ThemeProperty()
+                    {
+                        Name = "Color Property",
+                        Type = ThemePropertyTypes.ShaderPropertyColor,
+                        Value = new ThemePropertyValue()
+                        {
+                            Shader = Shader.Find(DefaultShaderName),
+                            String = DefaultColorShaderProperty
+                        },
+                    },
+                },
+            };
         }
 
         /// <inheritdoc />

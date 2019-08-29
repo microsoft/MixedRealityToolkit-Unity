@@ -26,31 +26,56 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Types = new Type[] { typeof(Transform), typeof(TextMesh), typeof(TextMesh), typeof(TextMeshPro), typeof(TextMeshProUGUI), typeof(Renderer) };
             Name = "Default: Scale, Offset, Color";
-            StateProperties = new List<ThemeStateProperty>();
-            StateProperties.Add(
-                new ThemeStateProperty()
+        }
+
+        /// <inheritdoc />
+        public override ThemeDefinition GetDefaultThemeDefinition()
+        {
+            Type t = GetType();
+            return new ThemeDefinition()
+            {
+                ClassName = t.Name,
+                AssemblyQualifiedName = t.AssemblyQualifiedName,
+                Type = t,
+                NoEasing = this.NoEasing,
+                StateProperties = new List<ThemeStateProperty>()
                 {
-                    Name = "Scale",
-                    Type = ThemePropertyTypes.Vector3,
-                    Values = new List<ThemePropertyValue>(),
-                    Default = new ThemePropertyValue() { Vector3 = Vector3.one }
-                });
-            StateProperties.Add(
-                new ThemeStateProperty()
+                    new ThemeStateProperty()
+                    {
+                        Name = "Scale",
+                        Type = ThemePropertyTypes.Vector3,
+                        Values = new List<ThemePropertyValue>(),
+                        Default = new ThemePropertyValue() { Vector3 = Vector3.one }
+                    },
+                    new ThemeStateProperty()
+                    {
+                        Name = "Offset",
+                        Type = ThemePropertyTypes.Vector3,
+                        Values = new List<ThemePropertyValue>(),
+                        Default = new ThemePropertyValue() { Vector3 = Vector3.zero }
+                    },
+                    new ThemeStateProperty()
+                    {
+                        Name = "Color",
+                        Type = ThemePropertyTypes.Color,
+                        Values = new List<ThemePropertyValue>(),
+                        Default = new ThemePropertyValue() { Color = Color.white }
+                    },
+                },
+                CustomProperties = new List<ThemeProperty>()
                 {
-                    Name = "Offset",
-                    Type = ThemePropertyTypes.Vector3,
-                    Values = new List<ThemePropertyValue>(),
-                    Default = new ThemePropertyValue() { Vector3 = Vector3.zero }
-                });
-            StateProperties.Add(
-                new ThemeStateProperty()
-                {
-                    Name = "Color",
-                    Type = ThemePropertyTypes.Color,
-                    Values = new List<ThemePropertyValue>(),
-                    Default = new ThemePropertyValue() { Color = Color.white }
-                });
+                    new ThemeProperty()
+                    {
+                        Name = "Color Property",
+                        Type = ThemePropertyTypes.ShaderPropertyColor,
+                        Value = new ThemePropertyValue()
+                        {
+                            Shader = Shader.Find(DefaultShaderName),
+                            String = DefaultColorShaderProperty
+                        },
+                    },
+                },
+            };
         }
 
         public override ThemePropertyValue GetProperty(ThemeStateProperty property)

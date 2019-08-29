@@ -35,17 +35,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public abstract ThemePropertyValue GetProperty(ThemeStateProperty property);
 
-        /// <summary>
-        /// Get list of default theme properties that are given values per-state
-        /// </summary>
-        /// <returns></returns>
-        public abstract List<ThemeStateProperty> GetDefaultStateProperties();
-
-        /// <summary>
-        /// Get list of default theme properties that are configuration for the entire theme engine
-        /// </summary>
-        /// <returns></returns>
-        public abstract List<ThemeProperty> GetDefaultThemeProperties();
+        // TODO: Troy - Add comment here
+        public abstract ThemeDefinition GetDefaultThemeDefinition();
 
         public virtual void Init(GameObject host, ThemeDefinition settings)
         {

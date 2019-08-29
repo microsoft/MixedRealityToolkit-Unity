@@ -16,28 +16,30 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Types = new Type[] { typeof(Transform) };
             Name = "Audio Theme";
             NoEasing = true;
-            StateProperties = GetDefaultStateProperties();
         }
 
         /// <inheritdoc />
-        public override List<ThemeStateProperty> GetDefaultStateProperties()
+        public override ThemeDefinition GetDefaultThemeDefinition()
         {
-            return new List<ThemeStateProperty>()
+            Type t = GetType();
+            return new ThemeDefinition()
             {
-                new ThemeStateProperty()
+                ClassName = t.Name,
+                AssemblyQualifiedName = t.AssemblyQualifiedName,
+                Type = t,
+                NoEasing = this.NoEasing,
+                StateProperties = new List<ThemeStateProperty>()
                 {
-                    Name = "Audio",
-                    Type = ThemePropertyTypes.AudioClip,
-                    Values = new List<ThemePropertyValue>(),
-                    Default = new ThemePropertyValue() { AudioClip = null }
+                    new ThemeStateProperty()
+                    {
+                        Name = "Audio",
+                        Type = ThemePropertyTypes.AudioClip,
+                        Values = new List<ThemePropertyValue>(),
+                        Default = new ThemePropertyValue() { AudioClip = null }
+                    },
                 },
+                CustomProperties = new List<ThemeProperty>(),
             };
-        }
-
-        /// <inheritdoc />
-        public override List<ThemeProperty> GetDefaultThemeProperties()
-        {
-            return new List<ThemeProperty>();
         }
 
         public override void Init(GameObject host, ThemeDefinition settings)

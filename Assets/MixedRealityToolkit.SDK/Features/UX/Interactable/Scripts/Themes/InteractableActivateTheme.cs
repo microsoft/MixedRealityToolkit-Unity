@@ -15,28 +15,30 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Types = new Type[] { typeof(Transform) };
             Name = "Activate Theme";
             NoEasing = true;
-            StateProperties = GetDefaultStateProperties();
         }
 
         /// <inheritdoc />
-        public override List<ThemeStateProperty> GetDefaultStateProperties()
+        public override ThemeDefinition GetDefaultThemeDefinition()
         {
-            return new List<ThemeStateProperty>()
+            Type t = GetType();
+            return new ThemeDefinition()
             {
-                new ThemeStateProperty()
+                ClassName = t.Name,
+                AssemblyQualifiedName = t.AssemblyQualifiedName,
+                Type = t,
+                NoEasing = this.NoEasing,
+                StateProperties = new List<ThemeStateProperty>()
                 {
-                    Name = "Activate",
-                    Type = ThemePropertyTypes.Bool,
-                    Values = new List<ThemePropertyValue>(),
-                    Default = new ThemePropertyValue() { Bool = true }
+                    new ThemeStateProperty()
+                    {
+                        Name = "Activate",
+                        Type = ThemePropertyTypes.Bool,
+                        Values = new List<ThemePropertyValue>(),
+                        Default = new ThemePropertyValue() { Bool = true }
+                    },
                 },
+                CustomProperties = new List<ThemeProperty>(),
             };
-        }
-
-        /// <inheritdoc />
-        public override List<ThemeProperty> GetDefaultThemeProperties()
-        {
-            return new List<ThemeProperty>();
         }
 
         /// <inheritdoc />

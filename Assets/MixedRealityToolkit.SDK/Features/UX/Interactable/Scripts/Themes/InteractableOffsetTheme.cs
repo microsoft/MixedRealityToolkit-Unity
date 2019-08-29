@@ -16,28 +16,30 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Types = new Type[] { typeof(Transform) };
             Name = "Offset Theme";
-            StateProperties = GetDefaultStateProperties();
         }
 
         /// <inheritdoc />
-        public override List<ThemeStateProperty> GetDefaultStateProperties()
+        public override ThemeDefinition GetDefaultThemeDefinition()
         {
-            return new List<ThemeStateProperty>()
+            Type t = GetType();
+            return new ThemeDefinition()
             {
-                new ThemeStateProperty()
+                ClassName = t.Name,
+                AssemblyQualifiedName = t.AssemblyQualifiedName,
+                Type = t,
+                NoEasing = this.NoEasing,
+                StateProperties = new List<ThemeStateProperty>()
                 {
-                    Name = "Offset",
-                    Type = ThemePropertyTypes.Vector3,
-                    Values = new List<ThemePropertyValue>(),
-                    Default = new ThemePropertyValue() { Vector3 = Vector3.zero }
+                    new ThemeStateProperty()
+                    {
+                        Name = "Offset",
+                        Type = ThemePropertyTypes.Vector3,
+                        Values = new List<ThemePropertyValue>(),
+                        Default = new ThemePropertyValue() { Vector3 = Vector3.zero }
+                    },
                 },
+                CustomProperties = new List<ThemeProperty>(),
             };
-        }
-
-        /// <inheritdoc />
-        public override List<ThemeProperty> GetDefaultThemeProperties()
-        {
-            return new List<ThemeProperty>();
         }
 
         /// <inheritdoc />

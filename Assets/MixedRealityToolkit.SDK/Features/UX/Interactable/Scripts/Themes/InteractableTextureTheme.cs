@@ -17,28 +17,30 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Types = new Type[] { typeof(Renderer) };
             Name = "Texture Theme";
             NoEasing = true;
-            StateProperties = GetDefaultStateProperties();
         }
 
         /// <inheritdoc />
-        public override List<ThemeStateProperty> GetDefaultStateProperties()
+        public override ThemeDefinition GetDefaultThemeDefinition()
         {
-            return new List<ThemeStateProperty>()
+            Type t = GetType();
+            return new ThemeDefinition()
             {
-                new ThemeStateProperty()
+                ClassName = t.Name,
+                AssemblyQualifiedName = t.AssemblyQualifiedName,
+                Type = t,
+                NoEasing = this.NoEasing,
+                StateProperties = new List<ThemeStateProperty>()
                 {
-                    Name = "Texture",
-                    Type = ThemePropertyTypes.Texture,
-                    Values = new List<ThemePropertyValue>(),
-                    Default = new ThemePropertyValue() { Texture = null }
+                    new ThemeStateProperty()
+                    {
+                        Name = "Texture",
+                        Type = ThemePropertyTypes.Texture,
+                        Values = new List<ThemePropertyValue>(),
+                        Default = new ThemePropertyValue() { Texture = null }
+                    },
                 },
+                CustomProperties = new List<ThemeProperty>(),
             };
-        }
-
-        /// <inheritdoc />
-        public override List<ThemeProperty> GetDefaultThemeProperties()
-        {
-            return new List<ThemeProperty>();
         }
 
         /// <inheritdoc />

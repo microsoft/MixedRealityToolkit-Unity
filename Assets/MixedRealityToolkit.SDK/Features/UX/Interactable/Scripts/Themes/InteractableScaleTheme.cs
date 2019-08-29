@@ -15,28 +15,30 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Types = new Type[] { typeof(Transform) };
             Name = "Scale Theme";
-            StateProperties = GetDefaultStateProperties();
         }
 
         /// <inheritdoc />
-        public override List<ThemeStateProperty> GetDefaultStateProperties()
+        public override ThemeDefinition GetDefaultThemeDefinition()
         {
-            return new List<ThemeStateProperty>()
+            Type t = GetType();
+            return new ThemeDefinition()
             {
-                new ThemeStateProperty()
+                ClassName = t.Name,
+                AssemblyQualifiedName = t.AssemblyQualifiedName,
+                Type = t,
+                NoEasing = this.NoEasing,
+                StateProperties = new List<ThemeStateProperty>()
                 {
-                    Name = "Scale",
-                    Type = ThemePropertyTypes.Vector3,
-                    Values = new List<ThemePropertyValue>(),
-                    Default = new ThemePropertyValue() { Vector3 = Vector3.one}
+                    new ThemeStateProperty()
+                    {
+                        Name = "Scale",
+                        Type = ThemePropertyTypes.Vector3,
+                        Values = new List<ThemePropertyValue>(),
+                        Default = new ThemePropertyValue() { Vector3 = Vector3.one}
+                    },
                 },
+                CustomProperties = new List<ThemeProperty>(),
             };
-        }
-
-        /// <inheritdoc />
-        public override List<ThemeProperty> GetDefaultThemeProperties()
-        {
-            return new List<ThemeProperty>();
         }
 
         /// <inheritdoc />

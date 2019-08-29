@@ -26,6 +26,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         Bool,
         AnimatorTrigger,
         Shader,
-        ShaderProperty
+        ShaderProperty,
+        ShaderPropertyFloat,
+        ShaderPropertyColor,
     }
 }

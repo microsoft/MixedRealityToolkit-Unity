@@ -17,44 +17,46 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private ThemePropertyValue startValue = new ThemePropertyValue();
 
-        private const string DefaultShaderProperty = "_Color";
-        private const string DefaultShaderName = "Mixed Reality Toolkit/Standard";
+        protected const string DefaultShaderProperty = "_Color";
+        protected const string DefaultShaderName = "Mixed Reality Toolkit/Standard";
 
         public InteractableShaderTheme()
         {
             Types = new Type[] { typeof(Renderer) };
             Name = "Shader Float";
-            StateProperties = GetDefaultStateProperties();
         }
 
         /// <inheritdoc />
-        public override List<ThemeStateProperty> GetDefaultStateProperties()
+        public override ThemeDefinition GetDefaultThemeDefinition()
         {
-            return new List<ThemeStateProperty>()
+            Type t = GetType();
+            return new ThemeDefinition()
             {
-                new ThemeStateProperty()
+                ClassName = t.Name,
+                AssemblyQualifiedName = t.AssemblyQualifiedName,
+                Type = t,
+                NoEasing = this.NoEasing,
+                StateProperties = new List<ThemeStateProperty>()
                 {
-                    Name = "Shader Value",
-                    Type = ThemePropertyTypes.ShaderFloat,
-                    Values = new List<ThemePropertyValue>(),
-                    Default = new ThemePropertyValue() { Float = 0}
-                },
-            };
-        }
-
-        /// <inheritdoc />
-        public override List<ThemeProperty> GetDefaultThemeProperties()
-        {
-            return new List<ThemeProperty>()
-            {
-                new ThemeProperty()
-                {
-                    Name = "Shader Property",
-                    Type = ThemePropertyTypes.ShaderProperty,
-                    Value = new ThemePropertyValue()
+                    new ThemeStateProperty()
                     {
-                        Shader = Shader.Find(DefaultShaderName),
-                        String = DefaultShaderProperty
+                        Name = "Shader Value",
+                        Type = ThemePropertyTypes.ShaderFloat,
+                        Values = new List<ThemePropertyValue>(),
+                        Default = new ThemePropertyValue() { Float = 0}
+                    },
+                },
+                CustomProperties =  new List<ThemeProperty>()
+                {
+                    new ThemeProperty()
+                    {
+                        Name = "Shader Property",
+                        Type = ThemePropertyTypes.ShaderProperty,
+                        Value = new ThemePropertyValue()
+                        {
+                            Shader = Shader.Find(DefaultShaderName),
+                            String = DefaultShaderProperty
+                        },
                     },
                 },
             };

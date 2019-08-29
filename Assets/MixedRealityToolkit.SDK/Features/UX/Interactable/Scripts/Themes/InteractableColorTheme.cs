@@ -20,22 +20,52 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // this will avoid 4 if statements for every set or get - also during animation
         private delegate bool SetColorOnText(Color color, ThemeStateProperty property, int index, float percentage);
         private delegate bool GetColorFromText(ThemeStateProperty property, out Color color);
+
         private SetColorOnText SetColorValue = null;
         private GetColorFromText GetColorValue = null;
+
+        protected const string DefaultColorShaderProperty = "_Color";
 
         public InteractableColorTheme()
         {
             Types = new Type[] { typeof(Renderer), typeof(TextMesh), typeof(Text), typeof(TextMeshPro), typeof(TextMeshProUGUI) };
             Name = "Color Theme";
-            StateProperties = new List<ThemeStateProperty>();
-            StateProperties.Add(
-                new ThemeStateProperty()
+        }
+
+        /// <inheritdoc />
+        public override ThemeDefinition GetDefaultThemeDefinition()
+        {
+            Type t = GetType();
+            return new ThemeDefinition()
+            {
+                ClassName = t.Name,
+                AssemblyQualifiedName = t.AssemblyQualifiedName,
+                Type = t,
+                NoEasing = this.NoEasing,
+                StateProperties = new List<ThemeStateProperty>()
                 {
-                    Name = "Color",
-                    Type = ThemePropertyTypes.Color,
-                    Values = new List<ThemePropertyValue>(),
-                    Default = new ThemePropertyValue() { Color = Color.white}
-                });
+                    new ThemeStateProperty()
+                    {
+                        Name = "Color",
+                        Type = ThemePropertyTypes.Color,
+                        Values = new List<ThemePropertyValue>(),
+                        Default = new ThemePropertyValue() { Color = Color.white}
+                    }
+                },
+                CustomProperties = new List<ThemeProperty>()
+                {
+                    new ThemeProperty()
+                    {
+                        Name = "Color Property",
+                        Type = ThemePropertyTypes.ShaderPropertyColor,
+                        Value = new ThemePropertyValue()
+                        {
+                            Shader = Shader.Find(DefaultShaderName),
+                            String = DefaultColorShaderProperty
+                        },
+                    },
+                },
+            };
         }
 
         /// <inheritdoc />

@@ -20,46 +20,46 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Types = new Type[] { typeof(Transform) };
             Name = "Grab Scale Theme";
-            StateProperties = GetDefaultStateProperties();
-
-            // adding a custom value and not showing Theme Properties for this theme
-            Properties = GetDefaultThemeProperties();
         }
 
         /// <inheritdoc />
-        public override List<ThemeStateProperty> GetDefaultStateProperties()
+        public override ThemeDefinition GetDefaultThemeDefinition()
         {
-            return new List<ThemeStateProperty>()
+            Type t = GetType();
+            return new ThemeDefinition()
             {
-                new ThemeStateProperty()
+                ClassName = t.Name,
+                AssemblyQualifiedName = t.AssemblyQualifiedName,
+                Type = t,
+                NoEasing = this.NoEasing,
+                StateProperties = new List<ThemeStateProperty>()
                 {
-                    Name = "Scale",
-                    Type = ThemePropertyTypes.Vector3,
-                    Values = new List<ThemePropertyValue>(),
-                    Default = new ThemePropertyValue(){ Vector3 = Vector3.one}
+                    new ThemeStateProperty()
+                    {
+                        Name = "Scale",
+                        Type = ThemePropertyTypes.Vector3,
+                        Values = new List<ThemePropertyValue>(),
+                        Default = new ThemePropertyValue(){ Vector3 = Vector3.one}
+                    },
+                },
+                CustomProperties = new List<ThemeProperty>()
+                {
+                    new ThemeProperty()
+                    {
+                        Name = "ScaleMagnifier",
+                        Type = ThemePropertyTypes.Vector3,
+                        Value = new ThemePropertyValue() { Vector3 = Vector3.one }
+                    },
+                    new ThemeProperty()
+                    {
+                        Name = "GrabTimer",
+                        Type = ThemePropertyTypes.Float,
+                        Value = new ThemePropertyValue() { Float = 0.3f }
+                    },
                 },
             };
         }
 
-        /// <inheritdoc />
-        public override List<ThemeProperty> GetDefaultThemeProperties()
-        {
-            return new List<ThemeProperty>()
-            {
-                new ThemeProperty()
-                {
-                    Name = "ScaleMagnifier",
-                    Type = ThemePropertyTypes.Vector3,
-                    Value = new ThemePropertyValue() { Vector3 = Vector3.one }
-                },
-                new ThemeProperty()
-                {
-                    Name = "GrabTimer",
-                    Type = ThemePropertyTypes.Float,
-                    Value = new ThemePropertyValue() { Float = 0.3f }
-                },
-            };
-        }
 
         /// <inheritdoc />
         public override void Init(GameObject host, ThemeDefinition settings)
