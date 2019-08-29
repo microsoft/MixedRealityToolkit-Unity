@@ -7,11 +7,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5234426576715676748, guid: df89e360642c6fc46abbc1c2656856f6,
-        type: 3}
-      propertyPath: m_Name
-      value: PressableButtonUnityUICircular
-      objectReference: {fileID: 0}
     - target: {fileID: 5234426576715676739, guid: df89e360642c6fc46abbc1c2656856f6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -117,11 +112,16 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 5234426576715676748, guid: df89e360642c6fc46abbc1c2656856f6,
+        type: 3}
+      propertyPath: m_Name
+      value: PressableButtonUnityUICircular
+      objectReference: {fileID: 0}
     - target: {fileID: 5234426576715676743, guid: df89e360642c6fc46abbc1c2656856f6,
         type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 2100000, guid: 68f0ad9fadae8b3438ebd66cdba2b20f, type: 2}
+      objectReference: {fileID: 2100000, guid: 54379f85887184c4cacf5e263e09d9ba, type: 2}
     - target: {fileID: 5234426577712821802, guid: df89e360642c6fc46abbc1c2656856f6,
         type: 3}
       propertyPath: m_Material
