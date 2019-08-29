@@ -247,6 +247,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.PropertyField(movingButtonVisuals);
             EditorGUILayout.LabelField("Press Settings", EditorStyles.boldLabel);
 
+            if (touchable is NearInteractionTouchableUnityUI && startPushDistance.floatValue < 0.0f)
+            {
+                EditorGUILayout.HelpBox("UnityUI based PressableButtons don't support negative Start Push Distances.", UnityEditor.MessageType.Warning);
+                if (GUILayout.Button("Set to 0"))
+                {
+                    startPushDistance.floatValue = 0.0f;
+                }
+            }
+
             EditorGUI.BeginChangeCheck();
             var currentMode = distanceSpaceMode.intValue;
             EditorGUILayout.PropertyField(distanceSpaceMode);

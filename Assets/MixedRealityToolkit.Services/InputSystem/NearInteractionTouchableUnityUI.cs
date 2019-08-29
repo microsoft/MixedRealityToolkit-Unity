@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     [RequireComponent(typeof(RectTransform))]
     public class NearInteractionTouchableUnityUI : BaseNearInteractionTouchable, INearInteractionTouchable
     {
-        private RectTransform rectTransform;
+        private Lazy<RectTransform> rectTransform;
 
         public static IReadOnlyList<NearInteractionTouchableUnityUI> Instances => instances;
 
@@ -29,13 +29,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public Vector3 LocalCenter => Vector3.zero;
 
-        public Vector2 Bounds => rectTransform.rect.size;
+        public Vector2 Bounds => rectTransform.Value.rect.size;
 
         private static readonly List<NearInteractionTouchableUnityUI> instances = new List<NearInteractionTouchableUnityUI>();
 
-        private void Awake()
+        public NearInteractionTouchableUnityUI()
         {
-            rectTransform = GetComponent<RectTransform>();
+            rectTransform = new Lazy<RectTransform>(GetComponent<RectTransform>);
         }
 
         /// <inheritdoc />
@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // touchables currently can only be touched within the bounds of the rectangle.
             // We return infinity to ensure that any point outside the bounds does not get touched.
-            if (!rectTransform.rect.Contains(localPoint))
+            if (!rectTransform.Value.rect.Contains(localPoint))
             {
                 return float.PositiveInfinity;
             }
