@@ -251,6 +251,20 @@ For pointer events handled by [`IMixedRealityPointerHandler`](xref:Microsoft.Mix
 
 <img src="../../Documentation/Images/Pointers/PointerHandler.png" style="max-width:100%;">
 
+## Pointer Extent
+
+Far pointers have settings which limit how far they will raycast and interact with other objects in the scene.
+By default, this value is set to 10 meters. This value was chosen to remain consistent with the behavior
+of the HoloLens shell.
+
+This can be changed by updating the `DefaultControllerPointer` prefab's
+[`ShellHandRayPointer`](xref:Microsoft.MixedReality.Toolkit.Input.ShellHandRayPointer) component's
+fields:
+
+**Pointer Extent** - This controls the maximum distance that pointers will interact with.
+**Default Pointer Extent** - This controls the length of the pointer ray/line that will
+render when the pointer is not interacting with anything.
+
 ## See Also
 
 - [Pointer Architecture](../Architecture/InputSystem/ControllersPointersAndFocus.md)
