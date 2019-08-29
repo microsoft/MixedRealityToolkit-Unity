@@ -120,15 +120,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Rays[0].UpdateRayStep(ref pointerPosition, ref endPoint);
 
                 var layerMasks = PrioritizedLayerMasksOverride ?? GrabLayerMasks;
-                var toQuery = new SpherePointerQueryInfo[] { queryBufferNearObjectRadius, queryBufferInteractionRadius };
-                for (int j = 0; j < toQuery.Length; j++)
+
+                for (int i = 0; i < layerMasks.Length; i++)
                 {
-                    for (int i = 0; i < layerMasks.Length; i++)
+                    if (queryBufferNearObjectRadius.TryUpdateQueryBufferForLayerMask(layerMasks[i], pointerPosition, triggerInteraction))
                     {
-                        if (toQuery[j].TryUpdateQueryBufferForLayerMask(layerMasks[i], pointerPosition, triggerInteraction))
-                        {
-                            break;
-                        }
+                        break;
+                    }
+                }
+
+                for (int i = 0; i < layerMasks.Length; i++)
+                {
+                    if (queryBufferInteractionRadius.TryUpdateQueryBufferForLayerMask(layerMasks[i], pointerPosition, triggerInteraction))
+                    {
+                        break;
                     }
                 }
             }
