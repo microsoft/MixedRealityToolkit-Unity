@@ -88,8 +88,12 @@ example [`IMixedRealitySpatialAwarenessMeshObserver`](xref:Microsoft.MixedRealit
 
 ### Observation change notifications
 
-To enable applications to respond to changes in the data provider's understanding of the environment, the next
-step is to send the observation change notifications.
+To enable applications to respond to changes in the device's understanding of the enviornment, the data provider raises notification events as defined in the 
+[`IMixedRealitySpatialAwarenessObservationtHandler<T>`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpatialAwarenessObservationHandler`1) interface.
+
+- `OnObservationAdded()`
+- `OnObservationRemoved()`
+- `OnObservationUpdated()` 
 
 The example of the [`SpatialObjectMeshObserver`](xref:Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver)
 raises events when meshes are added or removed. The following code demonstrates raising and event when mesh data is added.
@@ -139,9 +143,9 @@ private void SendMeshObjects()
 ```
 
 > [!Note]
-> By it's nature, the `SpatialObjectMeshObserver` does not raise updated events. Please see the implementation of the
+> By it's nature, the `SpatialObjectMeshObserver` does not raise `OnObservationUpdated` events. Please see the implementation of the
 `WindowsMixedRealitySpatialMeshObserver` (in the MixedRealityToolkit.Providers\WindowsMixedReality\WindowsMixedRealitySpatialMeshObserver.cs file) for an
-example of raising an updated event for an observed mesh. 
+example of raising an `OnObservationUpdated` event for an observed mesh. 
 
 ### Apply the MixedRealityDataProvider attribute
 
