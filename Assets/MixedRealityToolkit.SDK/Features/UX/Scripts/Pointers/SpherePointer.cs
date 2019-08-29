@@ -64,81 +64,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public int SceneQueryBufferSize => sceneQueryBufferSize;
 
-        /// <summary>
-        /// Helper class for storing and managing near grabbables close to a point
-        /// </summary>
-        private class QueryBufferInfo
-        {
-            /// <summary>
-            /// How many colliders are near the point from the latest call to TryUpdateQueryBufferForLayerMask 
-            /// </summary>
-            private int NumColliders { get; set; }
 
-            /// <summary>
-            /// Fixed-length array used to story physics queries
-            /// </summary>
-            private Collider[] QueryBuffer { get; set;  }
-
-            /// <summary>
-            /// Distance for performing queries.
-            /// </summary>
-            private float QueryRadius { get; set; }
-
-            /// <summary>
-            /// The grabbable near the QueryRadius. 
-            /// </summary>
-            private NearInteractionGrabbable Grabbable { get; set; }
-
-            public QueryBufferInfo(int bufferSize, float radius)
-            {
-                NumColliders = 0;
-                QueryBuffer = new Collider[bufferSize];
-                QueryRadius = radius;
-            }
-
-            public bool TryUpdateQueryBufferForLayerMask(LayerMask layerMask, Vector3 pointerPosition, QueryTriggerInteraction triggerInteraction)
-            {
-                Grabbable = null;
-                NumColliders = UnityEngine.Physics.OverlapSphereNonAlloc(
-                    pointerPosition, 
-                    QueryRadius,
-                    QueryBuffer, 
-                    layerMask, 
-                    triggerInteraction);
-
-                if (NumColliders == QueryBuffer.Length)
-                {
-                    Debug.LogWarning($"Maximum number of {NumColliders} colliders found in SpherePointer overlap query. Consider increasing the query buffer size in the pointer profile.");
-                }
-
-                for (int i = 0; i < NumColliders; i++)
-                {
-                    if(Grabbable = QueryBuffer[i].GetComponent<NearInteractionGrabbable>())
-                    {
-                        return true;
-                    }
-                }
-                return false;
-            }
-            /// <summary>
-            /// Returns true if any of the objects inside QueryBuffer contain a grabbable
-            /// </summary>
-            /// <returns></returns>
-            public bool ContainsGrabbable()
-            {
-                return Grabbable != null;
-            }
-        }
-        private QueryBufferInfo queryBufferNearObjectRadius;
-        private QueryBufferInfo queryBufferInteractionRadius;
+        private SpherePointerQueryInfo queryBufferNearObjectRadius;
+        private SpherePointerQueryInfo queryBufferInteractionRadius;
 
         /// <summary>
-        /// Currently performs a sphere check.
-        /// Currently anything that has a collider is considered "Grabbable".
-        /// Eventually we need to filter based on things that can respond
-        /// to grab events.
+        /// Test if the pointer is near any collider that's both on a grabbable layer mask, and has a NearInteractionGrabbable.
+        /// Uses SphereCastRadius + NearObjectMargin to determine if near an object.
         /// </summary>
-        /// <returns>True if the hand is near anything that's grabbable.</returns>
+        /// <returns>True if the pointer is near any collider that's both on a grabbable layer mask, and has a NearInteractionGrabbable.</returns>
         public bool IsNearObject
         {
             get
@@ -147,7 +81,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Test if the pointer is within the grabbable radius of collider that's both on a grabbable layer mask, and has a NearInteractionGrabbable.
+        /// Uses SphereCastRadius to determine if near an object.
+        /// Note: if focus on pointer is locked, will always return true.
+        /// </summary>
+        /// <returns>True if the pointer is within the grabbable radius of collider that's both on a grabbable layer mask, and has a NearInteractionGrabbable.</returns>
         public override bool IsInteractionEnabled
         {
             get
@@ -162,8 +101,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void Awake()
         {
-            queryBufferNearObjectRadius = new QueryBufferInfo(sceneQueryBufferSize, NearObjectRadius);
-            queryBufferInteractionRadius = new QueryBufferInfo(sceneQueryBufferSize, SphereCastRadius);
+            queryBufferNearObjectRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, NearObjectRadius);
+            queryBufferInteractionRadius = new SpherePointerQueryInfo(sceneQueryBufferSize, SphereCastRadius);
         }
 
         /// <inheritdoc />
@@ -181,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Rays[0].UpdateRayStep(ref pointerPosition, ref endPoint);
 
                 var layerMasks = PrioritizedLayerMasksOverride ?? GrabLayerMasks;
-                var toQuery = new QueryBufferInfo[] { queryBufferNearObjectRadius, queryBufferInteractionRadius };
+                var toQuery = new SpherePointerQueryInfo[] { queryBufferNearObjectRadius, queryBufferInteractionRadius };
                 for (int j = 0; j < toQuery.Length; j++)
                 {
                     for (int i = 0; i < layerMasks.Length; i++)
@@ -261,6 +200,72 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             normal = Vector3.forward;
             return false;
+        }
+
+        /// <summary>
+        /// Helper class for storing and managing near grabbables close to a point
+        /// </summary>
+        private class SpherePointerQueryInfo
+        {
+            /// <summary>
+            /// How many colliders are near the point from the latest call to TryUpdateQueryBufferForLayerMask 
+            /// </summary>
+            private int numColliders;
+
+            /// <summary>
+            /// Fixed-length array used to story physics queries
+            /// </summary>
+            private Collider[] queryBuffer;
+
+            /// <summary>
+            /// Distance for performing queries.
+            /// </summary>
+            private float queryRadius;
+
+            /// <summary>
+            /// The grabbable near the QueryRadius. 
+            /// </summary>
+            private NearInteractionGrabbable grabbable;
+
+            public SpherePointerQueryInfo(int bufferSize, float radius)
+            {
+                numColliders = 0;
+                queryBuffer = new Collider[bufferSize];
+                queryRadius = radius;
+            }
+
+            public bool TryUpdateQueryBufferForLayerMask(LayerMask layerMask, Vector3 pointerPosition, QueryTriggerInteraction triggerInteraction)
+            {
+                grabbable = null;
+                numColliders = UnityEngine.Physics.OverlapSphereNonAlloc(
+                    pointerPosition,
+                    queryRadius,
+                    queryBuffer,
+                    layerMask,
+                    triggerInteraction);
+
+                if (numColliders == queryBuffer.Length)
+                {
+                    Debug.LogWarning($"Maximum number of {numColliders} colliders found in SpherePointer overlap query. Consider increasing the query buffer size in the pointer profile.");
+                }
+
+                for (int i = 0; i < numColliders; i++)
+                {
+                    if (grabbable = queryBuffer[i].GetComponent<NearInteractionGrabbable>())
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            /// <summary>
+            /// Returns true if any of the objects inside QueryBuffer contain a grabbable
+            /// </summary>
+            /// <returns></returns>
+            public bool ContainsGrabbable()
+            {
+                return grabbable != null;
+            }
         }
     }
 }
