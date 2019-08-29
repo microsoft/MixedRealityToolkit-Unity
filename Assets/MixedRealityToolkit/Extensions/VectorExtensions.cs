@@ -163,6 +163,20 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
+        /// Calculates how much scale is required for objBounds to match otherbounds.
+        /// </summary>
+        /// <param name="objBounds">Object representation to be scaled</param>
+        /// <param name="otherBounds">Object representation to be scaled to</param>
+        /// <param name="padding">padding multitplied into otherbounds</param>
+        /// <returns>scale represented as a <see cref="Vector3"/> </returns>
+        public static Vector3 ScaleFromBounds(Bounds objBounds, Bounds otherBounds, Vector3 padding = default)
+        {
+            Vector3 szA = otherBounds.size + new Vector3(otherBounds.size.x * padding.x, otherBounds.size.y * padding.y, otherBounds.size.z * padding.z);
+            Vector3 szB = objBounds.size;
+            return new Vector3(szA.x / szB.x, szA.y / szB.y, szA.z / szB.z);
+        }
+
+        /// <summary>
         /// Get the relative mapping based on a source Vec3 and a radius for spherical mapping.
         /// </summary>
         /// <param name="source">The source <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> to be mapped to sphere</param>
@@ -242,6 +256,5 @@ namespace Microsoft.MixedReality.Toolkit
             source.y = UnityEngine.Random.Range(-radius, radius);
             return source;
         }
-
     }
 }

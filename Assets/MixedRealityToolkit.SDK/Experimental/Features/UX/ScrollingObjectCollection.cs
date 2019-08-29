@@ -2,8 +2,8 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         {
             FalloffPerFrame = 0,
             FalloffPerItem,
-            NoVeloctySnapToItem,
+            NoVelocitySnapToItem,
             None
         }
 
@@ -86,12 +86,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             set => dragTimeThreshold = value;
         }
 
-
         /// <summary>
-        /// Determines whether a near scroll gesture is released outside of the viewable area.
+        /// Determines whether a near scroll gesture is released when the engaged fingertip is dragged outside of the viewable area.
         /// </summary>
         [SerializeField]
-        [Tooltip("Determines whether a near scroll gesture is released outside of the viewable area.")]
+        [Tooltip("Determines whether a near scroll gesture is released when the engaged fingertip is dragged outside of the viewable area.")]
         private bool useNearScrollBoundary = false;
 
         public bool UseNearScrollBoundary
@@ -100,9 +99,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             set => useNearScrollBoundary = value;
         }
 
-
         /// <summary>
-        /// The direction in which content should scroll 
+        /// The direction in which content should scroll
         /// </summary>
         [SerializeField]
         [Tooltip("The direction in which content should scroll")]
@@ -115,7 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         }
 
         /// <summary>
-        /// Toggles whether the <see cref="ScrollingObjectCollection"/> will use the Camera <see cref="Camera.onPreRender"/> event to hide items in the list.
+        /// Toggles whether the <see cref="ScrollingObjectCollection"/> will use the Camera <see cref="Camera.onPreRender"/> event to hide items in the list. The fallback is <see cref"MonoBehaviour.LateUpdate()"/>.
         /// </summary>
         /// <remarks>This is especially helpful if you're trying to scroll dynamically created objects that may be added to the list after <see cref"MonoBehaviour.LateUpdate()"/> such as <see cref"MonoBehaviour.OnWillRender()"/></remarks>
         [SerializeField]
@@ -146,10 +144,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         }
 
         /// <summary>
-        /// Amount of (extra) velocity to be applied to scroller 
+        /// Amount of (extra) velocity to be applied to scroller.
         /// </summary>
         [SerializeField]
-        [Tooltip("Amount of velocity to be applied to scroller")]
+        [Tooltip("Amount of (extra) velocity to be applied to scroller")]
         [Range(0.0f, 2.0f)]
         private float velocityMultiplier = 0.8f;
 
@@ -231,6 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// <summary>
         /// Manual offset adjust the scale calculation of the <see cref="ClippingBox"/>
         /// </summary>
+        /// <remarks>Setting to zero may result in z fighting."/></remarks>
         [SerializeField]
         [Tooltip("Manual offset adjust the scale calculation of the ClippingBox")]
         private Vector3 occlusionScalePadding = new Vector3(0.0f, 0.0f, 0.001f);
@@ -280,22 +279,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         {
             get => (cellHeight > 0) ? cellHeight : 0.00001f;
             set => cellHeight = value;
-        }
-
-        /// <summary>
-        /// Forward vector for calculating the press plane of the <see cref="ScrollingObjectCollection"/>.
-        /// </summary>
-        /// <remarks>
-        /// When using <see cref="PressableButton"/> or <see cref="NearInteractionTouchable"/> ensure this matches <see cref="NearInteractionTouchable.LocalForward"/>.
-        /// </remarks>
-        [SerializeField]
-        [Tooltip("Forward vector for calculating the press plane of the ScrollingObjectCollection")]
-        private AxisOrientationType collectionForward = AxisOrientationType.NegativeZ;
-
-        public AxisOrientationType CollectionForward
-        {
-            get => collectionForward;
-            set => collectionForward = value;
         }
 
         /// <summary>
@@ -350,11 +333,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             {
                 if (scrollDirection == ScrollDirectionType.UpAndDown)
                 {
-                    return (int)(workingScrollerPos.y / CellHeight) - ((int)(workingScrollerPos.y / CellHeight) % Tiers);
+                    return (scrollContainer.transform.localPosition.y != 0.0f) ? (int)Mathf.Ceil(scrollContainer.transform.localPosition.y / CellHeight) : 0;
                 }
                 else
                 {
-                    return (int)(workingScrollerPos.x / CellWidth) - ((int)(workingScrollerPos.x / CellWidth) % Tiers);
+                    return (scrollContainer.transform.localPosition.x != 0.0f) ? (int)Mathf.Ceil(scrollContainer.transform.localPosition.x / CellWidth) : 0;
                 }
             }
         }
@@ -367,27 +350,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         private Vector2 HalfCell;
 
         //Maximum amount the scroller can travel (vertically)
-        //private float maxY => NodeList.Count != 0 ? ((StepMultiplier(NodeList.Count, Tiers) + ModuloCheck(NodeList.Count, Tiers) - ViewableArea) * CellHeight) : 0.0f;
-
-        private float maxY
-        {
-            get
-            {
-                if(NodeList.Count != 0)
-                {
-                    var modCheck = ModuloCheck(NodeList.Count, Tiers);
-                    var mult = StepMultiplier(NodeList.Count + (Tiers - modCheck), Tiers);
-
-                    Debug.Log(NodeList.Count);
-
-                    return ((StepMultiplier(NodeList.Count + Tiers - ModuloCheck(NodeList.Count, Tiers), Tiers) - ViewableArea) * CellHeight);
-                }
-                else
-                {
-                    return 0.0f;
-                }
-            }
-        }
+        private float maxY => NodeList.Count != 0 ? (StepMultiplier(NodeList.Count + Tiers - ModuloCheck(NodeList.Count, Tiers), Tiers) - ViewableArea) * CellHeight : 0.0f;
 
         //Minimum amount the scroller can travel (vertically) - this will always be zero. Here for readability
         private readonly float minY = 0.0f;
@@ -396,7 +359,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         private readonly float maxX = 0.0f;
 
         //Minimum amount the scroller can travel (horizontally)
-        private float minX => NodeList.Count != 0 ? -((StepMultiplier(NodeList.Count, Tiers) + ModuloCheck(NodeList.Count, Tiers) - ViewableArea) * CellWidth) : 0.0f;
+        private float minX => NodeList.Count != 0 ? -((StepMultiplier(NodeList.Count + Tiers - ModuloCheck(NodeList.Count, Tiers), Tiers) - ViewableArea) * CellWidth) : 0.0f;
 
         //item index for items that should be visible
         private int numItemsPrevView
@@ -512,7 +475,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 }
                 else
                 {
-                    return GetTrackedPoint(currentPointerTransform.position, pointerHitPoint, currentPointer.Position + currentPointer.Rotation * Vector3.forward, AxisOrientationType.PositiveY);
+                    return GetTrackedPoint(currentPointerTransform.position, pointerHitPoint, currentPointer.Position + currentPointer.Rotation * Vector3.forward, (scrollDirection == ScrollDirectionType.UpAndDown) ? transform.up : transform.right);
                 }
             }
         }
@@ -605,7 +568,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 if (oldContainer != null)
                 {
                     scrollContainer = oldContainer.gameObject;
-                    Debug.LogWarning("Scrolling Object Collection found an existing Container object, using it for the list");
+                    Debug.LogWarning(name + " ScrollingObjectCollection found an existing Container object, using it for the list");
                 }
                 else
                 {
@@ -626,7 +589,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 if (oldClippingObj != null)
                 {
                     clippingObject = oldClippingObj.gameObject;
-                    Debug.LogWarning("Scrolling Object Collection found an existing Clipping object, using it for the list");
+                    Debug.LogWarning(name + " ScrollingObjectCollection found an existing Clipping object, using it for the list");
                 }
                 else
                 {
@@ -713,25 +676,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                     NodeList.Add(new ObjectCollectionNode { Name = child.name, Transform = child, GameObject = child.gameObject, Colliders = child.GetComponentsInChildren<Collider>() });
                 }
             }
-            /*
-            //TODO: Use a passthrough for objects that use input
-            //Check for Pressable buttons and Interactables, then set passthrough mode
-            //eventually we should be adding Passthrough to the IMixedRealityTouchHandler (maybe even all Input events)
-            foreach (ObjectCollectionNode node in NodeList)
-            {
-                PressableButton pb = node.GameObject.GetComponentInChildren<PressableButton>();
-                if (pb != null)
-                {
-                    pb.PassThroughMode = true;
-                }
 
-                Interactable ixble = node.GameObject.GetComponentInChildren<Interactable>();
-                if (ixble != null)
-                {
-                    ixble.PassThroughMode = true;
-                }
-            }
-            */
             if (NodeList.Count <= 0)
             {
                 Debug.LogWarning(gameObject.name + " ScrollingObjectCollection needs a NodeList greater than zero");
@@ -825,11 +770,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             }
 
             //create the offset for our thesholdCalculation -- grab the first item in the list
-            TryGetObjectAlignedBoundsSize(NodeList[FirstItemInView].Transform, collectionForward, out thresholdOffset);
+            TryGetObjectAlignedBoundsSize(NodeList[FirstItemInView].Transform, out Vector3 offsetSize);
+            thresholdOffset = offsetSize.z * 0.5f;
 
             //get a point in front of the scrollContainer to use for the dot product check
-            finalOffset = (AxisOrientationToTransformDirection(collectionForward) * -1.0f) * thresholdOffset;
-            thresholdPoint = transform.InverseTransformPoint(transform.localPosition - finalOffset);
+            finalOffset = (Vector3.forward * -1.0f) * thresholdOffset;
+            thresholdPoint = transform.TransformPoint(finalOffset + transform.localPosition);
 
             //Use the first element for collection bounds -> for occluder positioning
             //temporarily zero out the rotation so we can get an accurate bounds
@@ -852,14 +798,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             // this prevents negative offset from ruining the scroll effect
             Vector3 tempClippingSize = clippingBounds.size;
 
-            //put the rotation back
-            NodeList[FirstItemInView].Transform.rotation = origRot;
-
             tempClippingSize.x = (tempClippingSize.x > CellWidth) ? tempClippingSize.x : CellWidth;
             tempClippingSize.y = (tempClippingSize.y > CellHeight) ? tempClippingSize.y : CellHeight;
 
             clippingBounds.size = tempClippingSize;
             clippingBounds.center = clippingBounds.size * 0.5f;
+
+            //put the rotation back
+            NodeList[FirstItemInView].Transform.rotation = origRot;
 
             //set the first item back to its original state
             if (resetActiveState)
@@ -878,7 +824,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                     //apply the viewable area and column/row multiplier
                     //use a dummy bounds of one to get the local scale to match;
                     clippingBounds.size = new Vector3((clippingBounds.size.x * Tiers), (clippingBounds.size.y * ViewableArea), clippingBounds.size.z);
-                    clipBox.transform.localScale = CalculateScale(new Bounds(Vector3.zero, Vector3.one), clippingBounds, OcclusionScalePadding);
+                    clipBox.transform.localScale = VectorExtensions.ScaleFromBounds(new Bounds(Vector3.zero, Vector3.one), clippingBounds, OcclusionScalePadding);
 
                     //adjust where the center of the clipping box is
                     viewableCenter.x = (clipBox.transform.localScale.x * 0.5f) - (OcclusionScalePadding.x * 0.5f) + OcclusionPositionPadding.x;
@@ -890,7 +836,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
                     //Same as above for L <-> R
                     clippingBounds.size = new Vector3(clippingBounds.size.x * ViewableArea, clippingBounds.size.y * Tiers, clippingBounds.size.z);
-                    clipBox.transform.localScale = CalculateScale(new Bounds(Vector3.zero, Vector3.one), clippingBounds) + OcclusionScalePadding;
+                    clipBox.transform.localScale = VectorExtensions.ScaleFromBounds(new Bounds(Vector3.zero, Vector3.one), clippingBounds) + OcclusionScalePadding;
 
                     //Same as above for L <-> R
                     viewableCenter.x = (clipBox.transform.localScale.x * 0.5f) - (OcclusionScalePadding.x * 0.5f) + OcclusionPositionPadding.x;
@@ -914,8 +860,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         {
             //Register for global input events
             MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out IMixedRealityInputSystem inputSys);
-            inputSys.RegisterHandler<IMixedRealityTouchHandler>(this);
-            inputSys.RegisterHandler<IMixedRealityPointerHandler>(this);
+
+            if (inputSys != null)
+            {
+                inputSys.RegisterHandler<IMixedRealityTouchHandler>(this);
+                inputSys.RegisterHandler<IMixedRealityPointerHandler>(this);
+            }
 
             if (useOnPreRender)
             {
@@ -993,12 +943,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 }
 
                 //get a point in front of the scrollContainer to use for the dot product check
-                finalOffset = AxisOrientationToTransformDirection(collectionForward) * thresholdOffset;
-                thresholdPoint = transform.TransformVector(transform.localPosition - finalOffset);
+                finalOffset = (Vector3.forward * -1.0f) * thresholdOffset;
+                thresholdPoint = transform.TransformPoint(finalOffset + transform.localPosition);
 
                 //Make sure we're actually (near) touched and not a pointer event, do a dot product check            
-                bool scrollRelease = UseNearScrollBoundary ? DetectScrollRelease(AxisOrientationToTransformDirection(collectionForward), thresholdPoint, currentPointerPos, clippingObject.transform, transform.worldToLocalMatrix, scrollDirection)
-                                                           : DetectScrollRelease(AxisOrientationToTransformDirection(collectionForward), thresholdPoint, currentPointerPos, null, null, null);
+                bool scrollRelease = UseNearScrollBoundary ? DetectScrollRelease(transform.forward * -1.0f, thresholdPoint, currentPointerPos, clippingObject.transform, transform.worldToLocalMatrix, scrollDirection)
+                                                           : DetectScrollRelease(transform.forward * -1.0f, thresholdPoint, currentPointerPos, null, null, null);
 
                 if (isTouched && scrollRelease)
                 {
@@ -1021,7 +971,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                         if (isColliderActive)
                         {
                             //Fire the UnityEvent
-                            //TODO: Use existing InputInterfaces to make a call back to the child object
                             ClickEvent?.Invoke(focusedObject);
                         }
                     }
@@ -1043,7 +992,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                     TouchEnded?.Invoke(focusedObject);
 
                     focusedObject = null;
-                    //scrollChild = null;
 
                     //Clear our states
                     isTouched = false;
@@ -1057,13 +1005,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                     if (scrollDirection == ScrollDirectionType.UpAndDown)
                     {
                         //Lock X, clamp Y
-                        workingScrollerPos.y = SoftClamp(initialScrollerPos.y - handDelta.y, minY, maxY, 0.5f);
+                        workingScrollerPos.y = MathUtilities.SoftClamp(initialScrollerPos.y - handDelta.y, minY, maxY, 0.5f);
                         workingScrollerPos.x = 0.0f;
                     }
                     else
                     {
                         //Lock Y, clamp X
-                        workingScrollerPos.x = SoftClamp(initialScrollerPos.x - handDelta.x, minX, maxX, 0.5f);
+                        workingScrollerPos.x = MathUtilities.SoftClamp(initialScrollerPos.x - handDelta.x, minX, maxX, 0.5f);
                         workingScrollerPos.y = 0.0f;
                     }
 
@@ -1079,7 +1027,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             else if (!animatingToPosition && nodeLengthCheck)//Prevent the Animation coroutine from being overridden
             {
                 //We're not engaged, so handle any not touching behavior
-                HandleVeloctyFalloff();
+                HandleVelocityFalloff();
 
                 //Apply our position
                 CalculateDragMove(workingScrollerPos);
@@ -1096,8 +1044,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         {
             //Unregister global input events
             MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out IMixedRealityInputSystem inputSys);
-            inputSys.UnregisterHandler<IMixedRealityTouchHandler>(this);
-            inputSys.UnregisterHandler<IMixedRealityPointerHandler>(this);
+            if (inputSys != null)
+            {
+                inputSys.UnregisterHandler<IMixedRealityTouchHandler>(this);
+                inputSys.UnregisterHandler<IMixedRealityPointerHandler>(this);
+            }
 
             if (useOnPreRender && cameraMethods != null)
             {
@@ -1114,7 +1065,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// When <see cref="UseOnPreRender"/>, the <see cref="ScrollingObjectCollection"/> subscribes to the <see cref="CameraEventRouter"/> call back for OnCameraPreRender
         /// </summary>
         /// <param name="router">The active <see cref="CameraEventRouter"/> on the camera.</param>
-
         private void OnCameraPreRender(CameraEventRouter router)
         {
             //clip any new items that may have shown up
@@ -1140,333 +1090,48 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// <summary>
         /// Calculates our <see cref="VelocityType"/> falloff
         /// </summary>
-        private void HandleVeloctyFalloff()
+        private void HandleVelocityFalloff()
         {
             switch (typeOfVelocity)
             {
-                case VelocityType.NoVeloctySnapToItem:
+                case VelocityType.FalloffPerFrame:
+
+                    HandleFalloffPerFrame();
+                    break;
+
+                case VelocityType.FalloffPerItem:
+                default:
+
+                    HandleFalloffPerItem();
+                    break;
+
+                case VelocityType.NoVelocitySnapToItem:
+
                     velocityState = VelocityState.None;
 
-                    if (Mathf.Abs(avgVelocity) > Mathf.Epsilon)
+                    avgVelocity = 0.0f;
+
+                    //Round to the nearest list item
+                    if (scrollDirection == ScrollDirectionType.UpAndDown)
                     {
-                        avgVelocity = 0.0f;
-
-                        //Round to the nearest list item
-                        if (scrollDirection == ScrollDirectionType.UpAndDown)
-                        {
-                            workingScrollerPos.y = ((int)(scrollContainer.transform.localPosition.y / CellHeight)) * CellHeight;
-                        }
-                        else
-                        {
-                            workingScrollerPos.x = ((int)(scrollContainer.transform.localPosition.x / CellWidth)) * CellWidth;
-                        }
-
-                        initialScrollerPos = workingScrollerPos;
-                        ListMomentumEnded?.Invoke();
+                        workingScrollerPos.y = (Mathf.Floor(scrollContainer.transform.localPosition.y / CellHeight)) * CellHeight;
                     }
+                    else
+                    {
+                        workingScrollerPos.x = (Mathf.Floor(scrollContainer.transform.localPosition.x / CellWidth)) * CellWidth;
+                    }
+
+                    initialScrollerPos = workingScrollerPos;
+                    ListMomentumEnded?.Invoke();
+
                     break;
 
                 case VelocityType.None:
 
                     velocityState = VelocityState.None;
 
-                    if (Mathf.Abs(avgVelocity) > Mathf.Epsilon)
-                    {
-                        //apply no velocity
-                        avgVelocity = 0.0f;
-                        ListMomentumEnded?.Invoke();
-                    }
-                    break;
-
-                case VelocityType.FalloffPerItem:
-
-                    switch (velocityState)
-                    {
-                        case VelocityState.Calculating:
-
-                            // The logarithmic formula to get the number of steps from "average velocity" with drag to "zero" -> can't figure out how to get the proper distance though.
-                            // Saving for later, use IterateFalloff() for now...
-                            //float numSteps = (Mathf.Log(0.00001f) - Mathf.Log(Mathf.Abs(avgVelocity))) / Mathf.Log(velocityFalloff);
-
-                            int numSteps;
-                            float newPosAfterVelocity;
-                            if (scrollDirection == ScrollDirectionType.UpAndDown)
-                            {
-                                if (avgVelocity == 0.0f)
-                                {
-                                    //velocity was cleared out so we should just snap
-                                    newPosAfterVelocity = scrollContainer.transform.localPosition.y;
-                                }
-                                else
-                                {
-                                    //calculate velocity one more time to prevent any sort of edge case where we didn't have enough frames to calculate properly
-                                    CalculateVelocity();
-
-                                    //Precalculate where the velocity falloff WOULD land our scrollContainer, then round it to the nearest item so it feels "natural"
-                                    velocitySnapshot = IterateFalloff(avgVelocity, out numSteps);
-                                    newPosAfterVelocity = initialScrollerPos.y + velocitySnapshot;
-                                }
-
-                                velocityDestinationPos.y = ((int)(newPosAfterVelocity / CellHeight)) * CellHeight;
-
-                                velocityState = VelocityState.Resolving;
-                            }
-                            else
-                            {
-                                if (avgVelocity == 0.0f)
-                                {
-                                    //velocity was cleared out so we should just snap
-                                    newPosAfterVelocity = scrollContainer.transform.localPosition.x;
-                                }
-                                else
-                                {
-                                    //calculate velocity one more time to prevent any sort of edge case where we didn't have enough frames to calculate properly
-                                    CalculateVelocity();
-
-                                    //Precalculate where the velocity falloff WOULD land our scrollContainer, then round it to the nearest item so it feels "natural"
-                                    velocitySnapshot = IterateFalloff(avgVelocity, out numSteps);
-                                    newPosAfterVelocity = initialScrollerPos.x + velocitySnapshot;
-                                }
-
-                                velocityDestinationPos.x = ((int)(newPosAfterVelocity / CellWidth)) * CellWidth;
-
-                                velocityState = VelocityState.Resolving;
-                            }
-
-                            workingScrollerPos = SmoothTo(scrollContainer.transform.localPosition, velocityDestinationPos, Time.deltaTime, 0.9275f);
-                            //Clear the velocity now that we've applied a new position
-                            avgVelocity = 0.0f;
-                            break;
-
-                        case VelocityState.Resolving:
-
-                            if (scrollDirection == ScrollDirectionType.UpAndDown)
-                            {
-                                if (scrollContainer.transform.localPosition.y > maxY + (thresholdOffset * bounceMultiplier)
-                                    || scrollContainer.transform.localPosition.y < minY - (thresholdOffset * bounceMultiplier))
-                                {
-                                    velocityState = VelocityState.Bouncing;
-                                    velocitySnapshot = 0.0f;
-                                    break;
-                                }
-                                else
-                                {
-                                    workingScrollerPos = SmoothTo(scrollContainer.transform.localPosition, velocityDestinationPos, Time.deltaTime, 0.9275f);
-
-                                    if (Vector3.Distance(scrollContainer.transform.localPosition, workingScrollerPos) < 0.00001f)
-                                    {
-                                        //Ensure we've actually snapped the position to prevent an extreme in-between state
-                                        workingScrollerPos.y = ((int)(scrollContainer.transform.localPosition.y / CellHeight)) * CellHeight;
-
-                                        velocityState = VelocityState.None;
-
-                                        ListMomentumEnded?.Invoke();
-
-                                        // clean up our position for next frame
-                                        initialScrollerPos = workingScrollerPos;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if (scrollContainer.transform.localPosition.x > maxX + (thresholdOffset * bounceMultiplier)
-                                    || scrollContainer.transform.localPosition.x < minX - (thresholdOffset * bounceMultiplier))
-                                {
-                                    velocityState = VelocityState.Bouncing;
-                                    velocitySnapshot = 0.0f;
-                                    break;
-                                }
-                                else
-                                {
-                                    workingScrollerPos = SmoothTo(scrollContainer.transform.localPosition, velocityDestinationPos, Time.deltaTime, 0.9275f);
-
-                                    if (Vector3.Distance(scrollContainer.transform.localPosition, workingScrollerPos) < 0.00001f)
-                                    {
-                                        //Ensure we've actually snapped the position to prevent an extreme in-between state
-                                        workingScrollerPos.y = ((int)(scrollContainer.transform.localPosition.x / CellWidth)) * CellWidth;
-
-                                        velocityState = VelocityState.None;
-
-                                        ListMomentumEnded?.Invoke();
-
-                                        // clean up our position for next frame
-                                        initialScrollerPos = workingScrollerPos;
-                                    }
-                                }
-                            }
-                            break;
-
-                        case VelocityState.Bouncing:
-                            bool smooth = false;
-                            if (Vector3.Distance(scrollContainer.transform.localPosition, workingScrollerPos) < 0.00001f)
-                            {
-                                smooth = true;
-                            }
-                            if (scrollDirection == ScrollDirectionType.UpAndDown
-                                && (scrollContainer.transform.localPosition.y - minY > -0.00001
-                                && scrollContainer.transform.localPosition.y - maxY < 0.00001f))
-                            {
-                                velocityState = VelocityState.None;
-
-                                ListMomentumEnded?.Invoke();
-
-                                // clean up our position for next frame
-                                initialScrollerPos = workingScrollerPos;
-                            }
-                            else if (scrollDirection == ScrollDirectionType.LeftAndRight
-                                     && (scrollContainer.transform.localPosition.x + minX > -0.00001
-                                     && scrollContainer.transform.localPosition.x - maxX < 0.00001f))
-                            {
-                                velocityState = VelocityState.None;
-
-                                ListMomentumEnded?.Invoke();
-
-                                // clean up our position for next frame
-                                initialScrollerPos = workingScrollerPos;
-                            }
-                            else
-                            {
-                                smooth = true;
-                            }
-
-                            if (smooth)
-                            {
-                                //Debug.Log("bounce calc");
-                                Vector3 clampedDest = new Vector3(Mathf.Clamp(scrollContainer.transform.localPosition.x, minX, maxX), Mathf.Clamp(scrollContainer.transform.localPosition.y, minY, maxY), 0.0f);
-                                workingScrollerPos.y = SmoothTo(scrollContainer.transform.localPosition, clampedDest, Time.deltaTime, 0.2f).y;
-                                workingScrollerPos.x = SmoothTo(scrollContainer.transform.localPosition, clampedDest, Time.deltaTime, 0.2f).x;
-                            }
-                            break;
-
-                        case VelocityState.None:
-                        default:
-                            // clean up our position for next frame
-                            initialScrollerPos = workingScrollerPos;
-                            break;
-                    }
-                    break;
-
-                case VelocityType.FalloffPerFrame:
-                default:
-
-                    switch (velocityState)
-                    {
-                        case VelocityState.Calculating:
-
-                            if (scrollDirection == ScrollDirectionType.UpAndDown)
-                            {
-                                workingScrollerPos.y = initialScrollerPos.y + avgVelocity;
-                            }
-                            else
-                            {
-                                workingScrollerPos.x = initialScrollerPos.x + avgVelocity;
-                            }
-
-                            velocityState = VelocityState.Resolving;
-
-                            // clean up our position for next frame
-                            initialScrollerPos = workingScrollerPos;
-                            break;
-
-                        case VelocityState.Resolving:
-
-                            if (scrollDirection == ScrollDirectionType.UpAndDown)
-                            {
-                                if (scrollContainer.transform.localPosition.y > maxY + (thresholdOffset * bounceMultiplier)
-                                    || scrollContainer.transform.localPosition.y < minY - (thresholdOffset * bounceMultiplier))
-                                {
-                                    velocityState = VelocityState.Bouncing;
-                                    avgVelocity = 0.0f;
-                                    break;
-                                }
-                                else
-                                {
-                                    avgVelocity *= velocityFalloff;
-                                    workingScrollerPos.y = initialScrollerPos.y + avgVelocity;
-
-                                    if (Vector3.Distance(scrollContainer.transform.localPosition, workingScrollerPos) < 0.00001f)
-                                    {
-                                        velocityState = VelocityState.None;
-                                        avgVelocity = 0.0f;
-
-                                        ListMomentumEnded?.Invoke();
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if (scrollContainer.transform.localPosition.x > maxX + (thresholdOffset * bounceMultiplier)
-                                    || scrollContainer.transform.localPosition.x < minX - (thresholdOffset * bounceMultiplier))
-                                {
-                                    velocityState = VelocityState.Bouncing;
-                                    avgVelocity = 0.0f;
-                                    break;
-                                }
-                                else
-                                {
-
-                                    avgVelocity *= velocityFalloff;
-                                    workingScrollerPos.x = initialScrollerPos.x + avgVelocity;
-
-                                    if (Vector3.Distance(scrollContainer.transform.localPosition, workingScrollerPos) < 0.00001f)
-                                    {
-                                        velocityState = VelocityState.None;
-                                        avgVelocity = 0.0f;
-
-                                        ListMomentumEnded?.Invoke();
-                                    }
-                                }
-                            }
-
-                            // clean up our position for next frame
-                            initialScrollerPos = workingScrollerPos;
-
-                            break;
-
-                        case VelocityState.Bouncing:
-
-                            bool smooth = false;
-
-                            if (Vector3.Distance(scrollContainer.transform.localPosition, workingScrollerPos) < 0.00001f)
-                            {
-                                smooth = true;
-                            }
-                            if (scrollDirection == ScrollDirectionType.UpAndDown
-                            && (scrollContainer.transform.localPosition.y - minY > -0.00001
-                            && scrollContainer.transform.localPosition.y - maxY < 0.00001f))
-                            {
-                                velocityState = VelocityState.None;
-
-                                ListMomentumEnded?.Invoke();
-
-                                // clean up our position for next frame
-                                initialScrollerPos = workingScrollerPos;
-                            }
-                            else if (scrollDirection == ScrollDirectionType.LeftAndRight
-                                     && (scrollContainer.transform.localPosition.x + minX > -0.00001
-                                     && scrollContainer.transform.localPosition.x - maxX < 0.00001f))
-                            {
-                                velocityState = VelocityState.None;
-
-                                ListMomentumEnded?.Invoke();
-
-                                // clean up our position for next frame
-                                initialScrollerPos = workingScrollerPos;
-                            }
-                            else
-                            {
-                                smooth = true;
-                            }
-
-                            if (smooth)
-                            {
-                                Vector3 clampedDest = new Vector3(Mathf.Clamp(scrollContainer.transform.localPosition.x, minX, maxX), Mathf.Clamp(scrollContainer.transform.localPosition.y, minY, maxY), 0.0f);
-                                workingScrollerPos.y = SmoothTo(scrollContainer.transform.localPosition, clampedDest, Time.deltaTime, 0.2f).y;
-                                workingScrollerPos.x = SmoothTo(scrollContainer.transform.localPosition, clampedDest, Time.deltaTime, 0.2f).x;
-                            }
-                            break;
-                    }
-
+                    avgVelocity = 0.0f;
+                    ListMomentumEnded?.Invoke();
                     break;
             }
 
@@ -1478,30 +1143,300 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         }
 
         /// <summary>
-        /// Clamps via a lerp for a "soft" clamp effect
+        /// Handles <see cref="ScrollingObjectCollection"/> drag release behavior when <see cref="TypeOfVelocity"/> is set to <see cref="VelocityType.FalloffPerItem"/>
         /// </summary>
-        /// <param name="pos">number to clamp</param>
-        /// <param name="min">if <see cref="pos"/> is less, clamps to this value</param>
-        /// <param name="max">if <see cref="pos"/> is more, clamps to this value</param>
-        /// <param name="clampFactor"> Range from 0.0f to 1.0f of how close to snap to <see cref="min"/> and <see cref="max"/></param>
-        /// <returns>A soft clamped value</returns>
-        private float SoftClamp(float pos, float min, float max, float clampFactor)
+        private void HandleFalloffPerItem()
         {
-            clampFactor = Mathf.Clamp(clampFactor, 0.0f, 1.0f);
-            if (pos < min)
-            {
-                return Mathf.Lerp(pos, min, clampFactor);
-            }
-            else if (pos > max)
-            {
-                return Mathf.Lerp(pos, max, clampFactor);
-            }
 
-            return pos;
+            switch (velocityState)
+            {
+                case VelocityState.Calculating:
+
+                    int numSteps;
+                    float newPosAfterVelocity;
+                    if (scrollDirection == ScrollDirectionType.UpAndDown)
+                    {
+                        if (avgVelocity == 0.0f)
+                        {
+                            //velocity was cleared out so we should just snap
+                            newPosAfterVelocity = scrollContainer.transform.localPosition.y;
+                        }
+                        else
+                        {
+                            //calculate velocity one more time to prevent any sort of edge case where we didn't have enough frames to calculate properly
+                            CalculateVelocity();
+
+                            //Precalculate where the velocity falloff WOULD land our scrollContainer, then round it to the nearest item so it feels "natural"
+                            velocitySnapshot = IterateFalloff(avgVelocity, out numSteps);
+                            newPosAfterVelocity = initialScrollerPos.y + velocitySnapshot;
+                        }
+
+                        velocityDestinationPos.y = (Mathf.Floor(newPosAfterVelocity / CellHeight)) * CellHeight;
+
+                        velocityState = VelocityState.Resolving;
+                    }
+                    else
+                    {
+                        if (avgVelocity == 0.0f)
+                        {
+                            //velocity was cleared out so we should just snap
+                            newPosAfterVelocity = scrollContainer.transform.localPosition.x;
+                        }
+                        else
+                        {
+                            //calculate velocity one more time to prevent any sort of edge case where we didn't have enough frames to calculate properly
+                            CalculateVelocity();
+
+                            //Precalculate where the velocity falloff WOULD land our scrollContainer, then round it to the nearest item so it feels "natural"
+                            velocitySnapshot = IterateFalloff(avgVelocity, out numSteps);
+                            newPosAfterVelocity = initialScrollerPos.x + velocitySnapshot;
+                        }
+
+                        velocityDestinationPos.x = (Mathf.Floor(newPosAfterVelocity / CellWidth)) * CellWidth;
+
+                        velocityState = VelocityState.Resolving;
+                    }
+
+                    workingScrollerPos = Solver.SmoothTo(scrollContainer.transform.localPosition, velocityDestinationPos, Time.deltaTime, 0.9275f);
+
+                    //Clear the velocity now that we've applied a new position
+                    avgVelocity = 0.0f;
+                    break;
+
+                case VelocityState.Resolving:
+
+                    if (scrollDirection == ScrollDirectionType.UpAndDown)
+                    {
+                        if (scrollContainer.transform.localPosition.y > maxY + (thresholdOffset * bounceMultiplier)
+                            || scrollContainer.transform.localPosition.y < minY - (thresholdOffset * bounceMultiplier))
+                        {
+                            velocityState = VelocityState.Bouncing;
+                            velocitySnapshot = 0.0f;
+                            break;
+                        }
+                        else
+                        {
+                            workingScrollerPos = Solver.SmoothTo(scrollContainer.transform.localPosition, velocityDestinationPos, Time.deltaTime, 0.9275f);
+
+                            if (Vector3.Distance(scrollContainer.transform.localPosition, workingScrollerPos) < 0.00001f)
+                            {
+                                //Ensure we've actually snapped the position to prevent an extreme in-between state
+                                workingScrollerPos.y = (Mathf.Floor(scrollContainer.transform.localPosition.y / CellHeight)) * CellHeight;
+
+                                velocityState = VelocityState.None;
+
+                                ListMomentumEnded?.Invoke();
+
+                                // clean up our position for next frame
+                                initialScrollerPos = workingScrollerPos;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (scrollContainer.transform.localPosition.x > maxX + (thresholdOffset * bounceMultiplier)
+                            || scrollContainer.transform.localPosition.x < minX - (thresholdOffset * bounceMultiplier))
+                        {
+                            velocityState = VelocityState.Bouncing;
+                            velocitySnapshot = 0.0f;
+                            break;
+                        }
+                        else
+                        {
+                            workingScrollerPos = Solver.SmoothTo(scrollContainer.transform.localPosition, velocityDestinationPos, Time.deltaTime, 0.9275f);
+
+                            if (Vector3.Distance(scrollContainer.transform.localPosition, workingScrollerPos) < 0.00001f)
+                            {
+                                //Ensure we've actually snapped the position to prevent an extreme in-between state
+                                workingScrollerPos.y = (Mathf.Floor(scrollContainer.transform.localPosition.x / CellWidth)) * CellWidth;
+
+                                velocityState = VelocityState.None;
+
+                                ListMomentumEnded?.Invoke();
+
+                                // clean up our position for next frame
+                                initialScrollerPos = workingScrollerPos;
+                            }
+                        }
+                    }
+                    break;
+
+                case VelocityState.Bouncing:
+                    bool smooth = false;
+                    if (Vector3.Distance(scrollContainer.transform.localPosition, workingScrollerPos) < 0.00001f)
+                    {
+                        smooth = true;
+                    }
+                    if (scrollDirection == ScrollDirectionType.UpAndDown
+                        && (scrollContainer.transform.localPosition.y - minY > -0.00001
+                        && scrollContainer.transform.localPosition.y - maxY < 0.00001f))
+                    {
+                        velocityState = VelocityState.None;
+
+                        ListMomentumEnded?.Invoke();
+
+                        // clean up our position for next frame
+                        initialScrollerPos = workingScrollerPos;
+                    }
+                    else if (scrollDirection == ScrollDirectionType.LeftAndRight
+                             && (scrollContainer.transform.localPosition.x + minX > -0.00001
+                             && scrollContainer.transform.localPosition.x - maxX < 0.00001f))
+                    {
+                        velocityState = VelocityState.None;
+
+                        ListMomentumEnded?.Invoke();
+
+                        // clean up our position for next frame
+                        initialScrollerPos = workingScrollerPos;
+                    }
+                    else
+                    {
+                        smooth = true;
+                    }
+
+                    if (smooth)
+                    {
+                        Vector3 clampedDest = new Vector3(Mathf.Clamp(scrollContainer.transform.localPosition.x, minX, maxX), Mathf.Clamp(scrollContainer.transform.localPosition.y, minY, maxY), 0.0f);
+                        workingScrollerPos.y = Solver.SmoothTo(scrollContainer.transform.localPosition, clampedDest, Time.deltaTime, 0.2f).y;
+                        workingScrollerPos.x = Solver.SmoothTo(scrollContainer.transform.localPosition, clampedDest, Time.deltaTime, 0.2f).x;
+                    }
+
+                    break;
+
+                case VelocityState.None:
+                default:
+                    // clean up our position for next frame
+                    initialScrollerPos = workingScrollerPos;
+                    break;
+            }
         }
 
         /// <summary>
-        /// Wrapper for per frame velocity calculation
+        /// Handles <see cref="ScrollingObjectCollection"/> drag release behavior when <see cref="TypeOfVelocity"/> is set to <see cref="VelocityType.FalloffPerFrame"/>
+        /// </summary>
+        private void HandleFalloffPerFrame()
+        {
+            switch (velocityState)
+            {
+                case VelocityState.Calculating:
+
+                    if (scrollDirection == ScrollDirectionType.UpAndDown)
+                    {
+                        workingScrollerPos.y = initialScrollerPos.y + avgVelocity;
+                    }
+                    else
+                    {
+                        workingScrollerPos.x = initialScrollerPos.x + avgVelocity;
+                    }
+
+                    velocityState = VelocityState.Resolving;
+
+                    // clean up our position for next frame
+                    initialScrollerPos = workingScrollerPos;
+                    break;
+
+                case VelocityState.Resolving:
+
+                    if (scrollDirection == ScrollDirectionType.UpAndDown)
+                    {
+                        if (scrollContainer.transform.localPosition.y > maxY + (thresholdOffset * bounceMultiplier)
+                            || scrollContainer.transform.localPosition.y < minY - (thresholdOffset * bounceMultiplier))
+                        {
+                            velocityState = VelocityState.Bouncing;
+                            avgVelocity = 0.0f;
+                            break;
+                        }
+                        else
+                        {
+                            avgVelocity *= velocityFalloff;
+                            workingScrollerPos.y = initialScrollerPos.y + avgVelocity;
+
+                            if (Vector3.Distance(scrollContainer.transform.localPosition, workingScrollerPos) < 0.00001f)
+                            {
+                                velocityState = VelocityState.None;
+                                avgVelocity = 0.0f;
+
+                                ListMomentumEnded?.Invoke();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (scrollContainer.transform.localPosition.x > maxX + (thresholdOffset * bounceMultiplier)
+                            || scrollContainer.transform.localPosition.x < minX - (thresholdOffset * bounceMultiplier))
+                        {
+                            velocityState = VelocityState.Bouncing;
+                            avgVelocity = 0.0f;
+                            break;
+                        }
+                        else
+                        {
+
+                            avgVelocity *= velocityFalloff;
+                            workingScrollerPos.x = initialScrollerPos.x + avgVelocity;
+
+                            if (Vector3.Distance(scrollContainer.transform.localPosition, workingScrollerPos) < 0.00001f)
+                            {
+                                velocityState = VelocityState.None;
+                                avgVelocity = 0.0f;
+
+                                ListMomentumEnded?.Invoke();
+                            }
+                        }
+                    }
+
+                    // clean up our position for next frame
+                    initialScrollerPos = workingScrollerPos;
+
+                    break;
+
+                case VelocityState.Bouncing:
+
+                    bool smooth = false;
+
+                    if (Vector3.Distance(scrollContainer.transform.localPosition, workingScrollerPos) < 0.00001f)
+                    {
+                        smooth = true;
+                    }
+                    if (scrollDirection == ScrollDirectionType.UpAndDown
+                    && (scrollContainer.transform.localPosition.y - minY > -0.00001
+                    && scrollContainer.transform.localPosition.y - maxY < 0.00001f))
+                    {
+                        velocityState = VelocityState.None;
+
+                        ListMomentumEnded?.Invoke();
+
+                        // clean up our position for next frame
+                        initialScrollerPos = workingScrollerPos;
+                    }
+                    else if (scrollDirection == ScrollDirectionType.LeftAndRight
+                             && (scrollContainer.transform.localPosition.x + minX > -0.00001
+                             && scrollContainer.transform.localPosition.x - maxX < 0.00001f))
+                    {
+                        velocityState = VelocityState.None;
+
+                        ListMomentumEnded?.Invoke();
+
+                        // clean up our position for next frame
+                        initialScrollerPos = workingScrollerPos;
+                    }
+                    else
+                    {
+                        smooth = true;
+                    }
+
+                    if (smooth)
+                    {
+                        Vector3 clampedDest = new Vector3(Mathf.Clamp(scrollContainer.transform.localPosition.x, minX, maxX), Mathf.Clamp(scrollContainer.transform.localPosition.y, minY, maxY), 0.0f);
+                        workingScrollerPos.y = Solver.SmoothTo(scrollContainer.transform.localPosition, clampedDest, Time.deltaTime, 0.2f).y;
+                        workingScrollerPos.x = Solver.SmoothTo(scrollContainer.transform.localPosition, clampedDest, Time.deltaTime, 0.2f).x;
+                    }
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Wrapper for per frame velocity calculation and filtering.
         /// </summary>
         private void CalculateVelocity()
         {
@@ -1553,11 +1488,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
             if (scrollDirection == ScrollDirectionType.UpAndDown)
             {
-                workingScrollerPos.y = initialScrollerPos.y = ((int)(scrollContainer.transform.localPosition.y / CellHeight)) * CellHeight;
+                workingScrollerPos.y = initialScrollerPos.y = finalPos.y;
             }
             else
             {
-                workingScrollerPos.x = initialScrollerPos.x = ((int)(scrollContainer.transform.localPosition.x / CellWidth)) * CellWidth;
+                workingScrollerPos.x = initialScrollerPos.x = finalPos.x;
             }
 
             animatingToPosition = false;
@@ -1587,7 +1522,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             }
 
             bool hasPassedBoundary = false;
-            
+
             if (clippingObj != null && transformMatrix != null && direction != null)
             {
                 Matrix4x4 tMat = (Matrix4x4)transformMatrix;
@@ -1799,6 +1734,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// <returns>The total distance the <see cref="avgVelocity"/> with <see cref="velocityFalloff"/> as drag would travel.</returns>
         private float IterateFalloff(float vel, out int steps)
         {
+            //Some day this should be a falloff formula, below is the number of steps. Just can't figure out how to get the right velocity.
             //float numSteps = (Mathf.Log(0.00001f)  - Mathf.Log(Mathf.Abs(avgVelocity))) / Mathf.Log(velocityFalloff);
 
             float newVal = 0.0f;
@@ -1910,8 +1846,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// <param name="callback"> An optional action to pass in to get notified that the <see cref="ScrollingObjectCollection"/> is finished moving</param>
         public void PageBy(int numOfPages, bool animateToPage = true, System.Action callback = null)
         {
-            Debug.Log(animateToPage);
-
             StopAllCoroutines();
             animatingToPosition = false;
             velocityState = VelocityState.None;
@@ -1956,10 +1890,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
             if (scrollDirection == ScrollDirectionType.UpAndDown)
             {
-                Debug.Log("FIIV: " + FirstItemInView);
-                Debug.Log("offset: " + (StepMultiplier(numberOfItemsToMove, Tiers) * CellHeight));
+                workingScrollerPos.y = (FirstItemInView + StepMultiplier(numberOfItemsToMove, Tiers)) * CellHeight;
 
-                workingScrollerPos.y = FirstItemInView + (StepMultiplier(numberOfItemsToMove, Tiers) * CellHeight);
                 //clamp the working pos since we already have calculated it
                 workingScrollerPos.y = Mathf.Clamp(workingScrollerPos.y, minY, maxY);
 
@@ -1968,7 +1900,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             }
             else
             {
-                workingScrollerPos.x = FirstItemInView + (StepMultiplier(numberOfItemsToMove, Tiers) * CellWidth);
+                workingScrollerPos.x = ((FirstItemInView + StepMultiplier(numberOfItemsToMove, Tiers)) * CellWidth) * -1.0f;
+
                 //clamp the working pos since we already have calculated it
                 workingScrollerPos.x = Mathf.Clamp(workingScrollerPos.x, minX, maxX);
 
@@ -1992,7 +1925,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         }
 
         /// <summary>
-        /// Moves scroller a relative number of lines of items.
+        /// Moves scroller a relative number of <see cref="Tiers"/> of items.
         /// </summary>
         /// <param name="numberOfLinesToMove">number of lines to move by</param>
         /// <param name="animateToPosition">if <see cref="true"/>, scroller will animate to new position</param>
@@ -2005,7 +1938,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
             if (scrollDirection == ScrollDirectionType.UpAndDown)
             {
-                workingScrollerPos.y = (FirstItemInView + (numberOfLinesToMove * Tiers)) * CellHeight;
+                workingScrollerPos.y = (FirstItemInView + numberOfLinesToMove) * CellHeight;
 
                 //clamp the working pos since we already have calculated it
                 workingScrollerPos.y = Mathf.Clamp(workingScrollerPos.y, minY, maxY);
@@ -2015,7 +1948,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             }
             else
             {
-                workingScrollerPos.x = (FirstItemInView + (numberOfLinesToMove * Tiers)) * CellWidth;
+                workingScrollerPos.x = ((FirstItemInView + numberOfLinesToMove) * CellWidth) * -1.0f;
 
                 //clamp the working pos since we already have calculated it
                 workingScrollerPos.x = Mathf.Clamp(workingScrollerPos.x, minX, maxX);
@@ -2065,7 +1998,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             }
             else
             {
-                workingScrollerPos.x = StepMultiplier(indexOfItem, Tiers) * CellWidth;
+                workingScrollerPos.x = (StepMultiplier(indexOfItem, Tiers) * CellWidth) * -1.0f;
 
                 //clamp the working pos since we already have calculated it
                 workingScrollerPos.x = Mathf.Clamp(workingScrollerPos.x, minX, maxX);
@@ -2090,57 +2023,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             }
         }
 
-        /// <summary>
-        /// Converts <see cref="AxisOrientationType"/> into a normalized <see cref="Vector3"/> direction relative to the <see cref="ScrollingObjectCollection"/>'s transform
-        /// </summary>
-        /// <param name="axis"> <see cref="AxisOrientationType"/> to convert</param>
-        /// <returns>Normalized direction</returns>
-        public Vector3 AxisOrientationToTransformDirection(AxisOrientationType axis)
-        {
-            switch (axis)
-            {
-                case AxisOrientationType.PositiveX:
-                    return transform.right;
-
-                case AxisOrientationType.NegativeX:
-                    return transform.right * -1.0f;
-
-                case AxisOrientationType.PositiveY:
-                    return transform.up;
-
-                case AxisOrientationType.NegativeY:
-                    return transform.up * -1.0f;
-
-                case AxisOrientationType.PositiveZ:
-                    return transform.forward;
-
-                case AxisOrientationType.NegativeZ:
-                    return transform.forward * -1.0f;
-
-                default:
-                    return Vector3.zero;
-            }
-        }
-
-        #endregion
+        #endregion public methods
 
         #region static methods
-
-        /// <summary>
-        /// Lerps Vector3 source to goal.
-        /// </summary>
-        /// <remarks>
-        /// Handles lerpTime less than 0 and more than 1.
-        /// </remarks>
-        /// <param name="source">Initial position to start at</param>
-        /// <param name="goal">desired position to end at</param>
-        /// <param name="deltaTime">time change per frame</param>
-        /// <param name="lerpTime">amount of time for smoothng to take</param>
-        /// <returns></returns>
-        public static Vector3 SmoothTo(Vector3 source, Vector3 goal, float deltaTime, float lerpTime)
-        {
-            return Vector3.Lerp(source, goal, lerpTime.Equals(0.0f) ? 1f : deltaTime / lerpTime);
-        }
 
         /// <summary>
         /// Projects a pointer's actual direction on the same plane as the original hit point (the point that caused the event to fire)
@@ -2151,15 +2036,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// <param name="axisConstraint">The (optional) axis to project the new point to</param>
         /// <returns>><see cref="Vector3"/> representing the new point on the plane as the hit point in world space</returns>
         /// <remarks><see cref="IMixedRealityPointer"/>'s eventData doesnt provide the "current" hit point, only an origin and direction, this makes the calculation easy</remarks>
-        public static Vector3 GetTrackedPoint(Vector3 origin, Vector3 hitPoint, Vector3 newDir, AxisOrientationType? axisConstraint = null)
+        public static Vector3 GetTrackedPoint(Vector3 origin, Vector3 hitPoint, Vector3 newDir, Vector3? directionalConstraint)
         {
             Vector3 hitDir = hitPoint - origin;
             float mag = Vector3.Dot(hitDir, newDir);
             Vector3 trackedPoint = origin + (newDir * mag);
 
-            if (axisConstraint != null)
+            if (directionalConstraint != null)
             {
-                trackedPoint.Scale(AxisOrientationToDirection((AxisOrientationType)axisConstraint));
+                trackedPoint.Scale((Vector3)directionalConstraint);
             }
 
             return trackedPoint;
@@ -2182,22 +2067,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         }
 
         /// <summary>
-        /// Calculates mow much scale is required for objBounds to match otherbounds.
-        /// </summary>
-        /// <param name="objBounds">Object representation to be scaled</param>
-        /// <param name="otherBounds">Object representation to be scaled to</param>
-        /// <param name="padding">padding multitplied into otherbounds</param>
-        /// <returns>scale represented as a <see cref="Vector3"/> </returns>
-        public static Vector3 CalculateScale(Bounds objBounds, Bounds otherBounds, Vector3 padding = default)
-        {
-            //Optional padding (especially z)
-            Vector3 szA = otherBounds.size + new Vector3(otherBounds.size.x * padding.x, otherBounds.size.y * padding.y, otherBounds.size.z * padding.z);
-            Vector3 szB = objBounds.size;
-            return new Vector3(szA.x / szB.x, szA.y / szB.y, szA.z / szB.z);
-        }
-
-        /// <summary>
-        /// Calculates which side a point in space is on
+        /// Calculates which side a point in world space is on of a plane
         /// </summary>
         /// <param name="initialDirection">The plane normal direction. </param>
         /// <param name="initialPosition">The point representing the plane's origin</param>
@@ -2205,7 +2075,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// <returns>true when the compared point is on the other side of the plane</returns>
         public static bool TouchPassedThreshold(Vector3 initialDirection, Vector3 initialPosition, Vector3 pointToCompare)
         {
-            //Debug.Log(pointToCompare.ToString("F5") + ", " + initialPosition.ToString("F5") + ", " + initialDirection.ToString("F5"));
             Vector3 delta = pointToCompare - initialPosition;
             float dot = Vector3.Dot(delta.normalized, initialDirection);
 
@@ -2216,13 +2085,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// Finds the object-aligned size of a <see cref="Transform"/> 
         /// </summary>
         /// <param name="obj"><see cref="Transform"/> representing the object to get offset from</param>
-        /// <returns></returns>
-        public static bool TryGetObjectAlignedBoundsSize(Transform obj, AxisOrientationType axis, out float offset)
+        /// <param name="alignedSize">the object-aligned size of  <param name="obj"></param></param>
+        /// <returns><see langword="true"/>  if <param name="alignedSize"> is valid</returns>
+        public static bool TryGetObjectAlignedBoundsSize(Transform obj, out Vector3 alignedSize)
         {
             Collider c = obj.GetComponentInChildren<Collider>();
             Renderer rend = obj.GetComponentInChildren<Renderer>();
-            Vector3 size = Vector3.zero;
-            offset = 0.0f;
+            alignedSize = Vector3.zero;
 
             //store and clear the original rotation
             Quaternion origRot = obj.rotation;
@@ -2235,13 +2104,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 if (c.GetType() == typeof(BoxCollider))
                 {
                     BoxCollider bC = c as BoxCollider;
-                    size = bC.bounds.size;
+                    alignedSize = bC.bounds.size;
                     canGetSize = true;
                 }
                 else if (c.GetType() == typeof(SphereCollider))
                 {
                     SphereCollider sC = c as SphereCollider;
-                    size = new Vector3(sC.radius, sC.radius, sC.radius);
+                    alignedSize = new Vector3(sC.radius, sC.radius, sC.radius);
                     canGetSize = true;
                 }
                 else
@@ -2252,7 +2121,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             }
             else if (rend != null)
             {
-                size = rend.bounds.size;
+                alignedSize = rend.bounds.size;
                 canGetSize = true;
             }
             else
@@ -2263,69 +2132,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             //reapply our rotation
             obj.rotation = origRot;
 
-            if (!canGetSize)
-            {
-                return false;
-            }
-
-            switch (axis)
-            {
-                case AxisOrientationType.PositiveX:
-                case AxisOrientationType.NegativeX:
-                    offset = size.x * 0.5f;
-                    break;
-
-                case AxisOrientationType.PositiveY:
-                case AxisOrientationType.NegativeY:
-                    offset = size.y * 0.5f;
-                    break;
-
-                case AxisOrientationType.PositiveZ:
-                case AxisOrientationType.NegativeZ:
-                    offset = size.z * 0.5f;
-                    break;
-
-                default:
-                    offset = 0.0f;
-                    break;
-            }
-
-            return true;
+            return (canGetSize) ? true : false;
         }
 
-        /// <summary>
-        /// Converts <see cref="AxisOrientationType"/> into a normalized <see cref="Vector3"/> direction
-        /// </summary>
-        /// <param name="axis"> <see cref="AxisOrientationType"/> to convert</param>
-        /// <returns>Normalized direction</returns>
-        public static Vector3 AxisOrientationToDirection(AxisOrientationType axis)
-        {
-            switch (axis)
-            {
-                case AxisOrientationType.PositiveX:
-                    return Vector3.right;
-
-                case AxisOrientationType.NegativeX:
-                    return Vector3.right * -1.0f;
-
-                case AxisOrientationType.PositiveY:
-                    return Vector3.up;
-
-                case AxisOrientationType.NegativeY:
-                    return Vector3.up * -1.0f;
-
-                case AxisOrientationType.PositiveZ:
-                    return Vector3.forward;
-
-                case AxisOrientationType.NegativeZ:
-                    return Vector3.forward * -1.0f;
-
-                default:
-                    return Vector3.zero;
-            }
-        }
-
-        #endregion
+        #endregion static methods
 
         #region IMixedRealityPointerHandler implementation
 
@@ -2451,7 +2261,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         ///</inheritdoc>
         void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData)
         {
-
             //Quick check for the global listener to bail if the object is not in the list
             if (!ContainsNode(currentPointer.Result.CurrentPointerTarget.transform))
             {
@@ -2459,28 +2268,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 {
                     eventData.Use();
                 }
-
                 return;
-            }
-
-            if (TryGetPokePointer(eventData.InputSource.Pointers, out IMixedRealityPointer p))
-            {
-                if (focusedObject != currentPointer.Result.CurrentPointerTarget || focusedObject == null)
-                {
-                    //TODO: Send input back down to child with a new sender so PassThroughMode knows to handle it properly
-                    /*
-
-                    HandTrackingInputEventData newTouchData = eventData;
-                    newTouchData.Sender = this;
-
-                    //We don't know if this is a scroll or not so we're going to pass the event along to the child
-                    scrollChild = currentPointer.Result.CurrentPointerTarget.GetComponentInChildren<IMixedRealityTouchHandler>();
-                    if (scrollChild != null)
-                    {
-                        scrollChild.OnTouchCompleted(newTouchData);
-                    }
-                    */
-                }
             }
         }
 
@@ -2495,47 +2283,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                     return;
                 }
 
-                if (p == currentPointer)
+                if (p == currentPointer && isDragging)
                 {
-                    if (!isDragging)
-                    {
-
-                    }
-                    else
-                    {
-                        eventData.Use();
-                    }
-
+                    eventData.Use();
                 }
-
-                //TODO: Send input back down to child with a new sender so PassThroughMode knows to handle it properly
-                /*
-
-                HandTrackingInputEventData newTouchData = eventData;
-                newTouchData.Sender = this;
-
-                if (focusedObject != p.Result.CurrentPointerTarget)
-                {
-                    scrollChild = currentPointer.Result.CurrentPointerTarget.GetComponentInChildren<IMixedRealityTouchHandler>();
-
-                    //the finger moved enough we have a mismatch in our focused object, we need to make sure we call touch started first
-                    //and update our focusedObject as well
-
-                    if (scrollChild != null)
-                    {
-                        scrollChild.OnTouchStarted(newTouchData);
-                    }
-
-                    focusedObject = currentPointer.Result.CurrentPointerTarget;
-                }
-                scrollChild = focusedObject.GetComponentInChildren<IMixedRealityTouchHandler>();
-
-                //now call OnTouchUpdated
-                if (scrollChild != null)
-                {
-                    scrollChild.OnTouchUpdated(newTouchData);
-                }
-                */
             }
         }
 
