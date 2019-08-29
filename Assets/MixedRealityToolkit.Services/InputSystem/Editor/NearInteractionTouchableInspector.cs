@@ -98,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected virtual void OnSceneGUI()
         {
-            var t = (INearInteractionTouchable)target;
+            var t = (INearInteractionTouchableDirected)target;
 
             if (Event.current.type == EventType.Repaint)
             {
@@ -107,10 +107,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Vector3 center = t.transform.TransformPoint(t.LocalCenter);
 
                 float arrowSize = UnityEditor.HandleUtility.GetHandleSize(center) * 0.75f;
-                UnityEditor.Handles.ArrowHandleCap(0, center, Quaternion.LookRotation(t.transform.rotation * t.LocalForward), arrowSize, EventType.Repaint);
+                UnityEditor.Handles.ArrowHandleCap(0, center, Quaternion.LookRotation(t.transform.rotation * -t.LocalPressDirection), arrowSize, EventType.Repaint);
 
-                Vector3 rightDelta = t.transform.localToWorldMatrix.MultiplyVector(t.LocalRight * t.Bounds.x / 2);
-                Vector3 upDelta = t.transform.localToWorldMatrix.MultiplyVector(t.LocalUp * t.Bounds.y / 2);
+                var localRight = Vector3.right;
+                var localUp = Vector3.up;
+
+                if (t is NearInteractionTouchable touchableConcrete)
+                {
+                    localRight = touchableConcrete.LocalRight;
+                    localUp = touchableConcrete.LocalUp;
+                }
+
+                Vector3 rightDelta = t.transform.localToWorldMatrix.MultiplyVector(localRight * t.Bounds.x / 2);
+                Vector3 upDelta = t.transform.localToWorldMatrix.MultiplyVector(localUp * t.Bounds.y / 2);
 
                 Vector3[] points = new Vector3[4];
                 points[0] = center + rightDelta + upDelta;

@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// Add a NearInteractionTouchable to your scene and configure a touchable surface
     /// in order to get PointerDown and PointerUp events whenever a PokePointer touches this surface.
     /// </summary>
-    public class NearInteractionTouchable : ColliderNearInteractionTouchable, INearInteractionTouchable
+    public class NearInteractionTouchable : ColliderNearInteractionTouchable, INearInteractionTouchableDirected
     {
         /// <summary>
         /// Local space forward direction
@@ -72,6 +72,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             localUp = newLocalUp;
             localForward = Vector3.Cross(LocalRight, localUp).normalized;
         }
+
+        public Vector3 LocalPressDirection => -localForward;
 
         /// <summary>
         /// Local space forward direction

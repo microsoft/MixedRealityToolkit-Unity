@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public abstract class BaseNearInteractionTouchable : MonoBehaviour
     {
         [SerializeField]
-        private TouchableEventType eventsToReceive = TouchableEventType.Touch;
+        protected TouchableEventType eventsToReceive = TouchableEventType.Touch;
 
         /// <summary>
         /// The type of event to receive.
@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("Distance behind the surface at which you will receive a touch started event")]
         [SerializeField]
         [FormerlySerializedAs("distBack")]
-        private float pokeThreshold = 0.25f;
+        protected float pokeThreshold = 0.25f;
         /// <summary>
         /// Distance behind the surface at which the touchable becomes active.
         /// </summary>
@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [Tooltip("Distance in front of the surface at which you will receive a touch completed event")]
         [SerializeField]
-        private float debounceThreshold = 0.01f;
+        protected float debounceThreshold = 0.01f;
         /// <summary>
         /// Distance in front of the surface at which you will receive a touch completed event.
         /// </summary>

@@ -193,10 +193,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             get
             {
-                var nearInteractionTouchable = GetComponent<INearInteractionTouchable>();
+                var nearInteractionTouchable = GetComponent<INearInteractionTouchableDirected>();
                 if (nearInteractionTouchable != null)
                 {
-                    return -1.0f * nearInteractionTouchable.Forward;
+                    return nearInteractionTouchable.transform.TransformDirection(nearInteractionTouchable.LocalPressDirection);
                 }
                 
                 return transform.forward;

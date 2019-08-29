@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private PressableButton button;
         private Transform transform;
-        private INearInteractionTouchable touchable;
+        private INearInteractionTouchableDirected touchable;
 
         private ButtonInfo currentInfo;
 
@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             pressDistance = serializedObject.FindProperty("pressDistance");
             releaseDistanceDelta = serializedObject.FindProperty("releaseDistanceDelta");
 
-            touchable = button.GetComponent<INearInteractionTouchable>();
+            touchable = button.GetComponent<INearInteractionTouchableDirected>();
         }
 
         [DrawGizmo(GizmoType.Selected)]
@@ -111,8 +111,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             info.LocalCenter = touchable.LocalCenter;
             info.PlaneExtents = touchable.Bounds;
 
-            Vector3 pressDirLocal = (touchable != null) ? -1.0f * touchable.LocalForward : Vector3.forward;
-            Vector3 upDirLocal = (touchable != null) ? touchable.LocalUp : Vector3.up;
+            Vector3 pressDirLocal = (touchable != null) ? touchable.LocalPressDirection : Vector3.forward;
+            Vector3 upDirLocal = Vector3.up;
+
+            if (touchable is NearInteractionTouchable touchableConcrete)
+            {
+                upDirLocal = touchableConcrete.LocalUp;
+            }
 
             info.PushRotationLocal = Quaternion.LookRotation(pressDirLocal, upDirLocal);
             
@@ -224,7 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 float handleSize = HandleUtility.GetHandleSize(vertices[1]) * 0.15f;
 
-                Vector3 dir = (touchable != null) ? -1.0f * touchable.LocalForward : Vector3.forward;
+                Vector3 dir = (touchable != null) ? touchable.LocalPressDirection : Vector3.forward;
                 Vector3 planeNormal = button.transform.TransformDirection(dir);
                 Handles.ArrowHandleCap(0, vertices[1], Quaternion.LookRotation(planeNormal), handleSize * 2, EventType.Repaint);
                 Handles.ArrowHandleCap(0, vertices[1], Quaternion.LookRotation(-planeNormal), handleSize * 2, EventType.Repaint);
