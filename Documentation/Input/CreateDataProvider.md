@@ -7,6 +7,8 @@ support for new hardware platforms.
 This article describes how to create custom data providers, also called device managers, for the input system. The example code shown here is
 from the [`WindowsMixedRealityDeviceManager`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityDeviceManager).
 
+> The complete code used in this example can be found in the MixedRealityToolkit.Providers\WindowsMixedReality folder.
+
 ## Namespace and folder structure
 
 > [!Important]
@@ -16,15 +18,23 @@ located in a folder beneath MixedRealityToolkit.Providers (ex: MixedRealityToolk
 
 ### Namespace
 
-<< >>
+Data providers are required to have a namespace to mitigate potential name collisions. It is recommended that the namespace includes the following components.
 
-### Folder structure
+- Company name
+- Feature area
 
-<< >>
+For example, an input data provider created by the Contoso company may be "Contoso.MixedReality.Input".
+
+### Recommended folder structure
+
+It is recommended that the source code for data providers be layed out in a folder heirarchy as shown in the following image.
+
+![Example folder structure](../Images/SpatialAwareness/ExampleProviderFolderStructure.png)
+
+Where ContosoInput contains the implementation of the data provider, the Editor folder contains the inspector (and any other Unity editor specific code) and Profiles
+contains one or more pre-made profiles.
 
 ## Implement the data provider
-
-> The complete code for the examples in this section are from the MixedRealityToolkit.Providers\WindowsMixedReality\WindowsMixedRealityDeviceManager.cs file.
 
 ### Specify interface and/or base class inheritance
 
@@ -34,7 +44,7 @@ class which provides a default implementation of this required functionality. Fo
 class can be used as a base class.
 
 > [!Note]
-> The `BaseInputDeviceManager` class provides the required `IMixedRealityInputDeviceManager` implementation.
+> The `BaseInputDeviceManager` and `UnityJoystickManager` classes provide the required `IMixedRealityInputDeviceManager` implementation.
 
 ``` c#
 public class WindowsMixedRealityDeviceManager : BaseInputDeviceManager, IMixedRealityCapabilityCheck
@@ -54,12 +64,12 @@ interface.
 
 The methods that should be implemented by the data provider are:
 
-- `Destroy`
-- `Disable`
-- `Enable`
-- `Initialize`
-- `Reset`
-- `Update`
+- `Destroy()`
+- `Disable()`
+- `Enable()`
+- `Initialize()`
+- `Reset()`
+- `Update()`
 
 ### Implement the data provider logic
 
@@ -83,20 +93,19 @@ The next step is to add the logic for managing the input devices, including any 
 To enable applications to respond to input from the user, the data provider raises notification events corresponding to controller state changes as defined in the [`IMixedRealityInputHandler`1`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler)
 and [`IMixedRealityInputHandler<T>`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler`1) interfaces.
 
-> The complete source code for the examples in this section can be found in the MixedRealityToolkit.Providers\WindowsMixedReality\WindowsMixedRealityController.cs file.
-
 For digital (button) type controls, raise the OnInputDown and OnInputUp events.
 
 ``` c#
+// inputAction is the input event that is to be raised.
+
 if (interactionSourceState.touchpadPressed)
 {
-    InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+    InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, inputAction);
 }
 else
 {
-    InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+    InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, inputAction);
 }
-
 ```
 
 For analog controls (ex: touchpad position) the InputChanged event should be raised.
@@ -126,9 +135,9 @@ In the Mixed Reality Toolkit, data providers are configured using [profiles](../
 Data providers with additional configuration options (ex: [InputSimulationService](../InputSimulation/InputSimulationService.md)) should create a profile and inspector to allow
 customers to modify the behavior to best suit the needs of the application.
 
-### Define the profile
+> The complete code for the example in this section can be found in the MixedRealityToolkit.Services\InputSimulation folder.
 
-> The complete code for the example in this section are from the MixedRealityToolkit.Services\InputSimulation\MixedRealityInputSimulationProfile.cs file.
+### Define the profile
 
 Profile contents should mirror the accessible properties of the observer (ex: update interval). All of the user configurable properties defined in each
 interface should be contained with the profile.
@@ -144,22 +153,35 @@ The `CreateAssetMenu` attribute can be applied to the profile class to enable cu
 
 ### Implement the inspector
 
-> The complete code for the example in this section are from the MixedRealityToolkit.Providers\ObjectMeshObserver\SpatialObjectMeshObserverProfileInspector.cs file.
-
 Profile inspectors are the user interface for configuring and viewing profile contents. Each profile inspector should extend the
 [`BaseMixedRealityToolkitConfigurationProfileInspector]() class.
 
 ``` c#
-[CustomEditor(typeof(SpatialObjectMeshObserverProfile))]
+[CustomEditor(typeof(MixedRealityInputSimulationProfile))]
 public class SpatialObjectMeshObserverProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
 { }
 ```
 
 The `CustomEditor` attribute informs Unity the type of asset to which the inspector applies.
 
-## Create an assembly definition
+## Create assembly definition(s)
 
-<< >>
+The Mixed Reality Toolkit uses assembly definition ([.asmdef](https://docs.unity3d.com/Manual/ScriptCompilationAssemblyDefinitionFiles.html)) files to specify dependencies
+between components as well as to assist Unity in reducing compilation time.
+
+It is recommended that assembly definition files are created for all data providers and their editor components.
+
+Using the [folder structure](#recommended-folder-structure) in the earlier example, there would be two .asmdef files for the ContosoInput data provider.
+
+The first assembly definition is for the data provider. For this example, it will be called ContosoInput and will be located in the example's ContosoInput folder.
+This assembly definition must specify a dependency on Microsoft.MixedReality.Toolkit and any other assemblies upon which it depends.
+
+The ContosoInputEditor assembly definition will specify the profile inspector and any editor specific code. This file must be located in the root folder of the editor code. In this example,
+the file will be located in the ContosoInput\Editor folder. This assembly definition will contain a reference to the ContosoInput assembly as well as:
+
+- Microsoft.MixedReality.Toolkit
+- Microsoft.MixedReality.Toolkit.Editor.Inspectors
+- Microsoft.MixedReality.Toolkit.Editor.Utilities
 
 ## Register the data provider
 

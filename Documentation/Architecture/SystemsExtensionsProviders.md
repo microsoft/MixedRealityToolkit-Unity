@@ -23,6 +23,8 @@ Each of the listed systems are surfaced in the MixedRealityToolkit component's c
 Extension services are components that extend the functionality of the Mixed Reality Toolkit. All extension services must specify
 that they implement the [`IMixedRealityExtensionService`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityExtensionService) interface.
 
+For information on creating extension services, please reference the [Extension services](../Extensions/ExtensionServices.md) article.
+
 To be accessible to the MRTK, extension services are registered and configured using the Extensions section of the MixedRealityToolkit
 component's configuration profile.
 
@@ -39,13 +41,13 @@ only services to utilize data providers.
 
 To be accessible to the specific MRTK service, data providers are registered in the service's configuration profile. 
 
-Application code accesses data providers using the [`IMixedRealityDataProviderAccess`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess)
+Application code accesses data providers via the [`IMixedRealityDataProviderAccess`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess)
 interface.
 
 > [!Important]
 > Although `IMixedRealityDataProvider` inherits from `IMixedRealityService`, data providers are not
 registered with the `MixedRealityServiceRegistry`. To access data providers, application code must
-query the appropriate service.
+query the service instance for which they were registered (ex: input system).
 
 ### Input
 
@@ -56,9 +58,9 @@ The MRTK input system utilizes only data providers that implement the [`IMixedRe
 The following example demonstrates accessing the registered input data providers.
 
 ``` c#
-if (MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out var service))
+if (CoreServices.InputSystem != null)
 {
-    IMixedRealityDataProviderAccess dataProviderAccess = service as IMixedRealityDataProviderAccess;
+    IMixedRealityDataProviderAccess dataProviderAccess = CoreServices.InputSystem as IMixedRealityDataProviderAccess;
     
     if (dataProviderAccess != null)
     {
@@ -89,9 +91,9 @@ interface.
 The following example demonstrates accessing the registered spatial mesh data providers.
 
 ``` c#
-if (MixedRealityServiceRegistry.TryGetService<IMixedRealitySpatialAwarenessSystem>(out var service))
+if (CoreServices.SpatialAwarenessSystem != null)
 {
-    IMixedRealityDataProviderAccess dataProviderAccess = service as IMixedRealityDataProviderAccess;
+    IMixedRealityDataProviderAccess dataProviderAccess = CoreServices.SpatialAwarenessSystem as IMixedRealityDataProviderAccess;
     
     if (dataProviderAccess != null)
     {
@@ -121,4 +123,3 @@ For more information, please see [creating a spatial awareness system data provi
 - [IMixedRealityService interface](xref:Microsoft.MixedReality.Toolkit.IMixedRealityService)
 - [IMixedRealityDataProvider interface](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider)
 - [IMixedRealityExtensionService interface](xref:Microsoft.MixedReality.Toolkit.IMixedRealityExtensionService)
-- [IMixedRealitySpatialAwarenessObserver](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver)

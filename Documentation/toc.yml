@@ -61,7 +61,7 @@
       href: Input/Gaze.md
     - name: Eyes
       href: EyeTracking/EyeTracking_Main.md
-    - name: Creating a data provider
+    - name: Creating an input data provider
       href: Input/CreateDataProvider.md
   - name: In-Editor Input Simulation
     href: InputSimulation/InputSimulationService.md
@@ -109,7 +109,7 @@
       href: SpatialAwareness/SpatialObjectMeshObserver.md
     - name: Usage Guide
       href: SpatialAwareness/UsageGuide.md
-    - name: Creating a data provider
+    - name: Creating a spatial awareness data provider
       href: SpatialAwareness/CreateDataProvider.md
   - name: Multi Scene System
     items:
