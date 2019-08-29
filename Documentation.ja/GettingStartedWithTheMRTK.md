@@ -9,7 +9,7 @@ Mixed Reality Toolkit (MRTK) は、Virtual Reality (VR) 及び Augmented Reality
 Mixed Reality Toolkit を始めるには、次のものが必要です。
 
 * [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/)
-* [Unity 2018.4.x、 2019.1.x または 2019.2.x](https://unity3d.com/get-unity/download/archive)
+* [Unity 2018.4.x, 2019.1.x または 2019.2.x](https://unity3d.com/get-unity/download/archive)
 
   MRTKは、 Unity 2018 で IL2CPP と .NET scripting backends の両方をサポートします。
 
