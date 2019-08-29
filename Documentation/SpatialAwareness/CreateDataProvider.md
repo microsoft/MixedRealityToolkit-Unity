@@ -159,7 +159,10 @@ attribute to the class. This step enables setting the default profile and platfo
     "Spatial Object Mesh Observer",
     "ObjectMeshObserver/Profiles/DefaultObjectMeshObserverProfile.asset",
     "MixedRealityToolkit.Providers")]
-public class SpatialObjectMeshObserver : BaseSpatialObserver, IMixedRealitySpatialAwarenessMeshObserver, IMixedRealityCapabilityCheck
+public class SpatialObjectMeshObserver : 
+    BaseSpatialObserver,
+    IMixedRealitySpatialAwarenessMeshObserver,
+    IMixedRealityCapabilityCheck
 { } 
 ```
 
@@ -177,7 +180,10 @@ extends the [`MixedRealitySpatialAwarenessMeshObserverProfile`](xref:Microsoft.M
 customers to provide a 3D model to be used as the environment data.
 
 ``` c#
-[CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Spatial Object Mesh Observer Profile", fileName = "SpatialObjectMeshObserverProfile", order = 100)]
+[CreateAssetMenu(
+    menuName = "Mixed Reality Toolkit/Profiles/Spatial Object Mesh Observer Profile",
+    fileName = "SpatialObjectMeshObserverProfile",
+    order = 100)]
 public class SpatialObjectMeshObserverProfile : MixedRealitySpatialAwarenessMeshObserverProfile
 {
     [SerializeField]

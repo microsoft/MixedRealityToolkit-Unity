@@ -143,7 +143,10 @@ Profile contents should mirror the accessible properties of the observer (ex: up
 interface should be contained with the profile.
 
 ``` c#
-[CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Simulated Input Profile", fileName = "MixedRealityInputSimulationProfile", order = (int)CreateProfileMenuItemIndices.InputSimulation)]
+[CreateAssetMenu(
+    menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Simulated Input Profile",
+    fileName = "MixedRealityInputSimulationProfile",
+    order = (int)CreateProfileMenuItemIndices.InputSimulation)]
 public class MixedRealityInputSimulationProfile : BaseMixedRealityProfile
 { }
 ```
