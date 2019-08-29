@@ -27,8 +27,8 @@
       href: Architecture/InputSystem/CoreSystem.md
     - name: Controllers, Pointers, and Focus
       href: Architecture/InputSystem/ControllersPointersAndFocus.md
-- name: Systems, Extension Services and Data Providers
-  href: Architecture/SystemsExtensionsProviders.md
+  - name: Systems, Extension Services and Data Providers
+    href: Architecture/SystemsExtensionsProviders.md
 - name: Feature Overviews
   items:
   - name: Profiles

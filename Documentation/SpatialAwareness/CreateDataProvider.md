@@ -1,12 +1,28 @@
 # Creating a spatial awareness system data provider
 
-The Mixed Reality Toolkit spatial awareness system is a flexible and extensible system for providing applications
+The Mixed Reality Toolkit spatial awareness system is an extensible system for providing applications
 with data about real world environments.
 
 This article describes how to create custom data providers, also called observers, for the spatial awareness system. The example code shown here is
 from the [`SpatialObjectMeshObserver`](xref:Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver).
 
 > The complete source code used in this example can be found in the MixedRealityToolkit.Providers\ObjectMeshObserver folder.
+
+## Namespace and folder structure
+
+> [!Important]
+> If a spatial awareness system data provider is being submitted to the [Mixed Reality Toolkit repository](https://github.com/Microsoft/MixedRealityToolkit-Unity), the
+namespace **must** begin with Microsoft.MixedReality.Toolkit (ex: Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver) and the code should be
+located in a folder beneath MixedRealityToolkit.Providers (ex: MixedRealityToolkit.Providers\ObjectMeshObserver).
+
+### Namespace
+
+<< >>
+
+### Folder structure
+
+<< >>
+
 
 ## Define the spatial data object
 
@@ -21,7 +37,7 @@ The Mixed Reality Toolkit foundation provides the following spatial objects that
 - [`SpatialAwarenessMeshObject`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.SpatialAwarenessMeshObject)
 - [`SpatialAwarenessPlanarObject`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.SpatialAwarenessPlanarObject)
 
-## Implement the observer
+## Implement the data provider
 
 > The complete code for the examples in this section are from the MixedRealityToolkit.Providers\ObjectMeshObserver\SpatialObjectMeshObserver.cs file.
 
@@ -31,21 +47,12 @@ All spatial awareness data providers must implement the [`IMixedRealitySpatialAw
 interface, which specifies the minimium functionality required by the spatial awareness system. The MRTK foundation includes the [`BaseSpatialObserver`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver)
 class which provides a default implementation of this required functionality.
 
-> [!Note]
-> It is recommended that data providers use or define an interface that exposes significant settings and data (ex: level of detail) to enable applications
-to customize behavior and access relevant data.
-
-Using the example of the [`SpatialObjectMeshObserver`](xref:Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver), the following code specifies
-that the class uses the [`BaseSpatialAwarenessObject`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialAwarenessObject) and implments the
-[`IMixedRealitySpatialAwarenessMeshObserver`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessMeshObserver) and
-[`IMixedRealityCapabilityCheck`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityCapabilityCheck) interfaces.
-
 ``` c#
 public class SpatialObjectMeshObserver : BaseSpatialObserver, IMixedRealitySpatialAwarenessMeshObserver, IMixedRealityCapabilityCheck
 { }
 ```
 
-> `IMixedRealityCapabilityCheck` is used by the `SpatialObjectMeshObserver` to indicate that itprovides support for the SpatialAwarenessMesh capability.
+> `IMixedRealityCapabilityCheck` is used by the `SpatialObjectMeshObserver` to indicate that it provides support for the SpatialAwarenessMesh capability.
 
 ### Implement the IMixedRealityDataProvider methods
 
@@ -64,9 +71,9 @@ The methods that should be implemented by the data provider are:
 - `Reset`
 - `Update`
 
-### Implement the observer logic
+### Implement the data provider logic
 
-The next step is to add the logic of the observer by implementing the specific observer interface, for
+The next step is to add the logic of the data provider by implementing the specific data provider interface, for
 example [`IMixedRealitySpatialAwarenessMeshObserver`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessMeshObserver).
 
 > [!Note]
@@ -74,7 +81,7 @@ example [`IMixedRealitySpatialAwarenessMeshObserver`](xref:Microsoft.MixedRealit
 
 ### Observation change notifications
 
-To enable applications to respond to changes in the observer's understanding of the environment, the next
+To enable applications to respond to changes in the data provider's understanding of the environment, the next
 step is to send the observation change notifications.
 
 The example of the [`SpatialObjectMeshObserver`](xref:Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver)
@@ -132,7 +139,7 @@ example of raising an updated event for an observed mesh.
 ### Apply the MixedRealityDataProvider attribute
 
 The final step of creating a spatial awareness data provider is to apply the [`MixedRealityDataProvider`](xref:Microsoft.MixedReality.Toolkit.MixedRealityDataProviderAttribute)
-attribute to the class. This is an optional step that allows for setting the default profile and platform(s) for the observer, when selected in the spatial awareness profile.
+attribute to the class. This step enables setting the default profile and platform(s) for the data provider, when selected in the spatial awareness profile.
 
 ``` c#
 [MixedRealityDataProvider(
@@ -147,17 +154,16 @@ public class SpatialObjectMeshObserver : BaseSpatialObserver, IMixedRealitySpati
 
 ## Create the profile and inspector
 
-In the Mixed Reality Toolkit, data providers are configured using profiles. These are serialized objects that can easily be shared between applications by simply copying and
-pasting a .asset file.
+In the Mixed Reality Toolkit, data providers are configured using [profiles](../Profiles/Profiles.md).
 
 ### Define the profile
 
 > The complete code for the example in this section are from the MixedRealityToolkit.Providers\ObjectMeshObserver\SpatialObjectMeshObserverProfile.cs file.
 
-Profile contents should mirror the accessible properties of the observer (ex: update interval). All of the user configurable properties defined in each
+Profile contents should mirror the accessible properties of the data provider (ex: update interval). All of the user configurable properties defined in each
 interface should be contained with the profile.
 
-Base classes are encouraged if a new observer extends an existing data provider. For example, the [`SpatialObjectMeshObserverProfile`](xref:Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserverProfile)
+Base classes are encouraged if a new data provider extends an existing provider. For example, the [`SpatialObjectMeshObserverProfile`](xref:Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserverProfile)
 extends the [`MixedRealitySpatialAwarenessMeshObserverProfile`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessMeshObserverProfile) to enable
 customers to provide a 3D model to be used as the environment data.
 
@@ -186,7 +192,7 @@ The `CreateAssetMenu` attribute can be applied to the profile class to enable cu
 Profile inspectors are the user interface for configuring and viewing profile contents. Each profile inspector should extend the
 [`BaseMixedRealityToolkitConfigurationProfileInspector]() class.
 
-The `CustomEditor` attribute informs Unity the type of asset to which the imspector applies.
+The `CustomEditor` attribute informs Unity the type of asset to which the inspector applies.
 
 ``` c#
 [CustomEditor(typeof(SpatialObjectMeshObserverProfile))]
@@ -194,15 +200,19 @@ public class SpatialObjectMeshObserverProfileInspector : BaseMixedRealityToolkit
 { }
 ```
 
-## Register the observer
+## Create an assembly definition
 
-Once created, the observer can be registered with the spatial awareness system be used in the application.
+<< >>
+
+## Register the data provider
+
+Once created, the data provider can be registered with the spatial awareness system be used in the application.
 
 ![Selecting the spatial object mesh observer](../Images/SpatialAwareness/SelectObjectObserver.png)
 
 ## See also
 
-- [Spatial awarenes system](SpatialAwarenessGettingStarted.md)
+- [Spatial awareness system](SpatialAwarenessGettingStarted.md)
 - [`IMixedRealitySpatialAwarenessObject` interface](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObject)
 - [`BaseSpatialAwarenessObject` class](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialAwarenessObject)
 - [`SpatialAwarenessMeshObject` class](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.SpatialAwarenessMeshObject)

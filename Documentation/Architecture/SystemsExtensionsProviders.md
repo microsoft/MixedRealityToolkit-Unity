@@ -1,7 +1,7 @@
 # Systems, Extension Services and Data Providers
 
 In the Mixed Reality Toolkit, many of the features are delivered in the form of services. Services are grouped into three
-primary categories; systems, extension services and data providers.
+primary categories: systems, extension services and data providers.
 
 ## Systems
 

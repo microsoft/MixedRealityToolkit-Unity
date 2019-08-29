@@ -1,14 +1,28 @@
 # Creating an input system data provider
 
-The Mixed Reality Toolkit input  system is a flexible and extensible system for enabling input device support.
+The Mixed Reality Toolkit input system is an extensible system for enabling input device support.
 It is the input system data provider (also called device manager) that is largely responsible for providing
 support for new hardware platforms.
 
-This article describes how to create custom data providers for the input system. The example code shown here is
-from the [`WidnowsMixedRealityDeviceManager`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityDeviceManager).
+This article describes how to create custom data providers, also called device managers, for the input system. The example code shown here is
+from the [`WindowsMixedRealityDeviceManager`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityDeviceManager).
 
+## Namespace and folder structure
 
-## Implement the device manager
+> [!Important]
+> If an input system data provider is being submitted to the [Mixed Reality Toolkit repository](https://github.com/Microsoft/MixedRealityToolkit-Unity), the
+namespace **must** begin with Microsoft.MixedReality.Toolkit (ex: Microsoft.MixedReality.Toolkit.WindowsMixedReality) and the code should be
+located in a folder beneath MixedRealityToolkit.Providers (ex: MixedRealityToolkit.Providers\WindowsMixedReality).
+
+### Namespace
+
+<< >>
+
+### Folder structure
+
+<< >>
+
+## Implement the data provider
 
 > The complete code for the examples in this section are from the MixedRealityToolkit.Providers\WindowsMixedReality\WindowsMixedRealityDeviceManager.cs file.
 
@@ -16,11 +30,11 @@ from the [`WidnowsMixedRealityDeviceManager`](xref:Microsoft.MixedReality.Toolki
 
 All input system data providers must implement the [`IMixedRealityInputDeviceManager`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputDeviceManager)
 interface, which specifies the minimium functionality required by the input system. The MRTK foundation includes the [`BaseInputDeviceManager`](xref:Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager)
-class which provides a default implementation of this required functionality.
+class which provides a default implementation of this required functionality. For devices that build upon Unity's UInput class, the [`UnityJoystickManager`](xref:Microsoft.MixedReality.Toolkit.Input.UnityInput.UnityJoystickManager)
+class can be used as a base class.
 
-Using the example of the [`WindowsMixedRealityDeviceManager`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityDeviceManager), the following code specifies
-that the class uses the [`BaseInputDeviceManager`](xref:Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager) and implments the
-[`IMixedRealityCapabilityCheck`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityCapabilityCheck) interface.
+> [!Note]
+> The `BaseInputDeviceManager` class provides the required `IMixedRealityInputDeviceManager` implementation.
 
 ``` c#
 public class WindowsMixedRealityDeviceManager : BaseInputDeviceManager, IMixedRealityCapabilityCheck
@@ -36,7 +50,7 @@ Once the class has been defined, the next step is to provide the implementation 
 interface.
 
 > [!Note]
-> The `BaseInputDevicemManager` class, via the `BaseService` class , provides only an empty implementations for `IMixedRealityDataProvider` methods. The details of these methods are generally data provider specific.
+> The `BaseInputDevicemManager` class, via the `BaseService` class, provides only an empty implementations for `IMixedRealityDataProvider` methods. The details of these methods are generally data provider specific.
 
 The methods that should be implemented by the data provider are:
 
@@ -47,7 +61,7 @@ The methods that should be implemented by the data provider are:
 - `Reset`
 - `Update`
 
-### Implement the device manager logic
+### Implement the data provider logic
 
 The next step is to add the logic for managing the input devices, including any controllers to be supported.
 
@@ -94,7 +108,7 @@ InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, intera
 ### Apply the MixedRealityDataProvider attribute
 
 The final step of creating an input system data provider is to apply the [`MixedRealityDataProvider`](xref:Microsoft.MixedReality.Toolkit.MixedRealityDataProviderAttribute)
-attribute to the class. This is an optional step that allows for setting the default profile and platform(s) for the provider, when selected in the input system profile.
+attribute to the class. This step enables setting the default profile and platform(s) for the provider, when selected in the input system profile.
 
 ``` c#
 [MixedRealityDataProvider(
@@ -107,8 +121,7 @@ public class WindowsMixedRealityDeviceManager : BaseInputDeviceManager, IMixedRe
 
 ## Create the profile and inspector
 
-In the Mixed Reality Toolkit, data providers are configured using profiles. These are serialized objects that can easily be shared between applications by simply copying and
-pasting a .asset file.
+In the Mixed Reality Toolkit, data providers are configured using [profiles](../Profiles/Profiles.md).
 
 Data providers with additional configuration options (ex: [InputSimulationService](../InputSimulation/InputSimulationService.md)) should create a profile and inspector to allow
 customers to modify the behavior to best suit the needs of the application.
@@ -137,16 +150,20 @@ Profile inspectors are the user interface for configuring and viewing profile co
 [`BaseMixedRealityToolkitConfigurationProfileInspector]() class.
 
 ``` c#
-[CustomEditor(typeof(MixedRealityInputSimulationProfile))]
-public class MixedRealityInputSimulationProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
+[CustomEditor(typeof(SpatialObjectMeshObserverProfile))]
+public class SpatialObjectMeshObserverProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
 { }
 ```
 
-The `CustomEditor` attribute informs Unity the type of asset to which the imspector applies.
+The `CustomEditor` attribute informs Unity the type of asset to which the inspector applies.
 
-## Register the device manager
+## Create an assembly definition
 
-Once created, the device manager can be registered with the input system be used in the application.
+<< >>
+
+## Register the data provider
+
+Once created, the data provider can be registered with the input system be used in the application.
 
 ![Registered input system data providers](../Images/Input/RegisteredServiceProviders.png)
 
