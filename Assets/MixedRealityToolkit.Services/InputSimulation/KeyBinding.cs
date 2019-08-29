@@ -239,7 +239,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Test if the key has been released since the last frame.
         /// </summary>
         /// <returns>True if the bound key was released since the last frame</returns>
-        public static bool GetKeyUp(KeyBinding kb, ref bool wasFocused)
+        public static bool GetKeyUp(KeyBinding kb)
         {
             if (kb.TryGetMouseButton(out int mouseButton))
             {

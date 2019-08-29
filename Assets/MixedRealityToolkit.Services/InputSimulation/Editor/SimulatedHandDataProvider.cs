@@ -222,11 +222,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             float time = Time.time;
 
-            if (UnityEngine.Input.GetKeyDown(profile.ToggleLeftHandKey))
+            if (KeyInputSystem.GetKeyDown(profile.ToggleLeftHandKey))
             {
                 IsAlwaysVisibleLeft = !IsAlwaysVisibleLeft;
             }
-            if (UnityEngine.Input.GetKeyDown(profile.ToggleRightHandKey))
+            if (KeyInputSystem.GetKeyDown(profile.ToggleRightHandKey))
             {
                 IsAlwaysVisibleRight = !IsAlwaysVisibleRight;
             }
@@ -238,7 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             else
             {
-                if (UnityEngine.Input.GetKeyDown(profile.LeftHandManipulationKey))
+                if (KeyInputSystem.GetKeyDown(profile.LeftHandManipulationKey))
                 {
                     isSimulatingLeft = true;
                     if (lastSimulationLeft > 0.0f && time - lastSimulationLeft <= profile.DoublePressTime)
@@ -247,12 +247,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                     lastSimulationLeft = time;
                 }
-                if (UnityEngine.Input.GetKeyUp(profile.LeftHandManipulationKey))
+                if (KeyInputSystem.GetKeyUp(profile.LeftHandManipulationKey))
                 {
                     isSimulatingLeft = false;
                 }
 
-                if (UnityEngine.Input.GetKeyDown(profile.RightHandManipulationKey))
+                if (KeyInputSystem.GetKeyDown(profile.RightHandManipulationKey))
                 {
                     isSimulatingRight = true;
                     if (lastSimulationRight > 0.0f && time - lastSimulationRight <= profile.DoublePressTime)
@@ -261,7 +261,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                     lastSimulationRight = time;
                 }
-                if (UnityEngine.Input.GetKeyUp(profile.RightHandManipulationKey))
+                if (KeyInputSystem.GetKeyUp(profile.RightHandManipulationKey))
                 {
                     isSimulatingRight = false;
                 }
@@ -271,27 +271,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
             mouseDelta.z += UnityEngine.Input.GetAxis("Mouse ScrollWheel") * profile.HandDepthMultiplier;
             float rotationDelta = profile.HandRotationSpeed * Time.deltaTime;
             Vector3 rotationDeltaEulerAngles = Vector3.zero;
-            if (UnityEngine.Input.GetKey(profile.YawHandCCWKey))
+            if (KeyInputSystem.GetKey(profile.YawHandCCWKey))
             {
                 rotationDeltaEulerAngles.y = -rotationDelta;
             }
-            if (UnityEngine.Input.GetKey(profile.YawHandCWKey))
+            if (KeyInputSystem.GetKey(profile.YawHandCWKey))
             {
                 rotationDeltaEulerAngles.y = rotationDelta;
             }
-            if (UnityEngine.Input.GetKey(profile.PitchHandCCWKey))
+            if (KeyInputSystem.GetKey(profile.PitchHandCCWKey))
             {
                 rotationDeltaEulerAngles.x = rotationDelta;
             }
-            if (UnityEngine.Input.GetKey(profile.PitchHandCWKey))
+            if (KeyInputSystem.GetKey(profile.PitchHandCWKey))
             {
                 rotationDeltaEulerAngles.x = -rotationDelta;
             }
-            if (UnityEngine.Input.GetKey(profile.RollHandCCWKey))
+            if (KeyInputSystem.GetKey(profile.RollHandCCWKey))
             {
                 rotationDeltaEulerAngles.z = rotationDelta;
             }
-            if (UnityEngine.Input.GetKey(profile.RollHandCWKey))
+            if (KeyInputSystem.GetKey(profile.RollHandCWKey))
             {
                 rotationDeltaEulerAngles.z = -rotationDelta;
             }

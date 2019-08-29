@@ -49,8 +49,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private InputSimulationControlMode currentControlMode = InputSimulationControlMode.Fly;
         public InputSimulationControlMode CurrentControlMode => currentControlMode;
         [SerializeField]
-        private KeyCode fastControlKey = KeyCode.RightControl;
-        public KeyCode FastControlKey => fastControlKey;
+        private KeyBinding fastControlKey = KeyBinding.FromKey(KeyCode.RightControl);
+        public KeyBinding FastControlKey => fastControlKey;
         [SerializeField]
         private float controlSlowSpeed = 0.1f;
         public float ControlSlowSpeed => controlSlowSpeed;
@@ -93,12 +93,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public string LookVertical => lookVertical;
         [SerializeField]
         [Tooltip("Key to roll the camera clockwise")]
-        private KeyCode rollCameraCWKey = KeyCode.M;
-        public KeyCode RollCameraCWKey => rollCameraCWKey;
+        private KeyBinding rollCameraCWKey = KeyBinding.FromKey(KeyCode.M);
+        public KeyBinding RollCameraCWKey => rollCameraCWKey;
         [SerializeField]
         [Tooltip("Key to roll the camera counter-clockwise")]
-        private KeyCode rollCameraCCWKey = KeyCode.N;
-        public KeyCode RollCameraCCWKey => rollCameraCCWKey;
+        private KeyBinding rollCameraCCWKey = KeyBinding.FromKey(KeyCode.N);
+        public KeyBinding RollCameraCCWKey => rollCameraCCWKey;
 
         [Header("Eye Simulation")]
         [SerializeField]
@@ -115,24 +115,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Header("Hand Control Settings")]
         [SerializeField]
         [Tooltip("Key to toggle persistent mode for the left hand")]
-        private KeyCode toggleLeftHandKey = KeyCode.T;
-        public KeyCode ToggleLeftHandKey => toggleLeftHandKey;
+        private KeyBinding toggleLeftHandKey = KeyBinding.FromKey(KeyCode.T);
+        public KeyBinding ToggleLeftHandKey => toggleLeftHandKey;
         [SerializeField]
         [Tooltip("Key to toggle persistent mode for the right hand")]
-        private KeyCode toggleRightHandKey = KeyCode.Y;
-        public KeyCode ToggleRightHandKey => toggleRightHandKey;
+        private KeyBinding toggleRightHandKey = KeyBinding.FromKey(KeyCode.Y);
+        public KeyBinding ToggleRightHandKey => toggleRightHandKey;
         [SerializeField]
         [Tooltip("Time after which uncontrolled hands are hidden")]
         private float handHideTimeout = 0.2f;
         public float HandHideTimeout => handHideTimeout;
         [SerializeField]
         [Tooltip("Key to manipulate the left hand")]
-        private KeyCode leftHandManipulationKey = KeyCode.LeftShift;
-        public KeyCode LeftHandManipulationKey => leftHandManipulationKey;
+        private KeyBinding leftHandManipulationKey = KeyBinding.FromKey(KeyCode.LeftShift);
+        public KeyBinding LeftHandManipulationKey => leftHandManipulationKey;
         [SerializeField]
         [Tooltip("Key to manipulate the right hand")]
-        private KeyCode rightHandManipulationKey = KeyCode.Space;
-        public KeyCode RightHandManipulationKey => rightHandManipulationKey;
+        private KeyBinding rightHandManipulationKey = KeyBinding.FromKey(KeyCode.Space);
+        public KeyBinding RightHandManipulationKey => rightHandManipulationKey;
 
         [Header("Hand Gesture Settings")]
         [SerializeField]
@@ -179,28 +179,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Header("Hand Rotation Settings")]
         [SerializeField]
         [Tooltip("Key to turn the hand clockwise")]
-        private KeyCode yawHandCWKey = KeyCode.E;
-        public KeyCode YawHandCWKey => yawHandCWKey;
+        private KeyBinding yawHandCWKey = KeyBinding.FromKey(KeyCode.E);
+        public KeyBinding YawHandCWKey => yawHandCWKey;
         [SerializeField]
         [Tooltip("Key to turn the hand counter-clockwise")]
-        private KeyCode yawHandCCWKey = KeyCode.Q;
-        public KeyCode YawHandCCWKey => yawHandCCWKey;
+        private KeyBinding yawHandCCWKey = KeyBinding.FromKey(KeyCode.Q);
+        public KeyBinding YawHandCCWKey => yawHandCCWKey;
         [SerializeField]
         [Tooltip("Key to pitch the hand upward")]
-        private KeyCode pitchHandCWKey = KeyCode.F;
-        public KeyCode PitchHandCWKey => pitchHandCWKey;
+        private KeyBinding pitchHandCWKey = KeyBinding.FromKey(KeyCode.F);
+        public KeyBinding PitchHandCWKey => pitchHandCWKey;
         [SerializeField]
         [Tooltip("Key to pitch the hand downward")]
-        private KeyCode pitchHandCCWKey = KeyCode.R;
-        public KeyCode PitchHandCCWKey => pitchHandCCWKey;
+        private KeyBinding pitchHandCCWKey = KeyBinding.FromKey(KeyCode.R);
+        public KeyBinding PitchHandCCWKey => pitchHandCCWKey;
         [SerializeField]
         [Tooltip("Key to roll the hand right")]
-        private KeyCode rollHandCWKey = KeyCode.X;
-        public KeyCode RollHandCWKey => rollHandCWKey;
+        private KeyBinding rollHandCWKey = KeyBinding.FromKey(KeyCode.X);
+        public KeyBinding RollHandCWKey => rollHandCWKey;
         [SerializeField]
         [Tooltip("Key to roll the hand left")]
-        private KeyCode rollHandCCWKey = KeyCode.Z;
-        public KeyCode RollHandCCWKey => rollHandCCWKey;
+        private KeyBinding rollHandCCWKey = KeyBinding.FromKey(KeyCode.Z);
+        public KeyBinding RollHandCCWKey => rollHandCCWKey;
         [SerializeField]
         [Tooltip("Angle per second when rotating the hand")]
         private float handRotationSpeed = 100.0f;

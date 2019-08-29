@@ -89,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 deltaPosition += InputCurve(UnityEngine.Input.GetAxis(profile.MoveVertical)) * transform.forward;
             }
 
-            float accel = UnityEngine.Input.GetKey(profile.FastControlKey) ? profile.ControlFastSpeed : profile.ControlSlowSpeed;
+            float accel = KeyInputSystem.GetKey(profile.FastControlKey) ? profile.ControlFastSpeed : profile.ControlSlowSpeed;
             return accel * deltaPosition;
         }
 
