@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
     /// </summary>
     public class CameraFaderQuad : ICameraFader
     {
-        const string QuadMaterialShaderName = "UI/Unlit/Transparent";
+        const string QuadMaterialShaderName = "Mixed Reality Toolkit/Standard";
         const string QuadMaterialColorName = "_Color";
 
         /// <summary>
@@ -74,6 +74,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
                     return;
                 }
             }
+
+            // Reference: MixedRealityShaderGUI
+            quadMaterial.SetOverrideTag("RenderType", "Transparent");
+            quadMaterial.SetInt("_CustomMode", 2);
+            quadMaterial.SetInt("_SrcBlend", 5);
+            quadMaterial.SetInt("_DstBlend", 10);
+            quadMaterial.SetInt("_ZWrite", 0);
+            quadMaterial.DisableKeyword("_ALPHATEST_ON");
+            quadMaterial.EnableKeyword("_ALPHABLEND_ON");
 
             quadMaterial.SetColor(QuadMaterialColorName, currentColor);
 
