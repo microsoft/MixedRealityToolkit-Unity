@@ -106,7 +106,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Input_MixedRealityHandTrackingProfile_EnableHandJointVisualization_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityHandTrackingProfile.EnableHandJointVisualization*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_MixedRealityHandTrackingProfile_EnableHandJointVisualization" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityHandTrackingProfile.EnableHandJointVisualization">EnableHandJointVisualization</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The hand joint visualization enable/disable state of the current application mode.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -127,11 +128,18 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Input_MixedRealityHandTrackingProfile_EnableHandJointVisualization_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If this property is called while in-editor, this will only affect the in-editor settings
+(i.e. the SupportedApplicationModes.Editor flag of HandJointVisualizationModes).
+If this property is called while in-player, this will only affect the in-player settings
+(i.e. the SupportedApplicationModes.Player flag of HandJointVisualizationModes).</p>
+</div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_MixedRealityHandTrackingProfile_EnableHandMeshVisualization_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityHandTrackingProfile.EnableHandMeshVisualization*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_MixedRealityHandTrackingProfile_EnableHandMeshVisualization" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityHandTrackingProfile.EnableHandMeshVisualization">EnableHandMeshVisualization</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The hand mesh visualization enable/disable state of the current application mode.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -152,6 +160,12 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Input_MixedRealityHandTrackingProfile_EnableHandMeshVisualization_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If this property is called while in-editor, this will only affect the in-editor settings
+(i.e. the SupportedApplicationModes.Editor flag of HandMeshVisualizationModes).
+If this property is called while in-player, this will only affect the in-player settings
+(i.e. the SupportedApplicationModes.Player flag of HandMeshVisualizationModes).</p>
+</div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_MixedRealityHandTrackingProfile_FingerTipPrefab_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityHandTrackingProfile.FingerTipPrefab*"></a>
@@ -180,6 +194,31 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_MixedRealityHandTrackingProfile_HandJointVisualizationModes_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityHandTrackingProfile.HandJointVisualizationModes*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_MixedRealityHandTrackingProfile_HandJointVisualizationModes" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityHandTrackingProfile.HandJointVisualizationModes">HandJointVisualizationModes</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SupportedApplicationModes HandJointVisualizationModes { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">SupportedApplicationModes</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Input_MixedRealityHandTrackingProfile_HandMeshPrefab_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityHandTrackingProfile.HandMeshPrefab*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_MixedRealityHandTrackingProfile_HandMeshPrefab" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityHandTrackingProfile.HandMeshPrefab">HandMeshPrefab</h4>
   <div class="markdown level1 summary"><p>The hand mesh prefab to use to render the hand</p>
@@ -200,6 +239,31 @@
     <tbody>
       <tr>
         <td><span class="xref">GameObject</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_MixedRealityHandTrackingProfile_HandMeshVisualizationModes_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityHandTrackingProfile.HandMeshVisualizationModes*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_MixedRealityHandTrackingProfile_HandMeshVisualizationModes" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityHandTrackingProfile.HandMeshVisualizationModes">HandMeshVisualizationModes</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SupportedApplicationModes HandMeshVisualizationModes { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">SupportedApplicationModes</span></td>
         <td></td>
       </tr>
     </tbody>

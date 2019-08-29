@@ -5366,7 +5366,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/InputSystem/HandTracking.html",
-          "hash": "LsSiMib6TiEZ5JnqmF2xyg=="
+          "hash": "D7d4chCdCiHgZ/aEwW1KHQ=="
         }
       },
       "is_incremental": false,
@@ -11389,7 +11389,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.MixedRealityHandTrackingProfile.html",
-          "hash": "es0iosYoIP8wJutSfhYxJQ=="
+          "hash": "MLNf0ETFWGiRwY+kbkwvDA=="
         }
       },
       "is_incremental": false,
@@ -18513,6 +18513,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.SupportedApplicationModes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.SupportedApplicationModes.html",
+          "hash": "/JDjEfCQNEceMoTiAI2JZw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.SupportedPlatforms.yml",
       "output": {
         ".html": {
@@ -18661,7 +18673,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.html",
-          "hash": "cPjKVdiBPyXA4DUT0fdfzg=="
+          "hash": "9wL9860QOoN6xFm87nGYaw=="
         }
       },
       "is_incremental": false,
@@ -19213,7 +19225,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "UW2zwyyU9nWxJ6gAa3HKXg=="
+          "hash": "IVnudNVy+x57KVoC+FD0kw=="
         }
       },
       "is_incremental": false,
@@ -19272,16 +19284,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1109,
+          "skipped_file_count": 0
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 120,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1108,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

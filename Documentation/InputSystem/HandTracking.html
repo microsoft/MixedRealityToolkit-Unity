@@ -97,6 +97,14 @@
 <p>The hand mesh is used if fully defined mesh data is provided by the hand tracking device. The mesh renderable in the prefab is replaced by data from the device, so a dummy mesh such as a cube is sufficient. The material of the prefab is used for the hand mesh.</p>
 <img src="../Images/InputSimulation/MRTK_Core_Input_Hands_ArticulatedHandMesh.png" width="350px" style="display:block;">
 <p>Hand mesh display can have a noticeable performance impact, for this reason it can be disabled entirely by unchecking <strong>Enable Hand Mesh Visualization</strong> option.</p>
+<h2 id="hand-visualization-settings">Hand visualization settings</h2>
+<p>The hand mesh and hand joint visualizations can be turned off or on via the <em>Hand Mesh Visualization Modes</em>
+setting and <em>Hand Joint Visualization Modes</em> respectively. These settings are application-mode specific,
+meaning it is possible to turn on some features while in editor (to see joints with in-editor simulation, for
+example) while having the same features turned off when deployed to device (in player builds).</p>
+<p>Note that it's generally recommended to have hand joint visualization turned on in editor (so that in-editor
+simulation will show where the hand joints are), and to have both hand joint visualization and hand mesh
+visualization turned off in player (because they incur a performance hit).</p>
 <h2 id="scripting">Scripting</h2>
 <p>Position and rotation can be requested from the input system for each individual hand joint as a <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.html"><code>MixedRealityPose</code></a>.</p>
 <p>Alternatively the system allows access to <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObjects</a> that follow the joints. This can be useful if another GameObject should track a joint continuously.</p>
