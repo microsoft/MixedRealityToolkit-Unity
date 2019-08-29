@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -19,10 +20,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
     [CustomEditor(typeof(Theme))]
     public class ThemeInspector : UnityEditor.Editor
     {
-        protected SerializedProperty settings;
+        protected SerializedProperty themeDefinitions;
         protected SerializedProperty states;
+        protected Theme theme;
 
-        protected static InteractableTypesContainer themeOptions;
         protected static string[] shaderOptions;
         protected static State[] themeStates;
 
@@ -34,11 +35,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         private static readonly GUIContent RemoveThemePropertyContent = new GUIContent("-", "Remove Theme Property");
         private static readonly GUIContent CreateAnimationsContent = new GUIContent("Create Animations", "Create and add an Animator with AnimationClips");
         private static readonly GUIContent EasingContent = new GUIContent("Easing", "should the theme animate state values");
-
-        protected virtual void OnEnable()
-        {
-            SetupThemeOptions();
-        }
 
         public override void OnInspectorGUI()
         {
@@ -52,10 +48,14 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
         public virtual void RenderCustomInspector()
         {
-            settings = serializedObject.FindProperty("Settings");
+            theme = target as Theme;
+
+
+            // TODO: Troy Make this all a static function that can be called*
+
+            themeDefinitions = serializedObject.FindProperty("Definitions");
             states = serializedObject.FindProperty("States");
 
-            //base.OnInspectorGUI();
             serializedObject.Update();
 
             boxStyle = InspectorUIUtility.Box(0);
@@ -70,14 +70,15 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             }
 
             // If no theme properties assigned, add a default one
-            if (settings.arraySize < 1 || InspectorUIUtility.FlexButton(AddThemePropertyLabel))
+            if (themeDefinitions.arraySize < 1 || InspectorUIUtility.FlexButton(AddThemePropertyLabel))
             {
-                AddThemeProperty();
+                AddThemeDefinition();
+                return;
             }
 
-            RenderThemeSettings(settings, themeOptions, null, GetStates());
+            RenderThemeSettings(theme, themeDefinitions, GetStates());
 
-            RenderThemeStates(settings, GetStates(), 0);
+            RenderThemeStates(themeDefinitions, GetStates(), 0);
 
             serializedObject.ApplyModifiedProperties();
         }
@@ -121,55 +122,101 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             return themeStates;
         }
 
-        protected void SetupThemeOptions()
+        protected virtual void AddThemeDefinition()
         {
-            themeOptions = InteractableProfileItem.GetThemeTypes();
+            // TODO: Troy - Harden this code
+            var themeOptions = InteractableProfileItem.GetThemeTypes();
+            var defaultType = themeOptions.Types[0];
+
+            theme.Definitions.Add(CreateThemeDefinition(theme.GetStates(), defaultType));
+
+            serializedObject.Update();
         }
 
-        protected virtual void AddThemeProperty()
+        private static string BuildPreferenceKey(Theme target, int index, Type definitionClassType)
         {
-            SerializedProperty themeObjSettings = serializedObject.FindProperty("Settings");
-            themeObjSettings.InsertArrayElementAtIndex(0);
-
-            AddThemePropertySettings(themeObjSettings);
-            ChangeThemeProperty(themeObjSettings.arraySize - 1, themeObjSettings, null, GetStates(), true);
+            return target.name + "_" + index + "_" + definitionClassType.Name;
         }
 
-        /// <summary>
-        /// set up the theme properties when a theme property is added
-        /// </summary>
-        /// <param name="themeSettings"></param>
-        protected virtual void AddThemePropertySettings(SerializedProperty themeSettings)
+        protected static void ClearThemeDefinitions(Theme target, int index)
         {
-            SerializedProperty settingsItem = themeSettings.GetArrayElementAtIndex(themeSettings.arraySize - 1);
-            SerializedProperty className = settingsItem.FindPropertyRelative("Name");
-            SerializedProperty assemblyQualifiedName = settingsItem.FindPropertyRelative("AssemblyQualifiedName");
+            var themeOptions = InteractableProfileItem.GetThemeTypes();
 
-            // TODO: Troy WTF?
-            if (themeSettings.arraySize == 1)
+            foreach(var type in themeOptions.Types)
             {
-                className.stringValue = "ScaleOffsetColorTheme";
-                assemblyQualifiedName.stringValue = typeof(ScaleOffsetColorTheme).AssemblyQualifiedName;
+                string prefKey = BuildPreferenceKey(target, index, type);
+                SessionState.EraseString(prefKey);
+            }
+        }
+
+        protected static void SaveThemeDefinition(Theme target, int index, Type definitionClassType)
+        {
+            if (target == null || target.Definitions == null 
+                || index < 0 || target.Definitions.Count < index)
+            {
+                // TODO: Troy - File warning/error?
+                return;
+            }
+
+            string prefKey = BuildPreferenceKey(target, index, definitionClassType);
+
+            var definition = target.Definitions[index];
+            string jsonDefinition = JsonUtility.ToJson(definition);
+
+            SessionState.SetString(prefKey, jsonDefinition);
+
+            Debug.Log(jsonDefinition);
+        }
+
+        protected static void LoadThemeDefinition(Theme target, int index, Type newDefinitionClassType)
+        {
+            string prefKey = BuildPreferenceKey(target, index, newDefinitionClassType);
+            var historyJSON = SessionState.GetString(prefKey, string.Empty);
+
+            if (!string.IsNullOrEmpty(historyJSON))
+            {
+                ThemeDefinition savedDefinition = JsonUtility.FromJson<ThemeDefinition>(historyJSON);
+                target.Definitions[index] = savedDefinition;
             }
             else
             {
-                className.stringValue = themeOptions.ClassNames[0];
-                assemblyQualifiedName.stringValue = themeOptions.AssemblyQualifiedNames[0];
+                // TODO: Troy - Add comments, 
+                target.Definitions[index] = CreateThemeDefinition(target.GetStates(), newDefinitionClassType);
             }
-
-            SerializedProperty easing = settingsItem.FindPropertyRelative("Easing");
-
-            SerializedProperty time = easing.FindPropertyRelative("LerpTime");
-            SerializedProperty curve = easing.FindPropertyRelative("Curve");
-            time.floatValue = 0.5f;
-            curve.animationCurveValue = AnimationCurve.Linear(0, 1, 1, 1);
         }
 
-        public static SerializedProperty ChangeThemeProperty(int index, SerializedProperty themeSettings, SerializedProperty target, State[] states, bool isNew = false)
+        private static ThemeDefinition CreateThemeDefinition(State[] states, Type newDefinitionClassType)
         {
-            SerializedProperty settingsItem = themeSettings.GetArrayElementAtIndex(index);
+            InteractableThemeBase themeBase = (InteractableThemeBase)Activator.CreateInstance(newDefinitionClassType);
 
-            SerializedProperty className = settingsItem.FindPropertyRelative("Name");
+            ThemeDefinition newDefinition = new ThemeDefinition()
+            {
+                ClassName = newDefinitionClassType.Name,
+                AssemblyQualifiedName = newDefinitionClassType.AssemblyQualifiedName, // TODO: Troy - SystemType.GetReference(type);
+                Type = newDefinitionClassType,
+                NoEasing = themeBase.NoEasing,
+                StateProperties = themeBase.GetDefaultStateProperties(),
+                CustomProperties = themeBase.GetDefaultThemeProperties(),
+            };
+
+            // TODO: Troy - Create comment here
+            foreach (ThemeStateProperty p in newDefinition.StateProperties)
+            {
+                foreach (State s in states)
+                {
+                    p.Values.Add(p.Default.Copy());
+                }
+            }
+
+            return newDefinition;
+        }
+
+        /*
+        public static SerializedProperty ChangeThemeDefinition(int index, SerializedProperty themeDefinitionsList, SerializedProperty target, State[] states, bool isNew = false)
+        {
+            SerializedProperty themeDefinitionItem = themeDefinitionsList.GetArrayElementAtIndex(index);
+
+            SerializedProperty className = themeDefinitionItem.FindPropertyRelative("ClassName");
 
             InteractableTypesContainer themeTypes = InteractableProfileItem.GetThemeTypes();
 
@@ -182,8 +229,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                 InteractableThemeBase themeBase = (InteractableThemeBase)Activator.CreateInstance(themeTypes.Types[propIndex], renderHost);
 
                 // does this object have the right component types
-                SerializedProperty isValid = settingsItem.FindPropertyRelative("IsValid");
-                SerializedProperty noEasing = settingsItem.FindPropertyRelative("NoEasing");
+                SerializedProperty isValid = themeDefinitionItem.FindPropertyRelative("IsValid");
+                SerializedProperty noEasing = themeDefinitionItem.FindPropertyRelative("NoEasing");
                 noEasing.boolValue = themeBase.NoEasing;
 
                 bool valid = false;
@@ -210,11 +257,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                 List<ThemeStateProperty> properties = themeBase.StateProperties;
                 List<ThemeProperty> customSettings = themeBase.Properties;
 
-                SerializedProperty sProps = settingsItem.FindPropertyRelative("StateProperties");
+                SerializedProperty sProps = themeDefinitionItem.FindPropertyRelative("StateProperties");
                 //SerializedProperty history = settingsItem.FindPropertyRelative("History");
                 //SerializedProperty customHistory = settingsItem.FindPropertyRelative("CustomHistory");
 
-                SerializedProperty custom = settingsItem.FindPropertyRelative("CustomProperties");
+                SerializedProperty custom = themeDefinitionItem.FindPropertyRelative("CustomProperties");
                 
                 if (isNew)
                 {
@@ -337,8 +384,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                 }
             }
 
-            return themeSettings;
-        }
+            return themeDefinitionsList;
+        }*/
 
         private static void PopulateShaderNames(SerializedProperty shaderList, SerializedProperty shaderNames, SerializedProperty shaderName, ShaderInfo info)
         {
@@ -799,47 +846,76 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             return copyTo;
         }
 
-        public static void RenderThemeSettings(SerializedProperty themeSettings, 
-            InteractableTypesContainer themeOptions, 
-            SerializedProperty gameObjectProperty, 
-            State[] states, 
+        public static void RenderThemeSettings(Theme target,
+            SerializedProperty themeDefinitions, 
+            State[] states,
             int margin = 0)
         {
             GUIStyle box = InspectorUIUtility.Box(margin);
 
             // Loop through all InteractableThemePropertySettings of Theme
-            for (int settingIndex = 0; settingIndex < themeSettings.arraySize; settingIndex++)
+            for (int index = 0; index < themeDefinitions.arraySize; index++)
             {
-                SerializedProperty settingsItem = themeSettings.GetArrayElementAtIndex(settingIndex);
-                SerializedProperty className = settingsItem.FindPropertyRelative("Name");
+                SerializedProperty themeDefinition = themeDefinitions.GetArrayElementAtIndex(index);
+
+                SerializedProperty className = themeDefinition.FindPropertyRelative("ClassName");
 
                 using (new EditorGUILayout.VerticalScope(box))
                 {
+                    // TODO: Troy -> Important commentshere
                     using (new EditorGUILayout.HorizontalScope())
                     {
+                        var themeOptions = InteractableProfileItem.GetThemeTypes();
                         int id = InspectorUIUtility.ReverseLookup(className.stringValue, themeOptions.ClassNames);
-                        int newId = EditorGUILayout.Popup("Theme Property", id, themeOptions.ClassNames);
+                        int newId = EditorGUILayout.Popup("Theme Runtime", id, themeOptions.ClassNames);
 
-                        if (themeSettings.arraySize > 1)
+                        // Create Delete button if we have an array of themes
+                        // TODO: Troy -> Alright to be empty?
+                        if (themeDefinitions.arraySize > 1)
                         {
                             if (InspectorUIUtility.SmallButton(RemoveThemePropertyContent))
                             {
-                                themeSettings.DeleteArrayElementAtIndex(settingIndex);
-                                continue;
+                                //ClearThemeDefinitions(target, index);
+
+                                target.Definitions.RemoveAt(index);
+                                //target.IDs.RemoveAt(index);
+
+                                themeDefinitions.serializedObject.Update();
+                                // TODO: Troy - Need to call delete themedefinition button
+                                //themeDefinitions.DeleteArrayElementAtIndex(index);
+                                return;
                             }
                         }
 
+                        // If user changed the theme type for current themeDefinition, 
                         if (id != newId)
                         {
-                            SerializedProperty assemblyQualifiedName = settingsItem.FindPropertyRelative("AssemblyQualifiedName");
+                            Type oldType = themeOptions.Types[id];
+                            Type newType = themeOptions.Types[newId];
+
+                            // Save theme definition to cache
+                            SaveThemeDefinition(target, index, oldType);
+
+                            // Load new theme definition or grab last state from cache
+                            LoadThemeDefinition(target, index, newType);
+
+                            themeDefinitions.serializedObject.Update();
+                            return;
+
+                            // TODO: Troy 
+                            // Save serializedproperty/serializedobject.update()?
+
+                            // TODO: Troy
+                            /*
+                            SerializedProperty assemblyQualifiedName = themeDefinition.FindPropertyRelative("AssemblyQualifiedName");
                             className.stringValue = themeOptions.ClassNames[newId];
                             assemblyQualifiedName.stringValue = themeOptions.AssemblyQualifiedNames[newId];
-
-                            themeSettings = ChangeThemeProperty(settingIndex, themeSettings, gameObjectProperty, states);
+                            themeSettings = ChangeThemeDefinition(settingIndex, themeSettings, gameObjectProperty, states);
+                            */
                         }
                     }
 
-                    SerializedProperty stateProperties = settingsItem.FindPropertyRelative("StateProperties");
+                    SerializedProperty stateProperties = themeDefinition.FindPropertyRelative("StateProperties");
                     int animatorCount = 0;
 
                     // TODO: Troy Update comment
@@ -875,13 +951,13 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                         }*/
                     }
 
-                    SerializedProperty customProperties = settingsItem.FindPropertyRelative("CustomProperties");
+                    SerializedProperty customProperties = themeDefinition.FindPropertyRelative("CustomProperties");
                     RenderCustomProperties(customProperties);
 
                     // TODO: Troy - Just check no-easing????
                     if (animatorCount < stateProperties.arraySize)
                     {
-                        RenderEasingProperties(settingsItem);
+                        RenderEasingProperties(themeDefinition);
                     }
 
                     // TODO: Troy -> Re-add Create animation button*

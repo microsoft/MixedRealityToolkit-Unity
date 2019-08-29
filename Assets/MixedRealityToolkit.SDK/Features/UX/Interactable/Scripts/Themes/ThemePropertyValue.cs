@@ -29,6 +29,29 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public AudioClip AudioClip;
         public Animation Animation;
 
+        public ThemePropertyValue Copy()
+        {
+            return new ThemePropertyValue()
+            {
+                Name = this.Name,
+                String = this.String,
+                Bool = this.Bool,
+                Int = this.Int,
+                Float = this.Float,
+                Texture = this.Texture,
+                Material = this.Material,
+                Shader = this.Shader,
+                GameObject = this.GameObject,
+                Vector2 = this.Vector2,
+                Vector3 = this.Vector3,
+                Vector4 = this.Vector4,
+                Color = this.Color,
+                Quaternion = this.Quaternion,
+                AudioClip = this.AudioClip,
+                Animation = this.Animation,
+            };
+        }
+
         public void Reset()
         {
             Name = string.Empty;

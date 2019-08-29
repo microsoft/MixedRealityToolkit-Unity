@@ -194,13 +194,15 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
                                     if (InspectorUIUtility.FlexButton(AddThemePropertyLabel))
                                     {
-                                        AddThemeProperty(profileItem, themeItem);
+                                        AddThemeDefinition(profileItem, themeItem);
                                     }
 
                                     State[] states = GetStates();
 
                                     themeObj.Update();
-                                    ThemeInspector.RenderThemeSettings(themeDefinitions, themeOptions, gameObject, states, ThemePropertiesBoxMargin);
+
+                                    Theme theme = themeItem.objectReferenceValue as Theme;
+                                    ThemeInspector.RenderThemeSettings(theme, themeDefinitions, states, ThemePropertiesBoxMargin);
                                     ThemeInspector.RenderThemeStates(themeDefinitions, states, ThemePropertiesBoxMargin);
                                     themeObj.ApplyModifiedProperties();
                                 }
@@ -591,20 +593,20 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             themeOptions = InteractableProfileItem.GetThemeTypes();
         }
 
-        protected virtual void AddThemeProperty(SerializedProperty profileItem, SerializedProperty themeItem)
+        protected virtual void AddThemeDefinition(SerializedProperty profileItem, SerializedProperty themeItem)
         {
             SerializedProperty serializedTarget = profileItem.FindPropertyRelative("Target");
 
             SerializedObject themeObj = new SerializedObject(themeItem.objectReferenceValue);
             themeObj.Update();
 
-            SerializedProperty themeObjSettings = themeObj.FindProperty("Settings");
-            themeObjSettings.InsertArrayElementAtIndex(themeObjSettings.arraySize);
+            SerializedProperty themeDefinitionsList = themeObj.FindProperty("Definitions");
+            themeDefinitionsList.InsertArrayElementAtIndex(themeDefinitionsList.arraySize);
 
-            SerializedProperty settingsItem = themeObjSettings.GetArrayElementAtIndex(themeObjSettings.arraySize - 1);
+            SerializedProperty settingsItem = themeDefinitionsList.GetArrayElementAtIndex(themeDefinitionsList.arraySize - 1);
             SerializedProperty className = settingsItem.FindPropertyRelative("Name");
             SerializedProperty assemblyQualifiedName = settingsItem.FindPropertyRelative("AssemblyQualifiedName");
-            if (themeObjSettings.arraySize == 1)
+            if (themeDefinitionsList.arraySize == 1)
             {
                 className.stringValue = "ScaleOffsetColorTheme";
                 assemblyQualifiedName.stringValue = typeof(ScaleOffsetColorTheme).AssemblyQualifiedName;
@@ -622,7 +624,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             time.floatValue = 0.5f;
             curve.animationCurveValue = AnimationCurve.Linear(0, 1, 1, 1);
 
-            themeObjSettings = ThemeInspector.ChangeThemeProperty(themeObjSettings.arraySize - 1, themeObjSettings, serializedTarget, GetStates(), true);
+            // TODO: Troy
+            //themeDefinitionsList = ThemeInspector.ChangeThemeDefinition(themeDefinitionsList.arraySize - 1, themeDefinitionsList, serializedTarget, GetStates(), true);
 
             themeObj.ApplyModifiedProperties();
         }
@@ -640,7 +643,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             SerializedObject themeObj = new SerializedObject(themeItem.objectReferenceValue);
             themeObj.Update();
 
-            SerializedProperty themeObjSettings = themeObj.FindProperty("Settings");
+            SerializedProperty themeObjSettings = themeObj.FindProperty("Definitions");
             themeObjSettings.DeleteArrayElementAtIndex(index);
 
             themeObj.ApplyModifiedProperties();
@@ -648,8 +651,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
         protected virtual SerializedObject ChangeThemeProperty(int index, SerializedObject themeObj, SerializedProperty target, bool isNew = false)
         {
-            SerializedProperty themeObjSettings = themeObj.FindProperty("Settings");
-            themeObjSettings = ThemeInspector.ChangeThemeProperty(index, themeObjSettings, target, GetStates(), isNew);
+            SerializedProperty themeObjSettings = themeObj.FindProperty("Definitions");
+
+            // TODO: Troy
+            //themeObjSettings = ThemeInspector.ChangeThemeDefinition(index, themeObjSettings, target, GetStates(), isNew);
             return themeObj;
         }
 
