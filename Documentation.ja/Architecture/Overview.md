@@ -1,25 +1,12 @@
 # アーキテクチャの全体像
 
-このセクションでは、MRTKのアーキテクチャの全体像について説明します。なお、アーキテクチャのドキュメント全体を通して以下の内容を理解することを目的としています。
+このセクションでは、MRTK のアーキテクチャの全体像について説明します。なお、アーキテクチャのドキュメント全体を通して以下の内容を理解することを目的としています。
 
-- MRTKの各構成要素と、それらの接続方法
-- Untiyにはない、MRTKが取り入れている設計思想
-- 入力などの大掛かりな仕組みがどのように動作するのか
+- MRTK の各構成要素と、それらの接続方法
+- Untiy にはない、MRTK が取り入れている設計思想
+- 入力システムといった大掛かりな仕組みがどのように動作するのか
 
-このセクションでは、MRTKの動作方法を説明することは意図しておらず、MRTKがどのような構造で作られているのか、またそのような構造となった理由を説明すること目的としています。
-
-# Architecture overview
-
-The goal of this architectural overview is to give the reader an overall survey of what is
-contained within the MRTK. After reading through the architecture documentation, the reader should understand:
-documentation, the reader should understand:
-
--  the large pieces of MRTK and how they connect,
-- the concepts that MRTK introduces that may not exist in vanilla Unity,
-- how some of the larger systems (such as Input) work.
-
-This section isn't intended to teach the audience how to do things, but rather how things
-are structured and why.
+このセクションでは、MRTK の動作方法を説明することは意図しておらず、MRTK がどのような構造で作られているのか、またそのような構造となった理由を説明すること目的としています。
 
 ## Many audiences, one toolkit
 
@@ -39,20 +26,15 @@ times the team may focus a particular iteration on a particular system or platfo
 long term goal is to build a wide range of support for wherever people are building
 mixed reality experiences.
 
-## High level breakdown
+## MRTK のコンポーネントの大まかな分類
 
-The MRTK is both a collection of tools for getting mixed reality (MR) experiences of
-the ground quickly, and also an application framework with opinions on its own runtime,
-how it should be extended, and how it should be configured. 
+MRTK は、Mixed Reality（MR）体験を迅速に実現するためのツールコレクションであり、独自のランタイムや拡張方法、設定方法に関する機能を含むアプリケーションフレームワークでもあります。
 
-At a high level the MRTK can be broken down in the following ways:
+MRTK は以下の図のとおりにおおまかに分類することができます。
 
 ![Architecture Overview Diagram](../../Documentation/Images/Architecture/MRTK_Architecture.png)
 
-The MRTK also contains another set of grab-bag utilities that have little to no
-dependencies on the rest of the MRTK (to list a few: build tools, solvers, audio
-influencers, smoothing utilities, and line renderers)
+MRTK には、他の MRTK のコンポーネントにはほとんど依存しないユーティリティも含まれています（例えばビルドツール、ソルバー、オーディオインフルエンサー、スムージングユーティリティ、ラインレンダラーなど）。
 
-The rest of the architecture documentation will build bottom up, starting from the framework
-and runtime, building up to more interesting and complex systems like input. Please reference the
-table of contents to the side to dive into the rest of the architectural overview.
+残りのアーキテクチャのドキュメントでは、フレームワークとランタイムの説明からはじめて、入力システムのようなより複雑な仕組みを段階的に説明します。 目次を参照し残りのアーキテクチャの概要を深掘りしてみてください。
+
