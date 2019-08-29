@@ -1,8 +1,8 @@
-# Button #
+# ボタン (Button) #
 
 ![Button](../Documentation/Images/Button/MRTK_Button_Main.png)
 
-A button gives the user a way to trigger an immediate action. It is one of the most foundational components in mixed reality. MRTK provides various types of button prefabs.
+ボタン (button) を使うと，ユーザは即座にアクションを起こすことができます。Mixed Reality の最も基本的なコンポーネントの１つです。MRTK は，様々なタイプのボタンプレハブを提供しています。
 
 ## Button prefabs in MRTK ##
 Examples of the button prefabs under ``MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs`` folder
