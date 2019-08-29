@@ -92,9 +92,9 @@ MonoBehaviour:
   movingButtonVisuals: {fileID: 3223503683169235570}
   distanceSpaceMode: 1
   startPushDistance: 0
-  maxPushDistance: 5.162118
-  pressDistance: 3.576755
-  releaseDistanceDelta: 1.612783
+  maxPushDistance: 13.74
+  pressDistance: 10.2
+  releaseDistanceDelta: 2.544
   returnSpeed: 25
   releaseOnTouchEnd: 1
   enforceFrontPush: 1
