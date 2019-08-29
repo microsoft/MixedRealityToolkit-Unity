@@ -1,185 +1,186 @@
-# Getting Started with MRTK
+# MRTK を始める
 
 ![MRTK Logo](../Documentation/Images/MRTK_Logo_Rev.png)
 
-The Mixed Reality Toolkit (MRTK) is a cross-platform toolkit for building Mixed Reality experiences for Virtual Reality (VR) and Augmented Reality (AR).
+Mixed Reality Toolkit (MRTK) は、Virtual Reality (VR) 及び Augmented Reality (AR) の Mixed Reality エクスペリエンスを構築するためのクロスプラットフォームツールキットです。
 
-## Prerequisites
+## 前提条件
 
-To get started with the Mixed Reality Toolkit you will need:
+Mixed Reality Toolkit を始めるには、次のものが必要です。
 
 * [Visual Studio 2019](https://visualstudio.microsoft.com/downloads/)
-* [Unity 2018.4.x, 2019.1.x or 2019.2.x](https://unity3d.com/get-unity/download/archive)
+* [Unity 2018.4.x, 2019.1.x または 2019.2.x](https://unity3d.com/get-unity/download/archive)
 
-  MRTK supports both IL2CPP and .NET scripting backends on Unity 2018
+  MRTKは、 Unity 2018 で IL2CPP と .NET scripting backends の両方をサポートします。
 
-* [Latest MRTK release](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases)
+* [最新の MRTK release](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases)
 * [Windows SDK 18362+](https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk).
 
-  This is necessary if you are building a UWP app for WMR, HoloLens 1, or HoloLens 2. This is not necessary
-  when building for OpenVR.
+  これは WMR、HoloLens 1、または HoloLens 2 向けの UWP アプリを構築する場合に必要です。OpenVR 向けに構築する場合は不要です。
 
-## Getting started tutorials
+## チュートリアルを始める
 
-If you are new to MRTK, or MR development, we recommend you check out the [Getting started tutorials](https://docs.microsoft.com/en-us/windows/mixed-reality/mrlearning-base) which uses MRTK v2.
+MRTK、または MR 開発が初めての場合は、MRTKv2 を使った [チュートリアルを始める](https://docs.microsoft.com/en-us/windows/mixed-reality/mrlearning-base)をチェックすることをお勧めします。
 
-## Add MRTK to your Unity Project
+## MRTK を Unity Project に追加する
 
-### Get the latest MRTK Unity packages
+### 最新の MRTK Unity パッケージを取得する
 
-1. Go to the  [MRTK release page](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases).
-1. Under Assets, download
-    - `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage`
-    - `Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage`
-    - `Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage`
-    - `Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage`
+1. [MRTK のリリースページ](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases) を開きます。
+2. Assets の下から以下をダウンロードします。
 
-For additional delivery mechanisms, please see [Downloading the MRTK](DownloadingTheMRTK.md).
+    * `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage`
+    * `Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage`
+    * `Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage`
+    * `Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage`
 
-### Switch your Unity project to the target platform
+より詳細な配布の仕組みは、[MRTK をダウンロードする](DownloadingTheMRTK.md)を参照して下さい。
 
-The next step **Import MRTK packages into your Unity project** will apply changes to your project specifically for the platform that is selected in the project at that moment you import them.
+### Unity プロジェクトをターゲットプラットフォームに切り替える
 
-You should make sure that you select the correct platform before following the next step.
+次のステップ **MRTK のパッケージ を Unity プロジェクトへインポート** するでは、インポートした時点でプロジェクトで選択されているプラットフォームに応じた変更がプロジェクトに適用されます。
 
-For instance, if you want to create a HoloLens application, switch to Universal Windows Platform:
+次のステップへ進む前に、正しいプラットフォームを選択していることを確認してください。
 
-- Open menu : File > Build Settings
-- Select **Universal Windows Platform** in the **Platform** list
-- Click on the **Switch Platform** button
+例えば、HoloLens アプリケーションを作成する場合は、Universal Windows Platform に切り替えます。
 
-### Import MRTK packages into your Unity project
+* File > Build Settings からメニューを開きます。
+* **Platform** の一覧から、**Universal Windows Platform** を選択します。
+* **Switch Platform** ボタンを押します。
 
-1. Create a new Unity project, or open an existing project. When creating a project, make sure to select "3D" as the template type.
-1. Import the `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage` you downloaded by going into "Asset -> Import Package -> Custom Package", selecting the .unitypackage file, ensure all items to import are checked, and then selecting "Import".
-1. Import the `Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage` following the same steps as above. The examples package is optional and contains useful demonstration scenes for current MRTK features.
-1. Import the `Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage` following the same steps as for the foundation package. These tools package is optional and contains useful tools, such as the ExtensionServiceCreator, that enhance the MRTK developer experience.
-1. Import the `Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage` following the same steps as for the foundation package. The extensions package provides a set of useful optional components for the MRTK.
+### MRTK のパッケージを Unity プロジェクトにインポートする
 
-After importing the Foundation package, you may see a setup prompt like the following:
+1. 新しい Unity プロジェクトを作成するか、既存のプロジェクトを開きます。新しいプロジェクトを作成する場合は、テンプレートタイプに 「3D」 が選択されていることを確認してください。
+1. ダウンロードした `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage` をインポートします。「Asset -> Import Package -> Custom Package」から、 .unitypackage ファイルを選択し、 インポートする全ての項目がチェックされていることを確認してから、「Import」を選択します。
+1. `Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage` も上記と同様の手順でインポートします。Examples のパッケージは、オプションであり、現在の MRTK の機能の有用なデモシーンが含まれています。
+1. `Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage` も Foundaiton パッケージと同様にインポートします。Tools のパッケージは、オプションであり、MRTK 開発者のエクスペリエンスを向上させる、ExtensionServiceCreator などの便利なツールが含まれています。
+1. `Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage` も Foundaiton パッケージと同様にインポートします。 Extensions パッケージは、オプションで、 MRTK の便利なオプションコンポーネントのセットを提供します。
+
+Foundation パッケージをインポートすると、次のようなセットアッププロンプトが表示される場合があります。
 
 ![UnitySetupPrompt](../Documentation/Images/MRTK_UnitySetupPrompt.png)
 
-MRTK is attempting to set up your project for building Mixed Reality solutions by doing the following:
+MRTK は、以下を実行することで Mixed Reality ソリューションを構築するためのプロジェクトをセットアップします。
 
- * Enable XR Settings for your current platform (enabling the XR checkbox).
- * Force Text Serialization / Visible Meta files (recommended for Unity projects using source control).
+* 現在のプラットフォームで XR Settings を有効にします (XR チェックボックスを有効にします)。
+* テキストのシリアライズを強制 / メタファイルの可視化をします （ソース管理をする　Unity プロジェクトに推奨）。
 
-Accepting these options is completely optional, but recommended.
+これらのオプションを適用するかは選択的ですが、推奨されています。
 
-Some prefabs and assets require TextMesh Pro, meaning you have to have the TextMesh Pro package installed and the assets in your project (Window -> TextMeshPro -> Import TMP Essential Resources). **After you import TMP Essentials Resources, you need to restart Unity to see changes**.
+一部のプレハブ、及びアセットには、TextMesh Pro が必要です。つまり、TextMesh Pro のパッケージをインストールし、アセットがプロジェクト内にあることが必要です。(Window -> TextMeshPro -> Import TMP Essential Resources)
+ **TMP Essentials Resources をインポートした後、変更を確認するには Unity を再起動する必要があります**。
 
-### Open and run the HandInteractionExamples scene in editor
+### HandInteractionExamples のシーンを Editor で開いて実行する
 
 [![HandInteractionExample scene](../Documentation/Images/MRTK_Examples.png)](README_HandInteractionExamples.md)
 
-The [hand interaction examples scene](README_HandInteractionExamples.md) is a great place to get started because it shows a wide variety of UX controls and interactions in MRTK. To get started we will import MRTK, open the example scene, and explore the scene in the editor.
+[Hand Interaction のサンプルシーン](README_HandInteractionExamples.md) は、MRTK の様々な UX コントロールとインタラクションを紹介しているため、MRTK を始めるには最適な場所です。はじめに、MRTK をインポートし、サンプルシーンを開いて、Editor でシーンを探索します。
 
-1. Create a new Unity project and then import both the **Foundation** and **Examples** unity packages following [the steps above](#import-mrtk-packages-into-your-unity-project).
-2. Open the HandInteractionExamples scene under `Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes\HandInteractionExamples`
+1. 新しい Unity プロジェクトを作成し、[上記の手順](#import-mrtk-packages-into-your-unity-project) に従って、**Foundation** と **Examples** の Unity パッケージの両方をインポートします。
+1. `Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes\HandInteractionExamples` の下の HandInteractionExamples　のシーンを開きます。
 
-3. You may get a prompt asking you to import "TMP Essentials".
+1. 「TMP Essentials」をインポートするかを尋ねるプロンプトが表示されます。
+  
+    ![TMP Essentials](../Documentation/Images/getting_started/MRTK_GettingStarted_TMPro.png)
+  
+    このようなプロンプトが表示された場合は、「Import TMP essentials」 ボタンを選択します。「TMP Essentials」とは、Text Mesh プラグインを指し、MRTK のサンプルの一部はテキストレンダリングを改善するために使用しています。(詳細については、[Unity のテキスト](https://docs.microsoft.com/en-us/windows/mixed-reality/text-in-unity)を参照してください。)
 
-![TMP Essentials](../Documentation/Images/getting_started/MRTK_GettingStarted_TMPro.png)
+1. TMP ダイアログを閉じます。この後、シーンをリロードする必要があります。これを行うには、プロジェクトタブでシーンをダブルクリックします。
 
-If you get such a prompt, select "Import TMP essentials" button. "TMP Essentials" refers to Text Mesh Pro plugin, which some of the MRTK examples use for improved text rendering. (See [Text in Unity](https://docs.microsoft.com/en-us/windows/mixed-reality/text-in-unity) for more detailed information)
+1. Play ボタンを押します。
 
-4. Close the TMP dialog. After this you need to reload the scene. You can do this by double clicking the scene in the project tab.
+## Editor 内ハンド入力シミュレーションを使ってシーンをテストする
 
-5. Press the play button.
+Editor 内の入力シミュレーション を使って、[手](InputSimulation/InputSimulationService.md#hand-simulation)や[目](EyeTracking/EyeTracking_BasicSetup.md#simulating-eye-tracking-in-the-unity-editor)などの特定のタイプの入力に対し、バーチャルなオブジェクトの動作をテストすることができます。
 
-## Using the In-Editor Hand Input Simulation to test a scene
+シーン内を移動する：
 
-The in-editor input simulation allows you to test virtual object behavior given a specific type of input such as [hands](InputSimulation/InputSimulationService.md#hand-simulation) or [eyes](EyeTracking/EyeTracking_BasicSetup.md#simulating-eye-tracking-in-the-unity-editor).
+* W/A/S/D キーを使用して、カメラを前後/左右に移動します。
+* マウスの右ボタンを押したままにして、カメラを回転させます。
 
-How to move around in the scene: 
-- Use W/A/S/D keys to move the camera forward/left/back/right.
-- Press and hold the right mouse to rotate the camera.
+手の入力をシミュレートする：
 
-How to simulate hand input:
-- Press and hold the space bar to enable the right hand. 
-- While holding the space bar, move your mouse to move the hand.
-- Use the middle mouse scroll to adjust the depth of the hand.
-- Click the left mouse to switch gestures.
+* スペースキーを押し続けて、右手を有効にします。
+* スペースキーを押しながら、マウスを動かして手を動かします。
+* 中央のマウススクロールを使用して、手の奥行を調整します。
+* マウスの左ボタンをクリックして、ジェスチャーを切り替えます。
 
-Have fun exploring the scene! You can learn more about the UI controls [in the hand interaction examples guide](README_HandInteractionExamples.md). Also, read through [input simulation docs](InputSimulation/InputSimulationService.md) to learn more about in-editor hand input simulation in MRTK.
+シーンの探索を楽しんでください！ UI コントロールの詳細については、[ハンドインタラクションのサンプルガイド](README_HandInteractionExamples.md) で学ぶことができます。また、[入力シミュレーションのドキュメント](InputSimulation/InputSimulationService.md)を読んで、MRTK の Editor 内の手の入力シミュレーションの詳細を確認してください。
 
-Congratulations, you just used your first MRTK scene. Now onto creating your own experiences...
+おめでとうございます、最初の MRTK のシーンを使うことができました。これであなた自身のエクスペリエンスを創りはじめることができます。
 
-### Add MRTK to a new scene or new project
+### MRTK を新しいシーン、または新しいプロジェクトに追加する
 
-1. Create a new Unity project, or start a new scene in your current project. 
+1. 新規のプロジェクトを作成する、あるいは新しいシーンを現在のプロジェクトに作成します。
 
-2. Make sure you have imported the MRTK packages (we recommend both Foundation and Examples, though Examples is not required) following [the steps above](#import-mrtk-packages-into-your-unity-project).
+1. MRTK のパッケージが[上記の手順](#MRTK-のパッケージを-Unity-プロジェクトにインポートする) に従ってインポートされていることを確認します。(Examples は必須ではありませんが、 Foundation と Examles の両方をインポートすることを推奨します。 )
 
-3. From the menu bar, select Mixed Reality Toolkit -> Add to Scene and Configure
+1. メニューバーから、Mixed Reality Toolkit -> Add to Scene and Configure　を選択します。
 
-![Configure to scene](../Documentation/Images/MRTK_ConfigureScene.png)
+    ![Configure to scene](../Documentation/Images/MRTK_ConfigureScene.png)
 
-4. You will see a prompt like this:
+1. 次のようなプロンプトが表示されます。
 
-![MRTK Configure Dialog](../Documentation/Images/MRTK_ConfigureDialog.png)
+    ![MRTK Configure Dialog](../Documentation/Images/MRTK_ConfigureDialog.png)
 
-Click "OK".
+    「OK」を押します。  
 
-5. You will then be prompted to choose an MRTK Configuration profile. Double click "DefaultMixedRealityToolkitConfigurationProfile".
+1. その後、MRTK Configuration profile を選択するよう求められます。「DefaultMixedRealityToolkitConfigurationProfile」をダブルクリックします。
 
-![MRTK Select Configure Dialog](../Documentation/Images/MRTK_SelectConfigurationDialog.png)
+    ![MRTK Select Configure Dialog](../Documentation/Images/MRTK_SelectConfigurationDialog.png)
 
-> **NOTE**: Note that if you are getting started on the HoloLens 2, you should choose the "DefaultHoloLens2ConfigurationProfile" instead.
-> See the [profiles](Profiles/Profiles.md#hololens-2-profile) for more information on the differences between 
-> DefaultMixedRealityToolkitConfigurationProfile and DefaultHoloLens2ConfigurationProfile.
+    > **注意**： HoloLens 2 で始める場合は、「DefaultHoloLens2ConfigurationProfile」を選択することを推奨します。
+    > DefaultMixedRealityToolkitConfigurationProfile と DefaultHoloLens2ConfigurationProfile の違いは、
+    > [プロファイル](Profiles/Profiles.md#hololens-2-profile) を参照してください。
 
-You will then see the following in your Scene hierarchy:
+    シーンのヒエラルキーが以下のようになります。
 
-![MRTK Scene Setup](../Documentation/Images/MRTK_SceneSetup.png)
+    ![MRTK Scene Setup](../Documentation/Images/MRTK_SceneSetup.png)
 
-Which contains the following:
+    ヒエラルキーには以下のものが含まれます。
 
-* Mixed Reality Toolkit - The toolkit itself, providing the central configuration entry point for the entire framework.
-* MixedRealityPlayspace - The parent object for the headset, which ensures the headset / controllers and other required systems are managed correctly in the scene.
-* The Main Camera is moved as a child to the Playspace - Which allows the playspace to manage the camera in conjunction with the SDKs
+    * Mixed Reality Toolkit - フレームワーク全体に対する中心的な設定のエントリポイントを提供します。
+    * MixedRealityPlayspace - ヘッドセットの親オブジェクト。ヘッドセット / コントローラ及びその他の必要なシステムがシーンで正しく管理されるようにします。
+    * Playspace の下に移動した Main Camera - プレイスペースが SDK と連動してカメラを管理できるようにします。
 
-**Note** While working in your scene, **DO NOT move the Main Camera** (or the playspace) from the scene origin (0,0,0).  This is controlled by the MRTK and the active SDK.
-If you need to move the players start point, then **move the scene content and NOT the camera**!
+    > **注意**: シーンで作業している間、シーンの原点 (0,0,0) から **Main Camera を動かさないでください** (または playspace)。これは MRTK と アクティブな SDK によって制御されます。player を初期位置から動かしたい場合は、**カメラではなくシーンのコンテンツを移動してください**！
 
-6. Hit play and test out hand simulation by pressing spacebar.
+1. Play を押して再生し、スペースキーを押して、ハンドシミュレーションでテストします。
 
-You are now ready to build and deploy to device! Follow the steps instructions at [Build and Deploy MRTK](BuildAndDeploy.md).
+これで、デバイスにビルドしてデプロイする準備ができました！ [MRTK のビルドとデプロイ](BuildAndDeploy.md) の手順に従ってください。
 
-## Next steps
+## 次のステップ
 
-Here are some suggested next steps:
+お勧めの次のステップを紹介します。
 
-* Add a [PressableButton](README_Button.md) to your scene (we recommend using the `PressableButtonPlated` prefab to start)).
-* Add a cube to your scene, then make it movable using the [ManipulationHandler](README_ManipulationHandler.md) component.
-* Learn about the UX controls available in MRTK in [building blocks for UI and interactions](#building-blocks-for-ui-and-interactions).
-* Read through [input simulation guide](InputSimulation/InputSimulationService.md) to learn how to simulate hand input in editor.
-* Learn how to work with the MRTK Configuration profile in the [mixed reality configuration guide](MixedRealityConfigurationGuide.md).
+* [PressableButton](README_Button.md) をシーンに追加する。(最初は、 `PressableButtonPlated` プレハブを使うことを推奨します。)
+* キューブをシーンに追加して、それを [ManipulationHandler](README_ManipulationHandler.md) コンポーネントを使って動かせるようにする。
+* [building blocks for UI and interactions](#UIとインタラクションのビルディングブロック) で UX コントロール について学ぶ。
+* [入力シミュレーションのガイド](InputSimulation/InputSimulationService.md) を読んで、Editor 内で手の入力をシミュレートする方法を学ぶ。)
+* [Mixed Reality 設定ガイド](MixedRealityConfigurationGuide.md) で MRTK Configuration profile の使い方を学ぶ。
 
-## Building blocks for UI and interactions
+## UI とインタラクションのビルディングブロック
 
-|  [![Button](Images/Button/MRTK_Button_Main.png)](README_Button.md) [Button](README_Button.md) | [![Bounding Box](Images/BoundingBox/MRTK_BoundingBox_Main.png)](README_BoundingBox.md) [Bounding Box](README_BoundingBox.md) | [![Manipulation Handler](Images/ManipulationHandler/MRTK_Manipulation_Main.png)](README_ManipulationHandler.md) [Manipulation Handler](README_ManipulationHandler.md) |
+|  [![Button](../Documentation/Images/Button/MRTK_Button_Main.png)](README_Button.md) [Button](README_Button.md) | [![Bounding Box](../Documentation/Images/BoundingBox/MRTK_BoundingBox_Main.png)](README_BoundingBox.md) [Bounding Box](README_BoundingBox.md) | [![Manipulation Handler](../Documentation/Images/ManipulationHandler/MRTK_Manipulation_Main.png)](README_ManipulationHandler.md) [Manipulation Handler](README_ManipulationHandler.md) |
 |:--- | :--- | :--- |
-| A button control which supports various input methods including HoloLens 2's articulated hand | Standard UI for manipulating objects in 3D space | Script for manipulating objects with one or two hands |
-|  [![Slate](Images/Slate/MRTK_Slate_Main.png)](README_Slate.md) [Slate](README_Slate.md) | [![System Keyboard](Images/SystemKeyboard/MRTK_SystemKeyboard_Main.png)](README_SystemKeyboard.md) [System Keyboard](README_SystemKeyboard.md) | [![Interactable](Images/Interactable/InteractableExamples.png)](README_Interactable.md) [Interactable](README_Interactable.md) |
-| 2D style plane which supports scrolling with articulated hand input | Example script of using the system keyboard in Unity  | A script for making objects interactable with visual states and theme support |
-|  [![Solver](Images/Solver/MRTK_Solver_Main.png)](README_Solver.md) [Solver](README_Solver.md) | [![Object Collection](Images/ObjectCollection/MRTK_ObjectCollection_Main.png)](README_ObjectCollection.md) [Object Collection](README_ObjectCollection.md) | [![Tooltip](Images/Tooltip/MRTK_Tooltip_Main.png)](README_Tooltip.md) [Tooltip](README_Tooltip.md) |
-| Various object positioning behaviors such as tag-along, body-lock, constant view size and surface magnetism | Script for lay out an array of objects in a three-dimensional shape | Annotation UI with flexible anchor/pivot system which can be used for labeling motion controllers and object. |
-|  [![App Bar](Images/AppBar/MRTK_AppBar_Main.png)](README_AppBar.md) [App Bar](README_AppBar.md) | [![Pointers](Images/Pointers/MRTK_Pointer_Main.png)](/Input/Pointers.md) [Pointers](/Input/Pointers.md) | [![Fingertip Visualization](Images/Fingertip/MRTK_FingertipVisualization_Main.png)](README_FingertipVisualization.md) [Fingertip Visualization](README_FingertipVisualization.md) |
-| UI for Bounding Box's manual activation | Learn about various types of pointers | Visual affordance on the fingertip which improves the confidence for the direct interaction |
-|  [![Slider](Images/Slider/MRTK_UX_Slider_Main.jpg)](README_Sliders.md) [Slider](README_Sliders.md) | [![MRTK Standard Shader](Images/MRTKStandardShader/MRTK_StandardShader.jpg)](README_MRTKStandardShader.md) [MRTK Standard Shader](README_MRTKStandardShader.md) | [![Hand Joint Chaser](Images/HandJointChaser/MRTK_HandJointChaser_Main.jpg)](README_HandJointChaser.md) [Hand Joint Chaser](README_HandJointChaser.md) |
-| Slider UI for adjusting values supporting direct hand tracking interaction | MRTK's standard shader supports various fluent design elements with performance | Demonstrates how to use solver to attach objects to the hand joints |
-|  [![Eye Tracking: Target Selection](Images/EyeTracking/mrtk_et_targetselect.png)](EyeTracking/EyeTracking_TargetSelection.md) [Eye Tracking: Target Selection](EyeTracking/EyeTracking_TargetSelection.md) | [![Eye Tracking: Navigation](Images/EyeTracking/mrtk_et_navigation.png)](EyeTracking/EyeTracking_Navigation.md) [Eye Tracking: Navigation](EyeTracking/EyeTracking_Navigation.md) | [![Eye Tracking: Heat Map](Images/EyeTracking/mrtk_et_heatmaps.png)](EyeTracking/EyeTracking_ExamplesOverview.md#visualization-of-visual-attention) [Eye Tracking: Heat Map](EyeTracking/EyeTracking_ExamplesOverview.md#visualization-of-visual-attention) |
-| Combine eyes, voice and hand input to quickly and effortlessly select holograms across your scene | Learn how to auto scroll text or fluently zoom into focused content based on what you are looking at| Examples for logging, loading and visualizing what users have been looking at in your app |
+| HoloLen 2 の多関節ハンド (articulated hand) を含む様々な入力方法をサポートするボタンコントロール | 3D 空間でオブジェクトを操作するための標準 UI | 片手、または両手でオブジェクトを操作するためのスクリプト |
+|  [![Slate](../Documentation/Images/Slate/MRTK_Slate_Main.png)](README_Slate.md) [Slate](README_Slate.md) | [![System Keyboard](../Documentation/Images/SystemKeyboard/MRTK_SystemKeyboard_Main.png)](README_SystemKeyboard.md) [System Keyboard](README_SystemKeyboard.md) | [![Interactable](../Documentation/Images/Interactable/InteractableExamples.png)](README_Interactable.md) [Interactable](README_Interactable.md) |
+| 多関節ハンドの入力によるスクロールをサポートする 2D スタイル平面 | Unity でシステムキーボードを使用するスクリプトのサンプル  | 視覚的にオブジェクトとインタラクションするためのスクリプトとテーマサポート |
+|  [![Solver](../Documentation/Images/Solver/MRTK_Solver_Main.png)](README_Solver.md) [Solver](README_Solver.md) | [![Object Collection](../Documentation/Images/ObjectCollection/MRTK_ObjectCollection_Main.png)](README_ObjectCollection.md) [Object Collection](README_ObjectCollection.md) | [![Tooltip](../Documentation/Images/Tooltip/MRTK_Tooltip_Main.png)](README_Tooltip.md) [Tooltip](README_Tooltip.md) |
+| tag-along、body-lock、constant view size、 surface magnetism のような様々なオブジェクト配置動作 |  オブジェクトの配列を3次元にレイアウトするためのスクリプト |モーションコントローラーとオブジェクトのラベル付けに使用できる柔軟なアンカー/ピボットシステムを備えた注釈 UI。 |
+|  [![App Bar](../Documentation/Images/AppBar/MRTK_AppBar_Main.png)](README_AppBar.md) [App Bar](README_AppBar.md) | [![Pointers](../Documentation/Images/Pointers/MRTK_Pointer_Main.png)](Input/Pointers.md) [Pointers](Input/Pointers.md) | [![Fingertip Visualization](../Documentation/Images/Fingertip/MRTK_FingertipVisualization_Main.png)](README_FingertipVisualization.md) [Fingertip Visualization](README_FingertipVisualization.md) |
+| Bounding Box の手動で有効化する UI | 様々なタイプのポインターについて学ぶ | 直接的なインタラクションの信頼性を向上させる、指先の視覚的アフォーダンス |
+|  [![Slider](../Documentation/Images/Slider/MRTK_UX_Slider_Main.jpg)](README_Sliders.md) [Slider](README_Sliders.md) | [![MRTK Standard Shader](../Documentation/Images/MRTKStandardShader/MRTK_StandardShader.jpg)](README_MRTKStandardShader.md) [MRTK Standard Shader](README_MRTKStandardShader.md) | [![Hand Joint Chaser](../Documentation/Images/HandJointChaser/MRTK_HandJointChaser_Main.jpg)](README_HandJointChaser.md) [Hand Joint Chaser](README_HandJointChaser.md) |
+| ダイレクトハンドインタラクションをサポートする、値を調整するためのスライダー | フルーエントデザインの要素をサポートし、パフォーマンスの良い MRTK の標準シェーダー | ソルバーを使用してオブジェクトを手の関節にアタッチする方法のデモ |
+|  [![Eye Tracking: Target Selection](../Documentation/Images/EyeTracking/mrtk_et_targetselect.png)](EyeTracking/EyeTracking_TargetSelection.md) [Eye Tracking: Target Selection](EyeTracking/EyeTracking_TargetSelection.md) | [![Eye Tracking: Navigation](../Documentation/Images/EyeTracking/mrtk_et_navigation.png)](EyeTracking/EyeTracking_Navigation.md) [Eye Tracking: Navigation](EyeTracking/EyeTracking_Navigation.md) | [![Eye Tracking: Heat Map](../Documentation/Images/EyeTracking/mrtk_et_heatmaps.png)](EyeTracking/EyeTracking_ExamplesOverview.md#visualization-of-visual-attention) [Eye Tracking: Heat Map](EyeTracking/EyeTracking_ExamplesOverview.md#visualization-of-visual-attention) |
+| 目、音声、手の入力を組み合わせて、シーン内の holograms を簡単に選択する | 見ている場所に基づいてテキストを自動スクロールする方法やフォーカスされたコンテンツをズームする方法を学ぶ | アプリでユーザーが見ているものを記録、読み込み、視覚化するサンプル |
 
+## ツール
 
-## Tools
-|  [![Optimize Window](Images/MRTK_Icon_OptimizeWindow.png)](Tools/OptimizeWindow.md) [Optimize Window](Tools/OptimizeWindow.md) | [![Dependency Window](Images/MRTK_Icon_DependencyWindow.png)](Tools/DependencyWindow.md) [Dependency Window](Tools/DependencyWindow.md) | ![Build Window](Images/MRTK_Icon_BuildWindow.png) Build Window | [![Input recording](Images/MRTK_Icon_InputRecording.png)](InputSimulation/InputAnimationRecording.md) [Input recording](InputSimulation/InputAnimationRecording.md) |
-
+|  [![Optimize Window](../Documentation/Images/MRTK_Icon_OptimizeWindow.png)](Tools/OptimizeWindow.md) [Optimize Window](Tools/OptimizeWindow.md) | [![Dependency Window](../Documentation/Images/MRTK_Icon_DependencyWindow.png)](Tools/DependencyWindow.md) [Dependency Window](Tools/DependencyWindow.md) | ![Build Window](../Documentation/Images/MRTK_Icon_BuildWindow.png) Build Window | [![Input recording](../Documentation/Images/MRTK_Icon_InputRecording.png)](InputSimulation/InputAnimationRecording.md) [Input recording](InputSimulation/InputAnimationRecording.md) |
 | :--- | :--- | :--- | :--- |
-| Automate configuration of Mixed Reality projects for performance optimizations | Analyze dependencies between assets and identify unused assets |  Configure and execute end-to-end build process for Mixed Reality applications | Record and playback head movement and hand tracking data in-editor |
+| パフォーマンスの最適化のための Mixed Reality プロジェクトの構成の自動化 | アセット間の依存関係を分析し、未使用のアセットを特定する | Mixed Reality アプリケーションのエンドツーエンドのビルドプロセスを構成および実行する | エディターでのヘッドの動きとハンドトラッキングデータの記録と再生 |
 
-## Upgrading from the HoloToolkit (HTK/MRTK v1)
+## HoloToolkit (HTK/MRTK v1) からアップグレードする
 
-There is not a direct upgrade path from the HoloToolkit to Mixed Reality Toolkit v2 due to the rebuilt framework. However, it is possible to import the MRTK into your HoloToolkit project and migrate your implementation. For more information please see the [HoloToolkit to Mixed Reality Toolkit Porting Guide](HTKToMRTKPortingGuide.md)
+フレームワークが再構築されたため、HoloToolkit から Mixed Reality Toolkit v2 への直接的なアップグレードパスはありません。ただし、MRTK を HoloToolkit プロジェクトにインポートし、実装を移行することは可能です。詳細については、 [HoloToolkit to Mixed Reality Toolkit Porting Guide](HTKToMRTKPortingGuide.md) を参照してください。
