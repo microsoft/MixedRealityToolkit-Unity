@@ -1,7 +1,8 @@
 # Creating a spatial awareness system data provider
 
 The Mixed Reality Toolkit spatial awareness system is an extensible system for providing applications
-with data about real world environments.
+with data about real world environments. To add support for a new hardware platform or a new form of spatial awareness
+data, a custom data provider may be required.
 
 This article describes how to create custom data providers, also called observers, for the spatial awareness system. The example code shown here is
 from the [`SpatialObjectMeshObserver`](xref:Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver).
