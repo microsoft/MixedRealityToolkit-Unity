@@ -8,7 +8,7 @@
 |---------------------------|----------|-----------|
 | 型                      | 関連する入力タイプの情報を含む、ボタンに対する特定のイベント | イベントを介して渡される、動作 / ジェスチャ ベースの入力|
 | セットアップ                     | シーン内に InputManager を配置します。 | [Configuration Profile](MixedRealityConfigurationGuide.md) 内の input system を有効にし、 input system type の詳細を設定します。|
-| 設定             | シーン内の個々のスクリプト上でインスペクタ内に構成されています。 | 以下に示す Mixed Reality Input System プロファイルおよび関連するプロファイルが構成されています。 |
+| 設定             | シーン内の個々のスクリプトのインスペクタで設定されます。 | 以下に示す Mixed Reality Input System プロファイルおよび関連するプロファイルによって設定されます。 |
 
 関連するプロファイル:
 
@@ -57,7 +57,7 @@ Windows Mixed Reality Device Manager などのプラットフォームサポー�
 |                           | HTK 2017 |  MRTK v2  |
 |---------------------------|----------|-----------|
 | セットアップ                     | Main Camera を削除し、MixedRealityCameraParent / MixedRealityCamera / HoloLensCamera プレハブをシーンに追加します。 **あるいは**  Mixed Reality Toolkit > Configure > Apply Mixed Reality Scene Settings というメニューを使用します。 | Main camera オブジェクトの親オブジェクトが MixedRealityPlayspace となるように、 Mixed Reality Toolkit > Add to Scene and Configure... を使用します。 |
-| 設定             | Camera settings の構成がプレハブインスタンスで実行されます。 | [Mixed Reality Camera Profile](xref:Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile) にて Camera settings が構成されます。 |
+| 設定             | Camera の設定は、プレハブインスタンスにて行います。 | [Mixed Reality Camera Profile](xref:Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile) にて Camera の設定を行います。 |
 
 ## 音声認識 (Speech)
 
