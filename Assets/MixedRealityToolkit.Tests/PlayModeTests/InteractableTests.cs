@@ -112,32 +112,29 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // This should not throw an exception
             var interactable = cube.AddComponent<Interactable>();
-            var ie = new InteractableEvent();
-            var fr = new InteractableOnFocusReceiver(ie.Event);
-            ie.Receiver = fr;
-            interactable.Events.Add(ie);
+            var onFocusReceiver = interactable.AddReceiver<InteractableOnFocusReceiver>();
             bool didHover = false;
-            ie.Event.AddListener(() =>
+            onFocusReceiver.OnFocusOn.AddListener(() =>
             {
                 didHover = true;
                 Debug.Log("Hover on " + interactable.StateManager.CurrentState().ToString());
             });
 
             bool didUnHover = false;
-            fr.OnFocusOff.AddListener(() =>
+            onFocusReceiver.OnFocusOff.AddListener(() =>
             {
                 didUnHover = true;
                 Debug.Log("Hover OFF " + interactable.StateManager.CurrentState().ToString());
             });
 
-            yield return null;
+
             CameraCache.Main.transform.LookAt(interactable.transform);
             yield return null;
             CameraCache.Main.transform.LookAt(Vector3.forward);
             yield return null;
 
             Assert.True(didHover, "Interactable did not receive hover event");
-            Assert.True(didUnHover, "Interactable did not receiv un-hover event");
+            Assert.True(didUnHover, "Interactable did not receive un-hover event");
 
             // clean up
             GameObject.Destroy(cube);

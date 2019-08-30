@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using System.Windows.Markup;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -16,7 +17,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public bool HideUnityEvents;
         protected UnityEvent uEvent;
+
+        /// <summary>
+        /// Each Receiver has a base Event it raises, (in addition to others).
+        /// </summary>
+        public UnityEvent Event
+        {
+            get { return uEvent; }
+            set { uEvent = value; }
+        }
+
         public MonoBehaviour Host;
+
+        public ReceiverBase()
+        {
+            uEvent = new UnityEvent();
+        }
 
         public ReceiverBase(UnityEvent ev)
         {

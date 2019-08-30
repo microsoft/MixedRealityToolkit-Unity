@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.UI
@@ -11,8 +12,30 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     public class InteractableOnFocusReceiver : ReceiverBase
     {
+        [SerializeField]
         [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Focus Off", Tooltip = "Focus has left the object")]
-        public UnityEvent OnFocusOff = new UnityEvent();
+        private UnityEvent onFocusOff = new UnityEvent();
+
+        /// <summary>
+        /// Raised when focus has left the object
+        /// </summary>
+        public UnityEvent OnFocusOff
+        {
+            get { return onFocusOff; }
+        }
+
+        public InteractableOnFocusReceiver() : base()
+        {
+
+        }
+
+        /// <summary>
+        /// Raised when focus has entered the object
+        /// </summary>
+        public UnityEvent OnFocusOn
+        {
+            get { return uEvent; }
+        }
 
         private bool hadFocus;
 

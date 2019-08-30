@@ -128,6 +128,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public bool FocusEnabled { get { return !IsGlobal; } set { IsGlobal = !value; } }
 
         /// <summary>
+        /// Event receivers can be used to listen for different
+        /// events at runtime. This method allows receivers to be dynamically added at runtime.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>The new event receiver</returns>
+        public T AddReceiver<T> () where T : ReceiverBase, new()
+        {
+            var interactableEvent = new InteractableEvent();
+            var result = new T();
+            result.Event = interactableEvent.Event;
+            interactableEvent.Receiver = result;
+            Events.Add(interactableEvent);
+            return result;
+        }
+
+        /// <summary>
         /// List of profiles can match themes with gameObjects
         /// </summary>
         public List<InteractableProfileItem> Profiles = new List<InteractableProfileItem>();
