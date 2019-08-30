@@ -72,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 // TODO: Troy - Temp hack
                 if (ThemeStateProperty.IsShaderPropertyType(stateProp.Type))
                 {
-                    stateProp.MigrateData();
+                    stateProp.MigrateShaderData();
                 }
 
                 // TODO: Troy - See if I can jsut reference directly? Same with properties

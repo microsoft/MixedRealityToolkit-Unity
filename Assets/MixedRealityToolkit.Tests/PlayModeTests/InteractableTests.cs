@@ -501,7 +501,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             interactable.States = defaultStates;
             InteractableProfileItem profileItem = new InteractableProfileItem();
             profileItem.Themes = new System.Collections.Generic.List<Theme>() { cylinderTheme };
-            profileItem.HadDefaultTheme = true;
             profileItem.Target = translateTargetObject.gameObject;
 
             interactable.Profiles = new System.Collections.Generic.List<InteractableProfileItem>() { profileItem };

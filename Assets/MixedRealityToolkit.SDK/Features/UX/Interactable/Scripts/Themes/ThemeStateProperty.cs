@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,10 +9,9 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
-    /// Base class for themes
+    /// Class to store information about a Theme property that contains values per available state
     /// </summary>
-
-    [System.Serializable]
+    [Serializable]
     public class ThemeStateProperty
     {
         // TODO: Troy Add comments
@@ -23,6 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public Shader TargetShader;
         public string ShaderPropertyName;
+
         [System.NonSerialized]
         protected int ShaderPropertyID = -1;
 
@@ -48,14 +49,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return ShaderPropertyID;
         }
 
+        // Properties below are outdated. They remain only for backward compatibility and migration purposes
+        [SerializeField]
+        private int PropId = -1; // i.e OptionIndex
 
-        // TODO: Troy Mark as protected but still serializable? and then can also modify to obsolete?
-        public int PropId; // i.e OptionIndex
-        public List<ShaderProperties> ShaderOptions;
-        public List<string> ShaderOptionNames;
-        public string ShaderName;
+        [SerializeField]
+        private List<ShaderProperties> ShaderOptions = new List<ShaderProperties>();
 
-        public void MigrateData()
+        [SerializeField]
+        private List<string> ShaderOptionNames = new List<string>();
+
+        [SerializeField]
+        private string ShaderName = "";
+
+        public void MigrateShaderData()
         {
             if (ShaderOptions != null && ShaderOptions.Count > 0)
             {

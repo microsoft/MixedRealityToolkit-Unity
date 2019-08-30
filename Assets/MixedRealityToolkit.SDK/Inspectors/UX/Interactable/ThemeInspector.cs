@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -99,33 +100,25 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             for (int index = 0; index < themeDefinitions.arraySize; index++)
             {
                 SerializedProperty themeDefinition = themeDefinitions.GetArrayElementAtIndex(index);
-                Type themeType;
                 using (new EditorGUILayout.VerticalScope(box))
                 {
                     using (new EditorGUILayout.HorizontalScope())
                     {
                         SerializedProperty className = themeDefinition.FindPropertyRelative("ClassName");
 
-                        // TODO: Troy Set type if not already set* or use by default and then use classname otherwise
+                        var themeTypes = typeof(InteractableThemeBase).GetAllSubClassesOf();
+                        var themeClassNames = themeTypes.Select(t => t.Name).ToArray();
+                        int id = Array.IndexOf(themeClassNames, className.stringValue);
+                        int newId = EditorGUILayout.Popup("Theme Runtime", id, themeClassNames);
 
-                        var themeOptions = InteractableProfileItem.GetThemeTypes();
-                        int id = Array.IndexOf(themeOptions.ClassNames, className.stringValue);
-                        int newId = EditorGUILayout.Popup("Theme Runtime", id, themeOptions.ClassNames);
-
-                        // TODO: Troy - Fix here?
-                        SerializedProperty type = themeDefinition.FindPropertyRelative("Type");
-                        //type.objectReferenceValue = themeType;
-
-                        // If user changed the theme type for current themeDefinition, 
+                        // If user changed the theme type for current themeDefinition
                         if (id != newId)
                         {
-                            Type oldType = themeOptions.Types[id];
-                            Type newType = themeOptions.Types[newId];
+                            Type oldType = themeTypes[id];
+                            Type newType = themeTypes[newId];
                             ChangeThemeDefinitionType(index, oldType, newType);
                             return;
                         }
-
-                        themeType = themeOptions.Types[newId];
 
                         // Create Delete button if we have an array of themes
                         // TODO: Troy -> Alright to be empty?
@@ -143,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                     SerializedProperty customProperties = themeDefinition.FindPropertyRelative("CustomProperties");
                     RenderCustomProperties(customProperties);
 
-                    // TODO: Troy
+                    var themeType = theme.Definitions[index].ThemeType;
                     var themeExample = (InteractableThemeBase)Activator.CreateInstance(themeType);
 
                     if (themeExample.IsEasingSupported)
@@ -389,8 +382,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         protected virtual void AddThemeDefinition()
         {
             // TODO: Troy - Harden this code
-            var themeOptions = InteractableProfileItem.GetThemeTypes();
-            var defaultType = themeOptions.Types[0];
+            Type defaultType = typeof(InteractableActivateTheme);
 
             ThemeDefinition newDefinition = ThemeDefinition.GetDefaultThemeDefinition(defaultType).Value;
             ValidateThemeDefinition(ref newDefinition, theme.GetStates());
@@ -545,12 +537,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                 case ThemePropertyTypes.ShaderFloat:
                     shaderType = ShaderUtil.ShaderPropertyType.Float;
                     break;
-                // TODO: Fill more here
+                // TODO: Troy Fill more here
             }
             return shaderType;
         }
 
-        // TODO: Troy - Consolidate with GetShaderProperties shaderinfo
         private static List<string> GetShaderPropertyList(Shader shader, ShaderUtil.ShaderPropertyType? filterType = null)
         {
             List<string> results = new List<string>();

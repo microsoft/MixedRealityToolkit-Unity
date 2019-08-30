@@ -16,27 +16,5 @@ namespace Microsoft.MixedReality.Toolkit.UI
     {
         public GameObject Target;
         public List<Theme> Themes;
-        public bool HadDefaultTheme;
-
-        // TODO: Troy - Don't I just need InteractableThemeBase?
-        /// <summary>
-        /// The list of base classes whose derived classes will be included in interactable theme
-        /// selection dropdowns.
-        /// </summary>
-        private static readonly List<Type> candidateThemeTypes = new List<Type>()
-        {
-            typeof(InteractableThemeBase),
-            typeof(InteractableShaderTheme),
-            typeof(InteractableColorTheme)
-        };
-
-        /// <summary>
-        /// Get a list of themes
-        /// </summary>
-        /// <returns></returns>
-        public static InteractableTypesContainer GetThemeTypes()
-        {
-            return InteractableTypeFinder.Find(candidateThemeTypes, TypeRestriction.DerivedOnly);
-        }
     }
 }
