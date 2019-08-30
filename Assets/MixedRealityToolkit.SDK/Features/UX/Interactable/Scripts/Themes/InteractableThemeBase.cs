@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public static InteractableThemeBase CreateAndInitTheme(ThemeDefinition definition, GameObject host = null)
         {
-            var theme = CreateTheme(definition.Type);
+            var theme = CreateTheme(definition.ThemeType);
             theme.Init(host, definition);
             return theme;
         }

@@ -15,14 +15,49 @@ namespace Microsoft.MixedReality.Toolkit.UI
     [System.Serializable]
     public struct ThemeDefinition
     {
+        public Type ThemeType
+        {
+            get
+            {
+                if (Type == null)
+                {
+                    if (string.IsNullOrEmpty(AssemblyQualifiedName))
+                    {
+                        return null;
+                    }
+
+                    Type = Type.GetType(AssemblyQualifiedName);
+                }
+
+                return Type;
+            }
+            set
+            {
+                if (!value.IsSubclassOf(typeof(InteractableThemeBase)))
+                {
+                    Debug.LogWarning($"Cannot assign type {value} that does not extend {typeof(InteractableThemeBase)} to ThemeDefinition");
+                    return;
+                }
+
+                if (Type != value)
+                {
+                    Type = value;
+                    ClassName = Type.Name;
+                    AssemblyQualifiedName = Type.AssemblyQualifiedName;
+                }
+            }
+        }
+
+        [SerializeField]
+        private Type Type;
+
+        // Outdated variables. Kept only for temporary backward compatibility
+        [SerializeField]
         [FormerlySerializedAs("Name")]
-        public string ClassName;
+        private string ClassName;
 
-        public string AssemblyQualifiedName;
-
-        public Type Type;
-
-        //public InteractableThemeBase Theme;
+        [SerializeField]
+        private string AssemblyQualifiedName;
 
         /// <summary>
         /// Per state properties
@@ -34,8 +69,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public List<ThemeProperty> CustomProperties;
 
         public Easing Easing;
-
-        //public ThemeTarget ThemeTarget;
 
         // TODO: Troy - Comments
         public static ThemeDefinition? GetDefaultThemeDefinition<T>()

@@ -33,12 +33,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc />
         public override ThemeDefinition GetDefaultThemeDefinition()
         {
-            Type t = GetType();
             return new ThemeDefinition()
             {
-                ClassName = t.Name,
-                AssemblyQualifiedName = t.AssemblyQualifiedName,
-                Type = t,
+                ThemeType = GetType(),
                 StateProperties = new List<ThemeStateProperty>()
                 {
                     new ThemeStateProperty()

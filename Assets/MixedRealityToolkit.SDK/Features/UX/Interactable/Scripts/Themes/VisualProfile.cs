@@ -22,13 +22,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (Theme != null)
             {
-                foreach (var setting in Theme.Definitions)
+                foreach (var definition in Theme.Definitions)
                 {
-                    Type themeType = Type.GetType(setting.AssemblyQualifiedName);
-                    InteractableThemeBase theme = (InteractableThemeBase)Activator.CreateInstance(themeType);
-                    theme.Init(Target, setting);
-
-                    results.Add(theme);
+                    results.Add(InteractableThemeBase.CreateAndInitTheme(definition, Target));
                 }
             }
 

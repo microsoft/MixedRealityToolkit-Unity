@@ -112,6 +112,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                         int id = InspectorUIUtility.ReverseLookup(className.stringValue, themeOptions.ClassNames);
                         int newId = EditorGUILayout.Popup("Theme Runtime", id, themeOptions.ClassNames);
 
+                        // TODO: Troy - Fix here?
+                        SerializedProperty type = themeDefinition.FindPropertyRelative("Type");
+                        //type.objectReferenceValue = themeType;
+
                         // If user changed the theme type for current themeDefinition, 
                         if (id != newId)
                         {
