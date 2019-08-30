@@ -13,6 +13,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     public class InteractableStringTheme : InteractableThemeBase
     {
+        /// <inheritdoc />
+        public override bool IsEasingSupported => false;
+
         private TextMesh mesh;
         private Text text;
 
@@ -20,7 +23,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Types = new Type[] { typeof(TextMesh), typeof(Text) };
             Name = "String Theme";
-            NoEasing = true;
         }
 
         /// <inheritdoc />
@@ -32,7 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 ClassName = t.Name,
                 AssemblyQualifiedName = t.AssemblyQualifiedName,
                 Type = t,
-                NoEasing = this.NoEasing,
                 StateProperties = new List<ThemeStateProperty>()
                 {
                     new ThemeStateProperty()

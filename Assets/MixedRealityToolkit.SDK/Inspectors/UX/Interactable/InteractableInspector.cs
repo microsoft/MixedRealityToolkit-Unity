@@ -44,9 +44,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
         protected bool hasProfileLayout;
 
-        protected GUIStyle boxStyle;
-        private const int ThemePropertiesBoxMargin = 30;
-
         private static readonly GUIContent InputActionsLabel = new GUIContent("Input Actions", "The input action filter");
         private static readonly GUIContent selectionModeLabel = new GUIContent("Selection Mode", "How the Interactable should react to input");
         private static readonly GUIContent dimensionsLabel = new GUIContent("Dimensions", "The amount of theme layers for sequence button functionality (3-9)");
@@ -187,27 +184,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
                                 if (show)
                                 {
-                                    UnityEditor.Editor themeEditor = UnityEditor.Editor.CreateEditor(themeItem.objectReferenceValue);
-                                    themeEditor.OnInspectorGUI();
-                                    /*
-                                    SerializedObject themeObj = new SerializedObject(themeItem.objectReferenceValue);
-                                    SerializedProperty themeDefinitions = themeObj.FindProperty("Definitions");
-                                    GUILayout.Space(5);
-
-                                    if (InspectorUIUtility.FlexButton(AddThemePropertyLabel))
+                                    using (new EditorGUI.IndentLevelScope())
                                     {
-                                        AddThemeDefinition(profileItem, themeItem);
+                                        UnityEditor.Editor themeEditor = UnityEditor.Editor.CreateEditor(themeItem.objectReferenceValue);
+                                        themeEditor.OnInspectorGUI();
                                     }
-
-                                    State[] states = GetStates();
-
-                                    themeObj.Update();
-
-                                    Theme theme = themeItem.objectReferenceValue as Theme;
-                                    ThemeInspector.RenderThemeSettings(theme, themeDefinitions, states, ThemePropertiesBoxMargin);
-                                    ThemeInspector.RenderThemeStates(themeDefinitions, states, ThemePropertiesBoxMargin);
-                                    themeObj.ApplyModifiedProperties();
-                                    */
                                 }
 
                                 validProfileCnt++;
@@ -217,6 +198,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                                 // show message about profile setup
                                 const string themeMsg = "Assign a Target and/or Theme above to add visual effects";
                                 SerializedProperty hadDefault = profileItem.FindPropertyRelative("HadDefaultTheme");
+
+                                // TODO: Troy - WTF?
 
                                 if (!hadDefault.boolValue && t == 0)
                                 {
@@ -369,7 +352,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             // If states value is not provided, try to use Default states type
             if (statesProperty.objectReferenceValue == null)
             {
-                statesProperty.objectReferenceValue = ThemeInspector.GetDefaultInteractableStates();
+                statesProperty.objectReferenceValue = GetDefaultInteractableStates();
             }
 
             GUI.enabled = !isPlayMode;
@@ -509,6 +492,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             EditorGUILayout.EndVertical();
         }
 
+        // TODO: Troy - WTF?
         private static void ValidateThemes(SerializedProperty dimensions, SerializedProperty themes)
         {
             // make sure there are enough themes as dimensions
@@ -547,6 +531,27 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                     }
                 }
             }
+        }
+
+        public static States GetDefaultInteractableStates()
+        {
+            AssetDatabase.Refresh();
+            string[] stateLocations = AssetDatabase.FindAssets("DefaultInteractableStates");
+            if (stateLocations.Length > 0)
+            {
+                for (int i = 0; i < stateLocations.Length; i++)
+                {
+                    string path = AssetDatabase.GUIDToAssetPath(stateLocations[i]);
+                    States defaultStates = (States)AssetDatabase.LoadAssetAtPath(path, typeof(States));
+                    if (defaultStates != null)
+                    {
+                        return defaultStates;
+                        //states.objectReferenceValue = defaultStates;
+                    }
+                }
+            }
+
+            return null;
         }
 
         private static string BuildThemeTitle(int dimensions, int themeIndex)

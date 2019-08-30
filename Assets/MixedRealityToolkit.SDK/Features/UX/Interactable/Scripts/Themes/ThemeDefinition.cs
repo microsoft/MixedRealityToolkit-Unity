@@ -60,19 +60,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [FormerlySerializedAs("Properties")]
         public List<ThemeStateProperty> StateProperties;
 
-        // TODO: Troy - Delete
-        //public List<ThemeProperty> History;
-
         [FormerlySerializedAs("CustomSettings")]
         public List<ThemeProperty> CustomProperties;
 
-        // TODO: Troy - Delete
-        //public List<InteractableCustomSetting> CustomHistory;
-
         public Easing Easing;
-
-        // TODO: Troy - Rename EasingNotSupported
-        public bool NoEasing;
 
         // TODO: Troy - what is this?
         public bool IsValid;

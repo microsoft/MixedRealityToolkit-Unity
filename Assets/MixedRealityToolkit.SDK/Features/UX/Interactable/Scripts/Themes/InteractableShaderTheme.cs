@@ -3,16 +3,20 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     public class InteractableShaderTheme : InteractableThemeBase
     {
+        /// <inheritdoc />
+        public override bool AreShadersSupported => true;
+
         private static ThemePropertyValue emptyValue = new ThemePropertyValue();
 
         protected MaterialPropertyBlock propertyBlock;
-        protected List<ShaderProperties> shaderProperties;
+        protected List<ThemeStateProperty> shaderProperties;
         protected Renderer renderer;
 
         private ThemePropertyValue startValue = new ThemePropertyValue();
@@ -35,7 +39,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 ClassName = t.Name,
                 AssemblyQualifiedName = t.AssemblyQualifiedName,
                 Type = t,
-                NoEasing = this.NoEasing,
                 StateProperties = new List<ThemeStateProperty>()
                 {
                     new ThemeStateProperty()
@@ -46,38 +49,29 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         Default = new ThemePropertyValue() { Float = 0}
                     },
                 },
-                CustomProperties =  new List<ThemeProperty>()
-                {
-                    new ThemeProperty()
-                    {
-                        Name = "Shader Property",
-                        Type = ThemePropertyTypes.ShaderProperty,
-                        Value = new ThemePropertyValue()
-                        {
-                            Shader = Shader.Find(DefaultShaderName),
-                            String = DefaultShaderProperty
-                        },
-                    },
-                },
+                CustomProperties =  new List<ThemeProperty>(),
             };
         }
 
         /// <inheritdoc />
-        public override void Init(GameObject host, ThemeDefinition settings)
+        public override void Init(GameObject host, ThemeDefinition definition)
         {
-            base.Init(host, settings);
+            base.Init(host, definition);
 
-            shaderProperties = new List<ShaderProperties>();
-            for (int i = 0; i < StateProperties.Count; i++)
+            // TODO: Troy 
+            // HACK
+            // Check either customProperties or check the StateProperties shadername
+
+            shaderProperties = new List<ThemeStateProperty>();
+            foreach (var prop in StateProperties)
             {
-                ThemeStateProperty prop = StateProperties[i];
-                if (prop.ShaderOptions.Count > 0)
+                if (ThemeStateProperty.IsShaderPropertyType(prop.Type))
                 {
-                    shaderProperties.Add(prop.ShaderOptions[prop.PropId]);
+                    shaderProperties.Add(prop);
                 }
             }
 
-            propertyBlock = InteractableThemeShaderUtils.GetMaterialPropertyBlock(host, shaderProperties.ToArray());
+            propertyBlock = InteractableThemeShaderUtils.GetMaterialPropertyBlock(host, shaderProperties);
 
             renderer = Host.GetComponent<Renderer>();
         }
@@ -91,7 +85,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             renderer.GetPropertyBlock(propertyBlock);
 
             int propId = property.GetShaderPropertyId();
-            float newValue;
             switch (property.Type)
             {
                 case ThemePropertyTypes.Color:
@@ -99,12 +92,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     propertyBlock = SetColor(propertyBlock, newColor, propId);
                     break;
                 case ThemePropertyTypes.ShaderFloat:
-                    newValue = LerpFloat(property.StartValue.Float, property.Values[index].Float, percentage);
-                    propertyBlock = SetFloat(propertyBlock, newValue, propId);
+                    float floatValue = LerpFloat(property.StartValue.Float, property.Values[index].Float, percentage);
+                    propertyBlock = SetFloat(propertyBlock, floatValue, propId);
                     break;
                 case ThemePropertyTypes.ShaderRange:
-                    newValue = LerpFloat(property.StartValue.Float, property.Values[index].Float, percentage);
-                    propertyBlock = SetFloat(propertyBlock, newValue, propId);
+                    float rangeValue = LerpFloat(property.StartValue.Float, property.Values[index].Float, percentage);
+                    propertyBlock = SetFloat(propertyBlock, rangeValue, propId);
                     break;
                 default:
                     break;

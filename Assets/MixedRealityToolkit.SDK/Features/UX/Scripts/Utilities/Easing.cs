@@ -41,6 +41,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             Stop();
         }
 
+        public Easing Copy()
+        {
+            return new Easing()
+            {
+                Curve = this.Curve,
+                Enabled = this.Enabled,
+                LerpTime = this.LerpTime,
+            };
+        }
+
         /// <summary>
         /// Update the ease each frame or on Update
         /// </summary>

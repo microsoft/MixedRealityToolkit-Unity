@@ -41,7 +41,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 ClassName = t.Name,
                 AssemblyQualifiedName = t.AssemblyQualifiedName,
                 Type = t,
-                NoEasing = this.NoEasing,
                 StateProperties = new List<ThemeStateProperty>()
                 {
                     new ThemeStateProperty()
@@ -52,19 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         Default = new ThemePropertyValue() { Color = Color.white}
                     }
                 },
-                CustomProperties = new List<ThemeProperty>()
-                {
-                    new ThemeProperty()
-                    {
-                        Name = "Color Property",
-                        Type = ThemePropertyTypes.ShaderPropertyColor,
-                        Value = new ThemePropertyValue()
-                        {
-                            Shader = Shader.Find(DefaultShaderName),
-                            String = DefaultColorShaderProperty
-                        },
-                    },
-                },
+                CustomProperties = new List<ThemeProperty>(),
             };
         }
 

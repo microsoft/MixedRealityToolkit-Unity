@@ -9,12 +9,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
 {
     public class InteractableActivateTheme : InteractableThemeBase
     {
+        /// <inheritdoc />
+        public override bool IsEasingSupported => false;
 
         public InteractableActivateTheme()
         {
             Types = new Type[] { typeof(Transform) };
             Name = "Activate Theme";
-            NoEasing = true;
         }
 
         /// <inheritdoc />
@@ -26,7 +27,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 ClassName = t.Name,
                 AssemblyQualifiedName = t.AssemblyQualifiedName,
                 Type = t,
-                NoEasing = this.NoEasing,
                 StateProperties = new List<ThemeStateProperty>()
                 {
                     new ThemeStateProperty()

@@ -7,11 +7,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// <summary>
     /// Theme property value types used for converting theme values back and forth from serialized objects
     /// </summary>
-    public enum ThemePropertyTypes {
+    public enum ThemePropertyTypes
+    {
         Float,
         Int,
         Color,
-        ShaderFloat,
+        ShaderFloat, // TODO: Troy - mark deprecated
         ShaderRange,
         Vector2,
         Vector3,
@@ -26,8 +27,5 @@ namespace Microsoft.MixedReality.Toolkit.UI
         Bool,
         AnimatorTrigger,
         Shader,
-        ShaderProperty,
-        ShaderPropertyFloat,
-        ShaderPropertyColor,
     }
 }

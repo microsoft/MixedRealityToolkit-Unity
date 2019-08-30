@@ -9,6 +9,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 {
     public class InteractableTextureTheme : InteractableThemeBase
     {
+        /// <inheritdoc />
+        public override bool IsEasingSupported => false;
+
         private MaterialPropertyBlock propertyBlock;
         private Renderer renderer;
 
@@ -16,7 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Types = new Type[] { typeof(Renderer) };
             Name = "Texture Theme";
-            NoEasing = true;
         }
 
         /// <inheritdoc />
@@ -28,7 +30,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 ClassName = t.Name,
                 AssemblyQualifiedName = t.AssemblyQualifiedName,
                 Type = t,
-                NoEasing = this.NoEasing,
                 StateProperties = new List<ThemeStateProperty>()
                 {
                     new ThemeStateProperty()
@@ -47,7 +48,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public override void Init(GameObject host, ThemeDefinition settings)
         {
             base.Init(host, settings);
-            propertyBlock = InteractableThemeShaderUtils.GetMaterialPropertyBlock(host, new ShaderProperties[0]);
+            // TODO: Troy - Remove
+            //propertyBlock = InteractableThemeShaderUtils.GetMaterialPropertyBlock(host, new ShaderProperties[0]);
+            propertyBlock = InteractableThemeShaderUtils.GetPropertyBlock(host);
             renderer = Host.GetComponent<Renderer>();
         }
 

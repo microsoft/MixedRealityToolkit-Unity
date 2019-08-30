@@ -9,6 +9,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 {
     public class InteractableMaterialTheme : InteractableThemeBase
     {
+        /// <inheritdoc />
+        public override bool IsEasingSupported => false;
+
         private Material material = null;
         private Renderer renderer;
 
@@ -16,7 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Types = new Type[] { typeof(Renderer) };
             Name = "Material Theme";
-            NoEasing = true;
         }
 
         /// <inheritdoc />
@@ -28,7 +30,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 ClassName = t.Name,
                 AssemblyQualifiedName = t.AssemblyQualifiedName,
                 Type = t,
-                NoEasing = this.NoEasing,
                 StateProperties = new List<ThemeStateProperty>()
                 {
                     new ThemeStateProperty()

@@ -11,7 +11,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// <summary>
     /// Base class for themes
     /// </summary>
-
     public abstract class InteractableThemeBase
     {
         public Type[] Types;
@@ -20,9 +19,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public List<ThemeProperty> Properties = new List<ThemeProperty>();
         public GameObject Host;
         public Easing Ease;
-        public bool NoEasing;
         public bool Loaded;
-        public string AssemblyQualifiedName;
+
+        /// <summary>
+        /// TODO: Troy
+        /// </summary>
+        public virtual bool IsEasingSupported => true;
+
+        /// <summary>
+        /// TODO: Troy
+        /// </summary>
+        public virtual bool AreShadersSupported => false;
 
         private bool hasFirstState = false;
 
@@ -38,31 +45,43 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // TODO: Troy - Add comment here
         public abstract ThemeDefinition GetDefaultThemeDefinition();
 
-        public virtual void Init(GameObject host, ThemeDefinition settings)
+        public virtual void Init(GameObject host, ThemeDefinition definition)
         {
             Host = host;
 
-            for (int i = 0; i < settings.StateProperties.Count; i++)
+            this.StateProperties = new List<ThemeStateProperty>(definition.StateProperties.Count);
+            foreach (ThemeStateProperty stateProp in definition.StateProperties)
             {
-                ThemeStateProperty prop = StateProperties[i];
-                prop.ShaderOptionNames = settings.StateProperties[i].ShaderOptionNames;
-                prop.ShaderOptions = settings.StateProperties[i].ShaderOptions;
-                prop.PropId = settings.StateProperties[i].PropId;
-                prop.Values = settings.StateProperties[i].Values;
-                
-                StateProperties[i] = prop;
+                // TODO: Troy - Temp hack
+                if (ThemeStateProperty.IsShaderPropertyType(stateProp.Type))
+                {
+                    stateProp.MigrateData();
+                }
+
+                // TODO: Troy - See if I can jsut reference directly? Same with properties
+                this.StateProperties.Add(new ThemeStateProperty()
+                {
+                    Name = stateProp.Name,
+                    Type = stateProp.Type,
+                    Values = stateProp.Values,
+                    Default = stateProp.Default,
+                    TargetShader = stateProp.TargetShader,
+                    ShaderPropertyName = stateProp.ShaderPropertyName,
+                });
             }
 
-            for (int i = 0; i < settings.CustomProperties.Count; i++)
+            this.Properties = new List<ThemeProperty>(definition.CustomProperties.Count);
+            foreach (ThemeProperty prop in definition.CustomProperties)
             {
-                ThemeProperty setting = Properties[i];
-                setting.Name = settings.CustomProperties[i].Name;
-                setting.Type = settings.CustomProperties[i].Type;
-                setting.Value = settings.CustomProperties[i].Value;
-                Properties[i] = setting;
+                this.Properties.Add(new ThemeProperty()
+                {
+                    Name = prop.Name,
+                    Type = prop.Type,
+                    Value = prop.Value,
+                });
             }
 
-            Ease = CopyEase(settings.Easing);
+            Ease = definition.Easing.Copy();
             Ease.Stop();
 
             Loaded = true;
@@ -78,15 +97,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return Mathf.RoundToInt((e - s) * t) + s;
         }
 
-        protected Easing CopyEase(Easing ease)
-        {
-            Easing newEase = new Easing();
-            newEase.Curve = ease.Curve;
-            newEase.Enabled = ease.Enabled;
-            newEase.LerpTime = ease.LerpTime;
-
-            return newEase;
-        }
 
         public virtual void OnUpdate(int state, Interactable source, bool force = false)
         {

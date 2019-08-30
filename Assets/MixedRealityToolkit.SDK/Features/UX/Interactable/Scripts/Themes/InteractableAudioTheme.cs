@@ -9,13 +9,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
 {
     public class InteractableAudioTheme : InteractableThemeBase
     {
+        /// <inheritdoc />
+        public override bool IsEasingSupported => false;
+
         private AudioSource audioSource;
 
         public InteractableAudioTheme()
         {
             Types = new Type[] { typeof(Transform) };
             Name = "Audio Theme";
-            NoEasing = true;
         }
 
         /// <inheritdoc />
@@ -27,7 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 ClassName = t.Name,
                 AssemblyQualifiedName = t.AssemblyQualifiedName,
                 Type = t,
-                NoEasing = this.NoEasing,
                 StateProperties = new List<ThemeStateProperty>()
                 {
                     new ThemeStateProperty()

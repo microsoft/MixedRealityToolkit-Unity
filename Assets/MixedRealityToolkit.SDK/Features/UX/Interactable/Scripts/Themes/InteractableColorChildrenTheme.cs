@@ -33,7 +33,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 ClassName = t.Name,
                 AssemblyQualifiedName = t.AssemblyQualifiedName,
                 Type = t,
-                NoEasing = this.NoEasing,
                 StateProperties = new List<ThemeStateProperty>()
                 {
                     new ThemeStateProperty()
@@ -44,19 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         Default = new ThemePropertyValue() { Color = Color.white}
                     }
                 },
-                CustomProperties = new List<ThemeProperty>()
-                {
-                    new ThemeProperty()
-                    {
-                        Name = "Color Property",
-                        Type = ThemePropertyTypes.ShaderPropertyColor,
-                        Value = new ThemePropertyValue()
-                        {
-                            Shader = Shader.Find(DefaultShaderName),
-                            String = DefaultColorShaderProperty
-                        },
-                    },
-                },
+                CustomProperties = new List<ThemeProperty>(),
             };
         }
 
@@ -65,21 +52,23 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             base.Init(host, settings);
 
-            shaderProperties = new List<ShaderProperties>();
-            for (int i = 0; i < StateProperties.Count; i++)
+            // TODO: Troy - Remove? Because may not want in future classes
+            /*
+            for (int i = shaderProperties.Count; i >= 0; )
             {
-                ThemeStateProperty prop = StateProperties[i];
-                if (prop.ShaderOptions.Count > 0)
+                if (shaderProperties[i].Type != ThemePropertyTypes.ShaderPropertyColor)
                 {
-                    shaderProperties.Add(prop.ShaderOptions[prop.PropId]);
+                    Debug.LogError($"InteractableColorChildrenTheme has property not of type {Enum.GetName(typeof(ThemePropertyTypes), ThemePropertyTypes.ShaderPropertyColor)}. Removing property from list");
+                    shaderProperties.RemoveAt(i);
                 }
             }
+            */
 
             propertyBlocks = new List<BlocksAndRenderer>();
             Renderer[] list = host.GetComponentsInChildren<Renderer>();
             for (int i = 0; i < list.Length; i++)
             {
-                MaterialPropertyBlock block = InteractableThemeShaderUtils.GetMaterialPropertyBlock(list[i].gameObject, shaderProperties.ToArray());
+                MaterialPropertyBlock block = InteractableThemeShaderUtils.GetMaterialPropertyBlock(list[i].gameObject, shaderProperties);
                 BlocksAndRenderer bAndR = new BlocksAndRenderer();
                 bAndR.Renderer = list[i];
                 bAndR.Block = block;
