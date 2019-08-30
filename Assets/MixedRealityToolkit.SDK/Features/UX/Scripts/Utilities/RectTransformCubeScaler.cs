@@ -3,32 +3,35 @@
 
 using UnityEngine;
 
-/// <summary>
-/// RectTransforms do not scale 3d objects (such as unit cubes) to fit within their bounds.
-/// This helper class will apply a scale to fit a unit cube into the bounds specified by the RectTransform.
-/// The Z component is scaled to the min of the X and Y components.
-/// </summary>
-[ExecuteInEditMode]
-[RequireComponent(typeof(RectTransform))]
-public class RectTransformCubeScaler : MonoBehaviour
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
-    private RectTransform rectTransform;
-    private Vector2 prevRectSize = default;
-
-    private void Start()
+    /// <summary>
+    /// RectTransforms do not scale 3d objects (such as unit cubes) to fit within their bounds.
+    /// This helper class will apply a scale to fit a unit cube into the bounds specified by the RectTransform.
+    /// The Z component is scaled to the min of the X and Y components.
+    /// </summary>
+    [ExecuteInEditMode]
+    [RequireComponent(typeof(RectTransform))]
+    public class RectTransformCubeScaler : MonoBehaviour
     {
-        rectTransform = GetComponent<RectTransform>();
-    }
+        private RectTransform rectTransform;
+        private Vector2 prevRectSize = default;
 
-    private void Update()
-    {
-        var size = rectTransform.rect.size;
-
-        if (prevRectSize != size)
+        private void Start()
         {
-            prevRectSize = size;
+            rectTransform = GetComponent<RectTransform>();
+        }
 
-            this.transform.localScale = new Vector3(size.x, size.y, Mathf.Min(size.x, size.y));
+        private void Update()
+        {
+            var size = rectTransform.rect.size;
+
+            if (prevRectSize != size)
+            {
+                prevRectSize = size;
+
+                this.transform.localScale = new Vector3(size.x, size.y, Mathf.Min(size.x, size.y));
+            }
         }
     }
 }
