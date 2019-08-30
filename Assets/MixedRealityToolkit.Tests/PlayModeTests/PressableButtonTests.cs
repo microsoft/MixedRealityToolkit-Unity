@@ -64,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 // Need to place this test button in a Canvas.  Instantiate the test canvas and place the button into it.
                 var canvasPrefab = AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit.Tests/PlayModeTests/Prefabs/TestCanvas.prefab", typeof(Object));
                 var canvasObject = (GameObject)Object.Instantiate(canvasPrefab);
-                testButton.transform.parent = canvasObject.transform;
+                testButton.transform.SetParent(canvasObject.transform, worldPositionStays: false);
             }
 
             return testButton;
@@ -406,7 +406,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 buttonReleased = true;
             });
 
-            Vector3 startHand = new Vector3(0, 0, -0.008f);
+            Vector3 startHand = new Vector3(0, 0, -0.02f);
             Vector3 inButtonOnPress = new Vector3(0, 0, 0.002f); // past press plane of mrtk pressablebutton prefab
             Vector3 rightOfButtonPress = new Vector3(1.0f, 0, 0.002f); // right of press plane, outside button
             Vector3 inButtonOnRelease = new Vector3(0, 0, -0.0015f); // release plane of mrtk pressablebutton prefab
@@ -423,7 +423,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield return hand.MoveTo(inButtonOnPress, numSteps);
                 yield return hand.MoveTo(inButtonOnRelease, numSteps);
                 yield return hand.Hide();
-                
+
                 Assert.IsTrue(buttonPressed, "Button did not get pressed when hand moved to press it.");
                 Assert.IsTrue(buttonReleased, "Button did not get released.");
 
