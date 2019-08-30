@@ -16,8 +16,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         {
         }
 
-        private const float K_CONTACT_EPSILON = 30.0f;
-
         /// <summary>
         /// Time in seconds to determine if the contact registers as a tap or a hold
         /// </summary>
@@ -110,8 +108,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                     InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, Interactions[0].MixedRealityInputAction, TouchData.deltaPosition);
                 }
 
-                lastPose.Position = InputSource.Pointers[0].BaseCursor.Position;
-                lastPose.Rotation = InputSource.Pointers[0].BaseCursor.Rotation;
+                lastPose.Position = InputSource.Pointers[0].Position;
+                lastPose.Rotation = InputSource.Pointers[0].Rotation;
                 InputSystem?.RaiseSourcePoseChanged(InputSource, this, lastPose);
 
                 Interactions[1].PoseData = lastPose;
@@ -147,21 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         {
             if (TouchData.phase == TouchPhase.Ended)
             {
-                if (Lifetime < K_CONTACT_EPSILON)
-                {
-                    if (isHolding)
-                    {
-                        InputSystem?.RaiseGestureCanceled(this, holdingAction);
-                        isHolding = false;
-                    }
-
-                    if (isManipulating)
-                    {
-                        InputSystem?.RaiseGestureCanceled(this, manipulationAction);
-                        isManipulating = false;
-                    }
-                }
-                else if (Lifetime < MaxTapContactTime)
+                if (Lifetime < MaxTapContactTime)
                 {
                     if (isHolding)
                     {

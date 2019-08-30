@@ -162,6 +162,13 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// </summary>
         public static async void StartCommandLineBuild()
         {
+            var success = await BuildUnityPlayerSimplified();
+            Debug.Log($"Exiting build...");
+            EditorApplication.Exit(success ? 0 : 1);
+        }
+        
+        public static async Task<bool> BuildUnityPlayerSimplified()
+        {
             // We don't need stack traces on all our logs. Makes things a lot easier to read.
             Application.SetStackTraceLogType(LogType.Log, StackTraceLogType.None);
             Debug.Log($"Starting command line build for {EditorUserBuildSettings.activeBuildTarget}...");
@@ -190,8 +197,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 success = false;
             }
 
-            Debug.Log($"Exiting command line build... Build success? {success}");
-            EditorApplication.Exit(success ? 0 : 1);
+            Debug.Log($"Finished build... Build success? {success}");
+            return success;
         }
 
         internal static bool CheckBuildScenes()
