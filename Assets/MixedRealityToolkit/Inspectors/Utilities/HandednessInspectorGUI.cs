@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-public static class HandednessInspectorGui
+public static class HandednessInspectorGUI
 {
     private static readonly GUIContent[] HandednessSelections =
     {

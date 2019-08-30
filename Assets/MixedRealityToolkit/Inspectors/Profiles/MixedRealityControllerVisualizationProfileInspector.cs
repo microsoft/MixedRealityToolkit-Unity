@@ -203,7 +203,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 var controllerUseDefaultModelOverride = controllerSetting.FindPropertyRelative("useDefaultModel");
                 EditorGUILayout.PropertyField(controllerUseDefaultModelOverride);
 
-                HandednessInspectorGui.DrawControllerHandednessDropdown(mixedRealityControllerHandedness);
+                HandednessInspectorGUI.DrawControllerHandednessDropdown(mixedRealityControllerHandedness);
 
                 if (controllerUseDefaultModelOverride.boolValue && overrideModelPrefab != null)
                 {
