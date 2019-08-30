@@ -55,7 +55,7 @@ The MRTK input system utilizes only data providers that implement the [`IMixedRe
 
 ![Input system data providers](../Images/Input/RegisteredServiceProviders.PNG)
 
-The following example demonstrates accessing the registered input data providers.
+The following example demonstrates accessing the input simulation provider to toggle the SmoothEyeTracking property.
 
 ``` c#
 if (CoreServices.InputSystem != null)
@@ -64,12 +64,12 @@ if (CoreServices.InputSystem != null)
     
     if (dataProviderAccess != null)
     {
-        IReadOnlyList<IMixedRealityInputDeviceManager> dataProviders =
-            dataProviderAccess.GetDataProviders<IMixedRealityInputDeviceManager>();
+        IInputSimulationService inputSimulation =
+            dataProviderAccess.GetDataProvider<IInputSimulationService>();
 
-        foreach (IMixedRealityInputDeviceManager in dataProviders)
+        if (inputSimulation != null)
         {
-            // Perform desired work.
+            inputSimulation.SmoothEyeTracking = !inputSimulation.SmoothEyeTracking;
         }
     }
 }
@@ -88,7 +88,7 @@ interface.
 
 ![Spatial awarenss system data providers](../Images/SpatialAwareness/SpatialAwarenessProfile.png)
 
-The following example demonstrates accessing the registered spatial mesh data providers.
+The following example demonstrates accessing the registered spatial mesh data providers and changing the visibility of the meshes.
 
 ``` c#
 if (CoreServices.SpatialAwarenessSystem != null)
@@ -100,9 +100,10 @@ if (CoreServices.SpatialAwarenessSystem != null)
         IReadOnlyList<IMixedRealitySpatialAwarenessMeshObserver> observers =
             dataProviderAccess.GetDataProviders<IMixedRealitySpatialAwarenessMeshObserver>();
 
-        foreach (IMixedRealitySpatialAwarenessMeshObserver in observers)
+        foreach (IMixedRealitySpatialAwarenessMeshObserver observer in observers)
         {
-            // Perform desired work.
+            // Set the mesh to use the occlusion material
+            observer.DisplayOption = SpatialMeshDisplayOptions.Occlusion;
         }
     }
 }
