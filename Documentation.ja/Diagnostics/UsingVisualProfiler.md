@@ -14,7 +14,7 @@
 
 ## Visual Profiler Interface (ビジュアルプロファイラインターフェイス)
 
-![ビジュアル プロファイラ インターフェイス](../../Documentation/Images/Diagnostics/VisualProfiler.png)
+![ビジュアルプロファイラ インターフェイス](../../Documentation/Images/Diagnostics/VisualProfiler.png)
 
 ビジュアルプロファイラインターフェイスには、次のコンポーネントが含まれます。
 
@@ -45,7 +45,7 @@ GPU 時間は、これからのリリースで追加される予定です。
 
 フレームグラフは、アプリケーションフレームレート履歴のグラフを提供します。
 
-![ビジュアルプロファイラフレームグラフ](../../Documentation/Images/Diagnostics/VisualProfilerMissedFrames.png)
+![ビジュアルプロファイラフレーム グラフ](../../Documentation/Images/Diagnostics/VisualProfilerMissedFrames.png)
 
 アプリケーションを使用する場合は、欠落したフレームを探します。フレームの欠落は、アプリケーションがターゲットフレームレートに達していないと、まだ最適化作業が必要な場合があることを示します。
 
@@ -53,7 +53,7 @@ GPU 時間は、これからのリリースで追加される予定です。
 
 メモリ使用率表示を使用すると、現在のビューがアプリケーションのメモリ消費に与える影響を簡易に理解できます。
 
-![ビジュアルプロファイラフレームグラフ](../../Documentation/Images/Diagnostics/VisualProfilerMemory.png)
+![ビジュアルプロファイラフレーム グラフ](../../Documentation/Images/Diagnostics/VisualProfilerMemory.png)
 
 アプリケーションを使用する場合は、メモリの合計使用量を探します。主な指標は：メモリ制限の近い、使用状況の急激な変化です。
 
