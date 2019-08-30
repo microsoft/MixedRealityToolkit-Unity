@@ -58,18 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
             if (DrawHandednessProperty)
             {
-                var currentHandedness = handedness.intValue - 1;
-
-                // Reset in case it was set to something other than left, right or both.
-                if (currentHandedness < 0 || currentHandedness > 2) { currentHandedness = 0; }
-
-                EditorGUI.BeginChangeCheck();
-                var newHandednessIndex = EditorGUILayout.IntPopup(new GUIContent(handedness.displayName, handedness.tooltip), currentHandedness, HandednessSelections, null);
-
-                if (EditorGUI.EndChangeCheck())
-                {
-                    handedness.intValue = currentHandedness + 1;
-                }
+                HandednessInspectorGui.DrawControllerHandednessDropdown(handedness);
             }
 
             EditorGUILayout.PropertyField(useSourcePoseData);

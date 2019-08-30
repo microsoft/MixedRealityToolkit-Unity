@@ -136,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             profileFound = true;
 
                             // If it is an exact match, assign interaction mappings.
-                            if (controllerMappings[i].Handedness == ControllerHandedness &&
+                            if ((controllerMappings[i].Handedness & ControllerHandedness) != 0 &&
                                 controllerMappings[i].Interactions.Length > 0)
                             {
                                 MixedRealityInteractionMapping[] profileInteractions = controllerMappings[i].Interactions;

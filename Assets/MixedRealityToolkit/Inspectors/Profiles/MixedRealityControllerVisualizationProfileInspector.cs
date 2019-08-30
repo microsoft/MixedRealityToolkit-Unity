@@ -16,13 +16,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private static readonly GUIContent ControllerAddButtonContent = new GUIContent("+ Add a New Controller Definition");
         private static readonly GUIContent ControllerMinusButtonContent = new GUIContent("-", "Remove Controller Definition");
 
-        private static readonly GUIContent[] HandednessSelections =
-        {
-            new GUIContent("Left Hand"),
-            new GUIContent("Right Hand"),
-            new GUIContent("Both Hands"),
-        };
-
         private SerializedProperty renderMotionControllers;
         private SerializedProperty defaultControllerVisualizationType;
 
@@ -181,7 +174,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                 serializedObject.ApplyModifiedProperties();
                 var mixedRealityControllerHandedness = controllerSetting.FindPropertyRelative("handedness");
-                EditorGUILayout.LabelField($"{mixedRealityControllerMappingDescription.stringValue} {((Handedness)mixedRealityControllerHandedness.intValue).ToString().ToProperCase()} Hand", EditorStyles.boldLabel);
+                var handedness = (Handedness)mixedRealityControllerHandedness.intValue;
+                EditorGUILayout.LabelField($"{mixedRealityControllerMappingDescription.stringValue} {handedness.ToString().ToProperCase()} Hand{((handedness == Handedness.Both) ? 's' : char.MinValue)}", EditorStyles.boldLabel);
 
                 if (GUILayout.Button(ControllerMinusButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
                 {
@@ -201,24 +195,15 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     EditorGUILayout.HelpBox("A controller type must be defined!", MessageType.Error);
                 }
 
-                var handednessValue = mixedRealityControllerHandedness.intValue - 1;
 
-                // Reset in case it was set to something other than left, right or both.
-                if (handednessValue < 0 || handednessValue > 2) { handednessValue = 0; }
-
-                EditorGUI.BeginChangeCheck();
-                handednessValue = EditorGUILayout.IntPopup(new GUIContent(mixedRealityControllerHandedness.displayName, mixedRealityControllerHandedness.tooltip), handednessValue, HandednessSelections, null);
-
-                if (EditorGUI.EndChangeCheck())
-                {
-                    mixedRealityControllerHandedness.intValue = handednessValue + 1;
-                }
 
                 var overrideModel = controllerSetting.FindPropertyRelative("overrideModel");
                 var overrideModelPrefab = overrideModel.objectReferenceValue as GameObject;
 
                 var controllerUseDefaultModelOverride = controllerSetting.FindPropertyRelative("useDefaultModel");
                 EditorGUILayout.PropertyField(controllerUseDefaultModelOverride);
+
+                HandednessInspectorGui.DrawControllerHandednessDropdown(mixedRealityControllerHandedness);
 
                 if (controllerUseDefaultModelOverride.boolValue && overrideModelPrefab != null)
                 {
