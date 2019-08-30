@@ -244,6 +244,20 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return MoveHandFromTo(handPos, handPos, 2, ArticulatedHandPose.GestureId.Pinch, handedness, inputSimulationService);
         }
 
+        public static T GetPointer<T>(Handedness handedness) where T : class, IMixedRealityPointer
+        {
+            InputSimulationService simulationService = GetInputSimulationService();
+            var hand = simulationService.GetHandDevice(handedness);
+            foreach (var pointer in hand.InputSource.Pointers)
+            {
+                if (pointer is T)
+                {
+                    return pointer as T;
+                }
+            }
+            return null;
+        }
+
         internal static IEnumerator MoveHandFromTo(
             Vector3 startPos, Vector3 endPos, int numSteps,
             ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)
