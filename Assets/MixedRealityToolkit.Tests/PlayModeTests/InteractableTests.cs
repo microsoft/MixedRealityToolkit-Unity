@@ -24,7 +24,7 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    class InteractableTests
+    class InteractableTests 
     {
         const float buttonPressAnimationDelay = 0.25f;
         const float buttonReleaseAnimationDelay = 0.25f;
@@ -58,6 +58,42 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // clean up
             GameObject.Destroy(cube);
+            yield return null;
+        }
+
+        /// <summary>
+        /// Tests that an interactable component can be added to a GameObject
+        /// at runtime, and an OnClick event handler can be added
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator TestAddOnClickRuntime()
+        {
+            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.position = Vector3.forward;
+            PlayModeTestUtilities.PushHandSimulationProfile();
+            PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
+
+            // This should not throw an exception
+            var interactable = cube.AddComponent<Interactable>();
+
+            // Subscribe to interactable's on click so we know the click went through
+            bool wasClicked = false;
+            interactable.OnClick.AddListener(() => { wasClicked = true; });
+
+            TestHand th = new TestHand(Handedness.Right);
+            yield return th.Show(Vector3.zero);
+
+            CameraCache.Main.transform.LookAt(interactable.transform);
+            yield return th.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return th.SetGesture(ArticulatedHandPose.GestureId.Open);
+
+            Assert.True(wasClicked);
+
+            // clean up
+            GameObject.Destroy(cube);
+            PlayModeTestUtilities.PopHandSimulationProfile();
+
             yield return null;
         }
 
