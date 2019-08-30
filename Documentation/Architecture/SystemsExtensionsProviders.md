@@ -55,7 +55,7 @@ The MRTK input system utilizes only data providers that implement the [`IMixedRe
 
 ![Input system data providers](../Images/Input/RegisteredServiceProviders.PNG)
 
-The following example demonstrates accessing the input simulation provider to toggle the SmoothEyeTracking property.
+The following example demonstrates accessing the input simulation provider and toggle the SmoothEyeTracking property.
 
 ``` c#
 if (CoreServices.InputSystem != null)
