@@ -20,11 +20,14 @@ MonoBehaviour:
   extraMouseSensitivityScale: 3
   defaultMouseSensitivity: 0.1
   mouseLookButton:
-    code: 1001
+    bindingType: 1
+    code: 1
   mouseLookToggle: 0
   isControllerLookInverted: 1
   currentControlMode: 0
-  fastControlKey: 305
+  fastControlKey:
+    bindingType: 2
+    code: 305
   controlSlowSpeed: 0.1
   controlFastSpeed: 1
   moveHorizontal: Horizontal
@@ -33,15 +36,27 @@ MonoBehaviour:
   mouseY: Mouse Y
   lookHorizontal: AXIS_4
   lookVertical: AXIS_5
-  rollCameraCWKey: 109
-  rollCameraCCWKey: 110
+  rollCameraCWKey:
+    bindingType: 2
+    code: 109
+  rollCameraCCWKey:
+    bindingType: 2
+    code: 110
   simulateEyePosition: 0
   defaultHandSimulationMode: 2
-  toggleLeftHandKey: 116
-  toggleRightHandKey: 121
+  toggleLeftHandKey:
+    bindingType: 2
+    code: 116
+  toggleRightHandKey:
+    bindingType: 2
+    code: 121
   handHideTimeout: 0.2
-  leftHandManipulationKey: 304
-  rightHandManipulationKey: 32
+  leftHandManipulationKey:
+    bindingType: 2
+    code: 304
+  rightHandManipulationKey:
+    bindingType: 2
+    code: 32
   defaultHandGesture: 2
   leftMouseHandGesture: 3
   middleMouseHandGesture: 0
@@ -52,10 +67,22 @@ MonoBehaviour:
   defaultHandDistance: 0.5
   handDepthMultiplier: 0.1
   handJitterAmount: 0
-  yawHandCWKey: 101
-  yawHandCCWKey: 113
-  pitchHandCWKey: 102
-  pitchHandCCWKey: 114
-  rollHandCWKey: 120
-  rollHandCCWKey: 122
+  yawHandCWKey:
+    bindingType: 2
+    code: 101
+  yawHandCCWKey:
+    bindingType: 2
+    code: 113
+  pitchHandCWKey:
+    bindingType: 2
+    code: 102
+  pitchHandCCWKey:
+    bindingType: 2
+    code: 114
+  rollHandCWKey:
+    bindingType: 2
+    code: 120
+  rollHandCCWKey:
+    bindingType: 2
+    code: 122
   handRotationSpeed: 100
