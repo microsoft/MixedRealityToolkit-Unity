@@ -167,7 +167,40 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return;
             }
 
+            DrawHeadGUI();
             DrawHandsGUI();
+        }
+
+        private void DrawHeadGUI()
+        {
+            if (!CameraCache.Main)
+            {
+                return;
+            }
+
+            using (new GUILayout.VerticalScope(EditorStyles.helpBox))
+            {
+                GUILayout.Label($"Head:");
+
+                Transform headTransform = CameraCache.Main.transform;
+                Vector3 newPosition = EditorGUILayout.Vector3Field("Position", headTransform.position);
+                Vector3 newRotation = DrawRotationGUI("Rotation", headTransform.rotation.eulerAngles);
+                bool resetHand = GUILayout.Button("Reset");
+
+                if (newPosition != headTransform.position)
+                {
+                    headTransform.position = newPosition;
+                }
+                if (newRotation != headTransform.rotation.eulerAngles)
+                {
+                    headTransform.rotation = Quaternion.Euler(newRotation);
+                }
+                if (resetHand)
+                {
+                    headTransform.position = Vector3.zero;
+                    headTransform.rotation = Quaternion.identity;
+                }
+            }
         }
 
         private void DrawHandsGUI()
