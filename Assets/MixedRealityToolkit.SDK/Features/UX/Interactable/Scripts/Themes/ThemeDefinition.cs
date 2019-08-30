@@ -48,12 +48,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        [SerializeField]
+        // Unity cannot serialize System.Type, thus must save AssemblyQualifiedName
+        // Field here for Runtime use
+        [NonSerialized]
         private Type Type;
 
-        // Outdated variables. Kept only for temporary backward compatibility
-        [SerializeField]
         [FormerlySerializedAs("Name")]
+        [SerializeField]
         private string ClassName;
 
         [SerializeField]

@@ -109,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                         // TODO: Troy Set type if not already set* or use by default and then use classname otherwise
 
                         var themeOptions = InteractableProfileItem.GetThemeTypes();
-                        int id = InspectorUIUtility.ReverseLookup(className.stringValue, themeOptions.ClassNames);
+                        int id = Array.IndexOf(themeOptions.ClassNames, className.stringValue);
                         int newId = EditorGUILayout.Popup("Theme Runtime", id, themeOptions.ClassNames);
 
                         // TODO: Troy - Fix here?
