@@ -157,14 +157,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // TODO implement custom hand device update frequency here, use 1000/fps instead of 0
                 if (msSinceLastHandUpdate > 0)
                 {
-                    if (HandDataLeft.Timestamp > lastHandUpdateTimestamp)
-                    {
-                        UpdateHandDevice(profile.HandSimulationMode, Handedness.Left, HandDataLeft);
-                    }
-                    if (HandDataRight.Timestamp > lastHandUpdateTimestamp)
-                    {
-                        UpdateHandDevice(profile.HandSimulationMode, Handedness.Right, HandDataRight);
-                    }
+                    UpdateHandDevice(profile.HandSimulationMode, Handedness.Left, HandDataLeft);
+                    UpdateHandDevice(profile.HandSimulationMode, Handedness.Right, HandDataRight);
 
                     lastHandUpdateTimestamp = currentTime.Ticks;
                 }
