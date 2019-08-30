@@ -89,7 +89,7 @@ Useful Poke Pointer properties:
 - *TouchableDistance*: Maximum distance a which a touchable surface can be interacted with
 - *Visuals*: Game object used to render finger tip visual (the ring on finger, by default).
 - *Line*: Optional line to draw from fingertip to the active input surface.
-- *Poke Layer Masks* - A prioritized array of LayerMasks to determine which possible GameObjects a the pointer can interact with and the order of interaction to attempt. Note that a GameObject must also have a `NearInteractionTouchable` component in order to interact with a poke pointer.
+- *Poke Layer Masks* - A prioritized array of LayerMasks to determine which possible GameObjects the pointer can interact with and the order of interaction to attempt. Note that a GameObject must also have a `NearInteractionTouchable` component in order to interact with a poke pointer.
 
 <img src="../../Documentation/Images/Pointers/MRTK_PokePointer.png" width="400">
 
