@@ -163,8 +163,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public bool IsSimulatingRight => isSimulatingRight;
 
-        // Last frame's mouse position for computing delta
-        private Vector3? lastMousePosition = null;
         // Most recent time hand control was enabled,
         private float lastSimulationLeft = -1.0e6f;
         private float lastSimulationRight = -1.0e6f;
@@ -189,9 +187,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Capture a snapshot of simulated hand data based on current state.
         /// </summary>
-        public bool UpdateHandData(SimulatedHandData handDataLeft, SimulatedHandData handDataRight)
+        public bool UpdateHandData(SimulatedHandData handDataLeft, SimulatedHandData handDataRight, Vector3 mouseDelta)
         {
-            SimulateUserInput();
+            SimulateUserInput(mouseDelta);
 
             bool handDataChanged = false;
 
@@ -215,7 +213,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Update hand state based on keyboard and mouse input
         /// </summary>
-        private void SimulateUserInput()
+        private void SimulateUserInput(Vector3 mouseDelta)
         {
             float time = Time.time;
 
@@ -264,8 +262,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            Vector3 mouseDelta = (lastMousePosition.HasValue ? UnityEngine.Input.mousePosition - lastMousePosition.Value : Vector3.zero);
-            mouseDelta.z += UnityEngine.Input.GetAxis("Mouse ScrollWheel") * profile.HandDepthMultiplier;
             float rotationDelta = profile.HandRotationSpeed * Time.deltaTime;
             Vector3 rotationDeltaEulerAngles = Vector3.zero;
             if (KeyInputSystem.GetKey(profile.YawHandCCWKey))
@@ -299,8 +295,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             float gestureAnimDelta = profile.HandGestureAnimationSpeed * Time.deltaTime;
             HandStateLeft.GestureBlending += gestureAnimDelta;
             HandStateRight.GestureBlending += gestureAnimDelta;
-
-            lastMousePosition = UnityEngine.Input.mousePosition;
         }
 
         /// Apply changes to one hand and update tracking

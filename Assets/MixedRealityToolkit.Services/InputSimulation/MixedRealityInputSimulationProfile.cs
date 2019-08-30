@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -28,11 +29,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public bool IsCameraControlEnabled => isCameraControlEnabled;
 
         [SerializeField]
-        private float extraMouseSensitivityScale = 3.0f;
-        public float ExtraMouseSensitivityScale => extraMouseSensitivityScale;
+        [FormerlySerializedAs("defaultMouseSensitivity")]
+        private float mouseRotationSensitivity = 0.1f;
+        public float MouseRotationSensitivity => mouseRotationSensitivity;
         [SerializeField]
-        private float defaultMouseSensitivity = 0.1f;
-        public float DefaultMouseSensitivity => defaultMouseSensitivity;
+        [FormerlySerializedAs("extraMouseSensitivityScale")]
+        private float extraMouseRotationScale = 3.0f;
+        public float ExtraMouseRotationScale => extraMouseRotationScale;
         [SerializeField]
         [Tooltip("Controls how mouse look control is activated")]
         private KeyBinding mouseLookButton = KeyBinding.FromMouseButton(KeyBinding.MouseButton.Right);

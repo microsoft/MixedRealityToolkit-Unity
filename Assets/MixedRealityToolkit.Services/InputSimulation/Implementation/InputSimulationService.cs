@@ -168,6 +168,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 indicators = GameObject.Instantiate(profile.IndicatorsPrefab);
             }
+
+            ResetMouseDelta();
         }
 
         /// <inheritdoc />
@@ -187,12 +189,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             var profile = InputSimulationProfile;
 
+            Vector3 mouseDelta = UpdateMouseDelta();
+
             if (profile.IsCameraControlEnabled)
             {
                 EnableCameraControl();
                 if (CameraCache.Main)
                 {
-                    cameraControl.UpdateTransform(CameraCache.Main.transform);
+                    cameraControl.UpdateTransform(CameraCache.Main.transform, mouseDelta);
                 }
             }
             else
@@ -221,7 +225,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                     if (UserInputEnabled)
                     {
-                        handDataProvider.UpdateHandData(HandDataLeft, HandDataRight);
+                        handDataProvider.UpdateHandData(HandDataLeft, HandDataRight, mouseDelta);
                     }
                     break;
             }
@@ -311,6 +315,56 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (handDataProvider != null)
             {
                 handDataProvider = null;
+            }
+        }
+
+        private Vector3 lastMousePosition;
+        private bool wasFocused;
+        private bool wasCursorLocked;
+
+        private void ResetMouseDelta()
+        {
+            lastMousePosition = UnityEngine.Input.mousePosition;
+        }
+
+        private Vector3 UpdateMouseDelta()
+        {
+            var profile = InputSimulationProfile;
+
+            bool isFocused = Application.isFocused;
+            bool gainedFocus = (!wasFocused && isFocused);
+            wasFocused = isFocused;
+
+            bool isCursorLocked = UnityEngine.Cursor.lockState != CursorLockMode.None;
+            bool cursorLockChanged = (wasCursorLocked != isCursorLocked);
+            wasCursorLocked = isCursorLocked;
+
+            // Reset in cases where mouse position is jumping
+            if (gainedFocus || cursorLockChanged)
+            {
+                ResetMouseDelta();
+                return Vector3.zero;
+            }
+            else
+            {
+                // Use frame-to-frame mouse delta in pixels to determine mouse rotation.
+                // The traditional GetAxis("Mouse X") method doesn't work under Remote Desktop.
+                Vector3 mousePositionDelta;
+                if (UnityEngine.Cursor.lockState == CursorLockMode.Locked)
+                {
+                    mousePositionDelta.x = UnityEngine.Input.GetAxis(profile.MouseX);
+                    mousePositionDelta.y = UnityEngine.Input.GetAxis(profile.MouseY);
+                    mousePositionDelta.z = UnityEngine.Input.GetAxis("Mouse ScrollWheel") * profile.HandDepthMultiplier;
+                }
+                else
+                {
+                    mousePositionDelta = (UnityEngine.Input.mousePosition - lastMousePosition);
+                    mousePositionDelta.z = UnityEngine.Input.mouseScrollDelta.y * profile.HandDepthMultiplier;
+                }
+
+                lastMousePosition = UnityEngine.Input.mousePosition;
+
+                return mousePositionDelta;
             }
         }
     }

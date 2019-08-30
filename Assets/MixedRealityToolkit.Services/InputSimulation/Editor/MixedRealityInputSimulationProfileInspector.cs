@@ -16,8 +16,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private SerializedProperty isCameraControlEnabled;
 
-        private SerializedProperty extraMouseSensitivityScale;
-        private SerializedProperty defaultMouseSensitivity;
+        private SerializedProperty extraMouseRotationScale;
+        private SerializedProperty mouseRotationSensitivity;
         private SerializedProperty mouseLookButton;
         private SerializedProperty mouseLookToggle;
         private SerializedProperty isControllerLookInverted;
@@ -78,8 +78,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             isCameraControlEnabled = serializedObject.FindProperty("isCameraControlEnabled");
 
-            extraMouseSensitivityScale = serializedObject.FindProperty("extraMouseSensitivityScale");
-            defaultMouseSensitivity = serializedObject.FindProperty("defaultMouseSensitivity");
+            extraMouseRotationScale = serializedObject.FindProperty("extraMouseRotationScale");
+            mouseRotationSensitivity = serializedObject.FindProperty("mouseRotationSensitivity");
             mouseLookButton = serializedObject.FindProperty("mouseLookButton");
             mouseLookToggle = serializedObject.FindProperty("mouseLookToggle");
             isControllerLookInverted = serializedObject.FindProperty("isControllerLookInverted");
@@ -146,8 +146,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     EditorGUILayout.BeginVertical("Label");
                     using (new GUIEnabledWrapper(isCameraControlEnabled.boolValue))
                     {
-                        EditorGUILayout.PropertyField(extraMouseSensitivityScale);
-                        EditorGUILayout.PropertyField(defaultMouseSensitivity);
+                        EditorGUILayout.PropertyField(mouseRotationSensitivity);
+                        EditorGUILayout.PropertyField(extraMouseRotationScale);
                         EditorGUILayout.PropertyField(mouseLookButton);
                         EditorGUILayout.PropertyField(mouseLookToggle);
                         EditorGUILayout.PropertyField(isControllerLookInverted);

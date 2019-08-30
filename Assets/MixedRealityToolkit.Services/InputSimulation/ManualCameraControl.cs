@@ -15,7 +15,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private bool isMouseJumping = false;
         private bool isGamepadLookEnabled = true;
         private bool isFlyKeypressEnabled = true;
-        private Vector3 lastMousePosition = Vector3.zero;
         private Vector3 lastTrackerToUnityTranslation = Vector3.zero;
         private Quaternion lastTrackerToUnityRotation = Quaternion.identity;
         private bool wasLooking = false;
@@ -32,14 +31,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return Mathf.Sign(x) * (1.0f - Mathf.Cos(0.5f * Mathf.PI * Mathf.Clamp(x, -1.0f, 1.0f)));
         }
 
-        public void UpdateTransform(Transform transform)
+        public void UpdateTransform(Transform transform, Vector3 mouseDelta)
         {
             // Undo the last tracker to Unity transforms applied
             transform.Translate(-this.lastTrackerToUnityTranslation, Space.World);
             transform.Rotate(-this.lastTrackerToUnityRotation.eulerAngles, Space.World);
 
             // Calculate and apply the camera control movement this frame
-            Vector3 rotate = GetCameraControlRotation();
+            Vector3 rotate = GetCameraControlRotation(mouseDelta);
             Vector3 translate = GetCameraControlTranslation(transform);
 
             transform.Rotate(rotate.x, 0.0f, 0.0f);
@@ -99,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return accel * deltaPosition;
         }
 
-        private Vector3 GetCameraControlRotation()
+        private Vector3 GetCameraControlRotation(Vector3 mouseDelta)
         {
             float inversionFactor = profile.IsControllerLookInverted ? -1.0f : 1.0f;
 
@@ -125,8 +124,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     OnStartMouseLook();
                 }
-
-                ManualCameraControl_MouseLookTick(ref rot);
+                else
+                {
+                    rot.x += -InputCurve(mouseDelta.y * profile.MouseRotationSensitivity);
+                    rot.y += InputCurve(mouseDelta.x * profile.MouseRotationSensitivity);
+                }
 
                 this.wasLooking = true;
             }
@@ -140,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 this.wasLooking = false;
             }
 
-            rot *= profile.ExtraMouseSensitivityScale;
+            rot *= profile.ExtraMouseRotationScale;
 
             return rot;
         }
@@ -179,28 +181,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             // do nothing if (this.MouseLookButton == MouseButton.None)
-        }
-
-        private void ManualCameraControl_MouseLookTick(ref Vector3 rot)
-        {
-            // Use frame-to-frame mouse delta in pixels to determine mouse rotation. The traditional
-            // GetAxis("Mouse X") method doesn't work under Remote Desktop.
-            Vector3 mousePositionDelta = UnityEngine.Input.mousePosition - this.lastMousePosition;
-            this.lastMousePosition = UnityEngine.Input.mousePosition;
-
-            if (UnityEngine.Cursor.lockState == CursorLockMode.Locked)
-            {
-                mousePositionDelta.x = UnityEngine.Input.GetAxis(profile.MouseX);
-                mousePositionDelta.y = UnityEngine.Input.GetAxis(profile.MouseY);
-            }
-            else
-            {
-                mousePositionDelta.x *= profile.DefaultMouseSensitivity;
-                mousePositionDelta.y *= profile.DefaultMouseSensitivity;
-            }
-
-            rot.x += -InputCurve(mousePositionDelta.y);
-            rot.y += InputCurve(mousePositionDelta.x);
         }
 
         private bool ShouldMouseLook
@@ -257,8 +237,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     wasCursorVisible = UnityEngine.Cursor.visible;
                     // hide the cursor
                     UnityEngine.Cursor.visible = false;
-
-                    this.lastMousePosition = UnityEngine.Input.mousePosition;
                 }
                 else
                 {
