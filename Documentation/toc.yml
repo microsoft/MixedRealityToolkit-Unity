@@ -47,6 +47,8 @@
       href: Input/Controllers.md
     - name: Pointers
       href: Input/Pointers.md
+    - name: How to Add Near Interaction
+      href: Input/HowToAddNearInteractivity.md
     - name: Gestures
       href: Input/Gestures.md
     - name: Speech(Voice command)
