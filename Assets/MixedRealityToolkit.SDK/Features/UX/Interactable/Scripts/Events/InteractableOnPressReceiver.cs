@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
@@ -14,8 +15,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
     {
 
         [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Release", Tooltip = "The button is released")]
-        public UnityEvent OnRelease = new UnityEvent();
+        [SerializeField]
+        [FormerlySerializedAsAttribute("OnRelease")]
+        private UnityEvent onRelease = new UnityEvent();
 
+        /// <summary>
+        /// Invoked on pointer release
+        /// </summary>
+        public UnityEvent OnRelease { get { return onRelease; } }
+
+        /// <summary>
+        /// Invoked on pointer press
+        /// </summary>
+        public UnityEvent OnPress { get { return uEvent; } }
         public enum InteractionType
         {
             NearAndFar = 0,

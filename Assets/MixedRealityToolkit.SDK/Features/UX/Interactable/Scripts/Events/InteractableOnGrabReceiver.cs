@@ -2,7 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
@@ -12,8 +14,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     public class InteractableOnGrabReceiver : ReceiverBase
     {
+        [SerializeField]
         [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Release", Tooltip = "Grab was released")]
-        public UnityEvent OnRelease = new UnityEvent();
+        [FormerlySerializedAsAttribute("OnRelease")]
+        private UnityEvent onRelease = new UnityEvent();
+
+        /// <summary>
+        /// Invoked on grab release
+        /// </summary>
+        public UnityEvent OnRelease { get { return onRelease; } }
+
+        /// <summary>
+        /// Invoked on grab start
+        /// </summary>
+        public UnityEvent OnGrab { get { return uEvent; } }
 
         private bool hadGrab;
         private State lastState;

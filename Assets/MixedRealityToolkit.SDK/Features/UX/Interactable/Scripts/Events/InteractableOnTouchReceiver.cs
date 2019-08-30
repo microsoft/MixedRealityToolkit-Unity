@@ -2,7 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
@@ -13,15 +15,28 @@ namespace Microsoft.MixedReality.Toolkit.UI
     public class InteractableOnTouchReceiver : ReceiverBase
     {
         [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Touch End", Tooltip = "Touch has left the object")]
-        public UnityEvent OnTouchEnd = new UnityEvent();
+        [SerializeField]
+        [FormerlySerializedAs("OnTouchEnd")]
+        private UnityEvent onTouchEnd = new UnityEvent();
+
+        /// <summary>
+        /// Invoked when touch has left the object
+        /// </summary>
+        public UnityEvent OnTouchEnd { get => onTouchEnd; }
+
+        /// <summary>
+        /// Invoked when touch begins
+        /// </summary>
+        public UnityEvent OnTouchStart { get => uEvent; }
 
         private bool hadTouch;
-        private State lastState;
 
         public InteractableOnTouchReceiver(UnityEvent ev) : base(ev)
         {
             Name = "OnTouch";
         }
+
+        public UnityEvent OnTouchEnd { get => onTouchEnd; set => onTouchEnd = value; }
 
         public override void OnUpdate(InteractableStates state, Interactable source)
         {
@@ -40,7 +55,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             this.hadTouch = hadTouch;
-            lastState = state.CurrentState();
         }
     }
 }
