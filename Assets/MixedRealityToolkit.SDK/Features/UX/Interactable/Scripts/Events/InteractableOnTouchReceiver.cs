@@ -36,8 +36,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Name = "OnTouch";
         }
 
-        public UnityEvent OnTouchEnd { get => onTouchEnd; set => onTouchEnd = value; }
-
         public override void OnUpdate(InteractableStates state, Interactable source)
         {
             bool hadTouch = state.GetState(InteractableStates.InteractableStateEnum.PhysicalTouch).Value > 0;
