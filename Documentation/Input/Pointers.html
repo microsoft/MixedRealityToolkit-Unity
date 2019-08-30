@@ -90,10 +90,10 @@
 <ul>
 <li><p><em>Pointing Extent</em> - Defines the max distance for which a Pointer can interact with a GameObject.</p>
 </li>
-<li><p><em>Pointing Raycast Layer Masks</em> - This is a prioritized array of LayerMasks to determine what possible GameObjects any given Pointer can interact and the order of interaction to attempt. This is may be useful to ensure Pointers interact with UI elements first before other scene objects.</p>
+<li><p><em>Pointing Raycast Layer Masks</em> - This is a prioritized array of LayerMasks to determine what possible GameObjects any given Pointer can interact and the order of interaction to attempt. This is may be useful to ensure Pointers interact with UI elements first before other scene objects.
+<img src="../Images/Input/Pointers/PointerProfile.PNG" alt="Pointer Profile Example"></p>
 </li>
 </ul>
-<p><img src="../Images/Input/Pointers/PointerProfile.PNG" alt="Pointer Profile Example"></p>
 <h3 id="pointer-options-configuration">Pointer options configuration</h3>
 <p>The default MRTK Pointer Profile configuration includes the following pointer classes and associated prefabs out-of-box. The list of pointers available to the system at runtime is defined under <em>Pointer Options</em> in the Pointer profile. Developers can utilize this list to reconfigure existing Pointers, add new Pointers, or delete one.</p>
 <p><img src="../Images/Input/Pointers/PointerOptionsProfile.PNG" alt="Pointer Options Profile Example"></p>
@@ -150,6 +150,7 @@ the articulated hand controller is associated with the <em>PokePointer</em>, <em
 <li><em>TouchableDistance</em>: Maximum distance a which a touchable surface can be interacted with</li>
 <li><em>Visuals</em>: Game object used to render finger tip visual (the ring on finger, by default).</li>
 <li><em>Line</em>: Optional line to draw from fingertip to the active input surface.</li>
+<li><em>Poke Layer Masks</em> - A prioritized array of LayerMasks to determine which possible GameObjects the pointer can interact with and the order of interaction to attempt. Note that a GameObject must also have a <code>NearInteractionTouchable</code> component in order to interact with a poke pointer.</li>
 </ul>
 <img src="../Images/Pointers/MRTK_PokePointer.png" width="400">
 <h5 id="spherepointer"><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.SpherePointer.html"><code>SpherePointer</code></a></h5>
@@ -157,8 +158,12 @@ the articulated hand controller is associated with the <em>PokePointer</em>, <em
 <p>Useful Sphere Pointer properties:</p>
 <ul>
 <li><em>Sphere Cast Radius</em>: The radius for the sphere used to query for grabbable objects.</li>
-<li><em>Debug Mode</em>: If true, draw the sphere that is used to query for grabbable objects.</li>
+<li><em>Grab Layer Masks</em> - A prioritized array of LayerMasks to determine which possible GameObjects the pointer can interact with and the order of interaction to attempt. Note that a GameObject must also have a <code>NearInteractionGrabbable</code> to interact with a SpherePointer.</li>
 </ul>
+<div class="NOTE">
+<h5>Note</h5>
+<p>the Spatial Awareness layer is disabled in the default GrabPointer prefab provided by MRTK. This is done to reduce performance impact of doing a sphere overlap query with the spatial mesh. You can enable this by modifying the GrabPointer prefab.</p>
+</div>
 <img src="../Images/Pointers/MRTK_GrabPointer.jpg" width="400">
 <h4 id="teleport-pointers">Teleport pointers</h4>
 <ul>

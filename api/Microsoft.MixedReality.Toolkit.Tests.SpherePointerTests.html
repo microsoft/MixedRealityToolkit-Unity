@@ -91,7 +91,8 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">SpherePointerTests</span></div>
+    <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.BasePlayModeTests.html">BasePlayModeTests</a></div>
+    <div class="level2"><span class="xref">SpherePointerTests</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -121,25 +122,56 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Tests_SpherePointerTests_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class SpherePointerTests</code></pre>
+    <pre><code class="lang-csharp hljs">public class SpherePointerTests : BasePlayModeTests</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Tests_SpherePointerTests_SetUp_" data-uid="Microsoft.MixedReality.Toolkit.Tests.SpherePointerTests.SetUp*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_SpherePointerTests_SetUp" data-uid="Microsoft.MixedReality.Toolkit.Tests.SpherePointerTests.SetUp">SetUp()</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Tests_SpherePointerTests_GrabLayerMasks_" data-uid="Microsoft.MixedReality.Toolkit.Tests.SpherePointerTests.GrabLayerMasks*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_SpherePointerTests_GrabLayerMasks" data-uid="Microsoft.MixedReality.Toolkit.Tests.SpherePointerTests.GrabLayerMasks">GrabLayerMasks()</h4>
+  <div class="markdown level1 summary"><p>Verifies that SpherePointer correctly returns IsNearObject and IsInteractionEnabled
+only when it is near a grabbable object, on the correct grabbable layer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator GrabLayerMasks()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Tests_SpherePointerTests_Setup_" data-uid="Microsoft.MixedReality.Toolkit.Tests.SpherePointerTests.Setup*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_SpherePointerTests_Setup" data-uid="Microsoft.MixedReality.Toolkit.Tests.SpherePointerTests.Setup">Setup()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SetUp()</code></pre>
+    <pre><code class="lang-csharp hljs">public override void Setup()</code></pre>
   </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.BasePlayModeTests.html#Microsoft_MixedReality_Toolkit_Tests_BasePlayModeTests_Setup">BasePlayModeTests.Setup()</a></div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Tests_SpherePointerTests_SpherePointerDistances_" data-uid="Microsoft.MixedReality.Toolkit.Tests.SpherePointerTests.SpherePointerDistances*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_SpherePointerTests_SpherePointerDistances" data-uid="Microsoft.MixedReality.Toolkit.Tests.SpherePointerTests.SpherePointerDistances">SpherePointerDistances()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Verifies that the IsNearObject and IsInteractionEnabled get set
+at the correct times as a hand approaches a grabbable object</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -168,8 +200,10 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void TearDown()</code></pre>
+    <pre><code class="lang-csharp hljs">public override void TearDown()</code></pre>
   </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Tests.BasePlayModeTests.html#Microsoft_MixedReality_Toolkit_Tests_BasePlayModeTests_TearDown">BasePlayModeTests.TearDown()</a></div>
 </article>
           </div>
           
