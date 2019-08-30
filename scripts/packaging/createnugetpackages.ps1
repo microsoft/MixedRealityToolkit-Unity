@@ -103,9 +103,30 @@ try
     $nugetJobs = Get-ChildItem -Filter *.nuspec -Recurse | Foreach-Object {
         Write-Verbose "Starting nuget job for $($_.FullName)"
         Start-Job { 
-            param($name, $outDir, $props) 
+            param($name, $outDir, $props, $workingDir) 
             nuget pack $name -OutputDirectory $outDir -Properties $props -Exclude *.nuspec.meta
-        } -ArgumentList $_.FullName, $OutputDirectory, "version=$Version;releaseNotes=$releaseNotes"
+            
+            # To make debugging the MRTK NuGet packages locally much easier automatically create new packages with version 0.0.0 and then
+            # restore them to the machine NuGet feed. To test changes to the packages developers can run this script and then change their
+            # project to consume version 0.0.0 and restore. Because the package is in the machine global feed it will resolve properly.
+            $localVersion = '0.0.0'
+            $packageId = ([xml](Get-Content $name)).package.metadata.id
+            $finalInstallPath = [System.IO.Path]::Combine($env:UserProfile, '.nuget', 'packages', $packageId, $localVersion)
+            
+            # Repack but with a hard-coded version of 0.0.0 (the -Version parameter overrides the property value for version)
+            nuget pack $name -OutputDirectory $outDir -Properties $props -Exclude *.nuspec.meta -Version $localVersion
+            
+            # If the package is already installed to the machine global cache delete it, otherwise the next restore will no-op
+            if ([System.IO.Directory]::Exists($finalInstallPath))
+            {
+                Remove-Item -Recurse -Force $finalInstallPath
+            }
+            
+            # Restore the package by providing the nupkg folder. After this restore the machine global cache will be populated with the package
+            $restoreProjectPath = [System.IO.Path]::Combine($workingDir, 'NuGetRestoreProject.csproj')
+            dotnet build $restoreProjectPath -p:RestorePackageFeed=$outdir -p:RestorePackageId=$packageId -p:RestorePackageVersion=$localVersion
+            
+        } -ArgumentList $_.FullName, $OutputDirectory, "version=$Version;releaseNotes=$releaseNotes", (Split-Path $MyInvocation.MyCommand.Path)
     }
     
     # Wait for, receive, and remove all the nuget jobs
