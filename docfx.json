@@ -23,9 +23,9 @@
       {
         // generate html for conceptual docs
         "files": ["*.md", "*.yml", //root dir md and toc files
-                "Documentation/**/*.md", "Assets/**/*.md",
-				"Documentation/**/*.yml", "Assets/**/*.yml" // conceptual docs subfolders toc yml files
-                ]
+            "Documentation/**/*.md", "Documentation.ja/**/*.md", "Assets/**/*.md",
+            "Documentation/**/*.yml", "Documentation.ja/**/*.yml", "Assets/**/*.yml" // conceptual docs subfolders toc yml files
+        ]
       }
     ],
     "resource": [
