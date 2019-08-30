@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// Base Pointer class for pointers that exist in the scene as GameObjects.
     /// </summary>
     [DisallowMultipleComponent]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Pointers.html")]
     public abstract class BaseControllerPointer : ControllerPoseSynchronizer, IMixedRealityPointer
     {
         [SerializeField]
@@ -363,7 +364,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public virtual SceneQueryType SceneQueryType { get; set; } = SceneQueryType.SimpleRaycast;
 
         [SerializeField]
-        [Tooltip("The radius to use when SceneQueryType is set to Sphere or SphereColliders.")]
+        [Tooltip("How far controller needs to be from object before object can be grabbed / focused.")]
         private float sphereCastRadius = 0.1f;
 
         /// <inheritdoc />

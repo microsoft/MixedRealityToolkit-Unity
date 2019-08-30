@@ -19,6 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private const string EDITOR_PREF_USE_SSL = "BuildDeployWindow_UseSSL";
         private const string EDITOR_PREF_PROCESS_ALL = "BuildDeployWindow_ProcessAll";
         private const string EDITOR_PREF_GAZE_INPUT_CAPABILITY_ENABLED = "BuildDeployWindow_GazeInputCapabilityEnabled";
+        private const string EDITOR_PREF_MULTICORE_APPX_BUILD_ENABLED = "BuildDeployWindow_MulticoreAppxBuildEnabled";
 
         /// <summary>
         /// The current Build Configuration. (Debug, Release, or Master)
@@ -30,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         }
 
         /// <summary>
-        /// The current Build Configuration. (Debug, Release, or Master)
+        /// The current Platform Toolset. (Solution, v141, or v142)
         /// </summary>
         public static string PlatformToolset
         {
@@ -95,6 +96,16 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         {
             get => EditorPreferences.Get(EDITOR_PREF_GAZE_INPUT_CAPABILITY_ENABLED, false);
             set => EditorPreferences.Set(EDITOR_PREF_GAZE_INPUT_CAPABILITY_ENABLED, value);
+        }
+
+        /// <summary>
+        /// If true, the appx will be build with multicore support enabled in the
+        /// msbuild process.
+        /// </summary>
+        public static bool MulticoreAppxBuildEnabled
+        {
+            get => EditorPreferences.Get(EDITOR_PREF_MULTICORE_APPX_BUILD_ENABLED, false);
+            set => EditorPreferences.Set(EDITOR_PREF_MULTICORE_APPX_BUILD_ENABLED, value);
         }
     }
 }

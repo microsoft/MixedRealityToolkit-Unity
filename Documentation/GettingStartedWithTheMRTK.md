@@ -90,7 +90,7 @@ If you get such a prompt, select "Import TMP essentials" button. "TMP Essentials
 
 ## Using the In-Editor Hand Input Simulation to test a scene
 
-The in-editor input simulation allows you to test virtual object behavior given a specific type of input such as [hands](InputSimulation/InputSimulationService.md#hand-simulation) or [eyes] (EyeTracking/EyeTracking_BasicSetup.md#simulating-eye-tracking-in-the-unity-editor).
+The in-editor input simulation allows you to test virtual object behavior given a specific type of input such as [hands](InputSimulation/InputSimulationService.md#hand-simulation) or [eyes](EyeTracking/EyeTracking_BasicSetup.md#simulating-eye-tracking-in-the-unity-editor).
 
 How to move around in the scene: 
 - Use W/A/S/D keys to move the camera forward/left/back/right.

@@ -62,6 +62,16 @@ We provide basic examples for logging and loading eye tracking data and examples
 
 ## Setting up the MRTK eye tracking samples
 
+### Prerequisites
+
+Note that using the eye tracking samples on device requires a HoloLens 2
+and a sample app package that is built with the "Gaze Input" capability
+on the package's AppXManifest.
+
+In order to use these eye tracking samples on device, make sure to follow
+[these steps](EyeTracking_BasicSetup.md#testing-your-unity-app-on-a-hololens-2)
+prior to building the app in Visual Studio.
+
 ### 1. Load EyeTrackingDemo-00-RootScene.unity
 The *EyeTrackingDemo-00-RootScene* is the base (_root_) scene that has all the core MRTK components included.
 This is the scene that you need to load first and from which you will run the eye tracking demos. 

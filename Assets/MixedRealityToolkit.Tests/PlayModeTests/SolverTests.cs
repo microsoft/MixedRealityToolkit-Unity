@@ -326,6 +326,58 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(Quaternion.Angle(targetTransform.rotation, pose.Rotation) < 2.0f);
         }
 
+        /// <summary>
+        /// Test solver system's ability to add multiple solvers at runtime and switch between them.
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator TestSolverSwap()
+        {
+            // Reset view to origin
+            MixedRealityPlayspace.PerformTransformation(p =>
+            {
+                p.position = Vector3.zero;
+                p.LookAt(Vector3.forward);
+            });
+
+            // Instantiate and setup RadialView to place object in the view center.
+            var testObjects = InstantiateTestSolver<RadialView>();
+            RadialView radialViewSolver = (RadialView)testObjects.solver;
+            radialViewSolver.MinDistance = 2.0f;
+            radialViewSolver.MaxDistance = 2.0f;
+            radialViewSolver.MinViewDegrees = 0.0f;
+            radialViewSolver.MaxViewDegrees = 0.0f;
+
+            // Let RadialView update the target object
+            yield return WaitForFrames(2);
+
+            // Make sure Radial View is placing object in center of View, so we can later check that a solver swap actually moved the target object.
+            TestUtilities.AssertAboutEqual(testObjects.target.transform.position, Vector3.forward * 2.0f, "RadialView does not place object in center of view");
+
+            // Disable the old solver
+            radialViewSolver.enabled = false;
+
+            // Add a another solver during runtime, give him a specifc location to check whether the new solver updates the target object.
+            Orbital orbitalSolver = AddSolverComponent<Orbital>(testObjects.target);
+            orbitalSolver.WorldOffset = Vector3.zero;
+            orbitalSolver.LocalOffset = Vector3.down * 2.0f;
+
+            // Let Orbital update the target object
+            yield return WaitForFrames(2);
+
+            // Make sure Orbital is now updating the target object
+            TestUtilities.AssertAboutEqual(testObjects.target.transform.position, Vector3.down * 2.0f, "Orbital solver did not place object below origin");
+
+            // Swap solvers once again during runtime
+            radialViewSolver.enabled = true;
+            orbitalSolver.enabled = false;
+
+            // Let RadialView update the target object
+            yield return WaitForFrames(2);
+
+            // Make sure Radial View is now updating the target object once again.
+            TestUtilities.AssertAboutEqual(testObjects.target.transform.position, Vector3.forward * 2.0f, "RadialView solver did not place object in center of view");
+        }
 
         #region Test Helpers
 
@@ -349,13 +401,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.transform.localScale = new Vector3(0.1f, 0.2f, 0.1f);
 
-            Solver solver = cube.AddComponent<T>();
-            Assert.IsNotNull(solver, "AddComponent<T>() returned null");
-
-            // Set Solver lerp times to 0 so we can process tests faster instead of waiting for transforms to update/apply
-            solver.MoveLerpTime = 0.0f;
-            solver.RotateLerpTime = 0.0f;
-            solver.ScaleLerpTime = 0.0f;
+            Solver solver = AddSolverComponent<T>(cube);
 
             SolverHandler handler = cube.GetComponent<SolverHandler>();
             Assert.IsNotNull(handler, "GetComponent<SolverHandler>() returned null");
@@ -370,6 +416,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             setupDataList.Add(setupData);
 
             return setupData;
+        }
+
+        private T AddSolverComponent<T>(GameObject target) where T : Solver
+        {
+            T solver = target.AddComponent<T>();
+            Assert.IsNotNull(solver, "AddComponent<T>() returned null");
+
+            // Set Solver lerp times to 0 so we can process tests faster instead of waiting for transforms to update/apply
+            solver.MoveLerpTime = 0.0f;
+            solver.RotateLerpTime = 0.0f;
+            solver.ScaleLerpTime = 0.0f;
+
+            return solver;
         }
 
         private IEnumerator WaitForFrames(int frames)

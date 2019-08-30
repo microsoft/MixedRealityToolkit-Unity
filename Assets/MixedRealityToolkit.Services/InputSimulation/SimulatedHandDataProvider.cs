@@ -190,9 +190,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             SimulateUserInput();
 
             bool handDataChanged = false;
-            // TODO: DateTime.UtcNow can be quite imprecise, better use Stopwatch.GetTimestamp
-            // https://stackoverflow.com/questions/2143140/c-sharp-datetime-now-precision
-            long timestamp = DateTime.UtcNow.Ticks;
 
             // Cache the generator delegates so we don't gc alloc every frame
             if (generatorLeft == null)
@@ -205,8 +202,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 generatorRight = HandStateRight.FillCurrentFrame;
             }
 
-            handDataChanged |= handDataLeft.UpdateWithTimestamp(timestamp, HandStateLeft.IsTracked, HandStateLeft.IsPinching, generatorLeft);
-            handDataChanged |= handDataRight.UpdateWithTimestamp(timestamp, HandStateRight.IsTracked, HandStateRight.IsPinching, generatorRight);
+            handDataChanged |= handDataLeft.Update(HandStateLeft.IsTracked, HandStateLeft.IsPinching, generatorLeft);
+            handDataChanged |= handDataRight.Update(HandStateRight.IsTracked, HandStateRight.IsPinching, generatorRight);
 
             return handDataChanged;
         }
