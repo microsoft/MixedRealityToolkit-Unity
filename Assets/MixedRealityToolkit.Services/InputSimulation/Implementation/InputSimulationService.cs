@@ -191,28 +191,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             Vector3 mouseDelta = UpdateMouseDelta();
 
-            if (profile.IsCameraControlEnabled)
-            {
-                EnableCameraControl();
-                if (CameraCache.Main)
-                {
-                    cameraControl.UpdateTransform(CameraCache.Main.transform, mouseDelta);
-                }
-            }
-            else
-            {
-                DisableCameraControl();
-            }
-
-            if (profile.SimulateEyePosition)
-            {
-                // In the simulated eye gaze condition, let's set the eye tracking calibration status automatically to true
-                InputSystem?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, true);
-
-                // Update the simulated eye gaze with the current camera position and forward vector
-                InputSystem?.EyeGazeProvider?.UpdateEyeGaze(this, new Ray(CameraCache.Main.transform.position, CameraCache.Main.transform.forward), DateTime.UtcNow);
-            }
-
             switch (HandSimulationMode)
             {
                 case HandSimulationMode.Disabled:
@@ -222,12 +200,42 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 case HandSimulationMode.Articulated:
                 case HandSimulationMode.Gestures:
                     EnableHandSimulation();
-
-                    if (UserInputEnabled)
-                    {
-                        handDataProvider.UpdateHandData(HandDataLeft, HandDataRight, mouseDelta);
-                    }
                     break;
+            }
+
+            if (profile.IsCameraControlEnabled)
+            {
+                EnableCameraControl();
+            }
+            else
+            {
+                DisableCameraControl();
+            }
+
+            if (UserInputEnabled)
+            {
+                bool enableCameraControl = true; 
+                if (handDataProvider != null)
+                {
+                    handDataProvider.UpdateHandData(HandDataLeft, HandDataRight, mouseDelta);
+
+                    // Enable camera control only when hand control isn't active
+                    enableCameraControl = !(handDataProvider.IsSimulatingLeft || handDataProvider.IsSimulatingRight);
+                }
+
+                if (cameraControl != null && enableCameraControl && CameraCache.Main)
+                {
+                    cameraControl.UpdateTransform(CameraCache.Main.transform, mouseDelta);
+                }
+            }
+
+            if (profile.SimulateEyePosition)
+            {
+                // In the simulated eye gaze condition, let's set the eye tracking calibration status automatically to true
+                InputSystem?.EyeGazeProvider?.UpdateEyeTrackingStatus(this, true);
+
+                // Update the simulated eye gaze with the current camera position and forward vector
+                InputSystem?.EyeGazeProvider?.UpdateEyeGaze(this, new Ray(CameraCache.Main.transform.position, CameraCache.Main.transform.forward), DateTime.UtcNow);
             }
         }
 
