@@ -18,6 +18,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
     [CustomEditor(typeof(Canvas))]
     public class MixedRealityCanvasInspector : Editor
     {
+        private static readonly GUIContent makeMRTKCanvas = new GUIContent("Convert to MRTK Canvas", "Configures the GameObject for MRKT use:\n1. Switches Canvas to world space\n2. Removes world space Camera\n3. Ensures GraphicRaycaster component\n4. Ensures CanvasUtility component");
+        private static readonly GUIContent removeMRTKCanvas = new GUIContent("Convert to Unity Canvas", "Configures the GameObject for regular use:\n1. Removes CanvasUtility component\n2. Removes NearInteractionTouchableUnityUI component");
+
         private MethodInfo sortingLayerField;
         private MethodInfo getDisplayNames;
         private MethodInfo getDisplayIndices;
@@ -41,14 +44,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private static class Styles
         {
-            public static GUIContent eventCamera = EditorGUIUtility.TrTextContent("Event Camera", "The Camera which the events are triggered through. This is used to determine clicking and hover positions if the Canvas is in World Space render mode.");
-            public static GUIContent renderCamera = EditorGUIUtility.TrTextContent("Render Camera", "The Camera which will render the canvas. This is also the camera used to send events.");
-            public static GUIContent sortingOrder = EditorGUIUtility.TrTextContent("Sort Order", "The order in which Screen Space - Overlay canvas will render");
-            public static string s_RootAndNestedMessage = "Cannot multi-edit root Canvas together with nested Canvas.";
-            public static GUIContent m_SortingLayerStyle = EditorGUIUtility.TrTextContent("Sorting Layer", "Name of the Renderer's sorting layer");
-            public static GUIContent targetDisplay = EditorGUIUtility.TrTextContent("Target Display", "Display on which to render the canvas when in overlay mode");
-            public static GUIContent m_SortingOrderStyle = EditorGUIUtility.TrTextContent("Order in Layer", "Renderer's order within a sorting layer");
-            public static GUIContent m_ShaderChannel = EditorGUIUtility.TrTextContent("Additional Shader Channels");
+            public const string s_RootAndNestedMessage = "Cannot multi-edit root Canvas together with nested Canvas.";
+            public static readonly GUIContent eventCamera = EditorGUIUtility.TrTextContent("Event Camera", "The Camera which the events are triggered through. This is used to determine clicking and hover positions if the Canvas is in World Space render mode.");
+            public static readonly GUIContent renderCamera = EditorGUIUtility.TrTextContent("Render Camera", "The Camera which will render the canvas. This is also the camera used to send events.");
+            public static readonly GUIContent sortingOrder = EditorGUIUtility.TrTextContent("Sort Order", "The order in which Screen Space - Overlay canvas will render");
+            public static readonly GUIContent m_SortingLayerStyle = EditorGUIUtility.TrTextContent("Sorting Layer", "Name of the Renderer's sorting layer");
+            public static readonly GUIContent targetDisplay = EditorGUIUtility.TrTextContent("Target Display", "Display on which to render the canvas when in overlay mode");
+            public static readonly GUIContent m_SortingOrderStyle = EditorGUIUtility.TrTextContent("Order in Layer", "Renderer's order within a sorting layer");
+            public static readonly GUIContent m_ShaderChannel = EditorGUIUtility.TrTextContent("Additional Shader Channels");
         }
 
         private bool m_AllNested = false;
@@ -265,7 +268,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (isMRTKCanvas)
             {
-                if (GUILayout.Button("Revert MRTK canvas"))
+                if (GUILayout.Button(removeMRTKCanvas))
                 {
                     EditorApplication.delayCall += () =>
                     {
@@ -287,7 +290,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             else
             {
-                if (GUILayout.Button("Make MRTK canvas"))
+                if (GUILayout.Button(makeMRTKCanvas))
                 {
                     if (canvas.GetComponent<GraphicRaycaster>() == null)
                         Undo.AddComponent<GraphicRaycaster>(canvas.gameObject);
