@@ -11,14 +11,15 @@
 // play mode tests in this check.
 
 using Microsoft.MixedReality.Toolkit.UI;
-using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.TestTools;
-using System.Collections;
-using UnityEditor;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using NUnit.Framework;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.TestTools;
+using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
@@ -202,8 +203,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             bool buttonTriggered = false;
             Interactable interactableComponent = testButton.GetComponent<Interactable>();
-            Assert.IsNotNull(interactableComponent);
-            interactableComponent.OnClick.AddListener(() =>
+            Button buttonComponent = testButton.GetComponent<Button>();
+            Assert.IsTrue(interactableComponent != null || buttonComponent != null, "Depending on button type, there should be either an Interactable or a UnityUI Button on the control");
+
+            var onClickEvent = (interactableComponent != null) ? interactableComponent.OnClick : buttonComponent.onClick;
+
+            onClickEvent.AddListener(() =>
             {
                 buttonTriggered = true;
             });
