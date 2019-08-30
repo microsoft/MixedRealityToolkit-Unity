@@ -32,7 +32,7 @@ public class PrintPointerEvents : MonoBehaviour, IMixedRealityPointerHandler
 }
 ```
 
-## How to add near **grab** interactions
+## How to add near grab interactions
 1. Make sure you have a [SpherePointer](Pointers.md#spherepointer) in you MRTK pointer profile. If you are using the default MRTK profile or the default HoloLens 2 profile, you will have this already. If you have a custom profile, look under Input / Pointers  / Pointer Options. Make sure that for the "articulated hand" controller type you have an entry that points to the GrabPointer prefab under MRTK.SDK/Features/UX/Prefabs, or create your own prefab and add a [SpherePointer](Pointers.md#spherepointer).
 
 1. Pick an object that you want to make grabbable. Any ancestor of that object will be able to receive pointer events. For example, you can add a cube to the scene.
@@ -46,7 +46,7 @@ public class PrintPointerEvents : MonoBehaviour, IMixedRealityPointerHandler
 1. On that object or one of its ancestors, add a component that implements [IMixedRealityPointerHandler](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler). You can for example add [ManipulationHandler](xref:Microsoft.MixedReality.Toolkit.UI.ManipulationHandler).
 
 
-## How to add near **touch** interactions to collidables
+## How to add near touch interactions to collidables
 > If you have UnityUI that you would like to make work with touch events, please read the next section
 
 1. Make sure you have a [PokePointer](Pointers.md#pokepointer) in your MRTK pointer profile. If you are using the default MRTK profile or the default HoloLens 2 profile, you will have this already. If you have a custom profile, look under Input / Pointers  / Pointer Options. Make sure that for the "articulated hand" controller type you have an entry that points to the PokePointer prefab under MRTK.SDK/Features/UX/Prefabs, or create your own prefab and add a [PokePointer](Pointers.md#pokepointer).
@@ -67,7 +67,7 @@ public class PrintPointerEvents : MonoBehaviour, IMixedRealityPointerHandler
 
 1. If you'd like to make your collider touchable from all directions, add a [NearInteractionTouchableVolume](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableVolume) instead.
 
-## How to add near **touch** interactions to **UnityUI**
+## How to add near touch interactions to UnityUI
 1. Make sure you have a [PokePointer](Pointers.md#pokepointer) in your MRTK pointer profile. If you are using the default MRTK profile or the default HoloLens 2 profile, you will have this already. If you have a custom profile, open your custom profile and go to look under Input / Pointers  / Pointer Options. Make sure that for the "articulated hand" controller type you have an entry that points to the PokePointer prefab under MRTK.SDK/Features/UX/Prefabs, or create your own prefab and add a [PokePointer](Pointers.md#pokepointer).
 
 1. Add a UnityUI canvas to your scene.
