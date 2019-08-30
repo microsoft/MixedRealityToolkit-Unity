@@ -98,6 +98,55 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// Tests that an interactable component can be added to a GameObject
+        /// at runtime, and an OnFocus enter and exit event handler can be added
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator TestHoverEventsRuntime()
+        {
+            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.position = Vector3.right;
+            PlayModeTestUtilities.PushHandSimulationProfile();
+            PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
+
+            // This should not throw an exception
+            var interactable = cube.AddComponent<Interactable>();
+            var ie = new InteractableEvent();
+            var fr = new InteractableOnFocusReceiver(ie.Event);
+            ie.Receiver = fr;
+            interactable.Events.Add(ie);
+            bool didHover = false;
+            ie.Event.AddListener(() =>
+            {
+                didHover = true;
+                Debug.Log("Hover on " + interactable.StateManager.CurrentState().ToString());
+            });
+
+            bool didUnHover = false;
+            fr.OnFocusOff.AddListener(() =>
+            {
+                didUnHover = true;
+                Debug.Log("Hover OFF " + interactable.StateManager.CurrentState().ToString());
+            });
+
+            yield return null;
+            CameraCache.Main.transform.LookAt(interactable.transform);
+            yield return null;
+            CameraCache.Main.transform.LookAt(Vector3.forward);
+            yield return null;
+
+            Assert.True(didHover, "Interactable did not receive hover event");
+            Assert.True(didUnHover, "Interactable did not receiv un-hover event");
+
+            // clean up
+            GameObject.Destroy(cube);
+            PlayModeTestUtilities.PopHandSimulationProfile();
+
+            yield return null;
+        }
+
+        /// <summary>
         /// Instantiates a push button prefab and uses simulated hand input to press it.
         /// </summary>
         /// <returns></returns>

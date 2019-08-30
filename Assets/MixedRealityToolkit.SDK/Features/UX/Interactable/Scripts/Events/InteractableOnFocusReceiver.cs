@@ -15,7 +15,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public UnityEvent OnFocusOff = new UnityEvent();
 
         private bool hadFocus;
-        private State lastState;
 
         public InteractableOnFocusReceiver(UnityEvent ev) : base(ev)
         {
@@ -25,11 +24,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc />
         public override void OnUpdate(InteractableStates state, Interactable source)
         {
-            bool changed = state.CurrentState() != lastState;
-
             bool hasFocus = state.GetState(InteractableStates.InteractableStateEnum.Focus).Value > 0;
 
-            if (hadFocus != hasFocus && changed)
+            if (hadFocus != hasFocus)
             {
                 if (hasFocus)
                 {
@@ -42,7 +39,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             hadFocus = hasFocus;
-            lastState = state.CurrentState();
         }
     }
 }
