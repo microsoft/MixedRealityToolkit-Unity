@@ -9685,7 +9685,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html",
-          "hash": "gEtcCOK7gYe78mwxh+rOOw=="
+          "hash": "YR+7UMP97RedGm+3jOTdHg=="
         }
       },
       "is_incremental": false,
@@ -9697,7 +9697,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.ColliderNearInteractionTouchable.html",
-          "hash": "MznYklPi2O1FN6vug6n3Og=="
+          "hash": "g+UCB2/TWiCK4N/ppc2Rkw=="
         }
       },
       "is_incremental": false,
@@ -11461,7 +11461,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.MixedRealityInputModule.html",
-          "hash": "qHuKb5JwCMvCM+BRku2zRQ=="
+          "hash": "mm1xxiR/v8XwoUkH3skI9w=="
         }
       },
       "is_incremental": false,
@@ -11653,7 +11653,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.html",
-          "hash": "ue07MW67ENrd4I+uoOj5+g=="
+          "hash": "+QAJYs5fLb5RtTiE8a6r7w=="
         }
       },
       "is_incremental": false,
@@ -11677,7 +11677,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableUnityUI.html",
-          "hash": "GeALJiKudyXInEThE33R5w=="
+          "hash": "J4ukk9rBoDEnYW1k3OOg3Q=="
         }
       },
       "is_incremental": false,
@@ -11689,7 +11689,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableVolume.html",
-          "hash": "aLBkU6EcCny1nPnALZmJVg=="
+          "hash": "8WLFkfkvQA9/WVNxfpZeBQ=="
         }
       },
       "is_incremental": false,
@@ -11773,7 +11773,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.PokePointer.html",
-          "hash": "+EyTDuPCWf3Onl9yP0//2w=="
+          "hash": "GlZYGWSTI9NLea5doU9ztw=="
         }
       },
       "is_incremental": false,
@@ -13981,7 +13981,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.NearInteractionTouchableTests.html",
-          "hash": "wM5bcj9QI4Dyw/J1NBtquQ=="
+          "hash": "TeaFPO44N9PvFndoxg+8vw=="
         }
       },
       "is_incremental": false,
@@ -13993,7 +13993,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.PlayModeTestUtilities.html",
-          "hash": "cFZqPZOv6JsTSBE4MGwPVw=="
+          "hash": "U1A/uFI0rXFJH1AKxM3JbQ=="
         }
       },
       "is_incremental": false,

@@ -127,6 +127,45 @@
   </h3>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Tests_NearInteractionTouchableTests_NearInteractionTouchableDistance_" data-uid="Microsoft.MixedReality.Toolkit.Tests.NearInteractionTouchableTests.NearInteractionTouchableDistance*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Tests_NearInteractionTouchableTests_NearInteractionTouchableDistance" data-uid="Microsoft.MixedReality.Toolkit.Tests.NearInteractionTouchableTests.NearInteractionTouchableDistance">NearInteractionTouchableDistance()</h4>
+  <div class="markdown level1 summary"><p>Test minimum touch distance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator NearInteractionTouchableDistance()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerator</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Tests_NearInteractionTouchableTests_NearInteractionTouchableDistance_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Near interaction uses two separate distance calculations:</p>
+<ol>
+<li>The PokePointer uses the DistanceToTouchable to determine the closest touchable. This distance value is also used compared to PokePointer.TouchableDistance to determine the set of eligible touchables in the first place.
+There is no explicit spec which space this distance is computed in, although it should be in world space. Due to the way touchables convert pointer position into local space first and then do a scale-only inverse transform there may be errors.</li>
+<li>After the PokePointer has selected the closest touchable, it then performs a raycast against either the collider or the UnityUI canvas, depending on type. The (world space) length of that ray is then used as the actual distance for triggering touch events.
+When the ray length is negative the TouchDown event is raised and the touchable is &quot;down&quot;.
+When the touchable is &quot;down&quot; and the ray length is <em>greater</em> than DebounceThreshold the TouchUp event is raised and the touchable is released.</li>
+</ol>
+<p>The normal vector for performing the ray cast, however, is still the one returned by the first distance calculation.</p>
+<p>NearInteractionTouchable also calculates distance from the object center, but the raycast ignores this and uses distance from the collider.
+UnityUI OTOH does a raycast against a flat canvas, so the two distance values <em>should</em> match (but it's not guaranteed).</p>
+</div>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Tests_NearInteractionTouchableTests_NearInteractionTouchableInstantiate_" data-uid="Microsoft.MixedReality.Toolkit.Tests.NearInteractionTouchableTests.NearInteractionTouchableInstantiate*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_NearInteractionTouchableTests_NearInteractionTouchableInstantiate" data-uid="Microsoft.MixedReality.Toolkit.Tests.NearInteractionTouchableTests.NearInteractionTouchableInstantiate">NearInteractionTouchableInstantiate()</h4>
   <div class="markdown level1 summary"><p>Test creating adding a NearInteractionTouchable to GameObject programmatically.

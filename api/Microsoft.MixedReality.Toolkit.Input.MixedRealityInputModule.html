@@ -276,13 +276,24 @@
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputModule_GetMousePointerEventDataForMrtkPointer_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputModule.GetMousePointerEventDataForMrtkPointer*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputModule_GetMousePointerEventDataForMrtkPointer_Microsoft_MixedReality_Toolkit_Input_MixedRealityInputModule_PointerData_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputModule.GetMousePointerEventDataForMrtkPointer(Microsoft.MixedReality.Toolkit.Input.MixedRealityInputModule.PointerData)">GetMousePointerEventDataForMrtkPointer(MixedRealityInputModule.PointerData)</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputModule_Process_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputModule.Process*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputModule_Process" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputModule.Process">Process()</h4>
+  <div class="markdown level1 summary"><p>Process the active pointers from MixedRealityInputManager and all other Unity input.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void Process()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputModule_ResetMousePointerEventData_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputModule.ResetMousePointerEventData*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputModule_ResetMousePointerEventData_Microsoft_MixedReality_Toolkit_Input_MixedRealityInputModule_PointerData_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputModule.ResetMousePointerEventData(Microsoft.MixedReality.Toolkit.Input.MixedRealityInputModule.PointerData)">ResetMousePointerEventData(MixedRealityInputModule.PointerData)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected MouseState GetMousePointerEventDataForMrtkPointer(MixedRealityInputModule.PointerData pointerData)</code></pre>
+    <pre><code class="lang-csharp hljs">protected void ResetMousePointerEventData(MixedRealityInputModule.PointerData pointerData)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -301,32 +312,6 @@
       </tr>
     </tbody>
   </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">MouseState</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputModule_Process_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputModule.Process*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputModule_Process" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputModule.Process">Process()</h4>
-  <div class="markdown level1 summary"><p>Process the active pointers from MixedRealityInputManager and all other Unity input.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void Process()</code></pre>
-  </div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputModule_StateForPointer_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputModule.StateForPointer*"></a>
@@ -365,6 +350,33 @@
     <tbody>
       <tr>
         <td><span class="xref">PointerEventData.FramePressState</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputModule_UpdateMousePointerEventData_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputModule.UpdateMousePointerEventData*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_MixedRealityInputModule_UpdateMousePointerEventData_Microsoft_MixedReality_Toolkit_Input_MixedRealityInputModule_PointerData_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputModule.UpdateMousePointerEventData(Microsoft.MixedReality.Toolkit.Input.MixedRealityInputModule.PointerData)">UpdateMousePointerEventData(MixedRealityInputModule.PointerData)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void UpdateMousePointerEventData(MixedRealityInputModule.PointerData pointerData)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.MixedRealityInputModule.PointerData.html">MixedRealityInputModule.PointerData</a></td>
+        <td><span class="parametername">pointerData</span></td>
         <td></td>
       </tr>
     </tbody>

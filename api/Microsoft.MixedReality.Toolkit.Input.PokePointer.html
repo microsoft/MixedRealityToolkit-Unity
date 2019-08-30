@@ -162,9 +162,6 @@
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_CursorModifier">BaseControllerPointer.CursorModifier</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_IsInteractionEnabled">BaseControllerPointer.IsInteractionEnabled</a>
-    </div>
-    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_IsActive">BaseControllerPointer.IsActive</a>
     </div>
     <div>
@@ -284,8 +281,8 @@
 <p>If a poke pointer has no <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.PokePointer.html#Microsoft_MixedReality_Toolkit_Input_PokePointer_CurrentTouchableObjectDown">CurrentTouchableObjectDown</a>, then it will try to select one from the Reachable Objects based on:</p>
 <ol>
 <li>Layer mask priority: Lower-priority layer masks will only be considered if higher-priority layers don't contain any Reachable Objects.</li>
-<li>Distance: the closest object in the highest priority layers is selected based on <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html#Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_DistanceToTouchable_">DistanceToTouchable</a>.</li>
-<li>Poke Threshold: The object becomes the <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.PokePointer.html#Microsoft_MixedReality_Toolkit_Input_PokePointer_CurrentTouchableObjectDown">CurrentTouchableObjectDown</a> once it crosses the <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html#Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_PokeThreshold">PokeThreshold</a> distance (behind the surface). At this point the <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityTouchHandler_OnTouchStarted_">OnTouchStarted</a> or <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityPointerHandler_OnPointerDown_">OnPointerDown</a> event is raised.</li>
+<li>Touchable Distance: the closest object in the highest priority layers is selected based on <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html#Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_DistanceToTouchable_">DistanceToTouchable</a>.</li>
+<li>Ray Distance: The object becomes the <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.PokePointer.html#Microsoft_MixedReality_Toolkit_Input_PokePointer_CurrentTouchableObjectDown">CurrentTouchableObjectDown</a> once the ray cast distance becomes negative (behind the surface). At this point the <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityTouchHandler_OnTouchStarted_">OnTouchStarted</a> or <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityPointerHandler_OnPointerDown_">OnPointerDown</a> event is raised.</li>
 </ol>
 <p>If a poke pointer <em>does</em>  have a <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.PokePointer.html#Microsoft_MixedReality_Toolkit_Input_PokePointer_CurrentTouchableObjectDown">CurrentTouchableObjectDown</a> it will not consider any other object, until the <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html#Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_DistanceToTouchable_">DistanceToTouchable</a> exceeds the <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html#Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_DebounceThreshold">DebounceThreshold</a> (in front of the surface). At this point the active object is cleared and the <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityTouchHandler_OnTouchCompleted_">OnTouchCompleted</a> or <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityPointerHandler_OnPointerUp_">OnPointerUp</a> event is raised.</p>
 </div>
@@ -447,9 +444,42 @@ These are all the game objects in the subtree of the closest touchable component
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_IsInteractionEnabled_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.IsInteractionEnabled*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_IsInteractionEnabled" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.IsInteractionEnabled">IsInteractionEnabled</h4>
+  <div class="markdown level1 summary"><p>Is the pointer active and have the conditions for the interaction been satisfied to enable the interaction?</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool IsInteractionEnabled { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseControllerPointer.html#Microsoft_MixedReality_Toolkit_Input_BaseControllerPointer_IsInteractionEnabled">BaseControllerPointer.IsInteractionEnabled</a></div>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_IsNearObject_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.IsNearObject*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_IsNearObject" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.IsNearObject">IsNearObject</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Returns true if the hand is near anything that's grabbable
+Currently performs a sphere cast in the direction of the hand ray.
+Currently anything that has a collider is considered &quot;Grabbable&quot;
+Eventually we need to filter based on things that can respond
+to grab events.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -706,8 +736,7 @@ These are all the game objects in the subtree of the closest touchable component
   
   <a id="Microsoft_MixedReality_Toolkit_Input_PokePointer_OnPreSceneQuery_" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.OnPreSceneQuery*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_PokePointer_OnPreSceneQuery" data-uid="Microsoft.MixedReality.Toolkit.Input.PokePointer.OnPreSceneQuery">OnPreSceneQuery()</h4>
-  <div class="markdown level1 summary"><p>Called before performing the scene query.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">

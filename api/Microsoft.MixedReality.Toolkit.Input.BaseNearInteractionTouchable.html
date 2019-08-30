@@ -156,30 +156,6 @@ The object layer must be included of the <a class="xref" href="Microsoft.MixedRe
       </tr>
     </tbody>
   </table>
-  
-  
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_pokeThreshold" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.pokeThreshold">pokeThreshold</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected float pokeThreshold</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="properties">Properties
   </h3>
   
@@ -191,7 +167,7 @@ The object layer must be included of the <a class="xref" href="Microsoft.MixedRe
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float DebounceThreshold { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public float DebounceThreshold { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -238,36 +214,6 @@ then the Touch Completed event is raised and the touchable object is released by
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_PokeThreshold_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.PokeThreshold*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_PokeThreshold" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.PokeThreshold">PokeThreshold</h4>
-  <div class="markdown level1 summary"><p>Distance behind the surface at which the touchable becomes active.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float PokeThreshold { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_PokeThreshold_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>When the pointer distance to the touchable object becomes less than -PokeThreshold (i.e. behind the surface),
-then the Touch Started event is raised and the touchable object becomes tracked by the pointer.</p>
-</div>
   <h3 id="methods">Methods
   </h3>
   
