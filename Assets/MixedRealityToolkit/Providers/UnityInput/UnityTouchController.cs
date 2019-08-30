@@ -112,6 +112,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 lastPose.Rotation = InputSource.Pointers[0].Rotation;
                 InputSystem?.RaiseSourcePoseChanged(InputSource, this, lastPose);
 
+                // Send dragged event, to inform manipulation handlers.
+                InputSystem?.RaisePointerDragged(InputSource.Pointers[0], Interactions[1].MixedRealityInputAction);
+
                 Interactions[1].PoseData = lastPose;
 
                 if (Interactions[1].Changed)
