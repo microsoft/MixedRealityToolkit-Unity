@@ -76,7 +76,7 @@ MRTK は、以下を実行することで Mixed Reality ソリューションを
 
 [Hand Interaction のサンプルシーン](README_HandInteractionExamples.md) は、MRTK の様々な UX コントロールとインタラクションを紹介しているため、MRTK を始めるには最適な場所です。はじめに、MRTK をインポートし、サンプルシーンを開いて、Editor でシーンを探索します。
 
-1. 新しい Unity プロジェクトを作成し、[上記の手順](#import-mrtk-packages-into-your-unity-project) に従って、**Foundation** と **Examples** の Unity パッケージの両方をインポートします。
+1. 新しい Unity プロジェクトを作成し、[上記の手順](#mrtk-のパッケージを-unity-プロジェクトにインポートする) に従って、**Foundation** と **Examples** の Unity パッケージの両方をインポートします。
 1. `Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes\HandInteractionExamples` の下の HandInteractionExamples　のシーンを開きます。
 
 1. 「TMP Essentials」をインポートするかを尋ねるプロンプトが表示されます。
@@ -113,7 +113,7 @@ Editor 内の入力シミュレーション を使って、[手](InputSimulation
 
 1. 新規のプロジェクトを作成する、あるいは新しいシーンを現在のプロジェクトに作成します。
 
-1. MRTK のパッケージが[上記の手順](#MRTK-のパッケージを-Unity-プロジェクトにインポートする) に従ってインポートされていることを確認します。(Examples は必須ではありませんが、 Foundation と Examles の両方をインポートすることを推奨します。 )
+1. MRTK のパッケージが[上記の手順](#mrtk-のパッケージを-unity-プロジェクトにインポートする) に従ってインポートされていることを確認します。(Examples は必須ではありませんが、 Foundation と Examles の両方をインポートすることを推奨します。 )
 
 1. メニューバーから、Mixed Reality Toolkit -> Add to Scene and Configure　を選択します。
 
@@ -155,8 +155,8 @@ Editor 内の入力シミュレーション を使って、[手](InputSimulation
 
 * [PressableButton](README_Button.md) をシーンに追加する。(最初は、 `PressableButtonPlated` プレハブを使うことを推奨します。)
 * キューブをシーンに追加して、それを [ManipulationHandler](README_ManipulationHandler.md) コンポーネントを使って動かせるようにする。
-* [building blocks for UI and interactions](#UIとインタラクションのビルディングブロック) で UX コントロール について学ぶ。
-* [入力シミュレーションのガイド](InputSimulation/InputSimulationService.md) を読んで、Editor 内で手の入力をシミュレートする方法を学ぶ。)
+* [UI とインタラクションのビルディングブロック](#ui-とインタラクションのビルディングブロック) で UX コントロール について学ぶ。
+* [入力シミュレーションのガイド](InputSimulation/InputSimulationService.md) を読んで、Editor 内で手の入力をシミュレートする方法を学ぶ。
 * [Mixed Reality 設定ガイド](MixedRealityConfigurationGuide.md) で MRTK Configuration profile の使い方を学ぶ。
 
 ## UI とインタラクションのビルディングブロック
