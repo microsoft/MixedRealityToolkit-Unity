@@ -34,11 +34,22 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
         private static readonly Dictionary<int, UnityTouchController> ActiveTouches = new Dictionary<int, UnityTouchController>();
 
+        private List<UnityTouchController> touchesToRemove = new List<UnityTouchController>();
+
         /// <inheritdoc />
         public override void Update()
         {
+
+            // Ensure that touch up and source lost events are at least one frame apart.
+            for (int i = 0; i < touchesToRemove.Count; i++)
+            {
+                IMixedRealityController controller = touchesToRemove[i];
+                InputSystem?.RaiseSourceLost(controller.InputSource, controller);
+            }
+            touchesToRemove.Clear();
+
             int touchCount = UInput.touchCount;
-            for (var i = 0; i < touchCount; i++)
+            for (int i = 0; i < touchCount; i++)
             {
                 Touch touch = UInput.touches[i];
 
@@ -121,6 +132,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             }
 
             inputSystem?.RaiseSourceDetected(controller.InputSource, controller);
+
+            controller.TouchData = touch;
             controller.StartTouch();
             UpdateTouchData(touch, ray);
         }
@@ -149,11 +162,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 return;
             }
 
-            ActiveTouches.Remove(touch.fingerId);
             controller.TouchData = touch;
             controller.EndTouch();
-            IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
-            inputSystem?.RaiseSourceLost(controller.InputSource, controller);
+            // Schedule the source lost event.
+            touchesToRemove.Add(controller);
+            // Remove from the active collection
+            ActiveTouches.Remove(touch.fingerId);
         }
     }
 }
