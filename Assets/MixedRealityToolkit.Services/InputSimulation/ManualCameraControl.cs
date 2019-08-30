@@ -12,13 +12,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         private MixedRealityInputSimulationProfile profile;
 
-        private bool isMouseJumping = false;
         private bool isGamepadLookEnabled = true;
         private bool isFlyKeypressEnabled = true;
         private Vector3 lastTrackerToUnityTranslation = Vector3.zero;
         private Quaternion lastTrackerToUnityRotation = Quaternion.identity;
-        private bool wasLooking = false;
-        private bool wasCursorVisible = true;
+
+        private static readonly KeyBinding cancelRotationKey = KeyBinding.FromKey(KeyCode.Escape);
+        private readonly MouseRotationProvider mouseRotation = new MouseRotationProvider();
 
         public ManualCameraControl(MixedRealityInputSimulationProfile _profile)
         {
@@ -118,28 +118,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            if (this.ShouldMouseLook)
+            mouseRotation.Update(profile.MouseLookButton, cancelRotationKey, profile.MouseLookToggle);
+            if (mouseRotation.IsRotating)
             {
-                if (!this.wasLooking)
-                {
-                    OnStartMouseLook();
-                }
-                else
-                {
-                    rot.x += -InputCurve(mouseDelta.y * profile.MouseRotationSensitivity);
-                    rot.y += InputCurve(mouseDelta.x * profile.MouseRotationSensitivity);
-                }
-
-                this.wasLooking = true;
-            }
-            else
-            {
-                if (this.wasLooking)
-                {
-                    OnEndMouseLook();
-                }
-
-                this.wasLooking = false;
+                rot.x += -InputCurve(mouseDelta.y * profile.MouseRotationSensitivity);
+                rot.y += InputCurve(mouseDelta.x * profile.MouseRotationSensitivity);
             }
 
             rot *= profile.ExtraMouseRotationScale;
@@ -147,111 +130,5 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return rot;
         }
 
-        private void OnStartMouseLook()
-        {
-            if (profile.MouseLookButton.BindingType == KeyBinding.KeyType.Mouse)
-            {
-                // if mousebutton is either left, right or middle
-                SetWantsMouseJumping(true);
-            }
-            else if (profile.MouseLookButton.BindingType == KeyBinding.KeyType.Key)
-            {
-                // if mousebutton is either control, shift or focused
-                UnityEngine.Cursor.lockState = CursorLockMode.Locked;
-                // save current cursor visibility before hiding it
-                wasCursorVisible = UnityEngine.Cursor.visible;
-                UnityEngine.Cursor.visible = false;
-            }
-
-            // do nothing if (this.MouseLookButton == MouseButton.None)
-        }
-
-        private void OnEndMouseLook()
-        {
-            if (profile.MouseLookButton.BindingType == KeyBinding.KeyType.Mouse)
-            {
-                // if mousebutton is either left, right or middle
-                SetWantsMouseJumping(false);
-            }
-            else if (profile.MouseLookButton.BindingType == KeyBinding.KeyType.Key)
-            {
-                // if mousebutton is either control, shift or focused
-                UnityEngine.Cursor.lockState = CursorLockMode.None;
-                UnityEngine.Cursor.visible = wasCursorVisible;
-            }
-
-            // do nothing if (this.MouseLookButton == MouseButton.None)
-        }
-
-        private bool ShouldMouseLook
-        {
-            get
-            {
-                // Only allow the mouse to control rotation when Unity has focus. This enables
-                // the player to temporarily alt-tab away without having the player look around randomly
-                // back in the Unity Game window.
-                if (!Application.isFocused)
-                {
-                    return false;
-                }
-                else
-                {
-                    if (profile.MouseLookToggle)
-                    {
-                        if (this.wasLooking)
-                        {
-                            // pressing escape will stop capture
-                            return !UnityEngine.Input.GetKeyDown(KeyCode.Escape);
-                        }
-                        else
-                        {
-                            // any kind of click will capture focus
-                            return KeyInputSystem.GetKeyDown(profile.MouseLookButton);
-                        }
-                    }
-                    else
-                    {
-                        return KeyInputSystem.GetKey(profile.MouseLookButton);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Mouse jumping is where the mouse cursor appears outside the Unity game window, but
-        /// disappears when it enters the Unity game window.
-        /// </summary>
-        /// <param name="wantsJumping">Show the cursor</param>
-        private void SetWantsMouseJumping(bool wantsJumping)
-        {
-            if (wantsJumping != this.isMouseJumping)
-            {
-                this.isMouseJumping = wantsJumping;
-
-                if (wantsJumping)
-                {
-                    // unlock the cursor if it was locked
-                    UnityEngine.Cursor.lockState = CursorLockMode.None;
-
-                    // save original state of cursor before hiding
-                    wasCursorVisible = UnityEngine.Cursor.visible;
-                    // hide the cursor
-                    UnityEngine.Cursor.visible = false;
-                }
-                else
-                {
-                    // recenter the cursor (setting lockCursor has side-effects under the hood)
-                    UnityEngine.Cursor.lockState = CursorLockMode.Locked;
-                    UnityEngine.Cursor.lockState = CursorLockMode.None;
-
-                    // restore the cursor
-                    UnityEngine.Cursor.visible = wasCursorVisible;
-                }
-
-    #if UNITY_EDITOR
-                UnityEditor.EditorGUIUtility.SetWantsMouseJumping(wantsJumping ? 1 : 0);
-    #endif
-            }
-        }
     }
 }

@@ -189,8 +189,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             var profile = InputSimulationProfile;
 
-            Vector3 mouseDelta = UpdateMouseDelta();
-
             switch (HandSimulationMode)
             {
                 case HandSimulationMode.Disabled:
@@ -212,6 +210,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 DisableCameraControl();
             }
 
+            Vector3 mouseDelta = UpdateMouseDelta();
             if (UserInputEnabled)
             {
                 bool enableCameraControl = true; 
