@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
-using UnityEditor;
 using UnityEngine;
+using UnityEditor;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Editor
 {
@@ -11,12 +11,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
     public class ControllerPoseSynchronizerInspector : UnityEditor.Editor
     {
         private const string SynchronizationSettingsKey = "MRTK_Inspector_SynchronizationSettingsFoldout";
-        private static readonly GUIContent[] HandednessSelections =
-{
-            new GUIContent("Left"),
-            new GUIContent("Right"),
-            new GUIContent("Both"),
-        };
 
         private static bool synchronizationSettingsFoldout = true;
 
