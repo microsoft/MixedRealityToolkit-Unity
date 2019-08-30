@@ -7,7 +7,7 @@ Mixed Reality Toolkit 診断システムは、アプリケーションの問題�
 ## はじめに
 
 > [!IMPORTANT]
-> 診断システムは、製品開発サイクル全体を通じて有効にすることを_**強く**_、最終バージョンをビルドしてリリースする前の最後の変更として無効にすることをお勧めします。
+> 診断システムは、製品開発サイクル全体を通じて有効にし、最終バージョンをビルドしてリリースする前の最後の変更として無効にすることを **_強く_** お勧めします。
 
 1. [診断を有効にする](#診断を有効に) 診断システム
 2. [診断のオプションを設定する](#診断のオプションを設定する) 診断オプション
@@ -15,15 +15,15 @@ Mixed Reality Toolkit 診断システムは、アプリケーションの問題�
 
 ### 診断を有効に
 
-診断システムは、MixedRealityToolkit オブジェクト (または別のサービスレジストラコンポーネント (service registrar component)) コンポーネントによって管理されます。
+診断システムは、MixedRealityToolkit オブジェクト (または別の[サービス登録 (service registar)](xref:Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar)) コンポーネントによって管理されます。
 
 次の手順では、MixedRealityToolkit オブジェクトの使用を想定しています。他のサービスレジストラに必要な手順は異なる場合があります。
 
-1. Hierarchy で MixedRealityToolkit オブジェクトを選択します。
+1. シーンヒエラルキーで MixedRealityToolkit オブジェクトを選択します。
 
-![シーンHierarchyでMRTKの設定](../../Documentation/Images/MRTK_ConfiguredHierarchy.png)
+![シーンヒエラルキーでMRTKの設定](../../Documentation/Images/MRTK_ConfiguredHierarchy.png)
 
-2. Inspector を [Diagnostics System] セクションに移動し、[Enable] にチェックを入れます。
+2. インスペクターで「Diagnostics System」セクションに移動し、「Enable」にチェックを入れます。
 
 ![診断を有効にする](../../Documentation/Images/Diagnostics/MRTKConfig_Diagnostics.png)
 
