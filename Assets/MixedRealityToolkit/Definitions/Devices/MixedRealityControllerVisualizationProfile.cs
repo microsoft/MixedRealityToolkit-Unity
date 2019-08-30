@@ -183,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             return setting.ControllerType != null &&
                 setting.ControllerType.Type == controllerType &&
-                (setting.Handedness == hand || setting.Handedness == Handedness.Both);
+                (setting.Handedness & hand) != 0;
         }
     }
 }

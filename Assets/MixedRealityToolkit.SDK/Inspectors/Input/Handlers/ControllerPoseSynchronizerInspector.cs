@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
-using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Editor
 {
@@ -11,7 +11,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
     public class ControllerPoseSynchronizerInspector : UnityEditor.Editor
     {
         private const string SynchronizationSettingsKey = "MRTK_Inspector_SynchronizationSettingsFoldout";
-        private static readonly string[] HandednessLabels = { "Left", "Right" };
+        private static readonly GUIContent[] HandednessSelections =
+{
+            new GUIContent("Left"),
+            new GUIContent("Right"),
+            new GUIContent("Both"),
+        };
 
         private static bool synchronizationSettingsFoldout = true;
 
@@ -53,16 +58,17 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
             if (DrawHandednessProperty)
             {
-                var currentHandedness = (Handedness)handedness.enumValueIndex;
-                var handIndex = currentHandedness == Handedness.Right ? 1 : 0;
+                var currentHandedness = handedness.intValue - 1;
+
+                // Reset in case it was set to something other than left, right or both.
+                if (currentHandedness < 0 || currentHandedness > 2) { currentHandedness = 0; }
 
                 EditorGUI.BeginChangeCheck();
-                var newHandednessIndex = EditorGUILayout.Popup(handedness.displayName, handIndex, HandednessLabels);
+                var newHandednessIndex = EditorGUILayout.IntPopup(new GUIContent(handedness.displayName, handedness.tooltip), currentHandedness, HandednessSelections, null);
 
                 if (EditorGUI.EndChangeCheck())
                 {
-                    currentHandedness = newHandednessIndex == 0 ? Handedness.Left : Handedness.Right;
-                    handedness.enumValueIndex = (int)currentHandedness;
+                    handedness.intValue = currentHandedness + 1;
                 }
             }
 

@@ -20,6 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         {
             new GUIContent("Left Hand"),
             new GUIContent("Right Hand"),
+            new GUIContent("Both Hands"),
         };
 
         private SerializedProperty renderMotionControllers;
@@ -202,8 +203,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                 var handednessValue = mixedRealityControllerHandedness.intValue - 1;
 
-                // Reset in case it was set to something other than left or right.
-                if (handednessValue < 0 || handednessValue > 1) { handednessValue = 0; }
+                // Reset in case it was set to something other than left, right or both.
+                if (handednessValue < 0 || handednessValue > 2) { handednessValue = 0; }
 
                 EditorGUI.BeginChangeCheck();
                 handednessValue = EditorGUILayout.IntPopup(new GUIContent(mixedRealityControllerHandedness.displayName, mixedRealityControllerHandedness.tooltip), handednessValue, HandednessSelections, null);
