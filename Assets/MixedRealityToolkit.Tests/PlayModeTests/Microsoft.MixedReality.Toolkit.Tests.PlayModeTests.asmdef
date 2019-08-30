@@ -8,7 +8,7 @@
         "Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem",
         "Microsoft.MixedReality.Toolkit.Services.InputSystem",
         "Microsoft.MixedReality.Toolkit.Services.InputSimulation",
-        "Microsoft.MixedReality.Toolkit.Services.InputSimulation.Editor",
+        "Microsoft.MixedReality.Toolkit.Services.InputSimulation.Implementation",
         "Microsoft.MixedReality.Toolkit.Tests",
         "Unity.TextMeshPro"
     ],
