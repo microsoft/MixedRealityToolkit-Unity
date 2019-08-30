@@ -34,18 +34,21 @@ public class PrintPointerEvents : MonoBehaviour, IMixedRealityPointerHandler
 }
 ```
 
-# How to add near **grab** interactions
-1. Make sure you have a sphere pointer in you MRTK pointer profile. If you are using the default MRTK profile or the default HoloLens 2 profile, you will have this already. If you have a custom profile, look under Input / Pointers  / Pointer Options. Make sure that for the "articulated hand" controller type you have an entry that points to the GrabPointer prefab under MRTK.SDK/Features/UX/Prefabs, or create your own prefab and add a [SpherePointer](Pointers.md#spherepointer).
+## How to add near **grab** interactions
+1. Make sure you have a [SpherePointer](Pointers.md#spherepointer) in you MRTK pointer profile. If you are using the default MRTK profile or the default HoloLens 2 profile, you will have this already. If you have a custom profile, look under Input / Pointers  / Pointer Options. Make sure that for the "articulated hand" controller type you have an entry that points to the GrabPointer prefab under MRTK.SDK/Features/UX/Prefabs, or create your own prefab and add a [SpherePointer](Pointers.md#spherepointer).
 
 1. Pick an object that you want to make grabbable. Any ancestor of that object will be able to receive pointer events. For example, you can add a cube to the scene.
 
 1. Make sure there is a collider to that object.
 
+1. Make sure the layer your object is on is a grabbable layer. By default, all layers except Spatial Awareness and Ignore Raycast are grabbable. You can see which layers are grabbable by inspecting the Grab Layer Masks in your GrabPointer prefab.
+
 1. Add a [NearInteractionGrabbable](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable) to that collider.
 
 1. On that object or one of its ancestors, add a component that implements [IMixedRealityPointerHandler](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler). You can for example add [ManipulationHandler](xref:Microsoft.MixedReality.Toolkit.UI.ManipulationHandler).
 
-# How to add near **touch** interactions to collidables
+
+## How to add near **touch** interactions to collidables
 > If you have UnityUI that you would like to make work with touch events, please read the next section
 
 1. Make sure you have a [PokePointer](Pointers.md#pokepointer) in your MRTK pointer profile. If you are using the default MRTK profile or the default HoloLens 2 profile, you will have this already. If you have a custom profile, look under Input / Pointers  / Pointer Options. Make sure that for the "articulated hand" controller type you have an entry that points to the PokePointer prefab under MRTK.SDK/Features/UX/Prefabs, or create your own prefab and add a [PokePointer](Pointers.md#pokepointer).
@@ -53,6 +56,8 @@ public class PrintPointerEvents : MonoBehaviour, IMixedRealityPointerHandler
 1.  Pick a object that you want to raise pointer events. Any ancestor of that object will be able to receive pointer events. For example, you can add a cube to the scene.
 
 1. Make sure there is a collider to that object.
+
+1. Make sure the layer your object is on is a touchable layer. By default, all layers except Ignore Raycast are touchable. You can see which layers are grabbable by inspecting the Touch Layer Masks in your PokePointer prefab.
 
 1. Add a [NearInteractionTouchable](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable) to your object. 
 
@@ -64,17 +69,15 @@ public class PrintPointerEvents : MonoBehaviour, IMixedRealityPointerHandler
 
 1. If you'd like to make your collider touchable from all directions, add a [NearInteractionTouchableVolume](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableVolume) instead.
 
-# How to add near **touch** interactions to UnityUI
-1. Make sure you have a [PokePointer](Pointers.md#pokepointer) in your MRTK pointer profile. If you are using the default MRTK profile or the default HoloLens 2 profile, you will have this already. If you have a custom profile, look under Input / Pointers  / Pointer Options. Make sure that for the "articulated hand" controller type you have an entry that points to the PokePointer prefab under MRTK.SDK/Features/UX/Prefabs, or create your own prefab and add a [PokePointer](Pointers.md#pokepointer).
+## How to add near **touch** interactions to **UnityUI**
+1. Make sure you have a [PokePointer](Pointers.md#pokepointer) in your MRTK pointer profile. If you are using the default MRTK profile or the default HoloLens 2 profile, you will have this already. If you have a custom profile, open your custom profile and go to look under Input / Pointers  / Pointer Options. Make sure that for the "articulated hand" controller type you have an entry that points to the PokePointer prefab under MRTK.SDK/Features/UX/Prefabs, or create your own prefab and add a [PokePointer](Pointers.md#pokepointer).
 
-1. Add a UnitUI canvas to your scene.
+1. Add a UnityUI canvas to your scene.
 
 1. Add a [NearInteractionTouchableUnityUI](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableUnityUI) to your object. 
 
 1. Set "Events to Receive" to Pointer.
 
-## Why Near Interaction Grabbables and Touchables?
-Why we need grabbables and touchable components. Imagine we didn't have near interaction grabbable and touchables. When a user grasps, how would we decide what gameobjects to dispatch to? We only want to dispatch to the closest object, so we would look for the collider closest to the hand. But, what if that collider is in fact not interactive? We need a way to tell input system to ignore that collider. We could accomplish this just with layers, so have a "grabbable" layer, or a layer mask indicating grabbable objects. But, each object can only have one layer. Let's say we want to have something that's grabbable and touchable, but that not all touchable things should be grabbable. We would then need a grabbable and a touchable layer (to ensure that not all touchable things are grabbable). But then we would perhaps need a third layer 'grab and touchable', or to create two colliders -- one that is for the grabbable geometry, and one for the touchable geometry. Additionally, developers would need to think about and manage these layers themselves.  
 
 
 # Examples
