@@ -9,34 +9,6 @@ using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
-    // TODO: Troy -> Remove these containers* => Mark obsolete
-    /// <summary>
-    /// list of theme settings to virtualize theme values
-    /// </summary>
-    public struct ProfileSettings
-    {
-        public List<ThemeSettings> ThemeSettings;
-    }
-
-    /// <summary>
-    /// List of settings that are copied from themes
-    /// </summary>
-    public struct ThemeSettings
-    {
-        public List<ThemeDefinition> Settings;
-    }
-
-    /// <summary>
-    /// A way to cache some serializes values to pass between buttons and handlers
-    /// </summary>
-    [System.Serializable]
-    public class ThemeTarget
-    {
-        public List<ThemeStateProperty> Properties;
-        public GameObject Target;
-        public State[] States;
-    }
-
     /// <summary>
     /// The main settings found in Themes
     /// </summary>
@@ -48,8 +20,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public string AssemblyQualifiedName;
 
-        // TODO: Troy
-        // NOT used????
         public Type Type;
 
         //public InteractableThemeBase Theme;
@@ -65,9 +35,23 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public Easing Easing;
 
-        // TODO: Troy - what is this?
-        public bool IsValid;
-
         //public ThemeTarget ThemeTarget;
+
+        // TODO: Troy - Comments
+        public static ThemeDefinition? GetDefaultThemeDefinition<T>()
+        {
+            return GetDefaultThemeDefinition(typeof(T));
+        }
+
+        public static ThemeDefinition? GetDefaultThemeDefinition(Type themeType)
+        {
+            var theme = InteractableThemeBase.CreateTheme(themeType);
+            if (theme != null)
+            {
+                return theme.GetDefaultThemeDefinition();
+            }
+
+            return null;
+        }
     }
 }

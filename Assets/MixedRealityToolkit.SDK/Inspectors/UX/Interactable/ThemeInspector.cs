@@ -388,7 +388,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             var themeOptions = InteractableProfileItem.GetThemeTypes();
             var defaultType = themeOptions.Types[0];
 
-            ThemeDefinition newDefinition = CreateThemeDefinition(defaultType);
+            ThemeDefinition newDefinition = ThemeDefinition.GetDefaultThemeDefinition(defaultType).Value;
             ValidateThemeDefinition(ref newDefinition, theme.GetStates());
 
             theme.Definitions.Add(newDefinition);
@@ -419,7 +419,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             if (definition == null)
             {
                 // if not available, then create a new one
-                definition = CreateThemeDefinition(newType);
+                definition = ThemeDefinition.GetDefaultThemeDefinition(newType);
             }
 
             ThemeDefinition newDefinition = definition.Value;
@@ -429,15 +429,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
             themeDefinitions.serializedObject.Update();
             EditorUtility.SetDirty(theme);
-        }
-
-        private static ThemeDefinition CreateThemeDefinition(Type themeClassType)
-        {
-            // TODO: Troy - Confirm themeClassType extends from InteractableThemeBase
-
-            InteractableThemeBase themeBase = (InteractableThemeBase)Activator.CreateInstance(themeClassType);
-
-            return themeBase.GetDefaultThemeDefinition();
         }
 
         protected static void ValidateThemeDefinition(ref ThemeDefinition definition, State[] states)

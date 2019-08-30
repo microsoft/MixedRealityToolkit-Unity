@@ -505,7 +505,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             profileItem.Target = translateTargetObject.gameObject;
 
             interactable.Profiles = new System.Collections.Generic.List<InteractableProfileItem>() { profileItem };
-            interactable.ForceUpdateThemes();
+            interactable.RefreshSetup();
 #endif
 
             // Set the interactable to respond to the requested input action

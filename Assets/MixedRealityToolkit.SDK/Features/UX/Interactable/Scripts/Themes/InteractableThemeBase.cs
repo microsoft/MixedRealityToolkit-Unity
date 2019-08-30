@@ -31,10 +31,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public virtual bool AreShadersSupported => false;
 
-        private bool hasFirstState = false;
-
-        private int lastState = -1;
-
         //! find a way to set the default values of the properties, like scale should be Vector3.one
         // these should be custom, per theme
 
@@ -44,6 +40,27 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         // TODO: Troy - Add comment here
         public abstract ThemeDefinition GetDefaultThemeDefinition();
+
+        private bool hasFirstState = false;
+        private int lastState = -1;
+
+        public static InteractableThemeBase CreateTheme(Type themeType)
+        {
+            if (!themeType.IsSubclassOf(typeof(InteractableThemeBase)))
+            {
+                Debug.LogError($"Trying to initialize theme of type {themeType} but type does not extend {typeof(InteractableThemeBase)}");
+                return null;
+            }
+
+            return (InteractableThemeBase)Activator.CreateInstance(themeType);
+        }
+
+        public static InteractableThemeBase CreateAndInitTheme(ThemeDefinition definition, GameObject host = null)
+        {
+            var theme = CreateTheme(definition.Type);
+            theme.Init(host, definition);
+            return theme;
+        }
 
         public virtual void Init(GameObject host, ThemeDefinition definition)
         {
@@ -87,17 +104,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Loaded = true;
         }
 
-        protected float LerpFloat(float s, float e, float t)
-        {
-            return (e - s) * t + s;
-        }
-
-        protected int LerpInt(int s, int e, float t)
-        {
-            return Mathf.RoundToInt((e - s) * t) + s;
-        }
-
-
         public virtual void OnUpdate(int state, Interactable source, bool force = false)
         {
 
@@ -139,6 +145,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             lastState = state;
+        }
+
+        protected float LerpFloat(float s, float e, float t)
+        {
+            return (e - s) * t + s;
+        }
+
+        protected int LerpInt(int s, int e, float t)
+        {
+            return Mathf.RoundToInt((e - s) * t) + s;
         }
     }
 }

@@ -9,9 +9,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// The foundation of profiles that exist on an Interactable
-    /// Profiles pair themes with the objects they manipulate, based on state changes
+    /// Profiles pair ThemeContainers with the objects they manipulate, based on state changes
     /// </summary>
-
     [System.Serializable]
     public class InteractableProfileItem
     {
@@ -19,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public List<Theme> Themes;
         public bool HadDefaultTheme;
 
+        // TODO: Troy - Don't I just need InteractableThemeBase?
         /// <summary>
         /// The list of base classes whose derived classes will be included in interactable theme
         /// selection dropdowns.
@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             typeof(InteractableShaderTheme),
             typeof(InteractableColorTheme)
         };
-        
+
         /// <summary>
         /// Get a list of themes
         /// </summary>
@@ -37,21 +37,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public static InteractableTypesContainer GetThemeTypes()
         {
             return InteractableTypeFinder.Find(candidateThemeTypes, TypeRestriction.DerivedOnly);
-        }
-
-        /// <summary>
-        /// Get a new theme instance and load it with settings
-        /// </summary>
-        /// <param name="settings"></param>
-        /// <param name="host"></param>
-        /// <param name="lists"></param>
-        /// <returns></returns>
-        public static InteractableThemeBase GetTheme(ThemeDefinition settings, GameObject host)
-        {
-            Type themeType = Type.GetType(settings.AssemblyQualifiedName);
-            InteractableThemeBase theme = (InteractableThemeBase)Activator.CreateInstance(themeType);
-            theme.Init(host, settings);
-            return theme;
         }
     }
 }

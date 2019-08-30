@@ -15,8 +15,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Maintains a collection of themes that react to state changes and provide sensory feedback
     /// Passes state information and input data on to receivers that detect patterns and does stuff.
     /// </summary>
-    // TODO: Make sure all shader values are batched by theme
-
     [System.Serializable]
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Interactable.html")]
     public class Interactable :
@@ -46,19 +44,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        protected readonly List<IMixedRealityPointer> focusingPointers = new List<IMixedRealityPointer>();
-
         /// <summary>
         /// Pointers that are focusing the interactable
         /// </summary>
         public List<IMixedRealityPointer> FocusingPointers => focusingPointers;
+        protected readonly List<IMixedRealityPointer> focusingPointers = new List<IMixedRealityPointer>();
 
-        protected readonly HashSet<IMixedRealityInputSource> pressingInputSources = new HashSet<IMixedRealityInputSource>();
         /// <summary>
         /// Input sources that are pressing the interactable
         /// </summary>
         public HashSet<IMixedRealityInputSource> PressingInputSources => pressingInputSources;
-        
+        protected readonly HashSet<IMixedRealityInputSource> pressingInputSources = new HashSet<IMixedRealityInputSource>();
+
         /// <summary>
         /// Is the interactable enabled?
         /// </summary>
@@ -146,16 +143,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// The list of running theme instances to receive state changes
         /// When the dimension index changes, the list of themes that are updated changes to those assigned to that dimension.
         /// </summary>
-        public List<InteractableThemeBase> runningThemesList = new List<InteractableThemeBase>();
+        private List<InteractableThemeBase> activeThemes = new List<InteractableThemeBase>();
 
-        // the list of profile settings, so theme values are not directly effected
-        protected List<ProfileSettings> runningProfileSettings = new List<ProfileSettings>();
         // directly manipulate a theme value, skip blending
         protected bool forceUpdate = false;
 
-        //
-        // States
-        //
+        #region States
 
         /// <summary>
         /// Has focus
@@ -243,6 +236,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected State lastState;
         protected bool wasDisabled = false;
 
+        #endregion
+
         // check for isGlobal or RequiresFocus changes
         protected bool requiresFocusValueCheck;
         protected bool isGlobalValueCheck;
@@ -264,39 +259,43 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         protected Coroutine globalTimer;
 
-        // 
-        // Clicking
-        //
+        #region Click Variables
 
         // A click must occur within this many seconds after an input down
         protected float clickTime = 1.5f;
         protected Coroutine clickValidTimer;
-        // how many clicks does it take?
         protected int clickCount = 0;
         protected float globalFeedbackClickTime = 0.3f;
 
         /// <summary>
-        /// how many times this interactable was clicked
-        /// good for checking when a click event occurs.
+        /// How many times this interactable was clicked
         /// </summary>
+        /// <remarks>
+        /// Useful for checking when a click event occurs.
+        /// </remarks>
         public int ClickCount => clickCount;
 
-        // 
-        // Variables for determining gesture state
-        //
+        #endregion
+
+        #region Gesture State Variables
 
         /// <summary>
         /// The position of the controller when input down occurs.
         /// Used to determine when controller has moved far enough to trigger gesture
         /// </summary>
         protected Vector3? dragStartPosition = null;
+
         // Input must move at least this distance before a gesture is considered started, for 2D input like thumbstick
         static readonly float gestureStartThresholdVector2 = 0.1f;
+
         // Input must move at least this distance before a gesture is considered started, for 3D input
         static readonly float gestureStartThresholdVector3 = 0.05f;
+
         // Input must move at least this distance before a gesture is considered started, for
         // mixed reality pose input. This is the distance and hand or controller needs to move
         static readonly float gestureStartThresholdMixedRealityPose = 0.1f;
+
+        #endregion
 
         /// <summary>
         /// Register OnClick extra handlers
@@ -323,6 +322,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         #region InspectorHelpers
+
         /// <summary>
         /// Get a list of Mixed Reality Input Actions from the input actions profile.
         /// </summary>
@@ -413,21 +413,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             return new State[0];
         }
+
         #endregion InspectorHelpers
 
         #region MonoBehaviorImplementation
 
         protected virtual void Awake()
         {
-
             if (States == null)
             {
+                // TODO: Troy - Editor only code*
                 States = States.GetDefaultInteractableStates();
             }
+
             InputAction = ResolveInputAction(InputActionId);
-            SetupEvents();
-            SetupThemes();
-            SetupStates();
+
+            RefreshSetup();
 
             if(StartDimensionIndex > 0)
             {
@@ -455,7 +456,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (focusingPointers.Count == 0)
             {
                 ResetBaseStates();
-                ForceUpdateThemes();
+                RefreshSetup();
             }
         }
 
@@ -526,11 +527,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
 
-            for (int i = 0; i < runningThemesList.Count; i++)
+            for (int i = 0; i < activeThemes.Count; i++)
             {
-                if (runningThemesList[i].Loaded)
+                if (activeThemes[i].Loaded)
                 {
-                    runningThemesList[i].OnUpdate(StateManager.CurrentState().ActiveIndex, this, forceUpdate);
+                    activeThemes[i].OnUpdate(StateManager.CurrentState().ActiveIndex, this, forceUpdate);
                 }
             }
 
@@ -598,45 +599,27 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         /// <summary>
         /// Creates the list of theme instances based on all the theme settings
+        /// Themes will be created for the current dimension index
         /// </summary>
         protected virtual void SetupThemes()
         {
-            runningThemesList = new List<InteractableThemeBase>();
-            runningProfileSettings = new List<ProfileSettings>();
-            for (int i = 0; i < Profiles.Count; i++)
+            activeThemes.Clear();
+
+            // Profiles are one per GameObject/ThemeContainer
+            // ThemeContainers are one per dimension
+            // ThemeDefinitions are one per desired effect (i.e theme)
+            foreach (var profile in Profiles)
             {
-                ProfileSettings profileSettings = new ProfileSettings();
-                List<ThemeSettings> themeSettingsList = new List<ThemeSettings>();
-                for (int j = 0; j < Profiles[i].Themes.Count; j++)
+                if (profile.Target != null && profile.Themes != null)
                 {
-                    Theme theme = Profiles[i].Themes[j];
-                    ThemeSettings themeSettings = new ThemeSettings();
-                    if (Profiles[i].Target != null && theme != null)
+                    // TODO: Troy check dimensionIndex valid?
+                    var themeContainer = profile.Themes[dimensionIndex];
+
+                    foreach (var themeDefinition in themeContainer.Definitions)
                     {
-                        List<ThemeDefinition> tempSettings = new List<ThemeDefinition>();
-                        for (int n = 0; n < theme.Definitions.Count; n++)
-                        {
-                            ThemeDefinition settings = theme.Definitions[n];
-                            // TODO: Troy
-                            //settings.Theme = InteractableProfileItem.GetTheme(settings, Profiles[i].Target);
-
-                            // add themes to theme list based on dimension
-                            if (j == dimensionIndex)
-                            {
-                                // TODO: Troy
-                                //runningThemesList.Add(settings.Theme);
-                            }
-
-                            tempSettings.Add(settings);
-                        }
-
-                        themeSettings.Settings = tempSettings;
-                        themeSettingsList.Add(themeSettings);
+                        activeThemes.Add(InteractableThemeBase.CreateAndInitTheme(themeDefinition, profile.Target));
                     }
                 }
-
-                profileSettings.ThemeSettings = themeSettingsList;
-                runningProfileSettings.Add(profileSettings);
             }
         }
 
@@ -1060,7 +1043,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 if (currentIndex != dimensionIndex)
                 {
-                    FilterThemesByDimensions();
+                    SetupThemes();
                     forceUpdate = true;
                 }
             }
@@ -1084,12 +1067,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (currentIndex != dimensionIndex)
             {
-                FilterThemesByDimensions();
+                SetupThemes();
                 forceUpdate = true;
             }
         }
 
-        public void ForceUpdateThemes()
+        /// <summary>
+        /// Force re-initialization of Interactable from events, themes and state references
+        /// </summary>
+        public void RefreshSetup()
         {
             SetupEvents();
             SetupThemes();
@@ -1110,25 +1096,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             MixedRealityInputAction[] actions = InputSystem.InputSystemProfile.InputActionsProfile.InputActions;
             index = Mathf.Clamp(index, 0, actions.Length - 1);
             return actions[index];
-        }
-
-        /// <summary>
-        /// Get the themes based on the current dimesionIndex
-        /// </summary>
-        protected void FilterThemesByDimensions()
-        {
-            runningThemesList = new List<InteractableThemeBase>();
-
-            for (int i = 0; i < runningProfileSettings.Count; i++)
-            {
-                ProfileSettings settings = runningProfileSettings[i];
-                ThemeSettings themeSettings = settings.ThemeSettings[dimensionIndex];
-                for (int j = 0; j < themeSettings.Settings.Count; j++)
-                {
-                    // TODO: Troy
-                    //runningThemesList.Add(themeSettings.Settings[j].Theme);
-                }
-            }
         }
 
         /// <summary>
