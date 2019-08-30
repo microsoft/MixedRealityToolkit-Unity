@@ -1,64 +1,55 @@
-# Diagnostic System
+﻿# 診断システム (Diagnostic System)
 
-The Mixed Reality Toolkit Diagnostics System provides diagnostic tools that run within the 
-application to enable analysis of application issues. 
+Mixed Reality Toolkit 診断システムは、アプリケーションの問題の分析を可能にするツールです。
 
-The first release of the diagnostics system contains the Visual Profiler to allow for analyzing 
-performance issues while using the application. 
+診断システムの最初のリリースには、アプリケーションの使用中にパフォーマンスの問題を分析するためのビジュアルプロファイラ (Visual Profiler) が含まれています。
 
-## Getting Started
+## はじめに
 
 > [!IMPORTANT]
-> It is **_highly_** recommended that the diagnostics system be enabled throughout the entire product 
-development cycle and disabled as the last change prior to building and releasing the final version.
+> 診断システムは、製品開発サイクル全体を通じて有効にすることを_**強く**_、最終バージョンをビルドしてリリースする前の最後の変更として無効にすることをお勧めします。
 
-1. [Enable](#enable-diagnostics) the diagnostic system
-2. [Configure](#configure-diagnostic-options) diagnostic options
-3. [Build and deploy](#build-and-deploy)
+1. [有効にする](#診断を有効に) 診断システム
+2. [設定する](#診断の設定オプション) 診断オプション
+3. [ビルドとデプロイ](#ビルドとデプロイ)
 
-### Enable Diagnostics
+### 診断を有効に
 
-The diagnostics system is managed by the MixedRealityToolkit object (or another [service registrar](xref:Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar) component). 
+診断システムは、MixedRealityToolkit オブジェクト (または別のサービスレジストラコンポーネント (service registrar component)) コンポーネントによって管理されます。
 
-The following steps presume use of the MixedRealityToolkit object. Steps required for other service registrars may be different.
+次の手順では、MixedRealityToolkit オブジェクトの使用を想定しています。他のサービスレジストラに必要な手順は異なる場合があります。
 
-1. Select the MixedRealityToolkit object in the scene hierarchy.
+1. Hierarchy で MixedRealityToolkit オブジェクトを選択します。
 
-![MRTK Configured Scene Hierarchy](../../Documentation/Images/MRTK_ConfiguredHierarchy.png)
+![シーンHierarchyでMRTKの設定](../../Documentation/Images/MRTK_ConfiguredHierarchy.png)
 
-2. Navigate the Inspector panel to the Diagnostics System section and check Enable
+2. Inspector を [Diagnostics System] セクションに移動し、[Enable] にチェックを入れます。
 
-![Enable the Diagnostics System](../../Documentation/Images/Diagnostics/MRTKConfig_Diagnostics.png)
+![診断を有効にする](../../Documentation/Images/Diagnostics/MRTKConfig_Diagnostics.png)
 
-3. Select the Diagnostics System implementation
+3. 診断システムの実行を選択する
 
-![Select the Diagnostics System Implementation](../../Documentation/Images/Diagnostics/DiagnosticsSelectSystemType.png)
-
-> [!NOTE]
-> Users of the default profile (DefaultMixedRealityToolkitConfigurationProfile) will have the 
-diagnostics system pre-configured to use the MixedRealityDiagnosticsSystem object.
-
-### Configure Diagnostic Options
-
-The diagnostics system uses a configuration profile to specify which components are to be displayed 
-and to configure their settings. Please see [Configuring the Diagnostics System](ConfiguringDiagnostics.md) 
-for more information pertaining to the available component settings. 
-
-![Diagnostics Options](../../Documentation/Images/Diagnostics/DiagnosticsProfile.png) 
-
-### Build and Deploy
-
-Once the diagnostic system is configured with the desired options, the project can be built 
-and deployed to the target platform.
+![診断システムの導入を選択する](../../Documentation/Images/Diagnostics/DiagnosticsSelectSystemType.png)
 
 > [!NOTE]
-> While it is possible to use Unity's Play Mode while developing applications without requiring the build and deploy steps, it is important to evaluate the diagnostics system results using a compiled application running on the target hardware and platform. 
-> 
-> Performance diagnostics, such as the Visual Profiler, may not accurately reflect actual application performance when run from within the editor.
+> デフォルトのプロファイル (DefaultMixedRealityToolkitConfigurationProfiel) を使うユーザーは、事前に設定された診断システム MixedRealityDiagnosticsSystem オブジェクトを使用します。
 
-## See Also
+### 診断の設定オプション
 
-- [Diagnostics API documentation](xref:Microsoft.MixedReality.Toolkit.Diagnostics)
+診断システムは、設定プロファイルを使用して、表示するコンポーネントを指定し、その設定を構成します。使用可能なコンポーネント設定の詳細については、[診断システムの設定](../../Documentation/Diagnostics/ConfiguringDiagnostics.md)を参照してください。
+
+![診断の設定オプション](../../Documentation/Images/Diagnostics/DiagnosticsProfile.png)
+
+### ビルドとデプロイ
+
+診断システムを必要なオプションで設定すると、プロジェクトをターゲットプラットフォームにビルド、デプロイできます。
+
+> [!NOTE]
+> ビルドとデプロイの手順を必要とせずにアプリケーションを開発しながら Unity の Play モードを使用することは可能ですが、ターゲットハードウェアとプラットフォーム上で実行されているコンパイル済みアプリケーションを使用して診断システムの結果を評価することが重要です。
+> ビジュアルプロファイラ (Visual Profiler) などのパフォーマンス診断では、エディター内から実行されたときに実際のアプリケーション のパフォーマンスが正確に反映されない場合があります。
+
+## 参考に
+
+- Diagnostics API documentation
 - [Configuring the Diagnostics System](ConfiguringDiagnostics.md)
 - [Using the Visual Profiler](UsingVisualProfiler.md)
-
