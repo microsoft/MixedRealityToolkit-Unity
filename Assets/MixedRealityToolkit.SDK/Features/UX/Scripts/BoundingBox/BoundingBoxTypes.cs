@@ -100,4 +100,18 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundingBoxTypes
         Sphere,
         Box
     }
+
+
+   
+
+    /// <summary>
+    /// Internal state tracking for proximity of a handle
+    /// </summary>
+    public enum HandleProximityState
+    {
+        FullsizeNoProximity = 0,
+        MediumProximity,
+        CloseProximity
+    }
+
 }

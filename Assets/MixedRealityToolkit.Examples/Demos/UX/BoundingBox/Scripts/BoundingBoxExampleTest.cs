@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 SetStatus("Instantiate BoundingBox");
                 bbox = cube.AddComponent<BoundingBox>();
                 bbox.HideElementsInInspector = false;
-                bbox.BoundingBoxActivation = BoundingBox.BoundingBoxActivationType.ActivateOnStart;
+                bbox.BoundingBoxActivation = UI.BoundingBoxTypes.BoundingBoxActivationType.ActivateOnStart;
                 var mh = cube.AddComponent<ManipulationHandler>();
                 yield return WaitForSpeechCommand();
 
@@ -110,15 +110,15 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 yield return WaitForSpeechCommand();
 
                 SetStatus("FlattenX");
-                bbox.FlattenAxis = BoundingBox.FlattenModeType.FlattenX;
+                bbox.FlattenAxis = UI.BoundingBoxTypes.FlattenModeType.FlattenX;
                 yield return WaitForSpeechCommand();
 
                 SetStatus("FlattenY");
-                bbox.FlattenAxis = BoundingBox.FlattenModeType.FlattenY;
+                bbox.FlattenAxis = UI.BoundingBoxTypes.FlattenModeType.FlattenY;
                 yield return WaitForSpeechCommand();
 
                 SetStatus("FlattenNone");
-                bbox.FlattenAxis = BoundingBox.FlattenModeType.DoNotFlatten;
+                bbox.FlattenAxis = UI.BoundingBoxTypes.FlattenModeType.DoNotFlatten;
                 yield return WaitForSpeechCommand();
 
                 SetStatus("ShowWireframe false");
@@ -181,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 yield return WaitForSpeechCommand();
 
                 SetStatus("Wireframe shape cylinder");
-                bbox.WireframeShape = BoundingBox.WireframeType.Cylindrical;
+                bbox.WireframeShape = UI.BoundingBoxTypes.WireframeType.Cylindrical;
                 yield return WaitForSpeechCommand();
 
                 Destroy(cube);
@@ -210,7 +210,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 }
 
                 bbox = multiRoot.AddComponent<BoundingBox>();
-                bbox.BoundingBoxActivation = BoundingBox.BoundingBoxActivationType.ActivateOnStart;
+                bbox.BoundingBoxActivation = UI.BoundingBoxTypes.BoundingBoxActivationType.ActivateOnStart;
                 bbox.HideElementsInInspector = false;
                 bbox.WireframeEdgeRadius = .05f;
                 multiRoot.AddComponent<ManipulationHandler>();

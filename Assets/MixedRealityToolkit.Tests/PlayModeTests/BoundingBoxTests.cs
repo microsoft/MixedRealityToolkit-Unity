@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             var bbox = InstantiateSceneAndDefaultBbox();
             yield return null;
-            bbox.BoundingBoxActivation = BoundingBox.BoundingBoxActivationType.ActivateOnStart;
+            bbox.BoundingBoxActivation = UI.BoundingBoxTypes.BoundingBoxActivationType.ActivateOnStart;
             bbox.HideElementsInInspector = false;
             yield return null;
 
