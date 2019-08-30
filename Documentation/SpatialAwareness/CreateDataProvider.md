@@ -90,7 +90,7 @@ example [`IMixedRealitySpatialAwarenessMeshObserver`](xref:Microsoft.MixedRealit
 ### Observation change notifications
 
 To enable applications to respond to changes in the device's understanding of the enviornment, the data provider raises notification events as defined in the 
-[`IMixedRealitySpatialAwarenessObservationtHandler<T>`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpatialAwarenessObservationHandler`1) interface.
+[`IMixedRealitySpatialAwarenessObservationtHandler<T>`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObservationHandler`1) interface.
 
 - `OnObservationAdded()`
 - `OnObservationRemoved()`
