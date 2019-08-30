@@ -27,6 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private SerializedProperty controlFastSpeed;
         private SerializedProperty moveHorizontal;
         private SerializedProperty moveVertical;
+        private SerializedProperty moveUpDown;
         private SerializedProperty mouseX;
         private SerializedProperty mouseY;
         private SerializedProperty lookHorizontal;
@@ -88,6 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             controlFastSpeed = serializedObject.FindProperty("controlFastSpeed");
             moveHorizontal = serializedObject.FindProperty("moveHorizontal");
             moveVertical = serializedObject.FindProperty("moveVertical");
+            moveUpDown = serializedObject.FindProperty("moveUpDown");
             mouseX = serializedObject.FindProperty("mouseX");
             mouseY = serializedObject.FindProperty("mouseY");
             lookHorizontal = serializedObject.FindProperty("lookHorizontal");
@@ -155,6 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         EditorGUILayout.PropertyField(controlFastSpeed);
                         EditorGUILayout.PropertyField(moveHorizontal);
                         EditorGUILayout.PropertyField(moveVertical);
+                        EditorGUILayout.PropertyField(moveUpDown);
                         EditorGUILayout.PropertyField(mouseX);
                         EditorGUILayout.PropertyField(mouseY);
                         EditorGUILayout.PropertyField(lookHorizontal);

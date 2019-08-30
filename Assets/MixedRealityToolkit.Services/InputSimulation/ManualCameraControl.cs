@@ -80,14 +80,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             deltaPosition += InputCurve(UnityEngine.Input.GetAxis(profile.MoveHorizontal)) * transform.right;
 
+            Vector3 forward;
+            Vector3 up;
             if (profile.CurrentControlMode == InputSimulationControlMode.Walk)
             {
-                deltaPosition += InputCurve(UnityEngine.Input.GetAxis(profile.MoveVertical)) * new Vector3(transform.forward.x, 0, transform.forward.z).normalized;
+                up = Vector3.up;
+                forward = Vector3.ProjectOnPlane(transform.forward, up).normalized;
             }
             else
             {
-                deltaPosition += InputCurve(UnityEngine.Input.GetAxis(profile.MoveVertical)) * transform.forward;
+                forward = transform.forward;
+                up = transform.up;
             }
+            deltaPosition += InputCurve(UnityEngine.Input.GetAxis(profile.MoveVertical)) * forward;
+            deltaPosition += InputCurve(UnityEngine.Input.GetAxis(profile.MoveUpDown)) * up;
 
             float accel = KeyInputSystem.GetKey(profile.FastControlKey) ? profile.ControlFastSpeed : profile.ControlSlowSpeed;
             return accel * deltaPosition;

@@ -70,6 +70,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("Vertical movement Axis ")]
         private string moveVertical = "Vertical";
         public string MoveVertical => moveVertical;
+        [SerializeField]
+        [Tooltip("Up/Down movement Axis ")]
+        private string moveUpDown = "UpDown";
+        public string MoveUpDown => moveUpDown;
         // Mouse movement string for the x-axis
         [SerializeField]
         [Tooltip("Mouse Movement X-axis")]
