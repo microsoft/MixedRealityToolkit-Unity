@@ -1,33 +1,24 @@
 # How to add near interaction in MRTK
-Near interactions come in the form of touches and grabs. Touches occur when a finger touches a collider or surface. Grabs occur when a user grabs a collider by either pinching their fingers together or grabbing. You can listen for touch and grab events by implementing the `IMixedRealityPointer` interface and looking at the type of pointer that triggered the `OnPointerDown` method.
+Near interactions come in the form of touches and grabs. Touches occur when a finger touches a collider or surface. Grabs occur when a user grabs a collider by either pinching their fingers together or grasping with their hand. You can listen for touch and grab events by implementing the `IMixedRealityPointer` interface and looking at the type of pointer that triggered the `OnPointerDown` method. If the pointer is a `PokePointer`, the interaction is a touch. If the pointer is a `SpherePointer`, the interaction is a near grab.
 
-Because near interactions are dispatched by pointers, you need to make sure to have these near interaction pointers in the scene. You also need to add `NearInteractionGrabbable` or `NearInteractionTouchable` to each collidable you want to be near grababable / touchable. 
+Because near interactions are dispatched by pointers, you need to make sure MRTK is configured to create a `SpherePointer` and a `PokePointer` whenever articulated hands are present. You also need to add `NearInteractionGrabbable` or `NearInteractionTouchable` to each collidable you want to be near grababable / touchable.
 
-> NOTE: For touch events it is also possible to configured your objects to raise touch evenets, listen to these by implementing the `IMixedRealityTouchHandler`
+> For touch events it is also possible to configured your objects to raise touch events, listen to these by implementing the `IMixedRealityTouchHandler`
 
-> NOTE: If you want to add touch interactions to Unity UI, you need to add a sepcial type of `NearInteractionTouchable`, read below for more details.
+> If you want to add touch interactions to Unity UI, you need to add a sepcial type of `NearInteractionTouchable`, read below for more details.
 
 # How to add near grab interactions to your scene
-1. Make sure you have a sphere pointer in you MRTK configuration. If you are using the Default MRTK configuration or the HL2 configuration, you have this already. This is under the mrtk profile / input system / pointers. Look for a prefab called "GrabPointer". The prefab needs to have a `SpherePointer` component.
+1. Make sure you have a sphere pointer in you MRTK profile. If you are using the default MRTK profile or the default HoloLens 2 profile, you will have this already. If you have a custom profile, look under Input / Pointers  / Pointer Options. Make sure that for the "articulated hand" controller type you have an entry that points to the GrabPointer prefab under MRTK.SDK/Features/UX/Prefabs, or some other prefab that has a `SpherePointer`on it.
 
-1. Pick a object that you want to raise pointer events. Any ancestor of that object will be able to receive pointer events. For example, you can add a cube to the scene.
+1. Pick an object that you want to make grabbable. Any ancestor of that object will be able to receive pointer events. For example, you can add a cube to the scene.
 
-1. Add a collider to that object. If you added a cube above.
+1. Make sure there is a collider to that object.
 
 1. Add a `NearInteractionGrabbable` to your object
 
-1. On that object or one of its ancestors, add the following component:
+1. On that object or one of its ancestors, add a component that implements IMixedRealityPointerHandler. You can for example add `ManipulationHandler`.
 
-```
-public class NearGrabTest : Monobehaviour, IMixedRealityPointerHandler
-{
-    public void OnPointerDown()
-    {
-        // If pointer is a Sphere pointer, then print "i've been grabbed!"
-    }
-}
-```
-
+### LEFT OFF HERE
 # How to add near touch interactions to your scene
 > Note: If you have UnityUI that you would like to make work with touch events, please read the next section
 
