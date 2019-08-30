@@ -3,11 +3,9 @@ Near interactions come in the form of touches and grabs. Touch and grab events a
 
 You can listen for touch and grab events by implementing [IMixedRealityPointerHandler](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler) and looking at the type of pointer that triggers your event. If the pointer is a PokePointer, the interaction is a touch. If the pointer is a SpherePointer, the interaction is a near grab.
 
-Because near interactions are dispatched by pointers, you need to make sure MRTK is configured to create a [SpherePointer](Pointers.md#spherepointer) and a [PokePointer](Pointers.md#pokepointer) whenever articulated hands are present. You also need to add [NearInteractionGrabbable](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable) or [NearInteractionTouchable](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable) to each collidable you want to be near grababable / touchable.
+Because near interactions are dispatched by pointers, you need to make sure MRTK is configured to create a [SpherePointer](Pointers.md#spherepointer) and a [PokePointer](Pointers.md#pokepointer) whenever articulated hands are present. You also need to add [NearInteractionGrabbable](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable) or [NearInteractionTouchable](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable) to each collidable you want to be near grababable / touchable. If you want to add touch interactions to Unity UI, you need to add add [NearInteractionTouchableUnityUI](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableUnityUI), read below for more details.
 
 For touch interaction it is also possible to configured your objects to raise touch events, listen to these by implementing the [IMixedRealityTouchHandler](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler)
-
-> If you want to add touch interactions to Unity UI, you need to add add [NearInteractionTouchableUnityUI](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableUnityUI), read below for more details.
 
 
 #### Example
@@ -82,46 +80,69 @@ public class PrintPointerEvents : MonoBehaviour, IMixedRealityPointerHandler
 
 # Examples
 
-## Grab events: Create a simple draggable cube from code
-
+## Touch events
+This example creates a cube, makes it touchable, and change color on touch.
 ```csharp
-using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.UI;
-
-/// <summary>
-/// On startup, creates a cube that can be dragged and resized using near interaction and far interaction
-/// </summary>
-public class SimpleGrabbableCube : Monobehaviour
+public class MakeTouchableCube : MonoBehaviour
 {
-    private void Start()
+    void Start()
     {
         GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cube.AddComponent<NearInteractionGrabbable>();
-        cube.AddComponent<ManipulationHandler>();
-        cube.transform.localScale = Vector3.one * 0.1f;
-        cube.transform.position = Vector3.forward;
+        
+        // Add and configure the touchable
+        var touchable = cube.AddComponent<NearInteractionTouchableVolume>();
+        touchable.EventsToReceive = TouchableEventType.Pointer;
+
+
+        // Initialize the material, we will change its color
+        var magentaMaterial = (Material)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit.SDK/StandardAssets/Materials/MRTK_Standard_Magenta.mat", typeof(Material));
+        var cubeMaterial = new Material(magentaMaterial);
+        cube.GetComponent<Renderer>().material = cubeMaterial;
+
+        // Change color on pointer down and up
+        var pointerHandler = cube.AddComponent<PointerHandler>();
+        pointerHandler.OnPointerDown.AddListener((e) => cubeMaterial.color = Color.green);
+        pointerHandler.OnPointerUp.AddListener((e) => cubeMaterial.color = Color.magenta);
     }
 }
 ```
 
+## Grab events
+The below example creates a cube, and makes it near draggable
 
-## Touch events: Create a cube, make it touchable, and change color on touch
 ```csharp
-public class MakeTouchableCube : MonoBehaviour
+using UnityEngine;
+using Microsoft.MixedReality.Toolkit.Input;
+
+/// <summary>
+/// On startup, creates a cube that can be dragged using near interaction
+/// </summary>
+public class SimpleGrabbableCube : MonoBehaviour
 {
-    // Use this for initialization
-    void Start()
+    private void Start()
     {
+        // Instantiate and add grabbable
         GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        var touchable = cube.AddComponent<NearInteractionTouchableVolume>();
-        touchable.EventsToReceive = TouchableEventType.Pointer;
+        cube.AddComponent<NearInteractionGrabbable>();
+
+        // Add ability to drag by reparenting to pointer object on pointer down
         var pointerHandler = cube.AddComponent<PointerHandler>();
-        var magentaMaterial = (Material)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit.SDK/StandardAssets/Materials/MRTK_Standard_Magenta.mat", typeof(Material));
-        var cubeMaterial = new Material(magentaMaterial);
-        cube.GetComponent<Renderer>().material = cubeMaterial;
-        pointerHandler.OnPointerDown.AddListener((e) => cubeMaterial.color = Color.green);
-        pointerHandler.OnPointerUp.AddListener((e) => cubeMaterial.color = Color.magenta);
+        pointerHandler.OnPointerDown.AddListener((e) =>
+        {
+            if (e.Pointer is SpherePointer)
+            {
+                cube.transform.parent = ((SpherePointer)(e.Pointer)).transform;
+                cube.GetComponent<MeshRenderer>().material.color = Color.green;
+            }
+        });
+        pointerHandler.OnPointerUp.AddListener((e) =>
+        {
+            if (e.Pointer is SpherePointer)
+            {
+                cube.transform.parent = null;
+                cube.GetComponent<MeshRenderer>().material.color = Color.gray;
+            }
+        });
     }
 }
 ```
