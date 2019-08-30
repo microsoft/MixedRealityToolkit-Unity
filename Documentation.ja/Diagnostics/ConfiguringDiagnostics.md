@@ -1,22 +1,22 @@
-# 診断システムの構成
+# 診断システム (Diagnostics System) の構成
 
 診断システムプロファイルには、次の構成オプションが提供されます。
 - [一般的な設定](#一般的な設定)
-- [プロファイラーの設定](#プロファイラーの設定)
+- [プロファイラの設定](#プロファイラの設定)
 
-## 一般的な設定
+## 一般設定 (General Settings)
 
 ![診断の一般的な設定](../../Documentation/Images/Diagnostics/DiagnosticsGeneralSettings.png)
 
-### 診断を表示
+### 診断の表示
 
-診断システムに設定された診断オプションを表示するかどうかを示します。
+診断システムが設定された診断オプションを表示するかどうかを示します。
 
 無効にすると、設定されたすべての診断オプションが非表示になります。
 
 #### プログラムによる診断システムの制御
 
-また、実行時に診断システムとプロファイラーの可視性を切り替えることもできます。
+また、実行時に診断システムとプロファイラの可視性を切り替えることもできます。
 たとえば、次のコードでは、診断システムとプロファイラを非表示にします。
 
 ```C#
@@ -27,35 +27,35 @@ if (MixedRealityServiceRegistry.TryGetService<IMixedRealityDiagnosticsSystem>(ou
 }
 ```
 
-## プロファイラーの設定
+## Show Profiler （プロファイラの表示）
 
 ![診断プロファイラの設定](../../Documentation/Images/Diagnostics/DiagnosticsProfilerSettings.png)
 
-### プロファイラーの表示
+### プロファイラの表示
 
 ビジュアルプロファイラ (Visual Profiler) を表示するかどうかを示します。
 
-### フレームサンプルレート (Frame Sample Rate)
+### Frame Sample Rate (フレームサンプルレート)
 
 フレームレート計算用にフレームを収集する時間 (秒単位) 。範囲は 0 ~ 5 秒です。
 
-### ウィンドウアンカー (Window Anchor)
+### Window Anchor (ウィンドウアンカー)
 
-プロファイラウィンドウを固定するビューポート (view port) のどの部分に固定するかを設定します。デフォルト値は[下中央]です。
+プロファイラウィンドウをビューポート (view port) のどの部分に固定するかを設定します。デフォルト値は下中央です。
 
-### ウィンドウオフセット (Window Offset)
+### Window Offset (ウィンドウオフセット)
 
-ビューポート (view port) の中心からビジュアルプロファイラを配置するまでのオフセット。オフセットは[ウィンドウアンカー (Window Anchor)](#ウィンドウアンカー (Window Anchor))の方向に向けます。
+ビューポート (view port) の中心からビジュアルプロファイラを配置するまでのオフセット。オフセットは[ウィンドウアンカー (Window Anchor)](#ウィンドウアンカー (Window Anchor))の方向です。
 
-### ウィンドウスケール (Window Scale)
+### Window Scale (ウィンドウスケール)
 
-プロファイラーウィンドウ (profiler window) に適用されるサイズ乗数。たとえば、値を 2 に設定すると、ウィンドウのサイズが 2 倍になります。
+プロファイラウィンドウ (profiler window) に適用されるサイズ乗数。たとえば、値を 2 に設定すると、ウィンドウのサイズが 2 倍になります。
 
-### ウィンドウ追従スピード
+### Window Follow Speed (ウィンドウ追従スピード)
 
 ビューポート (view port) 内の可視性を維持するためにプロファイラウィンドウを移動する速度。
 
-## 参照に
+## 参考に
 
 - [診断システム (Diagnostic System)](DiagnosticsSystemGettingStarted.md)
-- [ビジュアルプロファイラー (Visual Profiler) を使用する](UsingVisualProfiler.md)
+- [ビジュアルプロファイラ (Visual Profiler) を使用する](UsingVisualProfiler.md)
