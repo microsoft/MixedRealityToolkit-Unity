@@ -287,6 +287,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 811868108115982556, guid: 271778f6c957b524981067a81d238394,
+        type: 3}
+      propertyPath: toolTipText
+      value: Speech Confirmation
+      objectReference: {fileID: 0}
     - target: {fileID: 774750519729489742, guid: 271778f6c957b524981067a81d238394,
         type: 3}
       propertyPath: m_LocalScale.x
