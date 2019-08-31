@@ -48,6 +48,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Name = "OnPress";
         }
 
+        public InteractableOnPressReceiver() : base()
+        {
+            Name = "OnPress";
+        }
+
         /// <summary>
         /// checks if the received interactable state matches the press filter
         /// </summary>

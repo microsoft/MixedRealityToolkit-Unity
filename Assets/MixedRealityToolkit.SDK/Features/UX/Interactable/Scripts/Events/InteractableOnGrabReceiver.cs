@@ -37,6 +37,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Name = "OnGrab";
         }
 
+        public InteractableOnGrabReceiver() : base()
+        {
+            Name = "OnGrab";
+        }
+
         /// <inheritdoc />
         public override void OnUpdate(InteractableStates state, Interactable source)
         {

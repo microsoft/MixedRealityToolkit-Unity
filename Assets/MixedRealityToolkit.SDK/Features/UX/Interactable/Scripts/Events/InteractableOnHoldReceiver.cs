@@ -29,6 +29,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Name = "OnHold";
         }
 
+        public InteractableOnHoldReceiver() : base()
+        {
+            Name = "OnHold";
+        }
+
         /// <inheritdoc />
         public override void OnUpdate(InteractableStates state, Interactable source)
         {
