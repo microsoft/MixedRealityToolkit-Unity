@@ -115,16 +115,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var onFocusReceiver = interactable.AddReceiver<InteractableOnFocusReceiver>();
 
             bool didHover = false;
-            onFocusReceiver.OnFocusOn.AddListener(() => didHover = true);
-
             bool didUnHover = false;
+            onFocusReceiver.OnFocusOn.AddListener(() => didHover = true);
             onFocusReceiver.OnFocusOff.AddListener(() => didUnHover = true);
-
             CameraCache.Main.transform.LookAt(interactable.transform);
             yield return null;
             CameraCache.Main.transform.LookAt(Vector3.forward);
             yield return null;
-
             Assert.True(didHover, "Interactable did not receive hover event");
             Assert.True(didUnHover, "Interactable did not receive un-hover event");
 
@@ -143,6 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.True(didGrab, "Did not receive grab event");
             Assert.True(didRelease, "Did not receive release event");
 
+            // Hold
             var holdReceiver = interactable.AddReceiver<InteractableOnHoldReceiver>();
             bool didHold = false;
             holdReceiver.OnHold.AddListener(() => didHold = true);
@@ -152,6 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.Hide();
             Assert.True(didHold, "Did not receive hold event");
 
+            // Press
             var pressReceiver = interactable.AddReceiver<InteractableOnPressReceiver>();
             bool didPress = false;
             pressReceiver.OnPress.AddListener(() => didPress = true);
@@ -160,6 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.Hide();
             Assert.True(didPress, "did not receive press event");
 
+            // Toggle
             var toggleReceiver = interactable.AddReceiver<InteractableOnToggleReceiver>();
             interactable.transform.position = Vector3.forward * 2f;
             interactable.Dimensions = 2;
@@ -194,6 +194,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.Hide();
             Assert.True(didTouch, "Did not receive touch event");
             Assert.True(didUntouch, "Did not receive touch end event");
+            
             // clean up
             GameObject.Destroy(cube);
 
