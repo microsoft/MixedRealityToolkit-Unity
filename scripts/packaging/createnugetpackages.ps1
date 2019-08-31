@@ -136,9 +136,6 @@ try
         $restoreProjectPath = [System.IO.Path]::Combine((Split-Path $MyInvocation.MyCommand.Path), 'NuGetRestoreProject.csproj')
         dotnet build $restoreProjectPath -p:RestorePackageFeed=$OutputDirectory -p:RestorePackageId=$packageId -p:RestorePackageVersion=$localVersion
     }
-    
-    # Wait for, receive, and remove all the nuget jobs
-    $nugetJobs | Receive-Job -Wait -AutoRemoveJob
 }
 finally
 {
