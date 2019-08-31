@@ -172,7 +172,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.Show(Vector3.forward);
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
             yield return null;
-            yield return PlayModeTestUtilities.WaitForEnterKey();
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
@@ -181,7 +180,20 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.True(didSelect, "Toggle select did not fire");
             Assert.True(didUnselect, "Toggle unselect did not fire");
 
-
+            // Touch
+            interactable.gameObject.AddComponent<NearInteractionTouchableVolume>();
+            var touchReceiver = interactable.AddReceiver<InteractableOnTouchReceiver>();
+            bool didTouch = false;
+            bool didUntouch = false;
+            touchReceiver.OnTouchStart.AddListener(() => didTouch = true);
+            touchReceiver.OnTouchEnd.AddListener(() => didUntouch = true);
+            yield return hand.Show(Vector3.forward);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return hand.MoveTo(interactable.transform.position);
+            yield return hand.MoveTo(Vector3.forward);
+            yield return hand.Hide();
+            Assert.True(didTouch, "Did not receive touch event");
+            Assert.True(didUntouch, "Did not receive touch end event");
             // clean up
             GameObject.Destroy(cube);
 
