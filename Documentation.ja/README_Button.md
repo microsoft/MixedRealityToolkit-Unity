@@ -2,7 +2,7 @@
 
 ![Button](../Documentation/Images/Button/MRTK_Button_Main.png)
 
-ボタン (button) を使うと，ユーザは即座にアクションを起こすことができます。Mixed Reality の最も基本的なコンポーネントの１つです。MRTK は，様々なタイプのボタンプレハブを提供しています。
+ボタン (button) を使うと，ユーザは即座にアクションを引き起こすことができます。Mixed Reality の最も基本的なコンポーネントの１つです。MRTK は，様々なタイプのボタンプレハブを提供しています。
 
 ## MRTK のボタンプレハブ ##
 
@@ -21,19 +21,19 @@
 [`Button.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/Button.prefab) は， [Interactable](README_Interactable.md) コンセプトに基づいており，ボタンまたはその他のタイプのインタラクション可能な面に簡単な UI コントロールを提供します。 ベースラインボタンは，近くのインタラクション要素に対して多関節ハンドで入力する場合や，遠くのインタラクション要素に対して注視＋エアタップなど，利用可能な全ての入力方法をサポートします。音声コマンドを使用してボタンをトリガーすることもできます。
 [`PressableButtonHoloLens2.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab) は，HoloLens 2 のシェルスタイルボタンで，ダイレクトハンドトラッキングでの入力用の精密な動きをサポートします。 `Interactable` のスクリプトと `PressableButton` のスクリプトを組み合わせています。
 
-## How to use pressable buttons ##
+## Pressable button の使い方 ##
 
-Simply drag [`PressableButtonHoloLens2.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab) or [`PressableButtonHoloLens2Unplated.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2Unplated.prefab) into the scene. These button prefabs are already configured to have audio-visual feedback for the various types of inputs, including articulated hand input and gaze.
+単に [`PressableButtonHoloLens2.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab) または[`PressableButtonHoloLens2Unplated.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2Unplated.prefab) をドラッグしてシーンに置くだけです。これらのボタンプレハブは，多関節ハンド (articulated hand) 入力や注視など，様々なタイプの入力に対して視聴覚フィードバックするように既に設定されています。
 
-The events exposed in the prefab itself as well as the [Interactable](README_Interactable.md) component can be used to trigger additional actions. The pressable buttons in the [HandInteractionExample scene](README_HandInteractionExamples.md) use Interactable's *OnClick* event to trigger a change in the color of a cube. This event gets triggered for different types of input methods such as gaze, air-tap, hand-ray, as well as physical button presses through the pressable button script.
+プレハブ自体と[Interactable](README_Interactable.md)コンポーネントで公開されるイベントを使用して，追加のアクションをトリガーできます。 [HandInteractionExample のシーン](README_HandInteractionExamples.md)の pressable buttons は，Interactable の *OnClick* イベントを使って，キューブの色の変更をトリガーします。このイベントは，Gaze，AirTap，HandRay などの様々なタイプの入力メソッド，及び pressable button のスクリプトを介した物理的なボタンの押下に対してトリガーされます。
 
 <img src="../Documentation/Images/Button/MRTK_Button_HowToUse_Interactable.png" width="450">
 
-You can configure when the pressable button fires the *OnClick* event via the `PhysicalPressEventRouter` on the button. For example, you can set *OnClick* to fire when the button is first pressed, as opposed to be pressed and released, by setting *Interactable On Click* to *Event On Press*.
+ボタンの `PhysicalPressEventRouter` を介して，pressable button が *OnClick* イベントを発生させるタイミングを設定できます。例えば，*OnClick* は，*Interactable On Click* を *Event On Press* に設定することにより，ボタンが最初に押された時と離された時に起動するように設定できます。
 
 <img src="../Documentation/Images/Button/MRTK_Button_HowTo_Events.png" width="450">
 
-To leverage specific articulated hand input state information, you can use pressable buttons events - *Touch Begin*, *Touch End*, *Button Pressed*, *Button Released*. These events will not fire in response to air-tap, hand-ray, or eye inputs, however.
+Articulated hand の入力状態情報を活用するには，pressable buttons イベントの - *Touch Begin*, *Touch End*, *Button Pressed*, *Button Released*を使用できます。ただし，これらのイベントは，AirTap，HandRay，Gaze 入力には応答して発生はしません。
 
 <img src="../Documentation/Images/Button/MRTK_Button_HowTo_PressableButton.png" width="450">
 
