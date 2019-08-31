@@ -89,3 +89,4 @@ doc/
 /MRTKBuild/
 /MSBuild/
 /PackagesCopy/
+!/scripts/Packaging/NuGetRestoreProject.csproj
