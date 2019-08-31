@@ -133,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// Current active systems registered with the MixedRealityToolkit.
         /// </summary>
         /// <remarks>
-        /// Systems can only be registered once by <see cref="Type"/>
+        /// Systems can only be registered once by <see cref="System.Type"/>
         /// </remarks>
         [Obsolete("Use CoreService, MixedRealityServiceRegistry, or GetService<T> instead")]
         public IReadOnlyDictionary<Type, IMixedRealityService> ActiveSystems => new Dictionary<Type, IMixedRealityService>(activeSystems) as IReadOnlyDictionary<Type, IMixedRealityService>;
