@@ -73,71 +73,50 @@ public class PrintPointerEvents : MonoBehaviour, IMixedRealityPointerHandler
 
 1. Set "Events to Receive" to Pointer.
 
-# Examples
 
-## Touch events
+## Examples
+
+### Touch events
 This example creates a cube, makes it touchable, and change color on touch.
 ```csharp
-public class MakeTouchableCube : MonoBehaviour
+public static void MakeChangeColorOnTouch(GameObject target)
 {
-    void Start()
-    {
-        GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        
-        // Add and configure the touchable
-        var touchable = cube.AddComponent<NearInteractionTouchableVolume>();
-        touchable.EventsToReceive = TouchableEventType.Pointer;
+    // Add and configure the touchable
+    var touchable = target.AddComponent<NearInteractionTouchableVolume>();
+    touchable.EventsToReceive = TouchableEventType.Pointer;
 
-
-        // Initialize the material, we will change its color
-        var magentaMaterial = (Material)AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit.SDK/StandardAssets/Materials/MRTK_Standard_Magenta.mat", typeof(Material));
-        var cubeMaterial = new Material(magentaMaterial);
-        cube.GetComponent<Renderer>().material = cubeMaterial;
-
-        // Change color on pointer down and up
-        var pointerHandler = cube.AddComponent<PointerHandler>();
-        pointerHandler.OnPointerDown.AddListener((e) => cubeMaterial.color = Color.green);
-        pointerHandler.OnPointerUp.AddListener((e) => cubeMaterial.color = Color.magenta);
-    }
+    var material = target.GetComponent<Renderer>().material;
+    // Change color on pointer down and up
+    var pointerHandler = target.AddComponent<PointerHandler>();
+    pointerHandler.OnPointerDown.AddListener((e) => material.color = Color.green);
+    pointerHandler.OnPointerUp.AddListener((e) => material.color = Color.magenta);
 }
 ```
 
-## Grab events
-The below example creates a cube, and makes it near draggable
+### Grab events
+The below example shows how to make a gameobject draggable. Assumes that the game object has a collider on it.
 
 ```csharp
-using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Input;
-
-/// <summary>
-/// On startup, creates a cube that can be dragged using near interaction
-/// </summary>
-public class SimpleGrabbableCube : MonoBehaviour
+public static void MakeNearDraggable(GameObject target)
 {
-    private void Start()
-    {
-        // Instantiate and add grabbable
-        GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cube.AddComponent<NearInteractionGrabbable>();
+    // Instantiate and add grabbable
+    target.AddComponent<NearInteractionGrabbable>();
 
-        // Add ability to drag by reparenting to pointer object on pointer down
-        var pointerHandler = cube.AddComponent<PointerHandler>();
-        pointerHandler.OnPointerDown.AddListener((e) =>
+    // Add ability to drag by reparenting to pointer object on pointer down
+    var pointerHandler = target.AddComponent<PointerHandler>();
+    pointerHandler.OnPointerDown.AddListener((e) =>
+    {
+        if (e.Pointer is SpherePointer)
         {
-            if (e.Pointer is SpherePointer)
-            {
-                cube.transform.parent = ((SpherePointer)(e.Pointer)).transform;
-                cube.GetComponent<MeshRenderer>().material.color = Color.green;
-            }
-        });
-        pointerHandler.OnPointerUp.AddListener((e) =>
+            target.transform.parent = ((SpherePointer)(e.Pointer)).transform;
+        }
+    });
+    pointerHandler.OnPointerUp.AddListener((e) =>
+    {
+        if (e.Pointer is SpherePointer)
         {
-            if (e.Pointer is SpherePointer)
-            {
-                cube.transform.parent = null;
-                cube.GetComponent<MeshRenderer>().material.color = Color.gray;
-            }
-        });
-    }
+            target.transform.parent = null;
+        }
+    });
 }
 ```
