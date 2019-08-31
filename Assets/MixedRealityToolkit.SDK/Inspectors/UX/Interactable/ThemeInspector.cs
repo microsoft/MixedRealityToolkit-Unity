@@ -526,23 +526,25 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
         #endregion
 
-        private static ShaderUtil.ShaderPropertyType? GetShaderPropertyFilter(ThemePropertyTypes shaderPropertyType)
+        private static ShaderUtil.ShaderPropertyType[] GetShaderPropertyFilter(ThemePropertyTypes shaderPropertyType)
         {
-            ShaderUtil.ShaderPropertyType? shaderType = null;
+            ShaderUtil.ShaderPropertyType[] shaderTypes = null;
             switch (shaderPropertyType)
             {
                 case ThemePropertyTypes.Color:
-                    shaderType = ShaderUtil.ShaderPropertyType.Color;
+                    shaderTypes = new ShaderUtil.ShaderPropertyType[] { ShaderUtil.ShaderPropertyType.Color };
                     break;
                 case ThemePropertyTypes.ShaderFloat:
-                    shaderType = ShaderUtil.ShaderPropertyType.Float;
+                case ThemePropertyTypes.ShaderRange:
+                    shaderTypes = new ShaderUtil.ShaderPropertyType[] { ShaderUtil.ShaderPropertyType.Float, ShaderUtil.ShaderPropertyType.Range };
                     break;
                 // TODO: Troy Fill more here
             }
-            return shaderType;
+
+            return shaderTypes;
         }
 
-        private static List<string> GetShaderPropertyList(Shader shader, ShaderUtil.ShaderPropertyType? filterType = null)
+        private static List<string> GetShaderPropertyList(Shader shader, ShaderUtil.ShaderPropertyType[] filterTypes = null)
         {
             List<string> results = new List<string>();
 
@@ -554,13 +556,14 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             for (int i = 0; i < count; i++)
             {
                 bool isHidden = ShaderUtil.IsShaderPropertyHidden(shader, i);
-                bool isValidPropertyType = filterType == null || filterType.Value == ShaderUtil.GetPropertyType(shader, i);
+                bool isValidPropertyType = filterTypes == null || filterTypes.Contains(ShaderUtil.GetPropertyType(shader, i));
                 if (!isHidden && isValidPropertyType)
                 {
                     results.Add(ShaderUtil.GetPropertyName(shader, i));
                 }
             }
 
+            results.Sort();
             return results;
         }
 
