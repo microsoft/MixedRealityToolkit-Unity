@@ -133,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns>The new event receiver</returns>
-        public T AddReceiver<T> () where T : ReceiverBase, new()
+        public T AddReceiver<T>() where T : ReceiverBase, new()
         {
             var interactableEvent = new InteractableEvent();
             var result = new T();
@@ -141,6 +141,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
             interactableEvent.Receiver = result;
             Events.Add(interactableEvent);
             return result;
+        }
+
+        /// <summary>
+        /// Returns the first receiver of type T on the interactable,
+        /// or null if nothing is found.
+        /// </summary>
+        public T GetReceiver<T>() where T : ReceiverBase
+        {
+            for (int i = 0; i < Events.Count; i++)
+            {
+                if (Events[i] != null && Events[i].Receiver is T)
+                {
+                    return (T) Events[i].Receiver;
+                }
+            }
+            return null;
         }
 
         /// <summary>
