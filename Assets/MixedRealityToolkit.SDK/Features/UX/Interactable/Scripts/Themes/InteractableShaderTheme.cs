@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
@@ -57,9 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             base.Init(host, definition);
 
-            // TODO: Troy 
-            // HACK
-            // Check either customProperties or check the StateProperties shadername
+            renderer = Host.GetComponent<Renderer>();
 
             shaderProperties = new List<ThemeStateProperty>();
             foreach (var prop in StateProperties)
@@ -70,51 +67,52 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
 
+            // TODO: Troy - Why do we need this?
             propertyBlock = InteractableThemeShaderUtils.GetMaterialPropertyBlock(host, shaderProperties);
-
-            renderer = Host.GetComponent<Renderer>();
         }
 
         /// <inheritdoc />
         public override void SetValue(ThemeStateProperty property, int index, float percentage)
         {
-            if (Host == null)
-                return;
-
-            renderer.GetPropertyBlock(propertyBlock);
-
-            int propId = property.GetShaderPropertyId();
-            switch (property.Type)
+            if (renderer != null)
             {
-                case ThemePropertyTypes.Color:
-                    Color newColor = Color.Lerp(property.StartValue.Color, property.Values[index].Color, percentage);
-                    propertyBlock = SetColor(propertyBlock, newColor, propId);
-                    break;
-                case ThemePropertyTypes.ShaderFloat:
-                    float floatValue = LerpFloat(property.StartValue.Float, property.Values[index].Float, percentage);
-                    propertyBlock = SetFloat(propertyBlock, floatValue, propId);
-                    break;
-                case ThemePropertyTypes.ShaderRange:
-                    float rangeValue = LerpFloat(property.StartValue.Float, property.Values[index].Float, percentage);
-                    propertyBlock = SetFloat(propertyBlock, rangeValue, propId);
-                    break;
-                default:
-                    break;
-            }
+                renderer.GetPropertyBlock(propertyBlock);
 
-            renderer.SetPropertyBlock(propertyBlock);
+                int propId = property.GetShaderPropertyId();
+                switch (property.Type)
+                {
+                    case ThemePropertyTypes.Color:
+                        Color newColor = Color.Lerp(property.StartValue.Color, property.Values[index].Color, percentage);
+                        propertyBlock = SetColor(propertyBlock, newColor, propId);
+                        break;
+                    case ThemePropertyTypes.ShaderFloat:
+                        float floatValue = LerpFloat(property.StartValue.Float, property.Values[index].Float, percentage);
+                        propertyBlock = SetFloat(propertyBlock, floatValue, propId);
+                        break;
+                    case ThemePropertyTypes.ShaderRange:
+                        float rangeValue = LerpFloat(property.StartValue.Float, property.Values[index].Float, percentage);
+                        propertyBlock = SetFloat(propertyBlock, rangeValue, propId);
+                        break;
+                    default:
+                        break;
+                }
+
+                renderer.SetPropertyBlock(propertyBlock);
+            }
         }
 
         /// <inheritdoc />
         public override ThemePropertyValue GetProperty(ThemeStateProperty property)
         {
-            if (Host == null)
-                return emptyValue;
+            if (renderer == null)
+            {
+                return null;
+            }
 
             renderer.GetPropertyBlock(propertyBlock);
 
             startValue.Reset();
-            
+
             int propId = property.GetShaderPropertyId();
             switch (property.Type)
             {
@@ -152,7 +150,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public static MaterialPropertyBlock SetFloat(MaterialPropertyBlock block, float value, int propId)
         {
             if (block == null)
+            {
                 return null;
+            }
 
             block.SetFloat(propId, value);
             return block;
@@ -161,7 +161,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public static Color GetColor(GameObject host, int propId)
         {
             if (host == null)
+            {
                 return Color.white;
+            }
 
             MaterialPropertyBlock block = InteractableThemeShaderUtils.GetPropertyBlock(host);
             return block.GetVector(propId);

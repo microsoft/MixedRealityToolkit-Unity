@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     public enum ShaderPropertyType { Color, Float, Range, TexEnv, Vector, None }
 
     /// <summary>
-    /// property format for each property
+    /// Obsolete container. Only exists to support backward compatibility to copy values from old scriptableobjects
     /// </summary>
     [System.Serializable]
     public struct ShaderProperties
@@ -19,15 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public string Name;
         public ShaderPropertyType Type;
         public Vector2 Range;
-    }
-
-    /// <summary>
-    /// collection of properties found in a shader
-    /// </summary>
-    public struct ShaderInfo
-    {
-        public ShaderProperties[] ShaderOptions;
-        public string Name;
     }
 
     /// <summary>

@@ -49,18 +49,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             base.Init(host, settings);
 
-            // TODO: Troy - Remove? Because may not want in future classes
-            /*
-            for (int i = shaderProperties.Count; i >= 0; )
-            {
-                if (shaderProperties[i].Type != ThemePropertyTypes.ShaderPropertyColor)
-                {
-                    Debug.LogError($"InteractableColorChildrenTheme has property not of type {Enum.GetName(typeof(ThemePropertyTypes), ThemePropertyTypes.ShaderPropertyColor)}. Removing property from list");
-                    shaderProperties.RemoveAt(i);
-                }
-            }
-            */
-
             propertyBlocks = new List<BlocksAndRenderer>();
             Renderer[] list = host.GetComponentsInChildren<Renderer>();
             for (int i = 0; i < list.Length; i++)
