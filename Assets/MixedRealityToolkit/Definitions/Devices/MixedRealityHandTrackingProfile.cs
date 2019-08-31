@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -47,39 +48,120 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public GameObject HandMeshPrefab => handMeshPrefab;
 
-        [SerializeField]
-        [Tooltip("If true and the hand mesh is available, try to access the hand mesh from the system. Note: this could reduce performance")]
-        [FormerlySerializedAs("enableHandMeshUpdates")]
-        private bool enableHandMeshVisualization = false;
+        /// <summary>
+        /// The hand mesh visualization enable/disable state of the current application mode.
+        /// </summary>
+        /// <remarks>
+        /// If this property is called while in-editor, this will only affect the in-editor settings
+        /// (i.e. the SupportedApplicationModes.Editor flag of HandMeshVisualizationModes).
+        /// If this property is called while in-player, this will only affect the in-player settings
+        /// (i.e. the SupportedApplicationModes.Player flag of HandMeshVisualizationModes).
+        /// </remarks>
         public bool EnableHandMeshVisualization
         {
             get
             {
-                return enableHandMeshVisualization;
+                return IsSupportedApplicationMode(handMeshVisualizationModes);
             }
 
             set
             {
-                enableHandMeshVisualization = value;
+                handMeshVisualizationModes = UpdateSupportedApplicationMode(value, handMeshVisualizationModes);
             }
         }
 
-        [SerializeField]
-        [Tooltip("Renders the hand joints. Note: this could reduce performance")]
-        private bool enableHandJointVisualization = false;
+        /// <summary>
+        /// The hand joint visualization enable/disable state of the current application mode.
+        /// </summary>
+        /// <remarks>
+        /// If this property is called while in-editor, this will only affect the in-editor settings
+        /// (i.e. the SupportedApplicationModes.Editor flag of HandJointVisualizationModes).
+        /// If this property is called while in-player, this will only affect the in-player settings
+        /// (i.e. the SupportedApplicationModes.Player flag of HandJointVisualizationModes).
+        /// </remarks>
         public bool EnableHandJointVisualization
         {
             get
             {
-                return enableHandJointVisualization;
+                return IsSupportedApplicationMode(handJointVisualizationModes);
             }
 
             set
             {
-                enableHandJointVisualization = value;
+                handJointVisualizationModes = UpdateSupportedApplicationMode(value, handJointVisualizationModes);
             }
         }
 
-        
+        [EnumFlags]
+        [SerializeField]
+        [Tooltip("The application modes in which hand mesh visualizations will display. " +
+                 "Will only show if the system provides hand mesh data. Note: this could reduce performance")]
+        private SupportedApplicationModes handMeshVisualizationModes = 0;
+        public SupportedApplicationModes HandMeshVisualizationModes
+        {
+            get
+            {
+                return handMeshVisualizationModes;
+            }
+            set
+            {
+                handMeshVisualizationModes = value;
+            }
+        }
+
+        [EnumFlags]
+        [SerializeField]
+        [Tooltip("The application modes in which hand joint visualizations will display. " +
+                 "Will only show if the system provides joint data. Note: this could reduce performance")]
+        private SupportedApplicationModes handJointVisualizationModes = 0;
+        public SupportedApplicationModes HandJointVisualizationModes
+        {
+            get
+            {
+                return handJointVisualizationModes;
+            }
+            set
+            {
+                handJointVisualizationModes = value;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the modes specified by the specified SupportedApplicationModes matches
+        /// the current mode that the code is running in.
+        /// </summary>
+        /// <remarks>
+        /// For example, if the code is currently running in editor mode (for testing in-editor
+        /// simulation), this would return true if modes contained the SupportedApplicationModes.Editor 
+        /// bit.
+        /// </remarks>
+        private static bool IsSupportedApplicationMode(SupportedApplicationModes modes)
+        {
+#if UNITY_EDITOR
+            return (modes & SupportedApplicationModes.Editor) != 0;
+#else // !UNITY_EDITOR
+            return (modes & SupportedApplicationModes.Player) != 0;
+#endif
+        }
+
+        /// <summary>
+        /// Updates the given SupportedApplicationModes by setting the bit associated with the
+        /// currently active application mode.
+        /// </summary>
+        /// <remarks>
+        /// For example, if the code is currently running in editor mode (for testing in-editor
+        /// simulation), and modes is currently SupportedApplicationModes.Player | SupportedApplicationModes.Editor
+        /// and enabled is 'false', this would return SupportedApplicationModes.Player.
+        /// </remarks>
+        private static SupportedApplicationModes UpdateSupportedApplicationMode(bool enabled, SupportedApplicationModes modes)
+        {
+#if UNITY_EDITOR
+            var bitValue = enabled ? SupportedApplicationModes.Editor : 0;
+            return (modes & ~SupportedApplicationModes.Editor) | bitValue;
+#else // !UNITY_EDITOR
+            var bitValue = enabled ? SupportedApplicationModes.Player : 0;
+            return (modes & ~SupportedApplicationModes.Player) | bitValue;
+#endif
+        }
     }
 }

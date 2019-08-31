@@ -321,7 +321,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 1
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
 --- !u!1 &1083297846644742
 GameObject:

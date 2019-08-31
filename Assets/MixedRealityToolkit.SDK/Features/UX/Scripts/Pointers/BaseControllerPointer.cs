@@ -364,7 +364,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public virtual SceneQueryType SceneQueryType { get; set; } = SceneQueryType.SimpleRaycast;
 
         [SerializeField]
-        [Tooltip("The radius to use when SceneQueryType is set to Sphere or SphereColliders.")]
+        [Tooltip("How far controller needs to be from object before object can be grabbed / focused.")]
         private float sphereCastRadius = 0.1f;
 
         /// <inheritdoc />
