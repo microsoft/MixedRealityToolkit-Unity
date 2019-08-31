@@ -14,8 +14,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
     [CreateAssetMenu(fileName = "Theme", menuName = "Mixed Reality Toolkit/Interactable/Theme", order = 1)]
     public class Theme : ScriptableObject
     {
-        public string Name;
-
         [FormerlySerializedAs("Settings")]
         public List<ThemeDefinition> Definitions;
 

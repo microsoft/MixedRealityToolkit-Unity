@@ -612,12 +612,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 if (profile.Target != null && profile.Themes != null)
                 {
-                    // TODO: Troy check dimensionIndex valid?
-                    var themeContainer = profile.Themes[dimensionIndex];
-
-                    foreach (var themeDefinition in themeContainer.Definitions)
+                    if (dimensionIndex >= 0 && dimensionIndex < profile.Themes.Count)
                     {
-                        activeThemes.Add(InteractableThemeBase.CreateAndInitTheme(themeDefinition, profile.Target));
+                        var themeContainer = profile.Themes[dimensionIndex];
+                        if (themeContainer.States == States)
+                        {
+                            foreach (var themeDefinition in themeContainer.Definitions)
+                            {
+                                activeThemes.Add(InteractableThemeBase.CreateAndInitTheme(themeDefinition, profile.Target));
+                            }
+                        }
+                        else
+                        {
+                            Debug.LogWarning($"Could not use {themeContainer.name} in Interactable on {gameObject.name} because Theme's States does not match {States.name}");
+                        }
                     }
                 }
             }

@@ -148,6 +148,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                         if (hostGameObject.objectReferenceValue == null)
                         {
                             InspectorUIUtility.DrawError("Assign a GameObject to apply visual effects");
+                            if (GUILayout.Button("Assign Self"))
+                            {
+                                hostGameObject.objectReferenceValue = instance.gameObject;
+                            }
                         }
 
                         SerializedProperty themes = profileItem.FindPropertyRelative("Themes");
@@ -157,11 +161,20 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                         for (int t = 0; t < themes.arraySize; t++)
                         {
                             SerializedProperty themeItem = themes.GetArrayElementAtIndex(t);
+
                             string themeLabel = BuildThemeTitle(dimensions.intValue, t);
                             EditorGUILayout.PropertyField(themeItem, new GUIContent(themeLabel, "Theme properties for interaction feedback"));
 
                             if (themeItem.objectReferenceValue != null)
                             {
+                                // TODO: Odd bug where themeStates below is null when it shouldn't be
+                                //SerializedProperty themeStates = themeItem.FindPropertyRelative("States");
+                                var themeInstance = themeItem.objectReferenceValue as Theme;
+                                if (statesProperty.objectReferenceValue != themeInstance.States)
+                                {
+                                    InspectorUIUtility.DrawWarning($"{themeInstance.name}'s States property does not match Interactable's States property");
+                                }
+
                                 string prefKey = themeItem.objectReferenceValue.name + "Profiles" + i + "_Theme" + t + "_Edit";
                                 bool showSettingsPref = SessionState.GetBool(prefKey, true);
                                 bool show = InspectorUIUtility.DrawSectionFoldout(themeItem.objectReferenceValue.name + " (Click to edit)", showSettingsPref, FontStyle.Normal);
@@ -470,7 +483,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             {
                 Theme newTheme = ScriptableObject.CreateInstance<Theme>();
                 newTheme.States = GetDefaultInteractableStates();
-                newTheme.Name = Path.GetFileNameWithoutExtension(themeFileName);
                 newTheme.Definitions = new List<ThemeDefinition>();
                 AssetDatabase.CreateAsset(newTheme, path);
                 return newTheme;
