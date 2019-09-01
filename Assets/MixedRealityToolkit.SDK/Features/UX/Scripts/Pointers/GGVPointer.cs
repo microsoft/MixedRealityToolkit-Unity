@@ -339,14 +339,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 
                 // Destroy the pointer since nobody else is destroying us
-                if (!Application.isPlaying)
-                {
-                    DestroyImmediate(gameObject);
-                }
-                else
-                {
-                    Destroy(gameObject);
-                }
+                GameObjectExtensions.DestroyGameObject(gameObject);
             }
         }
 

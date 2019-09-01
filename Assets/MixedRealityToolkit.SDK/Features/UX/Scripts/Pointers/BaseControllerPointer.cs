@@ -120,14 +120,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (cursorInstance != null)
             {
-                if (Application.isPlaying)
-                {
-                    Destroy(cursorInstance);
-                }
-                else
-                {
-                    DestroyImmediate(cursorInstance);
-                }
+                // Destroy correctly depending on if in play mode or edit mode
+                GameObjectExtensions.DestroyGameObject(cursorInstance);
             }
         }
 
@@ -165,7 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // The pointer's input source was lost during the await.
             if (Controller == null)
             {
-                Destroy(gameObject);
+                GameObjectExtensions.DestroyGameObject(gameObject);
                 return;
             }
         }
