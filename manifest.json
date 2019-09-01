@@ -9313,7 +9313,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.GameObjectExtensions.html",
-          "hash": "97SDVsd113rtZ/QeOsEQ1A=="
+          "hash": "FzhLX9q28pC/a7nsic2vfg=="
         }
       },
       "is_incremental": false,
@@ -16993,7 +16993,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Facades.MixedRealityToolkitFacadeHandler.html",
-          "hash": "/F4Dhip5cy4w5b4UhBCVmg=="
+          "hash": "EPs1qiz9Uif/V9C6A89eSQ=="
         }
       },
       "is_incremental": false,
@@ -19277,9 +19277,9 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "TocDocumentProcessor": {
+        "ResourceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
@@ -19290,9 +19290,9 @@
           "total_file_count": 120,
           "skipped_file_count": 0
         },
-        "ResourceDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
