@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// such as cursor visibility/locking
     /// </summary>
     /// <param name="wantsJumping">Show the cursor</param>
-    internal class MouseRotationProvider
+    public class MouseRotationProvider
     {
         private bool isRotating = false;
         public bool IsRotating => isRotating;

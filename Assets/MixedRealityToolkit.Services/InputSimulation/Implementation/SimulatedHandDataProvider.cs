@@ -173,6 +173,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private SimulatedHandData.HandJointDataGenerator generatorLeft;
         private SimulatedHandData.HandJointDataGenerator generatorRight;
 
+        private static readonly KeyBinding cancelRotationKey = KeyBinding.FromKey(KeyCode.Escape);
+        private readonly MouseRotationProvider mouseRotation = new MouseRotationProvider();
+
         public SimulatedHandDataProvider(MixedRealityInputSimulationProfile _profile)
         {
             profile = _profile;
@@ -262,32 +265,41 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            float rotationDelta = profile.HandRotationSpeed * Time.deltaTime;
             Vector3 rotationDeltaEulerAngles = Vector3.zero;
-            if (KeyInputSystem.GetKey(profile.YawHandCCWKey))
+            mouseRotation.Update(profile.MouseLookButton, cancelRotationKey, false);
+            if (mouseRotation.IsRotating)
             {
-                rotationDeltaEulerAngles.y = -rotationDelta;
+                rotationDeltaEulerAngles.x += -mouseDelta.y * profile.MouseRotationSensitivity;
+                rotationDeltaEulerAngles.y += mouseDelta.x * profile.MouseRotationSensitivity;
             }
-            if (KeyInputSystem.GetKey(profile.YawHandCWKey))
-            {
-                rotationDeltaEulerAngles.y = rotationDelta;
-            }
-            if (KeyInputSystem.GetKey(profile.PitchHandCCWKey))
-            {
-                rotationDeltaEulerAngles.x = rotationDelta;
-            }
-            if (KeyInputSystem.GetKey(profile.PitchHandCWKey))
-            {
-                rotationDeltaEulerAngles.x = -rotationDelta;
-            }
-            if (KeyInputSystem.GetKey(profile.RollHandCCWKey))
-            {
-                rotationDeltaEulerAngles.z = rotationDelta;
-            }
-            if (KeyInputSystem.GetKey(profile.RollHandCWKey))
-            {
-                rotationDeltaEulerAngles.z = -rotationDelta;
-            }
+
+            rotationDeltaEulerAngles *= profile.ExtraMouseRotationScale;
+
+            // float rotationDelta = profile.HandRotationSpeed * Time.deltaTime;
+            // if (KeyInputSystem.GetKey(profile.YawHandCCWKey))
+            // {
+            //     rotationDeltaEulerAngles.y = -rotationDelta;
+            // }
+            // if (KeyInputSystem.GetKey(profile.YawHandCWKey))
+            // {
+            //     rotationDeltaEulerAngles.y = rotationDelta;
+            // }
+            // if (KeyInputSystem.GetKey(profile.PitchHandCCWKey))
+            // {
+            //     rotationDeltaEulerAngles.x = rotationDelta;
+            // }
+            // if (KeyInputSystem.GetKey(profile.PitchHandCWKey))
+            // {
+            //     rotationDeltaEulerAngles.x = -rotationDelta;
+            // }
+            // if (KeyInputSystem.GetKey(profile.RollHandCCWKey))
+            // {
+            //     rotationDeltaEulerAngles.z = rotationDelta;
+            // }
+            // if (KeyInputSystem.GetKey(profile.RollHandCWKey))
+            // {
+            //     rotationDeltaEulerAngles.z = -rotationDelta;
+            // }
 
             SimulateHandInput(ref lastHandTrackedTimestampLeft, HandStateLeft, isSimulatingLeft, IsAlwaysVisibleLeft, mouseDelta, rotationDeltaEulerAngles);
             SimulateHandInput(ref lastHandTrackedTimestampRight, HandStateRight, isSimulatingRight, IsAlwaysVisibleRight, mouseDelta, rotationDeltaEulerAngles);
