@@ -78,7 +78,7 @@ The MousePointer powers a screen to world raycast for far interactions, but for 
 
 #### Near pointers
 
-##### PokePointer
+##### [`PokePointer`](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer)
 
 The [PokePointer](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer) is used to interact with game objects that support “near interaction touchable.” which are GameObjects that have an attached [`NearInteractionTouchable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable) script. In the case of UnityUI, this pointer looks for NearInteractionTouchableUnityUIs.  The PokePointer uses a SphereCast to determine the closest touchable element and is used to power things like the pressable buttons.
 
@@ -93,7 +93,7 @@ Useful Poke Pointer properties:
 
 <img src="../../Documentation/Images/Pointers/MRTK_PokePointer.png" width="400">
 
-##### SpherePointer
+##### [`SpherePointer`](xref:Microsoft.MixedReality.Toolkit.Input.SpherePointer)
 
 The [SpherePointer](xref:Microsoft.MixedReality.Toolkit.Input.SpherePointer) uses [UnityEngine.Physics.OverlapSphere](https://docs.unity3d.com/ScriptReference/Physics.OverlapSphere.html) in order to identify the closest [`NearInteractionGrabbable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable) object for interaction which is useful for "grabbable" input like the `ManipulationHandler`. Similar to the [`PokePointer`](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer)/[`NearInteractionTouchable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable) functional pair, in order to be interactable with the Sphere Pointer, the game object must contain a component that is the [`NearInteractionGrabbable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable) script.
 
