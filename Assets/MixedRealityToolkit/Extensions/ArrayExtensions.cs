@@ -6,7 +6,7 @@ using System;
 namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
-    /// <see cref="Array"/> type method extensions.
+    /// <see cref="System.Array"/> type method extensions.
     /// </summary>
     public static class ArrayExtensions
     {

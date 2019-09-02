@@ -47,6 +47,8 @@
       href: Input/Controllers.md
     - name: Pointers
       href: Input/Pointers.md
+    - name: How to Add Near Interaction
+      href: Input/HowToAddNearInteractivity.md
     - name: Gestures
       href: Input/Gestures.md
     - name: Speech(Voice command)
@@ -54,7 +56,7 @@
     - name: Dictation
       href: Input/Dictation.md
     - name: Hands
-      href: InputSystem/HandTracking.md
+      href: Input/HandTracking.md
     - name: Gaze
       href: Input/Gaze.md
     - name: Eyes
