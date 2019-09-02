@@ -71,17 +71,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
             handedness = _handedness;
         }
 
-        public void SimulateInput(Vector3 mouseDelta, float noiseAmount, Vector3 rotationDeltaEulerAngles)
+        public void SimulateInput(Vector3 mouseDelta, bool useMouseRotation, float rotationSensitivity, float rotationScale, float noiseAmount)
         {
-            Vector3 screenPosition = CameraCache.Main.ViewportToScreenPoint(ViewportPosition);
-            // Apply mouse delta x/y in screen space, but depth offset in world space
-            screenPosition.x += mouseDelta.x;
-            screenPosition.y += mouseDelta.y;
-            Vector3 newWorldPoint = CameraCache.Main.ScreenToWorldPoint(screenPosition);
-            newWorldPoint += CameraCache.Main.transform.forward * mouseDelta.z;
-            ViewportPosition = CameraCache.Main.WorldToViewportPoint(newWorldPoint);
+            if (useMouseRotation)
+            {
+                Vector3 rotationDeltaEulerAngles = Vector3.zero;
+                rotationDeltaEulerAngles.x += -mouseDelta.y * rotationSensitivity;
+                rotationDeltaEulerAngles.y += mouseDelta.x * rotationSensitivity;
+                rotationDeltaEulerAngles *= rotationScale;
 
-            ViewportRotation = ViewportRotation + rotationDeltaEulerAngles;
+                ViewportRotation = ViewportRotation + rotationDeltaEulerAngles;
+            }
+            else
+            {
+                Vector3 screenPosition = CameraCache.Main.ViewportToScreenPoint(ViewportPosition);
+                // Apply mouse delta x/y in screen space, but depth offset in world space
+                screenPosition.x += mouseDelta.x;
+                screenPosition.y += mouseDelta.y;
+                Vector3 newWorldPoint = CameraCache.Main.ScreenToWorldPoint(screenPosition);
+                newWorldPoint += CameraCache.Main.transform.forward * mouseDelta.z;
+                ViewportPosition = CameraCache.Main.WorldToViewportPoint(newWorldPoint);
+            }
 
             JitterOffset = UnityEngine.Random.insideUnitSphere * noiseAmount;
         }
@@ -265,18 +275,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            Vector3 rotationDeltaEulerAngles = Vector3.zero;
             mouseRotation.Update(profile.MouseLookButton, cancelRotationKey, false);
-            if (mouseRotation.IsRotating)
-            {
-                rotationDeltaEulerAngles.x += -mouseDelta.y * profile.MouseRotationSensitivity;
-                rotationDeltaEulerAngles.y += mouseDelta.x * profile.MouseRotationSensitivity;
-            }
 
-            rotationDeltaEulerAngles *= profile.ExtraMouseRotationScale;
-
-            SimulateHandInput(ref lastHandTrackedTimestampLeft, HandStateLeft, isSimulatingLeft, IsAlwaysVisibleLeft, mouseDelta, rotationDeltaEulerAngles);
-            SimulateHandInput(ref lastHandTrackedTimestampRight, HandStateRight, isSimulatingRight, IsAlwaysVisibleRight, mouseDelta, rotationDeltaEulerAngles);
+            SimulateHandInput(ref lastHandTrackedTimestampLeft, HandStateLeft, isSimulatingLeft, IsAlwaysVisibleLeft, mouseDelta, mouseRotation.IsRotating);
+            SimulateHandInput(ref lastHandTrackedTimestampRight, HandStateRight, isSimulatingRight, IsAlwaysVisibleRight, mouseDelta, mouseRotation.IsRotating);
 
             float gestureAnimDelta = profile.HandGestureAnimationSpeed * Time.deltaTime;
             HandStateLeft.GestureBlending += gestureAnimDelta;
@@ -290,7 +292,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             bool isSimulating,
             bool isAlwaysVisible,
             Vector3 mouseDelta,
-            Vector3 rotationDeltaEulerAngles)
+            bool useMouseRotation)
         {
             bool enableTracking = isAlwaysVisible || isSimulating;
             if (!state.IsTracked && enableTracking)
@@ -300,7 +302,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (isSimulating)
             {
-                state.SimulateInput(mouseDelta, profile.HandJitterAmount, rotationDeltaEulerAngles);
+                state.SimulateInput(mouseDelta, useMouseRotation, profile.MouseRotationSensitivity, profile.ExtraMouseRotationScale, profile.HandJitterAmount);
 
                 if (isAlwaysVisible)
                 {
