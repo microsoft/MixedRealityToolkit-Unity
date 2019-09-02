@@ -36,7 +36,7 @@ public class PrintPointerEvents : MonoBehaviour, IMixedRealityPointerHandler
 
 1. Make sure there is a collider to that object.
 
-1. Make sure the layer your object is on is a grabbable layer. By default, all layers except Spatial Awareness and Ignore Raycast are grabbable. See which layers are grabbable by inspecting the Grab Layer Masks in your GrabPointer prefab.
+1. Make sure the layer your object is on is a grabbable layer. By default, all layers except _Spatial Awareness_ and _Ignore Raycast_ are grabbable. See which layers are grabbable by inspecting the Grab Layer Masks in your GrabPointer prefab.
 
 1. Add a [NearInteractionGrabbable](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable) to that collider.
 
@@ -52,7 +52,7 @@ public class PrintPointerEvents : MonoBehaviour, IMixedRealityPointerHandler
 
 1. Make sure there is a collider to that object.
 
-1. Make sure the layer your object is on is a touchable layer. By default, all layers except Ignore Raycast are touchable. See which layers are grabbable by inspecting the Touch Layer Masks in the PokePointer prefab.
+1. Make sure the layer your object is on is a touchable layer. By default, all layers except _Ignore Raycast_ are touchable. See which layers are grabbable by inspecting the Touch Layer Masks in the PokePointer prefab.
 
 1. Add a [NearInteractionTouchable](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable) to the object. 
 
