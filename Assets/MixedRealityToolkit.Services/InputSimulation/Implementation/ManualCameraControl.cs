@@ -43,6 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             transform.Rotate(rotate.x, 0.0f, 0.0f);
             transform.Rotate(0.0f, rotate.y, 0.0f, Space.World);
+            transform.Rotate(0.0f, 0.0f, rotate.z);
             transform.Translate(translate, Space.World);
 
             transform.Rotate(this.lastTrackerToUnityRotation.eulerAngles, Space.World);
@@ -123,6 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 rot.x += -InputCurve(mouseDelta.screenDelta.y * profile.MouseRotationSensitivity);
                 rot.y += InputCurve(mouseDelta.screenDelta.x * profile.MouseRotationSensitivity);
+                rot.z += InputCurve(mouseDelta.screenDelta.z * profile.MouseRotationSensitivity);
             }
 
             rot *= profile.ExtraMouseRotationScale;

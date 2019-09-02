@@ -75,11 +75,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (useMouseRotation)
             {
-                // // mouseDelta.z is in world space, convert into pixels so the same sensitivity factors can be applied as to x and y.
-                // Vector3 mouseWorldZ = CameraCache.Main.transform.TransformPoint(new Vector3(mouseDelta.z, 0, 0.5f));
-                // Vector3 mouseViewportZ = CameraCache.Main.WorldToViewportPoint(mouseWorldZ);
-                // mouseDelta.z = (mouseViewportZ.x - 0.5f) * CameraCache.Main.pixelWidth;
-
                 Vector3 rotationDeltaEulerAngles = Vector3.zero;
                 rotationDeltaEulerAngles.x += -mouseDelta.screenDelta.y * rotationSensitivity;
                 rotationDeltaEulerAngles.y += mouseDelta.screenDelta.x * rotationSensitivity;
@@ -90,14 +85,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             else
             {
-                // Vector3 screenPosition = CameraCache.Main.ViewportToScreenPoint(ViewportPosition);
-                // // Apply mouse delta x/y in screen space, but depth offset in world space
-                // screenPosition.x += mouseDelta.x;
-                // screenPosition.y += mouseDelta.y;
-                // Vector3 newWorldPoint = CameraCache.Main.ScreenToWorldPoint(screenPosition);
-                // newWorldPoint += CameraCache.Main.transform.forward * mouseDelta.z;
-                // ViewportPosition = CameraCache.Main.WorldToViewportPoint(newWorldPoint);
-
                 ViewportPosition += mouseDelta.viewportDelta;
             }
 
