@@ -75,9 +75,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (useMouseRotation)
             {
+                // mouseDelta.z is in world space, convert into pixels so the same sensitivity factors can be applied as to x and y.
+                Vector3 mouseWorldZ = CameraCache.Main.transform.TransformPoint(new Vector3(mouseDelta.z, 0, 0.5f));
+                Vector3 mouseViewportZ = CameraCache.Main.WorldToViewportPoint(mouseWorldZ);
+                mouseDelta.z = (mouseViewportZ.x - 0.5f) * CameraCache.Main.pixelWidth;
+
                 Vector3 rotationDeltaEulerAngles = Vector3.zero;
                 rotationDeltaEulerAngles.x += -mouseDelta.y * rotationSensitivity;
                 rotationDeltaEulerAngles.y += mouseDelta.x * rotationSensitivity;
+                rotationDeltaEulerAngles.z += mouseDelta.z * rotationSensitivity;
                 rotationDeltaEulerAngles *= rotationScale;
 
                 ViewportRotation = ViewportRotation + rotationDeltaEulerAngles;

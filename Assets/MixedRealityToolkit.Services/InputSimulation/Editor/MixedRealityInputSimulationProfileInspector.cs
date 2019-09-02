@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private SerializedProperty moveUpDown;
         private SerializedProperty mouseX;
         private SerializedProperty mouseY;
-        private SerializedProperty mouseZ;
+        private SerializedProperty mouseScroll;
         private SerializedProperty lookHorizontal;
         private SerializedProperty lookVertical;
         private SerializedProperty rollCameraCWKey;
@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             moveUpDown = serializedObject.FindProperty("moveUpDown");
             mouseX = serializedObject.FindProperty("mouseX");
             mouseY = serializedObject.FindProperty("mouseY");
-            mouseZ = serializedObject.FindProperty("mouseZ");
+            mouseScroll = serializedObject.FindProperty("mouseScroll");
             lookHorizontal = serializedObject.FindProperty("lookHorizontal");
             lookVertical = serializedObject.FindProperty("lookVertical");
             rollCameraCWKey = serializedObject.FindProperty("rollCameraCWKey");
@@ -146,7 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         EditorGUILayout.PropertyField(moveUpDown);
                         EditorGUILayout.PropertyField(mouseX);
                         EditorGUILayout.PropertyField(mouseY);
-                        EditorGUILayout.PropertyField(mouseZ);
+                        EditorGUILayout.PropertyField(mouseScroll);
                         EditorGUILayout.PropertyField(lookHorizontal);
                         EditorGUILayout.PropertyField(lookVertical);
                         EditorGUILayout.PropertyField(rollCameraCWKey);

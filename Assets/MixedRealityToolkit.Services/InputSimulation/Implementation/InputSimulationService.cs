@@ -361,13 +361,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     mouseDelta.x = UnityEngine.Input.GetAxis(profile.MouseX);
                     mouseDelta.y = UnityEngine.Input.GetAxis(profile.MouseY);
-                    mouseDelta.z = UnityEngine.Input.GetAxis(profile.MouseZ);
+                    mouseDelta.z = UnityEngine.Input.GetAxis(profile.MouseScroll);
                 }
                 else
                 {
                     mouseDelta = (UnityEngine.Input.mousePosition - lastMousePosition);
                     mouseDelta.z = UnityEngine.Input.mouseScrollDelta.y;
                 }
+
                 mouseDelta.z *= profile.HandDepthMultiplier;
 
                 lastMousePosition = UnityEngine.Input.mousePosition;
