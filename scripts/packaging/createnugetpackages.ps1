@@ -134,7 +134,7 @@ try
         
         # Restore the package by providing the nupkg folder. After this restore the machine global cache will be populated with the package
         $restoreProjectPath = [System.IO.Path]::Combine((Split-Path $MyInvocation.MyCommand.Path), 'NuGetRestoreProject.csproj')
-        dotnet build $restoreProjectPath -p:RestorePackageFeed=$OutputDirectory -p:RestorePackageId=$packageId -p:RestorePackageVersion=$localVersion
+        dotnet build "$restoreProjectPath" -p:RestorePackageFeed="$(convert-path $OutputDirectory)" -p:RestorePackageId=$packageId -p:RestorePackageVersion=$localVersion
     }
 }
 finally
