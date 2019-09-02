@@ -87,6 +87,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("Mouse Movement Y-axis")]
         private string mouseY = "Mouse Y";
         public string MouseY => mouseY;
+        [SerializeField]
+        [Tooltip("Mouse Movement Z-axis")]
+        private string mouseZ = "Mouse ScrollWheel";
+        public string MouseZ => mouseZ;
         // Look horizontal string for right stick of game controller
         // The right stick has no default settings in the Input Manager and will need to be setup for a game controller to look
         [SerializeField]

@@ -356,22 +356,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 // Use frame-to-frame mouse delta in pixels to determine mouse rotation.
                 // The traditional GetAxis("Mouse X") method doesn't work under Remote Desktop.
-                Vector3 mousePositionDelta;
+                Vector3 mouseDelta;
                 if (UnityEngine.Cursor.lockState == CursorLockMode.Locked)
                 {
-                    mousePositionDelta.x = UnityEngine.Input.GetAxis(profile.MouseX);
-                    mousePositionDelta.y = UnityEngine.Input.GetAxis(profile.MouseY);
-                    mousePositionDelta.z = UnityEngine.Input.GetAxis("Mouse ScrollWheel") * profile.HandDepthMultiplier;
+                    mouseDelta.x = UnityEngine.Input.GetAxis(profile.MouseX);
+                    mouseDelta.y = UnityEngine.Input.GetAxis(profile.MouseY);
+                    mouseDelta.z = UnityEngine.Input.GetAxis(profile.MouseZ);
                 }
                 else
                 {
-                    mousePositionDelta = (UnityEngine.Input.mousePosition - lastMousePosition);
-                    mousePositionDelta.z = UnityEngine.Input.mouseScrollDelta.y * profile.HandDepthMultiplier;
+                    mouseDelta = (UnityEngine.Input.mousePosition - lastMousePosition);
+                    mouseDelta.z = UnityEngine.Input.mouseScrollDelta.y;
                 }
+                mouseDelta.z *= profile.HandDepthMultiplier;
 
                 lastMousePosition = UnityEngine.Input.mousePosition;
 
-                return mousePositionDelta;
+                return mouseDelta;
             }
         }
     }
