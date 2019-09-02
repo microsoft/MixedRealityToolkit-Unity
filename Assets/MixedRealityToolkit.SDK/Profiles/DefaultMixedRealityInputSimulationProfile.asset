@@ -17,8 +17,8 @@ MonoBehaviour:
     type: 3}
   doublePressTime: 0.4
   isCameraControlEnabled: 1
-  extraMouseSensitivityScale: 3
-  defaultMouseSensitivity: 0.1
+  mouseRotationSensitivity: 0.1
+  extraMouseRotationScale: 3
   mouseLookButton:
     bindingType: 1
     code: 1
@@ -32,6 +32,7 @@ MonoBehaviour:
   controlFastSpeed: 1
   moveHorizontal: Horizontal
   moveVertical: Vertical
+  moveUpDown: UpDown
   mouseX: Mouse X
   mouseY: Mouse Y
   lookHorizontal: AXIS_4
@@ -65,24 +66,5 @@ MonoBehaviour:
   holdStartDuration: 0.5
   navigationStartThreshold: 0.03
   defaultHandDistance: 0.5
-  handDepthMultiplier: 0.1
+  handDepthMultiplier: 0.01
   handJitterAmount: 0
-  yawHandCWKey:
-    bindingType: 2
-    code: 101
-  yawHandCCWKey:
-    bindingType: 2
-    code: 113
-  pitchHandCWKey:
-    bindingType: 2
-    code: 102
-  pitchHandCCWKey:
-    bindingType: 2
-    code: 114
-  rollHandCWKey:
-    bindingType: 2
-    code: 120
-  rollHandCCWKey:
-    bindingType: 2
-    code: 122
-  handRotationSpeed: 100
