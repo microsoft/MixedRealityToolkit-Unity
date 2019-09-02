@@ -1,9 +1,9 @@
 # How to add near interaction in MRTK
 Near interactions come in the form of touches and grabs. Touch and grab events are raised as pointer events by the [PokePointer](Pointers.md#pokepointer) and [SpherePointer](Pointers.md#spherepointer), respectively.
 
-Listen for touch and grab events by implementing [IMixedRealityPointerHandler](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler) and looking at the type of pointer that triggers your event. If the pointer is a PokePointer, the interaction is a touch. If the pointer is a SpherePointer, the interaction is a near grab. For touch interaction it is also possible to configure objects to raise touch events by implementing the [IMixedRealityTouchHandler](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler)
+Listen for touch and grab events by implementing [`IMixedRealityPointerHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler) and looking at the type of pointer that triggers your event. If the pointer is a PokePointer, the interaction is a touch. If the pointer is a SpherePointer, the interaction is a near grab. For touch interaction it is also possible to configure objects to raise touch events by implementing the [`IMixedRealityTouchHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler)
 
-Because near interactions are dispatched by pointers, you need to make sure MRTK is configured to create a [SpherePointer](Pointers.md#spherepointer) and a [PokePointer](Pointers.md#pokepointer) whenever articulated hands are present. You also need to add [NearInteractionGrabbable](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable) or [NearInteractionTouchable](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable) to each collidable you want to be near grababable / touchable. If you want to add touch interactions to Unity UI, you need to add add [NearInteractionTouchableUnityUI](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableUnityUI), read below for more details.
+Because near interactions are dispatched by pointers, you need to make sure MRTK is configured to create a [SpherePointer](Pointers.md#spherepointer) and a [PokePointer](Pointers.md#pokepointer) whenever articulated hands are present. You also need to add [`NearInteractionGrabbable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable) or [`NearInteractionTouchable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable) to each collidable you want to be near grababable / touchable. If you want to add touch interactions to Unity UI, you need to add add [`NearInteractionTouchableUnityUI`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableUnityUI), read below for more details.
 
 #### Example
 Below is a script that will print if an event is a touch or grab.
@@ -38,9 +38,9 @@ public class PrintPointerEvents : MonoBehaviour, IMixedRealityPointerHandler
 
 1. Make sure the layer your object is on is a grabbable layer. By default, all layers except _Spatial Awareness_ and _Ignore Raycast_ are grabbable. See which layers are grabbable by inspecting the Grab Layer Masks in your GrabPointer prefab.
 
-1. Add a [NearInteractionGrabbable](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable) to that collider.
+1. Add a [`NearInteractionGrabbable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable) to that collider.
 
-1. On that object or one of its ancestors, add a component that implements [IMixedRealityPointerHandler](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler). For example, add [ManipulationHandler](xref:Microsoft.MixedReality.Toolkit.UI.ManipulationHandler).
+1. On that object or one of its ancestors, add a component that implements [`IMixedRealityPointerHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler). For example, add [`ManipulationHandler`](xref:Microsoft.MixedReality.Toolkit.UI.ManipulationHandler).
 
 
 ## How to add near touch interactions to collidables
@@ -54,7 +54,7 @@ public class PrintPointerEvents : MonoBehaviour, IMixedRealityPointerHandler
 
 1. Make sure the layer your object is on is a touchable layer. By default, all layers except _Ignore Raycast_ are touchable. See which layers are grabbable by inspecting the Touch Layer Masks in the PokePointer prefab.
 
-1. Add a [NearInteractionTouchable](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable) to the object. 
+1. Add a [`NearInteractionTouchable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable) to the object. 
 
 1. Set "Events to Receive" to Pointer.
 
@@ -62,14 +62,14 @@ public class PrintPointerEvents : MonoBehaviour, IMixedRealityPointerHandler
 
 1. In the scene inspector, notice a white outline square and arrow. The arrow points to the "front" of the touchable. The collidable will only be touchable from that direction.
 
-1. To make a collider touchable from all directions, add a [NearInteractionTouchableVolume](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableVolume) instead.
+1. To make a collider touchable from all directions, add a [`NearInteractionTouchableVolume`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableVolume) instead.
 
 ## How to add near touch interactions to UnityUI
 1. Make sure you have a [PokePointer](Pointers.md#pokepointer) in your MRTK pointer profile. If you are using the default MRTK profile or the default HoloLens 2 profile, you will have this already. If you have a custom profile, open your custom profile and go to look under Input / Pointers  / Pointer Options. Make sure that for the "articulated hand" controller type you have an entry that points to the PokePointer prefab under MRTK.SDK/Features/UX/Prefabs, or create your own prefab and add a [PokePointer](Pointers.md#pokepointer).
 
 1. Add a UnityUI canvas to your scene.
 
-1. Add a [NearInteractionTouchableUnityUI](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableUnityUI) to your object. 
+1. Add a [`NearInteractionTouchableUnityUI`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableUnityUI) to your object.  
 
 1. Set "Events to Receive" to Pointer.
 
