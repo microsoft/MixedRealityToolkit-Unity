@@ -15,8 +15,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private bool isRotating = false;
         public bool IsRotating => isRotating;
 
-        private bool isMouseJumping = false;
-        private bool wasCursorVisible = true;
+        private static int numRotating = 0;
+        private static bool isMouseJumping = false;
+        private static bool wasCursorVisible = true;
 
         public void Update(KeyBinding rotationKey, KeyBinding cancelRotationKey, bool toggle)
         {
@@ -60,40 +61,50 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private void OnStartRotating(KeyBinding rotationKey)
+        private static void OnStartRotating(KeyBinding rotationKey)
         {
-            if (rotationKey.BindingType == KeyBinding.KeyType.Mouse)
+            if (numRotating == 0)
             {
-                // if mousebutton is either left, right or middle
-                SetWantsMouseJumping(true);
-            }
-            else if (rotationKey.BindingType == KeyBinding.KeyType.Key)
-            {
-                // if mousebutton is either control, shift or focused
-                UnityEngine.Cursor.lockState = CursorLockMode.Locked;
-                // save current cursor visibility before hiding it
-                wasCursorVisible = UnityEngine.Cursor.visible;
-                UnityEngine.Cursor.visible = false;
+                if (rotationKey.BindingType == KeyBinding.KeyType.Mouse)
+                {
+                    // if mousebutton is either left, right or middle
+                    SetWantsMouseJumping(true);
+                }
+                else if (rotationKey.BindingType == KeyBinding.KeyType.Key)
+                {
+                    // if mousebutton is either control, shift or focused
+                    UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+                    // save current cursor visibility before hiding it
+                    wasCursorVisible = UnityEngine.Cursor.visible;
+                    UnityEngine.Cursor.visible = false;
+                }
+
+                // do nothing if (this.MouseLookButton == MouseButton.None)
             }
 
-            // do nothing if (this.MouseLookButton == MouseButton.None)
+            ++numRotating;
         }
 
-        private void OnEndRotating(KeyBinding rotationKey)
+        private static void OnEndRotating(KeyBinding rotationKey)
         {
-            if (rotationKey.BindingType == KeyBinding.KeyType.Mouse)
-            {
-                // if mousebutton is either left, right or middle
-                SetWantsMouseJumping(false);
-            }
-            else if (rotationKey.BindingType == KeyBinding.KeyType.Key)
-            {
-                // if mousebutton is either control, shift or focused
-                UnityEngine.Cursor.lockState = CursorLockMode.None;
-                UnityEngine.Cursor.visible = wasCursorVisible;
-            }
+            --numRotating;
 
-            // do nothing if (this.MouseLookButton == MouseButton.None)
+            if (numRotating == 0)
+            {
+                if (rotationKey.BindingType == KeyBinding.KeyType.Mouse)
+                {
+                    // if mousebutton is either left, right or middle
+                    SetWantsMouseJumping(false);
+                }
+                else if (rotationKey.BindingType == KeyBinding.KeyType.Key)
+                {
+                    // if mousebutton is either control, shift or focused
+                    UnityEngine.Cursor.lockState = CursorLockMode.None;
+                    UnityEngine.Cursor.visible = wasCursorVisible;
+                }
+
+                // do nothing if (this.MouseLookButton == MouseButton.None)
+            }
         }
 
         /// <summary>
@@ -101,11 +112,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// disappears when it enters the Unity game window.
         /// </summary>
         /// <param name="wantsJumping">Show the cursor</param>
-        private void SetWantsMouseJumping(bool wantsJumping)
+        private static void SetWantsMouseJumping(bool wantsJumping)
         {
-            if (wantsJumping != this.isMouseJumping)
+            if (wantsJumping != isMouseJumping)
             {
-                this.isMouseJumping = wantsJumping;
+                isMouseJumping = wantsJumping;
 
                 if (wantsJumping)
                 {
