@@ -182,35 +182,5 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("Apply random offset to the hand position")]
         private float handJitterAmount = 0.0f;
         public float HandJitterAmount => handJitterAmount;
-
-        [Header("Hand Rotation Settings")]
-        [SerializeField]
-        [Tooltip("Key to turn the hand clockwise")]
-        private KeyBinding yawHandCWKey = KeyBinding.FromKey(KeyCode.E);
-        public KeyBinding YawHandCWKey => yawHandCWKey;
-        [SerializeField]
-        [Tooltip("Key to turn the hand counter-clockwise")]
-        private KeyBinding yawHandCCWKey = KeyBinding.FromKey(KeyCode.Q);
-        public KeyBinding YawHandCCWKey => yawHandCCWKey;
-        [SerializeField]
-        [Tooltip("Key to pitch the hand upward")]
-        private KeyBinding pitchHandCWKey = KeyBinding.FromKey(KeyCode.F);
-        public KeyBinding PitchHandCWKey => pitchHandCWKey;
-        [SerializeField]
-        [Tooltip("Key to pitch the hand downward")]
-        private KeyBinding pitchHandCCWKey = KeyBinding.FromKey(KeyCode.R);
-        public KeyBinding PitchHandCCWKey => pitchHandCCWKey;
-        [SerializeField]
-        [Tooltip("Key to roll the hand right")]
-        private KeyBinding rollHandCWKey = KeyBinding.FromKey(KeyCode.X);
-        public KeyBinding RollHandCWKey => rollHandCWKey;
-        [SerializeField]
-        [Tooltip("Key to roll the hand left")]
-        private KeyBinding rollHandCCWKey = KeyBinding.FromKey(KeyCode.Z);
-        public KeyBinding RollHandCCWKey => rollHandCCWKey;
-        [SerializeField]
-        [Tooltip("Angle per second when rotating the hand")]
-        private float handRotationSpeed = 100.0f;
-        public float HandRotationSpeed => handRotationSpeed;
     }
 }

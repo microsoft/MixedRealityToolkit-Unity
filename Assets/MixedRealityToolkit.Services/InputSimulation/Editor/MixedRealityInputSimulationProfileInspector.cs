@@ -55,14 +55,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private SerializedProperty handDepthMultiplier;
         private SerializedProperty handJitterAmount;
 
-        private SerializedProperty yawHandCWKey;
-        private SerializedProperty yawHandCCWKey;
-        private SerializedProperty pitchHandCWKey;
-        private SerializedProperty pitchHandCCWKey;
-        private SerializedProperty rollHandCWKey;
-        private SerializedProperty rollHandCCWKey;
-        private SerializedProperty handRotationSpeed;
-
         private SerializedProperty holdStartDuration;
         private SerializedProperty navigationStartThreshold;
 
@@ -119,14 +111,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             defaultHandDistance = serializedObject.FindProperty("defaultHandDistance");
             handDepthMultiplier = serializedObject.FindProperty("handDepthMultiplier");
             handJitterAmount = serializedObject.FindProperty("handJitterAmount");
-
-            yawHandCWKey = serializedObject.FindProperty("yawHandCWKey");
-            yawHandCCWKey = serializedObject.FindProperty("yawHandCCWKey");
-            pitchHandCWKey = serializedObject.FindProperty("pitchHandCWKey");
-            pitchHandCCWKey = serializedObject.FindProperty("pitchHandCCWKey");
-            rollHandCWKey = serializedObject.FindProperty("rollHandCWKey");
-            rollHandCCWKey = serializedObject.FindProperty("rollHandCCWKey");
-            handRotationSpeed = serializedObject.FindProperty("handRotationSpeed");
         }
 
         public override void OnInspectorGUI()
@@ -198,15 +182,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     EditorGUILayout.PropertyField(defaultHandDistance);
                     EditorGUILayout.PropertyField(handDepthMultiplier);
                     EditorGUILayout.PropertyField(handJitterAmount);
-                    EditorGUILayout.Space();
-
-                    EditorGUILayout.PropertyField(yawHandCWKey);
-                    EditorGUILayout.PropertyField(yawHandCCWKey);
-                    EditorGUILayout.PropertyField(pitchHandCWKey);
-                    EditorGUILayout.PropertyField(pitchHandCCWKey);
-                    EditorGUILayout.PropertyField(rollHandCWKey);
-                    EditorGUILayout.PropertyField(rollHandCCWKey);
-                    EditorGUILayout.PropertyField(handRotationSpeed);
                     EditorGUILayout.Space();
 
                     EditorGUILayout.EndVertical();

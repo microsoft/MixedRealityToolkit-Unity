@@ -275,32 +275,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             rotationDeltaEulerAngles *= profile.ExtraMouseRotationScale;
 
-            // float rotationDelta = profile.HandRotationSpeed * Time.deltaTime;
-            // if (KeyInputSystem.GetKey(profile.YawHandCCWKey))
-            // {
-            //     rotationDeltaEulerAngles.y = -rotationDelta;
-            // }
-            // if (KeyInputSystem.GetKey(profile.YawHandCWKey))
-            // {
-            //     rotationDeltaEulerAngles.y = rotationDelta;
-            // }
-            // if (KeyInputSystem.GetKey(profile.PitchHandCCWKey))
-            // {
-            //     rotationDeltaEulerAngles.x = rotationDelta;
-            // }
-            // if (KeyInputSystem.GetKey(profile.PitchHandCWKey))
-            // {
-            //     rotationDeltaEulerAngles.x = -rotationDelta;
-            // }
-            // if (KeyInputSystem.GetKey(profile.RollHandCCWKey))
-            // {
-            //     rotationDeltaEulerAngles.z = rotationDelta;
-            // }
-            // if (KeyInputSystem.GetKey(profile.RollHandCWKey))
-            // {
-            //     rotationDeltaEulerAngles.z = -rotationDelta;
-            // }
-
             SimulateHandInput(ref lastHandTrackedTimestampLeft, HandStateLeft, isSimulatingLeft, IsAlwaysVisibleLeft, mouseDelta, rotationDeltaEulerAngles);
             SimulateHandInput(ref lastHandTrackedTimestampRight, HandStateRight, isSimulatingRight, IsAlwaysVisibleRight, mouseDelta, rotationDeltaEulerAngles);
 
