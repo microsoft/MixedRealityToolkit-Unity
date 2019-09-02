@@ -7,6 +7,16 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    /// <summary>
+    /// Utility struct that provides mouse delta in pixels (screen space), normalized viewport coordinates, and world units.
+    /// </summary>
+    public class MouseDelta
+    {
+        public Vector3 screenDelta = Vector3.zero;
+        public Vector3 viewportDelta = Vector3.zero;
+        public Vector3 worldDelta = Vector3.zero;
+    }
+
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
         SupportedPlatforms.WindowsEditor | SupportedPlatforms.MacEditor | SupportedPlatforms.LinuxEditor,
@@ -210,7 +220,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 DisableCameraControl();
             }
 
-            Vector3 mouseDelta = UpdateMouseDelta();
+            MouseDelta mouseDelta = UpdateMouseDelta();
             if (UserInputEnabled)
             {
                 bool enableCameraControl = true; 
@@ -334,7 +344,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             lastMousePosition = UnityEngine.Input.mousePosition;
         }
 
-        private Vector3 UpdateMouseDelta()
+        private MouseDelta UpdateMouseDelta()
         {
             var profile = InputSimulationProfile;
 
@@ -350,31 +360,71 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (gainedFocus || cursorLockChanged)
             {
                 ResetMouseDelta();
-                return Vector3.zero;
+                return new MouseDelta();
             }
             else
             {
                 // Use frame-to-frame mouse delta in pixels to determine mouse rotation.
                 // The traditional GetAxis("Mouse X") method doesn't work under Remote Desktop.
-                Vector3 mouseDelta;
+                Vector3 screenDelta;
+                Vector3 worldDelta;
                 if (UnityEngine.Cursor.lockState == CursorLockMode.Locked)
                 {
-                    mouseDelta.x = UnityEngine.Input.GetAxis(profile.MouseX);
-                    mouseDelta.y = UnityEngine.Input.GetAxis(profile.MouseY);
-                    mouseDelta.z = UnityEngine.Input.GetAxis(profile.MouseScroll);
+                    screenDelta.x = UnityEngine.Input.GetAxis(profile.MouseX);
+                    screenDelta.y = UnityEngine.Input.GetAxis(profile.MouseY);
+
+                    worldDelta.z = UnityEngine.Input.GetAxis(profile.MouseScroll);
                 }
                 else
                 {
-                    mouseDelta = (UnityEngine.Input.mousePosition - lastMousePosition);
-                    mouseDelta.z = UnityEngine.Input.mouseScrollDelta.y;
+                    screenDelta.x = (UnityEngine.Input.mousePosition.x - lastMousePosition.x);
+                    screenDelta.y = (UnityEngine.Input.mousePosition.y - lastMousePosition.y);
+
+                    worldDelta.z = UnityEngine.Input.mouseScrollDelta.y;
                 }
 
-                mouseDelta.z *= profile.HandDepthMultiplier;
+                // Interpret scroll values as world space delta
+                worldDelta.z *= profile.HandDepthMultiplier;
+
+                // Convert world space scroll delta into screen space pixels
+                screenDelta.z = WorldToScreen(new Vector2(worldDelta.z, 0)).x;
+
+                // Convert screen space x/y delta into world space
+                Vector2 worldDelta2D = ScreenToWorld(new Vector2(screenDelta.x, screenDelta.y));
+                worldDelta.x = worldDelta2D.x;
+                worldDelta.y = worldDelta2D.y;
 
                 lastMousePosition = UnityEngine.Input.mousePosition;
 
-                return mouseDelta;
+                return new MouseDelta()
+                {
+                    screenDelta = screenDelta,
+                    worldDelta = worldDelta,
+                    viewportDelta = CameraCache.Main.ScreenToViewportPoint(screenDelta),
+                };
             }
+        }
+
+        private const float MouseWorldDepth = 0.5f;
+
+        private Vector2 ScreenToWorld(Vector2 screenDelta)
+        {
+            Vector3 deltaViewport3D = new Vector3(
+                screenDelta.x / CameraCache.Main.pixelWidth + 0.5f,
+                screenDelta.y / CameraCache.Main.pixelHeight + 0.5f,
+                MouseWorldDepth);
+            Vector3 deltaWorld3D = CameraCache.Main.ViewportToWorldPoint(deltaViewport3D);
+            Vector3 deltaLocal3D = CameraCache.Main.transform.InverseTransformPoint(deltaWorld3D);
+            return new Vector2(deltaLocal3D.x, deltaLocal3D.y);
+        }
+
+        private Vector2 WorldToScreen(Vector2 deltaWorld)
+        {
+            Vector3 deltaWorld3D = CameraCache.Main.transform.TransformPoint(new Vector3(deltaWorld.x, deltaWorld.y, MouseWorldDepth));
+            Vector3 deltaViewport3D = CameraCache.Main.WorldToViewportPoint(deltaWorld3D);
+            return new Vector2(
+                (deltaViewport3D.x - 0.5f) * CameraCache.Main.pixelWidth,
+                (deltaViewport3D.y - 0.5f) * CameraCache.Main.pixelHeight);
         }
     }
 }

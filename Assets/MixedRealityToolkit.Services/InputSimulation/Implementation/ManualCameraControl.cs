@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return Mathf.Sign(x) * (1.0f - Mathf.Cos(0.5f * Mathf.PI * Mathf.Clamp(x, -1.0f, 1.0f)));
         }
 
-        public void UpdateTransform(Transform transform, Vector3 mouseDelta)
+        public void UpdateTransform(Transform transform, MouseDelta mouseDelta)
         {
             // Undo the last tracker to Unity transforms applied
             transform.Translate(-this.lastTrackerToUnityTranslation, Space.World);
@@ -98,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return accel * deltaPosition;
         }
 
-        private Vector3 GetCameraControlRotation(Vector3 mouseDelta)
+        private Vector3 GetCameraControlRotation(MouseDelta mouseDelta)
         {
             float inversionFactor = profile.IsControllerLookInverted ? -1.0f : 1.0f;
 
@@ -121,8 +121,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             mouseRotation.Update(profile.MouseLookButton, cancelRotationKey, profile.MouseLookToggle);
             if (mouseRotation.IsRotating)
             {
-                rot.x += -InputCurve(mouseDelta.y * profile.MouseRotationSensitivity);
-                rot.y += InputCurve(mouseDelta.x * profile.MouseRotationSensitivity);
+                rot.x += -InputCurve(mouseDelta.screenDelta.y * profile.MouseRotationSensitivity);
+                rot.y += InputCurve(mouseDelta.screenDelta.x * profile.MouseRotationSensitivity);
             }
 
             rot *= profile.ExtraMouseRotationScale;

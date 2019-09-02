@@ -71,32 +71,34 @@ namespace Microsoft.MixedReality.Toolkit.Input
             handedness = _handedness;
         }
 
-        public void SimulateInput(Vector3 mouseDelta, bool useMouseRotation, float rotationSensitivity, float rotationScale, float noiseAmount)
+        public void SimulateInput(MouseDelta mouseDelta, bool useMouseRotation, float rotationSensitivity, float rotationScale, float noiseAmount)
         {
             if (useMouseRotation)
             {
-                // mouseDelta.z is in world space, convert into pixels so the same sensitivity factors can be applied as to x and y.
-                Vector3 mouseWorldZ = CameraCache.Main.transform.TransformPoint(new Vector3(mouseDelta.z, 0, 0.5f));
-                Vector3 mouseViewportZ = CameraCache.Main.WorldToViewportPoint(mouseWorldZ);
-                mouseDelta.z = (mouseViewportZ.x - 0.5f) * CameraCache.Main.pixelWidth;
+                // // mouseDelta.z is in world space, convert into pixels so the same sensitivity factors can be applied as to x and y.
+                // Vector3 mouseWorldZ = CameraCache.Main.transform.TransformPoint(new Vector3(mouseDelta.z, 0, 0.5f));
+                // Vector3 mouseViewportZ = CameraCache.Main.WorldToViewportPoint(mouseWorldZ);
+                // mouseDelta.z = (mouseViewportZ.x - 0.5f) * CameraCache.Main.pixelWidth;
 
                 Vector3 rotationDeltaEulerAngles = Vector3.zero;
-                rotationDeltaEulerAngles.x += -mouseDelta.y * rotationSensitivity;
-                rotationDeltaEulerAngles.y += mouseDelta.x * rotationSensitivity;
-                rotationDeltaEulerAngles.z += mouseDelta.z * rotationSensitivity;
+                rotationDeltaEulerAngles.x += -mouseDelta.screenDelta.y * rotationSensitivity;
+                rotationDeltaEulerAngles.y += mouseDelta.screenDelta.x * rotationSensitivity;
+                rotationDeltaEulerAngles.z += mouseDelta.screenDelta.z * rotationSensitivity;
                 rotationDeltaEulerAngles *= rotationScale;
 
                 ViewportRotation = ViewportRotation + rotationDeltaEulerAngles;
             }
             else
             {
-                Vector3 screenPosition = CameraCache.Main.ViewportToScreenPoint(ViewportPosition);
-                // Apply mouse delta x/y in screen space, but depth offset in world space
-                screenPosition.x += mouseDelta.x;
-                screenPosition.y += mouseDelta.y;
-                Vector3 newWorldPoint = CameraCache.Main.ScreenToWorldPoint(screenPosition);
-                newWorldPoint += CameraCache.Main.transform.forward * mouseDelta.z;
-                ViewportPosition = CameraCache.Main.WorldToViewportPoint(newWorldPoint);
+                // Vector3 screenPosition = CameraCache.Main.ViewportToScreenPoint(ViewportPosition);
+                // // Apply mouse delta x/y in screen space, but depth offset in world space
+                // screenPosition.x += mouseDelta.x;
+                // screenPosition.y += mouseDelta.y;
+                // Vector3 newWorldPoint = CameraCache.Main.ScreenToWorldPoint(screenPosition);
+                // newWorldPoint += CameraCache.Main.transform.forward * mouseDelta.z;
+                // ViewportPosition = CameraCache.Main.WorldToViewportPoint(newWorldPoint);
+
+                ViewportPosition += mouseDelta.viewportDelta;
             }
 
             JitterOffset = UnityEngine.Random.insideUnitSphere * noiseAmount;
@@ -206,7 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Capture a snapshot of simulated hand data based on current state.
         /// </summary>
-        public bool UpdateHandData(SimulatedHandData handDataLeft, SimulatedHandData handDataRight, Vector3 mouseDelta)
+        public bool UpdateHandData(SimulatedHandData handDataLeft, SimulatedHandData handDataRight, MouseDelta mouseDelta)
         {
             SimulateUserInput(mouseDelta);
 
@@ -232,7 +234,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Update hand state based on keyboard and mouse input
         /// </summary>
-        private void SimulateUserInput(Vector3 mouseDelta)
+        private void SimulateUserInput(MouseDelta mouseDelta)
         {
             float time = Time.time;
 
@@ -297,7 +299,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             SimulatedHandState state,
             bool isSimulating,
             bool isAlwaysVisible,
-            Vector3 mouseDelta,
+            MouseDelta mouseDelta,
             bool useMouseRotation)
         {
             bool enableTracking = isAlwaysVisible || isSimulating;
