@@ -22,12 +22,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Invoked on pointer release
         /// </summary>
-        public UnityEvent OnRelease { get { return onRelease; } }
+        public UnityEvent OnRelease => onRelease;
 
         /// <summary>
         /// Invoked on pointer press
         /// </summary>
-        public UnityEvent OnPress { get { return uEvent; } }
+        public UnityEvent OnPress => uEvent;
         public enum InteractionType
         {
             NearAndFar = 0,
@@ -68,13 +68,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc />
         public override void OnUpdate(InteractableStates state, Interactable source)
         {
-            bool changed = state.CurrentState() != lastState;
-
             bool hadDown = hasDown;
             hasDown = state.GetState(InteractableStates.InteractableStateEnum.Pressed).Value > 0;
 
 
-            if (changed && hasDown != hadDown)
+            if (hasDown != hadDown)
             {
                 if (hasDown)
                 {
