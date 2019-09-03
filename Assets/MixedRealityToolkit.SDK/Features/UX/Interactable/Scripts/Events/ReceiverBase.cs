@@ -22,11 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Each Receiver has a base Event it raises, (in addition to others).
         /// </summary>
-        public UnityEvent Event
-        {
-            get { return uEvent; }
-            set { uEvent = value; }
-        }
+        public UnityEvent Event { get => uEvent; set => uEvent = value; }
 
         public MonoBehaviour Host;
 
