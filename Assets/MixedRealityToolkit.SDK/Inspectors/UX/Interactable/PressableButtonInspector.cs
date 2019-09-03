@@ -142,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (editingEnabled && newStartPushDistance != info.StartPushDistance)
             {
                 EnforceDistanceOrdering(ref info);
-                info.StartPushDistance = Mathf.Min(newStartPushDistance, info.ReleaseDistance);
+                info.StartPushDistance = ClampStartPushDistance(Mathf.Min(newStartPushDistance, info.ReleaseDistance));
             }
 
             // RELEASE DISTANCE
@@ -194,7 +194,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private void EnforceDistanceOrdering(ref ButtonInfo info)
         {
-            info.StartPushDistance = Mathf.Min(new[] { info.StartPushDistance, info.ReleaseDistance, info.PressDistance, info.MaxPushDistance });
+            info.StartPushDistance = ClampStartPushDistance(Mathf.Min(new[] { info.StartPushDistance, info.ReleaseDistance, info.PressDistance, info.MaxPushDistance }));
             info.ReleaseDistance = Mathf.Min(new[] { info.ReleaseDistance, info.PressDistance, info.MaxPushDistance });
             info.PressDistance = Mathf.Min(info.PressDistance, info.MaxPushDistance);
         }
@@ -252,15 +252,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.PropertyField(movingButtonVisuals);
             EditorGUILayout.LabelField("Press Settings", EditorStyles.boldLabel);
 
-            if (touchable is NearInteractionTouchableUnityUI && startPushDistance.floatValue < 0.0f)
-            {
-                EditorGUILayout.HelpBox("UnityUI based PressableButtons don't support negative Start Push Distances.", UnityEditor.MessageType.Warning);
-                if (GUILayout.Button("Set to 0"))
-                {
-                    startPushDistance.floatValue = 0.0f;
-                }
-            }
-
             EditorGUI.BeginChangeCheck();
             var currentMode = distanceSpaceMode.intValue;
             EditorGUILayout.PropertyField(distanceSpaceMode);
@@ -275,6 +266,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             DrawPropertiesExcluding(serializedObject, excludeProperties);
+
+            startPushDistance.floatValue = ClampStartPushDistance(startPushDistance.floatValue);
 
             // show button state in play mode
             {
@@ -367,6 +360,19 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             vertices[1] = transform.TransformVector(info.PushRotationLocal * (new Vector3(-halfExtents.x, +halfExtents.y, 0.0f) + touchCageOrigin)) + centerWorld;
             vertices[2] = transform.TransformVector(info.PushRotationLocal * (new Vector3(+halfExtents.x, +halfExtents.y, 0.0f) + touchCageOrigin)) + centerWorld;
             vertices[3] = transform.TransformVector(info.PushRotationLocal * (new Vector3(+halfExtents.x, -halfExtents.y, 0.0f) + touchCageOrigin)) + centerWorld;
+        }
+
+        private float ClampStartPushDistance(float startDistance)
+        {
+            // If the touchable is UnityUI based, then the start distance must be positive.
+            if (touchable is NearInteractionTouchableUnityUI && startDistance < 0.0f)
+            {
+                return 0.0f;
+            }
+            else
+            {
+                return startDistance;
+            }
         }
     }
 }

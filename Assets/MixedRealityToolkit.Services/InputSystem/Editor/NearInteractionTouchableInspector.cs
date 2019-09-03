@@ -10,15 +10,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
     [CustomEditor(typeof(NearInteractionTouchable), true)]
     public class NearInteractionTouchableInspector : NearInteractionTouchableInspectorBase
     {
-        private SerializedProperty boundsProperty;
-        private SerializedProperty localCenterProperty;
-
-        private void OnEnable()
-        {
-            boundsProperty = serializedObject.FindProperty("bounds");
-            localCenterProperty = serializedObject.FindProperty("localCenter");
-        }
-
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
@@ -34,37 +25,37 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             Math.Abs(Vector3.Dot(bc.size, t.LocalUp)));
 
                 // Resize helper
-                if (adjustedSize != boundsProperty.vector2Value)
+                if (adjustedSize != t.Bounds)
                 {
                     EditorGUILayout.HelpBox("Bounds do not match the BoxCollider size", MessageType.Warning);
                     if (GUILayout.Button("Fix Bounds"))
                     {
                         Undo.RecordObject(t, "Fix Bounds");
-                        boundsProperty.vector2Value = adjustedSize;
+                        t.SetBounds(adjustedSize);
                     }
                 }
 
                 // Recentre helper
-                if (localCenterProperty.vector3Value != bc.center + Vector3.Scale(bc.size / 2.0f, t.LocalForward))
+                if (t.LocalCenter != bc.center + Vector3.Scale(bc.size / 2.0f, t.LocalForward))
                 {
                     EditorGUILayout.HelpBox("Center does not match the BoxCollider center", MessageType.Warning);
                     if (GUILayout.Button("Fix Center"))
                     {
                         Undo.RecordObject(t, "Fix Center");
-                        localCenterProperty.vector3Value = bc.center + Vector3.Scale(bc.size / 2.0f, t.LocalForward);
+                        t.SetLocalCenter(bc.center + Vector3.Scale(bc.size / 2.0f, t.LocalForward));
                     }
                 }
             }
             else if (rt != null)
             {
                 // Resize Helper
-                if (rt.sizeDelta != boundsProperty.vector2Value)
+                if (rt.sizeDelta != t.Bounds)
                 {
                     EditorGUILayout.HelpBox("Bounds do not match the RectTransform size", MessageType.Warning);
                     if (GUILayout.Button("Fix Bounds"))
                     {
                         Undo.RecordObject(t, "Fix Bounds");
-                        boundsProperty.vector2Value = rt.sizeDelta;
+                        t.SetBounds(rt.sizeDelta);
                     }
                 }
 

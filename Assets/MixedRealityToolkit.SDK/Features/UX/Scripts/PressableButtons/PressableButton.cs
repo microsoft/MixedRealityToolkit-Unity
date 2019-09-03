@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [SerializeField]
-        [Tooltip("The offset at which pushing starts. Offset is relative to the pivot of either the moving visuals if there's any or the button itself.")]
+        [Tooltip("The offset at which pushing starts. Offset is relative to the pivot of either the moving visuals if there's any or the button itself.  For UnityUI based PressableButtons, this cannot be a negative value.")]
         protected float startPushDistance = 0.0f;
 
         /// <summary>
@@ -187,7 +187,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public bool IsPressing { get; private set; }
 
         /// <summary>
-        /// The press direction of the button as defined by an INearInteractionTouchable.
+        /// The press direction of the button as defined by a NearInteractionTouchableSurface.
         /// </summary>
         private Vector3 WorldSpacePressDirection
         {

@@ -60,8 +60,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             if (PressableButtonTestPrefabs[prefabFilename])
             {
-                //TODO: does this get cleaned up by TearDown?
-
                 // Need to place this test button in a Canvas.  Instantiate the test canvas and place the button into it.
                 var canvasPrefab = AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit.Tests/PlayModeTests/Prefabs/UnitTestCanvas.prefab", typeof(Object));
                 var canvasObject = (GameObject)Object.Instantiate(canvasPrefab);
@@ -391,11 +389,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
-        bool AreApproximatelyEqual(float f0, float f1, float tolerance)
-        {
-            return Mathf.Abs(f0 - f1) < tolerance;
-        }
-
         /// <summary>
         /// This tests the release behavior of a button
         /// </summary>
@@ -480,7 +473,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
-
+        private static bool AreApproximatelyEqual(float f0, float f1, float tolerance)
+        {
+            return Mathf.Abs(f0 - f1) < tolerance;
+        }
         #endregion
     }
 }
