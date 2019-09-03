@@ -31,46 +31,39 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         const string defaultInteractablePrefabAssetPath = "Assets/MixedRealityToolkit.Examples/Demos/UX/Interactables/Prefabs/Model_PushButton.prefab";
         const string radialSetPrefabAssetPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/RadialSet.prefab";
 
+        GameObject cube;
+        Interactable interactable;
+        TestHand testHand;
+
         [SetUp]
         public void Setup()
         {
             PlayModeTestUtilities.Setup();
             TestUtilities.PlayspaceToOriginLookingForward();
+
+            cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.position = Vector3.forward;
+
+            interactable = cube.AddComponent<Interactable>();
+            Assert.NotNull(interactable, "Failed to add interactable to cube");
+            testHand = new TestHand(Handedness.Right);
         }
 
         [TearDown]
         public void TearDown()
         {
+            GameObject.Destroy(cube);
             PlayModeTestUtilities.TearDown();
         }
 
         /// <summary>
-        /// Tests that an interactable component can be added to a GameObject
-        /// at runtime.
-        /// </summary>
-        /// <returns></returns>
-        [UnityTest]
-        public IEnumerator TestAddInteractableAtRuntime()
-        {
-            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            // This should not throw an exception
-            var interactable = cube.AddComponent<Interactable>();
-
-            // clean up
-            GameObject.Destroy(cube);
-            yield return null;
-        }
-
-        /// <summary>
-        /// Tests that an interactable component can be added to a GameObject
+        /// Tests that an Interactable component can be added to a GameObject
         /// at runtime, and an OnClick event handler can be added
         /// </summary>
         /// <returns></returns>
         [UnityTest]
         public IEnumerator TestAddOnClickRuntime()
         {
-            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.position = Vector3.forward;
             PlayModeTestUtilities.PushHandSimulationProfile();
             PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
 
@@ -81,20 +74,106 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             bool wasClicked = false;
             interactable.OnClick.AddListener(() => { wasClicked = true; });
 
-            TestHand th = new TestHand(Handedness.Right);
-            yield return th.Show(Vector3.zero);
+            yield return testHand.Show(Vector3.zero);
 
             CameraCache.Main.transform.LookAt(interactable.transform);
-            yield return th.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-            yield return th.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return testHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return testHand.SetGesture(ArticulatedHandPose.GestureId.Open);
 
             Assert.True(wasClicked);
 
-            // clean up
-            GameObject.Destroy(cube);
             PlayModeTestUtilities.PopHandSimulationProfile();
+        }
 
+        [UnityTest]
+        public IEnumerator TestGrabEvents()
+        {
+            var grabReceiver = interactable.AddReceiver<InteractableOnGrabReceiver>();
+            interactable.gameObject.AddComponent<NearInteractionGrabbable>();
+            bool didGrab = false;
+            grabReceiver.OnGrab.AddListener(() => didGrab = true);
+            bool didRelease = false;
+            grabReceiver.OnRelease.AddListener(() => didRelease = true);
+
+            yield return testHand.Show(interactable.transform.position);
+            yield return testHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return testHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return testHand.Hide();
+            Assert.True(didGrab, "Did not receive grab event");
+            Assert.True(didRelease, "Did not receive release event");
+            GameObject.Destroy(cube);
             yield return null;
+        }
+
+        public IEnumerator TestHoldEvents()
+        {
+            // Hold
+            var holdReceiver = interactable.AddReceiver<InteractableOnHoldReceiver>();
+            bool didHold = false;
+            holdReceiver.OnHold.AddListener(() => didHold = true);
+            yield return testHand.Show(interactable.transform.position);
+            yield return testHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return new WaitForSeconds(holdReceiver.HoldTime);
+            yield return testHand.Hide();
+            Assert.True(didHold, "Did not receive hold event");
+            GameObject.Destroy(cube);
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator TestPressEvents()
+        {
+            // Press
+            var pressReceiver = interactable.AddReceiver<InteractableOnPressReceiver>();
+            bool didPress = false;
+            pressReceiver.OnPress.AddListener(() => didPress = true);
+            yield return testHand.Show(interactable.transform.position);
+            yield return testHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return testHand.Hide();
+            Assert.True(didPress, "did not receive press event");
+        }
+
+        [UnityTest]
+        public IEnumerator TestToggleEvents()
+        {
+            // Toggle
+            var toggleReceiver = interactable.AddReceiver<InteractableOnToggleReceiver>();
+            interactable.transform.position = Vector3.forward * 2f;
+            interactable.Dimensions = 2;
+            interactable.CanSelect = true;
+            interactable.CanDeselect = true;
+            bool didSelect = false;
+            bool didUnselect = false;
+            toggleReceiver.OnSelect.AddListener(() => didSelect = true);
+            toggleReceiver.OnDeselect.AddListener(() => didUnselect = true);
+            yield return testHand.Show(Vector3.forward);
+            yield return testHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return null;
+            yield return testHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return testHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return testHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return testHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return testHand.Hide();
+            Assert.True(didSelect, "Toggle select did not fire");
+            Assert.True(didUnselect, "Toggle unselect did not fire");
+        }
+
+        [UnityTest]
+        public IEnumerator TestTouchEvents()
+        {
+            interactable.gameObject.AddComponent<NearInteractionTouchableVolume>();
+            var touchReceiver = interactable.AddReceiver<InteractableOnTouchReceiver>();
+            bool didTouch = false;
+            bool didUntouch = false;
+            touchReceiver.OnTouchStart.AddListener(() => didTouch = true);
+            touchReceiver.OnTouchEnd.AddListener(() => didUntouch = true);
+            yield return testHand.Show(Vector3.forward);
+            yield return testHand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return testHand.MoveTo(interactable.transform.position);
+            yield return testHand.MoveTo(Vector3.forward);
+            yield return testHand.Hide();
+            Assert.True(didTouch, "Did not receive touch event");
+            Assert.True(didUntouch, "Did not receive touch end event");
         }
 
         /// <summary>
@@ -104,14 +183,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         /// <returns></returns>
         [UnityTest]
-        public IEnumerator TestRuntimeEvents()
+        public IEnumerator TestFocusEvents()
         {
-            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.position = Vector3.right;
-
-            var interactable = cube.AddComponent<Interactable>();
-
-            // OnFocus
             var onFocusReceiver = interactable.AddReceiver<InteractableOnFocusReceiver>();
 
             bool didHover = false;
@@ -124,79 +197,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
             Assert.True(didHover, "Interactable did not receive hover event");
             Assert.True(didUnHover, "Interactable did not receive un-hover event");
-
-            // OnGrab
-            var grabReceiver = interactable.AddReceiver<InteractableOnGrabReceiver>();
-            interactable.gameObject.AddComponent<NearInteractionGrabbable>();
-            bool didGrab = false;
-            grabReceiver.OnGrab.AddListener(() => didGrab = true);
-            bool didRelease = false;
-            grabReceiver.OnRelease.AddListener(() => didRelease = true);
-            TestHand hand = new TestHand(Handedness.Right);
-            yield return hand.Show(interactable.transform.position);
-            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
-            yield return hand.Hide();
-            Assert.True(didGrab, "Did not receive grab event");
-            Assert.True(didRelease, "Did not receive release event");
-
-            // Hold
-            var holdReceiver = interactable.AddReceiver<InteractableOnHoldReceiver>();
-            bool didHold = false;
-            holdReceiver.OnHold.AddListener(() => didHold = true);
-            yield return hand.Show(interactable.transform.position);
-            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-            yield return new WaitForSeconds(holdReceiver.HoldTime);
-            yield return hand.Hide();
-            Assert.True(didHold, "Did not receive hold event");
-
-            // Press
-            var pressReceiver = interactable.AddReceiver<InteractableOnPressReceiver>();
-            bool didPress = false;
-            pressReceiver.OnPress.AddListener(() => didPress = true);
-            yield return hand.Show(interactable.transform.position);
-            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-            yield return hand.Hide();
-            Assert.True(didPress, "did not receive press event");
-
-            // Toggle
-            var toggleReceiver = interactable.AddReceiver<InteractableOnToggleReceiver>();
-            interactable.transform.position = Vector3.forward * 2f;
-            interactable.Dimensions = 2;
-            interactable.CanSelect = true;
-            interactable.CanDeselect  = true;
-            bool didSelect = false;
-            bool didUnselect = false;
-            toggleReceiver.OnSelect.AddListener(() => didSelect = true);
-            toggleReceiver.OnDeselect.AddListener(() => didUnselect = true);
-            yield return hand.Show(Vector3.forward);
-            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
-            yield return null;
-            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
-            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
-            yield return hand.Hide();
-            Assert.True(didSelect, "Toggle select did not fire");
-            Assert.True(didUnselect, "Toggle unselect did not fire");
-
-            // Touch
-            interactable.gameObject.AddComponent<NearInteractionTouchableVolume>();
-            var touchReceiver = interactable.AddReceiver<InteractableOnTouchReceiver>();
-            bool didTouch = false;
-            bool didUntouch = false;
-            touchReceiver.OnTouchStart.AddListener(() => didTouch = true);
-            touchReceiver.OnTouchEnd.AddListener(() => didUntouch = true);
-            yield return hand.Show(Vector3.forward);
-            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
-            yield return hand.MoveTo(interactable.transform.position);
-            yield return hand.MoveTo(Vector3.forward);
-            yield return hand.Hide();
-            Assert.True(didTouch, "Did not receive touch event");
-            Assert.True(didUntouch, "Did not receive touch end event");
-            
-            // clean up
-            GameObject.Destroy(cube);
 
             yield return null;
         }
