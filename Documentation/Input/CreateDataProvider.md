@@ -28,7 +28,7 @@ For example, an input data provider created by the Contoso company may be "Conto
 
 It is recommended that the source code for data providers be layed out in a folder heirarchy as shown in the following image.
 
-![Example folder structure](../Images/SpatialAwareness/ExampleProviderFolderStructure.png)
+![Example folder structure](../Images/Input/ExampleProviderFolderStructure.png)
 
 Where ContosoInput contains the implementation of the data provider, the Editor folder contains the inspector (and any other Unity editor specific code) and Profiles
 contains one or more pre-made profiles.
@@ -59,7 +59,7 @@ Once the class has been defined, the next step is to provide the implementation 
 interface.
 
 > [!Note]
-> The `BaseInputDevicemManager` class, via the `BaseService` class, provides only an empty implementations for `IMixedRealityDataProvider` methods. The details of these methods are generally data provider specific.
+> The `BaseInputDevicemManager` class, via the `BaseService` class, provides only empty implementations for `IMixedRealityDataProvider` methods. The details of these methods are generally data provider specific.
 
 The methods that should be implemented by the data provider are:
 
