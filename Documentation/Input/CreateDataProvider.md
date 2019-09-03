@@ -183,7 +183,7 @@ Profile inspectors are the user interface for configuring and viewing profile co
 
 ``` c#
 [CustomEditor(typeof(MixedRealityInputSimulationProfile))]
-public class SpatialObjectMeshObserverProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
+public class MixedRealityInputSimulationProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
 { }
 ```
 
