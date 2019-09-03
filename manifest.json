@@ -11253,6 +11253,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.MixedRealityCanvasInspector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.MixedRealityCanvasInspector.html",
+          "hash": "zbx8TZxnddJ4LhOqnxY55g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.MixedRealityControllerAttribute.yml",
       "output": {
         ".html": {
@@ -12241,7 +12253,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.html",
-          "hash": "Dss/D+Qq6BSTRsECRV3yuw=="
+          "hash": "avMgKtT2S75X79kg6BX6ew=="
         }
       },
       "is_incremental": false,
@@ -19237,7 +19249,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "IVnudNVy+x57KVoC+FD0kw=="
+          "hash": "S84eU5T9LuvfTh2D1oWTIg=="
         }
       },
       "is_incremental": false,
@@ -19312,7 +19324,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1109,
+          "total_file_count": 1110,
           "skipped_file_count": 0
         }
       }
