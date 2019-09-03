@@ -18,10 +18,7 @@
     <BuildFolder>$(MSBuildThisFileDirectory)$(RelativeBuildFolder)</BuildFolder>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <!--NOTE: Currently one of the Unity packages has a * in AssemblyVersion identifier in the AssemblyInfo file, so have to do this.-->
-    <Deterministic>false</Deterministic>   
-    <_TargetFrameworkDirectories />
-    <FrameworkPathOverride />
-    <TargetFrameworkDirectory />
+    <Deterministic>false</Deterministic>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(PublishOutputPath)'==''">
@@ -77,6 +74,9 @@
 
   <!--IMPORT SDK.props manually to be able to set the BaseIntermediateOutputPath above path-->
   <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <PropertyGroup>
+      <AssemblySearchPaths>{CandidateAssemblyFiles};{HintPathFromItem};{RawFileName};</AssemblySearchPaths>
+  </PropertyGroup>
   
   <Import Project="##PLATFORM_PROPS_FOLDER_PATH_TOKEN##\$(UnityPlatform).$(UnityConfiguration).props"/>
 
@@ -94,6 +94,7 @@
   
   <PropertyGroup>
     <DefaultItemExcludes>$(DefaultItemExcludes)obj;bin;*.asmdef;*.asmdef.meta;*.csmap;</DefaultItemExcludes>
+    <AddAdditionalExplicitAssemblyReferences>false</AddAdditionalExplicitAssemblyReferences>
   </PropertyGroup>
 
 <!--PROJECT_REFERENCE_SET_TEMPLATE_START-->
