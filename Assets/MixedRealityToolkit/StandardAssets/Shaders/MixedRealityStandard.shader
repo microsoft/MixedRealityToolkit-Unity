@@ -327,12 +327,10 @@ Shader "Mixed Reality Toolkit/Standard"
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
 #if defined(LIGHTMAP_ON)
-                float2 lightMapUV : TEXCOORD1;
+                float2 uv1 : TEXCOORD1;
 #endif
-#if defined (_VERTEX_EXTRUSION_SMOOTH_NORMALS)
-                fixed3 smoothNormal : TEXCOORD2;
-#endif
-                float2 scale : TEXCOORD3;
+                float4 uv2 : TEXCOORD2;
+                float2 uv3 : TEXCOORD3;
 #if defined(_VERTEX_COLORS)
                 fixed4 color : COLOR0;
 #endif
@@ -680,12 +678,12 @@ Shader "Mixed Reality Toolkit/Standard"
 #else
                 o.scale.z = length(mul(unity_ObjectToWorld, float4(0.0, 0.0, 1.0, 0.0)));
 #endif
-                // Scale will contain a negative value when rendered by UGUI.
-                if (v.scale.x < 0)
+                // uv3.y will contain a negative value when rendered by a UGUI and ScaleMeshEffect.
+                if (v.uv3.y < 0.0)
                 {
-                    o.scale.x *= -v.scale.x;
-                    o.scale.y *= -v.scale.y;
-                    o.scale.z = o.scale.x;
+                    o.scale.x *= v.uv2.x;
+                    o.scale.y *= v.uv2.y;
+                    o.scale.z *= v.uv3.x;
                 }
 #endif
 
@@ -697,7 +695,7 @@ Shader "Mixed Reality Toolkit/Standard"
 
 #if defined(_VERTEX_EXTRUSION)
 #if defined(_VERTEX_EXTRUSION_SMOOTH_NORMALS)
-                worldVertexPosition += UnityObjectToWorldNormal(v.smoothNormal * o.scale) * _VertexExtrusionValue;
+                worldVertexPosition += UnityObjectToWorldNormal(v.uv2 * o.scale) * _VertexExtrusionValue;
 #else
                 worldVertexPosition += worldNormal * _VertexExtrusionValue;
 #endif
@@ -799,7 +797,7 @@ Shader "Mixed Reality Toolkit/Standard"
 #endif
 
 #if defined(LIGHTMAP_ON)
-                o.lightMapUV.xy = v.lightMapUV.xy * unity_LightmapST.xy + unity_LightmapST.zw;
+                o.lightMapUV.xy = v.uv1.xy * unity_LightmapST.xy + unity_LightmapST.zw;
 #endif
 
 #if defined(_VERTEX_COLORS)
