@@ -230,7 +230,7 @@ PrefabInstance:
     - target: {fileID: 779914303111114550, guid: 271778f6c957b524981067a81d238394,
         type: 3}
       propertyPath: m_Name
-      value: SpeechConfirmationLabel
+      value: SpeechConfirmationTooltip
       objectReference: {fileID: 0}
     - target: {fileID: 774922017504275548, guid: 271778f6c957b524981067a81d238394,
         type: 3}
