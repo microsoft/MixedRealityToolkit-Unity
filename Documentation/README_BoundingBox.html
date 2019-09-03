@@ -151,7 +151,7 @@ You can assign the material and prefab to override the handle style. If no handl
 <li><strong>Close Scale</strong>: Scale value of the handle asset when the hands are within the grab interaction(distance defined above by 'Handle Close Proximity'. Use 1.x to show bigger size)</li>
 </ul>
 <h2 id="making-an-object-movable-with-manipulation-handler">Making an object movable with manipulation handler</h2>
-<p>A bounding box can be combined with <a href="README_ManipulationHandler.html"><code>ManipulationHandler.cs</code></a> to make the object movable using far interaction. The manipulation handler supports both one and two-handed interactions. <a href="InputSystem/HandTracking.html">Hand tracking</a> can be used to interact with an object up close.</p>
+<p>A bounding box can be combined with <a href="README_ManipulationHandler.html"><code>ManipulationHandler.cs</code></a> to make the object movable using far interaction. The manipulation handler supports both one and two-handed interactions. <a href="Input/HandTracking.html">Hand tracking</a> can be used to interact with an object up close.</p>
 <img src="Images/BoundingBox/MRTK_BoundingBox_ManipulationHandler.png" width="450">
 <p>In order for the bounding box edges to behave the same way when moving it using <a href="README_ManipulationHandler.html"><code>ManipulationHandler</code></a>'s far interaction, it is advised to connect its events for <em>On Manipulation Started</em> / <em>On Manipulation Ended</em> to <code>BoundingBox.HighlightWires</code> / <code>BoundingBox.UnhighlightWires</code> respectively, as shown in the screenshot above.</p>
 </article>
