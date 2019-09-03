@@ -126,8 +126,8 @@ Next, apply the [`MixedRealityController`](xref:Microsoft.MixedReality.Toolkit.I
 
 ### Raise notification events
 
-To enable applications to respond to input from the user, the data provider raises notification events corresponding to controller state changes as defined in the [`IMixedRealityInputHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler)
-and [`IMixedRealityInputHandler<T>`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler`1) interfaces.
+To enable applications to respond to input from the user, the data provider raises notification events corresponding to controller state changes as defined in
+the [`IMixedRealityInputHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler) and [`IMixedRealityInputHandler<T>`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler`1) interfaces.
 
 For digital (button) type controls, raise the OnInputDown and OnInputUp events.
 
@@ -179,7 +179,7 @@ The `CreateAssetMenu` attribute can be applied to the profile class to enable cu
 ### Implement the inspector
 
 Profile inspectors are the user interface for configuring and viewing profile contents. Each profile inspector should extend the
-[`BaseMixedRealityToolkitConfigurationProfileInspector]() class.
+[`BaseMixedRealityToolkitConfigurationProfileInspector](xref:Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityToolkitConfigurationProfileInspector) class.
 
 ``` c#
 [CustomEditor(typeof(MixedRealityInputSimulationProfile))]
@@ -219,8 +219,7 @@ Once created, the data provider can be registered with the input system and be u
 Data providers that are distributed as third party components have the specific details of packaging and distribution left to the preference of the developer. Likely, the most
 common solution will be to generate a .unitypackage and distribute via the Unity Asset Store.
 
-If a data provider is submitted and accepted as a part of the Microsoft Mixed Reality Toolkit package, the Microsoft MRTK team will package and distribute it as part of the MRTK
-offerings.
+If a data provider is submitted and accepted as a part of the Microsoft Mixed Reality Toolkit package, the Microsoft MRTK team will package and distribute it as part of the MRTK offerings.
 
 ## See also
 

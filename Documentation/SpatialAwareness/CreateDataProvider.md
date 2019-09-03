@@ -1,8 +1,7 @@
 # Creating a spatial awareness system data provider
 
-The Mixed Reality Toolkit spatial awareness system is an extensible system for providing applications
-with data about real world environments. To add support for a new hardware platform or a new form of spatial awareness
-data, a custom data provider may be required.
+The Mixed Reality Toolkit spatial awareness system is an extensible system for providing applications with data about real world environments.
+To add support for a new hardware platform or a new form of spatial awareness data, a custom data provider may be required.
 
 This article describes how to create custom data providers, also called observers, for the spatial awareness system. The example code shown here is
 from the [`SpatialObjectMeshObserver`](xref:Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver).
@@ -89,8 +88,7 @@ public class SpatialObjectMeshObserver :
 
 ### Implement the IMixedRealityDataProvider methods
 
-Once the class has been defined, the next step is to provide the implementation of the [`IMixedRealityDataProvider`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider)
-interface.
+Once the class has been defined, the next step is to provide the implementation of the [`IMixedRealityDataProvider`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider) interface.
 
 > [!Note]
 > The `BaseSpatialObserver` class, via the `BaseService` class , provides only an empty implementations for `IMixedRealityDataProvider` methods. The details of these methods are generally data provider specific.
@@ -210,7 +208,7 @@ The `CreateAssetMenu` attribute can be applied to the profile class to enable cu
 ### Implement the inspector
 
 Profile inspectors are the user interface for configuring and viewing profile contents. Each profile inspector should extend the
-[`BaseMixedRealityToolkitConfigurationProfileInspector]() class.
+[`BaseMixedRealityToolkitConfigurationProfileInspector](xref:Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityToolkitConfigurationProfileInspector) class.
 
 The `CustomEditor` attribute informs Unity the type of asset to which the inspector applies.
 
@@ -250,8 +248,7 @@ Once created, the data provider can be registered with the spatial awareness sys
 Data providers that are distributed as third party components have the specific details of packaging and distribution left to the preference of the developer. Likely, the most
 common solution will be to generate a .unitypackage and distribute via the Unity Asset Store.
 
-If a data provider is submitted and accepted as a part of the Microsoft Mixed Reality Toolkit package, the Microsoft MRTK team will package and distribute it as part of the MRTK
-offerings.
+If a data provider is submitted and accepted as a part of the Microsoft Mixed Reality Toolkit package, the Microsoft MRTK team will package and distribute it as part of the MRTK offerings.
 
 ## See also
 

@@ -41,8 +41,7 @@ only services to utilize data providers.
 
 To be accessible to the specific MRTK service, data providers are registered in the service's configuration profile. 
 
-Application code accesses data providers via the [`IMixedRealityDataProviderAccess`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess)
-interface.
+Application code accesses data providers via the [`IMixedRealityDataProviderAccess`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProviderAccess) interface.
 
 > [!Important]
 > Although `IMixedRealityDataProvider` inherits from `IMixedRealityService`, data providers are not
@@ -83,8 +82,7 @@ For information on writing a data provider for the MRTK input system, please see
 
 ### Spatial Awareness
 
-The MRTK spatial awareness system utilizes only data providers that implement the [`IMixedRealitySpatialAwarenessObserver`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver)
-interface.
+The MRTK spatial awareness system utilizes only data providers that implement the [`IMixedRealitySpatialAwarenessObserver`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver) interface.
 
 ![Spatial awarenss system data providers](../Images/SpatialAwareness/SpatialAwarenessProfile.png)
 
@@ -93,7 +91,8 @@ The following example demonstrates accessing the registered spatial mesh data pr
 ``` c#
 if (CoreServices.SpatialAwarenessSystem != null)
 {
-    IMixedRealityDataProviderAccess dataProviderAccess = CoreServices.SpatialAwarenessSystem as IMixedRealityDataProviderAccess;
+    IMixedRealityDataProviderAccess dataProviderAccess = 
+        CoreServices.SpatialAwarenessSystem as IMixedRealityDataProviderAccess;
     
     if (dataProviderAccess != null)
     {
@@ -110,8 +109,7 @@ if (CoreServices.SpatialAwarenessSystem != null)
 ```
 
 > [!Note]
-> The spatial awareness system returns only data providers that are supported for the platform on which the 
-application is running.
+> The spatial awareness system returns only data providers that are supported for the platform on which the application is running.
 
 For information on writing a data provider for the MRTK spatial awareness system, please see [creating a spatial awareness system data provider](../SpatialAwareness/CreateDataProvider.md).
 
