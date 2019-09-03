@@ -422,7 +422,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (States == null)
             {
-                // TODO: Troy - Editor only code*
                 States = States.GetDefaultInteractableStates();
             }
 

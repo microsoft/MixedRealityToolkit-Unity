@@ -121,7 +121,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                         }
 
                         // Create Delete button if we have an array of themes
-                        // TODO: Troy -> Alright to be empty?
                         if (themeDefinitions.arraySize > 1 && InspectorUIUtility.SmallButton(RemoveThemePropertyContent))
                         {
                             ClearHistoryCache(index);
@@ -175,8 +174,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
                                 if (n >= values.arraySize)
                                 {
-                                    // This property does not have the correct number of state values*
-                                    // TODO: Troy - Auto-populate?
+                                    // This property does not have the correct number of state values
                                     continue;
                                 }
 
@@ -184,10 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                                 SerializedProperty type = propertyItem.FindPropertyRelative("Type");
                                 SerializedProperty statePropertyValue = values.GetArrayElementAtIndex(n);
 
-                                // TODO: Change function to stateProperty, int index
-                                // TODO: Troy - fix shaderPropName?
-                                //RenderValue(item, name.stringValue, shaderPropName, (ThemePropertyTypes)type.intValue);
-                                RenderValue(statePropertyValue, name.stringValue, name.stringValue, (ThemePropertyTypes)type.intValue);
+                                RenderValue(statePropertyValue, name.stringValue, (ThemePropertyTypes)type.intValue);
                             }
                         }
                     }
@@ -215,8 +210,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                     SerializedProperty time = easing.FindPropertyRelative("LerpTime");
                     SerializedProperty curve = easing.FindPropertyRelative("Curve");
 
-                    EditorGUILayout.PropertyField(time, new GUIContent("Duration", "Animation duration"));
-                    EditorGUILayout.PropertyField(curve, new GUIContent("Animation Curve"));
+                    EditorGUILayout.PropertyField(time, new GUIContent("Duration", "Duration for easing between values in seconds"));
+                    EditorGUILayout.PropertyField(curve, new GUIContent("Animation Curve", "Curve that defines rate of easing between values"));
                 }
             }
         }
@@ -236,24 +231,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                     SerializedProperty shader = stateProperty.FindPropertyRelative("TargetShader");
                     SerializedProperty shaderPropertyname = stateProperty.FindPropertyRelative("ShaderPropertyName");
 
-                    // TODO: Troy - move to static function
-                    SerializedProperty shaderOptions = stateProperty.FindPropertyRelative("ShaderOptions");
-                    if (shaderOptions.arraySize > 0 && shader.objectReferenceValue == null)
-                    {
-                        var shaderName = stateProperty.FindPropertyRelative("ShaderName");
-                        var shaderOptionNames = stateProperty.FindPropertyRelative("ShaderOptionNames");
-                        var shaderOptionIndex = stateProperty.FindPropertyRelative("PropId");
-                        var shaderOption = shaderOptionNames.GetArrayElementAtIndex(shaderOptionIndex.intValue);
-
-                        // Migrate data over to new model
-                        shader.objectReferenceValue = Shader.Find(shaderName.stringValue);
-                        shaderPropertyname.stringValue = shaderOption.stringValue;
-
-                        // Wipe old data from trigering this again
-                        shaderOptions.ClearArray();
-
-                        stateProperty.serializedObject.ApplyModifiedProperties();
-                    }
+                    // Temporary workaround to help migrate old ThemeDefinitions to new model if applicable
+                    MigrateShaderData(stateProperty, shader, shaderPropertyname);
 
                     EditorGUILayout.PropertyField(shader, new GUIContent(statePropertyName.stringValue + " Shader"), false);
 
@@ -266,6 +245,33 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                         shaderPropertyname.stringValue = propertyList[newIndex];
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Temporary utility function to migrate shader data from deprecated properties to new valid properties
+        /// </summary>
+        /// <param name="stateProperty"></param>
+        /// <param name="shader"></param>
+        /// <param name="shaderPropertyname"></param>
+        private static void MigrateShaderData(SerializedProperty stateProperty, SerializedProperty shader, SerializedProperty shaderPropertyname)
+        {
+            SerializedProperty shaderOptions = stateProperty.FindPropertyRelative("ShaderOptions");
+            if (shaderOptions.arraySize > 0 && shader.objectReferenceValue == null)
+            {
+                var shaderName = stateProperty.FindPropertyRelative("ShaderName");
+                var shaderOptionNames = stateProperty.FindPropertyRelative("ShaderOptionNames");
+                var shaderOptionIndex = stateProperty.FindPropertyRelative("PropId");
+                var shaderOption = shaderOptionNames.GetArrayElementAtIndex(shaderOptionIndex.intValue);
+
+                // Migrate data over to new model
+                shader.objectReferenceValue = Shader.Find(shaderName.stringValue);
+                shaderPropertyname.stringValue = shaderOption.stringValue;
+
+                // Wipe old data from trigering this again
+                shaderOptions.ClearArray();
+
+                stateProperty.serializedObject.ApplyModifiedProperties();
             }
         }
 
@@ -283,7 +289,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                 SerializedProperty value = item.FindPropertyRelative("Value");
                 ThemePropertyTypes type = (ThemePropertyTypes)propType.intValue;
 
-                RenderValue(value, name.stringValue, name.stringValue, type);
+                RenderValue(value, name.stringValue, type);
             }
         }
 
@@ -292,9 +298,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         /// </summary>
         /// <param name="item"></param>
         /// <param name="name"></param>
-        /// <param name="propName"></param>
         /// <param name="type"></param>
-        public static void RenderValue(SerializedProperty item, string name, string propName, ThemePropertyTypes type)
+        public static void RenderValue(SerializedProperty item, string name, ThemePropertyTypes type)
         {
             SerializedProperty floatValue = item.FindPropertyRelative("Float");
             SerializedProperty vector2Value = item.FindPropertyRelative("Vector2");
@@ -311,13 +316,13 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                     break;
                 case ThemePropertyTypes.Color:
                     SerializedProperty colorValue = item.FindPropertyRelative("Color");
-                    colorValue.colorValue = EditorGUILayout.ColorField(new GUIContent(propName, propName), colorValue.colorValue);
+                    colorValue.colorValue = EditorGUILayout.ColorField(name, colorValue.colorValue);
                     break;
                 case ThemePropertyTypes.ShaderFloat:
-                    floatValue.floatValue = EditorGUILayout.FloatField(new GUIContent(propName, propName), floatValue.floatValue);
+                    floatValue.floatValue = EditorGUILayout.FloatField(name, floatValue.floatValue);
                     break;
                 case ThemePropertyTypes.ShaderRange:
-                    vector2Value.vector2Value = EditorGUILayout.Vector2Field(new GUIContent(propName, propName), vector2Value.vector2Value);
+                    vector2Value.vector2Value = EditorGUILayout.Vector2Field(name, vector2Value.vector2Value);
                     break;
                 case ThemePropertyTypes.Vector2:
                     vector2Value.vector2Value = EditorGUILayout.Vector2Field(name, vector2Value.vector2Value);
@@ -381,7 +386,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
         protected virtual void AddThemeDefinition()
         {
-            // TODO: Troy - Harden this code
             Type defaultType = typeof(InteractableActivateTheme);
 
             ThemeDefinition newDefinition = ThemeDefinition.GetDefaultThemeDefinition(defaultType).Value;
@@ -398,7 +402,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         {
             if (!(theme != null && theme.Definitions != null && index < theme.Definitions.Count))
             {
-                // TOOD: Troy - log errro
+                Debug.LogError("Cannot delete ThemeDefinition. Invalid Theme object");
                 return;
             }
 
@@ -486,7 +490,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         {
             if (theme == null || theme.History == null || theme.Definitions == null)
             {
-                // TODO: Troy - File warning/error?
+                Debug.LogWarning("Could not save ThemeDefinition to history cache");
                 return;
             }
 
@@ -509,7 +513,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         {
             if (!ValidThemeHistoryAccess(theme, (uint)index))
             {
-                // TODO: Troy - File warning/error?
+                Debug.LogWarning("Could not save ThemeDefinition to history cache");
                 return null;
             }
 
@@ -538,7 +542,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                 case ThemePropertyTypes.ShaderRange:
                     shaderTypes = new ShaderUtil.ShaderPropertyType[] { ShaderUtil.ShaderPropertyType.Float, ShaderUtil.ShaderPropertyType.Range };
                     break;
-                // TODO: Troy Fill more here
             }
 
             return shaderTypes;
@@ -565,57 +568,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
             results.Sort();
             return results;
-        }
-
-        // TODO: Troy - What to do with this?
-        public static void AddAnimator(SerializedProperty prop)
-        {
-            SerializedProperty target = prop.FindPropertyRelative("Target");
-            SerializedProperty targetStates = prop.FindPropertyRelative("States");
-
-            GameObject host = target.objectReferenceValue as GameObject;
-            string path = "Assets/Animations";
-
-            if (host != null)
-            {
-                string controllerName = host.name + "Controller.controller";
-
-                path = EditorUtility.SaveFilePanelInProject(
-                   "Save Animator Controller",
-                   controllerName,
-                   "controller",
-                   "Create a name and select a location for the new Animator Controller");
-
-                if (path.Length != 0)
-                {
-                    // we have a location
-                    UnityEditor.Animations.AnimatorController controller = UnityEditor.Animations.AnimatorController.CreateAnimatorControllerAtPath(path);
-                    AnimatorStateMachine stateMachine = controller.layers[0].stateMachine;
-
-                    for (int i = 0; i < targetStates.arraySize; i++)
-                    {
-                        string name = targetStates.GetArrayElementAtIndex(i).stringValue;
-
-                        controller.AddParameter(name, AnimatorControllerParameterType.Trigger);
-                        AnimationClip clip = AnimatorController.AllocateAnimatorClip(name);
-
-                        AnimationClipSettings settings = AnimationUtility.GetAnimationClipSettings(clip);
-                        settings.loopTime = false;
-                        AnimationUtility.SetAnimationClipSettings(clip, settings);
-
-                        AssetDatabase.AddObjectToAsset(clip, controller);
-                        AnimatorState newState = controller.AddMotion(clip);
-
-                        //AnimatorState newState = stateMachine.AddState(name);
-                        AnimatorStateTransition transition = stateMachine.AddAnyStateTransition(newState);
-                        transition.AddCondition(AnimatorConditionMode.If, 0, name);
-                        transition.duration = 1;
-                    }
-
-                    Animator animator = host.AddComponent<Animator>();
-                    animator.runtimeAnimatorController = controller;
-                }
-            }
         }
     }
 #endif

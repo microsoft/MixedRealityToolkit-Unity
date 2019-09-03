@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Renderer[] list = host.GetComponentsInChildren<Renderer>();
             for (int i = 0; i < list.Length; i++)
             {
-                MaterialPropertyBlock block = InteractableThemeShaderUtils.GetMaterialPropertyBlock(list[i].gameObject, shaderProperties);
+                MaterialPropertyBlock block = InteractableThemeShaderUtils.InitMaterialPropertyBlock(list[i].gameObject, shaderProperties);
                 BlocksAndRenderer bAndR = new BlocksAndRenderer();
                 bAndR.Renderer = list[i];
                 bAndR.Block = block;

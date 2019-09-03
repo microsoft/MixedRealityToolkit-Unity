@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         Float,
         Int,
         Color,
-        ShaderFloat, // TODO: Troy - mark deprecated
+        ShaderFloat,
         ShaderRange,
         Vector2,
         Vector3,

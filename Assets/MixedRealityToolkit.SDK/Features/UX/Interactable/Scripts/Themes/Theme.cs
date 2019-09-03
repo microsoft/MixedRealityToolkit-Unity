@@ -14,16 +14,28 @@ namespace Microsoft.MixedReality.Toolkit.UI
     [CreateAssetMenu(fileName = "Theme", menuName = "Mixed Reality Toolkit/Interactable/Theme", order = 1)]
     public class Theme : ScriptableObject
     {
+        /// <summary>
+        /// List of Theme Definition configurations. Each definition defines what type of Theme Engine to create and how to configure it
+        /// </summary>
         [FormerlySerializedAs("Settings")]
         public List<ThemeDefinition> Definitions;
 
-        //public List<ThemePropertyValue> CustomSettings;
-
+        /// <summary>
+        /// Associated States object to use with this theme. Defines the states available for each Theme to utilize
+        /// </summary>
         public States States;
 
-        // TODO: Troy - Add comment here
+        /// <summary>
+        /// Stores historical values of different ThemeDefinition selections. Useful for editor design
+        /// Each item in list corresponds to item in Definitions list property
+        /// Each Dictionary keeps track of last used ThemeDefinition configuration for a given Theme type (type must extend from InteractableThemeBase)
+        /// </summary>
         public List<Dictionary<Type, ThemeDefinition>> History = new List<Dictionary<Type, ThemeDefinition>>();
 
+        /// <summary>
+        /// Helper function to convert States scriptableobject into an array of available State values 
+        /// </summary>
+        /// <returns>Array of available State values for currently assigned States property in this Theme</returns>
         public State[] GetStates()
         {
             if (States != null)

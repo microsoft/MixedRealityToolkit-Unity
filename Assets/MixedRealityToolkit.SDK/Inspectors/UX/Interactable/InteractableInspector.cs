@@ -167,7 +167,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
                             if (themeItem.objectReferenceValue != null)
                             {
-                                // TODO: Odd bug where themeStates below is null when it shouldn't be
+                                // TODO: Odd bug where themeStates below is null when it shouldn't be. Use instance object as workaround atm
                                 //SerializedProperty themeStates = themeItem.FindPropertyRelative("States");
                                 var themeInstance = themeItem.objectReferenceValue as Theme;
                                 if (statesProperty.objectReferenceValue != themeInstance.States)

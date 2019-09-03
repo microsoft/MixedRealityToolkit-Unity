@@ -67,8 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
 
-            // TODO: Troy - Why do we need this?
-            propertyBlock = InteractableThemeShaderUtils.GetMaterialPropertyBlock(host, shaderProperties);
+            propertyBlock = InteractableThemeShaderUtils.InitMaterialPropertyBlock(host, shaderProperties);
         }
 
         /// <inheritdoc />

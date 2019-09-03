@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <param name="gameObject"></param>
         /// <param name="props"></param>
         /// <returns></returns>
-        public static MaterialPropertyBlock GetMaterialPropertyBlock(GameObject gameObject, List<ThemeStateProperty> props)
+        public static MaterialPropertyBlock InitMaterialPropertyBlock(GameObject gameObject, List<ThemeStateProperty> props)
         {
             MaterialPropertyBlock materialBlock = GetPropertyBlock(gameObject);
             Renderer renderer = gameObject.GetComponent<Renderer>();
@@ -44,7 +44,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     foreach (ThemeStateProperty prop in props)
                     {
-                        // TODO: Troy - check prop.value.Shader == material.shader
                         switch (prop.Type)
                         {
                             case ThemePropertyTypes.Color:
@@ -59,7 +58,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                                 value = material.GetFloat(prop.ShaderPropertyName);
                                 materialBlock.SetFloat(prop.ShaderPropertyName, value);
                                 break;
-                            // TODO: Troy - Add in Texture and others
                             default:
                                 break;
                         }

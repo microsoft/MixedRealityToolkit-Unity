@@ -10,11 +10,14 @@ using UnityEngine.Serialization;
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
-    /// The main settings found in Themes
+    /// Defines configuration properties and settings to use when initializing a class extending InteractableThemeBase
     /// </summary>
     [System.Serializable]
     public struct ThemeDefinition
     {
+        /// <summary>
+        /// Defines the type of Theme to associate with this definition. Type must be a class that extends InteractableThemeBase
+        /// </summary>
         public Type ThemeType
         {
             get
@@ -61,22 +64,37 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private string AssemblyQualifiedName;
 
         /// <summary>
-        /// Per state properties
+        /// List of properties with values defined per state index (Example list of colors for different states)
         /// </summary>
         [FormerlySerializedAs("Properties")]
         public List<ThemeStateProperty> StateProperties;
 
+        /// <summary>
+        /// List of single-value properties defined for the entire Theme engine regardless of the current state
+        /// </summary>
         [FormerlySerializedAs("CustomSettings")]
         public List<ThemeProperty> CustomProperties;
 
+        /// <summary>
+        /// Object to configure easing between values. Type of Theme Engine, as defined by the ThemeType property, must have IsEasingSupported set to true
+        /// </summary>
         public Easing Easing;
 
-        // TODO: Troy - Comments
-        public static ThemeDefinition? GetDefaultThemeDefinition<T>()
+        /// <summary>
+        /// Utility function to generate the default ThemeDefinition configuration for the provided type of Theme engine
+        /// </summary>
+        /// <typeparam name="T">type of Theme Engine to build default configuration for</typeparam>
+        /// <returns>Default ThemeDefinition configuration for the provided them type</returns>
+        public static ThemeDefinition? GetDefaultThemeDefinition<T>() where T : InteractableThemeBase
         {
             return GetDefaultThemeDefinition(typeof(T));
         }
 
+        /// <summary>
+        /// Utility function to generate the default ThemeDefinition configuration for the provided type of Theme engine
+        /// </summary>
+        /// <param name="themeType">type of Theme Engine to build default configuration for</param>
+        /// <returns>Default ThemeDefinition configuration for the provided them type</returns>
         public static ThemeDefinition? GetDefaultThemeDefinition(Type themeType)
         {
             var theme = InteractableThemeBase.CreateTheme(themeType);

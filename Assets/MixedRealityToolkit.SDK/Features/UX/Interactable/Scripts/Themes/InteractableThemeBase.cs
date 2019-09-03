@@ -22,23 +22,34 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public bool Loaded;
 
         /// <summary>
-        /// TODO: Troy
+        /// Indicates whether the current Theme engine implementation supports easing between state values
         /// </summary>
         public virtual bool IsEasingSupported => true;
 
         /// <summary>
-        /// TODO: Troy
+        /// Indicates whether the current Theme engine implementation supports shader targeting on state properties
         /// </summary>
         public virtual bool AreShadersSupported => false;
 
-        //! find a way to set the default values of the properties, like scale should be Vector3.one
-        // these should be custom, per theme
-
+        /// <summary>
+        /// Instruct theme to set value for current property with given index state and at given lerp percentage
+        /// </summary>
+        /// <param name="property">property to update value</param>
+        /// <param name="index">index of state to access array of values</param>
+        /// <param name="percentage">percentage transition between values</param>
         public abstract void SetValue(ThemeStateProperty property, int index, float percentage);
 
+        /// <summary>
+        /// Get the current property value for the provided state property
+        /// </summary>
+        /// <param name="property">state property to access</param>
+        /// <returns>Value currently for given state property</returns>
         public abstract ThemePropertyValue GetProperty(ThemeStateProperty property);
 
-        // TODO: Troy - Add comment here
+        /// <summary>
+        /// Generates the default theme definition configuration for the current theme implementation
+        /// </summary>
+        /// <returns>Default ThemeDefinition to initialize with the current theme engine implemenetation</returns>
         public abstract ThemeDefinition GetDefaultThemeDefinition();
 
         private bool hasFirstState = false;
@@ -69,13 +80,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
             this.StateProperties = new List<ThemeStateProperty>(definition.StateProperties.Count);
             foreach (ThemeStateProperty stateProp in definition.StateProperties)
             {
-                // TODO: Troy - Temp hack
+                // This is a temporary workaround to support backward compatible themes
+                // If the current state properties is one we know supports shaders, try to migrate data
+                // See ThemeStateProperty class for more details
                 if (ThemeStateProperty.IsShaderPropertyType(stateProp.Type))
                 {
                     stateProp.MigrateShaderData();
                 }
 
-                // TODO: Troy - See if I can jsut reference directly? Same with properties
                 this.StateProperties.Add(new ThemeStateProperty()
                 {
                     Name = stateProp.Name,
@@ -106,7 +118,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public virtual void OnUpdate(int state, Interactable source, bool force = false)
         {
-
             if (state != lastState || force)
             {
                 int themePropCount = StateProperties.Count;
