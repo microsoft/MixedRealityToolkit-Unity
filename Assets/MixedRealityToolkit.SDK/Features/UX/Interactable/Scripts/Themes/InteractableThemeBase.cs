@@ -75,6 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     stateProp.MigrateShaderData();
                 }
 
+                // TODO: Troy - See if I can jsut reference directly? Same with properties
                 this.StateProperties.Add(new ThemeStateProperty()
                 {
                     Name = stateProp.Name,

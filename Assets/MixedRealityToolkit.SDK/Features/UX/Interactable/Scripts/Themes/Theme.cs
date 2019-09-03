@@ -17,6 +17,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [FormerlySerializedAs("Settings")]
         public List<ThemeDefinition> Definitions;
 
+        //public List<ThemePropertyValue> CustomSettings;
+
         public States States;
 
         // TODO: Troy - Add comment here
@@ -31,6 +33,5 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             return new State[0];
         }
-
     }
 }
