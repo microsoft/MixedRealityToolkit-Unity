@@ -10,6 +10,9 @@ from the [`WindowsMixedRealityDeviceManager`](xref:Microsoft.MixedReality.Toolki
 
 ## Namespace and folder structure
 
+Data providers can be distributed as a third party add-on or as a part of the Microsoft Mixed Reality Toolkit. The approval process for submissions of
+new data providers to the MRTK will vary on a case-by-case basis and will be communicated at the time of the initial proposal.
+
 > [!Important]
 > If an input system data provider is being submitted to the [Mixed Reality Toolkit repository](https://github.com/Microsoft/MixedRealityToolkit-Unity), the
 namespace **must** begin with Microsoft.MixedReality.Toolkit (ex: Microsoft.MixedReality.Toolkit.WindowsMixedReality) and the code should be
@@ -30,8 +33,11 @@ It is recommended that the source code for data providers be layed out in a fold
 
 ![Example folder structure](../Images/Input/ExampleProviderFolderStructure.png)
 
-Where ContosoInput contains the implementation of the data provider, the Editor folder contains the inspector (and any other Unity editor specific code) and Profiles
-contains one or more pre-made profiles.
+Where ContosoInput contains the implementation of the data provider, the Editor folder contains the inspector (and any other Unity editor specific code), the Textures folder
+contains images of the supported controllers, and Profiles contains one or more pre-made profiles.
+
+> [!Note]
+> Some common controller images can be found in the MixedRealityToolkit\StandardAssets\Textures folder.
 
 ## Implement the data provider
 
@@ -46,12 +52,30 @@ class can be used as a base class.
 > The `BaseInputDeviceManager` and `UnityJoystickManager` classes provide the required `IMixedRealityInputDeviceManager` implementation.
 
 ``` c#
-public class WindowsMixedRealityDeviceManager : BaseInputDeviceManager, IMixedRealityCapabilityCheck
+public class WindowsMixedRealityDeviceManager : 
+    BaseInputDeviceManager, 
+    IMixedRealityCapabilityCheck
 { }
 ```
 
 > `IMixedRealityCapabilityCheck` is used by the `WindowsMixedRealityDeviceManager` to indicate that it provides support for a set of input capabilities, specifically; articulated hands,
 gaze-gesture-voice hands and motion controllers.
+
+#### Apply the MixedRealityDataProvider attribute
+
+A key step of creating an input system data provider is to apply the [`MixedRealityDataProvider`](xref:Microsoft.MixedReality.Toolkit.MixedRealityDataProviderAttribute)
+attribute to the class. This step enables setting the default profile and platform(s) for the provider, when selected in the input system profile.
+
+``` c#
+[MixedRealityDataProvider(
+    typeof(IMixedRealityInputSystem),
+    SupportedPlatforms.WindowsUniversal,
+    "Windows Mixed Reality Device Manager")]
+public class WindowsMixedRealityDeviceManager : 
+    BaseInputDeviceManager, 
+    IMixedRealityCapabilityCheck
+{ }
+```
 
 ### Implement the IMixedRealityDataProvider methods
 
@@ -87,6 +111,19 @@ The next step is to add the logic for managing the input devices, including any 
 > [!Note]
 > Not all device managers will support multiple controller types.
 
+#### Apply the MixedRealityController attribute
+
+Next, apply the [`MixedRealityController`](xref:Microsoft.MixedReality.Toolkit.Input.MixedRealityControllerAttribute) attribute to the class. This attribute speficies the type of controller
+(ex: articulated hand), the handedness (ex: left or right) and an optional controller image.
+
+``` c#
+[MixedRealityController(
+    SupportedControllerType.WindowsMixedReality,
+    new[] { Handedness.Left, Handedness.Right },
+    "StandardAssets/Textures/MotionController")]
+{ }
+```
+
 ### Raise notification events
 
 To enable applications to respond to input from the user, the data provider raises notification events corresponding to controller state changes as defined in the [`IMixedRealityInputHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler)
@@ -111,20 +148,6 @@ For analog controls (ex: touchpad position) the InputChanged event should be rai
 
 ``` c#
 InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.touchpadPosition);
-```
-
-### Apply the MixedRealityDataProvider attribute
-
-The final step of creating an input system data provider is to apply the [`MixedRealityDataProvider`](xref:Microsoft.MixedReality.Toolkit.MixedRealityDataProviderAttribute)
-attribute to the class. This step enables setting the default profile and platform(s) for the provider, when selected in the input system profile.
-
-``` c#
-[MixedRealityDataProvider(
-    typeof(IMixedRealityInputSystem),
-    SupportedPlatforms.WindowsUniversal,
-    "Windows Mixed Reality Device Manager")]
-public class WindowsMixedRealityDeviceManager : BaseInputDeviceManager, IMixedRealityCapabilityCheck
-{ }
 ```
 
 ## Create the profile and inspector
@@ -190,6 +213,14 @@ the file will be located in the ContosoInput\Editor folder. This assembly defini
 Once created, the data provider can be registered with the input system be used in the application.
 
 ![Registered input system data providers](../Images/Input/RegisteredServiceProviders.png)
+
+## Packaging and distribution
+
+Data providers that are distributed as third party components have the specific details of packaging and distribution left to the preference of the developer. Likely, the most
+common solution will be to generate a .unitypackage and distribute via the Unity Asset Store.
+
+If a data provider is submitted and accepted as a part of the Microsoft Mixed Reality Toolkit package, the Microsoft MRTK team will package and distribute it as part of the MRTK
+offerings.
 
 ## See also
 
