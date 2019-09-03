@@ -62,13 +62,23 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         private string ShaderName = "";
 
-        public void MigrateShaderData()
+        // TODO: Troy - Add comment
+        public bool MigrateShaderData()
         {
             if (ShaderOptions != null && ShaderOptions.Count > 0)
             {
                 TargetShader = Shader.Find(ShaderName);
                 ShaderPropertyName = ShaderOptionNames[PropId];
+
+                // Invalidate old fields so we can deprecate in future
+                ShaderOptions.Clear();
+                ShaderOptionNames.Clear();
+                ShaderName = string.Empty;
+
+                return true;
             }
+
+            return false;
         }
     }
 }

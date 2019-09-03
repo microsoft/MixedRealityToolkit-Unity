@@ -47,6 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             base.Init(host, settings);
 
             propertyBlock = InteractableThemeShaderUtils.GetPropertyBlock(host);
+
             renderer = Host.GetComponent<Renderer>();
         }
 

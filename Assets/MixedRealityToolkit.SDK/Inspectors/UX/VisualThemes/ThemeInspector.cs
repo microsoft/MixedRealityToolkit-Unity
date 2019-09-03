@@ -46,6 +46,32 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             serializedObject.ApplyModifiedProperties();
         }
 
+        [MenuItem("Mixed Reality Toolkit/Migration/Update Themes")]
+        public static void MigrateShaders()
+        {
+            string[] guids = AssetDatabase.FindAssets(string.Format("t:{0}", typeof(Theme)));
+            foreach (var guid in guids)
+            {
+                var theme = AssetDatabase.LoadAssetAtPath<Theme>(AssetDatabase.GUIDToAssetPath(guid));
+                bool setDirty = false;
+                foreach ( var themeDefinition in theme.Definitions)
+                {
+                    foreach (var property in themeDefinition.StateProperties)
+                    {
+                        if (property.MigrateShaderData())
+                        {
+                            setDirty = true;
+                        }
+                    }
+                }
+
+                if (setDirty)
+                {
+                    EditorUtility.SetDirty(theme);
+                }
+            }
+        }
+
         #region Rendering Methods
 
         public virtual void RenderTheme()
