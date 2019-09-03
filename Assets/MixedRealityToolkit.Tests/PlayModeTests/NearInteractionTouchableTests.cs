@@ -151,7 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             var touchable = CreateTouchable<NearInteractionTouchable>(objectScale);
             touchable.SetLocalForward(touchNormal);
-            touchable.Bounds = new Vector2(0.5f, 0.5f);
+            touchable.SetBounds(new Vector2(0.5f, 0.5f));
 
             yield return new WaitForFixedUpdate();
             yield return null;
@@ -352,7 +352,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
                 touchables[i] = CreateTouchable<NearInteractionTouchable>(0.15f);
                 touchables[i].SetLocalForward(touchNormal);
-                touchables[i].Bounds = new Vector2(0.5f, 0.5f);
+                touchables[i].SetBounds(new Vector2(0.5f, 0.5f));
                 touchables[i].transform.position = objectPosition + r * radiusStart;
 
                 catchers[i] = CreateEventCatcher(touchables[i]);

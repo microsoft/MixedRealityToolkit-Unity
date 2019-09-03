@@ -4,6 +4,7 @@
 using System;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -11,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// Add a NearInteractionTouchable to your scene and configure a touchable surface
     /// in order to get PointerDown and PointerUp events whenever a PokePointer touches this surface.
     /// </summary>
-    public class NearInteractionTouchable : ColliderNearInteractionTouchable, INearInteractionTouchableDirected
+    public class NearInteractionTouchable : NearInteractionTouchableSurface
     {
         /// <summary>
         /// Local space forward direction
@@ -40,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         [SerializeField]
         protected Vector3 localCenter = Vector3.zero;
-        public Vector3 LocalCenter { get => localCenter; set { localCenter = value; } }
+        public override Vector3 LocalCenter { get => localCenter; }
 
         public Vector3 LocalRight
         {
@@ -61,26 +62,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public Vector3 Forward => transform.TransformDirection(localForward);
 
-        public void SetLocalForward(Vector3 newLocalForward)
-        {
-            localForward = newLocalForward;
-            localUp = Vector3.Cross(localForward, LocalRight).normalized;
-        }
-
-        public void SetLocalUp(Vector3 newLocalUp)
-        {
-            localUp = newLocalUp;
-            localForward = Vector3.Cross(LocalRight, localUp).normalized;
-        }
-
-        public Vector3 LocalPressDirection => -localForward;
+        public override Vector3 LocalPressDirection => -localForward;
 
         /// <summary>
         /// Local space forward direction
         /// </summary>
         [SerializeField]
         protected Vector2 bounds = Vector2.zero;
-        public Vector2 Bounds { get => bounds; set { bounds = value; } }
+        public override Vector2 Bounds { get => bounds; }
+
+        public bool ColliderEnabled { get { return touchableCollider.enabled && touchableCollider.gameObject.activeInHierarchy; } }
+
+        /// <summary>
+        /// The collider used by this touchable.
+        /// </summary>
+        [SerializeField]
+        [FormerlySerializedAs("collider")]
+        private Collider touchableCollider;
+        public Collider TouchableCollider => touchableCollider;
 
         protected override void OnValidate()
         {
@@ -90,6 +89,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             base.OnValidate();
+
+            touchableCollider = GetComponent<Collider>();
 
             Debug.Assert(localForward.magnitude > 0);
             Debug.Assert(localUp.magnitude > 0);
@@ -104,6 +105,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             bounds.x = Mathf.Max(bounds.x, 0);
             bounds.y = Mathf.Max(bounds.y, 0);
+        }
+
+        public void SetLocalForward(Vector3 newLocalForward)
+        {
+            localForward = newLocalForward;
+            localUp = Vector3.Cross(localForward, LocalRight).normalized;
+        }
+
+        public void SetLocalUp(Vector3 newLocalUp)
+        {
+            localUp = newLocalUp;
+            localForward = Vector3.Cross(LocalRight, localUp).normalized;
+        }
+
+        public void SetLocalCenter(Vector3 newLocalCenter)
+        {
+            localCenter = newLocalCenter;
+        }
+
+        public void SetBounds(Vector2 newBounds)
+        {
+            bounds = newBounds;
         }
 
         /// <inheritdoc />

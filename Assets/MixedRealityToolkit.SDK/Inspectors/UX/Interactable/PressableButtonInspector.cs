@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private PressableButton button;
         private Transform transform;
-        private INearInteractionTouchableDirected touchable;
+        private NearInteractionTouchableSurface touchable;
 
         private ButtonInfo currentInfo;
 
@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             pressDistance = serializedObject.FindProperty("pressDistance");
             releaseDistanceDelta = serializedObject.FindProperty("releaseDistanceDelta");
 
-            touchable = button.GetComponent<INearInteractionTouchableDirected>();
+            touchable = button.GetComponent<NearInteractionTouchableSurface>();
         }
 
         [DrawGizmo(GizmoType.Selected)]
