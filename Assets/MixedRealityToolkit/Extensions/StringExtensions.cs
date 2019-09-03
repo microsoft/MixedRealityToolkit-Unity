@@ -7,7 +7,7 @@ using System.Text;
 namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
-    /// <see cref="String"/> Extensions.
+    /// <see cref="System.String"/> Extensions.
     /// </summary>
     public static class StringExtensions
     {

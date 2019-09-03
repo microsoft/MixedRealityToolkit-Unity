@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Base input device manager to inherit from.
+    /// Class providing a base implementation of the <see cref="IMixedRealityInputDeviceManager"/> interface.
     /// </summary>
     public abstract class BaseInputDeviceManager : BaseDataProvider, IMixedRealityInputDeviceManager
     {
