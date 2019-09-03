@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
@@ -13,6 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     public class InteractableOnFocusReceiver : ReceiverBase
     {
         [SerializeField]
+        [FormerlySerializedAs("OnFocusOff")]
         [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Focus Off", Tooltip = "Focus has left the object")]
         private UnityEvent onFocusOff = new UnityEvent();
 
