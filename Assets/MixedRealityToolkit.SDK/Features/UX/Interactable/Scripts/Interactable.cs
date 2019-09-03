@@ -160,6 +160,23 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
+        /// Returns all receivers of type T on the interactable.
+        /// If nothing is found, returns empty list.
+        /// </summary>
+        public List<T> GetReceivers<T>() where T : ReceiverBase
+        {
+            List<T> result = new List<T>();
+            for (int i = 0; i < Events.Count; i++)
+            {
+                if (Events[i] != null && Events[i].Receiver is T)
+                {
+                    result.Add((T)Events[i].Receiver);
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
         /// List of profiles can match themes with gameObjects
         /// </summary>
         public List<InteractableProfileItem> Profiles = new List<InteractableProfileItem>();
