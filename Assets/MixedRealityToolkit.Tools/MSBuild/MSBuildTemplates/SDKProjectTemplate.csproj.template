@@ -18,8 +18,10 @@
     <BuildFolder>$(MSBuildThisFileDirectory)$(RelativeBuildFolder)</BuildFolder>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <!--NOTE: Currently one of the Unity packages has a * in AssemblyVersion identifier in the AssemblyInfo file, so have to do this.-->
-    <Deterministic>false</Deterministic>
-    <AddAdditionalExplicitAssemblyReferences>false</AddAdditionalExplicitAssemblyReferences>
+    <Deterministic>false</Deterministic>   
+    <_TargetFrameworkDirectories />
+    <FrameworkPathOverride />
+    <TargetFrameworkDirectory />
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(PublishOutputPath)'==''">
