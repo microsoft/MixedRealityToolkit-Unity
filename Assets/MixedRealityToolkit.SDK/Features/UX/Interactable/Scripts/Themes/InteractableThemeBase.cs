@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public List<ThemeStateProperty> StateProperties = new List<ThemeStateProperty>();
         public List<ThemeProperty> Properties = new List<ThemeProperty>();
         public GameObject Host;
-        public Easing Ease;
+        public Easing Ease = new Easing();
         public bool Loaded;
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Host = host;
 
-            this.StateProperties = new List<ThemeStateProperty>(definition.StateProperties.Count);
+            this.StateProperties = new List<ThemeStateProperty>();
             foreach (ThemeStateProperty stateProp in definition.StateProperties)
             {
                 // This is a temporary workaround to support backward compatible themes
@@ -99,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 });
             }
 
-            this.Properties = new List<ThemeProperty>(definition.CustomProperties.Count);
+            this.Properties = new List<ThemeProperty>();
             foreach (ThemeProperty prop in definition.CustomProperties)
             {
                 this.Properties.Add(new ThemeProperty()
@@ -110,8 +110,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 });
             }
 
-            Ease = definition.Easing.Copy();
-            Ease.Stop();
+            if (definition.Easing != null)
+            {
+                Ease = definition.Easing.Copy();
+                Ease.Stop();
+            }
 
             Loaded = true;
         }

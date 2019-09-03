@@ -17,6 +17,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -490,9 +491,31 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             translateTargetObject = childObject.transform;
 
+            var defaultStates = States.GetDefaultInteractableStates();
+            Theme testTheme = new Theme()
+            {
+                States = defaultStates,
+                Definitions = new List<ThemeDefinition>()
+                {
+                    ThemeDefinition.GetDefaultThemeDefinition<InteractableColorTheme>().Value
+                }
+            };
+
+            // TODO: Troy - Need to validate ThemeDefinition based on defaultStates***
+
+            InteractableProfileItem profileItem = new InteractableProfileItem()
+            {
+                Themes = new List<Theme>() { testTheme },
+                Target = translateTargetObject.gameObject,
+            };
+
             // Add an interactable
             interactable = interactableObject.AddComponent<Interactable>();
+            interactable.States = defaultStates;
+            interactable.Profiles = new List<InteractableProfileItem>() { profileItem };
+            interactable.RefreshSetup();
 
+            /*
 #if UNITY_EDITOR
             // Find our states and themes via the asset database
             Theme cylinderTheme = ScriptableObjectExtensions.GetAllInstances<Theme>().FirstOrDefault(profile => profile.name.Equals($"CylinderTheme"));
@@ -505,7 +528,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             interactable.Profiles = new System.Collections.Generic.List<InteractableProfileItem>() { profileItem };
             interactable.RefreshSetup();
-#endif
+#endif*/
 
             // Set the interactable to respond to the requested input action
             MixedRealityInputAction selectAction = CoreServices.InputSystem.InputSystemProfile.InputActionsProfile.InputActions.Where(m => m.Description == selectActionDescription).FirstOrDefault();
