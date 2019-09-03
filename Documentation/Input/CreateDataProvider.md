@@ -25,7 +25,7 @@ Data providers are required to have a namespace to mitigate potential name colli
 - Company name
 - Feature area
 
-For example, an input data provider created by the Contoso company may be "Contoso.MixedReality.Input".
+For example, an input data provider created by the Contoso company may be "Contoso.MixedReality.Toolkit.Input".
 
 ### Recommended folder structure
 
