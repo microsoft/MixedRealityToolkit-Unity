@@ -270,7 +270,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            mouseRotation.Update(profile.MouseLookButton, cancelRotationKey, false);
+            mouseRotation.Update(profile.HandRotateButton, cancelRotationKey, false);
 
             SimulateHandInput(ref lastHandTrackedTimestampLeft, HandStateLeft, isSimulatingLeft, IsAlwaysVisibleLeft, mouseDelta, mouseRotation.IsRotating);
             SimulateHandInput(ref lastHandTrackedTimestampRight, HandStateRight, isSimulatingRight, IsAlwaysVisibleRight, mouseDelta, mouseRotation.IsRotating);
