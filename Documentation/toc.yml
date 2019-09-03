@@ -3,14 +3,16 @@
   items:
   - name: Upgrading from HTK
     href: HTKToMRTKPortingGuide.md
-  - name: Updating from RC2 to GA
-    href: UpdatingToGA.md
+  - name: Updating from RC2
+    href: Updating.md
+  - name: Release Notes
+    href: ReleaseNotes.md
+  - name: Building and Deploying MRTK
+    href: BuildAndDeploy.md
   - name: Performance
     href: Performance/PerfGettingStarted.md
   - name: Hologram Stabilization
     href: Hologram-Stabilization.md
-  - name: Known Issues
-    href: KnownIssues.md
 - name: Architecture
   items:
   - name: Overview
@@ -45,6 +47,8 @@
       href: Input/Controllers.md
     - name: Pointers
       href: Input/Pointers.md
+    - name: How to Add Near Interaction
+      href: Input/HowToAddNearInteractivity.md
     - name: Gestures
       href: Input/Gestures.md
     - name: Speech(Voice command)
@@ -52,7 +56,9 @@
     - name: Dictation
       href: Input/Dictation.md
     - name: Hands
-      href: InputSystem/HandTracking.md
+      href: Input/HandTracking.md
+    - name: Gaze
+      href: Input/Gaze.md
     - name: Eyes
       href: EyeTracking/EyeTracking_Main.md
   - name: In-Editor Input Simulation
@@ -75,8 +81,6 @@
       href: README_AppBar.md
     - name: Object Collection
       href: README_ObjectCollection.md
-    - name: Pointers
-      href: README_Pointers.md
     - name: Slate
       href: README_Slate.md
     - name: System Keyboard
@@ -115,6 +119,8 @@
       href: SceneSystem/SceneSystemLoadProgress.md
     - name: Lighting Scene Operations
       href: SceneSystem/SceneSystemLightingScenes.md
+  - name: Teleport System
+    href: TeleportSystem/Overview.md
   - name: Boundary System
     items:
     - name: Boundary System Overview

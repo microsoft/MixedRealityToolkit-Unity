@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     /// </summary>
     public class Overlap : Solver
     {
+        /// <inheritdoc />
         public override void SolverUpdate()
         {
             var target = SolverHandler.TransformTarget;

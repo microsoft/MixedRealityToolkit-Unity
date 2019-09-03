@@ -17,6 +17,9 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             MixedRealityDiagnosticsProfile profile) : base(registrar, profile)
         { }
 
+        /// <inheritdoc/>
+        public override string Name { get; protected set; } = "Mixed Reality Diagnostics System";
+
         /// <summary>
         /// The parent object under which all visualization game objects will be placed.
         /// </summary>

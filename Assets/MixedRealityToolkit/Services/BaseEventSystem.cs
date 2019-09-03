@@ -253,6 +253,7 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
+        /// <inheritdoc />
         public override void Destroy()
         {
             if(!enableDanglingHandlerDiagnostics)

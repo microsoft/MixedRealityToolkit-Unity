@@ -38,10 +38,28 @@ function CheckBooLang(
     return $false
 }
 
-function CheckFile(
+function CheckCustomProfile(
+    [string]$FileName,
+    [string[]]$FileContent,
+    [int]$LineNumber
+) {
+    <#
+    .SYNOPSIS
+        Checks if the given profile is marked as a custom profile.
+        Returns true if such a reference exists.
+    #>
+    if ($FileName -notmatch "Examples" -and $FileContent[$LineNumber] -match "isCustomProfile: 1") {
+        Write-Host "An instance of 'isCustomProfile: 1' was found in $FileName at line $LineNumber"
+        Write-Host "Please update this to 'isCustomProfile: 0' instead."
+        return $true;
+    }
+    return $false
+}
+
+function CheckScript(
     [string]$FileName
 ) {
-    # Each line of each file is checked by all of the validators above - this ensures that in
+    # Each line of each script is checked by all of the validators above - this ensures that in
     # a single pass, we'll get all of the issues highlighted all at once, rather than
     # repeatedly running this script, discovering a single issue, fixing it, and then
     # re-running the script
@@ -55,12 +73,36 @@ function CheckFile(
     return $containsIssue
 }
 
+function CheckAsset(
+    [string]$FileName
+) {
+    # Each line of each asset is checked by all of the validators above - this ensures that in
+    # a single pass, we'll get all of the issues highlighted all at once, rather than
+    # repeatedly running this script, discovering a single issue, fixing it, and then
+    # re-running the script
+    $containsIssue = $false
+    $fileContent = Get-Content $FileName
+    for ($i = 0; $i -lt $fileContent.Length; $i++) {
+        if (CheckCustomProfile $FileName $fileContent $i) {
+            $containsIssue = $true
+        }
+    }
+    return $containsIssue
+}
+
 Write-Output "Checking $Directory for common code issues"
 
 $codeFiles = Get-ChildItem $Directory *.cs -Recurse | Select-Object FullName
 $containsIssue = $false
 foreach ($codeFile in $codeFiles) {
-    if (CheckFile $codeFile.FullName) {
+    if (CheckScript $codeFile.FullName) {
+        $containsIssue = $true
+    }
+}
+
+$codeFiles = Get-ChildItem $Directory *.asset -Recurse | Select-Object FullName
+foreach ($codeFile in $codeFiles) {
+    if (CheckAsset $codeFile.FullName) {
         $containsIssue = $true
     }
 }

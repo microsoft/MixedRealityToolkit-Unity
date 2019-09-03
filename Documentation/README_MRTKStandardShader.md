@@ -56,11 +56,11 @@ For static lighting the shader will respect lightmaps built by Unity's [Lightmap
 
 ### Hover Light
 
-A Hover Light is a Fluent Design System paradigm that mimics a "point light" hovering near the surface of an object. Often used for far away cursor lighting the application can control the properties of a Hover Light via the [**HoverLight.cs**](xref:Microsoft.MixedReality.Toolkit.Utilities.HoverLight). Up to 3 Hover Lights are supported at a time.
+A Hover Light is a Fluent Design System paradigm that mimics a "point light" hovering near the surface of an object. Often used for far away cursor lighting the application can control the properties of a Hover Light via the [`HoverLight.cs`](xref:Microsoft.MixedReality.Toolkit.Utilities.HoverLight). Up to 3 Hover Lights are supported at a time.
 
 ### Proximity Light
 
-A Proximity Light is a Fluent Design System paradigm that mimics a "gradient inverse point light" hovering near the surface of an object. Often used for near cursor lighting the application can control the properties of a Proximity Light via the [**ProximityLight.cs**](xref:Microsoft.MixedReality.Toolkit.Utilities.ProximityLight). Up to 2 Proximity Lights are supported at a time.
+A Proximity Light is a Fluent Design System paradigm that mimics a "gradient inverse point light" hovering near the surface of an object. Often used for near cursor lighting the application can control the properties of a Proximity Light via the [`ProximityLight.cs`](xref:Microsoft.MixedReality.Toolkit.Utilities.ProximityLight). Up to 2 Proximity Lights are supported at a time.
 
 ## Lightweight Scriptable Render Pipeline Support
 
@@ -97,25 +97,64 @@ This windows can be automatically filled out by selecting a Unity Standard shade
 
 Below are extra details on a handful of features details available with the MRTK/Standard shader.
 
+### Primitive Clipping
+
 Performant plane, sphere, and box shape clipping with the ability to specify which side of the primitive to clip against (inside or outside). You can find a scene that demonstrates advanced usage of clipping primitives in the  **ClippingExamples** scene under: [MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes)
 
 ![primitive clipping](../Documentation/Images/MRTKStandardShader/MRTK_PrimitiveClipping.gif)
 
-[**ClippingPlane.cs**](xref:Microsoft.MixedReality.Toolkit.Utilities.ClippingPlane), [**ClippingSphere.cs**](xref:Microsoft.MixedReality.Toolkit.Utilities.ClippingSphere), and [**ClippingBox.cs**](xref:Microsoft.MixedReality.Toolkit.Utilities.ClippingBox) can be used to easily control clipping primitive properties.
+[`ClippingPlane.cs`](xref:Microsoft.MixedReality.Toolkit.Utilities.ClippingPlane), [**ClippingSphere.cs`](xref:Microsoft.MixedReality.Toolkit.Utilities.ClippingSphere), and [**ClippingBox.cs`](xref:Microsoft.MixedReality.Toolkit.Utilities.ClippingBox) can be used to easily control clipping primitive properties.
 
 ![primitive clipping gizmos](../Documentation/Images/MRTKStandardShader/MRTK_PrimitiveClippingGizmos.gif)
+
+### Mesh Outlines
+
+Many mesh outline techniques are done using a [post processing](https://docs.unity3d.com/Manual/PostProcessingOverview.html) technique. Post processing provides great quality outlines, but can be prohibitively expensive on many Mixed Reality devices. You can find a scene that demonstrates usage of mesh outlines in the  **OutlineExamples** scene under: [MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes)
+
+<img src="../Documentation/Images/MRTKStandardShader/MRTK_MeshOutline.jpg" width="900">
+
+[`MeshOutline.cs`](xref:Microsoft.MixedReality.Toolkit.Utilities.MeshOutline) and [`MeshOutlineHierarchy.cs`](xref:Microsoft.MixedReality.Toolkit.Utilities.MeshOutlineHierarchy) can be used render an outline around a mesh renderer. Enabling this component introduces an additional render pass of the object being outlined, but is designed to run performantly on mobile Mixed Reality devices and does not utilize any post processes. Limitations of this effect include it not working well on objects which are not watertight (or required to be two sided) and depth sorting issues can occur on overlapping objects.
+
+The outline behaviors are designed to be used in conjunction with the MRTK/Standard shader. Outline materials are usually a solid unlit color, but can be configured to achieve a wide array of effects. The default configuration of a outline material is as follows: 
+
+<img src="../Documentation/Images/MRTKStandardShader/MRTK_OutlineMaterial.jpg" width="450">
+
+1. Depth Write - should be disabled for outline materials to make sure the outline does not prevent other objects from rendering.
+2. Vertex Extrusion - needs to be enabled to render the outline.
+3. Use Smooth Normals - this setting is optional for some meshes. Extrusion occurs by moving a vertex along a vertex normal, on some meshes extruding along the default normals will cause discontinuities in the outline. To fix these discontinuities you can check this box to use another set of smoothed normals which get generated by [`MeshSmoother.cs`](xref:Microsoft.MixedReality.Toolkit.Utilities.MeshSmoother)
+
+[`MeshSmoother.cs`](xref:Microsoft.MixedReality.Toolkit.Utilities.MeshSmoother) is a component which can be used to automatically generate smoothed normals on a mesh. This method groups vertices in a mesh that share the same location in space then averages the normals of those vertices. This process creates a copy of the underlying mesh and should be used only when required.
+
+<img src="../Documentation/Images/MRTKStandardShader/MRTK_SmoothNormals.jpg" width="450">
+
+1. Smooth normals generated via [`MeshSmoother.cs`](xref:Microsoft.MixedReality.Toolkit.Utilities.MeshSmoother).
+2. Default normals used, notice the artifacts around the cube corners. 
+
+### Stencil Testing
 
 Built in configurable stencil test support to achieve a wide array of effects. Such as portals:
 
 ![stencil test](../Documentation/Images/MRTKStandardShader/MRTK_StencilTest.gif)
 
+### Instanced Color Support
+
 Instanced color support to give thousands of GPU instanced meshes unique material properties:
 
 ![instanced properties](../Documentation/Images/MRTKStandardShader/MRTK_InstancedProperties.gif)
 
+### Triplanar Mapping
+
 Triplanar mapping is a technique to programmatically texture a mesh. Often used in terrain, meshes without UVs, or difficult to unwrap shapes. This implementation supports world or local space projection, the specification of blending smoothness, and normal map support. Note, each texture used requires 3 texture samples, so please use sparingly in performance critical situations.
 
 ![triplanar](../Documentation/Images/MRTKStandardShader/MRTK_TriplanarMapping.gif)
+
+### Vertex Extrusion
+
+Vertex extrusion in world space. Useful for visualizing extruded bounding volumes or transitions in/out meshes.
+
+![normal map scale](../Documentation/Images/MRTKStandardShader/MRTK_VertexExtrusion.gif)
+
+### Miscellaneous
 
 A checkbox to control albedo optimizations. As an optimization albedo operations are disabled when no albedo texture is specified. This is useful for controlling [remote texture loading](http://dotnetbyexample.blogspot.com/2018/10/workaround-remote-texture-loading-does.html).
 
@@ -126,10 +165,6 @@ Simply check this box:
 Per pixel clipping textures, local edge based anti aliasing, and normal map scaling are supported.
 
 ![normal map scale](../Documentation/Images/MRTKStandardShader/MRTK_NormalMapScale.gif)
-
-Vertex extrusion in world space. Useful for visualizing extruded bounding volumes or transitions in/out meshes.
-
-![normal map scale](../Documentation/Images/MRTKStandardShader/MRTK_VertexExtrusion.gif)
 
 ## See also
 

@@ -71,6 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
         public override void ActivateModule()
         {
             base.ActivateModule();
@@ -89,6 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
         public override void DeactivateModule()
         {
             if (InputSystem != null)
@@ -163,11 +165,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 IMixedRealityPointer pointer = pointerData.pointer;
 
-                pointer.Result = null;
                 ProcessMouseEvent((int)pointer.PointerId);
 
-                // Invalidate last mouse point.
-                pointerData.lastMousePoint3d = null; 
+                ResetMousePointerEventData(pointerData);
             }
         }
 
@@ -181,13 +181,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             PointerData pointerData;
             if (pointerDataToUpdate.TryGetValue(pointerId, out pointerData))
             {
-                return GetMousePointerEventDataForMrtkPointer(pointerData);
+                UpdateMousePointerEventData(pointerData);
+                return pointerData.mouseState;
             }
 
             return base.GetMousePointerEventData(pointerId);
         }
 
-        protected MouseState GetMousePointerEventDataForMrtkPointer(PointerData pointerData)
+        protected void UpdateMousePointerEventData(PointerData pointerData)
         {
             IMixedRealityPointer pointer = pointerData.pointer;
 
@@ -208,7 +209,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 RaycastCamera.transform.position = pointer.Position;
                 RaycastCamera.transform.rotation = Quaternion.LookRotation(pointer.Rays[0].Direction);
             }
-
 
             // Populate eventDataLeft
             pointerData.eventDataLeft.Reset();
@@ -241,7 +241,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             pointerData.eventDataLeft.pressPosition += pointerData.eventDataLeft.delta;
 
             // Populate raycast data
-            pointerData.eventDataLeft.pointerCurrentRaycast = (pointer.Result?.Details.Object != null) ? pointer.Result.Details.LastGraphicsRaycastResult : new RaycastResult();
+            pointerData.eventDataLeft.pointerCurrentRaycast = pointer.Result != null ? pointer.Result.Details.LastGraphicsRaycastResult : new RaycastResult();
             // TODO: Simulate raycast for 3D objects?
 
             // Populate the data for the buttons
@@ -256,8 +256,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
             CopyFromTo(pointerData.eventDataLeft, pointerData.eventDataMiddle);
             pointerData.eventDataMiddle.button = PointerEventData.InputButton.Middle;
             pointerData.mouseState.SetButtonState(PointerEventData.InputButton.Middle, PointerEventData.FramePressState.NotChanged, pointerData.eventDataMiddle);
+        }
 
-            return pointerData.mouseState;
+        protected void ResetMousePointerEventData(PointerData pointerData)
+        {
+            // Invalidate last mouse point.
+            pointerData.lastMousePoint3d = null; 
+            pointerData.pointer.Result = null;
+
+            pointerData.eventDataLeft.pointerCurrentRaycast = new RaycastResult();
+
+            // Populate the data for the buttons
+            pointerData.eventDataLeft.button = PointerEventData.InputButton.Left;
+            pointerData.mouseState.SetButtonState(PointerEventData.InputButton.Left, PointerEventData.FramePressState.NotChanged, pointerData.eventDataLeft);
+
+            // Need to provide data for middle and right button for MouseState, although not used by MRTK pointers.
+            CopyFromTo(pointerData.eventDataLeft, pointerData.eventDataRight);
+            pointerData.eventDataRight.button = PointerEventData.InputButton.Right;
+            pointerData.mouseState.SetButtonState(PointerEventData.InputButton.Right, PointerEventData.FramePressState.NotChanged, pointerData.eventDataRight);
+
+            CopyFromTo(pointerData.eventDataLeft, pointerData.eventDataMiddle);
+            pointerData.eventDataMiddle.button = PointerEventData.InputButton.Middle;
+            pointerData.mouseState.SetButtonState(PointerEventData.InputButton.Middle, PointerEventData.FramePressState.NotChanged, pointerData.eventDataMiddle);
         }
 
         protected PointerEventData.FramePressState StateForPointer(PointerData pointerData)

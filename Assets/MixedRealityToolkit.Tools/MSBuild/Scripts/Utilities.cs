@@ -514,8 +514,8 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
             if (result.Success)
             {
-                fullTemplate = result.Groups[0].Captures[0].Value;
-                templateBody = result.Groups[1].Captures[0].Value;
+                fullTemplate = result.Groups[0].Captures[0].Value.TrimEnd();
+                templateBody = result.Groups[1].Captures[0].Value.TrimEnd();
                 return true;
             }
 

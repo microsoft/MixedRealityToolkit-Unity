@@ -17,6 +17,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             MixedRealityInputSystemProfile profile) : base(registrar, profile)
         { }
 
+        /// <inheritdoc/>
+        public override string Name { get; protected set; } = "Default Raycast Provider";
+
         /// <inheritdoc />
         public bool Raycast(RayStep step, LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out MixedRealityRaycastHit hitInfo)
         {
