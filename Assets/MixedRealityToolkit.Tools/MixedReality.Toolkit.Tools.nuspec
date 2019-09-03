@@ -26,6 +26,6 @@
     <file src="..\MixedRealityToolkit\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Examples.targets" />
 
     <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Tools.*" target="Plugins\" />
-    <file src="..\..\Assets\MixedRealityToolkit.Tools\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Tools" />
+    <file src="..\..\..\Assets\MixedRealityToolkit.Tools\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Tools" />
   </files>
 </package>
