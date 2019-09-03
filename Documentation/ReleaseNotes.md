@@ -80,7 +80,9 @@ For the smoothest upgrade path, please use the following steps.
     > [!Note]
     > If additional extensions had been installed, they may need to be re-imported.
     - (Optional) Examples
-1. For each scene in the project
+1. Close Unity and Delete the **Library** folder. This step is necessary to force Unity to refresh its
+   asset database and reconcile existing custom profiles.
+1. Launch Unity, and for each scene in the project
     - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy
     - Select **MixedRealityToolkit -> Add to Scene and Configure**
 

@@ -13,7 +13,6 @@ Pointers are configured as part of the Input System in MRTK via a [`MixedReality
 - *Pointing Extent* - Defines the max distance for which a Pointer can interact with a GameObject.
 
 - *Pointing Raycast Layer Masks* - This is a prioritized array of LayerMasks to determine what possible GameObjects any given Pointer can interact and the order of interaction to attempt. This is may be useful to ensure Pointers interact with UI elements first before other scene objects.
-
 ![Pointer Profile Example](../Images/Input/Pointers/PointerProfile.PNG)
 
 ### Pointer options configuration
@@ -81,7 +80,7 @@ The MousePointer powers a screen to world raycast for far interactions, but for 
 
 ##### [`PokePointer`](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer)
 
-The PokePointer is used to interact with game objects that support “near interaction touchable.” which are GameObjects that have an attached [`NearInteractionTouchable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable) script. In the case of UnityUI, this pointer looks for NearInteractionTouchableUnityUIs.  The PokePointer uses a SphereCast to determine the closest touchable element and is used to power things like the pressable buttons.
+The [PokePointer](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer) is used to interact with game objects that support “near interaction touchable.” which are GameObjects that have an attached [`NearInteractionTouchable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable) script. In the case of UnityUI, this pointer looks for NearInteractionTouchableUnityUIs.  The PokePointer uses a SphereCast to determine the closest touchable element and is used to power things like the pressable buttons.
 
  When configuring the GameObject with the [`NearInteractionTouchable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable) component, make sure to configure the *localForward* parameter to point out of the front of the button or other object that should be made touchable. Also make sure that the touchable's *bounds* matches the bounds of the touchable object.
 
@@ -90,17 +89,21 @@ Useful Poke Pointer properties:
 - *TouchableDistance*: Maximum distance a which a touchable surface can be interacted with
 - *Visuals*: Game object used to render finger tip visual (the ring on finger, by default).
 - *Line*: Optional line to draw from fingertip to the active input surface.
+- *Poke Layer Masks* - A prioritized array of LayerMasks to determine which possible GameObjects the pointer can interact with and the order of interaction to attempt. Note that a GameObject must also have a `NearInteractionTouchable` component in order to interact with a poke pointer.
 
 <img src="../../Documentation/Images/Pointers/MRTK_PokePointer.png" width="400">
 
 ##### [`SpherePointer`](xref:Microsoft.MixedReality.Toolkit.Input.SpherePointer)
 
-The SpherePointer uses [UnityEngine.Physics.OverlapSphere](https://docs.unity3d.com/ScriptReference/Physics.OverlapSphere.html) in order to identify the closest [`NearInteractionGrabbable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable) object for interaction which is useful for "grabbable" input like the `ManipulationHandler`. Similar to the [`PokePointer`](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer)/[`NearInteractionTouchable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable) functional pair, in order to be interactable with the Sphere Pointer, the game object must contain a component that is the [`NearInteractionGrabbable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable) script.
+The [SpherePointer](xref:Microsoft.MixedReality.Toolkit.Input.SpherePointer) uses [UnityEngine.Physics.OverlapSphere](https://docs.unity3d.com/ScriptReference/Physics.OverlapSphere.html) in order to identify the closest [`NearInteractionGrabbable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable) object for interaction which is useful for "grabbable" input like the `ManipulationHandler`. Similar to the [`PokePointer`](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer)/[`NearInteractionTouchable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable) functional pair, in order to be interactable with the Sphere Pointer, the game object must contain a component that is the [`NearInteractionGrabbable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable) script.
 
 Useful Sphere Pointer properties:
 
 - *Sphere Cast Radius*: The radius for the sphere used to query for grabbable objects.
-- *Debug Mode*: If true, draw the sphere that is used to query for grabbable objects.
+- *Grab Layer Masks* - A prioritized array of LayerMasks to determine which possible GameObjects the pointer can interact with and the order of interaction to attempt. Note that a GameObject must also have a `NearInteractionGrabbable` to interact with a SpherePointer.
+
+> [!NOTE]
+> the Spatial Awareness layer is disabled in the default GrabPointer prefab provided by MRTK. This is done to reduce performance impact of doing a sphere overlap query with the spatial mesh. You can enable this by modifying the GrabPointer prefab.
 
 <img src="../../Documentation/Images/Pointers/MRTK_GrabPointer.jpg" width="400">
 
@@ -247,6 +250,20 @@ The [PointerResultExample scene](https://github.com/microsoft/MixedRealityToolki
 For pointer events handled by [`IMixedRealityPointerHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler), MRTK provides further convenience in the form of the [`PointerHandler`](xref:Microsoft.MixedReality.Toolkit.Input.PointerHandler) component which allows pointer events to be handled directly via Unity Events.
 
 <img src="../../Documentation/Images/Pointers/PointerHandler.png" style="max-width:100%;">
+
+## Pointer Extent
+
+Far pointers have settings which limit how far they will raycast and interact with other objects in the scene.
+By default, this value is set to 10 meters. This value was chosen to remain consistent with the behavior
+of the HoloLens shell.
+
+This can be changed by updating the `DefaultControllerPointer` prefab's
+[`ShellHandRayPointer`](xref:Microsoft.MixedReality.Toolkit.Input.ShellHandRayPointer) component's
+fields:
+
+**Pointer Extent** - This controls the maximum distance that pointers will interact with.
+**Default Pointer Extent** - This controls the length of the pointer ray/line that will
+render when the pointer is not interacting with anything.
 
 ## See Also
 

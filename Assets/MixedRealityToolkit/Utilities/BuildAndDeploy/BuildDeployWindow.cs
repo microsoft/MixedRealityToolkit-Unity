@@ -1078,6 +1078,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 RebuildAppx = UwpBuildDeployPreferences.ForceRebuild,
                 Configuration = UwpBuildDeployPreferences.BuildConfig,
                 BuildPlatform = EditorUserBuildSettings.wsaArchitecture,
+                PlatformToolset = UwpBuildDeployPreferences.PlatformToolset,
                 OutputDirectory = BuildDeployPreferences.BuildDirectory,
                 AutoIncrement = BuildDeployPreferences.IncrementBuildVersion,
                 Multicore = UwpBuildDeployPreferences.MulticoreAppxBuildEnabled,
