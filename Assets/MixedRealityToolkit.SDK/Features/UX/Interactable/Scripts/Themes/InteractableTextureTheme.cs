@@ -45,8 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public override void Init(GameObject host, ThemeDefinition settings)
         {
             base.Init(host, settings);
-            // TODO: Troy - Remove
-            //propertyBlock = InteractableThemeShaderUtils.GetMaterialPropertyBlock(host, new ShaderProperties[0]);
+
             propertyBlock = InteractableThemeShaderUtils.GetPropertyBlock(host);
             renderer = Host.GetComponent<Renderer>();
         }
