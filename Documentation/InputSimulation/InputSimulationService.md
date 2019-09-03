@@ -17,42 +17,35 @@ Input simulation is enabled by default in MRTK.
 
 Input simulation is an optional [Mixed Reality service](../MixedRealityServices.md). It can be added as a data provider in the [Input System profile](../Input/InputProviders.md).
 * __Type__ must be _Microsoft.MixedReality.Toolkit.Input > InputSimulationService_.
-* __Platform(s)__ should always be _Windows Editor_ since the service depends on keyboard and mouse input.
-* __Profile__ has all settings for input simulation.
+* __Platform(s)__ by default includes all _Editor_ platforms, since the service uses keyboard and mouse input.
 
-> [!WARNING]
-> Any type of profile can be assigned to services at the time of this writing. If you assign a different profile to the service, make sure to use a profile of type _Input Simulation_ or it will not work!
+## Input Simulation Tools Window
 
-<a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_InputSystemDataProviders.png">
-  <img src="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_InputSystemDataProviders.png" title="Full Hand Mesh" width="80%" class="center" />
-</a>
+Enable the input simulation tools window from the  _"Mixed Reality Toolkit > Utilities > Input Simulation"_ menu. This window provides access to the state of input simulation during play mode.
 
-Open the linked profile to access settings for input simulation.
+## Viewport Butttons
 
-<a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_InputSimulationProfile.png">
-  <img src="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_InputSimulationProfile.png" title="Full Hand Mesh" width="80%" class="center" />
-</a>
+A prefab for in-editor buttons to control basic hand placement can be specified in the input simulation profile under __Indicators Prefab__. This is an optional utility, the same features can be accessed in the [Input Simulation tools window](#input-simulation-tools-window).
 
 # Camera Control
 
 Head movement can be emulated by the Input Simulation Service.
 
-<a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_CameraControlSettings.png">
-  <img src="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_CameraControlSettings.png" title="Full Hand Mesh" width="80%" class="center" />
-</a>
-
-## Rotating the camera
+### To rotate the camera:
 
 1. Hover over the viewport editor window.
+    _You may need to click the window to give it input focus if button presses don't work._
+1. Press and hold the __Mouse Look Button__ (default: Right mouse button).
+1. Move the mouse in the viewport window to rotate the camera.
+1. Use the scroll wheel to roll the camera around the view direction.
 
-   _You may need to click the window to give it input focus if button presses don't work._
+Alternatively use the __Look Horizontal__/__Look Vertical__ axes to rotate the camera (default: game controller right thumbstick).
 
-2. Press and hold the __Mouse Look Button__ (default: Right mouse button).
-3. Move the mouse in the viewport window to rotate the camera.
+### To move the camera:
 
-## Moving the camera
+Use the __Move Horizontal__/__Move Vertical__ axes to move the camera (default: WASD keys or game controller left thumbstick).
 
-Press and hold the movement keys (W/A/S/D for forward/left/back/right).
+Camera position and rotation angles can be set explicitly in the tools window as well. The camera can be reset to its default using the __Reset__ button.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Z7L4I1ET7GU" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 
