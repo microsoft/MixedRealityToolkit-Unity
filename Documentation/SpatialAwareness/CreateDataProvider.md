@@ -26,7 +26,7 @@ Data providers are required to have a namespace to mitigate potential name colli
 - Company name
 - Feature area
 
-For example, a spatial awareness data provider created by the Contoso company may be "Contoso.MixedReality.SpatialAwareness".
+For example, a spatial awareness data provider created by the Contoso company may be "Contoso.MixedReality.Toolkit.SpatialAwareness".
 
 ### Recommended folder structure
 
