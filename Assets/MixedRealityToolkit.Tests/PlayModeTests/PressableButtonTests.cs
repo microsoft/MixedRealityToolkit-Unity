@@ -360,11 +360,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             testButton.transform.localScale = Vector3.one;
             button.StartPushDistance = 0.00003f;
 
+            float zeroPushDistanceWorld = button.GetWorldPositionAlongPushDirection(0.0f).z;
+
             // get the buttons default values for the push planes
-            float startPushDistanceWorld = button.GetWorldPositionAlongPushDirection(button.StartPushDistance).z;
-            float maxPushDistanceWorld = button.GetWorldPositionAlongPushDirection(button.MaxPushDistance).z;
-            float pressDistanceWorld = button.GetWorldPositionAlongPushDirection(button.PressDistance).z;
-            float releaseDistanceWorld = button.GetWorldPositionAlongPushDirection(button.PressDistance - button.ReleaseDistanceDelta).z;
+            float startPushDistanceWorld = button.GetWorldPositionAlongPushDirection(button.StartPushDistance).z - zeroPushDistanceWorld;
+            float maxPushDistanceWorld = button.GetWorldPositionAlongPushDirection(button.MaxPushDistance).z - zeroPushDistanceWorld;
+            float pressDistanceWorld = button.GetWorldPositionAlongPushDirection(button.PressDistance).z - zeroPushDistanceWorld;
+            float releaseDistanceWorld = button.GetWorldPositionAlongPushDirection(button.PressDistance - button.ReleaseDistanceDelta).z - zeroPushDistanceWorld;
 
             // scale the button in z direction
             // scaling the button while in local space should keep plane distance ratios mantained
@@ -372,19 +374,26 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             testButton.transform.localScale = zScale;
             yield return null;
 
-            float startPushDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.StartPushDistance).z;
-            float maxPushDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.MaxPushDistance).z;
-            float pressDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.PressDistance).z;
-            float releaseDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.PressDistance - button.ReleaseDistanceDelta).z;
+            float startPushDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.StartPushDistance).z - zeroPushDistanceWorld;
+            float maxPushDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.MaxPushDistance).z - zeroPushDistanceWorld;
+            float pressDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.PressDistance).z - zeroPushDistanceWorld;
+            float releaseDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.PressDistance - button.ReleaseDistanceDelta).z - zeroPushDistanceWorld;
 
-            Assert.IsTrue(Mathf.Approximately(startPushDistanceWorld * zScale.z, startPushDistanceWorld_Scaled), "Start push distance plane did not scale correctly");
-            Assert.IsTrue(Mathf.Approximately(maxPushDistanceWorld * zScale.z, maxPushDistanceWorld_Scaled), "Max push distance plane did not scale correctly");
-            Assert.IsTrue(Mathf.Approximately(pressDistanceWorld * zScale.z, pressDistanceWorld_Scaled), "Press distance plane did not scale correctly");
-            Assert.IsTrue(Mathf.Approximately(releaseDistanceWorld * zScale.z, releaseDistanceWorld_Scaled), "Release distance plane did not scale correctly");
+            float tolerance = 0.00000001f;
+
+            Assert.IsTrue(AreApproximatelyEqual(startPushDistanceWorld * zScale.z, startPushDistanceWorld_Scaled, tolerance), "Start push distance plane did not scale correctly");
+            Assert.IsTrue(AreApproximatelyEqual(maxPushDistanceWorld * zScale.z, maxPushDistanceWorld_Scaled, tolerance), "Max push distance plane did not scale correctly");
+            Assert.IsTrue(AreApproximatelyEqual(pressDistanceWorld * zScale.z, pressDistanceWorld_Scaled, tolerance), "Press distance plane did not scale correctly");
+            Assert.IsTrue(AreApproximatelyEqual(releaseDistanceWorld * zScale.z, releaseDistanceWorld_Scaled, tolerance), "Release distance plane did not scale correctly");
 
             Object.Destroy(testButton);
-            // Wait for a frame to give Unity a change to actually destroy the object
+            // Wait for a frame to give Unity a chance to actually destroy the object
             yield return null;
+        }
+
+        bool AreApproximatelyEqual(float f0, float f1, float tolerance)
+        {
+            return Mathf.Abs(f0 - f1) < tolerance;
         }
 
         /// <summary>
