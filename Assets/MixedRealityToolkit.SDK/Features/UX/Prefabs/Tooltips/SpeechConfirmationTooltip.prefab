@@ -39,10 +39,10 @@ MonoBehaviour:
   smoothing: 1
   lifetime: 0
   referenceDirection: 1
-  minDistance: 1
-  maxDistance: 1
+  minDistance: 1.5
+  maxDistance: 1.5
   minViewDegrees: 0
-  maxViewDegrees: 5
+  maxViewDegrees: 2
   aspectV: 1
   ignoreAngleClamp: 0
   ignoreDistanceClamp: 0
@@ -135,21 +135,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8215610606298197891, guid: 247dc8aebe30ca2408e8293a883c75df,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8215610606298197891, guid: 247dc8aebe30ca2408e8293a883c75df,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8215610606298197891, guid: 247dc8aebe30ca2408e8293a883c75df,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8329787883158438443, guid: 247dc8aebe30ca2408e8293a883c75df,
         type: 3}
       propertyPath: backgroundPadding.x
@@ -196,6 +181,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce,
         type: 2}
+    - target: {fileID: 8215610606298197891, guid: 247dc8aebe30ca2408e8293a883c75df,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8215610606298197891, guid: 247dc8aebe30ca2408e8293a883c75df,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8215610606298197891, guid: 247dc8aebe30ca2408e8293a883c75df,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1537115806125884074, guid: 247dc8aebe30ca2408e8293a883c75df,
         type: 3}
       propertyPath: m_fontAsset
@@ -232,6 +232,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8279342259856327629, guid: 247dc8aebe30ca2408e8293a883c75df,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 247dc8aebe30ca2408e8293a883c75df, type: 3}

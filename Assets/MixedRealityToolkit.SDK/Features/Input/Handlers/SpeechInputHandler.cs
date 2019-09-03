@@ -139,7 +139,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 keywordResponse.Invoke();
                 eventData.Use();
 
-                if(speechConfirmationTooltipPrefabInstance != null)
+                // OS will display the tooltip for the "Select" keyword. 
+                if ((speechConfirmationTooltipPrefabInstance != null) && !(eventData.Command.Keyword.ToLower().Equals("select")))
                 {
                     // Update the text label with recognized keyword
                     speechConfirmationTooltipPrefabInstance.GetComponentInChildren<TextMeshPro>().text = eventData.Command.Keyword;
