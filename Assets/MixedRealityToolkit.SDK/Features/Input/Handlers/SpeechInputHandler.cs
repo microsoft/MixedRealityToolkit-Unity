@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private bool persistentKeywords = false;
 
         [SerializeField]
-        [Tooltip("Tooltip prefab used to display confirmation label. Optional.")]
+        [Tooltip("Assign SpeechConfirmationTooltip.prefab here to display confirmation label. Optional.")]
         private GameObject speechConfirmationTooltipPrefab = null;
 
         /// <summary>
