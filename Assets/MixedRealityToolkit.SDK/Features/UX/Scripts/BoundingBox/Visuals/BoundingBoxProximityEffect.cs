@@ -87,16 +87,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
             public HandleProximityState ProximityState = HandleProximityState.FullsizeNoProximity;
         }
 
-        private List<Handle> handles;
+        private List<Handle> handles = new List<Handle>();
 
         private HashSet<IMixedRealityPointer> proximityPointers = new HashSet<IMixedRealityPointer>();
         private List<Vector3> proximityPoints = new List<Vector3>();
 
-        public BoundingBoxProximityEffect()
+   
+
+        public void Init()
         {
             handles = new List<Handle>();
         }
-
 
         public void ClearHandles()
         {

@@ -114,4 +114,15 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundingBoxTypes
         CloseProximity
     }
 
+
+
+    /// <summary>
+    /// This enum defines which of the axes a given rotation handle revolves about.
+    /// </summary>
+    public enum CardinalAxisType
+    {
+        X = 0,
+        Y,
+        Z
+    }
 }
