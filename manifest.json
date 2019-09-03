@@ -434,6 +434,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/Architecture/SystemsExtensionsProviders.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Architecture/SystemsExtensionsProviders.html",
+          "hash": "ISVw+dxt+k7/JUiwUYDloQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/Authors.md",
       "output": {
         ".html": {
@@ -654,7 +666,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Extensions/ExtensionServices.html",
-          "hash": "Jrf5hF2fMdZOe38PHyD+qw=="
+          "hash": "6EUPYuTochF4SKdd9EoFwg=="
         }
       },
       "is_incremental": false,
@@ -2262,6 +2274,17 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/Input/DictationHandler.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Input/ExampleProviderFolderStructure.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Input/ExampleProviderFolderStructure.png"
         }
       },
       "is_incremental": false,
@@ -4722,6 +4745,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/SpatialAwareness/ExampleProviderFolderStructure.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/SpatialAwareness/ExampleProviderFolderStructure.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/SpatialAwareness/MRTKConfig_SpatialAwareness.png",
       "output": {
         "resource": {
@@ -5218,6 +5252,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/Input/CreateDataProvider.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Input/CreateDataProvider.html",
+          "hash": "pmHt+0haMPBpj5oyI023AA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/Input/Dictation.md",
       "output": {
         ".html": {
@@ -5306,7 +5352,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/InputProviders.html",
-          "hash": "yncJjmQwu0uKLT7h371iBA=="
+          "hash": "FiECmIG4UQxrNhDtsG+i+Q=="
         }
       },
       "is_incremental": false,
@@ -5770,11 +5816,23 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/SpatialAwareness/CreateDataProvider.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/SpatialAwareness/CreateDataProvider.html",
+          "hash": "cKLxtIYNVpMRdx9yXdj6TQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.md",
       "output": {
         ".html": {
           "relative_path": "Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html",
-          "hash": "wpQdEv+B1BbkYVLR9Phvdw=="
+          "hash": "qIsvlbpDLK9qO2gQKJhSiw=="
         }
       },
       "is_incremental": false,
@@ -5894,7 +5952,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "Uub0zPpuOTvb1N/GwFAjnA=="
+          "hash": "H/JyDHNZgYuUaLF288g8sQ=="
         }
       },
       "is_incremental": false,
@@ -19301,9 +19359,9 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "TocDocumentProcessor": {
+        "ResourceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
@@ -19311,20 +19369,20 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 121,
+          "total_file_count": 124,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
           "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 1110,
-          "skipped_file_count": 0
-        },
-        "ResourceDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
           "skipped_file_count": 0
         }
       }
