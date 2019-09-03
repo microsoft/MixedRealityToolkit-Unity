@@ -22,12 +22,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Invoked on grab release
         /// </summary>
-        public UnityEvent OnRelease { get { return onRelease; } }
+        public UnityEvent OnRelease => onRelease;
 
         /// <summary>
         /// Invoked on grab start
         /// </summary>
-        public UnityEvent OnGrab { get { return uEvent; } }
+        public UnityEvent OnGrab => uEvent;
 
         private bool hadGrab;
         private State lastState;

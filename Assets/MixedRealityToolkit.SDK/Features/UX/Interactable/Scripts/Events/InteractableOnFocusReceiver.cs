@@ -21,20 +21,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Raised when focus has left the object
         /// </summary>
-        public UnityEvent OnFocusOff
-        {
-            get { return onFocusOff; }
-        }
+        public UnityEvent OnFocusOff => onFocusOff;
 
         public InteractableOnFocusReceiver() : this(new UnityEvent()) { }
 
         /// <summary>
         /// Raised when focus has entered the object
         /// </summary>
-        public UnityEvent OnFocusOn
-        {
-            get { return uEvent; }
-        }
+        public UnityEvent OnFocusOn => uEvent;
 
         private bool hadFocus;
 

@@ -22,12 +22,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Invoked when toggle is deselected
         /// </summary>
-        public UnityEvent OnDeselect { get => onDeselect; }
+        public UnityEvent OnDeselect => onDeselect;
 
         /// <summary>
         /// Invoked when toggle is checked
         /// </summary>
-        public UnityEvent OnSelect { get => uEvent; }
+        public UnityEvent OnSelect => uEvent;
 
         public InteractableOnToggleReceiver(UnityEvent ev) : base(ev, "OnSelect") { }
 

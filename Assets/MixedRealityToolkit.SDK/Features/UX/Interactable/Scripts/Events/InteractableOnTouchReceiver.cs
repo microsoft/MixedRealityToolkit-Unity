@@ -22,12 +22,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Invoked when touch has left the object
         /// </summary>
-        public UnityEvent OnTouchEnd { get => onTouchEnd; }
+        public UnityEvent OnTouchEnd => onTouchEnd;
 
         /// <summary>
         /// Invoked when touch begins
         /// </summary>
-        public UnityEvent OnTouchStart { get => uEvent; }
+        public UnityEvent OnTouchStart => uEvent;
 
         private bool hadTouch;
 
