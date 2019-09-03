@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using System;
 using System.Windows.Markup;
 using UnityEngine;
 using UnityEngine.Events;
@@ -29,14 +30,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public MonoBehaviour Host;
 
-        public ReceiverBase()
-        {
-            uEvent = new UnityEvent();
-        }
-
-        public ReceiverBase(UnityEvent ev)
+        /// <summary>
+        /// Constructs an interaction receiver that will raise unity event when triggered.
+        /// </summary>
+        /// <param name="ev">Unity event to invoke. Add more events in deriving class.</param>
+        /// <param name="name">Name of the unity event that will get invoked (visible in editor).</param>
+        public ReceiverBase(UnityEvent ev, String name)
         {
             uEvent = ev;
+            Name = name;
         }
 
         /// <summary>

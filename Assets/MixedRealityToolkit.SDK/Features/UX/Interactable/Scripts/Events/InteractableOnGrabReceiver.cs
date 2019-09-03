@@ -32,15 +32,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private bool hadGrab;
         private State lastState;
 
-        public InteractableOnGrabReceiver(UnityEvent ev) : base(ev)
-        {
-            Name = "OnGrab";
-        }
+        public InteractableOnGrabReceiver(UnityEvent ev) : base(ev, "OnGrab") { }
 
-        public InteractableOnGrabReceiver() : base()
-        {
-            Name = "OnGrab";
-        }
+        public InteractableOnGrabReceiver() : this( new UnityEvent()) { }
 
         /// <inheritdoc />
         public override void OnUpdate(InteractableStates state, Interactable source)

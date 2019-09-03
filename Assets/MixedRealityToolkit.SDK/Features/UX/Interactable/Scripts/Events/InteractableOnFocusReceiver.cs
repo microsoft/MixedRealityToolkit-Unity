@@ -24,10 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get { return onFocusOff; }
         }
 
-        public InteractableOnFocusReceiver() : base()
-        {
-
-        }
+        public InteractableOnFocusReceiver() : this(new UnityEvent()) { }
 
         /// <summary>
         /// Raised when focus has entered the object
@@ -39,10 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private bool hadFocus;
 
-        public InteractableOnFocusReceiver(UnityEvent ev) : base(ev)
-        {
-            Name = "OnFocus";
-        }
+        public InteractableOnFocusReceiver(UnityEvent ev) : base(ev, "OnFocus") { }
 
         /// <inheritdoc />
         public override void OnUpdate(InteractableStates state, Interactable source)

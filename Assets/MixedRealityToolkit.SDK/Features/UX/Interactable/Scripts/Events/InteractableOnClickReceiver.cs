@@ -12,10 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     public class InteractableOnClickReceiver : ReceiverBase
     {
         public UnityEvent OnClicked { get { return uEvent; } }
-        public InteractableOnClickReceiver(UnityEvent ev): base(ev)
-        {
-            Name = "OnClick";
-        }
+        public InteractableOnClickReceiver(UnityEvent ev): base(ev, "OnClick") { }
 
         /// <inheritdoc />
         public override void OnUpdate(InteractableStates state, Interactable source)

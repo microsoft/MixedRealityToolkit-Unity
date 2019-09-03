@@ -29,15 +29,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public UnityEvent OnSelect { get => uEvent; }
 
-        public InteractableOnToggleReceiver(UnityEvent ev) : base(ev)
-        {
-            Name = "OnSelect";
-        }
+        public InteractableOnToggleReceiver(UnityEvent ev) : base(ev, "OnSelect") { }
 
-        public InteractableOnToggleReceiver() : base()
-        {
-            Name = "OnSelect";
-        }
+        public InteractableOnToggleReceiver() : this(new UnityEvent()) { }
 
         /// <inheritdoc />
         public override void OnUpdate(InteractableStates state, Interactable source)

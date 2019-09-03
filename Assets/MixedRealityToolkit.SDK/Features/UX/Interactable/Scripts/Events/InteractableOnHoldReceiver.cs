@@ -24,15 +24,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public UnityEvent OnHold { get { return uEvent; } }
 
-        public InteractableOnHoldReceiver(UnityEvent ev): base(ev)
-        {
-            Name = "OnHold";
-        }
+        public InteractableOnHoldReceiver(UnityEvent ev): base(ev, "OnHold") { }
 
-        public InteractableOnHoldReceiver() : base()
-        {
-            Name = "OnHold";
-        }
+        public InteractableOnHoldReceiver() : this(new UnityEvent()) { }
 
         /// <inheritdoc />
         public override void OnUpdate(InteractableStates state, Interactable source)

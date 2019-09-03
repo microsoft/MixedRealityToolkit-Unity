@@ -43,15 +43,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private bool isNear = false;
 
-        public InteractableOnPressReceiver(UnityEvent ev) : base(ev)
-        {
-            Name = "OnPress";
-        }
+        public InteractableOnPressReceiver(UnityEvent ev) : base(ev, "OnPress") { }
 
-        public InteractableOnPressReceiver() : base()
-        {
-            Name = "OnPress";
-        }
+        public InteractableOnPressReceiver() : this(new UnityEvent()) { }
 
         /// <summary>
         /// checks if the received interactable state matches the press filter
