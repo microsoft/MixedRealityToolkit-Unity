@@ -20,8 +20,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Release", Tooltip = "Grab was released")]
         public UnityEvent OnRelease = new UnityEvent();
 
-        public UnityEvent OnRelease => onRelease;
-
         /// <summary>
         /// Invoked on grab start
         /// </summary>
