@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
-    /// This is a helper class to allow you to call OnSubmit() on a <see cref="UnityEngine.UI.Button"/> or other control derived from <see cref="ISubmitHandler"/> on this gameObject.
+    /// This is a helper class to allow you to call OnSubmit() on a UnityEngine.UI.Button or other control derived from UnityEngine.EventSystems.ISubmitHandler on this gameObject.
     /// It exposes a public function that can be bound in the Editor to a Unity Event.
     /// </summary>
     public class SubmitEventRouter : MonoBehaviour

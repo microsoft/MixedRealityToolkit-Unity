@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 {
     ///<summary>
     /// A button that can be pushed via direct touch.
-    /// You can use <see cref="Microsoft.MixedReality.Toolkit.Examples.Demos.PhysicalPressEventRouter"/> to route these events to <see cref="Interactable"/>.
+    /// You can use <see cref="Microsoft.MixedReality.Toolkit.PhysicalPressEventRouter"/> to route these events to <see cref="Microsoft.MixedReality.Toolkit.UI.Interactable"/>.
     ///</summary>
     public class PressableButton : MonoBehaviour, IMixedRealityTouchHandler
     {
