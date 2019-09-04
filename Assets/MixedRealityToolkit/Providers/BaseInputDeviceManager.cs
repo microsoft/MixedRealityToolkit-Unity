@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             IMixedRealityInputSystem inputSystem,
             string name, 
             uint priority, 
-            BaseMixedRealityProfile profile): base(registrar, inputSystem, name, priority, profile)
+            BaseMixedRealityProfile profile) : base(registrar, inputSystem, name, priority, profile)
         {
             if (inputSystem == null)
             {
@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             var pointers = new List<IMixedRealityPointer>();
 
-            if ((Service != null) &&
+            if ((InputSystem != null) &&
                 (InputSystemProfile != null) &&
                 InputSystemProfile.PointerProfile != null)
             {

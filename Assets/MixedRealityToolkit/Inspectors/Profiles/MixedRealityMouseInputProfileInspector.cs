@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return false;
             }
 
-            var mouseManager = MixedRealityToolkit.Instance.GetService<MouseDeviceManager>(null, false);
+            var mouseManager = MixedRealityToolkit.Instance.GetService<IMixedRealityMouseDeviceManager>(null, false);
             return mouseManager != null && profile == mouseManager.MouseInputProfile;
         }
     }

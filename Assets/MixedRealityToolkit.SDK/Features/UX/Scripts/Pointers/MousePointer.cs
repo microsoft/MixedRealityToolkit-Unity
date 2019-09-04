@@ -14,21 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public class MousePointer : BaseMousePointer
     {
-        private MixedRealityMouseInputProfile mouseInputProfile = null;
-
-        private MixedRealityMouseInputProfile MouseInputProfile
-        {
-            get
-            {
-                if (mouseInputProfile == null)
-                {
-                    // Get the profile from the input system's registered mouse device manager.
-                    IMixedRealityMouseDeviceManager mouseManager = (InputSystem as IMixedRealityDataProviderAccess)?.GetDataProvider<IMixedRealityMouseDeviceManager>();
-                    mouseInputProfile = mouseManager?.MouseInputProfile;
-                }
-                return mouseInputProfile;
-            }
-        }
+        private IMixedRealityMouseDeviceManager mouseDeviceManager = null;
 
         /// <inheritdoc />
         protected override string ControllerName => "Spatial Mouse Pointer";
@@ -53,6 +39,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void OnInputChanged(InputEventData<Vector2> eventData)
         {
+            if (mouseDeviceManager == null)
+            {
+                // Get the instance of the mouse device manager.
+                IMixedRealityDataProviderAccess dataProviderAccess = InputSystem as IMixedRealityDataProviderAccess;
+                mouseDeviceManager = dataProviderAccess?.GetDataProvider<IMixedRealityMouseDeviceManager>();
+            }
+
             if (eventData.SourceId == Controller?.InputSource.SourceId)
             {
                 if (PoseAction == eventData.MixedRealityInputAction && !UseSourcePoseData)
@@ -60,9 +53,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     Vector3 mouseDeltaRotation = Vector3.zero;
                     mouseDeltaRotation.x += eventData.InputData.x;
                     mouseDeltaRotation.y += eventData.InputData.y;
-                    if (MouseInputProfile != null)
+                    if (mouseDeviceManager != null)
                     {
-                        mouseDeltaRotation *= MouseInputProfile.MouseSpeed;
+                        mouseDeltaRotation *= mouseDeviceManager.CursorSpeed;
                     }
                     UpdateMouseRotation(mouseDeltaRotation);
                 }

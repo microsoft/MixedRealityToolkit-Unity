@@ -21,10 +21,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <param name="controllerHandedness"></param>
         /// <param name="inputSource"></param>
         /// <param name="interactions"></param>
-        public MouseController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
-            : base(trackingState, controllerHandedness, inputSource, interactions)
-        {
-        }
+        public MouseController(
+            TrackingState trackingState, 
+            Handedness controllerHandedness, 
+            IMixedRealityInputSource inputSource = null, 
+            MixedRealityInteractionMapping[] interactions = null) : base(trackingState, controllerHandedness, inputSource, interactions)
+        { }
 
         /// <inheritdoc />
         public override MixedRealityInteractionMapping[] DefaultInteractions { get; } =
@@ -49,20 +51,22 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
         private MixedRealityPose controllerPose = MixedRealityPose.ZeroIdentity;
 
-        private MixedRealityMouseInputProfile mouseInputProfile = null;
-        private MixedRealityMouseInputProfile MouseInputProfile
-        {
-            get
-            {
-                if (mouseInputProfile == null)
-                {
-                    // Get the profile from the input system's registered mouse device manager.
-                    IMixedRealityMouseDeviceManager mouseManager = (InputSystem as IMixedRealityDataProviderAccess)?.GetDataProvider<IMixedRealityMouseDeviceManager>();
-                    mouseInputProfile = mouseManager?.MouseInputProfile;
-                }
-                return mouseInputProfile;
-            }
-        }
+        private IMixedRealityMouseDeviceManager mouseDeviceManager = null;
+
+        //private MixedRealityMouseInputProfile mouseInputProfile = null;
+        //private MixedRealityMouseInputProfile MouseInputProfile
+        //{
+        //    get
+        //    {
+        //        if (mouseInputProfile == null)
+        //        {
+        //            // Get the profile from the input system's registered mouse device manager.
+        //            IMixedRealityMouseDeviceManager mouseManager = (InputSystem as IMixedRealityDataProviderAccess)?.GetDataProvider<IMixedRealityMouseDeviceManager>();
+        //            mouseInputProfile = mouseManager?.MouseInputProfile;
+        //        }
+        //        return mouseInputProfile;
+        //    }
+        //}
 
         /// <summary>
         /// Update controller.
@@ -70,6 +74,13 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         public void Update()
         {
             if (!UInput.mousePresent) { return; }
+
+            if (mouseDeviceManager == null)
+            {
+                // Get the instance of the mouse device manager.
+                IMixedRealityDataProviderAccess dataProviderAccess = InputSystem as IMixedRealityDataProviderAccess;
+                mouseDeviceManager = dataProviderAccess?.GetDataProvider<IMixedRealityMouseDeviceManager>();
+            }
 
             // Bail early if our mouse isn't in our game window.
             if (UInput.mousePosition.x < 0 ||
@@ -82,18 +93,16 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
             for (int i = 0; i < Interactions.Length; i++)
             {
-                
-
                 if (Interactions[i].InputType == DeviceInputType.SpatialPointer)
                 {
                     // add mouse delta as rotation
                     var mouseDeltaRotation = Vector3.zero;
                     mouseDeltaRotation.x += -UInput.GetAxis("Mouse Y");
                     mouseDeltaRotation.y += UInput.GetAxis("Mouse X");
-                    
-                    if (MouseInputProfile != null)
+
+                    if (mouseDeviceManager != null)
                     {
-                        mouseDeltaRotation *= MouseInputProfile.MouseSpeed;
+                        mouseDeltaRotation *= mouseDeviceManager.CursorSpeed;
                     }
 
                     MixedRealityPose controllerPose = MixedRealityPose.ZeroIdentity;
