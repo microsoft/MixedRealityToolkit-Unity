@@ -20,7 +20,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
         public void OnPointerDown(MixedRealityPointerEventData eventData)
         {
             oldIsTargetPositionLockedOnFocusLock = eventData.Pointer.IsTargetPositionLockedOnFocusLock;
-            eventData.Pointer.IsTargetPositionLockedOnFocusLock = false;
+            if (!(eventData.Pointer is IMixedRealityNearPointer) && eventData.Pointer.Controller.IsRotationAvailable)
+            {
+                eventData.Pointer.IsTargetPositionLockedOnFocusLock = false;
+            }
         }
 
         public void OnPointerDragged(MixedRealityPointerEventData eventData) { }
