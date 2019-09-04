@@ -131,7 +131,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Event receivers can be used to listen for different
         /// events at runtime. This method allows receivers to be dynamically added at runtime.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <returns>The new event receiver</returns>
         public T AddReceiver<T>() where T : ReceiverBase, new()
         {
