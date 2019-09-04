@@ -14,15 +14,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     public class InteractableOnToggleReceiver : ReceiverBase
     {
-        [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Deselect", Tooltip = "The toggle is deselected")]
-        [SerializeField]
-        [FormerlySerializedAsAttribute("OnDeselect")]
-        private UnityEvent onDeselect = new UnityEvent();
-
         /// <summary>
         /// Invoked when toggle is deselected
         /// </summary>
-        public UnityEvent OnDeselect => onDeselect;
+        [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Deselect", Tooltip = "The toggle is deselected")]
+        public UnityEvent OnDeselect = new UnityEvent();
 
         /// <summary>
         /// Invoked when toggle is checked

@@ -14,15 +14,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     public class InteractableOnTouchReceiver : ReceiverBase
     {
-        [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Touch End", Tooltip = "Touch has left the object")]
-        [SerializeField]
-        [FormerlySerializedAs("OnTouchEnd")]
-        private UnityEvent onTouchEnd = new UnityEvent();
-
         /// <summary>
         /// Invoked when touch has left the object
         /// </summary>
-        public UnityEvent OnTouchEnd => onTouchEnd;
+        [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Touch End", Tooltip = "Touch has left the object")]
+        public UnityEvent OnTouchEnd = new UnityEvent();
 
         /// <summary>
         /// Invoked when touch begins

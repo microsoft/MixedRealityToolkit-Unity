@@ -14,15 +14,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
     public class InteractableOnPressReceiver : ReceiverBase
     {
 
-        [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Release", Tooltip = "The button is released")]
-        [SerializeField]
-        [FormerlySerializedAsAttribute("OnRelease")]
-        private UnityEvent onRelease = new UnityEvent();
-
         /// <summary>
         /// Invoked on pointer release
         /// </summary>
-        public UnityEvent OnRelease => onRelease;
+        [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Release", Tooltip = "The button is released")]
+        public UnityEvent OnRelease = new UnityEvent();
 
         /// <summary>
         /// Invoked on pointer press
