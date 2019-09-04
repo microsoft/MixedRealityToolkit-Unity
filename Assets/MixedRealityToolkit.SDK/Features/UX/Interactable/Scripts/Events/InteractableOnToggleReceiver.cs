@@ -25,8 +25,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public UnityEvent OnSelect => uEvent;
 
+        /// <summary>
+        /// Creates a receiver that raises events for toggle button states
+        /// </summary>
         public InteractableOnToggleReceiver(UnityEvent ev) : base(ev, "OnSelect") { }
 
+        /// <summary>
+        /// Creates a receiver that raises events for toggle button states
+        /// </summary>
         public InteractableOnToggleReceiver() : this(new UnityEvent()) { }
 
         /// <inheritdoc />

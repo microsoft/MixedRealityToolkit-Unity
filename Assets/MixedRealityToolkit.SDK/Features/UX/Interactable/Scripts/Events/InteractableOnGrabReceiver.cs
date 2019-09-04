@@ -26,10 +26,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public UnityEvent OnGrab => uEvent;
 
         private bool hadGrab;
-        private State lastState;
 
+        /// <summary>
+        /// Creates a receiver that raises grab start and end events.
+        /// </summary>
         public InteractableOnGrabReceiver(UnityEvent ev) : base(ev, "OnGrab") { }
 
+        /// <summary>
+        /// Creates a receiver that raises grab start and end events.
+        /// </summary>
         public InteractableOnGrabReceiver() : this( new UnityEvent()) { }
 
         /// <inheritdoc />
@@ -50,7 +55,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             hadGrab = hasGrab;
-            lastState = state.CurrentState();
         }
     }
 }

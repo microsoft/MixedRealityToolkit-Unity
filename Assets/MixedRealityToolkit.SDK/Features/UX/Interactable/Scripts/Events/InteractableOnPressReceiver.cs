@@ -35,12 +35,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public int InteractionFilter = (int)InteractionType.NearAndFar;
 
         private bool hasDown;
-        private State lastState;
 
         private bool isNear = false;
 
+        /// <summary>
+        /// Receiver that raises press and release unity events
+        /// </summary>
         public InteractableOnPressReceiver(UnityEvent ev) : base(ev, "OnPress") { }
 
+        /// <summary>
+        /// Receiver that raises press and release unity events
+        /// </summary>
         public InteractableOnPressReceiver() : this(new UnityEvent()) { }
 
         /// <summary>
@@ -86,8 +91,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     }
                 }
             }
-            
-            lastState = state.CurrentState();
         }
     }
 }

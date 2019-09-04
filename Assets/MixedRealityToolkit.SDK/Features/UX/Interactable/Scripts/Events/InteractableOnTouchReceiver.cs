@@ -27,8 +27,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private bool hadTouch;
 
+        /// <summary>
+        /// Receiver for raising touch begin and end events
+        /// </summary>
         public InteractableOnTouchReceiver(UnityEvent ev) : base(ev, "OnTouch") { }
 
+        /// <summary>
+        /// Receiver for raising touch begin and end events
+        /// </summary>
         public InteractableOnTouchReceiver() : this(new UnityEvent()) { }
 
         public override void OnUpdate(InteractableStates state, Interactable source)

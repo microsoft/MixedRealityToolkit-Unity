@@ -24,8 +24,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public UnityEvent OnHold => uEvent;
 
+        /// <summary>
+        /// Creates receiver that raises OnHold events
+        /// </summary>
         public InteractableOnHoldReceiver(UnityEvent ev): base(ev, "OnHold") { }
 
+        /// <summary>
+        /// Creates receiver that raises OnHold events
+        /// </summary>
         public InteractableOnHoldReceiver() : this(new UnityEvent()) { }
 
         /// <inheritdoc />

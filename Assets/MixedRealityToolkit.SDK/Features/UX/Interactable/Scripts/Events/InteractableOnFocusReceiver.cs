@@ -13,8 +13,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     public class InteractableOnFocusReceiver : ReceiverBase
     {
+        /// <summary>
+        /// Creates receiver that raises focus enter and exit unity events
+        /// </summary>
         public InteractableOnFocusReceiver() : this(new UnityEvent()) { }
 
+        /// <summary>
+        /// Creates receiver that raises focus enter and exit unity events
+        /// </summary>
         public InteractableOnFocusReceiver(UnityEvent ev) : base(ev, "OnFocusOn") { }
 
         /// <summary>
