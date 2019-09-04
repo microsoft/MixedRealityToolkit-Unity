@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (normal == Vector3.zero)
             {
                 // inside object, use vector to centre as normal
-                normal = samplePoint - transform.TransformVector(TouchableCollider.bounds.center);
+                normal = samplePoint - TouchableCollider.bounds.center;
                 normal.Normalize();
                 return 0;
             }
