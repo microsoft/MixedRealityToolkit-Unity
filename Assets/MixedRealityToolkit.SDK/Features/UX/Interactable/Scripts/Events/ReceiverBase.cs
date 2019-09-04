@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         /// <param name="ev">Unity event to invoke. Add more events in deriving class.</param>
         /// <param name="name">Name of the unity event that will get invoked (visible in editor).</param>
-        public ReceiverBase(UnityEvent ev, String name)
+        public ReceiverBase(UnityEvent ev, string name)
         {
             uEvent = ev;
             Name = name;

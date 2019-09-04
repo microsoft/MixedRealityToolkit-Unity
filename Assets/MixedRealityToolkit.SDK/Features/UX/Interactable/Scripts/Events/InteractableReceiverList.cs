@@ -27,11 +27,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         protected virtual void SetupEvents()
         {
-            InteractableTypesContainer interactableTypes = InteractableEvent.GetEventTypes();
-
             for (int i = 0; i < Events.Count; i++)
             {
-                Events[i].Receiver = InteractableEvent.GetReceiver(Events[i], interactableTypes);
+                Events[i].Receiver = InteractableEvent.GetReceiver(Events[i]);
                 Events[i].Receiver.Host = this;
             }
         }

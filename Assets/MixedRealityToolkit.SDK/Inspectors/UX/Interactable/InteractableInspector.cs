@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
@@ -15,7 +14,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
     public class InteractableInspector : UnityEditor.Editor
     {
         protected Interactable instance;
-        protected List<InteractableEvent> eventList;
 
         protected SerializedProperty profileList;
         protected SerializedProperty statesProperty;
@@ -35,8 +33,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         protected const string ShowEventsPrefKey = "InteractableInspectorProfiles_ShowEvents";
         protected bool enabled = false;
 
-        protected InteractableTypesContainer eventOptions;
-
         protected string[] inputActionOptions = null;
         protected string[] speechKeywordOptions = null;
 
@@ -53,7 +49,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         protected virtual void OnEnable()
         {
             instance = (Interactable)target;
-            eventList = instance.Events;
 
             profileList = serializedObject.FindProperty("Profiles");
             statesProperty = serializedObject.FindProperty("States");
@@ -68,8 +63,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             dimensions = serializedObject.FindProperty("Dimensions");
 
             showProfiles = SessionState.GetBool(ShowProfilesPrefKey, showProfiles);
-
-            SetupEventOptions();
 
             enabled = true;
         }
@@ -234,20 +227,20 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                 for (int i = 0; i < events.arraySize; i++)
                 {
                     SerializedProperty eventItem = events.GetArrayElementAtIndex(i);
-                    if (InteractableReceiverListInspector.RenderEventSettings(eventItem, i, eventOptions, ChangeEvent, RemoveEvent))
+                    if (InteractableEventInspector.RenderEvent(eventItem))
                     {
+                        events.DeleteArrayElementAtIndex(i);
                         // If removed, skip rendering rest of list till next redraw
                         break;
                     }
+
+                    EditorGUILayout.Space();
                 }
                 GUI.enabled = true;
 
-                if (eventOptions.ClassNames.Length > 1)
+                if (GUILayout.Button(new GUIContent("Add Event")))
                 {
-                    if (GUILayout.Button(new GUIContent("Add Event")))
-                    {
-                        AddEvent(events.arraySize);
-                    }
+                    AddEvent(events.arraySize);
                 }
             }
         }
@@ -259,7 +252,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
             using (new EditorGUILayout.HorizontalScope())
             {
-                InspectorUIUtility.DrawTitle("General");
+                InspectorUIUtility.DrawLabel("General", InspectorUIUtility.TitleFontSize, InspectorUIUtility.ColorTint10);
 
                 if (target != null)
                 {
@@ -543,35 +536,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         {
             SerializedProperty events = serializedObject.FindProperty("Events");
             events.InsertArrayElementAtIndex(events.arraySize);
-        }
-
-        protected void ChangeEvent(int[] indexArray, SerializedProperty prop = null)
-        {
-            SerializedProperty className = prop.FindPropertyRelative("ClassName");
-            SerializedProperty name = prop.FindPropertyRelative("Name");
-            SerializedProperty settings = prop.FindPropertyRelative("Settings");
-            SerializedProperty hideEvents = prop.FindPropertyRelative("HideUnityEvents");
-            SerializedProperty assemblyQualifiedName = prop.FindPropertyRelative("AssemblyQualifiedName");
-
-            if (!String.IsNullOrEmpty(className.stringValue))
-            {
-                InteractableEvent.ReceiverData data = eventList[indexArray[0]].AddReceiver(eventOptions.Types[indexArray[1]]);
-                name.stringValue = data.Name;
-                hideEvents.boolValue = data.HideUnityEvents;
-                assemblyQualifiedName.stringValue = eventOptions.AssemblyQualifiedNames[indexArray[1]];
-
-                InspectorFieldsUtility.PropertySettingsList(settings, data.Fields);
-            }
-        }
-
-        protected void SetupEventOptions()
-        {
-            eventOptions = InteractableEvent.GetEventTypes();
-        }
-
-        protected string[] GetEventList()
-        {
-            return new string[] { };
         }
 
         #endregion Events

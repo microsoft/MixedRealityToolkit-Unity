@@ -1,10 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
@@ -17,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         /// <param name="eventItem">serialized property of the event item to render properties from</param>
         /// <returns>If item has been removed, returns true. False otherwise</returns>
-        public static bool RenderEventSettings(SerializedProperty eventItem)
+        public static bool RenderEvent(SerializedProperty eventItem, bool canRemove = true)
         {
             using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
             {
@@ -25,8 +27,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 SerializedProperty eventName = eventItem.FindPropertyRelative("Name");
                 SerializedProperty className = eventItem.FindPropertyRelative("ClassName");
                 SerializedProperty assemblyQualifiedName = eventItem.FindPropertyRelative("AssemblyQualifiedName");
-                SerializedProperty hideEvents = eventItem.FindPropertyRelative("HideUnityEvents");
+                Type receiverType;
 
+                InspectorUIUtility.DrawHeader("Event Receiver Type");
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     Rect position = EditorGUILayout.GetControlRect();
@@ -37,48 +40,70 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         int id = Array.IndexOf(recevierClassNames, className.stringValue);
                         int newId = EditorGUI.Popup(position, id, recevierClassNames);
 
-                        if (id != newId || String.IsNullOrEmpty(className.stringValue))
+                        receiverType = receiverTypes[newId];
+                        if (id != newId)
                         {
-                            // TODO: Troy
-                            className.stringValue = recevierClassNames[newId];
-                            //assemblyQualifiedName.stringValue = options.AssemblyQualifiedNames[newId];
-
-                            changeEvent(new int[] { index, newId }, eventItem);
+                            EventChanged(receiverType, eventItem);
                         }
-
                     }
 
-                    if (removeEvent != null)
+                    if (canRemove)
                     {
-                        if (InspectorUIUtility.FlexButton(new GUIContent("Remove Event"), index, removeEvent))
+                        if (InspectorUIUtility.FlexButton(new GUIContent("Remove Event")))
                         {
                             return true;
                         }
                     }
-
                 }
+
                 EditorGUILayout.Space();
+                InspectorUIUtility.DrawHeader("Event Properties");
 
-                if (!hideEvents.boolValue)
+                ReceiverBase receiver = (ReceiverBase)Activator.CreateInstance(receiverType, new UnityEvent());
+
+                if (!receiver.HideUnityEvents)
                 {
-                    EditorGUILayout.PropertyField(uEvent, new GUIContent(eventName.stringValue));
+                    EditorGUILayout.PropertyField(uEvent, new GUIContent(receiver.Name));
                 }
 
-                // show event properties
                 SerializedProperty eventSettings = eventItem.FindPropertyRelative("Settings");
-                for (int j = 0; j < eventSettings.arraySize; j++)
+
+                // If the number of fields has changed, update our list to track the difference
+                if (eventSettings.arraySize != receiverType.GetProperties().Length + receiverType.GetFields().Length)
                 {
-                    SerializedProperty propertyField = eventSettings.GetArrayElementAtIndex(j);
+                    InspectorFieldsUtility.PropertySettingsList(eventSettings, InteractableEvent.GetReceiverFields(receiver));
+                }
+
+                for (int index = 0; index < eventSettings.arraySize; index++)
+                {
+                    SerializedProperty propertyField = eventSettings.GetArrayElementAtIndex(index);
                     bool isEvent = InspectorFieldsUtility.IsPropertyType(propertyField, InspectorField.FieldTypes.Event);
 
-                    if (!hideEvents.boolValue || !isEvent)
+                    if (!receiver.HideUnityEvents || !isEvent)
                     {
-                        InspectorFieldsUtility.DisplayPropertyField(eventSettings.GetArrayElementAtIndex(j));
+                        InspectorFieldsUtility.DisplayPropertyField(eventSettings.GetArrayElementAtIndex(index));
                     }
                 }
             }
 
             return false;
+        }
+
+        // TODO: Troy add comment here
+        private static void EventChanged(Type newType, SerializedProperty prop)
+        {
+            SerializedProperty className = prop.FindPropertyRelative("ClassName");
+            SerializedProperty assemblyQualifiedName = prop.FindPropertyRelative("AssemblyQualifiedName");
+
+            className.stringValue = newType.Name;
+            assemblyQualifiedName.stringValue = newType.AssemblyQualifiedName;
+
+            SerializedProperty settings = prop.FindPropertyRelative("Settings");
+
+            // TODO: Troy - Put in own static method?
+            //ReceiverBase receiver = (ReceiverBase)Activator.CreateInstance(type, Event);
+            ReceiverBase defaultReceiver = (ReceiverBase)Activator.CreateInstance(newType, new UnityEvent());
+            InspectorFieldsUtility.PropertySettingsList(settings, InteractableEvent.GetReceiverFields(defaultReceiver));
         }
     }
 }

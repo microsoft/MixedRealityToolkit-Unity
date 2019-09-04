@@ -19,9 +19,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         public static readonly Color ColorTint75 = new Color(0.75f, 0.75f, 0.75f);
         public static readonly Color ColorTint50 = new Color(0.5f, 0.5f, 0.5f);
         public static readonly Color ColorTint25 = new Color(0.25f, 0.25f, 0.25f);
+        public static readonly Color ColorTint10 = new Color(0.10f, 0.10f, 0.10f);
 
         // default UI sizes
         public const int TitleFontSize = 14;
+        public const int HeaderFontSize = 11;
         public const int DefaultFontSize = 10;
         public const float DocLinkWidth = 175f;
 
@@ -389,6 +391,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             GUIStyle labelStyle = LableStyle(TitleFontSize, ColorTint50);
             EditorGUILayout.LabelField(new GUIContent(title), labelStyle);
             GUILayout.Space(TitleFontSize * 0.5f);
+        }
+
+        /// <summary>
+        /// Medium title format
+        /// </summary>
+        /// <param name="title"></param>
+        public static void DrawHeader(string header)
+        {
+            GUIStyle labelStyle = LableStyle(HeaderFontSize, ColorTint10);
+            EditorGUILayout.LabelField(new GUIContent(header), labelStyle);
         }
 
         /// <summary>

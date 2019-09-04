@@ -198,6 +198,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     {
                         intValue.intValue = EditorGUI.Popup(position, label.stringValue, intValue.intValue, InspectorUIUtility.GetOptions(options));
                     }
+                    EditorGUI.EndProperty();
                     break;
                 case InspectorField.FieldTypes.DropdownString:
                     string[] stringOptions = InspectorUIUtility.GetOptions(options);
