@@ -72,7 +72,11 @@ MonoBehaviour:
   defaultPointerExtent: 10
   sphereCastRadius: 0.05
   nearObjectMargin: 0.2
-  debugMode: 0
+  grabLayerMasks:
+  - serializedVersion: 2
+    m_Bits: 563
+  triggerInteraction: 0
+  sceneQueryBufferSize: 64
 --- !u!114 &7376459786343609486
 MonoBehaviour:
   m_ObjectHideFlags: 0

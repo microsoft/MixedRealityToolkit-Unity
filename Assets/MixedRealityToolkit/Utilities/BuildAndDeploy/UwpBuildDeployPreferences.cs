@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         }
 
         /// <summary>
-        /// The current Build Configuration. (Debug, Release, or Master)
+        /// The current Platform Toolset. (Solution, v141, or v142)
         /// </summary>
         public static string PlatformToolset
         {

@@ -4265,7 +4265,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
   touchableCollider: {fileID: 258672082}
   localForward: {x: 0, y: 0, z: 1}
@@ -9868,7 +9867,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
   touchableCollider: {fileID: 681037095}
   localForward: {x: 0, y: 0, z: -1}
@@ -11675,7 +11673,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
   touchableCollider: {fileID: 817099307}
   localForward: {x: 0, y: 0, z: -1}
@@ -21110,7 +21107,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
   touchableCollider: {fileID: 1633489052}
   localForward: {x: 0, y: 0, z: -1}

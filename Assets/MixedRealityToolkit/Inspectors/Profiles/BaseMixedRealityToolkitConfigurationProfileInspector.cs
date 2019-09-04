@@ -196,10 +196,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
             }
 
-            EditorGUILayout.BeginHorizontal();
+            using (new EditorGUILayout.HorizontalScope())
+            {
                 EditorGUILayout.LabelField(new GUIContent(title, description), EditorStyles.boldLabel, GUILayout.ExpandWidth(true));
                 RenderDocumentation(selectionObject);
-            EditorGUILayout.EndHorizontal();
+            }
 
             EditorGUILayout.LabelField(string.Empty, GUI.skin.horizontalSlider);
         }

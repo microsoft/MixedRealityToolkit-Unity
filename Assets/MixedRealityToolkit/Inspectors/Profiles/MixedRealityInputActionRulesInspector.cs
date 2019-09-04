@@ -230,138 +230,137 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                         EditorGUILayout.HelpBox("Base rule must have a valid axis constraint.", MessageType.Warning);
                         break;
                     case AxisType.Digital:
-                        EditorGUILayout.BeginHorizontal();
-                        EditorGUILayout.LabelField(CriteriaContent, GUILayout.Width(128));
-                        EditorGUI.BeginChangeCheck();
-                        var boolValue = EditorGUILayout.Toggle(GUIContent.none, criteriaValue?.boolValue ?? currentBoolCriteria, GUILayout.Width(64), GUILayout.ExpandWidth(true));
-
-                        if (EditorGUI.EndChangeCheck())
+                        using (new EditorGUILayout.HorizontalScope())
                         {
-                            if (criteriaValue != null)
+                            EditorGUILayout.LabelField(CriteriaContent, GUILayout.Width(128));
+                            EditorGUI.BeginChangeCheck();
+                            var boolValue = EditorGUILayout.Toggle(GUIContent.none, criteriaValue?.boolValue ?? currentBoolCriteria, GUILayout.Width(64), GUILayout.ExpandWidth(true));
+
+                            if (EditorGUI.EndChangeCheck())
                             {
-                                criteriaValue.boolValue = boolValue;
-                            }
-                            else
-                            {
-                                currentBoolCriteria = boolValue;
+                                if (criteriaValue != null)
+                                {
+                                    criteriaValue.boolValue = boolValue;
+                                }
+                                else
+                                {
+                                    currentBoolCriteria = boolValue;
+                                }
                             }
                         }
-
-                        EditorGUILayout.EndHorizontal();
                         break;
                     case AxisType.SingleAxis:
-                        EditorGUILayout.BeginHorizontal();
-                        EditorGUILayout.LabelField(CriteriaContent, GUILayout.Width(128));
-                        EditorGUI.BeginChangeCheck();
-                        var floatValue = EditorGUILayout.FloatField(GUIContent.none, criteriaValue?.floatValue ?? currentSingleAxisCriteria, GUILayout.Width(64), GUILayout.ExpandWidth(true));
-
-                        if (EditorGUI.EndChangeCheck())
+                        using (new EditorGUILayout.HorizontalScope())
                         {
-                            if (criteriaValue != null)
+                            EditorGUILayout.LabelField(CriteriaContent, GUILayout.Width(128));
+                            EditorGUI.BeginChangeCheck();
+                            var floatValue = EditorGUILayout.FloatField(GUIContent.none, criteriaValue?.floatValue ?? currentSingleAxisCriteria, GUILayout.Width(64), GUILayout.ExpandWidth(true));
+
+                            if (EditorGUI.EndChangeCheck())
                             {
-                                criteriaValue.floatValue = floatValue;
-                            }
-                            else
-                            {
-                                currentSingleAxisCriteria = floatValue;
+                                if (criteriaValue != null)
+                                {
+                                    criteriaValue.floatValue = floatValue;
+                                }
+                                else
+                                {
+                                    currentSingleAxisCriteria = floatValue;
+                                }
                             }
                         }
-
-                        EditorGUILayout.EndHorizontal();
                         break;
                     case AxisType.DualAxis:
                         EditorGUILayout.LabelField(CriteriaContent, GUILayout.Width(128));
-                        EditorGUI.indentLevel++;
-                        EditorGUI.BeginChangeCheck();
-                        var dualAxisValue = EditorGUILayout.Vector2Field("Position", criteriaValue?.vector2Value ?? currentDualAxisCriteria, GUILayout.Width(64), GUILayout.ExpandWidth(true));
-
-                        if (EditorGUI.EndChangeCheck())
+                        using (new EditorGUI.IndentLevelScope())
                         {
-                            if (criteriaValue != null)
+                            EditorGUI.BeginChangeCheck();
+                            var dualAxisValue = EditorGUILayout.Vector2Field("Position", criteriaValue?.vector2Value ?? currentDualAxisCriteria, GUILayout.Width(64), GUILayout.ExpandWidth(true));
+
+                            if (EditorGUI.EndChangeCheck())
                             {
-                                criteriaValue.vector2Value = dualAxisValue;
-                            }
-                            else
-                            {
-                                currentDualAxisCriteria = dualAxisValue;
+                                if (criteriaValue != null)
+                                {
+                                    criteriaValue.vector2Value = dualAxisValue;
+                                }
+                                else
+                                {
+                                    currentDualAxisCriteria = dualAxisValue;
+                                }
                             }
                         }
-
-                        EditorGUI.indentLevel--;
                         break;
                     case AxisType.ThreeDofPosition:
                         EditorGUILayout.LabelField(CriteriaContent, GUILayout.Width(128));
-                        EditorGUI.indentLevel++;
-                        EditorGUI.BeginChangeCheck();
-                        var positionValue = EditorGUILayout.Vector3Field("Position", criteriaValue?.vector3Value ?? currentVectorCriteria, GUILayout.ExpandWidth(true));
-
-                        if (EditorGUI.EndChangeCheck())
+                        using (new EditorGUI.IndentLevelScope())
                         {
-                            if (criteriaValue != null)
+                            EditorGUI.BeginChangeCheck();
+                            var positionValue = EditorGUILayout.Vector3Field("Position", criteriaValue?.vector3Value ?? currentVectorCriteria, GUILayout.ExpandWidth(true));
+
+                            if (EditorGUI.EndChangeCheck())
                             {
-                                criteriaValue.vector3Value = positionValue;
-                            }
-                            else
-                            {
-                                currentVectorCriteria = positionValue;
+                                if (criteriaValue != null)
+                                {
+                                    criteriaValue.vector3Value = positionValue;
+                                }
+                                else
+                                {
+                                    currentVectorCriteria = positionValue;
+                                }
                             }
                         }
-
-                        EditorGUI.indentLevel--;
                         break;
                     case AxisType.ThreeDofRotation:
                         EditorGUILayout.LabelField(CriteriaContent, GUILayout.Width(128));
-                        EditorGUI.indentLevel++;
-                        EditorGUI.BeginChangeCheck();
-                        var rotationValue = EditorGUILayout.Vector3Field("Rotation", criteriaValue?.quaternionValue.eulerAngles ?? currentQuaternionCriteria.eulerAngles, GUILayout.ExpandWidth(true));
-
-                        if (EditorGUI.EndChangeCheck())
+                        using (new EditorGUI.IndentLevelScope())
                         {
-                            if (criteriaValue != null)
+                            EditorGUI.BeginChangeCheck();
+                            var rotationValue = EditorGUILayout.Vector3Field("Rotation", criteriaValue?.quaternionValue.eulerAngles ?? currentQuaternionCriteria.eulerAngles, GUILayout.ExpandWidth(true));
+
+                            if (EditorGUI.EndChangeCheck())
                             {
-                                criteriaValue.quaternionValue = Quaternion.Euler(rotationValue);
-                            }
-                            else
-                            {
-                                currentQuaternionCriteria = Quaternion.Euler(rotationValue);
+                                if (criteriaValue != null)
+                                {
+                                    criteriaValue.quaternionValue = Quaternion.Euler(rotationValue);
+                                }
+                                else
+                                {
+                                    currentQuaternionCriteria = Quaternion.Euler(rotationValue);
+                                }
                             }
                         }
-
-                        EditorGUI.indentLevel--;
                         break;
                     case AxisType.SixDof:
                         EditorGUILayout.LabelField(CriteriaContent, GUILayout.Width(128));
-                        EditorGUI.indentLevel++;
-
-                        var posePosition = currentPoseCriteria.Position;
-                        var poseRotation = currentPoseCriteria.Rotation;
-
-                        if (criteriaValue != null)
+                        using (new EditorGUI.IndentLevelScope())
                         {
-                            posePosition = criteriaValue.FindPropertyRelative("position").vector3Value;
-                            poseRotation = criteriaValue.FindPropertyRelative("rotation").quaternionValue;
-                        }
+                            var posePosition = currentPoseCriteria.Position;
+                            var poseRotation = currentPoseCriteria.Rotation;
 
-                        EditorGUI.BeginChangeCheck();
-                        posePosition = EditorGUILayout.Vector3Field("Position", posePosition);
-
-                        poseRotation.eulerAngles = EditorGUILayout.Vector3Field("Rotation", poseRotation.eulerAngles);
-
-                        if (EditorGUI.EndChangeCheck())
-                        {
                             if (criteriaValue != null)
                             {
-                                criteriaValue.FindPropertyRelative("position").vector3Value = posePosition;
-                                criteriaValue.FindPropertyRelative("rotation").quaternionValue = poseRotation;
+                                posePosition = criteriaValue.FindPropertyRelative("position").vector3Value;
+                                poseRotation = criteriaValue.FindPropertyRelative("rotation").quaternionValue;
                             }
-                            else
+
+                            EditorGUI.BeginChangeCheck();
+                            posePosition = EditorGUILayout.Vector3Field("Position", posePosition);
+
+                            poseRotation.eulerAngles = EditorGUILayout.Vector3Field("Rotation", poseRotation.eulerAngles);
+
+                            if (EditorGUI.EndChangeCheck())
                             {
-                                currentPoseCriteria.Position = posePosition;
-                                currentPoseCriteria.Rotation = poseRotation;
+                                if (criteriaValue != null)
+                                {
+                                    criteriaValue.FindPropertyRelative("position").vector3Value = posePosition;
+                                    criteriaValue.FindPropertyRelative("rotation").quaternionValue = poseRotation;
+                                }
+                                else
+                                {
+                                    currentPoseCriteria.Position = posePosition;
+                                    currentPoseCriteria.Rotation = poseRotation;
+                                }
                             }
                         }
-
-                        EditorGUI.indentLevel--;
                         break;
                 }
 
@@ -507,17 +506,16 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 var ruleActionDescription = ruleAction.FindPropertyRelative("description");
                 var ruleActionConstraint = ruleAction.FindPropertyRelative("axisConstraint");
 
-                EditorGUILayout.BeginHorizontal();
-                foldouts[i] = EditorGUILayout.Foldout(foldouts[i], new GUIContent($"{baseActionDescription.stringValue} -> {ruleActionDescription.stringValue}"), true);
-
-                if (GUILayout.Button(RuleMinusButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
+                using (new EditorGUILayout.HorizontalScope())
                 {
-                    list.DeleteArrayElementAtIndex(i);
-                    EditorGUILayout.EndHorizontal();
-                    return;
-                }
+                    foldouts[i] = EditorGUILayout.Foldout(foldouts[i], new GUIContent($"{baseActionDescription.stringValue} -> {ruleActionDescription.stringValue}"), true);
 
-                EditorGUILayout.EndHorizontal();
+                    if (GUILayout.Button(RuleMinusButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
+                    {
+                        list.DeleteArrayElementAtIndex(i);
+                        return;
+                    }
+                }
 
                 if (foldouts[i])
                 {

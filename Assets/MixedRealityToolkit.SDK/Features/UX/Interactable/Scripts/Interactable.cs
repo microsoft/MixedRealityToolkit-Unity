@@ -128,6 +128,54 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public bool FocusEnabled { get { return !IsGlobal; } set { IsGlobal = !value; } }
 
         /// <summary>
+        /// Event receivers can be used to listen for different
+        /// events at runtime. This method allows receivers to be dynamically added at runtime.
+        /// </summary>
+        /// <returns>The new event receiver</returns>
+        public T AddReceiver<T>() where T : ReceiverBase, new()
+        {
+            var interactableEvent = new InteractableEvent();
+            var result = new T();
+            result.Event = interactableEvent.Event;
+            interactableEvent.Receiver = result;
+            Events.Add(interactableEvent);
+            return result;
+        }
+
+        /// <summary>
+        /// Returns the first receiver of type T on the interactable,
+        /// or null if nothing is found.
+        /// </summary>
+        public T GetReceiver<T>() where T : ReceiverBase
+        {
+            for (int i = 0; i < Events.Count; i++)
+            {
+                if (Events[i] != null && Events[i].Receiver is T)
+                {
+                    return (T) Events[i].Receiver;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Returns all receivers of type T on the interactable.
+        /// If nothing is found, returns empty list.
+        /// </summary>
+        public List<T> GetReceivers<T>() where T : ReceiverBase
+        {
+            List<T> result = new List<T>();
+            for (int i = 0; i < Events.Count; i++)
+            {
+                if (Events[i] != null && Events[i].Receiver is T)
+                {
+                    result.Add((T)Events[i].Receiver);
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
         /// List of profiles can match themes with gameObjects
         /// </summary>
         public List<InteractableProfileItem> Profiles = new List<InteractableProfileItem>();
