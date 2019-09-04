@@ -9,7 +9,7 @@ MRTK を設定する主な方法の一つは、foundation パッケージに含�
 <sup>Profile Inspector</sup>
 
 > [!NOTE]
-> 実行時に Profile が変更可能であるように意図されていますが、現在のところはこれは正しく動作しません- [参考](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4289)
+> 今後、実行時に Profile が変更可能になる予定ですが、現状は対応していません。- [参考](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4289)
 
 ## Default Profile
 
