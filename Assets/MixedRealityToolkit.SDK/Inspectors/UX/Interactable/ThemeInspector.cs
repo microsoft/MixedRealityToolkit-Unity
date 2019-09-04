@@ -37,8 +37,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
             theme = target as Theme;
 
-            themeDefinitions = serializedObject.FindProperty("Definitions");
-            states = serializedObject.FindProperty("States");
+            themeDefinitions = serializedObject.FindProperty("definitions");
+            states = serializedObject.FindProperty("states");
             themeStates = theme.GetStates();
 
             RenderTheme();
@@ -60,7 +60,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             if (themeDefinitions.arraySize < 1 || InspectorUIUtility.FlexButton(AddThemePropertyLabel))
             {
                 AddThemeDefinition();
-                return;
             }
 
             RenderThemeSettings();
@@ -389,10 +388,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             Type defaultType = typeof(InteractableActivateTheme);
 
             ThemeDefinition newDefinition = ThemeDefinition.GetDefaultThemeDefinition(defaultType).Value;
-            ValidateThemeDefinition(ref newDefinition, theme.GetStates());
-
             theme.Definitions.Add(newDefinition);
             theme.History.Add(new Dictionary<Type, ThemeDefinition>());
+            theme.ValidateDefinitions();
 
             serializedObject.Update();
             EditorUtility.SetDirty(theme);
@@ -422,41 +420,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                 definition = ThemeDefinition.GetDefaultThemeDefinition(newType);
             }
 
-            ThemeDefinition newDefinition = definition.Value;
-            ValidateThemeDefinition(ref newDefinition, theme.GetStates());
-
-            theme.Definitions[index] = newDefinition;
+            theme.Definitions[index] = definition.Value;
+            theme.ValidateDefinitions();
 
             themeDefinitions.serializedObject.Update();
             EditorUtility.SetDirty(theme);
-        }
-
-        protected static void ValidateThemeDefinition(ref ThemeDefinition definition, State[] states)
-        {
-            // For each theme property with values per possible state
-            // ensure the number of values matches the number of states
-            foreach (ThemeStateProperty p in definition.StateProperties)
-            {
-                if (p.Values.Count != states.Length)
-                {
-                    // Need to fill property with default values to match number of states
-                    if (p.Values.Count < states.Length)
-                    {
-                        for (int i = p.Values.Count - 1; i < states.Length; i++)
-                        {
-                            p.Values.Add(p.Default.Copy());
-                        }
-                    }
-                    else
-                    {
-                        // Too many property values, remove to match number of states
-                        for (int i = p.Values.Count - 1; i >= states.Length; i--)
-                        {
-                            p.Values.RemoveAt(i);
-                        }
-                    }
-                }
-            }
         }
 
         #endregion

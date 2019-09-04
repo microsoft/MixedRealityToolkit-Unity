@@ -14,16 +14,39 @@ namespace Microsoft.MixedReality.Toolkit.UI
     [CreateAssetMenu(fileName = "Theme", menuName = "Mixed Reality Toolkit/Interactable/Theme", order = 1)]
     public class Theme : ScriptableObject
     {
+        [FormerlySerializedAs("Settings")]
+        [FormerlySerializedAs("Definitions")]
+        [SerializeField]
+        private List<ThemeDefinition> definitions;
+
         /// <summary>
         /// List of Theme Definition configurations. Each definition defines what type of Theme Engine to create and how to configure it
         /// </summary>
-        [FormerlySerializedAs("Settings")]
-        public List<ThemeDefinition> Definitions;
+        public List<ThemeDefinition> Definitions
+        {
+            get { return definitions; }
+            set
+            {
+                definitions = value;
+                ValidateDefinitions();
+            }
+        }
 
+        [FormerlySerializedAs("States")]
+        [SerializeField]
+        private States states;
         /// <summary>
         /// Associated States object to use with this theme. Defines the states available for each Theme to utilize
         /// </summary>
-        public States States;
+        public States States
+        {
+            get { return states; }
+            set
+            {
+                states = value;
+                ValidateDefinitions();
+            }
+        }
 
         /// <summary>
         /// Stores historical values of different ThemeDefinition selections. Useful for editor design
@@ -44,6 +67,44 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             return new State[0];
+        }
+
+        /// <summary>
+        /// Validate list of ThemeDefinitions with current States object
+        /// </summary>
+        public void ValidateDefinitions()
+        {
+            int numOfStates = GetStates().Length;
+            if (Definitions != null)
+            {
+                foreach (var definition in Definitions)
+                {
+                    // For each theme property with values per possible state
+                    // ensure the number of values matches the number of states
+                    foreach (ThemeStateProperty p in definition.StateProperties)
+                    {
+                        if (p.Values.Count != numOfStates)
+                        {
+                            // Need to fill property with default values to match number of states
+                            if (p.Values.Count < numOfStates)
+                            {
+                                for (int i = p.Values.Count - 1; i < numOfStates; i++)
+                                {
+                                    p.Values.Add(p.Default.Copy());
+                                }
+                            }
+                            else
+                            {
+                                // Too many property values, remove to match number of states
+                                for (int i = p.Values.Count - 1; i >= numOfStates; i--)
+                                {
+                                    p.Values.RemoveAt(i);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

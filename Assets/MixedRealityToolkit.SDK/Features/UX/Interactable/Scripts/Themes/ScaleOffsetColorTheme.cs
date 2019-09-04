@@ -55,7 +55,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         Name = "Color",
                         Type = ThemePropertyTypes.Color,
                         Values = new List<ThemePropertyValue>(),
-                        Default = new ThemePropertyValue() { Color = Color.white }
+                        Default = new ThemePropertyValue() { Color = Color.white },
+                        TargetShader = Shader.Find(DefaultShaderName),
+                        ShaderPropertyName = DefaultColorShaderProperty,
                     },
                 },
                 CustomProperties = new List<ThemeProperty>(),
