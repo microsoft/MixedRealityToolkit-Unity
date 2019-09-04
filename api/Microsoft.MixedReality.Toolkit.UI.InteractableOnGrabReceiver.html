@@ -108,6 +108,9 @@ When the grab states change, on or off, these events are triggered</p>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ReceiverBase.html#Microsoft_MixedReality_Toolkit_UI_ReceiverBase_uEvent">ReceiverBase.uEvent</a>
     </div>
     <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ReceiverBase.html#Microsoft_MixedReality_Toolkit_UI_ReceiverBase_Event">ReceiverBase.Event</a>
+    </div>
+    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ReceiverBase.html#Microsoft_MixedReality_Toolkit_UI_ReceiverBase_Host">ReceiverBase.Host</a>
     </div>
     <div>
@@ -149,8 +152,20 @@ When the grab states change, on or off, these events are triggered</p>
   
   
   <a id="Microsoft_MixedReality_Toolkit_UI_InteractableOnGrabReceiver__ctor_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableOnGrabReceiver.#ctor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableOnGrabReceiver__ctor" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableOnGrabReceiver.#ctor">InteractableOnGrabReceiver()</h4>
+  <div class="markdown level1 summary"><p>Creates a receiver that raises grab start and end events.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public InteractableOnGrabReceiver()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableOnGrabReceiver__ctor_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableOnGrabReceiver.#ctor*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableOnGrabReceiver__ctor_UnityEvent_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableOnGrabReceiver.#ctor(UnityEvent)">InteractableOnGrabReceiver(UnityEvent)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Creates a receiver that raises grab start and end events.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -178,13 +193,42 @@ When the grab states change, on or off, these events are triggered</p>
   
   
   <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableOnGrabReceiver_OnRelease" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableOnGrabReceiver.OnRelease">OnRelease</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Invoked on grab release</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public UnityEvent OnRelease</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEvent</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableOnGrabReceiver_OnGrab_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableOnGrabReceiver.OnGrab*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableOnGrabReceiver_OnGrab" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableOnGrabReceiver.OnGrab">OnGrab</h4>
+  <div class="markdown level1 summary"><p>Invoked on grab start</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public UnityEvent OnGrab { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>

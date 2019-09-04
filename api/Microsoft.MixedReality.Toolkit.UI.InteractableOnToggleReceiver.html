@@ -86,7 +86,7 @@
   
   <h1 id="Microsoft_MixedReality_Toolkit_UI_InteractableOnToggleReceiver" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableOnToggleReceiver" class="text-break">Class InteractableOnToggleReceiver
   </h1>
-  <div class="markdown level0 summary"><p>a receiver that listens to toggle events</p>
+  <div class="markdown level0 summary"><p>A receiver that listens to toggle events</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -105,6 +105,9 @@
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ReceiverBase.html#Microsoft_MixedReality_Toolkit_UI_ReceiverBase_uEvent">ReceiverBase.uEvent</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ReceiverBase.html#Microsoft_MixedReality_Toolkit_UI_ReceiverBase_Event">ReceiverBase.Event</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ReceiverBase.html#Microsoft_MixedReality_Toolkit_UI_ReceiverBase_Host">ReceiverBase.Host</a>
@@ -145,8 +148,20 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_UI_InteractableOnToggleReceiver__ctor_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableOnToggleReceiver.#ctor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableOnToggleReceiver__ctor" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableOnToggleReceiver.#ctor">InteractableOnToggleReceiver()</h4>
+  <div class="markdown level1 summary"><p>Creates a receiver that raises events for toggle button states</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public InteractableOnToggleReceiver()</code></pre>
+  </div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableOnToggleReceiver__ctor_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableOnToggleReceiver.#ctor*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableOnToggleReceiver__ctor_UnityEvent_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableOnToggleReceiver.#ctor(UnityEvent)">InteractableOnToggleReceiver(UnityEvent)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Creates a receiver that raises events for toggle button states</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -174,13 +189,42 @@
   
   
   <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableOnToggleReceiver_OnDeselect" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableOnToggleReceiver.OnDeselect">OnDeselect</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Invoked when toggle is deselected</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public UnityEvent OnDeselect</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEvent</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableOnToggleReceiver_OnSelect_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableOnToggleReceiver.OnSelect*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableOnToggleReceiver_OnSelect" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableOnToggleReceiver.OnSelect">OnSelect</h4>
+  <div class="markdown level1 summary"><p>Invoked when toggle is checked</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public UnityEvent OnSelect { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>

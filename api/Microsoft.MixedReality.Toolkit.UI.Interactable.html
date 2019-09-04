@@ -1533,6 +1533,50 @@ Can be reset using the SetVoiceCommand(bool) method.</p>
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_AddReceiver_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.AddReceiver*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_AddReceiver__1" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.AddReceiver``1">AddReceiver&lt;T&gt;()</h4>
+  <div class="markdown level1 summary"><p>Event receivers can be used to listen for different
+events at runtime. This method allows receivers to be dynamically added at runtime.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public T AddReceiver&lt;T&gt;()
+    where T : ReceiverBase, new()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>The new event receiver</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_Awake_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.Awake*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_Awake" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.Awake">Awake()</h4>
   <div class="markdown level1 summary"></div>
@@ -1621,6 +1665,92 @@ Can be reset using the SetVoiceCommand(bool) method.</p>
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_GetReceiver_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.GetReceiver*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_GetReceiver__1" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.GetReceiver``1">GetReceiver&lt;T&gt;()</h4>
+  <div class="markdown level1 summary"><p>Returns the first receiver of type T on the interactable,
+or null if nothing is found.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public T GetReceiver&lt;T&gt;()
+    where T : ReceiverBase</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_Interactable_GetReceivers_" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.GetReceivers*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Interactable_GetReceivers__1" data-uid="Microsoft.MixedReality.Toolkit.UI.Interactable.GetReceivers``1">GetReceivers&lt;T&gt;()</h4>
+  <div class="markdown level1 summary"><p>Returns all receivers of type T on the interactable.
+If nothing is found, returns empty list.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;T&gt; GetReceivers&lt;T&gt;()
+    where T : ReceiverBase</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">List</span>&lt;T&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
         <td></td>
       </tr>
     </tbody>

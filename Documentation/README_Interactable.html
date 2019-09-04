@@ -161,6 +161,31 @@ SetDimensionIndex(0);
 <img src="Images/Interactable/InteractableReceiver.png" width="450">
 <p><em>Example of InteractableReceiver existing on a separate gameObject from the Interactable, referencing the Interactable for event and state updates</em></p>
 <p>&quot;Search Scope&quot; provides a preferred path to search for an Interactable if one is not explicitly assigned.</p>
+<h3 id="interactable-events-example">Interactable Events Example</h3>
+<p>Listen for focus enter, exit events from an interactable, using <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.InteractableOnFocusReceiver.html">InteractableOnFocusReceiver</a></p>
+<pre><code class="lang-csharp">public static void AddFocusEvents(Interactable interactable)
+{
+    var onFocusReceiver = interactable.AddReceiver&lt;InteractableOnFocusReceiver&gt;();
+
+    onFocusReceiver.OnFocusOn.AddListener(() =&gt; Debug.Log(&quot;Focus on&quot;));
+    onFocusReceiver.OnFocusOff.AddListener(() =&gt; Debug.Log(&quot;Focus off&quot;));
+}
+</code></pre>
+<p>Listen for selected, deselected events on a toggle-able interactable.</p>
+<pre><code class="lang-csharp">public static void AddToggleEvents(Interactable interactable)
+{
+    var toggleReceiver = interactable.AddReceiver&lt;InteractableOnToggleReceiver&gt;();
+
+    // Make the interactable have toggle capability, from code.
+    // In the gui editor it's much easier 
+    interactable.Dimensions = 2;
+    interactable.CanSelect = true;
+    interactable.CanDeselect  = true;
+
+    toggleReceiver.OnSelect.AddListener(() =&gt; Debug.Log(&quot;Toggle selected&quot;));
+    toggleReceiver.OnDeselect.AddListener(() =&gt; Debug.Log(&quot;Toggle un-selected&quot;));
+}
+</code></pre>
 <h2 id="states">States</h2>
 <p>States are a list of terms that can be used to define interactions phases, like press or observed.</p>
 <img src="Images/Interactable/DefaultStates.png" width="450">

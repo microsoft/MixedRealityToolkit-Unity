@@ -5592,7 +5592,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Interactable.html",
-          "hash": "gr/MdnN/A2P+qYNua/AIfw=="
+          "hash": "wmUo320vxjADMoV4zIOPiA=="
         }
       },
       "is_incremental": false,
@@ -10211,7 +10211,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.FocusProvider.html",
-          "hash": "s/K+j+34Dg88KJM8G+W7Pw=="
+          "hash": "+LvsWpQybGCF99aMiuw+Tw=="
         }
       },
       "is_incremental": false,
@@ -10559,7 +10559,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityFocusProvider.html",
-          "hash": "81ik+Rx7JGuEnjUfKUoFqA=="
+          "hash": "J8zvuz4y4fO0TyXR2mhXpA=="
         }
       },
       "is_incremental": false,
@@ -13931,7 +13931,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.FocusProviderTests.html",
-          "hash": "yD5eVNJL+6UJ+m8DeHGzKA=="
+          "hash": "IW+H9cujijFW265dQgVejg=="
         }
       },
       "is_incremental": false,
@@ -14723,7 +14723,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.CustomInteractablesReceiver.html",
-          "hash": "TXFwgsDhW0gSEdgzWaPhzQ=="
+          "hash": "wH0zYWXJciol4TpTgjzz1g=="
         }
       },
       "is_incremental": false,
@@ -14903,7 +14903,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.Interactable.html",
-          "hash": "Owu7epLWztvAZYG+834MtA=="
+          "hash": "fgmlAIJZyera7Gt2gUSDaA=="
         }
       },
       "is_incremental": false,
@@ -14939,7 +14939,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.InteractableAudioReceiver.html",
-          "hash": "ia6kyO80Z1LSEkJcXSK0jQ=="
+          "hash": "oNVHGJ15TfuMU5lb33MIWg=="
         }
       },
       "is_incremental": false,
@@ -15095,7 +15095,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.InteractableOnClickReceiver.html",
-          "hash": "vQzVOo9eGxdxp++AhzFNiw=="
+          "hash": "JmweszCnyAwmjeVbGGBiDQ=="
         }
       },
       "is_incremental": false,
@@ -15119,7 +15119,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.InteractableOnFocusReceiver.html",
-          "hash": "YrW9bYtyUZS9rHm7hIE6QA=="
+          "hash": "2kBfjk4SqT2WtFhU1133Qg=="
         }
       },
       "is_incremental": false,
@@ -15131,7 +15131,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.InteractableOnGrabReceiver.html",
-          "hash": "I3WjUzLtOy0hHw5VZDj3hw=="
+          "hash": "yBJCxbdqijyQ4kHldMGLtg=="
         }
       },
       "is_incremental": false,
@@ -15143,7 +15143,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.InteractableOnHoldReceiver.html",
-          "hash": "ZlF1IMX3JRWYAz4LVIjleg=="
+          "hash": "d0W56wAlXU5vhna4nrjqcw=="
         }
       },
       "is_incremental": false,
@@ -15167,7 +15167,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.InteractableOnPressReceiver.html",
-          "hash": "2vgREAvtq+yL9zE/KqxtpA=="
+          "hash": "lO9Yi80cqj095OiS3SATaQ=="
         }
       },
       "is_incremental": false,
@@ -15179,7 +15179,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.InteractableOnToggleReceiver.html",
-          "hash": "zvuylFaELto1w/P3oZyzOQ=="
+          "hash": "ZpfO5LmhuGdOQ5cWyvBh5A=="
         }
       },
       "is_incremental": false,
@@ -15191,7 +15191,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.InteractableOnTouchReceiver.html",
-          "hash": "5+sNqXzJC/3t9HZ2kCCQnQ=="
+          "hash": "cCUfbtwI6XeODETcxzOwFA=="
         }
       },
       "is_incremental": false,
@@ -15707,7 +15707,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ReceiverBase.html",
-          "hash": "Aez+2g920QIubSR6kgaw7Q=="
+          "hash": "c1nn6HRPrRRjRA1IINUEog=="
         }
       },
       "is_incremental": false,
@@ -16103,7 +16103,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.html",
-          "hash": "TFg1v+5DGTNDKwiSsyvjMA=="
+          "hash": "mWS2oyQOF/eGa9QBHzSM/A=="
         }
       },
       "is_incremental": false,
