@@ -14,28 +14,24 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
     [RequireComponent(typeof(Canvas))]
     public class CanvasUtility : MonoBehaviour, IMixedRealityPointerHandler
     {
-        private Vector3 previousHitPosition;
-        private RectTransform rectTransform;
-
+        private bool oldIsTargetPositionLockedOnFocusLock = false;
         public void OnPointerClicked(MixedRealityPointerEventData eventData) {}
 
         public void OnPointerDown(MixedRealityPointerEventData eventData)
         {
-            previousHitPosition = eventData.Pointer.Result.Details.Point;
+            oldIsTargetPositionLockedOnFocusLock = eventData.Pointer.IsTargetPositionLockedOnFocusLock;
+            eventData.Pointer.IsTargetPositionLockedOnFocusLock = false;
         }
 
-        public void OnPointerDragged(MixedRealityPointerEventData eventData)
-        {
-            if (canvas.)
-        }
+        public void OnPointerDragged(MixedRealityPointerEventData eventData) { }
 
         public void OnPointerUp(MixedRealityPointerEventData eventData)
         {
+            eventData.Pointer.IsTargetPositionLockedOnFocusLock = oldIsTargetPositionLockedOnFocusLock;
         }
 
         private void Start()
         {
-            rectTransform = GetComponent<RectTransform>();
             Canvas canvas = GetComponent<Canvas>();
             Debug.Assert(canvas != null);
 
