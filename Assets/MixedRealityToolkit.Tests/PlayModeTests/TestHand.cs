@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
         }
 
-        public IEnumerator MoveTo(Vector3 newPosition, int numSteps = 10, bool waitForFixedUpdate = true)
+        public IEnumerator MoveTo(Vector3 newPosition, int numSteps = 30, bool waitForFixedUpdate = true)
         {
             Vector3 oldPosition = position;
             position = newPosition;
