@@ -6,7 +6,7 @@ Speech input providers, like *Windows Speech Input*, don't create any controller
 - Specify a **key code** that will produce the same speech event when pressed.
 - Add a **localization key** that will be used in UWP apps to obtain the localized keyword from the app resources.
 
-<img src="../../Documentation/Images/Input/SpeechCommands.png" width="450px">
+<img src="../../Documentation/Images/Input/SpeechCommandsProfile.png" width="450px">
 
 ## Handling Speech Input
 
