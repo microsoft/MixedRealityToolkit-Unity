@@ -3,6 +3,7 @@
 
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Utilities
 {
@@ -11,24 +12,37 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
     /// </summary>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(Canvas))]
-    public class CanvasUtility : MonoBehaviour
+    public class CanvasUtility : MonoBehaviour, IMixedRealityPointerHandler
     {
-        private IMixedRealityInputSystem inputSystem = null;
+        private Vector3 previousHitPosition;
+        private RectTransform rectTransform;
 
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        private IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = CoreServices.InputSystem);
+        public void OnPointerClicked(MixedRealityPointerEventData eventData) {}
+
+        public void OnPointerDown(MixedRealityPointerEventData eventData)
+        {
+            previousHitPosition = eventData.Pointer.Result.Details.Point;
+        }
+
+        public void OnPointerDragged(MixedRealityPointerEventData eventData)
+        {
+            if (canvas.)
+        }
+
+        public void OnPointerUp(MixedRealityPointerEventData eventData)
+        {
+        }
 
         private void Start()
         {
+            rectTransform = GetComponent<RectTransform>();
             Canvas canvas = GetComponent<Canvas>();
             Debug.Assert(canvas != null);
 
             if (canvas.worldCamera == null)
             {
-                Debug.Assert(InputSystem?.FocusProvider?.UIRaycastCamera != null, this);
-                canvas.worldCamera = InputSystem?.FocusProvider?.UIRaycastCamera;
+                Debug.Assert(CoreServices.InputSystem?.FocusProvider?.UIRaycastCamera != null, this);
+                canvas.worldCamera = CoreServices.InputSystem?.FocusProvider?.UIRaycastCamera;
 
                 if (EventSystem.current == null)
                 {

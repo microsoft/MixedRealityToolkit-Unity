@@ -387,6 +387,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.OnEnable();
 
+            IsTargetPositionLockedOnFocusLock = false;
+
             Debug.Assert(line != null, "No line renderer found in PokePointer.");
             Debug.Assert(visuals != null, "No visuals object found in PokePointer.");
         }
