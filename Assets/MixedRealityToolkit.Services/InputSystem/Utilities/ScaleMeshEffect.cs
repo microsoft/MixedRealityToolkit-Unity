@@ -41,13 +41,15 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
         {
             var rectTransform = transform as RectTransform;
             var scale = new Vector2(rectTransform.rect.width * rectTransform.localScale.x,
-                                  rectTransform.rect.height * rectTransform.localScale.y);
+                                    rectTransform.rect.height * rectTransform.localScale.y);
+
             var canvas = GetComponentInParent<Canvas>();
             var depth = new Vector2((canvas ? (1.0f / canvas.transform.lossyScale.z) : 1.0f) * rectTransform.localScale.z, 
                                     -1.0f);
+
             var vertex = new UIVertex();
 
-            for (int i = 0; i < vh.currentVertCount; ++i)
+            for (var i = 0; i < vh.currentVertCount; ++i)
             {
                 vh.PopulateUIVertex(ref vertex, i);
                 vertex.uv2 = scale;

@@ -1,8 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Utilities
 {
@@ -44,6 +47,20 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
                     if (GUILayout.Button("Add NearInteractionTouchable"))
                     {
                         UnityEditor.Undo.AddComponent<NearInteractionTouchableUnityUI>(canvas.gameObject);
+                    }
+                }
+
+                var graphics = GetGraphicsWhichRequireScaleMeshEffect(canvas.gameObject);
+
+                if (graphics.Count != 0)
+                {
+                    UnityEditor.EditorGUILayout.HelpBox($"Canvas contains {graphics.Count} {typeof(Graphic).Name}(s) which require a {typeof(ScaleMeshEffect).Name} to work with the {StandardShaderUtility.MrtkStandardShaderName} shader.", UnityEditor.MessageType.Warning);
+                    if (GUILayout.Button($"Add {typeof(ScaleMeshEffect).Name}(s)"))
+                    {
+                        foreach (var graphic in graphics)
+                        {
+                            UnityEditor.Undo.AddComponent<ScaleMeshEffect>(graphic.gameObject);
+                        }
                     }
                 }
 
@@ -101,6 +118,23 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
         private static bool CanSupportMrtkInput(Canvas canvas)
         {
             return (canvas.isRootCanvas && (canvas.renderMode == RenderMode.WorldSpace));
+        }
+
+        private static List<Graphic> GetGraphicsWhichRequireScaleMeshEffect(GameObject gameObject)
+        {
+            var output = new List<Graphic>();
+            Graphic[] graphics = gameObject.GetComponentsInChildren<Graphic>();
+
+            foreach (var graphic in graphics)
+            {
+                if (StandardShaderUtility.IsUsingMrtkStandardShader(graphic.material) && 
+                    graphic.GetComponent<ScaleMeshEffect>() == null)
+                {
+                    output.Add(graphic);
+                }
+            }
+
+            return output;
         }
     }
 }
