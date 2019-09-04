@@ -276,7 +276,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
             public Vector3 StartPoint { get; private set; }
 
             /// <inheritdoc />
-            public FocusDetails Details => focusDetails;
+            public FocusDetails Details
+            {
+                get
+                {
+                    return focusDetails;
+                }
+                set
+                {
+                    focusDetails = value;
+                }
+            }
 
             /// <inheritdoc />
             public GameObject CurrentPointerTarget => focusDetails.Object;
@@ -581,6 +591,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             focusDetails = default(FocusDetails);
             return false;
+        }
+
+        /// <inheritdoc />
+        public bool TryOverrideFocusDetails(IMixedRealityPointer pointer, FocusDetails focusDetails)
+        {
+            if (TryGetPointerData(pointer, out PointerData pointerData))
+            {
+                pointerData.Details = focusDetails;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         #endregion Focus Details by IMixedRealityPointer

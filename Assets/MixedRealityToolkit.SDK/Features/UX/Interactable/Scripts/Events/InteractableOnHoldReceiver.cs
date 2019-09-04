@@ -19,10 +19,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private bool hasDown;
 
-        public InteractableOnHoldReceiver(UnityEvent ev): base(ev)
-        {
-            Name = "OnHold";
-        }
+        /// <summary>
+        /// Invoked when interactable has been pressed for HoldTime
+        /// </summary>
+        public UnityEvent OnHold => uEvent;
+
+        /// <summary>
+        /// Creates receiver that raises OnHold events
+        /// </summary>
+        public InteractableOnHoldReceiver(UnityEvent ev): base(ev, "OnHold") { }
+
+        /// <summary>
+        /// Creates receiver that raises OnHold events
+        /// </summary>
+        public InteractableOnHoldReceiver() : this(new UnityEvent()) { }
 
         /// <inheritdoc />
         public override void OnUpdate(InteractableStates state, Interactable source)
