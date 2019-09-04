@@ -52,6 +52,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         bool TryGetFocusDetails(IMixedRealityPointer pointer, out FocusDetails focusDetails);
 
         /// <summary>
+        /// Sets the FocusDetails of the specified pointer, overriding the focus point that was currently set. This can be used to change
+        /// the FocusDetails of a specific pointer even if focus is locked.
+        /// </summary>
+        /// <returns>
+        /// True if the FocusDetails were set successfully. False if the pointer is not associated with the FocusProvider.
+        /// </returns>
+        bool TryOverrideFocusDetails(IMixedRealityPointer pointer, FocusDetails focusDetails);
+
+        /// <summary>
         /// Generate a new unique pointer id.
         /// </summary>
         uint GenerateNewPointerId();

@@ -34,16 +34,18 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (!instance.IsActiveInstance)
             {
                 EditorGUILayout.HelpBox("This instance of the toolkit is inactive. There can only be one active instance loaded at any time.", MessageType.Warning);
-                EditorGUILayout.BeginHorizontal();
-                if (GUILayout.Button("Select Active Instance"))
+                using (new EditorGUILayout.HorizontalScope())
                 {
-                    UnityEditor.Selection.activeGameObject = MixedRealityToolkit.Instance.gameObject;
+                    if (GUILayout.Button("Select Active Instance"))
+                    {
+                        UnityEditor.Selection.activeGameObject = MixedRealityToolkit.Instance.gameObject;
+                    }
+
+                    if (GUILayout.Button("Make this the Active Instance"))
+                    {
+                        MixedRealityToolkit.SetActiveInstance(instance);
+                    }
                 }
-                if (GUILayout.Button("Make this the Active Instance"))
-                {
-                    MixedRealityToolkit.SetActiveInstance(instance);
-                }
-                EditorGUILayout.EndHorizontal();
                 return;
             }
 

@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     public class InteractableEvent
     {
         public string Name;
-        public UnityEvent Event;
+        public UnityEvent Event = new UnityEvent();
         public string ClassName;
         public string AssemblyQualifiedName;
         public ReceiverBase Receiver;

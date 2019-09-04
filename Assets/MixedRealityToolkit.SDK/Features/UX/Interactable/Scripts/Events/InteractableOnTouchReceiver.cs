@@ -12,16 +12,28 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     public class InteractableOnTouchReceiver : ReceiverBase
     {
+        /// <summary>
+        /// Invoked when touch has left the object
+        /// </summary>
         [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Touch End", Tooltip = "Touch has left the object")]
         public UnityEvent OnTouchEnd = new UnityEvent();
 
-        private bool hadTouch;
-        private State lastState;
+        /// <summary>
+        /// Invoked when touch begins
+        /// </summary>
+        public UnityEvent OnTouchStart => uEvent;
 
-        public InteractableOnTouchReceiver(UnityEvent ev) : base(ev)
-        {
-            Name = "OnTouch";
-        }
+        private bool hadTouch;
+
+        /// <summary>
+        /// Receiver for raising touch begin and end events
+        /// </summary>
+        public InteractableOnTouchReceiver(UnityEvent ev) : base(ev, "OnTouch") { }
+
+        /// <summary>
+        /// Receiver for raising touch begin and end events
+        /// </summary>
+        public InteractableOnTouchReceiver() : this(new UnityEvent()) { }
 
         public override void OnUpdate(InteractableStates state, Interactable source)
         {
@@ -40,7 +52,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             this.hadTouch = hadTouch;
-            lastState = state.CurrentState();
         }
     }
 }
