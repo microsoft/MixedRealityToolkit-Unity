@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
@@ -14,42 +15,91 @@ namespace Microsoft.MixedReality.Toolkit.UI
     [Serializable]
     public class ThemeStateProperty
     {
+        [FormerlySerializedAs("Name")]
+        [SerializeField]
+        private string name;
         /// <summary>
         /// Name of property, useful for comparisons and editor displaying
         /// </summary>
-        public string Name;
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
 
+        [FormerlySerializedAs("Type")]
+        [SerializeField]
+        private ThemePropertyTypes type;
         /// <summary>
         /// Type of value stored in this property
         /// </summary>
-        public ThemePropertyTypes Type;
+        public ThemePropertyTypes Type
+        {
+            get { return type; }
+            set { type = value; }
+        }
 
+        [FormerlySerializedAs("Values")]
+        [SerializeField]
+        private List<ThemePropertyValue> values;
         /// <summary>
         /// List of values corresponding to every available state
         /// </summary>
-        public List<ThemePropertyValue> Values;
-        
+        public List<ThemePropertyValue> Values
+        {
+            get { return values; }
+            set { values = value; }
+        }
+
+        [FormerlySerializedAs("StartValue")]
+        [SerializeField]
+        private ThemePropertyValue startValue;
         /// <summary>
         /// The starting value of this property
         /// </summary>
-        public ThemePropertyValue StartValue;
+        public ThemePropertyValue StartValue
+        {
+            get { return startValue; }
+            set { startValue = value; }
+        }
 
+        [FormerlySerializedAs("Default")]
+        [SerializeField]
+        private ThemePropertyValue defaultValue;
         /// <summary>
         /// Default value to use for this property 
         /// </summary>
-        public ThemePropertyValue Default;
+        public ThemePropertyValue Default
+        {
+            get { return defaultValue; }
+            set { defaultValue = value; }
+        }
 
+        [FormerlySerializedAs("TargetShader")]
+        [SerializeField]
+        private Shader targetShader;
         /// <summary>
         /// Shader to target for getting/setting values with this property, if applicable
         /// Supported by Themes which have AreShadersSupported set to true
         /// </summary>
-        public Shader TargetShader;
+        public Shader TargetShader
+        {
+            get { return targetShader; }
+            set { targetShader = value; }
+        }
 
+        [FormerlySerializedAs("ShaderPropertyName")]
+        [SerializeField]
+        private string shaderPropertyName;
         /// <summary>
         /// Name of the shader property, defined in the TargetShader, to utilize for getting/setting values with this property, if applicable
         /// Supported by Themes which have AreShadersSupported set to true
         /// </summary>
-        public string ShaderPropertyName;
+        public string ShaderPropertyName
+        {
+            get { return shaderPropertyName; }
+            set { shaderPropertyName = value; }
+        }
 
         [System.NonSerialized]
         protected int ShaderPropertyID = -1;
@@ -57,6 +107,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private static readonly ThemePropertyTypes[] ShaderTypes =
             { ThemePropertyTypes.Color, ThemePropertyTypes .ShaderFloat, ThemePropertyTypes.ShaderRange};
 
+        /// <summary>
+        /// Utility function that determines if the passed property type is supported for shader targeting
+        /// </summary>
+        /// <param name="type">type of property value</param>
+        /// <returns>true if property type supports shader targeting, false otherwise</returns>
         public static bool IsShaderPropertyType(ThemePropertyTypes type)
         {
             return ShaderTypes.Contains(type);
