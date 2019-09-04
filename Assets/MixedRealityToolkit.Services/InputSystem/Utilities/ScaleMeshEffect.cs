@@ -8,8 +8,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
 {
     /// <summary>
     /// On Unity UI components the unity_ObjectToWorld matrix is not the transformation matrix of the local 
-    /// transform the Image component lives on, but that of it's parent Canvas. Many MRTK/Standard shader 
-    /// effects require scale to be known. To solve this issue the ScaleMeshEffect will store scaling 
+    /// transform the Graphic component lives on, but that of it's parent Canvas. Many MRTK/Standard shader 
+    /// effects require object scale to be known. To solve this issue the ScaleMeshEffect will store scaling 
     /// information into UV channel attributes during UI mesh construction. Ideally we would store the scale 
     /// in one attribute but UGUI only supports two scalers per attribute (even in the tangent attribute).
     /// </summary>

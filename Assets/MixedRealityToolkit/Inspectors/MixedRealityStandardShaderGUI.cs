@@ -770,8 +770,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                             "Ok", 
                                             "Cancel"))
             {
-                string shaderName = "Mixed Reality Toolkit/Standard";
-                string path = AssetDatabase.GetAssetPath(Shader.Find(shaderName));
+                string path = AssetDatabase.GetAssetPath(StandardShaderUtility.MrtkStandardShader);
 
                 if (!string.IsNullOrEmpty(path))
                 {
@@ -794,7 +793,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
                 else
                 {
-                    Debug.LogErrorFormat("Failed to get asset path to: {0}", shaderName);
+                    Debug.LogErrorFormat("Failed to get asset path to: {0}", StandardShaderUtility.MrtkStandardShaderName);
                 }
             }
         }

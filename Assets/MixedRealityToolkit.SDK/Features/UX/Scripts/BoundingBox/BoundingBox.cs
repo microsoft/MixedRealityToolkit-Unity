@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -1815,9 +1816,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 float[] color = { 1.0f, 1.0f, 1.0f, 0.75f };
 
-                Shader shader = Shader.Find("Mixed Reality Toolkit/Standard");
-
-                wireframeMaterial = new Material(shader);
+                wireframeMaterial = new Material(StandardShaderUtility.MrtkStandardShader);
                 wireframeMaterial.EnableKeyword("_InnerGlow");
                 wireframeMaterial.SetColor("_Color", new Color(0.0f, 0.63f, 1.0f));
                 wireframeMaterial.SetFloat("_InnerGlow", 1.0f);
@@ -1827,9 +1826,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 float[] color = { 1.0f, 1.0f, 1.0f, 0.75f };
 
-                Shader shader = Shader.Find("Mixed Reality Toolkit/Standard");
-
-                handleMaterial = new Material(shader);
+                handleMaterial = new Material(StandardShaderUtility.MrtkStandardShader);
                 handleMaterial.EnableKeyword("_InnerGlow");
                 handleMaterial.SetColor("_Color", new Color(0.0f, 0.63f, 1.0f));
                 handleMaterial.SetFloat("_InnerGlow", 1.0f);
@@ -1839,9 +1836,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 float[] color = { 1.0f, 1.0f, 1.0f, 0.75f };
 
-                Shader shader = Shader.Find("Mixed Reality Toolkit/Standard");
-
-                handleGrabbedMaterial = new Material(shader);
+                handleGrabbedMaterial = new Material(StandardShaderUtility.MrtkStandardShader);
                 handleGrabbedMaterial.EnableKeyword("_InnerGlow");
                 handleGrabbedMaterial.SetColor("_Color", new Color(0.0f, 0.63f, 1.0f));
                 handleGrabbedMaterial.SetFloat("_InnerGlow", 1.0f);

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
     /// <summary>
     /// Inspector for themes, and used by Interactable
     /// </summary>
-    
+
 #if UNITY_EDITOR
     [CustomEditor(typeof(Theme))]
     public class ThemeInspector : UnityEditor.Editor
@@ -1285,7 +1286,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             }
             else
             {
-                material = new Material(Shader.Find("Mixed Reality Toolkit/Standard"));
+                material = new Material(StandardShaderUtility.MrtkStandardShader);
             }
 
             if (material != null)

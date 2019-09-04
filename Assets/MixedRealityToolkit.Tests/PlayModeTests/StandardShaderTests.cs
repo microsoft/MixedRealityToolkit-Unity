@@ -112,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private static Material InstantiateStandardShaderMaterial(Color? color = null)
         {
-            var material = new Material(Shader.Find("Mixed Reality Toolkit/Standard"));
+            var material = new Material(StandardShaderUtility.MrtkStandardShader);
             material.color = color ?? Color.white;
 
             return material;
