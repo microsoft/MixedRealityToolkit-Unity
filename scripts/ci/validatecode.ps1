@@ -47,7 +47,7 @@ function CheckEmptyDoccomment(
     .SYNOPSIS
         Checks if the given file (at the given line number) contains an empty <returns></returns>
         or an <param ...></param> doccomment. These are typically added automatically by IDEs,
-        but empty doccomments don't at value to code.
+        but empty doccomments don't add value to code.
     #>
     $tags = @("param", "returns")
     $containsEmptyDoccomment = $false;
