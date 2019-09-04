@@ -482,7 +482,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             var touchableRect = CreateTouchable<NearInteractionTouchable>(0.15f);
             touchableRect.SetLocalForward(touchNormal);
-            touchableRect.Bounds = new Vector2(0.5f, 0.5f);
+            touchableRect.SetBounds(new Vector2(0.5f, 0.5f));
             var catcherRect = CreateEventCatcher(touchableRect);
 
             var touchableVolume = CreateTouchable<NearInteractionTouchableVolume>(0.15f);
