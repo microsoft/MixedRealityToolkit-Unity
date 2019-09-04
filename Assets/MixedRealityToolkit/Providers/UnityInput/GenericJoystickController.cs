@@ -85,10 +85,24 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         {
             Debug.Assert(interactionMapping.AxisType == AxisType.Digital);
 
-            var keyButton = UInput.GetKey(interactionMapping.KeyCode);
-
             // Update the interaction data source
-            interactionMapping.BoolData = keyButton;
+            switch (interactionMapping.InputType)
+            {
+                case DeviceInputType.TriggerPress:
+                    interactionMapping.BoolData = UInput.GetAxis(interactionMapping.AxisCodeX).Equals(1);
+                    break;
+                case DeviceInputType.TriggerNearTouch:
+                case DeviceInputType.ThumbNearTouch:
+                case DeviceInputType.IndexFingerNearTouch:
+                case DeviceInputType.MiddleFingerNearTouch:
+                case DeviceInputType.RingFingerNearTouch:
+                case DeviceInputType.PinkyFingerNearTouch:
+                    interactionMapping.BoolData = !UInput.GetAxis(interactionMapping.AxisCodeX).Equals(0);
+                    break;
+                default:
+                    interactionMapping.BoolData = UInput.GetKey(interactionMapping.KeyCode);
+                    break;
+            }
 
             // If our value changed raise it.
             if (interactionMapping.Changed)
@@ -118,24 +132,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
             var singleAxisValue = UInput.GetAxis(interactionMapping.AxisCodeX);
 
-            switch (interactionMapping.InputType)
-            {
-                case DeviceInputType.TriggerPress:
-                case DeviceInputType.ButtonPress:
-                    // Update the interaction data source
-                    interactionMapping.BoolData = singleAxisValue.Equals(1);
-                    break;
-                case DeviceInputType.TriggerTouch:
-                case DeviceInputType.TriggerNearTouch:
-                case DeviceInputType.ThumbNearTouch:
-                case DeviceInputType.IndexFingerNearTouch:
-                case DeviceInputType.MiddleFingerNearTouch:
-                case DeviceInputType.RingFingerNearTouch:
-                case DeviceInputType.PinkyFingerNearTouch:
-                    // Update the interaction data source
-                    interactionMapping.BoolData = !singleAxisValue.Equals(0);
-                    break;
-                case DeviceInputType.Trigger:
                     // Update the interaction data source
                     interactionMapping.FloatData = singleAxisValue;
 
@@ -145,25 +141,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                         // Raise input system Event if it enabled
                         InputSystem?.RaiseFloatInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.FloatData);
                     }
-                    return;
-                default:
-                    Debug.LogWarning("Unhandled Interaction");
-                    return;
-            }
-
-            // If our value changed raise it.
-            if (interactionMapping.Changed)
-            {
-                // Raise input system Event if it enabled
-                if (interactionMapping.BoolData)
-                {
-                    InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                }
-                else
-                {
-                    InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                }
-            }
         }
 
         /// <summary>
