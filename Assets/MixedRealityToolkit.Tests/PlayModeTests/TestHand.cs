@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
         }
 
-        public IEnumerator MoveTo(Vector3 newPosition, int numSteps = 30, bool waitForFixedUpdate = true)
+        public IEnumerator MoveTo(Vector3 newPosition, int numSteps = 10, bool waitForFixedUpdate = true)
         {
             Vector3 oldPosition = position;
             position = newPosition;
@@ -97,6 +97,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             {
                 yield return new WaitForFixedUpdate();
             }
+        }
+
+        /// <summary>
+        /// Combined sequence of pinching and unpinching
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerator Click()
+        {
+            yield return SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return null;
+            yield return SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return null;
         }
 
         /// <summary>
