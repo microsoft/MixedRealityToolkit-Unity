@@ -29,7 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// <summary>
         /// Starts the build process
         /// </summary>
-        /// <param name="buildInfo"></param>
         /// <returns>The <see href="https://docs.unity3d.com/ScriptReference/Build.Reporting.BuildReport.html">BuildReport</see> from Unity's <see href="https://docs.unity3d.com/ScriptReference/BuildPipeline.html">BuildPipeline</see></returns>
         public static BuildReport BuildUnityPlayer(IBuildInfo buildInfo)
         {
@@ -284,8 +283,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// <summary>
         /// Restores any nuget packages at the path specified.
         /// </summary>
-        /// <param name="nugetPath"></param>
-        /// <param name="storePath"></param>
         /// <returns>True, if the nuget packages were successfully restored.</returns>
         public static async Task<bool> RestoreNugetPackagesAsync(string nugetPath, string storePath)
         {

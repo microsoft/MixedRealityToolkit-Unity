@@ -26,8 +26,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// Build the UWP appx bundle for this project.  Requires that <see cref="UwpPlayerBuildTools.BuildPlayer(string,bool,CancellationToken)"/> has already be run or a user has
         /// previously built the Unity Player with the WSA Player as the Build Target.
         /// </summary>
-        /// <param name="buildInfo"></param>
-        /// <param name="cancellationToken"></param>
         /// <returns>True, if the appx build was successful.</returns>
         public static async Task<bool> BuildAppxAsync(UwpBuildInfo buildInfo, CancellationToken cancellationToken = default)
         {

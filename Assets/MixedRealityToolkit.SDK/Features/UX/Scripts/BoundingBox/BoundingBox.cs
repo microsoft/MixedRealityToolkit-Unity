@@ -1432,8 +1432,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Add all common components to a corner or rotate affordance
         /// </summary>
-        /// <param name="afford"></param>
-        /// <param name="bounds"></param>
         private void AddComponentsToAffordance(GameObject afford, Bounds bounds, RotationHandlePrefabCollider colliderType, CursorContextInfo.CursorAction cursorType, Vector3 colliderPadding)
         {
             if (colliderType == RotationHandlePrefabCollider.Box)

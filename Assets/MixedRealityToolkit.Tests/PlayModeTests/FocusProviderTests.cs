@@ -36,7 +36,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         /// <summary>
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestGazeCursorArticulated()
         {
@@ -73,7 +72,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Ensure that the gaze provider hit result is not null when looking at an object,
         /// even when the hand is up
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestGazeProviderTargetNotNull()
         {

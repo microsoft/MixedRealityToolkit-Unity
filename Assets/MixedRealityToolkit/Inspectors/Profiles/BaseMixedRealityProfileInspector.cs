@@ -34,8 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <summary>
         /// Renders a non-editable object field and an editable dropdown of a profile.
         /// </summary>
-        /// <param name="property"></param>
-        /// <returns></returns>
         public static void RenderReadOnlyProfile(SerializedProperty property)
         {
             EditorGUILayout.BeginHorizontal();
@@ -309,8 +307,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <summary>
         /// Checks if the profile is locked
         /// </summary>
-        /// <param name="target"></param>
-        /// <param name="lockProfile"></param>
         protected static bool IsProfileLock(BaseMixedRealityProfile profile)
         {
             return MixedRealityPreferences.LockProfiles && !profile.IsCustomProfile;

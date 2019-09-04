@@ -44,7 +44,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Tests that a slider component can be added at runtime.
         /// at runtime.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestAddInteractableAtRuntime()
         {
@@ -62,7 +61,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Tests that an interactable assembled at runtime can be manipulated
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestAssembleInteractableAndNearManip()
         {
@@ -102,7 +100,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Tests that slider can be assembled from code and manipulated using GGV
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestAssembleInteractableAndFarManip()
         {
@@ -137,7 +134,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Tests that interactable raises proper events
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestAssembeInteractableAndEventsRaised()
         {
@@ -202,10 +198,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Generates an interactable from primitives and assigns a select action.
         /// </summary>
-        /// <param name="pinchSliderObject"></param>
-        /// <param name="slider"></param>
-        /// <param name="sliderThumbRoot"></param>
-        /// <param name="selectActionDescription"></param>
         private void AssembleSlider(Vector3 position, Vector3 rotation, out GameObject pinchSliderObject, out PinchSlider slider, bool isNearInteractionGrabbable = true)
         {
             // Assemble an interactable out of a set of primitives

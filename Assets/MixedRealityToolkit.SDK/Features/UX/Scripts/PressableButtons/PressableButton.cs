@@ -416,8 +416,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Returns world space position along the push direction for the given local distance
         /// </summary>
-        /// <param name="localDistance"></param>
-        /// <returns></returns>
         /// 
         public Vector3 GetWorldPositionAlongPushDirection(float localDistance)
         {
@@ -429,8 +427,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Returns the local distance along the push direction for the passed in world position
         /// </summary>
-        /// <param name="positionWorldSpace"></param>
-        /// <returns></returns>
         public float GetDistanceAlongPushDirection(Vector3 positionWorldSpace)
         {
             Vector3 localPosition = positionWorldSpace - InitialPosition;

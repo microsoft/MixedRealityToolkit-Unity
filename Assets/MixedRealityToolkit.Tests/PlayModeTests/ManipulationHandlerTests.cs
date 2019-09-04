@@ -40,7 +40,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Test creating adding a ManipulationHandler to GameObject programmatically.
         /// Should be able to run scene without getting any exceptions.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ManipulationHandlerInstantiate()
         {
@@ -61,7 +60,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Test creating ManipulationHandler and receiving hover enter/exit events
         /// from gaze provider.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ManipulationHandlerGazeHover()
         {
@@ -108,7 +106,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// as well as forcefully ending of the manipulation
         /// from gaze provider.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ManipulationHandlerForceRelease()
         {
@@ -174,7 +171,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Tests MaintainRotationToUser mode of ManipulationHandler (OneHandedOnly)
         /// MaintainRotationToUser should only align with user / camera on x / y and not apply rotations in z
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ManipulationHandlerRotateWithUser()
         {
@@ -240,7 +236,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Test validates throw behavior on manipulation handler. Box with disabled gravity should travel a 
         /// certain distance when being released from grab during hand movement
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ManipulationHandlerThrow()
         {
@@ -297,7 +292,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// The test will check the offset between object pivot and grab point and make sure we're not drifting
         /// out of the object on pointer rotation - this test should be the same in all rotation setups
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ManipulationHandlerOneHandMoveNear()
         {
@@ -391,7 +385,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// out of the object on pointer rotation - this test is the same for all objects that won't change 
         /// their orientation to camera while camera / pointer rotates as this will modify the far interaction grab point
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ManipulationHandlerOneHandMoveFar()
         {
@@ -495,7 +488,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// This tests the one hand near rotation and applying different rotation constraints to the object.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ManipulationHandlerOneHandRotateWithConstraint()
         {
@@ -741,7 +733,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// This test will scale a cube with two hand manipulation and ensure that
         /// maximum and minimum scales are not exceeded.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ManipulationHandlerMinMaxScale()
         {

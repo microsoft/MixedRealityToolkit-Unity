@@ -40,8 +40,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Used to initialize/reset the event and populate the data.
         /// </summary>
-        /// <param name="inputSource"></param>
-        /// <param name="inputAction"></param>
         protected void BaseInitialize(IMixedRealityInputSource inputSource, MixedRealityInputAction inputAction)
         {
             Reset();

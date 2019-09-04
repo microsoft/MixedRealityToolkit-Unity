@@ -54,7 +54,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="controllerType">The controller type making the request for pointers.</param>
         /// <param name="controllingHand">The handedness of the controller making the request.</param>
         /// <param name="useSpecificType">Only register pointers with a specific type.</param>
-        /// <returns></returns>
         protected virtual IMixedRealityPointer[] RequestPointers(SupportedControllerType controllerType, Handedness controllingHand)
         {
             var pointers = new List<IMixedRealityPointer>();

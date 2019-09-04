@@ -69,8 +69,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Box style with left margin
         /// </summary>
-        /// <param name="margin"></param>
-        /// <returns></returns>
         public static GUIStyle Box(int margin)
         {
             GUIStyle box = new GUIStyle(GUI.skin.box);
@@ -81,9 +79,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Create a custom label style based on color and size
         /// </summary>
-        /// <param name="size"></param>
-        /// <param name="color"></param>
-        /// <returns></returns>
         public static GUIStyle LableStyle(int size, Color color)
         {
             GUIStyle labelStyle = new GUIStyle(EditorStyles.boldLabel);
@@ -202,11 +197,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// A button that is as wide as the label
         /// </summary>
-        /// <param name="label"></param>
-        /// <param name="index"></param>
-        /// <param name="callback"></param>
-        /// <param name="prop"></param>
-        /// <returns></returns>
         public static bool FlexButton(GUIContent label, int index, ListButtonEvent callback, SerializedProperty prop = null)
         {
             if (FlexButton(label))
@@ -221,10 +211,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// A button that is as wide as the label
         /// </summary>
-        /// <param name="label"></param>
-        /// <param name="indexArr"></param>
-        /// <param name="callback"></param>
-        /// <param name="prop"></param>
         /// <returns>true if button clicked, false otherwise</returns>
         public static bool FlexButton(GUIContent label, int[] indexArr, MultiListButtonEvent callback, SerializedProperty prop = null)
         {
@@ -263,12 +249,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// A button that is as wide as the available space
         /// </summary>
-        /// <param name="label"></param>
-        /// <param name="padding"></param>
-        /// <param name="index"></param>
-        /// <param name="callback"></param>
-        /// <param name="prop"></param>
-        /// <returns></returns>
         public static bool FullWidthButton(GUIContent label, float padding, int index, ListButtonEvent callback, SerializedProperty prop = null)
         {
             GUIStyle addStyle = new GUIStyle(GUI.skin.button);
@@ -295,12 +275,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// A button that is as wide as the available space
         /// </summary>
-        /// <param name="label"></param>
-        /// <param name="padding"></param>
-        /// <param name="indexArr"></param>
-        /// <param name="callback"></param>
-        /// <param name="prop"></param>
-        /// <returns></returns>
         public static bool FullWidthButton(GUIContent label, float padding, int[] indexArr, MultiListButtonEvent callback, SerializedProperty prop = null)
         {
             GUIStyle addStyle = new GUIStyle(GUI.skin.button);
@@ -328,9 +302,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// A small button, good for a single icon like + or - with single index callback events
         /// </summary>
         /// <param name="label">content to place in the button</param>
-        /// <param name="index"></param>
-        /// <param name="callback"></param>
-        /// <param name="prop"></param>
         /// <returns>true if button selected, false otherwise</returns>
         public static bool SmallButton(GUIContent label, int index, ListButtonEvent callback, SerializedProperty prop = null)
         {
@@ -347,9 +318,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// A small button, good for a single icon like + or - with multi-index callback events
         /// </summary>
         /// <param name="label">content to place in the button</param>
-        /// <param name="indexArr"></param>
-        /// <param name="callback"></param>
-        /// <param name="prop"></param>
         /// <returns>true if button selected, false otherwise</returns>
         public static bool SmallButton(GUIContent label, int[] indexArr, MultiListButtonEvent callback, SerializedProperty prop = null)
         {
@@ -383,7 +351,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Large title format
         /// </summary>
-        /// <param name="title"></param>
         public static void DrawTitle(string title)
         {
             GUIStyle labelStyle = LableStyle(TitleFontSize, ColorTint50);
@@ -394,9 +361,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Draw a basic label
         /// </summary>
-        /// <param name="title"></param>
-        /// <param name="size"></param>
-        /// <param name="color"></param>
         public static void DrawLabel(string title, int size, Color color)
         {
             GUIStyle labelStyle = LableStyle(size, color);
@@ -407,7 +371,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// draw a label with a yellow coloring
         /// </summary>
-        /// <param name="warning"></param>
         public static void DrawWarning(string warning)
         {
             Color prevColor = GUI.color;
@@ -423,7 +386,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// draw a notice area, normal coloring
         /// </summary>
-        /// <param name="notice"></param>
         public static void DrawNotice(string notice)
         {
             Color prevColor = GUI.color;
@@ -439,7 +401,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// draw a notice with green coloring
         /// </summary>
-        /// <param name="notice"></param>
         public static void DrawSuccess(string notice)
         {
             Color prevColor = GUI.color;
@@ -455,7 +416,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// draw a notice with red coloring
         /// </summary>
-        /// <param name="error"></param>
         public static void DrawError(string error)
         {
             Color prevColor = GUI.color;
@@ -479,13 +439,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Draws a section start (initiated by the Header attribute)
         /// </summary>
-        /// <param name="headerName"></param>
-        /// <param name="style"></param>
-        /// <param name="toUpper"></param>
-        /// <param name="indent"></param>
-        /// <param name="open"></param>
-        /// <param name="size"></param>
-        /// <returns></returns>
         public static bool DrawSectionFoldout(string headerName, bool open = true, FontStyle style = FontStyle.Bold, int size = 0)
         {
             GUIStyle sectionStyle = new GUIStyle(EditorStyles.foldout);
@@ -545,8 +498,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// adjust list settings as things change
         /// </summary>
-        /// <param name="listSettings"></param>
-        /// <param name="count"></param>
         public static List<ListSettings> AdjustListSettings(List<ListSettings> listSettings, int count)
         {
             if (listSettings == null)
@@ -581,8 +532,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Get an array of strings from a serialized list of strings, pop-up field helper
         /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
         public static string[] GetOptions(SerializedProperty options)
         {
             List<string> list = new List<string>();
@@ -597,9 +546,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Get the index of a serialized array item based on it's name, pop-up field helper
         /// </summary>
-        /// <param name="options"></param>
-        /// <param name="selection"></param>
-        /// <returns></returns>
         public static int GetOptionsIndex(SerializedProperty options, string selection)
         {
             for (int i = 0; i < options.arraySize; i++)
@@ -616,9 +562,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Get the index of an array item based on it's name, pop-up field helper
         /// </summary>
-        /// <param name="option"></param>
-        /// <param name="options"></param>
-        /// <returns></returns>
         public static int ReverseLookup(string option, string[] options)
         {
             for (int i = 0; i < options.Length; i++)

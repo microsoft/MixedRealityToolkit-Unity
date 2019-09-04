@@ -211,7 +211,6 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// <summary>
         /// Registers the <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to listen for boundary events.
         /// </summary>
-        /// <param name="listener"></param>
         public override void Register(GameObject listener)
         {
             base.Register(listener);
@@ -220,7 +219,6 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// <summary>
         /// UnRegisters the <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> to listen for boundary events.
         /// /// </summary>
-        /// <param name="listener"></param>
         public override void Unregister(GameObject listener)
         {
             base.Unregister(listener);
