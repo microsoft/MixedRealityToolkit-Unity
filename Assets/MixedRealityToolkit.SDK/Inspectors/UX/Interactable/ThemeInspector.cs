@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
-using UnityEditor.Animations;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI.Editor
@@ -131,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                         }
                     }
 
-                    SerializedProperty customProperties = themeDefinition.FindPropertyRelative("CustomProperties");
+                    SerializedProperty customProperties = themeDefinition.FindPropertyRelative("customProperties");
                     RenderCustomProperties(customProperties);
 
                     var themeType = theme.Definitions[index].ThemeType;
@@ -163,13 +162,13 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                     for (int j = 0; j < themeDefinitions.arraySize; j++)
                     {
                         SerializedProperty themeDefinition = themeDefinitions.GetArrayElementAtIndex(j);
-                        SerializedProperty stateProperties = themeDefinition.FindPropertyRelative("StateProperties");
+                        SerializedProperty stateProperties = themeDefinition.FindPropertyRelative("stateProperties");
                         using (new EditorGUI.IndentLevelScope())
                         {
                             for (int i = 0; i < stateProperties.arraySize; i++)
                             {
                                 SerializedProperty propertyItem = stateProperties.GetArrayElementAtIndex(i);
-                                SerializedProperty values = propertyItem.FindPropertyRelative("Values");
+                                SerializedProperty values = propertyItem.FindPropertyRelative("values");
 
                                 if (n >= values.arraySize)
                                 {
@@ -177,8 +176,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                                     continue;
                                 }
 
-                                SerializedProperty name = propertyItem.FindPropertyRelative("Name");
-                                SerializedProperty type = propertyItem.FindPropertyRelative("Type");
+                                SerializedProperty name = propertyItem.FindPropertyRelative("name");
+                                SerializedProperty type = propertyItem.FindPropertyRelative("type");
                                 SerializedProperty statePropertyValue = values.GetArrayElementAtIndex(n);
 
                                 RenderValue(statePropertyValue, name.stringValue, (ThemePropertyTypes)type.intValue);
@@ -197,7 +196,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         /// <param name="themeDefinition">Serialized property of a ThemeDefinition object</param>
         private static void RenderEasingProperties(SerializedProperty themeDefinition)
         {
-            SerializedProperty easing = themeDefinition.FindPropertyRelative("Easing");
+            SerializedProperty easing = themeDefinition.FindPropertyRelative("easing");
             SerializedProperty enabled = easing.FindPropertyRelative("Enabled");
 
             enabled.boolValue = EditorGUILayout.Toggle(EasingContent, enabled.boolValue);
@@ -217,18 +216,18 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
         private static void RenderShaderProperties(SerializedProperty themeDefinition)
         {
-            SerializedProperty stateProperties = themeDefinition.FindPropertyRelative("StateProperties");
+            SerializedProperty stateProperties = themeDefinition.FindPropertyRelative("stateProperties");
 
             for (int i = 0; i < stateProperties.arraySize; i++)
             {
                 SerializedProperty stateProperty = stateProperties.GetArrayElementAtIndex(i);
-                SerializedProperty type = stateProperty.FindPropertyRelative("Type");
+                SerializedProperty type = stateProperty.FindPropertyRelative("type");
 
                 if (ThemeStateProperty.IsShaderPropertyType((ThemePropertyTypes)type.enumValueIndex))
                 {
-                    SerializedProperty statePropertyName = stateProperty.FindPropertyRelative("Name");
-                    SerializedProperty shader = stateProperty.FindPropertyRelative("TargetShader");
-                    SerializedProperty shaderPropertyname = stateProperty.FindPropertyRelative("ShaderPropertyName");
+                    SerializedProperty statePropertyName = stateProperty.FindPropertyRelative("name");
+                    SerializedProperty shader = stateProperty.FindPropertyRelative("targetShader");
+                    SerializedProperty shaderPropertyname = stateProperty.FindPropertyRelative("shaderPropertyName");
 
                     // Temporary workaround to help migrate old ThemeDefinitions to new model if applicable
                     MigrateShaderData(stateProperty, shader, shaderPropertyname);

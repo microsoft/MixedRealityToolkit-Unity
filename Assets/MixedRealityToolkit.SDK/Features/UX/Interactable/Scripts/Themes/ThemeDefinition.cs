@@ -63,22 +63,43 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         private string AssemblyQualifiedName;
 
+        [FormerlySerializedAs("Properties")]
+        [FormerlySerializedAs("StateProperties")]
+        [SerializeField]
+        private List<ThemeStateProperty> stateProperties;
         /// <summary>
         /// List of properties with values defined per state index (Example list of colors for different states)
         /// </summary>
-        [FormerlySerializedAs("Properties")]
-        public List<ThemeStateProperty> StateProperties;
+        public List<ThemeStateProperty> StateProperties
+        {
+            get { return stateProperties; }
+            set { stateProperties = value; }
+        }
 
+        [FormerlySerializedAs("CustomSettings")]
+        [FormerlySerializedAs("CustomProperties")]
+        [SerializeField]
+        private List<ThemeProperty> customProperties;
         /// <summary>
         /// List of single-value properties defined for the entire Theme engine regardless of the current state
         /// </summary>
-        [FormerlySerializedAs("CustomSettings")]
-        public List<ThemeProperty> CustomProperties;
+        public List<ThemeProperty> CustomProperties
+        {
+            get { return customProperties; }
+            set { customProperties = value; }
+        }
 
+        [FormerlySerializedAs("Easing")]
+        [SerializeField]
+        public Easing easing;
         /// <summary>
         /// Object to configure easing between values. Type of Theme Engine, as defined by the ThemeType property, must have IsEasingSupported set to true
         /// </summary>
-        public Easing Easing;
+        public Easing Easing
+        {
+            get { return easing; }
+            set { easing = value; }
+        }
 
         /// <summary>
         /// Utility function to generate the default ThemeDefinition configuration for the provided type of Theme engine
