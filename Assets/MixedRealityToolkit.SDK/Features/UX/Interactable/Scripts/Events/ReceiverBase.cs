@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using System;
-using System.Windows.Markup;
 using UnityEngine;
 using UnityEngine.Events;
 
