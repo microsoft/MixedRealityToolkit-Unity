@@ -14,14 +14,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     public class InteractableOnGrabReceiver : ReceiverBase
     {
-        [SerializeField]
-        [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Release", Tooltip = "Grab was released")]
-        [FormerlySerializedAsAttribute("OnRelease")]
-        private UnityEvent onRelease = new UnityEvent();
-
         /// <summary>
         /// Invoked on grab release
         /// </summary>
+        [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Release", Tooltip = "Grab was released")]
+        public UnityEvent OnRelease = new UnityEvent();
+
         public UnityEvent OnRelease => onRelease;
 
         /// <summary>

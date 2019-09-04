@@ -13,17 +13,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     public class InteractableOnFocusReceiver : ReceiverBase
     {
-        [SerializeField]
-        [FormerlySerializedAs("OnFocusOff")]
-        [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Focus Off", Tooltip = "Focus has left the object")]
-        private UnityEvent onFocusOff = new UnityEvent();
+        public InteractableOnFocusReceiver() : this(new UnityEvent()) { }
+
+        public InteractableOnFocusReceiver(UnityEvent ev) : base(ev, "OnFocusOn") { }
 
         /// <summary>
         /// Raised when focus has left the object
         /// </summary>
-        public UnityEvent OnFocusOff => onFocusOff;
-
-        public InteractableOnFocusReceiver() : this(new UnityEvent()) { }
+        [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Focus Off", Tooltip = "Focus has left the object")]
+        public UnityEvent OnFocusOff = new UnityEvent();
 
         /// <summary>
         /// Raised when focus has entered the object
@@ -31,8 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public UnityEvent OnFocusOn => uEvent;
 
         private bool hadFocus;
-
-        public InteractableOnFocusReceiver(UnityEvent ev) : base(ev, "OnFocus") { }
 
         /// <inheritdoc />
         public override void OnUpdate(InteractableStates state, Interactable source)
