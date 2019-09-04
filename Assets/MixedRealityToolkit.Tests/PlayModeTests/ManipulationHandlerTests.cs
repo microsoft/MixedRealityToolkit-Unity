@@ -274,12 +274,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return hand.Show(initialHandPosition);
             yield return hand.MoveTo(initialObjectPosition);
-            yield return hand.GrabAndThrowAt(rightPosition);
+            // Note: don't wait for a physics update after releasing, because it would recompute
+            // the velocity of the hand and make it deviate from the rigid body velocity!
+            yield return hand.GrabAndThrowAt(rightPosition, false);
 
             // With simulated hand angular velocity would not be equal to 0, because of how simulation
             // moves hand when releasing the Pitch. Even though it doesn't directly follow from hand movement, there will always be some rotation.
             Assert.NotZero(rigidBody.angularVelocity.magnitude, "Manipulationhandler should apply angular velocity to rigidBody upon release.");
-            Assert.AreEqual(rigidBody.velocity, hand.GetVelocity(), "Manipulationhandler should apply hand velocity to rigidBody upon release.");
+            Assert.AreEqual(hand.GetVelocity(), rigidBody.velocity, "Manipulationhandler should apply hand velocity to rigidBody upon release.");
 
             // This is just for debugging purposes, so object's movement after release can be seen.
             yield return hand.MoveTo(initialHandPosition);

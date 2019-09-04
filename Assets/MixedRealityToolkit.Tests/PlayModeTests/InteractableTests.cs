@@ -45,23 +45,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Tests that an interactable component can be added to a GameObject
-        /// at runtime.
-        /// </summary>
-        /// <returns></returns>
-        [UnityTest]
-        public IEnumerator TestAddInteractableAtRuntime()
-        {
-            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            // This should not throw an exception
-            var interactable = cube.AddComponent<Interactable>();
-
-            // clean up
-            GameObject.Destroy(cube);
-            yield return null;
-        }
-
-        /// <summary>
         /// Instantiates a push button prefab and uses simulated hand input to press it.
         /// </summary>
         /// <returns></returns>

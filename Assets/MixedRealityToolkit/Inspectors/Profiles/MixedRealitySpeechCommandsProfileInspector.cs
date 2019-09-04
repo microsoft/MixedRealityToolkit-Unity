@@ -103,8 +103,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             using (new GUIEnabledWrapper(isInitialized, false))
             {
                 EditorGUILayout.Space();
-                EditorGUILayout.BeginVertical();
-
+                using (new EditorGUILayout.VerticalScope())
+                {
                     if (InspectorUIUtility.RenderIndentedButton(AddButtonContent, EditorStyles.miniButton))
                     {
                         list.arraySize += 1;
@@ -120,21 +120,22 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         actionId.intValue = 0;
                     }
 
-                EditorGUILayout.Space();
+                    EditorGUILayout.Space();
 
-                if (list == null || list.arraySize == 0)
-                {
-                    EditorGUILayout.HelpBox("Create a new Speech Command.", MessageType.Warning);
-                    EditorGUILayout.EndVertical();
-                    return;
-                }
+                    if (list == null || list.arraySize == 0)
+                    {
+                        EditorGUILayout.HelpBox("Create a new Speech Command.", MessageType.Warning);
+                        return;
+                    }
 
                     for (int i = 0; i < list.arraySize; i++)
                     {
-                        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+                        using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
+                        {
                             SerializedProperty speechCommand = list.GetArrayElementAtIndex(i);
 
-                            EditorGUILayout.BeginHorizontal();
+                            using (new EditorGUILayout.HorizontalScope())
+                            {
                                 var keyword = speechCommand.FindPropertyRelative("keyword");
                                 EditorGUILayout.PropertyField(keyword, KeywordContent);
                                 if (GUILayout.Button(MinusButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
@@ -142,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                     list.DeleteArrayElementAtIndex(i);
                                     break;
                                 }
-                            EditorGUILayout.EndHorizontal();
+                            }
 
                             var localizationKey = speechCommand.FindPropertyRelative("localizationKey");
                             EditorGUILayout.PropertyField(localizationKey, LocalizationContent);
@@ -164,10 +165,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                 actionDescription.stringValue = inputAction.Description;
                                 actionConstraint.enumValueIndex = (int)inputAction.AxisConstraint;
                             }
-                        EditorGUILayout.EndVertical();
+                        }
                         EditorGUILayout.Space();
                     }
-                GUILayout.EndVertical();
+                }
             }
         }
     }

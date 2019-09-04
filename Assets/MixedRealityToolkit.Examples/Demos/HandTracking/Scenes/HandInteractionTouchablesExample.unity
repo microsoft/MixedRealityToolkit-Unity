@@ -213,7 +213,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
   touchableCollider: {fileID: 120787140}
 --- !u!1 &154259684
@@ -410,7 +409,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
   touchableCollider: {fileID: 135097813561623892}
 --- !u!1 &319244396
@@ -2383,7 +2381,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
   touchableCollider: {fileID: 135097813720437581}
   localForward: {x: 0, y: 0, z: -1}
