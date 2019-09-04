@@ -18,10 +18,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public ref Vector3[] GetBoundsCornersRef() { return ref boundsCorners; }
 
-        private bool m_isFlattened = false;
-        private Transform m_parent = null;
-
-
 
         internal void UpdateVisibilityInInspector(HideFlags flags)
         {
@@ -73,11 +69,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         internal void CreateHandles(GameObject handlePrefab, Material handleMaterial, Transform parent, 
-            float handleSize, bool isFlattened, Vector3 colliderPadding)
+            float handleSize, bool isFlattened, Vector3 colliderPadding, bool drawManipulationTether)
         {
-            //bool isFlattened = (flattenAxis != FlattenModeType.DoNotFlatten);
-            m_isFlattened = isFlattened;
-            m_parent = parent;
             for (int i = 0; i < boundsCorners.Length; ++i)
             {
                 GameObject corner = new GameObject
@@ -133,7 +126,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 BoundingBox.ApplyMaterialToAllRenderers(cornerVisual, handleMaterial);
 
-                BoundingBoxHandleUtils.AddComponentsToAffordance(corner, new Bounds(cornerbounds.center * invScale, cornerbounds.size * invScale), RotationHandlePrefabCollider.Box, CursorContextInfo.CursorAction.Scale, colliderPadding);
+                BoundingBoxHandleUtils.AddComponentsToAffordance(corner, new Bounds(cornerbounds.center * invScale, cornerbounds.size * invScale), 
+                    RotationHandlePrefabCollider.Box, CursorContextInfo.CursorAction.Scale, colliderPadding, parent, drawManipulationTether);
                 handles.Add(corner.transform);
 
                 

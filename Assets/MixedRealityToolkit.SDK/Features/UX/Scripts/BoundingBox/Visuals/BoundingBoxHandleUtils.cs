@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
-    class BoundingBoxHandleUtils
+    internal class BoundingBoxHandleUtils
     {
 
 
@@ -70,7 +70,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         /// <param name="afford"></param>
         /// <param name="bounds"></param>
-        public static void AddComponentsToAffordance(GameObject afford, Bounds bounds, RotationHandlePrefabCollider colliderType, CursorContextInfo.CursorAction cursorType, Vector3 colliderPadding)
+        public static void AddComponentsToAffordance(GameObject afford, Bounds bounds, RotationHandlePrefabCollider colliderType, 
+            CursorContextInfo.CursorAction cursorType, Vector3 colliderPadding, Transform parent, bool drawTetherWhenManipulating)
         {
             if (colliderType == RotationHandlePrefabCollider.Box)
             {
@@ -94,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             var contextInfo = afford.EnsureComponent<CursorContextInfo>();
             contextInfo.CurrentCursorAction = cursorType;
-            contextInfo.ObjectCenter = rigRoot.transform;
+            contextInfo.ObjectCenter = parent;
         }
 
     }

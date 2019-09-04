@@ -85,11 +85,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public void Flatten(BoundingBoxRotationHandles rotationHandles)
         {
-            if (flattenedHandles != null && linkRenderers != null)
+            //TODO CHANGE THIS - MAYBE MAKE FLATTENEDHANDLES a static const array (different types) in the types class or make a constants class
+            if (rotationHandles.flattenedHandles != null && linkRenderers != null)
             {
-                for (int i = 0; i < flattenedHandles.Length; ++i)
+                for (int i = 0; i < rotationHandles.flattenedHandles.Length; ++i)
                 {
-                    linkRenderers[flattenedHandles[i]].enabled = false;
+                    linkRenderers[rotationHandles.flattenedHandles[i]].enabled = false;
                 }
             }
         }

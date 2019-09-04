@@ -528,8 +528,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        BoundingBoxVisuals visuals;
-
         [SerializeField]
         [Tooltip("Determines the type of collider that will surround the rotation handle prefab.")]
         private RotationHandlePrefabCollider rotationHandlePrefabColliderType = RotationHandlePrefabCollider.Box;
@@ -1451,13 +1449,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             proximityEffect.ClearHandles();
-
-
-
-            links.Clear();
-
-          
+            links.Clear();       
             scaleHandles.DestroyHandles();
+            rotationHandles.DestroyHandles();
 
             if (rigRoot != null)
             {
@@ -1507,6 +1501,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private void SetHighlighted(Transform activeHandle)
         {
             scaleHandles.SetHighlighted(activeHandle, handleGrabbedMaterial);
+            rotationHandles.SetHighlighted(activeHandle, handleGrabbedMaterial);
 
             //update the box material to the grabbed material
             if (boxDisplay != null)
@@ -1527,6 +1522,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private void HandleIgnoreCollider()
         {
             scaleHandles.HandleIgnoreCollider(handlesIgnoreCollider);
+            rotationHandles.HandleIgnoreCollider(handlesIgnoreCollider);
         }
 
         private void SetMaterials()
@@ -1603,7 +1599,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             //set corner visibility
             scaleHandles.ResetHandleVisibility(isVisible && showScaleHandles, handleMaterial);
             // set rotation handle visibility
-            rotationHandles.ResetHandleVisibility(isVisible, handleMaterial);
+            rotationHandles.ResetHandleVisibility(isVisible, handleMaterial, showRotationHandleForX, showRotationHandleForY, showRotationHandleForZ);
             rotationHandles.SetHiddenHandles();
         }
 
@@ -1649,7 +1645,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             bool isFlattened = flattenAxis != FlattenModeType.DoNotFlatten;
             GameObject handlePrefab = isFlattened ? scaleHandleSlatePrefab : scaleHandlePrefab;
-            scaleHandles.CreateHandles(handlePrefab, handleMaterial, rigRoot, scaleHandleSize, isFlattened, scaleHandleColliderPadding);
+            scaleHandles.CreateHandles(handlePrefab, handleMaterial, rigRoot, scaleHandleSize, isFlattened, scaleHandleColliderPadding, drawTetherWhenManipulating);
             scaleHandles.AddProximityEffect(proximityEffect);
            // rotationHandles.CreateHandles(rotationHandlePrefab, rigRoot);
            // rotationHandles.AddProximityEffect(proximityEffect);
@@ -1731,7 +1727,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             rotationHandles.CalculateEdgeCenters(scaleHandles.BoundsCorners);
             rotationHandles.InitEdgeAxis();
             rotationHandles.CreateHandles(rotationHandlePrefab, rigRoot.transform, RotationHandleSize, 
-                handleMaterial, rotationHandlePrefabColliderType, rotateHandleColliderPadding);
+                handleMaterial, rotationHandlePrefabColliderType, rotateHandleColliderPadding, drawTetherWhenManipulating);
             rotationHandles.AddProximityEffect(proximityEffect);
             links.CreateLinks(rotationHandles, wireframeEdgeRadius, GetLinkDimensions(), rigRoot.transform, wireframeMaterial, wireframeShape);
         }

@@ -13,7 +13,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Vector3[] edgeCenters = new Vector3[NumEdges];
         private CardinalAxisType[] edgeAxes;
 
-        private int[] flattenedHandles;
+        // TODO CHANGE BACK TO PRIVATE
+        internal int[] flattenedHandles;
 
         public int GetRotationHandleIdx(Transform handle)
         {
@@ -114,17 +115,26 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
 
 
-        internal void ResetHandleVisibility(bool isVisible, Material handleMaterial)
+        internal void ResetHandleVisibility(bool isVisible, Material handleMaterial, bool xEnabled, bool yEnabled, bool zEnabled)
         {
             //set balls visibility
             if (handles != null)
             {
                 for (int i = 0; i < handles.Count; ++i)
                 {
-                    handles[i].gameObject.SetActive(isVisible && ShouldRotateHandleBeVisible(edgeAxes[i]));
+                    bool isAxisEnabled = ShouldRotateHandleBeVisible(edgeAxes[i], xEnabled, yEnabled, zEnabled);
+                    handles[i].gameObject.SetActive(isVisible && isAxisEnabled);
                     BoundingBox.ApplyMaterialToAllRenderers(handles[i].gameObject, handleMaterial);
                 }
             }
+        }
+
+        private bool ShouldRotateHandleBeVisible(CardinalAxisType axisType, bool xEnabled, bool yEnabled, bool zEnabled)
+        {
+            return
+                (axisType == CardinalAxisType.X && xEnabled) ||
+                (axisType == CardinalAxisType.Y && yEnabled) ||
+                (axisType == CardinalAxisType.Z && zEnabled);
         }
 
         internal void SetHiddenHandles()
@@ -144,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         internal void CreateHandles(GameObject rotationHandlePrefab, Transform parent, float handleSize, 
-            Material handleMaterial, RotationHandlePrefabCollider colliderType, Vector3 colliderPadding)
+            Material handleMaterial, RotationHandlePrefabCollider colliderType, Vector3 colliderPadding, bool drawManipulationTether)
         {
 
             for (int i = 0; i < edgeCenters.Length; ++i)
@@ -187,7 +197,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 midpointVisual.transform.localScale = new Vector3(invScale, invScale, invScale);
                 midpointVisual.transform.localPosition = Vector3.zero;
 
-                BoundingBoxHandleUtils.AddComponentsToAffordance(midpoint, new Bounds(midpointBounds.center * invScale, midpointBounds.size * invScale), colliderType, CursorContextInfo.CursorAction.Rotate, colliderPadding);
+                BoundingBoxHandleUtils.AddComponentsToAffordance(midpoint, new Bounds(midpointBounds.center * invScale, midpointBounds.size * invScale), 
+                    colliderType, CursorContextInfo.CursorAction.Rotate, colliderPadding, parent, drawManipulationTether);
 
                 handles.Add(midpoint.transform);
 
@@ -200,13 +211,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
 
-        private bool ShouldRotateHandleBeVisible(CardinalAxisType axisType)
-        {
-            return
-                (axisType == CardinalAxisType.X && showRotationHandleForX) ||
-                (axisType == CardinalAxisType.Y && showRotationHandleForY) ||
-                (axisType == CardinalAxisType.Z && showRotationHandleForZ);
-        }
 
     }
 }
