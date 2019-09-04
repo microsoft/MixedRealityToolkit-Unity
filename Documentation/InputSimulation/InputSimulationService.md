@@ -27,6 +27,12 @@ Enable the input simulation tools window from the  _"Mixed Reality Toolkit > Uti
 
 A prefab for in-editor buttons to control basic hand placement can be specified in the input simulation profile under __Indicators Prefab__. This is an optional utility, the same features can be accessed in the [Input Simulation tools window](#input-simulation-tools-window).
 
+Hand icons show the state of the simulated hands:
+* ![Untracked hand icon](../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandIndicator_Untracked.png "Untracked hand icon") The hand is not tracking. Click to enable the hand.
+* ![Tracked hand icon](../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandIndicator_Tracked.png "Tracked hand icon") The hand is tracked, but not controlled by user. Click to hide the hand.
+* ![Controlled hand icon](../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandIndicator_Controlled.png "Controlled hand icon") The hand is tracked and controlled by user. Click to hide the hand.
+* ![Reset hand icon](../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandIndicator_Reset.png "Reset hand icon") Click to reset the hand to default position.
+
 # Camera Control
 
 Head movement can be emulated by the Input Simulation Service.
