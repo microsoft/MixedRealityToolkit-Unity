@@ -1,4 +1,6 @@
 # CI build for release packages.
+# Build Number Format
+name: $(Date:yyyyMMdd)v$(Rev:r)
 
 variables:
   UnityVersion: Unity2018.3.7f1
