@@ -93,7 +93,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Ensure FocusProvider's FocusDetails can be overridden.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestOverrideFocusDetails()
         {
