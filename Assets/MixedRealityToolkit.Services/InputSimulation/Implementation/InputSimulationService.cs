@@ -394,13 +394,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 worldDelta.x = worldDelta2D.x;
                 worldDelta.y = worldDelta2D.y;
 
+                // Viewport delta x and y can be computed from screen x/y.
+                // Note that the conversion functions do not change Z, it is expected to always be in world space units.
+                Vector3 viewportDelta = CameraCache.Main.ScreenToViewportPoint(screenDelta);
+                // Compute viewport-scale z delta
+                viewportDelta.z = WorldToViewport(new Vector2(worldDelta.z, 0)).x;
+
                 lastMousePosition = UnityEngine.Input.mousePosition;
 
                 return new MouseDelta()
                 {
                     screenDelta = screenDelta,
                     worldDelta = worldDelta,
-                    viewportDelta = CameraCache.Main.ScreenToViewportPoint(screenDelta),
+                    viewportDelta = viewportDelta,
                 };
             }
         }
@@ -425,6 +431,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return new Vector2(
                 (deltaViewport3D.x - 0.5f) * CameraCache.Main.pixelWidth,
                 (deltaViewport3D.y - 0.5f) * CameraCache.Main.pixelHeight);
+        }
+
+        private Vector2 WorldToViewport(Vector2 deltaWorld)
+        {
+            Vector3 deltaWorld3D = CameraCache.Main.transform.TransformPoint(new Vector3(deltaWorld.x, deltaWorld.y, MouseWorldDepth));
+            Vector3 deltaViewport3D = CameraCache.Main.WorldToViewportPoint(deltaWorld3D);
+            return new Vector2(deltaViewport3D.x - 0.5f, deltaViewport3D.y - 0.5f);
         }
     }
 }

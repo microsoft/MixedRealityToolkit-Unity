@@ -176,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public float DefaultHandDistance => defaultHandDistance;
         [SerializeField]
         [Tooltip("Depth change when scrolling the mouse wheel")]
-        private float handDepthMultiplier = 0.01f;
+        private float handDepthMultiplier = 0.03f;
         public float HandDepthMultiplier => handDepthMultiplier;
         [SerializeField]
         [Tooltip("Apply random offset to the hand position")]

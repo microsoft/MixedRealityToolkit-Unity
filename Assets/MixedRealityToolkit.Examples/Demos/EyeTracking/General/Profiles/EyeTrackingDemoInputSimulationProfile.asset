@@ -34,14 +34,9 @@ MonoBehaviour:
   moveUpDown: UpDown
   mouseX: Mouse X
   mouseY: Mouse Y
+  mouseScroll: Mouse ScrollWheel
   lookHorizontal: AXIS_4
   lookVertical: AXIS_5
-  rollCameraCWKey:
-    bindingType: 2
-    code: 109
-  rollCameraCCWKey:
-    bindingType: 2
-    code: 110
   simulateEyePosition: 1
   defaultHandSimulationMode: 2
   toggleLeftHandKey:
@@ -57,6 +52,9 @@ MonoBehaviour:
   rightHandManipulationKey:
     bindingType: 2
     code: 32
+  handRotateButton:
+    bindingType: 1
+    code: 1
   defaultHandGesture: 2
   leftMouseHandGesture: 3
   middleMouseHandGesture: 0
@@ -65,5 +63,5 @@ MonoBehaviour:
   holdStartDuration: 0.5
   navigationStartThreshold: 0.03
   defaultHandDistance: 0.5
-  handDepthMultiplier: 0.01
+  handDepthMultiplier: 0.03
   handJitterAmount: 0
