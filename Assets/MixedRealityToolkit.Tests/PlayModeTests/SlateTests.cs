@@ -79,11 +79,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 screenPoint = CameraCache.Main.ViewportToScreenPoint(new Vector3(0.5f, 0.25f, 0.5f));
             yield return h.Show(CameraCache.Main.ScreenToWorldPoint(screenPoint));
 
+            Assert.True(PointerUtils.TryGetHandRayEndPoint(Handedness.Right, out Vector3 hitPointStart));
+
             yield return h.SetGesture(ArticulatedHandPose.GestureId.Pinch);
             yield return h.Move(new Vector3(0, -0.05f, 0), 10);
+            Assert.True(PointerUtils.TryGetHandRayEndPoint(Handedness.Right, out Vector3 hitPointEnd));
             yield return h.SetGesture(ArticulatedHandPose.GestureId.Open);
 
+            TestUtilities.AssertNotAboutEqual(hitPointStart, hitPointEnd, "ray should not stick on slate scrolling");
             Assert.AreEqual(0.1, totalPanDelta.y, 0.05, "pan delta is not correct");
+
+
 
             yield return h.Hide();
         }
