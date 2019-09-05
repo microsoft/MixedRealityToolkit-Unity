@@ -40,11 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         var recevierClassNames = receiverTypes.Select(t => t.Name).ToArray();
                         int id = Array.IndexOf(recevierClassNames, className.stringValue);
                         int newId = EditorGUI.Popup(position, id, recevierClassNames);
-
-                        if (newId == -1)
-                        {
-                            newId = 0;
-                        }
+                        if (newId == -1) { newId = 0; }
 
                         receiverType = receiverTypes[newId];
                         if (id != newId)
@@ -96,16 +92,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return false;
         }
 
-        // TODO: Troy add comment here
-        private static void EventChanged(Type newType, SerializedProperty prop)
+        /// <summary>
+        /// Update the given InteractableEvent to the new type (which extends ReceiverBase)
+        /// </summary>
+        /// <param name="newType">new receiverbase subclass type to target</param>
+        /// <param name="eventItem">InteractableEvent to target and update</param>
+        private static void EventChanged(Type newType, SerializedProperty eventItem)
         {
-            SerializedProperty className = prop.FindPropertyRelative("ClassName");
-            SerializedProperty assemblyQualifiedName = prop.FindPropertyRelative("AssemblyQualifiedName");
+            SerializedProperty className = eventItem.FindPropertyRelative("ClassName");
+            SerializedProperty assemblyQualifiedName = eventItem.FindPropertyRelative("AssemblyQualifiedName");
 
             className.stringValue = newType.Name;
             assemblyQualifiedName.stringValue = newType.AssemblyQualifiedName;
 
-            SerializedProperty settings = prop.FindPropertyRelative("Settings");
+            SerializedProperty settings = eventItem.FindPropertyRelative("Settings");
 
             ReceiverBase defaultReceiver = (ReceiverBase)Activator.CreateInstance(newType, new UnityEvent());
             InspectorFieldsUtility.ClearSettingsList(settings, InspectorFieldsUtility.GetInspectorFields(defaultReceiver));

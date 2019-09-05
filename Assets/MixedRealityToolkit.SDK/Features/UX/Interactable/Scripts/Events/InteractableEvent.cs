@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -17,6 +16,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
     public class InteractableEvent
     {
         public UnityEvent Event = new UnityEvent();
+
+        [NonSerialized]
+        public ReceiverBase Receiver;
 
         /// <summary>
         /// Defines the type of Receiver to associate. Type must be a class that extends ReceiverBase
@@ -65,17 +67,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         private string AssemblyQualifiedName;
 
-        // TODO: Troy Make serialized field?
-        public ReceiverBase Receiver;
-
-        public List<InspectorPropertySetting> Settings;
+        [SerializeField]
+        private List<InspectorPropertySetting> Settings = new List<InspectorPropertySetting>();
 
         /// <summary>
         /// Create the event and setup the values from the inspector
         /// </summary>
         /// <param name="iEvent"></param>
         /// <returns></returns>
-        public static ReceiverBase GetReceiver(InteractableEvent iEvent)
+        public static ReceiverBase CreateReceiver(InteractableEvent iEvent)
         {
             Type eventType = Type.GetType(iEvent.AssemblyQualifiedName);
 

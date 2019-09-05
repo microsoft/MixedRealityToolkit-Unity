@@ -24,8 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 SerializedProperty eventItem = events.GetArrayElementAtIndex(0);
                 InteractableEventInspector.RenderEvent(eventItem, false);
-                // TODO: Troy
-                //RenderEventSettings(eventItem, 0, ChangeEvent, null);
             }
 
             serializedObject.ApplyModifiedProperties();

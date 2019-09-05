@@ -49,18 +49,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 assemblyQualifiedName.stringValue = newType.AssemblyQualifiedName;
             }
 
-            int bitCount = 0;
             for (int i = 0; i < stateList.arraySize; i++)
             {
-                if (i == 0)
-                {
-                    bitCount += 1;
-                }
-                else
-                {
-                    bitCount += bitCount;
-                }
-
                 using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
                 {
                     SerializedProperty stateItem = stateList.GetArrayElementAtIndex(i);
@@ -70,14 +60,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     SerializedProperty bit = stateItem.FindPropertyRelative("Bit");
                     SerializedProperty index = stateItem.FindPropertyRelative("Index");
 
+                    // assign the bitcount based on location in the list as power of 2
+                    bit.intValue = 1 << i;
+
                     activeIndex.intValue = i;
 
                     using (new EditorGUILayout.HorizontalScope())
                     {
-                        string[] stateEnums = GetStateOptions();
+                        string[] stateEnums = Enum.GetNames(typeof(InteractableStates.InteractableStateEnum));
                         int enumIndex = Array.IndexOf(stateEnums, name.stringValue);
 
-                        int newEnumIndex = EditorGUILayout.Popup(name.stringValue + " (" + bitCount + ")", enumIndex, stateEnums);
+                        int newEnumIndex = EditorGUILayout.Popup(name.stringValue + " (" + bit.intValue + ")", enumIndex, stateEnums);
                         if (newEnumIndex == -1) { newEnumIndex = 0; }
 
                         name.stringValue = stateEnums[newEnumIndex];
@@ -89,9 +82,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                             break;
                         }
                     }
-
-                    // assign the bitcount based on location in the list
-                    bit.intValue = bitCount;
                 }
             }
 
@@ -101,15 +91,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             serializedObject.ApplyModifiedProperties();
-        }
-
-        /// <summary>
-        /// Get a list of state names
-        /// </summary>
-        /// <returns></returns>
-        protected string[] GetStateOptions()
-        {
-            return Enum.GetNames(typeof(InteractableStates.InteractableStateEnum));
         }
     }
 #endif

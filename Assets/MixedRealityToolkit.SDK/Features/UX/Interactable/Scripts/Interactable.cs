@@ -637,7 +637,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             for (int i = 0; i < Events.Count; i++)
             {
-                Events[i].Receiver = InteractableEvent.GetReceiver(Events[i]);
+                Events[i].Receiver = InteractableEvent.CreateReceiver(Events[i]);
                 Events[i].Receiver.Host = this;
             }
         }

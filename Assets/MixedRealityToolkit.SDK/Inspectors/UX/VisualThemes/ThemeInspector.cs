@@ -442,7 +442,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         {
             if (theme == null || theme.History == null || index > theme.History.Count)
             {
-                // TOOD: Troy - log errro
+                Debug.LogWarning("Could not clear theme history cache as invalid access");
                 return;
             }
 
