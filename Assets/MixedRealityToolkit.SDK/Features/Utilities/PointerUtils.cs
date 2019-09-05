@@ -19,9 +19,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="handedness">Handedness of ray</param>
         /// <param name="endPoint">The output position</param>
         /// <returns>true if pointer found, false otherwise. If not found, endPoint is set to zero</returns>
-        public static bool TryGetHandRayEndPoint(Handedness handedness, out Vector3 endPoint)
+        public static bool TryGetHandRayEndPoint<LinePointer>(Handedness handedness, out Vector3 endPoint)
         {
-            return TryGetEndpoint(handedness, InputSourceType.Hand, out endPoint);
+            return TryGetPointerEndpoint(handedness, InputSourceType.Hand, out endPoint);
         }
 
         /// <summary>
@@ -33,25 +33,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <returns>true if pointer found, false otherwise. If not found, endPoint is set to zero</returns>
         public static bool TryGetMotionControllerEndPoint(Handedness handedness, out Vector3 endPoint)
         {
-            return TryGetEndpoint(handedness, InputSourceType.Controller, out endPoint);
+            return TryGetPointerEndpoint<LinePointer>(handedness, InputSourceType.Controller, out endPoint);
         }
 
         /// <summary>
         /// Tries to get the end point of a pointer by source type and handedness
         /// If no pointer of given handedness is found, returns false and sets result to zero.
         /// </summary>
+        /// <typeparam name="T">Type of pointer to query</typeparam>
         /// <param name="handedness">Handedness of pointer</param>
         /// <param name="inputType">input type of pointer</param>
         /// <param name="endPoint">output point position</param>
         /// <returns></returns>
-        public static bool TryGetEndpoint(Handedness handedness, InputSourceType inputType, out Vector3 endPoint)
+        public static bool TryGetPointerEndpoint<T>(Handedness handedness, InputSourceType inputType, out Vector3 endPoint) where T: IMixedRealityPointer
         {
-            foreach (var pointer in GetPointers<IMixedRealityPointer>(handedness, InputSourceType.Hand))
+            foreach (var pointer in GetPointers<IMixedRealityPointer>(handedness, inputType))
             {
-                if (pointer is IMixedRealityNearPointer)
-                {
-                    continue;
-                }
                 FocusDetails? details = pointer?.Result?.Details;
                 if (details.HasValue)
                 {
@@ -71,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="handedness">Handedness of pointer</param>
         /// <param name="endPoint">The output point position</param>
         /// <returns>true if pointer found, false otherwise. If not found, endPoint is set to zero</returns>
-        public static bool TryGetEndpoint<T>(Handedness handedness, out Vector3 endPoint) where T : class, IMixedRealityPointer
+        public static bool TryGetPointerEndpoint<T>(Handedness handedness, out Vector3 endPoint) where T : class, IMixedRealityPointer
         {
             T pointer = GetPointer<T>(handedness);
             FocusDetails? details = pointer?.Result?.Details;
