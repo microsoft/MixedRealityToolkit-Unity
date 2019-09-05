@@ -64,6 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 BuildPlatform = EditorUserBuildSettings.wsaArchitecture,
                 GazeInputCapabilityEnabled = UwpBuildDeployPreferences.GazeInputCapabilityEnabled,
                 Multicore = UwpBuildDeployPreferences.MulticoreAppxBuildEnabled,
+                ResearchModeCapabilityEnabled = UwpBuildDeployPreferences.ResearchModeCapabilityEnabled,
 
                 // Configure a post build action that will compile the generated solution
                 PostBuildAction = PostBuildAction
@@ -82,6 +83,11 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     if (uwpBuildInfo.GazeInputCapabilityEnabled)
                     {
                         UwpAppxBuildTools.AddGazeInputCapability(uwpBuildInfo);
+                    }
+
+                    if (uwpBuildInfo.ResearchModeCapabilityEnabled)
+                    {
+                        UwpAppxBuildTools.AddResearchModeCapability(uwpBuildInfo);
                     }
 
                     if (showDialog &&

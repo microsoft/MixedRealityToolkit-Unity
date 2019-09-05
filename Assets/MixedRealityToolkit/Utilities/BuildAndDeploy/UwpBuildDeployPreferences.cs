@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
@@ -41,6 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private const string EDITOR_PREF_PROCESS_ALL = "BuildDeployWindow_ProcessAll";
         private const string EDITOR_PREF_GAZE_INPUT_CAPABILITY_ENABLED = "BuildDeployWindow_GazeInputCapabilityEnabled";
         private const string EDITOR_PREF_MULTICORE_APPX_BUILD_ENABLED = "BuildDeployWindow_MulticoreAppxBuildEnabled";
+        private const string EDITOR_PREF_RESEARCH_MODE_CAPABILITY_ENABLED = "BuildDeployWindow_ResearchModeCapabilityEnabled";
 
         /// <summary>
         /// The current Build Configuration. (Debug, Release, or Master)
@@ -128,5 +129,13 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             get => EditorPreferences.Get(EDITOR_PREF_MULTICORE_APPX_BUILD_ENABLED, false);
             set => EditorPreferences.Set(EDITOR_PREF_MULTICORE_APPX_BUILD_ENABLED, value);
         }
-    }
+
+        /// <summary>
+        /// Current setting to modify 'Package.appxmanifest' file for sensor access.
+        /// </summary>
+        public static bool ResearchModeCapabilityEnabled
+        {
+            get => EditorPreferences.Get(EDITOR_PREF_RESEARCH_MODE_CAPABILITY_ENABLED, false);
+            set => EditorPreferences.Set(EDITOR_PREF_RESEARCH_MODE_CAPABILITY_ENABLED, value);
+        }
 }

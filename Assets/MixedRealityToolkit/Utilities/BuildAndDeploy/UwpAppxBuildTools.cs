@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
@@ -242,6 +242,11 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 AddGazeInputCapability(rootNode);
             }
 
+            if (uwpBuildInfo != null && uwpBuildInfo.ResearchModeCapabilityEnabled)
+            {
+                AddResearchModeCapability(rootNode);
+            }
+
             // We use XName.Get instead of string -> XName implicit conversion because
             // when we pass in the string "Version", the program doesn't find the attribute.
             // Best guess as to why this happens is that implicit string conversion doesn't set the namespace to empty
@@ -408,6 +413,78 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             rootElement.Save(manifestFilePath);
         }
 
+        /// <summary>
+        /// Adds the 'Research Mode' capability to the manifest.
+        /// </summary>
+        /// <remarks>
+        /// This is only for research projects and should not be used in production.
+        /// For further information take a look at https://docs.microsoft.com/en-us/windows/mixed-reality/research-mode.
+        /// Note that this function is only public to poke a hole for testing - do not
+        /// take a dependency on this function.
+        /// </remarks>
+        public static void AddResearchModeCapability(XElement rootNode)
+        {
+            // Add rescap Namespace to package tag
+            XNamespace rescapNs = "http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities";
+            var rescapAttribute = rootNode.Attribute(XNamespace.Xmlns + "rescap");
+            if (rescapAttribute == null)
+            {
+                rescapAttribute = new XAttribute(XNamespace.Xmlns + "rescap", rescapNs);
+                rootNode.Add(rescapAttribute);
+            }
+
+            // Add rescap to IgnorableNamespaces
+            var ignNsAttribute = rootNode.Attribute("IgnorableNamespaces");
+            if (ignNsAttribute == null)
+            {
+                ignNsAttribute = new XAttribute("IgnorableNamespaces", "rescap");
+                rootNode.Add(ignNsAttribute);
+            }
+
+            if (!ignNsAttribute.Value.Contains("rescap"))
+            {
+                ignNsAttribute.Value += " rescap";
+            }
+
+            // If the capabilities container tag is missing, make sure it gets added.
+            var capabilitiesTag = rootNode.GetDefaultNamespace() + "Capabilities";
+            XElement capabilitiesNode = rootNode.Element(capabilitiesTag);
+            if (capabilitiesNode == null)
+            {
+                capabilitiesNode = new XElement(capabilitiesTag);
+                rootNode.Add(capabilitiesNode);
+            }
+
+            var researchModeCapability = rescapNs + "Capability";
+            XElement existingResearchModeCapability = capabilitiesNode.Elements(researchModeCapability)
+                .FirstOrDefault(element => element.Attribute("Name")?.Value == "perceptionSensorsExperimental");
+
+            // Only add the capability if isn't there already.
+            if (existingResearchModeCapability == null)
+            {
+                capabilitiesNode.Add(
+                    new XElement(researchModeCapability, new XAttribute("Name", "perceptionSensorsExperimental")));
+            }
+        }
+
+        /// <summary>
+        /// An overload of AddResearchModeCapability that will read the AppX manifest
+        /// from the build output and update the manifest file with the rescap aka
+        /// research mode capability.
+        /// </summary>
+        /// <param name="buildInfo">An IBuildInfo containing a valid OutputDirectory</param>
+        public static void AddResearchModeCapability(IBuildInfo buildInfo)
+        {
+            string manifestFilePath = GetManifestFilePath(buildInfo);
+            if (manifestFilePath == null)
+            {
+                throw new FileNotFoundException("Unable to find manifest file");
+            }
+
+            var rootElement = XElement.Load(manifestFilePath);
+            AddResearchModeCapability(rootElement);
+            rootElement.Save(manifestFilePath);
+        }
         /// <summary>
         /// This struct controls the behavior of the arguments that are used
         /// when finding msbuild.exe.

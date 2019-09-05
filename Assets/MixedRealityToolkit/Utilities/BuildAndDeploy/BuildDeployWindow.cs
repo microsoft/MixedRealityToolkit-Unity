@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
@@ -103,6 +103,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private readonly GUIContent doAllLabel = new GUIContent(" Do actions on all devices", "Should the build options perform actions on all the connected devices?");
 
         private readonly GUIContent uninstallLabel = new GUIContent("Uninstall First", "Uninstall application before installing");
+
+        private readonly GUIContent researchModeCapabilityLabel = new GUIContent("Enable Research Mode", "Enables research mode of HoloLens 1. This allows access to raw sensor data.");
 
         #endregion Labels
 
@@ -366,6 +368,19 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
                 using (new EditorGUILayout.HorizontalScope())
                 {
+                    // If the WSA target device is HoloLens, show the checkboxes for research mode
+                    if (EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens)
+                    {
+                        // Enable Research Mode Capability
+                        bool curResearchModeCapabilityEnabled = UwpBuildDeployPreferences.ResearchModeCapabilityEnabled;
+                        bool newResearchModeCapabilityEnabled = EditorGUILayout.ToggleLeft(researchModeCapabilityLabel, curResearchModeCapabilityEnabled);
+
+                        if (newResearchModeCapabilityEnabled != curResearchModeCapabilityEnabled)
+                        {
+                            UwpBuildDeployPreferences.ResearchModeCapabilityEnabled = newResearchModeCapabilityEnabled;
+                        }
+                    }
+
                     GUILayout.FlexibleSpace();
                     GUI.enabled = ShouldOpenSLNBeEnabled;
 
