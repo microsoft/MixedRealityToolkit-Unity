@@ -3,9 +3,9 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
-
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
@@ -16,44 +16,33 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected States instance;
         protected SerializedProperty stateList;
 
-        // List of interactable states.
-        protected InteractableTypesContainer stateOptions;
-        
-        // indent tracker
-        protected static int indentOnSectionStart = 0;
-
-
         protected virtual void OnEnable()
         {
             instance = (States)target;
-            
-            stateList = serializedObject.FindProperty("StateList");
-            instance.SetupStateOptions();
+
+            stateList = serializedObject.FindProperty("stateList");
         }
 
         public override void OnInspectorGUI()
         {
-            //base.OnInspectorGUI();
             serializedObject.Update();
 
             InspectorUIUtility.DrawTitle("States");
             InspectorUIUtility.DrawNotice("Manage state configurations to drive Interactables or Transitions");
 
-            // get the list of options and InteractableStates
-            stateOptions = instance.StateOptions;
-            
-            SerializedProperty stateLogicName = serializedObject.FindProperty("StateLogicName");
+            SerializedProperty stateModelClassName = serializedObject.FindProperty("StateModelClassName");
             SerializedProperty assemblyQualifiedName  = serializedObject.FindProperty("AssemblyQualifiedName");
-            int option = Array.IndexOf(stateOptions.ClassNames, stateLogicName.stringValue);
 
-            int newLogic = EditorGUILayout.Popup("State Model", option, stateOptions.ClassNames);
-            if (option != newLogic)
+            var stateModelTypes = typeof(InteractableStateModel).GetAllSubClassesOf();
+            var stateModelClassNames = stateModelTypes.Select(t => t.Name).ToArray();
+            int id = Array.IndexOf(stateModelClassNames, stateModelClassName.stringValue);
+            int newId = EditorGUILayout.Popup("State Model", id, stateModelClassNames);
+            if (id != newId)
             {
-                stateLogicName.stringValue = stateOptions.ClassNames[newLogic];
-                assemblyQualifiedName.stringValue = stateOptions.AssemblyQualifiedNames[newLogic];
+                Type newType = stateModelTypes[newId];
+                stateModelClassName.stringValue = newType.Name;
+                assemblyQualifiedName.stringValue = newType.AssemblyQualifiedName;
             }
-
-            stateList = serializedObject.FindProperty("StateList");
 
             int bitCount = 0;
             for (int i = 0; i < stateList.arraySize; i++)
@@ -67,33 +56,33 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     bitCount += bitCount;
                 }
 
-                EditorGUILayout.BeginVertical("Box");
-                SerializedProperty stateItem = stateList.GetArrayElementAtIndex(i);
+                using (new EditorGUILayout.VerticalScope("Box"))
+                {
+                    SerializedProperty stateItem = stateList.GetArrayElementAtIndex(i);
 
-                SerializedProperty name = stateItem.FindPropertyRelative("Name");
-                SerializedProperty activeIndex = stateItem.FindPropertyRelative("ActiveIndex");
-                SerializedProperty bit = stateItem.FindPropertyRelative("Bit");
-                SerializedProperty index = stateItem.FindPropertyRelative("Index");
-                
-                activeIndex.intValue = i;
-                
-                EditorGUILayout.BeginHorizontal();
-                string[] stateEnums = GetStateOptions();
-                int enumIndex = Array.IndexOf(stateEnums, name.stringValue);
+                    SerializedProperty name = stateItem.FindPropertyRelative("Name");
+                    SerializedProperty activeIndex = stateItem.FindPropertyRelative("ActiveIndex");
+                    SerializedProperty bit = stateItem.FindPropertyRelative("Bit");
+                    SerializedProperty index = stateItem.FindPropertyRelative("Index");
 
-                int newEnumIndex = EditorGUILayout.Popup(name.stringValue + " (" + bitCount + ")", enumIndex, stateEnums);
-                
-                name.stringValue = stateEnums[newEnumIndex];
-                index.intValue = newEnumIndex;
+                    activeIndex.intValue = i;
 
-                InspectorUIUtility.SmallButton(new GUIContent(InspectorUIUtility.Minus, "Remove State"), i, RemoveState);
-                
-                EditorGUILayout.EndHorizontal();
+                    using (new EditorGUILayout.HorizontalScope())
+                    {
+                        string[] stateEnums = GetStateOptions();
+                        int enumIndex = Array.IndexOf(stateEnums, name.stringValue);
 
-                // assign the bitcount based on location in the list
-                bit.intValue = bitCount;
-                
-                EditorGUILayout.EndVertical();
+                        int newEnumIndex = EditorGUILayout.Popup(name.stringValue + " (" + bitCount + ")", enumIndex, stateEnums);
+
+                        name.stringValue = stateEnums[newEnumIndex];
+                        index.intValue = newEnumIndex;
+
+                        InspectorUIUtility.SmallButton(new GUIContent(InspectorUIUtility.Minus, "Remove State"), i, RemoveState);
+                    }
+
+                    // assign the bitcount based on location in the list
+                    bit.intValue = bitCount;
+                }
             }
 
             InspectorUIUtility.FlexButton(new GUIContent("+", "Add Theme Property"), 0, AddState);

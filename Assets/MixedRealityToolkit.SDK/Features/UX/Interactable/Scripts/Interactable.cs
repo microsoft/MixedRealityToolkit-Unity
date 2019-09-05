@@ -627,7 +627,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         protected virtual void SetupStates()
         {
-            StateManager = States.SetupLogic();
+            StateManager = States.CreateStateModel();
         }
 
         /// <summary>

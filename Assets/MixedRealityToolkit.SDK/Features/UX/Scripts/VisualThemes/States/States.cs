@@ -4,42 +4,100 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     [CreateAssetMenu(fileName = "States", menuName = "Mixed Reality Toolkit/Interactable/State", order = 1)]
     public class States : ScriptableObject
     {
-        public List<State> StateList;
-        public int DefaultIndex = 0;
-        public Type StateType;
-        public InteractableTypesContainer StateOptions;
-        public string StateLogicName = "InteractableStates";
-        public string AssemblyQualifiedName = typeof(InteractableStates).AssemblyQualifiedName;
+        [FormerlySerializedAs("StateList")]
+        [SerializeField]
+        private List<State> stateList;
 
         /// <summary>
-        /// The list of base classes whose derived classes will be included in interactable state
-        /// selection dropdowns.
+        /// List of available states defined by asset
         /// </summary>
-        private static readonly List<Type> candidateStateTypes = new List<Type>() { typeof(InteractableStates) };
+        public List<State> StateList
+        {
+            get {return stateList;}
+            set { stateList = value; }
+        }
+
+        [FormerlySerializedAs("DefaultIndex")]
+        [SerializeField]
+        private int defaultIndex = 0;
+
+        /// <summary>
+        /// Default index into state list
+        /// </summary>
+        public int DefaultIndex
+        {
+            get { return defaultIndex; }
+            set { defaultIndex = value; }
+        }
+
+        /// <summary>
+        /// Defines the type of State Model to associate with this States asset. Type must be a class that extends InteractableStateModel
+        /// </summary>
+        public Type StateModelType
+        {
+            get
+            {
+                if (stateModelType == null)
+                {
+                    if (string.IsNullOrEmpty(AssemblyQualifiedName))
+                    {
+                        return null;
+                    }
+
+                    stateModelType = Type.GetType(AssemblyQualifiedName);
+                }
+
+                return stateModelType;
+            }
+            set
+            {
+                if (!value.IsSubclassOf(typeof(InteractableStateModel)))
+                {
+                    Debug.LogWarning($"Cannot assign type {value} that does not extend {typeof(InteractableStateModel)} to ThemeDefinition");
+                    return;
+                }
+
+                if (stateModelType != value)
+                {
+                    stateModelType = value;
+                    StateModelClassName = stateModelType.Name;
+                    AssemblyQualifiedName = stateModelType.AssemblyQualifiedName;
+                }
+            }
+        }
+
+        // Unity cannot serialize System.Type, thus must save AssemblyQualifiedName
+        // Field here for Runtime use
+        private Type stateModelType;
+
+        [FormerlySerializedAs("StateLogicName")]
+        [SerializeField]
+        private string StateModelClassName;
+
+        [SerializeField]
+        private string AssemblyQualifiedName;
+
+        public States()
+        {
+            // Set default type
+            StateModelType = typeof(InteractableStates);
+        }
 
         public static States GetDefaultInteractableStates()
         {
             States result = CreateInstance<States>();
-
             InteractableStates allInteractableStates = new InteractableStates();
-
-            result.StateType = Type.GetType(typeof(InteractableStates).AssemblyQualifiedName);
-            result.StateOptions = InteractableTypeFinder.Find(candidateStateTypes, TypeRestriction.AllowBase);
+            result.StateModelType = typeof(InteractableStates);
             result.StateList = allInteractableStates.GetDefaultStates();
             result.DefaultIndex = 0;
             return result;
-        }
-
-        //!!! finish making states work, they should initiate the type and run the logic during play mode.
-        private void OnEnable()
-        {
-            SetupStateOptions();
         }
 
         public State[] GetStates()
@@ -47,10 +105,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return StateList.ToArray();
         }
 
-        public InteractableStates SetupLogic()
+        public InteractableStates CreateStateModel()
         {
-            StateType = Type.GetType(AssemblyQualifiedName);
-            InteractableStates stateLogic = (InteractableStates)Activator.CreateInstance(StateType, StateList[DefaultIndex]);
+            InteractableStates stateLogic = (InteractableStates)Activator.CreateInstance(StateModelType, StateList[DefaultIndex]);
+
             List<State> stateListCopy = new List<State>();
             for (int i = 0; i < StateList.Count; i++)
             {
@@ -62,14 +120,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 state.Value = StateList[i].Value;
                 stateListCopy.Add(state);
             }
+
             stateLogic.ImportStates(stateListCopy);
 
             return stateLogic;
-        }
-
-        public void SetupStateOptions()
-        {
-            StateOptions = InteractableTypeFinder.Find(candidateStateTypes, TypeRestriction.AllowBase);
         }
     }
 }
