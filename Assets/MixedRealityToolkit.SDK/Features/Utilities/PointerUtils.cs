@@ -19,9 +19,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="handedness">Handedness of ray</param>
         /// <param name="endPoint">The output position</param>
         /// <returns>true if pointer found, false otherwise. If not found, endPoint is set to zero</returns>
-        public static bool TryGetHandRayEndPoint<LinePointer>(Handedness handedness, out Vector3 endPoint)
+        public static bool TryGetHandRayEndPoint(Handedness handedness, out Vector3 endPoint)
         {
-            return TryGetPointerEndpoint(handedness, InputSourceType.Hand, out endPoint);
+            return TryGetPointerEndpoint<LinePointer>(handedness, InputSourceType.Hand, out endPoint);
         }
 
         /// <summary>
