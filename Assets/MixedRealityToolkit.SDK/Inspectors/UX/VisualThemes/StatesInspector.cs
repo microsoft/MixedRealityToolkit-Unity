@@ -16,10 +16,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected States instance;
         protected SerializedProperty stateList;
 
+        private static GUIContent RemoveStateLabel;
+        private static readonly GUIContent AddStateLabel = new GUIContent("+", "Add State");
+
         protected virtual void OnEnable()
         {
             instance = (States)target;
 
+            RemoveStateLabel = new GUIContent(InspectorUIUtility.Minus, "Remove State");
             stateList = serializedObject.FindProperty("stateList");
         }
 
@@ -56,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     bitCount += bitCount;
                 }
 
-                using (new EditorGUILayout.VerticalScope("Box"))
+                using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
                 {
                     SerializedProperty stateItem = stateList.GetArrayElementAtIndex(i);
 
@@ -73,11 +77,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         int enumIndex = Array.IndexOf(stateEnums, name.stringValue);
 
                         int newEnumIndex = EditorGUILayout.Popup(name.stringValue + " (" + bitCount + ")", enumIndex, stateEnums);
+                        if (newEnumIndex == -1) { newEnumIndex = 0; }
 
                         name.stringValue = stateEnums[newEnumIndex];
                         index.intValue = newEnumIndex;
 
-                        InspectorUIUtility.SmallButton(new GUIContent(InspectorUIUtility.Minus, "Remove State"), i, RemoveState);
+                        if (InspectorUIUtility.SmallButton(RemoveStateLabel))
+                        {
+                            stateList.DeleteArrayElementAtIndex(i);
+                            break;
+                        }
                     }
 
                     // assign the bitcount based on location in the list
@@ -85,19 +94,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
 
-            InspectorUIUtility.FlexButton(new GUIContent("+", "Add Theme Property"), 0, AddState);
+            if (InspectorUIUtility.FlexButton(AddStateLabel))
+            {
+                stateList.InsertArrayElementAtIndex(stateList.arraySize);
+            }
 
             serializedObject.ApplyModifiedProperties();
-        }
-
-        protected void AddState(int index, SerializedProperty prop = null)
-        {
-            stateList.InsertArrayElementAtIndex(stateList.arraySize);
-        }
-
-        protected void RemoveState(int index, SerializedProperty prop = null)
-        {
-            stateList.DeleteArrayElementAtIndex(index);
         }
 
         /// <summary>
