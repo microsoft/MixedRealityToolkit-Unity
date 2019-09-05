@@ -3,6 +3,7 @@
 
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Utilities
 {
@@ -11,14 +12,26 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
     /// </summary>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(Canvas))]
-    public class CanvasUtility : MonoBehaviour
+    public class CanvasUtility : MonoBehaviour, IMixedRealityPointerHandler
     {
-        private IMixedRealityInputSystem inputSystem = null;
+        private bool oldIsTargetPositionLockedOnFocusLock = false;
+        public void OnPointerClicked(MixedRealityPointerEventData eventData) {}
 
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        private IMixedRealityInputSystem InputSystem => inputSystem ?? (inputSystem = CoreServices.InputSystem);
+        public void OnPointerDown(MixedRealityPointerEventData eventData)
+        {
+            oldIsTargetPositionLockedOnFocusLock = eventData.Pointer.IsTargetPositionLockedOnFocusLock;
+            if (!(eventData.Pointer is IMixedRealityNearPointer) && eventData.Pointer.Controller.IsRotationAvailable)
+            {
+                eventData.Pointer.IsTargetPositionLockedOnFocusLock = false;
+            }
+        }
+
+        public void OnPointerDragged(MixedRealityPointerEventData eventData) { }
+
+        public void OnPointerUp(MixedRealityPointerEventData eventData)
+        {
+            eventData.Pointer.IsTargetPositionLockedOnFocusLock = oldIsTargetPositionLockedOnFocusLock;
+        }
 
         private void Start()
         {
@@ -27,8 +40,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
 
             if (canvas.worldCamera == null)
             {
-                Debug.Assert(InputSystem?.FocusProvider?.UIRaycastCamera != null, this);
-                canvas.worldCamera = InputSystem?.FocusProvider?.UIRaycastCamera;
+                Debug.Assert(CoreServices.InputSystem?.FocusProvider?.UIRaycastCamera != null, this);
+                canvas.worldCamera = CoreServices.InputSystem?.FocusProvider?.UIRaycastCamera;
 
                 if (EventSystem.current == null)
                 {
