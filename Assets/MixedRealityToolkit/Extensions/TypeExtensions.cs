@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace Microsoft.MixedReality.Toolkit
@@ -14,18 +15,28 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         /// <param name="rootType">The class type from which to search for inherited classes</param>
         /// <returns>Null if rootType is not a class, otherwise returns list of types for sub-classes of rootType</returns>
-        public static List<Type> GetAllSubClassesOf(this Type rootType)
+        public static List<Type> GetAllSubClassesOf(this Type rootType, Assembly[] assemblies = null)
         {
             if (!rootType.IsClass) return null;
 
+            if (assemblies == null) { assemblies = AppDomain.CurrentDomain.GetAssemblies(); }
+
             var results = new List<Type>();
-            foreach (var type in Assembly.GetAssembly(rootType).GetTypes())
+            Stopwatch st = new Stopwatch();
+            st.Start();
+            //Parallel.ForEach(
+            foreach (var assembly in assemblies)
             {
-                if (type.IsClass && !type.IsAbstract && type.IsSubclassOf(rootType))
+                foreach (var type in assembly.GetTypes())
                 {
-                    results.Add(type);
+                    if (type.IsClass && !type.IsAbstract && type.IsSubclassOf(rootType))
+                    {
+                        results.Add(type);
+                    }
                 }
             }
+            st.Stop();
+            UnityEngine.Debug.Log("Time:" + st.ElapsedMilliseconds);
             return results;
         }
     }

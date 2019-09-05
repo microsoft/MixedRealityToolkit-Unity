@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Linq;
@@ -35,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     Rect position = EditorGUILayout.GetControlRect();
                     using (new EditorGUI.PropertyScope(position, SelectEventLabel, className))
                     {
-                        var receiverTypes = typeof(ReceiverBase).GetAllSubClassesOf();
+                        var receiverTypes = TypeCacheUtility.GetSubClasses<ReceiverBase>();
                         var recevierClassNames = receiverTypes.Select(t => t.Name).ToArray();
                         int id = Array.IndexOf(recevierClassNames, className.stringValue);
                         int newId = EditorGUI.Popup(position, id, recevierClassNames);
@@ -74,7 +75,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 SerializedProperty eventSettings = eventItem.FindPropertyRelative("Settings");
 
                 var fieldList = InspectorFieldsUtility.GetInspectorFields(receiver);
-                //var fieldList = InteractableEvent.GetCustomReceiverFields(receiver);
                 // If the number of fields has changed, update our list to track the difference
                 if (eventSettings.arraySize != fieldList.Count)
                 {

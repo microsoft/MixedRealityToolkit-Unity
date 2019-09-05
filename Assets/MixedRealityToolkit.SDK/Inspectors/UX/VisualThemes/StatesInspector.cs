@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Linq;
@@ -37,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             SerializedProperty stateModelClassName = serializedObject.FindProperty("StateModelClassName");
             SerializedProperty assemblyQualifiedName  = serializedObject.FindProperty("AssemblyQualifiedName");
 
-            var stateModelTypes = typeof(InteractableStateModel).GetAllSubClassesOf();
+            var stateModelTypes = TypeCacheUtility.GetSubClasses<InteractableStateModel>();
             var stateModelClassNames = stateModelTypes.Select(t => t.Name).ToArray();
             int id = Array.IndexOf(stateModelClassNames, stateModelClassName.stringValue);
             int newId = EditorGUILayout.Popup("State Model", id, stateModelClassNames);

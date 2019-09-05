@@ -29,10 +29,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                     bool canRemove = i > 0;
                     if (InteractableEventInspector.RenderEvent(eventItem, canRemove))
-                    //if (RenderEventSettings(eventItem, i, ChangeEvent, removeEventRef))
                     {
                         events.DeleteArrayElementAtIndex(i);
-
                         // If removed, skip rendering rest of list till next redraw
                         break;
                     }
