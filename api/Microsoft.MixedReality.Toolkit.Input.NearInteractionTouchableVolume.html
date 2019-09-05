@@ -94,20 +94,10 @@ in order to get PointerDown and PointerUp events whenever a PokePointer collides
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html">BaseNearInteractionTouchable</a></div>
-    <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ColliderNearInteractionTouchable.html">ColliderNearInteractionTouchable</a></div>
-    <div class="level3"><span class="xref">NearInteractionTouchableVolume</span></div>
+    <div class="level2"><span class="xref">NearInteractionTouchableVolume</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ColliderNearInteractionTouchable.html#Microsoft_MixedReality_Toolkit_Input_ColliderNearInteractionTouchable_ColliderEnabled">ColliderNearInteractionTouchable.ColliderEnabled</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ColliderNearInteractionTouchable.html#Microsoft_MixedReality_Toolkit_Input_ColliderNearInteractionTouchable_TouchableCollider">ColliderNearInteractionTouchable.TouchableCollider</a>
-    </div>
-    <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.ColliderNearInteractionTouchable.html#Microsoft_MixedReality_Toolkit_Input_ColliderNearInteractionTouchable_OnValidate">ColliderNearInteractionTouchable.OnValidate()</a>
-    </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html#Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_eventsToReceive">BaseNearInteractionTouchable.eventsToReceive</a>
     </div>
@@ -125,8 +115,60 @@ in order to get PointerDown and PointerUp events whenever a PokePointer collides
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Input_NearInteractionTouchableVolume_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class NearInteractionTouchableVolume : ColliderNearInteractionTouchable</code></pre>
+    <pre><code class="lang-csharp hljs">public class NearInteractionTouchableVolume : BaseNearInteractionTouchable</code></pre>
   </div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_NearInteractionTouchableVolume_ColliderEnabled_" data-uid="Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableVolume.ColliderEnabled*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_NearInteractionTouchableVolume_ColliderEnabled" data-uid="Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableVolume.ColliderEnabled">ColliderEnabled</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool ColliderEnabled { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_NearInteractionTouchableVolume_TouchableCollider_" data-uid="Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableVolume.TouchableCollider*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_NearInteractionTouchableVolume_TouchableCollider" data-uid="Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableVolume.TouchableCollider">TouchableCollider</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Collider TouchableCollider { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Collider</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   
@@ -178,6 +220,18 @@ in order to get PointerDown and PointerUp events whenever a PokePointer collides
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html#Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_DistanceToTouchable_Vector3_Vector3__">BaseNearInteractionTouchable.DistanceToTouchable(Vector3, out Vector3)</a></div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_NearInteractionTouchableVolume_OnValidate_" data-uid="Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableVolume.OnValidate*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_NearInteractionTouchableVolume_OnValidate" data-uid="Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchableVolume.OnValidate">OnValidate()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnValidate()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.html#Microsoft_MixedReality_Toolkit_Input_BaseNearInteractionTouchable_OnValidate">BaseNearInteractionTouchable.OnValidate()</a></div>
 </article>
           </div>
           
