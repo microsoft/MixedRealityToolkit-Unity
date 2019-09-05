@@ -36,10 +36,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (newIndex != index)
                 {
-                    if (KeyBinding.EnumToKeyBindingMap.TryGetValue(newIndex, out KeyBinding kb))
+                    if (KeyBinding.EnumToKeyBindingMap.TryGetValue(newIndex, out var kb))
                     {
-                        bindingType.intValue = (int)kb.BindingType;
-                        code.intValue = kb.Code;
+                        bindingType.intValue = (int)kb.Item1;
+                        code.intValue = kb.Item2;
                     }
                 }
             }

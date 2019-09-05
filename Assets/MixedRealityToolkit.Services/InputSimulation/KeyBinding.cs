@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // Value can be used as index in AllCodeNames array.
         internal static readonly Dictionary<Tuple<KeyType, int>, int> KeyBindingToEnumMap;
         // Maps enum index to a KeyBinding, for assignment after selecting an enum value.
-        internal static readonly Dictionary<int, KeyBinding> EnumToKeyBindingMap;
+        internal static readonly Dictionary<int, Tuple<KeyType, int>> EnumToKeyBindingMap;
 
         // Static constructor to initialize static fields
         static KeyBinding()
@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Build maps for converting between int enum value and KeyBinding values
             {
                 KeyBindingToEnumMap = new Dictionary<Tuple<KeyType, int>, int>();
-                EnumToKeyBindingMap = new Dictionary<int, KeyBinding>();
+                EnumToKeyBindingMap = new Dictionary<int, Tuple<KeyType, int>>();
                 List<string> names = new List<string>();
 
                 int index = 0;
@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     var kb = new KeyBinding() { bindingType=bindingType, code=code };
                     names.Add(kb.ToString());
-                    EnumToKeyBindingMap[index] = kb;
+                    EnumToKeyBindingMap[index] = Tuple.Create(bindingType, code);
                     KeyBindingToEnumMap[Tuple.Create(bindingType, code)] = index;
 
                     ++index;
@@ -92,10 +92,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         private KeyType bindingType;
+        /// <summary>
+        /// Type of input this binding maps to.
+        /// </summary>
         public KeyType BindingType => bindingType;
+
+        // Internal binding code.
+        // This can be a KeyCode or mouse button index, depending on the bindingType;
         [SerializeField]
         private int code;
-        internal int Code => code;
 
         /// <inheritdoc />
         public override string ToString()
