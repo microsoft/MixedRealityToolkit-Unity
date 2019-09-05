@@ -311,7 +311,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             if (string.IsNullOrWhiteSpace(EditorUserBuildSettings.wsaMinUWPSDK))
             {
-                EditorUserBuildSettings.wsaMinUWPSDK = UwpBuildDeployPreferences.MIN_SDK_VERSION.ToString();
+                EditorUserBuildSettings.wsaMinUWPSDK = UwpBuildDeployPreferences.MIN_PLATFORM_VERSION.ToString();
             }
 
             string minVersion = EditorUserBuildSettings.wsaMinUWPSDK;
