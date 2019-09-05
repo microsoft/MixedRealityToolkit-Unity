@@ -206,8 +206,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <returns></returns>
         public static InputManagerAxis[] UnityInputManagerAxes => new[]
         {
-            new InputManagerAxis { Name = UP_DOWN, Gravity = 3, Dead = 0.001f, Sensitivity = 3, Snap = true, Invert = false, Type = InputManagerAxisType.KeyOrMouseButton, PositiveButton = "e", NegativeButton = "q" },
-            new InputManagerAxis { Name = UP_DOWN,  Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 3 },
             new InputManagerAxis { Name = AXIS_1,  Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 1  },
             new InputManagerAxis { Name = AXIS_2,  Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 2  },
             new InputManagerAxis { Name = AXIS_3,  Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 3  },
@@ -234,7 +232,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             new InputManagerAxis { Name = AXIS_24, Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 24 },
             new InputManagerAxis { Name = AXIS_25, Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 25 },
             new InputManagerAxis { Name = AXIS_26, Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 26 },
-            new InputManagerAxis { Name = AXIS_27, Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 27 }
+            new InputManagerAxis { Name = AXIS_27, Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 27 },
+            new InputManagerAxis { Name = UP_DOWN, Gravity = 3, Dead = 0.001f, Sensitivity = 3, Snap = true, Invert = false, Type = InputManagerAxisType.KeyOrMouseButton, PositiveButton = "e", NegativeButton = "q" },
+            new InputManagerAxis { Name = UP_DOWN,  Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 3 },
         };
 
         #endregion InputAxisConfig
