@@ -366,11 +366,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                 if (oldShader.name.Contains(TransparentCutoutShadersPath))
                 {
-                    mode = RenderingMode.TransparentCutout;
+                    mode = RenderingMode.Cutout;
                 }
                 else if (oldShader.name.Contains(TransparentShadersPath))
                 {
-                    mode = RenderingMode.Transparent;
+                    mode = RenderingMode.Fade;
                 }
 
                 material.SetFloat(BaseStyles.renderingModeName, (float)mode);
@@ -413,7 +413,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                 albedoAlphaMode.floatValue = EditorGUILayout.Popup(albedoAlphaMode.displayName, (int)albedoAlphaMode.floatValue, Styles.albedoAlphaModeNames);
 
-                if ((RenderingMode)renderingMode.floatValue == RenderingMode.TransparentCutout || 
+                if ((RenderingMode)renderingMode.floatValue == RenderingMode.Cutout || 
                     (RenderingMode)renderingMode.floatValue == RenderingMode.Custom)
                 {
                     materialEditor.ShaderProperty(alphaCutoff, Styles.alphaCutoff.text);
@@ -513,7 +513,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             if ((RenderingMode)renderingMode.floatValue != RenderingMode.Opaque &&
-                (RenderingMode)renderingMode.floatValue != RenderingMode.TransparentCutout)
+                (RenderingMode)renderingMode.floatValue != RenderingMode.Cutout)
             {
                 materialEditor.ShaderProperty(blendedClippingWidth, Styles.blendedClippingWidth);
                 GUILayout.Box(string.Format(Styles.propertiesComponentHelp, nameof(ClippingPrimitive), "other clipping"), EditorStyles.helpBox, new GUILayoutOption[0]);
@@ -593,9 +593,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     materialEditor.ShaderProperty(borderLightUsesHoverColor, Styles.borderLightUsesHoverColor, 2);
                 }
 
-                if (mode == RenderingMode.TransparentCutout || mode == RenderingMode.Transparent ||
-                    (mode == RenderingMode.Custom && customMode == CustomRenderingMode.TransparentCutout) ||
-                    (mode == RenderingMode.Custom && customMode == CustomRenderingMode.Transparent))
+                if (mode == RenderingMode.Cutout || mode == RenderingMode.Fade || mode == RenderingMode.Transparent ||
+                    (mode == RenderingMode.Custom && customMode == CustomRenderingMode.Cutout) ||
+                    (mode == RenderingMode.Custom && customMode == CustomRenderingMode.Fade))
                 {
                     materialEditor.ShaderProperty(borderLightOpaque, Styles.borderLightOpaque, 2);
 

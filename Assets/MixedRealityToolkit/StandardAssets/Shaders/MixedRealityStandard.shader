@@ -1082,7 +1082,7 @@ Shader "Mixed Reality Toolkit/Standard"
                 fixed diffuse = max(0.0, dot(worldNormal, directionalLightDirection));
 #if defined(_SPECULAR_HIGHLIGHTS)
                 fixed halfVector = max(0.0, dot(worldNormal, normalize(directionalLightDirection + worldViewDir)));
-                fixed specular = saturate(pow(halfVector, _Shininess * pow(_Smoothness, 4.0)) * _Smoothness * 0.5);
+                fixed specular = saturate(pow(halfVector, _Shininess * pow(_Smoothness, 4.0)) * (_Smoothness * 2.0) * _Metallic);
 #else
                 fixed specular = 0.0;
 #endif
