@@ -55,9 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         static KeyBinding()
         {
             KeyCode[] KeyCodeValues = (KeyCode[])Enum.GetValues(typeof(KeyCode));
-            string[] KeyCodeNames = Enum.GetNames(typeof(KeyCode));
             MouseButton[] MouseButtonValues = (MouseButton[])Enum.GetValues(typeof(MouseButton));
-            string[] MouseButtonNames = Enum.GetNames(typeof(MouseButton));
 
             // Build maps for converting between int enum value and KeyBinding values
             {
