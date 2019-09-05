@@ -69,34 +69,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public ReceiverBase Receiver;
 
         public List<InspectorPropertySetting> Settings;
- 
-        // TODO: Troy Comment
-        public static List<InspectorFieldData> GetReceiverFields(ReceiverBase receiver)
-        {
-            //ReceiverBase receiver = (ReceiverBase)Activator.CreateInstance(type, Event);
-            List<InspectorFieldData> fields = new List<InspectorFieldData>();
-            Type myType = receiver.GetType();
-
-            foreach (PropertyInfo prop in myType.GetProperties())
-            {
-                var attrs = (InspectorField[])prop.GetCustomAttributes(typeof(InspectorField), false);
-                foreach (var attr in attrs)
-                {
-                    fields.Add(new InspectorFieldData() { Name = prop.Name, Attributes = attr, Value = prop.GetValue(receiver, null)});
-                }
-            }
-
-            foreach (FieldInfo field in myType.GetFields())
-            {
-                var attrs = (InspectorField[])field.GetCustomAttributes(typeof(InspectorField), false);
-                foreach (var attr in attrs)
-                {
-                    fields.Add(new InspectorFieldData() { Name = field.Name, Attributes = attr, Value = field.GetValue(receiver) });
-                }
-            }
-
-            return fields;
-        }
 
         /// <summary>
         /// Create the event and setup the values from the inspector
@@ -105,15 +77,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <returns></returns>
         public static ReceiverBase GetReceiver(InteractableEvent iEvent)
         {
-            // TODO: Troy - Test
-            /*
-#if UNITY_EDITOR
-            int index = InspectorField.ReverseLookup(iEvent.ClassName, interactableTypes.ClassNames);
-            Type eventType = interactableTypes.Types[index];
-#else
-            Type eventType = Type.GetType(iEvent.AssemblyQualifiedName);
-#endif
-*/
             Type eventType = Type.GetType(iEvent.AssemblyQualifiedName);
 
             ReceiverBase newEvent = (ReceiverBase)Activator.CreateInstance(eventType, iEvent.Event);

@@ -40,6 +40,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         int id = Array.IndexOf(recevierClassNames, className.stringValue);
                         int newId = EditorGUI.Popup(position, id, recevierClassNames);
 
+                        if (newId == -1)
+                        {
+                            newId = 0;
+                        }
+
                         receiverType = receiverTypes[newId];
                         if (id != newId)
                         {
@@ -68,10 +73,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 SerializedProperty eventSettings = eventItem.FindPropertyRelative("Settings");
 
+                var fieldList = InspectorFieldsUtility.GetInspectorFields(receiver);
+                //var fieldList = InteractableEvent.GetCustomReceiverFields(receiver);
                 // If the number of fields has changed, update our list to track the difference
-                if (eventSettings.arraySize != receiverType.GetProperties().Length + receiverType.GetFields().Length)
+                if (eventSettings.arraySize != fieldList.Count)
                 {
-                    InspectorFieldsUtility.PropertySettingsList(eventSettings, InteractableEvent.GetReceiverFields(receiver));
+                    InspectorFieldsUtility.UpdateSettingsList(eventSettings, fieldList);
                 }
 
                 for (int index = 0; index < eventSettings.arraySize; index++)
@@ -100,10 +107,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             SerializedProperty settings = prop.FindPropertyRelative("Settings");
 
-            // TODO: Troy - Put in own static method?
-            //ReceiverBase receiver = (ReceiverBase)Activator.CreateInstance(type, Event);
             ReceiverBase defaultReceiver = (ReceiverBase)Activator.CreateInstance(newType, new UnityEvent());
-            InspectorFieldsUtility.PropertySettingsList(settings, InteractableEvent.GetReceiverFields(defaultReceiver));
+            InspectorFieldsUtility.ClearSettingsList(settings, InspectorFieldsUtility.GetInspectorFields(defaultReceiver));
         }
     }
 }

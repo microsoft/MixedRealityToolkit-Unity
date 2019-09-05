@@ -1,7 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -13,15 +16,54 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
     public static class InspectorFieldsUtility
     {
+
+        /// <summary>
+        /// Update list of serialized PropertySettings from new or removed InspectorFields
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <param name="data"></param>
+        public static void UpdateSettingsList(SerializedProperty settings, List<InspectorFieldData> data)
+        {
+            // Delete existing settings that now have missing field
+            // Remove data entries for existing setting matches
+            for (int idx = settings.arraySize - 1; idx >= 0; idx--)
+            {
+                SerializedProperty settingItem = settings.GetArrayElementAtIndex(idx);
+                SerializedProperty name = settingItem.FindPropertyRelative("Name");
+
+                int index = data.FindIndex(s => s.Name == name.stringValue);
+                if (index != -1)
+                {
+                    data.RemoveAt(index);
+                }
+                else
+                {
+                    settings.DeleteArrayElementAtIndex(idx);
+                }
+            }
+
+            AddFieldsToSettingsList(settings, data);
+        }
+
         /// <summary>
         /// Create a new list of serialized PropertySettings from InspectorFields
         /// </summary>
         /// <param name="settings"></param>
         /// <param name="data"></param>
-        public static void PropertySettingsList(SerializedProperty settings, List<InspectorFieldData> data)
+        public static void ClearSettingsList(SerializedProperty settings, List<InspectorFieldData> data)
         {
             settings.ClearArray();
 
+            AddFieldsToSettingsList(settings, data);
+        }
+
+        /// <summary>
+        /// Adds InspectorFields to list of serialized PropertySettings
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <param name="data"></param>
+        public static void AddFieldsToSettingsList(SerializedProperty settings, List<InspectorFieldData> data)
+        {
             for (int i = 0; i < data.Count; i++)
             {
                 settings.InsertArrayElementAtIndex(settings.arraySize);
@@ -142,6 +184,32 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 default:
                     break;
             }
+        }
+
+        public static List<InspectorFieldData> GetInspectorFields(System.Object target)
+        {
+            List<InspectorFieldData> fields = new List<InspectorFieldData>();
+            Type myType = target.GetType();
+
+            foreach (PropertyInfo prop in myType.GetProperties())
+            {
+                var attrs = (InspectorField[])prop.GetCustomAttributes(typeof(InspectorField), false);
+                foreach (var attr in attrs)
+                {
+                    fields.Add(new InspectorFieldData() { Name = prop.Name, Attributes = attr, Value = prop.GetValue(target, null) });
+                }
+            }
+
+            foreach (FieldInfo field in myType.GetFields())
+            {
+                var attrs = (InspectorField[])field.GetCustomAttributes(typeof(InspectorField), false);
+                foreach (var attr in attrs)
+                {
+                    fields.Add(new InspectorFieldData() { Name = field.Name, Attributes = attr, Value = field.GetValue(target) });
+                }
+            }
+
+            return fields;
         }
 
         /// <summary>
