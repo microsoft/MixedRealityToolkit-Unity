@@ -12,8 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public static class PointerUtils
     {
         /// <summary>
-        /// Tries to get the end point of a hand ray by calling 
-        /// TryGetPointerEndPoint<LineRenderer>()
+        /// Tries to get the end point of a hand ray.
         /// If no hand ray of given handedness is found, returns false and sets result to zero.
         /// </summary>
         /// <param name="handedness">Handedness of ray</param>
