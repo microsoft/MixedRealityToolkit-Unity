@@ -127,8 +127,40 @@
   </h3>
   
   
+  <h4 id="Microsoft_MixedReality_Toolkit_Build_Editor_UwpBuildDeployPreferences_MIN_PLATFORM_VERSION" data-uid="Microsoft.MixedReality.Toolkit.Build.Editor.UwpBuildDeployPreferences.MIN_PLATFORM_VERSION">MIN_PLATFORM_VERSION</h4>
+  <div class="markdown level1 summary"><p>The minimum version of the OS that must exist on the device that the application
+is deployed to.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Version MIN_PLATFORM_VERSION</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.version">Version</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Build_Editor_UwpBuildDeployPreferences_MIN_PLATFORM_VERSION_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This is intentionally set to a very low version, so that the application can be
+deployed to variety of different devices which may be on older OS versions.</p>
+</div>
+  
+  
   <h4 id="Microsoft_MixedReality_Toolkit_Build_Editor_UwpBuildDeployPreferences_MIN_SDK_VERSION" data-uid="Microsoft.MixedReality.Toolkit.Build.Editor.UwpBuildDeployPreferences.MIN_SDK_VERSION">MIN_SDK_VERSION</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The mininum Windows SDK that must be present on the build machine in order
+for a build to be successful.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -149,6 +181,12 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Build_Editor_UwpBuildDeployPreferences_MIN_SDK_VERSION_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This controls the version of the Windows SDK that is build against on the local
+machine, NOT the version of the OS that must be present on the device that
+the built application is deployed to (this other aspect is controlled by
+MIN_PLATFORM_VERSION)</p>
+</div>
   <h3 id="properties">Properties
   </h3>
   
