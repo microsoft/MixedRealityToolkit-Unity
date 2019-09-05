@@ -70,7 +70,7 @@ Shader "Mixed Reality Toolkit/Wireframe"
                 UNITY_SETUP_INSTANCE_ID(v);
                 v2g o;
                 o.viewPos = UnityObjectToClipPos(v.vertex);
-		UNITY_INITIALIZE_OUTPUT(v2g, o);
+                UNITY_INITIALIZE_OUTPUT(v2g, o);
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
                 return o;
             }
