@@ -199,11 +199,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.IsTrue(interactableComponent != null || buttonComponent != null, "Depending on button type, there should be either an Interactable or a UnityUI Button on the control");
 
-
-            if (Application.isBatchMode && buttonComponent != null)
+            if (buttonComponent != null)
             {
                 // For unknown reasons, Unity UI buttons don't seem to function properly in batch/headless mode when triggered via far field interaction.
-                // So just ignore this test in those circumstances.
+                // So just ignore this until that bug is resolved.
+                // https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5887
                 Assert.Ignore();
                 yield break;
             }
