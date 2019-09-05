@@ -50,14 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (PoseAction == eventData.MixedRealityInputAction && !UseSourcePoseData)
                 {
-                    Vector3 mouseDeltaRotation = Vector3.zero;
-                    mouseDeltaRotation.x += eventData.InputData.x;
-                    mouseDeltaRotation.y += eventData.InputData.y;
-                    if (mouseDeviceManager != null)
-                    {
-                        mouseDeltaRotation *= mouseDeviceManager.CursorSpeed;
-                    }
-                    UpdateMouseRotation(mouseDeltaRotation);
+                    UpdateMouseRotation(eventData.InputData);
                 }
             }
         }
@@ -92,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 timeoutTimer = 0.0f;
             }
 
-            transform.Rotate(mouseDeltaRotation, Space.World);
+            transform.Rotate(mouseDeltaRotation, Space.World); //  Self);
         }
 
         protected override void Start()

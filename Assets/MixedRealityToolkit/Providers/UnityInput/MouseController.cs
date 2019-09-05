@@ -53,21 +53,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
         private IMixedRealityMouseDeviceManager mouseDeviceManager = null;
 
-        //private MixedRealityMouseInputProfile mouseInputProfile = null;
-        //private MixedRealityMouseInputProfile MouseInputProfile
-        //{
-        //    get
-        //    {
-        //        if (mouseInputProfile == null)
-        //        {
-        //            // Get the profile from the input system's registered mouse device manager.
-        //            IMixedRealityMouseDeviceManager mouseManager = (InputSystem as IMixedRealityDataProviderAccess)?.GetDataProvider<IMixedRealityMouseDeviceManager>();
-        //            mouseInputProfile = mouseManager?.MouseInputProfile;
-        //        }
-        //        return mouseInputProfile;
-        //    }
-        //}
-
         /// <summary>
         /// Update controller.
         /// </summary>
@@ -93,40 +78,39 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
             for (int i = 0; i < Interactions.Length; i++)
             {
-                if (Interactions[i].InputType == DeviceInputType.SpatialPointer)
+                if ((Interactions[i].InputType == DeviceInputType.SpatialPointer) ||
+                    (Interactions[i].InputType == DeviceInputType.PointerPosition))
                 {
-                    // add mouse delta as rotation
-                    var mouseDeltaRotation = Vector3.zero;
-                    mouseDeltaRotation.x += -UInput.GetAxis("Mouse Y");
-                    mouseDeltaRotation.y += UInput.GetAxis("Mouse X");
-
-                    if (mouseDeviceManager != null)
-                    {
-                        mouseDeltaRotation *= mouseDeviceManager.CursorSpeed;
-                    }
-
-                    MixedRealityPose controllerPose = MixedRealityPose.ZeroIdentity;
-                    controllerPose.Rotation = Quaternion.Euler(mouseDeltaRotation);
-                    Interactions[i].PoseData = controllerPose;
-
-                    if (Interactions[i].Changed)
-                    {
-                        InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, Interactions[i].PoseData);
-                    }
-
-                }
-
-
-                if (Interactions[i].InputType == DeviceInputType.PointerPosition)
-                {
-                    Vector2 mouseDelta;
+                    Vector3 mouseDelta = Vector3.zero;
                     mouseDelta.x = -UInput.GetAxis("Mouse Y");
                     mouseDelta.y = UInput.GetAxis("Mouse X");
-                    Interactions[i].Vector2Data = mouseDelta;
-
-                    if (Interactions[i].Changed)
+                    if (mouseDeviceManager != null)
                     {
-                        InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, Interactions[i].Vector2Data);
+                        // Apply cursor speed.
+                        mouseDelta *= mouseDeviceManager.CursorSpeed;
+                    }
+
+                    if (Interactions[i].InputType == DeviceInputType.SpatialPointer)
+                    {
+                        // Spatial pointer raises Pose events
+                        MixedRealityPose controllerPose = MixedRealityPose.ZeroIdentity;
+                        controllerPose.Rotation = Quaternion.Euler(mouseDelta);
+                        Interactions[i].PoseData = controllerPose;
+
+                        if (Interactions[i].Changed)
+                        {
+                            InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, Interactions[i].PoseData);
+                        }
+                    }
+                    else
+                    {
+                        // Pointer position raises position events
+                        Interactions[i].Vector2Data = mouseDelta;
+
+                        if (Interactions[i].Changed)
+                        {
+                            InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, Interactions[i].Vector2Data);
+                        }
                     }
                 }
 
@@ -154,7 +138,14 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
                 if (Interactions[i].InputType == DeviceInputType.Scroll)
                 {
-                    Interactions[i].Vector2Data = UInput.mouseScrollDelta;
+                    Vector2 wheelDelta = UInput.mouseScrollDelta;
+                    if (mouseDeviceManager != null)
+                    {
+                        // Apply wheel speed.
+                        wheelDelta *= mouseDeviceManager.WheelSpeed;
+                    }
+
+                    Interactions[i].Vector2Data = wheelDelta;
 
                     if (Interactions[i].Changed)
                     {

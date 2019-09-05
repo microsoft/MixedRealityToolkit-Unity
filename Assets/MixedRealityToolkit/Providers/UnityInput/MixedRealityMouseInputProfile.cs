@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.Input.UnityInput;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -18,11 +19,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         [Range(0.1f, 10f)]
         [Tooltip("Mouse cursor speed multiplier.")]
-        private float mouseSpeed = 0.25f;
+        [FormerlySerializedAsAttribute("mouseSpeed")]
+        private float cursorSpeed = 1.0f;
 
         /// <summary>
         /// Defines the mouse cursor speed multiplier that gets applied to the mouse delta before converting to world space.
         /// </summary>
-        public float CursorSpeed => mouseSpeed;      
+        public float CursorSpeed => cursorSpeed;
+
+        [SerializeField]
+        [Range(0.1f, 10f)]
+        [Tooltip("Mouse wheel speed multiplier.")]
+        private float wheelSpeed = 1.0f;
+
+        /// <summary>
+        /// Defines the mouse cursor speed multiplier that gets applied to the mouse delta before converting to world space.
+        /// </summary>
+        public float WheelSpeed => wheelSpeed;
+
     }
 }

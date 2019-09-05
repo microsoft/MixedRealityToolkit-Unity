@@ -30,12 +30,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, name, priority, profile)
         { }
 
-        /// <inheritdoc />
-        public MixedRealityMouseInputProfile MouseInputProfile => ConfigurationProfile as MixedRealityMouseInputProfile;
-
-        // Values defining the range of the cursor speed multiplier
-        private readonly float MinCursorSpeed = 0.1f;
-        private readonly float MaxCursorSpeed = 10.0f;
+        // Values defining the range of the cursor and wheel speed multipliers
+        private const float MinSpeedMultiplier = 0.1f;
+        private const float MaxSpeedMultiplier = 10.0f;
 
         private float cursorSpeed = 1.0f;
 
@@ -48,7 +45,23 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             {
                 if (value != cursorSpeed)
                 {
-                    cursorSpeed = Mathf.Clamp(value, MinCursorSpeed, MaxCursorSpeed);
+                    cursorSpeed = Mathf.Clamp(value, MinSpeedMultiplier, MaxSpeedMultiplier);
+                }
+            }
+        }
+
+        private float wheelSpeed = 1.0f;
+
+        /// <inheritdoc />
+        public float WheelSpeed
+        {
+            get => wheelSpeed;
+
+            set
+            {
+                if (value != wheelSpeed)
+                {
+                    wheelSpeed = Mathf.Clamp(value, MinSpeedMultiplier, MaxSpeedMultiplier);
                 }
             }
         }
@@ -60,7 +73,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
         private void ReadProfile()
         {
-            CursorSpeed = MouseInputProfile.CursorSpeed;
+            MixedRealityMouseInputProfile profile = ConfigurationProfile as MixedRealityMouseInputProfile;
+
+            CursorSpeed = profile.CursorSpeed;
+            WheelSpeed = profile.WheelSpeed;
         }
 
         public override void Initialize()
