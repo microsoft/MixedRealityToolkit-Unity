@@ -16,19 +16,37 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class InputSimulationIndicators : MonoBehaviour
     {
         /// <summary>
-        /// Icon component for the left hand.
+        /// Component displaying the left hand icon.
         /// </summary>
         public UnityEngine.UI.Image imageHandLeft = null;
         /// <summary>
-        /// Icon component for the right hand.
+        /// Component displaying the right hand icon.
         /// </summary>
         public UnityEngine.UI.Image imageHandRight = null;
 
+        /// <summary>
+        /// Icon for left hand when under user control.
+        /// </summary>
         public Sprite iconHandActiveLeft = null;
+        /// <summary>
+        /// Icon for right hand when under user control.
+        /// </summary>
         public Sprite iconHandActiveRight = null;
+        /// <summary>
+        /// Icon for left hand when visible but not actively controlled.
+        /// </summary>
         public Sprite iconHandIdleLeft = null;
+        /// <summary>
+        /// Icon for right hand when visible but not actively controlled.
+        /// </summary>
         public Sprite iconHandIdleRight = null;
+        /// <summary>
+        /// Icon for left hand when untracked.
+        /// </summary>
         public Sprite iconHandUntrackedLeft = null;
+        /// <summary>
+        /// Icon for right hand when untracked.
+        /// </summary>
         public Sprite iconHandUntrackedRight = null;
 
         private IInputSimulationService inputSimService = null;
@@ -89,21 +107,33 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// Toggle permanent visibility of the left hand.
+        /// </summary>
         public void ToggleLeftHand()
         {
             InputSimService.IsAlwaysVisibleHandLeft = !InputSimService.IsAlwaysVisibleHandLeft;
         }
 
+        /// <summary>
+        /// Toggle permanent visibility of the right hand.
+        /// </summary>
         public void ToggleRightHand()
         {
             InputSimService.IsAlwaysVisibleHandRight = !InputSimService.IsAlwaysVisibleHandRight;
         }
 
+        /// <summary>
+        /// Reset the state of the left hand to default.
+        /// </summary>
         public void ResetLeftHand()
         {
             InputSimService.ResetHandLeft();
         }
 
+        /// <summary>
+        /// Reset the state of the right hand to default.
+        /// </summary>
         public void ResetRightHand()
         {
             InputSimService.ResetHandRight();
