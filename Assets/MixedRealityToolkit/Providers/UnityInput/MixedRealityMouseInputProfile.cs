@@ -15,7 +15,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
     [MixedRealityServiceProfile(typeof(MouseDeviceManager))]
     public class MixedRealityMouseInputProfile : BaseMixedRealityProfile
     {
-        [Header("Mouse Input Settings")]
         [SerializeField]
         [Range(0.1f, 10f)]
         [Tooltip("Mouse cursor speed multiplier.")]
@@ -23,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private float cursorSpeed = 1.0f;
 
         /// <summary>
-        /// Defines the mouse cursor speed multiplier that gets applied to the mouse delta before converting to world space.
+        /// Defines the mouse cursor speed multiplier used to scale the mouse cursor delta.
         /// </summary>
         public float CursorSpeed => cursorSpeed;
 
@@ -33,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private float wheelSpeed = 1.0f;
 
         /// <summary>
-        /// Defines the mouse cursor speed multiplier that gets applied to the mouse delta before converting to world space.
+        /// Defines the mouse wheel speed multiplier used to scale the scroll wheel delta.
         /// </summary>
         public float WheelSpeed => wheelSpeed;
 
