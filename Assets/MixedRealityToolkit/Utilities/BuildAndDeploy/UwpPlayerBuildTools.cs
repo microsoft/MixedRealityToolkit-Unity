@@ -65,6 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 GazeInputCapabilityEnabled = UwpBuildDeployPreferences.GazeInputCapabilityEnabled,
                 Multicore = UwpBuildDeployPreferences.MulticoreAppxBuildEnabled,
                 ResearchModeCapabilityEnabled = UwpBuildDeployPreferences.ResearchModeCapabilityEnabled,
+                AllowUnsafeCode = UwpBuildDeployPreferences.AllowUnsafeCode,
 
                 // Configure a post build action that will compile the generated solution
                 PostBuildAction = PostBuildAction
@@ -85,9 +86,17 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                         UwpAppxBuildTools.AddGazeInputCapability(uwpBuildInfo);
                     }
 
-                    if (uwpBuildInfo.ResearchModeCapabilityEnabled)
+                    if (EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens)
                     {
-                        UwpAppxBuildTools.AddResearchModeCapability(uwpBuildInfo);
+                        if (uwpBuildInfo.ResearchModeCapabilityEnabled)
+                        {
+                            UwpAppxBuildTools.AddResearchModeCapability(uwpBuildInfo);
+                        }
+
+                        if (EditorUserBuildSettings.wsaGenerateReferenceProjects && uwpBuildInfo.AllowUnsafeCode)
+                        {
+                            UwpAppxBuildTools.AllowUnsafeCode(uwpBuildInfo);
+                        }
                     }
 
                     if (showDialog &&

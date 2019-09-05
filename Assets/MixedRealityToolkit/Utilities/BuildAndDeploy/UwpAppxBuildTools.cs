@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
@@ -242,7 +242,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 AddGazeInputCapability(rootNode);
             }
 
-            if (uwpBuildInfo != null && uwpBuildInfo.ResearchModeCapabilityEnabled)
+            if (uwpBuildInfo != null && EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens && uwpBuildInfo.ResearchModeCapabilityEnabled)
             {
                 AddResearchModeCapability(rootNode);
             }
@@ -291,6 +291,31 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             if (manifests.Length > 1)
             {
                 Debug.LogWarning("Found more than one appxmanifest in the target build folder!");
+            }
+
+            return manifests[0];
+        }
+
+        /// <summary>
+        /// Gets the 'Assembly-CSharp.csproj' files path in the project output directory.
+        /// </summary>
+        private static string GetAssemblyCSharpProjectFilePath(IBuildInfo buildInfo)
+        {
+            var fullPathOutputDirectory = Path.GetFullPath(buildInfo.OutputDirectory);
+            Debug.Log($"Searching for 'Assembly-CSharp.csproj' in {fullPathOutputDirectory}...");
+
+            // Find the manifest, assume the one we want is the first one
+            string[] manifests = Directory.GetFiles(fullPathOutputDirectory, "Assembly-CSharp.csproj", SearchOption.AllDirectories);
+
+            if (manifests.Length == 0)
+            {
+                Debug.LogError($"Unable to find 'Assembly-CSharp.csproj' file for build (in path - {fullPathOutputDirectory})");
+                return null;
+            }
+
+            if (manifests.Length > 1)
+            {
+                Debug.LogWarning("Found more than one 'Assembly-CSharp.csproj' in the target build folder!");
             }
 
             return manifests[0];
@@ -485,6 +510,53 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             AddResearchModeCapability(rootElement);
             rootElement.Save(manifestFilePath);
         }
+
+        /// <summary>
+        /// Enables unsafe code in the generated Assembly-CSharp project.
+        /// </summary>
+        /// <remarks>
+        /// This is not required by the research mode, but not using unsafe code with
+        /// direct memory access results in poor performance. So its kinda recommended
+        /// to use unsafe code.
+        /// For further information take a look at https://docs.microsoft.com/en-us/windows/mixed-reality/research-mode.
+        /// Note that this function is only public to poke a hole for testing - do not
+        /// take a dependency on this function.
+        /// </remarks>
+        public static void AllowUnsafeCode(XElement rootNode)
+        {
+            foreach (XElement propertyGroupNode in rootNode.Descendants(rootNode.GetDefaultNamespace() + "PropertyGroup"))
+            {
+                if (propertyGroupNode.Attribute("Condition") != null)
+                {
+                    var allowUnsafeBlock = propertyGroupNode.Element("AllowUnsafeBlock");
+                    if (allowUnsafeBlock == null)
+                    {
+                        allowUnsafeBlock = new XElement(propertyGroupNode.GetDefaultNamespace() + "AllowUnsafeBlocks");
+                        propertyGroupNode.Add(allowUnsafeBlock);
+                    }
+                    allowUnsafeBlock.Value = "true";
+                }
+            }
+        }
+
+        /// <summary>
+        /// An overload of AllowUnsafeCode that will read the 'Assembly-CSharp.csproj'
+        /// file from the build output and update the project to allow unsafe code.
+        /// </summary>
+        /// <param name="buildInfo">An IBuildInfo containing a valid OutputDirectory</param>
+        public static void AllowUnsafeCode(IBuildInfo buildInfo)
+        {
+            string manifestFilePath = GetAssemblyCSharpProjectFilePath(buildInfo);
+            if (manifestFilePath == null)
+            {
+                throw new FileNotFoundException("Unable to find 'Assembly-CSharp.csproj' file");
+            }
+
+            var rootElement = XElement.Load(manifestFilePath);
+            AllowUnsafeCode(rootElement);
+            rootElement.Save(manifestFilePath);
+        }
+
         /// <summary>
         /// This struct controls the behavior of the arguments that are used
         /// when finding msbuild.exe.

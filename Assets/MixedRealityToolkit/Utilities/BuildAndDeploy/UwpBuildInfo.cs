@@ -45,5 +45,11 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// manifest after the Unity build.
         /// </summary>
         public bool ResearchModeCapabilityEnabled { get; set; } = false;
+
+        /// <summary>
+        /// If true, unsafe code will be allowed in the generated
+        /// Assembly-CSharp project.
+        /// </summary>
+        public bool AllowUnsafeCode { get; set; } = false;
     }
 }
