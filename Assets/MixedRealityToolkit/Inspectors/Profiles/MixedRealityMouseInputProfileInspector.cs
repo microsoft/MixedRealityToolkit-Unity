@@ -22,10 +22,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             base.OnEnable();
             cursorSpeed = serializedObject.FindProperty("cursorSpeed");
             wheelSpeed = serializedObject.FindProperty("wheelSpeed");
-            if (wheelSpeed == null)
-            {
-                // todo: set a default value if not found
-            }
         }
 
         public override void OnInspectorGUI()

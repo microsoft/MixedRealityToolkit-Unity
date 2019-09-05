@@ -14,8 +14,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public class MousePointer : BaseMousePointer
     {
-        private IMixedRealityMouseDeviceManager mouseDeviceManager = null;
-
         /// <inheritdoc />
         protected override string ControllerName => "Spatial Mouse Pointer";
 
@@ -39,13 +37,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void OnInputChanged(InputEventData<Vector2> eventData)
         {
-            if (mouseDeviceManager == null)
-            {
-                // Get the instance of the mouse device manager.
-                IMixedRealityDataProviderAccess dataProviderAccess = InputSystem as IMixedRealityDataProviderAccess;
-                mouseDeviceManager = dataProviderAccess?.GetDataProvider<IMixedRealityMouseDeviceManager>();
-            }
-
             if (eventData.SourceId == Controller?.InputSource.SourceId)
             {
                 if (PoseAction == eventData.MixedRealityInputAction && !UseSourcePoseData)
@@ -85,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 timeoutTimer = 0.0f;
             }
 
-            transform.Rotate(mouseDeltaRotation, Space.World); //  Self);
+            transform.Rotate(mouseDeltaRotation, Space.Self);
         }
 
         protected override void Start()
