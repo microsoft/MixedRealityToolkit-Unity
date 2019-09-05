@@ -43,6 +43,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         if (newId == -1) { newId = 0; }
 
                         receiverType = receiverTypes[newId];
+
+                        // Temporary workaround to fix bug shipped in GA where assemblyQualifiedName was never set
+                        if (string.IsNullOrEmpty(assemblyQualifiedName.stringValue))
+                        {
+                            assemblyQualifiedName.stringValue = receiverType.AssemblyQualifiedName;
+                        }
+
                         if (id != newId)
                         {
                             EventChanged(receiverType, eventItem);

@@ -1,9 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -77,9 +79,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <returns></returns>
         public static ReceiverBase CreateReceiver(InteractableEvent iEvent)
         {
-            Type eventType = Type.GetType(iEvent.AssemblyQualifiedName);
+            // Temporary workaround
+            // This is to fix a bug in GA where the AssemblyQualifiedName was never actually saved. Functionality would work in editor...but never on device player
+            if (iEvent.ReceiverType == null)
+            {
+                var correctType = TypeCacheUtility.GetSubClasses<ReceiverBase>().Where(s => s.Name == iEvent.ClassName).First();
+                iEvent.ReceiverType = correctType;
+            }
 
-            ReceiverBase newEvent = (ReceiverBase)Activator.CreateInstance(eventType, iEvent.Event);
+            ReceiverBase newEvent = (ReceiverBase)Activator.CreateInstance(iEvent.ReceiverType, iEvent.Event);
             InspectorGenericFields<ReceiverBase>.LoadSettings(newEvent, iEvent.Settings);
 
             return newEvent;

@@ -924,16 +924,16 @@ MonoBehaviour:
   Interactable: {fileID: 1885692589}
   InteractableSearchScope: 0
   Events:
-  - Name: CustomEvent
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls: []
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
     ClassName: CustomInteractablesReceiver
-    AssemblyQualifiedName: 
+    AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.CustomInteractablesReceiver,
+      Microsoft.MixedReality.Toolkit.Demos.UX.Interactables, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
     Settings: []
-    HideUnityEvents: 1
 --- !u!4 &519184499 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4558003219915732, guid: 29a6f5316e0868e47adff5eee8945193,
@@ -2030,7 +2030,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8f2fb2809320347428c67ea7c78ef4c5, type: 2}
+  - {fileID: 2100000, guid: f855b18af2d538d4f8965917ec01458e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2424,6 +2424,12 @@ PrefabInstance:
         type: 3}
       propertyPath: Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114818926546564510, guid: 02c524b22137b5449904f5395141cc73,
+        type: 3}
+      propertyPath: Events.Array.data[0].AssemblyQualifiedName
+      value: Microsoft.MixedReality.Toolkit.UI.InteractableOnFocusReceiver, Microsoft.MixedReality.Toolkit.SDK,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       objectReference: {fileID: 0}
     - target: {fileID: 3354217369102256160, guid: 02c524b22137b5449904f5395141cc73,
         type: 3}
@@ -3283,16 +3289,16 @@ MonoBehaviour:
   Interactable: {fileID: 1093241601}
   InteractableSearchScope: 0
   Events:
-  - Name: CustomEvent
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls: []
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
     ClassName: CustomInteractablesReceiver
-    AssemblyQualifiedName: 
+    AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.CustomInteractablesReceiver,
+      Microsoft.MixedReality.Toolkit.Demos.UX.Interactables, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
     Settings: []
-    HideUnityEvents: 1
 --- !u!4 &1441615695 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4899954742063566, guid: 02c524b22137b5449904f5395141cc73,
@@ -3614,19 +3620,17 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Events:
-  - Name: CustomEvent
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls: []
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
     ClassName: CustomInteractablesReceiver
     AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.CustomInteractablesReceiver,
-      MixedRealityToolkit.Examples.Demos.UX.Interactables
+      Microsoft.MixedReality.Toolkit.Demos.UX.Interactables, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
     Settings: []
-    HideUnityEvents: 1
-  - Name: OnTouch
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 716469222}
@@ -3644,7 +3648,7 @@ MonoBehaviour:
         Culture=neutral, PublicKeyToken=null
     ClassName: InteractableOnTouchReceiver
     AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.InteractableOnTouchReceiver,
-      Microsoft.MixedReality.Toolkit.SDK
+      Microsoft.MixedReality.Toolkit.SDK, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     Settings:
     - Type: 18
       Label: On Touch End
@@ -3688,7 +3692,6 @@ MonoBehaviour:
         m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       Options: []
-    HideUnityEvents: 0
   dimensionIndex: 0
 --- !u!114 &1590642588
 MonoBehaviour:
@@ -4473,6 +4476,12 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 23859773054077766, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4b1ffbebacd36694ebea9fb6d437c68f, type: 3}
 --- !u!4 &1672550136 stripped
