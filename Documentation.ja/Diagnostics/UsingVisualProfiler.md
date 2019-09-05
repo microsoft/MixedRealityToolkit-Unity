@@ -18,9 +18,9 @@
 
 ビジュアルプロファイラインターフェイスには、次のコンポーネントが含まれます。
 
-- [フレームレート](#Frame Rate (フレームレート))
-- [フレーム時間](#Frame Time (フレーム時間))
-- [フレームグラフ](#Frame Graph (フレームグラフ))
+- [フレームレート](#frame-rate-フレームレート)
+- [フレーム時間](#frame-time-フレーム時間)
+- [フレームグラフ](#frame-graph-フレームグラフ)
 - [メモリ使用率](#メモリ使用率)
 
 ### Frame Rate (フレームレート)
@@ -61,7 +61,7 @@ GPU 時間は、これからのリリースで追加される予定です。
 
 ビジュアルプロファイラの見た目と動きは、診断システムプロファイルを通じてカスタマイズできます。詳細については、「診断システム (Diagnostic System) の構成」(ConfiguringDiagnostics.md) を参照してください。
 
-## 参考に
+## 参考
 
 - [診断システム (Diagnostic System)](DiagnosticsSystemGettingStarted.md)
 - [診断システム (Diagnostic System) の構成](ConfiguringDiagnostics.md)
