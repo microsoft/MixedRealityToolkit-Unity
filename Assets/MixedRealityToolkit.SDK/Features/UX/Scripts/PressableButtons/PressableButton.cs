@@ -12,9 +12,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 {
     ///<summary>
     /// A button that can be pushed via direct touch.
-    /// You can use <see cref="Microsoft.MixedReality.Toolkit.Examples.Demos.PhysicalPressEventRouter"/> to route these events to <see cref="Interactable"/>.
+    /// You can use <see cref="Microsoft.MixedReality.Toolkit.PhysicalPressEventRouter"/> to route these events to <see cref="Microsoft.MixedReality.Toolkit.UI.Interactable"/>.
     ///</summary>
-    [RequireComponent(typeof(BoxCollider))]
     public class PressableButton : MonoBehaviour, IMixedRealityTouchHandler
     {
         const string InitialMarkerTransformName = "Initial Marker";
@@ -61,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [SerializeField]
-        [Tooltip("The offset at which pushing starts. Offset is relative to the pivot of either the moving visuals if there's any or the button itself.")]
+        [Tooltip("The offset at which pushing starts. Offset is relative to the pivot of either the moving visuals if there's any or the button itself.  For UnityUI based PressableButtons, this cannot be a negative value.")]
         protected float startPushDistance = 0.0f;
 
         /// <summary>
@@ -188,16 +187,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public bool IsPressing { get; private set; }
 
         /// <summary>
-        /// The press direction of the button as defined by a NearInteractionTouchable.
+        /// The press direction of the button as defined by a NearInteractionTouchableSurface.
         /// </summary>
         private Vector3 WorldSpacePressDirection
         {
             get
             {
-                var nearInteractionTouchable = GetComponent<NearInteractionTouchable>();
+                var nearInteractionTouchable = GetComponent<NearInteractionTouchableSurface>();
                 if (nearInteractionTouchable != null)
                 {
-                    return -1.0f * nearInteractionTouchable.Forward;
+                    return nearInteractionTouchable.transform.TransformDirection(nearInteractionTouchable.LocalPressDirection);
                 }
                 
                 return transform.forward;

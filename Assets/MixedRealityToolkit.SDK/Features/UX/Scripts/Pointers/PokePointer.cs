@@ -174,7 +174,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             for (int i = 0; i < numColliders; ++i)
             {
-                var touchable = queryBuffer[i].GetComponent<ColliderNearInteractionTouchable>();
+                var touchable = queryBuffer[i].GetComponent<BaseNearInteractionTouchable>();
                 if (touchable)
                 {
                     float distance = touchable.DistanceToTouchable(Position, out Vector3 normal);
