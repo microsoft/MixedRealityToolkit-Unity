@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     public class RectTransformCubeScaler : MonoBehaviour
     {
         private RectTransform rectTransform;
-        private Vector2 prevRectSize = default;
+        private Vector2 prevRectSize = Vector2.zero;
 
         private void Start()
         {
