@@ -201,10 +201,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Add a touchable and configure for touch events
             NearInteractionTouchable touchable = interactableObject.AddComponent<NearInteractionTouchable>();
             touchable.EventsToReceive = TouchableEventType.Touch;
-            touchable.Bounds = Vector2.one;
+            touchable.SetBounds(Vector2.one);
             touchable.SetLocalForward(Vector3.up);
             touchable.SetLocalUp(Vector3.forward);
-            touchable.LocalCenter = Vector3.up * 2.75f;
+            touchable.SetLocalCenter(Vector3.up * 2.75f);
 
             // Add a touch handler and link touch started / touch completed events
             TouchHandler touchHandler = interactableObject.AddComponent<TouchHandler>();
