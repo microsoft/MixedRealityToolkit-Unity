@@ -63,8 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get => hostTransform;
             set => hostTransform = value;
         }
-
-        [Header("Manipulation")]
+        
         [SerializeField]
         [EnumFlags]
         [Tooltip("Can manipulation be done only with one hand, only with two hands, or with both?")]
@@ -127,8 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get => releaseBehavior;
             set => releaseBehavior = value;
         }
-
-        [Header("Constraints")]
+        
         [SerializeField]
         [Tooltip("Constrain rotation along an axis")]
         private RotationConstraintType constraintOnRotation = RotationConstraintType.None;
@@ -161,8 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get => constraintOnMovement;
             set => constraintOnMovement = value;
         }
-
-        [Header("Smoothing")]
+        
         [SerializeField]
         [Tooltip("Check to enable frame-rate independent smoothing. ")]
         private bool smoothingActive = true;
@@ -187,7 +184,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion Serialized Fields
 
         #region Event handlers
-        [Header("Manipulation Events")]
         public ManipulationEvent OnManipulationStarted = new ManipulationEvent();
         public ManipulationEvent OnManipulationEnded = new ManipulationEvent();
         public ManipulationEvent OnHoverEntered = new ManipulationEvent();
