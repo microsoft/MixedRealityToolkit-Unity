@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
 
         /// <summary>
-        /// The amount of time the ease should run
+        /// The amount of time the ease should run in seconds
         /// </summary>
         public float LerpTime = 0.5f;
 
@@ -39,6 +39,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public Easing()
         {
             Stop();
+        }
+
+        public Easing Copy()
+        {
+            return new Easing()
+            {
+                Curve = this.Curve,
+                Enabled = this.Enabled,
+                LerpTime = this.LerpTime,
+            };
         }
 
         /// <summary>

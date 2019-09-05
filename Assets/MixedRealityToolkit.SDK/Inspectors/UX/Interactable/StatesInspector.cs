@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             
             SerializedProperty stateLogicName = serializedObject.FindProperty("StateLogicName");
             SerializedProperty assemblyQualifiedName  = serializedObject.FindProperty("AssemblyQualifiedName");
-            int option = States.ReverseLookup(stateLogicName.stringValue, stateOptions.ClassNames);
+            int option = Array.IndexOf(stateOptions.ClassNames, stateLogicName.stringValue);
 
             int newLogic = EditorGUILayout.Popup("State Model", option, stateOptions.ClassNames);
             if (option != newLogic)
@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 
                 EditorGUILayout.BeginHorizontal();
                 string[] stateEnums = GetStateOptions();
-                int enumIndex = States.ReverseLookup(name.stringValue, stateEnums);
+                int enumIndex = Array.IndexOf(stateEnums, name.stringValue);
 
                 int newEnumIndex = EditorGUILayout.Popup(name.stringValue + " (" + bitCount + ")", enumIndex, stateEnums);
                 

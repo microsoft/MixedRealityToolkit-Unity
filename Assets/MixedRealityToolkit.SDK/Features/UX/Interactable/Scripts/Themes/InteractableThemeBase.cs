@@ -11,89 +11,122 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// <summary>
     /// Base class for themes
     /// </summary>
-
     public abstract class InteractableThemeBase
     {
         public Type[] Types;
         public string Name = "Base Theme";
-        public List<InteractableThemeProperty> ThemeProperties = new List<InteractableThemeProperty>();
-        public List<InteractableCustomSetting> CustomSettings = new List<InteractableCustomSetting>();
+        public List<ThemeStateProperty> StateProperties = new List<ThemeStateProperty>();
+        public List<ThemeProperty> Properties = new List<ThemeProperty>();
         public GameObject Host;
-        public Easing Ease;
-        public bool NoEasing;
+        public Easing Ease = new Easing();
         public bool Loaded;
-        public string AssemblyQualifiedName;
+
+        /// <summary>
+        /// Indicates whether the current Theme engine implementation supports easing between state values
+        /// </summary>
+        public virtual bool IsEasingSupported => true;
+
+        /// <summary>
+        /// Indicates whether the current Theme engine implementation supports shader targeting on state properties
+        /// </summary>
+        public virtual bool AreShadersSupported => false;
+
+        /// <summary>
+        /// Instruct theme to set value for current property with given index state and at given lerp percentage
+        /// </summary>
+        /// <param name="property">property to update value</param>
+        /// <param name="index">index of state to access array of values</param>
+        /// <param name="percentage">percentage transition between values</param>
+        public abstract void SetValue(ThemeStateProperty property, int index, float percentage);
+
+        /// <summary>
+        /// Get the current property value for the provided state property
+        /// </summary>
+        /// <param name="property">state property to access</param>
+        /// <returns>Value currently for given state property</returns>
+        public abstract ThemePropertyValue GetProperty(ThemeStateProperty property);
+
+        /// <summary>
+        /// Generates the default theme definition configuration for the current theme implementation
+        /// </summary>
+        /// <returns>Default ThemeDefinition to initialize with the current theme engine implemenetation</returns>
+        public abstract ThemeDefinition GetDefaultThemeDefinition();
 
         private bool hasFirstState = false;
-
         private int lastState = -1;
 
-        //! find a way to set the default values of the properties, like scale should be Vector3.one
-        // these should be custom, per theme
+        public static InteractableThemeBase CreateTheme(Type themeType)
+        {
+            if (!themeType.IsSubclassOf(typeof(InteractableThemeBase)))
+            {
+                Debug.LogError($"Trying to initialize theme of type {themeType} but type does not extend {typeof(InteractableThemeBase)}");
+                return null;
+            }
 
-        public abstract void SetValue(InteractableThemeProperty property, int index, float percentage);
+            return (InteractableThemeBase)Activator.CreateInstance(themeType);
+        }
 
-        public abstract InteractableThemePropertyValue GetProperty(InteractableThemeProperty property);
+        public static InteractableThemeBase CreateAndInitTheme(ThemeDefinition definition, GameObject host = null)
+        {
+            var theme = CreateTheme(definition.ThemeType);
+            theme.Init(host, definition);
+            return theme;
+        }
 
-        public virtual void Init(GameObject host, InteractableThemePropertySettings settings)
+        public virtual void Init(GameObject host, ThemeDefinition definition)
         {
             Host = host;
 
-            for (int i = 0; i < settings.Properties.Count; i++)
+            this.StateProperties = new List<ThemeStateProperty>();
+            foreach (ThemeStateProperty stateProp in definition.StateProperties)
             {
-                InteractableThemeProperty prop = ThemeProperties[i];
-                prop.ShaderOptionNames = settings.Properties[i].ShaderOptionNames;
-                prop.ShaderOptions = settings.Properties[i].ShaderOptions;
-                prop.PropId = settings.Properties[i].PropId;
-                prop.Values = settings.Properties[i].Values;
-                
-                ThemeProperties[i] = prop;
+                // This is a temporary workaround to support backward compatible themes
+                // If the current state properties is one we know supports shaders, try to migrate data
+                // See ThemeStateProperty class for more details
+                if (ThemeStateProperty.IsShaderPropertyType(stateProp.Type))
+                {
+                    stateProp.MigrateShaderData();
+                }
+
+                this.StateProperties.Add(new ThemeStateProperty()
+                {
+                    Name = stateProp.Name,
+                    Type = stateProp.Type,
+                    Values = stateProp.Values,
+                    Default = stateProp.Default,
+                    TargetShader = stateProp.TargetShader,
+                    ShaderPropertyName = stateProp.ShaderPropertyName,
+                });
             }
 
-            for (int i = 0; i < settings.CustomSettings.Count; i++)
+            this.Properties = new List<ThemeProperty>();
+            foreach (ThemeProperty prop in definition.CustomProperties)
             {
-                InteractableCustomSetting setting = CustomSettings[i];
-                setting.Name = settings.CustomSettings[i].Name;
-                setting.Type = settings.CustomSettings[i].Type;
-                setting.Value = settings.CustomSettings[i].Value;
-                CustomSettings[i] = setting;
+                this.Properties.Add(new ThemeProperty()
+                {
+                    Name = prop.Name,
+                    Type = prop.Type,
+                    Value = prop.Value,
+                });
             }
 
-            Ease = CopyEase(settings.Easing);
-            Ease.Stop();
+            if (definition.Easing != null)
+            {
+                Ease = definition.Easing.Copy();
+                Ease.Stop();
+            }
 
             Loaded = true;
         }
 
-        protected float LerpFloat(float s, float e, float t)
-        {
-            return (e - s) * t + s;
-        }
-
-        protected int LerpInt(int s, int e, float t)
-        {
-            return Mathf.RoundToInt((e - s) * t) + s;
-        }
-
-        protected Easing CopyEase(Easing ease)
-        {
-            Easing newEase = new Easing();
-            newEase.Curve = ease.Curve;
-            newEase.Enabled = ease.Enabled;
-            newEase.LerpTime = ease.LerpTime;
-
-            return newEase;
-        }
-
         public virtual void OnUpdate(int state, Interactable source, bool force = false)
         {
-
             if (state != lastState || force)
             {
-                int themePropCount = ThemeProperties.Count;
+                int themePropCount = StateProperties.Count;
                 for (int i = 0; i < themePropCount; i++)
                 {
-                    InteractableThemeProperty current = ThemeProperties[i];
+                    ThemeStateProperty current = StateProperties[i];
                     current.StartValue = GetProperty(current);
                     if (hasFirstState || force)
                     {
@@ -109,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                             hasFirstState = true;
                         }
                     }
-                    ThemeProperties[i] = current;
+                    StateProperties[i] = current;
                 }
 
                 lastState = state;
@@ -117,15 +150,25 @@ namespace Microsoft.MixedReality.Toolkit.UI
             else if (Ease.Enabled && Ease.IsPlaying())
             {
                 Ease.OnUpdate();
-                int themePropCount = ThemeProperties.Count;
+                int themePropCount = StateProperties.Count;
                 for (int i = 0; i < themePropCount; i++)
                 {
-                    InteractableThemeProperty current = ThemeProperties[i];
+                    ThemeStateProperty current = StateProperties[i];
                     SetValue(current, state, Ease.GetCurved());
                 }
             }
 
             lastState = state;
+        }
+
+        protected float LerpFloat(float s, float e, float t)
+        {
+            return (e - s) * t + s;
+        }
+
+        protected int LerpInt(int s, int e, float t)
+        {
+            return Mathf.RoundToInt((e - s) * t) + s;
         }
     }
 }

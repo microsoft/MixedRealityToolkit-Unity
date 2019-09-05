@@ -71,19 +71,5 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             StateOptions = InteractableTypeFinder.Find(candidateStateTypes, TypeRestriction.AllowBase);
         }
-
-        // redundant method, put in a utils with static methods!!!
-        public static int ReverseLookup(string option, string[] options)
-        {
-            for (int i = 0; i < options.Length; i++)
-            {
-                if (options[i] == option)
-                {
-                    return i;
-                }
-            }
-
-            return 0;
-        }
     }
 }

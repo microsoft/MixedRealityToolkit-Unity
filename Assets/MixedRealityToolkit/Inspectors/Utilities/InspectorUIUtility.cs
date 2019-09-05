@@ -612,24 +612,5 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             return 0;
         }
-
-        /// <summary>
-        /// Get the index of an array item based on it's name, pop-up field helper
-        /// </summary>
-        /// <param name="option"></param>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        public static int ReverseLookup(string option, string[] options)
-        {
-            for (int i = 0; i < options.Length; i++)
-            {
-                if (options[i] == option)
-                {
-                    return i;
-                }
-            }
-
-            return 0;
-        }
     }
 }

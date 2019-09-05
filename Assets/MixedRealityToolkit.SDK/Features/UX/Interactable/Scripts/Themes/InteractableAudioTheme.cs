@@ -9,32 +9,46 @@ namespace Microsoft.MixedReality.Toolkit.UI
 {
     public class InteractableAudioTheme : InteractableThemeBase
     {
+        /// <inheritdoc />
+        public override bool IsEasingSupported => false;
+
         private AudioSource audioSource;
 
         public InteractableAudioTheme()
         {
             Types = new Type[] { typeof(Transform) };
             Name = "Audio Theme";
-            NoEasing = true;
-            ThemeProperties.Add(
-                new InteractableThemeProperty()
-                {
-                    Name = "Audio",
-                    Type = InteractableThemePropertyValueTypes.AudioClip,
-                    Values = new List<InteractableThemePropertyValue>(),
-                    Default = new InteractableThemePropertyValue() { AudioClip = null }
-                });
         }
 
-        public override void Init(GameObject host, InteractableThemePropertySettings settings)
+        /// <inheritdoc />
+        public override ThemeDefinition GetDefaultThemeDefinition()
+        {
+            return new ThemeDefinition()
+            {
+                ThemeType = GetType(),
+                StateProperties = new List<ThemeStateProperty>()
+                {
+                    new ThemeStateProperty()
+                    {
+                        Name = "Audio",
+                        Type = ThemePropertyTypes.AudioClip,
+                        Values = new List<ThemePropertyValue>(),
+                        Default = new ThemePropertyValue() { AudioClip = null }
+                    },
+                },
+                CustomProperties = new List<ThemeProperty>(),
+            };
+        }
+
+        public override void Init(GameObject host, ThemeDefinition settings)
         {
             base.Init(host, settings);
             audioSource = Host.GetComponentInChildren<AudioSource>();
         }
 
-        public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
+        public override ThemePropertyValue GetProperty(ThemeStateProperty property)
         {
-            InteractableThemePropertyValue start = new InteractableThemePropertyValue();
+            ThemePropertyValue start = new ThemePropertyValue();
             AudioSource audioSource = Host.GetComponentInChildren<AudioSource>();
             if (audioSource != null)
             {
@@ -43,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return start;
         }
 
-        public override void SetValue(InteractableThemeProperty property, int index, float percentage)
+        public override void SetValue(ThemeStateProperty property, int index, float percentage)
         {
             if (audioSource == null)
             {

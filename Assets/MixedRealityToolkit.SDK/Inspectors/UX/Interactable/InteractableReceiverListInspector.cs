@@ -151,7 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 SerializedProperty hideEvents = eventItem.FindPropertyRelative("HideUnityEvents");
 
                 // show event dropdown
-                int id = InspectorUIUtility.ReverseLookup(className.stringValue, options.ClassNames);
+                int id = Array.IndexOf(options.ClassNames, className.stringValue);
 
                 using (new EditorGUILayout.HorizontalScope())
                 {

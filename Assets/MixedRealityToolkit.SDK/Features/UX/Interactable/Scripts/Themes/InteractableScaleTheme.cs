@@ -11,37 +11,50 @@ namespace Microsoft.MixedReality.Toolkit.UI
     {
         private Transform hostTransform;
 
-        public override void Init(GameObject host, InteractableThemePropertySettings settings)
+        public InteractableScaleTheme()
+        {
+            Types = new Type[] { typeof(Transform) };
+            Name = "Scale Theme";
+        }
+
+        /// <inheritdoc />
+        public override ThemeDefinition GetDefaultThemeDefinition()
+        {
+            return new ThemeDefinition()
+            {
+                ThemeType = GetType(),
+                StateProperties = new List<ThemeStateProperty>()
+                {
+                    new ThemeStateProperty()
+                    {
+                        Name = "Scale",
+                        Type = ThemePropertyTypes.Vector3,
+                        Values = new List<ThemePropertyValue>(),
+                        Default = new ThemePropertyValue() { Vector3 = Vector3.one}
+                    },
+                },
+                CustomProperties = new List<ThemeProperty>(),
+            };
+        }
+
+        /// <inheritdoc />
+        public override void Init(GameObject host, ThemeDefinition settings)
         {
             base.Init(host, settings);
 
             hostTransform = Host.transform;
         }
 
-        public InteractableScaleTheme()
-        {
-            Types = new Type[] { typeof(Transform) };
-            Name = "Scale Theme";
-            ThemeProperties.Add(
-                new InteractableThemeProperty()
-                {
-                    Name = "Scale",
-                    Type = InteractableThemePropertyValueTypes.Vector3,
-                    Values = new List<InteractableThemePropertyValue>(),
-                    Default = new InteractableThemePropertyValue() { Vector3 = Vector3.one}
-                });
-        }
-
         /// <inheritdoc />
-        public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
+        public override ThemePropertyValue GetProperty(ThemeStateProperty property)
         {
-            InteractableThemePropertyValue start = new InteractableThemePropertyValue();
+            ThemePropertyValue start = new ThemePropertyValue();
             start.Vector3 = hostTransform.localScale;
             return start;
         }
 
         /// <inheritdoc />
-        public override void SetValue(InteractableThemeProperty property, int index, float percentage)
+        public override void SetValue(ThemeStateProperty property, int index, float percentage)
         {
             hostTransform.localScale = Vector3.Lerp(property.StartValue.Vector3, property.Values[index].Vector3, percentage);
         }

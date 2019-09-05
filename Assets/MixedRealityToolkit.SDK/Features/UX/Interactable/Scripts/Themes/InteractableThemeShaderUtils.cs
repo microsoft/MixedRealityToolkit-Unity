@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
@@ -9,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     public enum ShaderPropertyType { Color, Float, Range, TexEnv, Vector, None }
 
     /// <summary>
-    /// property format for each property
+    /// Obsolete container. Only exists to support backward compatibility to copy values from old scriptableobjects
     /// </summary>
     [System.Serializable]
     public struct ShaderProperties
@@ -20,20 +22,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
     }
 
     /// <summary>
-    /// collection of properties found in a shader
-    /// </summary>
-    public struct ShaderInfo
-    {
-        public ShaderProperties[] ShaderOptions;
-        public string Name;
-    }
-
-
-    /// <summary>
     /// Collection of shader and material utilities
     /// </summary>
-
-    public class InteractableThemeShaderUtils : MonoBehaviour
+    public static class InteractableThemeShaderUtils
     {
         /// <summary>
         /// Get a MaterialPropertyBlock and copy the designated properties
@@ -41,39 +32,38 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <param name="gameObject"></param>
         /// <param name="props"></param>
         /// <returns></returns>
-        public static MaterialPropertyBlock GetMaterialPropertyBlock(GameObject gameObject, ShaderProperties[] props)
+        public static MaterialPropertyBlock InitMaterialPropertyBlock(GameObject gameObject, List<ThemeStateProperty> props)
         {
             MaterialPropertyBlock materialBlock = GetPropertyBlock(gameObject);
             Renderer renderer = gameObject.GetComponent<Renderer>();
 
-            float value;
             if (renderer != null)
             {
                 Material material = GetValidMaterial(renderer);
                 if (material != null)
                 {
-                    for (int i = 0; i < props.Length; i++)
+                    foreach (ThemeStateProperty prop in props)
                     {
-                        ShaderProperties prop = props[i];
-                        switch (props[i].Type)
+                        switch (prop.Type)
                         {
-                            case ShaderPropertyType.Color:
-                                Color color = material.GetVector(prop.Name);
-                                materialBlock.SetColor(prop.Name, color);
+                            case ThemePropertyTypes.Color:
+                                Color color = material.GetVector(prop.ShaderPropertyName);
+                                materialBlock.SetColor(prop.ShaderPropertyName, color);
                                 break;
-                            case ShaderPropertyType.Float:
-                                value = material.GetFloat(prop.Name);
-                                materialBlock.SetFloat(prop.Name, value);
+                            case ThemePropertyTypes.ShaderFloat:
+                                float value = material.GetFloat(prop.ShaderPropertyName);
+                                materialBlock.SetFloat(prop.ShaderPropertyName, value);
                                 break;
-                            case ShaderPropertyType.Range:
-                                value = material.GetFloat(prop.Name);
-                                materialBlock.SetFloat(prop.Name, value);
+                            case ThemePropertyTypes.ShaderRange:
+                                value = material.GetFloat(prop.ShaderPropertyName);
+                                materialBlock.SetFloat(prop.ShaderPropertyName, value);
                                 break;
                             default:
                                 break;
                         }
                     }
                 }
+
                 gameObject.GetComponent<Renderer>().SetPropertyBlock(materialBlock);
             }
 

@@ -17,6 +17,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -473,23 +474,37 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             translateTargetObject = childObject.transform;
 
+            States defaultStates = ScriptableObjectExtensions.GetAllInstances<States>().FirstOrDefault(profile => profile.name.Equals($"DefaultInteractableStates"));
+            Theme testTheme = new Theme()
+            {
+                States = defaultStates,
+                Definitions = new List<ThemeDefinition>()
+                {
+                    ThemeDefinition.GetDefaultThemeDefinition<ScaleOffsetColorTheme>().Value
+                }
+            };
+            testTheme.ValidateDefinitions();
+
+            // Set the offset state property (index = 1) to move on the Pressed state (index = 2)
+            testTheme.Definitions[0].StateProperties[1].Values = new List<ThemePropertyValue>()
+            {
+                new ThemePropertyValue() { Vector3 = Vector3.zero},
+                new ThemePropertyValue() { Vector3 = Vector3.zero},
+                new ThemePropertyValue() { Vector3 = new Vector3(0.0f, -0.32f, 0.0f)},
+                new ThemePropertyValue() { Vector3 = Vector3.zero},
+            };
+
+            InteractableProfileItem profileItem = new InteractableProfileItem()
+            {
+                Themes = new List<Theme>() { testTheme },
+                Target = translateTargetObject.gameObject,
+            };
+
             // Add an interactable
             interactable = interactableObject.AddComponent<Interactable>();
-
-#if UNITY_EDITOR
-            // Find our states and themes via the asset database
-            Theme cylinderTheme = ScriptableObjectExtensions.GetAllInstances<Theme>().FirstOrDefault(profile => profile.name.Equals($"CylinderTheme"));
-            States defaultStates = ScriptableObjectExtensions.GetAllInstances<States>().FirstOrDefault(profile => profile.name.Equals($"DefaultInteractableStates"));
-
             interactable.States = defaultStates;
-            InteractableProfileItem profileItem = new InteractableProfileItem();
-            profileItem.Themes = new System.Collections.Generic.List<Theme>() { cylinderTheme };
-            profileItem.HadDefaultTheme = true;
-            profileItem.Target = translateTargetObject.gameObject;
-
-            interactable.Profiles = new System.Collections.Generic.List<InteractableProfileItem>() { profileItem };
-            interactable.ForceUpdateThemes();
-#endif
+            interactable.Profiles = new List<InteractableProfileItem>() { profileItem };
+            interactable.RefreshSetup();
 
             // Set the interactable to respond to the requested input action
             MixedRealityInputAction selectAction = CoreServices.InputSystem.InputSystemProfile.InputActionsProfile.InputActions.Where(m => m.Description == selectActionDescription).FirstOrDefault();

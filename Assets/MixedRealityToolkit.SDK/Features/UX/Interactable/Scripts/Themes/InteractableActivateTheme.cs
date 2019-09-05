@@ -9,32 +9,45 @@ namespace Microsoft.MixedReality.Toolkit.UI
 {
     public class InteractableActivateTheme : InteractableThemeBase
     {
+        /// <inheritdoc />
+        public override bool IsEasingSupported => false;
 
         public InteractableActivateTheme()
         {
             Types = new Type[] { typeof(Transform) };
             Name = "Activate Theme";
-            NoEasing = true;
-            ThemeProperties.Add(
-                new InteractableThemeProperty()
-                {
-                    Name = "Activate",
-                    Type = InteractableThemePropertyValueTypes.Bool,
-                    Values = new List<InteractableThemePropertyValue>(),
-                    Default = new InteractableThemePropertyValue() { Bool = true }
-                });
         }
 
         /// <inheritdoc />
-        public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
+        public override ThemeDefinition GetDefaultThemeDefinition()
         {
-            InteractableThemePropertyValue start = new InteractableThemePropertyValue();
+            return new ThemeDefinition()
+            {
+                ThemeType = GetType(),
+                StateProperties = new List<ThemeStateProperty>()
+                {
+                    new ThemeStateProperty()
+                    {
+                        Name = "Activate",
+                        Type = ThemePropertyTypes.Bool,
+                        Values = new List<ThemePropertyValue>(),
+                        Default = new ThemePropertyValue() { Bool = true }
+                    },
+                },
+                CustomProperties = new List<ThemeProperty>(),
+            };
+        }
+
+        /// <inheritdoc />
+        public override ThemePropertyValue GetProperty(ThemeStateProperty property)
+        {
+            ThemePropertyValue start = new ThemePropertyValue();
             start.Bool = Host.activeSelf;
             return start;
         }
 
         /// <inheritdoc />
-        public override void SetValue(InteractableThemeProperty property, int index, float percentage)
+        public override void SetValue(ThemeStateProperty property, int index, float percentage)
         {
             Host.SetActive(property.Values[index].Bool);
         }

@@ -13,6 +13,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     public class InteractableStringTheme : InteractableThemeBase
     {
+        /// <inheritdoc />
+        public override bool IsEasingSupported => false;
+
         private TextMesh mesh;
         private Text text;
 
@@ -20,20 +23,30 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             Types = new Type[] { typeof(TextMesh), typeof(Text) };
             Name = "String Theme";
-            NoEasing = true;
-            ThemeProperties.Add(
-                new InteractableThemeProperty()
-                {
-                    Name = "String",
-                    Type = InteractableThemePropertyValueTypes.String,
-                    Values = new List<InteractableThemePropertyValue>(),
-                    Default = new InteractableThemePropertyValue() { String = "" }
-                    
-                });
         }
 
         /// <inheritdoc />
-        public override void Init(GameObject host, InteractableThemePropertySettings settings)
+        public override ThemeDefinition GetDefaultThemeDefinition()
+        {
+            return new ThemeDefinition()
+            {
+                ThemeType = GetType(),
+                StateProperties = new List<ThemeStateProperty>()
+                {
+                    new ThemeStateProperty()
+                    {
+                        Name = "String",
+                        Type = ThemePropertyTypes.String,
+                        Values = new List<ThemePropertyValue>(),
+                        Default = new ThemePropertyValue() { String = "" }
+                    },
+                },
+                CustomProperties = new List<ThemeProperty>(),
+            };
+        }
+
+        /// <inheritdoc />
+        public override void Init(GameObject host, ThemeDefinition settings)
         {
             base.Init(host, settings);
 
@@ -42,9 +55,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <inheritdoc />
-        public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
+        public override ThemePropertyValue GetProperty(ThemeStateProperty property)
         {
-            InteractableThemePropertyValue start = new InteractableThemePropertyValue();
+            ThemePropertyValue start = new ThemePropertyValue();
             start.String = "";
 
             if (mesh != null)
@@ -61,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <inheritdoc />
-        public override void SetValue(InteractableThemeProperty property, int index, float percentage)
+        public override void SetValue(ThemeStateProperty property, int index, float percentage)
         {
             if(mesh != null)
             {

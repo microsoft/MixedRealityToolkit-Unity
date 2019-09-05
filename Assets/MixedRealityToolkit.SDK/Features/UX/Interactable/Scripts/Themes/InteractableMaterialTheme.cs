@@ -9,35 +9,50 @@ namespace Microsoft.MixedReality.Toolkit.UI
 {
     public class InteractableMaterialTheme : InteractableThemeBase
     {
+        /// <inheritdoc />
+        public override bool IsEasingSupported => false;
+
         private Material material = null;
         private Renderer renderer;
 
-        public override void Init(GameObject host, InteractableThemePropertySettings settings)
+        public InteractableMaterialTheme()
+        {
+            Types = new Type[] { typeof(Renderer) };
+            Name = "Material Theme";
+        }
+
+        /// <inheritdoc />
+        public override ThemeDefinition GetDefaultThemeDefinition()
+        {
+            return new ThemeDefinition()
+            {
+                ThemeType = GetType(),
+                StateProperties = new List<ThemeStateProperty>()
+                {
+                    new ThemeStateProperty()
+                    {
+                        Name = "Material",
+                        Type = ThemePropertyTypes.Material,
+                        Values = new List<ThemePropertyValue>(),
+                        Default = new ThemePropertyValue() { Material = null }
+                    },
+                },
+                CustomProperties = new List<ThemeProperty>(),
+            };
+        }
+
+        /// <inheritdoc />
+        public override void Init(GameObject host, ThemeDefinition settings)
         {
             base.Init(host, settings);
 
             renderer = Host.GetComponent<Renderer>();
         }
 
-        public InteractableMaterialTheme()
-        {
-            Types = new Type[] { typeof(Renderer) };
-            Name = "Material Theme";
-            NoEasing = true;
-            ThemeProperties.Add(
-                new InteractableThemeProperty()
-                {
-                    Name = "Material",
-                    Type = InteractableThemePropertyValueTypes.Material,
-                    Values = new List<InteractableThemePropertyValue>(),
-                    Default = new InteractableThemePropertyValue() { Material = null }
-                });
-        }
-
         /// <inheritdoc />
-        public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
+        public override ThemePropertyValue GetProperty(ThemeStateProperty property)
         {
-            InteractableThemePropertyValue start = new InteractableThemePropertyValue();
+            ThemePropertyValue start = new ThemePropertyValue();
 
             material = renderer.material;
             start.Material = material;
@@ -45,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <inheritdoc />
-        public override void SetValue(InteractableThemeProperty property, int index, float percentage)
+        public override void SetValue(ThemeStateProperty property, int index, float percentage)
         {
             Host.SetActive(property.Values[index].Bool);
 
