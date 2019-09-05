@@ -10,6 +10,7 @@ namespace Microsoft.MixedReality.Toolkit
 {
     public static class TypeExtensions
     {
+#if !NETFX_CORE
         /// <summary>
         /// Returns a list of types for all classes that extend from the current type and are not abstract
         /// </summary>
@@ -37,5 +38,6 @@ namespace Microsoft.MixedReality.Toolkit
 
             return results;
         }
+#endif
     }
 }
