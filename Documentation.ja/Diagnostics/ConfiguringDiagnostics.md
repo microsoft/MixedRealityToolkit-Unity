@@ -1,23 +1,23 @@
-# Configuring the Diagnostics System
+# 診断システム (Diagnostics System) の構成
 
-The diagnostics system profile provides options for configuring:
-- [General Settings](#general-settings)
-- [Profiler Settings](#profiler-settings)
+診断システムプロファイルには、次の構成オプションが提供されます。
+- [一般的な設定](#一般的な設定)
+- [プロファイラの設定](#プロファイラの設定)
 
-## General Settings
+## 一般設定 (General Settings)
 
-![Diagnostics General Settings](../../Documentation/Images/Diagnostics/DiagnosticsGeneralSettings.png)
+![診断の一般的な設定](../../Documentation/Images/Diagnostics/DiagnosticsGeneralSettings.png)
 
-### Show Diagnostics
+### 診断の表示
 
-Indicates whether or not the diagnostics system is to display the configured diagnostic options.
+診断システムが設定された診断オプションを表示するかどうかを示します。
 
-When disabled, all configured diagnostic options will be hidden.
+無効にすると、設定されたすべての診断オプションが非表示になります。
 
-#### Programmatically controlling the Diagnostics System
+#### プログラムによる診断システムの制御
 
-It's also possible to toggle the visibility of the diagnostics system and the profiler at runtime.
-For example, the code below will hide the diagnostics system and profiler.
+また、実行時に診断システムとプロファイラの可視性を切り替えることもできます。
+たとえば、次のコードでは、診断システムとプロファイラを非表示にします。
 
 ```C#
 if (MixedRealityServiceRegistry.TryGetService<IMixedRealityDiagnosticsSystem>(out var service))
@@ -27,36 +27,35 @@ if (MixedRealityServiceRegistry.TryGetService<IMixedRealityDiagnosticsSystem>(ou
 }
 ```
 
-## Profiler Settings
+## Show Profiler （プロファイラの表示）
 
-![Diagnostics Profiler Settings](../../Documentation/Images/Diagnostics/DiagnosticsProfilerSettings.png)
+![診断プロファイラの設定](../../Documentation/Images/Diagnostics/DiagnosticsProfilerSettings.png)
 
-### Show Profiler
+### プロファイラの表示
 
-Indicates whether or not the Visual Profiler is to be displayed.
+ビジュアルプロファイラ (Visual Profiler) を表示するかどうかを示します。
 
-### Frame Sample Rate
+### Frame Sample Rate (フレームサンプルレート)
 
-The amount of time, in seconds to collect frames for frame rate calculation. The range is 0 to 5 seconds.
+フレームレート計算用にフレームを収集する時間 (秒単位) 。範囲は 0 ~ 5 秒です。
 
-### Window Anchor
+### Window Anchor (ウィンドウアンカー)
 
-To what portion of the view port should the profiler window be anchored. The default value is Lower Center.
+プロファイラウィンドウをビューポート (view port) のどの部分に固定するかを設定します。デフォルト値は下中央です。
 
-### Window Offset
+### Window Offset (ウィンドウオフセット)
 
-The offset, from the center of the view port, to place the Visual Profiler. The offset will be in the direction
-of the [Window Anchor](#window-anchor).
+ビューポート (view port) の中心からビジュアルプロファイラを配置するまでのオフセット。オフセットは[ウィンドウアンカー (Window Anchor)](#ウィンドウアンカー (Window Anchor))の方向です。
 
-### Window Scale
+### Window Scale (ウィンドウスケール)
 
-Size multiplier applied to the profiler window. For example, setting the value to 2 will double the window size.
+プロファイラウィンドウ (profiler window) に適用されるサイズ乗数。たとえば、値を 2 に設定すると、ウィンドウのサイズが 2 倍になります。
 
-### Window Follow Speed
+### Window Follow Speed (ウィンドウ追従スピード)
 
-The speed at which to move the profiler window to maintain visibility within the view port.
+ビューポート (view port) 内の可視性を維持するためにプロファイラウィンドウを移動する速度。
 
-## See Also
+## 参考に
 
-- [Diagnostics System](DiagnosticsSystemGettingStarted.md)
-- [Using the Visual Profiler](UsingVisualProfiler.md)
+- [診断システム (Diagnostic System)](DiagnosticsSystemGettingStarted.md)
+- [ビジュアルプロファイラ (Visual Profiler) を使用する](UsingVisualProfiler.md)
