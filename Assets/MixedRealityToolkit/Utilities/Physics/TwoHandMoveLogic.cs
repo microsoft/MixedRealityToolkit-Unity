@@ -20,6 +20,8 @@ namespace Microsoft.MixedReality.Toolkit.Physics
     {
         private float pointerRefDistance;
 
+        private bool pointerPosIndependentOfHead = true;
+
         private Vector3 pointerLocalGrabPoint;
         private Vector3 objectLocalGrabPoint;
         private Vector3 pointerToObject;
@@ -35,6 +37,10 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         {
             Vector3 headPosition = CameraCache.Main.transform.position;            
             pointerRefDistance = Vector3.Distance(pointerCentroidPose.Position, headPosition);
+            if (pointerRefDistance == 0)
+            {
+                pointerPosIndependentOfHead = false;
+            }
             
             Quaternion worldToPointerRotation = Quaternion.Inverse(pointerCentroidPose.Rotation);
             pointerLocalGrabPoint = worldToPointerRotation * (grabCentroid - pointerCentroidPose.Position);
@@ -62,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
                 Vector3 headPosition = CameraCache.Main.transform.position;
                 float distanceRatio = 1.0f;
 
-                if (movementConstraint != MovementConstraintType.FixDistanceFromHead)
+                if (pointerPosIndependentOfHead && movementConstraint != MovementConstraintType.FixDistanceFromHead)
                 {
                     // Compute how far away the object should be based on the ratio of the current to original hand distance
                     var currentHandDistance = Vector3.Magnitude(pointerCentroidPose.Position - headPosition);
