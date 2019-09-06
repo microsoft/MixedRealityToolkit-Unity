@@ -58,6 +58,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
     }
 
+    /// <summary>
+    /// Utility window that listens to input events to set a key binding.
+    /// Pressing a key or mouse button will define the binding and then immediately close the popup.
+    /// </summary>
+    /// <remarks>
+    /// The shift keys don't raise input events on their own, so this popup does not work for shift keys.
+    /// These have to be bound by selecting from the traditional dropdown list.
+    /// </remarks>
     public class KeyBindingPopupWindow : EditorWindow
     {
         private static KeyBindingPopupWindow window;
@@ -66,6 +74,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private SerializedProperty bindingTypeProp;
         private SerializedProperty codeProp;
 
+        /// <summary>
+        /// Create a new popup.
+        /// </summary>
         public static void Show(SerializedProperty keyBinding)
         {
             if (window != null)
@@ -103,6 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        // Set the binding based on a keyboard key
         private void ApplyKeyCode(KeyCode keyCode)
         {
             bindingTypeProp.intValue = (int)KeyBinding.KeyType.Key;
@@ -112,6 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Close();
         }
 
+        // Set the binding based on a mouse button
         private void ApplyMouseButton(int button)
         {
             bindingTypeProp.intValue = (int)KeyBinding.KeyType.Mouse;
