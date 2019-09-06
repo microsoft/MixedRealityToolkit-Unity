@@ -65,7 +65,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Updates the left and right hand images according to the tracked state
+        /// </summary>
         void Update()
         {
             if (imageHandLeft)
