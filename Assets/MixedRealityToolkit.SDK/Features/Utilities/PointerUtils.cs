@@ -146,7 +146,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        public static void SetHandRayBehavior(PointerBehavior pointerBehavior, Handedness handedness)
+        public static void SetHandRayPointerBehavior(PointerBehavior pointerBehavior, Handedness handedness)
+        {
+            SetRayPointerBehavior(pointerBehavior, handedness);
+        }
+
+        public static void SetMotionControllerRayPointerBehavior(PointerBehavior pointerBehavior, Handedness handedness)
+        {
+            SetRayPointerBehavior(pointerBehavior, handedness);
+        }
+
+        public static void SetRayPointerBehavior(PointerBehavior pointerBehavior, Handedness handedness)
         {
             if (CoreServices.InputSystem.FocusProvider is FocusProvider focusProvider)
             {
@@ -158,6 +168,44 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     focusProvider.RayPointerBehaviorLeft = pointerBehavior;
                 }
+            }
+        }
+
+        public static void SetGrabPointerBehavior(PointerBehavior pointerBehavior, Handedness handedness)
+        {
+            if (CoreServices.InputSystem.FocusProvider is FocusProvider focusProvider)
+            {
+                if ((handedness & Handedness.Right) != 0)
+                {
+                    focusProvider.GrabPointerBehaviorRight = pointerBehavior;
+                }
+                if ((handedness & Handedness.Left) != 0)
+                {
+                    focusProvider.GrabPointerBehaviorLeft = pointerBehavior;
+                }
+            }
+        }
+
+        public static void SetPokePointerBehavior(PointerBehavior pointerBehavior, Handedness handedness)
+        {
+            if (CoreServices.InputSystem.FocusProvider is FocusProvider focusProvider)
+            {
+                if ((handedness & Handedness.Right) != 0)
+                {
+                    focusProvider.PokePointerBehaviorRight = pointerBehavior;
+                }
+                if ((handedness & Handedness.Left) != 0)
+                {
+                    focusProvider.PokePointerBehaviorLeft = pointerBehavior;
+                }
+            }
+        }
+
+        public static void SetGazeBehavior(PointerBehavior pointerBehavior)
+        {
+            if (CoreServices.InputSystem.FocusProvider is FocusProvider focusProvider)
+            {
+                focusProvider.GazePointerBehavior = pointerBehavior;
             }
         }
     }
