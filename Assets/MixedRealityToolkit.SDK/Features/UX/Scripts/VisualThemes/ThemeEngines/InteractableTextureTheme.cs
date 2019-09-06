@@ -41,5 +41,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 CustomProperties = new List<ThemeProperty>(),
             };
         }
+
+        /// <inheritdoc />
+        public override void Init(GameObject host, ThemeDefinition definition)
+        {
+            // Temporary workaround for backward compatbility
+            // If any properties are targeting textures but do not have the appropriate TargetShader or property name set, then set defaults here
+            foreach (var prop in definition.StateProperties)
+            {
+                if (prop.Type == ThemePropertyTypes.Texture && string.IsNullOrEmpty(prop.ShaderPropertyName))
+                {
+                    prop.TargetShader = Shader.Find(DefaultShaderName);
+                    prop.ShaderPropertyName = DefaultShaderProperty;
+                }
+            }
+
+            base.Init(host, definition);
+        }
     }
 }

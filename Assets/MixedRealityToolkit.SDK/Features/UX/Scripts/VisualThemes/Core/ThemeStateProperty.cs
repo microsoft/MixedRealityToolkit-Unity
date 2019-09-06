@@ -162,6 +162,24 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 ShaderPropertyName = ShaderOptionNames[PropId];
             }
 #pragma warning restore 612, 618
+
+            if (IsShaderPropertyType(Type) && TargetShader == null)
+            {
+                // TODO: Troy - Utilize Cameron's change for string name
+                TargetShader = Shader.Find("Mixed Reality Toolkit/Standard");
+
+                if (string.IsNullOrEmpty(ShaderPropertyName))
+                {
+                    if (Type == ThemePropertyTypes.Color)
+                    {
+                        ShaderPropertyName = "_Color";
+                    }
+                    else if (Type == ThemePropertyTypes.Texture)
+                    {
+                        ShaderPropertyName = "_Texture";
+                    }
+                }
+            }
         }
     }
 }
