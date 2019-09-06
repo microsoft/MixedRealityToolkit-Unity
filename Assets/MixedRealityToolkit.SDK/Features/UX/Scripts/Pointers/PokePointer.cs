@@ -209,6 +209,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.OnPostSceneQuery();
 
+            BaseCursor?.SetVisibility(IsInteractionEnabled);
+
             if (!IsActive)
             {
                 return;
