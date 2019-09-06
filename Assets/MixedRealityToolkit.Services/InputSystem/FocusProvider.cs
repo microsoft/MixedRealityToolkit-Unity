@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityPhysics = UnityEngine.Physics;
@@ -34,12 +35,73 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private readonly PointerHitResult hitResult3d = new PointerHitResult();
         private readonly PointerHitResult hitResultUi = new PointerHitResult();
 
-        public PointerBehavior RayPointerBehaviorLeft { get; set; } = PointerBehavior.Default;
-        public PointerBehavior RayPointerBehaviorRight { get; set; } = PointerBehavior.Default;
-        public PointerBehavior GrabPointerBehaviorLeft { get; set; } = PointerBehavior.Default;
-        public PointerBehavior GrabPointerBehaviorRight { get; set; } = PointerBehavior.Default;
-        public PointerBehavior PokePointerBehaviorLeft { get; set; } = PointerBehavior.Default;
-        public PointerBehavior PokePointerBehaviorRight { get; set; } = PointerBehavior.Default;
+        private Dictionary<Type, PointerBehaviorForHandedness> customPointerBehaviors = new Dictionary<Type, PointerBehaviorForHandedness>();
+        public void SetPointerBehavior<T>(Handedness h, PointerBehavior b) where T : class, IMixedRealityPointer
+        {
+            if(!customPointerBehaviors.ContainsKey(typeof(T)))
+            {
+                customPointerBehaviors.Add(typeof(T), new PointerBehaviorForHandedness());
+            }
+            customPointerBehaviors[typeof(T)].SetBehaviorForHandedness(h, b);
+        }
+
+        public PointerBehavior GetPointerBehavior(IMixedRealityPointer p, Handedness h)
+        {
+            foreach(var kv in customPointerBehaviors)
+            {
+                if (kv.Key.IsAssignableFrom(p.GetType()))
+                {
+                    // p is subclass of key, or it is the exact class
+                    return kv.Value.GetBehaviorForHandedness(h);
+                }
+            }
+            return PointerBehavior.Default;
+        }
+
+        private class PointerBehaviorForHandedness
+        {
+            public PointerBehavior Left;
+            public PointerBehavior Right;
+            public PointerBehavior Other;
+            public PointerBehavior GetBehaviorForHandedness(Handedness h)
+            {
+                if ((h & Handedness.Right) != 0)
+                {
+                    return Right;
+                }
+                if ((h & Handedness.Left) != 0)
+                {
+                    return Left;
+                }
+                if ((h & Handedness.Other) != 0)
+                {
+                    return Other;
+                }
+                return PointerBehavior.Default;
+            }
+            public void SetBehaviorForHandedness(Handedness h, PointerBehavior b)
+            {
+                if ((h & Handedness.Right) != 0)
+                {
+                    Right = b;
+                }
+                if ((h & Handedness.Left) != 0)
+                {
+                    Left = b;
+                }
+                if ((h & Handedness.Other) != 0)
+                {
+                    Other = b;
+                }
+            }
+            public PointerBehaviorForHandedness()
+            {
+                Left = PointerBehavior.Default;
+                Right = PointerBehavior.Default;
+                Other = PointerBehavior.Default;
+            }
+        }
+
         public PointerBehavior GazePointerBehavior { get; set; } = PointerBehavior.Default;
 
         private readonly int maxQuerySceneResults = 128;
