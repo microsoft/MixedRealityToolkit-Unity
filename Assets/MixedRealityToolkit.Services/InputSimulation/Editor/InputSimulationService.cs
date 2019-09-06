@@ -223,16 +223,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             MouseDelta mouseDelta = UpdateMouseDelta();
             if (UserInputEnabled)
             {
-                bool enableCameraControl = true; 
                 if (handDataProvider != null)
                 {
                     handDataProvider.UpdateHandData(HandDataLeft, HandDataRight, mouseDelta);
-
-                    // Enable camera control only when hand control isn't active
-                    enableCameraControl = !(handDataProvider.IsSimulatingLeft || handDataProvider.IsSimulatingRight);
                 }
 
-                if (cameraControl != null && enableCameraControl && CameraCache.Main)
+                if (cameraControl != null && CameraCache.Main)
                 {
                     cameraControl.UpdateTransform(CameraCache.Main.transform, mouseDelta);
                 }

@@ -53,8 +53,8 @@ MonoBehaviour:
     bindingType: 2
     code: 32
   handRotateButton:
-    bindingType: 1
-    code: 1
+    bindingType: 2
+    code: 306
   defaultHandGesture: 2
   leftMouseHandGesture: 3
   middleMouseHandGesture: 0
