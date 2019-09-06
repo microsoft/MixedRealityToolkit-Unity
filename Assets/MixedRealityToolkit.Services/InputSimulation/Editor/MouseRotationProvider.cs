@@ -9,7 +9,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// Utility class to manage toggling of mouse rotation and associated features,
     /// such as cursor visibility/locking
     /// </summary>
-    /// <param name="wantsJumping">Show the cursor</param>
     public class MouseRotationProvider
     {
         private bool isRotating = false;
