@@ -34,6 +34,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private readonly PointerHitResult hitResult3d = new PointerHitResult();
         private readonly PointerHitResult hitResultUi = new PointerHitResult();
 
+        public PointerBehavior RayPointerBehaviorLeft { get; set; } = PointerBehavior.Default;
+        public PointerBehavior RayPointerBehaviorRight { get; set; } = PointerBehavior.Default;
+        public PointerBehavior GrabPointerBehaviorLeft { get; set; } = PointerBehavior.Default;
+        public PointerBehavior GrabPointerBehaviorRight { get; set; } = PointerBehavior.Default;
+        public PointerBehavior PokePointerBehaviorLeft { get; set; } = PointerBehavior.Default;
+        public PointerBehavior PokePointerBehaviorRight { get; set; } = PointerBehavior.Default;
+        public PointerBehavior GazePointerBehavior { get; set; } = PointerBehavior.Default;
+
         private readonly int maxQuerySceneResults = 128;
         private bool focusIndividualCompoundCollider = false;
 

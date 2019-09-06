@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -44,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="inputType">input type of pointer</param>
         /// <param name="endPoint">output point position</param>
         /// <returns></returns>
-        public static bool TryGetPointerEndpoint<T>(Handedness handedness, InputSourceType inputType, out Vector3 endPoint) where T: IMixedRealityPointer
+        public static bool TryGetPointerEndpoint<T>(Handedness handedness, InputSourceType inputType, out Vector3 endPoint) where T : IMixedRealityPointer
         {
             foreach (var pointer in GetPointers<IMixedRealityPointer>(handedness, inputType))
             {
@@ -144,6 +145,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
         }
-    }
 
+        public static void SetHandRayBehavior(PointerBehavior pointerBehavior, Handedness handedness)
+        {
+            if (CoreServices.InputSystem.FocusProvider is FocusProvider focusProvider)
+            {
+                if ((handedness & Handedness.Right) != 0)
+                {
+                    focusProvider.RayPointerBehaviorRight = pointerBehavior;
+                }
+                if ((handedness & Handedness.Left) != 0)
+                {
+                    focusProvider.RayPointerBehaviorLeft = pointerBehavior;
+                }
+            }
+        }
+    }
 }

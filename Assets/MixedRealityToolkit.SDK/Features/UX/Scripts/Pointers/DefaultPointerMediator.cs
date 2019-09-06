@@ -9,14 +9,8 @@ using System.Diagnostics;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    public class DefaultPointerMediator : IMixedRealityPointerMediator
+    public partial class DefaultPointerMediator : IMixedRealityPointerMediator
     {
-        public enum PointerBehavior
-        {
-            AlwaysEnabled,
-            AlwaysDisabled,
-            Default // default behavior: on, unless pointer is near a grabbable
-        };
 
         protected readonly HashSet<IMixedRealityPointer> allPointers = new HashSet<IMixedRealityPointer>();
         protected readonly HashSet<IMixedRealityPointer> farInteractPointers = new HashSet<IMixedRealityPointer>();
@@ -24,11 +18,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected readonly HashSet<IMixedRealityTeleportPointer> teleportPointers = new HashSet<IMixedRealityTeleportPointer>();
         protected readonly HashSet<IMixedRealityPointer> unassignedPointers = new HashSet<IMixedRealityPointer>();
         protected readonly Dictionary<IMixedRealityInputSource, HashSet<IMixedRealityPointer>> pointerByInputSourceParent = new Dictionary<IMixedRealityInputSource, HashSet<IMixedRealityPointer>>();
-
-        public PointerBehavior RayPointerBehavior { get; set; } = PointerBehavior.Default;
-        public PointerBehavior GrabPointerBehavior { get; set; } = PointerBehavior.Default;
-        public PointerBehavior PokePointerBehavior { get; set; } = PointerBehavior.Default;
-        public PointerBehavior GazePointerBehavior { get; set; } = PointerBehavior.Default;
 
         public virtual void RegisterPointers(IMixedRealityPointer[] pointers)
         {
@@ -184,38 +173,43 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 unassignedPointer.IsActive = true;
             }
 
-            Action<IMixedRealityPointer, PointerBehavior> setPointerState =
-                (ptr, behavior) =>
-                {
-                    if (behavior == PointerBehavior.AlwaysDisabled)
-                    {
-                        ptr.IsActive = false;
-                    }
-                    else if (behavior == PointerBehavior.AlwaysEnabled)
-                    {
-                        ptr.IsActive = true;
-                    }
-                };
-            foreach (IMixedRealityPointer pointer in allPointers)
+            if (CoreServices.InputSystem.FocusProvider is FocusProvider focusProvider)
             {
-                if(pointer is GGVPointer)
+                Action<IMixedRealityPointer, PointerBehavior> setPointerState =
+                    (ptr, behavior) =>
+                    {
+                        if (behavior == PointerBehavior.AlwaysDisabled)
+                        {
+                            ptr.IsActive = false;
+                        }
+                        else if (behavior == PointerBehavior.AlwaysEnabled)
+                        {
+                            ptr.IsActive = true;
+                        }
+                    };
+                foreach (IMixedRealityPointer pointer in allPointers)
                 {
-                    setPointerState(pointer, GazePointerBehavior);
-                } else if (pointer == CoreServices.InputSystem.GazeProvider.GazePointer)
-                {
-                    setPointerState(pointer, GazePointerBehavior);
-                }
-                else if (pointer is LinePointer)
-                {
-                    setPointerState(pointer, RayPointerBehavior);
-                }
-                else if (pointer is PokePointer)
-                {
-                    setPointerState(pointer, PokePointerBehavior);
-                }
-                else if (pointer is SpherePointer)
-                {
-                    setPointerState(pointer, GrabPointerBehavior);
+                    bool isRight = (pointer.Controller?.ControllerHandedness & Handedness.Right) != 0;
+                    if (pointer is GGVPointer)
+                    {
+                        setPointerState(pointer, focusProvider.GazePointerBehavior);
+                    }
+                    else if (pointer == CoreServices.InputSystem.GazeProvider.GazePointer)
+                    {
+                        setPointerState(pointer, focusProvider.GazePointerBehavior);
+                    }
+                    else if (pointer is LinePointer)
+                    {
+                        setPointerState(pointer, isRight ? focusProvider.RayPointerBehaviorRight : focusProvider.RayPointerBehaviorLeft);
+                    }
+                    else if (pointer is PokePointer)
+                    {
+                        setPointerState(pointer, isRight ? focusProvider.PokePointerBehaviorRight : focusProvider.PokePointerBehaviorLeft);
+                    }
+                    else if (pointer is SpherePointer)
+                    {
+                        setPointerState(pointer, isRight ? focusProvider.GrabPointerBehaviorRight : focusProvider.GrabPointerBehaviorLeft);
+                    }
                 }
             }
         }
