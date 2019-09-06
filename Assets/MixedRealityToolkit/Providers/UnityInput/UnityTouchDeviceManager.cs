@@ -71,11 +71,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                         break;
                 }
             }
-
-            foreach (var controller in ActiveTouches)
-            {
-                controller.Value?.Update();
-            }
         }
 
         /// <inheritdoc />
@@ -135,7 +130,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
             controller.TouchData = touch;
             controller.StartTouch();
-            UpdateTouchData(touch, ray);
         }
 
         private void UpdateTouchData(Touch touch, Ray ray)
