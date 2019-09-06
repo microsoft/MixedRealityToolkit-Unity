@@ -16,8 +16,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Create a new list of serialized PropertySettings from InspectorFields
         /// </summary>
-        /// <param name="settings"></param>
-        /// <param name="data"></param>
         public static void PropertySettingsList(SerializedProperty settings, List<InspectorFieldData> data)
         {
             settings.ClearArray();
@@ -57,9 +55,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Update a property value in a serialized PropertySettings
         /// </summary>
-        /// <param name="prop"></param>
-        /// <param name="type"></param>
-        /// <param name="update"></param>
         public static void UpdatePropertySettings(SerializedProperty prop, int type, object update)
         {
             SerializedProperty intValue = prop.FindPropertyRelative("IntValue");
@@ -147,9 +142,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Checks the type a property field and returns if it matches the passed in type
         /// </summary>
-        /// <param name="prop"></param>
-        /// <param name="type"></param>
-        /// <returns></returns>
         public static bool IsPropertyType(SerializedProperty prop, InspectorField.FieldTypes type)
         {
             SerializedProperty propType = prop.FindPropertyRelative("Type");
@@ -159,7 +151,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Render a PropertySettings UI field based on the InspectorField Settings
         /// </summary>
-        /// <param name="prop"></param>
         public static void DisplayPropertyField(SerializedProperty prop)
         {
             SerializedProperty type = prop.FindPropertyRelative("Type");

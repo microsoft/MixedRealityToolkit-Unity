@@ -40,10 +40,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="trackingState"></param>
-        /// <param name="controllerHandedness"></param>
-        /// <param name="inputSource"></param>
-        /// <param name="interactions"></param>
         public SimulatedGestureHand(
             TrackingState trackingState, 
             Handedness controllerHandedness, 

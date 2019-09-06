@@ -45,9 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// <summary>
         /// Do a build configured for UWP Applications to the specified path, returns the error from <see cref="BuildPlayer(UwpBuildInfo, CancellationToken)"/>
         /// </summary>
-        /// <param name="buildDirectory"></param>
         /// <param name="showDialog">Should the user be prompted to build the appx as well?</param>
-        /// <param name="cancellationToken"></param>
         /// <returns>True, if build was successful.</returns>
         public static async Task<bool> BuildPlayer(string buildDirectory, bool showDialog = true, CancellationToken cancellationToken = default)
         {
@@ -101,8 +99,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// <summary>
         /// Build the Uwp Player.
         /// </summary>
-        /// <param name="buildInfo"></param>
-        /// <param name="cancellationToken"></param>
         public static async Task<bool> BuildPlayer(UwpBuildInfo buildInfo, CancellationToken cancellationToken = default)
         {
             #region Gather Build Data

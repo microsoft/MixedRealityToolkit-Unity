@@ -49,7 +49,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         /// <summary>
         /// Opens the Device Portal for the target device.
         /// </summary>
-        /// <param name="targetDevice"></param>
         public static void OpenWebPortal(DeviceInfo targetDevice)
         {
             System.Diagnostics.Process.Start(FinalizeUrl(targetDevice.IP));
@@ -59,7 +58,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         /// <summary>
         /// Gets the <see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.DeviceOsInfo"/> of the target device.
         /// </summary>
-        /// <param name="targetDevice"></param>
         /// <returns><see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.DeviceOsInfo"/></returns>
         public static async Task<DeviceOsInfo> GetDeviceOsInfoAsync(DeviceInfo targetDevice)
         {
@@ -86,7 +84,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         /// <summary>
         /// Gets the <see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.MachineName"/> of the target device.
         /// </summary>
-        /// <param name="targetDevice"></param>
         /// <returns><see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.MachineName"/></returns>
         public static async Task<MachineName> GetMachineNameAsync(DeviceInfo targetDevice)
         {
@@ -113,7 +110,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         /// <summary>
         /// Gets the <see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.BatteryInfo"/> of the target device.
         /// </summary>
-        /// <param name="targetDevice"></param>
         /// <returns><see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.BatteryInfo"/></returns>
         public static async Task<BatteryInfo> GetBatteryStateAsync(DeviceInfo targetDevice)
         {
@@ -140,7 +136,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         /// <summary>
         /// Gets the <see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.PowerStateInfo"/> of the target device.
         /// </summary>
-        /// <param name="targetDevice"></param>
         /// <returns><see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.PowerStateInfo"/></returns>
         public static async Task<PowerStateInfo> GetPowerStateAsync(DeviceInfo targetDevice)
         {
@@ -167,7 +162,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         /// <summary>
         /// Restart the target device.
         /// </summary>
-        /// <param name="targetDevice"></param>
         /// <returns>True, if the device has successfully restarted.</returns>
         public static async Task<bool> RestartAsync(DeviceInfo targetDevice)
         {
@@ -214,7 +208,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         /// <summary>
         /// Shuts down the target device.
         /// </summary>
-        /// <param name="targetDevice"></param>
         /// <returns>True, if the device is shitting down.</returns>
         public static async Task<bool> ShutdownAsync(DeviceInfo targetDevice)
         {
@@ -240,8 +233,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         /// <summary>
         /// Determines if the target application is currently running on the target device.
         /// </summary>
-        /// <param name="packageName"></param>
-        /// <param name="targetDevice"></param>
         /// <returns>True, if application is currently installed on device.</returns>
         public static async Task<bool> IsAppInstalledAsync(string packageName, DeviceInfo targetDevice)
         {
@@ -252,8 +243,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         /// <summary>
         /// Determines if the target application is running on the target device.
         /// </summary>
-        /// <param name="packageName"></param>
-        /// <param name="targetDevice"></param>
         /// <param name="appInfo">Optional cached <see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.ApplicationInfo"/>.</param>
         /// <returns>True, if the application is running.</returns>
         public static async Task<bool> IsAppRunningAsync(string packageName, DeviceInfo targetDevice, ApplicationInfo appInfo = null)
@@ -299,8 +288,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         /// <summary>
         /// Gets the <see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.ApplicationInfo"/> of the target application on the target device.
         /// </summary>
-        /// <param name="packageName"></param>
-        /// <param name="targetDevice"></param>
         /// <returns>Returns the <see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.ApplicationInfo"/> of the target application from the target device.</returns>
         private static async Task<ApplicationInfo> GetApplicationInfoAsync(string packageName, DeviceInfo targetDevice)
         {
@@ -347,8 +334,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         /// <summary>
         /// Installs the target application on the target device.
         /// </summary>
-        /// <param name="appFullPath"></param>
-        /// <param name="targetDevice"></param>
         /// <param name="waitForDone">Should the thread wait until installation is complete?</param>
         /// <returns>True, if Installation was a success.</returns>
         public static async Task<bool> InstallAppAsync(string appFullPath, DeviceInfo targetDevice, bool waitForDone = true)
@@ -477,8 +462,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         /// <summary>
         /// Uninstalls the target application on the target device
         /// </summary>
-        /// <param name="packageName"></param>
-        /// <param name="targetDevice"></param>
         /// <param name="appInfo">Optional cached <see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.ApplicationInfo"/>.</param>
         /// <returns>True, if uninstall was a success.</returns>
         public static async Task<bool> UninstallAppAsync(string packageName, DeviceInfo targetDevice, ApplicationInfo appInfo = null)
@@ -524,8 +507,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         /// <summary>
         /// Launches the target application on the target device.
         /// </summary>
-        /// <param name="packageName"></param>
-        /// <param name="targetDevice"></param>
         /// <param name="appInfo">Optional cached <see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.ApplicationInfo"/>.</param>
         /// <returns>True, if application was successfully launched and is currently running on the target device.</returns>
         public static async Task<bool> LaunchAppAsync(string packageName, DeviceInfo targetDevice, ApplicationInfo appInfo = null)
@@ -568,8 +549,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         /// <summary>
         /// Stops the target application on the target device.
         /// </summary>
-        /// <param name="packageName"></param>
-        /// <param name="targetDevice"></param>
         /// <param name="appInfo">Optional cached <see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.ApplicationInfo"/>.</param>
         /// <returns>true, if application was successfully stopped.</returns>
         public static async Task<bool> StopAppAsync(string packageName, DeviceInfo targetDevice, ApplicationInfo appInfo = null)
@@ -612,8 +591,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         /// <summary>
         /// Downloads and launches the Log file for the target application on the target device.
         /// </summary>
-        /// <param name="packageName"></param>
-        /// <param name="targetDevice"></param>
         /// <param name="appInfo">Optional cached <see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.ApplicationInfo"/>.</param>
         /// <returns>The path of the downloaded log file.</returns>
         public static async Task<string> DownloadLogFileAsync(string packageName, DeviceInfo targetDevice, ApplicationInfo appInfo = null)
@@ -653,7 +630,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         /// <summary>
         /// Gets the <see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.IpConfigInfo"/> of the target device.
         /// </summary>
-        /// <param name="targetDevice"></param>
         /// <returns><see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.IpConfigInfo"/></returns>
         public static async Task<IpConfigInfo> GetIpConfigInfoAsync(DeviceInfo targetDevice)
         {
@@ -680,7 +656,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         /// <summary>
         /// Gets the <see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.AvailableWiFiNetworks"/> of the target device.
         /// </summary>
-        /// <param name="targetDevice"></param>
         /// <param name="interfaceInfo">The GUID for the network interface to use to search for wireless networks, without brackets.</param>
         /// <returns><see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.AvailableWiFiNetworks"/></returns>
         public static async Task<AvailableWiFiNetworks> GetAvailableWiFiNetworksAsync(DeviceInfo targetDevice, InterfaceInfo interfaceInfo)
@@ -708,7 +683,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         /// <summary>
         /// Connects to the specified WiFi Network.
         /// </summary>
-        /// <param name="targetDevice"></param>
         /// <param name="interfaceInfo">The interface to use to connect.</param>
         /// <param name="wifiNetwork">The network to connect to.</param>
         /// <param name="password">Password for network access.</param>
@@ -728,7 +702,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         /// <summary>
         /// Gets the <see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.NetworkInterfaces"/> of the target device.
         /// </summary>
-        /// <param name="targetDevice"></param>
         /// <returns><see cref="Microsoft.MixedReality.Toolkit.WindowsDevicePortal.NetworkInterfaces"/></returns>
         public static async Task<NetworkInterfaces> GetWiFiNetworkInterfacesAsync(DeviceInfo targetDevice)
         {
@@ -774,7 +747,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         /// <summary>
         /// Refreshes the CSRF Token in case the device or it's portal was restarted.
         /// </summary>
-        /// <param name="targetDevice"></param>
         /// <returns>True, if refresh was successful.</returns>
         public static async Task<bool> RefreshCsrfTokenAsync(DeviceInfo targetDevice)
         {
@@ -792,7 +764,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         /// <summary>
         /// Makes sure the Authentication Headers and CSRF Tokens are set.
         /// </summary>
-        /// <param name="targetDevice"></param>
         /// <returns>True if Authentication is successful, otherwise false.</returns>
         public static async Task<bool> EnsureAuthenticationAsync(DeviceInfo targetDevice)
         {
