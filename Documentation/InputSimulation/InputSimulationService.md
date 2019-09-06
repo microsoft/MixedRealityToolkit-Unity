@@ -19,13 +19,13 @@ Input simulation is an optional [Mixed Reality service](../MixedRealityServices.
 * __Type__ must be _Microsoft.MixedReality.Toolkit.Input > InputSimulationService_.
 * __Platform(s)__ by default includes all _Editor_ platforms, since the service uses keyboard and mouse input.
 
-## Input Simulation Tools Window
+## Input simulation tools window
 
-Enable the input simulation tools window from the  _"Mixed Reality Toolkit > Utilities > Input Simulation"_ menu. This window provides access to the state of input simulation during play mode.
+Enable the input simulation tools window from the  _Mixed Reality Toolkit > Utilities > Input Simulation_ menu. This window provides access to the state of input simulation during play mode.
 
 ## Viewport Butttons
 
-A prefab for in-editor buttons to control basic hand placement can be specified in the input simulation profile under __Indicators Prefab__. This is an optional utility, the same features can be accessed in the [Input Simulation tools window](#input-simulation-tools-window).
+A prefab for in-editor buttons to control basic hand placement can be specified in the input simulation profile under __Indicators Prefab__. This is an optional utility, the same features can be accessed in the [input simulation tools window](#input-simulation-tools-window).
 
 Hand icons show the state of the simulated hands:
 * ![Untracked hand icon](../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandIndicator_Untracked.png "Untracked hand icon") The hand is not tracking. Click to enable the hand.
@@ -61,7 +61,7 @@ The input simulation supports emulated hand devices. These virtual hands can int
 
 ## Hand Simulation Mode
 
-In the [Input Simulation tools window](#input-simulation-tools-window) the __Hand Simulation Mode__ setting switches between two distinct input models. The default mode can also be set in the input simulation profile.
+In the [input simulation tools window](#input-simulation-tools-window) the __Hand Simulation Mode__ setting switches between two distinct input models. The default mode can also be set in the input simulation profile.
 
 * _Articulated Hands_: Simulates a fully articulated hand device with joint position data.
 
@@ -79,13 +79,13 @@ In the [Input Simulation tools window](#input-simulation-tools-window) the __Han
 
 Press and hold the __Left/Right Hand Control Key__ (default: Left Shift/Space for left/right respectively) to gain control of either hand. While the manipulation key is pressed, the hand will appear in the viewport. Once the manipulation key is released the hands will disappear after a short __Hand Hide Timeout__.
 
-Hands can be toggle on permanently in the [Input Simulation tools window](#input-simulation-tools-window) or by pressing the __Toggle Left/Right Hand Key__ (default: T/Y for left/right respectively). Press the toggle key again to hide the hands again.
+Hands can be toggle on permanently in the [input simulation tools window](#input-simulation-tools-window) or by pressing the __Toggle Left/Right Hand Key__ (default: T/Y for left/right respectively). Press the toggle key again to hide the hands again.
 
 Mouse movement will move the hand in the view plane. Hands can be moved further or closer to the camera using the __mouse wheel__.
 
 To rotate hands using the mouse, hold both the __Left/Right Hand Control Key__ (shift/space) _and_ the __Hand Rotate Button__ (default: right mouse button).
 
-All hand placement can also changed in the [Input Simulation tools window](#input-simulation-tools-window), including resetting hands to default.
+All hand placement can also changed in the [input simulation tools window](#input-simulation-tools-window), including resetting hands to default.
 
 ## Additional profile settings
 

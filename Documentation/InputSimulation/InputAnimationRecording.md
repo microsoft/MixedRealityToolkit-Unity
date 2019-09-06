@@ -51,7 +51,7 @@ The current animation time can also be controlled directly with the [LocalTime](
 
 ## Editor tools for recording and playing input animation
 
-A number of tools exist in the Unity editor for recording and examining input animation. These tools can be accessed in the [Input Simulation tools window](InputSimulationService.md#input-simulation-tools-window), which can be opened from the _"Mixed Reality Toolkit > Utilities > Input Simulation"_ menu.
+A number of tools exist in the Unity editor for recording and examining input animation. These tools can be accessed in the [input simulation tools window](InputSimulationService.md#input-simulation-tools-window), which can be opened from the _Mixed Reality Toolkit > Utilities > Input Simulation_ menu.
 
 > [!NOTE]
 > Input recording and playback only works during play mode.
