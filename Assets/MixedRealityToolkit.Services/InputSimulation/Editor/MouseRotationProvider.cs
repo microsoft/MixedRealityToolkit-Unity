@@ -13,6 +13,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class MouseRotationProvider
     {
         private bool isRotating = false;
+        /// <summary>
+        /// True when rotation is currently active.
+        /// </summary>
         public bool IsRotating => isRotating;
 
         // Refcount to ensure the cursor is locked iff at least one rotation is in progress.
@@ -20,6 +23,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private static bool isMouseJumping = false;
         private static bool wasCursorVisible = true;
 
+        /// <summary>
+        /// Start or stop rotation based on the key binding.
+        /// </summary>
+        /// <remarks>
+        /// Also manages shared features such as cursor visibility that can be activated by different rotation providers.
+        /// </remarks>
         public void Update(KeyBinding rotationKey, KeyBinding cancelRotationKey, bool toggle)
         {
             bool wasRotating = isRotating;
