@@ -894,6 +894,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.Show(cameraPosition);
             yield return null;
 
+            // Hand position is not exactly the pointer position, this correction applies the delta
+            // from the hand to the pointer.
             Vector3 correction = hand.GetPointer<GGVPointer>().Position - cameraPosition;
             yield return hand.Move(-correction, numHandSteps);
             yield return null;
@@ -901,6 +903,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(expectedDist, Vector3.Distance(testObject.transform.position, cameraPosition), 0.01f);
 
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return null;
+
+            Assert.AreEqual(expectedDist, Vector3.Distance(testObject.transform.position, cameraPosition), 0.01f);
+
+            Vector3 delta = new Vector3(0.2f, 0, 0);
+            MixedRealityPlayspace.Transform.Translate(delta);
+            yield return hand.Move(delta, numHandSteps);
+            yield return null;
+
+            Assert.AreEqual(expectedDist, Vector3.Distance(testObject.transform.position, cameraPosition), 0.01f);
+
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
             yield return null;
 
             Assert.AreEqual(expectedDist, Vector3.Distance(testObject.transform.position, cameraPosition), 0.01f);
