@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d8965cb7573e04429e22a5a476b4703, type: 3}
-  m_Name: ExamplesHubSceneTransitionServiceProfile
+  m_Name: MRTKExamplesHubSceneTransitionServiceProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 1
-  useDefaultProgressIndicator: 1
+  useDefaultProgressIndicator: 0
   defaultProgressIndicatorPrefab: {fileID: 1993071269674472, guid: 57d2436112e7d424da7e9a8e41c608dc,
     type: 3}
   useFadeColor: 1
