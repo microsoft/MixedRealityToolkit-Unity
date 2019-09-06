@@ -7,7 +7,7 @@ using UnityEditor;
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     /// <summary>
-    /// Custom profile inspector for the extended dwell profile sample
+    /// Custom profile inspector for the DisplayInputResult sample
     /// </summary>
     [CustomEditor(typeof(DisplayInputResult))]
     public class DisplayInputResultInspector : UnityEditor.Editor
