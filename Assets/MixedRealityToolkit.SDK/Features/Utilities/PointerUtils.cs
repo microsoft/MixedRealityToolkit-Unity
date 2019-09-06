@@ -148,57 +148,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public static void SetHandRayPointerBehavior(PointerBehavior pointerBehavior, Handedness handedness)
         {
-            SetRayPointerBehavior(pointerBehavior, handedness);
+            SetPointerBehavior<LinePointer>(pointerBehavior, handedness);
         }
 
         public static void SetMotionControllerRayPointerBehavior(PointerBehavior pointerBehavior, Handedness handedness)
         {
-            SetRayPointerBehavior(pointerBehavior, handedness);
+            SetPointerBehavior<LinePointer>(pointerBehavior, handedness);
         }
 
         public static void SetRayPointerBehavior(PointerBehavior pointerBehavior, Handedness handedness)
         {
-            if (CoreServices.InputSystem.FocusProvider is FocusProvider focusProvider)
-            {
-                if ((handedness & Handedness.Right) != 0)
-                {
-                    focusProvider.RayPointerBehaviorRight = pointerBehavior;
-                }
-                if ((handedness & Handedness.Left) != 0)
-                {
-                    focusProvider.RayPointerBehaviorLeft = pointerBehavior;
-                }
-            }
+            SetPointerBehavior<LinePointer>(pointerBehavior, handedness);
         }
 
         public static void SetGrabPointerBehavior(PointerBehavior pointerBehavior, Handedness handedness)
         {
-            if (CoreServices.InputSystem.FocusProvider is FocusProvider focusProvider)
-            {
-                if ((handedness & Handedness.Right) != 0)
-                {
-                    focusProvider.GrabPointerBehaviorRight = pointerBehavior;
-                }
-                if ((handedness & Handedness.Left) != 0)
-                {
-                    focusProvider.GrabPointerBehaviorLeft = pointerBehavior;
-                }
-            }
+            SetPointerBehavior<SpherePointer>(pointerBehavior, handedness);
         }
 
         public static void SetPokePointerBehavior(PointerBehavior pointerBehavior, Handedness handedness)
         {
-            if (CoreServices.InputSystem.FocusProvider is FocusProvider focusProvider)
-            {
-                if ((handedness & Handedness.Right) != 0)
-                {
-                    focusProvider.PokePointerBehaviorRight = pointerBehavior;
-                }
-                if ((handedness & Handedness.Left) != 0)
-                {
-                    focusProvider.PokePointerBehaviorLeft = pointerBehavior;
-                }
-            }
+            SetPointerBehavior<PokePointer>(pointerBehavior, handedness);
         }
 
         public static void SetGGVBehavior(PointerBehavior pointerBehavior)
@@ -207,6 +177,29 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 focusProvider.GazePointerBehavior = pointerBehavior;
             }
+            else
+            {
+                WarnAboutSettingCustomPointerBehaviors();
+            }
         }
+
+        public static void SetPointerBehavior<T>(PointerBehavior pointerBehavior, Handedness handedness) where T : class, IMixedRealityPointer
+        {
+            if (CoreServices.InputSystem.FocusProvider is FocusProvider focusProvider)
+            {
+                focusProvider.SetPointerBehavior<T>(handedness, pointerBehavior);
+            }
+            else
+            {
+                WarnAboutSettingCustomPointerBehaviors();
+            }
+        }
+
+        private static void WarnAboutSettingCustomPointerBehaviors()
+        {
+            Debug.LogError("Setting custom pointer behaviors only works if the input system is using the default MRTK focus provider. " +
+                "Are you using a custom Focus Provider?");
+        }
+
     }
 }

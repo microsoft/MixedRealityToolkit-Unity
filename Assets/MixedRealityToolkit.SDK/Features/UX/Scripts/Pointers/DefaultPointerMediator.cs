@@ -181,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         if (behavior == PointerBehavior.Off)
                         {
                             ptr.IsActive = false;
-                            if(ptr is GenericPointer genericPtr)
+                            if (ptr is GenericPointer genericPtr)
                             {
                                 genericPtr.IsInteractionEnabled = false;
                             }
@@ -197,26 +197,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     };
                 foreach (IMixedRealityPointer pointer in allPointers)
                 {
-                    bool isRight = (pointer.Controller?.ControllerHandedness & Handedness.Right) != 0;
-                    if (pointer is GGVPointer)
+                    Handedness handedness = pointer.Controller == null ? Handedness.None : pointer.Controller.ControllerHandedness;
+                    if (pointer is GGVPointer ||
+                        pointer == CoreServices.InputSystem.GazeProvider.GazePointer)
                     {
                         setPointerState(pointer, focusProvider.GazePointerBehavior);
                     }
-                    else if (pointer == CoreServices.InputSystem.GazeProvider.GazePointer)
+                    else
                     {
-                        setPointerState(pointer, focusProvider.GazePointerBehavior);
-                    }
-                    else if (pointer is LinePointer)
-                    {
-                        setPointerState(pointer, isRight ? focusProvider.RayPointerBehaviorRight : focusProvider.RayPointerBehaviorLeft);
-                    }
-                    else if (pointer is PokePointer)
-                    {
-                        setPointerState(pointer, isRight ? focusProvider.PokePointerBehaviorRight : focusProvider.PokePointerBehaviorLeft);
-                    }
-                    else if (pointer is SpherePointer)
-                    {
-                        setPointerState(pointer, isRight ? focusProvider.GrabPointerBehaviorRight : focusProvider.GrabPointerBehaviorLeft);
+                        setPointerState(pointer, focusProvider.GetPointerBehavior(pointer, handedness));
                     }
                 }
             }
