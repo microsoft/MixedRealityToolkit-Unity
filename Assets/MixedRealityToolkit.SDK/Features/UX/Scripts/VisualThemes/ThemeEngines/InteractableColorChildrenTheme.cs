@@ -16,7 +16,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         private List<BlocksAndRenderer> propertyBlocks;
-        protected new const string DefaultColorShaderProperty = "_Color";
+
+        protected new const string DefaultShaderProperty = "_Color";
 
         public InteractableColorChildrenTheme()
         {
@@ -37,7 +38,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         Name = "Color",
                         Type = ThemePropertyTypes.Color,
                         Values = new List<ThemePropertyValue>(),
-                        Default = new ThemePropertyValue() { Color = Color.white}
+                        Default = new ThemePropertyValue() { Color = Color.white},
+                        TargetShader = Shader.Find(DefaultShaderName),
+                        ShaderPropertyName = DefaultShaderProperty,
                     }
                 },
                 CustomProperties = new List<ThemeProperty>(),
