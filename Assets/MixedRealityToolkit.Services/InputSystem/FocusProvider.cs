@@ -47,9 +47,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public PointerBehavior GetPointerBehavior(IMixedRealityPointer p, Handedness h)
         {
-            foreach(var kv in customPointerBehaviors)
+            return GetPointerBehavior(p.GetType(), h);
+        }
+
+        public PointerBehavior GetPointerBehavior(Type t, Handedness h)
+        {
+            foreach (var kv in customPointerBehaviors)
             {
-                if (kv.Key.IsAssignableFrom(p.GetType()))
+                if (kv.Key.IsAssignableFrom(t))
                 {
                     // p is subclass of key, or it is the exact class
                     return kv.Value.GetBehaviorForHandedness(h);

@@ -146,6 +146,28 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        public static PointerBehavior GetPointerBehavior<T>(Handedness handedness)
+        {
+            return GetPointerBehavior(typeof(T), handedness);
+        }
+
+        public static PointerBehavior GetPointerBehavior(Type type, Handedness handedness)
+        {
+            if (CoreServices.InputSystem.FocusProvider is FocusProvider focusProvider)
+            {
+                if (type == typeof(GGVPointer))
+                {
+                    return focusProvider.GazePointerBehavior;
+                }
+                return focusProvider.GetPointerBehavior(type, handedness);
+            }
+            else
+            {
+                WarnAboutSettingCustomPointerBehaviors();
+                return PointerBehavior.Default;
+            }
+        }
+
         public static void SetHandRayPointerBehavior(PointerBehavior pointerBehavior, Handedness handedness)
         {
             SetPointerBehavior<LinePointer>(pointerBehavior, handedness);
@@ -197,7 +219,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private static void WarnAboutSettingCustomPointerBehaviors()
         {
-            Debug.LogError("Setting custom pointer behaviors only works if the input system is using the default MRTK focus provider. " +
+            Debug.LogWarning("Setting custom pointer behaviors only works if the input system is using the default MRTK focus provider. " +
                 "Are you using a custom Focus Provider?");
         }
 
