@@ -8,6 +8,10 @@ using System;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    /// <summary>
+    /// Inspector for KeyBindings.
+    /// This shows a simple dropdown list for selecting a binding, as well as a button for binding keys by pressing them.
+    /// </summary>
     [CustomPropertyDrawer(typeof(KeyBinding))]
     public class KeyBindingInspector : PropertyDrawer
     {
@@ -30,6 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             var indent = EditorGUI.indentLevel;
             EditorGUI.indentLevel = 0;
 
+            // Show the traditional long dropdown list for selecting a key binding.
             if (KeyBinding.KeyBindingToEnumMap.TryGetValue(Tuple.Create((KeyBinding.KeyType)bindingType.intValue, code.intValue), out int index))
             {
                 int newIndex = EditorGUI.Popup(codePosition, index, KeyBinding.AllCodeNames);
@@ -44,6 +49,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
+            // Show a popup for binding by pressing a key or mouse button.
+            // Note that this method does not work for shift keys (Unity event limitation)
             if (GUI.Button(autoBindPosition, ""))
             {
                 KeyBindingPopupWindow.Show(property);
