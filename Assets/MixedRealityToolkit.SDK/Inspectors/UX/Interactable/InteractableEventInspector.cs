@@ -77,9 +77,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 SerializedProperty eventSettings = eventItem.FindPropertyRelative("Settings");
 
+                // If fields for given receiver class type have been changed, update the related inspector field data
                 var fieldList = InspectorFieldsUtility.GetInspectorFields(receiver);
-                // If the number of fields has changed, update our list to track the difference
-                if (eventSettings.arraySize != fieldList.Count)
+                if (!InspectorFieldsUtility.AreFieldsSame(eventSettings, fieldList))
                 {
                     InspectorFieldsUtility.UpdateSettingsList(eventSettings, fieldList);
                 }

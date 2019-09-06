@@ -16,13 +16,33 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
     public static class InspectorFieldsUtility
     {
+        public static bool AreFieldsSame(SerializedProperty settings, List<InspectorFieldData> fieldList)
+        {
+            // If number of fields don't match, automaticaly not the same
+            if (settings.arraySize != fieldList.Count)
+            {
+                return false;
+            }
 
+            // If same number of fields, ensure union of two lists is a perfect match
+            for (int idx = 0; idx < settings.arraySize - 1; idx++)
+            {
+                SerializedProperty name = settings.GetArrayElementAtIndex(idx).FindPropertyRelative("Name");
+
+                if (fieldList.FindIndex(s => s.Name == name.stringValue) == -1)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
         /// <summary>
         /// Update list of serialized PropertySettings from new or removed InspectorFields
         /// </summary>
         /// <param name="settings"></param>
-        /// <param name="data"></param>
-        public static void UpdateSettingsList(SerializedProperty settings, List<InspectorFieldData> data)
+        /// <param name="fieldList"></param>
+        public static void UpdateSettingsList(SerializedProperty settings, List<InspectorFieldData> fieldList)
         {
             // Delete existing settings that now have missing field
             // Remove data entries for existing setting matches
@@ -31,10 +51,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 SerializedProperty settingItem = settings.GetArrayElementAtIndex(idx);
                 SerializedProperty name = settingItem.FindPropertyRelative("Name");
 
-                int index = data.FindIndex(s => s.Name == name.stringValue);
+                int index = fieldList.FindIndex(s => s.Name == name.stringValue);
                 if (index != -1)
                 {
-                    data.RemoveAt(index);
+                    fieldList.RemoveAt(index);
                 }
                 else
                 {
@@ -42,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 }
             }
 
-            AddFieldsToSettingsList(settings, data);
+            AddFieldsToSettingsList(settings, fieldList);
         }
 
         /// <summary>
