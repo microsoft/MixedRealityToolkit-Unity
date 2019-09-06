@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected int ShaderPropertyID = -1;
 
         private static readonly ThemePropertyTypes[] ShaderTypes =
-            { ThemePropertyTypes.Color, ThemePropertyTypes .ShaderFloat, ThemePropertyTypes.ShaderRange};
+            { ThemePropertyTypes.Color, ThemePropertyTypes .ShaderFloat, ThemePropertyTypes.ShaderRange, ThemePropertyTypes.Texture};
 
         /// <summary>
         /// Utility function that determines if the passed property type is supported for shader targeting

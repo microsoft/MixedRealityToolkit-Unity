@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private SetColorOnText SetColorValue = null;
         private GetColorFromText GetColorValue = null;
 
-        protected const string DefaultColorShaderProperty = "_Color";
+        protected new const string DefaultShaderProperty = "_Color";
 
         public InteractableColorTheme()
         {
