@@ -9,7 +9,7 @@
 
 ユーザーは、従来のキーボードやマウスの組み合わせで実行時に操作をシミュレーションすることができます。それにより、デバイスにデプロイする前に Unity Editor 上でインタラクションをテストすることができます。
 
-> [!警告]
+> [!WARNING]
 > これは、Unity の XR Holographic Emulation > Emulation Mode = "Simulate in Editor" では動作しません。Unity Editor 内でのシミュレーションは、MRTK の入力シミュレーションの制御を奪い取ります。MRTK の入力シミュレーションサービスを使用するには、XR Holographic Emulation を、Emulation Mode = *"None"* にセットする必要があります。
 
 ## 入力シミュレーションサービスの有効化
@@ -22,7 +22,7 @@ MRTK では、入力シミュレーションはデフォルトで有効化され
 * __Platform(s)__ は、サービスがキーボードとマウスの入力に依存しているため、常に _Windows Editor_ である必要があります
 * __Profile__ は、入力シミュレーションの全ての設定を保持しています。
 
-> [!警告]
+> [!WARNING]
 > 現時点では、どのタイプのプロファイルもアサインすることができます。別のプロファイルをサービスにアサインする場合は、必ず _Input Simulation_ タイプのプロファイルを使用してください。そうしないと機能しません。
 
 <a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_InputSystemDataProviders.png">
@@ -131,7 +131,7 @@ Manipuration キーが押されなくなると、手は短い _Hand Hide Timeout
 
 _Left/Middle/Right Mouse Hand Gesture_ 設定を使用して、各マウスボタンを、手の形が異なるジェスチャーにマップすることができます。 _Default Hand Gesture_ は、どのボタンも押されていないときの手の形です。
 
-> [!注意]
+> [!NOTE]
 > _Pinch_ ジェスチャーは、この時点では "Select" アクションを発生させる唯一のジェスチャーです
 
 ## 片手での操作
