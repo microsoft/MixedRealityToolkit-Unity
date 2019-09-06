@@ -742,9 +742,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         /// Skips the first item in the array (internal added blank value to turn feature off)
         /// and returns a 0 if no match is found for the blank value
         /// </summary>
-        /// <param name="option"></param>
-        /// <param name="options"></param>
-        /// <returns></returns>
         protected int SpeechKeywordLookup(string option, string[] options)
         {
             // starting on 1 to skip the blank value
@@ -762,10 +759,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         /// Draws a popup UI with PropertyField type features.
         /// Displays prefab pending updates
         /// </summary>
-        /// <param name="position"></param>
-        /// <param name="prop"></param>
-        /// <param name="options"></param>
-        /// <param name="label"></param>
         protected void DrawDropDownProperty(Rect position, SerializedProperty prop, string[] options, GUIContent label)
         {
             EditorGUI.BeginProperty(position, label, prop);

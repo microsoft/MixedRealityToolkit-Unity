@@ -16,8 +16,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="pointers"></param>
         public BaseGenericInputSource(string name, IMixedRealityPointer[] pointers = null, InputSourceType sourceType = InputSourceType.Other)
         {
             SourceId = (InputSystem != null) ? InputSystem.GenerateNewSourceId() : 0;

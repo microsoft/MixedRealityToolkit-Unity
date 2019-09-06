@@ -111,7 +111,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <remarks>
         /// Raises a Float Input Changed event when the float data changes
         /// </remarks>
-        /// <param name="interactionMapping"></param>
         protected void UpdateSingleAxisData(MixedRealityInteractionMapping interactionMapping)
         {
             Debug.Assert(interactionMapping.AxisType == AxisType.SingleAxis);
@@ -169,7 +168,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <summary>
         /// Update the Touchpad / Thumbstick input from the device (in OpenVR, touchpad and thumbstick are the same input control)
         /// </summary>
-        /// <param name="interactionMapping"></param>
         protected void UpdateDualAxisData(MixedRealityInteractionMapping interactionMapping)
         {
             Debug.Assert(interactionMapping.AxisType == AxisType.DualAxis);
@@ -191,7 +189,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <summary>
         /// Update Spatial Pointer Data.
         /// </summary>
-        /// <param name="interactionMapping"></param>
         protected void UpdatePoseData(MixedRealityInteractionMapping interactionMapping)
         {
             Debug.Assert(interactionMapping.AxisType == AxisType.SixDof);

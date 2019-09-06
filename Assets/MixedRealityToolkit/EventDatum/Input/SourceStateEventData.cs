@@ -19,8 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Populates the event with data.
         /// </summary>
-        /// <param name="inputSource"></param>
-        /// <param name="controller"></param>
         public void Initialize(IMixedRealityInputSource inputSource, IMixedRealityController controller)
         {
             // NOTE: Source State events do not have an associated Input Action.

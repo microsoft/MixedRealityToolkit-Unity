@@ -27,10 +27,6 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <summary>
         /// Setup function
         /// </summary>
-        /// <param name="pointerCentroidPose"></param>
-        /// <param name="grabCentroid"></param>
-        /// <param name="objectPose"></param>
-        /// <param name="objectScale"></param>
         public void Setup(MixedRealityPose pointerCentroidPose, Vector3 grabCentroid, MixedRealityPose objectPose, Vector3 objectScale)
         {
             Vector3 headPosition = CameraCache.Main.transform.position;            
@@ -48,12 +44,6 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <summary>
         /// Update the rotation based on input.
         /// </summary>
-        /// <param name="pointerCentroidPose"></param>
-        /// <param name="objectRotation"></param>
-        /// <param name="objectScale"></param>
-        /// <param name="isNearMode"></param>
-        /// <param name="usePointerRotation"></param>
-        /// <param name="movementConstraint"></param>
         /// <returns>A Vector3 describing the desired position</returns>
         public Vector3 Update(MixedRealityPose pointerCentroidPose, Quaternion objectRotation, Vector3 objectScale, bool isNearMode, bool usePointerRotation, MovementConstraintType movementConstraint)
         {

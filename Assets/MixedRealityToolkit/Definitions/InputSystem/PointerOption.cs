@@ -16,9 +16,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="controllerType"></param>
-        /// <param name="handedness"></param>
-        /// <param name="pointerPrefab"></param>
         public PointerOption(SupportedControllerType controllerType, Handedness handedness, GameObject pointerPrefab)
         {
             this.controllerType = controllerType;

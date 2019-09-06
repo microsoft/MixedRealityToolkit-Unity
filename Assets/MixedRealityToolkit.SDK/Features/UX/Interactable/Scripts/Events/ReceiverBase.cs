@@ -39,18 +39,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// The state has changed
         /// </summary>
-        /// <param name="state"></param>
-        /// <param name="source"></param>
         public abstract void OnUpdate(InteractableStates state, Interactable source);
 
         /// <summary>
         /// A voice command was called
         /// </summary>
-        /// <param name="state"></param>
-        /// <param name="source"></param>
-        /// <param name="command"></param>
-        /// <param name="index"></param>
-        /// <param name="length"></param>
         public virtual void OnVoiceCommand(InteractableStates state, Interactable source, string command, int index = 0, int length = 1)
         {
             // voice command called
@@ -59,9 +52,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// A click event happened
         /// </summary>
-        /// <param name="state"></param>
-        /// <param name="source"></param>
-        /// <param name="pointer"></param>
         public virtual void OnClick(InteractableStates state, Interactable source, IMixedRealityPointer pointer = null)
         {
             // click called

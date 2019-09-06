@@ -44,8 +44,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Add new events/receivers to the list and grab all the InspectorFields so we can render them in the inspector
         /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
         public ReceiverData AddReceiver(Type type)
         {
             ReceiverBase receiver = (ReceiverBase)Activator.CreateInstance(type, Event);
@@ -91,7 +89,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Get the recieverBase types that contain event logic
         /// </summary>
-        /// <returns></returns>
         public static InteractableTypesContainer GetEventTypes()
         {
             return InteractableTypeFinder.Find(candidateEventTypes, TypeRestriction.DerivedOnly);
@@ -100,8 +97,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Create the event and setup the values from the inspector
         /// </summary>
-        /// <param name="iEvent"></param>
-        /// <returns></returns>
         public static ReceiverBase GetReceiver(InteractableEvent iEvent, InteractableTypesContainer interactableTypes)
         {
 #if UNITY_EDITOR

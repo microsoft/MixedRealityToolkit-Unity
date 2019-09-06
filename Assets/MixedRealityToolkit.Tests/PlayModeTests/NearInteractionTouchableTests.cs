@@ -59,7 +59,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Test creating adding a NearInteractionTouchable to GameObject programmatically.
         /// Should be able to run scene without getting any exceptions.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator NearInteractionTouchableInstantiate()
         {
@@ -145,7 +144,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test creates an object with NearInteractionTouchable
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator NearInteractionTouchableVariant()
         {
@@ -196,7 +194,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test creates an object with NearInteractionTouchableVolume
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator NearInteractionTouchableVolumeVariant()
         {
@@ -287,7 +284,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test scene query with stacked touchables.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator NearInteractionTouchableStack()
         {
@@ -333,7 +329,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test buffer saturation for the overlap query
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator NearInteractionTouchableOverlapQuerySaturation()
         {
@@ -386,7 +381,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test Unity UI button
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator NearInteractionTouchableUnityUiButton()
         {
@@ -420,7 +414,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test Unity UI toggle button
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator NearInteractionTouchableUnityUiToggle()
         {
