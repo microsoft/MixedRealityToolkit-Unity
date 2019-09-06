@@ -47,9 +47,6 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// Distorts a world-space point
         /// Automatically applies DistortStrength and ensures that strength never exceeds 1
         /// </summary>
-        /// <param name="point"></param>
-        /// <param name="strength"></param>
-        /// <returns></returns>
         public Vector3 DistortPoint(Vector3 point, float strength = 1f)
         {
             strength = Mathf.Clamp01(strength * DistortStrength);
@@ -61,9 +58,6 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// Distorts a world-space scale
         /// Automatically applies DistortStrength and ensures that strength never exceeds 1
         /// </summary>
-        /// <param name="scale"></param>
-        /// <param name="strength"></param>
-        /// <returns></returns>
         public Vector3 DistortScale(Vector3 scale, float strength = 1f)
         {
             if (!isActiveAndEnabled)
@@ -79,17 +73,11 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <summary>
         /// Internal function where position distortion is done
         /// </summary>
-        /// <param name="point"></param>
-        /// <param name="strength"></param>
-        /// <returns></returns>
         protected abstract Vector3 DistortPointInternal(Vector3 point, float strength);
 
         /// <summary>
         /// Internal function where scale distortion is done
         /// </summary>
-        /// <param name="point"></param>
-        /// <param name="strength"></param>
-        /// <returns></returns>
         protected abstract Vector3 DistortScaleInternal(Vector3 point, float strength);
 
         #region MonoBehaviour Implementation

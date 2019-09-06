@@ -202,7 +202,6 @@ namespace Microsoft.MixedReality.Toolkit.Audio
             /// <summary>
             /// Generates a hash code representing this FilterSettings.
             /// </summary>
-            /// <returns></returns>
             public override int GetHashCode()
             {
                 string s = $"[{GetType().ToString()}] Low: {LowPassCutoff}, High: {HighPassCutoff}";

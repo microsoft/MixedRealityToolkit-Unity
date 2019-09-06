@@ -17,9 +17,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="description"></param>
-        /// <param name="axisConstraint"></param>
         public MixedRealityInputAction(uint id, string description, AxisType axisConstraint = AxisType.None)
         {
             this.id = id;

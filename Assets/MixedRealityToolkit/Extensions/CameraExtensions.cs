@@ -14,7 +14,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Get the horizontal FOV from the stereo camera
         /// </summary>
-        /// <returns></returns>
         public static float GetHorizontalFieldOfViewRadians(this Camera camera)
         {
             return 2f * Mathf.Atan(Mathf.Tan(camera.fieldOfView * Mathf.Deg2Rad * 0.5f) * camera.aspect);
@@ -24,8 +23,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// Returns if a point will be rendered on the screen in either eye
         /// </summary>
         /// <param name="camera">The camera to check the point against</param>
-        /// <param name="position"></param>
-        /// <returns></returns>
         public static bool IsInFOV(this Camera camera, Vector3 position)
         {
             float verticalFovHalf = camera.fieldOfView * 0.5f;
@@ -45,7 +42,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         /// <param name="camera">The camera to get the frustum size for</param>
         /// <param name="distanceFromCamera">The distance from the camera to get the frustum size at</param>
-        /// <returns></returns>
         public static Vector2 GetFrustumSizeForDistance(this Camera camera, float distanceFromCamera)
         {
             Vector2 frustumSize = new Vector2
@@ -62,7 +58,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         /// <param name="camera">The camera to get the distance from</param>
         /// <param name="frustumHeight">The frustum height</param>
-        /// <returns></returns>
         public static float GetDistanceForFrustumHeight(this Camera camera, float frustumHeight)
         {
             return frustumHeight * 0.5f / Mathf.Max(0.00001f, Mathf.Tan(camera.fieldOfView * 0.5f * Mathf.Deg2Rad));

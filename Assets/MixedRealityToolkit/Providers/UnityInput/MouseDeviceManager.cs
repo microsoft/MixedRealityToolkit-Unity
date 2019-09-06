@@ -34,6 +34,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         private const float MinSpeedMultiplier = 0.1f;
         private const float MaxSpeedMultiplier = 10.0f;
 
+        /// <inheritdoc />
+        public MixedRealityMouseInputProfile MouseInputProfile => ConfigurationProfile as MixedRealityMouseInputProfile;
+
         private float cursorSpeed = 1.0f;
 
         /// <inheritdoc />
@@ -116,7 +119,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                     "Unexpected mouse handedness declared in MixedRealityControllerAttribute");
             }
 
-            // todo: this looks like it could be cleaned up / improved
             if (InputSystem != null)
             {
                 var pointers = RequestPointers(SupportedControllerType.Mouse, handedness);
@@ -140,7 +142,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <inheritdoc />
         public override void Update()
         {
-            // If a mouse is present, and we do not yet
             if (UInput.mousePresent && Controller == null) { Enable(); }
 
             Controller?.Update();

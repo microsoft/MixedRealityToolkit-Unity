@@ -117,7 +117,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <summary>
         /// Check whether the selected target is the intended one based on the referenced 'targetIterator' object.
         /// </summary>
-        /// <returns></returns>
         private bool HandleTargetGridIterator()
         {
             if (targetIterator != null)

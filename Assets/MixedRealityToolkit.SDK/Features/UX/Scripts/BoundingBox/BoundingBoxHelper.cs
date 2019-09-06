@@ -35,9 +35,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Objects that align to an target's bounding box can call this function in the object's UpdateLoop
         /// to get current bound points;
         /// </summary>
-        /// <param name="target"></param>
-        /// <param name="boundsPoints"></param>
-        /// <param name="ignoreLayers"></param>
         public void UpdateNonAABoundingBoxCornerPositions(BoundingBox boundingBox, List<Vector3> boundsPoints)
         {
             if (boundingBox.TargetBounds != targetBounds || rawBoundingCornersObtained == false)
@@ -61,8 +58,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// This function gets the untransformed bounding box corner points of a GameObject.
         /// </summary>
-        /// <param name="target"></param>
-        /// <param name="ignoreLayers"></param>
         public void GetRawBBCorners(BoundingBox boundingBox)
         {
             targetBounds = boundingBox.TargetBounds;
@@ -143,7 +138,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// by the index parameter;
         /// </summary>
         /// <param name="index">an index into the list of faces of a boundingcube. 0-5</param>
-        /// <returns></returns>
         public Vector3 GetFaceCentroid(int index)
         {
             int[] faceIndices = GetFaceIndices(index);
