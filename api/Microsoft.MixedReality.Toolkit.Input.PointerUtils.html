@@ -214,7 +214,7 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Input_PointerUtils_GetPointers_" data-uid="Microsoft.MixedReality.Toolkit.Input.PointerUtils.GetPointers*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_PointerUtils_GetPointers__1_Handedness_" data-uid="Microsoft.MixedReality.Toolkit.Input.PointerUtils.GetPointers``1(Handedness)">GetPointers&lt;T&gt;(Handedness)</h4>
-  <div class="markdown level1 summary"><p>Returns iterator over all pointers of specific type, with specific handedness</p>
+  <div class="markdown level1 summary"><p>Returns iterator over all pointers of specific type, with specific handedness.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -251,7 +251,8 @@
     <tbody>
       <tr>
         <td><span class="xref">IEnumerable</span>&lt;T&gt;</td>
-        <td></td>
+        <td><p>Iterator over all pointers of specific type, with specific handedness</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -275,7 +276,7 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Input_PointerUtils_GetPointers_" data-uid="Microsoft.MixedReality.Toolkit.Input.PointerUtils.GetPointers*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_PointerUtils_GetPointers__1_Handedness_Microsoft_MixedReality_Toolkit_Input_InputSourceType_" data-uid="Microsoft.MixedReality.Toolkit.Input.PointerUtils.GetPointers``1(Handedness,Microsoft.MixedReality.Toolkit.Input.InputSourceType)">GetPointers&lt;T&gt;(Handedness, InputSourceType)</h4>
-  <div class="markdown level1 summary"><p>Returns all pointers with given handedness and input type</p>
+  <div class="markdown level1 summary"><p>Returns all pointers with given handedness and input type.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -318,7 +319,7 @@
     <tbody>
       <tr>
         <td><span class="xref">IEnumerable</span>&lt;T&gt;</td>
-        <td><p>Iterator over all pointers that match the source type</p>
+        <td><p>Iterator over all pointers that match the source type, with specific handedness</p>
 </td>
       </tr>
     </tbody>
@@ -385,7 +386,7 @@ If no hand ray of given handedness is found, returns false and sets result to ze
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>true if pointer found, false otherwise. If not found, endPoint is set to zero</p>
+        <td><p>True if pointer found, false otherwise. If not found, endPoint is set to zero</p>
 </td>
       </tr>
     </tbody>
@@ -394,7 +395,7 @@ If no hand ray of given handedness is found, returns false and sets result to ze
   
   <a id="Microsoft_MixedReality_Toolkit_Input_PointerUtils_TryGetMotionControllerEndPoint_" data-uid="Microsoft.MixedReality.Toolkit.Input.PointerUtils.TryGetMotionControllerEndPoint*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_PointerUtils_TryGetMotionControllerEndPoint_Handedness_Vector3__" data-uid="Microsoft.MixedReality.Toolkit.Input.PointerUtils.TryGetMotionControllerEndPoint(Handedness,Vector3@)">TryGetMotionControllerEndPoint(Handedness, out Vector3)</h4>
-  <div class="markdown level1 summary"><p>Tries to get the end point of a motion controller
+  <div class="markdown level1 summary"><p>Tries to get the end point of a motion controller.
 If no pointer of given handedness is found, returns false and sets result to zero.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -437,7 +438,7 @@ If no pointer of given handedness is found, returns false and sets result to zer
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>true if pointer found, false otherwise. If not found, endPoint is set to zero</p>
+        <td><p>True if pointer found, false otherwise. If not found, endPoint is set to zero</p>
 </td>
       </tr>
     </tbody>
@@ -446,7 +447,7 @@ If no pointer of given handedness is found, returns false and sets result to zer
   
   <a id="Microsoft_MixedReality_Toolkit_Input_PointerUtils_TryGetPointerEndpoint_" data-uid="Microsoft.MixedReality.Toolkit.Input.PointerUtils.TryGetPointerEndpoint*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_PointerUtils_TryGetPointerEndpoint__1_Handedness_Microsoft_MixedReality_Toolkit_Input_InputSourceType_Vector3__" data-uid="Microsoft.MixedReality.Toolkit.Input.PointerUtils.TryGetPointerEndpoint``1(Handedness,Microsoft.MixedReality.Toolkit.Input.InputSourceType,Vector3@)">TryGetPointerEndpoint&lt;T&gt;(Handedness, InputSourceType, out Vector3)</h4>
-  <div class="markdown level1 summary"><p>Tries to get the end point of a pointer by source type and handedness
+  <div class="markdown level1 summary"><p>Tries to get the end point of a pointer by source type and handedness.
 If no pointer of given handedness is found, returns false and sets result to zero.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -474,13 +475,13 @@ If no pointer of given handedness is found, returns false and sets result to zer
       <tr>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSourceType.html">InputSourceType</a></td>
         <td><span class="parametername">inputType</span></td>
-        <td><p>input type of pointer</p>
+        <td><p>Input type of pointer</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">Vector3</span></td>
         <td><span class="parametername">endPoint</span></td>
-        <td><p>output point position</p>
+        <td><p>Output point position</p>
 </td>
       </tr>
     </tbody>
@@ -496,7 +497,8 @@ If no pointer of given handedness is found, returns false and sets result to zer
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
+        <td><p>True if pointer found, false otherwise. If not found, endPoint is set to zero</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -564,7 +566,7 @@ If no pointer of given handedness is found, returns false and sets result to zer
     <tbody>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>true if pointer found, false otherwise. If not found, endPoint is set to zero</p>
+        <td><p>True if pointer found, false otherwise. If not found, endPoint is set to zero</p>
 </td>
       </tr>
     </tbody>
