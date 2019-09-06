@@ -201,7 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        public static void SetGazeBehavior(PointerBehavior pointerBehavior)
+        public static void SetGGVBehavior(PointerBehavior pointerBehavior)
         {
             if (CoreServices.InputSystem.FocusProvider is FocusProvider focusProvider)
             {
