@@ -5,8 +5,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     public enum PointerBehavior
     {
-        AlwaysEnabled,
-        AlwaysDisabled,
+        On,
+        Off,
         Default // default behavior: on, unless pointer is near a grabbable
     };
 }
