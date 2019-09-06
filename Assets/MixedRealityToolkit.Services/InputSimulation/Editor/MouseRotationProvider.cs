@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private bool isRotating = false;
         public bool IsRotating => isRotating;
 
+        // Refcount to ensure the cursor is locked iff at least one rotation is in progress.
         private static int numRotating = 0;
         private static bool isMouseJumping = false;
         private static bool wasCursorVisible = true;
@@ -36,17 +37,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     if (isRotating)
                     {
-                        // pressing escape will stop capture
+                        // Pressing escape will stop capture
                         isRotating = !KeyInputSystem.GetKeyDown(cancelRotationKey);
                     }
                     else
                     {
-                        // any kind of click will capture focus
+                        // Capture focus when starting rotation
                         isRotating = KeyInputSystem.GetKeyDown(rotationKey);
                     }
                 }
                 else
                 {
+                    // Rotate only while key is pressed
                     isRotating = KeyInputSystem.GetKey(rotationKey);
                 }
             }
@@ -67,19 +69,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (rotationKey.BindingType == KeyBinding.KeyType.Mouse)
                 {
-                    // if mousebutton is either left, right or middle
+                    // Enable jumping when a mouse button is used
                     SetWantsMouseJumping(true);
                 }
                 else if (rotationKey.BindingType == KeyBinding.KeyType.Key)
                 {
-                    // if mousebutton is either control, shift or focused
+                    // Use cursor locking when using a key
                     UnityEngine.Cursor.lockState = CursorLockMode.Locked;
                     // save current cursor visibility before hiding it
                     wasCursorVisible = UnityEngine.Cursor.visible;
                     UnityEngine.Cursor.visible = false;
                 }
-
-                // do nothing if (this.MouseLookButton == MouseButton.None)
             }
 
             ++numRotating;
@@ -93,17 +93,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (rotationKey.BindingType == KeyBinding.KeyType.Mouse)
                 {
-                    // if mousebutton is either left, right or middle
+                    // Enable jumping when a mouse button is used
                     SetWantsMouseJumping(false);
                 }
                 else if (rotationKey.BindingType == KeyBinding.KeyType.Key)
                 {
-                    // if mousebutton is either control, shift or focused
+                    // Use cursor locking when using a key
                     UnityEngine.Cursor.lockState = CursorLockMode.None;
                     UnityEngine.Cursor.visible = wasCursorVisible;
                 }
-
-                // do nothing if (this.MouseLookButton == MouseButton.None)
             }
         }
 

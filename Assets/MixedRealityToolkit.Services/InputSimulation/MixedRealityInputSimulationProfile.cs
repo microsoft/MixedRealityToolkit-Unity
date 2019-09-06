@@ -137,7 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private KeyBinding rightHandManipulationKey = KeyBinding.FromKey(KeyCode.Space);
         public KeyBinding RightHandManipulationKey => rightHandManipulationKey;
         [SerializeField]
-        [Tooltip("Controls how mouse look control is activated")]
+        [Tooltip("Controls how hand rotation is activated")]
         private KeyBinding handRotateButton = KeyBinding.FromKey(KeyCode.LeftControl);
         public KeyBinding HandRotateButton => handRotateButton;
 

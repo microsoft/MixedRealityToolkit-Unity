@@ -360,8 +360,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             else
             {
-                // Use frame-to-frame mouse delta in pixels to determine mouse rotation.
-                // The traditional GetAxis("Mouse X") method doesn't work under Remote Desktop.
                 Vector3 screenDelta;
                 Vector3 worldDelta;
                 if (UnityEngine.Cursor.lockState == CursorLockMode.Locked)
@@ -373,6 +371,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
                 else
                 {
+                    // Use frame-to-frame mouse delta in pixels to determine mouse rotation.
+                    // The traditional GetAxis("Mouse X") method doesn't work under Remote Desktop.
                     screenDelta.x = (UnityEngine.Input.mousePosition.x - lastMousePosition.x);
                     screenDelta.y = (UnityEngine.Input.mousePosition.y - lastMousePosition.y);
 
@@ -407,14 +407,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private const float MouseWorldDepth = 0.5f;
+        // Default world-space distance for converting screen/viewport scroll offsets into world space depth offset.
+        // The pixel-to-world-unit ratio changes with depth, so have to chose a fixed distance for conversion.
+        private const float mouseWorldDepth = 0.5f;
+        // Center of the viewport is at (0.5, 0.5)
+        private readonly Vector2 viewportCenter = new Vector2(0.5f, 0.5f);
 
         private Vector2 ScreenToWorld(Vector2 screenDelta)
         {
             Vector3 deltaViewport3D = new Vector3(
-                screenDelta.x / CameraCache.Main.pixelWidth + 0.5f,
-                screenDelta.y / CameraCache.Main.pixelHeight + 0.5f,
-                MouseWorldDepth);
+                screenDelta.x / CameraCache.Main.pixelWidth + viewportCenter.x,
+                screenDelta.y / CameraCache.Main.pixelHeight + viewportCenter.y,
+                mouseWorldDepth);
             Vector3 deltaWorld3D = CameraCache.Main.ViewportToWorldPoint(deltaViewport3D);
             Vector3 deltaLocal3D = CameraCache.Main.transform.InverseTransformPoint(deltaWorld3D);
             return new Vector2(deltaLocal3D.x, deltaLocal3D.y);
@@ -422,18 +426,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private Vector2 WorldToScreen(Vector2 deltaWorld)
         {
-            Vector3 deltaWorld3D = CameraCache.Main.transform.TransformPoint(new Vector3(deltaWorld.x, deltaWorld.y, MouseWorldDepth));
+            Vector3 deltaWorld3D = CameraCache.Main.transform.TransformPoint(new Vector3(deltaWorld.x, deltaWorld.y, mouseWorldDepth));
             Vector3 deltaViewport3D = CameraCache.Main.WorldToViewportPoint(deltaWorld3D);
             return new Vector2(
-                (deltaViewport3D.x - 0.5f) * CameraCache.Main.pixelWidth,
-                (deltaViewport3D.y - 0.5f) * CameraCache.Main.pixelHeight);
+                (deltaViewport3D.x - viewportCenter.x) * CameraCache.Main.pixelWidth,
+                (deltaViewport3D.y - viewportCenter.y) * CameraCache.Main.pixelHeight);
         }
 
         private Vector2 WorldToViewport(Vector2 deltaWorld)
         {
-            Vector3 deltaWorld3D = CameraCache.Main.transform.TransformPoint(new Vector3(deltaWorld.x, deltaWorld.y, MouseWorldDepth));
+            Vector3 deltaWorld3D = CameraCache.Main.transform.TransformPoint(new Vector3(deltaWorld.x, deltaWorld.y, mouseWorldDepth));
             Vector3 deltaViewport3D = CameraCache.Main.WorldToViewportPoint(deltaWorld3D);
-            return new Vector2(deltaViewport3D.x - 0.5f, deltaViewport3D.y - 0.5f);
+            return new Vector2(deltaViewport3D.x - viewportCenter.x, deltaViewport3D.y - viewportCenter.y);
         }
     }
 }

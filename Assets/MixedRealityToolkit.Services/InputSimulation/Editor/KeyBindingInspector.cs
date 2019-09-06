@@ -44,7 +44,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            // if (GUI.Button(position, KeyBinding.CodeToString(code.intValue)))
             if (GUI.Button(autoBindPosition, ""))
             {
                 KeyBindingPopupWindow.Show(property);
