@@ -14087,7 +14087,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.ManipulationHandlerTests.html",
-          "hash": "Yq+5OySOVkE4EDkyfZLdiw=="
+          "hash": "I8cCmkkkE+NxkQqOGaOdwg=="
         }
       },
       "is_incremental": false,
@@ -19407,16 +19407,16 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1114,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 124,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1114,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
