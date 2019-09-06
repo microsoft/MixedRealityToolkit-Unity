@@ -169,8 +169,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Get the <see href="https://docs.unity3d.com/ScriptReference/Color.html">Color</see> along the normalized length of the line.
         /// </summary>
-        /// <param name="normalizedLength"></param>
-        /// <returns></returns>
         protected virtual Color GetColor(float normalizedLength)
         {
             if (lineColor == null)
@@ -184,8 +182,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Get the width of the line along the normalized length of the line.
         /// </summary>
-        /// <param name="normalizedLength"></param>
-        /// <returns></returns>
         protected virtual float GetWidth(float normalizedLength)
         {
             if (lineWidth == null)

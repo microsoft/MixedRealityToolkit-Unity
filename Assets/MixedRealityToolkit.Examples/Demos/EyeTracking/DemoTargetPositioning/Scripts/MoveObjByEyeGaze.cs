@@ -388,7 +388,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <summary>
         /// Check whether the user is looking away from the target.
         /// </summary>
-        /// <returns></returns>
         private bool IsLookingAwayFromTarget()
         {
             // First, let's check if the target is still hit by the eye gaze cursor
@@ -413,7 +412,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <summary>
         /// Determine whether the user is looking away from the preview. 
         /// </summary>
-        /// <returns></returns>
         private bool IsLookingAwayFromPreview()
         {
             if (prevPreviewPos == null || EyeTrackingProvider == null)
@@ -478,8 +476,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <summary>
         /// Retrieve a valid location for placing the target.
         /// </summary>
-        /// <param name="hitobj"></param>
-        /// <returns></returns>
         private Vector3 GetValidPlacemLocation(GameObject hitobj)
         {
             // Determine position
@@ -595,7 +591,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <summary>
         /// Move the target using relative input values.
         /// </summary>
-        /// <param name="relativeMovement"></param>
         private void RelativeMoveUpdate(Vector3 relativeMovement)
         {
             manualTargetManip = false;
@@ -605,7 +600,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <summary>
         /// Compute the angle between the initial (when selecting the target) and current eye gaze direction.
         /// </summary>
-        /// <returns></returns>
         public float Angle_InitialGazeToCurrGazeDir()
         {
             return Vector3.Angle(initalGazeDir, EyeTrackingProvider.GazeDirection);
@@ -614,7 +608,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <summary>
         /// Compute angle between target center ( OR original targeting location??? ) and current targeting direction
         /// </summary>
-        /// <returns></returns>
         public float Angle_ToCurrHitTarget(GameObject gobj)
         {
             if (EyeTrackingProvider?.GazeTarget != null)

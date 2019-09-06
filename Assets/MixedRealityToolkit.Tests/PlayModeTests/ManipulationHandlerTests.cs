@@ -40,7 +40,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Test creating adding a ManipulationHandler to GameObject programmatically.
         /// Should be able to run scene without getting any exceptions.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ManipulationHandlerInstantiate()
         {
@@ -61,7 +60,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Test creating ManipulationHandler and receiving hover enter/exit events
         /// from gaze provider.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ManipulationHandlerGazeHover()
         {
@@ -108,7 +106,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// as well as forcefully ending of the manipulation
         /// from gaze provider.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ManipulationHandlerForceRelease()
         {
@@ -174,7 +171,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Tests MaintainRotationToUser mode of ManipulationHandler (OneHandedOnly)
         /// MaintainRotationToUser should only align with user / camera on x / y and not apply rotations in z
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ManipulationHandlerRotateWithUser()
         {
@@ -240,7 +236,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Test validates throw behavior on manipulation handler. Box with disabled gravity should travel a 
         /// certain distance when being released from grab during hand movement
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ManipulationHandlerThrow()
         {
@@ -274,12 +269,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return hand.Show(initialHandPosition);
             yield return hand.MoveTo(initialObjectPosition);
-            yield return hand.GrabAndThrowAt(rightPosition);
+            // Note: don't wait for a physics update after releasing, because it would recompute
+            // the velocity of the hand and make it deviate from the rigid body velocity!
+            yield return hand.GrabAndThrowAt(rightPosition, false);
 
             // With simulated hand angular velocity would not be equal to 0, because of how simulation
             // moves hand when releasing the Pitch. Even though it doesn't directly follow from hand movement, there will always be some rotation.
             Assert.NotZero(rigidBody.angularVelocity.magnitude, "Manipulationhandler should apply angular velocity to rigidBody upon release.");
-            Assert.AreEqual(rigidBody.velocity, hand.GetVelocity(), "Manipulationhandler should apply hand velocity to rigidBody upon release.");
+            Assert.AreEqual(hand.GetVelocity(), rigidBody.velocity, "Manipulationhandler should apply hand velocity to rigidBody upon release.");
 
             // This is just for debugging purposes, so object's movement after release can be seen.
             yield return hand.MoveTo(initialHandPosition);
@@ -295,7 +292,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// The test will check the offset between object pivot and grab point and make sure we're not drifting
         /// out of the object on pointer rotation - this test should be the same in all rotation setups
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ManipulationHandlerOneHandMoveNear()
         {
@@ -389,7 +385,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// out of the object on pointer rotation - this test is the same for all objects that won't change 
         /// their orientation to camera while camera / pointer rotates as this will modify the far interaction grab point
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ManipulationHandlerOneHandMoveFar()
         {
@@ -493,7 +488,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// This tests the one hand near rotation and applying different rotation constraints to the object.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ManipulationHandlerOneHandRotateWithConstraint()
         {
@@ -739,7 +733,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// This test will scale a cube with two hand manipulation and ensure that
         /// maximum and minimum scales are not exceeded.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ManipulationHandlerMinMaxScale()
         {
@@ -851,6 +844,73 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 TestUtilities.AssertAboutEqual(initialObjectPosition, testObject.transform.position, "Object moved while rotating head");
                 TestUtilities.AssertAboutEqual(initialObjectRotation, testObject.transform.rotation, "Object rotated while rotating head", 0.25f);
             }
+
+            // Restore the input simulation profile
+            iss.InputSimulationProfile = oldIsp;
+            yield return null;
+        }
+
+        /// <summary>
+        /// For positionless input sources that use gaze, such as xbox controller, pointer position will
+        /// be coincident with the head position. This was causing issues with manipulation handler, as
+        /// the distance between the pointer and the head is taken as part of the move logic. 
+        /// This test simulates a positionless input source by using GGV hands and setting the hand position
+        /// to be the head position. It then ensures that there is no weird behaviour as a result of this.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ManipulationHandlerPositionlessController()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // Switch to Gestures
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldIsp = iss.InputSimulationProfile;
+            var isp = ScriptableObject.CreateInstance<MixedRealityInputSimulationProfile>();
+            isp.HandSimulationMode = HandSimulationMode.Gestures;
+            iss.InputSimulationProfile = isp;
+
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.2f;
+            testObject.transform.position = new Vector3(0f, 0f, 1f);
+
+            var manipHandler = testObject.AddComponent<ManipulationHandler>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+
+            Vector3 cameraPosition = CameraCache.Main.transform.position;
+            TestHand hand = new TestHand(Handedness.Right);
+            const int numHandSteps = 1;
+            
+            float expectedDist = Vector3.Distance(testObject.transform.position, cameraPosition);
+            
+            yield return hand.Show(cameraPosition);
+            yield return null;
+
+            // Hand position is not exactly the pointer position, this correction applies the delta
+            // from the hand to the pointer.
+            Vector3 correction = hand.GetPointer<GGVPointer>().Position - cameraPosition;
+            yield return hand.Move(-correction, numHandSteps);
+            yield return null;
+
+            Assert.AreEqual(expectedDist, Vector3.Distance(testObject.transform.position, cameraPosition), 0.01f);
+
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return null;
+
+            Assert.AreEqual(expectedDist, Vector3.Distance(testObject.transform.position, cameraPosition), 0.01f);
+
+            Vector3 delta = new Vector3(0.2f, 0, 0);
+            MixedRealityPlayspace.Transform.Translate(delta);
+            yield return hand.Move(delta, numHandSteps);
+            yield return null;
+
+            Assert.AreEqual(expectedDist, Vector3.Distance(testObject.transform.position, cameraPosition), 0.01f);
+
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return null;
+
+            Assert.AreEqual(expectedDist, Vector3.Distance(testObject.transform.position, cameraPosition), 0.01f);
 
             // Restore the input simulation profile
             iss.InputSimulationProfile = oldIsp;

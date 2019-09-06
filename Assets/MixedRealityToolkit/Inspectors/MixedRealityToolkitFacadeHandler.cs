@@ -131,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
                 else if (!serviceSet.Contains(facade.Service))
                 {
                     ServiceFacade.ActiveFacadeObjects.Remove(facade);
-                    DestroyGameObject(facade.gameObject);
+                    GameObjectExtensions.DestroyGameObject(facade.gameObject);
                 }
                 else
                 {
@@ -165,30 +165,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             previousActiveInstance = MixedRealityToolkit.Instance;
         }
 
-        /// <summary>
-        /// Destroys gameobject appropriately depending if in edit or playmode
-        /// </summary>
-        /// <param name="gameObject">gameobject to destroy</param>
-        /// <param name="t">time at which to destroy GameObject if applicable</param>
-        public static void DestroyGameObject(this GameObject gameObject, float t = 0.0f)
-        {
-            if (Application.isPlaying)
-            {
-                GameObject.Destroy(gameObject, t);
-            }
-            else
-            {
-                GameObject.DestroyImmediate(gameObject);
-            }
-        }
-
         private static void DestroyFacades()
         {
             foreach (var facade in ServiceFacade.ActiveFacadeObjects)
             {
                 if (facade != null)
                 {
-                    DestroyGameObject(facade.gameObject);
+                    GameObjectExtensions.DestroyGameObject(facade.gameObject);
                 }
             }
 
@@ -218,12 +201,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             foreach (ServiceFacade facade in ServiceFacade.ActiveFacadeObjects)
             {
                 if (!childrenToDelete.Contains(facade.transform))
+                {
                     childrenToDelete.Add(facade.transform);
+                }
             }
 
             foreach (Transform child in childrenToDelete)
             {
-                DestroyGameObject(child.gameObject);
+                GameObjectExtensions.DestroyGameObject(child.gameObject);
             }
 
             childrenToDelete.Clear();

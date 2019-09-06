@@ -3,6 +3,7 @@
 
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Utilities
 {
@@ -11,62 +12,25 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
     /// </summary>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(Canvas))]
-    public class CanvasUtility : MonoBehaviour
+    public class CanvasUtility : MonoBehaviour, IMixedRealityPointerHandler
     {
-#if UNITY_EDITOR
-        [UnityEditor.CustomEditor(typeof(CanvasUtility))]
-        public class Editor : UnityEditor.Editor
+        private bool oldIsTargetPositionLockedOnFocusLock = false;
+        public void OnPointerClicked(MixedRealityPointerEventData eventData) {}
+
+        public void OnPointerDown(MixedRealityPointerEventData eventData)
         {
-            public override void OnInspectorGUI()
+            oldIsTargetPositionLockedOnFocusLock = eventData.Pointer.IsTargetPositionLockedOnFocusLock;
+            if (!(eventData.Pointer is IMixedRealityNearPointer) && eventData.Pointer.Controller.IsRotationAvailable)
             {
-                Canvas canvas = ((CanvasUtility)target).GetComponent<Canvas>();
-
-                if (canvas == null)
-                {
-                    Debug.LogError("Requires Canvas");
-                    base.OnInspectorGUI();
-                    return;
-                }
-
-                if (IsPartOfScene(canvas.gameObject) && CanSupportMrtkInput(canvas) && (canvas.worldCamera != null) && !Application.isPlaying)
-                {
-                    UnityEditor.EditorGUILayout.HelpBox("World Space Canvas should have no camera set to work properly with Mixed Reality Toolkit. At runtime, they'll get their camera set automatically.", UnityEditor.MessageType.Error);
-                    if (GUILayout.Button("Clear World Camera"))
-                    {
-                        UnityEditor.Undo.RecordObject(canvas, "Clear World Camera");
-                        canvas.worldCamera = null;
-                    }
-                }
-
-                if (CanSupportMrtkInput(canvas) && (canvas.GetComponentInChildren<NearInteractionTouchableUnityUI>() == null))
-                {
-                    UnityEditor.EditorGUILayout.HelpBox($"Canvas does not contain any {typeof(NearInteractionTouchableUnityUI).Name} components for supporting near interaction.", UnityEditor.MessageType.Warning);
-                    if (GUILayout.Button("Add NearInteractionTouchable"))
-                    {
-                        UnityEditor.Undo.AddComponent<NearInteractionTouchableUnityUI>(canvas.gameObject);
-                    }
-                }
-
-                base.OnInspectorGUI();
+                eventData.Pointer.IsTargetPositionLockedOnFocusLock = false;
             }
         }
-#endif
 
-        private IMixedRealityInputSystem inputSystem = null;
+        public void OnPointerDragged(MixedRealityPointerEventData eventData) { }
 
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        private IMixedRealityInputSystem InputSystem
+        public void OnPointerUp(MixedRealityPointerEventData eventData)
         {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
-                return inputSystem;
-            }
+            eventData.Pointer.IsTargetPositionLockedOnFocusLock = oldIsTargetPositionLockedOnFocusLock;
         }
 
         private void Start()
@@ -74,33 +38,20 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
             Canvas canvas = GetComponent<Canvas>();
             Debug.Assert(canvas != null);
 
-            if (CanSupportMrtkInput(canvas))
+            if (canvas.worldCamera == null)
             {
-                if (canvas.worldCamera == null)
-                {
-                    Debug.Assert(InputSystem?.FocusProvider?.UIRaycastCamera != null, this);
-                    canvas.worldCamera = InputSystem?.FocusProvider?.UIRaycastCamera;
+                Debug.Assert(CoreServices.InputSystem?.FocusProvider?.UIRaycastCamera != null, this);
+                canvas.worldCamera = CoreServices.InputSystem?.FocusProvider?.UIRaycastCamera;
 
-                    if (EventSystem.current == null)
-                    {
-                        Debug.LogError("No EventSystem detected. UI events will not be propagated to Unity UI.");
-                    }
-                }
-                else
+                if (EventSystem.current == null)
                 {
-                    Debug.LogError("World Space Canvas should have no camera set to work properly with Mixed Reality Toolkit. At runtime, they'll get their camera set automatically.");
+                    Debug.LogError("No EventSystem detected. UI events will not be propagated to Unity UI.");
                 }
             }
-        }
-
-        private static bool IsPartOfScene(GameObject gameObject)
-        {
-            return (gameObject.scene.name != null);
-        }
-
-        private static bool CanSupportMrtkInput(Canvas canvas)
-        {
-            return (canvas.isRootCanvas && (canvas.renderMode == RenderMode.WorldSpace));
+            else
+            {
+                Debug.LogError("World Space Canvas should have no camera set to work properly with Mixed Reality Toolkit. At runtime, they'll get their camera set automatically.");
+            }
         }
     }
 }

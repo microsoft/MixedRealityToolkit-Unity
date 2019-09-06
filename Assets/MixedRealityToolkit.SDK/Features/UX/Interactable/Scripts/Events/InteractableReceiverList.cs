@@ -39,8 +39,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// .A state has changed
         /// </summary>
-        /// <param name="state"></param>
-        /// <param name="source"></param>
         public override void OnStateChange(InteractableStates state, Interactable source)
         {
             base.OnStateChange(state, source);
@@ -58,9 +56,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// captures click events
         /// </summary>
-        /// <param name="state"></param>
-        /// <param name="source"></param>
-        /// <param name="pointer"></param>
         public override void OnClick(InteractableStates state, Interactable source, IMixedRealityPointer pointer = null)
         {
             base.OnClick(state, source, pointer);
@@ -77,9 +72,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// captures voice commands
         /// </summary>
-        /// <param name="state"></param>
-        /// <param name="source"></param>
-        /// <param name="command"></param>
         /// <param name="index">index of the voice command</param>
         /// <param name="length">voice command array length</param>
         public override void OnVoiceCommand(InteractableStates state, Interactable source, string command, int index = 0, int length = 1)

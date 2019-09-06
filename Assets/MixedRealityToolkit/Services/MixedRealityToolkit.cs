@@ -91,7 +91,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// When a configuration Profile is replaced with a new configuration, force all services to reset and read the new values
         /// </summary>
-        /// <param name="profile"></param>
         public void ResetConfiguration(MixedRealityToolkitConfigurationProfile profile)
         {
             if (activeProfile != null)
@@ -133,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// Current active systems registered with the MixedRealityToolkit.
         /// </summary>
         /// <remarks>
-        /// Systems can only be registered once by <see cref="Type"/>
+        /// Systems can only be registered once by <see cref="System.Type"/>
         /// </remarks>
         [Obsolete("Use CoreService, MixedRealityServiceRegistry, or GetService<T> instead")]
         public IReadOnlyDictionary<Type, IMixedRealityService> ActiveSystems => new Dictionary<Type, IMixedRealityService>(activeSystems) as IReadOnlyDictionary<Type, IMixedRealityService>;
@@ -551,7 +550,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Static function to determine if the MixedRealityToolkit class has been initialized or not.
         /// </summary>
-        /// <returns></returns>
         public static bool ConfirmInitialized()
         {
             // ReSharper disable once UnusedVariable
@@ -1119,7 +1117,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// Checks if the system is ready to get a service.
         /// </summary>
         /// <param name="interfaceType">The interface type of the service being checked.</param>
-        /// <returns></returns>
         private static bool CanGetService(Type interfaceType)
         {
             if (isApplicationQuitting && !internalShutdown)

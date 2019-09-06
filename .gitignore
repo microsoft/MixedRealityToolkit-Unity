@@ -10,6 +10,7 @@
 [Aa]pp/
 UWP/
 WindowsStoreApp/
+WSA/
 UnityGenerated/
 UnityPackageManager/
 .out/
@@ -89,3 +90,4 @@ doc/
 /MRTKBuild/
 /MSBuild/
 /PackagesCopy/
+!/scripts/Packaging/NuGetRestoreProject.csproj

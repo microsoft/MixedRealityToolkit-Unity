@@ -45,26 +45,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Tests that an interactable component can be added to a GameObject
-        /// at runtime.
-        /// </summary>
-        /// <returns></returns>
-        [UnityTest]
-        public IEnumerator TestAddInteractableAtRuntime()
-        {
-            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            // This should not throw an exception
-            var interactable = cube.AddComponent<Interactable>();
-
-            // clean up
-            GameObject.Destroy(cube);
-            yield return null;
-        }
-
-        /// <summary>
         /// Instantiates a push button prefab and uses simulated hand input to press it.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestSimulatedHandInputOnPrefab()
         {
@@ -116,7 +98,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Instantiates a push button prefab and uses simulated global input events to press it.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestSimulatedGlobalSelectInputOnPrefab()
         {
@@ -190,7 +171,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Assembles a push button from primitives and uses simulated hand input to press it.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestSimulatedHandInputOnRuntimeAssembled()
         {
@@ -218,10 +198,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Add a touchable and configure for touch events
             NearInteractionTouchable touchable = interactableObject.AddComponent<NearInteractionTouchable>();
             touchable.EventsToReceive = TouchableEventType.Touch;
-            touchable.Bounds = Vector2.one;
+            touchable.SetBounds(Vector2.one);
             touchable.SetLocalForward(Vector3.up);
             touchable.SetLocalUp(Vector3.forward);
-            touchable.LocalCenter = Vector3.up * 2.75f;
+            touchable.SetLocalCenter(Vector3.up * 2.75f);
 
             // Add a touch handler and link touch started / touch completed events
             TouchHandler touchHandler = interactableObject.AddComponent<TouchHandler>();
@@ -258,7 +238,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Assembles a push button from primitives and uses simulated input events to press it.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestSimulatedSelectInputOnRuntimeAssembled()
         {
@@ -315,7 +294,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Tests that radial buttons can be selected and deselected, and that a radial button
         /// set allows just one button to be selected at a time
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestRadialButtons()
         {
@@ -346,7 +324,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Instantiates a push button prefab and uses simulated input events to press it.
         /// </summary>
-        /// <returns></returns>
         /// https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5153
         // [UnityTest]
         public IEnumerator TestSimulatedMenuInputOnPrefab()
@@ -408,7 +385,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Instantiates a push button prefab and uses simulated voice input events to press it.
         /// </summary>
-        /// <returns></returns>
         /// https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5153
         // [UnityTest]
         public IEnumerator TestSimulatedVoiceInputOnPrefab()
@@ -464,10 +440,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Generates an interactable from primitives and assigns a select action.
         /// </summary>
-        /// <param name="interactableObject"></param>
-        /// <param name="interactable"></param>
-        /// <param name="translateTargetObject"></param>
-        /// <param name="selectActionDescription"></param>
         private void AssembleInteractableButton(out GameObject interactableObject, out Interactable interactable, out Transform translateTargetObject, string selectActionDescription = "Select")
         {
             // Assemble an interactable out of a set of primitives
@@ -530,11 +502,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Instantiates the default interactable button.
         /// </summary>
-        /// <param name="position"></param>
-        /// <param name="rotation"></param>
-        /// <param name="interactableObject"></param>
-        /// <param name="interactable"></param>
-        /// <param name="translateTargetObject"></param>
         private void InstantiateDefaultInteractablePrefab(Vector3 position, Vector3 rotation, out GameObject interactableObject, out Interactable interactable, out Transform translateTargetObject)
         {
             // Load interactable prefab

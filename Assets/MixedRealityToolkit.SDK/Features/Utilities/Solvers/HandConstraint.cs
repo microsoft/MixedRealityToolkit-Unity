@@ -347,7 +347,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         /// <param name="visible">Is the cursor visible?</param>
         /// <param name="frameDelay">Delay one frame before performing the toggle to allow the pointers to instantiate their cursors.</param>
-        /// <returns></returns>
         protected virtual IEnumerator ToggleCursor(bool visible, bool frameDelay = false)
         {
             if (hideHandCursorsOnActivate)

@@ -568,7 +568,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Unregister a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> from listening to input events.
         /// </summary>
-        /// <param name="listener"></param>
         public override void Unregister(GameObject listener)
         {
             base.Unregister(listener);
@@ -959,7 +958,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaisePointerDown(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
         {
-            pointer.IsFocusLocked = (pointer.Result?.Details.Object != null);
+            // Only lock the object if there is a grabbable above in the hierarchy
+            Transform currentObject = pointer.Result?.Details.Object?.transform;
+            IMixedRealityPointerHandler ancestorPointerHandler = null;
+            while(currentObject != null && ancestorPointerHandler == null)
+            {
+                foreach(var component in currentObject.GetComponents<Component>())
+                {
+                    if (component is IMixedRealityPointerHandler)
+                    {
+                        ancestorPointerHandler = (IMixedRealityPointerHandler) component;
+                        break;
+                    }
+                }
+                currentObject = currentObject.transform.parent;
+            }
+            pointer.IsFocusLocked = ancestorPointerHandler != null;
 
             pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
 

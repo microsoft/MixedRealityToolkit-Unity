@@ -100,8 +100,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// When we get interpolated points we subdivide the square so our sampling has more to work with
         /// </summary>
-        /// <param name="normalizedDistance"></param>
-        /// <returns></returns>
         protected override Vector3 GetPointInternal(float normalizedDistance)
         {
             BuildPoints();
