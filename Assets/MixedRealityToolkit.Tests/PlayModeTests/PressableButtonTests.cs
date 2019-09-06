@@ -11,12 +11,15 @@
 // play mode tests in this check.
 
 using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
-using System.Collections;
-using UnityEditor;
-using Microsoft.MixedReality.Toolkit.Utilities;
+using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
@@ -28,10 +31,40 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         #region Utilities
-        private GameObject InstantiateDefaultPressableButton()
+
+        private static string PrefabDirectoryPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs";
+
+        private static Dictionary<string, bool> PressableButtonTestPrefabs = new Dictionary<string, bool>
         {
-            Object pressableButtonPrefab = AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab", typeof(Object));
+            // Key is file name.  Value is whether or not it needs to be placed in a Canvas.
+            { "PressableButtonHoloLens2.prefab", false },
+            { "PressableButtonHoloLens2UnityUI.prefab", true },
+        };
+
+        public static IEnumerable<string> PressableButtonsTestPrefabFilenames
+        {
+            get
+            {
+                foreach (var prefabFilename in PressableButtonTestPrefabs.Keys)
+                {
+                    yield return prefabFilename;
+                }
+            }
+        }
+
+        private GameObject InstantiateDefaultPressableButton(string prefabFilename)
+        {
+            var path = Path.Combine(PrefabDirectoryPath, prefabFilename);
+            Object pressableButtonPrefab = AssetDatabase.LoadAssetAtPath(path, typeof(Object));
             GameObject testButton = Object.Instantiate(pressableButtonPrefab) as GameObject;
+
+            if (PressableButtonTestPrefabs[prefabFilename])
+            {
+                // Need to place this test button in a Canvas.  Instantiate the test canvas and place the button into it.
+                var canvasPrefab = AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit.Tests/PlayModeTests/Prefabs/UnitTestCanvas.prefab", typeof(Object));
+                var canvasObject = (GameObject)Object.Instantiate(canvasPrefab);
+                testButton.transform.SetParent(canvasObject.transform, worldPositionStays: false);
+            }
 
             return testButton;
         }
@@ -53,9 +86,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         #region Tests
 
         [UnityTest]
-        public IEnumerator ButtonInstantiate()
+        public IEnumerator ButtonInstantiate([ValueSource(nameof(PressableButtonsTestPrefabFilenames))] string prefabFilename)
         {
-            GameObject testButton = InstantiateDefaultPressableButton();
+            GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
             yield return null;
             PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
             Assert.IsNotNull(buttonComponent);
@@ -70,9 +103,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// See https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4683
         /// </summary>
         [UnityTest]
-        public IEnumerator PressButtonWithHand()
+        public IEnumerator PressButtonWithHand([ValueSource(nameof(PressableButtonsTestPrefabFilenames))] string prefabFilename)
         {
-            GameObject testButton = InstantiateDefaultPressableButton();
+            GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
 
             // Move the camera to origin looking at +z to more easily see the button.
             TestUtilities.PlayspaceToOriginLookingForward();
@@ -116,9 +149,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// if hands were moving too fast in low framerate
         /// </summary>
         [UnityTest]
-        public IEnumerator PressButtonFast()
+        public IEnumerator PressButtonFast([ValueSource(nameof(PressableButtonsTestPrefabFilenames))] string prefabFilename)
         {
-            GameObject testButton = InstantiateDefaultPressableButton();
+            GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
 
             // Move the camera to origin looking at +z to more easily see the button.
             TestUtilities.PlayspaceToOriginLookingForward();
@@ -155,21 +188,43 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// This test verifies that buttons will trigger with far interaction
         /// </summary>
         [UnityTest]
-        public IEnumerator TriggerButtonFarInteraction()
+        public IEnumerator TriggerButtonFarInteraction([ValueSource(nameof(PressableButtonsTestPrefabFilenames))] string prefabFilename)
         {
-            GameObject testButton = InstantiateDefaultPressableButton();
+            GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
 
             TestUtilities.PlayspaceToOriginLookingForward();
 
-            testButton.transform.position = new Vector3(0f, 0.3f, 0.8f);
-            testButton.transform.localScale = Vector3.one * 15f; // scale button up so it's easier to hit it with the far interaction pointer
+            Interactable interactableComponent = testButton.GetComponent<Interactable>();
+            Button buttonComponent = testButton.GetComponent<Button>();
+
+            Assert.IsTrue(interactableComponent != null || buttonComponent != null, "Depending on button type, there should be either an Interactable or a UnityUI Button on the control");
+
+            if (buttonComponent != null)
+            {
+                // For unknown reasons, Unity UI buttons don't seem to function properly in batch/headless mode when triggered via far field interaction.
+                // So just ignore this until that bug is resolved.
+                // https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5887
+                Assert.Ignore();
+                yield break;
+            }
+
+            var objectToMoveAndScale = testButton.transform;
+
+            if (buttonComponent != null)
+            {
+                objectToMoveAndScale = testButton.transform.parent;
+            }
+
+            objectToMoveAndScale.position += new Vector3(0f, 0.3f, 0.8f);
+            objectToMoveAndScale.localScale *= 15f; // scale button up so it's easier to hit it with the far interaction pointer
             yield return new WaitForFixedUpdate();
             yield return null;
 
             bool buttonTriggered = false;
-            Interactable interactableComponent = testButton.GetComponent<Interactable>();
-            Assert.IsNotNull(interactableComponent);
-            interactableComponent.OnClick.AddListener(() =>
+
+            var onClickEvent = (interactableComponent != null) ? interactableComponent.OnClick : buttonComponent.onClick;
+
+            onClickEvent.AddListener(() =>
             {
                 buttonTriggered = true;
             });
@@ -186,10 +241,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         [UnityTest]
-        public IEnumerator ScaleWorldDistances()
+        public IEnumerator ScaleWorldDistances([ValueSource(nameof(PressableButtonsTestPrefabFilenames))] string prefabFilename)
         {
             // instantiate scene and button
-            GameObject testButton = InstantiateDefaultPressableButton();
+            GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
             yield return null;
 
             PressableButton button = testButton.GetComponent<PressableButton>();
@@ -235,10 +290,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         [UnityTest]
-        public IEnumerator SwitchWorldToLocalDistanceMode()
+        public IEnumerator SwitchWorldToLocalDistanceMode([ValueSource(nameof(PressableButtonsTestPrefabFilenames))] string prefabFilename)
         {
             // instantiate scene and button
-            GameObject testButton = InstantiateDefaultPressableButton();
+            GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
             yield return null;
 
             PressableButton button = testButton.GetComponent<PressableButton>();
@@ -305,10 +360,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         [UnityTest]
-        public IEnumerator ScaleLocalDistances()
+        public IEnumerator ScaleLocalDistances([ValueSource(nameof(PressableButtonsTestPrefabFilenames))] string prefabFilename)
         {
             // instantiate scene and button
-            GameObject testButton = InstantiateDefaultPressableButton();
+            GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
             yield return null;
 
             PressableButton button = testButton.GetComponent<PressableButton>();
@@ -321,11 +376,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             testButton.transform.localScale = Vector3.one;
             button.StartPushDistance = 0.00003f;
 
+            float zeroPushDistanceWorld = button.GetWorldPositionAlongPushDirection(0.0f).z;
+
             // get the buttons default values for the push planes
-            float startPushDistanceWorld = button.GetWorldPositionAlongPushDirection(button.StartPushDistance).z;
-            float maxPushDistanceWorld = button.GetWorldPositionAlongPushDirection(button.MaxPushDistance).z;
-            float pressDistanceWorld = button.GetWorldPositionAlongPushDirection(button.PressDistance).z;
-            float releaseDistanceWorld = button.GetWorldPositionAlongPushDirection(button.PressDistance - button.ReleaseDistanceDelta).z;
+            float startPushDistanceWorld = button.GetWorldPositionAlongPushDirection(button.StartPushDistance).z - zeroPushDistanceWorld;
+            float maxPushDistanceWorld = button.GetWorldPositionAlongPushDirection(button.MaxPushDistance).z - zeroPushDistanceWorld;
+            float pressDistanceWorld = button.GetWorldPositionAlongPushDirection(button.PressDistance).z - zeroPushDistanceWorld;
+            float releaseDistanceWorld = button.GetWorldPositionAlongPushDirection(button.PressDistance - button.ReleaseDistanceDelta).z - zeroPushDistanceWorld;
 
             // scale the button in z direction
             // scaling the button while in local space should keep plane distance ratios mantained
@@ -333,18 +390,20 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             testButton.transform.localScale = zScale;
             yield return null;
 
-            float startPushDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.StartPushDistance).z;
-            float maxPushDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.MaxPushDistance).z;
-            float pressDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.PressDistance).z;
-            float releaseDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.PressDistance - button.ReleaseDistanceDelta).z;
+            float startPushDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.StartPushDistance).z - zeroPushDistanceWorld;
+            float maxPushDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.MaxPushDistance).z - zeroPushDistanceWorld;
+            float pressDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.PressDistance).z - zeroPushDistanceWorld;
+            float releaseDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.PressDistance - button.ReleaseDistanceDelta).z - zeroPushDistanceWorld;
 
-            Assert.IsTrue(Mathf.Approximately(startPushDistanceWorld * zScale.z, startPushDistanceWorld_Scaled), "Start push distance plane did not scale correctly");
-            Assert.IsTrue(Mathf.Approximately(maxPushDistanceWorld * zScale.z, maxPushDistanceWorld_Scaled), "Max push distance plane did not scale correctly");
-            Assert.IsTrue(Mathf.Approximately(pressDistanceWorld * zScale.z, pressDistanceWorld_Scaled), "Press distance plane did not scale correctly");
-            Assert.IsTrue(Mathf.Approximately(releaseDistanceWorld * zScale.z, releaseDistanceWorld_Scaled), "Release distance plane did not scale correctly");
+            float tolerance = 0.00000001f;
+
+            Assert.IsTrue(AreApproximatelyEqual(startPushDistanceWorld * zScale.z, startPushDistanceWorld_Scaled, tolerance), "Start push distance plane did not scale correctly");
+            Assert.IsTrue(AreApproximatelyEqual(maxPushDistanceWorld * zScale.z, maxPushDistanceWorld_Scaled, tolerance), "Max push distance plane did not scale correctly");
+            Assert.IsTrue(AreApproximatelyEqual(pressDistanceWorld * zScale.z, pressDistanceWorld_Scaled, tolerance), "Press distance plane did not scale correctly");
+            Assert.IsTrue(AreApproximatelyEqual(releaseDistanceWorld * zScale.z, releaseDistanceWorld_Scaled, tolerance), "Release distance plane did not scale correctly");
 
             Object.Destroy(testButton);
-            // Wait for a frame to give Unity a change to actually destroy the object
+            // Wait for a frame to give Unity a chance to actually destroy the object
             yield return null;
         }
 
@@ -352,9 +411,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// This tests the release behavior of a button
         /// </summary>
         [UnityTest]
-        public IEnumerator ReleaseButton()
+        public IEnumerator ReleaseButton([ValueSource(nameof(PressableButtonsTestPrefabFilenames))] string prefabFilename)
         {
-            GameObject testButton = InstantiateDefaultPressableButton();
+            GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
             TestUtilities.PlayspaceToOriginLookingForward();
 
             PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
@@ -389,7 +448,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield return hand.MoveTo(inButtonOnPress, numSteps);
                 yield return hand.MoveTo(inButtonOnRelease, numSteps);
                 yield return hand.Hide();
-                
+
                 Assert.IsTrue(buttonPressed, "Button did not get pressed when hand moved to press it.");
                 Assert.IsTrue(buttonReleased, "Button did not get released.");
 
@@ -403,7 +462,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield return hand.MoveTo(inButtonOnPress, numSteps);
                 yield return hand.MoveTo(rightOfButtonPress, numSteps);
                 yield return hand.Hide();
-                
+
                 Assert.IsTrue(buttonPressed, "Button did not get pressed when hand moved to press it.");
                 Assert.IsTrue(buttonReleased, "Button did not get released when hand exited the button.");
 
@@ -432,7 +491,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
-
+        private static bool AreApproximatelyEqual(float f0, float f1, float tolerance)
+        {
+            return Mathf.Abs(f0 - f1) < tolerance;
+        }
         #endregion
     }
 }

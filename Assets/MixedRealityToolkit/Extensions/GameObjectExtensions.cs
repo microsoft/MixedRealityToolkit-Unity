@@ -129,5 +129,22 @@ namespace Microsoft.MixedReality.Toolkit
                 action(i);
             }
         }
+
+        /// <summary>
+        /// Destroys gameobject appropriately depending if in edit or playmode
+        /// </summary>
+        /// <param name="gameObject">gameobject to destroy</param>
+        /// <param name="t">time in seconds at which to destroy GameObject if applicable</param>
+        public static void DestroyGameObject(GameObject gameObject, float t = 0.0f)
+        {
+            if (Application.isPlaying)
+            {
+                GameObject.Destroy(gameObject, t);
+            }
+            else
+            {
+                GameObject.DestroyImmediate(gameObject);
+            }
+        }
     }
 }

@@ -15,13 +15,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Input Up updates from Interactions, Keys, or any other simple input.
         /// </summary>
-        /// <param name="eventData"></param>
         void OnInputUp(InputEventData eventData);
 
         /// <summary>
         /// Input Down updates from Interactions, Keys, or any other simple input.
         /// </summary>
-        /// <param name="eventData"></param>
         void OnInputDown(InputEventData eventData);
     }
 

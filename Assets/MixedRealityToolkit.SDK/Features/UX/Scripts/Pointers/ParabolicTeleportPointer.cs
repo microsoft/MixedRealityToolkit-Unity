@@ -7,7 +7,6 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Teleport
 {
     [RequireComponent(typeof(ParabolaPhysicalLineDataProvider))]
-    [ExecuteAlways]
     public class ParabolicTeleportPointer : TeleportPointer
     {
         [SerializeField]

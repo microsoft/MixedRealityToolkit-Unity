@@ -53,8 +53,6 @@ From here you can navigate to all the configuration profiles for the MRTK, inclu
 
 These configuration profiles are detailed below in their relevant sections:
 
-From here you can navigate to all the configuration profiles for the MRTK, including:
-
 ---
 <a name="experience"/>
 
@@ -146,7 +144,7 @@ An optional but highly useful feature of the MRTK is the plugin diagnostics func
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsSystemSelection.png" width="650px" style="display:block;">
 
-The diagnostics profile provides several simple systems to monitor whilst the project is running, including a handy On/Off switch to enable / disable the display pane in the scene.
+The diagnostics profile provides several simple systems to monitor whilst the project is running, including a handy On/Off switch to enable / disable the display panel in the scene.
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsProfile.png" width="650px" style="display:block;">
 

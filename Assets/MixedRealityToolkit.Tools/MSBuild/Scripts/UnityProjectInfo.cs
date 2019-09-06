@@ -231,11 +231,11 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
         private string GetProjectEntry(CSProjectInfo projectInfo, string projectEntryTemplateBody)
         {
-            StringBuilder toReturn = new StringBuilder(Utilities.ReplaceTokens(projectEntryTemplateBody, new Dictionary<string, string>() {
+            StringBuilder toReturn = new StringBuilder();
+            toReturn.AppendLine(Utilities.ReplaceTokens(projectEntryTemplateBody, new Dictionary<string, string>() {
                         { "<PROJECT_NAME>", projectInfo.Name },
                         { "<PROJECT_RELATIVE_PATH>", Path.GetFileName(projectInfo.ReferencePath.AbsolutePath) },
                         { "<PROJECT_GUID>", projectInfo.Guid.ToString().ToUpper() } }));
-
             if (projectInfo.ProjectDependencies.Count > 0)
             {
                 string projectDependencyStartSection = "    ProjectSection(ProjectDependencies) = postProject";
@@ -350,9 +350,9 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 solutionTemplateText = Utilities.ReplaceTokens(solutionTemplateText, new Dictionary<string, string>()
                 {
                     { projectEntryTemplate, string.Join(Environment.NewLine, projectEntries)},
-                    { configurationPlatformEntry, string.Join(string.Empty, configPlatforms)},
-                    { configurationPlatformMappingTemplate, string.Join(string.Empty, configurationMappings) },
-                    { configurationPlatformEnabledTemplate, string.Join(string.Empty, disabled) }
+                    { configurationPlatformEntry, string.Join(Environment.NewLine, configPlatforms)},
+                    { configurationPlatformMappingTemplate, string.Join(Environment.NewLine, configurationMappings) },
+                    { configurationPlatformEnabledTemplate, string.Join(Environment.NewLine, disabled) }
                 });
             }
             else

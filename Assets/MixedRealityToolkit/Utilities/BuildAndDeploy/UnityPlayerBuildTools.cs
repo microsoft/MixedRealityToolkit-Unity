@@ -29,7 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// <summary>
         /// Starts the build process
         /// </summary>
-        /// <param name="buildInfo"></param>
         /// <returns>The <see href="https://docs.unity3d.com/ScriptReference/Build.Reporting.BuildReport.html">BuildReport</see> from Unity's <see href="https://docs.unity3d.com/ScriptReference/BuildPipeline.html">BuildPipeline</see></returns>
         public static BuildReport BuildUnityPlayer(IBuildInfo buildInfo)
         {
@@ -162,6 +161,13 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// </summary>
         public static async void StartCommandLineBuild()
         {
+            var success = await BuildUnityPlayerSimplified();
+            Debug.Log($"Exiting build...");
+            EditorApplication.Exit(success ? 0 : 1);
+        }
+        
+        public static async Task<bool> BuildUnityPlayerSimplified()
+        {
             // We don't need stack traces on all our logs. Makes things a lot easier to read.
             Application.SetStackTraceLogType(LogType.Log, StackTraceLogType.None);
             Debug.Log($"Starting command line build for {EditorUserBuildSettings.activeBuildTarget}...");
@@ -190,8 +196,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 success = false;
             }
 
-            Debug.Log($"Exiting command line build... Build success? {success}");
-            EditorApplication.Exit(success ? 0 : 1);
+            Debug.Log($"Finished build... Build success? {success}");
+            return success;
         }
 
         internal static bool CheckBuildScenes()
@@ -277,8 +283,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// <summary>
         /// Restores any nuget packages at the path specified.
         /// </summary>
-        /// <param name="nugetPath"></param>
-        /// <param name="storePath"></param>
         /// <returns>True, if the nuget packages were successfully restored.</returns>
         public static async Task<bool> RestoreNugetPackagesAsync(string nugetPath, string storePath)
         {

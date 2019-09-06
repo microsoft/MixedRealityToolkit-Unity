@@ -141,7 +141,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Checks if the <see cref="MixedRealityToolkit"/> is setup correctly to start this service.
         /// </summary>
-        /// <returns></returns>
         private bool IsSetupValid
         {
             get
@@ -276,7 +275,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
             public Vector3 StartPoint { get; private set; }
 
             /// <inheritdoc />
-            public FocusDetails Details => focusDetails;
+            public FocusDetails Details
+            {
+                get
+                {
+                    return focusDetails;
+                }
+                set
+                {
+                    focusDetails = value;
+                }
+            }
 
             /// <inheritdoc />
             public GameObject CurrentPointerTarget => focusDetails.Object;
@@ -583,6 +592,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return false;
         }
 
+        /// <inheritdoc />
+        public bool TryOverrideFocusDetails(IMixedRealityPointer pointer, FocusDetails focusDetails)
+        {
+            if (TryGetPointerData(pointer, out PointerData pointerData))
+            {
+                pointerData.Details = focusDetails;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         #endregion Focus Details by IMixedRealityPointer
 
         #region Utilities
@@ -885,17 +908,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             else
             {
+                LayerMask[] prioritizedLayerMasks = (pointerData.Pointer.PrioritizedLayerMasksOverride ?? FocusLayerMasks);
+
                 // If the pointer is locked, keep the focused object the same.
                 // This will ensure that we execute events on those objects
                 // even if the pointer isn't pointing at them.
                 if (pointerData.Pointer.IsFocusLocked && pointerData.Pointer.IsTargetPositionLockedOnFocusLock)
                 {
                     pointerData.UpdateFocusLockedHit();
+
+                    // If we have a unity event system, perform graphics raycasts as well to support Unity UI interactions
+                    if (EventSystem.current != null)
+                    {
+                        // NOTE: We need to do this AFTER RaycastPhysics so we use the current hit point to perform the correct 2D UI Raycast.
+                        hitResultUi.Clear();
+                        RaycastGraphics(pointerData.Pointer, pointerData.GraphicEventData, prioritizedLayerMasks, hitResultUi);
+                    }
                 }
                 else
                 {
-                    LayerMask[] prioritizedLayerMasks = (pointerData.Pointer.PrioritizedLayerMasksOverride ?? FocusLayerMasks);
-
                     // Perform raycast to determine focused object
                     var raycastProvider = InputSystem.RaycastProvider;
                     hitResult3d.Clear();
@@ -906,8 +937,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         gazeHitResult = hitResult3d;
                     }
 
-                    PointerHitResult hit = hitResult3d;
-
                     int hitResult3dLayer = hitResult3d.hitObject?.layer ?? -1;
                     if (hitResult3dLayer == 0)
                     {
@@ -917,6 +946,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         TruncatePointerRayToHit(pointerData.Pointer, hitResult3d);
                     }
 
+                    PointerHitResult hit = hitResult3d;
                     // If we have a unity event system, perform graphics raycasts as well to support Unity UI interactions
                     if (EventSystem.current != null)
                     {
@@ -1044,8 +1074,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Perform a scene query to determine which scene objects with a collider is currently being gazed at, if any.
         /// </summary>
-        /// <param name="pointerData"></param>
-        /// <param name="prioritizedLayerMasks"></param>
         private static void QueryScene(IMixedRealityPointer pointer, IMixedRealityRaycastProvider raycastProvider, LayerMask[] prioritizedLayerMasks, PointerHitResult hit, int maxQuerySceneResults, bool focusIndividualCompoundCollider)
         {
             float rayStartDistance = 0;

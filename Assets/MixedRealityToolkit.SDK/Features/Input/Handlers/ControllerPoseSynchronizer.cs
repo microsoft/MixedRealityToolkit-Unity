@@ -119,14 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 if (destroyOnSourceLost)
                 {
-                    if (!Application.isPlaying)
-                    {
-                        DestroyImmediate(gameObject);
-                    }
-                    else
-                    {
-                        Destroy(gameObject);
-                    }
+                    GameObjectExtensions.DestroyGameObject(gameObject);
                 }
             }
         }

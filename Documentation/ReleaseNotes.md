@@ -1,6 +1,36 @@
 # Microsoft Mixed Reality Toolkit Release Notes
 
+- [Version 2.0.1](#version-201)
 - [Version 2.0.0](#version-200)
+
+## Version 2.0.1
+
+- [Upgrading projects](#upgrading-projects-to-201)
+- [What's new](#whats-new-in-201)
+
+This hotfix release of Mixed Reality Toolkit fixes a couple of small bugs when consuming Mixed Reality Toolkit in NuGet package form. In addition, this release introduce the NuGet package as a release mechanism for Mixed Reality Toolkit.
+
+### Upgrading projects to 2.0.1
+
+For non-NuGet package cases, the upgrade from 2.0.0 should not have an effect when consuming Mixed Reality Toolkit as .unitypackages or source. To upgrade your Unity project to 2.0.1 from before 2.0.0, follow the same instructions as:
+- [Upgrading projects](#upgrading-projects-to-200)
+
+Currently, the upgrade path from non-NuGet package to NuGet package version of Mixed Reality Toolkit is not officially supported. Look out for that in the coming releases.
+
+To add Mixed Reality Toolkit to your project in the form of a NuGet package, do the following:
+
+1. Download the latest [NuGet For Unity](https://github.com/GlitchEnzo/NuGetForUnity/releases) .unitypackage
+1. Import the .unitypackage into your Unity Project.
+1. Click on the `NuGet > Manage NuGet Packages` menu.
+1. Search for `Microsoft.MixedReality.Toolkit`, and press `Install` on the packages you wish to bring-in:
+    - **Microsoft.MixedReality.Toolkit.Foundation:** This package contains everything needed to work with Mixed Reality Toolkit.
+    - **Microsoft.MixedReality.Toolkit.Examples:** This package contains example scenes of Mixed Reality Toolkit functionality.
+    - **Microsoft.MixedReality.Toolkit.Extensions:** This package contains extensions to Mixed Reality Toolkit.
+    - **Microsoft.MixedReality.Toolkit.Tools:** This package contains useful tooling for Unity.
+
+### What's new in 2.0.1
+
+Consuming Mixed Reality Toolkit as a NuGet package will reduce compilation time, the ammount of .csproj files when editing code, and allow for a simple update mechanism for future versions.
 
 ## Version 2.0.0
 
@@ -50,7 +80,9 @@ For the smoothest upgrade path, please use the following steps.
     > [!Note]
     > If additional extensions had been installed, they may need to be re-imported.
     - (Optional) Examples
-1. For each scene in the project
+1. Close Unity and Delete the **Library** folder. This step is necessary to force Unity to refresh its
+   asset database and reconcile existing custom profiles.
+1. Launch Unity, and for each scene in the project
     - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy
     - Select **MixedRealityToolkit -> Add to Scene and Configure**
 
