@@ -71,7 +71,7 @@ Mixed Reality プロジェクトは、デフォルトの設定で、すべての
 
 ![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputSystemSelection.png)
 
-MRTK が提供する入力システムの背後にはその他のいくつかのシステムがあり、マルチプラットフォーム / Mixed Realityフレームワークの複雑さを抽象化するために、複雑な絡み合わせを駆動させ、管理するのを補助します。
+MRTK が提供する入力システムの背後にはその他のいくつかのシステムがあり、マルチプラットフォーム / Mixed Reality フレームワークの複雑さを抽象化するために、複雑な絡み合わせを駆動させ、管理するのを補助します。
 
 ![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputSystemProfile.png)
 
@@ -134,13 +134,13 @@ Mixed Reality Toolkit のより高度な領域の1つは、フレームワーク
 
 [Stephen Hodgson の Mixed Reality フレームワークに関する記事](https://medium.com/@stephen_hodgson/the-mixed-reality-framework-6fdb5c11feb2)で、基礎となるフレームワークとその実装についての詳細を読むことができます。
 
-登録済みのサービスは、MonoBehaviour または不格好なシングルトンパターンを実装するオーバーヘッドとコストなしで、すべての Unity イベントを最大限に活用できます。これにより、フォアグラウンド（foreground）プロセスとバックグラウンド (background) プロセス(スポーンシステム、ランタイムゲームロジックなど)の両方を実行するためのシーンオーバーヘッドのない純粋な C# コンポーネントを使用できます。
+登録済みのサービスは、MonoBehaviour または不格好なシングルトンパターンを実装するオーバーヘッドとコストなしで、すべての Unity イベントを最大限に活用できます。これにより、フォアグラウンド（foreground）プロセスとバックグラウンド (background) プロセス (スポーンシステム、ランタイムゲームロジックなど)の両方を実行するためのシーンオーバーヘッドのない純粋な C# コンポーネントを使用できます。
 
 ![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProfidersProfile.png)
 
 # 入力アクション (Input actions) の設定
 
-入力アクションを使用すると、ランタイムプロジェクトからの物理的なインタラクションや入力を真似ることができます。すべての物理入力 (コントローラ/手/マウス等) は、ランタイムプロジェクトで使用するための論理入力アクションに変換されます。これにより、入力元に関係なく、プロジェクトはシーン内でこれらのアクションを"行う操作" または "これとインタラクション" として実装するだけでできます。
+入力アクションを使用すると、ランタイムプロジェクトからの物理的なインタラクションや入力を抽象化することができます。すべての物理入力 (コントローラ/手/マウス等) は、ランタイムプロジェクトで使用するための論理入力アクションに変換されます。これにより、入力元に関係なく、プロジェクトはシーン内でこれらのアクションを「実行する操作」または「対象とインタラクションする」として実装するだけでできます。
 
 新しい入力アクションを作成するには、[Add a new Action] ボタンをクリックし、その内容にわかりやすいテキスト名を入力します。次に、アクションの軸 (データの１種類) のみを選択するか、物理コントローラの場合は、それがアタッチできる物理入力タイプを選択するだけです。
 
@@ -245,7 +245,7 @@ MRTK は、次のコントローラ/システムのデフォルト設定を提�
 これは、「Global」(特定のハンド用コントローラのすべてのインスタンス) または個々のコントローラタイプ/ハンドに固有の設定が可能です。
 
 > [!IMPORTANT]
-> MRTK は現在、Unity が提供されていない、数多くのネイティブSDKのコントローラーのモデルの gLTF モデルをロード/レンダリングする機能をサポートしていません。これは、使用可能なときに追加されます。
+> MRTK は現在、Unity が提供されていない、数多くのネイティブ SDKのコントローラーのモデルの gLTF モデルをロード/レンダリングする機能をサポートしていません。これは、使用可能なときに追加されます。
 
 シーン内のコントローラリプレゼンテーションを物理コントローラの位置からオフセットする必要がある場合は、コントローラモデルのプレハブに対してオフセットを設定するだけです (例えば、コントローラプレハブの変換位置をオフセット位置で設定します)。
 
@@ -261,4 +261,4 @@ Configuration Profile の Editor Settings の Use Service Inspectors をオン�
 
 ![mrtk](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_EnableServiceInspectors.PNG)
 
-サービスインスペクタの有効にする
+サービスインスペクタを有効にする
