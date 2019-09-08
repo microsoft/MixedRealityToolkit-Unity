@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
@@ -77,7 +78,14 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             using (new EditorGUILayout.VerticalScope(box))
             {
                 GUI.enabled = !(EditorApplication.isPlaying || EditorApplication.isPaused);
-                EditorGUILayout.PropertyField(states, new GUIContent("States", "The States this Interactable is based on"));
+                using (var check = new EditorGUI.ChangeCheckScope())
+                {
+                    EditorGUILayout.PropertyField(states, new GUIContent("States", "The States this Interactable is based on"));
+                    if (check.changed)
+                    {
+                        theme.ValidateDefinitions();
+                    }
+                }
                 GUI.enabled = true;
 
                 if (states.objectReferenceValue == null || themeStates.Length < 1)
@@ -104,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                     {
                         SerializedProperty className = themeDefinition.FindPropertyRelative("ClassName");
 
-                        var themeTypes = typeof(InteractableThemeBase).GetAllSubClassesOf();
+                        var themeTypes = TypeCacheUtility.GetSubClasses<InteractableThemeBase>();
                         var themeClassNames = themeTypes.Select(t => t.Name).ToArray();
                         int id = Array.IndexOf(themeClassNames, className.stringValue);
                         int newId = EditorGUILayout.Popup("Theme Runtime", id, themeClassNames);
@@ -434,7 +442,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         {
             if (theme == null || theme.History == null || index > theme.History.Count)
             {
-                // TOOD: Troy - log errro
+                Debug.LogWarning("Could not clear theme history cache as invalid access");
                 return;
             }
 

@@ -627,7 +627,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         protected virtual void SetupStates()
         {
-            StateManager = States.SetupLogic();
+            StateManager = States.CreateStateModel();
         }
 
         /// <summary>
@@ -635,11 +635,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         protected virtual void SetupEvents()
         {
-            InteractableTypesContainer interactableTypes = InteractableEvent.GetEventTypes();
-
             for (int i = 0; i < Events.Count; i++)
             {
-                Events[i].Receiver = InteractableEvent.GetReceiver(Events[i], interactableTypes);
+                Events[i].Receiver = InteractableEvent.CreateReceiver(Events[i]);
                 Events[i].Receiver.Host = this;
             }
         }

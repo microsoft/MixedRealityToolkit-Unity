@@ -28,8 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (Events.Count > 0)
             {
-                InteractableTypesContainer interactableTypes = InteractableEvent.GetEventTypes();
-                Events[0].Receiver = InteractableEvent.GetReceiver(Events[0], interactableTypes);
+                Events[0].Receiver = InteractableEvent.CreateReceiver(Events[0]);
                 Events[0].Receiver.Host = this;
             }
         }
