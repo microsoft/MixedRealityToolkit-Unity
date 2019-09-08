@@ -5,7 +5,7 @@ Mixed Reality Toolkit (MRTK) は、Mixed Reality ハードウェアとプラッ�
 MRTK は、次のパッケージを介してリリースしています。
 
 - [Foundation](#foundation-パッケージ)
-- [Extensions](#拡張機能パッケージ)
+- [Extensions](#extensions-パッケージ)
 - [Examples](#examples-パッケージ)
 - [Tools](#tools-パッケージ)
 
@@ -27,19 +27,19 @@ MRTK Foundation は以下の通りに構成されています。
 
 ### Core パッケージ
 
-Core パッケージは _必須_ コンポーネントであり、すべての MRTK 基盤パッケージの依存関係として使用されます。
+Core パッケージは _必須_ コンポーネントであり、すべての MRTK Foundation パッケージが依存しています。。
 
-MRTK コアパッケージには以下が含まれます。
+MRTK Core パッケージには以下が含まれます。
 
-- [一般のインターフェース、クラスとデータ種類](#一般型)
+- [共通のインターフェイス、クラス、データ型](#共通型)
 - [MixedRealityToolkit シーン コンポーネント](#mixedrealitytoolkit-シーン-コンポーネント)
 - [MRTK スタンダード シェーダー](#mrtk-スタンダード-シェーダー)
-- [Unity 入力プロバイダ](#unity-入力プロバイダ)
+- [Unity インプットプロバイダ (Unity Input Provider)](#unity-インプットプロバイダ-unity-input-provider)
 - [パッケージ管理](#パッケージ管理)
 
-#### 一般型
+#### 共通型
 
-Mixed Reality Toolkit Core パッケージには、他のすべてのコンポーネントで使用されるすべての共通インターフェイス、クラス、およびデータ型の定義が含まれています。定義されたインターフェイスを介して MRTK コンポーネントのみにアクセスし、プラットフォーム間で最高レベルの互換性を実現することを強くお勧めします。
+Mixed Reality Toolkit Core パッケージには、他のすべてのコンポーネントで使用される共通のインターフェイス、クラス、データ型のすべての定義が含まれています。プラットフォーム間で最高レベルの互換性を実現するために、定義されたインターフェイスのみを介して MRTK コンポーネントにアクセスすることを _強く_ お勧めします。
 
 #### MixedRealityToolkit シーン コンポーネント
 
@@ -47,17 +47,17 @@ MixedRealityToolkit シーン コンポーネントは、Mixed Reality Toolkit �
 
 #### MRTK スタンダード シェーダー
 
-MRTK のスタンダードシェーダーは MRTK によって提供される事実上すべての材料の基礎を提供する。このシェーダは非常に柔軟性が高く、MRTK がサポートされているさまざまなプラットフォームに最適化されています。最適なパフォーマンスを実現するには、アプリケーションのマテリアルで MRTK スタンダードシェーダーを使用することを強くお勧めします。
+MRTK のスタンダードシェーダーは MRTK によって提供される事実上すべてのマテリアルの基礎を提供します。このシェーダは非常に柔軟性が高く、MRTK がサポートされているさまざまなプラットフォームに最適化されています。最適なパフォーマンスを実現するには、アプリケーションのマテリアルで MRTK スタンダードシェーダーを使用することを強くお勧めします。
 
-#### Unity 入力プロバイダ
+#### Unity インプットプロバイダ (Unity Input Provider)
 
-Unity 入力プロバイダは、ゲームコントローラ、タッチスクリーン、3D 空間マウスなどの一般的な入力デバイスにアクセスできます。
+Unity 入力プロバイダは、ゲームコントローラ、タッチスクリーン、3D 空間マウスなどの一般的な入力デバイスにへのアクセスを提供します。
 
 #### パッケージ管理
 
 _Coming soon_
 
-Mixed Reality Toolkit Core パッケージは、オプションの Foundation、Extensions、Examples MRTK パッケージを発見し、管理するためのサポートを提供します。
+Mixed Reality Toolkit Core パッケージは、オプションの Foundation、Extensions、Experimental（実験的な）MRTK パッケージを発見し、管理するためのサポートを提供します。
 
 ### プラットフォーム プロバイダー
 
@@ -128,7 +128,7 @@ Feature Assets are collections of related functionality delivered as Unity asset
 - Standard Assets
 - more
 
-## 拡張機能パッケージ
+## Extensions パッケージ
 
 The extensions package contains additional services and components that extend the functionality of the foundation package.
 
