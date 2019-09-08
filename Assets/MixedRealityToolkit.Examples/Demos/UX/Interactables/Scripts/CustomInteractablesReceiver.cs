@@ -29,9 +29,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Coroutine showVoice;
         private int clickCount = 0;
 
-        public CustomInteractablesReceiver(UnityEvent ev) : base(ev)
+        public CustomInteractablesReceiver(UnityEvent ev) : base(ev, "CustomEvent")
         {
-            Name = "CustomEvent";
             HideUnityEvents = true; // hides Unity events in the receiver - meant to be code only
         }
 

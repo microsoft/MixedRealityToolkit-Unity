@@ -17,10 +17,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public AudioClip AudioClip;
 
         private State lastState;
-        
-        public InteractableAudioReceiver(UnityEvent ev) : base(ev)
+
+        /// <summary>
+        /// Creates and AudioReceiver, which plays sounds on Click
+        /// </summary>
+        public InteractableAudioReceiver(UnityEvent ev) : base(ev, "AudioEvent")
         {
-            Name = "AudioEvent";
             HideUnityEvents = true; // hides Unity events in the receiver - meant to be code only
         }
         

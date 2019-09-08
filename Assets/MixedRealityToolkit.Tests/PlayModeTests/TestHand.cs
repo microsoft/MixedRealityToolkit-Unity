@@ -100,6 +100,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// Combined sequence of pinching and unpinching
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerator Click()
+        {
+            yield return SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return null;
+            yield return SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return null;
+        }
+
+        /// <summary>
         /// Combined sequence of pinching, moving, and releasing.
         /// </summary>
         /// <param name="positionToRelease">The position to which the hand moves while pinching</param>
