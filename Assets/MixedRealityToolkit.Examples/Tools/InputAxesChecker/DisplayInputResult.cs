@@ -23,13 +23,21 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         [SerializeField]
         [Tooltip("The axis number to read.")]
-        [Range(1, 28)]
+        [Range(1, UnityInputAxisCount)]
         private int axisNumber = 1;
 
         [SerializeField]
         [Tooltip("The button number to read.")]
-        [Range(0, 19)]
+        [Range(0, UnityInputButtonCount - 1)]
         private int buttonNumber = 0;
+
+        // This is defined in Unity's in-editor input axes
+        // settings, under the Axis dropdown.
+        private const int UnityInputAxisCount = 28;
+
+        // This is defined by Unity's KeyCode enum, per JoystickButton.
+        // https://docs.unity3d.com/ScriptReference/KeyCode.html
+        private const int UnityInputButtonCount = 20;
 
         private void OnValidate()
         {
@@ -67,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                     break;
                 case AxisType.None:
                     displayTextMesh.text = "All active:\n";
-                    for (int i = 1; i <= 28; i++)
+                    for (int i = 1; i <= UnityInputAxisCount; i++)
                     {
                         float reading = UnityEngine.Input.GetAxis($"AXIS_{i}");
 
@@ -77,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                         }
                     }
 
-                    for (int i = 0; i <= 19; i++)
+                    for (int i = 0; i < UnityInputButtonCount; i++)
                     {
 
                         if (Enum.TryParse($"JoystickButton{i}", out KeyCode buttonCode))
