@@ -115,7 +115,8 @@ Shader "Mixed Reality Toolkit/Wireframe"
                    o.viewPos = i[idx].viewPos;
                    o.inverseW = 1.0 / o.viewPos.w;
                    o.dist = distScale[idx] * o.viewPos.w * wireScale;
-                   UNITY_TRANSFER_VERTEX_OUTPUT_STEREO(i[idx], o);
+				   UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+				   UNITY_TRANSFER_VERTEX_OUTPUT_STEREO(i[idx], o);
                    triStream.Append(o);
                 }
             }
