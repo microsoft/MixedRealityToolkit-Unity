@@ -68,7 +68,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 startScaleValue = new ThemePropertyValue();
                 startScaleValue.Vector3 = host.transform.localScale;
-                targetInteractable = host.GetComponent<Interactable>();
             }
 
             timer = Ease.LerpTime;
@@ -101,6 +100,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Vector3 maxGrabScale = Properties[0].Value.Vector3;
             float grabTime = Properties[1].Value.Float;
             Vector3 grabScale = Vector3.Scale(startScaleValue.Vector3, maxGrabScale);
+
+            var targetInteractable = Host.FindAncestorComponent<Interactable>(true);
 
             if (targetInteractable.HasGrab)
             {
