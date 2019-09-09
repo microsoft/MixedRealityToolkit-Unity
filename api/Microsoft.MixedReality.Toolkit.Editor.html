@@ -200,6 +200,11 @@ when depth buffer sharing is enabled.</p>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Editor.ScriptableObjectExtensions.html">ScriptableObjectExtensions</a></h4>
       <section><p>Extensions for <a href="https://docs.unity3d.com/ScriptReference/ScriptableObject.html">ScriptableObject</a>s</p>
 </section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Editor.ScriptedImporterAssetReimporter.html">ScriptedImporterAssetReimporter</a></h4>
+      <section><p>Unity has a strange bug when it tries to import a DLL with a ScriptedImporter and an asset that importer is targetting.
+The first time, it will not invoke the ScriptedImporter as it's just being imported itself; the second time the ScriptedImporter will be constructed but Unity thinks it fails.
+The third time, the import will succeed. This class will invoke the third time import for .gltf, .glb and .room extensions.</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Editor.SelectRepairedTypeWindow.html">SelectRepairedTypeWindow</a></h4>
       <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Editor.SpatialAwarenessSystemInspector.html">SpatialAwarenessSystemInspector</a></h4>
