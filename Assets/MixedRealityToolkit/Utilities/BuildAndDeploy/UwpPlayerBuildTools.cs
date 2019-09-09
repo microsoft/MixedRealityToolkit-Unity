@@ -59,8 +59,14 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 OutputDirectory = buildDirectory,
                 Scenes = EditorBuildSettings.scenes.Where(scene => scene.enabled && !string.IsNullOrEmpty(scene.path)).Select(scene => scene.path),
                 BuildAppx = !showDialog,
-                BuildPlatform = EditorUserBuildSettings.wsaArchitecture,
                 GazeInputCapabilityEnabled = UwpBuildDeployPreferences.GazeInputCapabilityEnabled,
+
+                // Configure Appx build preferences for post build action
+                RebuildAppx = UwpBuildDeployPreferences.ForceRebuild,
+                Configuration = UwpBuildDeployPreferences.BuildConfig,
+                BuildPlatform = EditorUserBuildSettings.wsaArchitecture,
+                PlatformToolset = UwpBuildDeployPreferences.PlatformToolset,
+                AutoIncrement = BuildDeployPreferences.IncrementBuildVersion,
                 Multicore = UwpBuildDeployPreferences.MulticoreAppxBuildEnabled,
 
                 // Configure a post build action that will compile the generated solution
