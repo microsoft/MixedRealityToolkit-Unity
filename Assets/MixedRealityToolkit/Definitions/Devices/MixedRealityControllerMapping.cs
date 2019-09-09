@@ -127,20 +127,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         internal void SetDefaultInteractionMapping(bool overwrite = false)
         {
-            if (Activator.CreateInstance(controllerType, TrackingState.NotTracked, handedness, null, null) is BaseController detectedController
-                && (interactions == null || interactions.Length == 0 || overwrite))
+            if (interactions == null || interactions.Length == 0 || overwrite)
             {
-                switch (handedness)
+                MixedRealityInteractionMapping[] defaultMappings = GetDefaultInteractionMappings();
+
+                if (defaultMappings != null)
                 {
-                    case Handedness.Left:
-                        interactions = detectedController.DefaultLeftHandedInteractions;
-                        break;
-                    case Handedness.Right:
-                        interactions = detectedController.DefaultRightHandedInteractions;
-                        break;
-                    default:
-                        interactions = detectedController.DefaultInteractions;
-                        break;
+                    interactions = defaultMappings;
                 }
             }
         }
@@ -149,22 +142,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             bool updatedMappings = false;
 
-            if (Activator.CreateInstance(controllerType, TrackingState.NotTracked, handedness, null, null) is BaseController detectedController
-                && interactions?.Length > 0)
+            if (interactions?.Length > 0)
             {
-                MixedRealityInteractionMapping[] newDefaultInteractions;
+                MixedRealityInteractionMapping[] newDefaultInteractions = GetDefaultInteractionMappings();
 
-                switch (handedness)
+                if (newDefaultInteractions == null)
                 {
-                    case Handedness.Left:
-                        newDefaultInteractions = detectedController.DefaultLeftHandedInteractions;
-                        break;
-                    case Handedness.Right:
-                        newDefaultInteractions = detectedController.DefaultRightHandedInteractions;
-                        break;
-                    default:
-                        newDefaultInteractions = detectedController.DefaultInteractions;
-                        break;
+                    return updatedMappings;
                 }
 
                 for (int i = 0; i < newDefaultInteractions.Length; i++)
@@ -193,6 +177,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             return updatedMappings;
+        }
+
+        private MixedRealityInteractionMapping[] GetDefaultInteractionMappings()
+        {
+            if (Activator.CreateInstance(controllerType, TrackingState.NotTracked, handedness, null, null) is BaseController detectedController)
+            {
+                switch (handedness)
+                {
+                    case Handedness.Left:
+                        return detectedController.DefaultLeftHandedInteractions;
+                    case Handedness.Right:
+                        return detectedController.DefaultRightHandedInteractions;
+                    default:
+                        return detectedController.DefaultInteractions;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
