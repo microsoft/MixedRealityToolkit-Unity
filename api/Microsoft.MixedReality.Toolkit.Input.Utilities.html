@@ -93,6 +93,13 @@
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.Utilities.CanvasUtility.html">CanvasUtility</a></h4>
       <section><p>Helper class for setting up canvases for use in the MRTK.</p>
 </section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.Utilities.ScaleMeshEffect.html">ScaleMeshEffect</a></h4>
+      <section><p>On Unity UI components the unity_ObjectToWorld matrix is not the transformation matrix of the local
+transform the Graphic component lives on, but that of it's parent Canvas. Many MRTK/Standard shader
+effects require object scale to be known. To solve this issue the ScaleMeshEffect will store scaling
+information into UV channel attributes during UI mesh construction. Ideally we would store the scale
+in one attribute but UGUI only supports two scalers per attribute (even in the tangent attribute).</p>
+</section>
 </article>
           </div>
           
