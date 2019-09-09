@@ -266,7 +266,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <summary>
             /// Returns true if any of the objects inside QueryBuffer contain a grabbable
             /// </summary>
-            /// <returns></returns>
             public bool ContainsGrabbable()
             {
                 return grabbable != null;

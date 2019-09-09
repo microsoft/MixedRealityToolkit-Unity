@@ -80,7 +80,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Override OnCursorState change to set the correct animation state for the cursor.
         /// </summary>
-        /// <param name="state"></param>
         public override void OnCursorStateChange(CursorStateEnum state)
         {
             base.OnCursorStateChange(state);
@@ -99,7 +98,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Override OnCursorContext change to set the correct animation state for the cursor.
         /// </summary>
-        /// <param name="context"></param>
         public override void OnCursorContextChange(CursorContextEnum context)
         {
             base.OnCursorContextChange(context);
@@ -118,7 +116,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Based on the type of animator state info pass it through to the animator
         /// </summary>
-        /// <param name="animationParameter"></param>
         private void SetAnimatorParameter(AnimatorParameter animationParameter)
         {
             // Return if we do not have an animator

@@ -26,7 +26,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Tests if the MeshOutline component can be added and manipulated at runtime.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestMeshOutline()
         {
@@ -50,7 +49,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Tests if the MeshOutlineHierarchy component can be added and manipulated at runtime.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestMeshOutlineHierarchy()
         {
@@ -82,7 +80,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Tests if the MeshSmoother component can be added an manipulated at runtime.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestMeshSmoother()
         {

@@ -13,25 +13,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// When a pointer down event is raised, this method is used to pass along the event data to the input handler.
         /// </summary>
-        /// <param name="eventData"></param>
         void OnPointerDown(MixedRealityPointerEventData eventData);
 
         /// <summary>
         /// Called every frame a pointer is down. Can be used to implement drag-like behaviors.
         /// </summary>
-        /// <param name="eventData"></param>
         void OnPointerDragged(MixedRealityPointerEventData eventData);
 
         /// <summary>
         /// When a pointer up event is raised, this method is used to pass along the event data to the input handler.
         /// </summary>
-        /// <param name="eventData"></param>
         void OnPointerUp(MixedRealityPointerEventData eventData);
 
         /// <summary>
         /// When a pointer clicked event is raised, this method is used to pass along the event data to the input handler.
         /// </summary>
-        /// <param name="eventData"></param>
         void OnPointerClicked(MixedRealityPointerEventData eventData);
     }
 }

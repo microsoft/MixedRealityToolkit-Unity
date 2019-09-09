@@ -411,7 +411,6 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// <param name="angleRadians">The orientation, in radians, of the rectangle.</param>
         /// <param name="width">The width of the rectangle.</param>
         /// <param name="height">The height of the rectangle.</param>
-        /// <returns></returns>
         private bool CheckRectangleFit(
             Edge[] geometryEdges,
             Vector2 centerPoint,

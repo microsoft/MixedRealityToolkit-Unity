@@ -143,7 +143,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// expected amount. Assumes panZoom has already been created.
         /// </summary>
         /// <param name="expectedScroll">The amount panZoom is expected to scroll</param>
-        /// <returns></returns>
         private IEnumerator RunGGVScrollTest(float expectedScroll)
         {
             PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
@@ -173,7 +172,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Instantiates a slate from the default prefab at position, looking at the camera
         /// </summary>
-        /// <returns></returns>
         private void InstantiateFromPrefab(Vector3 position)
         {
             UnityEngine.Object prefab = AssetDatabase.LoadAssetAtPath(slatePrefabAssetPath, typeof(UnityEngine.Object));

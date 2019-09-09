@@ -45,7 +45,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         /// </summary>
         /// <typeparam name="T">Return Type</typeparam>
         /// <param name="task">Task<typeparamref name="T"/> method to execute</param>
-        /// <returns></returns>
         public static T RunSync<T>(Func<Task<T>> task)
         {
             var oldContext = SynchronizationContext.Current;

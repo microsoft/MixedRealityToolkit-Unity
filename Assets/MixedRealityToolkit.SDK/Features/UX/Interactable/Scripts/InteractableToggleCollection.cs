@@ -36,7 +36,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Sets the selected index and selected Interactive
         /// </summary>
-        /// <param name="index"></param>
         public void SetSelection(int index)
         {
             if (!isActiveAndEnabled ||
@@ -51,8 +50,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Set the toggle state of each button based on the selected item
         /// </summary>
-        /// <param name="index"></param>
-        /// <param name="force"></param>
         protected virtual void OnSelection(int index, bool force = false)
         {
             for (int i = 0; i < ToggleList.Length; ++i)

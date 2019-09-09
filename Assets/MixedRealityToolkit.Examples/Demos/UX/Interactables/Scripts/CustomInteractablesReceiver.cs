@@ -65,8 +65,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// allow the info to remove click info if a click event has expired
         /// </summary>
-        /// <param name="time"></param>
-        /// <returns></returns>
         private IEnumerator ClickTimer(float time)
         {
             yield return new WaitForSeconds(time);
@@ -76,8 +74,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// allow the info to remove voice command info and it expires
         /// </summary>
-        /// <param name="time"></param>
-        /// <returns></returns>
         private IEnumerator VoiceTimer(float time)
         {
             yield return new WaitForSeconds(time);
@@ -87,8 +83,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Called on update, check to see if the state has changed sense the last call
         /// </summary>
-        /// <param name="state"></param>
-        /// <param name="source"></param>
         public override void OnUpdate(InteractableStates state, Interactable source)
         {
             if (state.CurrentState() != lastState)
@@ -137,9 +131,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// click happened
         /// </summary>
-        /// <param name="state"></param>
-        /// <param name="source"></param>
-        /// <param name="pointer"></param>
         public override void OnClick(InteractableStates state, Interactable source, IMixedRealityPointer pointer = null)
         {
             base.OnClick(state, source);
@@ -161,11 +152,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// voice command called
         /// </summary>
-        /// <param name="state"></param>
-        /// <param name="source"></param>
-        /// <param name="command"></param>
-        /// <param name="index"></param>
-        /// <param name="length"></param>
         public override void OnVoiceCommand(InteractableStates state, Interactable source, string command, int index = 0, int length = 1)
         {
             base.OnVoiceCommand(state, source, command, index, length);
