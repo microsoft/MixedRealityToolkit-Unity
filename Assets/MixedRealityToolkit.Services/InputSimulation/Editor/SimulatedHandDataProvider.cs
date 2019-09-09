@@ -297,7 +297,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (isSimulating)
             {
-                state.SimulateInput(mouseDelta, useMouseRotation, profile.MouseRotationSensitivity, profile.ExtraMouseRotationScale, profile.HandJitterAmount);
+                state.SimulateInput(mouseDelta, useMouseRotation, profile.MouseRotationSensitivity, profile.MouseHandRotationSpeed, profile.HandJitterAmount);
 
                 if (isAlwaysVisible)
                 {

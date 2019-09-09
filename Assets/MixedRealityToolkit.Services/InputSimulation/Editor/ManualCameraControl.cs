@@ -130,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 rot.z += InputCurve(mouseDelta.screenDelta.z * profile.MouseRotationSensitivity);
             }
 
-            rot *= profile.ExtraMouseRotationScale;
+            rot *= profile.MouseLookSpeed;
 
             return rot;
         }

@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private SerializedProperty isCameraControlEnabled;
 
-        private SerializedProperty extraMouseRotationScale;
+        private SerializedProperty mouseLookSpeed;
         private SerializedProperty mouseRotationSensitivity;
         private SerializedProperty mouseLookButton;
         private SerializedProperty mouseLookToggle;
@@ -43,6 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private SerializedProperty handHideTimeout;
         private SerializedProperty leftHandManipulationKey;
         private SerializedProperty rightHandManipulationKey;
+        private SerializedProperty mouseHandRotationSpeed;
         private SerializedProperty handRotateButton;
 
         private SerializedProperty defaultHandGesture;
@@ -70,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             isCameraControlEnabled = serializedObject.FindProperty("isCameraControlEnabled");
 
-            extraMouseRotationScale = serializedObject.FindProperty("extraMouseRotationScale");
+            mouseLookSpeed = serializedObject.FindProperty("mouseLookSpeed");
             mouseRotationSensitivity = serializedObject.FindProperty("mouseRotationSensitivity");
             mouseLookButton = serializedObject.FindProperty("mouseLookButton");
             mouseLookToggle = serializedObject.FindProperty("mouseLookToggle");
@@ -97,6 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             handHideTimeout = serializedObject.FindProperty("handHideTimeout");
             leftHandManipulationKey = serializedObject.FindProperty("leftHandManipulationKey");
             rightHandManipulationKey = serializedObject.FindProperty("rightHandManipulationKey");
+            mouseHandRotationSpeed = serializedObject.FindProperty("mouseHandRotationSpeed");
             handRotateButton = serializedObject.FindProperty("handRotateButton");
 
             defaultHandGesture = serializedObject.FindProperty("defaultHandGesture");
@@ -131,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     using (new GUIEnabledWrapper(isCameraControlEnabled.boolValue))
                     {
                         EditorGUILayout.PropertyField(mouseRotationSensitivity);
-                        EditorGUILayout.PropertyField(extraMouseRotationScale);
+                        EditorGUILayout.PropertyField(mouseLookSpeed);
                         EditorGUILayout.PropertyField(mouseLookButton);
                         EditorGUILayout.PropertyField(mouseLookToggle);
                         EditorGUILayout.PropertyField(isControllerLookInverted);
@@ -165,6 +167,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     EditorGUILayout.PropertyField(handHideTimeout);
                     EditorGUILayout.PropertyField(leftHandManipulationKey);
                     EditorGUILayout.PropertyField(rightHandManipulationKey);
+                    EditorGUILayout.PropertyField(mouseHandRotationSpeed);
                     EditorGUILayout.PropertyField(handRotateButton);
                     EditorGUILayout.Space();
 

@@ -38,21 +38,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public bool IsCameraControlEnabled => isCameraControlEnabled;
 
         [SerializeField]
-        [Tooltip("Speed of rotation when using the mouse")]
+        [Tooltip("Sensitivity when using the mouse for rotation")]
         [FormerlySerializedAs("defaultMouseSensitivity")]
         private float mouseRotationSensitivity = 0.1f;
         /// <summary>
-        /// Speed of rotation when using the mouse
+        /// Sensitivity when using the mouse for rotation
         /// </summary>
         public float MouseRotationSensitivity => mouseRotationSensitivity;
         [SerializeField]
-        [Tooltip("Additional mouse rotation factor after input smoothing has been applied")]
+        [Tooltip("Additional rotation factor after input smoothing has been applied")]
         [FormerlySerializedAs("extraMouseSensitivityScale")]
-        private float extraMouseRotationScale = 3.0f;
+        private float mouseLookSpeed = 3.0f;
         /// <summary>
-        /// Additional mouse rotation factor after input smoothing has been applied
+        /// Additional rotation factor after input smoothing has been applied
         /// </summary>
-        public float ExtraMouseRotationScale => extraMouseRotationScale;
+        public float MouseLookSpeed => mouseLookSpeed;
         [SerializeField]
         [Tooltip("Controls how mouse look control is activated")]
         private KeyBinding mouseLookButton = KeyBinding.FromMouseButton(KeyBinding.MouseButton.Right);
@@ -225,6 +225,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Key to manipulate the right hand
         /// </summary>
         public KeyBinding RightHandManipulationKey => rightHandManipulationKey;
+        [SerializeField]
+        [Tooltip("Additional rotation factor after input smoothing has been applied")]
+        private float mouseHandRotationSpeed = 6.0f;
+        /// <summary>
+        /// Additional rotation factor after input smoothing has been applied
+        /// </summary>
+        public float MouseHandRotationSpeed => mouseHandRotationSpeed;
         [SerializeField]
         [Tooltip("Controls how hand rotation is activated")]
         private KeyBinding handRotateButton = KeyBinding.FromKey(KeyCode.LeftControl);
