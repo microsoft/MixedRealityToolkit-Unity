@@ -922,6 +922,61 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             iss.InputSimulationProfile = oldIsp;
             yield return null;
         }
+
+        /// <summary>
+        /// This test first moves the hand a set amount along the x-axis, records its x position, then moves
+        /// it the same amount along the y-axis and records its y position. Given no constraints on manipulation,
+        /// we expect these values to be the same.
+        /// This test was added as a change to pointer behaviour made GGV manipulation along the y-axis sluggish.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ManipulationHandlerMoveYAxisGGV()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // Switch to Gestures
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldIsp = iss.InputSimulationProfile;
+            var isp = ScriptableObject.CreateInstance<MixedRealityInputSimulationProfile>();
+            isp.HandSimulationMode = HandSimulationMode.Gestures;
+            iss.InputSimulationProfile = isp;
+
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.2f;
+            testObject.transform.position = new Vector3(0f, 0f, 1f);
+
+            var manipHandler = testObject.AddComponent<ManipulationHandler>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+
+            TestHand hand = new TestHand(Handedness.Right);
+            const int numHandSteps = 1;
+
+            float moveBy = 0.5f;
+            float xPos, yPos;
+
+            // Grab the object
+            yield return hand.Show(new Vector3(0, 0, 0.5f));
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return null;
+
+            yield return hand.Move(Vector3.right * moveBy, numHandSteps);
+            yield return null;
+
+            xPos = testObject.transform.position.x;
+
+            yield return hand.Move((Vector3.left + Vector3.up) * moveBy, numHandSteps);
+            yield return null;
+
+            yPos = testObject.transform.position.y;
+
+            Assert.AreEqual(xPos, yPos, 0.02f);
+
+            // Restore the input simulation profile
+            iss.InputSimulationProfile = oldIsp;
+            yield return null;
+        }
     }
 }
 #endif
