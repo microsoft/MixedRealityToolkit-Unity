@@ -72,6 +72,16 @@ To perform the MRTK upgrade select: **Mixed Reality Toolkit -> Utilities -> Upgr
 
 After the upgrade occurs the MRTK/Standard shader will be altered and any magenta (shader error) materials should be fixed. To verify the upgrade successfully occurred please check the console for: **Upgraded Assets/MixedRealityToolkit/StandardAssets/Shaders/MixedRealityStandard.shader for use with the Lightweight Render Pipeline.**
 
+## UGUI Support
+
+The MRTK Standard shading system works with Unity's built in [UI system](https://docs.unity3d.com/Manual/UISystem.html). On Unity UI components the unity_ObjectToWorld matrix is not the transformation matrix of the local transform the Graphic component lives on but that of it's parent Canvas. Many MRTK/Standard shader effects require object scale to be known. To solve this issue the [`ScaleMeshEffect.cs`](xref:Microsoft.MixedReality.Toolkit.Input.Utilities.ScaleMeshEffect) will store scaling information into UV channel attributes during UI mesh construction.
+
+Note, when using a Unity Image component it is recommended to specify "None (Sprite)" for the Source Image to prevent Unity UI from generating extra vertices.
+
+A Canvas within the MRTK will prompt for the addition of a [`ScaleMeshEffect.cs`](xref:Microsoft.MixedReality.Toolkit.Input.Utilities.ScaleMeshEffect) when one is required:
+
+![scale mesh effect](../Documentation/Images/MRTKStandardShader/MRTK_ScaleMeshEffect.jpg)
+
 ## Texture Combiner
 
 To improve parity with the Unity Standard shader per pixel metallic, smoothness, emissive, and occlusion values can all be controlled via [channel packing](http://wiki.polycount.com/wiki/ChannelPacking). For example:

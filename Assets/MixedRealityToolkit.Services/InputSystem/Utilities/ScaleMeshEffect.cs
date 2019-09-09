@@ -13,7 +13,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
     /// information into UV channel attributes during UI mesh construction. Ideally we would store the scale 
     /// in one attribute but UGUI only supports two scalers per attribute (even in the tangent attribute).
     /// </summary>
-    [RequireComponent(typeof(RectTransform))]
+    [RequireComponent(typeof(RectTransform), typeof(Graphic))]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_MRTKStandardShader.html#ugui-support")]
     public class ScaleMeshEffect : BaseMeshEffect
     {
         /// <summary>
@@ -40,10 +41,14 @@ namespace Microsoft.MixedReality.Toolkit.Input.Utilities
         public override void ModifyMesh(VertexHelper vh)
         {
             var rectTransform = transform as RectTransform;
+
+            // Pack the 2D xy scale into UV channel 2.
             var scale = new Vector2(rectTransform.rect.width * rectTransform.localScale.x,
                                     rectTransform.rect.height * rectTransform.localScale.y);
 
             var canvas = GetComponentInParent<Canvas>();
+
+            // Pack the z scale into x and a flag indicating this value comes from a ScaleMeshEffect into y into UV channel 3.
             var depth = new Vector2((canvas ? (1.0f / canvas.transform.lossyScale.z) : 1.0f) * rectTransform.localScale.z, 
                                     -1.0f);
 

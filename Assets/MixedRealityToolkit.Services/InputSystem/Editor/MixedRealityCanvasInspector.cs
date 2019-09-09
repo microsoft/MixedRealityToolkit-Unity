@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Input.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
@@ -148,9 +149,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             var graphics = GetGraphicsWhichRequireScaleMeshEffect(targets);
 
-            if (graphics.Count != 0)
+            if (graphics.Count() != 0)
             {
-                EditorGUILayout.HelpBox($"Canvas contains {graphics.Count} {typeof(Graphic).Name}(s) which require a {typeof(ScaleMeshEffect).Name} to work with the {StandardShaderUtility.MrtkStandardShaderName} shader.", UnityEditor.MessageType.Warning);
+                EditorGUILayout.HelpBox($"Canvas contains {graphics.Count()} {typeof(Graphic).Name}(s) which require a {typeof(ScaleMeshEffect).Name} to work with the {StandardShaderUtility.MrtkStandardShaderName} shader.", UnityEditor.MessageType.Warning);
                 if (GUILayout.Button($"Add {typeof(ScaleMeshEffect).Name}(s)"))
                 {
                     foreach (var graphic in graphics)
@@ -358,7 +359,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             serializedObject.ApplyModifiedProperties();
         }
 
-        private static List<Graphic> GetGraphicsWhichRequireScaleMeshEffect(Object[] targets)
+        private static IEnumerable<Graphic> GetGraphicsWhichRequireScaleMeshEffect(Object[] targets)
         {
             var output = new List<Graphic>();
 
