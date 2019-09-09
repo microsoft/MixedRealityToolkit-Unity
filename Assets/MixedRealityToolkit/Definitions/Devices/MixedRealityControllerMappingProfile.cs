@@ -133,6 +133,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         Array.Resize(ref mixedRealityControllerMappingProfiles, idx + 1);
                         mixedRealityControllerMappingProfiles[idx] = newMapping;
                     }
+                    else
+                    {
+                        mixedRealityControllerMappingProfiles[idx].UpdateInteractionMappings();
+                    }
                 }
             }
         }
