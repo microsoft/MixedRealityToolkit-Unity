@@ -165,7 +165,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (IsShaderPropertyType(Type) && TargetShader == null)
             {
-                // TODO: Troy - Utilize Cameron's change for string name
                 TargetShader = Shader.Find("Mixed Reality Toolkit/Standard");
 
                 if (string.IsNullOrEmpty(ShaderPropertyName))

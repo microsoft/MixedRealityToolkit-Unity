@@ -513,6 +513,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                 case ThemePropertyTypes.Color:
                     shaderTypes = new ShaderUtil.ShaderPropertyType[] { ShaderUtil.ShaderPropertyType.Color };
                     break;
+                case ThemePropertyTypes.Texture:
+                    shaderTypes = new ShaderUtil.ShaderPropertyType[] { ShaderUtil.ShaderPropertyType.TexEnv };
+                    break;
                 case ThemePropertyTypes.ShaderFloat:
                 case ThemePropertyTypes.ShaderRange:
                     shaderTypes = new ShaderUtil.ShaderPropertyType[] { ShaderUtil.ShaderPropertyType.Float, ShaderUtil.ShaderPropertyType.Range };

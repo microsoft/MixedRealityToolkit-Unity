@@ -50,12 +50,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
                                 Color color = material.GetVector(prop.ShaderPropertyName);
                                 materialBlock.SetColor(prop.ShaderPropertyName, color);
                                 break;
-                            case ThemePropertyTypes.ShaderFloat:
-                                float value = material.GetFloat(prop.ShaderPropertyName);
-                                materialBlock.SetFloat(prop.ShaderPropertyName, value);
+                            case ThemePropertyTypes.Texture:
+                                Texture tex = material.GetTexture(prop.ShaderPropertyName);
+                                materialBlock.SetTexture(prop.ShaderPropertyName, tex);
                                 break;
+                            case ThemePropertyTypes.ShaderFloat:
                             case ThemePropertyTypes.ShaderRange:
-                                value = material.GetFloat(prop.ShaderPropertyName);
+                                float value = material.GetFloat(prop.ShaderPropertyName);
                                 materialBlock.SetFloat(prop.ShaderPropertyName, value);
                                 break;
                             default:
