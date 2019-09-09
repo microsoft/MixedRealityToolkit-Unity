@@ -2254,7 +2254,7 @@ MonoBehaviour:
     - id: 2
       description: Grip Press
       axisType: 3
-      inputType: 7
+      inputType: 13
       inputAction:
         id: 7
         description: Grip Press

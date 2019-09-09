@@ -53,7 +53,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Tests that an Interactable component can be added to a GameObject
         /// at runtime, and an OnClick event handler can be added
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestClickEvents()
         {
@@ -186,7 +185,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// at runtime, and all receivers that extend ReceiverBase
         /// and have event handlers can easily be added, and work
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestFocusEvents()
         {

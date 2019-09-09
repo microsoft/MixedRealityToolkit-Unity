@@ -51,7 +51,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Add an interactable and add it as a handler
         /// </summary>
-        /// <param name="interactable"></param>
         public void AddInteractable(Interactable interactable)
         {
             if (Interactable != null)
@@ -90,8 +89,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// a state has changed
         /// </summary>
-        /// <param name="state"></param>
-        /// <param name="source"></param>
         public virtual void OnStateChange(InteractableStates state, Interactable source)
         {
             // the state has changed, do something new

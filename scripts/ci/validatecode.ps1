@@ -38,6 +38,36 @@ function CheckBooLang(
     return $false
 }
 
+function CheckEmptyDoccomment(
+    [string]$FileName,
+    [string[]]$FileContent,
+    [int]$LineNumber
+) {
+    <#
+    .SYNOPSIS
+        Checks if the given file (at the given line number) contains an empty <returns></returns>
+        or an <param ...></param> doccomment. These are typically added automatically by IDEs,
+        but empty doccomments don't add value to code.
+    #>
+    $tags = @("param", "returns")
+    $containsEmptyDoccomment = $false;
+
+    foreach ($tag in $tags) {
+        # This generates regexes that look like:
+        # ///\s*<returns[\sa-zA-Z"=]*>\s*</returns>
+        # which basically looks for an empty tag (allowing for alphanumeric param names
+        # and values in the tag itself)
+        $matcher = "///\s*<$tag[\sa-zA-Z0-9`"=]*>\s*</$tag>"
+        if ($FileContent[$LineNumber] -match $matcher) {
+            Write-Host "An empty doccomment was found in $FileName at line $LineNumber "
+            Write-Host "Delete the line or add a description "
+            Write-Host $FileContent[$LineNumber]
+            $containsEmptyDoccomment = $true;
+        }
+    }
+    return $containsEmptyDoccomment
+}
+
 function CheckCustomProfile(
     [string]$FileName,
     [string[]]$FileContent,
@@ -67,6 +97,9 @@ function CheckScript(
     $fileContent = Get-Content $FileName
     for ($i = 0; $i -lt $fileContent.Length; $i++) {
         if (CheckBooLang $FileName $fileContent $i) {
+            $containsIssue = $true
+        }
+        if (CheckEmptyDoccomment $FileName $fileContent $i) {
             $containsIssue = $true
         }
     }

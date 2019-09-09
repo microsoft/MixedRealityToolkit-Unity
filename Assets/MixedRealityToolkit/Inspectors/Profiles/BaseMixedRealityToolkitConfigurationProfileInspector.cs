@@ -23,7 +23,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// In these cases, we don't want to render when the active instance isn't using this profile,
         /// because it may produce an inaccurate combination of settings.
         /// </summary>
-        /// <returns></returns>
         protected abstract bool IsProfileInActiveInstance();
 
         /// <summary>
@@ -118,8 +117,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <summary>
         /// Renders a button that will take user back to a specified profile object
         /// </summary>
-        /// <param name="message"></param>
-        /// <param name="activeObject"></param>
         /// <returns>True if button was clicked</returns>
         protected bool DrawBacktrackProfileButton(string message, UnityEngine.Object activeObject)
         {

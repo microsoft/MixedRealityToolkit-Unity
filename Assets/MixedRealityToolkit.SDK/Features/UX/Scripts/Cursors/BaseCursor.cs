@@ -687,7 +687,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Change the cursor state to the new state.  Override in cursor implementations.
         /// </summary>
-        /// <param name="state"></param>
         public virtual void OnCursorStateChange(CursorStateEnum state)
         {
             CursorState = state;
@@ -696,7 +695,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Change the cursor context state to the new context.  Override in cursor implementations.
         /// </summary>
-        /// <param name="context"></param>
         public virtual void OnCursorContextChange(CursorContextEnum context)
         {
             CursorContext = context;

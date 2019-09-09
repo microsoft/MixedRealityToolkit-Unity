@@ -72,10 +72,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="ip"></param>
-        /// <param name="user"></param>
-        /// <param name="password"></param>
-        /// <param name="machineName"></param>
         public DeviceInfo(string ip, string user, string password, string machineName = "")
         {
             IP = ip;

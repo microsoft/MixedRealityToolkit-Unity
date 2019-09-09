@@ -77,7 +77,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Is the ease currently running?
         /// </summary>
-        /// <returns></returns>
         public bool IsPlaying()
         {
             return timer < LerpTime;
@@ -94,7 +93,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// get the linear ease value
         /// </summary>
-        /// <returns></returns>
         public float GetLinear()
         {
             return timer / LerpTime;
@@ -103,7 +101,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// get the ease value based on the animation curve
         /// </summary>
-        /// <returns></returns>
         public float GetCurved()
         {
             return IsLinear() ? GetLinear() : Curve.Evaluate(GetLinear());
@@ -135,7 +132,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// set the animation curve using a preset
         /// </summary>
-        /// <param name="curve"></param>
         public void SetCurve(BasicEaseCurves curve)
         {
             AnimationCurve animation = AnimationCurve.Linear(0, 1, 1, 1);

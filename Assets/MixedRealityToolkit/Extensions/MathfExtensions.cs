@@ -57,9 +57,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Sets the value to zero if greater than the specified amount.
         /// </summary>
-        /// <param name="value"></param>
-        /// <param name="amount"></param>
-        /// <returns></returns>
         public static int ResetIfGreaterThan(this int value, int amount)
         {
             if (value > amount)

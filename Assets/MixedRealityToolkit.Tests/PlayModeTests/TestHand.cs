@@ -102,7 +102,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Combined sequence of pinching and unpinching
         /// </summary>
-        /// <returns></returns>
         public IEnumerator Click()
         {
             yield return SetGesture(ArticulatedHandPose.GestureId.Pinch);
