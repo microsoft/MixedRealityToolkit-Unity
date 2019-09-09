@@ -125,14 +125,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 EditorGUILayout.PropertyField(indicatorsPrefab);
 
+                EditorGUILayout.Space();
+                EditorGUILayout.BeginVertical("Label");
+                EditorGUILayout.PropertyField(mouseRotationSensitivity);
+                EditorGUILayout.PropertyField(mouseX);
+                EditorGUILayout.PropertyField(mouseY);
+                EditorGUILayout.PropertyField(mouseScroll);
                 EditorGUILayout.PropertyField(doublePressTime);
+                EditorGUILayout.EndVertical();
 
                 EditorGUILayout.PropertyField(isCameraControlEnabled);
                 {
                     EditorGUILayout.BeginVertical("Label");
                     using (new GUIEnabledWrapper(isCameraControlEnabled.boolValue))
                     {
-                        EditorGUILayout.PropertyField(mouseRotationSensitivity);
                         EditorGUILayout.PropertyField(mouseLookSpeed);
                         EditorGUILayout.PropertyField(mouseLookButton);
                         EditorGUILayout.PropertyField(mouseLookToggle);
@@ -144,9 +150,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         EditorGUILayout.PropertyField(moveHorizontal);
                         EditorGUILayout.PropertyField(moveVertical);
                         EditorGUILayout.PropertyField(moveUpDown);
-                        EditorGUILayout.PropertyField(mouseX);
-                        EditorGUILayout.PropertyField(mouseY);
-                        EditorGUILayout.PropertyField(mouseScroll);
                         EditorGUILayout.PropertyField(lookHorizontal);
                         EditorGUILayout.PropertyField(lookVertical);
 

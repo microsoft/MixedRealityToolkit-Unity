@@ -20,6 +20,36 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public GameObject IndicatorsPrefab => indicatorsPrefab;
 
+        [Header("Common Input")]
+        [SerializeField]
+        [Tooltip("Sensitivity when using the mouse for rotation")]
+        [FormerlySerializedAs("defaultMouseSensitivity")]
+        private float mouseRotationSensitivity = 0.1f;
+        /// <summary>
+        /// Sensitivity when using the mouse for rotation
+        /// </summary>
+        public float MouseRotationSensitivity => mouseRotationSensitivity;
+        [SerializeField]
+        [Tooltip("Mouse Movement X-axis")]
+        private string mouseX = "Mouse X"; 
+        /// <summary>
+        /// Mouse Movement X-axis
+        /// </summary>
+        public string MouseX => mouseX;
+        [SerializeField]
+        [Tooltip("Mouse Movement Y-axis")]
+        private string mouseY = "Mouse Y";
+        /// <summary>
+        /// Mouse Movement Y-axis
+        /// </summary>
+        public string MouseY => mouseY;
+        [SerializeField]
+        [Tooltip("Mouse Scroll Wheel")]
+        private string mouseScroll = "Mouse ScrollWheel";
+        /// <summary>
+        /// Mouse Scroll Wheel
+        /// </summary>
+        public string MouseScroll => mouseScroll;
         [SerializeField]
         [Tooltip("Maximum time interval for double press")]
         private float doublePressTime = 0.4f;
@@ -36,15 +66,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Enable manual camera control
         /// </summary>
         public bool IsCameraControlEnabled => isCameraControlEnabled;
-
-        [SerializeField]
-        [Tooltip("Sensitivity when using the mouse for rotation")]
-        [FormerlySerializedAs("defaultMouseSensitivity")]
-        private float mouseRotationSensitivity = 0.1f;
-        /// <summary>
-        /// Sensitivity when using the mouse for rotation
-        /// </summary>
-        public float MouseRotationSensitivity => mouseRotationSensitivity;
         [SerializeField]
         [Tooltip("Additional rotation factor after input smoothing has been applied")]
         [FormerlySerializedAs("extraMouseSensitivityScale")]
@@ -129,29 +150,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Up/Down movement Axis 
         /// </summary>
         public string MoveUpDown => moveUpDown;
-        // Mouse movement string for the x-axis
-        [SerializeField]
-        [Tooltip("Mouse Movement X-axis")]
-        private string mouseX = "Mouse X"; 
-        /// <summary>
-        /// Mouse Movement X-axis
-        /// </summary>
-        public string MouseX => mouseX;
-        // Mouse movement string for the y-axis
-        [SerializeField]
-        [Tooltip("Mouse Movement Y-axis")]
-        private string mouseY = "Mouse Y";
-        /// <summary>
-        /// Mouse Movement Y-axis
-        /// </summary>
-        public string MouseY => mouseY;
-        [SerializeField]
-        [Tooltip("Mouse Scroll Wheel")]
-        private string mouseScroll = "Mouse ScrollWheel";
-        /// <summary>
-        /// Mouse Scroll Wheel
-        /// </summary>
-        public string MouseScroll => mouseScroll;
         // Look horizontal string for right stick of game controller
         // The right stick has no default settings in the Input Manager and will need to be setup for a game controller to look
         [SerializeField]
