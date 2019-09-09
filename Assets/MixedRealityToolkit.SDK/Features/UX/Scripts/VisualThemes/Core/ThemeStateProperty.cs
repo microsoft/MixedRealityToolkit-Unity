@@ -175,7 +175,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     }
                     else if (Type == ThemePropertyTypes.Texture)
                     {
-                        ShaderPropertyName = "_Texture";
+                        ShaderPropertyName = "_MainTex";
                     }
                 }
             }
