@@ -3,10 +3,31 @@
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    /// <summary>
+    /// Specifies how a pointer in MRTK's default input system behaves.
+    /// On: Pointer is always on, regardless of what other pointers are active.
+    /// Off: Pointer is always off, regardless of what other pointers are active.
+    /// Default: Pointer active state is managed by MRTK input system. If it is a near pointer (grab, poke), it
+    /// will be always enabled. If it is not a near pointer, it will get disabled if any near pointer on the 
+    /// same hand is active. This is what allows rays to turn off when a hand is near a grabbable.
+    /// 
+    /// By default, pointer behaviors are set to default state.
+    /// </summary>
     public enum PointerBehavior
     {
+        /// <summary>
+        /// Pointer is always on, regardless of what other pointers are active.
+        /// </summary>
         On,
+        /// <summary>
+        /// Pointer is always off, regardless of what other pointers are active.
+        /// </summary>
         Off,
-        Default // default behavior: on, unless pointer is near a grabbable
+        /// <summary>
+        /// Pointer active state is managed by MRTK input system. If it is a near pointer (grab, poke), it
+        /// will be always enabled. If it is not a near pointer, it will get disabled if any near pointer on the 
+        /// same hand is active. This is what allows rays to turn off when a hand is near a grabbable.
+        /// </summary>
+        Default
     };
 }

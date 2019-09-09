@@ -146,11 +146,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        public static PointerBehavior GetPointerBehavior<T>(Handedness handedness)
+        /// <summary>
+        /// Queries input system for the behavior of a given pointer type. See <seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/>.
+        /// </summary>
+        /// <typeparam name="T">Type of pointer to query</typeparam>
+        /// <param name="handedness">Handedness to query</param>
+        /// <returns><seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/> for the given pointer type and handedness</returns>
+        public static PointerBehavior GetPointerBehavior<T>(Handedness handedness) where T : class, IMixedRealityPointerHandler
         {
             return GetPointerBehavior(typeof(T), handedness);
         }
 
+        /// <summary>
+        /// Queries input system for behavior of given pointer type and handedndess
+        /// </summary>
+        /// <typeparam name="T">Type of pointer to query</typeparam>
+        /// <param name="handedness">Handedness to query</param>
+        /// <returns><seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/> for the given pointer type and handedness</returns>
         public static PointerBehavior GetPointerBehavior(Type type, Handedness handedness)
         {
             if (CoreServices.InputSystem.FocusProvider is FocusProvider focusProvider)
@@ -168,31 +180,61 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        public static void SetHandRayPointerBehavior(PointerBehavior pointerBehavior, Handedness handedness)
+        /// <summary>
+        /// Sets the behavior for the hand ray with given handedness
+        /// </summary>
+        /// <param name="pointerBehavior">Desired <seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/>.</param>
+        /// <param name="handedness">Specify handedness to restrict to only right, left hands.</param>
+        public static void SetHandRayPointerBehavior(PointerBehavior pointerBehavior, Handedness handedness = Handedness.Any)
         {
             SetPointerBehavior<LinePointer>(pointerBehavior, handedness);
         }
 
-        public static void SetMotionControllerRayPointerBehavior(PointerBehavior pointerBehavior, Handedness handedness)
+        /// <summary>
+        /// Sets the behavior for the motion controller ray with given handedness
+        /// </summary>
+        /// <param name="pointerBehavior">Desired <seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/>.</param>
+        /// <param name="handedness">Specify handedness to restrict to only right, left.</param>
+        public static void SetMotionControllerRayPointerBehavior(PointerBehavior pointerBehavior, Handedness handedness = Handedness.Any)
         {
             SetPointerBehavior<LinePointer>(pointerBehavior, handedness);
         }
 
-        public static void SetRayPointerBehavior(PointerBehavior pointerBehavior, Handedness handedness)
+        /// <summary>
+        /// Sets the behavior for the ray with given handedness.
+        /// </summary>
+        /// <param name="pointerBehavior">Desired <seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/>.</param>
+        /// <param name="handedness">Specify handedness to restrict to only right, left.</param>
+        public static void SetRayPointerBehavior(PointerBehavior pointerBehavior, Handedness handedness = Handedness.Any)
         {
             SetPointerBehavior<LinePointer>(pointerBehavior, handedness);
         }
 
-        public static void SetGrabPointerBehavior(PointerBehavior pointerBehavior, Handedness handedness)
+        /// <summary>
+        /// Sets the behavior for the grab pointer with given handedness.
+        /// </summary>
+        /// <param name="pointerBehavior">Desired <seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/>.</param>
+        /// <param name="handedness">Specify handedness to restrict to only right, left.</param>
+        public static void SetGrabPointerBehavior(PointerBehavior pointerBehavior, Handedness handedness = Handedness.Any)
         {
             SetPointerBehavior<SpherePointer>(pointerBehavior, handedness);
         }
 
-        public static void SetPokePointerBehavior(PointerBehavior pointerBehavior, Handedness handedness)
+        /// <summary>
+        /// Sets the behavior for the poke pointer with given handedness.
+        /// </summary>
+        /// <param name="pointerBehavior">Desired <seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/>.</param>
+        /// <param name="handedness">Specify handedness to restrict to only right, left.</param>
+        public static void SetPokePointerBehavior(PointerBehavior pointerBehavior, Handedness handedness = Handedness.Any)
         {
             SetPointerBehavior<PokePointer>(pointerBehavior, handedness);
         }
 
+        /// <summary>
+        /// Sets the behavior for the gaze pointer.
+        /// </summary>
+        /// <param name="pointerBehavior">Desired <seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/>.</param>
+        /// <param name="handedness">Specify handedness to restrict to only right, left.</param>
         public static void SetGGVBehavior(PointerBehavior pointerBehavior)
         {
             if (CoreServices.InputSystem.FocusProvider is FocusProvider focusProvider)
@@ -205,6 +247,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// Sets the behavior for the given pointer type.
+        /// </summary>
+        /// <typeparam name="T">Type of pointer to set behavior for.</typeparam>
+        /// <param name="pointerBehavior">Desired <seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/>.</param>
+        /// <param name="handedness">Specify handedness to restrict to only right, left.</param>
         public static void SetPointerBehavior<T>(PointerBehavior pointerBehavior, Handedness handedness) where T : class, IMixedRealityPointer
         {
             if (CoreServices.InputSystem.FocusProvider is FocusProvider focusProvider)
