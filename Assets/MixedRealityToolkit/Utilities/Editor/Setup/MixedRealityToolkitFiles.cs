@@ -363,6 +363,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return null;
         }
 
+        /// <summary>
+        /// Finds the module type, if found, from the specified package folder name.
+        /// </summary>
+        /// <param name="packageFolder">The asset folder name (ex: MixedRealityToolkit.Providers)</param>
+        /// <returns>
+        /// <see cref="MixedRealityToolkitModuleType"/> associated with the package folder name. Returns
+        /// MixedRealityToolkitModuleType.None if an appropriate module type could not be found.
+        /// </returns>
         public static MixedRealityToolkitModuleType GetModuleFromPackageFolder(string packageFolder)
         {
             if (!packageFolder.StartsWith("MixedRealityToolkit"))
