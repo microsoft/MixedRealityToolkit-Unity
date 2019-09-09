@@ -92,7 +92,7 @@ public class TurnPointersOnOffController : MonoBehaviour
     {
         PointerUtils.SetPokePointerBehavior(PointerBehavior.Off, Handedness.Any);
         PointerUtils.SetGrabPointerBehavior(PointerBehavior.Off, Handedness.Any);
-        PointerUtils.SetRayPointerBehavior(PointerBehavior.On, Handedness.Any);
+        PointerUtils.SetRayPointerBehavior(PointerBehavior.Default, Handedness.Any);
         PointerUtils.SetGGVBehavior(PointerBehavior.Off);
     }
 
@@ -109,14 +109,14 @@ public class TurnPointersOnOffController : MonoBehaviour
         PointerUtils.SetPokePointerBehavior(PointerBehavior.Off, Handedness.Any);
         PointerUtils.SetGrabPointerBehavior(PointerBehavior.Off, Handedness.Any);
         PointerUtils.SetRayPointerBehavior(PointerBehavior.Off, Handedness.Any);
-        PointerUtils.SetGGVBehavior(PointerBehavior.On);
+        PointerUtils.SetGGVBehavior(PointerBehavior.Default);
     }
 
     public void SetHoloLens2()
     {
-        PointerUtils.SetPokePointerBehavior(PointerBehavior.On, Handedness.Any);
-        PointerUtils.SetGrabPointerBehavior(PointerBehavior.On, Handedness.Any);
-        PointerUtils.SetRayPointerBehavior(PointerBehavior.On, Handedness.Any);
+        PointerUtils.SetPokePointerBehavior(PointerBehavior.Default, Handedness.Any);
+        PointerUtils.SetGrabPointerBehavior(PointerBehavior.Default, Handedness.Any);
+        PointerUtils.SetRayPointerBehavior(PointerBehavior.Default, Handedness.Any);
         PointerUtils.SetGGVBehavior(PointerBehavior.Off);
     }
 
