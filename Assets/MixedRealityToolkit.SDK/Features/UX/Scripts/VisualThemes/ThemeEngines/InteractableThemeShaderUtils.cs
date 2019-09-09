@@ -52,7 +52,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                                 break;
                             case ThemePropertyTypes.Texture:
                                 Texture tex = material.GetTexture(prop.ShaderPropertyName);
-                                materialBlock.SetTexture(prop.ShaderPropertyName, tex);
+                                if (tex != null)
+                                {
+                                    materialBlock.SetTexture(prop.ShaderPropertyName, tex);
+                                }
                                 break;
                             case ThemePropertyTypes.ShaderFloat:
                             case ThemePropertyTypes.ShaderRange:

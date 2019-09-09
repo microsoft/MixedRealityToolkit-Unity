@@ -578,7 +578,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 if (activeThemes[i].Loaded)
                 {
-                    activeThemes[i].OnUpdate(StateManager.CurrentState().ActiveIndex, this, forceUpdate);
+                    activeThemes[i].OnUpdate(StateManager.CurrentState().ActiveIndex, forceUpdate);
                 }
             }
 
