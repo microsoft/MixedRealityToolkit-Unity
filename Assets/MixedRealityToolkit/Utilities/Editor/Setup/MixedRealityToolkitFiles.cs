@@ -363,6 +363,24 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return null;
         }
 
+        public static MixedRealityToolkitModuleType GetModuleFromPackageFolder(string packageFolder)
+        {
+            if (!packageFolder.StartsWith("MixedRealityToolkit"))
+            {
+                // There are no mappings for folders that do not start with "MixedRealityToolkit"
+                return MixedRealityToolkitModuleType.None;
+            }
+
+            int separatorIndex = packageFolder.IndexOf('.');
+            if (separatorIndex != -1 )
+            {
+                packageFolder = (separatorIndex != -1) ? packageFolder.Substring(separatorIndex+1) : "Core";
+            }
+
+            MixedRealityToolkitModuleType moduleType;
+            return moduleNameMap.TryGetValue(packageFolder, out moduleType) ? moduleType: MixedRealityToolkitModuleType.None;
+        }
+
         private static readonly Dictionary<string, MixedRealityToolkitModuleType> moduleNameMap = new Dictionary<string, MixedRealityToolkitModuleType>()
         {
             { "Core", MixedRealityToolkitModuleType.Core },
