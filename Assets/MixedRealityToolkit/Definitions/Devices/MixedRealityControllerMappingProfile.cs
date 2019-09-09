@@ -135,7 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                     else
                     {
-                        mixedRealityControllerMappingProfiles[idx].UpdateInteractionMappings();
+                        mixedRealityControllerMappingProfiles[idx].UpdateInteractionSettingsFromDefault();
                     }
                 }
             }

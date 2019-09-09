@@ -145,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        internal bool UpdateInteractionMappings()
+        internal bool UpdateInteractionSettingsFromDefault()
         {
             bool updatedMappings = false;
 
