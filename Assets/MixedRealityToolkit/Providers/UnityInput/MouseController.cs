@@ -17,10 +17,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="trackingState"></param>
-        /// <param name="controllerHandedness"></param>
-        /// <param name="inputSource"></param>
-        /// <param name="interactions"></param>
+        /// <param name="trackingState">The controller's tracking state.</param>
+        /// <param name="controllerHandedness">The handedness (ex: right) of the controller.</param>
+        /// <param name="inputSource">The controller's input souce.</param>
+        /// <param name="interactions">The set of interactions supported by this controller.</param>
         public MouseController(
             TrackingState trackingState, 
             Handedness controllerHandedness, 
