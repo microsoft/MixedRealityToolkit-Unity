@@ -245,6 +245,32 @@ The [PointerResultExample scene](https://github.com/microsoft/MixedRealityToolki
 
 <img src="../../Documentation/Images/Input/PointerResultExample.png" style="max-width:100%;">
 
+### Turn pointers on and off
+To turn pointers on and off, set the [`PointerBehavior`]() for a given pointer type via [`PointerUtils`](). See [How to turn pointers on and off in MRTK using PointerBehavior]() for more information.
+
+```csharp
+// Turn off all hand rays
+PointerUtils.SetHandRayPointerBehavior(PointerBehavior.Off);
+
+// Turn off hand rays for the right hand only
+PointerUtils.SetHandRayPointerBehavior(PointerBehavior.Off, Handedness.Right);
+
+// Turn off the gaze pointer
+PointerUtils.SetGazePointerBehavior(PointerBehavior.Off);
+
+// Set the behavior to match HoloLens 1
+// Note, if on HoloLens 2, must make the GGV pointer show up for articulated hands. See TurnPointersOnOffExample in the MRTK Examples package
+public void SetHoloLens1()
+{
+    PointerUtils.SetPokePointerBehavior(PointerBehavior.Off, Handedness.Any);
+    PointerUtils.SetGrabPointerBehavior(PointerBehavior.Off, Handedness.Any);
+    PointerUtils.SetRayPointerBehavior(PointerBehavior.Off, Handedness.Any);
+    PointerUtils.SetGGVBehavior(PointerBehavior.Default);
+}
+```
+
+See [`PointerUtils`](xref:Microsoft.MixedReality.Toolkit.Input.PointerUtils) and [`TurnPointersOnOff`](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.TurnPointersOnOff) for more examples.
+
 ## Pointer interactions via editor
 
 For pointer events handled by [`IMixedRealityPointerHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler), MRTK provides further convenience in the form of the [`PointerHandler`](xref:Microsoft.MixedReality.Toolkit.Input.PointerHandler) component which allows pointer events to be handled directly via Unity Events.

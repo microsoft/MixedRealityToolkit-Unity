@@ -43,9 +43,38 @@ Because a single controller can have multiple pointers (for example, the articul
 For example, as the user’s hand approaches a pressable button, the [`ShellHandRayPointer`](xref:Microsoft.MixedReality.Toolkit.Input.ShellHandRayPointer) should stop showing, and the [`PokePointer`](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer) should be engaged.
 
 This is handled by the [`DefaultPointerMediator`](xref:Microsoft.MixedReality.Toolkit.Input.DefaultPointerMediator),
-which is responsible for determining which pointers based on the state of all pointers. One of the key things this does is [disable far pointers when a near pointer is close to an object](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Pointers/DefaultPointerMediator.cs#L127)
+which is responsible for determining which pointers based on the state of all pointers. One of the key things this does is [disable far pointers when a near pointer is close to an object](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Pointers/DefaultPointerMediator.cs#L127).
 
 It's possible to provide an alternate implementation of the pointer mediator by changing the [`PointerMediator`](xref:Microsoft.MixedReality.Toolkit.Input.MixedRealityPointerProfile.PointerMediator) property on the pointer profile.
+
+### How to turn pointers on and off in MRTK using PointerBehavior
+Because the pointer mediator runs every frame, it ends up controlling the active / inactive state of all pointers. Therefore, if you set a pointer's IsInteractionEnabled property in code, it will get overwritten by the pointer mediator every frame. Instead, you can specify the [`PointerBehavior`](xref:Microsoft.MixedReality.Toolkit.Inputf.PointerBehavior) to control whether pointers should be on or off yourself. Note that this will only work if you are using the default [`FocusProvider`](xref:Microsoft.MixedReality.Toolkit.Input.FocusProvider) and [`DefaultPointerMediator`](xref:Microsoft.MixedReality.Toolkit.Input.DefaultPointerMediator) in MRTK. 
+
+#### Example: Turn off hand rays in MRTK
+The following code will turn off the hand rays in MRTK:
+
+```csharp
+// Turn off all hand rays
+PointerUtils.SetHandRayPointerBehavior(PointerBehavior.Off);
+
+// Turn off hand rays for the right hand only
+PointerUtils.SetHandRayPointerBehavior(PointerBehavior.Off, Handedness.Right);
+```
+
+The following code will return hand rays to their default behavior (on unless a hand is near a grabbable) in MRTK:
+
+```csharp
+PointerUtils.SetHandRayPointerBehavior(PointerBehavior.Default);
+```
+
+The following code will force hand rays to be on, regardless of if near a grabbable:
+
+```csharp
+// Turn off all hand rays
+PointerUtils.SetHandRayPointerBehavior(PointerBehavior.On);
+```
+
+See [`PointerUtils`](xref:Microsoft.MixedReality.Toolkit.Input.PointerUtils) and [`TurnPointersOnOff`](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.TurnPointersOnOff) for more examples.
 
 ### FocusProvider
 
