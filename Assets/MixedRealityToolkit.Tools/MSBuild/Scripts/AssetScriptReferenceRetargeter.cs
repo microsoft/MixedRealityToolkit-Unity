@@ -528,7 +528,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
                     dllGuid = CycleGuidForward(dllGuid);
 
-                    if (file.Extension.Equals(".dll") && file.DirectoryName.EndsWith("Standalone"))
+                    if (file.Extension.Equals(".dll") && file.DirectoryName.EndsWith("StandalonePlayer"))
                     {
                         templateToUse = standaloneMetaFileTemplate;
                         goto WriteMeta;
@@ -536,12 +536,15 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
                     dllGuid = CycleGuidForward(dllGuid);
 
-                    if (file.Extension.Equals(".dll") && file.DirectoryName.EndsWith("UAP"))
+                    if (file.Extension.Equals(".dll") && file.DirectoryName.EndsWith("UAPPlayer"))
                     {
                         templateToUse = uapMetaFileTemplate;
                         goto WriteMeta;
                     }
 
+                    dllGuid = CycleGuidForward(dllGuid);
+
+                    // Switch to PDBs
                     if (file.DirectoryName.EndsWith("EditorPlayer"))
                     {
                         goto WriteMeta;
@@ -549,7 +552,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
                     dllGuid = CycleGuidForward(dllGuid);
 
-                    if (file.DirectoryName.EndsWith("Standalone"))
+                    if (file.DirectoryName.EndsWith("StandalonePlayer"))
                     {
                         templateToUse = standaloneMetaFileTemplate;
                         goto WriteMeta;
