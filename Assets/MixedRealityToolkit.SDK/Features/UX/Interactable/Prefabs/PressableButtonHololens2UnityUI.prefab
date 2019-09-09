@@ -206,6 +206,7 @@ GameObject:
   - component: {fileID: 448654273136647793}
   - component: {fileID: 3078934259714054176}
   - component: {fileID: 6643496050371014491}
+  - component: {fileID: 7765793373352522057}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -287,6 +288,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4ea7dc4a5a95cb84584659cbc5279700, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7765793373352522057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4716031617915946492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36065390e01a3cd40b87e4bf4acd02f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &7205869594250961695
@@ -569,10 +582,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5234426576715676748, guid: df89e360642c6fc46abbc1c2656856f6,
+    - target: {fileID: 9130116940813133624, guid: df89e360642c6fc46abbc1c2656856f6,
         type: 3}
-      propertyPath: m_Name
-      value: PressableButtonHololens2UnityUI
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5234426577712821812, guid: df89e360642c6fc46abbc1c2656856f6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5234426576715676739, guid: df89e360642c6fc46abbc1c2656856f6,
         type: 3}
@@ -679,6 +697,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 5234426576715676748, guid: df89e360642c6fc46abbc1c2656856f6,
+        type: 3}
+      propertyPath: m_Name
+      value: PressableButtonHololens2UnityUI
+      objectReference: {fileID: 0}
     - target: {fileID: 5234426576715676743, guid: df89e360642c6fc46abbc1c2656856f6,
         type: 3}
       propertyPath: m_Material
@@ -714,15 +737,10 @@ PrefabInstance:
       propertyPath: m_margin.y
       value: 22.371887
       objectReference: {fileID: 0}
-    - target: {fileID: 5234426577712821812, guid: df89e360642c6fc46abbc1c2656856f6,
+    - target: {fileID: 5234426577712821803, guid: df89e360642c6fc46abbc1c2656856f6,
         type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9130116940813133624, guid: df89e360642c6fc46abbc1c2656856f6,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
+      propertyPath: m_RootOrder
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5234426576715676738, guid: df89e360642c6fc46abbc1c2656856f6, type: 3}
