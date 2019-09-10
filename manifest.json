@@ -3150,6 +3150,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTKStandardShader/MRTK_RenderingModes.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTKStandardShader/MRTK_RenderingModes.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/MRTKStandardShader/MRTK_ScaleMeshEffect.jpg",
       "output": {
         "resource": {
@@ -5615,7 +5626,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_MRTKStandardShader.html",
-          "hash": "UyeOFSNlkYpwWEmzsQO0gw=="
+          "hash": "KYsD1gs4upHX7Ldws+MUrw=="
         }
       },
       "is_incremental": false,
@@ -7150,7 +7161,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.MixedRealityShaderGUI.CustomRenderingMode.html",
-          "hash": "ucjMcM56RQLXJU2PCzW03Q=="
+          "hash": "ZlPQD6DkVGin4ggbsJkSTw=="
         }
       },
       "is_incremental": false,
@@ -7174,7 +7185,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.MixedRealityShaderGUI.RenderingMode.html",
-          "hash": "L3MCJxP8rVe3PVb+QKMIHQ=="
+          "hash": "stKCbC7a6cprC9aVGX6lig=="
         }
       },
       "is_incremental": false,
@@ -19461,16 +19472,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 124,
-          "skipped_file_count": 0
-        },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 1117,
+          "skipped_file_count": 0
+        },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 124,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
