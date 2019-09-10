@@ -826,24 +826,152 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 originalHandPosition = new Vector3(0, 0, 0.5f);
             TestHand hand = new TestHand(Handedness.Right);
             const int numHandSteps = 1;
-
+            
             // Grab cube
             yield return hand.Show(originalHandPosition);
-            yield return null;
+
+            // Hand position is not exactly the pointer position, this correction applies the delta
+            // from the hand to the pointer.
+            Vector3 correction = originalHandPosition - hand.GetPointer<GGVPointer>().Position;
+            yield return hand.Move(correction, numHandSteps);
+
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return null;
 
             // Rotate Head and readjust hand
             int numRotations = 10;
             for (int i = 0; i < numRotations; i++)
             {
                 MixedRealityPlayspace.Transform.Rotate(Vector3.up, 180 / numRotations);
-                yield return hand.MoveTo(originalHandPosition, numHandSteps);
+                correction = originalHandPosition - hand.GetPointer<GGVPointer>().Position;
+                yield return hand.Move(correction, numHandSteps);
                 yield return null;
 
                 // Test Object hasn't moved
-                TestUtilities.AssertAboutEqual(initialObjectPosition, testObject.transform.position, "Object moved while rotating head");
+                TestUtilities.AssertAboutEqual(initialObjectPosition, testObject.transform.position, "Object moved while rotating head", 0.01f);
                 TestUtilities.AssertAboutEqual(initialObjectRotation, testObject.transform.rotation, "Object rotated while rotating head", 0.25f);
             }
+
+            // Restore the input simulation profile
+            iss.InputSimulationProfile = oldIsp;
+            yield return null;
+        }
+
+        /// <summary>
+        /// For positionless input sources that use gaze, such as xbox controller, pointer position will
+        /// be coincident with the head position. This was causing issues with manipulation handler, as
+        /// the distance between the pointer and the head is taken as part of the move logic. 
+        /// This test simulates a positionless input source by using GGV hands and setting the hand position
+        /// to be the head position. It then ensures that there is no weird behaviour as a result of this.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ManipulationHandlerPositionlessController()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // Switch to Gestures
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldIsp = iss.InputSimulationProfile;
+            var isp = ScriptableObject.CreateInstance<MixedRealityInputSimulationProfile>();
+            isp.HandSimulationMode = HandSimulationMode.Gestures;
+            iss.InputSimulationProfile = isp;
+
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.2f;
+            testObject.transform.position = new Vector3(0f, 0f, 1f);
+
+            var manipHandler = testObject.AddComponent<ManipulationHandler>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+            
+            TestHand hand = new TestHand(Handedness.Right);
+            const int numHandSteps = 1;
+            
+            float expectedDist = Vector3.Distance(testObject.transform.position, CameraCache.Main.transform.position);
+            
+            yield return hand.Show(CameraCache.Main.transform.position);
+            yield return null;
+
+            // Hand position is not exactly the pointer position, this correction applies the delta
+            // from the hand to the pointer.
+            Vector3 correction = CameraCache.Main.transform.position - hand.GetPointer<GGVPointer>().Position;
+            yield return hand.Move(correction, numHandSteps);
+            yield return null;
+
+            Assert.AreEqual(expectedDist, Vector3.Distance(testObject.transform.position, CameraCache.Main.transform.position), 0.02f);
+
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return null;
+
+            Assert.AreEqual(expectedDist, Vector3.Distance(testObject.transform.position, CameraCache.Main.transform.position), 0.02f);
+
+            Vector3 delta = new Vector3(0.2f, 0, 0);
+            MixedRealityPlayspace.Transform.Translate(delta);
+            yield return hand.Move(delta, numHandSteps);
+            yield return null;
+
+            Assert.AreEqual(expectedDist, Vector3.Distance(testObject.transform.position, CameraCache.Main.transform.position), 2.5f);
+
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return null;
+
+            Assert.AreEqual(expectedDist, Vector3.Distance(testObject.transform.position, CameraCache.Main.transform.position), 0.02f);
+
+            // Restore the input simulation profile
+            iss.InputSimulationProfile = oldIsp;
+            yield return null;
+        }
+
+        /// <summary>
+        /// This test first moves the hand a set amount along the x-axis, records its x position, then moves
+        /// it the same amount along the y-axis and records its y position. Given no constraints on manipulation,
+        /// we expect these values to be the same.
+        /// This test was added as a change to pointer behaviour made GGV manipulation along the y-axis sluggish.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ManipulationHandlerMoveYAxisGGV()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // Switch to Gestures
+            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var oldIsp = iss.InputSimulationProfile;
+            var isp = ScriptableObject.CreateInstance<MixedRealityInputSimulationProfile>();
+            isp.HandSimulationMode = HandSimulationMode.Gestures;
+            iss.InputSimulationProfile = isp;
+
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.2f;
+            testObject.transform.position = new Vector3(0f, 0f, 1f);
+
+            var manipHandler = testObject.AddComponent<ManipulationHandler>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+
+            TestHand hand = new TestHand(Handedness.Right);
+            const int numHandSteps = 1;
+
+            float moveBy = 0.5f;
+            float xPos, yPos;
+
+            // Grab the object
+            yield return hand.Show(new Vector3(0, 0, 0.5f));
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return null;
+
+            yield return hand.Move(Vector3.right * moveBy, numHandSteps);
+            yield return null;
+
+            xPos = testObject.transform.position.x;
+
+            yield return hand.Move((Vector3.left + Vector3.up) * moveBy, numHandSteps);
+            yield return null;
+
+            yPos = testObject.transform.position.y;
+
+            Assert.AreEqual(xPos, yPos, 0.02f);
 
             // Restore the input simulation profile
             iss.InputSimulationProfile = oldIsp;
