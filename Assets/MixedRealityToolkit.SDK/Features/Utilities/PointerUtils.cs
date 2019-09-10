@@ -153,7 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <typeparam name="T">Type of pointer to query</typeparam>
         /// <param name="handedness">Handedness to query</param>
         /// <returns><seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/> for the given pointer type and handedness</returns>
-        public static PointerBehavior GetPointerBehavior<T>(Handedness handedness) where T : class, IMixedRealityPointerHandler
+        public static PointerBehavior GetPointerBehavior<T>(Handedness handedness) where T : class, IMixedRealityPointer
         {
             return GetPointerBehavior(typeof(T), handedness);
         }

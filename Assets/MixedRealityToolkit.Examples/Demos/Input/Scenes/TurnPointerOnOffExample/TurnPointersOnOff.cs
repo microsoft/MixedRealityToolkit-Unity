@@ -15,7 +15,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// </summary>
     public class TurnPointersOnOff : MonoBehaviour
     {
-        List<Tuple<Type, Interactable>> pointerToggles = new List<Tuple<Type, Interactable>>();
+        public Interactable RayToggle;
+        public Interactable GrabToggle;
+        public Interactable GazeToggle;
+        public Interactable PokeToggle;
 
         public void SetRayEnabled(bool isEnabled)
         {
@@ -74,7 +77,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         void Start()
         {
             ResetExample();
-            PopulatePointerToggleList();
         }
 
         public void ResetExample()
@@ -101,37 +103,23 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             }
         }
 
-        private void PopulatePointerToggleList()
-        {
-            foreach (var icl in FindObjectsOfType<Interactable>())
-            {
-                if (icl.Dimensions == 2)
-                {
-                    if (icl.gameObject.name.Contains("Ray"))
-                    {
-                        pointerToggles.Add(new Tuple<Type, Interactable>(typeof(LinePointer), icl));
-                    }
-                    else if (icl.gameObject.name.Contains("Poke"))
-                    {
-                        pointerToggles.Add(new Tuple<Type, Interactable>(typeof(PokePointer), icl));
-                    }
-                    else if (icl.gameObject.name.Contains("Grab"))
-                    {
-                        pointerToggles.Add(new Tuple<Type, Interactable>(typeof(SpherePointer), icl));
-                    }
-                    else if (icl.gameObject.name.Contains("Gaze"))
-                    {
-                        pointerToggles.Add(new Tuple<Type, Interactable>(typeof(GGVPointer), icl));
-                    }
-                }
-            }
-        }
-
         void Update()
         {
-            foreach (var tuple in pointerToggles)
+            SetToggleHelper(RayToggle, "RayToggle", typeof(LinePointer));
+            SetToggleHelper(GrabToggle, "GrabToggle", typeof(SpherePointer));
+            SetToggleHelper(PokeToggle, "PokeToggle", typeof(PokePointer));
+            SetToggleHelper(GazeToggle, "GazeToggle", typeof(GGVPointer));
+        }
+
+        private void SetToggleHelper(Interactable toggle, string toggleName, Type toggleType)
+        {
+            if (toggle == null)
             {
-                tuple.Item2.SetToggled(PointerUtils.GetPointerBehavior(tuple.Item1, Handedness.Any) != PointerBehavior.Off);
+                Debug.LogWarning($"Button {toggleName} is null on gameobject {gameObject.name}. Did you forget to set it?");
+            }
+            else
+            {
+                toggle.SetToggled(PointerUtils.GetPointerBehavior(toggleType, Handedness.Any) != PointerBehavior.Off);
             }
         }
 
