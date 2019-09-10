@@ -19,9 +19,30 @@ You can find a comparison scene to compare and test the MRTK/Standard shader aga
 
 The MRTK/Standard shading system is an "uber shader" that uses [Unity's shader program variant feature](https://docs.unity3d.com/Manual/SL-MultipleProgramVariants.html) to auto-generate optimal shader code based on material properties. When a user selects material properties in the material inspector they only incur performance cost for features they have enabled.
 
-A custom material inspector exists for the MRTK/Standard shader called **MixedRealityStandardShaderGUI.cs**. The inspector automatically enables/disables shader features based on user selection and aides in setting up render state. For more information about each feature please hover over each property in the Unity Editor for a tooltip.
+## Material Inspector
+
+A custom material inspector exists for the MRTK/Standard shader called [`MixedRealityStandardShaderGUI.cs`](xref:Microsoft.MixedReality.Toolkit.Editor.MixedRealityStandardShaderGUI). The inspector automatically enables/disables shader features based on user selection and aides in setting up render state. For more information about each feature **please hover over each property in the Unity Editor for a tooltip.**
 
 ![Material Inspector](../Documentation/Images/MRTKStandardShader/MRTK_MaterialInspector.jpg)
+
+The first portion of the inspector controls the material's render state. *Rendering Mode* determines when and how a material will be rendered. The aim of the MRTK/Standard shader is to mirror the [rendering modes found in the Unity/Standard shader](https://docs.unity3d.com/Manual/StandardShaderMaterialParameterRenderingMode.html). The MRTK/Standard shader also includes an *Additive* rendering mode and *Custom* rendering mode for complete user control.
+
+| Rendering Mode |                                                                                                                                                                                                                                                                                                                                                                    |
+|----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Opaque         | (Default) Suitable for normal solid objects with no transparent areas.                                                                                                                                                                                                                                                                                             |
+| Cutout         | Allows creation of transparent effects that have hard edges between the opaque and transparent areas. In this mode, there are no semi-transparent areas, the texture is either 100% opaque, or invisible. This is useful when using transparency to create the shape of materials such as vegetation.                                                              |
+| Fade           | Allows the transparency values to entirely fade an object out, including any specular highlights or reflections it may have. This mode is useful if you want to animate an object fading in or out. It is not suitable for rendering realistic transparent materials such as clear plastic or glass because the reflections and highlights will also be faded out. |
+| Transparent    | Suitable for rendering realistic transparent materials such as clear plastic or glass. In this mode, the material itself will take on transparency values (based on the texture’s alpha channel and the alpha of the tint colour), however reflections and lighting highlights will remain visible at full clarity as is the case with real transparent materials. |
+| Additive       | Enables an additive blending mode which sums the previous pixel color with the current pixel color. This is the preferred transparency mode to avoid transparency sorting issues.                                                                                                                                                                                  |
+| Custom         | Allows for every aspect of the rendering mode to be controlled manually. For advanced usage only.                                                                                                                                                                                                                                                                  |                                                                                                                                            |
+
+![Rendering Modes](../Documentation/Images/MRTKStandardShader/MRTK_RenderingModes.jpg)
+
+| Cull Mode |                                                                                                                                                                                    |
+|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Off       | Disables face culling. Culling should only be set to Off when a two sided mesh is required.                                                                                        |
+| Front     | Enables front face culling.                                                                                                                                                        |
+| Back      | (Default) Enables [back face culling](https://en.wikipedia.org/wiki/Back-face_culling). Back face culling should be enabled as often as possible to improve rendering performance. |
 
 ## Performance
 
