@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
@@ -528,33 +528,15 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             {
                 if (propertyGroupNode.Attribute("Condition") != null)
                 {
-                    var allowUnsafeBlock = propertyGroupNode.Element("AllowUnsafeBlock");
-                    if (allowUnsafeBlock == null)
+                    var AllowUnsafeBlocks = propertyGroupNode.Element("AllowUnsafeBlocks");
+                    if (AllowUnsafeBlocks == null)
                     {
-                        allowUnsafeBlock = new XElement(propertyGroupNode.GetDefaultNamespace() + "AllowUnsafeBlocks");
-                        propertyGroupNode.Add(allowUnsafeBlock);
+                        AllowUnsafeBlocks = new XElement(propertyGroupNode.GetDefaultNamespace() + "AllowUnsafeBlocks");
+                        propertyGroupNode.Add(AllowUnsafeBlocks);
                     }
-                    allowUnsafeBlock.Value = "true";
+                    AllowUnsafeBlocks.Value = "true";
                 }
             }
-        }
-
-        /// <summary>
-        /// An overload of AllowUnsafeCode that will read the 'Assembly-CSharp.csproj'
-        /// file from the build output and update the project to allow unsafe code.
-        /// </summary>
-        /// <param name="buildInfo">An IBuildInfo containing a valid OutputDirectory</param>
-        public static void AllowUnsafeCode(IBuildInfo buildInfo)
-        {
-            string manifestFilePath = GetAssemblyCSharpProjectFilePath(buildInfo);
-            if (manifestFilePath == null)
-            {
-                throw new FileNotFoundException("Unable to find 'Assembly-CSharp.csproj' file");
-            }
-
-            var rootElement = XElement.Load(manifestFilePath);
-            AllowUnsafeCode(rootElement);
-            rootElement.Save(manifestFilePath);
         }
 
         /// <summary>
