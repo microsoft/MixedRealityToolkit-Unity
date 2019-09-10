@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected int ShaderPropertyID = -1;
 
         private static readonly ThemePropertyTypes[] ShaderTypes =
-            { ThemePropertyTypes.Color, ThemePropertyTypes .ShaderFloat, ThemePropertyTypes.ShaderRange};
+            { ThemePropertyTypes.Color, ThemePropertyTypes .ShaderFloat, ThemePropertyTypes.ShaderRange, ThemePropertyTypes.Texture};
 
         /// <summary>
         /// Utility function that determines if the passed property type is supported for shader targeting
@@ -162,6 +162,23 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 ShaderPropertyName = ShaderOptionNames[PropId];
             }
 #pragma warning restore 612, 618
+
+            if (IsShaderPropertyType(Type) && TargetShader == null)
+            {
+                TargetShader = Shader.Find("Mixed Reality Toolkit/Standard");
+
+                if (string.IsNullOrEmpty(ShaderPropertyName))
+                {
+                    if (Type == ThemePropertyTypes.Color)
+                    {
+                        ShaderPropertyName = "_Color";
+                    }
+                    else if (Type == ThemePropertyTypes.Texture)
+                    {
+                        ShaderPropertyName = "_MainTex";
+                    }
+                }
+            }
         }
     }
 }

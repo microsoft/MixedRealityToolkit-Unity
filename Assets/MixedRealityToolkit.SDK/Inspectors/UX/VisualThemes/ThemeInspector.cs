@@ -258,22 +258,39 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         /// </summary>
         private static void MigrateShaderData(SerializedProperty stateProperty, SerializedProperty shader, SerializedProperty shaderPropertyname)
         {
-            SerializedProperty shaderOptions = stateProperty.FindPropertyRelative("ShaderOptions");
-            if (shaderOptions.arraySize > 0 && shader.objectReferenceValue == null)
+            if (shader.objectReferenceValue == null)
             {
-                var shaderName = stateProperty.FindPropertyRelative("ShaderName");
-                var shaderOptionNames = stateProperty.FindPropertyRelative("ShaderOptionNames");
-                var shaderOptionIndex = stateProperty.FindPropertyRelative("PropId");
-                var shaderOption = shaderOptionNames.GetArrayElementAtIndex(shaderOptionIndex.intValue);
+                SerializedProperty shaderOptions = stateProperty.FindPropertyRelative("ShaderOptions");
+                if (shaderOptions.arraySize > 0)
+                {
+                    var shaderName = stateProperty.FindPropertyRelative("ShaderName");
+                    var shaderOptionNames = stateProperty.FindPropertyRelative("ShaderOptionNames");
+                    var shaderOptionIndex = stateProperty.FindPropertyRelative("PropId");
+                    var shaderOption = shaderOptionNames.GetArrayElementAtIndex(shaderOptionIndex.intValue);
 
-                // Migrate data over to new model
-                shader.objectReferenceValue = Shader.Find(shaderName.stringValue);
-                shaderPropertyname.stringValue = shaderOption.stringValue;
+                    // Migrate data over to new model
+                    shader.objectReferenceValue = Shader.Find(shaderName.stringValue);
+                    shaderPropertyname.stringValue = shaderOption.stringValue;
 
-                // Wipe old data from trigering this again
-                shaderOptions.ClearArray();
+                    // Wipe old data from trigering this again
+                    shaderOptions.ClearArray();
 
-                stateProperty.serializedObject.ApplyModifiedProperties();
+                    stateProperty.serializedObject.ApplyModifiedProperties();
+                }
+                else
+                {
+                    shader.objectReferenceValue = Shader.Find("Mixed Reality Toolkit/Standard");
+
+                    SerializedProperty type = stateProperty.FindPropertyRelative("type");
+                    if (type.enumValueIndex == (int)ThemePropertyTypes.Color)
+                    {
+                        shaderPropertyname.stringValue = "_Color";
+                    }
+                    else if (type.enumValueIndex == (int)ThemePropertyTypes.Texture)
+                    {
+                        shaderPropertyname.stringValue = "_MainTex";
+                    }
+                }
             }
         }
 
@@ -505,6 +522,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             {
                 case ThemePropertyTypes.Color:
                     shaderTypes = new ShaderUtil.ShaderPropertyType[] { ShaderUtil.ShaderPropertyType.Color };
+                    break;
+                case ThemePropertyTypes.Texture:
+                    shaderTypes = new ShaderUtil.ShaderPropertyType[] { ShaderUtil.ShaderPropertyType.TexEnv };
                     break;
                 case ThemePropertyTypes.ShaderFloat:
                 case ThemePropertyTypes.ShaderRange:

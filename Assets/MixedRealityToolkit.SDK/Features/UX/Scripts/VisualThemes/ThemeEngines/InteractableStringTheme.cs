@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,10 +19,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private TextMesh mesh;
         private Text text;
+        private TMPro.TextMeshPro meshPro;
+        private TMPro.TextMeshProUGUI meshProUGUI;
 
         public InteractableStringTheme()
         {
-            Types = new Type[] { typeof(TextMesh), typeof(Text) };
+            Types = new Type[] { typeof(TextMesh), typeof(Text), typeof(TextMeshPro), typeof(TextMeshProUGUI) };
             Name = "String Theme";
         }
 
@@ -52,38 +55,56 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             mesh = Host.GetComponent<TextMesh>();
             text = Host.GetComponent<Text>();
+            meshPro = Host.GetComponent<TextMeshPro>();
+            meshProUGUI = Host.GetComponent<TextMeshProUGUI>();
         }
 
         /// <inheritdoc />
         public override ThemePropertyValue GetProperty(ThemeStateProperty property)
         {
             ThemePropertyValue start = new ThemePropertyValue();
-            start.String = "";
+            start.String = string.Empty;
 
             if (mesh != null)
             {
                 start.String = mesh.text;
-                return start;
             }
-
-            if (mesh != null)
+            else if (text != null)
             {
                 start.String = text.text;
             }
+            else if (meshPro != null)
+            {
+                start.String = meshPro.text;
+            }
+            else if (meshProUGUI != null)
+            {
+                start.String = meshProUGUI.text;
+            }
+
             return start;
         }
 
         /// <inheritdoc />
         public override void SetValue(ThemeStateProperty property, int index, float percentage)
         {
-            if(mesh != null)
-            {
-                mesh.text = property.Values[index].String;
-                return;
-            }
+            string strValue = property.Values[index].String;
+
             if (mesh != null)
             {
-                text.text = property.Values[index].String;
+                mesh.text = strValue;
+            }
+            else if (text != null)
+            {
+                text.text = strValue;
+            }
+            else if (meshPro != null)
+            {
+                meshPro.text = strValue;
+            }
+            else if (meshProUGUI != null)
+            {
+                meshProUGUI.text = strValue;
             }
         }
     }

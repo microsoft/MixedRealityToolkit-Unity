@@ -269,7 +269,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                 // If states value is not provided, try to use Default states type
                 if (statesProperty.objectReferenceValue == null)
                 {
-                    statesProperty.objectReferenceValue = GetDefaultInteractableStates();
+                    statesProperty.objectReferenceValue = GetDefaultInteractableStatesFile();
                 }
 
                 GUI.enabled = !isPlayMode;
@@ -405,7 +405,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             }
         }
 
-        public static States GetDefaultInteractableStates()
+        public static States GetDefaultInteractableStatesFile()
         {
             AssetDatabase.Refresh();
             string[] stateLocations = AssetDatabase.FindAssets("DefaultInteractableStates");
@@ -475,7 +475,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             if (path.Length != 0)
             {
                 Theme newTheme = ScriptableObject.CreateInstance<Theme>();
-                newTheme.States = GetDefaultInteractableStates();
+                newTheme.States = GetDefaultInteractableStatesFile();
                 newTheme.Definitions = new List<ThemeDefinition>();
                 AssetDatabase.CreateAsset(newTheme, path);
                 return newTheme;

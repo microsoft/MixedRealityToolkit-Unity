@@ -7,13 +7,12 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
-    public class InteractableTextureTheme : InteractableThemeBase
+    public class InteractableTextureTheme : InteractableShaderTheme
     {
         /// <inheritdoc />
         public override bool IsEasingSupported => false;
 
-        private MaterialPropertyBlock propertyBlock;
-        private Renderer renderer;
+        protected new const string DefaultShaderProperty = "_MainTex";
 
         public InteractableTextureTheme()
         {
@@ -34,35 +33,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         Name = "Texture",
                         Type = ThemePropertyTypes.Texture,
                         Values = new List<ThemePropertyValue>(),
-                        Default = new ThemePropertyValue() { Texture = null }
+                        Default = new ThemePropertyValue() { Texture = null },
+                        TargetShader = Shader.Find(DefaultShaderName),
+                        ShaderPropertyName = DefaultShaderProperty,
                     },
                 },
                 CustomProperties = new List<ThemeProperty>(),
             };
-        }
-
-        /// <inheritdoc />
-        public override void Init(GameObject host, ThemeDefinition settings)
-        {
-            base.Init(host, settings);
-
-            propertyBlock = InteractableThemeShaderUtils.GetPropertyBlock(host);
-            renderer = Host.GetComponent<Renderer>();
-        }
-
-        /// <inheritdoc />
-        public override ThemePropertyValue GetProperty(ThemeStateProperty property)
-        {
-            ThemePropertyValue start = new ThemePropertyValue();
-            start.Texture = propertyBlock.GetTexture("_MainTex");
-            return start;
-        }
-
-        /// <inheritdoc />
-        public override void SetValue(ThemeStateProperty property, int index, float percentage)
-        {
-            propertyBlock.SetTexture("_MainTex", property.Values[index].Texture);
-            renderer.SetPropertyBlock(propertyBlock);
         }
     }
 }

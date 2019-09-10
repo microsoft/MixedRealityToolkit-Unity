@@ -119,7 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Loaded = true;
         }
 
-        public virtual void OnUpdate(int state, Interactable source, bool force = false)
+        public virtual void OnUpdate(int state, bool force = false)
         {
             if (state != lastState || force)
             {

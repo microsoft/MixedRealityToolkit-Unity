@@ -16,6 +16,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected float grabPercentage;
         protected bool grabTransition;
 
+        protected Interactable targetInteractable;
+
         public InteractableGrabScaleTheme()
         {
             Types = new Type[] { typeof(Transform) };
@@ -61,6 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public override void Init(GameObject host, ThemeDefinition settings)
         {
             base.Init(host, settings);
+
             if (host != null)
             {
                 startScaleValue = new ThemePropertyValue();
@@ -85,9 +88,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <inheritdoc />
-        public override void OnUpdate(int state, Interactable source, bool force = false)
+        public override void OnUpdate(int state, bool force = false)
         {
-            base.OnUpdate(state, source, force);
+            base.OnUpdate(state, force);
 
             if (Host == null)
             {
@@ -97,8 +100,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Vector3 maxGrabScale = Properties[0].Value.Vector3;
             float grabTime = Properties[1].Value.Float;
             Vector3 grabScale = Vector3.Scale(startScaleValue.Vector3, maxGrabScale);
-            
-            if (source.HasGrab)
+
+            var targetInteractable = Host.FindAncestorComponent<Interactable>(true);
+
+            if (targetInteractable.HasGrab)
             {
                 if (!hasGrab)
                 {

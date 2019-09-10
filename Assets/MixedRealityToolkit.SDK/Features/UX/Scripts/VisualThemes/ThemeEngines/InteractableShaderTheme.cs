@@ -78,19 +78,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 renderer.GetPropertyBlock(propertyBlock);
 
                 int propId = property.GetShaderPropertyId();
+                var propValue = property.Values[index];
                 switch (property.Type)
                 {
                     case ThemePropertyTypes.Color:
-                        Color newColor = Color.Lerp(property.StartValue.Color, property.Values[index].Color, percentage);
-                        propertyBlock = SetColor(propertyBlock, newColor, propId);
+                        Color newColor = Color.Lerp(property.StartValue.Color, propValue.Color, percentage);
+                        propertyBlock.SetColor(propId, newColor);
+                        break;
+                    case ThemePropertyTypes.Texture:
+                        propertyBlock.SetTexture(propId, propValue.Texture);
                         break;
                     case ThemePropertyTypes.ShaderFloat:
-                        float floatValue = LerpFloat(property.StartValue.Float, property.Values[index].Float, percentage);
-                        propertyBlock = SetFloat(propertyBlock, floatValue, propId);
-                        break;
                     case ThemePropertyTypes.ShaderRange:
-                        float rangeValue = LerpFloat(property.StartValue.Float, property.Values[index].Float, percentage);
-                        propertyBlock = SetFloat(propertyBlock, rangeValue, propId);
+                        float floatValue = LerpFloat(property.StartValue.Float, propValue.Float, percentage);
+                        propertyBlock.SetFloat(propId, floatValue);
                         break;
                     default:
                         break;
@@ -118,9 +119,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 case ThemePropertyTypes.Color:
                     startValue.Color = propertyBlock.GetVector(propId);
                     break;
-                case ThemePropertyTypes.ShaderFloat:
-                    startValue.Float = propertyBlock.GetFloat(propId);
+                case ThemePropertyTypes.Texture:
+                    startValue.Texture = propertyBlock.GetTexture(propId);
                     break;
+                case ThemePropertyTypes.ShaderFloat:
                 case ThemePropertyTypes.ShaderRange:
                     startValue.Float = propertyBlock.GetFloat(propId);
                     break;
@@ -140,23 +142,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return block.GetFloat(propId);
         }
 
-        public static void SetPropertyBlock(GameObject host, MaterialPropertyBlock block)
-        {
-            Renderer renderer = host.GetComponent<Renderer>();
-            renderer.SetPropertyBlock(block);
-        }
-
-        public static MaterialPropertyBlock SetFloat(MaterialPropertyBlock block, float value, int propId)
-        {
-            if (block == null)
-            {
-                return null;
-            }
-
-            block.SetFloat(propId, value);
-            return block;
-        }
-
         public static Color GetColor(GameObject host, int propId)
         {
             if (host == null)
@@ -166,16 +151,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             MaterialPropertyBlock block = InteractableThemeShaderUtils.GetPropertyBlock(host);
             return block.GetVector(propId);
-        }
-
-        public static MaterialPropertyBlock SetColor(MaterialPropertyBlock block, Color color, int propId)
-        {
-            if (block == null)
-                return null;
-
-            block.SetColor(propId, color);
-            return block;
-
         }
     }
 }
