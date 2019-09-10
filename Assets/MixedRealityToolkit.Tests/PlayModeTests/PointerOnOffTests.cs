@@ -16,6 +16,8 @@ using UnityEngine.TestTools;
 using System.Collections;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
+using System;
+using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
@@ -24,65 +26,94 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// </summary>
     public class PointerOnOffTests : BasePlayModeTests
     {
-        [SetUp]
-        public override void Setup()
+        private class PointerStateContainer
         {
-            base.Setup();
-
+            public bool? LinePointerEnabled { get; set; }
+            public bool? SpherePointerEnabled { get; set; }
+            public bool? PokePointerEnabled { get; set; }
+            public bool? GazePointerEnabled { get; set; }
+            public bool? GGVPointerEnabled { get; set; }
         }
 
-        private void EnsurePointerStates(Handedness h, bool rayEnabled, bool grabEnabled, bool pokeEnabled, bool gazeEnabled)
+        private void EnsurePointerStates(Handedness h, PointerStateContainer c)
         {
-            Assert.True(PointerUtils.GetPointer<LinePointer>(h).IsInteractionEnabled == rayEnabled);
-            Assert.True(PointerUtils.GetPointer<SpherePointer>(h).IsInteractionEnabled == grabEnabled);
-            Assert.True(PointerUtils.GetPointer<PokePointer>(h).IsInteractionEnabled == pokeEnabled);
-            Assert.True(PointerUtils.GetPointer<GGVPointer>(h).IsInteractionEnabled == gazeEnabled);
+            Action<IMixedRealityPointer, string, bool?> helper = (ptr, name, expected) =>
+            {
+                if (!expected.HasValue)
+                {
+                    Assert.Null(ptr, $"Expected {h} {name} to be null but it was not null");
+                }
+                else
+                {
+                    Assert.NotNull(ptr, $"Expected {name} to not be null, but it was null");
+                    Assert.True(expected.Value == ptr.IsInteractionEnabled,
+                    $"Expected {h} {name}.IsInteractionEnabled to be {expected.Value} but it wasn't");
+                }
+
+            };
+            helper(PointerUtils.GetPointer<LinePointer>(h), "Line Pointer", c.LinePointerEnabled);
+            helper(PointerUtils.GetPointer<SpherePointer>(h), "Sphere Pointer", c.SpherePointerEnabled);
+            helper(PointerUtils.GetPointer<PokePointer>(h), "Poke Pointer", c.PokePointerEnabled);
+            helper(PointerUtils.GetPointer<GGVPointer>(h), "GGV Pointer", c.GGVPointerEnabled);
+            helper(CoreServices.InputSystem.GazeProvider.GazePointer, "Gaze Pointer", c.GazePointerEnabled);
         }
 
         [UnityTest]
-        public IEnumerator TestSetStates()
+        public IEnumerator TurnOffRays()
         {
-            TestHand hand = new TestHand(Handedness.Right);
-            yield return hand.Show(Vector3.zero);
-            EnsurePointerStates(Handedness.Right, true, true, true, false);
+            PointerStateContainer lineOn = new PointerStateContainer()
+            {
+                GazePointerEnabled = false,
+                GGVPointerEnabled = null,
+                PokePointerEnabled = false,
+                SpherePointerEnabled = false,
+                LinePointerEnabled = true
+            };
 
-            // Ray
+            TestHand rightHand = new TestHand(Handedness.Right);
+            TestHand leftHand = new TestHand(Handedness.Left);
+
+            yield return rightHand.Show(Vector3.zero);
+            yield return leftHand.Show(Vector3.zero);
+
+            TestContext.Out.WriteLine("Show both hands");
+            EnsurePointerStates(Handedness.Right, lineOn);
+            EnsurePointerStates(Handedness.Left, lineOn);
+
+            TestContext.Out.WriteLine("Turn off ray pointer both hands");
             PointerUtils.SetRayPointerBehavior(PointerBehavior.Off);
             yield return null;
 
-            EnsurePointerStates(Handedness.Right, false, true, true, false);
+            PointerStateContainer lineOff = new PointerStateContainer()
+            {
+                GazePointerEnabled = false,
+                GGVPointerEnabled = null,
+                PokePointerEnabled = false,
+                SpherePointerEnabled = false,
+                LinePointerEnabled = false
+            };
 
-            PointerUtils.SetRayPointerBehavior(PointerBehavior.Default);
+            EnsurePointerStates(Handedness.Right, lineOff);
+            EnsurePointerStates(Handedness.Left, lineOff);
+
+            TestContext.Out.WriteLine("Turn on ray right hand.");
+            PointerUtils.SetRayPointerBehavior(PointerBehavior.On, Handedness.Right);
             yield return null;
 
-            EnsurePointerStates(Handedness.Right, true, true, true, false);
+            EnsurePointerStates(Handedness.Right, lineOn);
+            EnsurePointerStates(Handedness.Left, lineOff);
 
-            // Grab
-            PointerUtils.SetGrabPointerBehavior(PointerBehavior.Off);
+            TestContext.Out.WriteLine("Turn on ray (default behavior) right hand.");
+            PointerUtils.SetRayPointerBehavior(PointerBehavior.Default, Handedness.Right);
             yield return null;
-            EnsurePointerStates(Handedness.Right, true, false, true, false);
+            EnsurePointerStates(Handedness.Right, lineOn);
+            EnsurePointerStates(Handedness.Left, lineOff);
 
-            PointerUtils.SetGrabPointerBehavior(PointerBehavior.Default);
+            TestContext.Out.WriteLine("Turn on ray (default behavior) left hand.");
+            PointerUtils.SetRayPointerBehavior(PointerBehavior.Default, Handedness.Left);
             yield return null;
-            EnsurePointerStates(Handedness.Right, true, true, true, false);
-
-            // Poke
-            PointerUtils.SetPokePointerBehavior(PointerBehavior.Off);
-            yield return null;
-            EnsurePointerStates(Handedness.Right, true, true, false, false);
-
-            PointerUtils.SetPokePointerBehavior(PointerBehavior.Default);
-            yield return null;
-            EnsurePointerStates(Handedness.Right, true, true, true, false);
-
-            // Gaze
-            PointerUtils.SetGGVBehavior(PointerBehavior.On);
-            yield return null;
-            EnsurePointerStates(Handedness.Right, true, true, true, true);
-
-            PointerUtils.SetGGVBehavior(PointerBehavior.Default);
-            yield return null;
-            EnsurePointerStates(Handedness.Right, true, true, true, false);
+            EnsurePointerStates(Handedness.Right, lineOn);
+            EnsurePointerStates(Handedness.Left, lineOn);
         }
 
     }
