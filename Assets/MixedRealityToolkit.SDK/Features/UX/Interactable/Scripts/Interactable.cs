@@ -489,7 +489,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             requiresFocusValueCheck = RequiresFocus;
             isGlobalValueCheck = IsGlobal;
 
-            focusingPointers.RemoveAll((focusingPointer) => (Interactable)focusingPointer.FocusTarget != this);
+            focusingPointers.RemoveAll((focusingPointer) => (focusingPointer.FocusTarget as Interactable) != this);
 
             if (focusingPointers.Count == 0)
             {
