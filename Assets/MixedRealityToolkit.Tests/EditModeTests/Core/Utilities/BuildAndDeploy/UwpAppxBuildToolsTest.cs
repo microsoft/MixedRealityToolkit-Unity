@@ -119,5 +119,93 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Build.Editor
             Assert.AreEqual(1, gazeInputCapabilities.Count,
                             "There be a single gazeInput capability");
         }
+
+        /// <summary>
+        /// Validates that AddResearchModeCapability will add a perceptionSensorsExperimental
+        /// capability and its namespace to an existing well-formed manifest.
+        /// </summary>
+        [Test]
+        public void TestAddResearchModeCapability_CapabilitiesNodeExists()
+        {
+            XElement rootElement = XElement.Parse(TestManifest);
+            UwpAppxBuildTools.AddResearchModeCapability(rootElement);
+            AssertSingleResearchModeCapability(rootElement);
+        }
+
+
+
+        /// <summary>
+        /// Validates that the AddGazeInputCapability will also add the
+        /// <Capabilities></Capabilities> container tag if it's missing.
+        /// </summary>
+        [Test]
+        public void TestAddResearchModeCapability_CapabilitiesNodeMissing()
+        {
+            XElement rootElement = XElement.Parse(TestManifest);
+            XElement capabilitiesElement = rootElement.Element(rootElement.GetDefaultNamespace() + "Capabilities");
+            capabilitiesElement.Remove();
+
+            // Not technically necessary, but sanity checks that we aren't
+            // spuriously testing the same thing as
+            // TestAddGazeInputCapability_CapabilitiesNodeExists
+            Assert.IsNull(rootElement.Element(rootElement.GetDefaultNamespace() + "Capabilities"));
+
+            UwpAppxBuildTools.AddResearchModeCapability(rootElement);
+
+            AssertSingleResearchModeCapability(rootElement);
+        }
+
+        /// <summary>
+        /// Validates that AddResearchModeCapability will only add the research
+        /// mode capability if it doesn't already exist.
+        /// </summary>
+        [Test]
+        public void TestAddResearchModeCapability_AddsOnce()
+        {
+            XElement rootElement = XElement.Parse(TestManifest);
+            UwpAppxBuildTools.AddResearchModeCapability(rootElement);
+            AssertSingleResearchModeCapability(rootElement);
+
+            UwpAppxBuildTools.AddResearchModeCapability(rootElement);
+            AssertSingleResearchModeCapability(rootElement);
+        }
+
+        private static void AssertSingleResearchModeCapability(XElement rootElement)
+        {
+            var researchModeCapabilities = rootElement
+                .Element(rootElement.GetDefaultNamespace() + "Capabilities")
+                .Descendants()
+                .Where(element => element.Attribute("Name")?.Value == "perceptionSensorsExperimental")
+                .ToList();
+
+            Assert.AreEqual(1, researchModeCapabilities.Count,
+                            "There be a single gazeInput capability");
+        }
+
+        /// <summary>
+        /// Validates that AddCapability adds a capability.
+        /// </summary>
+        [Test]
+        public void TestAddCapability_Adds()
+        {
+            XElement rootElement = XElement.Parse(TestManifest);
+            UwpAppxBuildTools.AddCapability(rootElement, rootElement.GetDefaultNamespace() + "DeviceCapability", "gazeInput");
+            AssertSingleGazeInputCapability(rootElement);
+        }
+
+        /// <summary>
+        /// Validates that AddCapability will only add a capability if
+        /// it doesn't already exist.
+        /// </summary>
+        [Test]
+        public void TestAddCapability_AddsOnce()
+        {
+            XElement rootElement = XElement.Parse(TestManifest);
+            UwpAppxBuildTools.AddCapability(rootElement, rootElement.GetDefaultNamespace() + "DeviceCapability", "gazeInput");
+            AssertSingleGazeInputCapability(rootElement);
+
+            UwpAppxBuildTools.AddCapability(rootElement, rootElement.GetDefaultNamespace() + "DeviceCapability", "gazeInput");
+            AssertSingleGazeInputCapability(rootElement);
+        }
     }
 }
