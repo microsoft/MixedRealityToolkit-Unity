@@ -124,7 +124,7 @@ Mixed Reality Toolkit の空間認識設定を使用すると、アプリケー�
 
 # シーンシステム (Scene system) の設定
 
-MRTK は、複雑なシーンの読み込み (loading) /アンロード (unloading) の管理に役立つオプションを提供します。シーンシステムがプロジェクトに適しているかどうかを判断するには、[シーン システムの開始ガイド](../Documentation/SceneSystem/SceneSystemGettingStarted.html)を参照してください。
+MRTK は、複雑なシーンのロード/アンロードの管理に役立つオプションを提供します。シーンシステムがプロジェクトに適しているかどうかを判断するには、[シーン システムの開始ガイド](../Documentation/SceneSystem/SceneSystemGettingStarted.html)を参照してください。
 
 ![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SceneSystemProfile.png)
 
@@ -168,9 +168,9 @@ Input Action Rules を使用すると、1 つの入力アクションに対し�
 
 たとえば、単一のデュアル軸入力イベントを DPad から 4 つの対応する "DPad Up" / "DPad Down" / "Dpad Left" / "Dpad Right" アクションに変換します (下の図に示すように)。
 
-これは、独自のコードで行うこともできます。しかし、これは非常に一般的なパターンであったので、フレームワークはこれをそとから変更できるメカニズムを提供します。
+これは、独自のコードで行うこともできます。しかし、これは非常に一般的なパターンであったので、フレームワークはこれを外から変更できるメカニズムを提供します。
 
-Input Action Rules は、使用可能な入力軸のいずれかに対して設定できます。ただし、1 つの軸タイプからの入力アクションは、同じ軸タイプの別の入力アクションに変換できます。二重軸アクションを別の二重軸アクションにマップできますが、デジタルアクションまたはアクションなしにはマップできません。
+Input Action Rules は、使用可能な入力軸のいずれかに対して設定できます。ただし、1つの軸タイプからの入力アクションは、同じ軸タイプの別の入力アクションに変換できます。デュアル軸アクションを別のデュアル軸アクションにマップできますが、デジタルアクションまたはアクションなしにはマップできません。
 
 ![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionRulesProfile.png)
 
@@ -178,7 +178,7 @@ Input Action Rules は、使用可能な入力軸のいずれかに対して設�
 
 入力の向きとヒットテストの両方を、シーン内の任意のオブジェクト (コライダがアタッチされている、または UI コンポーネント) に対して行います。Pointers は、デフォルトでは、コントローラ、ヘッドセット(視線/フォーカス)、マウス/タッチ入力用に自動的に設定されます。
 
-Pointers は、Mixed Reality Toolkit によって提供される多くのラインコンポーネントの 1 つを使用してアクティブシーン内で視覚化することも、 MRTK IMixedRealityPointer インターフェイスを実装している場合は独自の要素を使用して可視化することもできます。
+Pointers は、Mixed Reality Toolkit によって提供される多くのラインコンポーネントの 1 つを使用してアクティブシーン内で可視化することも、 MRTK IMixedRealityPointer インターフェイスを実装している場合は独自の要素を使用して可視化することもできます。
 
 ![Mrtk](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputPointerProfile.png)
 
@@ -186,9 +186,9 @@ Pointers は、Mixed Reality Toolkit によって提供される多くのライ�
 
 - Pointing Raycast Layer Masks : レイキャストに対してどのレイキャストを行うレイヤーを決定します。
 
-- Debug Draw Pointing Rays : レイキャストに使用されるレイを視覚化するためのデバッグヘルパー。
+- Debug Draw Pointing Rays : レイキャストに使用されるレイを可視化するためのデバッグヘルパー。
 
-- Debug Draw Pointing Rays Colors : 視覚化に使用する一連の色。
+- Debug Draw Pointing Rays Colors : 可視化に使用する一連の色。
 
 - Gaze cursor prefab : 任意のシーンにグローバルな視線カーソルを簡単に指定できます。
 
@@ -238,7 +238,7 @@ MRTK は、次のコントローラ/システムのデフォルト設定を提�
 
 上記で識別されていない他の OpenVR または Unity 入力コントローラを設定するための高度な画面もあります。
 
-# コントローラの視覚化の設定
+# コントローラの可視化の設定
 
 コントローラーマッピングに加えて、シーン内でのコントローラーの表示方法をカスタマイズするための個別の設定プロファイルが用意されています。
 
