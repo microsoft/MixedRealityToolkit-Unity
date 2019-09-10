@@ -1,5 +1,8 @@
 # CI build for release packages.
 
+# Change the BuildNumber to be SemVer 1.0.0 compatible
+name: $(Date:yyyyMMdd)v$(Rev:r)
+
 variables:
   UnityVersion: Unity2018.3.7f1
   MRTKVersion: 2.0.1  # Major.Minor.Patch
