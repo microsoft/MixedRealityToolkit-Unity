@@ -3,6 +3,7 @@ using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 
@@ -42,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             PointerUtils.SetPokePointerBehavior(PointerBehavior.Off, Handedness.Any);
             PointerUtils.SetGrabPointerBehavior(PointerBehavior.Off, Handedness.Any);
             PointerUtils.SetRayPointerBehavior(PointerBehavior.Default, Handedness.Any);
-            PointerUtils.SetGazePointerBehavior(PointerBehavior.Off);
+            PointerUtils.SetGazePointerBehavior(PointerBehavior.Default);
         }
 
         public void SetFingerOnly()
@@ -68,6 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             PointerUtils.SetRayPointerBehavior(PointerBehavior.Default, Handedness.Any);
             PointerUtils.SetGazePointerBehavior(PointerBehavior.Off);
         }
+
 
         void Start()
         {
