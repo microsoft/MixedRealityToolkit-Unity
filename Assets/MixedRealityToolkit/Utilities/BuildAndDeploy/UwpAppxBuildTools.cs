@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
@@ -389,15 +389,53 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         }
 
         /// <summary>
-        /// Adds the 'Gaze Input' capability to the manifest.
+        /// An overload of AddResearchModeCapability that will read the AppX manifest
+        /// from the build output and update the manifest file with the rescap aka
+        /// research mode capability.
         /// </summary>
-        /// <remarks>
-        /// This is a workaround for versions of Unity which don't have native support
-        /// for the 'Gaze Input' capability in its Player Settings preference location.
-        /// Note that this function is only public to poke a hole for testing - do not
-        /// take a dependency on this function.
-        /// </remarks>
-        public static void AddGazeInputCapability(XElement rootNode)
+        /// <param name="buildInfo">An IBuildInfo containing a valid OutputDirectory</param>
+        public static void AddCapabilities(IBuildInfo buildInfo)
+        {
+            string manifestFilePath = GetManifestFilePath(buildInfo);
+            if (manifestFilePath == null)
+            {
+                throw new FileNotFoundException("Unable to find manifest file");
+            }
+
+            var rootElement = XElement.Load(manifestFilePath);
+            var uwpBuildInfo = buildInfo as UwpBuildInfo;
+
+            Debug.Assert(uwpBuildInfo != null);
+            if (uwpBuildInfo.GazeInputCapabilityEnabled)
+            {
+                AddGazeInputCapability(rootElement);
+            }
+
+            if (EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens)
+            {
+                if (uwpBuildInfo.ResearchModeCapabilityEnabled)
+                {
+                    AddResearchModeCapability(rootElement);
+                }
+
+                if (EditorUserBuildSettings.wsaGenerateReferenceProjects && uwpBuildInfo.AllowUnsafeCode)
+                {
+                    AllowUnsafeCode(rootElement);
+                }
+            }
+
+            rootElement.Save(manifestFilePath);
+        }
+
+        /// <summary>
+        /// Adds a capability to the given rootNode, which must be the read AppX manifest from
+        /// the build output.
+        /// </summary>
+        /// <param name="rootNode">An <see cref="XElement"/> containing the AppX manifest from 
+        /// the build output</param>
+        /// <param name="capability">The added capabilites tag as <see cref="XName"/></param>
+        /// <param name="value">Value of the Name-<see cref="XAttribute"/> of the added capability</param>
+        public static void AddCapability(XElement rootNode, XName capability, string value)
         {
             // If the capabilities container tag is missing, make sure it gets added.
             var capabilitiesTag = rootNode.GetDefaultNamespace() + "Capabilities";
@@ -408,34 +446,29 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 rootNode.Add(capabilitiesNode);
             }
 
-            var gazeInputCapability = rootNode.GetDefaultNamespace() + "DeviceCapability";
-            XElement existingGazeInputCapability = capabilitiesNode.Elements(gazeInputCapability)
-                .FirstOrDefault(element => element.Attribute("Name")?.Value == "gazeInput");
+            XElement existingCapability = capabilitiesNode.Elements(capability)
+                .FirstOrDefault(element => element.Attribute("Name")?.Value == value);
 
-            // Only add the capability if isn't there already.
-            if (existingGazeInputCapability == null)
+            // Only add the capability if it isn't there already.
+            if (existingCapability == null)
             {
                 capabilitiesNode.Add(
-                    new XElement(gazeInputCapability, new XAttribute("Name", "gazeInput")));
+                    new XElement(capability, new XAttribute("Name", value)));
             }
         }
 
         /// <summary>
-        /// An overload of AddGazeInputCapability that will read the AppX manifest from
-        /// the build output and update the manifest file with the gazeInput capability.
+        /// Adds the 'Gaze Input' capability to the manifest.
         /// </summary>
-        /// <param name="buildInfo">An IBuildInfo containing a valid OutputDirectory</param>
-        public static void AddGazeInputCapability(IBuildInfo buildInfo)
+        /// <remarks>
+        /// This is a workaround for versions of Unity which don't have native support
+        /// for the 'Gaze Input' capability in its Player Settings preference location.
+        /// Note that this function is only public to poke a hole for testing - do not
+        /// take a dependency on this function.
+        /// </remarks>
+        public static void AddGazeInputCapability(XElement rootNode)
         {
-            string manifestFilePath = GetManifestFilePath(buildInfo);
-            if (manifestFilePath == null)
-            {
-                throw new FileNotFoundException("Unable to find manifest file");
-            }
-
-            var rootElement = XElement.Load(manifestFilePath);
-            AddGazeInputCapability(rootElement);
-            rootElement.Save(manifestFilePath);
+            AddCapability(rootNode, rootNode.GetDefaultNamespace() + "DeviceCapability", "gazeInput");
         }
 
         /// <summary>
@@ -471,44 +504,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 ignNsAttribute.Value += " rescap";
             }
 
-            // If the capabilities container tag is missing, make sure it gets added.
-            var capabilitiesTag = rootNode.GetDefaultNamespace() + "Capabilities";
-            XElement capabilitiesNode = rootNode.Element(capabilitiesTag);
-            if (capabilitiesNode == null)
-            {
-                capabilitiesNode = new XElement(capabilitiesTag);
-                rootNode.Add(capabilitiesNode);
-            }
-
-            var researchModeCapability = rescapNs + "Capability";
-            XElement existingResearchModeCapability = capabilitiesNode.Elements(researchModeCapability)
-                .FirstOrDefault(element => element.Attribute("Name")?.Value == "perceptionSensorsExperimental");
-
-            // Only add the capability if isn't there already.
-            if (existingResearchModeCapability == null)
-            {
-                capabilitiesNode.Add(
-                    new XElement(researchModeCapability, new XAttribute("Name", "perceptionSensorsExperimental")));
-            }
-        }
-
-        /// <summary>
-        /// An overload of AddResearchModeCapability that will read the AppX manifest
-        /// from the build output and update the manifest file with the rescap aka
-        /// research mode capability.
-        /// </summary>
-        /// <param name="buildInfo">An IBuildInfo containing a valid OutputDirectory</param>
-        public static void AddResearchModeCapability(IBuildInfo buildInfo)
-        {
-            string manifestFilePath = GetManifestFilePath(buildInfo);
-            if (manifestFilePath == null)
-            {
-                throw new FileNotFoundException("Unable to find manifest file");
-            }
-
-            var rootElement = XElement.Load(manifestFilePath);
-            AddResearchModeCapability(rootElement);
-            rootElement.Save(manifestFilePath);
+            AddCapability(rootNode, rescapNs + "Capability", "perceptionSensorsExperimental");
         }
 
         /// <summary>

@@ -81,23 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 {
                     var uwpBuildInfo = innerBuildInfo as UwpBuildInfo;
                     Debug.Assert(uwpBuildInfo != null);
-                    if (uwpBuildInfo.GazeInputCapabilityEnabled)
-                    {
-                        UwpAppxBuildTools.AddGazeInputCapability(uwpBuildInfo);
-                    }
-
-                    if (EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens)
-                    {
-                        if (uwpBuildInfo.ResearchModeCapabilityEnabled)
-                        {
-                            UwpAppxBuildTools.AddResearchModeCapability(uwpBuildInfo);
-                        }
-
-                        if (EditorUserBuildSettings.wsaGenerateReferenceProjects && uwpBuildInfo.AllowUnsafeCode)
-                        {
-                            UwpAppxBuildTools.AllowUnsafeCode(uwpBuildInfo);
-                        }
-                    }
+                    UwpAppxBuildTools.AddCapabilities(uwpBuildInfo);
 
                     if (showDialog &&
                         !EditorUtility.DisplayDialog(PlayerSettings.productName, "Build Complete", "OK", "Build AppX"))
