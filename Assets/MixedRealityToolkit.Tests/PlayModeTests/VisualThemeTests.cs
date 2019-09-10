@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestMaterialTheme()
         {
-            Material state0 = new Material(Shader.Find("Mixed Reality Toolkit/Standard"));
+            Material state0 = new Material(StandardShaderUtility.MrtkStandardShader);
             Material state1 = new Material(Shader.Find("Standard"));
 
             var defaultStateValues = new List<ThemePropertyValue>()

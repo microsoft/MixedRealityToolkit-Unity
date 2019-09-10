@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -165,7 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (IsShaderPropertyType(Type) && TargetShader == null)
             {
-                TargetShader = Shader.Find("Mixed Reality Toolkit/Standard");
+                TargetShader = StandardShaderUtility.MrtkStandardShader;
 
                 if (string.IsNullOrEmpty(ShaderPropertyName))
                 {
