@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// This example demonstrates how to turn pointers on and off by 
     /// specifying custom behaviors.
     /// </summary>
-    public class TurnPointersOnOff : MonoBehaviour
+    public class DisablePointersExample : MonoBehaviour
     {
         public Interactable RayToggle;
         public Interactable GrabToggle;
