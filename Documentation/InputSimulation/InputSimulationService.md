@@ -45,6 +45,8 @@ Head movement can be emulated by the Input Simulation Service.
 1. Move the mouse in the viewport window to rotate the camera.
 1. Use the scroll wheel to roll the camera around the view direction.
 
+Camera rotation speed can be configured by changing the __Mouse Look Speed__ setting in the input simulation profile.
+
 Alternatively use the __Look Horizontal__/__Look Vertical__ axes to rotate the camera (default: game controller right thumbstick).
 
 ### To move the camera:
@@ -83,7 +85,7 @@ Hands can be toggle on permanently in the [input simulation tools window](#input
 
 Mouse movement will move the hand in the view plane. Hands can be moved further or closer to the camera using the __mouse wheel__.
 
-To rotate hands using the mouse, hold both the __Left/Right Hand Control Key__ (shift/space) _and_ the __Hand Rotate Button__ (default: right mouse button).
+To rotate hands using the mouse, hold both the __Left/Right Hand Control Key__ (shift/space) _and_ the __Hand Rotate Button__ (default: right mouse button). Hand rotation speed can be configured by changing the __Mouse Hand Rotation Speed__ setting in the input simulation profile.
 
 All hand placement can also changed in the [input simulation tools window](#input-simulation-tools-window), including resetting hands to default.
 
