@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         Type = ThemePropertyTypes.Texture,
                         Values = new List<ThemePropertyValue>(),
                         Default = new ThemePropertyValue() { Texture = null },
-                        TargetShader = Shader.Find(DefaultShaderName),
+                        TargetShader = StandardShaderUtility.MrtkStandardShader,
                         ShaderPropertyName = DefaultShaderProperty,
                     },
                 },

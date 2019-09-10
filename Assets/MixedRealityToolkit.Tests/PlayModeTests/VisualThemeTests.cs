@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 new ThemePropertyValue() { Bool = state1 },
             };
 
-            yield return TestTheme<InteractableActivateTheme, Component>(defaultStateValues,
+            yield return TestTheme<InteractableActivateTheme, MeshRenderer>(defaultStateValues,
                 (theme) => { Assert.AreEqual(state0, theme.Host.activeInHierarchy); },
                 (theme) => { Assert.AreEqual(state1, theme.Host.activeInHierarchy); });
         }
@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 new ThemePropertyValue() { Vector3 = state1 },
             };
 
-            yield return TestTheme<InteractableOffsetTheme, Component>(defaultStateValues,
+            yield return TestTheme<InteractableOffsetTheme, MeshRenderer>(defaultStateValues,
                 (theme) => { Assert.AreEqual(state0, theme.Host.transform.position); },
                 (theme) => { Assert.AreEqual(state1, theme.Host.transform.position); });
         }
@@ -104,7 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 new ThemePropertyValue() { Vector3 = state1 },
             };
 
-            yield return TestTheme<InteractableRotationTheme, Component>(defaultStateValues,
+            yield return TestTheme<InteractableRotationTheme, MeshRenderer>(defaultStateValues,
                 (theme) => { Assert.AreEqual(state0, theme.Host.transform.rotation.eulerAngles); },
                 (theme) => { Assert.AreEqual(state1, theme.Host.transform.rotation.eulerAngles); });
         }
@@ -121,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 new ThemePropertyValue() { Vector3 = state1 },
             };
 
-            yield return TestTheme<InteractableScaleTheme, Component>(defaultStateValues,
+            yield return TestTheme<InteractableScaleTheme, MeshRenderer>(defaultStateValues,
                 (theme) => { Assert.AreEqual(state0, theme.Host.transform.localScale); },
                 (theme) => { Assert.AreEqual(state1, theme.Host.transform.localScale); });
         }
@@ -246,7 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 };
             }
 
-            yield return TestTheme<T, Component>(targetHost, stateValues,convertedStateTests);
+            yield return TestTheme<T, AudioSource>(targetHost, stateValues,convertedStateTests);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using TMPro;
@@ -46,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         Type = ThemePropertyTypes.Color,
                         Values = new List<ThemePropertyValue>(),
                         Default = new ThemePropertyValue() { Color = Color.white},
-                        TargetShader = Shader.Find(DefaultShaderName),
+                        TargetShader = StandardShaderUtility.MrtkStandardShader,
                         ShaderPropertyName = DefaultShaderProperty
                     }
                 },
