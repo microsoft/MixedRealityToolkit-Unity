@@ -63,7 +63,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Verifies that SpherePointer correctly returns IsNearObject and IsInteractionEnabled
         /// only when it is near a grabbable object, on the correct grabbable layer.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator GrabLayerMasks()
         {
@@ -114,7 +113,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Verifies that the IsNearObject and IsInteractionEnabled get set 
         /// at the correct times as a hand approaches a grabbable object
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator SpherePointerDistances()
         {

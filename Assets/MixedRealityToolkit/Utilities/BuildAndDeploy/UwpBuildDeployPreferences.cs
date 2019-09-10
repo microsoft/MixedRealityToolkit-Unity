@@ -10,7 +10,28 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 {
     public static class UwpBuildDeployPreferences
     {
+        /// <summary>
+        /// The mininum Windows SDK that must be present on the build machine in order
+        /// for a build to be successful.
+        /// </summary>
+        /// <remarks>
+        /// This controls the version of the Windows SDK that is build against on the local
+        /// machine, NOT the version of the OS that must be present on the device that
+        /// the built application is deployed to (this other aspect is controlled by
+        /// MIN_PLATFORM_VERSION)
+        /// </remarks>
         public static Version MIN_SDK_VERSION = new Version("10.0.18362.0");
+
+        /// <summary>
+        /// The minimum version of the OS that must exist on the device that the application
+        /// is deployed to.
+        /// </summary>
+        /// <remarks>
+        /// This is intentionally set to a very low version, so that the application can be
+        /// deployed to variety of different devices which may be on older OS versions.
+        /// </remarks>
+        public static Version MIN_PLATFORM_VERSION = new Version("10.0.10240.0");
+
         private const string EDITOR_PREF_BUILD_CONFIG = "BuildDeployWindow_BuildConfig";
         private const string EDITOR_PREF_PLATFORM_TOOLSET = "BuildDeployWindow_PlatformToolset";
         private const string EDITOR_PREF_FORCE_REBUILD = "BuildDeployWindow_ForceRebuild";

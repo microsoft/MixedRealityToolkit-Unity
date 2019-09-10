@@ -239,7 +239,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         /// <summary>
         /// Removes an observation.
         /// </summary>
-        /// <param name="meshId"></param>
         private void RemoveMeshObject(int meshId)
         {
             SpatialAwarenessMeshObject meshObject = null;

@@ -53,7 +53,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test adding solver dynamically at runtime to gameobject
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestRuntimeInstantiation()
         {
@@ -65,7 +64,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test solver system's ability to change target types at runtime
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestTargetTypes()
         {
@@ -106,7 +104,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Tests solver handler's ability to switch hands
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestHandModality()
         {
@@ -143,7 +140,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test Surface Magnetism against "wall" and that attached object falls head direction
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestSurfaceMagnetism()
         {
@@ -209,7 +205,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test solver system's ability to change target types at runtime
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestInBetween()
         {
@@ -248,7 +243,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test the HandConstraint to make sure it tracks hands correctly.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestHandConstraint()
         {
@@ -292,7 +286,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test the Overlap solver and make sure it tracks the left simulated hand exactly
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestOverlap()
         {
@@ -329,7 +322,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test solver system's ability to add multiple solvers at runtime and switch between them.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestSolverSwap()
         {

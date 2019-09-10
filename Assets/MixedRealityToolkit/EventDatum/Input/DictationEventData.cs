@@ -27,9 +27,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Used to initialize/reset the event and populate the data.
         /// </summary>
-        /// <param name="inputSource"></param>
-        /// <param name="dictationResult"></param>
-        /// <param name="dictationAudioClip"></param>
         public void Initialize(IMixedRealityInputSource inputSource, string dictationResult, AudioClip dictationAudioClip = null)
         {
             BaseInitialize(inputSource, MixedRealityInputAction.None);

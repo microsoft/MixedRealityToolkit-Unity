@@ -348,7 +348,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Register OnClick extra handlers
         /// </summary>
-        /// <param name="handler"></param>
         public void AddHandler(IInteractableHandler handler)
         {
             if (!handlers.Contains(handler))
@@ -360,7 +359,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Remove onClick handlers
         /// </summary>
-        /// <param name="handler"></param>
         public void RemoveHandler(IInteractableHandler handler)
         {
             if (handlers.Contains(handler))
@@ -374,8 +372,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Get a list of Mixed Reality Input Actions from the input actions profile.
         /// </summary>
-        /// <param name="descriptionsArray"></param>
-        /// <returns></returns>
         public static bool TryGetInputActions(out string[] descriptionsArray)
         {
             if (!MixedRealityToolkit.ConfirmInitialized() || !MixedRealityToolkit.Instance.HasActiveProfile)
@@ -398,8 +394,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Try to get a list of speech commands from the MRTK/Input/SpeechCommands profile
         /// </summary>
-        /// <param name="commands"></param>
-        /// <returns></returns>
         public static bool TryGetMixedRealitySpeechCommands(out SpeechCommands[] commands)
         {
             if (!MixedRealityToolkit.ConfirmInitialized() || !MixedRealityToolkit.Instance.HasActiveProfile)
@@ -423,8 +417,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Look for speech commands in the MRTK Speech Command profile
         /// Adds a blank value at index zero so the developer can turn the feature off.
         /// </summary>
-        /// <param name="keywords"></param>
-        /// <returns></returns>
         public static bool TryGetSpeechKeywords(out string[] keywords)
         {
             SpeechCommands[] commands;
@@ -451,7 +443,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Returns a list of states assigned to the Interactable
         /// </summary>
-        /// <returns></returns>
         public State[] GetStates()
         {
             if (States != null)
@@ -683,8 +674,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Grabs the state value index
         /// </summary>
-        /// <param name="state"></param>
-        /// <returns></returns>
         public int GetStateValue(InteractableStates.InteractableStateEnum state)
         {
             if (StateManager != null)
@@ -698,7 +687,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Handle focus state changes
         /// </summary>
-        /// <param name="focus"></param>
         public virtual void SetFocus(bool focus)
         {
             HasFocus = focus;
@@ -717,7 +705,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Change the press state
         /// </summary>
-        /// <param name="press"></param>
         public virtual void SetPress(bool press)
         {
             HasPress = press;
@@ -727,7 +714,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Change the disabled state, will override the Enabled property
         /// </summary>
-        /// <param name="disabled"></param>
         public virtual void SetDisabled(bool disabled)
         {
             IsDisabled = disabled;
@@ -738,7 +724,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Change the targeted state
         /// </summary>
-        /// <param name="targeted"></param>
         public virtual void SetTargeted(bool targeted)
         {
             IsTargeted = targeted;
@@ -748,7 +733,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Change the Interactive state
         /// </summary>
-        /// <param name="interactive"></param>
         public virtual void SetInteractive(bool interactive)
         {
             IsInteractive = interactive;
@@ -758,7 +742,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Change the observation targeted state
         /// </summary>
-        /// <param name="targeted"></param>
         public virtual void SetObservationTargeted(bool targeted)
         {
             HasObservationTargeted = targeted;
@@ -768,7 +751,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Change the observation state
         /// </summary>
-        /// <param name="observation"></param>
         public virtual void SetObservation(bool observation)
         {
             HasObservation = observation;
@@ -778,7 +760,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Change the visited state
         /// </summary>
-        /// <param name="visited"></param>
         public virtual void SetVisited(bool visited)
         {
             IsVisited = visited;
@@ -788,7 +769,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Change the toggled state
         /// </summary>
-        /// <param name="toggled"></param>
         public virtual void SetToggled(bool toggled)
         {
             SetState(InteractableStates.InteractableStateEnum.Toggled, toggled);
@@ -808,7 +788,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Change the gesture state
         /// </summary>
-        /// <param name="gesture"></param>
         public virtual void SetGesture(bool gesture)
         {
             HasGesture = gesture;
@@ -818,7 +797,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Change the gesture max state
         /// </summary>
-        /// <param name="gesture"></param>
         public virtual void SetGestureMax(bool gesture)
         {
             HasGestureMax = gesture;
@@ -828,7 +806,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Change the collision state
         /// </summary>
-        /// <param name="collision"></param>
         public virtual void SetCollision(bool collision)
         {
             HasCollision = collision;
@@ -838,7 +815,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Change the custom state
         /// </summary>
-        /// <param name="custom"></param>
         public virtual void SetCustom(bool custom)
         {
             HasCustom = custom;
@@ -848,7 +824,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Change the voice command state
         /// </summary>
-        /// <param name="voice"></param>
         public virtual void SetVoiceCommand(bool voice)
         {
             HasVoiceCommand = voice;
@@ -858,7 +833,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Change the physical touch state
         /// </summary>
-        /// <param name="touch"></param>
         public virtual void SetPhysicalTouch(bool touch)
         {
             HasPhysicalTouch = touch;
@@ -868,7 +842,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Change the grab state
         /// </summary>
-        /// <param name="grab"></param>
         public virtual void SetGrab(bool grab)
         {
             HasGrab = grab;
@@ -878,8 +851,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// a public way to set state directly
         /// </summary>
-        /// <param name="state"></param>
-        /// <param name="value"></param>
         public void SetState(InteractableStates.InteractableStateEnum state, bool value)
         {
             if (StateManager != null)
@@ -1006,7 +977,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         ///  - Make sure Global Input events are not double firing
         ///  - Make sure pointer events are not duplicating an input event
         /// </summary>
-        /// <param name="isFromInputDown"></param>
         protected void StartClickTimer(bool isFromInputDown = false)
         {
             if (IsGlobal || isFromInputDown)
@@ -1031,7 +1001,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Return true if the interactable can fire a click event.
         /// Clicks can only occur within a short duration of an input down firing.
         /// </summary>
-        /// <returns></returns>
         private bool CanFireClick()
         {
             return clickValidTimer != null;
@@ -1051,7 +1020,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// A public way to access the current dimension
         /// </summary>
-        /// <returns></returns>
         public int GetDimensionIndex()
         {
             return dimensionIndex;
@@ -1086,7 +1054,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// a public way to set the dimension index
         /// </summary>
-        /// <param name="index"></param>
         public void SetDimensionIndex(int index)
         {
             int currentIndex = dimensionIndex;
@@ -1142,8 +1109,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Assigns the InputAction based on the InputActionId
         /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
         public static MixedRealityInputAction ResolveInputAction(int index)
         {
             MixedRealityInputAction[] actions = InputSystem.InputSystemProfile.InputActionsProfile.InputActions;
@@ -1154,8 +1119,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Based on inputAction and state, should interactable listen to this up/down event.
         /// </summary>
-        /// <param name="action"></param>
-        /// <returns></returns>
         protected virtual bool ShouldListenToUpDownEvent(InputEventData data)
         {
             if (!(HasFocus || IsGlobal))
@@ -1195,8 +1158,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Returns true if the inputeventdata is being dispatched from a near pointer
         /// </summary>
-        /// <param name="eventData"></param>
-        /// <returns></returns>
         private bool IsInputFromNearInteraction(InputEventData eventData)
         {
             bool isAnyNearpointerFocusing = false;
@@ -1214,7 +1175,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Based on button settings and state, should this button listen to input?
         /// </summary>
-        /// <returns></returns>
         protected virtual bool CanInteract()
         {
             if (!Enabled)
@@ -1276,7 +1236,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// sets some visual states for automating button events like clicks from a keyword
         /// </summary>
-        /// <param name="voiceCommand"></param>
         protected void StartGlobalVisual(bool voiceCommand = false)
         {
             if (voiceCommand)
@@ -1300,8 +1259,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Clears up any automated visual states
         /// </summary>
-        /// <param name="time"></param>
-        /// <returns></returns>
         protected IEnumerator GlobalVisualReset(float time)
         {
             yield return new WaitForSeconds(time);
@@ -1325,8 +1282,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// A timer for the MixedRealityInputHandlers, clicks should occur within a certain time.
         /// </summary>
-        /// <param name="time"></param>
-        /// <returns></returns>
         protected IEnumerator InputDownTimer(float time)
         {
             yield return new WaitForSeconds(time);
@@ -1341,7 +1296,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Voice commands from MixedRealitySpeechCommandProfile, keyword recognized
         /// requires isGlobal
         /// </summary>
-        /// <param name="eventData"></param>
         public void OnSpeechKeywordRecognized(SpeechEventData eventData)
         {
             if (eventData.Command.Keyword == VoiceCommand && (!RequiresFocus || HasFocus) && Enabled)
@@ -1379,8 +1333,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// checks the voiceCommand array for a keyword and returns it's index
         /// </summary>
-        /// <param name="command"></param>
-        /// <returns></returns>
         protected int GetVoiceCommandIndex(string command)
         {
             if (voiceCommands.Length > 1)
