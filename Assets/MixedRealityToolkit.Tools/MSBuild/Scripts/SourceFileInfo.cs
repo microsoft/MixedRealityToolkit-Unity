@@ -14,9 +14,6 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         /// <summary>
         /// Parses the source file at a given path.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="classType"></param>
-        /// <returns></returns>
         public static SourceFileInfo Parse(FileInfo path, Type classType = null)
         {
             if (path.Extension != ".cs")

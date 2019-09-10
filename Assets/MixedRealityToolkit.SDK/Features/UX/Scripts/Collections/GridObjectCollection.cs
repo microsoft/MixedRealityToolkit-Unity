@@ -286,7 +286,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Update the facing of a node given the nodes new position for facing origin with node and orientation type
         /// </summary>
-        /// <param name="node"></param>
         protected void UpdateNodeFacing(ObjectCollectionNode node)
         {
             Vector3 centerAxis;

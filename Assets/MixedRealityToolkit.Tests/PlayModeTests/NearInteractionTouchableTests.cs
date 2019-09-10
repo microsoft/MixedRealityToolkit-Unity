@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Light light = lightObj.AddComponent<Light>();
             light.type = LightType.Directional;
 
-            var shader = Shader.Find("Mixed Reality Toolkit/Standard");
+            var shader = StandardShaderUtility.MrtkStandardShader;
 
             idleMaterial = new Material(shader);
             idleMaterial.color = Color.yellow;
@@ -59,7 +59,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Test creating adding a NearInteractionTouchable to GameObject programmatically.
         /// Should be able to run scene without getting any exceptions.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator NearInteractionTouchableInstantiate()
         {
@@ -145,13 +144,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test creates an object with NearInteractionTouchable
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator NearInteractionTouchableVariant()
         {
             var touchable = CreateTouchable<NearInteractionTouchable>(objectScale);
             touchable.SetLocalForward(touchNormal);
-            touchable.Bounds = new Vector2(0.5f, 0.5f);
+            touchable.SetBounds(new Vector2(0.5f, 0.5f));
 
             yield return new WaitForFixedUpdate();
             yield return null;
@@ -196,7 +194,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test creates an object with NearInteractionTouchableVolume
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator NearInteractionTouchableVolumeVariant()
         {
@@ -287,7 +284,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test scene query with stacked touchables.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator NearInteractionTouchableStack()
         {
@@ -333,7 +329,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test buffer saturation for the overlap query
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator NearInteractionTouchableOverlapQuerySaturation()
         {
@@ -352,7 +347,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
                 touchables[i] = CreateTouchable<NearInteractionTouchable>(0.15f);
                 touchables[i].SetLocalForward(touchNormal);
-                touchables[i].Bounds = new Vector2(0.5f, 0.5f);
+                touchables[i].SetBounds(new Vector2(0.5f, 0.5f));
                 touchables[i].transform.position = objectPosition + r * radiusStart;
 
                 catchers[i] = CreateEventCatcher(touchables[i]);
@@ -386,7 +381,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test Unity UI button
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator NearInteractionTouchableUnityUiButton()
         {
@@ -420,7 +414,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test Unity UI toggle button
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator NearInteractionTouchableUnityUiToggle()
         {
@@ -482,7 +475,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             var touchableRect = CreateTouchable<NearInteractionTouchable>(0.15f);
             touchableRect.SetLocalForward(touchNormal);
-            touchableRect.Bounds = new Vector2(0.5f, 0.5f);
+            touchableRect.SetBounds(new Vector2(0.5f, 0.5f));
             var catcherRect = CreateEventCatcher(touchableRect);
 
             var touchableVolume = CreateTouchable<NearInteractionTouchableVolume>(0.15f);

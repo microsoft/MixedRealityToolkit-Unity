@@ -516,7 +516,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private void FindShaders()
         {
-            replacementShader = Shader.Find("Mixed Reality Toolkit/Standard");
+            replacementShader = StandardShaderUtility.MrtkStandardShader;
             unityStandardShader = Shader.Find("Standard");
             errorShader = Shader.Find("Hidden/InternalErrorShader");
         }

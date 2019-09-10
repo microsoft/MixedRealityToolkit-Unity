@@ -150,6 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Dictionary<uint, HandPanData> handDataMap = new Dictionary<uint, HandPanData>();
         List<Vector2> uvs = new List<Vector2>();
         List<Vector2> uvsOrig = new List<Vector2>();
+        private bool oldIsTargetPositionLockedOnFocusLock;
         #endregion Private Properties
 
         /// <summary>
@@ -788,6 +789,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void OnPointerDown(MixedRealityPointerEventData eventData)
         {
+            oldIsTargetPositionLockedOnFocusLock = eventData.Pointer.IsTargetPositionLockedOnFocusLock;
+            if (! (eventData.Pointer is IMixedRealityNearPointer) && eventData.Pointer.Controller.IsRotationAvailable)
+            {
+                eventData.Pointer.IsTargetPositionLockedOnFocusLock = false;
+            }
             SetAffordancesActive(false);
             EndTouch(eventData.SourceId);
             SetHandDataFromController(eventData.Pointer.Controller, eventData.Pointer,  false);
@@ -795,6 +801,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
         public void OnPointerUp(MixedRealityPointerEventData eventData)
         {
+            eventData.Pointer.IsTargetPositionLockedOnFocusLock = oldIsTargetPositionLockedOnFocusLock;
             EndTouch(eventData.SourceId);
             eventData.Use();
         }    

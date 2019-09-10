@@ -210,7 +210,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// Gets the hierarchical depth of the Transform from its root. Returns -1 if the transform is the root.
         /// </summary>
         /// <param name="t">The transform to get the depth for.</param>
-        /// <returns></returns>
         public static int GetDepth(this Transform t)
         {
             int depth = -1;
