@@ -5,7 +5,6 @@ using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityPhysics = UnityEngine.Physics;
@@ -36,6 +35,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private readonly PointerHitResult hitResultUi = new PointerHitResult();
 
         private Dictionary<Type, PointerBehaviorForHandedness> customPointerBehaviors = new Dictionary<Type, PointerBehaviorForHandedness>();
+        /// <summary>
+        /// Pointer behavior for the gaze pointer.
+        /// </summary>
+        public PointerBehavior GazePointerBehavior { get; set; } = PointerBehavior.Default;
 
         /// <summary>
         /// Sets the behavior for the given pointer type.
@@ -127,11 +130,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Other = PointerBehavior.Default;
             }
         }
-
-        /// <summary>
-        /// Pointer behavior for the gaze pointer.
-        /// </summary>
-        public PointerBehavior GazePointerBehavior { get; set; } = PointerBehavior.Default;
 
         private readonly int maxQuerySceneResults = 128;
         private bool focusIndividualCompoundCollider = false;

@@ -9,63 +9,12 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     /// <summary>
-    /// 
+    /// This example demonstrates how to turn pointers on and off by 
+    /// specifying custom behaviors.
     /// </summary>
     public class TurnPointersOnOff : MonoBehaviour
     {
         List<Tuple<Type, Interactable>> pointerToggles = new List<Tuple<Type, Interactable>>();
-        public void Start()
-        {
-            IMixedRealityCapabilityCheck capabilityChecker = CoreServices.InputSystem as IMixedRealityCapabilityCheck;
-            if (capabilityChecker != null)
-            {
-                if (capabilityChecker.CheckCapability(MixedRealityCapability.ArticulatedHand))
-                {
-                    SetHoloLens2();
-                }
-                else if (capabilityChecker.CheckCapability(MixedRealityCapability.MotionController))
-                {
-                    SetVR();
-                }
-                else
-                {
-                    SetHoloLens1();
-                }
-            }
-            else
-            {
-                Debug.LogWarning("Input system does not implement IMixedRealityCapabilityCheck, not setting to any preset interaction");
-            }
-            foreach (var icl in FindObjectsOfType<Interactable>())
-            {
-                if (icl.Dimensions == 2)
-                {
-                    if (icl.gameObject.name.Contains("Ray"))
-                    {
-                        pointerToggles.Add(new Tuple<Type, Interactable>(typeof(LinePointer), icl));
-                    }
-                    else if (icl.gameObject.name.Contains("Poke"))
-                    {
-                        pointerToggles.Add(new Tuple<Type, Interactable>(typeof(PokePointer), icl));
-                    }
-                    else if (icl.gameObject.name.Contains("Grab"))
-                    {
-                        pointerToggles.Add(new Tuple<Type, Interactable>(typeof(SpherePointer), icl));
-                    }
-                    else if (icl.gameObject.name.Contains("Gaze"))
-                    {
-                        pointerToggles.Add(new Tuple<Type, Interactable>(typeof(GGVPointer), icl));
-                    }
-                }
-            }
-        }
-        public void Update()
-        {
-            foreach (var tuple in pointerToggles)
-            {
-                tuple.Item2.SetToggled(PointerUtils.GetPointerBehavior(tuple.Item1, Handedness.Any) != PointerBehavior.Off);
-            }
-        }
 
         public void SetRayEnabled(bool isEnabled)
         {
@@ -119,6 +68,67 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             PointerUtils.SetRayPointerBehavior(PointerBehavior.Default, Handedness.Any);
             PointerUtils.SetGGVBehavior(PointerBehavior.Off);
         }
+
+        void Start()
+        {
+            IMixedRealityCapabilityCheck capabilityChecker = CoreServices.InputSystem as IMixedRealityCapabilityCheck;
+            if (capabilityChecker != null)
+            {
+                if (capabilityChecker.CheckCapability(MixedRealityCapability.ArticulatedHand))
+                {
+                    SetHoloLens2();
+                }
+                else if (capabilityChecker.CheckCapability(MixedRealityCapability.MotionController))
+                {
+                    SetVR();
+                }
+                else
+                {
+                    SetHoloLens1();
+                }
+            }
+            else
+            {
+                Debug.LogWarning("Input system does not implement IMixedRealityCapabilityCheck, not setting to any preset interaction");
+            }
+
+            PopulatePointerToggleList();
+        }
+
+        private void PopulatePointerToggleList()
+        {
+            foreach (var icl in FindObjectsOfType<Interactable>())
+            {
+                if (icl.Dimensions == 2)
+                {
+                    if (icl.gameObject.name.Contains("Ray"))
+                    {
+                        pointerToggles.Add(new Tuple<Type, Interactable>(typeof(LinePointer), icl));
+                    }
+                    else if (icl.gameObject.name.Contains("Poke"))
+                    {
+                        pointerToggles.Add(new Tuple<Type, Interactable>(typeof(PokePointer), icl));
+                    }
+                    else if (icl.gameObject.name.Contains("Grab"))
+                    {
+                        pointerToggles.Add(new Tuple<Type, Interactable>(typeof(SpherePointer), icl));
+                    }
+                    else if (icl.gameObject.name.Contains("Gaze"))
+                    {
+                        pointerToggles.Add(new Tuple<Type, Interactable>(typeof(GGVPointer), icl));
+                    }
+                }
+            }
+        }
+
+        void Update()
+        {
+            foreach (var tuple in pointerToggles)
+            {
+                tuple.Item2.SetToggled(PointerUtils.GetPointerBehavior(tuple.Item1, Handedness.Any) != PointerBehavior.Off);
+            }
+        }
+
     }
 
 }
