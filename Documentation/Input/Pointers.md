@@ -250,21 +250,21 @@ To turn pointers on and off, set the [`PointerBehavior`]() for a given pointer t
 
 ```csharp
 // Turn off all hand rays
-PointerUtils.SetHandRayPointerBehavior(PointerBehavior.Off);
+PointerUtils.SetHandRayPointerBehavior(PointerBehavior.AlwaysOff);
 
 // Turn off hand rays for the right hand only
-PointerUtils.SetHandRayPointerBehavior(PointerBehavior.Off, Handedness.Right);
+PointerUtils.SetHandRayPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Right);
 
 // Turn off the gaze pointer
-PointerUtils.SetGazePointerBehavior(PointerBehavior.Off);
+PointerUtils.SetGazePointerBehavior(PointerBehavior.AlwaysOff);
 
 // Set the behavior to match HoloLens 1
 // Note, if on HoloLens 2, must make the GGV pointer show up for articulated hands. See TurnPointersOnOffExample in the MRTK Examples package
 public void SetHoloLens1()
 {
-    PointerUtils.SetPokePointerBehavior(PointerBehavior.Off, Handedness.Any);
-    PointerUtils.SetGrabPointerBehavior(PointerBehavior.Off, Handedness.Any);
-    PointerUtils.SetRayPointerBehavior(PointerBehavior.Off, Handedness.Any);
+    PointerUtils.SetPokePointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
+    PointerUtils.SetGrabPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
+    PointerUtils.SetRayPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
     PointerUtils.SetGGVBehavior(PointerBehavior.Default);
 }
 ```
