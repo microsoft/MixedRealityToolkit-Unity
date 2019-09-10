@@ -8,11 +8,36 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     [Serializable]
-    internal class BoundingBoxScaleHandles : BoundingBoxHandlesBase
+    public class BoundingBoxScaleHandles : BoundingBoxHandlesBase
     {
 
+        [SerializeField]
+        [Tooltip("Check to show scale handles")]
+        private bool showScaleHandles = true;
 
-       // private List<Transform> corners = new List<Transform>();
+        /// <summary>
+        /// Public property to Set the visibility of the corner cube Scaling handles.
+        /// This property can be set independent of the Rotate handles.
+        /// </summary>
+        public bool ShowScaleHandles
+        {
+            get
+            {
+                return showScaleHandles;
+            }
+            set
+            {
+                if (showScaleHandles != value)
+                {
+                    showScaleHandles = value;
+                    visibilityChanged.Invoke();
+                    //ResetHandleVisibility(showScaleHandles);
+                }
+            }
+        }
+
+
+        // private List<Transform> corners = new List<Transform>();
         private Vector3[] boundsCorners = new Vector3[8];
         public Vector3[] BoundsCorners { get; private set; }
 
@@ -30,6 +55,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        public override bool IsVisible(Transform handle)
+        {
+            return ShowScaleHandles;
+        }
+
+        public override bool IsHandleTypeActive()
+        {
+            return ShowScaleHandles;
+        }
 
         public override void Init()
         {
@@ -54,22 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return HandleType.Scale;
         }
 
-
-
-        internal void ResetHandleVisibility(bool isVisible, Material handleMaterial)
-        { 
-            if (handles != null)
-            {
-                for (int i = 0; i < handles.Count; ++i)
-                {
-                    handles[i].gameObject.SetActive(isVisible);
-                    BoundingBox.ApplyMaterialToAllRenderers(handles[i].gameObject, handleMaterial);
-                }
-            }
-        }
-
-        internal void CreateHandles(GameObject handlePrefab, Material handleMaterial, Transform parent, 
-            float handleSize, bool isFlattened, Vector3 colliderPadding, bool drawManipulationTether)
+        internal void CreateHandles(Transform parent, bool drawManipulationTether, bool isFlattened)
         {
             for (int i = 0; i < boundsCorners.Length; ++i)
             {
@@ -93,8 +112,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 // figure out which prefab to instantiate
                 GameObject cornerVisual = null;
-
-                if (handlePrefab == null)
+                GameObject prefabType = isFlattened ? HandleSlatePrefab : HandlePrefab;
+                if (prefabType == null)
                 {
                     // instantiate default prefab, a cube. Remove the box collider from it
                     cornerVisual = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -104,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
                 else
                 {
-                    cornerVisual = GameObject.Instantiate(handlePrefab, visualsScale.transform);
+                    cornerVisual = GameObject.Instantiate(prefabType, visualsScale.transform);
                 }
 
                 if (isFlattened)
@@ -121,13 +140,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 cornerbounds.size = maxDim * Vector3.one;
 
                 // we need to multiply by this amount to get to desired scale handle size
-                var invScale = handleSize / cornerbounds.size.x;
+                var invScale = HandleSize / cornerbounds.size.x;
                 cornerVisual.transform.localScale = new Vector3(invScale, invScale, invScale);
 
-                BoundingBox.ApplyMaterialToAllRenderers(cornerVisual, handleMaterial);
+                BoundingBoxHandleUtils.ApplyMaterialToAllRenderers(cornerVisual, HandleMaterial);
 
                 BoundingBoxHandleUtils.AddComponentsToAffordance(corner, new Bounds(cornerbounds.center * invScale, cornerbounds.size * invScale), 
-                    RotationHandlePrefabCollider.Box, CursorContextInfo.CursorAction.Scale, colliderPadding, parent, drawManipulationTether);
+                    RotationHandlePrefabCollider.Box, CursorContextInfo.CursorAction.Scale, ColliderPadding, parent, drawManipulationTether);
                 handles.Add(corner.transform);
 
                 

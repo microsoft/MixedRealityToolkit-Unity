@@ -51,97 +51,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
 
-        ///------------------------ SCALE HANDLE STARTl
-
-        [SerializeField]
-        [Tooltip("Prefab used to display scale handles in corners. If not set, boxes will be displayed instead")]
-        GameObject scaleHandlePrefab = null;
-
-        [SerializeField]
-        [Tooltip("Prefab used to display scale handles in corners for 2D slate. If not set, boxes will be displayed instead")]
-        GameObject scaleHandleSlatePrefab = null;
-
-        /// <summary>
-        /// Prefab used to display scale handles in corners. If not set, boxes will be displayed instead
-        /// </summary>
-        public GameObject ScaleHandlePrefab
-        {
-            get { return scaleHandlePrefab; }
-            set
-            {
-                if (scaleHandlePrefab != value)
-                {
-                    scaleHandlePrefab = value;
-                    //DestroyCorners();
-                    // CreateHandles();
-                    CreateRig();
-                }
-            }
-        }
-
-
-        /// <summary>
-        /// Prefab used to display scale handles in corners for 2D slate. If not set, boxes will be displayed instead
-        /// </summary>
-        public GameObject ScaleHandleSlatePrefab
-        {
-            get { return scaleHandleSlatePrefab; }
-            set
-            {
-                if (scaleHandleSlatePrefab != value)
-                {
-                    scaleHandleSlatePrefab = value;
-                    CreateRig();
-                }
-            }
-        }
-
-
-        [SerializeField]
-        // [FormerlySerializedAs("cornerRadius")]
-        [Tooltip("Size of the cube collidable used in scale handles")]
-        private float scaleHandleSize = 0.016f; // 1.6cm default handle size
-
-        /// <summary>
-        /// Size of the cube collidable used in scale handles
-        /// </summary>
-        public float ScaleHandleSize
-        {
-            get { return scaleHandleSize; }
-            set
-            {
-                if (scaleHandleSize != value)
-                {
-                    scaleHandleSize = value;
-                    CreateRig();
-                }
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("Additional padding to apply to the collider on scale handle to make handle easier to hit")]
-        private Vector3 scaleHandleColliderPadding = new Vector3(0.016f, 0.016f, 0.016f);
-
-        /// <summary>
-        /// Additional padding to apply to the collider on scale handle to make handle easier to hit
-        /// </summary>
-        public Vector3 ScaleHandleColliderPadding
-        {
-            get { return scaleHandleColliderPadding; }
-            set
-            {
-                if (scaleHandleColliderPadding != value)
-                {
-                    scaleHandleColliderPadding = value;
-                    CreateRig();
-                }
-            }
-        }
-
-
-
-        ///----------------------------- SCALE HANDLE END
-
         [SerializeField]
         [Tooltip("Defines the volume type and the priority for the bounds calculation")]
         private BoundsCalculationMethod boundsCalculationMethod = BoundsCalculationMethod.RendererOverCollider;
@@ -183,466 +92,30 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        [SerializeField]
-        [Obsolete("Use a TransformScaleHandler script rather than setting minimum on BoundingBox directly", false)]
-        [Tooltip("Minimum scaling allowed relative to the initial size")]
-        private float scaleMinimum = 0.2f;
-
-        [SerializeField]
-        [Obsolete("Use a TransformScaleHandler script rather than setting maximum on BoundingBox directly")]
-        [Tooltip("Maximum scaling allowed relative to the initial size")]
-        private float scaleMaximum = 2.0f;
-
-
-        /// <summary>
-        /// Public property for the scale minimum, in the target's local scale.
-        /// Set this value with SetScaleLimits.
-        /// </summary>
-        [Obsolete("Use a TransformScaleHandler.ScaleMinimum as it is the authoritative value for min scale")]
-        public float ScaleMinimum
-        {
-            get
-            {
-                if (scaleHandler != null)
-                {
-                    return scaleHandler.ScaleMinimum;
-                }
-                return 0.0f;
-            }
-        }
-
-        /// <summary>
-        /// Public property for the scale maximum, in the target's local scale.
-        /// Set this value with SetScaleLimits.
-        /// </summary>
-        [Obsolete("Use a TransformScaleHandler.ScaleMinimum as it is the authoritative value for max scale")]
-        public float ScaleMaximum
-        {
-            get
-            {
-                if (scaleHandler != null)
-                {
-                    return scaleHandler.ScaleMaximum;
-                }
-                return 0.0f;
-            }
-        }
-
-        [Header("Box Display")]
-        [SerializeField]
-        [Tooltip("Flatten bounds in the specified axis or flatten the smallest one if 'auto' is selected")]
-        private FlattenModeType flattenAxis = FlattenModeType.DoNotFlatten;
-
-        /// <summary>
-        /// Flatten bounds in the specified axis or flatten the smallest one if 'auto' is selected
-        /// </summary>
-        public FlattenModeType FlattenAxis
-        {
-            get { return flattenAxis; }
-            set
-            {
-                if (flattenAxis != value)
-                {
-                    flattenAxis = value;
-                    CreateRig();
-                }
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("When an axis is flattened what value to set that axis's scale to for display.")]
-        private float flattenAxisDisplayScale = 0.0f;
-
-        /// <summary>
-        /// When an axis is flattened what value to set that axis's scale to for display.
-        /// </summary>
-        public float FlattenAxisDisplayScale
-        {
-            get { return flattenAxisDisplayScale; }
-            set
-            {
-                if (flattenAxisDisplayScale != value)
-                {
-                    flattenAxisDisplayScale = value;
-                    CreateRig();
-                }
-            }
-        }
-
-        [SerializeField]
-        [FormerlySerializedAs("wireframePadding")]
-        [Tooltip("Extra padding added to the actual Target bounds")]
-        private Vector3 boxPadding = Vector3.zero;
-
-        /// <summary>
-        /// Extra padding added to the actual Target bounds
-        /// </summary>
-        public Vector3 BoxPadding
-        {
-            get { return boxPadding; }
-            set
-            {
-                if (Vector3.Distance(boxPadding, value) > float.Epsilon)
-                {
-                    boxPadding = value;
-                    CreateRig();
-                }
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("Material used to display the bounding box. If set to null no bounding box will be displayed")]
-        private Material boxMaterial = null;
-
-        /// <summary>
-        /// Material used to display the bounding box. If set to null no bounding box will be displayed
-        /// </summary>
-        public Material BoxMaterial
-        {
-            get { return boxMaterial; }
-            set
-            {
-                if (boxMaterial != value)
-                {
-                    boxMaterial = value;
-                    CreateRig();
-                }
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("Material used to display the bounding box when grabbed. If set to null no change will occur when grabbed.")]
-        private Material boxGrabbedMaterial = null;
-
-        /// <summary>
-        /// Material used to display the bounding box when grabbed. If set to null no change will occur when grabbed.
-        /// </summary>
-        public Material BoxGrabbedMaterial
-        {
-            get { return boxGrabbedMaterial; }
-            set
-            {
-                if (boxGrabbedMaterial != value)
-                {
-                    boxGrabbedMaterial = value;
-                    CreateRig();
-                }
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("Show a wireframe around the bounding box when checked. Wireframe parameters below have no effect unless this is checked")]
-        private bool showWireframe = true;
-
-        /// <summary>
-        /// Show a wireframe around the bounding box when checked. Wireframe parameters below have no effect unless this is checked
-        /// </summary>
-        public bool ShowWireFrame
-        {
-            get { return showWireframe; }
-            set
-            {
-                if (showWireframe != value)
-                {
-                    showWireframe = value;
-                    CreateRig();
-                }
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("Shape used for wireframe display")]
-        private WireframeType wireframeShape = WireframeType.Cubic;
-
-        /// <summary>
-        /// Shape used for wireframe display
-        /// </summary>
-        public WireframeType WireframeShape
-        {
-            get { return wireframeShape; }
-            set
-            {
-                if (wireframeShape != value)
-                {
-                    wireframeShape = value;
-                    CreateRig();
-                }
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("Material used for wireframe display")]
-        private Material wireframeMaterial;
-
-        /// <summary>
-        /// Material used for wireframe display
-        /// </summary>
-        public Material WireframeMaterial
-        {
-            get { return wireframeMaterial; }
-            set
-            {
-                if (wireframeMaterial != value)
-                {
-                    wireframeMaterial = value;
-                    CreateRig();
-                }
-            }
-        }
-
-        [SerializeField]
-        [FormerlySerializedAs("linkRadius")]
-        [Tooltip("Radius for wireframe edges")]
-        private float wireframeEdgeRadius = 0.001f;
-
-        /// <summary>
-        /// Radius for wireframe edges
-        /// </summary>
-        public float WireframeEdgeRadius
-        {
-            get { return wireframeEdgeRadius; }
-            set
-            {
-                if (wireframeEdgeRadius != value)
-                {
-                    wireframeEdgeRadius = value;
-                    CreateRig();
-                }
-            }
-        }
-
-        [Header("Handles")]
-        [SerializeField]
-        [Tooltip("Material applied to hansdles when they are not in a grabbed state")]
-        private Material handleMaterial;
-
-        /// <summary>
-        /// Material applied to handles when they are not in a grabbed state
-        /// </summary>
-        public Material HandleMaterial
-        {
-            get { return handleMaterial; }
-            set
-            {
-                if (handleMaterial != value)
-                {
-                    handleMaterial = value;
-                    CreateRig();
-                }
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("Material applied to handles while they are a grabbed")]
-        private Material handleGrabbedMaterial;
-
-        /// <summary>
-        /// Material applied to handles while they are a grabbed
-        /// </summary>
-        public Material HandleGrabbedMaterial
-        {
-            get { return handleGrabbedMaterial; }
-            set
-            {
-                if (handleGrabbedMaterial != value)
-                {
-                    handleGrabbedMaterial = value;
-                    CreateRig();
-                }
-            }
-        }
-
-
+        [Header("Handles")]     
 
         [SerializeField]
         [Tooltip("TODO TOOLTIP")]
         BoundingBoxScaleHandles scaleHandles = new BoundingBoxScaleHandles();
+        public BoundingBoxScaleHandles ScaleHandles => scaleHandles;
+
 
         [SerializeField]
         [Tooltip("TODO TOOLTIP")]
         BoundingBoxRotationHandles rotationHandles = new BoundingBoxRotationHandles();
+        public BoundingBoxRotationHandles RotationHandles => rotationHandles;
 
 
+        [SerializeField]
+        [Tooltip("TODO TOOLTIP")]
         BoundingBoxLinks links = new BoundingBoxLinks();
+        public BoundingBoxLinks Links => links;
 
-       
-
-
-        [SerializeField]
-        [Tooltip("Prefab used to display rotation handles in the midpoint of each edge. Aligns the Y axis of the prefab with the pivot axis, and the X and Z axes pointing outward. If not set, spheres will be displayed instead")]
-        private GameObject rotationHandlePrefab = null;
-
-        /// <summary>
-        /// Prefab used to display rotation handles in the midpoint of each edge. Aligns the Y axis of the prefab with the pivot axis, and the X and Z axes pointing outward. If not set, spheres will be displayed instead
-        /// </summary>
-        public GameObject RotationHandleSlatePrefab
-        {
-            get { return rotationHandlePrefab; }
-            set
-            {
-                if (rotationHandlePrefab != value)
-                {
-                    rotationHandlePrefab = value;
-                    CreateRig();
-                }
-            }
-        }
-        [SerializeField]
-        [FormerlySerializedAs("ballRadius")]
-        [Tooltip("Radius of the handle geometry of rotation handles")]
-        private float rotationHandleSize = 0.016f; // 1.6cm default handle size
-
-        /// <summary>
-        /// Radius of the handle geometry of rotation handles
-        /// </summary>
-        public float RotationHandleSize
-        {
-            get { return rotationHandleSize; }
-            set
-            {
-                if (rotationHandleSize != value)
-                {
-                    rotationHandleSize = value;
-                    CreateRig();
-                }
-            }
-        }
 
         [SerializeField]
-        [Tooltip("Additional padding to apply to the collider on rotate handle to make handle easier to hit")]
-        private Vector3 rotateHandleColliderPadding = new Vector3(0.016f, 0.016f, 0.016f);
-
-        /// <summary>
-        /// Additional padding to apply to the collider on rotate handle to make handle easier to hit
-        /// </summary>
-        public Vector3 RotateHandleColliderPadding
-        {
-            get { return rotateHandleColliderPadding; }
-            set
-            {
-                if (rotateHandleColliderPadding != value)
-                {
-                    rotateHandleColliderPadding = value;
-                    CreateRig();
-                }
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("Determines the type of collider that will surround the rotation handle prefab.")]
-        private RotationHandlePrefabCollider rotationHandlePrefabColliderType = RotationHandlePrefabCollider.Box;
-
-        /// <summary>
-        /// Determines the type of collider that will surround the rotation handle prefab.
-        /// </summary>
-        public RotationHandlePrefabCollider RotationHandlePrefabColliderType
-        {
-            get
-            {
-                return rotationHandlePrefabColliderType;
-            }
-            set
-            {
-                if (rotationHandlePrefabColliderType != value)
-                {
-                    rotationHandlePrefabColliderType = value;
-                    CreateRig();
-                }
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("Check to show scale handles")]
-        private bool showScaleHandles = true;
-
-        /// <summary>
-        /// Public property to Set the visibility of the corner cube Scaling handles.
-        /// This property can be set independent of the Rotate handles.
-        /// </summary>
-        public bool ShowScaleHandles
-        {
-            get
-            {
-                return showScaleHandles;
-            }
-            set
-            {
-                if (showScaleHandles != value)
-                {
-                    showScaleHandles = value;
-                    ResetHandleVisibility();
-                }
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("Check to show rotation handles for the X axis")]
-        private bool showRotationHandleForX = true;
-
-        /// <summary>
-        /// Check to show rotation handles for the X axis
-        /// </summary>
-        public bool ShowRotationHandleForX
-        {
-            get
-            {
-                return showRotationHandleForX;
-            }
-            set
-            {
-                if (showRotationHandleForX != value)
-                {
-                    showRotationHandleForX = value;
-                    ResetHandleVisibility();
-                }
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("Check to show rotation handles for the Y axis")]
-        private bool showRotationHandleForY = true;
-
-        /// <summary>
-        /// Check to show rotation handles for the Y axis
-        /// </summary>
-        public bool ShowRotationHandleForY
-        {
-            get
-            {
-                return showRotationHandleForY;
-            }
-            set
-            {
-                if (showRotationHandleForY != value)
-                {
-                    showRotationHandleForY = value;
-                    ResetHandleVisibility();
-                }
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("Check to show rotation handles for the Z axis")]
-        private bool showRotationHandleForZ = true;
-
-        /// <summary>
-        /// Check to show rotation handles for the Z axis
-        /// </summary>
-        public bool ShowRotationHandleForZ
-        {
-            get
-            {
-                return showRotationHandleForZ;
-            }
-            set
-            {
-                if (showRotationHandleForZ != value)
-                {
-                    showRotationHandleForZ = value;
-                    ResetHandleVisibility();
-                }
-            }
-        }
+        [Tooltip("TODO TOOLTIP")]
+        BoundingBoxBoxDisplay boxDisplay = new BoundingBoxBoxDisplay();
+        public BoundingBoxBoxDisplay BoxDisplay => boxDisplay;
 
         [SerializeField]
         [Tooltip("Check to draw a tether point from the handles to the hand when manipulating.")]
@@ -709,6 +182,48 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [SerializeField]
+        [Tooltip("Flatten bounds in the specified axis or flatten the smallest one if 'auto' is selected")]
+        private FlattenModeType flattenAxis = FlattenModeType.DoNotFlatten;
+
+        /// <summary>
+        /// Flatten bounds in the specified axis or flatten the smallest one if 'auto' is selected
+        /// </summary>
+        public FlattenModeType FlattenAxis
+        {
+            get { return flattenAxis; }
+            set
+            {
+                if (flattenAxis != value)
+                {
+                    flattenAxis = value;
+                    CreateRig();
+                }
+            }
+        }
+
+        [SerializeField]
+        // [FormerlySerializedAs("wireframePadding")]
+        [Tooltip("Extra padding added to the actual Target bounds")]
+        private Vector3 boxPadding = Vector3.zero;
+
+        /// <summary>
+        /// Extra padding added to the actual Target bounds
+        /// </summary>
+        public Vector3 BoxPadding
+        {
+            get { return boxPadding; }
+            set
+            {
+                if (Vector3.Distance(boxPadding, value) > float.Epsilon)
+                {
+                    boxPadding = value;
+                    CreateRig();
+                }
+            }
+        }
+
+
+        [SerializeField]
         [Tooltip("Configuration for Proximity Effect")]
         public BoundingBoxProximityEffect proximityEffect = new BoundingBoxProximityEffect();
 
@@ -751,8 +266,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private Transform rigRoot;
 
-        // Game object used to display the bounding box. Parented to the rig root
-        private GameObject boxDisplay;
 
         
 
@@ -850,24 +363,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (targetObject == null)
                 targetObject = gameObject;
             boundingBoxTarget = new BoundingBoxTarget(targetObject ? targetObject : gameObject);
+
+            // subscribe to visual changes
+            scaleHandles.configurationChanged.AddListener(CreateRig);
+            scaleHandles.visibilityChanged.AddListener(ResetHandleVisibility);
+            rotationHandles.configurationChanged.AddListener(CreateRig);
+            boxDisplay.configurationChanged.AddListener(CreateRig);
+            links.configurationChanged.AddListener(CreateRig);
         }
 
-        
-
-        /// <summary>
-        /// Sets the minimum/maximum scale for the bounding box at runtime.
-        /// </summary>
-        /// <param name="min">Minimum scale</param>
-        /// <param name="max">Maximum scale</param>
-        /// <param name="relativeToInitialState">If true the values will be multiplied by scale of target at startup. If false they will be in absolute local scale.</param>
-        [Obsolete("Use a TransformScaleHandler script rather than setting min/max scale on BoundingBox directly")]
-        public void SetScaleLimits(float min, float max, bool relativeToInitialState = true)
-        {
-            scaleMinimum = min;
-            scaleMaximum = max;
-        }
-
-        
+                
 
         #endregion
 
@@ -925,11 +430,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 // active is true and wireframeOnly is false
                 if (!wireframeOnly)
                 {
-                    // If any handle type is visible, then update
-                    if (ShowScaleHandles || ShowRotationHandleForX || ShowRotationHandleForY || ShowRotationHandleForZ)
-                    {
-                        proximityEffect.HandleProximityScaling(this, currentPointer, currentBoundsExtents);
-                    }
+                    proximityEffect.HandleProximityScaling(currentPointer, transform.position, currentBoundsExtents);
                 }
             }
             else if (boundsOverride != null && HasBoundsOverrideChanged())
@@ -959,17 +460,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #region Private Methods
 
-        /// <summary>
-        /// Helper method to check if handle type may be visible based on configuration
-        /// </summary>
-        /// <param name="h">handle reference to check</param>
-        /// <returns>true if potentially visible, false otherwise</returns>
-        public bool IsHandleTypeVisible(HandleType type)
-        {
-            return (type == HandleType.Scale && ShowScaleHandles) ||
-                (type == HandleType.Rotation && (ShowRotationHandleForX || ShowRotationHandleForY || ShowRotationHandleForZ));
-        }
-
+       
         private void SetBoundingBoxCollider()
         {
             // Make sure that the bounds of all child objects are up to date before we compute bounds
@@ -1143,19 +634,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     scaleHandler = gameObject.AddComponent<TransformScaleHandler>();
 
                     scaleHandler.TargetTransform = boundingBoxTarget.transform;
-                #pragma warning disable 0618
-                    scaleHandler.ScaleMinimum = scaleMinimum;
-                    scaleHandler.ScaleMaximum = scaleMaximum;
-                #pragma warning restore 0618
                 }
             }
         }
-
        
-
-       
-
-        
 
         private void UpdateBounds()
         {
@@ -1407,26 +889,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion Unused Event Handlers
 
 
-        
-    
+
+       
 
 
-        /// <summary>
-        /// Returns list of transforms pointing to the scale handles of the bounding box.
-        /// </summary>
-        //public IReadOnlyList<Transform> ScaleCorners
-        //{
-        //    get { return corners; }
-        //}
-
-
-
-        /// <summary>
-        /// Returns list of transforms pointing to the rotation handles of the bounding box.
-        /// </summary>
+        ///// <summary>
+        ///// Returns list of transforms pointing to the rotation handles of the bounding box.
+        ///// </summary>
         //public IReadOnlyList<Transform> RotateMidpoints
         //{
-        //    get { return balls; }
+        //    get { return rotationHandles.Handles; }
         //}
 
         private void DestroyRig()
@@ -1468,10 +940,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             scaleHandles.UpdateVisibilityInInspector(desiredFlags);
 
-            if (boxDisplay != null)
-            {
-                boxDisplay.hideFlags = desiredFlags;
-            }
+            boxDisplay.UpdateVisibilityInInspector(desiredFlags);
 
             if (rigRoot != null)
             {
@@ -1500,14 +969,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void SetHighlighted(Transform activeHandle)
         {
-            scaleHandles.SetHighlighted(activeHandle, handleGrabbedMaterial);
-            rotationHandles.SetHighlighted(activeHandle, handleGrabbedMaterial);
-
-            //update the box material to the grabbed material
-            if (boxDisplay != null)
-            {
-                ApplyMaterialToAllRenderers(boxDisplay, boxGrabbedMaterial);
-            }
+            scaleHandles.SetHighlighted(activeHandle);
+            rotationHandles.SetHighlighted(activeHandle);
+            boxDisplay.SetHighlighted();
         }
 
 
@@ -1528,49 +992,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private void SetMaterials()
         {
             //ensure materials
-            if (wireframeMaterial == null)
-            {
-                float[] color = { 1.0f, 1.0f, 1.0f, 0.75f };
-
-                Shader shader = Shader.Find("Mixed Reality Toolkit/Standard");
-
-                wireframeMaterial = new Material(shader);
-                wireframeMaterial.EnableKeyword("_InnerGlow");
-                wireframeMaterial.SetColor("_Color", new Color(0.0f, 0.63f, 1.0f));
-                wireframeMaterial.SetFloat("_InnerGlow", 1.0f);
-                wireframeMaterial.SetFloatArray("_InnerGlowColor", color);
-            }
-            if (handleMaterial == null && handleMaterial != wireframeMaterial)
-            {
-                float[] color = { 1.0f, 1.0f, 1.0f, 0.75f };
-
-                Shader shader = Shader.Find("Mixed Reality Toolkit/Standard");
-
-                handleMaterial = new Material(shader);
-                handleMaterial.EnableKeyword("_InnerGlow");
-                handleMaterial.SetColor("_Color", new Color(0.0f, 0.63f, 1.0f));
-                handleMaterial.SetFloat("_InnerGlow", 1.0f);
-                handleMaterial.SetFloatArray("_InnerGlowColor", color);
-            }
-            if (handleGrabbedMaterial == null && handleGrabbedMaterial != handleMaterial && handleGrabbedMaterial != wireframeMaterial)
-            {
-                float[] color = { 1.0f, 1.0f, 1.0f, 0.75f };
-
-                Shader shader = Shader.Find("Mixed Reality Toolkit/Standard");
-
-                handleGrabbedMaterial = new Material(shader);
-                handleGrabbedMaterial.EnableKeyword("_InnerGlow");
-                handleGrabbedMaterial.SetColor("_Color", new Color(0.0f, 0.63f, 1.0f));
-                handleGrabbedMaterial.SetFloat("_InnerGlow", 1.0f);
-                handleGrabbedMaterial.SetFloatArray("_InnerGlowColor", color);
-            }
+            links.SetMaterials();
+            rotationHandles.SetMaterials();
+            scaleHandles.SetMaterials();
         }
 
         private void InitializeDataStructures()
         {
             scaleHandles.Init();
             rotationHandles.Init();
-            links.Init(showWireframe);
+            links.Init();
             proximityEffect.Init();
            
             sourcesDetected = new List<IMixedRealityController>();
@@ -1586,36 +1017,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             //set link visibility
-            links.ResetVisibility(active == true);     
-
-            //set box display visibility
-            if (boxDisplay != null)
-            {
-                boxDisplay.SetActive(active);
-                ApplyMaterialToAllRenderers(boxDisplay, boxMaterial);
-            }
+            links.ResetVisibility(active);
+            boxDisplay.ResetVisibility(active);
 
             bool isVisible = (active == true && wireframeOnly == false);
             //set corner visibility
-            scaleHandles.ResetHandleVisibility(isVisible && showScaleHandles, handleMaterial);
+            scaleHandles.ResetHandleVisibility(isVisible);
             // set rotation handle visibility
-            rotationHandles.ResetHandleVisibility(isVisible, handleMaterial, showRotationHandleForX, showRotationHandleForY, showRotationHandleForZ);
+            rotationHandles.ResetHandleVisibility(isVisible);
             rotationHandles.SetHiddenHandles();
         }
 
 
-        public static void ApplyMaterialToAllRenderers(GameObject root, Material material)
-        {
-            if (material != null)
-            {
-                Renderer[] renderers = root.GetComponentsInChildren<Renderer>();
-
-                for (int i = 0; i < renderers.Length; ++i)
-                {
-                    renderers[i].material = material;
-                }
-            }
-        }
+ 
 
 
         /// <summary>
@@ -1629,10 +1043,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             InitializeDataStructures();
             SetBoundingBoxCollider();
             UpdateBounds();
-            AddScaleHandles();
+            AddCorners();
             AddLinks();
             HandleIgnoreCollider();
-            AddBoxDisplay();
+            boxDisplay.AddBoxDisplay(rigRoot.transform, currentBoundsExtents, flattenAxis);
             UpdateRigHandles();
             rotationHandles.Flatten(flattenAxis);
             links.Flatten(rotationHandles);
@@ -1641,14 +1055,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             UpdateRigVisibilityInInspector();
         }
 
-        private void AddScaleHandles()
+        private void AddCorners()
         {
             bool isFlattened = flattenAxis != FlattenModeType.DoNotFlatten;
-            GameObject handlePrefab = isFlattened ? scaleHandleSlatePrefab : scaleHandlePrefab;
-            scaleHandles.CreateHandles(handlePrefab, handleMaterial, rigRoot, scaleHandleSize, isFlattened, scaleHandleColliderPadding, drawTetherWhenManipulating);
-            scaleHandles.AddProximityEffect(proximityEffect);
-           // rotationHandles.CreateHandles(rotationHandlePrefab, rigRoot);
-           // rotationHandles.AddProximityEffect(proximityEffect);
+            scaleHandles.CreateHandles(rigRoot, drawTetherWhenManipulating, isFlattened);
+            proximityEffect.AddHandles(scaleHandles);
         }
 
         private void InitializeRigRoot()
@@ -1677,20 +1088,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 scaleHandles.UpdateHandles();
                 rotationHandles.UpdateHandles();
+                links.Update(rotationHandles, rigRoot, currentBoundsExtents);
 
-                Vector3 rootScale = rigRoot.lossyScale;
-                Vector3 invRootScale = new Vector3(1.0f / rootScale[0], 1.0f / rootScale[1], 1.0f / rootScale[2]);
-
-                // Compute the local scale that produces the desired world space dimensions
-                Vector3 linkDimensions = Vector3.Scale(GetLinkDimensions(), invRootScale);
-
-                links.Update(rotationHandles, wireframeEdgeRadius, linkDimensions);
-
-                if (boxDisplay != null)
-                {
-                    // Compute the local scale that produces the desired world space size
-                    boxDisplay.transform.localScale = Vector3.Scale(GetBoxDisplayScale(), invRootScale);
-                }
+                boxDisplay.Update(rigRoot, currentBoundsExtents, flattenAxis);
 
                 //move rig into position and rotation
                 rigRoot.position = boundingBoxTarget.TargetBounds.bounds.center;
@@ -1716,64 +1116,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
             ResetHandleVisibility();
         }
 
-
-
-        
-
-
         private void AddLinks()
         {
             //edgeCenters = new Vector3[12];
             rotationHandles.CalculateEdgeCenters(scaleHandles.BoundsCorners);
             rotationHandles.InitEdgeAxis();
-            rotationHandles.CreateHandles(rotationHandlePrefab, rigRoot.transform, RotationHandleSize, 
-                handleMaterial, rotationHandlePrefabColliderType, rotateHandleColliderPadding, drawTetherWhenManipulating);
-            rotationHandles.AddProximityEffect(proximityEffect);
-            links.CreateLinks(rotationHandles, wireframeEdgeRadius, GetLinkDimensions(), rigRoot.transform, wireframeMaterial, wireframeShape);
+            bool isFlattened = flattenAxis != FlattenModeType.DoNotFlatten;
+            rotationHandles.CreateHandles(rigRoot.transform, drawTetherWhenManipulating, isFlattened);
+            proximityEffect.AddHandles(rotationHandles);
+            links.CreateLinks(rotationHandles, rigRoot.transform, currentBoundsExtents);
         }
-
-
-
-        private void AddBoxDisplay()
-        {
-            if (boxMaterial != null)
-            {
-                bool isFlattened = flattenAxis != FlattenModeType.DoNotFlatten;
-
-                boxDisplay = GameObject.CreatePrimitive(isFlattened ? PrimitiveType.Quad : PrimitiveType.Cube);
-                Destroy(boxDisplay.GetComponent<Collider>());
-                boxDisplay.name = "bounding box";
-
-                ApplyMaterialToAllRenderers(boxDisplay, boxMaterial);
-
-                boxDisplay.transform.localScale = GetBoxDisplayScale();
-                boxDisplay.transform.parent = rigRoot.transform;
-            }
-        }
-
-        private Vector3 GetBoxDisplayScale()
-        {
-            // When a box is flattened one axis is normally scaled to zero, this doesn't always work well with visuals so we take 
-            // that flattened axis and re-scale it to the flattenAxisDisplayScale.
-            Vector3 displayScale = currentBoundsExtents;
-            displayScale.x = (flattenAxis == FlattenModeType.FlattenX) ? flattenAxisDisplayScale : displayScale.x;
-            displayScale.y = (flattenAxis == FlattenModeType.FlattenY) ? flattenAxisDisplayScale : displayScale.y;
-            displayScale.z = (flattenAxis == FlattenModeType.FlattenZ) ? flattenAxisDisplayScale : displayScale.z;
-
-            return 2.0f * displayScale;
-        }
-
-
-
-
-  
-
-        private Vector3 GetLinkDimensions()
-        {
-            float linkLengthAdjustor = wireframeShape == WireframeType.Cubic ? 2.0f : 1.0f - (6.0f * wireframeEdgeRadius);
-            return (currentBoundsExtents * linkLengthAdjustor) + new Vector3(wireframeEdgeRadius, wireframeEdgeRadius, wireframeEdgeRadius);
-        }
-
+        
 
         public void TransformTarget(HandleType transformType)
         {

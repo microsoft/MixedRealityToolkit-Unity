@@ -2,16 +2,102 @@
 using Microsoft.MixedReality.Toolkit.UI.BoundingBoxTypes;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
-    internal class BoundingBoxLinks
+    public class BoundingBoxLinks
     {
+
+        [SerializeField]
+        [Tooltip("Material used for wireframe display")]
+        private Material wireframeMaterial;
+
+        /// <summary>
+        /// Material used for wireframe display
+        /// </summary>
+        public Material WireframeMaterial
+        {
+            get { return wireframeMaterial; }
+            set
+            {
+                if (wireframeMaterial != value)
+                {
+                    wireframeMaterial = value;
+                    configurationChanged.Invoke();
+                }
+            }
+        }
+
+        [SerializeField]
+       // [FormerlySerializedAs("linkRadius")]
+        [Tooltip("Radius for wireframe edges")]
+        private float wireframeEdgeRadius = 0.001f;
+
+        /// <summary>
+        /// Radius for wireframe edges
+        /// </summary>
+        public float WireframeEdgeRadius
+        {
+            get { return wireframeEdgeRadius; }
+            set
+            {
+                if (wireframeEdgeRadius != value)
+                {
+                    wireframeEdgeRadius = value;
+                    configurationChanged.Invoke();
+                }
+            }
+        }
+
+        [SerializeField]
+        [Tooltip("Shape used for wireframe display")]
+        private WireframeType wireframeShape = WireframeType.Cubic;
+
+        /// <summary>
+        /// Shape used for wireframe display
+        /// </summary>
+        public WireframeType WireframeShape
+        {
+            get { return wireframeShape; }
+            set
+            {
+                if (wireframeShape != value)
+                {
+                    wireframeShape = value;
+                    configurationChanged.Invoke();
+                }
+            }
+        }
+
+
+        [SerializeField]
+        [Tooltip("Show a wireframe around the bounding box when checked. Wireframe parameters below have no effect unless this is checked")]
+        private bool showWireframe = true;
+
+        /// <summary>
+        /// Show a wireframe around the bounding box when checked. Wireframe parameters below have no effect unless this is checked
+        /// </summary>
+        public bool ShowWireFrame
+        {
+            get { return showWireframe; }
+            set
+            {
+                if (showWireframe != value)
+                {
+                    showWireframe = value;
+                    configurationChanged.Invoke();
+                }
+            }
+        }
+
+        internal protected UnityEvent configurationChanged = new UnityEvent();
+
         private List<Transform> links;
         private List<Renderer> linkRenderers;
 
 
-        public void Init(bool showWireframe)
+        public void Init()
         {
             if (showWireframe)
             {
@@ -29,6 +115,23 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
                 links.Clear();
                 links = null;
+            }
+        }
+
+        public void SetMaterials()
+        {
+            //ensure materials
+            if (wireframeMaterial == null)
+            {
+                float[] color = { 1.0f, 1.0f, 1.0f, 0.75f };
+
+                Shader shader = Shader.Find("Mixed Reality Toolkit/Standard");
+
+                wireframeMaterial = new Material(shader);
+                wireframeMaterial.EnableKeyword("_InnerGlow");
+                wireframeMaterial.SetColor("_Color", new Color(0.0f, 0.63f, 1.0f));
+                wireframeMaterial.SetFloat("_InnerGlow", 1.0f);
+                wireframeMaterial.SetFloatArray("_InnerGlowColor", color);
             }
         }
 
@@ -58,7 +161,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        public void Update(BoundingBoxRotationHandles rotationHandles, float wireframeEdgeRadius, Vector3 linkDimensions)
+        private Vector3 GetLinkDimensions(Vector3 currentBoundsExtents)
+        {
+            float linkLengthAdjustor = wireframeShape == WireframeType.Cubic ? 2.0f : 1.0f - (6.0f * wireframeEdgeRadius);
+            return (currentBoundsExtents * linkLengthAdjustor) + new Vector3(wireframeEdgeRadius, wireframeEdgeRadius, wireframeEdgeRadius);
+        }
+
+        public void Update(BoundingBoxRotationHandles rotationHandles, Transform parent, Vector3 currentBoundsExtents)
         {
             for (int i = 0; i < BoundingBoxRotationHandles.NumEdges; ++i)
             {
@@ -66,6 +175,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (links != null)
                 {
                     links[i].position = rotationHandles.GetEdgeCenter(i);
+
+                    Vector3 rootScale = parent.lossyScale;
+                    Vector3 invRootScale = new Vector3(1.0f / rootScale[0], 1.0f / rootScale[1], 1.0f / rootScale[2]);
+                    // Compute the local scale that produces the desired world space dimensions
+                    Vector3 linkDimensions = Vector3.Scale(GetLinkDimensions(currentBoundsExtents), invRootScale);
 
                     if (rotationHandles.GetAxisType(i) == CardinalAxisType.X)
                     {
@@ -95,12 +209,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        public void CreateLinks(BoundingBoxRotationHandles rotationHandles, float wireframeEdgeRadius, Vector3 linkDimensions,
-            Transform parent, Material wireframeMaterial, WireframeType wireframeShape)
+        public void CreateLinks(BoundingBoxRotationHandles rotationHandles, Transform parent, Vector3 currentBoundsExtents)
         {
             if (links != null)
             {
                 GameObject link;
+                Vector3 linkDimensions = GetLinkDimensions(currentBoundsExtents);
                 for (int i = 0; i < BoundingBoxRotationHandles.NumEdges; ++i)
                 {
                     if (wireframeShape == WireframeType.Cubic)
@@ -115,6 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     }
                     link.name = "link_" + i.ToString();
 
+                    
                     if (rotationHandles.GetAxisType(i) == CardinalAxisType.Y)
                     {
                         link.transform.localScale = new Vector3(wireframeEdgeRadius, linkDimensions.y, wireframeEdgeRadius);

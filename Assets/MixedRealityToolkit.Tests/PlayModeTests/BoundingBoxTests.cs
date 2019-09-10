@@ -125,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
 
             // front right corner is corner 3
-            var frontRightCornerPos = bbox.ScaleCorners[3].transform.position;
+            var frontRightCornerPos = bbox.ScaleHandles.Handles[3].transform.position;
 
             Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
             int numSteps = 30;
@@ -164,7 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             const int numHandSteps = 1;
 
             Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
-            var frontRightCornerPos = bbox.ScaleCorners[3].transform.position; // front right corner is corner 3
+            var frontRightCornerPos = bbox.ScaleHandles.Handles[3].transform.position; // front right corner is corner 3
             TestHand hand = new TestHand(Handedness.Right);
 
             // Hands grab object at initial position
@@ -212,7 +212,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             PlayModeTestUtilities.PushHandSimulationProfile();
             PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
 
-            CameraCache.Main.transform.LookAt(bbox.ScaleCorners[3].transform);
+            CameraCache.Main.transform.LookAt(bbox.ScaleHandles.Handles[3].transform);
 
             var startHandPos = CameraCache.Main.transform.TransformPoint(new Vector3( 0.1f, 0f, 1.5f));
             TestHand rightHand = new TestHand(Handedness.Right);
@@ -274,7 +274,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestUtilities.AssertAboutEqual(afterTranslateBounds.center, afterTranslateCenter, "bbox incorrect center after translate");
             TestUtilities.AssertAboutEqual(afterTranslateBounds.size, scaledSize, "bbox incorrect size after translate");
 
-            var c0 = bbox.ScaleCorners[0];
+            var c0 = bbox.ScaleHandles.Handles[0];
             var bboxBottomCenter = afterTranslateBounds.center - Vector3.up * afterTranslateBounds.extents.y;
             Vector3 cc0 = c0.transform.position - bboxBottomCenter;
             float rotateAmount = 30;
@@ -294,7 +294,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <returns></returns>
         private Bounds GetBoundingBoxRigBounds(BoundingBox bbox)
         {
-            var corners = bbox.ScaleCorners;
+            var corners = bbox.ScaleHandles.Handles;
 
             Bounds b = new Bounds();
             b.center = corners[0].position;

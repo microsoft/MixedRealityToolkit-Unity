@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Input;
 using System.Runtime.CompilerServices;
 
+using ProximityStates = System.Collections.Generic.Dictionary<UnityEngine.GameObject, Microsoft.MixedReality.Toolkit.UI.BoundingBoxTypes.HandleProximityState>;
+
 namespace Microsoft.MixedReality.Toolkit.UI 
 {
     [Serializable]
@@ -79,15 +81,26 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Container for handle references and states (including scale and rotation type handles)
         /// </summary>
-        private class Handle
+        //private class Handle
+        //{
+        //    public Transform HandleVisual;
+        //    public Renderer HandleVisualRenderer;
+        //    public HandleType Type = HandleType.None;
+        //    public HandleProximityState ProximityState = HandleProximityState.FullsizeNoProximity;
+        //}
+
+
+        
+        /// Container for registered bounding box handles and their proximity states
+        /// 
+        private class RegisteredHandles
         {
-            public Transform HandleVisual;
-            public Renderer HandleVisualRenderer;
-            public HandleType Type = HandleType.None;
-            public HandleProximityState ProximityState = HandleProximityState.FullsizeNoProximity;
+            public BoundingBoxHandlesBase handles;
+            public ProximityStates proximityStates;
         }
 
-        private List<Handle> handles = new List<Handle>();
+        private List<RegisteredHandles> registeredHandles = new List<RegisteredHandles>();
+
 
         private HashSet<IMixedRealityPointer> proximityPointers = new HashSet<IMixedRealityPointer>();
         private List<Vector3> proximityPoints = new List<Vector3>();
@@ -96,29 +109,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public void Init()
         {
-            handles = new List<Handle>();
+            registeredHandles = new List<RegisteredHandles>();
         }
 
         public void ClearHandles()
         {
-            if (handles != null)
+            if (registeredHandles != null)
             {
-                handles.Clear();
+                registeredHandles.Clear();
             }
 
         }
 
-        public void AddHandle(HandleType type, GameObject visual)
-        {
-            handles.Add(new Handle()
-            {
-                Type = type,
-                HandleVisual = visual.transform,
-                HandleVisualRenderer = visual.GetComponent<Renderer>(),
-            });
-        }
-
-       
 
         public void ResetHandleProximityScale(BoundingBox boundingBox)
         {
@@ -127,32 +129,43 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return;
             }
 
-            for (int i = 0; i < handles.Count; ++i)
+            foreach (var baseHandles in registeredHandles)
             {
-                Handle h = handles[i];
-                if (h.ProximityState != HandleProximityState.FullsizeNoProximity)
+                foreach (KeyValuePair<GameObject, HandleProximityState> item in baseHandles.proximityStates)
                 {
-                    h.ProximityState = HandleProximityState.FullsizeNoProximity;
-
-                    if (h.HandleVisualRenderer != null)
+                    if (item.Value != HandleProximityState.FullsizeNoProximity)
                     {
-                        h.HandleVisualRenderer.material = boundingBox.HandleMaterial;
-                    }
+                        GameObject handleForState = item.Key;
+                        baseHandles.proximityStates[handleForState] = HandleProximityState.FullsizeNoProximity;
+                        Renderer rendererComp = handleForState.GetComponent<Renderer>();
+                        if (rendererComp)
+                        {
+                            rendererComp.material = baseHandles.handles.HandleMaterial;
+                        }
 
-                    ScaleHandle(boundingBox, h);
+                        ScaleHandle(item.Value, handleForState, baseHandles.handles.HandleSize);
+                    }
                 }
             }
         }
 
+        private bool IsAnyRegisteredHandleVisible()
+        {
+            foreach (var baseHandles in registeredHandles)
+            {
+                if (baseHandles.handles.IsHandleTypeActive())
+                {
+                    return true;
+                }
+            }
 
-       
-        
+            return false;
+        }
 
-
-        public void HandleProximityScaling(BoundingBox boundingBox, IMixedRealityPointer currentPointer, Vector3 currentBoundsExtents)
+        public void HandleProximityScaling(IMixedRealityPointer currentPointer, Vector3 boundingBoxPosition, Vector3 currentBoundsExtents)
         {
             // early out if effect is disabled
-            if (proximityEffectActive == false)
+            if (proximityEffectActive == false || !IsAnyRegisteredHandleVisible())
             {
                 return;
             }
@@ -180,79 +193,90 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 maxRadius *= maxRadius;
                 maxRadius += handleCloseProximity + handleMediumProximity;
 
-                // Grab points within sphere of inluence from valid pointers
+                // Grab points within sphere of influence from valid pointers
                 foreach (var pointer in proximityPointers)
                 {
-                    if (IsPointWithinBounds(boundingBox.transform, pointer.Position, maxRadius))
+                    if (IsPointWithinBounds(boundingBoxPosition, pointer.Position, maxRadius))
                     {
                         proximityPoints.Add(pointer.Position);
                     }
 
-                    if (IsPointWithinBounds(boundingBox.transform, pointer.Result.Details.Point, maxRadius))
+                    if (IsPointWithinBounds(boundingBoxPosition, pointer.Result.Details.Point, maxRadius))
                     {
                         proximityPoints.Add(pointer.Result.Details.Point);
                     }
                 }
 
                 // Loop through all handles and find closest one
-                int closestHandleIdx = -1;
+                GameObject closestHandle = null;
                 float closestDistanceSqr = float.MaxValue;
                 foreach (var point in proximityPoints)
                 {
-                    for (int i = 0; i < handles.Count; ++i)
-                    {
-                        // If handle can't be visisble, skip calculations
-                        if (!boundingBox.IsHandleTypeVisible(handles[i].Type))
-                            continue;
 
-                        // Perform comparison on sqr distance since sqrt() operation is expensive in Vector3.Distance()
-                        float sqrDistance = (handles[i].HandleVisual.position - point).sqrMagnitude;
-                        if (sqrDistance < closestDistanceSqr)
+                    foreach (var baseHandles in registeredHandles)
+                    {
+
+                        foreach (KeyValuePair<GameObject, HandleProximityState> item in baseHandles.proximityStates)
                         {
-                            closestHandleIdx = i;
-                            closestDistanceSqr = sqrDistance;
+                            // If handle can't be visible, skip calculations
+                            if (!baseHandles.handles.IsVisible(item.Key.transform))
+                            {
+                                continue;
+                            }
+
+                            // Perform comparison on sqr distance since sqrt() operation is expensive in Vector3.Distance()
+                            float sqrDistance = (item.Key.transform.position - point).sqrMagnitude;
+                            if (sqrDistance < closestDistanceSqr)
+                            {
+                                closestHandle = item.Key;
+                                closestDistanceSqr = sqrDistance;
+                            }
+
                         }
+
                     }
                 }
 
                 // Loop through all handles and update visual state based on closest point
-                for (int i = 0; i < handles.Count; ++i)
+                foreach (var baseHandles in registeredHandles)
                 {
-                    Handle h = handles[i];
-
-                    HandleProximityState newState = i == closestHandleIdx ? GetProximityState(closestDistanceSqr) : HandleProximityState.FullsizeNoProximity;
-
-                    // Only apply updates if handle is in a new state or closest handle needs to lerp scaling
-                    if (h.ProximityState != newState)
+                    foreach (KeyValuePair<GameObject, HandleProximityState> item in baseHandles.proximityStates)
                     {
-                        // Update and save new state
-                        h.ProximityState = newState;
+                        HandleProximityState newState = (closestHandle == item.Key) ? GetProximityState(closestDistanceSqr) : HandleProximityState.FullsizeNoProximity;
 
-                        if (h.HandleVisualRenderer != null)
+                        // Only apply updates if handle is in a new state or closest handle needs to lerp scaling
+                        if (item.Value != newState)
                         {
-                            h.HandleVisualRenderer.material = newState == HandleProximityState.CloseProximity ? boundingBox.HandleGrabbedMaterial : boundingBox.HandleMaterial;
-                        }
-                    }
+                            // Update and save new state
+                            GameObject handleForState = item.Key;
+                            baseHandles.proximityStates[handleForState] = newState;
 
-                    ScaleHandle(boundingBox, h, true);
+                            Renderer rendererComp = handleForState.GetComponent<Renderer>();
+                            if (rendererComp)
+                            {
+                                rendererComp.material = newState == HandleProximityState.CloseProximity ? baseHandles.handles.HandleGrabbedMaterial : baseHandles.handles.HandleMaterial;
+                            }
+                        }
+
+                        ScaleHandle(newState, item.Key, baseHandles.handles.HandleSize, true);
+                    }
                 }
             }
         }
 
 
-        private void ScaleHandle(BoundingBox bb, Handle handle, bool lerp = false)
+        private void ScaleHandle(HandleProximityState state, GameObject handle, float handleSize, bool lerp = false)
         {
-            float handleSize = handle.Type == HandleType.Scale ? bb.ScaleHandleSize : bb.RotationHandleSize;
-            float newLocalScale = GetHandleScaling(handle, handleSize, lerp);
-            handle.HandleVisual.localScale = new Vector3(newLocalScale, newLocalScale, newLocalScale);
+            float newLocalScale = GetHandleScaling(handle, handleSize, state, lerp);
+            handle.transform.localScale = new Vector3(newLocalScale, newLocalScale, newLocalScale);
         }
 
 
-        private float GetHandleScaling(Handle handle, float handleSize, bool lerp = false)
+        private float GetHandleScaling(GameObject handle, float handleSize, HandleProximityState state, bool lerp = false)
         {
             float targetScale = 1.0f, weight = 0.0f;
 
-            switch (handle.ProximityState)
+            switch (state)
             {
                 case HandleProximityState.FullsizeNoProximity:
                     targetScale = farScale;
@@ -268,7 +292,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     break;
             }
 
-            return (handle.HandleVisual.localScale.x * (1.0f - weight)) + (handleSize * targetScale * weight);
+            return (handle.transform.localScale.x * (1.0f - weight)) + (handleSize * targetScale * weight);
         }
 
 
@@ -280,10 +304,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <param name="radiusSqr">radius of sphere in distance squared for faster comparison</param>
         /// <returns>true if point is within sphere</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private bool IsPointWithinBounds(Transform transform, Vector3 point, float radiusSqr)
+        private bool IsPointWithinBounds(Vector3 position, Vector3 point, float radiusSqr)
         {
             // TODO
-            return (transform.position - point).sqrMagnitude < radiusSqr;
+            return (position - point).sqrMagnitude < radiusSqr;
         }
 
 
@@ -308,6 +332,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 return HandleProximityState.FullsizeNoProximity;
             }
+        }
+
+        // register handles for proximity effect
+        internal void AddHandles(BoundingBoxHandlesBase bbhandles)
+        {
+            RegisteredHandles handlesEntry = new RegisteredHandles() { handles = bbhandles, proximityStates = new ProximityStates() };
+            bbhandles.ForEachHandle(handle => {
+            handlesEntry.proximityStates[handle.gameObject] = HandleProximityState.FullsizeNoProximity;
+            });
+            registeredHandles.Add(handlesEntry);
         }
     }
 }

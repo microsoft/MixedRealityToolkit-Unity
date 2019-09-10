@@ -4,8 +4,100 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
-    internal class BoundingBoxRotationHandles : BoundingBoxHandlesBase
+    public class BoundingBoxRotationHandles : BoundingBoxHandlesBase
     {
+
+        [SerializeField]
+        [Tooltip("Determines the type of collider that will surround the rotation handle prefab.")]
+        private RotationHandlePrefabCollider rotationHandlePrefabColliderType = RotationHandlePrefabCollider.Box;
+
+        /// <summary>
+        /// Determines the type of collider that will surround the rotation handle prefab.
+        /// </summary>
+        public RotationHandlePrefabCollider RotationHandlePrefabColliderType
+        {
+            get
+            {
+                return rotationHandlePrefabColliderType;
+            }
+            set
+            {
+                if (rotationHandlePrefabColliderType != value)
+                {
+                    rotationHandlePrefabColliderType = value;
+                    configurationChanged.Invoke();
+                }
+            }
+        }
+
+        [SerializeField]
+        [Tooltip("Check to show rotation handles for the X axis")]
+        private bool showRotationHandleForX = true;
+
+        /// <summary>
+        /// Check to show rotation handles for the X axis
+        /// </summary>
+        public bool ShowRotationHandleForX
+        {
+            get
+            {
+                return showRotationHandleForX;
+            }
+            set
+            {
+                if (showRotationHandleForX != value)
+                {
+                    showRotationHandleForX = value;
+                    visibilityChanged.Invoke();
+                }
+            }
+        }
+
+        [SerializeField]
+        [Tooltip("Check to show rotation handles for the Y axis")]
+        private bool showRotationHandleForY = true;
+
+        /// <summary>
+        /// Check to show rotation handles for the Y axis
+        /// </summary>
+        public bool ShowRotationHandleForY
+        {
+            get
+            {
+                return showRotationHandleForY;
+            }
+            set
+            {
+                if (showRotationHandleForY != value)
+                {
+                    showRotationHandleForY = value;
+                    visibilityChanged.Invoke();
+                }
+            }
+        }
+
+        [SerializeField]
+        [Tooltip("Check to show rotation handles for the Z axis")]
+        private bool showRotationHandleForZ = true;
+
+        /// <summary>
+        /// Check to show rotation handles for the Z axis
+        /// </summary>
+        public bool ShowRotationHandleForZ
+        {
+            get
+            {
+                return showRotationHandleForZ;
+            }
+            set
+            {
+                if (showRotationHandleForZ != value)
+                {
+                    showRotationHandleForZ = value;
+                    visibilityChanged.Invoke();
+                }
+            }
+        }
 
 
         internal const int NumEdges = 12;
@@ -113,30 +205,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             edgeAxes[11] = CardinalAxisType.Z;
         }
 
-
-
-        internal void ResetHandleVisibility(bool isVisible, Material handleMaterial, bool xEnabled, bool yEnabled, bool zEnabled)
-        {
-            //set balls visibility
-            if (handles != null)
-            {
-                for (int i = 0; i < handles.Count; ++i)
-                {
-                    bool isAxisEnabled = ShouldRotateHandleBeVisible(edgeAxes[i], xEnabled, yEnabled, zEnabled);
-                    handles[i].gameObject.SetActive(isVisible && isAxisEnabled);
-                    BoundingBox.ApplyMaterialToAllRenderers(handles[i].gameObject, handleMaterial);
-                }
-            }
-        }
-
-        private bool ShouldRotateHandleBeVisible(CardinalAxisType axisType, bool xEnabled, bool yEnabled, bool zEnabled)
-        {
-            return
-                (axisType == CardinalAxisType.X && xEnabled) ||
-                (axisType == CardinalAxisType.Y && yEnabled) ||
-                (axisType == CardinalAxisType.Z && zEnabled);
-        }
-
         internal void SetHiddenHandles()
         {
             if (flattenedHandles != null)
@@ -148,15 +216,27 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        public override bool IsVisible(Transform handle)
+        {
+            CardinalAxisType axisType = GetAxisType(handle);
+            return
+                (axisType == CardinalAxisType.X && ShowRotationHandleForX) ||
+                (axisType == CardinalAxisType.Y && ShowRotationHandleForY) ||
+                (axisType == CardinalAxisType.Z && ShowRotationHandleForZ);
+        }
+
+        public override bool IsHandleTypeActive()
+        {
+            return ShowRotationHandleForX || ShowRotationHandleForY || ShowRotationHandleForZ;
+        }
+
         public override HandleType GetHandleType()
         {
             return HandleType.Rotation;
         }
 
-        internal void CreateHandles(GameObject rotationHandlePrefab, Transform parent, float handleSize, 
-            Material handleMaterial, RotationHandlePrefabCollider colliderType, Vector3 colliderPadding, bool drawManipulationTether)
+        internal void CreateHandles(Transform parent, bool drawManipulationTether, bool isFlattened)
         {
-
             for (int i = 0; i < edgeCenters.Length; ++i)
             {
                 GameObject midpoint = new GameObject();
@@ -165,9 +245,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 midpoint.transform.parent = parent;
 
                 GameObject midpointVisual;
-                if (rotationHandlePrefab != null)
+                GameObject prefabType = isFlattened ? HandleSlatePrefab : HandlePrefab;
+                if (prefabType != null)
                 {
-                    midpointVisual = GameObject.Instantiate(rotationHandlePrefab);
+                    midpointVisual = GameObject.Instantiate(prefabType);
                 }
                 else
                 {
@@ -191,20 +272,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 float maxDim = Mathf.Max(
                     Mathf.Max(midpointBounds.size.x, midpointBounds.size.y),
                     midpointBounds.size.z);
-                float invScale = handleSize / maxDim;
+                float invScale = HandleSize / maxDim;
 
                 midpointVisual.transform.parent = midpoint.transform;
                 midpointVisual.transform.localScale = new Vector3(invScale, invScale, invScale);
                 midpointVisual.transform.localPosition = Vector3.zero;
 
-                BoundingBoxHandleUtils.AddComponentsToAffordance(midpoint, new Bounds(midpointBounds.center * invScale, midpointBounds.size * invScale), 
-                    colliderType, CursorContextInfo.CursorAction.Rotate, colliderPadding, parent, drawManipulationTether);
+                BoundingBoxHandleUtils.AddComponentsToAffordance(midpoint, new Bounds(midpointBounds.center * invScale, midpointBounds.size * invScale),
+                    rotationHandlePrefabColliderType, CursorContextInfo.CursorAction.Rotate, ColliderPadding, parent, drawManipulationTether);
 
                 handles.Add(midpoint.transform);
 
-                if (handleMaterial != null)
+                if (HandleMaterial != null)
                 {
-                    BoundingBox.ApplyMaterialToAllRenderers(midpointVisual, handleMaterial);
+                    BoundingBoxHandleUtils.ApplyMaterialToAllRenderers(midpointVisual, HandleMaterial);
                 }
             }
 

@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     }
                     else
                     {
-                        BoundingBox.ApplyMaterialToAllRenderers(handles[i].gameObject, highlightMaterial);
+                        ApplyMaterialToAllRenderers(handles[i].gameObject, highlightMaterial);
                     }
                 }
             }
@@ -63,7 +63,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return b;
         }
 
+        public static void ApplyMaterialToAllRenderers(GameObject root, Material material)
+        {
+            if (material != null)
+            {
+                Renderer[] renderers = root.GetComponentsInChildren<Renderer>();
 
+                for (int i = 0; i < renderers.Length; ++i)
+                {
+                    renderers[i].material = material;
+                }
+            }
+        }
 
         /// <summary>
         /// Add all common components to a corner or rotate affordance
