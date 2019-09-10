@@ -70,7 +70,7 @@ PointerUtils.SetHandRayPointerBehavior(PointerBehavior.Default);
 The following code will force hand rays to be on, regardless of if near a grabbable:
 
 ```csharp
-// Turn off all hand rays
+// Turn on all hand rays
 PointerUtils.SetHandRayPointerBehavior(PointerBehavior.On);
 ```
 
