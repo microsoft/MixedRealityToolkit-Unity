@@ -28,6 +28,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     class VisualThemeTests
     {
+        private const string DefaultColorProperty = "_Color";
+
         [SetUp]
         public void Setup()
         {
@@ -41,16 +43,21 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             PlayModeTestUtilities.TearDown();
         }
 
+        #region Tests
+
         [UnityTest]
         public IEnumerator TestActivateTheme()
         {
             bool state0 = false;
             bool state1 = true;
 
-            var defaultStateValues = new List<ThemePropertyValue>()
+            var defaultStateValues = new List<List<ThemePropertyValue>>()
             {
-                new ThemePropertyValue() { Bool = state0 },
-                new ThemePropertyValue() { Bool = state1 },
+                new List<ThemePropertyValue>()
+                {
+                    new ThemePropertyValue() { Bool = state0 },
+                    new ThemePropertyValue() { Bool = state1 },
+                }
             };
 
             yield return TestTheme<InteractableActivateTheme, MeshRenderer>(defaultStateValues,
@@ -64,10 +71,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Material state0 = new Material(StandardShaderUtility.MrtkStandardShader);
             Material state1 = new Material(Shader.Find("Standard"));
 
-            var defaultStateValues = new List<ThemePropertyValue>()
+            var defaultStateValues = new List<List<ThemePropertyValue>>()
             {
-                new ThemePropertyValue() { Material = state0 },
-                new ThemePropertyValue() { Material = state1 },
+                new List<ThemePropertyValue>()
+                {
+                    new ThemePropertyValue() { Material = state0 },
+                    new ThemePropertyValue() { Material = state1 },
+                }
             };
 
             yield return TestTheme<InteractableMaterialTheme, MeshRenderer>(defaultStateValues,
@@ -81,10 +91,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 state0 = Vector3.forward;
             Vector3 state1 = Vector3.down;
 
-            var defaultStateValues = new List<ThemePropertyValue>()
+            var defaultStateValues = new List<List<ThemePropertyValue>>()
             {
-                new ThemePropertyValue() { Vector3 = state0 },
-                new ThemePropertyValue() { Vector3 = state1 },
+                new List<ThemePropertyValue>()
+                {
+                    new ThemePropertyValue() { Vector3 = state0 },
+                    new ThemePropertyValue() { Vector3 = state1 },
+                }
             };
 
             yield return TestTheme<InteractableOffsetTheme, MeshRenderer>(defaultStateValues,
@@ -98,10 +111,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 state0 = Quaternion.LookRotation(Vector3.up).eulerAngles;
             Vector3 state1 = Quaternion.LookRotation(Vector3.down).eulerAngles;
 
-            var defaultStateValues = new List<ThemePropertyValue>()
+            var defaultStateValues = new List<List<ThemePropertyValue>>()
             {
-                new ThemePropertyValue() { Vector3 = state0 },
-                new ThemePropertyValue() { Vector3 = state1 },
+                new List<ThemePropertyValue>()
+                {
+                    new ThemePropertyValue() { Vector3 = state0 },
+                    new ThemePropertyValue() { Vector3 = state1 },
+                }
             };
 
             yield return TestTheme<InteractableRotationTheme, MeshRenderer>(defaultStateValues,
@@ -115,10 +131,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 state0 = Vector3.one * 4.0f;
             Vector3 state1 = Vector3.one * 0.5f;
 
-            var defaultStateValues = new List<ThemePropertyValue>()
+            var defaultStateValues = new List<List<ThemePropertyValue>>()
             {
-                new ThemePropertyValue() { Vector3 = state0 },
-                new ThemePropertyValue() { Vector3 = state1 },
+                new List<ThemePropertyValue>()
+                {
+                    new ThemePropertyValue() { Vector3 = state0 },
+                    new ThemePropertyValue() { Vector3 = state1 },
+                }
             };
 
             yield return TestTheme<InteractableScaleTheme, MeshRenderer>(defaultStateValues,
@@ -127,20 +146,113 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         [UnityTest]
+        public IEnumerator TestScaleOffsetColorTheme()
+        {
+            Vector3 state0 = Vector3.one * 4.0f;
+            Vector3 state1 = Vector3.one * 0.5f;
+            Vector3 state0Offset = Vector3.up;
+            Vector3 state1Offset = Vector3.down;
+            Color state0Color = Color.red;
+            Color state1Color = Color.blue;
+
+            var defaultStateValues = new List<List<ThemePropertyValue>>()
+            {
+                new List<ThemePropertyValue>() // Scale
+                {
+                    new ThemePropertyValue() { Vector3 = state0 },
+                    new ThemePropertyValue() { Vector3 = state1 },
+                },
+                new List<ThemePropertyValue>() // Offset
+                {
+                    new ThemePropertyValue() { Vector3 = state0Offset },
+                    new ThemePropertyValue() { Vector3 = state1Offset },
+                },
+                new List<ThemePropertyValue>() //Color
+                {
+                    new ThemePropertyValue() { Color = state0Color },
+                    new ThemePropertyValue() { Color = state1Color },
+                }
+            };
+
+            yield return TestTheme<ScaleOffsetColorTheme, MeshRenderer>(defaultStateValues,
+                (theme) => 
+                {
+                    Assert.AreEqual(state0, theme.Host.transform.localScale);
+                    Assert.AreEqual(state0Offset, theme.Host.transform.position);
+                },
+                (theme) => 
+                {
+                    Assert.AreEqual(state1, theme.Host.transform.localScale);
+                    Assert.AreEqual(state1Offset, theme.Host.transform.position);
+                });
+
+            yield return TestShaderTheme<ScaleOffsetColorTheme>(defaultStateValues,
+                (block) => { Assert.AreEqual(state0Color, block.GetColor(DefaultColorProperty)); },
+                (block) => { Assert.AreEqual(state1Color, block.GetColor(DefaultColorProperty)); });
+        }
+
+        [UnityTest]
         public IEnumerator TestColorTheme()
         {
             Color state0Color = Color.red;
             Color state1Color = Color.blue;
 
-            var defaultStateValues = new List<ThemePropertyValue>()
+            var defaultStateValues = new List<List<ThemePropertyValue>>()
             {
-                new ThemePropertyValue() { Color = state0Color },
-                new ThemePropertyValue() { Color = state1Color },
+                new List<ThemePropertyValue>()
+                {
+                    new ThemePropertyValue() { Color = state0Color },
+                    new ThemePropertyValue() { Color = state1Color },
+                }
             };
 
             yield return TestShaderTheme<InteractableColorTheme>(defaultStateValues,
-                (block) => { Assert.AreEqual(state0Color, block.GetColor("_Color")); },
-                (block) => { Assert.AreEqual(state1Color, block.GetColor("_Color")); });
+                (block) => { Assert.AreEqual(state0Color, block.GetColor(DefaultColorProperty)); },
+                (block) => { Assert.AreEqual(state1Color, block.GetColor(DefaultColorProperty)); });
+        }
+
+        [UnityTest]
+        public IEnumerator TestColorChildrenTheme()
+        {
+            Color state0Color = Color.red;
+            Color state1Color = Color.blue;
+
+            var defaultStateValues = new List<List<ThemePropertyValue>>()
+            {
+                new List<ThemePropertyValue>()
+                {
+                    new ThemePropertyValue() { Color = state0Color },
+                    new ThemePropertyValue() { Color = state1Color },
+                }
+            };
+
+            const int numOfChildren = 3;
+            var parent = new GameObject("Parent");
+            for (int i = 0; i < numOfChildren; i++)
+            {
+                GameObject.CreatePrimitive(PrimitiveType.Cube).transform.parent = parent.transform;
+            }
+
+            yield return TestTheme<InteractableColorChildrenTheme, AudioSource>(parent,
+                defaultStateValues,
+                (theme) =>
+                {
+                    var block = new MaterialPropertyBlock();
+                    foreach (Transform child in theme.Host.transform)
+                    {
+                        child.GetComponent<Renderer>().GetPropertyBlock(block);
+                        Assert.AreEqual(state0Color, block.GetColor(DefaultColorProperty));
+                    }
+                },
+                (theme) =>
+                {
+                    var block = new MaterialPropertyBlock();
+                    foreach (Transform child in theme.Host.transform)
+                    {
+                        child.GetComponent<Renderer>().GetPropertyBlock(block);
+                        Assert.AreEqual(state1Color, block.GetColor(DefaultColorProperty));
+                    }
+                });
         }
 
         [UnityTest]
@@ -152,10 +264,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             const string TexturePathState1 = @"Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Textures/Checker_albedo.png";
             Texture texState1 = AssetDatabase.LoadAssetAtPath<Texture>(TexturePathState1);
 
-            var defaultStateValues = new List<ThemePropertyValue>()
+            var defaultStateValues = new List<List<ThemePropertyValue>>()
             {
-                new ThemePropertyValue() { Texture = texState0 },
-                new ThemePropertyValue() { Texture = texState1 },
+                new List<ThemePropertyValue>()
+                {
+                    new ThemePropertyValue() { Texture = texState0 },
+                    new ThemePropertyValue() { Texture = texState1 },
+                }
             };
 
             yield return TestShaderTheme<InteractableTextureTheme>(defaultStateValues,
@@ -169,10 +284,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             const string State0 = "TestState0";
             const string State1 = "TestState1";
 
-            var defaultStateValues = new List<ThemePropertyValue>()
+            var defaultStateValues = new List<List<ThemePropertyValue>>()
             {
-                new ThemePropertyValue() { String = State0 },
-                new ThemePropertyValue() { String = State1 },
+                new List<ThemePropertyValue>()
+                {
+                    new ThemePropertyValue() { String = State0 },
+                    new ThemePropertyValue() { String = State1 },
+                }
             };
 
             yield return TestTheme<InteractableStringTheme, Text>(defaultStateValues,
@@ -192,8 +310,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 (theme) => { Assert.AreEqual(State1, theme.Host.GetComponent<TMPro.TextMeshProUGUI>().text); });
         }
 
+        #endregion
+
+        #region Helpers
+
         private IEnumerator TestTheme<T, C>(
-            List<ThemePropertyValue> stateValues,
+            List<List<ThemePropertyValue>> stateValues,
             params Action<InteractableThemeBase>[] stateTests)
             where T : InteractableThemeBase
             where C : UnityEngine.Component
@@ -203,17 +325,32 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private IEnumerator TestTheme<T, C>(
             GameObject host,
-            List<ThemePropertyValue> stateValues,
+            List<List<ThemePropertyValue>> stateValues,
             params Action<InteractableThemeBase>[] stateTests)
             where T : InteractableThemeBase
             where C : UnityEngine.Component
         {
-            Assert.AreEqual(stateValues.Count, stateTests.Length);
-
-            host.AddComponent<C>();
+            foreach (var values in stateValues)
+            {
+                Assert.AreEqual(values.Count, stateTests.Length);
+            }
 
             var themeDefinition = ThemeDefinition.GetDefaultThemeDefinition<T>().Value;
-            themeDefinition.StateProperties[0].Values = stateValues;
+            for (int i = 0; i < stateValues.Count; i++)
+            {
+                themeDefinition.StateProperties[i].Values = stateValues[i];
+            }
+
+            yield return TestTheme<C>(host, themeDefinition, stateTests);
+        }
+
+        private IEnumerator TestTheme<C>(
+            GameObject host,
+            ThemeDefinition themeDefinition,
+            params Action<InteractableThemeBase>[] stateTests)
+            where C : UnityEngine.Component
+        {
+            host.AddComponent<C>();
 
             var theme = InteractableThemeBase.CreateAndInitTheme(themeDefinition, host);
 
@@ -227,7 +364,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         private IEnumerator TestShaderTheme<T>(
-            List<ThemePropertyValue> stateValues, 
+            List<List<ThemePropertyValue>> stateValues, 
             params Action<MaterialPropertyBlock>[] stateTests)
             where T : InteractableThemeBase
         {
@@ -248,6 +385,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return TestTheme<T, AudioSource>(targetHost, stateValues,convertedStateTests);
         }
+
+        #endregion
     }
 }
 #endif
