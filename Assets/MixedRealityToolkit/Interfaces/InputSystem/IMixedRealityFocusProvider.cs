@@ -43,15 +43,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Gets the currently focused object for the pointing source.
         /// </summary>
         /// <remarks>If the pointing source is not registered, then the Gaze's Focused <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> is returned.</remarks>
-        /// <param name="pointingSource"></param>
         /// <returns>Currently Focused Object.</returns>
         GameObject GetFocusedObject(IMixedRealityPointer pointingSource);
 
         /// <summary>
         /// Gets the currently focused object for the pointing source.
         /// </summary>
-        /// <param name="pointer"></param>
-        /// <param name="focusDetails"></param>
         bool TryGetFocusDetails(IMixedRealityPointer pointer, out FocusDetails focusDetails);
 
         /// <summary>
@@ -66,27 +63,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Generate a new unique pointer id.
         /// </summary>
-        /// <returns></returns>
         uint GenerateNewPointerId();
 
         /// <summary>
         /// Checks if the pointer is registered with the Focus Manager.
         /// </summary>
-        /// <param name="pointer"></param>
         /// <returns>True, if registered, otherwise false.</returns>
         bool IsPointerRegistered(IMixedRealityPointer pointer);
 
         /// <summary>
         /// Registers the pointer with the Focus Manager.
         /// </summary>
-        /// <param name="pointer"></param>
         /// <returns>True, if the pointer was registered, false if the pointer was previously registered.</returns>
         bool RegisterPointer(IMixedRealityPointer pointer);
 
         /// <summary>
         /// Unregisters the pointer with the Focus Manager.
         /// </summary>
-        /// <param name="pointer"></param>
         /// <returns>True, if the pointer was unregistered, false if the pointer was not registered.</returns>
         bool UnregisterPointer(IMixedRealityPointer pointer);
 
@@ -94,7 +87,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Provides access to all registered pointers of a specified type.
         /// </summary>
         /// <typeparam name="T">The type of pointers to request. Use IMixedRealityPointer to access all pointers.</typeparam>
-        /// <returns></returns>
         IEnumerable<T> GetPointers<T>() where T : class, IMixedRealityPointer;
 
         /// <summary>

@@ -75,8 +75,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Create the event and setup the values from the inspector
         /// </summary>
-        /// <param name="iEvent"></param>
-        /// <returns></returns>
         public static ReceiverBase CreateReceiver(InteractableEvent iEvent)
         {
             // Temporary workaround

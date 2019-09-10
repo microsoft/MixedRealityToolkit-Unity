@@ -166,7 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 unlimitedRecordingStartTime = Time.time;
             }
 
-            OnRecordingStarted.Invoke();
+            OnRecordingStarted?.Invoke();
         }
 
         /// <inheritdoc />
@@ -174,7 +174,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             IsRecording = false;
 
-            OnRecordingStopped.Invoke();
+            OnRecordingStopped?.Invoke();
         }
 
         /// <inheritdoc />

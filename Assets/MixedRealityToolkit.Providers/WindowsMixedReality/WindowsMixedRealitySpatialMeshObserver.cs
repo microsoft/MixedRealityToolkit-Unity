@@ -525,7 +525,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             /// </summary>
             /// <param name="lhs">Second transform to apply</param>
             /// <param name="rhs">First transform to apply</param>
-            /// <returns></returns>
             private static Pose Concatenate(Pose lhs, Pose rhs)
             {
                 return rhs.GetTransformedBy(lhs);
@@ -649,7 +648,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// <summary>
         /// Reclaims the <see cref="SpatialAwarenessMeshObject"/> to allow for later reuse.
         /// </summary>
-        /// <param name="availableMeshObject"></param>
         protected void ReclaimMeshObject(SpatialAwarenessMeshObject availableMeshObject)
         {
             if (spareMeshObject == null)

@@ -29,9 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Get a MaterialPropertyBlock and copy the designated properties
         /// </summary>
-        /// <param name="gameObject"></param>
-        /// <param name="props"></param>
-        /// <returns></returns>
         public static MaterialPropertyBlock InitMaterialPropertyBlock(GameObject gameObject, List<ThemeStateProperty> props)
         {
             MaterialPropertyBlock materialBlock = GetPropertyBlock(gameObject);
@@ -77,8 +74,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Get the MaterialPropertyBlock from a renderer on a gameObject
         /// </summary>
-        /// <param name="gameObject"></param>
-        /// <returns></returns>
         public static MaterialPropertyBlock GetPropertyBlock(GameObject gameObject)
         {
             MaterialPropertyBlock materialBlock = new MaterialPropertyBlock();
@@ -95,8 +90,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Because MaterialPropertyBlocks are used for setting material properties the shared material is
         /// used to set the initial state of the MaterialPropertyBlock(s) before mutating state.
         /// </summary>
-        /// <param name="renderer"></param>
-        /// <returns></returns>
         public static Material GetValidMaterial(Renderer renderer)
         {
             Material material = null;

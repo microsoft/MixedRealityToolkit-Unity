@@ -15,10 +15,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="trackingState"></param>
-        /// <param name="controllerHandedness"></param>
-        /// <param name="inputSource"></param>
-        /// <param name="interactions"></param>
         protected BaseController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
         {
             TrackingState = trackingState;
@@ -110,7 +106,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Setups up the configuration based on the Mixed Reality Controller Mapping Profile.
         /// </summary>
-        /// <param name="controllerType"></param>
         public bool SetupConfiguration(Type controllerType, InputSourceType inputSourceType = InputSourceType.Controller)
         {
             if (IsControllerMappingEnabled())
@@ -180,7 +175,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Assign the default interactions based on controller handedness if necessary. 
         /// </summary>
-        /// <param name="controllerHandedness"></param>
         public abstract void SetupDefaultInteractions(Handedness controllerHandedness);
 
         /// <summary>

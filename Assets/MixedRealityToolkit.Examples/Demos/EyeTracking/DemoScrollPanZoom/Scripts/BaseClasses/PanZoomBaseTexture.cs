@@ -73,9 +73,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// Returns the pan speed.
         /// </summary>
         /// <param name="uvCursorVal">Normalized cursor position in the hit box. Center is assumed to be at [-0.5, 0.5].</param>
-        /// <param name="maxSpeed"></param>
-        /// <param name="minDistThresh"></param>
-        /// <returns></returns>
         public override float ComputePanSpeed(float uvCursorPos, float maxSpeed, float minDistFromCenterForAutoPan)
         {
             // UV space from [0,1] -> Center: [-0.5, 0.5]

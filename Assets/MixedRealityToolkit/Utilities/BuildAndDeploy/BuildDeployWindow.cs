@@ -406,8 +406,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             GUILayout.BeginVertical();
 
             // SDK and MS Build Version (and save setting, if it's changed)
-            string currentSDKVersion = EditorUserBuildSettings.wsaMinUWPSDK;
-
+            // Note that this is the 'Target SDK Version' which is required to physically build the
+            // code on a build machine, not the minimum platform version.
+            string currentSDKVersion = EditorUserBuildSettings.wsaUWPSDK;
+            
             Version chosenSDKVersion = null;
             for (var i = 0; i < windowsSdkVersions.Count; i++)
             {
@@ -440,7 +442,26 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             string newSDKVersion = chosenSDKVersion.ToString();
             if (!newSDKVersion.Equals(currentSDKVersion))
             {
-                EditorUserBuildSettings.wsaMinUWPSDK = newSDKVersion;
+                EditorUserBuildSettings.wsaUWPSDK = newSDKVersion;
+            }
+
+            string currentMinPlatformVersion = EditorUserBuildSettings.wsaMinUWPSDK;
+            if (string.IsNullOrWhiteSpace(currentMinPlatformVersion))
+            {
+                // If the min platform version hasn't been specified, set it to the recommended value.
+                EditorUserBuildSettings.wsaMinUWPSDK = UwpBuildDeployPreferences.MIN_PLATFORM_VERSION.ToString();
+            }
+            else if (UwpBuildDeployPreferences.MIN_PLATFORM_VERSION != new Version(currentMinPlatformVersion))
+            {
+                // If the user has manually changed the minimum platform version in the 'Build Settings' window
+                // provide a warning that the generated application may not be deployable to older generation
+                // devices. We generally recommend setting to the lowest value and letting the app model's
+                // capability and versioning checks kick in for applications at runtime.
+                EditorGUILayout.HelpBox(
+                    "Minimum platform version is set to a different value from the recommended value: " +
+                        $"{UwpBuildDeployPreferences.MIN_PLATFORM_VERSION}, the generated app may not be deployable to older generation devices. " +
+                        $"Consider updating the 'Minimum Platform Version' in the Build Settings window to match {UwpBuildDeployPreferences.MIN_PLATFORM_VERSION}" ,
+                    MessageType.Warning);
             }
 
             var curScriptingBackend = PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA);

@@ -143,7 +143,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// HalfLife closer to zero means lerp closer to one
         /// </summary>
-        /// <param name="halfLife"></param>
         public StabilizedRay(float halfLife)
         {
             HalfLifePosition = halfLife;
