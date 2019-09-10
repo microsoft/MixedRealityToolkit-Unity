@@ -71,7 +71,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         /// draw the states property field for assigning states
         /// Set the default state if one does not exist
         /// </summary>
-        /// <returns></returns>
         protected bool RenderStates()
         {
             GUIStyle box = InspectorUIUtility.Box(EditorGUI.indentLevel * ThemeBoxMargin);
