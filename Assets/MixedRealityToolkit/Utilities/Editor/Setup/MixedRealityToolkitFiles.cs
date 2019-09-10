@@ -380,10 +380,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             int separatorIndex = packageFolder.IndexOf('.');
-            if (separatorIndex != -1 )
-            {
-                packageFolder = (separatorIndex != -1) ? packageFolder.Substring(separatorIndex+1) : "Core";
-            }
+            packageFolder = (separatorIndex != -1) ? packageFolder.Substring(separatorIndex+1) : "Core";
 
             MixedRealityToolkitModuleType moduleType;
             return moduleNameMap.TryGetValue(packageFolder, out moduleType) ? moduleType: MixedRealityToolkitModuleType.None;
