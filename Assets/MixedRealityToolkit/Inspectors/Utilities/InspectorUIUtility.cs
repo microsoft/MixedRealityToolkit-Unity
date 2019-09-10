@@ -363,7 +363,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Medium title format
         /// </summary>
-        /// <param name="title"></param>
+        /// <param name="header">string content to render</param>
         public static void DrawHeader(string header)
         {
             GUIStyle labelStyle = LableStyle(HeaderFontSize, ColorTint10);

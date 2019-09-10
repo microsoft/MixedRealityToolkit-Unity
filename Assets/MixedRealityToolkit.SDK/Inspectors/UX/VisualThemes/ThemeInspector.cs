@@ -257,9 +257,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         /// <summary>
         /// Temporary utility function to migrate shader data from deprecated properties to new valid properties
         /// </summary>
-        /// <param name="stateProperty"></param>
-        /// <param name="shader"></param>
-        /// <param name="shaderPropertyname"></param>
         private static void MigrateShaderData(SerializedProperty stateProperty, SerializedProperty shader, SerializedProperty shaderPropertyname)
         {
             SerializedProperty shaderOptions = stateProperty.FindPropertyRelative("ShaderOptions");
@@ -302,9 +299,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         /// <summary>
         /// Render a single property value
         /// </summary>
-        /// <param name="item"></param>
-        /// <param name="name"></param>
-        /// <param name="type"></param>
         public static void RenderValue(SerializedProperty item, string name, ThemePropertyTypes type)
         {
             SerializedProperty floatValue = item.FindPropertyRelative("Float");
