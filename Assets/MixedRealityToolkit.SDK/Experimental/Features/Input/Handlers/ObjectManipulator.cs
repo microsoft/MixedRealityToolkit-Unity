@@ -151,32 +151,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
         
         [SerializeField]
-        [Tooltip("Constrain rotation along an axis")]
-        private RotationConstraintType constraintOnRotation = RotationConstraintType.None;
-
-        /// <summary>
-        /// Constrain rotation along an axis
-        /// </summary>
-        public RotationConstraintType ConstraintOnRotation
-        {
-            get => constraintOnRotation;
-            set => constraintOnRotation = value;
-        }
-
-        [SerializeField]
-        [Tooltip("Constrain movement")]
-        private MovementConstraintType constraintOnMovement = MovementConstraintType.None;
-
-        /// <summary>
-        /// Constrain movement
-        /// </summary>
-        public MovementConstraintType ConstraintOnMovement
-        {
-            get => constraintOnMovement;
-            set => constraintOnMovement = value;
-        }
-        
-        [SerializeField]
         [Tooltip("Check to enable frame-rate independent smoothing.")]
         private bool smoothingActive = true;
 
@@ -328,7 +302,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         private Quaternion startObjectRotationFlatCameraSpace;
         private Quaternion hostWorldRotationOnManipulationStart;
 
-        private TransformScaleHandler scaleHandler;
+        private List<TransformConstraint> constraints;
 
         private bool IsOneHandedManipulationEnabled => manipulationType.HasFlag(HandMovementType.OneHanded) && pointerIdToPointerMap.Count == 1;
         private bool IsTwoHandedManipulationEnabled => manipulationType.HasFlag(HandMovementType.TwoHanded) && pointerIdToPointerMap.Count > 1;
@@ -351,7 +325,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             }
 
             rigidBody = GetComponent<Rigidbody>();
-            scaleHandler = GetComponent<TransformScaleHandler>();
+            constraints = GetComponents<TransformConstraint>().ToList();
         }
         #endregion MonoBehaviour Functions
 
@@ -567,7 +541,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
             if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Rotate))
             {
-                rotateLogic.Setup(handPositionArray, hostTransform, ConstraintOnRotation);
+                rotateLogic.Setup(handPositionArray, hostTransform);
             }
             if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Move))
             {
@@ -583,15 +557,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         private void HandleTwoHandManipulationUpdated()
         {
-            var targetPosition = hostTransform.position;
+            var targetPose = new MixedRealityPose(hostTransform.position, hostTransform.rotation);
             var targetScale = hostTransform.localScale;
-            var targetRotation = hostTransform.rotation;
 
             var handPositionArray = GetHandPositionArray();
 
             if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Rotate))
             {
-                targetRotation = rotateLogic.Update(handPositionArray, targetRotation, constraintOnRotation, false);
+                targetPose.Rotation = rotateLogic.Update(handPositionArray, targetPose.Rotation);
             }
             if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Scale))
             {
@@ -601,17 +574,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Move))
             {
                 MixedRealityPose pose = GetPointersPose();
-                targetPosition = moveLogic.Update(pose, targetRotation, targetScale, constraintOnMovement);
+                targetPose.Position = moveLogic.Update(pose, targetPose.Rotation, targetScale);
             }
             
-            hostTransform.position = SmoothTo(hostTransform.position, targetPosition, moveLerpTime);
-            // Currently the two hand rotation algorithm doesn't allow for lerping, but it should. Fix this.
-            hostTransform.rotation = SmoothTo(hostTransform.rotation, targetRotation, rotateLerpTime);
-
-            if (scaleHandler != null)
-            {
-                targetScale = scaleHandler.ClampScale(targetScale);
+            foreach (var constraint in constraints)
+            { 
+                constraint.ApplyConstraint(ref targetPose, ref targetScale);
             }
+
+            hostTransform.position = SmoothTo(hostTransform.position, targetPose.Position, moveLerpTime);
+            hostTransform.rotation = SmoothTo(hostTransform.rotation, targetPose.Rotation, rotateLerpTime);
             hostTransform.localScale = SmoothTo(hostTransform.localScale, targetScale, scaleLerpTime);
         }
 
@@ -655,52 +627,58 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             PointerData pointerData = GetFirstPointer();
             IMixedRealityPointer pointer = pointerData.pointer;
 
-            Quaternion targetRotation = Quaternion.identity;
+            var targetPose = new MixedRealityPose(hostTransform.position, hostTransform.rotation);
             RotateInOneHandType rotateInOneHandType = isNearManipulation ? oneHandRotationModeNear : oneHandRotationModeFar;
             switch (rotateInOneHandType)
             {
                 case RotateInOneHandType.MaintainOriginalRotation:
-                    targetRotation = hostTransform.rotation;
+                    targetPose.Rotation = hostTransform.rotation;
                     break;
                 case RotateInOneHandType.MaintainRotationToUser:
                     Vector3 euler = CameraCache.Main.transform.rotation.eulerAngles;
                     // don't use roll (feels awkward) - just maintain yaw / pitch angle
-                    targetRotation = Quaternion.Euler(euler.x, euler.y, 0) * startObjectRotationCameraSpace;
+                    targetPose.Rotation = Quaternion.Euler(euler.x, euler.y, 0) * startObjectRotationCameraSpace;
                     break;
                 case RotateInOneHandType.GravityAlignedMaintainRotationToUser:
                     var cameraForwardFlat = CameraCache.Main.transform.forward;
                     cameraForwardFlat.y = 0;
-                    targetRotation = Quaternion.LookRotation(cameraForwardFlat, Vector3.up) * startObjectRotationFlatCameraSpace;
+                    targetPose.Rotation = Quaternion.LookRotation(cameraForwardFlat, Vector3.up) * startObjectRotationFlatCameraSpace;
                     break;
                 case RotateInOneHandType.FaceUser:
                 {
                     Vector3 directionToTarget = pointerData.GrabPoint - CameraCache.Main.transform.position;
                     // Vector3 directionToTarget = hostTransform.position - CameraCache.Main.transform.position;
-                    targetRotation = Quaternion.LookRotation(-directionToTarget);
+                    targetPose.Rotation = Quaternion.LookRotation(-directionToTarget);
                     break;
                 }
                 case RotateInOneHandType.FaceAwayFromUser:
                 {
                     Vector3 directionToTarget = pointerData.GrabPoint - CameraCache.Main.transform.position;
-                    targetRotation = Quaternion.LookRotation(directionToTarget);
+                    targetPose.Rotation = Quaternion.LookRotation(directionToTarget);
                     break;
                 }
                 case RotateInOneHandType.RotateAboutObjectCenter:
                     Quaternion gripRotation;
                     TryGetGripRotation(pointer, out gripRotation);
-                    targetRotation = gripRotation * objectToGripRotation;
+                    targetPose.Rotation = gripRotation * objectToGripRotation;
                     break;
                 case RotateInOneHandType.RotateAboutGrabPoint:
-                    targetRotation = pointer.Rotation * objectToHandRotation;
+                    targetPose.Rotation = pointer.Rotation * objectToHandRotation;
                     break;
             }
-
-            targetRotation = ApplyConstraints(targetRotation);
-            MixedRealityPose pointerPose = new MixedRealityPose(pointer.Position, pointer.Rotation);
-            Vector3 targetPosition = moveLogic.Update(pointerPose, targetRotation, hostTransform.localScale, constraintOnMovement);
             
-            Quaternion smoothedRotation = SmoothTo(hostTransform.rotation, targetRotation, rotateLerpTime);
-            Vector3 smoothedPosition = SmoothTo(hostTransform.position, targetPosition, moveLerpTime);
+            MixedRealityPose pointerPose = new MixedRealityPose(pointer.Position, pointer.Rotation);
+            targetPose.Position = moveLogic.Update(pointerPose, targetPose.Rotation, hostTransform.localScale);
+
+            var ignoreScale = Vector3.one;
+            foreach (var constraint in constraints)
+            {
+                constraint.ApplyConstraint(ref targetPose, ref ignoreScale);
+            }
+
+            Quaternion smoothedRotation = SmoothTo(hostTransform.rotation, targetPose.Rotation, rotateLerpTime);
+            Vector3 smoothedPosition = SmoothTo(hostTransform.position, targetPose.Position, moveLerpTime);
+
             hostTransform.SetPositionAndRotation(smoothedPosition, smoothedRotation);
         }
 
@@ -838,26 +816,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             // We may be able to do this without allocating memory.
             // Moving to a method for later investigation.
             return pointerIdToPointerMap.Values.First();
-        }
-
-        private Quaternion ApplyConstraints(Quaternion newRotation)
-        {
-            // apply constraint on rotation diff
-            Quaternion diffRotation = newRotation * Quaternion.Inverse(hostWorldRotationOnManipulationStart);
-            switch (constraintOnRotation)
-            {
-                case RotationConstraintType.XAxisOnly:
-                    diffRotation.eulerAngles = Vector3.Scale(diffRotation.eulerAngles, Vector3.right);
-                    break;
-                case RotationConstraintType.YAxisOnly:
-                    diffRotation.eulerAngles = Vector3.Scale(diffRotation.eulerAngles, Vector3.up);
-                    break;
-                case RotationConstraintType.ZAxisOnly:
-                    diffRotation.eulerAngles = Vector3.Scale(diffRotation.eulerAngles, Vector3.forward);
-                    break;
-            }
-
-            return diffRotation * hostWorldRotationOnManipulationStart;
         }
 
         private bool TryGetGripRotation(IMixedRealityPointer pointer, out Quaternion rotation)

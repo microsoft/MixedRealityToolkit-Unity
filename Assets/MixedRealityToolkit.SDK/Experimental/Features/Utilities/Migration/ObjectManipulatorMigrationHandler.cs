@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Experimental.UI;
 using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
@@ -73,8 +74,32 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             }
 
             mh2.ReleaseBehavior = (ObjectManipulator.ReleaseBehaviorType)mh1.ReleaseBehavior;
-            mh2.ConstraintOnRotation = mh1.ConstraintOnRotation;
-            mh2.ConstraintOnMovement = mh1.ConstraintOnMovement;
+
+            if (mh1.ConstraintOnRotation != Toolkit.Utilities.RotationConstraintType.None)
+            {
+                var rotateConstraint = mh2.gameObject.AddComponent<RotateConstraint>();
+                rotateConstraint.TargetTransform = mh1.HostTransform;
+                switch (mh1.ConstraintOnRotation)
+                {
+                    case Toolkit.Utilities.RotationConstraintType.XAxisOnly:
+                        rotateConstraint.ConstraintOnRotation = Toolkit.Utilities.AxisFlags.XAxis;
+                        break;
+                    case Toolkit.Utilities.RotationConstraintType.YAxisOnly:
+                        rotateConstraint.ConstraintOnRotation = Toolkit.Utilities.AxisFlags.YAxis;
+                        break;
+                    case Toolkit.Utilities.RotationConstraintType.ZAxisOnly:
+                        rotateConstraint.ConstraintOnRotation = Toolkit.Utilities.AxisFlags.ZAxis;
+                        break;
+                }
+            }
+
+            if (mh1.ConstraintOnMovement == Toolkit.Utilities.MovementConstraintType.FixDistanceFromHead)
+            {
+                var moveConstraint = mh2.gameObject.AddComponent<FixedDistanceConstraint>();
+                moveConstraint.TargetTransform = mh1.HostTransform;
+                moveConstraint.ConstraintTransform = CameraCache.Main.transform;
+            }
+
             mh2.SmoothingActive = mh1.SmoothingActive;
             mh2.MoveLerpTime = mh1.SmoothingAmoutOneHandManip;
             mh2.RotateLerpTime = mh1.SmoothingAmoutOneHandManip;

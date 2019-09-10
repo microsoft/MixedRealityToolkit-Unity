@@ -26,9 +26,9 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// Setup the rotation logic.
         /// </summary>
         /// <param name="handsPressedArray">Array with positions of down pointers</param>
-        public void Setup(Vector3[] handsPressedArray, Transform t, RotationConstraintType rotationConstraint)
+        public void Setup(Vector3[] handsPressedArray, Transform t)
         {
-            startHandlebar = ProjectHandlebarGivenConstraint(rotationConstraint, GetHandlebarDirection(handsPressedArray));
+            startHandlebar = GetHandlebarDirection(handsPressedArray);
             startRotation = t.rotation;
         }
 
@@ -37,34 +37,10 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// </summary>
         /// <param name="handsPressedArray">Array with positions of down pointers, order should be the same as handsPressedArray provided in Setup</param>
         /// <returns>Desired rotation</returns>
-        public Quaternion Update(Vector3[] handsPressedArray, Quaternion currentRotation, RotationConstraintType rotationConstraint, bool useLocalSpaceForConstraint)
+        public Quaternion Update(Vector3[] handsPressedArray, Quaternion currentRotation)
         {
-            var handlebarDirection = ProjectHandlebarGivenConstraint(rotationConstraint, GetHandlebarDirection(handsPressedArray));
-            return useLocalSpaceForConstraint
-                ? startRotation * Quaternion.FromToRotation(startHandlebar, handlebarDirection)
-                : Quaternion.FromToRotation(startHandlebar, handlebarDirection) * startRotation;
-        }
-
-        private static Vector3 ProjectHandlebarGivenConstraint(RotationConstraintType constraint, Vector3 handlebarRotation)
-        {
-            Vector3 result = handlebarRotation;
-            switch (constraint)
-            {
-                case RotationConstraintType.XAxisOnly:
-                    result.x = 0;
-                    break;
-                case RotationConstraintType.YAxisOnly:
-                    result.y = 0;
-                    break;
-                case RotationConstraintType.ZAxisOnly:
-                    result.z = 0;
-                    break;
-                case RotationConstraintType.None:
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(constraint), constraint, null);
-            }
-            return result;
+            var handlebarDirection = GetHandlebarDirection(handsPressedArray);
+            return Quaternion.FromToRotation(startHandlebar, handlebarDirection) * startRotation;
         }
 
         private static Vector3 GetHandlebarDirection(Vector3[] handsPressedArray)

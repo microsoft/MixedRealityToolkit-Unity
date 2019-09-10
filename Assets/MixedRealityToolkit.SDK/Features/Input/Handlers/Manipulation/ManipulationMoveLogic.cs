@@ -48,12 +48,12 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// Update the position based on input.
         /// </summary>
         /// <returns>A Vector3 describing the desired position</returns>
-        public Vector3 Update(MixedRealityPose pointerCentroidPose, Quaternion objectRotation, Vector3 objectScale, MovementConstraintType movementConstraint)
+        public Vector3 Update(MixedRealityPose pointerCentroidPose, Quaternion objectRotation, Vector3 objectScale)
         {
             Vector3 headPosition = CameraCache.Main.transform.position;
             float distanceRatio = 1.0f;
 
-            if (pointerPosIndependentOfHead && movementConstraint != MovementConstraintType.FixDistanceFromHead)
+            if (pointerPosIndependentOfHead)
             {
                 // Compute how far away the object should be based on the ratio of the current to original hand distance
                 var currentHandDistance = Vector3.Magnitude(pointerCentroidPose.Position - headPosition);

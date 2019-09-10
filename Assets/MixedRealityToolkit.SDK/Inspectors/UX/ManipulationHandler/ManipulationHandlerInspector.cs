@@ -22,8 +22,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty oneHandRotationModeFar;
         private SerializedProperty twoHandedManipulationType;
         private SerializedProperty releaseBehavior;
-        private SerializedProperty constraintOnRotation;
-        private SerializedProperty constraintOnMovement;
         private SerializedProperty smoothingActive;
         private SerializedProperty smoothingAmountOneHandManip;
         private SerializedProperty onManipulationStarted;
@@ -54,10 +52,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             // Physics
             releaseBehavior = serializedObject.FindProperty("releaseBehavior");
-
-            // Constraints
-            constraintOnRotation = serializedObject.FindProperty("constraintOnRotation");
-            constraintOnMovement = serializedObject.FindProperty("constraintOnMovement");
 
             // Smoothing
             smoothingActive = serializedObject.FindProperty("smoothingActive");
@@ -146,8 +140,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (constraintsFoldout)
             {
-                EditorGUILayout.PropertyField(constraintOnRotation);
-                EditorGUILayout.PropertyField(constraintOnMovement);
             }
 
             EditorGUILayout.Space();

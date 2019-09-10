@@ -262,9 +262,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             get
             {
-                if (scaleHandler != null)
+                if (scaleConstraint != null)
                 {
-                    return scaleHandler.ScaleMinimum;
+                    return scaleConstraint.ScaleMinimum;
                 }
                 return 0.0f;
             }
@@ -280,9 +280,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             get
             {
-                if (scaleHandler != null)
+                if (scaleConstraint != null)
                 {
-                    return scaleHandler.ScaleMaximum;
+                    return scaleConstraint.ScaleMaximum;
                 }
                 return 0.0f;
             }
@@ -1044,7 +1044,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // Current position of the grab point
         private Vector3 currentGrabPoint;
 
-        private TransformScaleHandler scaleHandler;
+        private TransformScaleHandler scaleConstraint;
 
         // Grab point position in pointer space. Used to calculate the current grab point from the current pointer pose.
         private Vector3 grabPointInPointer;
@@ -1369,17 +1369,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     float scaleFactor = 1 + (currentDist - initialDist) / initialDist;
 
                     Vector3 newScale = initialScaleOnGrabStart * scaleFactor;
-                    Vector3 clampedScale = newScale;
-                    if (scaleHandler != null)
+
+                    Target.transform.localScale = newScale;
+                    if (scaleConstraint != null)
                     {
-                        clampedScale = scaleHandler.ClampScale(newScale);
+                        MixedRealityPose unusedPose = MixedRealityPose.ZeroIdentity;
+                        Vector3 clampedScale = newScale;
+                        scaleConstraint.ApplyConstraint(ref unusedPose, ref clampedScale);
                         if (clampedScale != newScale)
                         {
                             scaleFactor = clampedScale[0] / initialScaleOnGrabStart[0];
                         }
                     }
 
-                    Target.transform.localScale = clampedScale;
                     Target.transform.position = initialPositionOnGrabStart * scaleFactor + (1 - scaleFactor) * oppositeCorner;
                 }
             }
@@ -1951,15 +1953,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 isChildOfTarget = transform.IsChildOf(target.transform);
 
-                scaleHandler = GetComponent<TransformScaleHandler>();
-                if (scaleHandler == null)
+                scaleConstraint = GetComponent<TransformScaleHandler>();
+                if (scaleConstraint == null)
                 {
-                    scaleHandler = gameObject.AddComponent<TransformScaleHandler>();
+                    scaleConstraint = gameObject.AddComponent<TransformScaleHandler>();
 
-                    scaleHandler.TargetTransform = Target.transform;
+                    scaleConstraint.TargetTransform = Target.transform;
 #pragma warning disable 0618
-                    scaleHandler.ScaleMinimum = scaleMinimum;
-                    scaleHandler.ScaleMaximum = scaleMaximum;
+                    scaleConstraint.ScaleMinimum = scaleMinimum;
+                    scaleConstraint.ScaleMaximum = scaleMaximum;
 #pragma warning restore 0618
                 }
             }

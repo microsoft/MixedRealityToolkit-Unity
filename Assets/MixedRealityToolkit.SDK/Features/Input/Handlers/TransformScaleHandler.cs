@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
@@ -9,19 +10,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Component for setting the min/max scale values for ManipulationHandler
     /// or BoundingBox
     /// </summary>
-    public class TransformScaleHandler : MonoBehaviour
+    public class TransformScaleHandler : TransformConstraint
     {
         #region Properties
-
-        [SerializeField]
-        [Tooltip("Transform being scaled. Defaults to the object of the component.")]
-        private Transform targetTransform = null;
-
-        public Transform TargetTransform
-        {
-            get => targetTransform;
-            set => targetTransform = value;
-        }
 
         private Vector3 initialScale;
 
@@ -75,14 +66,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #region MonoBehaviour Methods
 
-        public void Start()
+        public override void Start()
         {
-            if (targetTransform == null)
-            {
-                targetTransform = transform;
-            }
-            initialScale = targetTransform.localScale;
+            base.Start();
 
+            initialScale = TargetTransform.localScale;
             SetScaleLimits();
         }
 
@@ -91,14 +79,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #region Public Methods
 
         /// <summary>
-        /// Clamps the given scale to the scale limits set by <see cref="SetScaleLimits"/> such that:
+        /// Clamps the transform scale to the scale limits set by <see cref="SetScaleLimits"/> such that:
         /// - No one component of the returned vector will be greater than the max scale.
         /// - No one component of the returned vector will be less than the min scale.
         /// - The returned vector's direction will be the same as the given vector
         /// </summary>
-        /// <param name="scale">Scale value to clamp</param>
-        /// <returns>The clamped scale vector</returns>
-        public Vector3 ClampScale(Vector3 scale)
+        public override void ApplyConstraint(ref MixedRealityPose pose, ref Vector3 scale)
         {
             if (Vector3.Min(maximumScale, scale) != scale)
             {
@@ -149,8 +135,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     scale /= minRatio;
                 }
             }
-
-            return scale;
         }
 
         #endregion Public Methods

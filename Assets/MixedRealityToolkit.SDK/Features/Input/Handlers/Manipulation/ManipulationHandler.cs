@@ -545,7 +545,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         #endregion Public Methods
-
+            
         #region Hand Event Handlers
 
         /// <inheritdoc />
@@ -629,7 +629,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if ((currentState & State.Rotating) > 0)
             {
-                targetRotationTwoHands = rotateLogic.Update(handPositionArray, targetRotationTwoHands, constraintOnRotation, useLocalSpaceForConstraint);
+                targetRotationTwoHands = rotateLogic.Update(handPositionArray, targetRotationTwoHands);
             }
             if ((currentState & State.Scaling) > 0)
             {
@@ -639,7 +639,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if ((currentState & State.Moving) > 0)
             {
                 MixedRealityPose pose = GetAveragePointerPose();
-                targetPosition = moveLogic.Update(pose, targetRotationTwoHands, targetScale, constraintOnMovement);
+                targetPosition = moveLogic.Update(pose, targetRotationTwoHands, targetScale);
             }
 
             float lerpAmount = GetLerpAmount();
@@ -649,31 +649,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (scaleHandler != null)
             {
-                targetScale = scaleHandler.ClampScale(targetScale);
+                var ignorePose = MixedRealityPose.ZeroIdentity;
+                scaleHandler.ApplyConstraint(ref ignorePose, ref targetScale);
             }
             hostTransform.localScale = Vector3.Lerp(hostTransform.localScale, targetScale, lerpAmount);
-        }
-
-        private Quaternion ApplyConstraints(Quaternion newRotation)
-        {
-            // apply constraint on rotation diff
-            Quaternion diffRotation = newRotation * Quaternion.Inverse(hostWorldRotationOnManipulationStart);
-            switch (constraintOnRotation)
-            {
-                case RotationConstraintType.XAxisOnly:
-                    diffRotation.eulerAngles = Vector3.Scale(diffRotation.eulerAngles, Vector3.right);
-                    break;
-                case RotationConstraintType.YAxisOnly:
-                    diffRotation.eulerAngles = Vector3.Scale(diffRotation.eulerAngles, Vector3.up);
-                    break;
-                case RotationConstraintType.ZAxisOnly:
-                    diffRotation.eulerAngles = Vector3.Scale(diffRotation.eulerAngles, Vector3.forward);
-                    break;
-            }
-
-            return useLocalSpaceForConstraint
-                ? hostWorldRotationOnManipulationStart * diffRotation
-                : diffRotation * hostWorldRotationOnManipulationStart;
         }
 
         private void HandleOneHandMoveUpdated()
@@ -721,10 +700,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     targetRotation = pointer.Rotation * objectToHandRotation;
                     break;
             }
-
-            targetRotation = ApplyConstraints(targetRotation);
+            
             MixedRealityPose pointerPose = new MixedRealityPose(pointer.Position, pointer.Rotation);
-            Vector3 targetPosition = moveLogic.Update(pointerPose, targetRotation, hostTransform.localScale, constraintOnMovement);
+            Vector3 targetPosition = moveLogic.Update(pointerPose, targetRotation, hostTransform.localScale);
 
             float lerpAmount = GetLerpAmount();
             Quaternion smoothedRotation = Quaternion.Lerp(hostTransform.rotation, targetRotation, lerpAmount);
@@ -739,7 +717,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if ((newState & State.Rotating) > 0)
             {
-                rotateLogic.Setup(handPositionArray, hostTransform, ConstraintOnRotation);
+                rotateLogic.Setup(handPositionArray, hostTransform);
             }
             if ((newState & State.Moving) > 0)
             {
