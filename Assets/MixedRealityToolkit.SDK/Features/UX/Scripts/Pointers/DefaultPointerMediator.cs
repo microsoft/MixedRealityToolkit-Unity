@@ -100,6 +100,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 unassignedPointers.Add(unassignedPointer);
             }
 
+            ApplyCustomPointerBehaviors();
+
             // If any pointers are locked, they have priority. 
             // Deactivate all other pointers that are on that input source
             foreach (IMixedRealityPointer pointer in allPointers)
@@ -170,7 +172,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 unassignedPointer.IsActive = true;
             }
 
-            ApplyCustomPointerBehaviors();
         }
 
         private void ApplyCustomPointerBehaviors()
@@ -187,6 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             {
                                 genericPtr.IsInteractionEnabled = false;
                             }
+                            unassignedPointers.Remove(ptr);
                         }
                         else if (behavior == PointerBehavior.On)
                         {
@@ -195,6 +197,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             {
                                 genericPtr.IsInteractionEnabled = true;
                             }
+                            unassignedPointers.Remove(ptr);
                         }
                     };
                 foreach (IMixedRealityPointer pointer in allPointers)
