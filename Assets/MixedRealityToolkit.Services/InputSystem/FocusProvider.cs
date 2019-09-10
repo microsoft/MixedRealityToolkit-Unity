@@ -37,6 +37,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Dictionary<Type, PointerBehaviorForHandedness> customPointerBehaviors = new Dictionary<Type, PointerBehaviorForHandedness>();
         /// <summary>
         /// Pointer behavior for the gaze pointer.
+        /// We make gaze pointer unique for a few reasons:
+        /// First, gazepointer actually maps to two types: ggvpointer and GazeProvider's internal gazepointer.
+        /// Second, the internal gaze pointer actually cannot be referenced from here since it's an internal class.
         /// </summary>
         public PointerBehavior GazePointerBehavior { get; set; } = PointerBehavior.Default;
 

@@ -209,6 +209,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.OnPostSceneQuery();
 
+            // This ensures that we actually hide the finger cursor if the poke pointer is off
             BaseCursor?.SetVisibility(IsInteractionEnabled);
 
             if (!IsActive)

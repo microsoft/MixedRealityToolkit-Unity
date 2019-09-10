@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     /// <summary>
     /// Verify that pointers can be turned on and offvia FocusProvider.SetPointerBehavior
     /// </summary>
-    public class PointerOnOffTests : BasePlayModeTests
+    public class PointerBehaviorTests : BasePlayModeTests
     {
         private class PointerStateContainer
         {

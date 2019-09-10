@@ -42,7 +42,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <typeparam name="T">Type of pointer to query</typeparam>
         /// <param name="handedness">Handedness of pointer</param>
-
         /// <param name="inputType">Input type of pointer</param>
         /// <param name="endPoint">Output point position</param>
         /// <returns>True if pointer found, false otherwise. If not found, endPoint is set to zero</returns>
@@ -188,7 +187,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="handedness">Specify handedness to restrict to only right, left hands.</param>
         public static void SetHandRayPointerBehavior(PointerBehavior pointerBehavior, Handedness handedness = Handedness.Any)
         {
-            SetPointerBehavior<LinePointer>(pointerBehavior, handedness);
+            SetPointerBehavior<ShellHandRayPointer>(pointerBehavior, handedness);
         }
 
         /// <summary>
@@ -198,7 +197,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="handedness">Specify handedness to restrict to only right, left.</param>
         public static void SetMotionControllerRayPointerBehavior(PointerBehavior pointerBehavior, Handedness handedness = Handedness.Any)
         {
-            SetPointerBehavior<LinePointer>(pointerBehavior, handedness);
+            SetPointerBehavior<ShellHandRayPointer>(pointerBehavior, handedness);
         }
 
         /// <summary>
