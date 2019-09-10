@@ -524,13 +524,13 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             {
                 if (propertyGroupNode.Attribute("Condition") != null)
                 {
-                    var AllowUnsafeBlocks = propertyGroupNode.Element("AllowUnsafeBlocks");
-                    if (AllowUnsafeBlocks == null)
+                    var allowUnsafeBlocks = propertyGroupNode.Element(propertyGroupNode.GetDefaultNamespace() + "AllowUnsafeBlocks");
+                    if (allowUnsafeBlocks == null)
                     {
-                        AllowUnsafeBlocks = new XElement(propertyGroupNode.GetDefaultNamespace() + "AllowUnsafeBlocks");
-                        propertyGroupNode.Add(AllowUnsafeBlocks);
+                        allowUnsafeBlocks = new XElement(propertyGroupNode.GetDefaultNamespace() + "AllowUnsafeBlocks");
+                        propertyGroupNode.Add(allowUnsafeBlocks);
                     }
-                    AllowUnsafeBlocks.Value = "true";
+                    allowUnsafeBlocks.Value = "true";
                 }
             }
         }
