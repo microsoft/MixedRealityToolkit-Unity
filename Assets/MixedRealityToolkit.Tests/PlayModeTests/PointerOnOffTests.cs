@@ -146,7 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 GGVPointerEnabled = null,
                 PokePointerEnabled = false,
                 SpherePointerEnabled = false,
-                LinePointerEnabled = false
+                LinePointerEnabled = true
             };
 
             EnsurePointerStates(Handedness.Right, touchOff);
@@ -201,7 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 GGVPointerEnabled = null,
                 PokePointerEnabled = false,
                 SpherePointerEnabled = false,
-                LinePointerEnabled = false
+                LinePointerEnabled = true
             };
 
             EnsurePointerStates(Handedness.Right, grabOff);
