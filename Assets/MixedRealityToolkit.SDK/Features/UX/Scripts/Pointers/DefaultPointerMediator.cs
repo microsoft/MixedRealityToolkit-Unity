@@ -186,7 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             return;
                         }
 
-                        bool isPointerOn = behavior == PointerBehavior.On;
+                        bool isPointerOn = behavior == PointerBehavior.AlwaysOn;
                         ptr.IsActive = isPointerOn;
                         if (ptr is GenericPointer genericPtr)
                         {

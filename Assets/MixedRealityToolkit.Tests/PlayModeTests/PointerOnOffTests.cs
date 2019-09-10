@@ -89,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             EnsurePointerStates(Handedness.Left, gazeOn);
 
             TestContext.Out.WriteLine("Turn off gaze cursor");
-            PointerUtils.SetGazePointerBehavior(PointerBehavior.Off);
+            PointerUtils.SetGazePointerBehavior(PointerBehavior.AlwaysOff);
 
             yield return null;
 
@@ -137,7 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             EnsurePointerStates(Handedness.Left, touchOn);
 
             TestContext.Out.WriteLine("Turn off poke pointer right hand");
-            PointerUtils.SetPokePointerBehavior(PointerBehavior.Off, Handedness.Right);
+            PointerUtils.SetPokePointerBehavior(PointerBehavior.AlwaysOff, Handedness.Right);
             yield return null;
 
             PointerStateContainer touchOff = new PointerStateContainer()
@@ -153,7 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             EnsurePointerStates(Handedness.Left, touchOn);
 
             TestContext.Out.WriteLine("Turn off poke pointer both hands");
-            PointerUtils.SetPokePointerBehavior(PointerBehavior.Off);
+            PointerUtils.SetPokePointerBehavior(PointerBehavior.AlwaysOff);
             yield return null;
 
             EnsurePointerStates(Handedness.Right, touchOff);
@@ -192,7 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             EnsurePointerStates(Handedness.Left, grabOn);
 
             TestContext.Out.WriteLine("Turn off grab pointer right hand");
-            PointerUtils.SetGrabPointerBehavior(PointerBehavior.Off, Handedness.Right);
+            PointerUtils.SetGrabPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Right);
             yield return null;
 
             PointerStateContainer grabOff = new PointerStateContainer()
@@ -208,7 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             EnsurePointerStates(Handedness.Left, grabOn);
 
             TestContext.Out.WriteLine("Turn off grab pointer both hands");
-            PointerUtils.SetGrabPointerBehavior(PointerBehavior.Off);
+            PointerUtils.SetGrabPointerBehavior(PointerBehavior.AlwaysOff);
             yield return null;
 
             EnsurePointerStates(Handedness.Right, grabOff);
@@ -242,7 +242,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             EnsurePointerStates(Handedness.Left, lineOn);
 
             TestContext.Out.WriteLine("Turn off ray pointer both hands");
-            PointerUtils.SetRayPointerBehavior(PointerBehavior.Off);
+            PointerUtils.SetRayPointerBehavior(PointerBehavior.AlwaysOff);
             yield return null;
 
             PointerStateContainer lineOff = new PointerStateContainer()
@@ -258,7 +258,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             EnsurePointerStates(Handedness.Left, lineOff);
 
             TestContext.Out.WriteLine("Turn on ray right hand.");
-            PointerUtils.SetRayPointerBehavior(PointerBehavior.On, Handedness.Right);
+            PointerUtils.SetRayPointerBehavior(PointerBehavior.AlwaysOn, Handedness.Right);
             yield return null;
 
             EnsurePointerStates(Handedness.Right, lineOn);
