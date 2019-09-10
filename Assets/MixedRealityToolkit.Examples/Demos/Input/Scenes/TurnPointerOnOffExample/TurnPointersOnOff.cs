@@ -73,6 +73,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         void Start()
         {
+            ResetExample();
+            PopulatePointerToggleList();
+        }
+
+        public void ResetExample()
+        {
             IMixedRealityCapabilityCheck capabilityChecker = CoreServices.InputSystem as IMixedRealityCapabilityCheck;
             if (capabilityChecker != null)
             {
@@ -93,8 +99,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             {
                 Debug.LogWarning("Input system does not implement IMixedRealityCapabilityCheck, not setting to any preset interaction");
             }
-
-            PopulatePointerToggleList();
         }
 
         private void PopulatePointerToggleList()
