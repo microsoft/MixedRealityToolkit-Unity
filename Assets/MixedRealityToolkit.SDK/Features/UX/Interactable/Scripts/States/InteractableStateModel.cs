@@ -31,6 +31,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             return Bit;
         }
+
+        public bool CompareState(State other)
+        {
+            return this.Name == other.Name
+                && this.Index == other.Index
+                && this.Bit == other.Bit
+                && this.Value == other.Value
+                && this.ActiveIndex == other.ActiveIndex;
+        }
     }
     
     public abstract class InteractableStateModel
@@ -100,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public State GetState(int index)
         {
-            if (allStates.Length > index && index > 0)
+            if (allStates.Length > index && index >= 0)
             {
                 State state = allStates[index];
                 return state;

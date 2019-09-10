@@ -50,8 +50,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         {
             instance = (Interactable)target;
 
-            profileList = serializedObject.FindProperty("Profiles");
-            statesProperty = serializedObject.FindProperty("States");
+            profileList = serializedObject.FindProperty("profiles");
+            statesProperty = serializedObject.FindProperty("states");
             enabledProperty = serializedObject.FindProperty("Enabled");
             voiceCommands = serializedObject.FindProperty("VoiceCommand");
             actionId = serializedObject.FindProperty("InputActionId");

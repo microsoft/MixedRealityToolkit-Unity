@@ -463,17 +463,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             translateTargetObject = childObject.transform;
 
-            States defaultStates = ScriptableObjectExtensions.GetAllInstances<States>().FirstOrDefault(profile => profile.name.Equals($"DefaultInteractableStates"));
-            Theme testTheme = new Theme()
-            {
-                States = defaultStates,
-                Definitions = new List<ThemeDefinition>()
-                {
-                    ThemeDefinition.GetDefaultThemeDefinition<ScaleOffsetColorTheme>().Value
-                }
-            };
-            testTheme.ValidateDefinitions();
+            // Add an interactable
+            interactable = interactableObject.AddComponent<Interactable>();
 
+            Theme testTheme = ScriptableObject.CreateInstance<Theme>();
+            testTheme.States = interactable.States;
+            testTheme.Definitions = new List<ThemeDefinition>()
+            {
+                ThemeDefinition.GetDefaultThemeDefinition<ScaleOffsetColorTheme>().Value
+            };
             // Set the offset state property (index = 1) to move on the Pressed state (index = 2)
             testTheme.Definitions[0].StateProperties[1].Values = new List<ThemePropertyValue>()
             {
@@ -483,17 +481,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 new ThemePropertyValue() { Vector3 = Vector3.zero},
             };
 
-            InteractableProfileItem profileItem = new InteractableProfileItem()
+            interactable.Profiles = new List<InteractableProfileItem>()
             {
-                Themes = new List<Theme>() { testTheme },
-                Target = translateTargetObject.gameObject,
+                new InteractableProfileItem()
+                {
+                    Themes = new List<Theme>() { testTheme },
+                    Target = translateTargetObject.gameObject,
+                },
             };
-
-            // Add an interactable
-            interactable = interactableObject.AddComponent<Interactable>();
-            interactable.States = defaultStates;
-            interactable.Profiles = new List<InteractableProfileItem>() { profileItem };
-            interactable.RefreshSetup();
 
             // Set the interactable to respond to the requested input action
             MixedRealityInputAction selectAction = CoreServices.InputSystem.InputSystemProfile.InputActionsProfile.InputActions.Where(m => m.Description == selectActionDescription).FirstOrDefault();

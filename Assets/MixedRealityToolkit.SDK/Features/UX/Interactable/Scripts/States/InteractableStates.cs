@@ -108,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public InteractableStates()
         {
             base.allStates = allStates;
-            currentState = allStates[0];
+            SetSate(allStates[0]);
         }
 
         public InteractableStates(State defaultState) : base(defaultState)
@@ -141,18 +141,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             int bit = GetBit();
 
-            currentState = stateList[0];
+            SetSate(stateList[0]);
 
             for (int i = stateList.Count - 1; i > -1; i--)
             {
                 if (bit >= stateList[i].Bit)
                 {
-                    currentState = stateList[i];
+                    SetSate(stateList[i]);
                     break;
                 }
             }
 
-            return currentState;
+            return CurrentState();
         }
 
         public override State[] GetStates()
@@ -173,6 +173,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             result.Add(GetState(InteractableStateEnum.Focus));
             result.Add(GetState(InteractableStateEnum.Pressed));
             result.Add(GetState(InteractableStateEnum.Disabled));
+
+            for (int i = 0; i < result.Count; i++)
+            {
+                result[i].Bit = 1 << i;
+                result[i].ActiveIndex = i;
+            }
+
             return result;
         }
     }

@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     {
         [FormerlySerializedAs("StateList")]
         [SerializeField]
-        private List<State> stateList;
+        private List<State> stateList = new List<State>();
 
         /// <summary>
         /// List of available states defined by asset
@@ -90,24 +90,34 @@ namespace Microsoft.MixedReality.Toolkit.UI
             StateModelType = typeof(InteractableStates);
         }
 
-        public static States GetDefaultInteractableStates()
-        {
-            States result = CreateInstance<States>();
-            InteractableStates allInteractableStates = new InteractableStates();
-            result.StateModelType = typeof(InteractableStates);
-            result.StateList = allInteractableStates.GetDefaultStates();
-            result.DefaultIndex = 0;
-            return result;
-        }
-
         public State[] GetStates()
         {
             return StateList.ToArray();
         }
 
-        public InteractableStates CreateStateModel()
+        public bool CompareStates(States other)
         {
-            InteractableStates stateLogic = (InteractableStates)Activator.CreateInstance(StateModelType, StateList[DefaultIndex]);
+            if (this.StateList.Count != other.StateList.Count 
+                || this.StateModelType != other.StateModelType 
+                || this.DefaultIndex != other.DefaultIndex)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < this.StateList.Count; i++)
+            {
+                if (!this.StateList[i].CompareState(other.StateList[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public InteractableStateModel CreateStateModel()
+        {
+            InteractableStateModel stateLogic = (InteractableStateModel)Activator.CreateInstance(StateModelType, StateList[DefaultIndex]);
 
             List<State> stateListCopy = new List<State>();
             for (int i = 0; i < StateList.Count; i++)
