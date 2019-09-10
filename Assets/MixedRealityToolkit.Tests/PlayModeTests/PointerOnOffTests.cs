@@ -18,6 +18,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
 using System;
 using System.Collections.Generic;
+using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
@@ -46,8 +47,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 else
                 {
                     Assert.NotNull(ptr, $"Expected {name} to not be null, but it was null");
-                    Assert.True(expected.Value == ptr.IsInteractionEnabled,
-                    $"Expected {h} {name}.IsInteractionEnabled to be {expected.Value} but it wasn't");
+                    Assert.AreEqual(expected.Value, ptr.IsInteractionEnabled,
+                    $"Incorrect state for {h} {name}.IsInteractionEnabled");
                 }
 
             };
@@ -58,8 +59,168 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             helper(CoreServices.InputSystem.GazeProvider.GazePointer, "Gaze Pointer", c.GazePointerEnabled);
         }
 
+        /// <summary>
+        /// Tests that the gaze pointer can be turned on and off
+        /// </summary>
+        /// <returns></returns>
         [UnityTest]
-        public IEnumerator TurnOffRays()
+        public IEnumerator TestGaze()
+        {
+            PointerStateContainer gazeOn = new PointerStateContainer()
+            {
+                GazePointerEnabled = true,
+                GGVPointerEnabled = true,
+                PokePointerEnabled = null,
+                SpherePointerEnabled = null,
+                LinePointerEnabled = null
+            };
+
+            // set input simulation mode to GGV
+            PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
+
+            TestHand rightHand = new TestHand(Handedness.Right);
+            TestHand leftHand = new TestHand(Handedness.Left);
+
+            yield return rightHand.Show(Vector3.zero);
+            yield return leftHand.Show(Vector3.zero);
+
+            TestContext.Out.WriteLine("Show both hands");
+            EnsurePointerStates(Handedness.Right, gazeOn);
+            EnsurePointerStates(Handedness.Left, gazeOn);
+
+            TestContext.Out.WriteLine("Turn off gaze cursor");
+            PointerUtils.SetGazePointerBehavior(PointerBehavior.Off);
+
+            yield return null;
+
+            PointerStateContainer gazeOff = new PointerStateContainer()
+            {
+                GazePointerEnabled = false,
+                GGVPointerEnabled = false,
+                PokePointerEnabled = null,
+                SpherePointerEnabled = null,
+                LinePointerEnabled = null
+            };
+            EnsurePointerStates(Handedness.Right, gazeOff);
+            EnsurePointerStates(Handedness.Left, gazeOff);
+        }
+
+        /// <summary>
+        /// Tests that poke pointer can be turned on/off
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator TestPoke()
+        {
+            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.AddComponent<NearInteractionTouchableVolume>();
+            cube.transform.position = Vector3.forward * 0.5f;
+
+            TestHand rightHand = new TestHand(Handedness.Right);
+            TestHand leftHand = new TestHand(Handedness.Left);
+
+            TestContext.Out.WriteLine("Show both hands near touchable cube");
+            yield return rightHand.Show(Vector3.zero);
+            yield return leftHand.Show(Vector3.zero);
+            yield return new WaitForFixedUpdate();
+
+            PointerStateContainer touchOn = new PointerStateContainer()
+            {
+                GazePointerEnabled = false,
+                GGVPointerEnabled = null,
+                PokePointerEnabled = true,
+                SpherePointerEnabled = false,
+                LinePointerEnabled = false
+            };
+
+            EnsurePointerStates(Handedness.Right, touchOn);
+            EnsurePointerStates(Handedness.Left, touchOn);
+
+            TestContext.Out.WriteLine("Turn off poke pointer right hand");
+            PointerUtils.SetPokePointerBehavior(PointerBehavior.Off, Handedness.Right);
+            yield return null;
+
+            PointerStateContainer touchOff = new PointerStateContainer()
+            {
+                GazePointerEnabled = false,
+                GGVPointerEnabled = null,
+                PokePointerEnabled = false,
+                SpherePointerEnabled = false,
+                LinePointerEnabled = false
+            };
+
+            EnsurePointerStates(Handedness.Right, touchOff);
+            EnsurePointerStates(Handedness.Left, touchOn);
+
+            TestContext.Out.WriteLine("Turn off poke pointer both hands");
+            PointerUtils.SetPokePointerBehavior(PointerBehavior.Off);
+            yield return null;
+
+            EnsurePointerStates(Handedness.Right, touchOff);
+            EnsurePointerStates(Handedness.Left, touchOff);
+        }
+
+        /// <summary>
+        /// Tests the grab pointer can be turned on/off
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator TestGrab()
+        {
+            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.AddComponent<NearInteractionGrabbable>();
+            cube.transform.position = Vector3.zero;
+
+            TestHand rightHand = new TestHand(Handedness.Right);
+            TestHand leftHand = new TestHand(Handedness.Left);
+
+            TestContext.Out.WriteLine("Show both hands near grabbable cube");
+            yield return rightHand.Show(Vector3.zero);
+            yield return leftHand.Show(Vector3.zero);
+            yield return new WaitForFixedUpdate();
+
+            PointerStateContainer grabOn = new PointerStateContainer()
+            {
+                GazePointerEnabled = false,
+                GGVPointerEnabled = null,
+                PokePointerEnabled = false,
+                SpherePointerEnabled = true,
+                LinePointerEnabled = false
+            };
+
+            EnsurePointerStates(Handedness.Right, grabOn);
+            EnsurePointerStates(Handedness.Left, grabOn);
+
+            TestContext.Out.WriteLine("Turn off grab pointer right hand");
+            PointerUtils.SetGrabPointerBehavior(PointerBehavior.Off, Handedness.Right);
+            yield return null;
+
+            PointerStateContainer grabOff = new PointerStateContainer()
+            {
+                GazePointerEnabled = false,
+                GGVPointerEnabled = null,
+                PokePointerEnabled = false,
+                SpherePointerEnabled = false,
+                LinePointerEnabled = false
+            };
+
+            EnsurePointerStates(Handedness.Right, grabOff);
+            EnsurePointerStates(Handedness.Left, grabOn);
+
+            TestContext.Out.WriteLine("Turn off grab pointer both hands");
+            PointerUtils.SetGrabPointerBehavior(PointerBehavior.Off);
+            yield return null;
+
+            EnsurePointerStates(Handedness.Right, grabOff);
+            EnsurePointerStates(Handedness.Left, grabOff);
+        }
+
+        /// <summary>
+        /// Tests that rays can be turned on and off
+        /// </summary>
+        /// <returns></returns>
+        [UnityTest]
+        public IEnumerator TestRays()
         {
             PointerStateContainer lineOn = new PointerStateContainer()
             {

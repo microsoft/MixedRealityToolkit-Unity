@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         public void SetGazeEnabled(bool isEnabled)
         {
-            PointerUtils.SetGGVBehavior(isEnabled ? PointerBehavior.Default : PointerBehavior.Off);
+            PointerUtils.SetGazePointerBehavior(isEnabled ? PointerBehavior.Default : PointerBehavior.Off);
         }
 
         public void SetGrabEnabled(bool isEnabled)
@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             PointerUtils.SetPokePointerBehavior(PointerBehavior.Off, Handedness.Any);
             PointerUtils.SetGrabPointerBehavior(PointerBehavior.Off, Handedness.Any);
             PointerUtils.SetRayPointerBehavior(PointerBehavior.Default, Handedness.Any);
-            PointerUtils.SetGGVBehavior(PointerBehavior.Off);
+            PointerUtils.SetGazePointerBehavior(PointerBehavior.Off);
         }
 
         public void SetFingerOnly()
@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             PointerUtils.SetPokePointerBehavior(PointerBehavior.Default, Handedness.Any);
             PointerUtils.SetGrabPointerBehavior(PointerBehavior.Off, Handedness.Any);
             PointerUtils.SetRayPointerBehavior(PointerBehavior.Off, Handedness.Any);
-            PointerUtils.SetGGVBehavior(PointerBehavior.Off);
+            PointerUtils.SetGazePointerBehavior(PointerBehavior.Off);
         }
 
         public void SetHoloLens1()
@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             PointerUtils.SetPokePointerBehavior(PointerBehavior.Off, Handedness.Any);
             PointerUtils.SetGrabPointerBehavior(PointerBehavior.Off, Handedness.Any);
             PointerUtils.SetRayPointerBehavior(PointerBehavior.Off, Handedness.Any);
-            PointerUtils.SetGGVBehavior(PointerBehavior.Default);
+            PointerUtils.SetGazePointerBehavior(PointerBehavior.Default);
         }
 
         public void SetHoloLens2()
@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             PointerUtils.SetPokePointerBehavior(PointerBehavior.Default, Handedness.Any);
             PointerUtils.SetGrabPointerBehavior(PointerBehavior.Default, Handedness.Any);
             PointerUtils.SetRayPointerBehavior(PointerBehavior.Default, Handedness.Any);
-            PointerUtils.SetGGVBehavior(PointerBehavior.Off);
+            PointerUtils.SetGazePointerBehavior(PointerBehavior.Off);
         }
 
         void Start()

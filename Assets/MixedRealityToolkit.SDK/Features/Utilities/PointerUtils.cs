@@ -236,7 +236,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <param name="pointerBehavior">Desired <seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/>.</param>
         /// <param name="handedness">Specify handedness to restrict to only right, left.</param>
-        public static void SetGGVBehavior(PointerBehavior pointerBehavior)
+        public static void SetGazePointerBehavior(PointerBehavior pointerBehavior)
         {
             if (CoreServices.InputSystem.FocusProvider is FocusProvider focusProvider)
             {
