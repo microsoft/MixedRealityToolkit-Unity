@@ -203,7 +203,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Get the InputManagerAxis data needed to configure the Input Mappings for a controller
         /// </summary>
-        /// <returns></returns>
         public static InputManagerAxis[] UnityInputManagerAxes => new[]
         {
             new InputManagerAxis { Name = AXIS_1,  Dead = defaultDeadZone, Sensitivity = 1, Invert = false, Type = InputManagerAxisType.JoystickAxis, Axis = 1  },

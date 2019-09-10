@@ -92,7 +92,7 @@ Show and hide the handles with animation based on the distance to the hands. It 
 
 
 ## Making an object movable with manipulation handler ##
-A bounding box can be combined with [`ManipulationHandler.cs`](README_ManipulationHandler.md) to make the object movable using far interaction. The manipulation handler supports both one and two-handed interactions. [Hand tracking](InputSystem/HandTracking.md) can be used to interact with an object up close.
+A bounding box can be combined with [`ManipulationHandler.cs`](README_ManipulationHandler.md) to make the object movable using far interaction. The manipulation handler supports both one and two-handed interactions. [Hand tracking](Input/HandTracking.md) can be used to interact with an object up close.
 
 <img src="../Documentation/Images/BoundingBox/MRTK_BoundingBox_ManipulationHandler.png" width="450">
 

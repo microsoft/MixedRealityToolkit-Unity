@@ -13,7 +13,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Enable Unity objects to skip "DontDestroyOnLoad" when editor isn't playing so test runner passes.
         /// </summary>
-        /// <param name="target"></param>
         public static void DontDestroyOnLoad(this Object target)
         {
 #if UNITY_EDITOR

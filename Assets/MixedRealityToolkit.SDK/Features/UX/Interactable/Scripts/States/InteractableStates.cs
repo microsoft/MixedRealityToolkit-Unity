@@ -166,7 +166,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// states is specified.
         /// Default States should match "DefaultStates" scriptable object in Interactable
         /// </summary>
-        /// <returns></returns>
         public virtual List<State> GetDefaultStates()
         {
             List<State> result = new List<State>();

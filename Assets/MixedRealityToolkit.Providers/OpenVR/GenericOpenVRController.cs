@@ -168,7 +168,6 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         /// <summary>
         /// Update the "Controller" input from the device
         /// </summary>
-        /// <param name="state"></param>
         protected void UpdateControllerData(XRNodeState state)
         {
             var lastState = TrackingState;

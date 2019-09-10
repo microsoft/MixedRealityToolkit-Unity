@@ -60,7 +60,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Decide which element (ring or dot) should be visible and at what scale
         /// </summary>
-        /// <param name="state"></param>
         public override void OnCursorStateChange(CursorStateEnum state)
         {
             base.OnCursorStateChange(state);
@@ -149,7 +148,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// override the base class for custom visibility
         /// </summary>
-        /// <param name="visible"></param>
         public override void SetVisibility(bool visible)
         {
             base.SetVisibility(visible);
@@ -166,7 +164,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// controls the visibility of cursor elements in one place
         /// </summary>
-        /// <param name="visible"></param>
         private void ElementVisibility(bool visible)
         {
             if (ring != null)

@@ -69,7 +69,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Destroys all objects in the play mode test scene, if it has been loaded, and shuts down MRTK instance.
         /// </summary>
-        /// <returns></returns>
         public static void TearDown()
         {
             TestUtilities.ShutdownMixedRealityToolkit();
@@ -242,6 +241,20 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return MoveHandFromTo(handPos, handPos, 2, ArticulatedHandPose.GestureId.Pinch, handedness, inputSimulationService);
         }
 
+        public static T GetPointer<T>(Handedness handedness) where T : class, IMixedRealityPointer
+        {
+            InputSimulationService simulationService = GetInputSimulationService();
+            var hand = simulationService.GetHandDevice(handedness);
+            foreach (var pointer in hand.InputSource.Pointers)
+            {
+                if (pointer is T)
+                {
+                    return pointer as T;
+                }
+            }
+            return null;
+        }
+
         internal static IEnumerator MoveHandFromTo(
             Vector3 startPos, Vector3 endPos, int numSteps,
             ArticulatedHandPose.GestureId gestureId, Handedness handedness, InputSimulationService inputSimulationService)
@@ -299,9 +312,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Shows the hand in the open state, at the origin
         /// </summary>
-        /// <param name="handedness"></param>
-        /// <param name="inputSimulationService"></param>
-        /// <returns></returns>
         internal static IEnumerator ShowHand(Handedness handedness, InputSimulationService inputSimulationService)
         {
             yield return ShowHand(handedness, inputSimulationService, ArticulatedHandPose.GestureId.Open, Vector3.zero);

@@ -170,7 +170,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Targeting
         /// <summary>
         /// Shows different types of visual feedback based on given normalized interest level (0-no interest; 1-full interest). 
         /// </summary>
-        /// <param name="normalizedInterest"></param>
         private void ShowFeedback(float normalizedInterest)
         {
             if (highlightOn)
@@ -202,7 +201,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Targeting
         /// <summary>
         /// Handles displaying a visual overlay to indicate the hover state.
         /// </summary>
-        /// <param name="normalizedInterest"></param>
         private void ShowFeedback_Overlay(float normalizedInterest)
         {
             if (Overlay_UseIt)
@@ -280,8 +278,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Targeting
         /// <summary>
         /// Returns adjusted normalized interest based on the selected transition type.
         /// </summary>
-        /// <param name="normalizedInterest"></param>
-        /// <returns></returns>
         private float TransitionAdjustedInterest(float normalizedInterest)
         {
             float quadIncreasePower = 4;
@@ -381,9 +377,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Targeting
         /// Returns an array of colors with respect to a given array of renderers for a given color property, such as "_Color" or "_EmissionColor".
         /// For more information, see https://docs.unity3d.com/ScriptReference/Material.GetColor.html
         /// </summary>
-        /// <param name="colorProperty"></param>
-        /// <param name="renderers"></param>
-        /// <returns></returns>
         private Color[] GetColorsByProperty(string colorProperty, Renderer[] renderers)
         {
             Color[] saveColorsTo = new Color[renderers.Length];
@@ -405,7 +398,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Targeting
         /// <param name="colorStart">Initial color.</param>
         /// <param name="colorEnd">Final color once the blend is completed (blend factor = 1).</param>
         /// <param name="normalizedBlendFactor">Value between 0 (original color) and 1 (final color).</param>
-        /// <returns></returns>
         private Color BlendColors(Color colorStart, Color colorEnd, float normalizedBlendFactor)
         {
             Color c = colorStart;
@@ -419,10 +411,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Targeting
         /// <summary>
         /// Returns an individual color channel that is blended between an original and final value based on normalized blend factor.
         /// </summary>
-        /// <param name="startVal"></param>
-        /// <param name="endVal"></param>
-        /// <param name="normalizedBlendFactor"></param>
-        /// <returns></returns>
         private float divBlendColor(float startVal, float endVal, float normalizedBlendFactor)
         {
             return (startVal + (endVal - startVal) * normalizedBlendFactor);

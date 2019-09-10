@@ -138,9 +138,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Gets all the corner points of the bounds 
         /// </summary>
-        /// <param name="transform"></param>
-        /// <param name="positions"></param>
-        /// <param name="bounds"></param>
         /// <remarks>
         /// Use BoxColliderExtensions.{Left|Right}{Bottom|Top}{Front|Back} consts to index into the output
         /// corners array.
@@ -178,8 +175,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Gets all the corner points from Renderer's Bounds
         /// </summary>
-        /// <param name="bounds"></param>
-        /// <param name="positions"></param>
         public static void GetCornerPositionsFromRendererBounds(this Bounds bounds, ref Vector3[] positions)
         {
             Vector3 center = bounds.center;
@@ -229,9 +224,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Gets all the corner points and mid points from Renderer's Bounds
         /// </summary>
-        /// <param name="bounds"></param>
-        /// <param name="transform"></param>
-        /// <param name="positions"></param>
         public static void GetCornerAndMidPointPositions(this Bounds bounds, Transform transform, ref Vector3[] positions)
         {
             // Calculate the local points to transform.
@@ -280,10 +272,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Gets all the corner points and mid points from Renderer's Bounds, ignoring the z axis
         /// </summary>
-        /// <param name="bounds"></param>
-        /// <param name="transform"></param>
-        /// <param name="positions"></param>
-        /// <param name="flattenAxis"></param>
         public static void GetCornerAndMidPointPositions2D(this Bounds bounds, Transform transform, ref Vector3[] positions, Axis flattenAxis)
         {
             // Calculate the local points to transform.
@@ -522,7 +510,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Returns the screen space corner points of the specified 'Bounds' instance.
         /// </summary>
-        /// <param name="bounds"></param>
         /// <param name="camera">
         /// The camera used for rendering to the screen. This is needed to perform the
         /// transformation to screen space.
@@ -570,8 +557,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Returns the volume of the bounds.
         /// </summary>
-        /// <param name="bounds"></param>
-        /// <returns></returns>
         public static float Volume(this Bounds bounds)
         {
             return bounds.size.x * bounds.size.y * bounds.size.z;
@@ -580,9 +565,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Returns bounds that contain both this bounds and the bounds passed in.
         /// </summary>
-        /// <param name="originalBounds"></param>
-        /// <param name="otherBounds"></param>
-        /// <returns></returns>
         public static Bounds ExpandToContain(this Bounds originalBounds, Bounds otherBounds)
         {
             Bounds tmpBounds = originalBounds;
@@ -595,9 +577,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Checks to see if bounds contains the other bounds completely.
         /// </summary>
-        /// <param name="bounds"></param>
-        /// <param name="otherBounds"></param>
-        /// <returns></returns>
         public static bool ContainsBounds(this Bounds bounds, Bounds otherBounds)
         {
             return bounds.Contains(otherBounds.min) && bounds.Contains(otherBounds.max);
@@ -606,10 +585,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Checks to see whether point is closer to bounds or otherBounds
         /// </summary>
-        /// <param name="bounds"></param>
-        /// <param name="point"></param>
-        /// <param name="otherBounds"></param>
-        /// <returns></returns>
         public static bool CloserToPoint(this Bounds bounds, Vector3 point, Bounds otherBounds)
         {
             Vector3 distToClosestPoint1 = bounds.ClosestPoint(point) - point;

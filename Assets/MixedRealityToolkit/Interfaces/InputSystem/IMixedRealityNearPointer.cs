@@ -15,7 +15,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Eventually we need to filter based on things that can respond
         /// to grab events.
         /// </summary>
-        /// <returns></returns>
         bool IsNearObject { get; }
 
         /// <summary>
