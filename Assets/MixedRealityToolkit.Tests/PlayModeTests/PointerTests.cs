@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var distance = Vector3.Distance(initialPos, linePointerOrigin);
             Assert.LessOrEqual(distance, 0.005f);
 
-            // Check that the angle between the line pointer ray and camera forward does not exceed 50 degrees
+            // Check that the angle between the line pointer ray and camera forward does not exceed 40 degrees
             float angle = Vector3.Angle(linePointer.Rays[0].Direction, Camera.main.transform.forward);
             Assert.LessOrEqual(angle, 40.0f);
         }
