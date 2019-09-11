@@ -1415,9 +1415,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
 
         #region IPointerPreferences Implementation
-        // pointer type, input source type, handedness => behavior
         private List<PointerPreferences> customPointerBehaviors = new List<PointerPreferences>();
 
+        /// <inheritdoc />
         public PointerBehavior GetPointerBehavior(IMixedRealityPointer pointer)
         {
             // Assumption: all pointers have controllers, input sources, except the gaze pointers
@@ -1457,6 +1457,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public PointerBehavior GazePointerBehavior { get; set; } = PointerBehavior.Default;
 
+        /// <inheritdoc />
         public void SetPointerBehavior<T>(Handedness handedness, InputSourceType inputType, PointerBehavior pointerBehavior) where T : class, IMixedRealityPointer
         {
             var preference = customPointerBehaviors.Find((x) => x.Matches(

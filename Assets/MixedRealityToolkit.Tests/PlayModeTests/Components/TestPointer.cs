@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
         }
 
-    public override Vector3 Position => throw new System.NotImplementedException();
+        public override Vector3 Position => throw new System.NotImplementedException();
 
         public override Quaternion Rotation => throw new System.NotImplementedException();
 
@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 
             PrioritizedLayerMasksOverride = testProxy.PrioritizedLayerMasks;
-            
+
             IsActive = true;
         }
     }
