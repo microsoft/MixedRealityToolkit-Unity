@@ -3,13 +3,13 @@
 入力シミュレーションサービスは、Unity Editor 上で使用できない場合があるデバイスやプラットフォームをエミュレートします。例：
 
 * HoloLens または VR デバイスのヘッドトラッキング
-* HoloLens のハンドジェスチャー
+* HoloLens のハンドジェスチャ
 * HoloLens 2 の多関節ハンドトラッキング
 * HoloLens 2 のアイトラッキング
 
 ユーザーは、従来のキーボードやマウスの組み合わせで実行時に操作をシミュレーションすることができます。それにより、デバイスにデプロイする前に Unity Editor 上でインタラクションをテストすることができます。
 
-> [!警告]
+> [!WARNING]
 > これは、Unity の XR Holographic Emulation > Emulation Mode = "Simulate in Editor" では動作しません。Unity Editor 内でのシミュレーションは、MRTK の入力シミュレーションの制御を奪い取ります。MRTK の入力シミュレーションサービスを使用するには、XR Holographic Emulation を、Emulation Mode = *"None"* にセットする必要があります。
 
 ## 入力シミュレーションサービスの有効化
@@ -22,7 +22,7 @@ MRTK では、入力シミュレーションはデフォルトで有効化され
 * __Platform(s)__ は、サービスがキーボードとマウスの入力に依存しているため、常に _Windows Editor_ である必要があります
 * __Profile__ は、入力シミュレーションの全ての設定を保持しています。
 
-> [!警告]
+> [!WARNING]
 > 現時点では、どのタイプのプロファイルもアサインすることができます。別のプロファイルをサービスにアサインする場合は、必ず _Input Simulation_ タイプのプロファイルを使用してください。そうしないと機能しません。
 
 <a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_InputSystemDataProviders.png">
@@ -74,11 +74,11 @@ __Hand Simulation Mode__ は、２つの異なる入力モデルを切り替え�
 
    このモードでは、手の正確な位置やタッチに基づいたインタラクションをシミュレートできます
 
-* _Gestures_: Air Tap や基本的なジェスチャーを持ったシンプルな手をシミュレートします
+* _Gestures_: Air Tap や基本的なジェスチャを持ったシンプルな手をシミュレートします
 
   [HoloLens interaction model](https://docs.microsoft.com/en-us/windows/mixed-reality/gestures) をエミュレートします。
 
-   フォーカスは視線ポインタを使ってコントロールします。_Air Tap_ ジェスチャーでボタンと対話します
+   フォーカスは視線ポインタを使ってコントロールします。_Air Tap_ ジェスチャでボタンと対話します
 
 ## 手の動きのコントロール
 
@@ -100,7 +100,7 @@ Manipuration キーが押されなくなると、手は短い _Hand Hide Timeout
 
 初期状態のカメラと手が表示される距離は、*Default Hand Distance.* で制御できます。
 
-デフォルトでは、シミュレートされた手の関節は完全に静的なものです。実機デバイスでは、ハンドトラッキングの原理的な特性として、いくらかのジッターやノイズが発生することに注意してください。
+デフォルトでは、シミュレートされた手の関節は完全に静的なものです。実機デバイスでは、ハンドトラッキングの原理上、いくらかのジッターやノイズが発生することに注意してください。
 実機デバイスでは手のメッシュや関節が有効になっているのを見ることができます（そして、手を完全に静止させていても少しジッターが発生するのがわかります）。*Hand Jitter Amount* をプラスの値（例として上の画像にあるように 0.1 程度）にすることにより、ジッターのシミュレーションを行うことができます。
 
 <a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandRotationSettings.png">
@@ -115,9 +115,9 @@ Manipuration キーが押されなくなると、手は短い _Hand Hide Timeout
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/uRYfwuqsjBQ" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen />
 
-## ハンドジェスチャー
+## ハンドジェスチャ
 
-ピンチ、グラブ、指差しなどのハンドジェスチャーをシミュレートできます
+ピンチ、グラブ、指差しなどのハンドジェスチャをシミュレートできます
 
 <a target="_blank" href="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandGestureSettings.png">
   <img src="../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandGestureSettings.png" title="Full Hand Mesh" width="80%" class="center" />
@@ -127,12 +127,12 @@ Manipuration キーが押されなくなると、手は短い _Hand Hide Timeout
 
    別の方法では、Toggle キー（T/Y）を使って手の on/off を切り替えることもできます
 
-2. 操作の間、マウスボタンを押し続けることによってハンドジェスチャーを実行することができます
+2. 操作の間、マウスボタンを押し続けることによってハンドジェスチャを実行することができます
 
-_Left/Middle/Right Mouse Hand Gesture_ 設定を使用して、各マウスボタンを、手の形が異なるジェスチャーにマップすることができます。 _Default Hand Gesture_ は、どのボタンも押されていないときの手の形です。
+_Left/Middle/Right Mouse Hand Gesture_ 設定を使用して、各マウスボタンを、手の形が異なるジェスチャにマップすることができます。 _Default Hand Gesture_ は、どのボタンも押されていないときの手の形です。
 
-> [!注意]
-> _Pinch_ ジェスチャーは、この時点では "Select" アクションを発生させる唯一のジェスチャーです
+> [!NOTE]
+> _Pinch_ ジェスチャは、この時点では "Select" アクションを発生させる唯一のジェスチャです
 
 ## 片手での操作
 
@@ -152,7 +152,7 @@ _Left/Middle/Right Mouse Hand Gesture_ 設定を使用して、各マウスボ�
 2. １回に１つの手を操作します
    1. _Space_ を押し続けて右手を操作します
    2. グラブしたいオブジェクトに手を動かします
-   3. マウスボタンを押して _Pinch_ ジェスチャーを有効にします。永続化モードではマウスボタンを離すまでジェスチャーが有効になります
+   3. マウスボタンを押して _Pinch_ ジェスチャを有効にします。永続化モードではマウスボタンを離すまでジェスチャが有効になります
 3. 同じ手順をもう片方の手で繰り返します。同じオブジェクトの別のポイントをグラブします
 4. これで両手で同じオブジェクトをグラブした状態になるので、どちらかの手を動かして両手での操作を行います
 
