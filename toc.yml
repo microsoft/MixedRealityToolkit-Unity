@@ -1,8 +1,13 @@
-- name: Guides (Japanese)
-  href: Documentation.ja/
-  homepage: Documentation.ja/GettingStartedWithTheMRTK.md
 - name: Guides
   href: Documentation/
-  homepage: Documentation/GettingStartedWithTheMRTK.md
+  topicHref: Documentation/GettingStartedWithTheMRTK.md
+  dropdown: true
+  items:
+  - name: English
+    href: Documentation/
+    homepage: Documentation/GettingStartedWithTheMRTK.md
+  - name: 日本語
+    href: Documentation.ja/
+    homepage: Documentation.ja/GettingStartedWithTheMRTK.md
 - name: API Documentation
   href: obj/api/
