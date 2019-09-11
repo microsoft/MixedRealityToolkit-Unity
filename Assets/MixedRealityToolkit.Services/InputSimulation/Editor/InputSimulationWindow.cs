@@ -1,22 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEngine;
-using UnityEngine.Playables;
-using UnityEngine.SceneManagement;
 using UnityEditor;
 using System;
 using System.IO;
-using System.Text.RegularExpressions;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Tools for recording and playing back input animation in the Unity editor.
+    /// Tools for simulating and recording input as well as playing back input animation in the Unity editor.
     /// </summary>
-    public class InputRecordingWindow : EditorWindow
+    public class InputSimulationWindow : EditorWindow
     {
         private InputAnimation animation
         {
@@ -25,6 +22,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         private string loadedFilePath = "";
+
+        private IInputSimulationService simulationService = null;
+        private IInputSimulationService SimulationService
+        {
+            get
+            {
+                if (simulationService == null)
+                {
+                    if (MixedRealityServiceRegistry.TryGetService(out IMixedRealityInputSystem inputSystem))
+                    {
+                        simulationService = (inputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IInputSimulationService>();
+                    }
+                }
+                return simulationService;
+            }
+        }
 
         private IMixedRealityInputRecordingService recordingService = null;
         private IMixedRealityInputRecordingService RecordingService
@@ -88,11 +101,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Texture2D iconJumpBack = null;
         private Texture2D iconJumpFwd = null;
 
-        [MenuItem("Mixed Reality Toolkit/Utilities/Input Recording")]
+        [MenuItem("Mixed Reality Toolkit/Utilities/Input Simulation")]
         private static void ShowWindow()
         {
-            InputRecordingWindow window = GetWindow<InputRecordingWindow>();
-            window.titleContent = new GUIContent("Input Recording");
+            InputSimulationWindow window = GetWindow<InputSimulationWindow>();
+            window.titleContent = new GUIContent("Input Simulation");
             window.minSize = new Vector2(380.0f, 680.0f);
             window.Show();
         }
@@ -100,6 +113,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void OnGUI()
         {
             LoadIcons();
+
+            if (!Application.isPlaying)
+            {
+                EditorGUILayout.HelpBox("Input simulation is only available in play mode", MessageType.Info);
+                return;
+            }
+
+            DrawSimulationGUI();
+
+            EditorGUILayout.Separator();
 
             string[] modeStrings = Enum.GetNames(typeof(ToolMode));
             Mode = (ToolMode)GUILayout.SelectionGrid((int)Mode, modeStrings, modeStrings.Length);
@@ -136,13 +159,113 @@ namespace Microsoft.MixedReality.Toolkit.Input
 #endif
         }
 
-        private void DrawRecordingGUI()
+        private void DrawSimulationGUI()
         {
-            if (!Application.isPlaying)
+            if (SimulationService == null)
             {
-                EditorGUILayout.HelpBox("Input test recording is only available in play mode", MessageType.Info);
+                EditorGUILayout.HelpBox("No input simulation service found", MessageType.Info);
                 return;
             }
+
+            DrawHeadGUI();
+            DrawHandsGUI();
+        }
+
+        private void DrawHeadGUI()
+        {
+            if (!CameraCache.Main)
+            {
+                return;
+            }
+
+            using (new GUILayout.VerticalScope(EditorStyles.helpBox))
+            {
+                GUILayout.Label($"Head:");
+
+                Transform headTransform = CameraCache.Main.transform;
+                Vector3 newPosition = EditorGUILayout.Vector3Field("Position", headTransform.position);
+                Vector3 newRotation = DrawRotationGUI("Rotation", headTransform.rotation.eulerAngles);
+                bool resetHand = GUILayout.Button("Reset");
+
+                if (newPosition != headTransform.position)
+                {
+                    headTransform.position = newPosition;
+                }
+                if (newRotation != headTransform.rotation.eulerAngles)
+                {
+                    headTransform.rotation = Quaternion.Euler(newRotation);
+                }
+                if (resetHand)
+                {
+                    headTransform.position = Vector3.zero;
+                    headTransform.rotation = Quaternion.identity;
+                }
+            }
+        }
+
+        private void DrawHandsGUI()
+        {
+            HandSimulationMode newHandSimMode = (HandSimulationMode)EditorGUILayout.EnumPopup("Hand Simulation Mode", SimulationService.HandSimulationMode);
+
+            if (newHandSimMode != SimulationService.HandSimulationMode)
+            {
+                SimulationService.HandSimulationMode = newHandSimMode;
+            }
+
+            using (new GUILayout.HorizontalScope())
+            {
+                DrawHandGUI(
+                    "Left",
+                    SimulationService.IsAlwaysVisibleHandLeft, v => SimulationService.IsAlwaysVisibleHandLeft = v,
+                    SimulationService.HandPositionLeft, v => SimulationService.HandPositionLeft = v,
+                    SimulationService.HandRotationLeft, v => SimulationService.HandRotationLeft = v,
+                    SimulationService.ResetHandLeft);
+
+                DrawHandGUI(
+                    "Right",
+                    SimulationService.IsAlwaysVisibleHandRight, v => SimulationService.IsAlwaysVisibleHandRight = v,
+                    SimulationService.HandPositionRight, v => SimulationService.HandPositionRight = v,
+                    SimulationService.HandRotationRight, v => SimulationService.HandRotationRight = v,
+                    SimulationService.ResetHandRight);
+            }
+        }
+
+        private void DrawHandGUI(string name,
+            bool isAlwaysVisible, Action<bool> setAlwaysVisible,
+            Vector3 position, Action<Vector3> setPosition,
+            Vector3 rotation, Action<Vector3> setRotation,
+            Action reset)
+        {
+            using (new GUILayout.VerticalScope(EditorStyles.helpBox))
+            {
+                GUILayout.Label($"{name} Hand:");
+
+                bool newIsAlwaysVisible = EditorGUILayout.Toggle("Always Visible", isAlwaysVisible);
+                Vector3 newPosition = EditorGUILayout.Vector3Field("Position", position);
+                Vector3 newRotation = DrawRotationGUI("Rotation", rotation);
+                bool resetHand = GUILayout.Button("Reset");
+
+                if (newIsAlwaysVisible != isAlwaysVisible)
+                {
+                    setAlwaysVisible(newIsAlwaysVisible);
+                }
+                if (newPosition != position)
+                {
+                    setPosition(newPosition);
+                }
+                if (newRotation != rotation)
+                {
+                    setRotation(newRotation);
+                }
+                if (resetHand)
+                {
+                    reset();
+                }
+            }
+        }
+
+        private void DrawRecordingGUI()
+        {
             if (RecordingService == null)
             {
                 EditorGUILayout.HelpBox("No input recording service found", MessageType.Info);
@@ -192,12 +315,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void DrawPlaybackGUI()
         {
-            if (!Application.isPlaying)
-            {
-                EditorGUILayout.HelpBox("Input test playback is only available in play mode", MessageType.Info);
-                return;
-            }
-
             DrawAnimationInfo();
 
             using (new GUILayout.HorizontalScope())
@@ -290,6 +407,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     GUILayout.Label("No animation loaded");
                 }
             }
+        }
+
+        private Vector3 DrawRotationGUI(string label, Vector3 rotation)
+        {
+            Vector3 newRotation = EditorGUILayout.Vector3Field(label, rotation);
+
+            return newRotation;
         }
 
         private void SaveAnimation(bool loadAfterExport)
