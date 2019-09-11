@@ -214,12 +214,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Sets the behavior for the gaze pointer.
         /// </summary>
         /// <param name="pointerBehavior">Desired <seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/>.</param>
-        /// <param name="handedness">Specify handedness to restrict to only right, left.</param>
         public static void SetGazePointerBehavior(PointerBehavior pointerBehavior)
         {
-            if (CoreServices.InputSystem.FocusProvider is FocusProvider focusProvider)
+            if (CoreServices.InputSystem.FocusProvider is IPointerPreferences pointerPreferences)
             {
-                focusProvider.GazePointerBehavior = pointerBehavior;
+                pointerPreferences.GazePointerBehavior = pointerBehavior;
+                foreach (InputSourceType sourceType in Enum.GetValues(typeof(InputSourceType)))
+                {
+                    pointerPreferences.SetPointerBehavior<GGVPointer>(Handedness.Any, sourceType, pointerBehavior);
+                }
             }
             else
             {
@@ -235,9 +238,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="handedness">Specify handedness to restrict to only right, left.</param>
         public static void SetPointerBehavior<T>(PointerBehavior pointerBehavior, Handedness handedness, InputSourceType sourceType) where T : class, IMixedRealityPointer
         {
-            if (CoreServices.InputSystem.FocusProvider is FocusProvider focusProvider)
+            if (CoreServices.InputSystem.FocusProvider is IPointerPreferences preferences)
             {
-                focusProvider.SetPointerBehavior<T>(handedness, sourceType, pointerBehavior);
+                preferences.SetPointerBehavior<T>(handedness, sourceType, pointerBehavior);
             }
             else
             {

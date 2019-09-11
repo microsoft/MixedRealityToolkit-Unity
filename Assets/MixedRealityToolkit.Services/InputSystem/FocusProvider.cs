@@ -1420,10 +1420,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public PointerBehavior GetPointerBehavior(IMixedRealityPointer pointer)
         {
-            if (pointer.Controller == null)
-            {
-                return PointerBehavior.Default;
-            }
+            // Assumption: all pointers have controllers, input sources, except the gaze pointers
+            // if the controller, input source is null, return the gaze pointer behavior here.
             if (pointer.Controller == null || pointer.InputSourceParent == null)
             {
                 // gazepointer means input source is null
