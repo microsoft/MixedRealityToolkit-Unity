@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// will be always enabled. If it is not a near pointer, it will get disabled if any near pointer on the 
         /// same hand is active. This is what allows rays to turn off when a hand is near a grabbable.
         /// </summary>
-    Default = 0,
+        Default = 0,
         /// <summary>
         /// Pointer is always on, regardless of what other pointers are active.
         /// </summary>
