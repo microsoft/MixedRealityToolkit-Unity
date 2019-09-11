@@ -682,6 +682,7 @@ Shader "Mixed Reality Toolkit/Standard"
 #else
                 o.scale.z = length(mul(unity_ObjectToWorld, float4(0.0, 0.0, 1.0, 0.0)));
 #endif
+#if !defined(_VERTEX_EXTRUSION_SMOOTH_NORMALS)
                 // uv3.y will contain a negative value when rendered by a UGUI and ScaleMeshEffect.
                 if (v.uv3.y < 0.0)
                 {
@@ -689,6 +690,7 @@ Shader "Mixed Reality Toolkit/Standard"
                     o.scale.y *= v.uv2.y;
                     o.scale.z *= v.uv3.x;
                 }
+#endif
 #endif
 
                 fixed3 localNormal = v.normal;
