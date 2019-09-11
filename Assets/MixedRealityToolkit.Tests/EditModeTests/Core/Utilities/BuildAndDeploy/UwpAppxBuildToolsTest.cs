@@ -251,8 +251,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Build.Editor
         "; // end of TestCSProject
 
         /// <summary>
-        /// Validates that AllowUnsafeCode will add a AllowUnsafeBlocks
-        /// node to an existing well-formed csproj-file.
+        /// Validates that AllowUnsafeCode will add an AllowUnsafeBlocks
+        /// node to a PropertyGroup which has a Condition-attribute.
         /// </summary>
         [Test]
         public void TestAllowUnsafeCode_Adds()
@@ -263,7 +263,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Build.Editor
         }
 
         /// <summary>
-        /// Validates that AllowUnsafeCode will only add a AllowUnsafeBlocks
+        /// Validates that AllowUnsafeCode will only add an AllowUnsafeBlocks
         /// node if it doesn't already exist.
         /// </summary>
         [Test]
@@ -281,7 +281,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Build.Editor
         {
             var allowUnsafeCode = rootElement
                 .Elements(rootElement.GetDefaultNamespace() + "PropertyGroup")
-                .Where(element => element.Attribute("Condition") != null)
                 .Descendants()
                 .Where(element => element.Name == element.Parent.GetDefaultNamespace() + "AllowUnsafeBlocks")
                 .ToList();
