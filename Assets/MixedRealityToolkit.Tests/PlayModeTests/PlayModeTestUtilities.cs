@@ -98,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             return (jointsOut) =>
             {
                 ArticulatedHandPose gesturePose = ArticulatedHandPose.GetGesturePose(gesture);
-                Quaternion worldRotation = CameraCache.Main.transform.rotation * rotation;
+                Quaternion worldRotation = rotation * CameraCache.Main.transform.rotation;
                 gesturePose.ComputeJointPoses(handedness, worldRotation, worldPosition, jointsOut);
             };
         }
