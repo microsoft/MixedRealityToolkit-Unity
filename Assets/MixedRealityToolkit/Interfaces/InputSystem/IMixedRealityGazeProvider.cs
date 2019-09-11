@@ -8,7 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Implements the Gaze Provider for an Input Source.
     /// </summary>
-    public interface IMixedRealityGazeProvider
+    public interface IMixedRealityGazeProvider : IMixedRealityService
     {
         /// <summary>
         /// Enable or disable the <see href="https://docs.unity3d.com/ScriptReference/Component.html">Component</see> attached to the <see cref="GameObjectReference"/>

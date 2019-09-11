@@ -66,11 +66,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public IMixedRealityRaycastProvider RaycastProvider => raycastProvider ?? (raycastProvider = Registrar.GetService<IMixedRealityRaycastProvider>());
 
-        /// <inheritdoc />
-        public IMixedRealityGazeProvider GazeProvider { get; private set; }
+        private IMixedRealityGazeProvider gazeProvider = null;
 
         /// <inheritdoc />
-        public IMixedRealityEyeGazeProvider EyeGazeProvider { get; private set; }
+        public IMixedRealityGazeProvider GazeProvider => gazeProvider ?? (gazeProvider = Registrar.GetService<IMixedRealityGazeProvider>());
+
+        /// <inheritdoc />
+        public IMixedRealityEyeGazeProvider EyeGazeProvider => GazeProvider as IMixedRealityEyeGazeProvider;
 
         private readonly Stack<GameObject> modalInputStack = new Stack<GameObject>();
         private readonly Stack<GameObject> fallbackInputStack = new Stack<GameObject>();
@@ -180,27 +182,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return;
             }
 
-            if (profile.PointerProfile != null)
-            {
-                if (profile.PointerProfile.GazeProviderType?.Type != null)
-                {
-                    GazeProvider = CameraCache.Main.gameObject.EnsureComponent(profile.PointerProfile.GazeProviderType.Type) as IMixedRealityGazeProvider;
-                    GazeProvider.GazeCursorPrefab = profile.PointerProfile.GazeCursorPrefab;
-                    // Current implementation implements both provider types in one concrete class.
-                    EyeGazeProvider = GazeProvider as IMixedRealityEyeGazeProvider;
-                }
-                else
-                {
-                    Debug.LogError("The Input system is missing the required GazeProviderType!");
-                    return;
-                }
-            }
-            else
-            {
-                Debug.LogError("The Input system is missing the required Pointer Profile!");
-                return;
-            }
-
             sourceStateEventData = new SourceStateEventData(EventSystem.current);
 
             sourceTrackingEventData = new SourcePoseEventData<TrackingState>(EventSystem.current);
@@ -250,7 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // Ensure data providers are enabled (performed by the base class)
             base.Enable();
-
+            GazeProvider.Enable();
             InputEnabled?.Invoke();
         }
 
@@ -268,24 +249,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.Disable();
 
-            // Input System adds a gaze provider component on the main camera, which needs to be removed when the input system is disabled/removed.
-            // Otherwise the component would keep references to dead objects.
-            // Unity's way to remove component is to destroy it.
-            if (GazeProvider != null)
+            // Shutdown of the gaze provider is managed by the MixedRealityToolkit
+            // object - it's possible that the service can have been unregistered
+            // by the point that input is getting disabled and then destroyed.
+            if (Registrar.IsServiceRegistered<IMixedRealityGazeProvider>())
             {
                 if (Application.isPlaying)
                 {
                     GazeProvider.GazePointer.BaseCursor.Destroy();
-                    UnityEngine.Object.Destroy(GazeProvider as Component);
                 }
-                else
-                {
-                    UnityEngine.Object.DestroyImmediate(GazeProvider as Component);
-                }
-
-                GazeProvider = null;
+                GazeProvider.Disable();
             }
-
+            
             foreach(var provider in GetDataProviders<IMixedRealityInputDeviceManager>())
             {
                 if (provider != null)
@@ -589,11 +564,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (disabledRefCount == 1)
             {
                 InputDisabled?.Invoke();
-
-                if (GazeProvider != null)
-                {
-                    GazeProvider.Enabled = false;
-                }
+                GazeProvider.Disable();
             }
         }
 
@@ -609,11 +580,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (disabledRefCount == 0)
             {
                 InputEnabled?.Invoke();
-
-                if (GazeProvider != null)
-                {
-                    GazeProvider.Enabled = true;
-                }
+                GazeProvider.Enable();
             }
         }
 
@@ -628,11 +595,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (wasInputDisabled)
             {
                 InputEnabled?.Invoke();
-
-                if (GazeProvider != null)
-                {
-                    GazeProvider.Enabled = true;
-                }
+                GazeProvider.Enable();
             }
         }
 
@@ -764,7 +727,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Create input event
             sourceStateEventData.Initialize(source, controller);
 
-            if (!DetectedInputSources.Contains(source)) { Debug.LogError($"{source.SourceName} was never registered with the Input Manager!"); }
+            if (!DetectedInputSources.Contains(source))
+            {
+                Debug.LogError($"{source.SourceName} was never registered with the Input Manager!");
+            }
 
             DetectedInputSources.Remove(source);
 

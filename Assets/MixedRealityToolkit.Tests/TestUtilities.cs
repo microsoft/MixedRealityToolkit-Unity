@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
 
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Editor;
@@ -25,6 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         const string additiveTestSceneTemporarySavePath = "Assets/__temp_additive_test_scene_#.unity";
         public static Scene primaryTestScene;
         public static Scene[] additiveTestScenes = new Scene[0];
+        public static Boolean DisableGazeStabilization = true;
 
         /// <summary>
         /// Destroys all scene assets that were created over the course of testing.
@@ -135,6 +137,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         public static void InitializeMixedRealityToolkit(MixedRealityToolkitConfigurationProfile configuration)
         {
+            if (DisableGazeStabilization)
+            {
+                configuration.InputSystemProfile.GazeProfile.Stabilizer = null;
+            }
+
             if (!MixedRealityToolkit.IsInitialized)
             {
                 MixedRealityToolkit mixedRealityToolkit = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();

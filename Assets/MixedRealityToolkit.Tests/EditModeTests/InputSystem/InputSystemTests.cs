@@ -97,10 +97,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             var inputSystem = new MixedRealityInputSystem(MixedRealityToolkit.Instance, MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile);
             Assert.IsTrue(MixedRealityToolkit.Instance.RegisterService<IMixedRealityInputSystem>(inputSystem));
 
+            var focusProvider = new FocusProvider(MixedRealityToolkit.Instance, MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile);
+            Assert.IsTrue(MixedRealityToolkit.Instance.RegisterService<IMixedRealityFocusProvider>(focusProvider));
+
+            var gazeProvider = new GazeProvider(MixedRealityToolkit.Instance, MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile);
+            Assert.IsTrue(MixedRealityToolkit.Instance.RegisterService<IMixedRealityGazeProvider>(gazeProvider));
+
+            // The input system requires the focus provider to exist
+            MixedRealityToolkit.Instance.EnableAllServicesByType(typeof(IMixedRealityFocusProvider));
+
+            // The input system requires the gaze provider to exist
+            MixedRealityToolkit.Instance.EnableAllServicesByType(typeof(IMixedRealityGazeProvider));
+
             // Since EditMode, we have to auto-enable MRTK input system ourselves
             MixedRealityToolkit.Instance.EnableAllServicesByType(typeof(IMixedRealityInputSystem));
 
-            Assert.AreEqual(1, MixedRealityServiceRegistry.GetAllServices().Count);
+            Assert.AreEqual(3, MixedRealityServiceRegistry.GetAllServices().Count);
             Assert.IsNotNull(MixedRealityToolkit.Instance.GetService<IMixedRealityInputSystem>());
 
             var dataProviderAccess = (inputSystem as IMixedRealityDataProviderAccess);
@@ -152,7 +164,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             inputSystemProfile.InputActionsProfile = ScriptableObject.CreateInstance<MixedRealityInputActionsProfile>();
             inputSystemProfile.InputActionRulesProfile = ScriptableObject.CreateInstance<MixedRealityInputActionRulesProfile>();
             inputSystemProfile.PointerProfile = ScriptableObject.CreateInstance<MixedRealityPointerProfile>();
-            inputSystemProfile.PointerProfile.GazeProviderType = typeof(GazeProvider);
+            inputSystemProfile.GazeProviderType = typeof(GazeProvider);
+            inputSystemProfile.GazeProfile = ScriptableObject.CreateInstance<MixedRealityGazeProfile>();
             inputSystemProfile.GesturesProfile = ScriptableObject.CreateInstance<MixedRealityGesturesProfile>();
             inputSystemProfile.SpeechCommandsProfile = ScriptableObject.CreateInstance<MixedRealitySpeechCommandsProfile>();
             inputSystemProfile.ControllerVisualizationProfile = ScriptableObject.CreateInstance<MixedRealityControllerVisualizationProfile>();

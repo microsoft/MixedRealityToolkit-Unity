@@ -338,6 +338,13 @@ namespace Microsoft.MixedReality.Toolkit
                     Debug.LogError("Failed to register the raycast provider! The input system will not function without it.");
                     return;
                 }
+
+                args = new object[] { this, ActiveProfile.InputSystemProfile };
+                if (!RegisterService<IMixedRealityGazeProvider>(ActiveProfile.InputSystemProfile.GazeProviderType, args: args))
+                {
+                    Debug.LogError("Failed to register the gaze provider! The input system will not function without it.");
+                    return;
+                }
             }
             else
             {
@@ -936,6 +943,10 @@ namespace Microsoft.MixedReality.Toolkit
                 {
                     UnregisterService<IMixedRealityFocusProvider>();
                 }
+                else if (typeof(IMixedRealityGazeProvider).IsAssignableFrom(type))
+                {
+                    UnregisterService<IMixedRealityGazeProvider>();
+                }
                 else if (typeof(IMixedRealityInputSystem).IsAssignableFrom(type))
                 {
                     UnregisterService<IMixedRealityInputSystem>();
@@ -1024,6 +1035,7 @@ namespace Microsoft.MixedReality.Toolkit
                    typeof(IMixedRealityCameraSystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealityFocusProvider).IsAssignableFrom(type) ||
                    typeof(IMixedRealityRaycastProvider).IsAssignableFrom(type) ||
+                   typeof(IMixedRealityGazeProvider).IsAssignableFrom(type) ||
                    typeof(IMixedRealityTeleportSystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealityBoundarySystem).IsAssignableFrom(type) ||
                    typeof(IMixedRealitySpatialAwarenessSystem).IsAssignableFrom(type) ||

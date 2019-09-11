@@ -27,9 +27,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private ReorderableList pointerOptionList;
         private SerializedProperty debugDrawPointingRays;
         private SerializedProperty debugDrawPointingRayColors;
-        private SerializedProperty gazeCursorPrefab;
-        private SerializedProperty gazeProviderType;
-        private SerializedProperty showCursorWithEyeGaze;
         private SerializedProperty pointerMediator;
         private SerializedProperty primaryPointerSelector;
 
@@ -42,9 +39,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             pointerOptions = serializedObject.FindProperty("pointerOptions");
             debugDrawPointingRays = serializedObject.FindProperty("debugDrawPointingRays");
             debugDrawPointingRayColors = serializedObject.FindProperty("debugDrawPointingRayColors");
-            gazeCursorPrefab = serializedObject.FindProperty("gazeCursorPrefab");
-            gazeProviderType = serializedObject.FindProperty("gazeProviderType");
-            showCursorWithEyeGaze = serializedObject.FindProperty("showCursorWithEyeGaze");
             pointerMediator = serializedObject.FindProperty("pointerMediator");
             primaryPointerSelector = serializedObject.FindProperty("primaryPointerSelector");
         }
@@ -56,20 +50,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
             {
                 serializedObject.Update();
-
-                EditorGUILayout.Space();
-                EditorGUILayout.LabelField("Gaze Settings", EditorStyles.boldLabel);
-                {
-                    EditorGUILayout.Space();
-                    EditorGUILayout.PropertyField(gazeCursorPrefab);
-                    EditorGUILayout.PropertyField(gazeProviderType);
-                    EditorGUILayout.Space();
-
-                    if (InspectorUIUtility.RenderIndentedButton("Customize Gaze Provider Settings"))
-                    {
-                        Selection.activeObject = CameraCache.Main.gameObject;
-                    }
-                }
 
                 EditorGUILayout.Space();
                 EditorGUILayout.LabelField("Pointer Settings", EditorStyles.boldLabel);

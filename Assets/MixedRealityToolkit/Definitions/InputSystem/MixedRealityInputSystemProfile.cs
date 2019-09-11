@@ -29,12 +29,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         [SerializeField]
-        [Tooltip("The focus provider service concrete type to use when raycasting.")]
+        [Tooltip("The focus provider service concrete type.")]
         [Implements(typeof(IMixedRealityFocusProvider), TypeGrouping.ByNamespaceFlat)]
         private SystemType focusProviderType;
 
         /// <summary>
-        /// The focus provider service concrete type to use when raycasting.
+        /// The focus provider service concrete type.
         /// </summary>
         public SystemType FocusProviderType
         {
@@ -116,6 +116,33 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get { return pointerProfile; }
             internal set { pointerProfile = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("The concrete type of IMixedRealityGazeProvider to use.")]
+        [Implements(typeof(IMixedRealityGazeProvider), TypeGrouping.ByNamespaceFlat)]
+        private SystemType gazeProviderType;
+
+        /// <summary>
+        /// The concrete type of <see cref="IMixedRealityGazeProvider"/> to use.
+        /// </summary>
+        public SystemType GazeProviderType
+        {
+            get { return gazeProviderType; }
+            internal set { gazeProviderType = value; }
+        }
+
+        [SerializeField]
+        [Tooltip("Gaze Configuration options")]
+        private MixedRealityGazeProfile gazeProfile;
+
+        /// <summary>
+        /// Pointer configuration options
+        /// </summary>
+        public MixedRealityGazeProfile GazeProfile
+        {
+            get { return gazeProfile; }
+            internal set { gazeProfile = value; }
         }
 
         [SerializeField]

@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             PlayModeTestUtilities.PushHandSimulationProfile();
             PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
-
+            
             // Subscribe to interactable's on click so we know the click went through
             bool wasClicked = false;
             interactable.OnClick.AddListener(() => { wasClicked = true; });
@@ -67,6 +67,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return testHand.Show(Vector3.zero);
 
             CameraCache.Main.transform.LookAt(interactable.transform);
+            yield return null;
+
             yield return testHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
             yield return testHand.SetGesture(ArticulatedHandPose.GestureId.Open);
             yield return testHand.Hide();

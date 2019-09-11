@@ -96,8 +96,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestOverrideFocusDetails()
         {
-            PlayModeTestUtilities.Setup();
-
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             yield return null;
 

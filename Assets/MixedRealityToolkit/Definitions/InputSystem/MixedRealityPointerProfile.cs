@@ -47,30 +47,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public Color[] DebugDrawPointingRayColors => debugDrawPointingRayColors;
 
-        [Prefab]
-        [SerializeField]
-        [Tooltip("The gaze cursor prefab to use on the Gaze pointer.")]
-        private GameObject gazeCursorPrefab = null;
-
-        /// <summary>
-        /// The gaze cursor prefab to use on the Gaze pointer.
-        /// </summary>
-        public GameObject GazeCursorPrefab => gazeCursorPrefab;
-
-        [SerializeField]
-        [Tooltip("The concrete type of IMixedRealityGazeProvider to use.")]
-        [Implements(typeof(IMixedRealityGazeProvider), TypeGrouping.ByNamespaceFlat)]
-        private SystemType gazeProviderType;
-
-        /// <summary>
-        /// The concrete type of <see cref="IMixedRealityGazeProvider"/> to use.
-        /// </summary>
-        public SystemType GazeProviderType
-        {
-            get { return gazeProviderType; }
-            internal set { gazeProviderType = value; }
-        }
-
         [SerializeField]
         [Tooltip("The Pointer options for this profile.")]
         private PointerOption[] pointerOptions = new PointerOption[0];

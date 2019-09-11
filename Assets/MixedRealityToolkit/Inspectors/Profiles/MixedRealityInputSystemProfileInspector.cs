@@ -54,6 +54,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private const string ShowInputSystem_HandTracking_PreferenceKey = "ShowInputSystem_HandTracking_PreferenceKey";
         private SerializedProperty handTrackingProfile;
 
+        private static bool showGazeProperties = false;
+        private const string ShowInputSystem_Gaze_PreferenceKey = "ShowInputSystem_Gaze_PreferenceKey";
+        private SerializedProperty gazeProviderType;
+        private SerializedProperty gazeProfile;
+
         private static bool[] providerFoldouts;
         private const string ProfileTitle = "Input System Settings";
         private const string ProfileDescription = "The Input System Profile helps developers configure input for cross-platform applications.";
@@ -76,6 +81,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             enableControllerMapping = serializedObject.FindProperty("enableControllerMapping");
             controllerVisualizationProfile = serializedObject.FindProperty("controllerVisualizationProfile");
             handTrackingProfile = serializedObject.FindProperty("handTrackingProfile");
+            gazeProviderType = serializedObject.FindProperty("gazeProviderType");
+            gazeProfile = serializedObject.FindProperty("gazeProfile");
 
             if (providerFoldouts == null || providerFoldouts.Length != dataProviderConfigurations.arraySize)
             {
@@ -168,6 +175,21 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                         changed |= RenderProfile(handTrackingProfile, typeof(MixedRealityHandTrackingProfile), true, false);
                     }
                 }, ShowInputSystem_HandTracking_PreferenceKey);
+
+
+                RenderFoldout(ref showGazeProperties, "Gaze", () =>
+                {
+                    using (new EditorGUI.IndentLevelScope())
+                    {
+                        using (var check = new EditorGUI.ChangeCheckScope())
+                        {
+                            EditorGUILayout.PropertyField(gazeProviderType);
+                            changed |= check.changed;
+                        }
+                        EditorGUILayout.Space();
+                        changed |= RenderProfile(gazeProfile, typeof(MixedRealityGazeProfile), true, false);
+                    }
+                }, ShowInputSystem_Gaze_PreferenceKey);
 
                 if (!isSubProfile)
                 {
