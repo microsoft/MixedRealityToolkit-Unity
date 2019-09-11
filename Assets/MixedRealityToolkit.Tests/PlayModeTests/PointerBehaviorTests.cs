@@ -62,7 +62,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Tests that the gaze pointer can be turned on and off
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestGaze()
         {
@@ -108,7 +107,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Tests that poke pointer can be turned on/off
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestPoke()
         {
@@ -163,7 +161,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Tests the grab pointer can be turned on/off
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestGrab()
         {
@@ -218,7 +215,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Tests that rays can be turned on and off
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestRays()
         {
