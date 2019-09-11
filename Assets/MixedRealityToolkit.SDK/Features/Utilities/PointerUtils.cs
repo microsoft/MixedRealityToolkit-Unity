@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -176,7 +177,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="handedness">Specify handedness to restrict to only right, left hands.</param>
         public static void SetHandRayPointerBehavior(PointerBehavior pointerBehavior, Handedness handedness = Handedness.Any)
         {
-            SetPointerBehavior<ShellHandRayPointer>(pointerBehavior, handedness, InputSourceType.Hand);
+            SetPointerBehavior<ShellHandRayPointer>(pointerBehavior, InputSourceType.Hand, handedness);
         }
 
         /// <summary>
@@ -186,7 +187,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="handedness">Specify handedness to restrict to only right, left.</param>
         public static void SetMotionControllerRayPointerBehavior(PointerBehavior pointerBehavior, Handedness handedness = Handedness.Any)
         {
-            SetPointerBehavior<ShellHandRayPointer>(pointerBehavior, handedness, InputSourceType.Controller);
+            SetPointerBehavior<ShellHandRayPointer>(pointerBehavior, InputSourceType.Controller, handedness);
         }
 
         /// <summary>
@@ -196,7 +197,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="handedness">Specify handedness to restrict to only right, left.</param>
         public static void SetHandGrabPointerBehavior(PointerBehavior pointerBehavior, Handedness handedness = Handedness.Any)
         {
-            SetPointerBehavior<SpherePointer>(pointerBehavior, handedness, InputSourceType.Hand);
+            SetPointerBehavior<SpherePointer>(pointerBehavior, InputSourceType.Hand, handedness);
         }
 
         /// <summary>
@@ -206,8 +207,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="handedness">Specify handedness to restrict to only right, left.</param>
         public static void SetHandPokePointerBehavior(PointerBehavior pointerBehavior, Handedness handedness = Handedness.Any)
         {
-            SetPointerBehavior<PokePointer>(pointerBehavior, handedness, InputSourceType.Hand
-                );
+            SetPointerBehavior<PokePointer>(pointerBehavior, InputSourceType.Hand
+, handedness);
         }
 
         /// <summary>
@@ -231,12 +232,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Sets the behavior for the given pointer type.
+        /// Sets the pointer behavior for pointer of type T, for all input types.
         /// </summary>
-        /// <typeparam name="T">Type of pointer to set behavior for.</typeparam>
+        /// <typeparam name="T">All pointer types that equal or derive from this type will be set.</typeparam>
         /// <param name="pointerBehavior">Desired <seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/>.</param>
         /// <param name="handedness">Specify handedness to restrict to only right, left.</param>
-        public static void SetPointerBehavior<T>(PointerBehavior pointerBehavior, Handedness handedness, InputSourceType sourceType) where T : class, IMixedRealityPointer
+        public static void SetPointerBehavior<T>(PointerBehavior pointerBehavior, Handedness handedness = Handedness.Any) where T : class, IMixedRealityPointer
+        {
+            foreach (InputSourceType type in Enum.GetValues(typeof(InputSourceType)))
+            {
+                SetPointerBehavior<T>(pointerBehavior, type, handedness);
+            }
+        }
+
+        /// <summary>
+        /// Sets the behavior for the given pointer type and input type.
+        /// </summary>
+        /// <typeparam name="T">All pointer types that equal or derive from this type will be set.</typeparam>
+        /// <param name="pointerBehavior">Desired <seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/>.</param>
+        /// <param name="sourceType">Allows setting different behaviors for different input types (hands, controllers, etc.)</param>
+        /// <param name="handedness">Specify handedness to restrict to only right, left.</param>
+        public static void SetPointerBehavior<T>(PointerBehavior pointerBehavior, InputSourceType sourceType, Handedness handedness = Handedness.Any) where T : class, IMixedRealityPointer
         {
             if (CoreServices.InputSystem.FocusProvider is IPointerPreferences preferences)
             {
