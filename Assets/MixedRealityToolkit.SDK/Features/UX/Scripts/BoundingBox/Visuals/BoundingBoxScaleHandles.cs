@@ -12,6 +12,26 @@ namespace Microsoft.MixedReality.Toolkit.UI
     {
 
         [SerializeField]
+        [Tooltip("Prefab used to display handles for 2D slate. If not set, default box shape will be used")]
+        GameObject handleSlatePrefab = null;
+
+        /// <summary>
+        /// Prefab used to display handles for 2D slate. If not set, default box shape will be used
+        /// </summary>
+        public GameObject HandleSlatePrefab
+        {
+            get { return handleSlatePrefab; }
+            set
+            {
+                if (handleSlatePrefab != value)
+                {
+                    handleSlatePrefab = value;
+                    configurationChanged.Invoke();
+                }
+            }
+        }
+
+        [SerializeField]
         [Tooltip("Check to show scale handles")]
         private bool showScaleHandles = true;
 

@@ -73,27 +73,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [SerializeField]
-        [Tooltip("Prefab used to display handles for 2D slate. If not set, default shape will be used (scale default: boxes, rotation default: spheres)")]
-        GameObject handleSlatePrefab = null;
-
-        /// <summary>
-        /// Prefab used to display handles for 2D slate. If not set, default shape will be used (scale default: boxes, rotation default: spheres)
-        /// </summary>
-        public GameObject HandleSlatePrefab
-        {
-            get { return handleSlatePrefab; }
-            set
-            {
-                if (handleSlatePrefab != value)
-                {
-                    handleSlatePrefab = value;
-                    configurationChanged.Invoke();
-                }
-            }
-        }
-
-
-        [SerializeField]
         // [FormerlySerializedAs("cornerRadius")]
         [Tooltip("Size of the handle collidable")]
         private float handleSize = 0.016f; // 1.6cm default handle size
@@ -136,6 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         internal protected UnityEvent configurationChanged = new UnityEvent();
         internal protected UnityEvent visibilityChanged = new UnityEvent();
+        //internal protected UnityEvent handlesCreated = new UnityEvent();
 
         internal void ResetHandleVisibility(bool isVisible)
         {

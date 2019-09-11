@@ -122,7 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
 
-        public void ResetHandleProximityScale(BoundingBox boundingBox)
+        public void ResetHandleProximityScale()
         {
             if (proximityEffectActive == false)
             {
@@ -162,7 +162,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return false;
         }
 
-        public void HandleProximityScaling(IMixedRealityPointer currentPointer, Vector3 boundingBoxPosition, Vector3 currentBoundsExtents)
+        public void HandleProximityScaling(Vector3 boundingBoxPosition, Vector3 currentBoundsExtents)
         {
             // early out if effect is disabled
             if (proximityEffectActive == false || !IsAnyRegisteredHandleVisible())
@@ -170,96 +170,92 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return;
             }
 
-            //only use proximity effect if nothing is being dragged or grabbed
-            if (currentPointer == null)
+            proximityPointers.Clear();
+            proximityPoints.Clear();
+
+            // Find all valid pointers
+            foreach (var inputSource in CoreServices.InputSystem.DetectedInputSources)
             {
-                proximityPointers.Clear();
-                proximityPoints.Clear();
-
-                // Find all valid pointers
-                foreach (var inputSource in CoreServices.InputSystem.DetectedInputSources)
+                foreach (var pointer in inputSource.Pointers)
                 {
-                    foreach (var pointer in inputSource.Pointers)
+                    if (pointer.IsInteractionEnabled && !proximityPointers.Contains(pointer))
                     {
-                        if (pointer.IsInteractionEnabled && !proximityPointers.Contains(pointer))
-                        {
-                            proximityPointers.Add(pointer);
-                        }
+                        proximityPointers.Add(pointer);
                     }
                 }
+            }
 
-                // Get the max radius possible of our current bounds plus the proximity
-                float maxRadius = Mathf.Max(Mathf.Max(currentBoundsExtents.x, currentBoundsExtents.y), currentBoundsExtents.z);
-                maxRadius *= maxRadius;
-                maxRadius += handleCloseProximity + handleMediumProximity;
+            // Get the max radius possible of our current bounds plus the proximity
+            float maxRadius = Mathf.Max(Mathf.Max(currentBoundsExtents.x, currentBoundsExtents.y), currentBoundsExtents.z);
+            maxRadius *= maxRadius;
+            maxRadius += handleCloseProximity + handleMediumProximity;
 
-                // Grab points within sphere of influence from valid pointers
-                foreach (var pointer in proximityPointers)
+            // Grab points within sphere of influence from valid pointers
+            foreach (var pointer in proximityPointers)
+            {
+                if (IsPointWithinBounds(boundingBoxPosition, pointer.Position, maxRadius))
                 {
-                    if (IsPointWithinBounds(boundingBoxPosition, pointer.Position, maxRadius))
-                    {
-                        proximityPoints.Add(pointer.Position);
-                    }
-
-                    if (IsPointWithinBounds(boundingBoxPosition, pointer.Result.Details.Point, maxRadius))
-                    {
-                        proximityPoints.Add(pointer.Result.Details.Point);
-                    }
+                    proximityPoints.Add(pointer.Position);
                 }
 
-                // Loop through all handles and find closest one
-                GameObject closestHandle = null;
-                float closestDistanceSqr = float.MaxValue;
-                foreach (var point in proximityPoints)
+                if (IsPointWithinBounds(boundingBoxPosition, pointer.Result.Details.Point, maxRadius))
                 {
-
-                    foreach (var baseHandles in registeredHandles)
-                    {
-
-                        foreach (KeyValuePair<GameObject, HandleProximityState> item in baseHandles.proximityStates)
-                        {
-                            // If handle can't be visible, skip calculations
-                            if (!baseHandles.handles.IsVisible(item.Key.transform))
-                            {
-                                continue;
-                            }
-
-                            // Perform comparison on sqr distance since sqrt() operation is expensive in Vector3.Distance()
-                            float sqrDistance = (item.Key.transform.position - point).sqrMagnitude;
-                            if (sqrDistance < closestDistanceSqr)
-                            {
-                                closestHandle = item.Key;
-                                closestDistanceSqr = sqrDistance;
-                            }
-
-                        }
-
-                    }
+                    proximityPoints.Add(pointer.Result.Details.Point);
                 }
+            }
 
-                // Loop through all handles and update visual state based on closest point
+            // Loop through all handles and find closest one
+            GameObject closestHandle = null;
+            float closestDistanceSqr = float.MaxValue;
+            foreach (var point in proximityPoints)
+            {
+
                 foreach (var baseHandles in registeredHandles)
                 {
+
                     foreach (KeyValuePair<GameObject, HandleProximityState> item in baseHandles.proximityStates)
                     {
-                        HandleProximityState newState = (closestHandle == item.Key) ? GetProximityState(closestDistanceSqr) : HandleProximityState.FullsizeNoProximity;
-
-                        // Only apply updates if handle is in a new state or closest handle needs to lerp scaling
-                        if (item.Value != newState)
+                        // If handle can't be visible, skip calculations
+                        if (!baseHandles.handles.IsVisible(item.Key.transform))
                         {
-                            // Update and save new state
-                            GameObject handleForState = item.Key;
-                            baseHandles.proximityStates[handleForState] = newState;
-
-                            Renderer rendererComp = handleForState.GetComponent<Renderer>();
-                            if (rendererComp)
-                            {
-                                rendererComp.material = newState == HandleProximityState.CloseProximity ? baseHandles.handles.HandleGrabbedMaterial : baseHandles.handles.HandleMaterial;
-                            }
+                            continue;
                         }
 
-                        ScaleHandle(newState, item.Key, baseHandles.handles.HandleSize, true);
+                        // Perform comparison on sqr distance since sqrt() operation is expensive in Vector3.Distance()
+                        float sqrDistance = (item.Key.transform.position - point).sqrMagnitude;
+                        if (sqrDistance < closestDistanceSqr)
+                        {
+                            closestHandle = item.Key;
+                            closestDistanceSqr = sqrDistance;
+                        }
+
                     }
+
+                }
+            }
+
+            // Loop through all handles and update visual state based on closest point
+            foreach (var baseHandles in registeredHandles)
+            {
+                foreach (KeyValuePair<GameObject, HandleProximityState> item in baseHandles.proximityStates)
+                {
+                    HandleProximityState newState = (closestHandle == item.Key) ? GetProximityState(closestDistanceSqr) : HandleProximityState.FullsizeNoProximity;
+
+                    // Only apply updates if handle is in a new state or closest handle needs to lerp scaling
+                    if (item.Value != newState)
+                    {
+                        // Update and save new state
+                        GameObject handleForState = item.Key;
+                        baseHandles.proximityStates[handleForState] = newState;
+
+                        Renderer rendererComp = handleForState.GetComponent<Renderer>();
+                        if (rendererComp)
+                        {
+                            rendererComp.material = newState == HandleProximityState.CloseProximity ? baseHandles.handles.HandleGrabbedMaterial : baseHandles.handles.HandleMaterial;
+                        }
+                    }
+
+                    ScaleHandle(newState, item.Key, baseHandles.handles.HandleSize, true);
                 }
             }
         }
@@ -306,11 +302,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private bool IsPointWithinBounds(Vector3 position, Vector3 point, float radiusSqr)
         {
-            // TODO
             return (position - point).sqrMagnitude < radiusSqr;
         }
-
-
 
 
         /// <summary>

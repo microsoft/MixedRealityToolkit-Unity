@@ -1,9 +1,11 @@
 ﻿using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI.BoundingBoxTypes;
+using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
+    [Serializable]
     public class BoundingBoxRotationHandles : BoundingBoxHandlesBase
     {
 
@@ -165,8 +167,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        internal void CalculateEdgeCenters(Vector3[] boundsCorners)
+        internal void CalculateEdgeCenters(ref Vector3[] boundsCorners)
         {
+            //edgeCenters = new Vector3[12];
             if (boundsCorners != null && edgeCenters != null)
             {
                 edgeCenters[0] = (boundsCorners[0] + boundsCorners[1]) * 0.5f;
@@ -187,7 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
 
-        internal void InitEdgeAxis()
+        private void InitEdgeAxis()
         {
 
             edgeAxes = new CardinalAxisType[12];
@@ -235,7 +238,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return HandleType.Rotation;
         }
 
-        internal void CreateHandles(Transform parent, bool drawManipulationTether, bool isFlattened)
+        internal void Create(ref Vector3[] boundsCorners, Transform parent, bool drawManipulationTether)
+        {
+            edgeCenters = new Vector3[12];
+            CalculateEdgeCenters(ref boundsCorners);
+            InitEdgeAxis();
+            CreateHandles(parent, drawManipulationTether);
+        }
+        private void CreateHandles(Transform parent, bool drawManipulationTether)
         {
             for (int i = 0; i < edgeCenters.Length; ++i)
             {
@@ -245,7 +255,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 midpoint.transform.parent = parent;
 
                 GameObject midpointVisual;
-                GameObject prefabType = isFlattened ? HandleSlatePrefab : HandlePrefab;
+                GameObject prefabType = HandlePrefab;
                 if (prefabType != null)
                 {
                     midpointVisual = GameObject.Instantiate(prefabType);
@@ -289,6 +299,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
 
+           //handlesCreated.Invoke();
         }
 
 

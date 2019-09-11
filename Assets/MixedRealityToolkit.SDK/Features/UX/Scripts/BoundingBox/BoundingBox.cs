@@ -136,8 +136,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-
-
         [SerializeField]
         [Tooltip("Add a Collider here if you do not want the handle colliders to interact with another object's collider.")]
         private Collider handlesIgnoreCollider = null;
@@ -236,7 +234,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #endregion Serialized Fields
 
-
         public BoxCollider TargetBounds
         {
             get
@@ -255,9 +252,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #region Private Fields
 
-
-      
-
         // Whether we should be displaying just the wireframe (if enabled) or the handles too
         private bool wireframeOnly = false;
 
@@ -266,18 +260,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private Transform rigRoot;
 
-
-        
-
         // Half the size of the current bounds
         private Vector3 currentBoundsExtents;
 
         private readonly List<IMixedRealityInputSource> touchingSources = new List<IMixedRealityInputSource>();
-
-        
+      
         private List<IMixedRealityController> sourcesDetected;
-        
-
+      
         // Current axis of rotation about the center of the rig root
         private Vector3 currentRotationAxis;
 
@@ -317,10 +306,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // Cache for the corner points of either renderers or colliders during the bounds calculation phase
         private static List<Vector3> totalBoundsCorners = new List<Vector3>();
 
-        
-
-
-        
         #endregion
 
         #region public Properties
@@ -340,20 +325,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     rigRoot?.gameObject.SetActive(value);
                     ResetHandleVisibility();
 
-                    if (value)
-                        proximityEffect.ResetHandleProximityScale(this);
+                    if (active)
+                        proximityEffect.ResetHandleProximityScale();
 
                    
                 }
             }
         }
 
-       
-
-        
-
         #endregion Public Properties
-
 
         #region Public Methods
 
@@ -370,12 +350,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             rotationHandles.configurationChanged.AddListener(CreateRig);
             boxDisplay.configurationChanged.AddListener(CreateRig);
             links.configurationChanged.AddListener(CreateRig);
-        }
-
-                
+        }               
 
         #endregion
-
 
         #region MonoBehaviour Methods
 
@@ -428,9 +405,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 // Only update proximity scaling of handles if they are visible which is when
                 // active is true and wireframeOnly is false
-                if (!wireframeOnly)
+                // also only use proximity effect if nothing is being dragged or grabbed
+                if (!wireframeOnly && currentPointer == null)
                 {
-                    proximityEffect.HandleProximityScaling(currentPointer, transform.position, currentBoundsExtents);
+                    proximityEffect.HandleProximityScaling(transform.position, currentBoundsExtents);
                 }
             }
             else if (boundsOverride != null && HasBoundsOverrideChanged())
@@ -457,10 +435,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #endregion MonoBehaviour Methods
 
-
         #region Private Methods
 
-       
         private void SetBoundingBoxCollider()
         {
             // Make sure that the bounds of all child objects are up to date before we compute bounds
@@ -600,9 +576,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             BoundsExtensions.GetColliderBoundsPoints(colliderByTransform.Value, totalBoundsCorners, 0);
         }
 
-
-
-
         private HandleType GetHandleType(Transform handle)
         {
             if (rotationHandles.IsHandleType(handle))
@@ -618,8 +591,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return HandleType.None;
             }
         }
-
-
 
         private void CaptureInitialState()
         {
@@ -638,7 +609,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
        
-
         private void UpdateBounds()
         {
             if (boundingBoxTarget.TargetBounds != null)
@@ -670,13 +640,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     currentBoundsExtents = boundsExtents;
 
                     GetCornerPositionsFromBounds(new Bounds(Vector3.zero, boundsExtents * 2.0f), ref scaleHandles.GetBoundsCornersRef());
-                    rotationHandles.CalculateEdgeCenters(scaleHandles.BoundsCorners);
+                    rotationHandles.CalculateEdgeCenters(ref scaleHandles.GetBoundsCornersRef());
                 }
             }
         }
-
-        
-       
+ 
         private void GetCornerPositionsFromBounds(Bounds bounds, ref Vector3[] positions)
         {
             int numCorners = 1 << 3;
@@ -745,7 +713,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (eventData.NewFocusedObject == null)
             {
-                proximityEffect.ResetHandleProximityScale(this);
+                proximityEffect.ResetHandleProximityScale();
             }
 
             if (activation == BoundingBoxActivationType.ActivateManually || activation == BoundingBoxActivationType.ActivateOnStart)
@@ -881,25 +849,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #endregion Used Event Handlers
 
-
         #region Unused Event Handlers
 
         void IMixedRealityFocusChangedHandler.OnBeforeFocusChange(FocusEventData eventData) { }
 
         #endregion Unused Event Handlers
-
-
-
-       
-
-
-        ///// <summary>
-        ///// Returns list of transforms pointing to the rotation handles of the bounding box.
-        ///// </summary>
-        //public IReadOnlyList<Transform> RotateMidpoints
-        //{
-        //    get { return rotationHandles.Handles; }
-        //}
 
         private void DestroyRig()
         {
@@ -974,12 +928,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             boxDisplay.SetHighlighted();
         }
 
-
-       
-
-        
-
-        
         /// <summary>
         /// Make the handle colliders ignore specified collider. (e.g. spatial mapping's floor collider to avoid the object get lifted up)
         /// </summary>
@@ -1007,8 +955,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             sourcesDetected = new List<IMixedRealityController>();
         }
 
-
-
         private void ResetHandleVisibility()
         {
             if (currentPointer != null)
@@ -1027,10 +973,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             rotationHandles.ResetHandleVisibility(isVisible);
             rotationHandles.SetHiddenHandles();
         }
-
-
- 
-
 
         /// <summary>
         /// Destroys and re-creates the rig around the bounding box
@@ -1118,13 +1060,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void AddLinks()
         {
-            //edgeCenters = new Vector3[12];
-            rotationHandles.CalculateEdgeCenters(scaleHandles.BoundsCorners);
-            rotationHandles.InitEdgeAxis();
             bool isFlattened = flattenAxis != FlattenModeType.DoNotFlatten;
-            rotationHandles.CreateHandles(rigRoot.transform, drawTetherWhenManipulating, isFlattened);
+            rotationHandles.Create(ref scaleHandles.GetBoundsCornersRef(), rigRoot, drawTetherWhenManipulating);
             proximityEffect.AddHandles(rotationHandles);
-            links.CreateLinks(rotationHandles, rigRoot.transform, currentBoundsExtents);
+            links.CreateLinks(rotationHandles, rigRoot, currentBoundsExtents);
         }
         
 
@@ -1166,6 +1105,5 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
         }
-
     }
 }

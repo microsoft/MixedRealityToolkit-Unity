@@ -1,11 +1,13 @@
 ﻿
 using Microsoft.MixedReality.Toolkit.UI.BoundingBoxTypes;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
+    [Serializable]
     public class BoundingBoxLinks
     {
 
@@ -111,7 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 foreach (Transform transform in links)
                 {
-                    Object.Destroy(transform.gameObject);
+                    GameObject.Destroy(transform.gameObject);
                 }
                 links.Clear();
                 links = null;
@@ -220,12 +222,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     if (wireframeShape == WireframeType.Cubic)
                     {
                         link = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                        Object.Destroy(link.GetComponent<BoxCollider>());
+                        GameObject.Destroy(link.GetComponent<BoxCollider>());
                     }
                     else
                     {
                         link = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-                        Object.Destroy(link.GetComponent<CapsuleCollider>());
+                        GameObject.Destroy(link.GetComponent<CapsuleCollider>());
                     }
                     link.name = "link_" + i.ToString();
 
