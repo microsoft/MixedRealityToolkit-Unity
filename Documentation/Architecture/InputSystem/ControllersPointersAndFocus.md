@@ -50,7 +50,7 @@ It's possible to provide an alternate implementation of the pointer mediator by 
 ### How to disable pointers
 Because the pointer mediator runs every frame, it ends up controlling the active / inactive state of all pointers. Therefore, if you set a pointer's IsInteractionEnabled property in code, it will get overwritten by the pointer mediator every frame. Instead, you can specify the [`PointerBehavior`](xref:Microsoft.MixedReality.Toolkit.Inputf.PointerBehavior) to control whether pointers should be on or off yourself. Note that this will only work if you are using the default [`FocusProvider`](xref:Microsoft.MixedReality.Toolkit.Input.FocusProvider) and [`DefaultPointerMediator`](xref:Microsoft.MixedReality.Toolkit.Input.DefaultPointerMediator) in MRTK. 
 
-#### Example: Turn off hand rays in MRTK
+#### Example: Disable hand rays in MRTK
 The following code will turn off the hand rays in MRTK:
 
 ```csharp
