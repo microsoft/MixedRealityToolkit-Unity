@@ -932,7 +932,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     hitResult3d.Clear();
                     QueryScene(pointerData.Pointer, raycastProvider, prioritizedLayerMasks, hitResult3d, maxQuerySceneResults, focusIndividualCompoundCollider);
 
-                    if (pointerData.Pointer.PointerId == gazeProviderPointingData.Pointer.PointerId)
+                    if ((gazeProviderPointingData?.Pointer != null) && 
+                        (pointerData.Pointer.PointerId == gazeProviderPointingData.Pointer.PointerId))
                     {
                         gazeHitResult = hitResult3d;
                     }
