@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1f18fec9b55c4f818e284af454161962, type: 3}
-  m_Name: DisablePointersExampeSpeechCommandsProfile
+  m_Name: DisablePointersExampleSpeechCommandsProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 1
   startBehavior: 0
