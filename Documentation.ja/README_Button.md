@@ -1,4 +1,4 @@
-# ボタン-Button
+# ボタン (Button)
 
 ![Button](../Documentation/Images/Button/MRTK_Button_Main.png)
 
@@ -16,20 +16,21 @@
 |  ![Radial](../Documentation/Images/Button/MRTK_Button_Radial.png) **Radial** | ![Checkbox](../Documentation/Images/Button/MRTK_Button_Checkbox.png) **Checkbox** | ![ToggleSwitch](../Documentation/Images/Button/MRTK_Button_ToggleSwitch.png) **ToggleSwitch** |
 | Radial button | Checkbox  | Toggle switch |
 |  ![ButtonHoloLens1](../Documentation/Images/Button/MRTK_Button_HoloLens1.png) **ButtonHoloLens1** | ![PressableRoundButton](../Documentation/Images/Button/MRTK_Button_Round.png) **PressableRoundButton** | ![Button](../Documentation/Images/Button/MRTK_Button_Base.png) **Button** |
-| HoloLens 第一世代のシェルスタイルボタン | 丸型押しボタン | ベーシックなボタン |
+| HoloLens 1 のシェルスタイルボタン | 丸型押しボタン | ベーシックなボタン |
 
-[`Button.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/Button.prefab) は、 [Interactable](README_Interactable.md) のコンセプトに基づいており、ボタンまたはその他のタイプのインタラクション可能な面に簡単な UI コントロールを提供します。 ベースラインボタンは、近くのインタラクション要素に対して多関節ハンド (articulated hand) で入力する場合や、遠くのインタラクション要素に対して注視＋エアタップなど、利用可能な全ての入力方法をサポートします。音声コマンドを使用してボタンをトリガーすることもできます。
-[`PressableButtonHoloLens2.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab) は、HoloLens 2 のシェルスタイルボタンで、ダイレクトハンドトラッキングの入力用に精密な動きをサポートします。 `Interactable` のスクリプトと `PressableButton` のスクリプトを組み合わせています。
+[`Button.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/Button.prefab) は、 [Interactable](README_Interactable.md) のコンセプトに基づいており、ボタンまたはその他のタイプのインタラクション可能な面に簡単な UI コントロールを提供します。 ベースラインボタンは、近くのインタラクション要素に対して多関節ハンド (articulated hand) で入力する場合や、遠くのインタラクション要素に対してゲイズ＋エアタップなど、利用可能な全ての入力方法をサポートします。音声コマンドを使用してボタンをトリガーすることもできます。
+
+[`PressableButtonHoloLens2.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab) は、HoloLens 2 のシェルスタイルボタンで、ダイレクトハンドトラッキングの入力用に精密な動きをサポートします。 `Interactable` のスクリプトと `PressableButton` のスクリプトを組合わせています。
 
 ## Pressable button の使い方
 
-単に [`PressableButtonHoloLens2.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab) または[`PressableButtonHoloLens2Unplated.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2Unplated.prefab) をドラッグしてシーンに置くだけです。これらのボタンプレハブは、多関節ハンド (articulated hand) 入力や注視など、様々なタイプの入力に対して視聴覚フィードバックするように既に設定されています。
+単に [`PressableButtonHoloLens2.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab) または[`PressableButtonHoloLens2Unplated.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2Unplated.prefab) をドラッグしてシーンに置くだけです。これらのボタンプレハブは、多関節ハンド (articulated hand) 入力やゲイズなど、様々なタイプの入力に対して視聴覚フィードバックするように既に設定されています。
 
 プレハブ自体と [Interactable](README_Interactable.md) コンポーネントで公開されるイベントを使用して、追加のアクションをトリガーできます。 [HandInteractionExample のシーン](README_HandInteractionExamples.md)の pressable buttons は、Interactable の *OnClick* イベントを使って、キューブの色の変更をトリガーします。このイベントは、Gaze、AirTap、HandRay などの様々なタイプの入力メソッド、及び pressable button のスクリプトを介した物理的なボタンの押下に対してトリガーされます。
 
 <img src="../Documentation/Images/Button/MRTK_Button_HowToUse_Interactable.png" width="450">
 
-ボタンの `PhysicalPressEventRouter` を介して、pressable button が *OnClick* イベントを発生させるタイミングを設定できます。例えば、*OnClick* は、*Interactable On Click* を *Event On Press* に設定することにより、ボタンが最初に押された時と離された時に起動するように設定できます。
+ボタンの `PhysicalPressEventRouter` を介して、pressable button が *OnClick* イベントを発生させるタイミングを設定できます。例えば、*Interactable On Click* を *Event On Press* に設定することにより、*OnClick* をボタンを押して離した時ではなく、最初に押した時にトリガーするよう設定できます。
 
 <img src="../Documentation/Images/Button/MRTK_Button_HowTo_Events.png" width="450">
 
@@ -37,9 +38,9 @@ Articulated hand の入力状態情報を活用するには、pressable button �
 
 <img src="../Documentation/Images/Button/MRTK_Button_HowTo_PressableButton.png" width="450">
 
-## インタラクション状態
+## インタラクションの状態
 
-アイドル状態では、ボタンの全面プレートは見えません。指が近づいたり、視線入力のカーソルが表面をターゲットすると、全面のプレートの光る境界線が可視化されます。全面プレートの表面には、指先の位置がさらにハイライトされます。指で押すと、全面プレートが指先で動きます。指先が全面プレートの表面に触れると、わずかにパルスのエフェクトが現れ、タッチポイントの視覚的なフィードバックが得られます。
+アイドル状態では、ボタンの前面プレートは見えません。指が近づいたり、視線入力のカーソルが表面をターゲットすると、前面のプレートの光る境界線が現れます。前面プレートの表面には、指先の位置がさらにハイライトされます。指で押すと、前面プレートが指先で動きます。指先が前面プレートの表面に触れると、わずかにパルスのエフェクトが現れ、タッチポイントの視覚的なフィードバックが得られます。
 
 <img src="../Documentation/Images/Button/MRTK_Button_InteractionStates.png" width="600">
 
