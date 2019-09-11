@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.UI;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -143,10 +144,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if ((speechConfirmationTooltipPrefabInstance != null) && (eventData.Command.Keyword.ToLower() != "select"))
                 {
                     // Update the text label with recognized keyword
-                    speechConfirmationTooltipPrefabInstance.GetComponentInChildren<TextMeshPro>().text = eventData.Command.Keyword;
-                    // Trigger animation of the Speech Confirmation Tooltip prefab
-                    speechConfirmationTooltipPrefabInstance.GetComponent<Animator>().SetTrigger("Confirmed");
+                    speechConfirmationTooltipPrefabInstance.GetComponent<SpeechConfirmationTooltip>().SetText(eventData.Command.Keyword);
 
+                    // Trigger animation of the Speech Confirmation Tooltip prefab
+                    speechConfirmationTooltipPrefabInstance.GetComponent<SpeechConfirmationTooltip>().TriggerConfirmedAnimation();
+
+                    // Tooltip prefab instance will be destroyed on animation complete 
+                    // by DestroyOnAnimationComplete.cs in the SpeechConfirmationTooltip.prefab
                 }
             }
         }

@@ -1,0 +1,25 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+
+namespace Microsoft.MixedReality.Toolkit.UI
+{
+    public class SpeechConfirmationTooltip : ToolTip
+    {
+        /// <summary>
+        /// Tooltip used for speech confirmation label. This inherits ToolTip class and provides generic text string interface for the label.
+        /// To create your own speecn cofirmation label, provide SetText(string s) and TriggerConfirmationAnimation() functions.
+        /// </summary>
+        public void SetText(string labelText)
+        {
+            gameObject.GetComponentInChildren<TextMeshPro>().text = labelText;
+        }
+
+        public void TriggerConfirmedAnimation()
+        {
+            gameObject.GetComponent<Animator>().SetTrigger("Confirmed");
+        }
+
+    }
+}
