@@ -2,93 +2,93 @@
 
 ![Manipulation handler](../Documentation/Images/ManipulationHandler/MRTK_Manipulation_Main.png)
 
-The *ManipulationHandler* script allows for an object to be made movable, scalable, and rotatable using one or two hands. Manipulation can be restricted so that it only allows certain kinds of transformation. The script works with various types of inputs including HoloLens 2 articulated hand input, hand-rays, HoloLens (1st gen) gesture input, and immersive headset motion controller input.
+*ManipulationHandler* スクリプトを使用することで、オブジェクトを 片手か両手を使って、移動、スケール調整、および回転を可能にすることができます。特定の種類の移動のみを許可することにより、操作を制限できます。このスクリプトは、HoloLens 2 多関節ハンド入力、手の Ray 、HoloLens (第 1 世代) ジェスチャ入力、没入型ヘッドセット モーション コントローラー入力など、さまざまな種類の入力で動作します。
 
-## How to use the manipulation handler ##
+## Manipulation handler の使用方法 ##
 
-Add the [`ManipulationHandler.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/ManipulationHandler.cs) component to a GameObject.
+[`ManipulationHandler.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/ManipulationHandler.cs) コンポーネントをゲームオブジェクトに追加します。
 
-Make sure to also add a collidable to the object, matching its grabbable bounds. To make the object respond to near articulated hand input, add the [`NearInteractionGrabbable.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Services/InputSystem/NearInteractionGrabbable.cs) script as well. 
+また、オブジェクトに衝突可能な境界を合わせて追加してください。オブジェクトが近い多関節ハンドに応答するようにするには、[NearInteractionGrabbable.cs](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Services/InputSystem/NearInteractionGrabbable.cs) スクリプトも追加します。
 
-If you wish to set minimum or maximum values for the object's scale, you can add a [`TransformScaleHandler`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/TransformScaleHandler.cs) script.
+オブジェクトのスケールの最小値または最大値を設定する場合は、[TransformScaleHandler](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/Input/Handlers/TransformScaleHandler.cs) スクリプトも追加してください。
 
 ![Manipulation Handler](../Documentation/Images/ManipulationHandler/MRTK_ManipulationHandler_Howto.png)
 
-## Inspector properties ##
+## インスペクタのプロパティ ##
 
 <img src="../Documentation/Images/ManipulationHandler/MRTK_ManipulationHandler_Structure.png" width="450">
 
-**Host Transform**
-Transform that will be dragged. Defaults to the object of the component.
+**ホスト Transform**
+ドラッグされる変換。既定では、コンポーネントのオブジェクトが設定されます。
 
-**Manipulation Type**
-Specifies whether the object can be manipulated using one hand, two hands, or both.
+**操作タイプ**
+片手、両手、または両方を使用してオブジェクトを操作できるかどうかを指定します。
 
-* *One handed only*
-* *Two handed only*
-* *One and Two handed*
+* *片手のみ*
+* *両手のみ*
+* *片手と両手両方*
 
-**Two Handed Manipulation Type**
+**両手操作タイプ**
 
-* *Scale*: Only scaling is allowed.
-* *Rotate*: Only rotation is allowed.
-* *Move Scale*: Moving and scaling is allowed.
-* *Move Rotate*: Moving and rotating is allowed.
-* *Rotate Scale*: Rotating and scaling is allowed.
-* *Move Rotate Scale*: Moving, rotating and scaling is allowed.
+* *スケール*: スケーリングのみ可能です。
+* *回転*:回転のみが許可されています。
+* *移動スケール*: 移動とスケーリングが許可されています。
+* *回転を移動*:移動および回転が許可される。
+* *回転スケール*: 回転とスケーリングが可能です。
+* *回転スケールを移動*:移動、回転およびスケーリングが許可されます。
 
 ![Manipulation Handler](../Documentation/Images/ManipulationHandler/MRTK_ManipulationHandler_TwoHanded.jpg)
 
-**Allow Far Manipulation**
-Specifies whether manipulation can be done using far interaction with pointers. 
+**遠い操作**
+ポインターとの遠い相互作用を使用して操作を実行できるかどうかを指定します。
 
-**One Hand Rotation Mode Near**
-Specifies how the object will behave when it is being grabbed with one hand / controller near.
+**片手回転モード近く**
+オブジェクトが片手/コントローラーの近くでつかまれているときにオブジェクトがどのように動作するかを指定します。
 
-**One Hand Rotation Mode Far**
-Specifies how the object will behave when it is being grabbed with one hand / controller at distance.
+**片手回転モード遠い**
+オブジェクトが距離で片手/コントローラーでつかまれているときにオブジェクトがどのように動作するかを指定します。
 
-**One Hand Rotation Mode Options**
-Specifies how the object will rotate when it is being grabbed with one hand.
+**片手回転モードオプション**
+オブジェクトが片手でつかまれているときにオブジェクトを回転させる方法を指定します。
 
-* *Maintain original rotation*: Does not rotate object as it is being moved
-* *Maintain rotation to user*: Maintains the object's original rotation for X/Y axis to the user
-* *Gravity aligned maintain rotation to user*: Maintains object's original rotation to user, but makes the object vertical. Useful for bounding boxes.
-* *Face user*: Ensures object always faces the user. Useful for slates/panels.
-* *Face away from user*: Ensures object always faces away from user. Useful for slates/panels that are configured backwards.
-* *Rotate about object center*:  Only works for articulated hands/controllers. Rotate object using rotation of the hand/controller, but about the object center point. Useful for inspecting at a distance.
-* *Rotate about grab point*:  Only works for articulated hands/controllers. Rotate object as if it was being held by hand/controller. Useful for inspection.
+* *元の回転を維持*: 移動中にオブジェクトを回転させません
+* *ユーザへの回転を維持する*: X/Y 軸のオブジェクトの元の回転をユーザに維持する
+* *重力整列は、ユーザーに回転を維持*: オブジェクトの元の回転をユーザに維持しますが、オブジェクトを垂直にします。境界ボックスに便利です。
+* *顔のユーザー*: オブジェクトが常にユーザーに直面していることを確認します。スレート/パネルに便利です。
+* *ユーザーから離れて顔*: オブジェクトが常にユーザーから離れて顔を保ちます。後方に設定されたスレート/パネルに便利です。
+* *オブジェクトの中心を中心に回転*: 多関節ハンド/コントローラでのみ動作します。ハンド/コントローラの回転を使用してオブジェクトを回転しますが、オブジェクトの中心点を中心に回転します。遠くから検査する場合に便利です。
+* *グラブポイント*について回転:関節の手/コントローラのためにのみ動作します。オブジェクトを手/コントローラーで保持しているかのように回転します。検査に役立ちます。
 
-**Release Behavior**
-When an object is released, specify its physical movement behavior. Requires a rigidbody component to be on that object.
+**リリース動作**
+オブジェクトが解放されるとき、その物理的な動きの動作を指定します。そのオブジェクト上に Rigidbody コンポーネントが必要です。
 
-* *Nothing*
-* *Everything*
-* *Keep Velocity*
-* *Keep Angular Velocity*
+* *何も*
+* *すべて*
+* *キープ速度*
+* *角度速度を保つ*
 
-**Constraints on Rotation**
-Specifies on which axis the object will rotate when interacted with.
+**回転の制約**
+操作時にオブジェクトが回転する軸を指定します。
 
-* *None*
-* *X-Axis Only*
-* *Y-Axis Only*
-* *Z-Axis Only*
+* *なし*
+* *X軸のみ*
+* *Y軸のみ*
+* *Z軸のみ*
 
-**Constraints on Movement**
-* *None*
-* *Fix distance from head*
+**動きの制約**
+* *なし*
+* *ヘッドからの距離を修正*
 
-**Smoothing Active**
-Specifies whether smoothing is active.
+**スムージングアクティブ**
+スムージングをアクティブにするかどうかを指定します。
 
-**Smoothing Amount One Hand**
-Amount of smoothing to apply to the movement, scale, rotation. Smoothing of 0 means no smoothing. Max value means no change to value.
+**平滑量片手**
+移動、スケール、回転に適用するスムージングの量。0 のスムージングは、スムージングがないことを意味します。最大値は、値に変更がないことを意味します。
 
-## Events ##
-Manipulation handler provides the following events:
+## イベント ##
+Manipulation handlerは、次のイベントを提供します。
 
-* *OnManipulationStarted*: Fired when manipulation starts.
-* *OnManipulationEnded*: Fires when the manipulation ends.
-* *OnHoverStarted*: Fires when a hand / controller hovers the manipulatable, near or far.
-* *OnHoverEnded*: Fires when a hand / controller un-hovers the manipulatable, near or far.
+* *OnManipulationStarted*: 操作が開始されたときに起動されます。
+* *OnManipulationEnded*: 操作が終了すると起動します。
+* *OnHoverStarted*: ハンド/コントローラーが操作可能な、近くまたは遠くにホバーしたときに起動します。
+* *OnHoverEnded*: ハンド/コントローラーが操作可能な、近くまたは遠くにホバリング解除すると起動します。
