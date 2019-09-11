@@ -1,4 +1,7 @@
-﻿#if !WINDOWS_UWP
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+#if !WINDOWS_UWP
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
@@ -16,7 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             PlayModeTestUtilities.Setup();
             TestUtilities.PlayspaceToOriginLookingForward();
-
         }
 
         [TearDown]
@@ -31,21 +33,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Tests that right after being instantiated, the pointer's direction 
         /// is in the same general direction as the forward direction of the camera
         /// </summary>
-        /// <returns></returns>
-        /// 
         [UnityTest]
-        public IEnumerator TestPointerDirectionMatchesCameraDirectionFirstFrame()
+        public IEnumerator TestPointerDirectionToCameraDirection()
         {
             var inputSystem = PlayModeTestUtilities.GetInputSystem();
 
             // Raise the hand
             var rightHand = new TestHand(Handedness.Right);
 
-            //Position 1 show hand
+            // Set initial position and show hand
             Vector3 initialPos = new Vector3(0.01f, 0.1f, 0.5f);
             yield return rightHand.Show(initialPos);
 
-            //return first hand controller that is right and source type hand
+            // Return first hand controller that is right and source type hand
             var handController = inputSystem.DetectedControllers.First(x => x.ControllerHandedness == Utilities.Handedness.Right && x.InputSource.SourceType == InputSourceType.Hand);
             Assert.IsNotNull(handController);
 
@@ -53,34 +53,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var linePointer = handController.InputSource.Pointers.First(x => x is LinePointer);
             Assert.IsNotNull(linePointer);
 
-            // Take dot product of camera forward and line pointer
-            float dot = Vector3.Dot(linePointer.Rays[0].Direction, Camera.main.transform.forward);
+            Vector3 linePointerOrigin = linePointer.Position;
 
-            // Making sure the pointer is pointing in the same general direction as the camera
-            // A dot of 1 means the pointer and camera forward point in the exact same direction 
-            // but greater than 0.5 is same general direction
-            Assert.GreaterOrEqual(dot, 0.5f);
+            // Check that the line pointer origin is within half a centimeter of the initial position of the hand
+            var distance = Vector3.Distance(initialPos, linePointerOrigin);
+            Assert.LessOrEqual(distance, 0.005f);
 
-            // Position 2
-            yield return new WaitForSeconds(1);
-            yield return rightHand.MoveTo(new Vector3(-1.0f, 0, 2.0f));
-
-            float dot2 = Vector3.Dot(linePointer.Rays[0].Direction, Camera.main.transform.forward);
-            Assert.GreaterOrEqual(dot2, 0.5f);
-
-            // Position 3 
-            yield return new WaitForSeconds(1);
-            yield return rightHand.MoveTo(new Vector3(1.0f, -1.0f, 2.0f));
-
-            float dot3 = Vector3.Dot(linePointer.Rays[0].Direction, Camera.main.transform.forward);
-            Assert.GreaterOrEqual(dot3, 0.5f);
-
-            // Position 4 
-            yield return new WaitForSeconds(1);
-            yield return rightHand.MoveTo(new Vector3(1.0f, 1.0f, 2.0f));
-
-            float dot4 = Vector3.Dot(linePointer.Rays[0].Direction, Camera.main.transform.forward);
-            Assert.GreaterOrEqual(dot4, 0.5f);
+            // Check that the angle between the line pointer ray and camera forward does not exceed 50 degrees
+            float angle = Vector3.Angle(linePointer.Rays[0].Direction, Camera.main.transform.forward);
+            Assert.LessOrEqual(angle, 40.0f);
         }
         #endregion
     }
