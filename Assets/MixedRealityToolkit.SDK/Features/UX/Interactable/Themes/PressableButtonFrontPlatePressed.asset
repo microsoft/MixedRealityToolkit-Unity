@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7e7db9a2688ed540af9819c456ba2e2, type: 3}
   m_Name: PressableButtonFrontPlatePressed
   m_EditorClassIdentifier: 
-  Definitions:
+  definitions:
   - ClassName: InteractableShaderTheme
     AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.InteractableShaderTheme,
       Microsoft.MixedReality.Toolkit.SDK
-    StateProperties:
-    - Name: Shader
-      Type: 3
-      Values:
+    stateProperties:
+    - name: Shader
+      type: 3
+      values:
       - Name: Default
         String: 
         Bool: 0
@@ -84,7 +84,7 @@ MonoBehaviour:
         Quaternion: {x: 0, y: 0, z: 0, w: 0}
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
-      StartValue:
+      startValue:
         Name: 
         String: 
         Bool: 0
@@ -101,7 +101,7 @@ MonoBehaviour:
         Quaternion: {x: 0, y: 0, z: 0, w: 0}
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
-      Default:
+      defaultValue:
         Name: 
         String: 
         Bool: 0
@@ -118,8 +118,8 @@ MonoBehaviour:
         Quaternion: {x: 0, y: 0, z: 0, w: 0}
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
-      TargetShader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
-      ShaderPropertyName: _InnerGlowPower
+      targetShader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
+      shaderPropertyName: _InnerGlowPower
       PropId: 45
       ShaderOptions: []
       ShaderOptionNames:
@@ -192,8 +192,8 @@ MonoBehaviour:
       - _StencilComparison
       - _StencilOperation
       ShaderName: Mixed Reality Toolkit/Standard
-    CustomProperties: []
-    Easing:
+    customProperties: []
+    easing:
       Enabled: 0
       Curve:
         serializedVersion: 2
@@ -220,4 +220,4 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       LerpTime: 0.5
-  States: {fileID: 11400000, guid: 5eac1712038236e4b8ffdb3893804fe1, type: 2}
+  states: {fileID: 11400000, guid: 5eac1712038236e4b8ffdb3893804fe1, type: 2}

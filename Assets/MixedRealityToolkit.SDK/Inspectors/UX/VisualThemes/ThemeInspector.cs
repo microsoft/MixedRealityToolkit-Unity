@@ -279,7 +279,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                 }
                 else
                 {
-                    shader.objectReferenceValue = Shader.Find("Mixed Reality Toolkit/Standard");
+                    shader.objectReferenceValue = StandardShaderUtility.MrtkStandardShader;
 
                     SerializedProperty type = stateProperty.FindPropertyRelative("type");
                     if (type.enumValueIndex == (int)ThemePropertyTypes.Color)

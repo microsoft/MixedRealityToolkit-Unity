@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
@@ -61,10 +62,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public bool Enabled = true;
 
+        [FormerlySerializedAs("States")]
+        [SerializeField]
+        private States states;
+
         /// <summary>
         /// A collection of states and basic state logic
         /// </summary>
-        public States States;
+        public States States
+        {
+            get { return states; }
+            set
+            {
+                states = value;
+                SetupStates();
+            }
+        }
 
         /// <summary>
         /// The state logic for comparing state
@@ -135,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             var result = new T();
             result.Event = interactableEvent.Event;
             interactableEvent.Receiver = result;
-            Events.Add(interactableEvent);
+            InteractableEvents.Add(interactableEvent);
             return result;
         }
 
@@ -145,11 +158,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public T GetReceiver<T>() where T : ReceiverBase
         {
-            for (int i = 0; i < Events.Count; i++)
+            for (int i = 0; i < InteractableEvents.Count; i++)
             {
-                if (Events[i] != null && Events[i].Receiver is T)
+                if (InteractableEvents[i] != null && InteractableEvents[i].Receiver is T)
                 {
-                    return (T) Events[i].Receiver;
+                    return (T) InteractableEvents[i].Receiver;
                 }
             }
             return null;
@@ -162,30 +175,51 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public List<T> GetReceivers<T>() where T : ReceiverBase
         {
             List<T> result = new List<T>();
-            for (int i = 0; i < Events.Count; i++)
+            for (int i = 0; i < InteractableEvents.Count; i++)
             {
-                if (Events[i] != null && Events[i].Receiver is T)
+                if (InteractableEvents[i] != null && InteractableEvents[i].Receiver is T)
                 {
-                    result.Add((T)Events[i].Receiver);
+                    result.Add((T)InteractableEvents[i].Receiver);
                 }
             }
             return result;
         }
 
+        [FormerlySerializedAs("Profiles")]
+        [SerializeField]
+        private List<InteractableProfileItem> profiles = new List<InteractableProfileItem>();
         /// <summary>
         /// List of profiles can match themes with gameObjects
         /// </summary>
-        public List<InteractableProfileItem> Profiles = new List<InteractableProfileItem>();
+        public List<InteractableProfileItem> Profiles
+        {
+            get { return profiles; }
+            set 
+            {
+                profiles = value;
+                SetupThemes();
+            }
+        }
 
         /// <summary>
         /// Base onclick event
         /// </summary>
         public UnityEvent OnClick = new UnityEvent();
 
+        [SerializeField]
+        private List<InteractableEvent> Events = new List<InteractableEvent>();
         /// <summary>
         /// List of events added to this interactable
         /// </summary>
-        public List<InteractableEvent> Events = new List<InteractableEvent>();
+        public List<InteractableEvent> InteractableEvents
+        {
+            get { return Events; }
+            set
+            {
+                Events = value;
+                SetupEvents();
+            }
+        }
 
         /// <summary>
         /// The list of running theme instances to receive state changes
@@ -461,14 +495,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (States == null)
             {
-                States = States.GetDefaultInteractableStates();
+                States = GetDefaultInteractableStates();
             }
 
             InputAction = ResolveInputAction(InputActionId);
 
             RefreshSetup();
 
-            if(StartDimensionIndex > 0)
+            if (StartDimensionIndex > 0)
             {
                 SetDimensionIndex(StartDimensionIndex);
             }
@@ -557,11 +591,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
 
-            for (int i = 0; i < Events.Count; i++)
+            for (int i = 0; i < InteractableEvents.Count; i++)
             {
-                if (Events[i].Receiver != null)
+                if (InteractableEvents[i].Receiver != null)
                 {
-                    Events[i].Receiver.OnUpdate(StateManager, this);
+                    InteractableEvents[i].Receiver.OnUpdate(StateManager, this);
                 }
             }
 
@@ -618,7 +652,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         protected virtual void SetupStates()
         {
-            StateManager = States.CreateStateModel();
+            Debug.Assert(typeof(InteractableStates).IsAssignableFrom(States.StateModelType), $"Invalid state model of type {States.StateModelType}. State model must extend from {typeof(InteractableStates)}");
+            StateManager = (InteractableStates)States.CreateStateModel();
         }
 
         /// <summary>
@@ -626,10 +661,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         protected virtual void SetupEvents()
         {
-            for (int i = 0; i < Events.Count; i++)
+            for (int i = 0; i < InteractableEvents.Count; i++)
             {
-                Events[i].Receiver = InteractableEvent.CreateReceiver(Events[i]);
-                Events[i].Receiver.Host = this;
+                InteractableEvents[i].Receiver = InteractableEvent.CreateReceiver(InteractableEvents[i]);
+                InteractableEvents[i].Receiver.Host = this;
             }
         }
 
@@ -1216,11 +1251,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             OnClick.Invoke();
             clickCount++;
 
-            for (int i = 0; i < Events.Count; i++)
+            for (int i = 0; i < InteractableEvents.Count; i++)
             {
-                if (Events[i].Receiver != null)
+                if (InteractableEvents[i].Receiver != null)
                 {
-                    Events[i].Receiver.OnClick(StateManager, this, pointer);
+                    InteractableEvents[i].Receiver.OnClick(StateManager, this, pointer);
                 }
             }
 
@@ -1288,6 +1323,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
             clickValidTimer = null;
         }
 
+
+        public static States GetDefaultInteractableStates()
+        {
+            States result = ScriptableObject.CreateInstance<States>();
+            InteractableStates allInteractableStates = new InteractableStates();
+            result.StateModelType = typeof(InteractableStates);
+            result.StateList = allInteractableStates.GetDefaultStates();
+            result.DefaultIndex = 0;
+            return result;
+        }
+
         #endregion InteractableUtilities
 
         #region VoiceCommands
@@ -1313,11 +1359,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         protected void SendVoiceCommands(string command, int index, int length)
         {
-            for (int i = 0; i < Events.Count; i++)
+            for (int i = 0; i < InteractableEvents.Count; i++)
             {
-                if (Events[i].Receiver != null)
+                if (InteractableEvents[i].Receiver != null)
                 {
-                    Events[i].Receiver.OnVoiceCommand(StateManager, this, command, index, length);
+                    InteractableEvents[i].Receiver.OnVoiceCommand(StateManager, this, command, index, length);
                 }
             }
 

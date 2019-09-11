@@ -15,7 +15,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
     public class Theme : ScriptableObject
     {
         [FormerlySerializedAs("Settings")]
-        [FormerlySerializedAs("Definitions")]
         [SerializeField]
         private List<ThemeDefinition> definitions;
 

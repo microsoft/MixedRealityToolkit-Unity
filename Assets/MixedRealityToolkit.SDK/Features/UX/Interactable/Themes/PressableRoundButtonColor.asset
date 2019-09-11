@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7e7db9a2688ed540af9819c456ba2e2, type: 3}
   m_Name: PressableRoundButtonColor
   m_EditorClassIdentifier: 
-  Definitions:
+  definitions:
   - ClassName: ScaleOffsetColorTheme
     AssemblyQualifiedName: Microsoft.MixedReality.Toolkit.UI.ScaleOffsetColorTheme,
       Microsoft.MixedReality.Toolkit.SDK
-    StateProperties:
-    - Name: Scale
-      Type: 6
-      Values:
+    stateProperties:
+    - name: Scale
+      type: 6
+      values:
       - Name: Default
         String: 
         Bool: 0
@@ -132,7 +132,7 @@ MonoBehaviour:
         Quaternion: {x: 0, y: 0, z: 0, w: 0}
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
-      StartValue:
+      startValue:
         Name: 
         String: 
         Bool: 0
@@ -149,7 +149,7 @@ MonoBehaviour:
         Quaternion: {x: 0, y: 0, z: 0, w: 0}
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
-      Default:
+      defaultValue:
         Name: 
         String: 
         Bool: 0
@@ -166,15 +166,15 @@ MonoBehaviour:
         Quaternion: {x: 0, y: 0, z: 0, w: 0}
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
-      TargetShader: {fileID: 0}
-      ShaderPropertyName: 
+      targetShader: {fileID: 0}
+      shaderPropertyName: 
       PropId: 0
       ShaderOptions: []
       ShaderOptionNames: []
       ShaderName: 
-    - Name: Offset
-      Type: 6
-      Values:
+    - name: Offset
+      type: 6
+      values:
       - Name: Default
         String: 
         Bool: 0
@@ -287,7 +287,7 @@ MonoBehaviour:
         Quaternion: {x: 0, y: 0, z: 0, w: 0}
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
-      StartValue:
+      startValue:
         Name: 
         String: 
         Bool: 0
@@ -304,7 +304,7 @@ MonoBehaviour:
         Quaternion: {x: 0, y: 0, z: 0, w: 0}
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
-      Default:
+      defaultValue:
         Name: 
         String: 
         Bool: 0
@@ -321,15 +321,15 @@ MonoBehaviour:
         Quaternion: {x: 0, y: 0, z: 0, w: 0}
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
-      TargetShader: {fileID: 0}
-      ShaderPropertyName: 
+      targetShader: {fileID: 0}
+      shaderPropertyName: 
       PropId: 0
       ShaderOptions: []
       ShaderOptionNames: []
       ShaderName: 
-    - Name: Color
-      Type: 2
-      Values:
+    - name: Color
+      type: 2
+      values:
       - Name: Default
         String: 
         Bool: 0
@@ -442,7 +442,7 @@ MonoBehaviour:
         Quaternion: {x: 0, y: 0, z: 0, w: 0}
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
-      StartValue:
+      startValue:
         Name: 
         String: 
         Bool: 0
@@ -459,7 +459,7 @@ MonoBehaviour:
         Quaternion: {x: 0, y: 0, z: 0, w: 0}
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
-      Default:
+      defaultValue:
         Name: 
         String: 
         Bool: 0
@@ -476,8 +476,8 @@ MonoBehaviour:
         Quaternion: {x: 0, y: 0, z: 0, w: 0}
         AudioClip: {fileID: 0}
         Animation: {fileID: 0}
-      TargetShader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
-      ShaderPropertyName: _Color
+      targetShader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
+      shaderPropertyName: _Color
       PropId: 0
       ShaderOptions: []
       ShaderOptionNames:
@@ -494,8 +494,8 @@ MonoBehaviour:
       - _EnvironmentColorY
       - _EnvironmentColorZ
       ShaderName: Mixed Reality Toolkit/Standard
-    CustomProperties: []
-    Easing:
+    customProperties: []
+    easing:
       Enabled: 1
       Curve:
         serializedVersion: 2
@@ -522,4 +522,4 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       LerpTime: 0.1
-  States: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
+  states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}

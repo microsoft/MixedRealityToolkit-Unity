@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,7 +22,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private ThemePropertyValue startValue = new ThemePropertyValue();
 
         protected const string DefaultShaderProperty = "_Color";
-        protected const string DefaultShaderName = "Mixed Reality Toolkit/Standard";
 
         public InteractableShaderTheme()
         {
@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         Type = ThemePropertyTypes.ShaderFloat,
                         Values = new List<ThemePropertyValue>(),
                         Default = new ThemePropertyValue() { Float = 0},
-                        TargetShader = Shader.Find(DefaultShaderName),
+                        TargetShader = StandardShaderUtility.MrtkStandardShader,
                         ShaderPropertyName = DefaultShaderProperty,
                     },
                 },
