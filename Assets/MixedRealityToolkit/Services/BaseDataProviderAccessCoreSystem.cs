@@ -19,6 +19,15 @@ namespace Microsoft.MixedReality.Toolkit
     {
         private List<IMixedRealityDataProvider> dataProviders = new List<IMixedRealityDataProvider>();
 
+        protected bool isDestroyed = false;
+
+        /// <inheritdoc />
+        public override void Destroy()
+        {
+            isDestroyed = true;
+            base.Destroy();
+        }
+
         public override void Reset()
         {
             base.Reset();
@@ -26,6 +35,7 @@ namespace Microsoft.MixedReality.Toolkit
             foreach(var provider in dataProviders)
             {
                 provider.Reset();
+                if (isDestroyed) { break; }
             }
         }
 
@@ -37,6 +47,7 @@ namespace Microsoft.MixedReality.Toolkit
             foreach (var provider in dataProviders)
             {
                 provider.Enable();
+                if (isDestroyed) { break; }
             }
         }
 
@@ -48,6 +59,7 @@ namespace Microsoft.MixedReality.Toolkit
             foreach (var provider in dataProviders)
             {
                 provider.Update();
+                if (isDestroyed) { break; }
             }
         }
 
@@ -59,6 +71,7 @@ namespace Microsoft.MixedReality.Toolkit
             foreach (var provider in dataProviders)
             {
                 provider.LateUpdate();
+                if (isDestroyed) { break; }
             }
         }
 

@@ -14,6 +14,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Microsoft.MixedReality.Toolkit.SceneSystem;
 using Microsoft.MixedReality.Toolkit.CameraSystem;
+using System.Text;
 
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Input.Editor;
@@ -105,14 +106,14 @@ namespace Microsoft.MixedReality.Toolkit
 
             activeProfile = profile;
 
-            if (profile != null)
-            {
-                if (Application.IsPlaying(profile))
-                {
-                    DisableAllServices();
-                }
-                DestroyAllServices();
-            }
+            //if (profile != null)
+            //{
+            //    if (Application.IsPlaying(profile))
+            //    {
+            //        DisableAllServices();
+            //    }
+            //    DestroyAllServices();
+            //}
 
             InitializeServiceLocator();
 
@@ -122,9 +123,9 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
-#endregion Mixed Reality Toolkit Profile configuration
+        #endregion Mixed Reality Toolkit Profile configuration
 
-#region Mixed Reality runtime service registry
+        #region Mixed Reality runtime service registry
 
         private static readonly Dictionary<Type, IMixedRealityService> activeSystems = new Dictionary<Type, IMixedRealityService>();
 
