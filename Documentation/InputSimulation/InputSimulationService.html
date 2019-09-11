@@ -99,44 +99,39 @@
 <p>Input simulation is an optional <a href="../MixedRealityServices.html">Mixed Reality service</a>. It can be added as a data provider in the <a href="../Input/InputProviders.html">Input System profile</a>.</p>
 <ul>
 <li><strong>Type</strong> must be <em>Microsoft.MixedReality.Toolkit.Input &gt; InputSimulationService</em>.</li>
-<li><strong>Platform(s)</strong> should always be <em>Windows Editor</em> since the service depends on keyboard and mouse input.</li>
-<li><strong>Profile</strong> has all settings for input simulation.</li>
+<li><strong>Platform(s)</strong> by default includes all <em>Editor</em> platforms, since the service uses keyboard and mouse input.</li>
 </ul>
-<div class="WARNING">
-<h5>Warning</h5>
-<p>Any type of profile can be assigned to services at the time of this writing. If you assign a different profile to the service, make sure to use a profile of type <em>Input Simulation</em> or it will not work!</p>
-</div>
-<a target="_blank" href="../Images/InputSimulation/MRTK_InputSimulation_InputSystemDataProviders.png">
-  <img src="../Images/InputSimulation/MRTK_InputSimulation_InputSystemDataProviders.png" title="Full Hand Mesh" width="80%" class="center">
-</a>
-<p>Open the linked profile to access settings for input simulation.</p>
-<a target="_blank" href="../Images/InputSimulation/MRTK_InputSimulation_InputSimulationProfile.png">
-  <img src="../Images/InputSimulation/MRTK_InputSimulation_InputSimulationProfile.png" title="Full Hand Mesh" width="80%" class="center">
-</a>
+<h2 id="input-simulation-tools-window">Input simulation tools window</h2>
+<p>Enable the input simulation tools window from the  <em>Mixed Reality Toolkit &gt; Utilities &gt; Input Simulation</em> menu. This window provides access to the state of input simulation during play mode.</p>
+<h2 id="viewport-butttons">Viewport Butttons</h2>
+<p>A prefab for in-editor buttons to control basic hand placement can be specified in the input simulation profile under <strong>Indicators Prefab</strong>. This is an optional utility, the same features can be accessed in the <a href="#input-simulation-tools-window">input simulation tools window</a>.</p>
+<p>Hand icons show the state of the simulated hands:</p>
+<ul>
+<li><img src="../Images/InputSimulation/MRTK_InputSimulation_HandIndicator_Untracked.png" alt="Untracked hand icon" title="Untracked hand icon"> The hand is not tracking. Click to enable the hand.</li>
+<li><img src="../Images/InputSimulation/MRTK_InputSimulation_HandIndicator_Tracked.png" alt="Tracked hand icon" title="Tracked hand icon"> The hand is tracked, but not controlled by user. Click to hide the hand.</li>
+<li><img src="../Images/InputSimulation/MRTK_InputSimulation_HandIndicator_Controlled.png" alt="Controlled hand icon" title="Controlled hand icon"> The hand is tracked and controlled by user. Click to hide the hand.</li>
+<li><img src="../Images/InputSimulation/MRTK_InputSimulation_HandIndicator_Reset.png" alt="Reset hand icon" title="Reset hand icon"> Click to reset the hand to default position.</li>
+</ul>
 <h1 id="camera-control">Camera Control</h1>
 <p>Head movement can be emulated by the Input Simulation Service.</p>
-<a target="_blank" href="../Images/InputSimulation/MRTK_InputSimulation_CameraControlSettings.png">
-  <img src="../Images/InputSimulation/MRTK_InputSimulation_CameraControlSettings.png" title="Full Hand Mesh" width="80%" class="center">
-</a>
-<h2 id="rotating-the-camera">Rotating the camera</h2>
+<h3 id="to-rotate-the-camera">To rotate the camera:</h3>
 <ol>
-<li><p>Hover over the viewport editor window.</p>
-<p><em>You may need to click the window to give it input focus if button presses don't work.</em></p>
-</li>
-<li><p>Press and hold the <strong>Mouse Look Button</strong> (default: Right mouse button).</p>
-</li>
-<li><p>Move the mouse in the viewport window to rotate the camera.</p>
-</li>
+<li>Hover over the viewport editor window.
+<em>You may need to click the window to give it input focus if button presses don't work.</em></li>
+<li>Press and hold the <strong>Mouse Look Button</strong> (default: Right mouse button).</li>
+<li>Move the mouse in the viewport window to rotate the camera.</li>
+<li>Use the scroll wheel to roll the camera around the view direction.</li>
 </ol>
-<h2 id="moving-the-camera">Moving the camera</h2>
-<p>Press and hold the movement keys (W/A/S/D for forward/left/back/right).</p>
+<p>Camera rotation speed can be configured by changing the <strong>Mouse Look Speed</strong> setting in the input simulation profile.</p>
+<p>Alternatively use the <strong>Look Horizontal</strong>/<strong>Look Vertical</strong> axes to rotate the camera (default: game controller right thumbstick).</p>
+<h3 id="to-move-the-camera">To move the camera:</h3>
+<p>Use the <strong>Move Horizontal</strong>/<strong>Move Vertical</strong> axes to move the camera (default: WASD keys or game controller left thumbstick).</p>
+<p>Camera position and rotation angles can be set explicitly in the tools window as well. The camera can be reset to its default using the <strong>Reset</strong> button.</p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Z7L4I1ET7GU" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
 <h1 id="hand-simulation">Hand Simulation</h1>
 <p>The input simulation supports emulated hand devices. These virtual hands can interact with any object that supports regular hand devices, such as buttons or grabbable objects.</p>
-<a target="_blank" href="../Images/InputSimulation/MRTK_InputSimulation_HandSimulationMode.png">
-  <img src="../Images/InputSimulation/MRTK_InputSimulation_HandSimulationMode.png" title="Full Hand Mesh" width="80%" class="center">
-</a>
-<p>The <strong>Hand Simulation Mode</strong> switches between two distinct input models.</p>
+<h2 id="hand-simulation-mode">Hand Simulation Mode</h2>
+<p>In the <a href="#input-simulation-tools-window">input simulation tools window</a> the <strong>Hand Simulation Mode</strong> setting switches between two distinct input models. The default mode can also be set in the input simulation profile.</p>
 <ul>
 <li><p><em>Articulated Hands</em>: Simulates a fully articulated hand device with joint position data.</p>
 <p>Emulates HoloLens 2 interaction model.</p>
@@ -148,41 +143,20 @@
 </li>
 </ul>
 <h2 id="controlling-hand-movement">Controlling hand movement</h2>
-<a target="_blank" href="../Images/InputSimulation/MRTK_InputSimulation_HandControlSettings.png">
-  <img src="../Images/InputSimulation/MRTK_InputSimulation_HandControlSettings.png" title="Full Hand Mesh" width="80%" class="center">
-</a>
-<p>Press and hold the <em>Left/Right Hand Manipulation Key</em> (default: Left Shift/Space for left/right respectively) to gain control of either hand. While the manipulation key is pressed, the hand will appear in the viewport. Mouse movement will move the hand in the view plane.</p>
-<p>Once the manipulation key is released the hands will disappear after a short <em>Hand Hide Timeout</em>. To toggle hands on permanently, press the <em>Toggle Left/Right Hand Key</em> (default: T/Y for left/right respectively). Press the toggle key again to hide the hands again.</p>
-<a target="_blank" href="../Images/InputSimulation/MRTK_InputSimulation_HandPlacementSettings.png">
-  <img src="../Images/InputSimulation/MRTK_InputSimulation_HandPlacementSettings.png" title="Full Hand Mesh" width="80%" class="center">
-</a>
-<p>Hands can be moved further or closer to the camera using the <em>mouse wheel</em>.
-By default the hand will move somewhat slowly in response to mouse scroll,
-and this can be made faster by changing the <em>Hand Depth Multiplier</em> to a
-larger number.</p>
-<p>The initial distance from the camera that the hand appears at is controlled by
-<em>Default Hand Distance.</em></p>
-<p>By default, the simulated hand joints will be perfectly still. Note that on devices there
-will always be some amount of jitter/noise due to the underlying hand tracking.
-You can see this on the device when you have hand mesh or joints enabled (and
-see how it has slightly jitter even if you have your hand perfectly still). It's possible
-to simulate jitter by changing <em>Hand Jitter Amount</em> to a positive value (for example, 0.1
-as is shown in the image above).</p>
-<a target="_blank" href="../Images/InputSimulation/MRTK_InputSimulation_HandRotationSettings.png">
-  <img src="../Images/InputSimulation/MRTK_InputSimulation_HandRotationSettings.png" title="Full Hand Mesh" width="80%" class="center">
-</a>
-<p>Hands can be rotated when precise direction is required.</p>
+<p>Press and hold the <strong>Left/Right Hand Control Key</strong> (default: Left Shift/Space for left/right respectively) to gain control of either hand. While the manipulation key is pressed, the hand will appear in the viewport. Once the manipulation key is released the hands will disappear after a short <strong>Hand Hide Timeout</strong>.</p>
+<p>Hands can be toggle on permanently in the <a href="#input-simulation-tools-window">input simulation tools window</a> or by pressing the <strong>Toggle Left/Right Hand Key</strong> (default: T/Y for left/right respectively). Press the toggle key again to hide the hands again.</p>
+<p>Mouse movement will move the hand in the view plane. Hands can be moved further or closer to the camera using the <strong>mouse wheel</strong>.</p>
+<p>To rotate hands using the mouse, hold both the <strong>Left/Right Hand Control Key</strong> (shift/space) <em>and</em> the <strong>Hand Rotate Button</strong> (default: right mouse button). Hand rotation speed can be configured by changing the <strong>Mouse Hand Rotation Speed</strong> setting in the input simulation profile.</p>
+<p>All hand placement can also changed in the <a href="#input-simulation-tools-window">input simulation tools window</a>, including resetting hands to default.</p>
+<h2 id="additional-profile-settings">Additional profile settings</h2>
 <ul>
-<li>Yaw rotates around the Y axis (default: E/Q keys for clockwise/counter-clockwise rotation)</li>
-<li>Pitch rotates around the X axis (default: F/R keys for clockwise/counter-clockwise rotation)</li>
-<li>Roll rotates around the Z axis (default: X/Z keys for clockwise/counter-clockwise rotation)</li>
+<li><strong>Hand Depth Multiplier</strong> controls the sensitivity of the mouse scroll wheel depth movement. A larger number will speed up hand zoom.</li>
+<li><strong>Default Hand Distance</strong> is the initial distance of hands from the camera. Clicking the <strong>Reset</strong> button hands will also place hands at this distance.</li>
+<li><strong>Hand Jitter Amount</strong> adds random motion to hands. This can be used to simulate inaccurate hand tracking on device, and ensure that interactions work well with noisy input.</li>
 </ul>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/uRYfwuqsjBQ" class="center" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
 <h2 id="hand-gestures">Hand Gestures</h2>
 <p>Hand gestures such as pinching, grabbing, poking, etc. can also be simulated.</p>
-<a target="_blank" href="../Images/InputSimulation/MRTK_InputSimulation_HandGestureSettings.png">
-  <img src="../Images/InputSimulation/MRTK_InputSimulation_HandGestureSettings.png" title="Full Hand Mesh" width="80%" class="center">
-</a>
 <ol>
 <li><p>First enable hand control using the manipulation keys (Left Shift/Space)</p>
 <p>Alternatively toggle the hands on/off using the toggle keys (T/Y).</p>
@@ -219,11 +193,6 @@ as is shown in the image above).</p>
 <h2 id="ggv-interaction">GGV Interaction</h2>
 <ol>
 <li>Enable GGV simulation by switching <strong>Hand Simulation Mode</strong> to <em>Gestures</em> in the <a href="#enabling-the-input-simulation-service">Input Simulation Profile</a></li>
-</ol>
-<a target="_blank" href="../Images/InputSimulation/MRTK_InputSimulation_SwitchToGGV.png">
-  <img src="../Images/InputSimulation/MRTK_InputSimulation_SwitchToGGV.png" title="Full Hand Mesh" width="80%" class="center">
-</a>
-<ol start="2">
 <li>Rotate the camera to point the gaze cursor at the interactable object (right mouse button)</li>
 <li>Hold <em>Space</em> to control the right hand</li>
 <li>Click and hold <em>left mouse button</em> to interact</li>

@@ -229,18 +229,99 @@
       </tr>
     </tbody>
   </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_SimulatedHandDataProvider_IsSimulatingLeft_" data-uid="Microsoft.MixedReality.Toolkit.Input.SimulatedHandDataProvider.IsSimulatingLeft*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_SimulatedHandDataProvider_IsSimulatingLeft" data-uid="Microsoft.MixedReality.Toolkit.Input.SimulatedHandDataProvider.IsSimulatingLeft">IsSimulatingLeft</h4>
+  <div class="markdown level1 summary"><p>Left hand is controlled by user input.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsSimulatingLeft { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_SimulatedHandDataProvider_IsSimulatingRight_" data-uid="Microsoft.MixedReality.Toolkit.Input.SimulatedHandDataProvider.IsSimulatingRight*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_SimulatedHandDataProvider_IsSimulatingRight" data-uid="Microsoft.MixedReality.Toolkit.Input.SimulatedHandDataProvider.IsSimulatingRight">IsSimulatingRight</h4>
+  <div class="markdown level1 summary"><p>Right hand is controlled by user input.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsSimulatingRight { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_SimulatedHandDataProvider_ResetHand_" data-uid="Microsoft.MixedReality.Toolkit.Input.SimulatedHandDataProvider.ResetHand*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_SimulatedHandDataProvider_ResetHand_Handedness_" data-uid="Microsoft.MixedReality.Toolkit.Input.SimulatedHandDataProvider.ResetHand(Handedness)">ResetHand(Handedness)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ResetHand(Handedness handedness)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Handedness</span></td>
+        <td><span class="parametername">handedness</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Input_SimulatedHandDataProvider_UpdateHandData_" data-uid="Microsoft.MixedReality.Toolkit.Input.SimulatedHandDataProvider.UpdateHandData*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Input_SimulatedHandDataProvider_UpdateHandData_Microsoft_MixedReality_Toolkit_Input_SimulatedHandData_Microsoft_MixedReality_Toolkit_Input_SimulatedHandData_" data-uid="Microsoft.MixedReality.Toolkit.Input.SimulatedHandDataProvider.UpdateHandData(Microsoft.MixedReality.Toolkit.Input.SimulatedHandData,Microsoft.MixedReality.Toolkit.Input.SimulatedHandData)">UpdateHandData(SimulatedHandData, SimulatedHandData)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_SimulatedHandDataProvider_UpdateHandData_Microsoft_MixedReality_Toolkit_Input_SimulatedHandData_Microsoft_MixedReality_Toolkit_Input_SimulatedHandData_Microsoft_MixedReality_Toolkit_Input_MouseDelta_" data-uid="Microsoft.MixedReality.Toolkit.Input.SimulatedHandDataProvider.UpdateHandData(Microsoft.MixedReality.Toolkit.Input.SimulatedHandData,Microsoft.MixedReality.Toolkit.Input.SimulatedHandData,Microsoft.MixedReality.Toolkit.Input.MouseDelta)">UpdateHandData(SimulatedHandData, SimulatedHandData, MouseDelta)</h4>
   <div class="markdown level1 summary"><p>Capture a snapshot of simulated hand data based on current state.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool UpdateHandData(SimulatedHandData handDataLeft, SimulatedHandData handDataRight)</code></pre>
+    <pre><code class="lang-csharp hljs">public bool UpdateHandData(SimulatedHandData handDataLeft, SimulatedHandData handDataRight, MouseDelta mouseDelta)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -260,6 +341,11 @@
       <tr>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.SimulatedHandData.html">SimulatedHandData</a></td>
         <td><span class="parametername">handDataRight</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.MouseDelta.html">MouseDelta</a></td>
+        <td><span class="parametername">mouseDelta</span></td>
         <td></td>
       </tr>
     </tbody>

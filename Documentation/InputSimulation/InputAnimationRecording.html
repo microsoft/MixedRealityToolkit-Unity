@@ -82,12 +82,11 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="input-animation-recording">Input Animation Recording</h1>
 
-<p>MRTK feature an recording system by which head movement and hand tracking data can be stored in animation files. The recorded data can then be played back using the input simulation system.</p>
+<p>MRTK features an recording system by which head movement and hand tracking data can be stored in animation files. The recorded data can then be played back using the <a href="InputSimulationService.html">input simulation system</a>.</p>
 <p>Recording input is a useful tool in a variety of situations:</p>
 <ul>
 <li>Creating automated tests for interaction, manipulations, solvers, etc.
-Creating the movement of controllers and hands for these tests can be time consuming. Recording input directly can speed up the process and provide real-world data.
-See <a href="#writing-tests-using-input-animation">Writing tests using input animation</a></li>
+Creating the movement of controllers and hands for these tests can be time consuming. Recording input directly can speed up the process and provide real-world data.</li>
 <li>Teaching the use of UX elements through animations.
 Showing users how to interact with buttons and other objects can smooth the learning curve.</li>
 <li>Debugging unexpected behavior that may be encountered during regular use.
@@ -118,10 +117,7 @@ See <a href="#input-recording-service">Input Recording Service</a>.</li>
 <p>Looping or resetting input animation or setting <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputPlaybackService.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityInputPlaybackService_LocalTime"><code>LocalTime</code></a> directly by scrubbing the timeline may yield unexpected results when manipulating the scene! Only the input movements are recorded, any additional changes such as moving objects or flipping switches will not be reset. Make sure to reload the scene if irreversible changes have been made.</p>
 </div>
 <h2 id="editor-tools-for-recording-and-playing-input-animation">Editor tools for recording and playing input animation</h2>
-<p>A number of tools exist in the Unity editor for recording and examining input animation. These tools can be accessed in the <em>Input Recording</em> window, which can be opened from the <em>&quot;Mixed Reality Toolkit &gt; Utilities &gt; Input Recording&quot;</em> menu.</p>
-<a target="_blank" href="../Images/InputSimulation/MRTK_InputAnimation_EditorToolsMenu.png">
-  <img src="../Images/InputSimulation/MRTK_InputAnimation_EditorToolsMenu.png" title="Editor tools menu" width="80%" class="center">
-</a>
+<p>A number of tools exist in the Unity editor for recording and examining input animation. These tools can be accessed in the <a href="InputSimulationService.html#input-simulation-tools-window">input simulation tools window</a>, which can be opened from the <em>Mixed Reality Toolkit &gt; Utilities &gt; Input Simulation</em> menu.</p>
 <div class="NOTE">
 <h5>Note</h5>
 <p>Input recording and playback only works during play mode.</p>
@@ -129,17 +125,11 @@ See <a href="#input-recording-service">Input Recording Service</a>.</li>
 <p>The input recording window has two modes:</p>
 <ul>
 <li><p><em>Recording</em> for recording input during play mode and saving it to animation files.</p>
-<a target="_blank" href="../Images/InputSimulation/MRTK_InputAnimation_EditorToolsRecording.png">
-  <img src="../Images/InputSimulation/MRTK_InputAnimation_EditorToolsRecording.png" title="Recording mode" width="80%" class="center">
-</a>
 <p>When toggling on the recording button the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.InputRecordingService.html"><code>InputRecordingService</code></a> is enabled to record input.
 When toggling off the recording button a file save selection is shown and the recorded input animation is saved to the selected destination.</p>
 <p>The buffer time limit can also be changed in this mode.</p>
 </li>
 <li><p><em>Playback</em> for loading animation files and then recreating input through the input simulation system.</p>
-<a target="_blank" href="../Images/InputSimulation/MRTK_InputAnimation_EditorToolsPlayback.png">
-  <img src="../Images/InputSimulation/MRTK_InputAnimation_EditorToolsPlayback.png" title="Playback mode" width="80%" class="center">
-</a>
 <p>An animation must be loaded in this mode first. After recording input in recording mode the resulting animation is automatically loaded. Alternatively click the &quot;Load&quot; button to select an existing animation file.</p>
 <p>The time control buttons from left to right are:</p>
 <ul>
@@ -154,14 +144,6 @@ When toggling off the recording button a file save selection is shown and the re
 <h5>Warning</h5>
 <p>Looping or resetting input animation or scrubbing the timeline may yield unexpected results when manipulating the scene! Only the input movements are recorded, any additional changes such as moving objects or flipping switches will not be reset. Make sure to reload the scene if irreversible changes have been made.</p>
 </div>
-<h2 id="conversion-to-and-from-animationclip">Conversion to and from AnimationClip</h2>
-<blockquote>
-<p>TODO: added in separate PR</p>
-</blockquote>
-<h2 id="writing-tests-using-input-animation">Writing tests using input animation</h2>
-<blockquote>
-<p>TODO</p>
-</blockquote>
 </article>
           </div>
           

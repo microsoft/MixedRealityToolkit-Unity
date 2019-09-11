@@ -189,22 +189,26 @@
       <tr>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Handedness.html">Handedness</a></td>
         <td><span class="parametername">handedness</span></td>
-        <td></td>
+        <td><p>Handedness of the resulting pose</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">Quaternion</span></td>
         <td><span class="parametername">rotation</span></td>
-        <td></td>
+        <td><p>Rotational offset of the resulting pose</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">Vector3</span></td>
         <td><span class="parametername">position</span></td>
-        <td></td>
+        <td><p>Translational offset of the resulting pose</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.html">MixedRealityPose</a>[]</td>
         <td><span class="parametername">jointsOut</span></td>
-        <td></td>
+        <td><p>Output array of joint poses</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -309,6 +313,53 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_ArticulatedHandPose_GetLocalJointPose_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ArticulatedHandPose.GetLocalJointPose*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_ArticulatedHandPose_GetLocalJointPose_Microsoft_MixedReality_Toolkit_Utilities_TrackedHandJoint_Microsoft_MixedReality_Toolkit_Utilities_Handedness_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ArticulatedHandPose.GetLocalJointPose(Microsoft.MixedReality.Toolkit.Utilities.TrackedHandJoint,Microsoft.MixedReality.Toolkit.Utilities.Handedness)">GetLocalJointPose(TrackedHandJoint, Handedness)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MixedRealityPose GetLocalJointPose(TrackedHandJoint joint, Handedness handedness)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.TrackedHandJoint.html">TrackedHandJoint</a></td>
+        <td><span class="parametername">joint</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Handedness.html">Handedness</a></td>
+        <td><span class="parametername">handedness</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.html">MixedRealityPose</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Utilities_ArticulatedHandPose_InterpolateOffsets_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ArticulatedHandPose.InterpolateOffsets*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_ArticulatedHandPose_InterpolateOffsets_Microsoft_MixedReality_Toolkit_Utilities_ArticulatedHandPose_Microsoft_MixedReality_Toolkit_Utilities_ArticulatedHandPose_System_Single_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ArticulatedHandPose.InterpolateOffsets(Microsoft.MixedReality.Toolkit.Utilities.ArticulatedHandPose,Microsoft.MixedReality.Toolkit.Utilities.ArticulatedHandPose,System.Single)">InterpolateOffsets(ArticulatedHandPose, ArticulatedHandPose, Single)</h4>
   <div class="markdown level1 summary"><p>Blend between two hand poses.</p>
@@ -369,22 +420,26 @@
       <tr>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.MixedRealityPose.html">MixedRealityPose</a>[]</td>
         <td><span class="parametername">joints</span></td>
-        <td></td>
+        <td><p>Input joint poses</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Handedness.html">Handedness</a></td>
         <td><span class="parametername">handedness</span></td>
-        <td></td>
+        <td><p>Handedness of the input data</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">Quaternion</span></td>
         <td><span class="parametername">rotation</span></td>
-        <td></td>
+        <td><p>Rotational offset of the input data</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">Vector3</span></td>
         <td><span class="parametername">position</span></td>
-        <td></td>
+        <td><p>Translational offset of the input data</p>
+</td>
       </tr>
     </tbody>
   </table>

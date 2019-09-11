@@ -2501,39 +2501,6 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/InputSimulation/MRTK_InputAnimation_EditorToolsMenu.png",
-      "output": {
-        "resource": {
-          "relative_path": "Documentation/Images/InputSimulation/MRTK_InputAnimation_EditorToolsMenu.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "Documentation/Images/InputSimulation/MRTK_InputAnimation_EditorToolsPlayback.png",
-      "output": {
-        "resource": {
-          "relative_path": "Documentation/Images/InputSimulation/MRTK_InputAnimation_EditorToolsPlayback.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "Documentation/Images/InputSimulation/MRTK_InputAnimation_EditorToolsRecording.png",
-      "output": {
-        "resource": {
-          "relative_path": "Documentation/Images/InputSimulation/MRTK_InputAnimation_EditorToolsRecording.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
       "source_relative_path": "Documentation/Images/InputSimulation/MRTK_InputAnimation_PlaybackDiagram.png",
       "output": {
         "resource": {
@@ -2556,10 +2523,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_CameraControlSettings.png",
+      "source_relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_HandIndicator_Controlled.png",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_CameraControlSettings.png"
+          "relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_HandIndicator_Controlled.png"
         }
       },
       "is_incremental": false,
@@ -2567,10 +2534,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_HandControlSettings.png",
+      "source_relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_HandIndicator_Reset.png",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_HandControlSettings.png"
+          "relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_HandIndicator_Reset.png"
         }
       },
       "is_incremental": false,
@@ -2578,10 +2545,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_HandGestureSettings.png",
+      "source_relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_HandIndicator_Tracked.png",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_HandGestureSettings.png"
+          "relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_HandIndicator_Tracked.png"
         }
       },
       "is_incremental": false,
@@ -2589,76 +2556,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_HandPlacementSettings.png",
+      "source_relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_HandIndicator_Untracked.png",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_HandPlacementSettings.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_HandRotationSettings.png",
-      "output": {
-        "resource": {
-          "relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_HandRotationSettings.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_HandSimulationMode.png",
-      "output": {
-        "resource": {
-          "relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_HandSimulationMode.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_HandSimulationSettings.png",
-      "output": {
-        "resource": {
-          "relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_HandSimulationSettings.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_InputSimulationProfile.png",
-      "output": {
-        "resource": {
-          "relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_InputSimulationProfile.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_InputSystemDataProviders.png",
-      "output": {
-        "resource": {
-          "relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_InputSystemDataProviders.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_SwitchToGGV.png",
-      "output": {
-        "resource": {
-          "relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_SwitchToGGV.png"
+          "relative_path": "Documentation/Images/InputSimulation/MRTK_InputSimulation_HandIndicator_Untracked.png"
         }
       },
       "is_incremental": false,
@@ -5434,7 +5335,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/InputSimulation/InputAnimationRecording.html",
-          "hash": "LPTq3JA0MOFQafPaC9/2zA=="
+          "hash": "Me1EABOjrDu9UKRq4rKbRQ=="
         }
       },
       "is_incremental": false,
@@ -5446,7 +5347,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/InputSimulation/InputSimulationService.html",
-          "hash": "cIXQNPbctjrLeXGP5Pb+Jw=="
+          "hash": "jwAgkFBnKHq3AOowDP5KNw=="
         }
       },
       "is_incremental": false,
@@ -5950,7 +5851,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Updating.html",
-          "hash": "EjfuZYUc2Mr3bxnnU+xHQg=="
+          "hash": "jWWw/krBO0YawUrmo7QxPQ=="
         }
       },
       "is_incremental": false,
@@ -9777,7 +9678,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.ControllerMappingLibrary.html",
-          "hash": "fsLKvryY3u04ON5q1pme3Q=="
+          "hash": "6qmdktu3aX/1HxF4nvn8CQ=="
         }
       },
       "is_incremental": false,
@@ -10401,7 +10302,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.IInputSimulationService.html",
-          "hash": "d7IkY7mNQxDtfhoM3qs4Fw=="
+          "hash": "iW0zo5dPxIeRRYuFOOVKSQ=="
         }
       },
       "is_incremental": false,
@@ -11141,30 +11042,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.InputRecordingWindow.ToolMode.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.InputRecordingWindow.ToolMode.html",
-          "hash": "01FwmAEAVoOCuxaPjD4sEg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.InputRecordingWindow.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.InputRecordingWindow.html",
-          "hash": "ZjQLijn0zy05TQhqILjUeg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.InputSimulationControlMode.yml",
       "output": {
         ".html": {
@@ -11177,11 +11054,11 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.InputSimulationMouseButton.yml",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.InputSimulationService.yml",
       "output": {
         ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.InputSimulationMouseButton.html",
-          "hash": "9a6BEOj39ksYuraYytbpqQ=="
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.InputSimulationService.html",
+          "hash": "ox1MKgGkTGEu82/qyFG67w=="
         }
       },
       "is_incremental": false,
@@ -11189,11 +11066,23 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.InputSimulationService.yml",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.InputSimulationWindow.ToolMode.yml",
       "output": {
         ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.InputSimulationService.html",
-          "hash": "N9BkR5HDuyCm2U9mASp55Q=="
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.InputSimulationWindow.ToolMode.html",
+          "hash": "D7qskjquAlVhFd4Db/QVRg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.InputSimulationWindow.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.InputSimulationWindow.html",
+          "hash": "rTqctWY2O3EYjXypBppyyQ=="
         }
       },
       "is_incremental": false,
@@ -11249,6 +11138,78 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.KeyBinding.KeyType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.KeyBinding.KeyType.html",
+          "hash": "IWXSWBtFc4724nBfWZxz3w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.KeyBinding.MouseButton.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.KeyBinding.MouseButton.html",
+          "hash": "Ev4on2w/dDGXPONkG/kyIg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.KeyBinding.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.KeyBinding.html",
+          "hash": "hsoFuKTTu3MRMf92xVeBmg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.KeyBindingInspector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.KeyBindingInspector.html",
+          "hash": "hGNWoBZNSoovgdKgmUMdQg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.KeyBindingPopupWindow.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.KeyBindingPopupWindow.html",
+          "hash": "3Tux/fZExW/Qzl1pfGLnIA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.KeyInputSystem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.KeyInputSystem.html",
+          "hash": "6tL4/118PHFIfeFCuj90ag=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.KeywordAndResponse.yml",
       "output": {
         ".html": {
@@ -11277,7 +11238,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.ManualCameraControl.html",
-          "hash": "xvnG90OX0dDRrtJqABE0QQ=="
+          "hash": "cT4T8rPegMp87A++LQCFOA=="
         }
       },
       "is_incremental": false,
@@ -11577,7 +11538,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.MixedRealityInputSimulationProfile.html",
-          "hash": "Jx6e1zJmz2WXFOKmLd0lAw=="
+          "hash": "ygYWwZ+30iu68f8GI6RDMA=="
         }
       },
       "is_incremental": false,
@@ -11705,11 +11666,35 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.MouseDelta.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.MouseDelta.html",
+          "hash": "XjFQ6DXnbl6bcti97vbCLw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.MousePointer.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.MousePointer.html",
           "hash": "tyXPOMEvuB2Fk7/tZMbERw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.MouseRotationProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.MouseRotationProvider.html",
+          "hash": "nL2tmJOiikJ7IcO753jmVA=="
         }
       },
       "is_incremental": false,
@@ -11997,7 +11982,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SimulatedHandDataProvider.html",
-          "hash": "o7hjZ1Znzsbshf8VU6cHqQ=="
+          "hash": "eio8WehQgLqAA/A5cQ4qGA=="
         }
       },
       "is_incremental": false,
@@ -12357,7 +12342,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.html",
-          "hash": "HWCKDas0LokZGdnpRu8M0g=="
+          "hash": "j27jCiX/XKKiOXvzcE9DEA=="
         }
       },
       "is_incremental": false,
@@ -16233,7 +16218,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.ArticulatedHandPose.html",
-          "hash": "VBu3q42XbCuu6n6YaSNOcw=="
+          "hash": "nUrzOITr+SGOF/XOW6lStA=="
         }
       },
       "is_incremental": false,
@@ -19413,7 +19398,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "gXW0CB11bq3CwSOa44fUgw=="
+          "hash": "Env0FpSsnWBY2ZJdtp0YoQ=="
         }
       },
       "is_incremental": false,
@@ -19472,16 +19457,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1117,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 124,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1124,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

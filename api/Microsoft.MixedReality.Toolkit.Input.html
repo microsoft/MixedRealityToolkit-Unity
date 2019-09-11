@@ -251,11 +251,11 @@ for focus with hand and gesture-based input and interaction across it.</p>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputRecordingService.html">InputRecordingService</a></h4>
       <section><p>Provides input recording into an internal buffer and exporting to files.</p>
 </section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputRecordingWindow.html">InputRecordingWindow</a></h4>
-      <section><p>Tools for recording and playing back input animation in the Unity editor.</p>
-</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSimulationService.html">InputSimulationService</a></h4>
       <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSimulationWindow.html">InputSimulationWindow</a></h4>
+      <section><p>Tools for simulating and recording input as well as playing back input animation in the Unity editor.</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSystemGlobalHandlerListener.html">InputSystemGlobalHandlerListener</a></h4>
       <section><p>This component ensures that input events are forwarded to this component when focus or gaze is not required.</p>
 </section>
@@ -265,6 +265,17 @@ for focus with hand and gesture-based input and interaction across it.</p>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InteractiveMeshCursor.html">InteractiveMeshCursor</a></h4>
       <section><p>A cursor that looks and acts more like the shell cursor.
 A two part cursor with visual feedback for all cursor states</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.KeyBindingInspector.html">KeyBindingInspector</a></h4>
+      <section><p>Inspector for KeyBindings.
+This shows a simple dropdown list for selecting a binding, as well as a button for binding keys by pressing them.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.KeyBindingPopupWindow.html">KeyBindingPopupWindow</a></h4>
+      <section><p>Utility window that listens to input events to set a key binding.
+Pressing a key or mouse button will define the binding and then immediately close the popup.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.KeyInputSystem.html">KeyInputSystem</a></h4>
+      <section><p>Utility class to poll input for key bindings.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.LinePointer.html">LinePointer</a></h4>
       <section><p>A simple line pointer for drawing lines from the input source origin to the current pointer position.</p>
@@ -341,10 +352,17 @@ the controller class.</p>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.MixedRealitySpeechCommandsProfile.html">MixedRealitySpeechCommandsProfile</a></h4>
       <section><p>Configuration profile settings for setting up and consuming Speech Commands.</p>
 </section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.MouseDelta.html">MouseDelta</a></h4>
+      <section><p>Utility struct that provides mouse delta in pixels (screen space), normalized viewport coordinates, and world units.</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.MousePointer.html">MousePointer</a></h4>
       <section><p>The MousePointer represents a mouse cursor in world space.
 It uses spherical movement around the camera.
 Its movement is bound to screenspace, but based in the delta movement of the computer mouse.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.MouseRotationProvider.html">MouseRotationProvider</a></h4>
+      <section><p>Utility class to manage toggling of mouse rotation and associated features,
+such as cursor visibility/locking</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable.html">NearInteractionGrabbable</a></h4>
       <section><p>Add a NearInteractionGrabbable component to any GameObject that has a collidable
@@ -469,6 +487,9 @@ It's movement is bound to screenspace.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputActionRuleVectorAxis.html">InputActionRuleVectorAxis</a></h4>
       <section><p>Generic Input Action Rule for raising actions based on specific criteria.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.KeyBinding.html">KeyBinding</a></h4>
+      <section><p>Identifier of a key combination or mouse button for generic input binding.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.KeywordAndResponse.html">KeywordAndResponse</a></h4>
       <section><p>Keyword/UnityEvent pair that ties voice input to UnityEvents wired up in the inspector.</p>
@@ -666,16 +687,18 @@ Denoting the available buttons / interactions that a controller supports.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.HandSimulationMode.html">HandSimulationMode</a></h4>
       <section></section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputRecordingWindow.ToolMode.html">InputRecordingWindow.ToolMode</a></h4>
-      <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSimulationControlMode.html">InputSimulationControlMode</a></h4>
       <section></section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSimulationMouseButton.html">InputSimulationMouseButton</a></h4>
-      <section><p>This enum is used to customize how/when users will look around in the Unity player
-using the mouse.</p>
-</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSimulationWindow.ToolMode.html">InputSimulationWindow.ToolMode</a></h4>
+      <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.InputSourceType.html">InputSourceType</a></h4>
       <section><p>The InputSourceType defines the types of input sources.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.KeyBinding.KeyType.html">KeyBinding.KeyType</a></h4>
+      <section><p>The type of value encoded in the <span class="xref">Microsoft.MixedReality.Toolkit.Input.KeyBinding.code</span> property.</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.KeyBinding.MouseButton.html">KeyBinding.MouseButton</a></h4>
+      <section><p>Enum for interpreting the mouse button integer index.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.MixedRealityControllerConfigurationFlags.html">MixedRealityControllerConfigurationFlags</a></h4>
       <section><p>Flags used by MixedRealityControllerAttribute.</p>
