@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -16,7 +17,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     /// <remarks>There are convenience properties for getting only Gaze Pointer if needed.</remarks>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html")]
-    public class FocusProvider : BaseCoreSystem, IMixedRealityFocusProvider
+    public class FocusProvider : BaseCoreSystem, 
+        IMixedRealityFocusProvider, 
+        IPointerPreferences
     {
         public FocusProvider(
             IMixedRealityServiceRegistrar registrar,
@@ -33,106 +36,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private readonly Dictionary<uint, IMixedRealityPointerMediator> pointerMediators = new Dictionary<uint, IMixedRealityPointerMediator>();
         private readonly PointerHitResult hitResult3d = new PointerHitResult();
         private readonly PointerHitResult hitResultUi = new PointerHitResult();
-
-        private Dictionary<Type, PointerBehaviorForHandedness> customPointerBehaviors = new Dictionary<Type, PointerBehaviorForHandedness>();
-        /// <summary>
-        /// Pointer behavior for the gaze pointer.
-        /// We make gaze pointer unique for a few reasons:
-        /// First, gazepointer actually maps to two types: ggvpointer and GazeProvider's internal gazepointer.
-        /// Second, the internal gaze pointer actually cannot be referenced from here since it's an internal class.
-        /// </summary>
-        public PointerBehavior GazePointerBehavior { get; set; } = PointerBehavior.Default;
-
-        /// <summary>
-        /// Sets the behavior for the given pointer type.
-        /// </summary>
-        /// <typeparam name="T">Type of pointer to set behavior for.</typeparam>
-        /// <param name="pointerBehavior">Desired <seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/>.</param>
-        /// <param name="handedness">Specify handedness to restrict to only right, left.</param>
-        public void SetPointerBehavior<T>(Handedness handedness, PointerBehavior pointerBehavior) where T : class, IMixedRealityPointer
-        {
-            if(!customPointerBehaviors.ContainsKey(typeof(T)))
-            {
-                customPointerBehaviors.Add(typeof(T), new PointerBehaviorForHandedness());
-            }
-            customPointerBehaviors[typeof(T)].SetBehaviorForHandedness(handedness, pointerBehavior);
-        }
-
-        /// <summary>
-        /// Gets the behavior for the given pointer.
-        /// </summary>
-        /// <param name="pointer">Pointer to query.</param>
-        /// <param name="handedness">Handedness to query.</param>
-        /// <returns><seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/> for the given pointer type and handedness. If right hand is enabled, left
-        /// hand is not enabled, and Handedness.Any is passed, returns value for the right hand.</returns>
-        public PointerBehavior GetPointerBehavior(IMixedRealityPointer pointer, Handedness handedness)
-        {
-            return GetPointerBehavior(pointer.GetType(), handedness);
-        }
-
-        /// <summary>
-        /// Gets the behavior for the given pointer type.
-        /// </summary>
-        /// <param name="pointerType">Pointer type to query</param>
-        /// <param name="handedness">Handedness to query</param>
-        /// <returns><seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/> for the given pointer type and handedness. If right hand is enabled, left
-        /// hand is not enabled, and Handedness.Any is passed, returns value for the right hand.</returns>
-        public PointerBehavior GetPointerBehavior(Type pointerType, Handedness handedness)
-        {
-            foreach (var kv in customPointerBehaviors)
-            {
-                if (kv.Key.IsAssignableFrom(pointerType))
-                {
-                    // pointerType is subclass of key, or it is the exact class
-                    return kv.Value.GetBehaviorForHandedness(handedness);
-                }
-            }
-            return PointerBehavior.Default;
-        }
-
-        private class PointerBehaviorForHandedness
-        {
-            public PointerBehavior Left;
-            public PointerBehavior Right;
-            public PointerBehavior Other;
-            public PointerBehavior GetBehaviorForHandedness(Handedness h)
-            {
-                if ((h & Handedness.Right) != 0)
-                {
-                    return Right;
-                }
-                if ((h & Handedness.Left) != 0)
-                {
-                    return Left;
-                }
-                if ((h & Handedness.Other) != 0)
-                {
-                    return Other;
-                }
-                return PointerBehavior.Default;
-            }
-            public void SetBehaviorForHandedness(Handedness h, PointerBehavior b)
-            {
-                if ((h & Handedness.Right) != 0)
-                {
-                    Right = b;
-                }
-                if ((h & Handedness.Left) != 0)
-                {
-                    Left = b;
-                }
-                if ((h & Handedness.Other) != 0)
-                {
-                    Other = b;
-                }
-            }
-            public PointerBehaviorForHandedness()
-            {
-                Left = PointerBehavior.Default;
-                Right = PointerBehavior.Default;
-                Other = PointerBehavior.Default;
-            }
-        }
 
         private readonly int maxQuerySceneResults = 128;
         private bool focusIndividualCompoundCollider = false;
@@ -822,7 +725,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (InputSystem?.InputSystemProfile.PointerProfile.PointerMediator.Type != null)
             {
-                mediator = Activator.CreateInstance(InputSystem.InputSystemProfile.PointerProfile.PointerMediator.Type) as IMixedRealityPointerMediator;
+                mediator = Activator.CreateInstance(
+                    InputSystem.InputSystemProfile.PointerProfile.PointerMediator.Type, 
+                    this) as IMixedRealityPointerMediator;
             }
 
             if (mediator != null)
@@ -1507,5 +1412,127 @@ namespace Microsoft.MixedReality.Toolkit.Input
             gazePointerStateMachine.OnSpeechKeywordRecognized(eventData);
         }
         #endregion
+
+
+        #region IPointerPreferences Implementation
+        // pointer type, input source type, handedness => behavior
+        private List<PointerPreferences> customPointerBehaviors = new List<PointerPreferences>();
+
+        public PointerBehavior GetPointerBehavior(IMixedRealityPointer pointer)
+        {
+            if (pointer.Controller == null)
+            {
+                return PointerBehavior.Default;
+            }
+            if (pointer.Controller == null || pointer.InputSourceParent == null)
+            {
+                // gazepointer means input source is null
+                return GazePointerBehavior;
+            }
+
+            return GetPointerBehavior(
+                pointer.GetType(), 
+                pointer.Controller.ControllerHandedness,
+                pointer.InputSourceParent.SourceType);
+        }
+
+        /// <summary>
+        /// Gets the behavior for the given pointer type.
+        /// </summary>
+        /// <param name="pointerType">Pointer type to query</param>
+        /// <param name="handedness">Handedness to query</param>
+        /// <returns><seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/> for the given pointer type and handedness. If right hand is enabled, left
+        /// hand is not enabled, and Handedness.Any is passed, returns value for the right hand.</returns>
+        public PointerBehavior GetPointerBehavior<T>(
+            Handedness handedness,
+            InputSourceType sourceType) where T : class, IMixedRealityPointer
+        {
+            return GetPointerBehavior(typeof(T), handedness, sourceType);
+        }
+
+        private PointerBehavior GetPointerBehavior(Type type, Handedness handedness, InputSourceType sourceType)
+        {
+            var result = customPointerBehaviors.Find((x) => x.Matches(type, sourceType))?.GetBehaviorForHandedness(handedness);
+            return result ?? PointerBehavior.Default;
+        }
+
+        /// <inheritdoc />
+        public PointerBehavior GazePointerBehavior { get; set; } = PointerBehavior.Default;
+
+        public void SetPointerBehavior<T>(Handedness handedness, InputSourceType inputType, PointerBehavior pointerBehavior) where T : class, IMixedRealityPointer
+        {
+            var preference = customPointerBehaviors.Find((x) => x.Matches(
+                typeof(T),
+                inputType));
+            if (preference == null)
+            {
+                preference = new PointerPreferences(typeof(T), inputType);
+                customPointerBehaviors.Add(preference);
+            }
+            preference.SetBehaviorForHandedness(handedness, pointerBehavior);
+        }
+
+        private class PointerPreferences
+        {
+            public InputSourceType InputSourceType;
+            public Type PointerType;
+
+            public bool Matches(Type queryType, InputSourceType queryInputType)
+            {
+                return Matches(queryType) && queryInputType == InputSourceType;
+            }
+
+            public bool Matches(Type queryType)
+            {
+                return PointerType.IsAssignableFrom(queryType);
+            }
+
+            public PointerBehavior Left;
+            public PointerBehavior Right;
+            public PointerBehavior Other;
+            public PointerBehavior GetBehaviorForHandedness(Handedness h)
+            {
+                if ((h & Handedness.Right) != 0)
+                {
+                    return Right;
+                }
+                if ((h & Handedness.Left) != 0)
+                {
+                    return Left;
+                }
+                if ((h & Handedness.Other) != 0)
+                {
+                    return Other;
+                }
+                return PointerBehavior.Default;
+            }
+            public void SetBehaviorForHandedness(
+                Handedness h, 
+                PointerBehavior b)
+            {
+                if ((h & Handedness.Right) != 0)
+                {
+                    Right = b;
+                }
+                if ((h & Handedness.Left) != 0)
+                {
+                    Left = b;
+                }
+                if ((h & Handedness.Other) != 0)
+                {
+                    Other = b;
+                }
+            }
+            public PointerPreferences(Type pointerType, InputSourceType inputType)
+            {
+                Left = PointerBehavior.Default;
+                Right = PointerBehavior.Default;
+                Other = PointerBehavior.Default;
+                InputSourceType = inputType;
+                PointerType = pointerType;
+            }
+        }
+        #endregion
+
     }
 }

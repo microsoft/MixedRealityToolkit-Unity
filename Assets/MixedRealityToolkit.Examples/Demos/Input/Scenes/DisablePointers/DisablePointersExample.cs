@@ -1,9 +1,6 @@
 ﻿using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 
 
@@ -22,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         public void SetRayEnabled(bool isEnabled)
         {
-            PointerUtils.SetRayPointerBehavior(isEnabled ? PointerBehavior.Default : PointerBehavior.AlwaysOff,
+            PointerUtils.SetHandRayPointerBehavior(isEnabled ? PointerBehavior.Default : PointerBehavior.AlwaysOff,
                 Handedness.Any);
         }
 
@@ -33,43 +30,43 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         public void SetGrabEnabled(bool isEnabled)
         {
-            PointerUtils.SetGrabPointerBehavior(isEnabled ? PointerBehavior.Default : PointerBehavior.AlwaysOff, Handedness.Any);
+            PointerUtils.SetHandGrabPointerBehavior(isEnabled ? PointerBehavior.Default : PointerBehavior.AlwaysOff, Handedness.Any);
         }
 
         public void SetPokeEnabled(bool isEnabled)
         {
-            PointerUtils.SetPokePointerBehavior(isEnabled ? PointerBehavior.Default : PointerBehavior.AlwaysOff, Handedness.Any);
+            PointerUtils.SetHandPokePointerBehavior(isEnabled ? PointerBehavior.Default : PointerBehavior.AlwaysOff, Handedness.Any);
         }
 
         public void SetVR()
         {
-            PointerUtils.SetPokePointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
-            PointerUtils.SetGrabPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
-            PointerUtils.SetRayPointerBehavior(PointerBehavior.Default, Handedness.Any);
+            PointerUtils.SetHandPokePointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
+            PointerUtils.SetHandGrabPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
+            PointerUtils.SetMotionControllerRayPointerBehavior(PointerBehavior.Default, Handedness.Any);
             PointerUtils.SetGazePointerBehavior(PointerBehavior.Default);
         }
 
         public void SetFingerOnly()
         {
-            PointerUtils.SetPokePointerBehavior(PointerBehavior.Default, Handedness.Any);
-            PointerUtils.SetGrabPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
-            PointerUtils.SetRayPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
+            PointerUtils.SetHandPokePointerBehavior(PointerBehavior.Default, Handedness.Any);
+            PointerUtils.SetHandGrabPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
+            PointerUtils.SetHandRayPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
             PointerUtils.SetGazePointerBehavior(PointerBehavior.AlwaysOff);
         }
 
         public void SetHoloLens1()
         {
-            PointerUtils.SetPokePointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
-            PointerUtils.SetGrabPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
-            PointerUtils.SetRayPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
+            PointerUtils.SetHandPokePointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
+            PointerUtils.SetHandGrabPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
+            PointerUtils.SetHandRayPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
             PointerUtils.SetGazePointerBehavior(PointerBehavior.Default);
         }
 
         public void SetHoloLens2()
         {
-            PointerUtils.SetPokePointerBehavior(PointerBehavior.Default, Handedness.Any);
-            PointerUtils.SetGrabPointerBehavior(PointerBehavior.Default, Handedness.Any);
-            PointerUtils.SetRayPointerBehavior(PointerBehavior.Default, Handedness.Any);
+            PointerUtils.SetHandPokePointerBehavior(PointerBehavior.Default, Handedness.Any);
+            PointerUtils.SetHandGrabPointerBehavior(PointerBehavior.Default, Handedness.Any);
+            PointerUtils.SetHandRayPointerBehavior(PointerBehavior.Default, Handedness.Any);
             PointerUtils.SetGazePointerBehavior(PointerBehavior.AlwaysOff);
         }
 
@@ -105,13 +102,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         void Update()
         {
-            SetToggleHelper(RayToggle, "RayToggle", typeof(LinePointer));
-            SetToggleHelper(GrabToggle, "GrabToggle", typeof(SpherePointer));
-            SetToggleHelper(PokeToggle, "PokeToggle", typeof(PokePointer));
-            SetToggleHelper(GazeToggle, "GazeToggle", typeof(GGVPointer));
+            SetToggleHelper<LinePointer>(RayToggle, "RayToggle");
+            SetToggleHelper<SpherePointer>(GrabToggle, "GrabToggle");
+            SetToggleHelper<PokePointer>(PokeToggle, "PokeToggle");
+            SetToggleHelper<GGVPointer>(GazeToggle, "GazeToggle");
         }
 
-        private void SetToggleHelper(Interactable toggle, string toggleName, Type toggleType)
+        private void SetToggleHelper<T>(Interactable toggle, string toggleName) where T : class, IMixedRealityPointer
         {
             if (toggle == null)
             {
@@ -119,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             }
             else
             {
-                toggle.SetToggled(PointerUtils.GetPointerBehavior(toggleType, Handedness.Any) != PointerBehavior.AlwaysOff);
+                toggle.SetToggled(PointerUtils.GetPointerBehavior<T>(Handedness.Any, InputSourceType.Hand) != PointerBehavior.AlwaysOff);
             }
         }
 

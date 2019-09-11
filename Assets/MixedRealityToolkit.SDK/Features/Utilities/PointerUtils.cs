@@ -152,26 +152,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <typeparam name="T">Type of pointer to query</typeparam>
         /// <param name="handedness">Handedness to query</param>
         /// <returns><seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/> for the given pointer type and handedness</returns>
-        public static PointerBehavior GetPointerBehavior<T>(Handedness handedness) where T : class, IMixedRealityPointer
+        public static PointerBehavior GetPointerBehavior<T>(Handedness handedness, InputSourceType inputSourceType) where T : class, IMixedRealityPointer
         {
-            return GetPointerBehavior(typeof(T), handedness);
-        }
-
-        /// <summary>
-        /// Queries input system for behavior of given pointer type and handedndess
-        /// </summary>
-        /// <typeparam name="T">Type of pointer to query</typeparam>
-        /// <param name="handedness">Handedness to query</param>
-        /// <returns><seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/> for the given pointer type and handedness</returns>
-        public static PointerBehavior GetPointerBehavior(Type type, Handedness handedness)
-        {
-            if (CoreServices.InputSystem.FocusProvider is FocusProvider focusProvider)
+            if (CoreServices.InputSystem.FocusProvider is IPointerPreferences preferences)
             {
-                if (type == typeof(GGVPointer))
+                if (typeof(T) == typeof(GGVPointer))
                 {
-                    return focusProvider.GazePointerBehavior;
+                    return preferences.GazePointerBehavior;
                 }
-                return focusProvider.GetPointerBehavior(type, handedness);
+                return preferences.GetPointerBehavior<T>(handedness, inputSourceType);
             }
             else
             {
@@ -187,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="handedness">Specify handedness to restrict to only right, left hands.</param>
         public static void SetHandRayPointerBehavior(PointerBehavior pointerBehavior, Handedness handedness = Handedness.Any)
         {
-            SetPointerBehavior<ShellHandRayPointer>(pointerBehavior, handedness);
+            SetPointerBehavior<ShellHandRayPointer>(pointerBehavior, handedness, InputSourceType.Hand);
         }
 
         /// <summary>
@@ -197,17 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="handedness">Specify handedness to restrict to only right, left.</param>
         public static void SetMotionControllerRayPointerBehavior(PointerBehavior pointerBehavior, Handedness handedness = Handedness.Any)
         {
-            SetPointerBehavior<ShellHandRayPointer>(pointerBehavior, handedness);
-        }
-
-        /// <summary>
-        /// Sets the behavior for the ray with given handedness.
-        /// </summary>
-        /// <param name="pointerBehavior">Desired <seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/>.</param>
-        /// <param name="handedness">Specify handedness to restrict to only right, left.</param>
-        public static void SetRayPointerBehavior(PointerBehavior pointerBehavior, Handedness handedness = Handedness.Any)
-        {
-            SetPointerBehavior<LinePointer>(pointerBehavior, handedness);
+            SetPointerBehavior<ShellHandRayPointer>(pointerBehavior, handedness, InputSourceType.Controller);
         }
 
         /// <summary>
@@ -215,9 +194,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <param name="pointerBehavior">Desired <seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/>.</param>
         /// <param name="handedness">Specify handedness to restrict to only right, left.</param>
-        public static void SetGrabPointerBehavior(PointerBehavior pointerBehavior, Handedness handedness = Handedness.Any)
+        public static void SetHandGrabPointerBehavior(PointerBehavior pointerBehavior, Handedness handedness = Handedness.Any)
         {
-            SetPointerBehavior<SpherePointer>(pointerBehavior, handedness);
+            SetPointerBehavior<SpherePointer>(pointerBehavior, handedness, InputSourceType.Hand);
         }
 
         /// <summary>
@@ -225,9 +204,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <param name="pointerBehavior">Desired <seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/>.</param>
         /// <param name="handedness">Specify handedness to restrict to only right, left.</param>
-        public static void SetPokePointerBehavior(PointerBehavior pointerBehavior, Handedness handedness = Handedness.Any)
+        public static void SetHandPokePointerBehavior(PointerBehavior pointerBehavior, Handedness handedness = Handedness.Any)
         {
-            SetPointerBehavior<PokePointer>(pointerBehavior, handedness);
+            SetPointerBehavior<PokePointer>(pointerBehavior, handedness, InputSourceType.Hand
+                );
         }
 
         /// <summary>
@@ -253,11 +233,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <typeparam name="T">Type of pointer to set behavior for.</typeparam>
         /// <param name="pointerBehavior">Desired <seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/>.</param>
         /// <param name="handedness">Specify handedness to restrict to only right, left.</param>
-        public static void SetPointerBehavior<T>(PointerBehavior pointerBehavior, Handedness handedness) where T : class, IMixedRealityPointer
+        public static void SetPointerBehavior<T>(PointerBehavior pointerBehavior, Handedness handedness, InputSourceType sourceType) where T : class, IMixedRealityPointer
         {
             if (CoreServices.InputSystem.FocusProvider is FocusProvider focusProvider)
             {
-                focusProvider.SetPointerBehavior<T>(handedness, pointerBehavior);
+                focusProvider.SetPointerBehavior<T>(handedness, sourceType, pointerBehavior);
             }
             else
             {

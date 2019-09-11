@@ -16,6 +16,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected readonly HashSet<IMixedRealityPointer> unassignedPointers = new HashSet<IMixedRealityPointer>();
         protected readonly Dictionary<IMixedRealityInputSource, HashSet<IMixedRealityPointer>> pointerByInputSourceParent = new Dictionary<IMixedRealityInputSource, HashSet<IMixedRealityPointer>>();
 
+        private IPointerPreferences pointerPreferences;
+        public DefaultPointerMediator(IPointerPreferences pointerPrefs)
+        {
+            this.pointerPreferences = pointerPrefs;
+        }
+
         public virtual void RegisterPointers(IMixedRealityPointer[] pointers)
         {
             for (int i = 0; i < pointers.Length; i++)
@@ -196,16 +202,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     };
                 foreach (IMixedRealityPointer pointer in allPointers)
                 {
-                    Handedness handedness = pointer.Controller == null ? Handedness.None : pointer.Controller.ControllerHandedness;
-                    if (pointer is GGVPointer ||
-                        pointer == CoreServices.InputSystem.GazeProvider.GazePointer)
-                    {
-                        setPointerState(pointer, focusProvider.GazePointerBehavior);
-                    }
-                    else
-                    {
-                        setPointerState(pointer, focusProvider.GetPointerBehavior(pointer, handedness));
-                    }
+                    setPointerState(pointer, pointerPreferences.GetPointerBehavior(pointer));
                 }
             }
         }
