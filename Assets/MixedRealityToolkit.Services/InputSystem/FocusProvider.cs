@@ -1484,7 +1484,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             public bool Matches(Type queryType)
             {
-                return PointerType.IsAssignableFrom(queryType);
+                return queryType.IsAssignableFrom(PointerType);
             }
 
             public PointerBehavior Left;
