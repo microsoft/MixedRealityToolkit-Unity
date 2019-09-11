@@ -24,6 +24,18 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 Handedness.Any);
         }
 
+        public void SetRightHandRayEnabled(bool isEnabled)
+        {
+            PointerUtils.SetHandRayPointerBehavior(isEnabled ? PointerBehavior.Default : PointerBehavior.AlwaysOff,
+                Handedness.Right);
+        }
+
+        public void SetLeftHandRayEnabled(bool isEnabled)
+        {
+            PointerUtils.SetHandRayPointerBehavior(isEnabled ? PointerBehavior.Default : PointerBehavior.AlwaysOff,
+                Handedness.Left);
+        }
+
         public void SetControllerRayEnabled(bool isEnabled)
         {
             PointerUtils.SetMotionControllerRayPointerBehavior(isEnabled ? PointerBehavior.Default : PointerBehavior.AlwaysOff,
@@ -113,7 +125,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         void Update()
         {
-            // todo: set this for hand type
             SetToggleHelper<ShellHandRayPointer>(HandRayToggle, "HandRayToggle", InputSourceType.Hand);
             SetToggleHelper<ShellHandRayPointer>(ControllerRayToggle, "ControllerRayToggle", InputSourceType.Controller);
             SetToggleHelper<SpherePointer>(GrabToggle, "GrabToggle", InputSourceType.Hand);
