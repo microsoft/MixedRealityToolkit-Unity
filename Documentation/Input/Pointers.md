@@ -245,8 +245,8 @@ The [PointerResultExample scene](https://github.com/microsoft/MixedRealityToolki
 
 <img src="../../Documentation/Images/Input/PointerResultExample.png" style="max-width:100%;">
 
-### Turn pointers on and off
-To turn pointers on and off, set the [`PointerBehavior`]() for a given pointer type via [`PointerUtils`](). See [How to turn pointers on and off in MRTK using PointerBehavior]() for more information.
+### How to disable certain pointers
+To turn pointers on and off, set the [`PointerBehavior`](xref:Microsoft.MixedReality.Toolkit.Input.PointerBehavior) for a given pointer type via [`PointerUtils`](xref:Microsoft.MixedReality.Toolkit.Input.PointerUtils).
 
 ```csharp
 // Turn off all hand rays

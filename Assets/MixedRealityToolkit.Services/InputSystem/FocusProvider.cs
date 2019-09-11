@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (kv.Key.IsAssignableFrom(pointerType))
                 {
-                    // p is subclass of key, or it is the exact class
+                    // pointerType is subclass of key, or it is the exact class
                     return kv.Value.GetBehaviorForHandedness(handedness);
                 }
             }
