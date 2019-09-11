@@ -207,8 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="handedness">Specify handedness to restrict to only right, left.</param>
         public static void SetHandPokePointerBehavior(PointerBehavior pointerBehavior, Handedness handedness = Handedness.Any)
         {
-            SetPointerBehavior<PokePointer>(pointerBehavior, InputSourceType.Hand
-, handedness);
+            SetPointerBehavior<PokePointer>(pointerBehavior, InputSourceType.Hand, handedness);
         }
 
         /// <summary>

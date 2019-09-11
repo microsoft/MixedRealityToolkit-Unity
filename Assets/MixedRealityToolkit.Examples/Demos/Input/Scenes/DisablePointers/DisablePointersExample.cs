@@ -12,14 +12,21 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// </summary>
     public class DisablePointersExample : MonoBehaviour
     {
-        public Interactable RayToggle;
-        public Interactable GrabToggle;
         public Interactable GazeToggle;
+        public Interactable GrabToggle;
         public Interactable PokeToggle;
+        public Interactable HandRayToggle;
+        public Interactable ControllerRayToggle;
 
-        public void SetRayEnabled(bool isEnabled)
+        public void SetHandRayEnabled(bool isEnabled)
         {
             PointerUtils.SetHandRayPointerBehavior(isEnabled ? PointerBehavior.Default : PointerBehavior.AlwaysOff,
+                Handedness.Any);
+        }
+
+        public void SetControllerRayEnabled(bool isEnabled)
+        {
+            PointerUtils.SetMotionControllerRayPointerBehavior(isEnabled ? PointerBehavior.Default : PointerBehavior.AlwaysOff,
                 Handedness.Any);
         }
 
@@ -42,8 +49,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         {
             PointerUtils.SetHandPokePointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
             PointerUtils.SetHandGrabPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
+            PointerUtils.SetHandRayPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
             PointerUtils.SetMotionControllerRayPointerBehavior(PointerBehavior.Default, Handedness.Any);
-            PointerUtils.SetGazePointerBehavior(PointerBehavior.Default);
+            PointerUtils.SetGazePointerBehavior(PointerBehavior.AlwaysOff);
         }
 
         public void SetFingerOnly()
@@ -51,6 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             PointerUtils.SetHandPokePointerBehavior(PointerBehavior.Default, Handedness.Any);
             PointerUtils.SetHandGrabPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
             PointerUtils.SetHandRayPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
+            PointerUtils.SetMotionControllerRayPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
             PointerUtils.SetGazePointerBehavior(PointerBehavior.AlwaysOff);
         }
 
@@ -59,6 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             PointerUtils.SetHandPokePointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
             PointerUtils.SetHandGrabPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
             PointerUtils.SetHandRayPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
+            PointerUtils.SetMotionControllerRayPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
             PointerUtils.SetGazePointerBehavior(PointerBehavior.Default);
         }
 
@@ -67,6 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             PointerUtils.SetHandPokePointerBehavior(PointerBehavior.Default, Handedness.Any);
             PointerUtils.SetHandGrabPointerBehavior(PointerBehavior.Default, Handedness.Any);
             PointerUtils.SetHandRayPointerBehavior(PointerBehavior.Default, Handedness.Any);
+            PointerUtils.SetMotionControllerRayPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
             PointerUtils.SetGazePointerBehavior(PointerBehavior.AlwaysOff);
         }
 
@@ -102,13 +113,15 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         void Update()
         {
-            SetToggleHelper<LinePointer>(RayToggle, "RayToggle");
-            SetToggleHelper<SpherePointer>(GrabToggle, "GrabToggle");
-            SetToggleHelper<PokePointer>(PokeToggle, "PokeToggle");
-            SetToggleHelper<GGVPointer>(GazeToggle, "GazeToggle");
+            // todo: set this for hand type
+            SetToggleHelper<ShellHandRayPointer>(HandRayToggle, "HandRayToggle", InputSourceType.Hand);
+            SetToggleHelper<ShellHandRayPointer>(ControllerRayToggle, "ControllerRayToggle", InputSourceType.Controller);
+            SetToggleHelper<SpherePointer>(GrabToggle, "GrabToggle", InputSourceType.Hand);
+            SetToggleHelper<PokePointer>(PokeToggle, "PokeToggle", InputSourceType.Hand);
+            SetToggleHelper<GGVPointer>(GazeToggle, "GazeToggle", InputSourceType.Hand);
         }
 
-        private void SetToggleHelper<T>(Interactable toggle, string toggleName) where T : class, IMixedRealityPointer
+        private void SetToggleHelper<T>(Interactable toggle, string toggleName, InputSourceType inputType) where T : class, IMixedRealityPointer
         {
             if (toggle == null)
             {
@@ -116,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             }
             else
             {
-                toggle.SetToggled(PointerUtils.GetPointerBehavior<T>(Handedness.Any, InputSourceType.Hand) != PointerBehavior.AlwaysOff);
+                toggle.SetToggled(PointerUtils.GetPointerBehavior<T>(Handedness.Any, inputType) != PointerBehavior.AlwaysOff);
             }
         }
 
