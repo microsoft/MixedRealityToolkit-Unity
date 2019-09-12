@@ -4,7 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEditor;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos
+namespace Microsoft.MixedReality.Toolkit.Tools.Runtime.Editor
 {
     /// <summary>
     /// Custom profile inspector for the DisplayInputResult sample

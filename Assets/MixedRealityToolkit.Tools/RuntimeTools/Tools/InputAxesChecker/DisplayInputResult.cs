@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos
+namespace Microsoft.MixedReality.Toolkit.Tools.Runtime
 {
     /// <summary>
     /// Displays a specified axis / button value on a specific TextMesh.
