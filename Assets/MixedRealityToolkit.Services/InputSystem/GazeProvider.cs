@@ -49,8 +49,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             set { profile.UseEyeTracking = value; }
         }
 
-        private bool enabled = false;
-
         /// <inheritdoc />
         public bool Enabled
         {
@@ -329,7 +327,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // Update Head Movement Direction
             float multiplier = Mathf.Clamp01(Mathf.InverseLerp(profile.MinHeadVelocityThreshold, profile.MaxHeadVelocityThreshold, HeadVelocity.magnitude));
-
             Vector3 newHeadMoveDirection = Vector3.Lerp(headPosition, HeadVelocity, multiplier).normalized;
             lastHeadPosition = headPosition;
             float directionAdjustmentRate = Mathf.Clamp01(5f * Time.fixedDeltaTime);

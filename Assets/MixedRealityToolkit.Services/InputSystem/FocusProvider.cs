@@ -522,7 +522,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void Update()
         {
-            if (!IsSetupValid) { return; }
+            if (!IsSetupValid || !enabled) { return; }
 
             UpdatePointers();
 

@@ -14,113 +14,13 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 using System.Collections;
-using UnityEditor;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
     // Tests to verify that pointer events are being raised correctly
     public class PointerEventsTests
     {
-
-        // Helper script used to keep track of the number of pointer events raised
-        private class PointerHandler : MonoBehaviour, IMixedRealityFocusChangedHandler, IMixedRealityFocusHandler, IMixedRealityPointerHandler
-        {
-            public class State
-            {
-                public int numBeforeFocusChange;
-                public int numFocusChanged;
-                public int numFocusEnter;
-                public int numFocusExit;
-                public int numPointerDown;
-                public int numPointerUp;
-                public int numPointerClicked;
-                public int numPointerDragged;
-
-                public void AssertEqual(State expected)
-                {
-                    Assert.AreEqual(expected.numBeforeFocusChange, numBeforeFocusChange);
-                    Assert.AreEqual(expected.numFocusChanged, numFocusChanged);
-                    Assert.AreEqual(expected.numFocusEnter, numFocusEnter);
-                    Assert.AreEqual(expected.numFocusExit, numFocusExit);
-                    Assert.AreEqual(expected.numPointerDown, numPointerDown);
-                    Assert.AreEqual(expected.numPointerUp, numPointerUp);
-                    Assert.AreEqual(expected.numPointerClicked, numPointerClicked);
-
-                    // Note that numPointerDragged is not asserted equal, because depending on
-                    // how many frames elapse during the test, the number of times something is
-                    // dragged can vary.
-                }
-            }
-
-            public State state = new State();
-            private int numFocusing;
-
-            void IMixedRealityFocusChangedHandler.OnBeforeFocusChange(FocusEventData eventData)
-            {
-                Assert.AreNotSame(eventData.OldFocusedObject, eventData.NewFocusedObject);
-                Assert.AreEqual(state.numFocusChanged, state.numBeforeFocusChange);
-
-                // Uncomment to help debugging issues
-                // var controllerPointer = eventData.Pointer as BaseControllerPointer;
-                // Debug.Log($"Pointer '{eventData.Pointer}' Game Object '{controllerPointer?.gameObject}' Old '{eventData.OldFocusedObject}' New '{eventData.NewFocusedObject}'");
-
-                state.numBeforeFocusChange++;
-
-                if (eventData.OldFocusedObject == gameObject)
-                {
-                    numFocusing--;
-                }
-                else if (eventData.NewFocusedObject == gameObject)
-                {
-                    numFocusing++;
-                }
-            }
-
-            void IMixedRealityFocusChangedHandler.OnFocusChanged(FocusEventData eventData)
-            {
-                Assert.AreNotSame(eventData.OldFocusedObject, eventData.NewFocusedObject);
-                Assert.AreEqual(state.numBeforeFocusChange, state.numFocusChanged + 1);
-
-                state.numFocusChanged++;
-            }
-
-            void IMixedRealityFocusHandler.OnFocusEnter(FocusEventData eventData)
-            {
-                Assert.AreEqual(1, numFocusing);
-
-                state.numFocusEnter++;
-            }
-
-            void IMixedRealityFocusHandler.OnFocusExit(FocusEventData eventData)
-            {
-                Assert.AreEqual(0, numFocusing);
-
-                state.numFocusExit++;
-            }
-
-            void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData)
-            {
-                state.numPointerClicked++;
-            }
-
-            void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData)
-            {
-                state.numPointerDown++;
-            }
-
-            void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData)
-            {
-                state.numPointerDragged++;
-            }
-
-            void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData)
-            {
-                state.numPointerUp++;
-            }
-        }
-
         private PointerHandler handler;
 
         // Keeping this low by default so the test runs fast. Increase it to be able to see hand movements in the editor.

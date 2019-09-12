@@ -30,7 +30,10 @@ namespace Microsoft.MixedReality.Toolkit
         public virtual void Reset() { }
 
         /// <inheritdoc />
-        public virtual void Enable() { }
+        public virtual void Enable()
+        {
+            enabled = true;
+        }
 
         /// <inheritdoc />
         public virtual void Update() { }
@@ -39,7 +42,10 @@ namespace Microsoft.MixedReality.Toolkit
         public virtual void LateUpdate() { }
 
         /// <inheritdoc />
-        public virtual void Disable() { }
+        public virtual void Disable()
+        {
+            enabled = false;
+        }
 
         /// <inheritdoc />
         public virtual void Destroy() { }
@@ -83,7 +89,12 @@ namespace Microsoft.MixedReality.Toolkit
         /// True will release all managed resources, unmanaged resources are always released.
         /// </param>
         protected virtual void Dispose(bool disposing) { }
-    
+
         #endregion IDisposable Implementation
+
+        /// <summary>
+        /// True if the service is currently enabled.
+        /// </summary>
+        protected bool enabled = false;
     }
 }

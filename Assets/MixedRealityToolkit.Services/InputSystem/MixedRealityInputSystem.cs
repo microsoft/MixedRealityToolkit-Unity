@@ -232,6 +232,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Ensure data providers are enabled (performed by the base class)
             base.Enable();
             GazeProvider.Enable();
+            FocusProvider.Enable();
             InputEnabled?.Invoke();
         }
 
@@ -248,6 +249,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public override void Disable()
         {
             base.Disable();
+
+            // Shutdown of the focus provider is managed by the MixedRealityToolkit
+            // object - it's possible that the service can have been unregistered
+            // by the point that input is getting disabled and then destroyed.
+            if (Registrar.IsServiceRegistered<IMixedRealityGazeProvider>())
+            {
+                FocusProvider.Disable();
+            }
 
             // Shutdown of the gaze provider is managed by the MixedRealityToolkit
             // object - it's possible that the service can have been unregistered
