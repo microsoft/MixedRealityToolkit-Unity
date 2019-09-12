@@ -48,30 +48,23 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// Update the position based on input.
         /// </summary>
         /// <returns>A Vector3 describing the desired position</returns>
-        public Vector3 Update(MixedRealityPose pointerCentroidPose, Quaternion objectRotation, Vector3 objectScale, bool isNearMode, bool usePointerRotation, MovementConstraintType movementConstraint)
+        public Vector3 Update(MixedRealityPose pointerCentroidPose, Quaternion objectRotation, Vector3 objectScale, MovementConstraintType movementConstraint)
         {
-            if (!isNearMode || usePointerRotation)
+            Vector3 headPosition = CameraCache.Main.transform.position;
+            float distanceRatio = 1.0f;
+
+            if (pointerPosIndependentOfHead && movementConstraint != MovementConstraintType.FixDistanceFromHead)
             {
-                Vector3 headPosition = CameraCache.Main.transform.position;
-                float distanceRatio = 1.0f;
-
-                if (pointerPosIndependentOfHead && movementConstraint != MovementConstraintType.FixDistanceFromHead)
-                {
-                    // Compute how far away the object should be based on the ratio of the current to original hand distance
-                    var currentHandDistance = Vector3.Magnitude(pointerCentroidPose.Position - headPosition);
-                    distanceRatio = currentHandDistance / pointerRefDistance;
-                }
-
-                Vector3 scaledGrabToObject = Vector3.Scale(objectLocalGrabPoint, objectScale);
-                Vector3 adjustedPointerToGrab = (pointerLocalGrabPoint * distanceRatio);
-                adjustedPointerToGrab = pointerCentroidPose.Rotation * adjustedPointerToGrab;
-
-                return adjustedPointerToGrab - objectRotation * scaledGrabToObject + pointerCentroidPose.Position;
+                // Compute how far away the object should be based on the ratio of the current to original hand distance
+                var currentHandDistance = Vector3.Magnitude(pointerCentroidPose.Position - headPosition);
+                distanceRatio = currentHandDistance / pointerRefDistance;
             }
-            else
-            {
-                return pointerCentroidPose.Position + pointerToObject;
-            }
+
+            Vector3 scaledGrabToObject = Vector3.Scale(objectLocalGrabPoint, objectScale);
+            Vector3 adjustedPointerToGrab = (pointerLocalGrabPoint * distanceRatio);
+            adjustedPointerToGrab = pointerCentroidPose.Rotation * adjustedPointerToGrab;
+
+            return adjustedPointerToGrab - objectRotation * scaledGrabToObject + pointerCentroidPose.Position;
         }
     }
 }

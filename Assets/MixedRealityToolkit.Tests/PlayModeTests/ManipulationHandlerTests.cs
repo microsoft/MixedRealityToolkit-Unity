@@ -361,19 +361,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                     Vector3 newHandPosition = Quaternion.AngleAxis(degreeStep * i, Vector3.up) * initialGrabPosition;
                     yield return hand.MoveTo(newHandPosition, numHandSteps);
 
-                    if (type == ManipulationHandler.RotateInOneHandType.RotateAboutObjectCenter)
-                    {
-                        // make sure that the offset between hand and object centre hasn't changed while rotating
-                        Vector3 offsetRotated = pointer.Position - testObject.transform.position;
-                        TestUtilities.AssertAboutEqual(offsetRotated, initialOffsetGrabToObjPivot, $"Object offset changed during rotation using {type}");
-                    }
-                    else
-                    {
-                        // make sure that the offset between grab point and object pivot hasn't changed while rotating
-                        Vector3 grabPoint = manipHandler.GetPointerGrabPoint(pointer.PointerId);
-                        Vector3 cornerRotated = testObject.transform.TransformPoint(initialGrabPointInObject);
-                        TestUtilities.AssertAboutEqual(cornerRotated, grabPoint, $"Grab point on object changed during rotation using {type}");
-                    }
+                    // make sure that the offset between grab point and object pivot hasn't changed while rotating
+                    Vector3 grabPoint = manipHandler.GetPointerGrabPoint(pointer.PointerId);
+                    Vector3 cornerRotated = testObject.transform.TransformPoint(initialGrabPointInObject);
+                    TestUtilities.AssertAboutEqual(cornerRotated, grabPoint, $"Grab point on object changed during rotation using {type}");
                 }
 
                 yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
