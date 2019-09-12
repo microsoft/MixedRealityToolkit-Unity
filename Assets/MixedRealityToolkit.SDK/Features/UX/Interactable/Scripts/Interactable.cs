@@ -254,7 +254,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// True if Selection is "Toggle" (Dimensions == 2)
         /// </summary>
-        public bool IsToggle { get { return Dimensions == 2; } }
+        public bool IsToggleButton { get { return Dimensions == 2; } }
 
         /// <summary>
         /// Currently pressed and some movement has occurred
@@ -789,7 +789,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             SetState(InteractableStates.InteractableStateEnum.Toggled, toggled);
 
             // if in toggle mode
-            if (IsToggle)
+            if (IsToggleButton)
             {
                 SetDimensionIndex(toggled ? 1 : 0);
             }
