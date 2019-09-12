@@ -537,8 +537,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             MixedRealityPose hostPose = new MixedRealityPose(hostTransform.position, hostTransform.rotation);
             moveLogic.Setup(pointerPose, pointerData.GrabPoint, hostPose, hostTransform.localScale);
 
-            Vector3 worldGrabPoint = pointerData.GrabPoint;
-
             startObjectRotationCameraSpace = Quaternion.Inverse(CameraCache.Main.transform.rotation) * hostTransform.rotation;
             var cameraFlat = CameraCache.Main.transform.forward;
             cameraFlat.y = 0;
