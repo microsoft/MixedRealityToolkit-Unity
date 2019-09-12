@@ -1,21 +1,21 @@
-- name: Getting Started with MRTK
+- name: MRTK を始める
   href: GettingStartedWithTheMRTK.md
   items:
-  - name: Upgrading from HTK
+  - name: HTK からの移植ガイド
     href: HTKToMRTKPortingGuide.md
   - name: Updating from RC2
     href: Updating.md
   - name: Release Notes
     href: ReleaseNotes.md
-  - name: Building and Deploying MRTK
+  - name: MRTK のビルドとデプロイ
     href: BuildAndDeploy.md
   - name: Performance
     href: Performance/PerfGettingStarted.md
   - name: Hologram Stabilization
     href: Hologram-Stabilization.md
-- name: Architecture
+- name: アーキテクチャ
   items:
-  - name: Overview
+  - name: 全体像
     href: Architecture/Overview.md
   - name: Framework and Runtime
     href: Architecture/FrameworkAndRuntime.md
@@ -59,7 +59,7 @@
       href: Input/Gaze.md
     - name: Eyes
       href: EyeTracking/EyeTracking_Main.md
-  - name: In-Editor Input Simulation
+  - name: エディタ内入力シミュレーション
     href: InputSimulation/InputSimulationService.md
   - name: UX Building Blocks
     items:
