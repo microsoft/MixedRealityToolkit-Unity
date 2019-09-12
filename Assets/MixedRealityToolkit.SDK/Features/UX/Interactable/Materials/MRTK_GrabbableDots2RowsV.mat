@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MRTK_GrabbableDots
+  m_Name: MRTK_GrabbableDots2RowsV
   m_Shader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
   m_ShaderKeywords: _ALPHABLEND_ON _NEAR_LIGHT_FADE _NEAR_PLANE_FADE _SPECULAR_HIGHLIGHTS
   m_LightmapFlags: 4
@@ -30,7 +30,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 2e264b2035e178e4dac9e40cfcf38662, type: 3}
-        m_Scale: {x: 100, y: 30}
+        m_Scale: {x: 2, y: 10}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
         m_Texture: {fileID: 0}
@@ -68,7 +68,7 @@ Material:
     - _EnvironmentColorThreshold: 1.5
     - _EnvironmentColoring: 0
     - _FadeBeginDistance: 0.01
-    - _FadeCompleteDistance: 0.04
+    - _FadeCompleteDistance: 0.03
     - _FadeMinValue: 0
     - _FluentLightIntensity: 1
     - _HoverLight: 0
