@@ -289,6 +289,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public override void Update()
         {
+            if (!Enabled)
+            {
+                return;
+            }
+
             if (MixedRealityRaycaster.DebugEnabled && gazeTransform != null)
             {
                 Debug.DrawRay(GazeOrigin, (HitPosition - GazeOrigin), Color.white);
@@ -305,6 +310,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public override void LateUpdate()
         {
+            if (!Enabled)
+            {
+                return;
+            }
+
             // Update head velocity.
             Vector3 headPosition = GazeOrigin;
             Vector3 headDelta = headPosition - lastHeadPosition;
