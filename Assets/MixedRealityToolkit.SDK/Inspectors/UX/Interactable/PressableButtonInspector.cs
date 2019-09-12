@@ -136,8 +136,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUI.BeginChangeCheck();
             }
 
+            var targetBehaviour = (MonoBehaviour)target;
+            bool isOpaque = targetBehaviour.isActiveAndEnabled;
+            float alpha = (isOpaque) ? 1.0f : 0.5f;
+
             // START PUSH
-            Handles.color = Color.cyan;
+            Handles.color = ApplyAlpha(Color.cyan, alpha);
             float newStartPushDistance = DrawPlaneAndHandle(startPlaneVertices, info.PlaneExtents * 0.5f, info.StartPushDistance, info, "Start Push Distance", editingEnabled);
             if (editingEnabled && newStartPushDistance != info.StartPushDistance)
             {
@@ -146,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             // RELEASE DISTANCE
-            Handles.color = Color.red;
+            Handles.color = ApplyAlpha(Color.red, alpha);
             float newReleaseDistance = DrawPlaneAndHandle(releasePlaneVertices, info.PlaneExtents * 0.3f, info.ReleaseDistance, info, "Release Distance", editingEnabled);
             if (editingEnabled && newReleaseDistance != info.ReleaseDistance)
             {
@@ -155,7 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             // PRESS DISTANCE
-            Handles.color = Color.yellow;
+            Handles.color = ApplyAlpha(Color.yellow, alpha);
             float newPressDistance = DrawPlaneAndHandle(pressPlaneVertices, info.PlaneExtents * 0.35f, info.PressDistance, info, "Press Distance", editingEnabled);
             if (editingEnabled && newPressDistance != info.PressDistance)
             {
@@ -164,7 +168,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             // MAX PUSH
-            Handles.color = new Color(0.28f, 0.0f, 0.69f); //Purple
+            var purple = new Color(0.28f, 0.0f, 0.69f);
+            Handles.color = ApplyAlpha(purple, alpha);
             float newMaxPushDistance = DrawPlaneAndHandle(endPlaneVertices, info.PlaneExtents * 0.5f, info.MaxPushDistance, info, "Max Push Distance", editingEnabled);
             if (editingEnabled && newMaxPushDistance != info.MaxPushDistance)
             {
@@ -286,21 +291,22 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUI.BeginDisabledGroup(Application.isPlaying == true);
                 EditorGUILayout.Space();
                 EditorGUILayout.LabelField("Editor Settings", EditorStyles.boldLabel);
-                VisiblePlanes = SessionState.GetBool(VisiblePlanesKey, true);
-                bool newValue = EditorGUILayout.Toggle("Show Button Event Planes", VisiblePlanes);
-                if (newValue != VisiblePlanes)
+                var prevVisiblePlanes = SessionState.GetBool(VisiblePlanesKey, true);
+                VisiblePlanes = EditorGUILayout.Toggle("Show Button Event Planes", prevVisiblePlanes);
+                if (VisiblePlanes != prevVisiblePlanes)
                 {
-                    SessionState.SetBool(VisiblePlanesKey, newValue);
+                    SessionState.SetBool(VisiblePlanesKey, VisiblePlanes);
+                    EditorUtility.SetDirty(target);
                 }
 
                 // enable plane editing
                 {
                     EditorGUI.BeginDisabledGroup(VisiblePlanes == false);
-                    EditingEnabled = SessionState.GetBool(EditingEnabledKey, false);
-                    newValue = EditorGUILayout.Toggle("Make Planes Editable", EditingEnabled);
-                    if (newValue != EditingEnabled)
+                    var prevEditingEnabled = SessionState.GetBool(EditingEnabledKey, false);
+                    EditingEnabled = EditorGUILayout.Toggle("Make Planes Editable", EditingEnabled);
+                    if (EditingEnabled != prevEditingEnabled)
                     {
-                        SessionState.SetBool(EditingEnabledKey, newValue);
+                        SessionState.SetBool(EditingEnabledKey, EditingEnabled);
                         EditorUtility.SetDirty(target);
                     }
                     EditorGUI.EndDisabledGroup();
@@ -373,6 +379,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 return startDistance;
             }
+        }
+
+        private static Color ApplyAlpha(Color color, float alpha)
+        {
+            return new Color(color.r, color.g, color.b, color.a * alpha);
         }
     }
 }
