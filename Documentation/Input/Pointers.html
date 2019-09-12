@@ -171,6 +171,57 @@ the articulated hand controller is associated with the <em>PokePointer</em>, <em
 <li><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Teleport.ParabolicTeleportPointer.html"><code>ParabolicTeleportPointer</code></a> will raise a teleport request when action is taken (i.e the teleport button is pressed) with a parabolic line raycast in order to move the user.</li>
 </ul>
 <img src="../Images/Pointers/MRTK_Pointers_Parabolic.png" width="400">
+<h2 id="pointers-commonly-available-for-mixed-reality-platforms">Pointers commonly available for Mixed Reality Platforms</h2>
+<p>The following table details the pointer types that are typically used for the common platforms in MRTK. NOTE:
+it's possible to add different pointer types to these platforms. For example, you could add a Poke pointer or Sphere pointer to VR. Additionally, VR devices with a gamepad could use the GGV pointer.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>OpenVR</th>
+<th>Windows Mixed Reality</th>
+<th>HoloLens 1</th>
+<th>HoloLens 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ShellHandRayPointer</td>
+<td>Valid</td>
+<td>Valid</td>
+<td></td>
+<td>Valid</td>
+</tr>
+<tr>
+<td>TeleportPointer</td>
+<td>Valid</td>
+<td>Valid</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>GGVPointer</td>
+<td></td>
+<td></td>
+<td>Valid</td>
+<td></td>
+</tr>
+<tr>
+<td>SpherePointer</td>
+<td></td>
+<td></td>
+<td></td>
+<td>Valid</td>
+</tr>
+<tr>
+<td>PokePointer</td>
+<td></td>
+<td></td>
+<td></td>
+<td>Valid</td>
+</tr>
+</tbody>
+</table>
 <h2 id="pointer-interactions-via-code">Pointer interactions via code</h2>
 <h3 id="pointer-event-interfaces">Pointer event interfaces</h3>
 <p>MonoBehaviors that implement one or more of the following interfaces and are assigned to a GameObject with a <code>Collider</code> will receive Pointer interactions events as defined by the associated interface.</p>
@@ -309,6 +360,28 @@ private void OnDisable()
 </code></pre>
 <p>The <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development/Assets/MixedRealityToolkit.Examples/Demos/Input/Scenes/PointerResult/PointerResultExample.unity">PointerResultExample scene</a> shows how to use the pointer <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.html#Microsoft_MixedReality_Toolkit_Input_IMixedRealityPointer_Result"><code>Result</code></a> to spawn an object at the hit location.</p>
 <img src="../Images/Input/PointerResultExample.png" style="max-width:100%;">
+<h3 id="disable-pointers">Disable Pointers</h3>
+<p>To turn enable and disable pointers (for example, to disable the hand ray), set the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.PointerBehavior.html"><code>PointerBehavior</code></a> for a given pointer type via <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.PointerUtils.html"><code>PointerUtils</code></a>.</p>
+<pre><code class="lang-csharp">// Disable the hand rays
+PointerUtils.SetHandRayPointerBehavior(PointerBehavior.AlwaysOff);
+
+// Disable hand rays for the right hand only
+PointerUtils.SetHandRayPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Right);
+
+// Disable the gaze pointer
+PointerUtils.SetGazePointerBehavior(PointerBehavior.AlwaysOff);
+
+// Set the behavior to match HoloLens 1
+// Note, if on HoloLens 2, you must configure your pointer profile to make the GGV pointer show up for articulated hands.
+public void SetHoloLens1()
+{
+    PointerUtils.SetPokePointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
+    PointerUtils.SetGrabPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
+    PointerUtils.SetRayPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
+    PointerUtils.SetGGVBehavior(PointerBehavior.Default);
+}
+</code></pre>
+<p>See <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.PointerUtils.html"><code>PointerUtils</code></a> and <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Examples.Demos.DisablePointersExample.html"><code>TurnPointersOnOff</code></a> for more examples.</p>
 <h2 id="pointer-interactions-via-editor">Pointer interactions via editor</h2>
 <p>For pointer events handled by <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler.html"><code>IMixedRealityPointerHandler</code></a>, MRTK provides further convenience in the form of the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.PointerHandler.html"><code>PointerHandler</code></a> component which allows pointer events to be handled directly via Unity Events.</p>
 <img src="../Images/Pointers/PointerHandler.png" style="max-width:100%;">
