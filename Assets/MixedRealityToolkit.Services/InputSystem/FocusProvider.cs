@@ -726,20 +726,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             var mediatorType = InputSystem?.InputSystemProfile.PointerProfile.PointerMediator.Type;
             if (mediatorType != null)
             {
-                // Figure out if the type has a constructor that takes an IMixedRealityPointerMediator
-                // InputSystem.InputSystemProfile.PointerProfile.PointerMediator.Type
-                if (InputSystem.InputSystemProfile.PointerProfile.PointerMediator.Type.GetConstructor(
-                    new Type[] { typeof(IPointerPreferences) }) != null)
+                try
                 {
-                    // MRTK's custom mediator takes a IPointerPreferences in its constructor. If this constructor
-                    // exists, instantiate using the IPointerPreferences constructor
+                    // First, try to use constructor used by DefaultPointerMediator (it takes a IPointePreferences)
                     mediator = Activator.CreateInstance(
-                        InputSystem.InputSystemProfile.PointerProfile.PointerMediator.Type, 
-                        this) as IMixedRealityPointerMediator;
+                    InputSystem.InputSystemProfile.PointerProfile.PointerMediator.Type,
+                    this) as IMixedRealityPointerMediator;
                 }
-                else
+                catch (MissingMethodException)
                 {
-                    // Otherwise instantiate with empty constructor
+                    // We are using custom mediator not provided by MRTK, instantiate with empty constructor
                     mediator = Activator.CreateInstance(
                         InputSystem.InputSystemProfile.PointerProfile.PointerMediator.Type) as IMixedRealityPointerMediator;
                 }
