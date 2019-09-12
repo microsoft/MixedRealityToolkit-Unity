@@ -1,5 +1,27 @@
 # Interactable
 
+
+
+Interactable
+
+Overview
+-> Create interactable at runtime*
+
+Input Settings
+-> Button types
+
+Profiles
+-> Themes (Mainly reference other page)
+-> Default interactable states*
+
+Events
+---> Extending Events
+
+Remove architecture*
+-> move goals to overview*
+
+
+
 ![Interactable](../Documentation/Images/Interactable/InteractableExamples.png)
 
 With Interactable script, you can make any object interactable with differentiated visual state. For example, you can change color of the object on focus or make it bigger on pressed state. Since you can have multiple themes that control different parts of the object, you can achieve sophisticated visual states including shader property changes. In fact, most [interaction example scenes](README_HandInteractionExamples.md) revolve around interactions based on Interactables. 
@@ -144,6 +166,7 @@ Events can be placed on an object to monitor a separate interactable. Use [`Inte
 "Search Scope" provides a preferred path to search for an Interactable if one is not explicitly assigned.
 
 ### Interactable Events Example
+
 Listen for focus enter, exit events from an interactable, using [InteractableOnFocusReceiver](xref:Microsoft.MixedReality.Toolkit.UI.InteractableOnFocusReceiver)
 
 ```csharp
@@ -174,6 +197,7 @@ public static void AddToggleEvents(Interactable interactable)
 ```
 
 ## States ##
+
 States are a list of terms that can be used to define interactions phases, like press or observed.
 
 <img src="../Documentation/Images/Interactable/DefaultStates.png" width="450">
@@ -212,10 +236,6 @@ There are currently 17 states total that you can used to drive themes, though so
 States have corresponding properties and Methods in the Interactable, like SetFocus(bool focus) or HasFocus.
 
 ## Interactable goals and architecture
-
-<img src="../Documentation/Images/Interactable/Interactable_overview.png" width="750">
-
-<img src="../Documentation/Images/Interactable/Interactable_details.png" width="1450">
 
 ## Extending themes
 
