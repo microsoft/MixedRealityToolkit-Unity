@@ -67,7 +67,7 @@ The following code will return hand rays to their default behavior in MRTK:
 PointerUtils.SetHandRayPointerBehavior(PointerBehavior.Default);
 ```
 
-The following code will force hand rays to be on, regardless of if near a grabbable:
+The following code will force hand rays to be on, regardless if near a grabbable:
 
 ```csharp
 // Turn off all hand rays

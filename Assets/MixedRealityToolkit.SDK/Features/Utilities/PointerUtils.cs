@@ -266,7 +266,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private static void WarnAboutSettingCustomPointerBehaviors()
         {
             Debug.LogWarning("Setting custom pointer behaviors only works if the input system is using the default MRTK focus provider. " +
-                "Are you using a custom Focus Provider?");
+                "Are you using a custom Focus Provider that doesn't implement IPointerPreferences?");
         }
 
     }

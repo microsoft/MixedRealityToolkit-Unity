@@ -116,7 +116,7 @@ Useful Sphere Pointer properties:
 
 ## Pointers commonly available for Mixed Reality Platforms
 The following table details the pointer types that are typically used for the common platforms in MRTK. NOTE:
-it's possible to add different pointer types to these platforms. For example, you could add a Poke pointer or Sphere pointer to VR. Additionally, VR devices with a gamepad would use the GGV pointer. 
+it's possible to add different pointer types to these platforms. For example, you could add a Poke pointer or Sphere pointer to VR. Additionally, VR devices with a gamepad could use the GGV pointer. 
 
 |                     | OpenVR  | Windows Mixed Reality | HoloLens 1 | HoloLens 2 |
 |---------------------|---------|-----------------------|------------|------------|
