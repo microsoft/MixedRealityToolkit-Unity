@@ -51,18 +51,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     showScaleHandles = value;
                     visibilityChanged.Invoke();
-                    //ResetHandleVisibility(showScaleHandles);
                 }
             }
         }
-
-
-        // private List<Transform> corners = new List<Transform>();
-        private Vector3[] boundsCorners = new Vector3[8];
-        public Vector3[] BoundsCorners { get; private set; }
-
-        public ref Vector3[] GetBoundsCornersRef() { return ref boundsCorners; }
-
 
         internal void UpdateVisibilityInInspector(HideFlags flags)
         {
@@ -85,15 +76,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return ShowScaleHandles;
         }
 
-        public override void Init()
-        {
-            boundsCorners = new Vector3[8];
-            base.Init();
-        }
+        //internal void DestroyHandles()
+       // {
+        ////    boundsCorners = new Vector3[8];
+        //    base.Init();
+       // }
         
 
 
-        internal void UpdateHandles()
+        internal void UpdateHandles(ref Vector3[] boundsCorners)
         {
             for (int i = 0; i < handles.Count; ++i)
             {
@@ -108,15 +99,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return HandleType.Scale;
         }
 
-        internal void CreateHandles(Transform parent, bool drawManipulationTether, bool isFlattened)
+        internal void CreateHandles(Transform parent, ref Vector3[] boundsCorners, bool drawManipulationTether, bool isFlattened)
         {
+            // ensure materials are set
+            SetMaterials();
+
+            // create corners
             for (int i = 0; i < boundsCorners.Length; ++i)
             {
                 GameObject corner = new GameObject
                 {
                     name = "corner_" + i.ToString()
                 };
-                corner.transform.parent = parent; // rigRoot.transform;
+                corner.transform.parent = parent;
                 corner.transform.localPosition = boundsCorners[i];
 
                 GameObject visualsScale = new GameObject();
@@ -167,14 +162,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 BoundingBoxHandleUtils.AddComponentsToAffordance(corner, new Bounds(cornerbounds.center * invScale, cornerbounds.size * invScale), 
                     RotationHandlePrefabCollider.Box, CursorContextInfo.CursorAction.Scale, ColliderPadding, parent, drawManipulationTether);
-                handles.Add(corner.transform);
-
-                
+                handles.Add(corner.transform);       
             }
         }
-
-
-        
-
     }
 }

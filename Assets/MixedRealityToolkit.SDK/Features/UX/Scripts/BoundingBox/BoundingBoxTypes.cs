@@ -101,25 +101,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.BoundingBoxTypes
         Box
     }
 
-
-   
-
-    /// <summary>
-    /// Internal state tracking for proximity of a handle
-    /// </summary>
-    public enum HandleProximityState
-    {
-        FullsizeNoProximity = 0,
-        MediumProximity,
-        CloseProximity
-    }
-
-
-
     /// <summary>
     /// This enum defines which of the axes a given rotation handle revolves about.
     /// </summary>
-    public enum CardinalAxisType
+    internal enum CardinalAxisType
     {
         X = 0,
         Y,

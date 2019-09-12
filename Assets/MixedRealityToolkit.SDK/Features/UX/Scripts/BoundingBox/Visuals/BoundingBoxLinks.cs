@@ -26,6 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (wireframeMaterial != value)
                 {
                     wireframeMaterial = value;
+                    SetMaterials();
                     configurationChanged.Invoke();
                 }
             }
@@ -95,18 +96,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         internal protected UnityEvent configurationChanged = new UnityEvent();
 
-        private List<Transform> links;
-        private List<Renderer> linkRenderers;
+        private List<Transform> links = new List<Transform>();
+        private List<Renderer> linkRenderers = new List<Renderer>();
 
 
-        public void Init()
-        {
-            if (showWireframe)
-            {
-                links = new List<Transform>();
-                linkRenderers = new List<Renderer>();
-            }
-        }
         public void Clear()
         {
             if (links != null)
@@ -116,11 +109,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     GameObject.Destroy(transform.gameObject);
                 }
                 links.Clear();
-                links = null;
             }
         }
 
-        public void SetMaterials()
+        private void SetMaterials()
         {
             //ensure materials
             if (wireframeMaterial == null)
@@ -199,20 +191,23 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        public void Flatten(BoundingBoxRotationHandles rotationHandles)
+        public void Flatten(ref int[] flattenedHandles)
         {
-            //TODO CHANGE THIS - MAYBE MAKE FLATTENEDHANDLES a static const array (different types) in the types class or make a constants class
-            if (rotationHandles.flattenedHandles != null && linkRenderers != null)
+            if (flattenedHandles != null && linkRenderers != null)
             {
-                for (int i = 0; i < rotationHandles.flattenedHandles.Length; ++i)
+                for (int i = 0; i < flattenedHandles.Length; ++i)
                 {
-                    linkRenderers[rotationHandles.flattenedHandles[i]].enabled = false;
+                    linkRenderers[flattenedHandles[i]].enabled = false;
                 }
             }
         }
 
         public void CreateLinks(BoundingBoxRotationHandles rotationHandles, Transform parent, Vector3 currentBoundsExtents)
         {
+            // ensure materials exist 
+            SetMaterials();
+
+            // create links
             if (links != null)
             {
                 GameObject link;

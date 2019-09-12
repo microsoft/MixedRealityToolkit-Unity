@@ -107,10 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Vector3[] edgeCenters = new Vector3[NumEdges];
         private CardinalAxisType[] edgeAxes;
 
-        // TODO CHANGE BACK TO PRIVATE
-        internal int[] flattenedHandles;
-
-        public int GetRotationHandleIdx(Transform handle)
+        internal int GetRotationHandleIdx(Transform handle)
         {
             for (int i = 0; i < handles.Count; ++i)
             {
@@ -124,38 +121,23 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
 
-        public void Flatten(FlattenModeType flattenAxis)
-        {
-            if (flattenAxis == FlattenModeType.FlattenX)
-            {
-                flattenedHandles = new int[] { 0, 4, 2, 6 };
-            }
-            else if (flattenAxis == FlattenModeType.FlattenY)
-            {
-                flattenedHandles = new int[] { 1, 3, 5, 7 };
-            }
-            else if (flattenAxis == FlattenModeType.FlattenZ)
-            {
-                flattenedHandles = new int[] { 9, 10, 8, 11 };
-            }
-        }
+        
 
-        public Vector3 GetEdgeCenter(int index)
+        internal Vector3 GetEdgeCenter(int index)
         {
-            // TODO ASSERT IF not in Bounds
+            Debug.Assert(index >= 0 && index <= NumEdges, "Edge center index out of bounds");
             return edgeCenters[index];
         }
 
-        public CardinalAxisType GetAxisType(int index)
+        internal CardinalAxisType GetAxisType(int index)
         {
-            // TODO ASSERT IF NOT IN BOUNDS
+            Debug.Assert(index >= 0 && index <= NumEdges, "Edge axes index out of bounds");
             return edgeAxes[index];
         }
 
-        public CardinalAxisType GetAxisType(Transform handle)
+        internal CardinalAxisType GetAxisType(Transform handle)
         {
             int index = GetRotationHandleIdx(handle);
-            //TODO ASSERT VALID INDEX
             return GetAxisType(index);
         }
 
@@ -190,10 +172,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
 
-        private void InitEdgeAxis()
+        internal void InitEdgeAxis()
         {
 
-            edgeAxes = new CardinalAxisType[12];
+            edgeAxes = new CardinalAxisType[NumEdges];
             edgeAxes[0] = CardinalAxisType.X;
             edgeAxes[1] = CardinalAxisType.Y;
             edgeAxes[2] = CardinalAxisType.X;
@@ -208,7 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             edgeAxes[11] = CardinalAxisType.Z;
         }
 
-        internal void SetHiddenHandles()
+        internal void FlattenHandles(ref int[] flattenedHandles)
         {
             if (flattenedHandles != null)
             {
@@ -240,6 +222,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         internal void Create(ref Vector3[] boundsCorners, Transform parent, bool drawManipulationTether)
         {
+            SetMaterials();
             edgeCenters = new Vector3[12];
             CalculateEdgeCenters(ref boundsCorners);
             InitEdgeAxis();

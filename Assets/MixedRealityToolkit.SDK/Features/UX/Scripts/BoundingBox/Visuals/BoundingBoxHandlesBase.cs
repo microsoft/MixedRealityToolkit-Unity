@@ -10,10 +10,10 @@ using UnityEngine.Events;
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     [Serializable]
-    public class BoundingBoxHandlesBase
+    public abstract class BoundingBoxHandlesBase
     {
         [SerializeField]
-        [Tooltip("Material applied to hansdles when they are not in a grabbed state")]
+        [Tooltip("Material applied to handles when they are not in a grabbed state")]
         private Material handleMaterial;
 
         /// <summary>
@@ -27,6 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (handleMaterial != value)
                 {
                     handleMaterial = value;
+                    SetMaterials();
                     configurationChanged.Invoke();
                 }
             }
@@ -47,6 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (handleGrabbedMaterial != value)
                 {
                     handleGrabbedMaterial = value;
+                    SetMaterials();
                     configurationChanged.Invoke();
                 }
             }
@@ -115,7 +117,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         internal protected UnityEvent configurationChanged = new UnityEvent();
         internal protected UnityEvent visibilityChanged = new UnityEvent();
-        //internal protected UnityEvent handlesCreated = new UnityEvent();
 
         internal void ResetHandleVisibility(bool isVisible)
         {
@@ -129,17 +130,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        public virtual bool IsVisible(Transform handle)
-        {
-            // todo . check if we can remove implementation and force derived to implement
-            return true;
-        }
-
-        public virtual bool IsHandleTypeActive()
-        {
-            // todo . check if we can remove implementation and force derived to implement
-            return true;
-        }
+        public abstract bool IsVisible(Transform handle);
+        public abstract bool IsHandleTypeActive();
 
         internal protected List<Transform> handles = new List<Transform>();
 
@@ -156,12 +148,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         internal void HandleIgnoreCollider(Collider handlesIgnoreCollider)
         {
             BoundingBoxHandleUtils.HandleIgnoreCollider(handlesIgnoreCollider, handles);
-        }
-
-
-        public virtual void Init()
-        {
-            handles = new List<Transform>();
         }
 
         internal void DestroyHandles()
@@ -204,7 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        public void SetMaterials()
+        internal protected void SetMaterials()
         {
             if (handleMaterial == null /*&& handleMaterial != wireframeMaterial*/)
             {
@@ -231,9 +217,5 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 handleGrabbedMaterial.SetFloatArray("_InnerGlowColor", color);
             }
         }
-
-        //public void CreateHandles()
-        //{
-
     }
 }
