@@ -203,7 +203,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Gets the physics ray based on the interaction enabled pointer assosiciated with the user's hand.
         /// </summary>
-        /// <param name="hand">The <see cref="Handedness"/> of the hand</param>
+        /// <param name="hand">The handedness of the hand</param>
         /// <param name="ray">The physics ray for the pointer</param>
         /// <returns>
         /// True if the ray contains valid data, false otherwise.
@@ -217,7 +217,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Gets the physics ray based on the interaction enabled pointer assosiciated with the
         /// motion controller.
         /// </summary>
-        /// <param name="hand">The <see cref="Handedness"/> of the motion controller</param>
+        /// <param name="hand">The handedness of the motion controller</param>
         /// <param name="ray">The physics ray for the pointer</param>
         /// <returns>
         /// True if the ray contains valid data, false otherwise.
@@ -232,7 +232,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Gets the physics ray based on the interaction enabled pointer assosiciated with the user's hand
         /// or a motion controller.
         /// </summary>
-        /// <param name="hand">The <see cref="Handedness"/> of the user's hand or motion controller</param>
+        /// <param name="hand">The handedness of the user's hand or motion controller</param>
         /// <param name="ray">The physics ray for the pointer</param>
         /// <param name="sourceType">The type of input source</param>
         /// <returns></returns>
@@ -263,7 +263,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// desired input source type.
         /// </summary>
         /// <param name="sourceType">The type of input source</param>
-        /// <param name="hand">The <see cref="Handedness"/> of the input source</param>
+        /// <param name="hand">The handedness of the input source</param>
         /// <param name="ray">The physics ray for the pointer</param>
         /// <returns>
         /// True if the ray contains valid data, false otherwise.
