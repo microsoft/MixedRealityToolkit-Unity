@@ -24,7 +24,7 @@ to use eye gaze.
 
 Gaze functionality (both head and eye) is provided by the
 [GazeProvider](xref:Microsoft.MixedReality.Toolkit.Input.GazeProvider). This provider can be configured
-in the *Pointer* section of the input system profile:
+in the *Gaze* section of the input system profile:
 
 ![Gaze Configuration Entrypoint](../../Documentation/Images/Input/GazeConfigurationEntrypoint.png)
 
@@ -44,7 +44,7 @@ bugs) as re-implementing the GazeProvider is non-trivial.
 
 ### How get the current gaze target
 
-This sample shows how to get the current game object that is targetted by the user gaze.
+This sample shows how to get the current game object that is targeted by the user gaze.
 
 ```csharp
 void LogCurrentGazeTarget()
@@ -72,4 +72,3 @@ void LogGazeDirectionOrigin()
         + CoreServices.InputSystem.GazeProvider.GazeOrigin);
 }
 ```
-
