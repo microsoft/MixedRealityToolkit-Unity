@@ -337,7 +337,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
 
                 // save relative pos grab point to object
-                Vector3 initialOffsetGrabToObjPivot = pointer.Position - testObject.transform.position;
                 Vector3 initialGrabPointInObject = testObject.transform.InverseTransformPoint(manipHandler.GetPointerGrabPoint(pointer.PointerId));
 
                 // full circle
