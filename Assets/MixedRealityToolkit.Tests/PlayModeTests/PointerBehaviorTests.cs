@@ -23,10 +23,16 @@ using UnityEditor;
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
     /// <summary>
-    /// Verify that pointers can be turned on and offvia FocusProvider.SetPointerBehavior
+    /// Verify that pointers can be turned on and off via FocusProvider.SetPointerBehavior
     /// </summary>
     public class PointerBehaviorTests : BasePlayModeTests
     {
+        /// <summary>
+        /// Simple container for comparing expected pointer states to actual.
+        /// if a bool? is null, this means pointer is null (doesn't exist)
+        /// if a bool? is false, this means the pointer exists, but is not enabled (IsInteractionEnabled == false)
+        /// if a bool? is true, this means the pointer exists, and is enabled
+        /// </summary>
         private class PointerStateContainer
         {
             public bool? LinePointerEnabled { get; set; }
@@ -80,10 +86,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestHand rightHand = new TestHand(Handedness.Right);
             TestHand leftHand = new TestHand(Handedness.Left);
 
+            TestContext.Out.WriteLine("Show both hands");
             yield return rightHand.Show(Vector3.zero);
             yield return leftHand.Show(Vector3.zero);
 
-            TestContext.Out.WriteLine("Show both hands");
             EnsurePointerStates(Handedness.Right, gazeOn);
             EnsurePointerStates(Handedness.Left, gazeOn);
 

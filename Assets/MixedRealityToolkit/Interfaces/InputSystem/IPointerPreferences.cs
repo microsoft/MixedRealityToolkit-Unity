@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <typeparam name="T">All pointers that are of this type, or a subclass of this type, will have the given behavior</typeparam>
         /// <param name="handedness">Specify Handedness.Any to apply to all handedness, or specify a specific handedness to just disable, right, left.</param>
-        /// <param name="sourceType">Allows specification of pointer behavior per input source, so that pointers can be disabled for hands but not controllers</param>
+        /// <param name="sourceType">Allows specification of pointer behavior per input source, so that pointers can be disabled for hands but not controllers, and vice versa.</param>
         PointerBehavior GetPointerBehavior<T>(
             Handedness handedness,
             InputSourceType sourceType) where T : class, IMixedRealityPointer;
@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <typeparam name="T">All pointers that are of this type, or a subclass of this type, will have the given behavior</typeparam>
         /// <param name="handedness">Specify Handedness.Any to apply to all handedness, or specify a specific handedness to just disable, right, left.</param>
-        /// <param name="sourceType">Allows specification of pointer behavior per input source, so that pointers can be disabled for hands but not controllers</param>
+        /// <param name="sourceType">Allows specification of pointer behavior per input source, so that pointers can be disabled for hands but not controllers, and vice versa.</param>
         void SetPointerBehavior<T>(Handedness handedness, InputSourceType inputType, PointerBehavior pointerBehavior) where T : class, IMixedRealityPointer;
 
         /// <summary>

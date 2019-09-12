@@ -1450,8 +1450,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private PointerBehavior GetPointerBehavior(Type type, Handedness handedness, InputSourceType sourceType)
         {
-            var result = customPointerBehaviors.Find((x) => x.Matches(type, sourceType))?.GetBehaviorForHandedness(handedness);
-            return result ?? PointerBehavior.Default;
+            for (int i = 0; i < customPointerBehaviors.Count; i++)
+            {
+                if (customPointerBehaviors[i].Matches(type, sourceType))
+                {
+                    return customPointerBehaviors[i].GetBehaviorForHandedness(handedness);
+                }
+            }
+            return PointerBehavior.Default;
         }
 
         /// <inheritdoc />
@@ -1460,9 +1466,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void SetPointerBehavior<T>(Handedness handedness, InputSourceType inputType, PointerBehavior pointerBehavior) where T : class, IMixedRealityPointer
         {
-            var preference = customPointerBehaviors.Find((x) => x.Matches(
-                typeof(T),
-                inputType));
+            PointerPreferences preference = null;
+            for (int i = 0; i < customPointerBehaviors.Count; i++)
+            {
+                if (customPointerBehaviors[i].Matches(typeof(T), inputType))
+                {
+                    preference = customPointerBehaviors[i];
+                }
+            }
             if (preference == null)
             {
                 preference = new PointerPreferences(typeof(T), inputType);
