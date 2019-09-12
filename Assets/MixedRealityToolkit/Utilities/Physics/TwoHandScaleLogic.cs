@@ -25,11 +25,11 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <summary>
         /// Initialize system with source info from controllers/hands
         /// </summary>
-        /// <param name="handsPressedMap">Dictionary that maps inputSources to states</param>
+        /// <param name="handsPressedArray">Dictionary that maps inputSources to states</param>
         /// <param name="manipulationRoot">Transform of gameObject to be manipulated</param>
-        public virtual void Setup(Dictionary<uint, Vector3> handsPressedMap, Transform manipulationRoot)
+        public virtual void Setup(Vector3[] handsPressedArray, Transform manipulationRoot)
         {
-            startHandDistanceMeters = GetMinDistanceBetweenHands(handsPressedMap);
+            startHandDistanceMeters = GetMinDistanceBetweenHands(handsPressedArray);
             startObjectScale = manipulationRoot.transform.localScale;
         }
 
@@ -37,22 +37,20 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// update GameObject with new Scale state
         /// </summary>
         /// <returns>a Vector3 describing the new Scale of the object being manipulated</returns>
-        public virtual Vector3 UpdateMap(Dictionary<uint, Vector3> handsPressedMap)
+        public virtual Vector3 UpdateMap(Vector3[] handsPressedArray)
         {
-            var ratioMultiplier = GetMinDistanceBetweenHands(handsPressedMap) / startHandDistanceMeters;
+            var ratioMultiplier = GetMinDistanceBetweenHands(handsPressedArray) / startHandDistanceMeters;
             return startObjectScale * ratioMultiplier;
         }
 
-        private float GetMinDistanceBetweenHands(Dictionary<uint, Vector3> handsPressedMap)
+        private float GetMinDistanceBetweenHands(Vector3[] handsPressedArray)
         {
             var result = float.MaxValue;
-            Vector3[] handLocations = new Vector3[handsPressedMap.Values.Count];
-            handsPressedMap.Values.CopyTo(handLocations, 0);
-            for (int i = 0; i < handLocations.Length; i++)
+            for (int i = 0; i < handsPressedArray.Length; i++)
             {
-                for (int j = i + 1; j < handLocations.Length; j++)
+                for (int j = i + 1; j < handsPressedArray.Length; j++)
                 {
-                    var distance = Vector3.Distance(handLocations[i], handLocations[j]);
+                    var distance = Vector3.Distance(handsPressedArray[i], handsPressedArray[j]);
                     if (distance < result)
                     {
                         result = distance;

@@ -465,11 +465,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #region Private Event Handlers
         private void HandleTwoHandManipulationStarted()
         {
-            var handPositionMap = GetHandPositionMap();
+            var handPositionArray = GetHandPositionArray();
 
             if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Rotate))
             {
-                rotateLogic.Setup(handPositionMap, hostTransform, ConstraintOnRotation);
+                rotateLogic.Setup(handPositionArray, hostTransform, ConstraintOnRotation);
             }
             if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Move))
             {
@@ -479,7 +479,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Scale))
             {
-                scaleLogic.Setup(handPositionMap, hostTransform);
+                scaleLogic.Setup(handPositionArray, hostTransform);
             }
         }
 
@@ -489,15 +489,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
             var targetScale = hostTransform.localScale;
             var targetRotation = hostTransform.rotation;
 
-            var handPositionMap = GetHandPositionMap();
+            var handPositionArray = GetHandPositionArray();
 
             if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Rotate))
             {
-                targetRotation = rotateLogic.Update(handPositionMap, targetRotation, constraintOnRotation, useLocalSpaceForConstraint);
+                targetRotation = rotateLogic.Update(handPositionArray, targetRotation, constraintOnRotation, useLocalSpaceForConstraint);
             }
             if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Scale))
             {
-                targetScale = scaleLogic.UpdateMap(handPositionMap);
+                targetScale = scaleLogic.UpdateMap(handPositionArray);
             }
 
             if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Move))
@@ -667,12 +667,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return 1.0f - Mathf.Pow(smoothingAmountOneHandManip, Time.deltaTime);
         }
 
-        private Dictionary<uint, Vector3> GetHandPositionMap()
+        private Vector3[] GetHandPositionArray()
         {
-            var handPositionMap = new Dictionary<uint, Vector3>();
+            var handPositionMap = new Vector3[pointerIdToPointerMap.Count];
+            int index = 0;
             foreach (var item in pointerIdToPointerMap)
             {
-                handPositionMap.Add(item.Key, item.Value.pointer.Position);
+                handPositionMap[index++] = item.Value.pointer.Position;
             }
             return handPositionMap;
         }

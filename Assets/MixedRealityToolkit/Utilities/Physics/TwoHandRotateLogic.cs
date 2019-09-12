@@ -25,9 +25,9 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <summary>
         /// Setup the rotation logic.
         /// </summary>
-        public void Setup(Dictionary<uint, Vector3> handsPressedMap, Transform t, RotationConstraintType rotationConstraint)
+        public void Setup(Vector3[] handsPressedArray, Transform t, RotationConstraintType rotationConstraint)
         {
-            startHandlebar = ProjectHandlebarGivenConstraint(rotationConstraint, GetHandlebarDirection(handsPressedMap));
+            startHandlebar = ProjectHandlebarGivenConstraint(rotationConstraint, GetHandlebarDirection(handsPressedArray));
             startRotation = t.rotation;
         }
 
@@ -35,9 +35,9 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// Update the rotation based on input.
         /// </summary>
         /// <returns>Desired rotation</returns>
-        public Quaternion Update(Dictionary<uint, Vector3> handsPressedMap, Quaternion currentRotation, RotationConstraintType rotationConstraint, bool useLocalSpaceForConstraint)
+        public Quaternion Update(Vector3[] handsPressedArray, Quaternion currentRotation, RotationConstraintType rotationConstraint, bool useLocalSpaceForConstraint)
         {
-            var handlebarDirection = ProjectHandlebarGivenConstraint(rotationConstraint, GetHandlebarDirection(handsPressedMap));
+            var handlebarDirection = ProjectHandlebarGivenConstraint(rotationConstraint, GetHandlebarDirection(handsPressedArray));
             return useLocalSpaceForConstraint
                 ? startRotation * Quaternion.FromToRotation(startHandlebar, handlebarDirection)
                 : Quaternion.FromToRotation(startHandlebar, handlebarDirection) * startRotation;
@@ -65,17 +65,10 @@ namespace Microsoft.MixedReality.Toolkit.Physics
             return result;
         }
 
-        private static Vector3 GetHandlebarDirection(Dictionary<uint, Vector3> handsPressedMap)
+        private static Vector3 GetHandlebarDirection(Vector3[] handsPressedArray)
         {
-            Debug.Assert(handsPressedMap.Count > 1);
-            var handsEnumerator = handsPressedMap.Values.GetEnumerator();
-            handsEnumerator.MoveNext();
-            var hand1 = handsEnumerator.Current;
-            handsEnumerator.MoveNext();
-            var hand2 = handsEnumerator.Current;
-            handsEnumerator.Dispose();
-
-            return hand2 - hand1;
+            Debug.Assert(handsPressedArray.Length > 1);
+            return handsPressedArray[1] - handsPressedArray[0];
         }
     }
 }
