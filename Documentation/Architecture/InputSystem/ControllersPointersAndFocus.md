@@ -74,7 +74,7 @@ The following code will force hand rays to be on, regardless if near a grabbable
 PointerUtils.SetHandRayPointerBehavior(PointerBehavior.AlwaysOn);
 ```
 
-See [`PointerUtils`](xref:Microsoft.MixedReality.Toolkit.Input.PointerUtils) and [`TurnPointersOnOff`](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.TurnPointersOnOff) for more examples.
+See [`PointerUtils`](xref:Microsoft.MixedReality.Toolkit.Input.PointerUtils) and [`TurnPointersOnOff`](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.DisablePointersExample) for more examples.
 
 ### FocusProvider
 
