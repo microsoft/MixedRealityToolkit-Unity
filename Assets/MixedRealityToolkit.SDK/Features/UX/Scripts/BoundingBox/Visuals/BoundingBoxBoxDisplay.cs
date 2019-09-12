@@ -94,7 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 GameObject.Destroy(boxDisplay.GetComponent<Collider>());
                 boxDisplay.name = "bounding box";
 
-                BoundingBoxHandleUtils.ApplyMaterialToAllRenderers(boxDisplay, boxMaterial);
+                BoundingBoxVisualUtils.ApplyMaterialToAllRenderers(boxDisplay, boxMaterial);
 
                 boxDisplay.transform.localScale = GetBoxDisplayScale(currentBoundsExtents, flattenAxis);
                 boxDisplay.transform.parent = parent;
@@ -126,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             //update the box material to the grabbed material
             if (boxDisplay != null)
             {
-                BoundingBoxHandleUtils.ApplyMaterialToAllRenderers(boxDisplay, boxGrabbedMaterial);
+                BoundingBoxVisualUtils.ApplyMaterialToAllRenderers(boxDisplay, boxGrabbedMaterial);
             }
         }
 
@@ -136,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (boxDisplay != null)
             {
                 boxDisplay.SetActive(activate);
-                BoundingBoxHandleUtils.ApplyMaterialToAllRenderers(boxDisplay, boxMaterial);
+                BoundingBoxVisualUtils.ApplyMaterialToAllRenderers(boxDisplay, boxMaterial);
             }
         }
 

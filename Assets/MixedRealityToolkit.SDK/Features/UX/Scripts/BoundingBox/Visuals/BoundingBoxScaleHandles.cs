@@ -2,7 +2,6 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI.BoundingBoxTypes;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
@@ -76,14 +75,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return ShowScaleHandles;
         }
 
-        //internal void DestroyHandles()
-       // {
-        ////    boundsCorners = new Vector3[8];
-        //    base.Init();
-       // }
-        
-
-
         internal void UpdateHandles(ref Vector3[] boundsCorners)
         {
             for (int i = 0; i < handles.Count; ++i)
@@ -91,8 +82,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 handles[i].position = boundsCorners[i];
             }
         }
-
-
 
         public override HandleType GetHandleType()
         {
@@ -150,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 cornerVisual.name = "visuals";
 
                 // this is the size of the corner visuals
-                var cornerbounds = BoundingBoxHandleUtils.GetMaxBounds(cornerVisual);
+                var cornerbounds = BoundingBoxVisualUtils.GetMaxBounds(cornerVisual);
                 float maxDim = Mathf.Max(Mathf.Max(cornerbounds.size.x, cornerbounds.size.y), cornerbounds.size.z);
                 cornerbounds.size = maxDim * Vector3.one;
 
@@ -158,9 +147,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 var invScale = HandleSize / cornerbounds.size.x;
                 cornerVisual.transform.localScale = new Vector3(invScale, invScale, invScale);
 
-                BoundingBoxHandleUtils.ApplyMaterialToAllRenderers(cornerVisual, HandleMaterial);
+                BoundingBoxVisualUtils.ApplyMaterialToAllRenderers(cornerVisual, HandleMaterial);
 
-                BoundingBoxHandleUtils.AddComponentsToAffordance(corner, new Bounds(cornerbounds.center * invScale, cornerbounds.size * invScale), 
+                BoundingBoxVisualUtils.AddComponentsToAffordance(corner, new Bounds(cornerbounds.center * invScale, cornerbounds.size * invScale), 
                     RotationHandlePrefabCollider.Box, CursorContextInfo.CursorAction.Scale, ColliderPadding, parent, drawManipulationTether);
                 handles.Add(corner.transform);       
             }

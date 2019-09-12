@@ -5,28 +5,8 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
-    internal class BoundingBoxHandleUtils
+    internal class BoundingBoxVisualUtils
     {
-
-
-        public static void SetHighlighted(Transform handleToHighlight, List<Transform> handles, Material highlightMaterial)
-        {
-            // turn off all handles that aren't the handle we want to highlight
-            if (handles != null)
-            {
-                for (int i = 0; i < handles.Count; ++i)
-                {
-                    if (handles[i] != handleToHighlight)
-                    {
-                        handles[i].gameObject.SetActive(false);
-                    }
-                    else
-                    {
-                        ApplyMaterialToAllRenderers(handles[i].gameObject, highlightMaterial);
-                    }
-                }
-            }
-        }
 
         public static void HandleIgnoreCollider(Collider handlesIgnoreCollider, List<Transform> handles)
         {

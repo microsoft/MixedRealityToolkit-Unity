@@ -261,7 +261,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     midpointVisual.transform.localRotation = realignment * midpointVisual.transform.localRotation;
                 }
 
-                Bounds midpointBounds = BoundingBoxHandleUtils.GetMaxBounds(midpointVisual);
+                Bounds midpointBounds = BoundingBoxVisualUtils.GetMaxBounds(midpointVisual);
                 float maxDim = Mathf.Max(
                     Mathf.Max(midpointBounds.size.x, midpointBounds.size.y),
                     midpointBounds.size.z);
@@ -271,14 +271,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 midpointVisual.transform.localScale = new Vector3(invScale, invScale, invScale);
                 midpointVisual.transform.localPosition = Vector3.zero;
 
-                BoundingBoxHandleUtils.AddComponentsToAffordance(midpoint, new Bounds(midpointBounds.center * invScale, midpointBounds.size * invScale),
+                BoundingBoxVisualUtils.AddComponentsToAffordance(midpoint, new Bounds(midpointBounds.center * invScale, midpointBounds.size * invScale),
                     rotationHandlePrefabColliderType, CursorContextInfo.CursorAction.Rotate, ColliderPadding, parent, drawManipulationTether);
 
                 handles.Add(midpoint.transform);
 
                 if (HandleMaterial != null)
                 {
-                    BoundingBoxHandleUtils.ApplyMaterialToAllRenderers(midpointVisual, HandleMaterial);
+                    BoundingBoxVisualUtils.ApplyMaterialToAllRenderers(midpointVisual, HandleMaterial);
                 }
             }
 

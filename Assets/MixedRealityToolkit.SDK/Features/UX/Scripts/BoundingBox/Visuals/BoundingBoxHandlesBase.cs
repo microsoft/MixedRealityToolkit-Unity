@@ -125,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 for (int i = 0; i < handles.Count; ++i)
                 {
                     handles[i].gameObject.SetActive(isVisible && IsVisible(handles[i]));
-                    BoundingBoxHandleUtils.ApplyMaterialToAllRenderers(handles[i].gameObject, handleMaterial);
+                    BoundingBoxVisualUtils.ApplyMaterialToAllRenderers(handles[i].gameObject, handleMaterial);
                 }
             }
         }
@@ -142,12 +142,26 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         internal void SetHighlighted(Transform handleToHighlight)
         {
-            BoundingBoxHandleUtils.SetHighlighted(handleToHighlight, handles, handleGrabbedMaterial);
+            // turn off all handles that aren't the handle we want to highlight
+            if (handles != null)
+            {
+                for (int i = 0; i < handles.Count; ++i)
+                {
+                    if (handles[i] != handleToHighlight)
+                    {
+                        handles[i].gameObject.SetActive(false);
+                    }
+                    else
+                    {
+                        BoundingBoxVisualUtils.ApplyMaterialToAllRenderers(handles[i].gameObject, handleGrabbedMaterial);
+                    }
+                }
+            }
         }
 
         internal void HandleIgnoreCollider(Collider handlesIgnoreCollider)
         {
-            BoundingBoxHandleUtils.HandleIgnoreCollider(handlesIgnoreCollider, handles);
+            BoundingBoxVisualUtils.HandleIgnoreCollider(handlesIgnoreCollider, handles);
         }
 
         internal void DestroyHandles()
