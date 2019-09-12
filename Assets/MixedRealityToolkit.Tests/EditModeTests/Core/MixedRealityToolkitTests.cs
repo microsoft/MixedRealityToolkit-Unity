@@ -3,14 +3,14 @@
 
 using Microsoft.MixedReality.Toolkit.Tests.Services;
 using NUnit.Framework;
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.Core
 {
-    public class TestFixture_01_MixedRealityToolkitTests
+    public class MixedRealityToolkitTests
     {
         [TearDown]
         public void TearDown()
@@ -345,6 +345,47 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
                 Assert.IsTrue(service is ITestService);
                 Assert.IsFalse((service as ITestService).IsEnabled);
             }
+        }
+
+
+        [Test]
+        public void TestGetAllServicesAscendingOrder()
+        {
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
+
+            ITestExtensionService1 service1 = new TestExtensionService1(null, "Service1", 20, null);
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(service1);
+
+            ITestExtensionService2 service2 = new TestExtensionService2(null, "Service2", 30, null);
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(service2);
+
+            ITestDataProvider1 service3 = new TestDataProvider1(null, null, "Service3", 10);
+            MixedRealityToolkit.Instance.RegisterService<ITestDataProvider1>(service3);
+
+            CollectionAssert.AreEqual(
+                new List<IMixedRealityService>(){ service3, service1, service2 },
+                MixedRealityServiceRegistry.GetAllServices());
+        }
+
+        [Test]
+        public void TestGetAllServicesAscendingOrderAfterRemoval()
+        {
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
+
+            ITestExtensionService1 service1 = new TestExtensionService1(null, "Service1", 20, null);
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(service1);
+
+            ITestExtensionService2 service2 = new TestExtensionService2(null, "Service2", 30, null);
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(service2);
+
+            ITestDataProvider1 service3 = new TestDataProvider1(null, null, "Service3", 10);
+            MixedRealityToolkit.Instance.RegisterService<ITestDataProvider1>(service3);
+
+            MixedRealityToolkit.Instance.UnregisterService<ITestExtensionService2>();
+
+            CollectionAssert.AreEqual(
+                new List<IMixedRealityService>() { service3, service1 },
+                MixedRealityServiceRegistry.GetAllServices());
         }
 
         #region Multiple Instances Tests
