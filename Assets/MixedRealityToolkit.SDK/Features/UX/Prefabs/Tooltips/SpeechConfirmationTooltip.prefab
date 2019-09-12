@@ -68,6 +68,18 @@ MonoBehaviour:
   additionalOffset: {x: 0, y: -0.4, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   updateSolvers: 1
+--- !u!114 &959849227508966978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 779914303111114550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0ba356208ebee842b61c465bde80a05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8046114618238072051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,12 +215,12 @@ PrefabInstance:
     - target: {fileID: 8222863950748663225, guid: 247dc8aebe30ca2408e8293a883c75df,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.16127202
+      value: 0.161272
       objectReference: {fileID: 0}
     - target: {fileID: 8222863950748663225, guid: 247dc8aebe30ca2408e8293a883c75df,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.034951586
+      value: 0.034951583
       objectReference: {fileID: 0}
     - target: {fileID: 8217189920156946147, guid: 247dc8aebe30ca2408e8293a883c75df,
         type: 3}

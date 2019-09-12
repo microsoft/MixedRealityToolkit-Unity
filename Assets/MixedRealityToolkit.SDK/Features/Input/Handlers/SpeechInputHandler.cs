@@ -82,12 +82,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     responses.Add(keyword, keywordAndResponse.Response);
                 }
             }
-
-            // Instantiate the Speech Confirmation Tooltip prefab if assigned
-            if((SpeechConfirmationTooltipPrefab != null) && (speechConfirmationTooltipPrefabInstance == null))
-            {
-                speechConfirmationTooltipPrefabInstance = Instantiate(speechConfirmationTooltipPrefab);
-            }
         }
 
         #endregion MonoBehaviour Implementation
@@ -140,21 +134,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 keywordResponse.Invoke();
                 eventData.Use();
 
-                // OS will display the tooltip for the "Select" keyword. 
-                if ((speechConfirmationTooltipPrefabInstance != null) && (eventData.Command.Keyword.ToLower() != "select"))
+                // Instantiate the Speech Confirmation Tooltip prefab if assigned
+                // Ignore "Select" keyword since OS will display the tooltip. 
+                if ((SpeechConfirmationTooltipPrefab != null) && (speechConfirmationTooltipPrefabInstance == null) && (eventData.Command.Keyword.ToLower() != "select")) 
                 {
+                    speechConfirmationTooltipPrefabInstance = Instantiate(speechConfirmationTooltipPrefab);
+
                     // Update the text label with recognized keyword
-                    speechConfirmationTooltipPrefabInstance.GetComponent<SpeechConfirmationTooltip>().SetText(eventData.Command.Keyword);
+                    speechConfirmationTooltipPrefabInstance.GetComponent<SpeechConfirmationTooltip>()?.SetText(eventData.Command.Keyword);
 
                     // Trigger animation of the Speech Confirmation Tooltip prefab
-                    speechConfirmationTooltipPrefabInstance.GetComponent<SpeechConfirmationTooltip>().TriggerConfirmedAnimation();
+                    speechConfirmationTooltipPrefabInstance.GetComponent<SpeechConfirmationTooltip>()?.TriggerConfirmedAnimation();
 
                     // Tooltip prefab instance will be destroyed on animation complete 
                     // by DestroyOnAnimationComplete.cs in the SpeechConfirmationTooltip.prefab
                 }
             }
         }
-
         #endregion  IMixedRealitySpeechHandler Implementation
     }
 }
