@@ -683,7 +683,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (uiRaycastCamera != null)
             {
-                UnityEngine.Object.Destroy(uiRaycastCamera.gameObject);
+                UnityEngine.Object.DestroyImmediate(uiRaycastCamera.gameObject);
             }
             uiRaycastCamera = null;
         }
