@@ -343,5 +343,49 @@ namespace Microsoft.MixedReality.Toolkit
 
             return results.AsReadOnly();
         }
+
+        /// <summary>
+        /// Enables the service of the given type, assuming that the service exists.
+        /// </summary>
+        /// <remarks>
+        /// Note that behavior is undefined if the service is already enabled - this should
+        /// only be called after <seealso cref="DisableService"/> has been called on a service
+        /// that is configured to startup on launch, or on a service that is not enabled
+        /// by default.
+        /// This is primarily provided as a convenience API because calling <seealso cref="IMixedRealityService.Enable"/>
+        /// by itself doesn't work correctly - it's not intended to be called by itself.
+        /// <seealso cref="IMixedRealityService.Initialize"/> must first be called prior to Enable.
+        /// </remarks>
+        /// <returns>Returns true if the service exists and the service went through an enable attempt</returns>
+        public static bool EnableService<T>() where T : IMixedRealityService
+        {
+            if (!TryGetService<T>(out T service))
+            {
+                service.Initialize();
+                service.Enable();
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Disables the service of the given type, assuming that the service exists.
+        /// </summary>
+        /// <remarks>
+        /// Note that behavior is undefined if the service is already disables - this should
+        /// only be called on a service that has already been started up (one that is on by default),
+        /// or after a call to <seealso cref="EnableService"/> on a service that is off by default.
+        /// This is primarily provided as a convenience API to mirror <seealso cref="EnableService"/>
+        /// </remarks>
+        /// <returns>Returns true if the service exists and the service went through a disable attempt</returns>
+        public static bool DisableService<T>() where T : IMixedRealityService
+        {
+            if (!TryGetService<T>(out T service))
+            {
+                service.Disable();
+                return true;
+            }
+            return false;
+        }
     }
 }

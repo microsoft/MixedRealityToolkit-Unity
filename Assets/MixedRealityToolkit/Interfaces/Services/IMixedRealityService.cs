@@ -32,36 +32,73 @@ namespace Microsoft.MixedReality.Toolkit
         /// The initialize function is used to setup the service once created.
         /// This method is called once all services have been registered in the Mixed Reality Toolkit.
         /// </summary>
+        /// <remarks>
+        /// Note that this function and some other IMixedRealityService functions are not designed to be
+        /// invoked by callers outside of the MixedRealityToolkit runtime management system.
+        /// This particular function should only be invoked by the component that manages this service.
+        /// </remarks>
         void Initialize();
 
         /// <summary>
         /// Optional Reset function to perform that will Reset the service, for example, whenever there is a profile change.
         /// </summary>
+        /// <remarks>
+        /// Note that this function and some other IMixedRealityService functions are not designed to be
+        /// invoked by callers outside of the MixedRealityToolkit runtime management system.
+        /// This particular function should only be invoked by the component that manages this service.
+        /// </remarks>
         void Reset();
 
         /// <summary>
         /// Optional Enable function to enable / re-enable the service.
         /// </summary>
+        /// <remarks>
+        /// Note that this function and some other IMixedRealityService functions are not designed to be
+        /// invoked by callers outside of the MixedRealityToolkit runtime management system.
+        /// This particular function should only be invoked by the component that manages this service.
+        /// In order to enable a service that is currently disabled, see <seealso cref="MixedRealityServiceRegistry.EnableService{T}"/>
+        /// </remarks>
         void Enable();
 
         /// <summary>
         /// Optional Update function to perform per-frame updates of the service.
         /// </summary>
+        /// <remarks>
+        /// Note that this function and some other IMixedRealityService functions are not designed to be
+        /// invoked by callers outside of the MixedRealityToolkit runtime management system.
+        /// This particular function should only be invoked by the component that manages this service.
+        /// </remarks>
         void Update();
 
         /// <summary>
         /// Optional LateUpdate function to that is called after Update has been called on all services.
         /// </summary>
+        /// <remarks>
+        /// Note that this function and some other IMixedRealityService functions are not designed to be
+        /// invoked by callers outside of the MixedRealityToolkit runtime management system.
+        /// This particular function should only be invoked by the component that manages this service.
+        /// </remarks>
         void LateUpdate();
 
         /// <summary>
         /// Optional Disable function to pause the service.
         /// </summary>
+        /// <remarks>
+        /// Note that this function and some other IMixedRealityService functions are not designed to be
+        /// invoked by callers outside of the MixedRealityToolkit runtime management system.
+        /// This particular function should only be invoked by the component that manages this service.
+        /// In order to enable a service that is currently disabled, see <seealso cref="MixedRealityServiceRegistry.DisableService{T}"/>
+        /// </remarks>
         void Disable();
 
         /// <summary>
         /// Optional Destroy function to perform cleanup of the service before the Mixed Reality Toolkit is destroyed.
         /// </summary>
+        /// <remarks>
+        /// Note that this function and some other IMixedRealityService functions are not designed to be
+        /// invoked by callers outside of the MixedRealityToolkit runtime management system.
+        /// This particular function should only be invoked by the component that manages this service.
+        /// </remarks>
         void Destroy();
     }
 }

@@ -29,3 +29,26 @@ When creating your own implementations of these systems, you must ensure each co
 
 > [!NOTE]
 > All services must also inherit from the [`BaseService`](xref:Microsoft.MixedReality.Toolkit.BaseService) class or implement [`IMixedRealityService`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityService), to implement the functions required by the `MixedRealityToolkit` so their life-cycles are handled appropriately. (E.G. Initialize, Update, Destroy are called correctly.)
+
+## Usage
+
+### Enabling and disabling services at runtime
+
+Services can be enabled and disabled at runtime through the functionality exposed on
+[`MixedRealityServiceRegistrar`](xref:Microsoft.MixedReality.Toolkit.MixedRealityServiceRegistrar)
+
+```csharp
+// Enables the input system.
+// If the input system is already enabled, the behavior is undefined.
+MixedRealityServiceRegistry.EnableService<IMixedRealityInputSystem>();
+
+// Disables the input system.
+// If the input system is already disabled, the behavior is undefined.
+MixedRealityServiceRegistry.EnableService<IMixedRealityInputSystem>();
+```
+
+Note that [`IMixedRealityService`](xref:Microsoft.MixedReality.Toolkit.IMixedRealityService) has Enable, Disable
+and other functions that control its runtime. These are only intended to be called by the component that manages
+the service. Certain functions require specific calling order and other mechanics and don't work in isolation.
+To avoid the complications associated with knowing these mechanics, the [`MixedRealityServiceRegistrar`](xref:Microsoft.MixedReality.Toolkit.MixedRealityServiceRegistrar)
+provides its Enable/DisableService helpers.
