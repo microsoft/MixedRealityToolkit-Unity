@@ -235,7 +235,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="hand">The handedness of the user's hand or motion controller</param>
         /// <param name="ray">The physics ray for the pointer</param>
         /// <param name="sourceType">The type of input source</param>
-        /// <returns></returns>
+        /// <returns>
+        /// True if the ray contains valid data, false otherwise.
+        /// </returns>
         public static bool TryGetHandOrControllerRay(Handedness hand, out Ray ray, out InputSourceType sourceType)
         {
             ray = new Ray();
