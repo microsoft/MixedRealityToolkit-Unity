@@ -210,26 +210,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 this.initialGrabPointInPointer = initialGrabPointInPointer;
             }
 
-            public bool IsNearPointer()
-            {
-                return (pointer is IMixedRealityNearPointer);
-            }
+            public bool IsNearPointer => pointer is IMixedRealityNearPointer;
 
             /// Returns the grab point on the manipulated object in world space
-            public Vector3 GrabPoint
-            {
-                get
-                {
-                    return (pointer.Rotation * initialGrabPointInPointer) + pointer.Position;
-                }
-            }
+            public Vector3 GrabPoint => (pointer.Rotation * initialGrabPointInPointer) + pointer.Position;
         }
+
         private Dictionary<uint, PointerData> pointerIdToPointerMap = new Dictionary<uint, PointerData>();
         private Quaternion objectToHandRotation;
         private bool isNearManipulation;
         private bool isManipulationStarted;
-        // This can probably be consolidated so that we use same for one hand and two hands
-        private Quaternion targetRotationTwoHands;
 
         private Rigidbody rigidBody;
         private bool wasKinematic = false;
@@ -337,7 +327,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             foreach (var item in pointerIdToPointerMap)
             {
-                if (item.Value.IsNearPointer())
+                if (item.Value.IsNearPointer)
                 {
                     return true;
                 }
@@ -504,12 +494,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             var targetPosition = hostTransform.position;
             var targetScale = hostTransform.localScale;
+            var targetRotation = hostTransform.rotation;
 
             var handPositionMap = GetHandPositionMap();
 
             if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Rotate))
             {
-                targetRotationTwoHands = rotateLogic.Update(handPositionMap, targetRotationTwoHands, constraintOnRotation, useLocalSpaceForConstraint);
+                targetRotation = rotateLogic.Update(handPositionMap, targetRotation, constraintOnRotation, useLocalSpaceForConstraint);
             }
             if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Scale))
             {
@@ -519,13 +510,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Move))
             {
                 MixedRealityPose pose = GetAveragePointerPose();
-                targetPosition = moveLogic.Update(pose, targetRotationTwoHands, targetScale, constraintOnMovement);
+                targetPosition = moveLogic.Update(pose, targetRotation, targetScale, constraintOnMovement);
             }
 
             float lerpAmount = GetLerpAmount();
             hostTransform.position = Vector3.Lerp(hostTransform.position, targetPosition, lerpAmount);
             // Currently the two hand rotation algorithm doesn't allow for lerping, but it should. Fix this.
-            hostTransform.rotation = Quaternion.Lerp(hostTransform.rotation, targetRotationTwoHands, lerpAmount);
+            hostTransform.rotation = Quaternion.Lerp(hostTransform.rotation, targetRotation, lerpAmount);
 
             if (scaleHandler != null)
             {
@@ -610,7 +601,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private void HandleTwoHandManipulationStarted()
         {
             var handPositionMap = GetHandPositionMap();
-            targetRotationTwoHands = hostTransform.rotation;
 
             if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Rotate))
             {
