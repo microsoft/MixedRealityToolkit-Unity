@@ -78,6 +78,7 @@ Material:
     - _AlbedoAlphaSmoothness: 0
     - _AlbedoAssignedAtRuntime: 0
     - _BlendOp: 0
+    - _BlendedClippingWidth: 1
     - _BorderLight: 0
     - _BorderLightOpaque: 0
     - _BorderLightOpaqueAlpha: 1
@@ -108,17 +109,21 @@ Material:
     - _EnableLightMap: 0
     - _EnableLocalSpaceTriplanarMapping: 0
     - _EnableNormalMap: 0
+    - _EnableProximityLightColorOverride: 0
     - _EnableTriplanarMapping: 0
     - _EnvironmentColorIntensity: 0.46
     - _EnvironmentColorThreshold: 1.46
     - _EnvironmentColoring: 0
     - _FadeBeginDistance: 0.85
     - _FadeCompleteDistance: 0.5
+    - _FadeMinValue: 0
+    - _FluentLightIntensity: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _HoverLight: 1
     - _HoverLightOpaque: 0
+    - _IgnoreZScale: 0
     - _InnerGlow: 1
     - _InnerGlowPower: 4
     - _InstancedColor: 0
@@ -128,11 +133,14 @@ Material:
     - _IridescenceThreshold: 0.05
     - _Metallic: 0
     - _Mode: 0
+    - _NearLightFade: 0
     - _NearPlaneFade: 0
     - _NormalMapScale: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _ProximityLight: 0
+    - _ProximityLightSubtractive: 0
+    - _ProximityLightTwoSided: 0
     - _Reflections: 0
     - _Refraction: 0
     - _RefractiveIndex: 1.1
@@ -154,6 +162,11 @@ Material:
     - _TriplanarMappingBlendSharpness: 4
     - _UVSec: 0
     - _VertexColors: 0
+    - _VertexExtrusion: 0
+    - _VertexExtrusionSmoothNormals: 0
+    - _VertexExtrusionValue: 0
+    - _ZOffsetFactor: 0
+    - _ZOffsetUnits: 0
     - _ZTest: 4
     - _ZWrite: 1
     m_Colors:
@@ -169,4 +182,7 @@ Material:
     - _HoverColorOpaqueOverride: {r: 1, g: 1, b: 1, a: 1}
     - _HoverColorOverride: {r: 1, g: 1, b: 1, a: 1}
     - _InnerGlowColor: {r: 0.28627455, g: 0.5784523, b: 1, a: 0.2784314}
+    - _ProximityLightCenterColorOverride: {r: 1, g: 0, b: 0, a: 0}
+    - _ProximityLightMiddleColorOverride: {r: 0, g: 1, b: 0, a: 0.5}
+    - _ProximityLightOuterColorOverride: {r: 0, g: 0, b: 1, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
