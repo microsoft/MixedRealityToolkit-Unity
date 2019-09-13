@@ -55,61 +55,21 @@ This guide will give a starting point on how to add tests to MRTK. It will not e
 
 There's two types of tests that can be added for new code
 
-* Edit mode tests
 * Play mode tests
+* Edit mode tests
+
 
 ## Play mode tests
 
-Play mode tests will be executed in Unity's play mode and should be added into MixedRealityToolkit.Tests > PlaymodeTests. New play mode tests can inherit [BasePlayModeTests](xref:Microsoft.MixedReality.Toolkit.Tests.BasePlayModeTests):
+ MRTK play mode tests have the ability to test how your new feature responds to different input sources such as hands or eyes.
 
-``` csharp
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
-
-#if !WINDOWS_UWP
-// When the .NET scripting backend is enabled and C# projects are built
-// The assembly that this file is part of is still built for the player,
-// even though the assembly itself is marked as a test assembly (this is not
-// expected because test assemblies should not be included in player builds).
-// Because the .NET backend is deprecated in 2018 and removed in 2019 and this
-// issue will likely persist for 2018, this issue is worked around by wrapping all
-// play mode tests in this check.
-
-using NUnit.Framework;
-
-namespace Microsoft.MixedReality.Toolkit.Tests
-{
-    /// <summary>
-    /// Base class to handle typical code setup/teardown and test utilities
-    /// </summary>
-    public abstract class BasePlayModeTests
-    {
-        // This method is called once before we enter play mode and executes any of the tests
-        // Do any kind of setup here that can't be done in playmode
-        [SetUp]
-        public virtual void Setup()
-        {
-            // NOTE: This setup initializes the main camera at Vector3(1.0f, 1.5f, -2.0f)
-            PlayModeTestUtilities.Setup();
-        }
-
-        // Destroy commonly initialized objects here - this will be called after each of your tests has finished
-        [TearDown]
-        public virtual void TearDown()
-        {
-            PlayModeTestUtilities.TearDown();
-        }
-    }
-}
-#endif
-
-```
+ New play mode tests can inherit [BasePlayModeTests](xref:Microsoft.MixedReality.Toolkit.Tests.BasePlayModeTests) or the skeleton below can be used.
 
 ## Creating a new play mode test
 To create a new play mode test:
 - Navigate to Assets > MixedRealityToolkit.Tests > PlayModeTests
 - Right click, Create > Testing > C# Test Script
-- Replace the default template with the example starter test below
+- Replace the default template with the skeleton below
 
 ``` csharp
 #if !WINDOWS_UWP
@@ -132,47 +92,56 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    class ExamplePlayModeTests : BasePlayModeTests
+    class ExamplePlayModeTests
     {
-        // Override Setup() in BasePlayModeTests to change the starting camera position
-        public override void Setup()
+        // Setup a scene, initialize MRTK and the playspace - this method is called before the start of each test listed below
+        [SetUp]
+        public void Setup()
         {
-            base.Setup();
-            
-            // Set camera position to Vector3(0,0,0), the default position Vector3(1.0f, 1.5f. -2.0f)
+            PlayModeTestUtilities.Setup();
+
+            // Change the position of the main camera to (0, 0, 0), in PlayModeTestUtilites.Setup() 
+            // the camera is set to position (1, 1.5, -2)
             TestUtilities.PlayspaceToOriginLookingForward();
+        }
+
+        // Destroy the scene - this method is called after each test listed below has completed 
+        [TearDown]
+        public void TearDown()
+        {
+            PlayModeTestUtilities.TearDown();
         }
 
         #region Tests
 
         /// <summary>
-        /// Example starter test that shows a test hand, gets the line pointer and moves the hand
+        /// Skeleton for a new MRTK play mode test.
         /// </summary>
         [UnityTest]
-        public IEnumerator ExampleTest()
+        public IEnumerator TestMyFeature()
         {
-            // Get the input system
-            var inputSystem = PlayModeTestUtilities.GetInputSystem();
+            // ----------------------------------------------------------
+            // EXAMPLE PLAY MODE TEST METHODS
+            // ----------------------------------------------------------
+            // Getting the input system
+            // var inputSystem = PlayModeTestUtilities.GetInputSystem();
 
-            // Create a new test hand for input
-            var rightHand = new TestHand(Handedness.Right);
+            // Creating a new test hand for input
+            // var rightHand = new TestHand(Handedness.Right);
+            // yield return rightHand.Show(new Vector3(0, 0, 0.5f));
 
-            // Initialize the position of the hand
-            Vector3 initialPos = new Vector3(0f, 0f, 0.5f);
+            // Moving the new test hand
+            // We are doing a yield return here because moving the hand to a new position
+            // requires multiple frames to complete the action.
+            // yield return rightHand.MoveTo(new Vector3(0, 0, 2.0f));
 
-            // Show the hand
-            yield return rightHand.Show(initialPos);
+            // Getting a specific pointer from the hand
+            // var linePointer = PointerUtils.GetPointer<LinePointer>(Handedness.Right);
+            // Assert.IsNotNull(linePointer);
+            // ---------------------------------------------------------
 
-            // Get hand controller 
-            var handController = inputSystem.DetectedControllers.First(x => x.ControllerHandedness == Utilities.Handedness.Right && x.InputSource.SourceType == InputSourceType.Hand);
-            Debug.Assert(handController != null);
-
-            // Get the line pointer from the hand controller
-            var linePointer = handController.InputSource.Pointers.First(x => x is LinePointer);
-            Assert.IsNotNull(linePointer);
-
-            // Move the right hand to a new position
-            yield return rightHand.MoveTo(new Vector3(0, 0, 2.0f));
+            // Your new test here
+            yield return null;
         }
         #endregion
     }
