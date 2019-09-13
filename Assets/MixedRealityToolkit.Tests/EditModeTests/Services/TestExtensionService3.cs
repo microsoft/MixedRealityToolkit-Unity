@@ -4,9 +4,9 @@
 
 namespace Microsoft.MixedReality.Toolkit.Tests.Services
 {
-    internal class TestExtensionService1 : BaseTestExtensionService, ITestExtensionService1
+    internal class TestExtensionService3 : BaseTestExtensionService, ITestExtensionService3
     {
-        public TestExtensionService1(
+        public TestExtensionService3(
             IMixedRealityServiceRegistrar registrar,
             string name,
             uint priority,
