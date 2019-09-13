@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 
             PrioritizedLayerMasksOverride = testProxy.PrioritizedLayerMasks;
-            
+
             IsActive = true;
         }
     }
