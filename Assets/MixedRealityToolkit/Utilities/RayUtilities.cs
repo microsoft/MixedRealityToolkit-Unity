@@ -27,7 +27,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// Gets the <seealso cref="UnityEngine.Ray"/> representing the position and direction of the user's eyes.
         /// </summary>
         /// <param name="ray">The <seealso cref="UnityEngine.Ray"/> being returned</param>
-        /// <returns>True if the ray contains valid data, false otherwise.</param>
+        /// <returns>
+        /// True if the ray is being returned, false otherwise.
+        /// </returns>
         public static bool TryGetEyeGazeRay(out Ray ray)
         {
             ray = new Ray();
@@ -46,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="hand">The handedness of the hand</param>
         /// <param name="ray">The <seealso cref="UnityEngine.Ray"/> being returned</param>
         /// <returns>
-        /// True if the ray contains valid data, false otherwise.
+        /// True if the ray is being returned, false otherwise.
         /// </returns>
         public static bool TryGetHandRay(Handedness hand, out Ray ray)
         {
@@ -73,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="hand">The handedness of the motion controller</param>
         /// <param name="ray">The <seealso cref="UnityEngine.Ray"/> being returned</param>
         /// <returns>
-        /// True if the ray contains valid data, false otherwise.
+        /// True if the ray is being returned, false otherwise.
         /// </returns>
         public static bool TryGetMotionControllerRay(Handedness hand, out Ray ray)
         {
@@ -101,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="hand">The handedness of the controller</param>
         /// <param name="controller">The <seealso cref="IMixedRealityController"/> instance being returned</param>
         /// <returns>
-        /// True if the controller instance is valid, false otherwise. 
+        /// True if the controller instance is beeing returned, false otherwise. 
         /// </returns>
         private static bool TryGetControllerInstance(InputSourceType sourceType, Handedness hand, out IMixedRealityController controller)
         {
@@ -128,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="inputType">The type of device input</param>
         /// <param name="mapping">The <seealso cref="MixedRealityInteractionMapping"/> being returned</param>
         /// <returns>
-        /// True if the interaction mapping is valid, false otherwise. 
+        /// True if the interaction mapping is being returned, false otherwise. 
         /// </returns>
         private static bool TryGetInteractionMapping(IMixedRealityController controller, DeviceInputType inputType, out MixedRealityInteractionMapping mapping)
         {
@@ -155,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="hand">The handedness of the input source</param>
         /// <param name="ray">The <seealso cref="UnityEngine.Ray"/> for the pointer</param>
         /// <returns>
-        /// True if the ray contains valid data, false otherwise.
+        /// True if the ray is being returned, false otherwise.
         /// </returns>
         public static bool TryGetRay(InputSourceType sourceType, Handedness hand, out Ray ray)
         {
