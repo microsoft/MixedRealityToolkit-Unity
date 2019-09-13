@@ -231,11 +231,13 @@ runtime without requiring direct code reference to a singleton style component.<
     <tbody>
       <tr>
         <td><span class="xref">IReadOnlyCollection</span>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a>&gt;</td>
-        <td><p>readonly list of all services registered</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_MixedRealityServiceRegistry_GetAllServices_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The list is sorted in ascending priority order.</p>
+</div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_MixedRealityServiceRegistry_GetAllServices_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityServiceRegistry.GetAllServices*"></a>
@@ -276,11 +278,15 @@ runtime without requiring direct code reference to a singleton style component.<
     <tbody>
       <tr>
         <td><span class="xref">IReadOnlyCollection</span>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityService.html">IMixedRealityService</a>&gt;</td>
-        <td><p>readonly list of all services registered for given registrar, all services if parameter nul</p>
+        <td><p>Readonly list of all services registered for given registrar, all services if parameter null.
+If given a registrar that the registry is not aware of, returns null.</p>
 </td>
       </tr>
     </tbody>
   </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_MixedRealityServiceRegistry_GetAllServices_Microsoft_MixedReality_Toolkit_IMixedRealityServiceRegistrar__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The list is sorted in ascending priority order.</p>
+</div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_MixedRealityServiceRegistry_RemoveService_" data-uid="Microsoft.MixedReality.Toolkit.MixedRealityServiceRegistry.RemoveService*"></a>
