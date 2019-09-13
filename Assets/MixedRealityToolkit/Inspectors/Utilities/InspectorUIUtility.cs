@@ -79,6 +79,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         /// <summary>
+        /// Help box style with left margin
+        /// </summary>
+        /// <param name="margin">amount of left margin</param>
+        /// <returns>Configured helpbox GUIStyle</returns>
+        public static GUIStyle HelpBox(int margin)
+        {
+            GUIStyle box = new GUIStyle(EditorStyles.helpBox);
+            box.margin.left = margin;
+            return box;
+        }
+
+        /// <summary>
         /// Create a custom label style based on color and size
         /// </summary>
         public static GUIStyle LableStyle(int size, Color color)
@@ -377,7 +389,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             GUIStyle labelStyle = LableStyle(size, color);
             EditorGUILayout.LabelField(new GUIContent(title), labelStyle);
-            GUILayout.Space(TitleFontSize * 0.5f);
         }
 
         /// <summary>
@@ -451,36 +462,59 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Draws a section start (initiated by the Header attribute)
         /// </summary>
-        public static bool DrawSectionFoldout(string headerName, bool open = true, FontStyle style = FontStyle.Bold, int size = 0)
+        public static bool DrawSectionFoldout(string headerName, bool open = true, GUIStyle style = null, int size = 0)
         {
+            if (style == null)
+            {
+                style = EditorStyles.foldout;
+            }
+            /*
             GUIStyle sectionStyle = new GUIStyle(EditorStyles.foldout);
             sectionStyle.fontStyle = style;
             if (size > 0)
             {
                 sectionStyle.fontSize = size;
                 sectionStyle.fixedHeight = size * 2;
-            }
+            }*/
 
+            using (new EditorGUI.IndentLevelScope())
+            {
+                return EditorGUILayout.Foldout(open, headerName, true, style);
+            }
+            /*
             bool drawSection = false;
 
             // To make foldout render properly, indent only this control
-            using (new EditorGUI.IndentLevelScope())
-            {
-                drawSection = EditorGUILayout.Foldout(open, headerName, true, sectionStyle);
-            }
+            //using (new EditorGUI.IndentLevelScope())
+            //{
+                drawSection = EditorGUILayout.Foldout(open, headerName, true, style);
+            //}
 
             return drawSection;
+            */
         }
 
-        /// <summary>
-        /// Draws a popup UI with PropertyField type features.
-        /// Displays prefab pending updates
-        /// </summary>
-        /// <param name="prop">serialized property corresponding to Enum</param>
-        /// <param name="label">label for property</param>
-        /// <param name="propValue">Current enum value for property</param>
-        /// <returns>New enum value after draw</returns>
-        public static Enum DrawEnumSerializedProperty(SerializedProperty prop, GUIContent label, Enum propValue)
+        public static bool DrawSectionFoldoutWithKey(string headerName, string preferenceKey = null, GUIStyle style = null, int size = 0)
+        {
+            bool showPref = SessionState.GetBool(preferenceKey, true);
+            bool show = DrawSectionFoldout(headerName, showPref, style, size);
+            if (show != showPref)
+            {
+                SessionState.SetBool(preferenceKey, show);
+            }
+
+            return show;
+        }
+
+    /// <summary>
+    /// Draws a popup UI with PropertyField type features.
+    /// Displays prefab pending updates
+    /// </summary>
+    /// <param name="prop">serialized property corresponding to Enum</param>
+    /// <param name="label">label for property</param>
+    /// <param name="propValue">Current enum value for property</param>
+    /// <returns>New enum value after draw</returns>
+    public static Enum DrawEnumSerializedProperty(SerializedProperty prop, GUIContent label, Enum propValue)
         {
             return DrawEnumSerializedProperty(EditorGUILayout.GetControlRect(), prop, label, propValue);
         }

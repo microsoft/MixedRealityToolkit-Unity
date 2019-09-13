@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
     }
     
-    public abstract class InteractableStateModel
+    public abstract class BaseStateModel
     {
         protected State currentState;
         protected List<State> stateList;
@@ -117,11 +117,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return new State();
         }
 
-        public InteractableStateModel()
+        public BaseStateModel()
         {
         }
 
-        public InteractableStateModel(State defaultState)
+        public BaseStateModel(State defaultState)
         {
             currentState = defaultState;
         }
