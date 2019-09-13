@@ -775,7 +775,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
             //get a point in front of the scrollContainer to use for the dot product check
             finalOffset = (Vector3.forward * -1.0f) * thresholdOffset;
-            thresholdPoint = transform.TransformPoint(finalOffset + transform.localPosition);
+            thresholdPoint = transform.TransformVector(finalOffset + transform.localPosition);
 
             //Use the first element for collection bounds -> for occluder positioning
             //temporarily zero out the rotation so we can get an accurate bounds
@@ -945,7 +945,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 //get a point in front of the scrollContainer to use for the dot product check
                 finalOffset = (Vector3.forward * -1.0f) * thresholdOffset;
                 thresholdPoint = transform.TransformPoint(finalOffset + transform.localPosition);
-
+                Debug.DrawLine(transform.position, thresholdPoint, Color.red, 5.0f);
                 //Make sure we're actually (near) touched and not a pointer event, do a dot product check            
                 bool scrollRelease = UseNearScrollBoundary ? DetectScrollRelease(transform.forward * -1.0f, thresholdPoint, currentPointerPos, clippingObject.transform, transform.worldToLocalMatrix, scrollDirection)
                                                            : DetectScrollRelease(transform.forward * -1.0f, thresholdPoint, currentPointerPos, null, null, null);
@@ -2290,7 +2290,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             }
         }
 
-        #endregion IMixedRealityTouchHandler implementation
+        #endregion IMixedRealityTouchHandler implementation`
 
         #region IMixedRealitySourceStateHandler implementation
 
