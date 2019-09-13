@@ -3,14 +3,14 @@
 
 using Microsoft.MixedReality.Toolkit.Tests.Services;
 using NUnit.Framework;
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.Core
 {
-    public class TestFixture_01_MixedRealityToolkitTests
+    public class MixedRealityToolkitTests
     {
         [TearDown]
         public void TearDown()
@@ -345,6 +345,62 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
                 Assert.IsTrue(service is ITestService);
                 Assert.IsFalse((service as ITestService).IsEnabled);
             }
+        }
+
+        /// <summary>
+        /// This test validates that even when services are inserted in non-priority order
+        /// (i.e. 20 -> 30 -> 10), the services are returned in ascending priority order
+        /// when GetAllServices is called (i.e. 10, 20, 30).
+        /// </summary>
+        [Test]
+        public void TestGetAllServicesAscendingOrder()
+        {
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
+
+            ITestExtensionService1 service1 = new TestExtensionService1(null, "Service1", 20, null);
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(service1);
+
+            ITestExtensionService2 service2 = new TestExtensionService2(null, "Service2", 30, null);
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(service2);
+
+            ITestExtensionService3 service3 = new TestExtensionService3(null, "Service3", 10, null);
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService3>(service3);
+
+            // The order should be service3, service1, service2 because:
+            // service3 priority = 10
+            // service1 priority = 20
+            // service2 priority = 30
+            CollectionAssert.AreEqual(
+                new List<IMixedRealityService>(){ service3, service1, service2 },
+                MixedRealityServiceRegistry.GetAllServices());
+        }
+
+        /// <summary>
+        /// Similar to TestGetAllServicesAscendingOrder, except one of the services is then
+        /// removed, and this validates that the remaining services are still sorted correctly.
+        /// </summary>
+        [Test]
+        public void TestGetAllServicesAscendingOrderAfterRemoval()
+        {
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
+
+            ITestExtensionService3 service3 = new TestExtensionService3(null, "Service3", 10, null);
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService3>(service3);
+
+            ITestExtensionService1 service1 = new TestExtensionService1(null, "Service1", 20, null);
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(service1);
+
+            ITestExtensionService2 service2 = new TestExtensionService2(null, "Service2", 30, null);
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(service2);
+
+            MixedRealityToolkit.Instance.UnregisterService<ITestExtensionService2>();
+
+            // The order should be service3, service1 because:
+            // service3 priority = 10
+            // service1 priority = 20
+            CollectionAssert.AreEqual(
+                new List<IMixedRealityService>() { service3, service1 },
+                MixedRealityServiceRegistry.GetAllServices());
         }
 
         #region Multiple Instances Tests
