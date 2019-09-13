@@ -3,7 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -146,9 +146,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Gets the physics ray based on the interaction enabled pointer assosiciated with the head gaze.
+        /// Gets the <seealso cref="UnityEngine.Ray"/> based on the interaction enabled pointer assosiciated with the head gaze.
         /// </summary>
-        /// <param name="ray">The physics ray for the pointer</param>
+        /// <param name="ray">The <seealso cref="UnityEngine.Ray"/> for the pointer</param>
         /// <returns>
         /// True if the ray contains valid data, false otherwise.
         /// </returns>
@@ -158,9 +158,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Gets the physics ray based on the interaction enabled pointer assosiciated with the eye gaze.
+        /// Gets the <seealso cref="UnityEngine.Ray"/> based on the interaction enabled pointer assosiciated with the eye gaze.
         /// </summary>
-        /// <param name="ray">The physics ray for the pointer</param>
+        /// <param name="ray">The <seealso cref="UnityEngine.Ray"/> for the pointer</param>
         /// <returns>
         /// True if the ray contains valid data, false otherwise.
         /// </returns>
@@ -170,10 +170,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Gets the physics ray based on the interaction enabled pointer assosiciated with the user's gaze
+        /// Gets the <seealso cref="UnityEngine.Ray"/> based on the interaction enabled pointer assosiciated with the user's gaze
         /// and reports the type of input (head or eyes) of the active gaze.
         /// </summary>
-        /// <param name="ray">The physics ray for the pointer</param>
+        /// <param name="ray">The <seealso cref="UnityEngine.Ray"/> for the pointer</param>
         /// <param name="sourceType">The type of input source</param>
         /// <returns>
         /// True if the ray contains valid data, false otherwise.
@@ -201,7 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Gets the physics ray based on the interaction enabled pointer assosiciated with the user's hand.
+        /// Gets the <seealso cref="UnityEngine.Ray"/> based on the active pointer assosiciated with the user's hand.
         /// </summary>
         /// <param name="hand">The handedness of the hand</param>
         /// <param name="ray">The physics ray for the pointer</param>
@@ -214,7 +214,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Gets the physics ray based on the interaction enabled pointer assosiciated with the
+        /// Gets the <seealso cref="UnityEngine.Ray"/> based on the active pointer assosiciated with the
         /// motion controller.
         /// </summary>
         /// <param name="hand">The handedness of the motion controller</param>
@@ -229,11 +229,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Gets the physics ray based on the interaction enabled pointer assosiciated with the user's hand
+        /// Gets the <seealso cref="UnityEngine.Ray"/> based on the active pointer assosiciated with the user's hand
         /// or a motion controller.
         /// </summary>
         /// <param name="hand">The handedness of the user's hand or motion controller</param>
-        /// <param name="ray">The physics ray for the pointer</param>
+        /// <param name="ray">The <seealso cref="UnityEngine.Ray"/> for the pointer</param>
         /// <param name="sourceType">The type of input source</param>
         /// <returns>
         /// True if the ray contains valid data, false otherwise.
@@ -261,12 +261,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Gets the physics ray based on the interaction enabled pointer assosiciated with the
+        /// Gets the<seealso cref="UnityEngine.Ray"/> based on the active pointer assosiciated with the
         /// desired input source type.
         /// </summary>
         /// <param name="sourceType">The type of input source</param>
         /// <param name="hand">The handedness of the input source</param>
-        /// <param name="ray">The physics ray for the pointer</param>
+        /// <param name="ray">The <seealso cref="UnityEngine.Ray"/> for the pointer</param>
         /// <returns>
         /// True if the ray contains valid data, false otherwise.
         /// </returns>
@@ -294,9 +294,132 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <returns>
         /// Normalized Vector3 representing the direction vector.
         /// </returns>
-        public static Vector3 GetDirection(Quaternion rotation)
+        private static Vector3 GetDirection(Quaternion rotation)
         {
             return (rotation * Vector3.forward).normalized;
         }
+
+        /// <summary>
+        /// Queries input system for the behavior of a given pointer type. See <seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/>.
+        /// </summary>
+        /// <typeparam name="T">Type of pointer to query</typeparam>
+        /// <param name="handedness">Handedness to query</param>
+        /// <returns><seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/> for the given pointer type and handedness</returns>
+        public static PointerBehavior GetPointerBehavior<T>(Handedness handedness, InputSourceType inputSourceType) where T : class, IMixedRealityPointer
+        {
+            if (CoreServices.InputSystem.FocusProvider is IPointerPreferences preferences)
+            {
+                if (typeof(T) == typeof(GGVPointer))
+                {
+                    return preferences.GazePointerBehavior;
+                }
+                return preferences.GetPointerBehavior<T>(handedness, inputSourceType);
+            }
+            else
+            {
+                WarnAboutSettingCustomPointerBehaviors();
+                return PointerBehavior.Default;
+            }
+        }
+
+        /// <summary>
+        /// Sets the behavior for the hand ray with given handedness
+        /// </summary>
+        /// <param name="pointerBehavior">Desired <seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/>.</param>
+        /// <param name="handedness">Specify handedness to restrict to only right, left hands.</param>
+        public static void SetHandRayPointerBehavior(PointerBehavior pointerBehavior, Handedness handedness = Handedness.Any)
+        {
+            SetPointerBehavior<ShellHandRayPointer>(pointerBehavior, InputSourceType.Hand, handedness);
+        }
+
+        /// <summary>
+        /// Sets the behavior for the motion controller ray with given handedness
+        /// </summary>
+        /// <param name="pointerBehavior">Desired <seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/>.</param>
+        /// <param name="handedness">Specify handedness to restrict to only right, left.</param>
+        public static void SetMotionControllerRayPointerBehavior(PointerBehavior pointerBehavior, Handedness handedness = Handedness.Any)
+        {
+            SetPointerBehavior<ShellHandRayPointer>(pointerBehavior, InputSourceType.Controller, handedness);
+        }
+
+        /// <summary>
+        /// Sets the behavior for the grab pointer with given handedness.
+        /// </summary>
+        /// <param name="pointerBehavior">Desired <seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/>.</param>
+        /// <param name="handedness">Specify handedness to restrict to only right, left.</param>
+        public static void SetHandGrabPointerBehavior(PointerBehavior pointerBehavior, Handedness handedness = Handedness.Any)
+        {
+            SetPointerBehavior<SpherePointer>(pointerBehavior, InputSourceType.Hand, handedness);
+        }
+
+        /// <summary>
+        /// Sets the behavior for the poke pointer with given handedness.
+        /// </summary>
+        /// <param name="pointerBehavior">Desired <seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/>.</param>
+        /// <param name="handedness">Specify handedness to restrict to only right, left.</param>
+        public static void SetHandPokePointerBehavior(PointerBehavior pointerBehavior, Handedness handedness = Handedness.Any)
+        {
+            SetPointerBehavior<PokePointer>(pointerBehavior, InputSourceType.Hand, handedness);
+        }
+
+        /// <summary>
+        /// Sets the behavior for the gaze pointer.
+        /// </summary>
+        /// <param name="pointerBehavior">Desired <seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/>.</param>
+        public static void SetGazePointerBehavior(PointerBehavior pointerBehavior)
+        {
+            if (CoreServices.InputSystem.FocusProvider is IPointerPreferences pointerPreferences)
+            {
+                pointerPreferences.GazePointerBehavior = pointerBehavior;
+                foreach (InputSourceType sourceType in Enum.GetValues(typeof(InputSourceType)))
+                {
+                    pointerPreferences.SetPointerBehavior<GGVPointer>(Handedness.Any, sourceType, pointerBehavior);
+                }
+            }
+            else
+            {
+                WarnAboutSettingCustomPointerBehaviors();
+            }
+        }
+
+        /// <summary>
+        /// Sets the pointer behavior for pointer of type T, for all input types.
+        /// </summary>
+        /// <typeparam name="T">All pointer types that equal or derive from this type will be set.</typeparam>
+        /// <param name="pointerBehavior">Desired <seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/>.</param>
+        /// <param name="handedness">Specify handedness to restrict to only right, left.</param>
+        public static void SetPointerBehavior<T>(PointerBehavior pointerBehavior, Handedness handedness = Handedness.Any) where T : class, IMixedRealityPointer
+        {
+            foreach (InputSourceType type in Enum.GetValues(typeof(InputSourceType)))
+            {
+                SetPointerBehavior<T>(pointerBehavior, type, handedness);
+            }
+        }
+
+        /// <summary>
+        /// Sets the behavior for the given pointer type and input type.
+        /// </summary>
+        /// <typeparam name="T">All pointer types that equal or derive from this type will be set.</typeparam>
+        /// <param name="pointerBehavior">Desired <seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/>.</param>
+        /// <param name="sourceType">Allows setting different behaviors for different input types (hands, controllers, etc.)</param>
+        /// <param name="handedness">Specify handedness to restrict to only right, left.</param>
+        public static void SetPointerBehavior<T>(PointerBehavior pointerBehavior, InputSourceType sourceType, Handedness handedness = Handedness.Any) where T : class, IMixedRealityPointer
+        {
+            if (CoreServices.InputSystem.FocusProvider is IPointerPreferences preferences)
+            {
+                preferences.SetPointerBehavior<T>(handedness, sourceType, pointerBehavior);
+            }
+            else
+            {
+                WarnAboutSettingCustomPointerBehaviors();
+            }
+        }
+
+        private static void WarnAboutSettingCustomPointerBehaviors()
+        {
+            Debug.LogWarning("Setting custom pointer behaviors only works if the input system is using the default MRTK focus provider. " +
+                "Are you using a custom Focus Provider that doesn't implement IPointerPreferences?");
+        }
+
     }
 }

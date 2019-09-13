@@ -23,7 +23,7 @@
     <file src="**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta" target="MRTK\" />
 
     <!-- Reuse MixedReality.Toolkit.targets, as the MSBuild logic is the same for all MRTK nuget packages. -->
-    <file src="..\MixedRealityToolkit\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Examples.targets" />
+    <file src="..\MixedRealityToolkit\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Extensions.targets" />
 
     <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Extensions.*" target="Plugins\" />
     <file src="..\..\..\Assets\MixedRealityToolkit.Extensions\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Extensions" />
