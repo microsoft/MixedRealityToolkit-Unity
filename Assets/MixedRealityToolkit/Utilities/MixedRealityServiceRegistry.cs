@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <remarks>
         /// The list is sorted in ascending priority order (i.e. services with a smaller priority
         /// value are first in the list).
-        /// </remarks
+        /// </remarks>
         private static List<IMixedRealityService> allServices = new List<IMixedRealityService>();
 
         /// <summary>

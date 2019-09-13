@@ -384,14 +384,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
+            ITestDataProvider1 service3 = new TestDataProvider1(null, null, "Service3", 10);
+            MixedRealityToolkit.Instance.RegisterService<ITestDataProvider1>(service3);
+
             ITestExtensionService1 service1 = new TestExtensionService1(null, "Service1", 20, null);
             MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(service1);
 
             ITestExtensionService2 service2 = new TestExtensionService2(null, "Service2", 30, null);
             MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(service2);
-
-            ITestDataProvider1 service3 = new TestDataProvider1(null, null, "Service3", 10);
-            MixedRealityToolkit.Instance.RegisterService<ITestDataProvider1>(service3);
 
             MixedRealityToolkit.Instance.UnregisterService<ITestExtensionService2>();
 
