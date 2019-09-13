@@ -10,7 +10,8 @@
         "Microsoft.MixedReality.Toolkit.Services.InputSimulation",
         "Microsoft.MixedReality.Toolkit.Services.InputSimulation.Editor",
         "Microsoft.MixedReality.Toolkit.Tests",
-        "Unity.TextMeshPro"
+        "Unity.TextMeshPro",
+        "Microsoft.MixedReality.Toolkit.Async"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"
