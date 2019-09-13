@@ -1,4 +1,4 @@
-﻿using Microsoft.MixedReality.Toolkit.UI.BoundingBoxTypes;
+﻿using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundingBoxTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.UI
+namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 {
     [Serializable]
     public abstract class BoundingBoxHandlesBase

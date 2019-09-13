@@ -1,9 +1,9 @@
 ﻿using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.UI.BoundingBoxTypes;
+using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundingBoxTypes;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.UI
+namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 {
     internal class BoundingBoxVisualUtils
     {

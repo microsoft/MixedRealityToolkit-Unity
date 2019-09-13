@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Microsoft.MixedReality.Toolkit.UI.BoundingBoxTypes
+﻿
+namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundingBoxTypes
 {
     /// <summary>
     /// Enum which describes how an object's boundingbox is to be flattened.

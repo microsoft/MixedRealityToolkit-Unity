@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.UI.Experimental;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections;
 using System.Text;
@@ -11,7 +12,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
-    public class BoundingBoxExampleTest : MonoBehaviour, IMixedRealitySpeechHandler
+    public class BoundingBox2ExampleTest : MonoBehaviour, IMixedRealitySpeechHandler
     {
         public TextMeshPro statusText;
 
@@ -23,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         private bool speechTriggeredFalg;
         private Vector3 cubePosition = new Vector3(0, 0, 2);
-        private BoundingBox bbox;
+        private BoundingBox2 bbox;
 
         private IMixedRealityInputSystem inputSystem = null;
 
@@ -77,9 +78,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 cube.transform.position = cubePosition;
 
                 SetStatus("Instantiate BoundingBox");
-                bbox = cube.AddComponent<BoundingBox>();
+                bbox = cube.AddComponent<BoundingBox2>();
                 bbox.HideElementsInInspector = false;
-                bbox.BoundingBoxActivation = BoundingBox.BoundingBoxActivationType.ActivateOnStart;
+                bbox.BoundingBoxActivation = UI.Experimental.BoundingBoxTypes.BoundingBoxActivationType.ActivateOnStart;
                 var mh = cube.AddComponent<ManipulationHandler>();
                 yield return WaitForSpeechCommand();
 
@@ -110,23 +111,23 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 yield return WaitForSpeechCommand();
 
                 SetStatus("FlattenX");
-                bbox.FlattenAxis = BoundingBox.FlattenModeType.FlattenX;
+                bbox.FlattenAxis = UI.Experimental.BoundingBoxTypes.FlattenModeType.FlattenX;
                 yield return WaitForSpeechCommand();
 
                 SetStatus("FlattenY");
-                bbox.FlattenAxis = BoundingBox.FlattenModeType.FlattenY;
+                bbox.FlattenAxis = UI.Experimental.BoundingBoxTypes.FlattenModeType.FlattenY;
                 yield return WaitForSpeechCommand();
 
                 SetStatus("FlattenNone");
-                bbox.FlattenAxis = BoundingBox.FlattenModeType.DoNotFlatten;
+                bbox.FlattenAxis = UI.Experimental.BoundingBoxTypes.FlattenModeType.DoNotFlatten;
                 yield return WaitForSpeechCommand();
 
                 SetStatus("ShowWireframe false");
-                bbox.ShowWireFrame = false;
+                bbox.Links.ShowWireFrame = false;
                 yield return WaitForSpeechCommand();
 
                 SetStatus("ShowWireframe true");
-                bbox.ShowWireFrame = true;
+                bbox.Links.ShowWireFrame = true;
                 yield return WaitForSpeechCommand();
 
                 SetStatus("BoxPadding 0.2f");
@@ -138,31 +139,32 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 yield return WaitForSpeechCommand();
 
                 SetStatus("Set scale handle size 0.3");
-                bbox.ScaleHandleSize = 0.3f;
+                bbox.ScaleHandles.HandleSize = 0.3f;
                 yield return WaitForSpeechCommand();
 
                 SetStatus("Set scale handle widget prefab");
                 Debug.Assert(scaleWidget != null);
-                bbox.ScaleHandlePrefab = scaleWidget;
+                bbox.ScaleHandles.HandlePrefab = scaleWidget;
                 yield return WaitForSpeechCommand();
 
                 SetStatus("Handles red");
-                bbox.HandleMaterial = redMaterial;
+                bbox.ScaleHandles.HandleMaterial = redMaterial;
+                bbox.RotationHandles.HandleMaterial = redMaterial;
                 yield return WaitForSpeechCommand();
 
                 SetStatus("BBox material cyan");
                 Debug.Assert(cyanMaterial != null);
-                bbox.BoxMaterial = cyanMaterial;
+                bbox.BoxDisplay.BoxMaterial = cyanMaterial;
                 yield return WaitForSpeechCommand();
 
                 SetStatus("BBox grabbed material red");
-                bbox.BoxGrabbedMaterial = redMaterial;
+                bbox.BoxDisplay.BoxGrabbedMaterial = redMaterial;
                 mh.OnManipulationStarted.AddListener((med) => bbox.HighlightWires());
                 mh.OnManipulationEnded.AddListener((med) => bbox.UnhighlightWires());
                 yield return WaitForSpeechCommand();
 
                 SetStatus("BBox material none");
-                bbox.BoxMaterial = null;
+                bbox.BoxDisplay.BoxMaterial = null;
                 yield return WaitForSpeechCommand();
 
                 SetStatus("Scale X and update rig");
@@ -172,16 +174,16 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
                 SetStatus("Rotate 20 degrees and update rig");
                 cube.transform.localRotation = Quaternion.Euler(0, 20, 0);
-                bbox.ShowRotationHandleForY = true;
+                bbox.RotationHandles.ShowRotationHandleForY = true;
                 bbox.CreateRig();
                 yield return WaitForSpeechCommand();
 
                 SetStatus("Wireframe radius 0.1");
-                bbox.WireframeEdgeRadius = 0.1f;
+                bbox.Links.WireframeEdgeRadius = 0.1f;
                 yield return WaitForSpeechCommand();
 
                 SetStatus("Wireframe shape cylinder");
-                bbox.WireframeShape = BoundingBox.WireframeType.Cylindrical;
+                bbox.Links.WireframeShape = UI.Experimental.BoundingBoxTypes.WireframeType.Cylindrical;
                 yield return WaitForSpeechCommand();
 
                 Destroy(cube);
@@ -209,10 +211,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                     lastParent = cubechild.transform;
                 }
 
-                bbox = multiRoot.AddComponent<BoundingBox>();
-                bbox.BoundingBoxActivation = BoundingBox.BoundingBoxActivationType.ActivateOnStart;
+                bbox = multiRoot.AddComponent<BoundingBox2>();
+                bbox.BoundingBoxActivation = UI.Experimental.BoundingBoxTypes.BoundingBoxActivationType.ActivateOnStart;
                 bbox.HideElementsInInspector = false;
-                bbox.WireframeEdgeRadius = .05f;
+                bbox.Links.WireframeEdgeRadius = .05f;
                 multiRoot.AddComponent<ManipulationHandler>();
 
                 SetStatus("Randomize Child Scale for skewing");
@@ -228,7 +230,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                     childTransform.transform.localScale = new Vector3(baseScale * Random.Range(.5f, 2f), baseScale * Random.Range(.5f, 2f), baseScale * Random.Range(.5f, 2f));
                 }
 
-                bbox.WireframeEdgeRadius = 1f;
+                bbox.Links.WireframeEdgeRadius = 1f;
                 bbox.CreateRig();
                 SetStatus("Delete GameObject");
                 yield return WaitForSpeechCommand();

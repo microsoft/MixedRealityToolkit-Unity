@@ -1,10 +1,10 @@
-﻿using Microsoft.MixedReality.Toolkit.UI.BoundingBoxTypes;
+﻿using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundingBoxTypes;
 using System;
 
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.UI
+namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 {
     [Serializable]
     public class BoundingBoxBoxDisplay

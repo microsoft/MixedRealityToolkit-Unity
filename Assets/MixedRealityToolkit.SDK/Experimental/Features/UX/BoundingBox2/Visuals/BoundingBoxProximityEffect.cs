@@ -5,10 +5,8 @@ using Microsoft.MixedReality.Toolkit.Input;
 using System.Runtime.CompilerServices;
 
 
-namespace Microsoft.MixedReality.Toolkit.UI 
+namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 {
-   // using ProximityStates = Dictionary<GameObject, BoundingBoxProximityEffect.ProximityHandleInfo>;
-
     [Serializable]
     public class BoundingBoxProximityEffect 
     {
