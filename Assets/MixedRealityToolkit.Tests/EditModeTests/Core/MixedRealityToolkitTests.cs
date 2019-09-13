@@ -363,8 +363,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             ITestExtensionService2 service2 = new TestExtensionService2(null, "Service2", 30, null);
             MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(service2);
 
-            ITestDataProvider1 service3 = new TestDataProvider1(null, null, "Service3", 10);
-            MixedRealityToolkit.Instance.RegisterService<ITestDataProvider1>(service3);
+            ITestExtensionService3 service3 = new TestExtensionService3(null, "Service3", 10, null);
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService3>(service3);
 
             // The order should be service3, service1, service2 because:
             // service3 priority = 10
@@ -384,8 +384,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
-            ITestDataProvider1 service3 = new TestDataProvider1(null, null, "Service3", 10);
-            MixedRealityToolkit.Instance.RegisterService<ITestDataProvider1>(service3);
+            ITestExtensionService3 service3 = new TestExtensionService3(null, "Service3", 10, null);
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService3>(service3);
 
             ITestExtensionService1 service1 = new TestExtensionService1(null, "Service1", 20, null);
             MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(service1);
