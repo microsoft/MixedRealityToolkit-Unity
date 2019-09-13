@@ -35,7 +35,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             ray = new Ray();
 
             IMixedRealityEyeGazeProvider eyeGazeProvider = CoreServices.InputSystem?.EyeGazeProvider;
-            if (eyeGazeProvider == null) { return false; }
+            if ((eyeGazeProvider == null) ||
+                !eyeGazeProvider.IsEyeGazeValid)
+            { return false; }
 
             ray.origin = eyeGazeProvider.GazeOrigin;
             ray.direction = eyeGazeProvider.GazeDirection;
