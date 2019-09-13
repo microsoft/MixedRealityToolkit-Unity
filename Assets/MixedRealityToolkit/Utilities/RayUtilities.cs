@@ -10,23 +10,23 @@ using UnityEngine.Experimental.XR;
 namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
-    /// Utilities which return, or manipulate a <seealso cref="UnityEngine.Ray"/> objects.
+    /// Utilities which return, or manipulate ray objects.
     /// </summary>
     public static class RayUtilities
     {
         /// <summary>
-        /// Gets the <seealso cref="UnityEngine.Ray"/> representing the position and direction of the user's head.
+        /// Gets the ray representing the position and direction of the user's head.
         /// </summary>
-        /// <returns>The <seealso cref="UnityEngine.Ray"/> for the pointer</param>
+        /// <returns>The ray the head gaze</param>
         public static Ray GetHeadGazeRay()
         {
             return new Ray(CameraCache.Main.transform.position, CameraCache.Main.transform.forward);
         }
 
         /// <summary>
-        /// Gets the <seealso cref="UnityEngine.Ray"/> representing the position and direction of the user's eyes.
+        /// Gets the ray> representing the position and direction of the user's eyes.
         /// </summary>
-        /// <param name="ray">The <seealso cref="UnityEngine.Ray"/> being returned</param>
+        /// <param name="ray">The ray being returned</param>
         /// <returns>
         /// True if the ray is being returned, false otherwise.
         /// </returns>
@@ -45,10 +45,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         /// <summary>
-        /// Gets the <seealso cref="UnityEngine.Ray"/> assosiciated with the user's hand.
+        /// Gets the ray assosiciated with the user's hand.
         /// </summary>
         /// <param name="hand">The handedness of the hand</param>
-        /// <param name="ray">The <seealso cref="UnityEngine.Ray"/> being returned</param>
+        /// <param name="ray">The ray being returned</param>
         /// <returns>
         /// True if the ray is being returned, false otherwise.
         /// </returns>
@@ -72,10 +72,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         /// <summary>
-        /// Gets the <seealso cref="UnityEngine.Ray"/> assosiciated with the motion controller.
+        /// Gets the ray assosiciated with the motion controller.
         /// </summary>
         /// <param name="hand">The handedness of the motion controller</param>
-        /// <param name="ray">The <seealso cref="UnityEngine.Ray"/> being returned</param>
+        /// <param name="ray">The ray being returned</param>
         /// <returns>
         /// True if the ray is being returned, false otherwise.
         /// </returns>
@@ -152,12 +152,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         /// <summary>
-        /// Gets the<seealso cref="UnityEngine.Ray"/> assosiciated with the desired input source type
+        /// Gets the ray assosiciated with the desired input source type
         /// and hand.
         /// </summary>
         /// <param name="sourceType">The type of input source</param>
         /// <param name="hand">The handedness of the input source</param>
-        /// <param name="ray">The <seealso cref="UnityEngine.Ray"/> for the pointer</param>
+        /// <param name="ray">The ray being returned</param>
         /// <returns>
         /// True if the ray is being returned, false otherwise.
         /// </returns>
