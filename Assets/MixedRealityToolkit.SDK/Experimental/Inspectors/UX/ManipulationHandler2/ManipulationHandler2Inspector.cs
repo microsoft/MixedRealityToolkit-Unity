@@ -3,14 +3,13 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
 
-using Microsoft.MixedReality.Toolkit.UI;
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using Microsoft.MixedReality.Toolkit.Experimental.UI;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Editor
+namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
 {
-    [CustomEditor(typeof(ManipulationHandler))]
+    [CustomEditor(typeof(ManipulationHandler2))]
     [CanEditMultipleObjects]
     public class ManipulationHandlerInspector : UnityEditor.Editor
     {
@@ -75,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.PropertyField(manipulationType);
             EditorGUILayout.PropertyField(allowFarManipulation);
 
-            var handedness = (ManipulationHandler.HandMovementType)manipulationType.intValue;
+            var handedness = (ManipulationHandler2.HandMovementType)manipulationType.intValue;
 
             EditorGUILayout.Space();
             GUIStyle style = EditorStyles.foldout;
@@ -85,8 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (oneHandedFoldout)
             {
-                if (handedness == ManipulationHandler.HandMovementType.OneHandedOnly ||
-                    handedness == ManipulationHandler.HandMovementType.OneAndTwoHanded)
+                if (handedness.HasFlag(ManipulationHandler2.HandMovementType.OneHanded))
                 {
                     EditorGUILayout.PropertyField(oneHandRotationModeNear);
                     EditorGUILayout.PropertyField(oneHandRotationModeFar);
@@ -102,8 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (twoHandedFoldout)
             {
-                if (handedness == ManipulationHandler.HandMovementType.TwoHandedOnly ||
-                    handedness == ManipulationHandler.HandMovementType.OneAndTwoHanded)
+                if (handedness.HasFlag(ManipulationHandler2.HandMovementType.TwoHanded))
                 {
                     EditorGUILayout.PropertyField(twoHandedManipulationType);
                 }
@@ -113,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
             }
 
-            var mh = (ManipulationHandler)target;
+            var mh = (ManipulationHandler2)target;
             var rb = mh.GetComponent<Rigidbody>();
 
             EditorGUILayout.Space();

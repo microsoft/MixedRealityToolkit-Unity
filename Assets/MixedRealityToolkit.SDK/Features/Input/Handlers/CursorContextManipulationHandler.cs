@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             hoverCount++;
             if (hoverCount >= 2 && 
-                manipEvent.ManipulationSource.ManipulationType != ManipulationHandler.HandMovementType.OneHanded)
+                manipEvent.ManipulationSource.ManipulationType != ManipulationHandler.HandMovementType.OneHandedOnly)
             {
                 contextInfo.CurrentCursorAction = CursorContextInfo.CursorAction.Move;
             }
