@@ -231,5 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 handleGrabbedMaterial.SetFloatArray("_InnerGlowColor", color);
             }
         }
+
+        internal abstract Transform GetVisual(Transform handle);
     }
 }

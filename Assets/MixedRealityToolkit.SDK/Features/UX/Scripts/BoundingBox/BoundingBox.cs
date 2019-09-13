@@ -240,11 +240,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        
-
-
-        
-
         [Header("Events")]
         public UnityEvent RotateStarted = new UnityEvent();
         public UnityEvent RotateStopped = new UnityEvent();

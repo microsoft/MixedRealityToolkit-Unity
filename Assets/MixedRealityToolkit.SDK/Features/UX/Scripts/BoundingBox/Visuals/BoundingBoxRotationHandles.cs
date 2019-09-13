@@ -121,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
 
-        
+
 
         internal Vector3 GetEdgeCenter(int index)
         {
@@ -267,6 +267,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     midpointBounds.size.z);
                 float invScale = HandleSize / maxDim;
 
+                midpointVisual.name = "visuals";
                 midpointVisual.transform.parent = midpoint.transform;
                 midpointVisual.transform.localScale = new Vector3(invScale, invScale, invScale);
                 midpointVisual.transform.localPosition = Vector3.zero;
@@ -282,10 +283,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
 
-           //handlesCreated.Invoke();
+            //handlesCreated.Invoke();
         }
 
+        internal override Transform GetVisual(Transform handle)
+        {
+            // visual is first child 
+            Transform childTransform =  handle.GetChild(0);
+            if (childTransform != null && childTransform.name == "visuals")
+            {
+                return childTransform;
+            }
 
-
+            return null;
+        }
     }
 }

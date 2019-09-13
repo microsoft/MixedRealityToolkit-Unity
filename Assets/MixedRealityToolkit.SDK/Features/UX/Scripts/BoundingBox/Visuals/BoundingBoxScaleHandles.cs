@@ -154,5 +154,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 handles.Add(corner.transform);       
             }
         }
+
+        internal override Transform GetVisual(Transform handle)
+        {
+            Transform visual = handle.GetChild(0).GetChild(0);
+            if (visual != null && visual.name == "visuals")
+            {
+                return visual;
+            }
+
+            return null;
+        }
     }
 }
