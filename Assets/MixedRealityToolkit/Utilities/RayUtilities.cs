@@ -10,7 +10,7 @@ using UnityEngine.Experimental.XR;
 namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
-    /// Utilities which return, or manipulate a <seealso cref="UnityEngine.Ray"/>.
+    /// Utilities which return, or manipulate a <seealso cref="UnityEngine.Ray"/> objects.
     /// </summary>
     public static class RayUtilities
     {
