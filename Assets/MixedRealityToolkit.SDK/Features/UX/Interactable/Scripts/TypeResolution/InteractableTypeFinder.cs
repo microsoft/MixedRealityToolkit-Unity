@@ -108,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             foreach (Assembly assembly in assemblies)
             {
-                foreach (Type assemblyType in assembly.GetTypes())
+                foreach (Type assemblyType in assembly.GetLoadableTypes())
                 {
                     TypeInfo info = assemblyType.GetTypeInfo();   
                     if (info.IsSubclassOf(type))
