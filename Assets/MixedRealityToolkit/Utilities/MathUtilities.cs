@@ -435,5 +435,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             Vector2 diff = pointA - pointB;
             return MathUtilities.RadiansToDegrees(Mathf.Atan2(diff.y, diff.x));
         }
+
+        /// <summary>
+        /// Calculates the direction vector from a rotation.
+        /// </summary>
+        /// <param name="rotation">Quaternion representing the rotation of the object.</param>
+        /// <returns>
+        /// Normalized Vector3 representing the direction vector.
+        /// </returns>
+        public static Vector3 GetDirection(Quaternion rotation)
+        {
+            return (rotation * Vector3.forward).normalized;
+        }
+
     }
 }

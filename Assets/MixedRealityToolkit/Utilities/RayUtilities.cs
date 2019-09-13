@@ -2,13 +2,15 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.WindowsDevicePortal;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.Experimental.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
-    /// 
+    /// Utilities which return, or manipulate a <seealso cref="UnityEngine.Ray"/>.
     /// </summary>
     public static class RayUtilities
     {
@@ -24,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Gets the <seealso cref="UnityEngine.Ray"/> representing the position and direction of the user's eyes.
         /// </summary>
-        /// <param name="ray">The <seealso cref="UnityEngine.Ray"/> for the pointer</param>
+        /// <param name="ray">The <seealso cref="UnityEngine.Ray"/> being returned</param>
         /// <returns>True if the ray contains valid data, false otherwise.</param>
         public static bool TryGetEyeGazeRay(out Ray ray)
         {
@@ -38,128 +40,124 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             return true;
         }
 
-        ///// <summary>
-        ///// Gets the <seealso cref="UnityEngine.Ray"/> based on the interaction enabled pointer assosiciated with the user's gaze
-        ///// and reports the type of input (head or eyes) of the active gaze.
-        ///// </summary>
-        ///// <param name="ray">The <seealso cref="UnityEngine.Ray"/> for the pointer</param>
-        ///// <param name="sourceType">The type of input source</param>
-        ///// <returns>
-        ///// True if the ray contains valid data, false otherwise.
-        ///// </returns>
-        //public static bool TryGetGazeRay(out Ray ray, out InputSourceType sourceType)
-        //{
-        //    ray = new Ray();
-        //    sourceType = InputSourceType.Other;
-
-        //    // First, try to get the eye gaze ray
-        //    if (TryGetEyeGazeRay(out ray))
-        //    {
-        //        sourceType = InputSourceType.Eyes;
-        //        return true;
-        //    }
-
-        //    // Then try to get the head gaze ray
-        //    if (TryGetHeadGazeRay(out ray))
-        //    {
-        //        sourceType = InputSourceType.Head;
-        //        return true;
-        //    }
-
-        //    return false;
-        //}
-
         /// <summary>
-        /// Gets the <seealso cref="UnityEngine.Ray"/> based on the active pointer assosiciated with the user's hand.
+        /// Gets the <seealso cref="UnityEngine.Ray"/> assosiciated with the user's hand.
         /// </summary>
         /// <param name="hand">The handedness of the hand</param>
-        /// <param name="ray">The <seealso cref="UnityEngine.Ray"/> for the pointer</param>
+        /// <param name="ray">The <seealso cref="UnityEngine.Ray"/> being returned</param>
         /// <returns>
         /// True if the ray contains valid data, false otherwise.
         /// </returns>
         public static bool TryGetHandRay(Handedness hand, out Ray ray)
         {
-            // todo
             ray = new Ray();
+
+            IMixedRealityController controller;
+            if (TryGetControllerInstance(InputSourceType.Hand, hand, out controller))
+            {
+                MixedRealityInteractionMapping mapping;
+                if (TryGetInteractionMapping(controller, DeviceInputType.SpatialPointer, out mapping))
+                {
+                    ray.origin = mapping.PositionData;
+                    ray.direction = MathUtilities.GetDirection(mapping.RotationData);
+                    return true;
+                }
+            }
+
             return false;
         }
 
         /// <summary>
-        /// Gets the <seealso cref="UnityEngine.Ray"/> based on the active pointer assosiciated with the
-        /// motion controller.
+        /// Gets the <seealso cref="UnityEngine.Ray"/> assosiciated with the motion controller.
         /// </summary>
         /// <param name="hand">The handedness of the motion controller</param>
-        /// <param name="ray">The <seealso cref="UnityEngine.Ray"/> for the pointer</param>
+        /// <param name="ray">The <seealso cref="UnityEngine.Ray"/> being returned</param>
         /// <returns>
         /// True if the ray contains valid data, false otherwise.
         /// </returns>
         public static bool TryGetMotionControllerRay(Handedness hand, out Ray ray)
         {
-            // todo
             ray = new Ray();
+
+            IMixedRealityController controller;
+            if (TryGetControllerInstance(InputSourceType.Controller, hand, out controller))
+            {
+                MixedRealityInteractionMapping mapping;
+                if (TryGetInteractionMapping(controller, DeviceInputType.SpatialPointer, out mapping))
+                {
+                    ray.origin = mapping.PositionData;
+                    ray.direction = MathUtilities.GetDirection(mapping.RotationData);
+                    return true;
+                }
+            }
+
             return false;
         }
 
-    ///// <summary>
-    ///// Gets the <seealso cref="UnityEngine.Ray"/> based on the active pointer assosiciated with the user's hand
-    ///// or a motion controller.
-    ///// </summary>
-    ///// <param name="hand">The handedness of the user's hand or motion controller</param>
-    ///// <param name="ray">The <seealso cref="UnityEngine.Ray"/> for the pointer</param>
-    ///// <param name="sourceType">The type of input source</param>
-    ///// <returns>
-    ///// True if the ray contains valid data, false otherwise.
-    ///// </returns>
-    //public static bool TryGetHandOrControllerRay(Handedness hand, out Ray ray, out InputSourceType sourceType)
-    //{
-    //    ray = new Ray();
-    //    sourceType = InputSourceType.Other;
+        /// <summary>
+        /// Gets the <seealso cref="IMixedRealityController"/> instance matching the specified source type and hand.
+        /// </summary>
+        /// <param name="sourceType">Type type of the input source</param>
+        /// <param name="hand">The handedness of the controller</param>
+        /// <param name="controller">The <seealso cref="IMixedRealityController"/> instance being returned</param>
+        /// <returns>
+        /// True if the controller instance is valid, false otherwise. 
+        /// </returns>
+        private static bool TryGetControllerInstance(InputSourceType sourceType, Handedness hand, out IMixedRealityController controller)
+        {
+            controller = null;
 
-    //    // First, try to get the hand ray
-    //    if (TryGetHandRay(hand, out ray))
-    //    {
-    //        sourceType = InputSourceType.Hand;
-    //        return true;
-    //    }
+            foreach (IMixedRealityController c in CoreServices.InputSystem.DetectedControllers)
+            {
+                if ((c.InputSource?.SourceType == sourceType) &&
+                    (c.ControllerHandedness == hand))
+                {
+                    controller = c;
+                    return true;
+                }
+            }
 
-    //    // Then try to get the controller ray
-    //    if (TryGetMotionControllerRay(hand, out ray))
-    //    {
-    //        sourceType = InputSourceType.Controller;
-    //        return true;
-    //    }
+            return false;
+        }
 
-    //    return false;
-    //}
+        /// <summary>
+        /// Gets the <seealso cref="MixedRealityInteractionMapping"/> matching the <seealso cref="DeviceInputType"/> for
+        /// the specified controller.
+        /// </summary>
+        /// <param name="controller">The <seealso cref="IMixedRealityController"/> instance</param>
+        /// <param name="inputType">The type of device input</param>
+        /// <param name="mapping">The <seealso cref="MixedRealityInteractionMapping"/> being returned</param>
+        /// <returns>
+        /// True if the interaction mapping is valid, false otherwise. 
+        /// </returns>
+        private static bool TryGetInteractionMapping(IMixedRealityController controller, DeviceInputType inputType, out MixedRealityInteractionMapping mapping)
+        {
+            mapping = null;
 
-    ///// <summary>
-    ///// Gets the<seealso cref="UnityEngine.Ray"/> based on the active pointer assosiciated with the
-    ///// desired input source type.
-    ///// </summary>
-    ///// <param name="sourceType">The type of input source</param>
-    ///// <param name="hand">The handedness of the input source</param>
-    ///// <param name="ray">The <seealso cref="UnityEngine.Ray"/> for the pointer</param>
-    ///// <returns>
-    ///// True if the ray contains valid data, false otherwise.
-    ///// </returns>
-    //public static bool TryGetRay(InputSourceType sourceType, Handedness hand, out Ray ray)
-    //{
-    //    ray = new Ray();
+            MixedRealityInteractionMapping[] mappings = controller.Interactions;
+            for (int i = 0; i < mappings.Length; i++)
+            {
+                if (mappings[i].InputType == inputType)
+                {
+                    mapping = mappings[i];
+                    return true;
+                }
+            }
 
-    //    //foreach (IMixedRealityPointer pointer in PointerUtils.GetPointers<IMixedRealityPointer>(hand, sourceType))
-    //    //{
-    //    //    if (pointer.IsInteractionEnabled)
-    //    //    {
-    //    //        ray.origin = pointer.Position;
-    //    //        ray.direction = GetDirection(pointer.Rotation);
-    //    //        return true;
-    //    //    }
-    //    //}
+            return false;
+        }
 
-    //    return false;
-    //}
-
-    public static bool TryGetRay(InputSourceType sourceType, Handedness hand, out Ray ray)
+        /// <summary>
+        /// Gets the<seealso cref="UnityEngine.Ray"/> assosiciated with the desired input source type
+        /// and hand.
+        /// </summary>
+        /// <param name="sourceType">The type of input source</param>
+        /// <param name="hand">The handedness of the input source</param>
+        /// <param name="ray">The <seealso cref="UnityEngine.Ray"/> for the pointer</param>
+        /// <returns>
+        /// True if the ray contains valid data, false otherwise.
+        /// </returns>
+        public static bool TryGetRay(InputSourceType sourceType, Handedness hand, out Ray ray)
         {
             bool success = false;
 
@@ -190,20 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     success = false;
                     break;
             }
-
             return success;
-        }
-
-        /// <summary>
-        /// Calculates the direction vector from a rotation.
-        /// </summary>
-        /// <param name="rotation">Quaternion representing the rotation of the object.</param>
-        /// <returns>
-        /// Normalized Vector3 representing the direction vector.
-        /// </returns>
-        public static Vector3 GetDirection(Quaternion rotation)
-        {
-            return (rotation * Vector3.forward).normalized;
         }
     }
 }
