@@ -145,66 +145,43 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        /// <summary>
-        /// Gets the <seealso cref="UnityEngine.Ray"/> based on the interaction enabled pointer assosiciated with the head gaze.
-        /// </summary>
-        /// <param name="ray">The <seealso cref="UnityEngine.Ray"/> for the pointer</param>
-        /// <returns>
-        /// True if the ray contains valid data, false otherwise.
-        /// </returns>
-        public static bool TryGetHeadGazeRay(out Ray ray)
-        {
-            return TryGetRay(InputSourceType.Head, Handedness.None, out ray);
-        }
+        // todo - REMOVE THESE
+        ///// <summary>
+        ///// Gets the <seealso cref="UnityEngine.Ray"/> based on the interaction enabled pointer assosiciated with the user's gaze
+        ///// and reports the type of input (head or eyes) of the active gaze.
+        ///// </summary>
+        ///// <param name="ray">The <seealso cref="UnityEngine.Ray"/> for the pointer</param>
+        ///// <param name="sourceType">The type of input source</param>
+        ///// <returns>
+        ///// True if the ray contains valid data, false otherwise.
+        ///// </returns>
+        //public static bool TryGetGazeRay(out Ray ray, out InputSourceType sourceType)
+        //{
+        //    ray = new Ray();
+        //    sourceType = InputSourceType.Other;
 
-        /// <summary>
-        /// Gets the <seealso cref="UnityEngine.Ray"/> based on the interaction enabled pointer assosiciated with the eye gaze.
-        /// </summary>
-        /// <param name="ray">The <seealso cref="UnityEngine.Ray"/> for the pointer</param>
-        /// <returns>
-        /// True if the ray contains valid data, false otherwise.
-        /// </returns>
-        public static bool TryGetEyeGazeRay(out Ray ray)
-        {
-            return TryGetRay(InputSourceType.Eyes, Handedness.None, out ray);
-        }
+        //    // First, try to get the eye gaze ray
+        //    if (TryGetEyeGazeRay(out ray))
+        //    {
+        //        sourceType = InputSourceType.Eyes;
+        //        return true;
+        //    }
 
-        /// <summary>
-        /// Gets the <seealso cref="UnityEngine.Ray"/> based on the interaction enabled pointer assosiciated with the user's gaze
-        /// and reports the type of input (head or eyes) of the active gaze.
-        /// </summary>
-        /// <param name="ray">The <seealso cref="UnityEngine.Ray"/> for the pointer</param>
-        /// <param name="sourceType">The type of input source</param>
-        /// <returns>
-        /// True if the ray contains valid data, false otherwise.
-        /// </returns>
-        public static bool TryGetGazeRay(out Ray ray, out InputSourceType sourceType)
-        {
-            ray = new Ray();
-            sourceType = InputSourceType.Other;
+        //    // Then try to get the head gaze ray
+        //    if (TryGetHeadGazeRay(out ray))
+        //    {
+        //        sourceType = InputSourceType.Head;
+        //        return true;
+        //    }
 
-            // First, try to get the eye gaze ray
-            if (TryGetEyeGazeRay(out ray))
-            {
-                sourceType = InputSourceType.Eyes;
-                return true;
-            }
-
-            // Then try to get the head gaze ray
-            if (TryGetHeadGazeRay(out ray))
-            {
-                sourceType = InputSourceType.Head;
-                return true;
-            }
-
-            return false;
-        }
+        //    return false;
+        //}
 
         /// <summary>
         /// Gets the <seealso cref="UnityEngine.Ray"/> based on the active pointer assosiciated with the user's hand.
         /// </summary>
         /// <param name="hand">The handedness of the hand</param>
-        /// <param name="ray">The physics ray for the pointer</param>
+        /// <param name="ray">The <seealso cref="UnityEngine.Ray"/> for the pointer</param>
         /// <returns>
         /// True if the ray contains valid data, false otherwise.
         /// </returns>
@@ -218,7 +195,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// motion controller.
         /// </summary>
         /// <param name="hand">The handedness of the motion controller</param>
-        /// <param name="ray">The physics ray for the pointer</param>
+        /// <param name="ray">The <seealso cref="UnityEngine.Ray"/> for the pointer</param>
         /// <returns>
         /// True if the ray contains valid data, false otherwise.
         /// </returns>
@@ -287,17 +264,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return false;
         }
 
-        /// <summary>
-        /// Calculates the direction vector from a rotation.
-        /// </summary>
-        /// <param name="rotation">Quaternion representing the rotation of the object.</param>
-        /// <returns>
-        /// Normalized Vector3 representing the direction vector.
-        /// </returns>
         private static Vector3 GetDirection(Quaternion rotation)
         {
             return (rotation * Vector3.forward).normalized;
         }
+        // todo - REMOVE THESE
 
         /// <summary>
         /// Queries input system for the behavior of a given pointer type. See <seealso cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/>.
