@@ -130,6 +130,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             SetToggleHelper<SpherePointer>(GrabToggle, "GrabToggle", InputSourceType.Hand);
             SetToggleHelper<PokePointer>(PokeToggle, "PokeToggle", InputSourceType.Hand);
             SetToggleHelper<GGVPointer>(GazeToggle, "GazeToggle", InputSourceType.Hand);
+
+            DrawDebugRay(InputSourceType.Hand, Handedness.Left);
+            DrawDebugRay(InputSourceType.Hand, Handedness.Right);
+            DrawDebugRay(InputSourceType.Controller, Handedness.Left);
+            DrawDebugRay(InputSourceType.Controller, Handedness.Right);
         }
 
         private void SetToggleHelper<T>(Interactable toggle, string toggleName, InputSourceType inputType) where T : class, IMixedRealityPointer
@@ -144,6 +149,16 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             }
         }
 
+        private void DrawDebugRay(InputSourceType sourceType, Handedness hand)
+        {
+            Color rayColor = Color.red;
+
+            Ray ray;
+            if (RayUtilities.TryGetRay(sourceType, hand, out ray))
+            {
+                Debug.DrawRay(ray.origin, ray.direction * 5, rayColor);
+            }
+        }
     }
 
 }
