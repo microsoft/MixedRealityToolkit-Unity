@@ -4,18 +4,54 @@
 
 The [`BoundingBox.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/BoundingBox/BoundingBox.cs) script provides basic functionality for transforming objects in mixed reality. A bounding box will show a cube around the hologram to indicate that it can be interacted with. Handles on the corners and edges of the cube allow scaling or rotating the object. The bounding box also reacts to user input. On HoloLens 2 for example the bounding box responds to finger proximity, providing visual feedback to help perceive the distance from the object. All interactions and visuals can be easily customized. 
 
-For more information please see [App Bar and Bounding Box](https://docs.microsoft.com/en-us/windows/mixed-reality/app-bar-and-bounding-box) on Windows Dev Center.
+For more information please see [Bounding Box and App Bar](https://docs.microsoft.com/en-us/windows/mixed-reality/app-bar-and-bounding-box) on Windows Dev Center.
 
 ## Example scene ##
 You can find examples of Bounding Box configurations in the `BoundingBoxExamples` scene.
 
-<img src="../Documentation/Images/BoundingBox/MRTK_BoundingBox_Examples.png" width="550">
+<img src="../Documentation/Images/BoundingBox/MRTK_BoundingBox_Examples.png">
 
 
-## How to use a bounding box ##
-To enable a bounding box around an object, simply assign the `BoundingBox` script to any GameObject. Note that the object will need a box collider, added in the *Bounds Override* field in the inspector.
+## How to add and configure a bounding box using Unity Inspector ##
+1. Add Box Collider to an object
+2. Assign `BoundingBox` script to an object
+3. Configure options such as 'Activation' methods (see [Inspector properties](#inspector-properties) section below)
+4. (Optional) Assign prefabs and materials for HoloLens 2 style Bounding Box (see [Handle styles](#handle-styles) section below)
+
+> [!NOTE]
+> Use *Target Object* and *Bounds Override* field in the inspector to assign specific object and collider in the object with multiple child components.
 
 ![Bounding Box](../Documentation/Images/BoundingBox/MRTK_BoundingBox_Assign.png)
+
+## How to add and configure a bounding box in the code ##
+1. Assign `BoundingBox` script to an object with collider, using AddComponent<>()
+```
+   private BoundingBox bbox;
+   bbox = cube.AddComponent<BoundingBox>();
+```
+2. Configure options such as 'Activation' methods
+```
+   bbox.BoundingBoxActivation = BoundingBox.BoundingBoxActivationType.ActivateOnStart;
+   bbox.FlattenAxis = BoundingBox.FlattenModeType.DoNotFlatten;
+```
+3. (Optional) Assign prefabs and materials for HoloLens 2 style Bounding Box
+```
+bbox.HandleMaterial = Assign BoundingBoxHandleWhite.mat through inspector variable.
+bbox.HandleGrabbedMaterial = Assign BoundingBoxHandleBlueGrabbed.mat through inspector variable.
+bbox.BoxMaterial = Assign BoundingBox.mat through inspector variable.
+bbox.BoxGrabbedMaterial = Assign MRTK_BoundingBox_ScaleHandle.mat through inspector variable.
+bbox.ScaleHandlePrefab = Assign BoundingBoxGrabbed.mat through inspector variable.
+bbox.ScaleHandleSlatePrefab = Assign BoundingBoxGrabbed.mat through inspector variable.
+bbox.ScaleHandleSize = 0.016f;
+bbox.ScaleHandleColliderPadding = 0.016f;
+bbox.RotationHandleSlatePrefab = Assign MRTK_BoundingBox_RotateHandle.prefab through inspector variable.
+bbox.RotationHandleSize = 0.016f;
+bbox.RotateHandleColliderPadding = 0.016f;
+mh.OnManipulationStarted.AddListener((med) => bbox.HighlightWires());
+mh.OnManipulationEnded.AddListener((med) => bbox.UnhighlightWires());
+```
+
+
 
 ## Inspector properties ##
 
@@ -58,7 +94,7 @@ Bounding box provides the following events. The example uses these events to pla
 <img src="../Documentation/Images/BoundingBox/MRTK_BoundingBox_Events.png" width="450">
 
 
-## Bounding box handle styles
+## Handle styles
 By default, when you just assign the [`BoundingBox.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/BoundingBox/BoundingBox.cs) script, it will show the handle of the HoloLens 1st gen style. To use HoloLens 2 style handles, you need to assign proper handle prefabs and materials.
 
 ![Bounding Box](../Documentation/Images/BoundingBox/MRTK_BoundingBox_HandleStyles1.png)
@@ -70,11 +106,11 @@ Below are the prefabs, materials, and the scaling values for the HoloLens 2 styl
 ### Handles (Setup for HoloLens 2 style)
 - **Handle Material**: BoundingBoxHandleWhite
 - **Handle Grabbed Material**: BoundingBoxHandleBlueGrabbed
-- **Scale Handle Prefab**: MRTK_BoundingBox_ScaleWidget
-- **Scale Handle Slate Prefab**: MRTK_BoundingBox_ScaleWidget_Slate
+- **Scale Handle Prefab**: MRTK_BoundingBox_ScaleHandle
+- **Scale Handle Slate Prefab**: MRTK_BoundingBox_ScaleHandle_Slate
 - **Scale Handle Size**: 0.016 (1.6cm)
 - **Scale Handle Collider Padding**: 0.016 (makes the grabbable collider slightly bigger than handle visual)
-- **Rotation Handle Prefab**: MRTK_BoundingBox_RotateWidget
+- **Rotation Handle Prefab**: MRTK_BoundingBox_RotateHandle
 - **Rotation Handle Size**: 0.016
 - **Rotation Handle Collider Padding**: 0.016 (makes the grabbable collider slightly bigger than handle visual)
 
