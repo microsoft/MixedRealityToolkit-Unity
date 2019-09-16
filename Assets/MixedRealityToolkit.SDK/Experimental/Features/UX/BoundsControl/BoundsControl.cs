@@ -213,7 +213,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
         [SerializeField]
         [Tooltip("Configuration for Proximity Effect")]
-        public BoundsControlProximityEffect proximityEffect = new BoundsControlProximityEffect();
+        public ProximityEffect proximityEffect = new ProximityEffect();
 
 
         [Header("Debug")]
@@ -1075,7 +1075,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
         void DestroyVisuals()
         {
-            proximityEffect.ClearHandles();
+            proximityEffect.ClearObjects();
             links.Clear();
             scaleHandles.DestroyHandles();
             rotationHandles.DestroyHandles();

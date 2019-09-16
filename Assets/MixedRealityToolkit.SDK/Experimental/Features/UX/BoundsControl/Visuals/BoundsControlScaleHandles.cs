@@ -70,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             return ShowScaleHandles;
         }
 
-        public override bool IsHandleTypeActive()
+        public override bool IsActive()
         {
             return ShowScaleHandles;
         }
@@ -155,7 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
         }
 
-        internal override Transform GetVisual(Transform handle)
+        protected override Transform GetVisual(Transform handle)
         {
             Transform visual = handle.GetChild(0).GetChild(0);
             if (visual != null && visual.name == "visuals")

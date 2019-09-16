@@ -210,7 +210,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                 (axisType == CardinalAxisType.Z && ShowRotationHandleForZ);
         }
 
-        public override bool IsHandleTypeActive()
+        public override bool IsActive()
         {
             return ShowRotationHandleForX || ShowRotationHandleForY || ShowRotationHandleForZ;
         }
@@ -286,10 +286,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             //handlesCreated.Invoke();
         }
 
-        internal override Transform GetVisual(Transform handle)
+        protected override Transform GetVisual(Transform handle)
         {
             // visual is first child 
-            Transform childTransform =  handle.GetChild(0);
+            Transform childTransform = handle.GetChild(0);
             if (childTransform != null && childTransform.name == "visuals")
             {
                 return childTransform;
