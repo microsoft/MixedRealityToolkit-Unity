@@ -435,7 +435,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                 // also only use proximity effect if nothing is being dragged or grabbed
                 if (!wireframeOnly && currentPointer == null)
                 {
-                    proximityEffect.HandleProximityScaling(transform.position, currentBoundsExtents);
+                    proximityEffect.Update(transform.position, currentBoundsExtents);
                 }
             }
             else if (boundsOverride != null && HasBoundsOverrideChanged())

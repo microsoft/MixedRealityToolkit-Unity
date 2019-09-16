@@ -112,6 +112,27 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         private HashSet<IMixedRealityPointer> proximityPointers = new HashSet<IMixedRealityPointer>();
         private List<Vector3> proximityPoints = new List<Vector3>();
 
+        #region public methods
+        /// <summary>
+        /// register objects for proximity effect via a <see cref="IProximityEffectObjectProvider"/>
+        /// </summary>
+        public void AddObjects(IProximityEffectObjectProvider provider)
+        {
+            RegisteredObjects registeredObject = new RegisteredObjects() { objectProvider = provider, proximityInfos = new List<ObjectProximityInfo>() };
+            provider.ForEachProximityObject(proximityObject =>
+            {
+                registeredObject.proximityInfos.Add(new ObjectProximityInfo()
+                {
+                    ScaledObject = proximityObject,
+                    ObjectVisualRenderer = proximityObject.gameObject.GetComponentInChildren<Renderer>()
+                });
+            });
+            registeredObjects.Add(registeredObject);
+        }
+
+        /// <summary>
+        /// Clears all registered objects in the proximity effect
+        /// </summary>
         public void ClearObjects()
         {
             if (registeredObjects != null)
@@ -120,6 +141,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
         }
 
+        /// <summary>
+        /// Resets all objects that had a proximity effect applied. This will reset them to their default size and reset to the base material
+        /// </summary>
         public void ResetProximityScale()
         {
             if (proximityEffectActive == false)
@@ -146,20 +170,13 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
         }
 
-        private bool IsAnyRegisteredObjectVisible()
-        {
-            foreach (var registeredObject in registeredObjects)
-            {
-                if (registeredObject.objectProvider.IsActive())
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public void HandleProximityScaling(Vector3 boundingBoxPosition, Vector3 currentBoundsExtents)
+        /// <summary>
+        /// Updates proximity effect and it's registered objects.
+        /// Highlights and scales objects in proximity according to the pointer distance
+        /// </summary>
+        /// <param name="boundsCenter">gameobject position the proximity effect is attached to</param>
+        /// <param name="boundsExtents">extents of the gameobject the proximity effect is attached to</param>
+        public void Update(Vector3 boundsCenter, Vector3 boundsExtents)
         {
             // early out if effect is disabled
             if (proximityEffectActive == false || !IsAnyRegisteredObjectVisible())
@@ -183,19 +200,19 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
 
             // Get the max radius possible of our current bounds plus the proximity
-            float maxRadius = Mathf.Max(Mathf.Max(currentBoundsExtents.x, currentBoundsExtents.y), currentBoundsExtents.z);
+            float maxRadius = Mathf.Max(Mathf.Max(boundsExtents.x, boundsExtents.y), boundsExtents.z);
             maxRadius *= maxRadius;
             maxRadius += objectCloseProximity + objectMediumProximity;
 
             // Grab points within sphere of influence from valid pointers
             foreach (var pointer in proximityPointers)
             {
-                if (IsPointWithinBounds(boundingBoxPosition, pointer.Position, maxRadius))
+                if (IsPointWithinBounds(boundsCenter, pointer.Position, maxRadius))
                 {
                     proximityPoints.Add(pointer.Position);
                 }
 
-                if (IsPointWithinBounds(boundingBoxPosition, pointer.Result.Details.Point, maxRadius))
+                if (IsPointWithinBounds(boundsCenter, pointer.Result.Details.Point, maxRadius))
                 {
                     proximityPoints.Add(pointer.Result.Details.Point);
                 }
@@ -253,6 +270,23 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                     ScaleObject(newState, item.ScaledObject, provider.objectProvider.GetObjectSize(), true);
                 }
             }
+        }
+
+        #endregion public methods
+
+        #region private methods
+
+        private bool IsAnyRegisteredObjectVisible()
+        {
+            foreach (var registeredObject in registeredObjects)
+            {
+                if (registeredObject.objectProvider.IsActive())
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private void ScaleObject(ProximityState state, Transform scaleVisual, float objectSize, bool lerp = false)
@@ -314,18 +348,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
         }
 
-        // register objects for proximity effect
-        internal void AddObjects(IProximityEffectObjectProvider provider)
-        {
-            RegisteredObjects registeredObject = new RegisteredObjects() { objectProvider = provider, proximityInfos = new List<ObjectProximityInfo>() };
-            provider.ForEachProximityObject(proximityObject => {
-                registeredObject.proximityInfos.Add(new ObjectProximityInfo()
-                {
-                    ScaledObject = proximityObject,
-                    ObjectVisualRenderer = proximityObject.gameObject.GetComponentInChildren<Renderer>()
-                });
-            });
-            registeredObjects.Add(registeredObject);
-        }
+        #endregion private methods
     }
 }
