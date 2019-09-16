@@ -683,26 +683,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 return;
             }
 
-            switch (SortType)
-            {
-                case CollationOrder.ChildOrder:
-                    NodeList.Sort((c1, c2) => (c1.Transform.GetSiblingIndex().CompareTo(c2.Transform.GetSiblingIndex())));
-                    break;
-
-                case CollationOrder.Alphabetical:
-                    NodeList.Sort((c1, c2) => (string.CompareOrdinal(c1.Name, c2.Name)));
-                    break;
-
-                case CollationOrder.AlphabeticalReversed:
-                    NodeList.Sort((c1, c2) => (string.CompareOrdinal(c1.Name, c2.Name)));
-                    NodeList.Reverse();
-                    break;
-
-                case CollationOrder.ChildOrderReversed:
-                    NodeList.Sort((c1, c2) => (c1.Transform.GetSiblingIndex().CompareTo(c2.Transform.GetSiblingIndex())));
-                    NodeList.Reverse();
-                    break;
-            }
+            SortNodes();
 
             LayoutChildren();
 
@@ -943,9 +924,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                     }
                 }
 
-                //get a point in front of the scrollContainer to use for the dot product check
-                finalOffset = (Vector3.forward * -1.0f) * thresholdOffset;
+                //recalcualte every frame to prevent any weirdness from moving the scrolling list.
                 thresholdPoint = transform.TransformPoint(finalOffset);
+
                 //Make sure we're actually (near) touched and not a pointer event, do a dot product check            
                 bool scrollRelease = UseNearScrollBoundary ? DetectScrollRelease(transform.forward * -1.0f, thresholdPoint, currentPointerPos, clippingObject.transform, transform.worldToLocalMatrix, scrollDirection)
                                                            : DetectScrollRelease(transform.forward * -1.0f, thresholdPoint, currentPointerPos, null, null, null);

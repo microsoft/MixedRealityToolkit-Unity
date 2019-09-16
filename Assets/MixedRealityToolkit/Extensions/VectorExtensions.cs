@@ -177,6 +177,28 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
+        /// Projects a pointer's actual direction on the same plane as a previous point in space.
+        /// </summary>
+        /// <param name="initialPoint">The original point representing the plane to project <paramref name="newDir"/> on.</param>
+        /// <param name="origin">Where <paramref name="newDir"/> is originating from in world space.</param>
+        /// <param name="newDir">The direction to project</param>
+        /// <param name="axisConstraint">The (optional) axis to scale to</param>
+        /// <returns>><see cref="Vector3"/> representing the new point on the plane as the hit point in world space</returns>
+        public static Vector3 GetProjectedPoint(Vector3 initialPoint, Vector3 origin, Vector3 newDir, Vector3? directionalConstraint)
+        {
+            Vector3 hitDir = initialPoint - origin;
+            float mag = Vector3.Dot(hitDir, newDir);
+            Vector3 trackedPoint = origin + (newDir * mag);
+
+            if (directionalConstraint != null)
+            {
+                trackedPoint.Scale((Vector3)directionalConstraint);
+            }
+
+            return trackedPoint;
+        }
+
+        /// <summary>
         /// Calculates how much scale is required for objBounds to match otherbounds.
         /// </summary>
         /// <param name="objBounds">Object representation to be scaled</param>
