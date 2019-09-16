@@ -1066,7 +1066,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Menu Examples
+  m_text: Near Menu Examples
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
   m_sharedMaterial: {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce,
@@ -1136,10 +1136,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: -40.90899, w: 0}
   m_textInfo:
     textComponent: {fileID: 1131124967}
-    characterCount: 13
+    characterCount: 18
     spriteCount: 0
-    spaceCount: 1
-    wordCount: 2
+    spaceCount: 2
+    wordCount: 3
     linkCount: 0
     lineCount: 1
     pageCount: 1
@@ -1823,7 +1823,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: 'This example scene demonstrates various types of menus with following functionality:
+  m_text: 'This example scene demonstrates various types of near interaction menus
+    with following functionality:
 
 
     - Toggle Pin button for Tag-along behavior
@@ -1877,7 +1878,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 129
+  m_firstOverflowCharacterIndex: 146
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -1900,10 +1901,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: -40.90899, w: -7.350438}
   m_textInfo:
     textComponent: {fileID: 2045784225}
-    characterCount: 197
+    characterCount: 214
     spriteCount: 0
-    spaceCount: 30
-    wordCount: 30
+    spaceCount: 32
+    wordCount: 32
     linkCount: 0
     lineCount: 6
     pageCount: 1
@@ -2000,17 +2001,17 @@ PrefabInstance:
     - target: {fileID: 7816578460215159413, guid: 12d9654209e044140b1de119eaff01f6,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6836587720326654440, guid: 12d9654209e044140b1de119eaff01f6,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.1178
+      value: -0.4512
       objectReference: {fileID: 0}
     - target: {fileID: 6836587720326654440, guid: 12d9654209e044140b1de119eaff01f6,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.022
+      value: 0.0657
       objectReference: {fileID: 0}
     - target: {fileID: 6836587720326654440, guid: 12d9654209e044140b1de119eaff01f6,
         type: 3}
