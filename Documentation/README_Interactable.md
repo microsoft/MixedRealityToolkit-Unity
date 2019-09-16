@@ -8,7 +8,7 @@ The [`Interactable`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable) compon
 
 The component allows for three primary sections of configuration:
 
-1) [types of input](#input-settings)
+1) [types of input](#general-input-settings)
 1) [visual themes](VisualThemes.md) targeted against multiple GameObjects
 1) [event handlers](#events)
 
@@ -82,7 +82,7 @@ The selection modes available are:
 
 ### Interactable Profiles
 
-*Profiles* are items that create a relationship between a GameObject and a [Visual Theme](VisualThemes.md). The profile defines what content will be manipulated by a theme when a [state change occurs](#states).
+*Profiles* are items that create a relationship between a GameObject and a [Visual Theme](VisualThemes.md). The profile defines what content will be manipulated by a theme when a [state change occurs](#general-input-settings).
 
 Themes work a lot like materials. They are scriptable objects that contain a list of properties that will be assigned to an object based on the current state. Themes are also re-usable and can be assigned across multiple *Interactable* UX objects.
 
@@ -123,7 +123,7 @@ A custom receiver can be created by making a new class that extends [`ReceiverBa
 
 ### Create custom events
 
-Like [Visual Themes](VisualTheme.md#custom-theme-engines), events can be extended to detect any state pattern or to expose functionality.
+Like [Visual Themes](VisualThemes.md#custom-theme-engines), events can be extended to detect any state pattern or to expose functionality.
 
 Custom events can be created in two main ways:
 

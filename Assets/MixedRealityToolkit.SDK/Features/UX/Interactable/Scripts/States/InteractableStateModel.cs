@@ -41,7 +41,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 && this.ActiveIndex == other.ActiveIndex;
         }
     }
-    
+
+    /// <summary>
+    /// Base class for defining state model logic to use in conjunction with the State class
+    /// Allows for retrieving current state mode and comparing states
+    /// </summary>
     public abstract class BaseStateModel
     {
         protected State currentState;

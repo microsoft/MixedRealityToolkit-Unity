@@ -33,7 +33,7 @@ A [`State`](xref:Microsoft.MixedReality.Toolkit.UI.States) ScriptableObject defi
 
 ### Theme Engine properties
 
-Outside of *States*, a [`Theme`](xref:Microsoft.MixedReality.Toolkit.UI.Theme) asset also defines a list of Theme Engines and the associated properties for these engines. A [Theme engine](#theme-engine) again defines the logic to set the correct values against a GameObject at runtime.
+Outside of *States*, a [`Theme`](xref:Microsoft.MixedReality.Toolkit.UI.Theme) asset also defines a list of Theme Engines and the associated properties for these engines. A [Theme engine](#theme-engines) again defines the logic to set the correct values against a GameObject at runtime.
 
 A [`Theme`](xref:Microsoft.MixedReality.Toolkit.UI.Theme) asset can define multiple Theme Engines to achieve sophisticated visual states transitions targeting multiple GameObject properties.
 
@@ -55,9 +55,9 @@ In general, it is easier to design Theme configurations via the Unity inspector 
 
 To help expedite development, the following helper methods are useful for simplifying setup.
 
-[`Interactable.GetDefaultInteractableStates()`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable.GetDefaultInteractableStates) - creates a new States ScriptableObject with the four default state values used in the [Interactable](README_Interactable.md) component.
+[`Interactable.GetDefaultInteractableStates()`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable.GetDefaultInteractableStates()) - creates a new States ScriptableObject with the four default state values used in the [Interactable](README_Interactable.md) component.
 
-[`ThemeDefinition.GetDefaultThemeDefinition<T>()`](xref:Microsoft.MixedReality.Toolkit.UI.ThemeDefinition.GetDefaultThemeDefinition) - Every Theme Engine defines a default configuration with the correct properties needed for that Theme runtime type. This helper creates a definition for the given Theme Engine type.
+[`ThemeDefinition.GetDefaultThemeDefinition<T>()`](xref:Microsoft.MixedReality.Toolkit.UI.ThemeDefinition.GetDefaultThemeDefinition()) - Every Theme Engine defines a default configuration with the correct properties needed for that Theme runtime type. This helper creates a definition for the given Theme Engine type.
 
 ```csharp
 // This code example builds a Theme ScriptableObject that can be used with an Interactable component.
@@ -86,7 +86,7 @@ testTheme.Definitions = new List<ThemeDefinition>() { newThemeType };
 
 ## Theme Engines
 
-A [Theme Engine](#theme-engine) is a class that extends from the [`InteractableThemeBase`](xref:Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase) class. These classes are instantiated at runtime and configured with a [`ThemeDefinition`](xref:Microsoft.MixedReality.Toolkit.UI.ThemeDefinition) object as outlined earlier.
+A [Theme Engine](#theme-engines) is a class that extends from the [`InteractableThemeBase`](xref:Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase) class. These classes are instantiated at runtime and configured with a [`ThemeDefinition`](xref:Microsoft.MixedReality.Toolkit.UI.ThemeDefinition) object as outlined earlier.
 
 ### Default Theme Engines
 

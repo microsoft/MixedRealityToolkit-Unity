@@ -77,7 +77,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         /// </summary>
         protected bool RenderStates()
         {
-            //GUIStyle box = InspectorUIUtility.Box(EditorGUI.indentLevel * ThemeBoxMargin);
             using (new EditorGUILayout.VerticalScope())
             {
                 GUI.enabled = !(EditorApplication.isPlaying || EditorApplication.isPaused);
