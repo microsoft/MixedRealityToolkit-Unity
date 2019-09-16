@@ -37,7 +37,7 @@ You can find examples of Bounding Box configurations in the `BoundingBoxExamples
 3. (Optional) Assign prefabs and materials for HoloLens 2 style Bounding Box. This still requires assignments through the inspector since the materials and prefabs should be dynamically loaded. 
 
 > [!NOTE]
-> Using Unity's 'Resources' folder for dynamically loading the materials is not recommended since the shader's permutation could be missing on build time.
+> Using Unity's 'Resources' folder or [Shader.Find]( https://docs.unity3d.com/ScriptReference/Shader.Find.html) for dynamically loading shaders is not recommended since shader permutations may be missing at runtime.
 
 ```
    bbox.BoxMaterial = [Assign BoundingBox.mat]
