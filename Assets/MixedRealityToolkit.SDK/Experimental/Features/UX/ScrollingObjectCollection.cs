@@ -475,7 +475,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 }
                 else
                 {
-                    return GetTrackedPoint(currentPointerTransform.position, pointerHitPoint, currentPointer.Position + currentPointer.Rotation * Vector3.forward, (scrollDirection == ScrollDirectionType.UpAndDown) ? transform.up : transform.right);
+                    return VectorExtensions.GetProjectedPoint(pointerHitPoint, currentPointerTransform.position, currentPointer.Position + currentPointer.Rotation * Vector3.forward, (scrollDirection == ScrollDirectionType.UpAndDown) ? transform.up : transform.right);
                 }
             }
         }
@@ -770,7 +770,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             }
 
             //create the offset for our thesholdCalculation -- grab the first item in the list
-            TryGetObjectAlignedBoundsSize(NodeList[FirstItemInView].Transform, out Vector3 offsetSize);
+
+            BoundsExtensions.TryGetObjectAlignedBoundsSize(NodeList[FirstItemInView].Transform, out Vector3 offsetSize);
             thresholdOffset = offsetSize.z * 0.5f;
 
             //get a point in front of the scrollContainer to use for the dot product check
@@ -1750,27 +1751,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         }
 
         /// <summary>
-        /// Iterates over a list of <see cref="IMixedRealityPointer"/> to find a <see cref="PokePointer"/>
-        /// </summary>
-        /// <param name="pointers"> List of <see cref="IMixedRealityPointer"/> to iterate</param>
-        /// <param name="pokePointer"><see cref="out"/> valid <see cref="PokePointer"/> as <see cref="IMixedRealityPointer"/></param>
-        /// <returns><see cref="true"/> when a <see cref="PokePointer"/> is found</returns>
-        private bool TryGetPokePointer(IMixedRealityPointer[] pointers, out IMixedRealityPointer pokePointer)
-        {
-            pokePointer = null;
-
-            for (int i = 0; i < pointers.Length; i++)
-            {
-                if (pointers[i].GetType() == typeof(PokePointer))
-                {
-                    pokePointer = pointers[i];
-                }
-            }
-
-            return (pokePointer != null) ? true : false;
-        }
-
-        /// <summary>
         /// Helper get near hand joint in world space
         /// </summary>
         /// <param name="joint">Joint to get</param>
@@ -1996,33 +1976,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             }
         }
 
-        #endregion public methods
-
-        #region static methods
-
-        /// <summary>
-        /// Projects a pointer's actual direction on the same plane as the original hit point (the point that caused the event to fire)
-        /// </summary>
-        /// <param name="origin">Where the direction is originating from</param>
-        /// <param name="hitPoint">The original point where the hit occured</param>
-        /// <param name="newDir">The direction of the pointer</param>
-        /// <param name="axisConstraint">The (optional) axis to project the new point to</param>
-        /// <returns>><see cref="Vector3"/> representing the new point on the plane as the hit point in world space</returns>
-        /// <remarks><see cref="IMixedRealityPointer"/>'s eventData doesnt provide the "current" hit point, only an origin and direction, this makes the calculation easy</remarks>
-        public static Vector3 GetTrackedPoint(Vector3 origin, Vector3 hitPoint, Vector3 newDir, Vector3? directionalConstraint)
-        {
-            Vector3 hitDir = hitPoint - origin;
-            float mag = Vector3.Dot(hitDir, newDir);
-            Vector3 trackedPoint = origin + (newDir * mag);
-
-            if (directionalConstraint != null)
-            {
-                trackedPoint.Scale((Vector3)directionalConstraint);
-            }
-
-            return trackedPoint;
-        }
-
         /// <summary>
         /// Simple time threshold check
         /// </summary>
@@ -2039,61 +1992,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             return false;
         }
 
-        /// <summary>
-        /// Finds the object-aligned size of a <see cref="Transform"/> 
-        /// </summary>
-        /// <param name="obj"><see cref="Transform"/> representing the object to get offset from</param>
-        /// <param name="alignedSize">the object-aligned size of  <param name="obj"></param></param>
-        /// <returns><see langword="true"/>  if <param name="alignedSize"> is valid</returns>
-        public static bool TryGetObjectAlignedBoundsSize(Transform obj, out Vector3 alignedSize)
-        {
-            Collider c = obj.GetComponentInChildren<Collider>();
-            Renderer rend = obj.GetComponentInChildren<Renderer>();
-            alignedSize = Vector3.zero;
-
-            //store and clear the original rotation
-            Quaternion origRot = obj.rotation;
-            obj.rotation = Quaternion.identity;
-
-            bool canGetSize = false;
-
-            if (c != null)
-            {
-                if (c.GetType() == typeof(BoxCollider))
-                {
-                    BoxCollider bC = c as BoxCollider;
-                    alignedSize = bC.bounds.size;
-                    canGetSize = true;
-                }
-                else if (c.GetType() == typeof(SphereCollider))
-                {
-                    SphereCollider sC = c as SphereCollider;
-                    alignedSize = new Vector3(sC.radius, sC.radius, sC.radius);
-                    canGetSize = true;
-                }
-                else
-                {
-                    canGetSize = false;
-                }
-
-            }
-            else if (rend != null)
-            {
-                alignedSize = rend.bounds.size;
-                canGetSize = true;
-            }
-            else
-            {
-                canGetSize = false;
-            }
-
-            //reapply our rotation
-            obj.rotation = origRot;
-
-            return (canGetSize) ? true : false;
-        }
-
-        #endregion static methods
+        #endregion public methods
 
         #region IMixedRealityPointerHandler implementation
 
@@ -2181,7 +2080,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         ///</inheritdoc>
         void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
         {
-            if (TryGetPokePointer(eventData.InputSource.Pointers, out currentPointer))
+            currentPointer = PointerUtils.GetPointer<PokePointer>(eventData.Handedness);
+            if (currentPointer != null)
             {
                 //Quick check for the global listener to bail if the object is not in the list
                 if (!ContainsNode(currentPointer.Result.CurrentPointerTarget.transform))
@@ -2233,7 +2133,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         ///</inheritdoc>
         void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData)
         {
-            if (TryGetPokePointer(eventData.InputSource.Pointers, out IMixedRealityPointer p))
+            IMixedRealityPointer p = PointerUtils.GetPointer<PokePointer>(eventData.Handedness);
+
+            if (p != null)
             {
                 //Quick check for the global listener to bail if the object is not in the list
                 if (!ContainsNode(p.Result.CurrentPointerTarget.transform))
@@ -2248,7 +2150,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             }
         }
 
-        #endregion IMixedRealityTouchHandler implementation`
+        #endregion IMixedRealityTouchHandler implementation
 
         #region IMixedRealitySourceStateHandler implementation
 
