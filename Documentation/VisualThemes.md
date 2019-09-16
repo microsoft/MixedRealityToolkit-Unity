@@ -55,9 +55,9 @@ In general, it is easier to design Theme configurations via the Unity inspector 
 
 To help expedite development, the following helper methods are useful for simplifying setup.
 
-[`Interactable.GetDefaultInteractableStates()`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable.GetDefaultInteractableStates()) - creates a new States ScriptableObject with the four default state values used in the [Interactable](README_Interactable.md) component.
+[`Interactable.GetDefaultInteractableStates()`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable) - creates a new States ScriptableObject with the four default state values used in the [Interactable](README_Interactable.md) component.
 
-[`ThemeDefinition.GetDefaultThemeDefinition<T>()`](xref:Microsoft.MixedReality.Toolkit.UI.ThemeDefinition.GetDefaultThemeDefinition()) - Every Theme Engine defines a default configuration with the correct properties needed for that Theme runtime type. This helper creates a definition for the given Theme Engine type.
+[`ThemeDefinition.GetDefaultThemeDefinition<T>()`](xref:Microsoft.MixedReality.Toolkit.UI.ThemeDefinition) - Every Theme Engine defines a default configuration with the correct properties needed for that Theme runtime type. This helper creates a definition for the given Theme Engine type.
 
 ```csharp
 // This code example builds a Theme ScriptableObject that can be used with an Interactable component.
@@ -130,7 +130,7 @@ Returns a [`ThemeDefinition`](xref:Microsoft.MixedReality.Toolkit.UI.ThemeDefini
 
 #### Recommended overrides
 
-[`InteractableThemeBase.Init(GameObject host, ThemeDefinition settings)`](xref:Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.Init)
+[`InteractableThemeBase.Init(GameObject host, ThemeDefinition settings)`](xref:Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase)
 
 Perform any initialization steps here targeting the provided *GameObject* parameter and using the properties and configurations defined in the *ThemeDefinition* parameter. It is recommended to call `base.Init(host, settings)` at the beginning of an override.
 

@@ -142,7 +142,7 @@ public CustomInteractablesReceiver(UnityEvent ev) : base(ev, "CustomEvent")
 }
 ```
 
-The following methods are useful to override/implement when creating a custom Event Receiver. [`ReceiverBase.OnUpdate()`](xref:Microsoft.MixedReality.Toolkit.UI.ReceiverBase.OnUpdate) is an abstract method that can be used to detect state patterns/transitions. Furthermore, the [`ReceiverBase.OnVoiceCommand()`](xref:Microsoft.MixedReality.Toolkit.UI.ReceiverBase.OnVoiceCommand) and [`ReceiverBase.OnClick()`](xref:Microsoft.MixedReality.Toolkit.UI.ReceiverBase.OnClick) methods are useful for creating custom event logic when the *Interactable* is selected.
+The following methods are useful to override/implement when creating a custom Event Receiver. [`ReceiverBase.OnUpdate()`](xref:Microsoft.MixedReality.Toolkit.UI.ReceiverBase) is an abstract method that can be used to detect state patterns/transitions. Furthermore, the [`ReceiverBase.OnVoiceCommand()`](xref:Microsoft.MixedReality.Toolkit.UI.ReceiverBase) and [`ReceiverBase.OnClick()`](xref:Microsoft.MixedReality.Toolkit.UI.ReceiverBase) methods are useful for creating custom event logic when the *Interactable* is selected.
 
 ``` csharp
 public override void OnUpdate(InteractableStates state, Interactable source)
@@ -208,7 +208,7 @@ While the [`SelectionMode`](xref:Microsoft.MixedReality.Toolkit.UI.SelectionMode
 
 ![Profile Toggle Visual Themes Example](Images/Interactable/Profile_toggle.png)
 
-Developers can utilize the [`SetToggled`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable.SetToggled) and [`IsToggled`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable.IsToggled) interfaces to get/set the toggle state of an *Interactable* via code.
+Developers can utilize the [`SetToggled`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable) and [`IsToggled`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable) interfaces to get/set the toggle state of an *Interactable* via code.
 
 ```csharp
 // If using SelectionMode = Toggle (i.e Dimensions == 2)
@@ -246,7 +246,7 @@ Every click event will advance the `DimensionIndex` by 1 at runtime until the `D
 
 ![Multi-Dimensional profile example](Images/Interactable/Profile_multiDimensions.png)
 
-Developers can assess the [`DimensionIndex`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable.DimensionIndex) to determine which dimension is currently active.
+Developers can assess the [`DimensionIndex`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable) to determine which dimension is currently active.
 
 ```csharp
 // If using SelectionMode = Multi-dimension (i.e Dimensions >= 3)
@@ -293,7 +293,7 @@ public static void AddOnClick(Interactable interactable)
 }
 ```
 
-Use the [`Interactable.AddReceiver<T>()`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable.AddReceiver) function to add event receivers dynamically at runtime.
+Use the [`Interactable.AddReceiver<T>()`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable) function to add event receivers dynamically at runtime.
 
 The example code below demonstrates how to add an [InteractableOnFocusReceiver](xref:Microsoft.MixedReality.Toolkit.UI.InteractableOnFocusReceiver), which listens for focus enter/exit, and furthermore define action code to perform when the event instances fire.
 
@@ -332,4 +332,3 @@ public static void AddToggleEvents(Interactable interactable)
 * [Speech Commands](./Input/Speech.md)
 * [Buttons](README_Button.md)
 * [MRTK Standard Shader](README_MRTKStandardShader.md)
-  
