@@ -10,7 +10,7 @@ using UnityEngine.Events;
 namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 {
     [Serializable]
-    public abstract class BoundsControlHandlesBase
+    public abstract class BoundsControlHandlesBase : IProximityScaleObjectProvider
     {
         [SerializeField]
         [Tooltip("Material applied to handles when they are not in a grabbed state")]
@@ -131,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         }
 
         public abstract bool IsVisible(Transform handle);
-        public abstract bool IsHandleTypeActive();
+        
 
         internal protected List<Transform> handles = new List<Transform>();
 
@@ -196,14 +196,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             return HandleType.None;
         }
 
-        internal void ForEachHandle(Action<Transform> action)
-        {
-            for (int i = 0; i < handles.Count; ++i)
-            {
-                action(handles[i]);
-            }
-        }
-
         internal protected void SetMaterials()
         {
             if (handleMaterial == null /*&& handleMaterial != wireframeMaterial*/)
@@ -232,6 +224,35 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
         }
 
-        internal abstract Transform GetVisual(Transform handle);
+        protected abstract Transform GetVisual(Transform handle);
+
+
+        #region IProximityScaleObjectProvider 
+        public abstract bool IsActive();
+
+        public Material GetBaseMaterial()
+        {
+            return handleMaterial;
+        }
+
+        public Material GetHighlightedMaterial()
+        {
+            return HandleGrabbedMaterial;
+        }
+
+        public float GetObjectSize()
+        {
+            return HandleSize;
+        }
+
+        public void ForEachProximityObject(Action<Transform> action)
+        {
+            for (int i = 0; i < handles.Count; ++i)
+            {
+                action(GetVisual(handles[i]));
+            }
+        }
+
+        #endregion
     }
 }

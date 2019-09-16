@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 {
     [Serializable]
-    public class BoundsControlProximityEffect 
+    public class ProximityEffect 
     {
         [SerializeField]
         [Tooltip("Determines whether proximity feature (scaling and material toggling) for bounding box handles is activated")]
@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         /// <summary>
         /// Internal state tracking for proximity of a handle
         /// </summary>
-        internal enum HandleProximityState
+        internal enum ProximityState
         {
             FullsizeNoProximity = 0,
             MediumProximity,
@@ -85,41 +85,34 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         /// <summary>
         /// Container for handle references and states (including scale and rotation type handles)
         /// </summary>
-        private class HandleProximityInfo
+        private class ObjectProximityInfo
         {
-            public Transform Handle;
-            public Renderer HandleVisualRenderer;
-            public HandleProximityState ProximityState = HandleProximityState.FullsizeNoProximity;
+            public Transform ScaledObject;
+            public Renderer ObjectVisualRenderer;
+            public ProximityState ProximityState = ProximityState.FullsizeNoProximity;
         }
 
 
 
         /// Container for registered bounding box handles and their proximity states
         /// 
-        private class RegisteredHandles
+        private class RegisteredObjects
         {
-            public BoundsControlHandlesBase handleCollection;
-            public List<HandleProximityInfo> proximityInfos;
+            public IProximityScaleObjectProvider objectProvider;
+            public List<ObjectProximityInfo> proximityInfos;
         }
 
-        //internal class ProximityHandleInfo
-        //{
-        //    public HandleProximityState proximityState;
-        //    public Renderer HandleVisualRenderer;
-        //}
-
-
-        private List<RegisteredHandles> registeredHandles = new List<RegisteredHandles>();
+        private List<RegisteredObjects> registeredObjects = new List<RegisteredObjects>();
 
 
         private HashSet<IMixedRealityPointer> proximityPointers = new HashSet<IMixedRealityPointer>();
         private List<Vector3> proximityPoints = new List<Vector3>();
 
-        public void ClearHandles()
+        public void ClearObjects()
         {
-            if (registeredHandles != null)
+            if (registeredObjects != null)
             {
-                registeredHandles.Clear();
+                registeredObjects.Clear();
             }
         }
 
@@ -130,30 +123,30 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                 return;
             }
 
-            foreach (var baseHandles in registeredHandles)
+            foreach (var baseHandles in registeredObjects)
             {
                 foreach (var item in baseHandles.proximityInfos)
                 {
-                    if (item.ProximityState != HandleProximityState.FullsizeNoProximity)
+                    if (item.ProximityState != ProximityState.FullsizeNoProximity)
                     {
-                        item.ProximityState = HandleProximityState.FullsizeNoProximity;
+                        item.ProximityState = ProximityState.FullsizeNoProximity;
                        
-                        if (item.HandleVisualRenderer)
+                        if (item.ObjectVisualRenderer)
                         {
-                            item.HandleVisualRenderer.material = baseHandles.handleCollection.HandleMaterial;
+                            item.ObjectVisualRenderer.material = baseHandles.objectProvider.GetBaseMaterial();
                         }
 
-                        ScaleHandle(item.ProximityState, item.Handle, baseHandles.handleCollection.HandleSize);
+                        ScaleObject(item.ProximityState, item.ScaledObject, baseHandles.objectProvider.GetObjectSize());
                     }
                 }
             }
         }
 
-        private bool IsAnyRegisteredHandleVisible()
+        private bool IsAnyRegisteredObjectVisible()
         {
-            foreach (var baseHandles in registeredHandles)
+            foreach (var baseHandles in registeredObjects)
             {
-                if (baseHandles.handleCollection.IsHandleTypeActive())
+                if (baseHandles.objectProvider.IsActive())
                 {
                     return true;
                 }
@@ -165,7 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         public void HandleProximityScaling(Vector3 boundingBoxPosition, Vector3 currentBoundsExtents)
         {
             // early out if effect is disabled
-            if (proximityEffectActive == false || !IsAnyRegisteredHandleVisible())
+            if (proximityEffectActive == false || !IsAnyRegisteredObjectVisible())
             {
                 return;
             }
@@ -210,22 +203,22 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             foreach (var point in proximityPoints)
             {
 
-                foreach (var baseHandles in registeredHandles)
+                foreach (var baseHandles in registeredObjects)
                 {
 
                     foreach (var item in baseHandles.proximityInfos)
                     {
                         // If handle can't be visible, skip calculations
-                        if (!baseHandles.handleCollection.IsHandleTypeActive())
+                        if (!baseHandles.objectProvider.IsActive())
                         {
                             continue;
                         }
 
                         // Perform comparison on sqr distance since sqrt() operation is expensive in Vector3.Distance()
-                        float sqrDistance = (item.Handle.transform.position - point).sqrMagnitude;
+                        float sqrDistance = (item.ScaledObject.transform.position - point).sqrMagnitude;
                         if (sqrDistance < closestDistanceSqr)
                         {
-                            closestHandle = item.Handle;
+                            closestHandle = item.ScaledObject;
                             closestDistanceSqr = sqrDistance;
                         }
 
@@ -235,11 +228,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
 
             // Loop through all handles and update visual state based on closest point
-            foreach (var baseHandles in registeredHandles)
+            foreach (var baseHandles in registeredObjects)
             {
                 foreach (var item in baseHandles.proximityInfos)
                 {
-                    HandleProximityState newState = (closestHandle == item.Handle) ? GetProximityState(closestDistanceSqr) : HandleProximityState.FullsizeNoProximity;
+                    ProximityState newState = (closestHandle == item.ScaledObject) ? GetProximityState(closestDistanceSqr) : ProximityState.FullsizeNoProximity;
 
                     // Only apply updates if handle is in a new state or closest handle needs to lerp scaling
                     if (item.ProximityState != newState)
@@ -247,39 +240,39 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                         // Update and save new state
                         item.ProximityState = newState;
 
-                        if (item.HandleVisualRenderer)
+                        if (item.ObjectVisualRenderer)
                         {
-                            item.HandleVisualRenderer.material = newState == HandleProximityState.CloseProximity ? baseHandles.handleCollection.HandleGrabbedMaterial : baseHandles.handleCollection.HandleMaterial;
+                            item.ObjectVisualRenderer.material = newState == ProximityState.CloseProximity ? baseHandles.objectProvider.GetHighlightedMaterial() : baseHandles.objectProvider.GetBaseMaterial();
                         }
                     }
 
-                    ScaleHandle(newState, item.Handle, baseHandles.handleCollection.HandleSize, true);
+                    ScaleObject(newState, item.ScaledObject, baseHandles.objectProvider.GetObjectSize(), true);
                 }
             }
         }
 
 
-        private void ScaleHandle(HandleProximityState state, Transform scaleVisual, float handleSize, bool lerp = false)
+        private void ScaleObject(ProximityState state, Transform scaleVisual, float objectSize, bool lerp = false)
         {
             float targetScale = 1.0f, weight = 0.0f;
 
             switch (state)
             {
-                case HandleProximityState.FullsizeNoProximity:
+                case ProximityState.FullsizeNoProximity:
                     targetScale = farScale;
                     weight = lerp ? farGrowRate : 1.0f;
                     break;
-                case HandleProximityState.MediumProximity:
+                case ProximityState.MediumProximity:
                     targetScale = mediumScale;
                     weight = lerp ? mediumGrowRate : 1.0f;
                     break;
-                case HandleProximityState.CloseProximity:
+                case ProximityState.CloseProximity:
                     targetScale = closeScale;
                     weight = lerp ? closeGrowRate : 1.0f;
                     break;
             }
 
-            float newLocalScale = (scaleVisual.localScale.x * (1.0f - weight)) + (handleSize * targetScale * weight);
+            float newLocalScale = (scaleVisual.localScale.x * (1.0f - weight)) + (objectSize * targetScale * weight);
             scaleVisual.localScale = new Vector3(newLocalScale, newLocalScale, newLocalScale);
         }
 
@@ -302,34 +295,34 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         /// </summary>
         /// <param name="sqrDistance">distance squared in proximity in meters</param>
         /// <returns>HandleProximityState for given distance</returns>
-        private HandleProximityState GetProximityState(float sqrDistance)
+        private ProximityState GetProximityState(float sqrDistance)
         {
             if (sqrDistance < handleCloseProximity * handleCloseProximity)
             {
-                return HandleProximityState.CloseProximity;
+                return ProximityState.CloseProximity;
             }
             else if (sqrDistance < handleMediumProximity * handleMediumProximity)
             {
-                return HandleProximityState.MediumProximity;
+                return ProximityState.MediumProximity;
             }
             else
             {
-                return HandleProximityState.FullsizeNoProximity;
+                return ProximityState.FullsizeNoProximity;
             }
         }
 
         // register handles for proximity effect
-        internal void AddHandles(BoundsControlHandlesBase bbhandles)
+        internal void AddHandles(IProximityScaleObjectProvider provider)
         {
-            RegisteredHandles handlesEntry = new RegisteredHandles() { handleCollection = bbhandles, proximityInfos = new List<HandleProximityInfo>() };
-            bbhandles.ForEachHandle(handle => {
-                handlesEntry.proximityInfos.Add(new HandleProximityInfo()
+            RegisteredObjects registeredObject = new RegisteredObjects() { objectProvider = provider, proximityInfos = new List<ObjectProximityInfo>() };
+            provider.ForEachProximityObject(proximityObject => {
+                registeredObject.proximityInfos.Add(new ObjectProximityInfo()
                 {
-                    Handle = bbhandles.GetVisual(handle),
-                    HandleVisualRenderer = handle.gameObject.GetComponentInChildren<Renderer>()
+                    ScaledObject = proximityObject,
+                    ObjectVisualRenderer = proximityObject.gameObject.GetComponentInChildren<Renderer>()
                 });
             });
-            registeredHandles.Add(handlesEntry);
+            registeredObjects.Add(registeredObject);
         }
     }
 }
