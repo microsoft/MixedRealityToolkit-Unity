@@ -50,7 +50,7 @@ Articulated hand の入力状態情報を活用するには、pressable button �
 
 ![Button](../Documentation/Images/Button/MRTK_Button_Structure.png)
 
-**[Box Collider] (ボックスコライダー)**
+**ボックスコライダー**
 ボタンの前面プレートのための `Box Collider`。
 
 **Pressable Button**
@@ -62,31 +62,31 @@ Articulated hand の入力状態情報を活用するには、pressable button �
 **Interactable**
 [Interactable](README_Interactable.md) は様々なタイプのインタラクションの状態とイベントを処理します。HoloLens のゲイズ，ジェスチャ，及び音声入力と，没入型ヘッドセットのモーションコントローラの入力は，このスクリプトによって直接処理されます。
 
-**Audio Source**
+**オーディオソース**
 音声フィードバッククリップ用の Unity のオーディオソース。
 
 *NearInteractionTouchable.cs*
 多関節ハンドでオブジェクトをタッチ可能にするために必要です。
 
-## Prefab Layout
+## Prefab のレイアウト
 
 *ButtonContent* オブジェクトには、フロントプレート、テキストラベル、およびアイコンが含まれています。 *FrontPlate*は、*Button_Box* シェーダーを使用して、人差し指の近接に応答します。 光る境界線、近接ライト、およびタッチのパルスエフェクトを示します。 テキストラベルは TextMesh Pro で作成されます。 *SeeItSayItLabel* の可視性は、[Interactable]（README_Interactable.md）のテーマによって制御されます。
 
 ![Button](../Documentation/Images/Button/MRTK_Button_Layout.png)
 
-## Voice command ('See-it, Say-it') ##
+## 音声コマンド ('See-it, Say-it')
 
 **Speech Input Handler**
 Pressable Buttonの[Interactable]（README_Interactable.md）スクリプトは、すでに `IMixedRealitySpeechHandler`を実装しています。 ここで音声コマンドのキーワードを設定できます。
 
 <img src="../Documentation/Images/Button/MRTK_Button_Speech1.png" width="450">
 
-**Speech Input Profile**
+**音声入力プロファイル (Speech Input Profile)**
 さらに、グローバルな *Speech Commands Profile* に音声コマンドキーワードを登録する必要があります。
 
 <img src="../Documentation/Images/Button/MRTK_Button_Speech2.png" width="450">
 
-**See-it, Say-it label**
+**See-it, Say-it ラベル**
 Pressable Button プレハブには、*SeeItSayItLabel* オブジェクトの下にプレースホルダー TextMesh Pro ラベルがあります。このラベルを使用して、ボタンの音声コマンドキーワードをユーザーに伝えることができます。
 
 <img src="../Documentation/Images/Button/MRTK_Button_Speech3.png" width="450">
@@ -96,7 +96,7 @@ Pressable Button プレハブには、*SeeItSayItLabel* オブジェクトの下
 
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCube0.png">
 
-### 1. Creating a Pressable Button with Cube (Near interaction only)
+### 1. キューブで Pressable Button を作成する (Near interaction のみ)
 
 1. Unity のキューブを作成します（GameObject> 3D Object> Cube）
 2. `PressableButton.cs` のスクリプトを追加します
@@ -116,7 +116,7 @@ Pressable Button プレハブには、*SeeItSayItLabel* オブジェクトの下
 
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCubeRun1.jpg">
 
-### 2. Adding visual feedback to the basic cube button
+### 2. 視覚的なフィードバックをベーシックなキューブボタンに加える
 
 MRTK Standard Shader は、視覚的なフィードバックを簡単に追加できるさまざまな機能を提供しています。 マテリアルを作成し、シェーダー `Mixed Reality Toolkit/Standard` を選択します。 または、MRTK 標準シェーダーを使用している `/SDK/StandardAssets/Materials/` にある既存のマテリアルの１つを使用または複製できます。
 
@@ -128,7 +128,7 @@ MRTK Standard Shader は、視覚的なフィードバックを簡単に追加�
 
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCubeRun2.jpg">
 
-### 3. Adding audio feedback to the basic cube button
+### 3. オーディオフィードバックをベーシックなキューブボタンに加える
 
 `PressableButton.cs` のスクリプトは TouchBegin()、TouchEnd()、ButtonPressed()、ButtonReleased() などのイベントを公開するため、音声フィードバックを簡単に割り当てることができます。Unity の `Audio Source` をキューブオブジェクトに追加し、AudioSource.PlayOneShot() を選択してオーディオクリップを割り当てます。`/SDK/StandardAssets/Audio/` フォルダーの下のMRTK_Select_Main および MRTK_Select_Secondary オーディオクリップを使用できます。
 
@@ -136,7 +136,7 @@ MRTK Standard Shader は、視覚的なフィードバックを簡単に追加�
 
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCube6.png" width="450">
 
-### 4. Adding visual states and handle far interaction events
+### 4. 視覚的な状態と遠方のインタラクションイベントの処理を加える
 
 [Interactable]（README_Interactable.md）は、さまざまなタイプの入力インタラクションの視覚的な状態を簡単に作成できるスクリプトです。 また、遠方のインタラクションイベントも処理します。`Interactable.cs` を追加し、キューブオブジェクトを **Profiles** の下の **Target** フィールドにドラッグアンドドロップします。 次に、**ScaleOffsetColorTheme** タイプの新しいテーマを作成します。このテーマでは、**Focus** や **Pressed** などの特定のインタラクションの状態におけるオブジェクトの色を指定できます。スケールとオフセットも制御できます。**Easing** をチェックし、継続時間を設定して視覚的な移行をスムーズにします。
 
@@ -148,7 +148,7 @@ MRTK Standard Shader は、視覚的なフィードバックを簡単に追加�
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCubeRun3.jpg">
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCubeRun4.jpg">
 
-## Custom Button Examples ##
+## カスタムボタンのサンプル ##
 
 [HandInteractionExample のシーン](README_HandInteractionExamples.md) で、ピアノと丸ボタンの例を見てみましょう。どちらも `PressableButton` を使用しています。
 
