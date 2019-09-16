@@ -26,8 +26,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// Build the UWP appx bundle for this project.  Requires that <see cref="UwpPlayerBuildTools.BuildPlayer(string,bool,CancellationToken)"/> has already be run or a user has
         /// previously built the Unity Player with the WSA Player as the Build Target.
         /// </summary>
-        /// <param name="buildInfo"></param>
-        /// <param name="cancellationToken"></param>
         /// <returns>True, if the appx build was successful.</returns>
         public static async Task<bool> BuildAppxAsync(UwpBuildInfo buildInfo, CancellationToken cancellationToken = default)
         {
@@ -101,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             // Now that NuGet packages have been restored, we can run the actual build process.
             exitCode = await Run(msBuildPath, 
-                $"\"{solutionProjectPath}\" /t:{(buildInfo.RebuildAppx ? "Rebuild" : "Build")} /p:Configuration={buildInfo.Configuration} /p:Platform={buildInfo.BuildPlatform} {GetMSBuildLoggingCommand(buildInfo.LogDirectory, "buildAppx.log")}",
+                $"\"{solutionProjectPath}\" {(buildInfo.Multicore ? "/m /nr:false" : "")} /t:{(buildInfo.RebuildAppx ? "Rebuild" : "Build")} /p:Configuration={buildInfo.Configuration} /p:Platform={buildInfo.BuildPlatform} {(string.IsNullOrEmpty(buildInfo.PlatformToolset) ? string.Empty : $"/p:PlatformToolset={buildInfo.PlatformToolset}")} {GetMSBuildLoggingCommand(buildInfo.LogDirectory, "buildAppx.log")}",
                 !Application.isBatchMode,
                 cancellationToken);
             AssetDatabase.SaveAssets();
@@ -311,7 +309,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             if (string.IsNullOrWhiteSpace(EditorUserBuildSettings.wsaMinUWPSDK))
             {
-                EditorUserBuildSettings.wsaMinUWPSDK = UwpBuildDeployPreferences.MIN_SDK_VERSION.ToString();
+                EditorUserBuildSettings.wsaMinUWPSDK = UwpBuildDeployPreferences.MIN_PLATFORM_VERSION.ToString();
             }
 
             string minVersion = EditorUserBuildSettings.wsaMinUWPSDK;

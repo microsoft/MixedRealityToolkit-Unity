@@ -32,13 +32,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Opens the progress indicator before loading begins. Method is async to allow for animation to begin before loading.
         /// </summary>
-        /// <returns></returns>
         Task OpenAsync();
 
         /// <summary>
         /// Closes the progress indicator after loading is finished. Method is async to allow for animation to complete.
         /// </summary>
-        /// <returns></returns>
         Task CloseAsync();
 
     }

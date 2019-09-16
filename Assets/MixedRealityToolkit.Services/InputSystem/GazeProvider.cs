@@ -163,8 +163,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private Ray latestEyeGaze = default(Ray);
         private DateTime latestEyeTrackingUpdate = DateTime.MinValue;
-        private bool? isEyeCalibrated = null;
-
         private readonly float maxEyeTrackingTimeoutInSeconds = 2.0f;
 
         #region InternalGazePointer Class
@@ -215,7 +213,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <summary>
             /// Only for use when initializing Gaze Pointer on startup.
             /// </summary>
-            /// <param name="gazeInputSource"></param>
             internal void SetGazeInputSourceParent(IMixedRealityInputSource gazeInputSource)
             {
                 InputSourceParent = gazeInputSource;
@@ -262,27 +259,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            public override void OnPreCurrentPointerTargetChange()
-            {
-            }
+            /// <inheritdoc />
+            public override void OnPreCurrentPointerTargetChange() { }
 
             /// <inheritdoc />
-            public override Vector3 Position
-            {
-                get
-                {
-                    return gazeTransform.position;
-                }
-            }
+            public override Vector3 Position => gazeTransform.position;
 
             /// <inheritdoc />
-            public override Quaternion Rotation
-            {
-                get
-                {
-                    return gazeTransform.rotation;
-                }
-            }
+            public override Quaternion Rotation => gazeTransform.rotation;
 
             #endregion IMixedRealityPointer Implementation
 
@@ -291,7 +275,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// </summary>
             /// <param name="mixedRealityInputAction">The input action that corresponds to the pressed button or axis.</param>
             /// <param name="handedness">Optional handedness of the source that pressed the pointer.</param>
-            /// <param name="inputSource"></param>
             public void RaisePointerDown(MixedRealityInputAction mixedRealityInputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
             {
                 isDown = true;
@@ -305,7 +288,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// </summary>
             /// <param name="mixedRealityInputAction">The input action that corresponds to the released button or axis.</param>
             /// <param name="handedness">Optional handedness of the source that released the pointer.</param>
-            /// <param name="inputSource"></param>
             public void RaisePointerUp(MixedRealityInputAction mixedRealityInputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
             {
                 isDown = false;
@@ -329,6 +311,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -340,6 +323,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
         protected override async void Start()
         {
             base.Start();
@@ -371,7 +355,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // If flagged to do so (setCursorInvisibleWhenFocusLocked) and active (IsInteractionEnabled), set the visibility to !IsFocusLocked,
             // but don't touch the visibility when not active or not flagged.
             if (setCursorInvisibleWhenFocusLocked && gazePointer != null &&
-                gazePointer.IsInteractionEnabled && gazePointer.IsFocusLocked == GazeCursor.IsVisible)
+                gazePointer.IsInteractionEnabled && GazeCursor != null && gazePointer.IsFocusLocked == GazeCursor.IsVisible)
             {
                 GazeCursor.SetVisibility(!gazePointer.IsFocusLocked);
             }
@@ -415,6 +399,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
         protected override void OnDisable()
         {
             base.OnDisable();
@@ -431,11 +416,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region InputSystemGlobalHandlerListener Implementation
 
+        /// <inheritdoc />
         protected override void RegisterHandlers()
         {
             InputSystem?.RegisterHandler<IMixedRealityInputHandler>(this);
         }
 
+        /// <inheritdoc />
         protected override void UnregisterHandlers()
         {
             InputSystem?.UnregisterHandler<IMixedRealityInputHandler>(this);
@@ -508,7 +495,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             GazePointer.BaseCursor?.SetVisibility(true);
         }
 
-        internal void UpdateGazeInfoFromHit(MixedRealityRaycastHit raycastHit)
+        /// <inheritdoc />
+        public void UpdateGazeInfoFromHit(MixedRealityRaycastHit raycastHit)
         {
             HitInfo = raycastHit;
             if (raycastHit.transform != null)
@@ -550,7 +538,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public void UpdateEyeTrackingStatus(IMixedRealityEyeGazeDataProvider provider, bool userIsEyeCalibrated)
         {
-            this.isEyeCalibrated = userIsEyeCalibrated;
+            this.IsEyeCalibrationValid = userIsEyeCalibrated;
         }
 
         /// <summary>
@@ -563,7 +551,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Boolean to check whether the user went through the eye tracking calibration. 
         /// Initially the parameter will return null until it has received valid information from the eye tracking system.
         /// </summary>
-        public bool? IsEyeCalibrationValid => isEyeCalibrated;
+        public bool? IsEyeCalibrationValid { get; private set; } = null;
         #endregion Utilities
     }
 }

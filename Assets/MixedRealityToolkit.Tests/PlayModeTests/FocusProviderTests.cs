@@ -36,7 +36,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         /// <summary>
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestGazeCursorArticulated()
         {
@@ -73,7 +72,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Ensure that the gaze provider hit result is not null when looking at an object,
         /// even when the hand is up
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestGazeProviderTargetNotNull()
         {
@@ -83,13 +81,49 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return null;
 
-            Assert.NotNull(MixedRealityToolkit.InputSystem.GazeProvider.GazeTarget, "GazeProvider target is null when looking at an object");
+            Assert.NotNull(CoreServices.InputSystem.GazeProvider.GazeTarget, "GazeProvider target is null when looking at an object");
 
             TestHand h = new TestHand(Handedness.Right);
             yield return h.Show(Vector3.forward * 0.2f);
             yield return null;
 
-            Assert.NotNull(MixedRealityToolkit.InputSystem.GazeProvider.GazeTarget, "GazeProvider target is null when looking at an object with hand raised");
+            Assert.NotNull(CoreServices.InputSystem.GazeProvider.GazeTarget, "GazeProvider target is null when looking at an object with hand raised");
+        }
+
+        /// <summary>
+        /// Ensure FocusProvider's FocusDetails can be overridden.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestOverrideFocusDetails()
+        {
+            PlayModeTestUtilities.Setup();
+
+            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            yield return null;
+
+            var focusProvider = PlayModeTestUtilities.GetInputSystem().FocusProvider;
+
+            var pointer = new TestPointer();
+            Assert.IsFalse(focusProvider.TryGetFocusDetails(pointer, out var focusDetails));
+            Assert.IsFalse(focusProvider.TryOverrideFocusDetails(pointer, new Physics.FocusDetails()));
+
+            focusProvider.RegisterPointer(pointer);
+            yield return null;
+
+            Assert.IsTrue(focusProvider.TryGetFocusDetails(pointer, out focusDetails));
+            Assert.IsNull(focusDetails.Object);
+
+            var newFocusDetails = new Physics.FocusDetails();
+            newFocusDetails.Object = cube;
+            newFocusDetails.RayDistance = 10;
+            newFocusDetails.Point = new Vector3(1, 2, 3);
+            Assert.IsTrue(focusProvider.TryOverrideFocusDetails(pointer, newFocusDetails));
+
+            Assert.IsTrue(focusProvider.TryGetFocusDetails(pointer, out focusDetails));
+            Assert.AreEqual(newFocusDetails.Object, focusDetails.Object);
+            Assert.AreEqual(newFocusDetails.RayDistance, focusDetails.RayDistance);
+            Assert.AreEqual(newFocusDetails.Point, focusDetails.Point);
+            Assert.AreEqual(newFocusDetails.Object, focusProvider.GetFocusedObject(pointer));
         }
     }
 }

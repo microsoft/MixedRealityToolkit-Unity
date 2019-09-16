@@ -71,6 +71,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             ".pdf",
         };
 
+        private const string DependencyWindow_URL = "https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Tools/DependencyWindow.html";
+
         [MenuItem("Mixed Reality Toolkit/Utilities/Dependency Window", false, 3)]
         private static void ShowWindow()
         {
@@ -142,7 +144,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             MixedRealityInspectorUtility.RenderMixedRealityToolkitLogo();
 
-            EditorGUILayout.LabelField("Mixed Reality Toolkit Dependency Window", EditorStyles.boldLabel);
+            // Render Title
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField("Mixed Reality Toolkit Dependency Window", EditorStyles.boldLabel);
+                InspectorUIUtility.RenderDocumentationButton(DependencyWindow_URL);
+            }
+
             EditorGUILayout.LabelField("This tool displays how assets reference and depend on each other. Dependencies are calculated by parsing guids within project YAML files, code dependencies are not considered.", EditorStyles.wordWrappedLabel);
 
             EditorGUILayout.Space();
@@ -152,7 +160,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             if (EditorSettings.serializationMode != SerializationMode.ForceText)
             {
-                EditorGUILayout.BeginHorizontal();
+                using (new EditorGUILayout.HorizontalScope())
                 {
                     EditorGUILayout.HelpBox("Dependencies can only be tracked with text assets. Please change the project serialization mode to \"Force Text\"", MessageType.Error);
 
@@ -161,13 +169,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                         EditorSettings.serializationMode = SerializationMode.ForceText;
                     }
                 }
-                EditorGUILayout.EndHorizontal();
             }
         }
 
         private void DrawDependencyGraphStatistics()
         {
-            EditorGUILayout.BeginHorizontal();
+            using (new EditorGUILayout.HorizontalScope())
             {
                 if (dependencyGraph.Count == 0)
                 {
@@ -183,8 +190,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     RefreshDependencyGraph();
                 }
             }
-            EditorGUILayout.EndHorizontal();
-
             EditorGUILayout.Space();
 
             if (GUI.enabled)
@@ -467,7 +472,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private static void DrawDependencyGraphNode(DependencyGraphNode node, int depth, int maxDepth)
         {
-            EditorGUILayout.BeginHorizontal();
+            using (new EditorGUILayout.HorizontalScope())
             {
                 GUILayout.Space(depth * 8);
 
@@ -487,7 +492,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     EditorGUILayout.LabelField("Max display depth was exceeded...");
                 }
             }
-            EditorGUILayout.EndHorizontal();
         }
 
         private static void DrawDependencyGraphNodeRecurse(DependencyGraphNode node, int depth, int maxDepth)

@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -12,6 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     /// <summary>
     /// This class handles the solver components that are attached to this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>
     /// </summary>
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Solver.html")]
     public class SolverHandler : MonoBehaviour
     {
         [SerializeField]
@@ -168,6 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         protected readonly List<Solver> solvers = new List<Solver>();
+        private bool updateSolversList = false;
 
         /// <summary>
         /// List of solvers that this handler will manage and update
@@ -296,8 +299,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         private void Start()
         {
-            solvers.AddRange(GetComponents<Solver>());
-
             RefreshTrackedObject();
         }
 
@@ -309,6 +310,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         private void LateUpdate()
         {
+            if (updateSolversList)
+            {
+                IEnumerable<Solver> inspectorOrderedSolvers = GetComponents<Solver>().Intersect(solvers);
+                Solvers = inspectorOrderedSolvers.Union(Solvers).ToReadOnlyCollection();
+
+                updateSolversList = false;
+            }
+
             if (UpdateSolvers)
             {
                 //Before calling solvers, update goal to be the transform so that working and transform will match
@@ -344,11 +353,31 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             AttachToNewTrackedObject();
         }
 
+        /// <summary>
+        /// Adds <paramref name="solver"/> to the list of <see cref="Solvers"/> guaranteeing inspector ordering.
+        /// </summary>
+        public void RegisterSolver(Solver solver)
+        {
+            if (!solvers.Contains(solver))
+            {
+                solvers.Add(solver);
+                updateSolversList = true;
+            }
+        }
+
+        /// <summary>
+        /// Removes <paramref name="solver"/> from the list of <see cref="Solvers"/>.
+        /// </summary>
+        public void UnregisterSolver(Solver solver)
+        {
+            solvers.Remove(solver);
+        }
+
         protected virtual void DetachFromCurrentTrackedObject()
         {
             if (trackingTarget != null)
             {
-                DestroyImmediate(trackingTarget);
+                Destroy(trackingTarget);
                 trackingTarget = null;
             }
         }

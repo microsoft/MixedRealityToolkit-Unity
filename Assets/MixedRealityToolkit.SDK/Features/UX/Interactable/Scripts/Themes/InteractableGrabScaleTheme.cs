@@ -49,6 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             };
         }
 
+        /// <inheritdoc />
         public override void Init(GameObject host, InteractableThemePropertySettings settings)
         {
             base.Init(host, settings);
@@ -61,6 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             timer = Ease.LerpTime;
         }
 
+        /// <inheritdoc />
         public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
         {
             if (Host == null)
@@ -74,6 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return prop;
         }
 
+        /// <inheritdoc />
         public override void OnUpdate(int state, Interactable source, bool force = false)
         {
             base.OnUpdate(state, source, force);
@@ -128,6 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        /// <inheritdoc />
         public override void SetValue(InteractableThemeProperty property, int index, float percentage)
         {
             if (!hasGrab && Host != null)

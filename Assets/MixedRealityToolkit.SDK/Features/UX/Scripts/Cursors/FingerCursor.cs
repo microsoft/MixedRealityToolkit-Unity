@@ -168,17 +168,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <see href="https://docs.unity3d.com/ScriptReference/Vector3-zero.html">Vector3.zero</see></param>
         /// <param name="rotation">Out parameter filled with joint rotation, otherwise 
         /// <see href="https://docs.unity3d.com/ScriptReference/Quaternion-identity.html">Quaternion.identity</see></param>
-        /// <returns></returns>
         protected bool TryGetJoint(TrackedHandJoint joint, out Vector3 position, out Quaternion rotation)
         {
-            if (Pointer != null && Pointer.Controller != null)
+            if (Pointer != null)
             {
-                if (HandJointUtils.TryGetJointPose(joint, Pointer.Controller.ControllerHandedness, out MixedRealityPose handJoint))
+                var hand = Pointer.Controller as IMixedRealityHand;
+                if (hand != null)
                 {
-                    position = handJoint.Position;
-                    rotation = handJoint.Rotation;
+                    if (hand.TryGetJoint(joint, out MixedRealityPose handJoint))
+                    {
+                        position = handJoint.Position;
+                        rotation = handJoint.Rotation;
 
-                    return true;
+                        return true;
+                    }
                 }
             }
 

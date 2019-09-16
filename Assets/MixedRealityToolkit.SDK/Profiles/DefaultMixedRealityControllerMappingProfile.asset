@@ -1069,8 +1069,8 @@ MonoBehaviour:
         id: 1
         description: Select
         axisConstraint: 2
-      keyCode: 344
-      axisCodeX: 
+      keyCode: 0
+      axisCodeX: AXIS_9
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
@@ -1134,7 +1134,7 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
-      keyCode: 346
+      keyCode: 338
       axisCodeX: 
       axisCodeY: 
       invertXAxis: 0
@@ -1295,8 +1295,8 @@ MonoBehaviour:
         id: 1
         description: Select
         axisConstraint: 2
-      keyCode: 345
-      axisCodeX: 
+      keyCode: 0
+      axisCodeX: AXIS_10
       axisCodeY: 
       invertXAxis: 0
       invertYAxis: 0
@@ -1360,7 +1360,7 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
-      keyCode: 347
+      keyCode: 339
       axisCodeX: 
       axisCodeY: 
       invertXAxis: 0
@@ -2189,7 +2189,7 @@ MonoBehaviour:
         id: 2
         description: Menu
         axisConstraint: 2
-      keyCode: 330
+      keyCode: 332
       axisCodeX: 
       axisCodeY: 
       invertXAxis: 0
@@ -2254,7 +2254,7 @@ MonoBehaviour:
     - id: 2
       description: Grip Press
       axisType: 3
-      inputType: 7
+      inputType: 13
       inputAction:
         id: 7
         description: Grip Press
@@ -2350,7 +2350,7 @@ MonoBehaviour:
         id: 2
         description: Menu
         axisConstraint: 2
-      keyCode: 332
+      keyCode: 330
       axisCodeX: 
       axisCodeY: 
       invertXAxis: 0

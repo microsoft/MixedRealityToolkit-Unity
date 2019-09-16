@@ -3,7 +3,7 @@ function createDropdown()
 {
 	// configurable values:
 	var defaultTitle = "mrtk_development"; 	// title in the dropdown for the root version of the docs
-	var versionArray = [];	// list of all versions in the version folder
+	var versionArray = ["releases/2.0.0"];	// list of all versions in the version folder
 	
 	//--------------------------------------
 

@@ -143,6 +143,36 @@ Events can be placed on an object to monitor a separate interactable. Use [`Inte
 
 "Search Scope" provides a preferred path to search for an Interactable if one is not explicitly assigned.
 
+### Interactable Events Example
+Listen for focus enter, exit events from an interactable, using [InteractableOnFocusReceiver](xref:Microsoft.MixedReality.Toolkit.UI.InteractableOnFocusReceiver)
+
+```csharp
+public static void AddFocusEvents(Interactable interactable)
+{
+    var onFocusReceiver = interactable.AddReceiver<InteractableOnFocusReceiver>();
+
+    onFocusReceiver.OnFocusOn.AddListener(() => Debug.Log("Focus on"));
+    onFocusReceiver.OnFocusOff.AddListener(() => Debug.Log("Focus off"));
+}
+```
+
+Listen for selected, deselected events on a toggle-able interactable.
+```csharp
+public static void AddToggleEvents(Interactable interactable)
+{
+    var toggleReceiver = interactable.AddReceiver<InteractableOnToggleReceiver>();
+
+    // Make the interactable have toggle capability, from code.
+    // In the gui editor it's much easier 
+    interactable.Dimensions = 2;
+    interactable.CanSelect = true;
+    interactable.CanDeselect  = true;
+
+    toggleReceiver.OnSelect.AddListener(() => Debug.Log("Toggle selected"));
+    toggleReceiver.OnDeselect.AddListener(() => Debug.Log("Toggle un-selected"));
+}
+```
+
 ## States ##
 States are a list of terms that can be used to define interactions phases, like press or observed.
 
@@ -173,10 +203,10 @@ There are currently 17 states total that you can used to drive themes, though so
 
 - Default, Focus, Pressed and Disabled are mentioned above
 - Visited: the Interactable has been clicked.
-- Toggled: The button is in a toggled state or Dimension idex is an odd number.
+- Toggled: The button is in a toggled state or Dimension index is an odd number.
 - Gesture: The hand or controller was pressed and has moved from the original position.
 - VoiceCommand: A speech command was used to trigger an Interactable.
-- PhyscialTouch: A touch input is currently detected, use NearInteractionTouchable to enable.
+- PhysicalTouch: A touch input is currently detected, use NearInteractionTouchable to enable.
 - Grab: A hand is currently grabbing in the bounds of the object, use NearInteractionGrabbable to enable
 
 States have corresponding properties and Methods in the Interactable, like SetFocus(bool focus) or HasFocus.

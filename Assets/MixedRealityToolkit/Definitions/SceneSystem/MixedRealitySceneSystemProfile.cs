@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Scene System Profile", fileName = "MixedRealitySceneSystemProfile", order = (int)CreateProfileMenuItemIndices.SceneSystem)]
     [MixedRealityServiceProfile(typeof(IMixedRealitySceneSystem))]
-    [DocLink("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SceneSystem/SceneSystemGettingStarted.html")]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SceneSystem/SceneSystemGettingStarted.html")]
     public class MixedRealitySceneSystemProfile : BaseMixedRealityProfile
     {
         /// <summary>
@@ -264,9 +264,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// Since extracting them is complex and requires scene loading, I thought it best to avoid having the profile do it.
         /// </summary>
         /// <param name="sceneInfo">The scene these settings belong to.</param>
-        /// <param name="lightingSettings"></param>
-        /// <param name="renderSettings"></param>
-        /// <param name="sunlightSettings"></param>
         public void SetLightingCache(SceneInfo sceneInfo, RuntimeLightingSettings lightingSettings, RuntimeRenderSettings renderSettings, RuntimeSunlightSettings sunlightSettings)
         {
             CachedLightingSettings settings = new CachedLightingSettings();

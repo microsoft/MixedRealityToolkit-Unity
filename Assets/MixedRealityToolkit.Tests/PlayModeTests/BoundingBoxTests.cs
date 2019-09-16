@@ -41,7 +41,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Instantiates a bounding box at 0, 0, -1.5f
         /// box is at scale .5, .5, .5
         /// </summary>
-        /// <returns></returns>
         private BoundingBox InstantiateSceneAndDefaultBbox()
         {
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -65,7 +64,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Verify that we can instantiate bounding box at runtime
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator BBoxInstantiate()
         {
@@ -81,7 +79,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test that if we update the bounds of a box collider, that the corners will move correctly
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator BBoxOverride()
         {
@@ -112,7 +109,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Uses near interaction to scale the bounding box by directly grabbing corner
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ScaleViaNearInteration()
         {
@@ -130,8 +126,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
             int numSteps = 30;
             var delta = new Vector3(0.1f, 0.1f, 0f);
-            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService, ArticulatedHandPose.GestureId.Open, initialHandPosition);
-            yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, frontRightCornerPos, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService, ArticulatedHandPose.GestureId.OpenSteadyGrabPoint, initialHandPosition);
+            yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, frontRightCornerPos, numSteps, ArticulatedHandPose.GestureId.OpenSteadyGrabPoint, Handedness.Right, inputSimulationService);
             yield return PlayModeTestUtilities.MoveHandFromTo(frontRightCornerPos, frontRightCornerPos + delta, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService);
 
             var endBounds = bbox.GetComponent<BoxCollider>().bounds;
@@ -169,6 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Hands grab object at initial position
             yield return hand.Show(initialHandPosition);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
             yield return hand.MoveTo(frontRightCornerPos, numHandSteps);
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
 
@@ -196,7 +193,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Uses far interaction (HoloLens 1 style) to scale the bounding box
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ScaleViaHoloLens1Interaction()
         {
@@ -227,7 +223,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var endBounds = bbox.GetComponent<BoxCollider>().bounds;
             TestUtilities.AssertAboutEqual(endBounds.center, new Vector3(0.033f, 0.033f, 1.467f), "endBounds incorrect center");
-            TestUtilities.AssertAboutEqual(endBounds.size, Vector3.one * .567f, "endBounds incorrect size");
+            TestUtilities.AssertAboutEqual(endBounds.size, Vector3.one * .561f, "endBounds incorrect size", 0.02f);
 
             GameObject.Destroy(bbox.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object
@@ -243,7 +239,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Test that changing the transform of the bounding box target (rotation, scale, translation)
         /// updates the rig bounds
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator UpdateTransformUpdatesBounds()
         {
@@ -289,8 +284,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Returns the AABB of the bounding box rig (corners, edges)
         /// that make up the bounding box by using the positions of the corners
         /// </summary>
-        /// <param name="bbox"></param>
-        /// <returns></returns>
         private Bounds GetBoundingBoxRigBounds(BoundingBox bbox)
         {
             var corners = bbox.ScaleCorners;

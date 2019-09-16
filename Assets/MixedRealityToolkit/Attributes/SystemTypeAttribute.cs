@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="Type"/> satisfies filter constraint.
+        /// Determines whether the specified <see cref="System.Type"/> satisfies filter constraint.
         /// </summary>
         /// <param name="type">Type to test.</param>
         /// <returns>

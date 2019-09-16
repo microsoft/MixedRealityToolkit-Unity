@@ -2,7 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit
@@ -20,8 +22,33 @@ namespace Microsoft.MixedReality.Toolkit
         /// The service registry store where the key is the Type of the service interface and the value is
         /// a pair in which they key is the service instance and the value is the registrar instance.
         /// </summary>
-        private static Dictionary<Type, List<KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>>> registry = 
+        private static Dictionary<Type, List<KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>>> registry =
             new Dictionary<Type, List<KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>>>();
+
+        /// <summary>
+        /// A cache used to power <seealso cref="GetAllServices(IMixedRealityServiceRegistrar)"/>
+        /// </summary>
+        /// <remarks>
+        /// Lists are sorted in ascending priority order (i.e. services with a smaller priority
+        /// value are first in the list).
+        /// </remarks>
+        private static Dictionary<IMixedRealityServiceRegistrar, List<IMixedRealityService>> allServicesByRegistrar =
+            new Dictionary<IMixedRealityServiceRegistrar, List<IMixedRealityService>>();
+
+        /// <summary>
+        /// A cache used to power <seealso cref="GetAllServices"/>
+        /// </summary>
+        /// <remarks>
+        /// The list is sorted in ascending priority order (i.e. services with a smaller priority
+        /// value are first in the list).
+        /// </remarks>
+        private static List<IMixedRealityService> allServices = new List<IMixedRealityService>();
+
+        /// <summary>
+        /// A comparer used to sort the allServices and allServiceByRegistrar lists in-place.
+        /// </summary>
+        private static readonly Comparer<IMixedRealityService> ascendingOrderComparer =
+            Comparer<IMixedRealityService>.Create((i1, i2) => i1.Priority.CompareTo(i2.Priority));
 
         /// <summary>
         /// Static constructor.
@@ -70,6 +97,7 @@ namespace Microsoft.MixedReality.Toolkit
 
             List<KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>> services = registry[interfaceType];
             services.Add(new KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>(serviceInstance, registrar));
+            AddServiceToCache(serviceInstance, registrar);
             return true;
         }
 
@@ -123,7 +151,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </returns>
         public static bool RemoveService<T>(string name) where T : IMixedRealityService
         {
-            T tempService;            
+            T tempService;
             IMixedRealityServiceRegistrar registrar;
 
             if (!TryGetService<T>(out tempService, out registrar, name))
@@ -160,77 +188,54 @@ namespace Microsoft.MixedReality.Toolkit
                 registry.Remove(interfaceType);
             }
 
+            RemoveServiceFromCache(serviceInstance, registrar);
+
             return removed;
         }
 
         /// <summary>
-        /// Gets the instance of the requested service from the registry.
+        /// Adds the given service/registrar combination to the GetAllServices cache
         /// </summary>
-        /// <typeparam name="T">The interface type of the service being requested.</typeparam>
-        /// <param name="serviceInstance">Output parameter to receive the requested service instance.</param>
-        /// <param name="registrar">Output parameter to receive the registrar that loaded the service instance.</param>
-        /// <param name="name">Optional name of the service.</param>
-        /// <returns>
-        /// True if the requested service is being returned, false otherwise.
-        /// </returns>
-        public static bool TryGetService<T>(
-            out T serviceInstance,
-            out IMixedRealityServiceRegistrar registrar,
-            string name = null)
+        private static void AddServiceToCache(
+            IMixedRealityService service,
+            IMixedRealityServiceRegistrar registrar)
         {
-            Type interfaceType = typeof(T);
+            // Services are stored in ascending priority order - adding them to the
+            // list requires that we re-enforce that order. This must happen
+            // in both the allServices and allServicesByRegistrar data structures.
+            allServices.Add(service);
+            allServices.Sort(ascendingOrderComparer);
 
-            if (!registry.ContainsKey(interfaceType))
+            if (!allServicesByRegistrar.ContainsKey(registrar))
             {
-                serviceInstance = default(T);
-                registrar = null;
-                return false;
+                allServicesByRegistrar.Add(registrar, new List<IMixedRealityService>());
             }
 
-            List<KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>> services = registry[interfaceType];
-            
-            int registryIndex = -1;
-            if (!string.IsNullOrWhiteSpace(name))
-            {
-                // Find the desired service by it's name.
-                for (int i = 0; i < services.Count; i++)
-                {
-                    if (services[i].Key.Name != name) { continue; }
-
-                    registryIndex = i;
-                    break;
-                }
-
-                if (registryIndex == -1)
-                {
-                    // Failed to find the requested service.
-                    serviceInstance = default(T);
-                    registrar = null;
-                    return false;
-                }
-            }
-            else
-            {
-                if (services.Count > 1)
-                {
-                    Debug.LogWarning("Multiple instances of the requested service were found. Please re-call this method and provide a value for the name parameter.");
-                    serviceInstance = default(T);
-                    registrar = null;
-                    return false;
-                }
-                registryIndex = 0;
-            }
-
-            IMixedRealityService tempService = services[registryIndex].Key;
-            Debug.Assert(tempService is T, "The service in the registry does not match the expected type.");
-
-            serviceInstance = (T)tempService;
-            registrar = services[registryIndex].Value;
-            return true;
+            allServicesByRegistrar[registrar].Add(service);
+            allServicesByRegistrar[registrar].Sort(ascendingOrderComparer);
         }
 
         /// <summary>
-        /// Gets the instance of the requested service from the registry.
+        /// Removes the given service/registrar combination from the GetAllServices cache
+        /// </summary>
+        private static void RemoveServiceFromCache(
+            IMixedRealityService service,
+            IMixedRealityServiceRegistrar registrar)
+        {
+            // Removing from the sorted list keeps sort order, so re-sorting isn't necessary
+            allServices.Remove(service);
+            if (allServicesByRegistrar.ContainsKey(registrar))
+            {
+                allServicesByRegistrar[registrar].Remove(service);
+                if (allServicesByRegistrar[registrar].Count == 0)
+                {
+                    allServicesByRegistrar.Remove(registrar);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the first instance of the requested service from the registry that matches the given query.
         /// </summary>
         /// <typeparam name="T">The interface type of the service being requested.</typeparam>
         /// <param name="serviceInstance">Output parameter to receive the requested service instance.</param>
@@ -246,6 +251,173 @@ namespace Microsoft.MixedReality.Toolkit
                 out serviceInstance,
                 out _,                  // The registrar out param is not used, it can be discarded.
                 name);
+        }
+
+        /// <summary>
+        /// Gets the first instance of the requested service from the registry that matches the given query.
+        /// </summary>
+        /// <typeparam name="T">The interface type of the service being requested.</typeparam>
+        /// <param name="serviceInstance">Output parameter to receive the requested service instance.</param>
+        /// <param name="registrar">Output parameter to receive the registrar that loaded the service instance.</param>
+        /// <param name="name">Optional name of the service.</param>
+        /// <returns>
+        /// True if the requested service is being returned, false otherwise.
+        /// </returns>
+        public static bool TryGetService<T>(
+            out T serviceInstance,
+            out IMixedRealityServiceRegistrar registrar,
+            string name = null) where T : IMixedRealityService
+        {
+            Type interfaceType = typeof(T);
+
+            IMixedRealityService tempService;
+            if (TryGetServiceInternal(interfaceType, out tempService, out registrar, name))
+            {
+                Debug.Assert(tempService is T, "The service in the registry does not match the expected type.");
+                serviceInstance = (T)tempService;
+                return true;
+            }
+
+            serviceInstance = default(T);
+            registrar = null;
+            return false;
+        }
+
+        /// <summary>
+        /// Gets the first instance of the requested service from the registry that matches the given query.
+        /// </summary>
+        /// <param name="interfaceType">The interface type of the service being requested.</param>
+        /// <param name="serviceInstance">Output parameter to receive the requested service instance.</param>
+        /// <param name="registrar">Output parameter to receive the registrar that loaded the service instance.</param>
+        /// <param name="name">Optional name of the service.</param>
+        /// <returns>
+        /// True if the requested service is being returned, false otherwise.
+        /// </returns>
+        public static bool TryGetService(Type interfaceType,
+            out IMixedRealityService serviceInstance,
+            out IMixedRealityServiceRegistrar registrar,
+            string name = null)
+        {
+            if (!typeof(IMixedRealityService).IsAssignableFrom(interfaceType))
+            {
+                Debug.LogWarning($"Cannot find type {interfaceType.Name} since it does not extend IMixedRealityService");
+                serviceInstance = null;
+                registrar = null;
+                return false;
+            }
+
+            return TryGetServiceInternal(interfaceType, out serviceInstance, out registrar, name);
+        }
+
+        private static bool TryGetServiceInternal(Type interfaceType,
+            out IMixedRealityService serviceInstance,
+            out IMixedRealityServiceRegistrar registrar,
+            string name = null)
+        {
+            // Assume failed and return null unless proven otherwise
+            serviceInstance = null;
+            registrar = null;
+
+            // If there is an entry for the interface key provided, search that small list first
+            if (registry.ContainsKey(interfaceType))
+            {
+                if (FindEntry(registry[interfaceType], interfaceType, name, out serviceInstance, out registrar))
+                {
+                    return true;
+                }
+            }
+
+            // Either there is no entry for the interface type, or it was not placed in that list. 
+            // Services can have multiple supported interfaces thus they may match the requested query but be placed in a different registry bin
+            // Thus, search all bins until a match is found
+            foreach (var list in registry.Values)
+            {
+                if (FindEntry(list, interfaceType, name, out serviceInstance, out registrar))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Helper method to search list of IMixedRealityService/IMixedRealityServiceRegistrar pairs to find first service that matches name and interface type query
+        /// </summary>
+        /// <param name="serviceList">list of IMixedRealityService/IMixedRealityServiceRegistrar pairs to search</param>
+        /// <param name="interfaceType">type of interface to check</param>
+        /// <param name="name">name of service to check. Wildcard if null or empty</param>
+        /// <param name="serviceInstance">reference to IMixedRealityService matching query, null otherwise</param>
+        /// <param name="registrar">reference to IMixedRealityServiceRegistrar matching query, null otherwise</param>
+        /// <returns>true if found first entry to match query, false otherwise</returns>
+        private static bool FindEntry(List<KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>> serviceList,
+            Type interfaceType,
+            string name,
+            out IMixedRealityService serviceInstance, 
+            out IMixedRealityServiceRegistrar registrar)
+        {
+            serviceInstance = null;
+            registrar = null;
+
+            for (int i = 0; i < serviceList.Count; ++i)
+            {
+                var svc = serviceList[i].Key;
+                if ((string.IsNullOrEmpty(name) || svc.Name == name) && interfaceType.IsAssignableFrom(svc.GetType()))
+                {
+                    serviceInstance = svc;
+                    registrar = serviceList[i].Value;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Clears the registry cache of all services
+        /// </summary>
+        public static void ClearAllServices()
+        {
+            if (registry != null)
+            {
+                registry.Clear();
+                allServices.Clear();
+                allServicesByRegistrar.Clear();
+            }
+        }
+
+        /// <summary>
+        /// Returns readonly list of all services registered
+        /// </summary>
+        /// <remarks>
+        /// The list is sorted in ascending priority order.
+        /// </remarks>
+        public static IReadOnlyCollection<IMixedRealityService> GetAllServices()
+        {
+            return allServices;
+        }
+
+        /// <summary>
+        /// Returns readonly list of all services registered for given registrar
+        /// </summary>
+        /// <param name="registrar">Registrar object to filter sevices by</param>
+        /// <remarks>
+        /// The list is sorted in ascending priority order.
+        /// </remarks>
+        /// <returns>Readonly list of all services registered for given registrar, all services if parameter null.
+        /// If given a registrar that the registry is not aware of, returns null.
+        /// </returns>
+        public static IReadOnlyCollection<IMixedRealityService> GetAllServices(IMixedRealityServiceRegistrar registrar)
+        {
+            if (registrar == null)
+            {
+                return GetAllServices();
+            }
+            if (allServicesByRegistrar.TryGetValue(registrar, out List<IMixedRealityService> services))
+            {
+                return services;
+            }
+            return null;
         }
     }
 }

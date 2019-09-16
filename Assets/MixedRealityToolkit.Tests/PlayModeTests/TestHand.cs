@@ -38,30 +38,45 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             return hand.Velocity;
         }
 
-        public IEnumerator Show(Vector3 position)
+        public IEnumerator Show(Vector3 position, bool waitForFixedUpdate = true)
         {
             this.position = position;
             yield return PlayModeTestUtilities.ShowHand(handedness, simulationService, gestureId, position);
-            yield return new WaitForFixedUpdate();
+            if (waitForFixedUpdate)
+            {
+                yield return new WaitForFixedUpdate();
+            }
         }
 
-        public IEnumerator Hide()
+        public IEnumerator Hide(bool waitForFixedUpdate = true)
         {
             yield return PlayModeTestUtilities.HideHand(handedness, simulationService);
-            yield return new WaitForFixedUpdate();
+            if (waitForFixedUpdate)
+            {
+                yield return new WaitForFixedUpdate();
+            }
         }
 
-        public IEnumerator MoveTo(Vector3 newPosition, int numSteps = 30)
+        public IEnumerator MoveTo(Vector3 newPosition, int numSteps = 30, bool waitForFixedUpdate = true)
         {
             Vector3 oldPosition = position;
             position = newPosition;
-            yield return PlayModeTestUtilities.MoveHandFromTo(oldPosition, newPosition, numSteps, gestureId, handedness, simulationService);
-            yield return new WaitForFixedUpdate();
+            for (var iter = PlayModeTestUtilities.MoveHandFromTo(oldPosition, newPosition, numSteps, gestureId, handedness, simulationService); iter.MoveNext(); )
+            {
+                yield return iter.Current;
+            }
+            if (waitForFixedUpdate)
+            {
+                yield return new WaitForFixedUpdate();
+            }
         }
 
         public IEnumerator Move(Vector3 delta, int numSteps = 30)
         {
-            yield return MoveTo(position + delta, numSteps);
+            for (var iter = MoveTo(position + delta, numSteps); iter.MoveNext(); )
+            {
+                yield return iter.Current;
+            }
         }
 
         public IEnumerator SetRotation(Quaternion newRotation, int numSteps = 30)
@@ -71,18 +86,50 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return PlayModeTestUtilities.SetHandRotation(oldRotation, newRotation, position, gestureId, handedness, numSteps, simulationService);
         }
 
-        public IEnumerator SetGesture(ArticulatedHandPose.GestureId newGestureId)
+        public IEnumerator SetGesture(ArticulatedHandPose.GestureId newGestureId, bool waitForFixedUpdate = true)
         {
             gestureId = newGestureId;
-            yield return PlayModeTestUtilities.MoveHandFromTo(position, position, 1, gestureId, handedness, simulationService);
-            yield return new WaitForFixedUpdate();
+            for (var iter = PlayModeTestUtilities.MoveHandFromTo(position, position, 1, gestureId, handedness, simulationService); iter.MoveNext(); )
+            {
+                yield return iter.Current;
+            }
+            if (waitForFixedUpdate)
+            {
+                yield return new WaitForFixedUpdate();
+            }
         }
 
-        public IEnumerator GrabAndThrowAt(Vector3 positionToRelease, int numSteps = 30)
+        /// <summary>
+        /// Combined sequence of pinching and unpinching
+        /// </summary>
+        public IEnumerator Click()
         {
             yield return SetGesture(ArticulatedHandPose.GestureId.Pinch);
-            yield return MoveTo(positionToRelease, numSteps);
+            yield return null;
             yield return SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return null;
+        }
+
+        /// <summary>
+        /// Combined sequence of pinching, moving, and releasing.
+        /// </summary>
+        /// <param name="positionToRelease">The position to which the hand moves while pinching</param>
+        /// <param name="waitForFinalFixedUpdate">Wait for a final physics update after releasing</param>
+        /// <param name="numSteps">Number of steps of the hand movement</param>
+        public IEnumerator GrabAndThrowAt(Vector3 positionToRelease, bool waitForFinalFixedUpdate, int numSteps = 30)
+        {
+            for (var iter = SetGesture(ArticulatedHandPose.GestureId.Pinch); iter.MoveNext(); )
+            {
+                yield return iter.Current;
+            }
+            for (var iter = MoveTo(positionToRelease, numSteps); iter.MoveNext(); )
+            {
+                yield return iter.Current;
+            }
+            for (var iter = SetGesture(ArticulatedHandPose.GestureId.Open, waitForFinalFixedUpdate); iter.MoveNext(); )
+            {
+                yield return iter.Current;
+            }
         }
 
         public T GetPointer<T>() where T : class, IMixedRealityPointer

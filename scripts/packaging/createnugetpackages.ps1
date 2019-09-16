@@ -13,8 +13,7 @@ param(
     [string]$OutputDirectory = ".\artifacts",
     [ValidatePattern("^\d+\.\d+\.\d+$")]
     [string]$Version,
-    [string]$UnityDirectory,
-    [string]$MSBuildExtensionsPath="C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild"
+    [string]$UnityDirectory
 )
 
 Write-Verbose "Reconciling Unity binary:"
@@ -70,21 +69,21 @@ try
 
     ### Build all the needed flavors for MRTK
     Write-Output "============ Building InEditor WindowsStandalone32 ============ "
-    ..\MSBuild\Projects\buildall.bat InEditor WindowsStandalone32 $MSBuildExtensionsPath > "Logs\Build.InEditor.WindowsStandalone32.$($Version).log"
+    dotnet msbuild .\BuildSource.proj -target:BuildStandaloneEditor > "Logs\Build.InEditor.WindowsStandalone32.$($Version).log"
     if ($lastexitcode -ge 1)
     {
             Write-Error "Building InEditor WindowsStandalone32 Failed! See log file for more information $(Get-Location)\Logs\Build.InEditor.WindowsStandalone32.$($Version).log";
         exit($lastexitcode)
     }
     Write-Output "============ Building Player WindowsStandalone32 ============ "
-    ..\MSBuild\Projects\buildall.bat Player WindowsStandalone32 $MSBuildExtensionsPath > "Logs\Build.Player.WindowsStandalone32.$($Version).log"
+    dotnet msbuild .\BuildSource.proj -target:BuildStandalonePlayer > "Logs\Build.Player.WindowsStandalone32.$($Version).log"
     if ($lastexitcode -ge 1)
     {
         Write-Error "Building Player WindowsStandalone32 Failed! See log file for more information $(Get-Location)\Logs\Build.Player.WindowsStandalone32.$($Version).log";
         exit($lastexitcode)
     }
     Write-Output "============ Building Player WSA ============ "
-    ..\MSBuild\Projects\buildall.bat Player WSA $MSBuildExtensionsPath  > "Logs\Build.Player.WSA.$($Version).log"
+    dotnet msbuild .\BuildSource.proj -target:BuildWSAPlayer  > "Logs\Build.Player.WSA.$($Version).log"
     if ($lastexitcode -ge 1)
     {
         Write-Error "Building Player WSA Failed! See log file for more information $(Get-Location)\Logs\Build.Player.WSA.$($Version).log";
@@ -99,18 +98,44 @@ try
     New-Item -ItemType Directory -Force -Path $OutputDirectory
     $OutputDirectory = Resolve-Path $OutputDirectory
     $releaseNotes = "Built on local Unity"
-    
-    # Kick jobs for bundling up the nuget packages
-    $nugetJobs = Get-ChildItem -Filter *.nuspec -Recurse | Foreach-Object {
-        Write-Verbose "Starting nuget job for $($_.FullName)"
-        Start-Job { 
-            param($name, $outDir, $props) 
-            nuget pack $name -OutputDirectory $outDir -Properties $props -Exclude *.nuspec.meta
-        } -ArgumentList $_.FullName, $OutputDirectory, "version=$Version;releaseNotes=$releaseNotes"
+
+    # Add this location to the path as NuGet.exe may be installed here
+    $env:PATH = "$($env:Path);$((Get-Location).Path)"
+
+    # Check if NuGet.exe is in the environment PATH, if not go ahead and install it to this directory
+    where.exe nuget > $null 2> $null
+    if ($lastexitcode -ne 0){
+        Write-Host "Could not find NuGet.exe in the path. Downloading it now from: https://dist.nuget.org/win-x86-commandline/latest/nuget.exe"
+        Invoke-WebRequest -Uri "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" -OutFile ".\nuget.exe"
     }
     
-    # Wait for, receive, and remove all the nuget jobs
-    $nugetJobs | Receive-Job -Wait -AutoRemoveJob
+    # Kick jobs for bundling up the nuget packages
+    Get-ChildItem -Filter *.nuspec -Recurse | Foreach-Object {
+        Write-Verbose "Starting nuget job for $($_.FullName)"
+        $props = "version=$Version;releaseNotes=$releaseNotes"
+
+        nuget pack $_.FullName -OutputDirectory $OutputDirectory -Properties $props -Exclude *.nuspec.meta
+        
+        # To make debugging the MRTK NuGet packages locally much easier automatically create new packages with version 0.0.0 and then
+        # restore them to the machine NuGet feed. To test changes to the packages developers can run this script and then change their
+        # project to consume version 0.0.0 and restore. Because the package is in the machine global feed it will resolve properly.
+        $localVersion = '0.0.0'
+        $packageId = ([xml](Get-Content $_.FullName)).package.metadata.id
+        $finalInstallPath = [System.IO.Path]::Combine($env:UserProfile, '.nuget', 'packages', $packageId, $localVersion)
+        
+        # Repack but with a hard-coded version of 0.0.0 (the -Version parameter overrides the property value for version)
+        nuget pack $_.FullName -OutputDirectory $OutputDirectory -Properties $props -Exclude *.nuspec.meta -Version $localVersion
+        
+        # If the package is already installed to the machine global cache delete it, otherwise the next restore will no-op
+        if ([System.IO.Directory]::Exists($finalInstallPath))
+        {
+            Remove-Item -Recurse -Force $finalInstallPath
+        }
+        
+        # Restore the package by providing the nupkg folder. After this restore the machine global cache will be populated with the package
+        $restoreProjectPath = [System.IO.Path]::Combine((Split-Path $MyInvocation.MyCommand.Path), 'NuGetRestoreProject.csproj')
+        dotnet build "$restoreProjectPath" -p:RestorePackageFeed="$(convert-path $OutputDirectory)" -p:RestorePackageId=$packageId -p:RestorePackageVersion=$localVersion
+    }
 }
 finally
 {

@@ -18,10 +18,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Finds a scene in our build settings by name.
         /// </summary>
-        /// <param name="sceneName"></param>
-        /// <param name="scene"></param>
-        /// <param name="sceneIndex"></param>
-        /// <returns></returns>
         public static bool FindScene(string sceneName, out Scene scene, out int sceneIndex)
         {
             scene = default(Scene);
@@ -47,7 +43,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Returns all root GameObjects in all loaded scenes.
         /// </summary>
-        /// <returns></returns>
         public static IEnumerable<GameObject> GetRootGameObjectsInLoadedScenes()
         {
             for (int i = 0; i < SceneManager.sceneCount; i++)
@@ -64,7 +59,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Sets the active scene to the supplied scene. Returns true if successful.
         /// </summary>
-        /// <param name="scene"></param>
         public static bool SetActiveScene(Scene scene)
         {
             if (!scene.IsValid() || !scene.isLoaded)

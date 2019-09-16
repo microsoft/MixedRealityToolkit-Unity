@@ -15,6 +15,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
+using NUnit.Framework.Internal;
 using System.Collections;
 using System.Linq;
 using UnityEditor;
@@ -28,6 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         const float buttonPressAnimationDelay = 0.25f;
         const float buttonReleaseAnimationDelay = 0.25f;
         const string defaultInteractablePrefabAssetPath = "Assets/MixedRealityToolkit.Examples/Demos/UX/Interactables/Prefabs/Model_PushButton.prefab";
+        const string radialSetPrefabAssetPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/RadialSet.prefab";
 
         [SetUp]
         public void Setup()
@@ -43,26 +45,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Tests that an interactable component can be added to a GameObject
-        /// at runtime.
-        /// </summary>
-        /// <returns></returns>
-        [UnityTest]
-        public IEnumerator TestAddInteractableAtRuntime()
-        {
-            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            // This should not throw an exception
-            var interactable = cube.AddComponent<Interactable>();
-
-            // clean up
-            GameObject.Destroy(cube);
-            yield return null;
-        }
-
-        /// <summary>
         /// Instantiates a push button prefab and uses simulated hand input to press it.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestSimulatedHandInputOnPrefab()
         {
@@ -114,7 +98,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Instantiates a push button prefab and uses simulated global input events to press it.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestSimulatedGlobalSelectInputOnPrefab()
         {
@@ -151,15 +134,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Find an input source to associate with the input event (doesn't matter which one)
-            IMixedRealityInputSource defaultInputSource = MixedRealityToolkit.InputSystem.DetectedInputSources.FirstOrDefault();
+            IMixedRealityInputSource defaultInputSource = CoreServices.InputSystem.DetectedInputSources.FirstOrDefault();
             Assert.NotNull(defaultInputSource, "At least one input source must be present for this test to work.");
 
             // Add interactable as a global listener
             // This is only necessary if IsGlobal is being set manually. If it's set in the inspector, interactable will register itself in OnEnable automatically.
-            MixedRealityToolkit.InputSystem.PushModalInputHandler(interactableObject);
+            CoreServices.InputSystem.PushModalInputHandler(interactableObject);
 
             // Raise a select down input event, then wait for transition to take place
-            MixedRealityToolkit.InputSystem.RaiseOnInputDown(defaultInputSource, Handedness.None, interactable.InputAction);
+            CoreServices.InputSystem.RaiseOnInputDown(defaultInputSource, Handedness.None, interactable.InputAction);
             // Wait for at least one frame explicitly to ensure the input goes through
             yield return new WaitForFixedUpdate();
 
@@ -172,7 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 
             // Raise a select up input event, then wait for transition to take place
-            MixedRealityToolkit.InputSystem.RaiseOnInputUp(defaultInputSource, Handedness.Right, interactable.InputAction);
+            CoreServices.InputSystem.RaiseOnInputUp(defaultInputSource, Handedness.Right, interactable.InputAction);
             // Wait for at least one frame explicitly to ensure the input goes through
             yield return new WaitForFixedUpdate();
             yield return new WaitForSeconds(buttonReleaseAnimationDelay);
@@ -182,13 +165,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.False(interactable.HasFocus, "Interactable had focus");
 
             // Remove as global listener
-            MixedRealityToolkit.InputSystem.PopModalInputHandler();
+            CoreServices.InputSystem.PopModalInputHandler();
         }
 
         /// <summary>
         /// Assembles a push button from primitives and uses simulated hand input to press it.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestSimulatedHandInputOnRuntimeAssembled()
         {
@@ -216,10 +198,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Add a touchable and configure for touch events
             NearInteractionTouchable touchable = interactableObject.AddComponent<NearInteractionTouchable>();
             touchable.EventsToReceive = TouchableEventType.Touch;
-            touchable.Bounds = Vector2.one;
+            touchable.SetBounds(Vector2.one);
             touchable.SetLocalForward(Vector3.up);
             touchable.SetLocalUp(Vector3.forward);
-            touchable.LocalCenter = Vector3.up * 2.75f;
+            touchable.SetLocalCenter(Vector3.up * 2.75f);
 
             // Add a touch handler and link touch started / touch completed events
             TouchHandler touchHandler = interactableObject.AddComponent<TouchHandler>();
@@ -256,7 +238,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Assembles a push button from primitives and uses simulated input events to press it.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestSimulatedSelectInputOnRuntimeAssembled()
         {
@@ -282,11 +263,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Find an input source to associate with the input event (doesn't matter which one)
-            IMixedRealityInputSource defaultInputSource = MixedRealityToolkit.InputSystem.DetectedInputSources.FirstOrDefault();
+            IMixedRealityInputSource defaultInputSource = CoreServices.InputSystem.DetectedInputSources.FirstOrDefault();
             Assert.NotNull(defaultInputSource, "At least one input source must be present for this test to work.");
 
             // Raise an input down event, then wait for transition to take place
-            MixedRealityToolkit.InputSystem.RaiseOnInputDown(defaultInputSource, Handedness.None, interactable.InputAction);
+            CoreServices.InputSystem.RaiseOnInputDown(defaultInputSource, Handedness.None, interactable.InputAction);
             // Wait for at least one frame explicitly to ensure the input goes through
             yield return new WaitForFixedUpdate();
 
@@ -299,7 +280,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 
             // Raise an input up event, then wait for transition to take place
-            MixedRealityToolkit.InputSystem.RaiseOnInputUp(defaultInputSource, Handedness.None, interactable.InputAction);
+            CoreServices.InputSystem.RaiseOnInputUp(defaultInputSource, Handedness.None, interactable.InputAction);
             // Wait for at least one frame explicitly to ensure the input goes through
             yield return new WaitForFixedUpdate();
             yield return new WaitForSeconds(buttonReleaseAnimationDelay);
@@ -310,9 +291,39 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
+        /// Tests that radial buttons can be selected and deselected, and that a radial button
+        /// set allows just one button to be selected at a time
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestRadialButtons()
+        {
+            var radialSet = InstantiateInteractableFromPath(Vector3.forward, Vector3.zero, radialSetPrefabAssetPath);
+            var firstRadialButton = radialSet.transform.Find("Radial (1)");
+            var secondRadialButton = radialSet.transform.Find("Radial (2)");
+            var thirdRadialButton = radialSet.transform.Find("Radial (3)");
+            var testHand = new TestHand(Handedness.Right);
+            yield return testHand.Show(Vector3.zero);
+            Assert.IsTrue(firstRadialButton.GetComponent<Interactable>().IsToggled);
+            Assert.IsFalse(secondRadialButton.GetComponent<Interactable>().IsToggled);
+            Assert.IsFalse(thirdRadialButton.GetComponent<Interactable>().IsToggled);
+
+            yield return testHand.Show(Vector3.zero);
+
+            var aBitBack = Vector3.forward * -0.2f;
+            yield return testHand.MoveTo(firstRadialButton.position);
+            yield return testHand.Move(aBitBack);
+
+            yield return testHand.MoveTo(secondRadialButton.transform.position);
+            yield return testHand.Move(aBitBack);
+
+            Assert.IsFalse(firstRadialButton.GetComponent<Interactable>().IsToggled);
+            Assert.IsTrue(secondRadialButton.GetComponent<Interactable>().IsToggled);
+            Assert.IsFalse(thirdRadialButton.GetComponent<Interactable>().IsToggled);
+        }
+
+        /// <summary>
         /// Instantiates a push button prefab and uses simulated input events to press it.
         /// </summary>
-        /// <returns></returns>
         /// https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5153
         // [UnityTest]
         public IEnumerator TestSimulatedMenuInputOnPrefab()
@@ -338,18 +349,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Find the menu action from the input system profile
-            MixedRealityInputAction menuAction = MixedRealityToolkit.InputSystem.InputSystemProfile.InputActionsProfile.InputActions.Where(m => m.Description == "Menu").FirstOrDefault();
+            MixedRealityInputAction menuAction = CoreServices.InputSystem.InputSystemProfile.InputActionsProfile.InputActions.Where(m => m.Description == "Menu").FirstOrDefault();
             Assert.NotNull(menuAction.Description, "Couldn't find menu input action in input system profile.");
 
             // Set the interactable to respond to a 'menu' input action
             interactable.InputAction = menuAction;
 
             // Find an input source to associate with the input event (doesn't matter which one)
-            IMixedRealityInputSource defaultInputSource = MixedRealityToolkit.InputSystem.DetectedInputSources.FirstOrDefault();
+            IMixedRealityInputSource defaultInputSource = CoreServices.InputSystem.DetectedInputSources.FirstOrDefault();
             Assert.NotNull(defaultInputSource, "At least one input source must be present for this test to work.");
 
             // Raise a menu down input event, then wait for transition to take place
-            MixedRealityToolkit.InputSystem.RaiseOnInputDown(defaultInputSource, Handedness.Right, menuAction);
+            CoreServices.InputSystem.RaiseOnInputDown(defaultInputSource, Handedness.Right, menuAction);
             // Wait for at least one frame explicitly to ensure the input goes through
             yield return new WaitForFixedUpdate();
 
@@ -362,7 +373,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 
             // Raise a menu up input event, then wait for transition to take place
-            MixedRealityToolkit.InputSystem.RaiseOnInputUp(defaultInputSource, Handedness.Right, menuAction);
+            CoreServices.InputSystem.RaiseOnInputUp(defaultInputSource, Handedness.Right, menuAction);
             // Wait for at least one frame explicitly to ensure the input goes through
             yield return new WaitForFixedUpdate();
             yield return new WaitForSeconds(buttonReleaseAnimationDelay);
@@ -374,7 +385,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Instantiates a push button prefab and uses simulated voice input events to press it.
         /// </summary>
-        /// <returns></returns>
         /// https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5153
         // [UnityTest]
         public IEnumerator TestSimulatedVoiceInputOnPrefab()
@@ -403,12 +413,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Find an input source to associate with the input event (doesn't matter which one)
-            IMixedRealityInputSource defaultInputSource = MixedRealityToolkit.InputSystem.DetectedInputSources.FirstOrDefault();
+            IMixedRealityInputSource defaultInputSource = CoreServices.InputSystem.DetectedInputSources.FirstOrDefault();
             Assert.NotNull(defaultInputSource, "At least one input source must be present for this test to work.");
 
             // Raise a voice select input event, then wait for transition to take place
             SpeechCommands commands = new SpeechCommands("Select", KeyCode.None, interactable.InputAction);
-            MixedRealityToolkit.InputSystem.RaiseSpeechCommandRecognized(defaultInputSource, RecognitionConfidenceLevel.High, new System.TimeSpan(100), System.DateTime.Now, commands);
+            CoreServices.InputSystem.RaiseSpeechCommandRecognized(defaultInputSource, RecognitionConfidenceLevel.High, new System.TimeSpan(100), System.DateTime.Now, commands);
             // Wait for at least one frame explicitly to ensure the input goes through
             yield return new WaitForFixedUpdate();
 
@@ -430,10 +440,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Generates an interactable from primitives and assigns a select action.
         /// </summary>
-        /// <param name="interactableObject"></param>
-        /// <param name="interactable"></param>
-        /// <param name="translateTargetObject"></param>
-        /// <param name="selectActionDescription"></param>
         private void AssembleInteractableButton(out GameObject interactableObject, out Interactable interactable, out Transform translateTargetObject, string selectActionDescription = "Select")
         {
             // Assemble an interactable out of a set of primitives
@@ -475,24 +481,31 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 #endif
 
             // Set the interactable to respond to the requested input action
-            MixedRealityInputAction selectAction = MixedRealityToolkit.InputSystem.InputSystemProfile.InputActionsProfile.InputActions.Where(m => m.Description == selectActionDescription).FirstOrDefault();
+            MixedRealityInputAction selectAction = CoreServices.InputSystem.InputSystemProfile.InputActionsProfile.InputActions.Where(m => m.Description == selectActionDescription).FirstOrDefault();
             Assert.NotNull(selectAction.Description, "Couldn't find " + selectActionDescription + " input action in input system profile.");
             interactable.InputAction = selectAction;
+        }
+
+        private GameObject InstantiateInteractableFromPath(Vector3 position, Vector3 eulerAngles, string path)
+        {
+            // Load interactable prefab
+            Object interactablePrefab = AssetDatabase.LoadAssetAtPath(path, typeof(Object));
+            GameObject result = Object.Instantiate(interactablePrefab) as GameObject;
+            Assert.IsNotNull(result);
+
+            // Move the object into position
+            result.transform.position = position;
+            result.transform.eulerAngles = eulerAngles;
+            return result;
         }
 
         /// <summary>
         /// Instantiates the default interactable button.
         /// </summary>
-        /// <param name="position"></param>
-        /// <param name="rotation"></param>
-        /// <param name="interactableObject"></param>
-        /// <param name="interactable"></param>
-        /// <param name="translateTargetObject"></param>
         private void InstantiateDefaultInteractablePrefab(Vector3 position, Vector3 rotation, out GameObject interactableObject, out Interactable interactable, out Transform translateTargetObject)
         {
             // Load interactable prefab
-            Object interactablePrefab = AssetDatabase.LoadAssetAtPath(defaultInteractablePrefabAssetPath, typeof(Object));
-            interactableObject = Object.Instantiate(interactablePrefab) as GameObject;
+            interactableObject = InstantiateInteractableFromPath(position, rotation, defaultInteractablePrefabAssetPath);
             interactable = interactableObject.GetComponent<Interactable>();
             Assert.IsNotNull(interactable);
 

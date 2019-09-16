@@ -3,14 +3,16 @@
   items:
   - name: Upgrading from HTK
     href: HTKToMRTKPortingGuide.md
-  - name: Updating from RC2 to GA
-    href: UpdatingToGA.md
+  - name: Updating from RC2
+    href: Updating.md
+  - name: Release Notes
+    href: ReleaseNotes.md
+  - name: Building and Deploying MRTK
+    href: BuildAndDeploy.md
   - name: Performance
     href: Performance/PerfGettingStarted.md
   - name: Hologram Stabilization
     href: Hologram-Stabilization.md
-  - name: Known Issues
-    href: KnownIssues.md
 - name: Architecture
   items:
   - name: Overview
@@ -25,6 +27,8 @@
       href: Architecture/InputSystem/CoreSystem.md
     - name: Controllers, Pointers, and Focus
       href: Architecture/InputSystem/ControllersPointersAndFocus.md
+  - name: Systems, Extension Services and Data Providers
+    href: Architecture/SystemsExtensionsProviders.md
 - name: Feature Overviews
   items:
   - name: Profiles
@@ -45,6 +49,8 @@
       href: Input/Controllers.md
     - name: Pointers
       href: Input/Pointers.md
+    - name: How to Add Near Interaction
+      href: Input/HowToAddNearInteractivity.md
     - name: Gestures
       href: Input/Gestures.md
     - name: Speech(Voice command)
@@ -52,9 +58,13 @@
     - name: Dictation
       href: Input/Dictation.md
     - name: Hands
-      href: InputSystem/HandTracking.md
+      href: Input/HandTracking.md
+    - name: Gaze
+      href: Input/Gaze.md
     - name: Eyes
       href: EyeTracking/EyeTracking_Main.md
+    - name: Creating an input data provider
+      href: Input/CreateDataProvider.md
   - name: In-Editor Input Simulation
     href: InputSimulation/InputSimulationService.md
   - name: UX Building Blocks
@@ -75,8 +85,6 @@
       href: README_AppBar.md
     - name: Object Collection
       href: README_ObjectCollection.md
-    - name: Pointers
-      href: README_Pointers.md
     - name: Slate
       href: README_Slate.md
     - name: System Keyboard
@@ -89,6 +97,8 @@
       href: README_HandInteractionExamples.md
     - name: Eye Tracking Interaction Example
       href: EyeTracking/EyeTracking_ExamplesOverview.md
+  - name: Detecting Platform Capabilities
+    href: DetectingPlatformCapabilities.md
   - name: MRTK Standard Shader
     href: README_MRTKStandardShader.md
   - name: Spatial Awareness
@@ -101,6 +111,8 @@
       href: SpatialAwareness/SpatialObjectMeshObserver.md
     - name: Usage Guide
       href: SpatialAwareness/UsageGuide.md
+    - name: Creating a spatial awareness data provider
+      href: SpatialAwareness/CreateDataProvider.md
   - name: Multi Scene System
     items:
     - name: Multi Scene System Overview
@@ -113,6 +125,8 @@
       href: SceneSystem/SceneSystemLoadProgress.md
     - name: Lighting Scene Operations
       href: SceneSystem/SceneSystemLightingScenes.md
+  - name: Teleport System
+    href: TeleportSystem/Overview.md
   - name: Boundary System
     items:
     - name: Boundary System Overview
@@ -128,7 +142,13 @@
     - name: Using the Visual Profiler
       href: Diagnostics/UsingVisualProfiler.md
   - name: Services
-    href: MixedRealityServices.md
+    items:
+    - name: What makes a mixed reality feature
+      href: MixedRealityServices.md
+    - name: What are the MixedRealityServiceRegistry and IMixedRealityServiceRegistrar
+      href: ServiceUtilities/MixedRealityServiceRegistryAndIMixedRealityServiceRegistrar.md
+    - name: Extension services
+      href: Extensions/ExtensionServices.md
   - name: Packages
     items:
     - name: MRTK Packages
@@ -137,8 +157,6 @@
       href: Packaging/MRTK_Modularization.md
   - name: Tools
     items:
-    - name: Build Window
-      href: Tools/BuildWindow.md
     - name: Dependency Window
       href: Tools/DependencyWindow.md
     - name: Optimize Window
@@ -154,10 +172,6 @@
     href: Extensions/SceneTransitionService/SceneTransitionServiceOverview.md
   - name: Experimental Features
     href: ExperimentalFeatures.md
-  - name: Advanced topics
-    items:
-    - name: Shared Experiences
-      href: TODO.md
 - name: Contributing
   items:
   - name: Contributing Overview

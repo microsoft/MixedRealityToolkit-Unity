@@ -336,7 +336,7 @@ GameObject:
   - component: {fileID: 1565874583813688473}
   - component: {fileID: 4351817177103377279}
   m_Layer: 0
-  m_Name: Toggle
+  m_Name: ToggleSwitch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -437,7 +437,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  pokeThreshold: 0.25
   debounceThreshold: 0.01
   touchableCollider: {fileID: 65620022048249504}
   localForward: {x: 0, y: 0, z: -1}

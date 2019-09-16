@@ -11,7 +11,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Retrieve all controllers currently registered with this device at runtime (if direct access is required)
         /// </summary>
-        /// <returns></returns>
         IMixedRealityController[] GetActiveControllers();
     }
 }

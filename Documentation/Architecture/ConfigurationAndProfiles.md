@@ -54,7 +54,7 @@ be covered in the [Input System](InputSystem/Terminology.md) documentation itsel
 
 ### Teleport
 
-This profile controls how the teleporation system works, which is primarily a VR concept.
+This profile controls how the teleportation system works, which is primarily a VR concept.
 
 ### Spatial mapping
 

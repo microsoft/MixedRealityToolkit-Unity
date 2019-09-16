@@ -136,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return GetState((int)state);
         }
 
-        // compares all the state values and returns a state based on bitwise comparison
+        /// <inheritdoc />
         public override State CompareStates()
         {
             int bit = GetBit();
@@ -166,7 +166,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// states is specified.
         /// Default States should match "DefaultStates" scriptable object in Interactable
         /// </summary>
-        /// <returns></returns>
         public virtual List<State> GetDefaultStates()
         {
             List<State> result = new List<State>();
