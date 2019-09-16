@@ -7,6 +7,11 @@ using System.Runtime.CompilerServices;
 
 namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 {
+    /// <summary>
+    /// ProximityEffect scales and switches out materials for registered objects whenever a pointer is in proximity.
+    /// Scaling is done on three different stages: far / medium and close proximity whereas material switching 
+    /// will only be done on close proximity.
+    /// </summary>
     [Serializable]
     public class ProximityEffect 
     {
@@ -88,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         private class ObjectProximityInfo
         {
             public Transform ScaledObject;
-            public Renderer ObjectVisualRenderer;
+            public Renderer ObjectVisualRenderer; 
             public ProximityState ProximityState = ProximityState.FullsizeNoProximity;
         }
 
@@ -250,7 +255,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
         }
 
-
         private void ScaleObject(ProximityState state, Transform scaleVisual, float objectSize, bool lerp = false)
         {
             float targetScale = 1.0f, weight = 0.0f;
@@ -325,5 +329,3 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         }
     }
 }
-
-
