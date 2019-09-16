@@ -30,7 +30,7 @@
 
 <img src="../Documentation/Images/Button/MRTK_Button_HowToUse_Interactable.png" width="450">
 
-ボタンの `PhysicalPressEventRouter` を介して、pressable button が *OnClick* イベントを発生させるタイミングを設定できます。例えば、*Interactable On Click* を *Event On Press* に設定することにより、*OnClick* をボタンを押して離した時ではなく、最初に押した時にトリガーするよう設定できます。
+ボタンの `PhysicalPressEventRouter` を介して、Pressable button が *OnClick* イベントを発生させるタイミングを設定できます。例えば、*Interactable On Click* を *Event On Press* に設定することにより、*OnClick* をボタンを押して離した時ではなく、最初に押した時にトリガーするよう設定できます。
 
 <img src="../Documentation/Images/Button/MRTK_Button_HowTo_Events.png" width="450">
 
@@ -46,113 +46,116 @@ Articulated hand の入力状態情報を活用するには、pressable button �
 
 このわずかなパルスエフェクトは、現在インタラクションしているポインター上に存在する  *ProximityLight(s)* を探す、pressable button によってトリガーされます。近接ライトが見つかった場合、  `ProximityLight.Pulse` メソッドが呼び出され、シェーダーパラメーターを自動的にアニメーション化してパルスを表示します。
 
-## Inspector properties ##
+## [Inspector] (インスペクタ―) プロパティ
 
 ![Button](../Documentation/Images/Button/MRTK_Button_Structure.png)
 
-**Box Collider**
-`Box Collider` for the button's front plate.
+**[Box Collider] (ボックスコライダー)**
+ボタンの前面プレートのための `Box Collider`。
 
 **Pressable Button**
-The logic for the button movement with hand press interaction.
+ハンドプレス インタラクション を使ったボタン移動のロジック。
 
 **Physical Press Event Router**
-This script sends events from hand press interaction to [Interactable](README_Interactable.md).
+ハンドプレス インタラクションから [Interactable](README_Interactable.md) へイベントを送るスクリプト。
 
 **Interactable**
-[Interactable](README_Interactable.md) handles various types of interaction states and events. HoloLens gaze, gesture, and voice input and immersive headset motion controller input are directly handled by this script.
+[Interactable](README_Interactable.md) は様々なタイプのインタラクションの状態とイベントを処理します。HoloLens のゲイズ，ジェスチャ，及び音声入力と，没入型ヘッドセットのモーションコントローラの入力は，このスクリプトによって直接処理されます。
 
 **Audio Source**
-Unity audio source for the audio feedback clips.
+音声フィードバッククリップ用の Unity のオーディオソース。
 
 *NearInteractionTouchable.cs*
-Required to make any object touchable with articulated hand input.
+多関節ハンドでオブジェクトをタッチ可能にするために必要です。
 
 ## Prefab Layout
-The *ButtonContent* object contains front plate, text label and icon. The *FrontPlate* responds to the proximity of the index fingertip using the *Button_Box* shader. It shows glowing borders, proximity light, and a pulse effect on touch. The text label is made with TextMesh Pro. *SeeItSayItLabel*'s visibility is controlled by [Interactable](README_Interactable.md)'s theme.
+
+*ButtonContent* オブジェクトには、フロントプレート、テキストラベル、およびアイコンが含まれています。 *FrontPlate*は、*Button_Box* シェーダーを使用して、人差し指の近接に応答します。 光る境界線、近接ライト、およびタッチのパルスエフェクトを示します。 テキストラベルは TextMesh Pro で作成されます。 *SeeItSayItLabel* の可視性は、[Interactable]（README_Interactable.md）のテーマによって制御されます。
 
 ![Button](../Documentation/Images/Button/MRTK_Button_Layout.png)
 
 ## Voice command ('See-it, Say-it') ##
 
 **Speech Input Handler**
-The [Interactable](README_Interactable.md) script in Pressable Button already implements `IMixedRealitySpeechHandler`. A voice command keyword can be set here. 
+Pressable Buttonの[Interactable]（README_Interactable.md）スクリプトは、すでに `IMixedRealitySpeechHandler`を実装しています。 ここで音声コマンドのキーワードを設定できます。
 
 <img src="../Documentation/Images/Button/MRTK_Button_Speech1.png" width="450">
 
 **Speech Input Profile**
-Additionally, you need to register the voice command keyword in the global *Speech Commands Profile*. 
+さらに、グローバルな *Speech Commands Profile* に音声コマンドキーワードを登録する必要があります。
 
 <img src="../Documentation/Images/Button/MRTK_Button_Speech2.png" width="450">
 
 **See-it, Say-it label**
-The pressable button prefab has a placeholder TextMesh Pro label under the *SeeItSayItLabel* object. You can use this label to communicate the voice command keyword for the button to the user.
+Pressable Button プレハブには、*SeeItSayItLabel* オブジェクトの下にプレースホルダー TextMesh Pro ラベルがあります。このラベルを使用して、ボタンの音声コマンドキーワードをユーザーに伝えることができます。
 
 <img src="../Documentation/Images/Button/MRTK_Button_Speech3.png" width="450">
 
 ## How to make a button from scratch ##
-You can find the examples of these buttons in the **PressableButtonExample** scene.
+これらのボタンの例は、**PressableButtonExample** のシーンにあります。
 
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCube0.png">
 
 ### 1. Creating a Pressable Button with Cube (Near interaction only)
-1. Create a Unity Cube (GameObject > 3D Object > Cube)
-2. Add `PressableButton.cs` script
-3. Add `NearInteractionTouchable.cs` script
 
-In the `PressableButton`'s Inspector panel, assign the cube object to the **Moving Button Visuals**. 
+1. Unity のキューブを作成します（GameObject> 3D Object> Cube）
+2. `PressableButton.cs` のスクリプトを追加します
+3. `NearInteractionTouchable.cs` のスクリプトを追加します
+
+`PressableButton` の [Inspector] (インスペクター) パネルで、キューブオブジェクトを **Moving Button Visuals** に割り当てます。
 
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCube3.png" width="450">
 
-When you select the cube, you will see multiple colored layers on the object. This visualizes the distance values under **Press Settings**. Using the handles, you can configure when to start press (move the object) and when to trigger event.
+キューブを選択すると、オブジェクト上に複数の色付きのレイヤーが表示されます。 これにより、**Press Settings** の下の距離の値が視覚化されます。 ハンドルを使用して、プレスを開始するタイミング（オブジェクトを動かす）とイベントをトリガーするタイミングを設定できます。
 
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCube1.jpg" width="450">
 
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCube2.png" width="450">
 
-When you press the button, it will move and generate proper events exposed in the `PressableButton.cs` script such as TouchBegin(), TouchEnd(), ButtonPressed(), ButtonReleased().
+ボタンを押すと、ボタンが移動し，TouchBegin()、TouchEnd()、ButtonPressed()、ButtonReleased() などの `PressableButton.cs` のスクリプトで公開される適切なイベントが生成されます。
 
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCubeRun1.jpg">
 
 ### 2. Adding visual feedback to the basic cube button
-MRTK Standard Shader provides various features that makes it easy to add visual feedback. Create an material and select shader `Mixed Reality Toolkit/Standard`. Or you can use or duplicate one of the existing materials under `/SDK/StandardAssets/Materials/` that uses MRTK Standard Shader.
+
+MRTK Standard Shader は、視覚的なフィードバックを簡単に追加できるさまざまな機能を提供しています。 マテリアルを作成し、シェーダー `Mixed Reality Toolkit/Standard` を選択します。 または、MRTK 標準シェーダーを使用している `/SDK/StandardAssets/Materials/` にある既存のマテリアルの１つを使用または複製できます。
 
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCube4.png" width="450">
 
-Check `Hover Light` and `Proximity Light` under **Fluent Options**. This enables visual feedback for both near hand(Proximity Light) and far pointer(Hover Light) interactions.
+**Fluent Options** の下の `Hover Light` と `Proximity Light` をチェックします。 これにより、近くの手 (近接ライト) と遠くのポインター (ホバーライト) の両方のインタラクションの視覚的なフィードバックが可能になります。
 
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCube5.png" width="450">
 
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCubeRun2.jpg">
 
 ### 3. Adding audio feedback to the basic cube button
-Since `PressableButton.cs` script exposes events such as TouchBegin(), TouchEnd(), ButtonPressed(), ButtonReleased(), we can easily assign audio feedback. Simply add Unity's `Audio Source` to the cube object then assign audio clips by selecting AudioSource.PlayOneShot(). You can use MRTK_Select_Main and MRTK_Select_Secondary audio clips under `/SDK/StandardAssets/Audio/` folder.
+
+`PressableButton.cs` のスクリプトは TouchBegin()、TouchEnd()、ButtonPressed()、ButtonReleased() などのイベントを公開するため、音声フィードバックを簡単に割り当てることができます。Unity の `Audio Source` をキューブオブジェクトに追加し、AudioSource.PlayOneShot() を選択してオーディオクリップを割り当てます。`/SDK/StandardAssets/Audio/` フォルダーの下のMRTK_Select_Main および MRTK_Select_Secondary オーディオクリップを使用できます。
 
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCube7.png" width="450">
 
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCube6.png" width="450">
 
 ### 4. Adding visual states and handle far interaction events
-[Interactable](README_Interactable.md) is a script that makes it easy to create a visual states for the various types of input interactions. It also handles far interaction events. Add `Interactable.cs` and drag and drop the cube object onto the **Target** field under **Profiles**. Then, create a new Theme with a type **ScaleOffsetColorTheme**. Under this theme, you can specify the color of the object for the specific interaction states such as **Focus** and **Pressed**. You can also control Scale and Offset as well. Check **Easing** and set duration to make the visual transition smooth.
+
+[Interactable]（README_Interactable.md）は、さまざまなタイプの入力インタラクションの視覚的な状態を簡単に作成できるスクリプトです。 また、遠方のインタラクションイベントも処理します。`Interactable.cs` を追加し、キューブオブジェクトを **Profiles** の下の **Target** フィールドにドラッグアンドドロップします。 次に、**ScaleOffsetColorTheme** タイプの新しいテーマを作成します。このテーマでは、**Focus** や **Pressed** などの特定のインタラクションの状態におけるオブジェクトの色を指定できます。スケールとオフセットも制御できます。**Easing** をチェックし、継続時間を設定して視覚的な移行をスムーズにします。
 
  <img src="../Documentation/Images/Button/MRTK_PressableButtonCube8.png" width="450">
-  <img src="../Documentation/Images/Button/MRTK_PressableButtonCube9.png" width="450">
+ <img src="../Documentation/Images/Button/MRTK_PressableButtonCube9.png" width="450">
 
-You will see the object responds to both far(hand ray or gaze cursor) and near(hand) interactions.
+オブジェクトが遠く（ハンドレイ，またはゲイズカーソル）と近く（ハンド）の両方のインタラクションに応答するのがわかります。
 
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCubeRun3.jpg">
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCubeRun4.jpg">
 
 ## Custom Button Examples ##
 
-In the [HandInteractionExample scene](README_HandInteractionExamples.md), you can take a look at the piano and round button examples which are both using `PressableButton`. 
+[HandInteractionExample のシーン](README_HandInteractionExamples.md) で、ピアノと丸ボタンの例を見てみましょう。どちらも `PressableButton` を使用しています。
 
 <img src="../Documentation/Images/Button/MRTK_Button_Custom1.png" width="450">
 
 <img src="../Documentation/Images/Button/MRTK_Button_Custom2.png" width="450">
 
-Each piano key has a `PressableButton` and a `NearInteractionTouchable` script assigned. It is important to verify that the *Local Forward* direction of `NearInteractionTouchable` is correct. It is represented by a white arrow in the editor. Make sure the arrow points away from the button's front face:
+各ピアノのキーには、`PressableButton` と `NearInteractionTouchable` のスクリプトが割り当てられています。`NearInteractionTouchable` の *Local Forward* の方向が正しいことを確認することが重要です。エディターでは白い矢印で表されます。矢印がボタンの前面から離れていることを確認してください。
 
 <img src="../Documentation/Images/Button/MRTK_Button_Custom3.png" width="450">
-
-
