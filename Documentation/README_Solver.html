@@ -100,8 +100,8 @@
 <li><a href="#surfacemagnetism"><code>SurfaceMagnetism</code></a>: casts rays to surfaces in the world, and align the object to that surface.</li>
 <li><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.Momentum.html"><code>Momentum</code></a>: Applies acceleration/velocity/friction to simulate momentum and springiness for an object being moved by other solvers/components.</li>
 <li><a href="#inbetween"><code>InBetween</code></a>: Keeps an object in between two tracked objects.</li>
-<li><a href="#handconstraint-and-handconstraintpalmup"><code>HandConstraint</code></a>: Constrains object to follow hands in a region that doesn't intersect the GameObject with the hands. Useful for hand constrained interactive content such as menus, etc. This solver is intended to work with <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand.html">IMixedRealityHand</a> but also works with <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityController.html">IMixedRealityController</a>.</li>
-<li><a href="#handconstraint-and-handconstraintpalmup"><code>HandConstraintPalmUp</code></a>: Derives from HandConstraint but includes logic to test if the palm is facing the user before activation. This solver only works with <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand.html">IMixedRealityHand</a> controllers, with other controller types this solver will behave just like its base class.</li>
+<li><a href="#hand-menu-with-handconstraint-and-handconstraintpalmup"><code>HandConstraint</code></a>: Constrains object to follow hands in a region that doesn't intersect the GameObject with the hands. Useful for hand constrained interactive content such as menus, etc. This solver is intended to work with <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand.html">IMixedRealityHand</a> but also works with <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityController.html">IMixedRealityController</a>.</li>
+<li><a href="#hand-menu-with-handconstraint-and-handconstraintpalmup"><code>HandConstraintPalmUp</code></a>: Derives from HandConstraint but includes logic to test if the palm is facing the user before activation. This solver only works with <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand.html">IMixedRealityHand</a> controllers, with other controller types this solver will behave just like its base class.</li>
 </ul>
 <p>In order to use the Solver system, simply add one of the components listed above to a GameObject. Since all Solvers require a <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.html"><code>SolverHandler</code></a>, one will be created automatically by Unity.</p>
 <div class="NOTE">
@@ -164,13 +164,13 @@ public class InFront : Solver
 <p>Every Solver component has a core-set of identical properties that control the core Solver behavior.</p>
 <p>If <em>Smoothing</em> is enabled, then the Solver will gradually update the transform of the GameObject over time to the calculated values. The speed of this change is determined by every transform component's <em>LerpTime</em> property. For example, a higher <em>MoveLerpTime</em> value will result in slower increments in movement between frames.</p>
 <p>If <em>MaintainScale</em> is enabled, then the Solver will utilize the GameObject's default local scale.</p>
-<p><img src="Images/Solver/GeneralSolverProperties.PNG" alt="Core Solver Properties">
+<p><img src="Images/Solver/GeneralSolverProperties.png" alt="Core Solver Properties">
 <br>
 <em>Common properties inherited by all Solver components</em></p>
 <h3 id="orbital">Orbital</h3>
 <p>The <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.Orbital.html"><code>Orbital</code></a> class is a tag-along component that behaves like planets in a solar system. This Solver will ensure the attached GameObject orbits around the tracked transform. Thus, if the <em>Tracked Target Type</em> of the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.html"><code>SolverHandler</code></a> is set to <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.TrackedObjectType.html#Microsoft_MixedReality_Toolkit_Utilities_TrackedObjectType_Head"><code>Head</code></a>, then the GameObject will orbit around the user's head with a fixed offset applied.</p>
 <p>Developers can modify this fixed offset to keep menus or other scene components at eye-level or at waist level etc. around a user. This is done by modifying the <em>Local Offset</em> and <em>World Offset</em> properties. The <em>Orientation Type</em> property determines the rotation applied to the object if it should maintain it's original rotation or always face the camera or face whatever transform is driving it's position etc.</p>
-<p><img src="Images/Solver/OrbitalExample.PNG" alt="Orbital Example">
+<p><img src="Images/Solver/OrbitalExample.png" alt="Orbital Example">
 <br>
 <em>Orbital example</em></p>
 <h3 id="radialview">RadialView</h3>
@@ -178,7 +178,7 @@ public class InFront : Solver
 <p>The <em>Min &amp; Max View Degrees</em> properties determines how large of a portion of the GameObject must always be in view.</p>
 <p>The <em>Min &amp; Max Distance</em> properties determines how far the GameObject should be kept from the user. For example, walking towards the GameObject with a <em>Min Distance</em> of 1m will push the GameObject away to ensure it is never closer than 1m to the user.</p>
 <p>Generally, the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.RadialView.html"><code>RadialView</code></a> is used in conjunction with <em>Tracked Target Type</em> set to <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.TrackedObjectType.html#Microsoft_MixedReality_Toolkit_Utilities_TrackedObjectType_Head"><code>Head</code></a> so that the component follows the user's gaze. However, this component can function to be kept in <em>&quot;view&quot;</em> of any <em>Tracked Target Type</em>.</p>
-<p><img src="Images/Solver/RadialViewExample.PNG" alt="RadialView Example">
+<p><img src="Images/Solver/RadialViewExample.png" alt="RadialView Example">
 <br>
 <em>RadialView example</em></p>
 <h3 id="inbetween">InBetween</h3>
@@ -204,15 +204,16 @@ public class InFront : Solver
 <h5>Note</h5>
 <p>Use the <em>Orientation Blend</em> property to control the balance between rotation factors when <em>Orientation Mode</em> is set to <em>Blended</em>. A value of 0.0 will have orientation entirely driven by <em>TrackedTarget</em> mode and a value of 1.0 will have orientation driven entirely by <em>SurfaceNormal</em>.</p>
 </div>
-<p><img src="Images/Solver/SurfaceMagExample.PNG" alt="SurfaceMagnetism Example"></p>
-<h3 id="handconstraint-and-handconstraintpalmup">HandConstraint and HandConstraintPalmUp</h3>
+<p><img src="Images/Solver/SurfaceMagExample.png" alt="SurfaceMagnetism Example"></p>
+<h3 id="hand-menu-with-handconstraint-and-handconstraintpalmup">Hand Menu with HandConstraint and HandConstraintPalmUp</h3>
+<p><img src="Images/Solver/MRTK_UX_HandMenu.png" alt=""></p>
 <p>The <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> behavior provides a solver that constrains the tracked object to a region safe for hand constrained content (such as hand UI, menus, etc). Safe regions are considered areas that don't intersect with the hand. A derived class of <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> called <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.html"><code>HandConstraintPalmUp</code></a> is also included to demonstrate a common behavior of activating the solver tracked object when the palm is facing the user. For example use of this behavior please see the HandBasedMenuExample scene under: <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes">MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/</a></p>
 <p>Please see the tool tips available for each <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> property for additional documentation. A few properties are defined in more detail below.</p>
-<img src="Images/Solver/MRTK_Solver_HandConstraintPalmUp.PNG" width="450">
+<img src="Images/Solver/MRTK_Solver_HandConstraintPalmUp.png" width="450">
 <ul>
 <li><strong>Safe Zone</strong>: The safe zone specifies where on the hand to constrain content. It is recommended that content be placed on the Ulnar Side to avoid overlap with the hand and improved interaction quality. Safe zones are calculated by taking the hands orientation projected into a plane orthogonal to the camera's view and raycasting against a bounding box around the hands. Safe zones are defined to work with <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand.html"><code>IMixedRealityHand</code></a> but also works with other controller types. It is recommended to explore what each safe zone represents on different controller types.</li>
 </ul>
-<img src="Images/Solver/MRTK_Solver_HandConstraintSafeZones.PNG" width="450">
+<img src="Images/Solver/MRTK_Solver_HandConstraintSafeZones.png" width="450">
 <ul>
 <li><p><strong>Activation Events</strong>: Currently the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> triggers four activation events. These events can be used in many different combinations to create unique <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> behaviors, please see the HandBasedMenuExample scene under: <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes">MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/</a> for examples of these behaviors.</p>
 <ul>

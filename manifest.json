@@ -2391,6 +2391,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/Input/MRTK_Input_Speech.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Input/MRTK_Input_Speech.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/Input/MRTK_Package_Foundation.png",
       "output": {
         "resource": {
@@ -3227,6 +3238,39 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_ExamplesHub.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_ExamplesHub.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_Icon_APIReference.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_Icon_APIReference.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_Icon_ArchitectureOverview.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_Icon_ArchitectureOverview.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/MRTK_Icon_Boundary.png",
       "output": {
         "resource": {
@@ -3308,6 +3352,17 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/MRTK_Icon_EyeTracking.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/MRTK_Icon_FeatureGuides.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MRTK_Icon_FeatureGuides.png"
         }
       },
       "is_incremental": false,
@@ -4558,10 +4613,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/Solver/GeneralSolverProperties.PNG",
+      "source_relative_path": "Documentation/Images/Solver/GeneralSolverProperties.png",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/Solver/GeneralSolverProperties.PNG"
+          "relative_path": "Documentation/Images/Solver/GeneralSolverProperties.png"
         }
       },
       "is_incremental": false,
@@ -4580,10 +4635,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/Solver/MRTK_Solver_HandConstraintPalmUp.PNG",
+      "source_relative_path": "Documentation/Images/Solver/MRTK_Solver_HandConstraintPalmUp.png",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/Solver/MRTK_Solver_HandConstraintPalmUp.PNG"
+          "relative_path": "Documentation/Images/Solver/MRTK_Solver_HandConstraintPalmUp.png"
         }
       },
       "is_incremental": false,
@@ -4591,10 +4646,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/Solver/MRTK_Solver_HandConstraintSafeZones.PNG",
+      "source_relative_path": "Documentation/Images/Solver/MRTK_Solver_HandConstraintSafeZones.png",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/Solver/MRTK_Solver_HandConstraintSafeZones.PNG"
+          "relative_path": "Documentation/Images/Solver/MRTK_Solver_HandConstraintSafeZones.png"
         }
       },
       "is_incremental": false,
@@ -4613,10 +4668,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/Solver/OrbitalExample.PNG",
+      "source_relative_path": "Documentation/Images/Solver/MRTK_UX_HandMenu.png",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/Solver/OrbitalExample.PNG"
+          "relative_path": "Documentation/Images/Solver/MRTK_UX_HandMenu.png"
         }
       },
       "is_incremental": false,
@@ -4624,10 +4679,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/Solver/RadialViewExample.PNG",
+      "source_relative_path": "Documentation/Images/Solver/OrbitalExample.png",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/Solver/RadialViewExample.PNG"
+          "relative_path": "Documentation/Images/Solver/OrbitalExample.png"
         }
       },
       "is_incremental": false,
@@ -4635,10 +4690,21 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/Solver/SurfaceMagExample.PNG",
+      "source_relative_path": "Documentation/Images/Solver/RadialViewExample.png",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/Solver/SurfaceMagExample.PNG"
+          "relative_path": "Documentation/Images/Solver/RadialViewExample.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Solver/SurfaceMagExample.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Solver/SurfaceMagExample.png"
         }
       },
       "is_incremental": false,
@@ -5311,7 +5377,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/Speech.html",
-          "hash": "UsBByAMT9VeNgIiU8ktSFA=="
+          "hash": "KKClz65IC5vrdG6r8VR2WA=="
         }
       },
       "is_incremental": false,
@@ -5527,7 +5593,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_MRTKStandardShader.html",
-          "hash": "c2t6gomYvDQ/E60q0UrWXA=="
+          "hash": "LeOBth+6fP55Hs31D+i70w=="
         }
       },
       "is_incremental": false,
@@ -5599,7 +5665,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Solver.html",
-          "hash": "Uo61T0L18zeGDr7Ij+aipw=="
+          "hash": "rXhcYfVu3TeR1JSNVVjJFw=="
         }
       },
       "is_incremental": false,
@@ -5887,7 +5953,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "Mg1xXeZxYPBF2x6Xs6Dszg=="
+          "hash": "YUaYqH673Vd3BVu3FbK4fA=="
         }
       },
       "is_incremental": false,
@@ -19523,17 +19589,17 @@
           "total_file_count": 124,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1129,
-          "skipped_file_count": 0
-        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1129,
           "skipped_file_count": 0
         }
       }
