@@ -10,7 +10,7 @@ using UnityEngine.Events;
 namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 {
     [Serializable]
-    public abstract class BoundsControlHandlesBase : IProximityScaleObjectProvider
+    public abstract class BoundsControlHandlesBase : IProximityEffectObjectProvider
     {
         [SerializeField]
         [Tooltip("Material applied to handles when they are not in a grabbed state")]
