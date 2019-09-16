@@ -351,7 +351,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                     ResetVisuals();
 
                     if (active)
-                        proximityEffect.ResetHandleProximityScale();
+                        proximityEffect.ResetProximityScale();
 
                    
                 }
@@ -739,7 +739,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         {
             if (eventData.NewFocusedObject == null)
             {
-                proximityEffect.ResetHandleProximityScale();
+                proximityEffect.ResetProximityScale();
             }
 
             if (activation == BoundingBoxActivationType.ActivateManually || activation == BoundingBoxActivationType.ActivateOnStart)
@@ -1054,11 +1054,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             // add corners
             bool isFlattened = flattenAxis != FlattenModeType.DoNotFlatten;
             scaleHandles.CreateHandles(rigRoot, ref boundsCorners, drawTetherWhenManipulating, isFlattened);
-            proximityEffect.AddHandles(scaleHandles);
+            proximityEffect.AddObjects(scaleHandles);
 
             // add links
             rotationHandles.Create(ref boundsCorners, rigRoot, drawTetherWhenManipulating);
-            proximityEffect.AddHandles(rotationHandles);
+            proximityEffect.AddObjects(rotationHandles);
             links.CreateLinks(rotationHandles, rigRoot, currentBoundsExtents);
 
             // add box display

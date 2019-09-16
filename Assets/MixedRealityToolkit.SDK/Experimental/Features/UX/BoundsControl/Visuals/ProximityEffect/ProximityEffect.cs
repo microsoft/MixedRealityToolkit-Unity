@@ -11,69 +11,69 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
     public class ProximityEffect 
     {
         [SerializeField]
-        [Tooltip("Determines whether proximity feature (scaling and material toggling) for bounding box handles is activated")]
+        [Tooltip("Determines whether proximity feature (scaling and material toggling) is activated")]
         private bool proximityEffectActive = false;
 
         /// <summary>
-        /// Determines whether proximity feature (scaling and material toggling) for bounding box handles is activated
+        /// Determines whether proximity feature (scaling and material toggling) is activated
         /// </summary>
         public bool ProximityEffectActive => proximityEffectActive;
 
 
         [SerializeField]
-        [Tooltip("How far away should the hand be from a handle before it starts scaling the handle?")]
+        [Tooltip("How far away should the hand be from an object before it starts scaling the object?")]
         [Range(0.005f, 0.2f)]
-        private float handleMediumProximity = 0.1f;
+        private float objectMediumProximity = 0.1f;
 
         [SerializeField]
-        [Tooltip("How far away should the hand be from a handle before it activates the close-proximity scaling effect?")]
+        [Tooltip("How far away should the hand be from an object before it activates the close-proximity scaling effect?")]
         [Range(0.001f, 0.1f)]
-        private float handleCloseProximity = 0.03f;
+        private float objectCloseProximity = 0.03f;
 
         [SerializeField]
-        [Tooltip("A Proximity-enabled Handle scales by this amount when a hand moves out of range. Default is 0, invisible handle.")]
-        private float farScale = 1.0f;
+        [Tooltip("A Proximity-enabled object scales by this amount when a hand moves out of range. Default is 0, invisible object.")]
+        private float farScale = 0.0f;
 
         /// <summary>
-        /// A Proximity-enabled Handle scales by this amount when a hand moves out of range. Default is 0, invisible handle.
+        /// A Proximity-enabled object scales by this amount when a hand moves out of range. Default is 0, invisible object.
         /// </summary>
         public float FarScale => farScale;
 
         [SerializeField]
-        [Tooltip("A Proximity-enabled Handle scales by this amount when a hand moves into the Medium Proximity range. Default is 1.0, original handle size.")]
-        private float mediumScale = 1.2f;
+        [Tooltip("A Proximity-enabled object scales by this amount when a hand moves into the Medium Proximity range. Default is 1.0, original object size.")]
+        private float mediumScale = 1.0f;
 
         /// <summary>
-        /// A Proximity-enabled Handle scales by this amount when a hand moves into the Medium Proximity range. Default is 1.0, original handle size.
+        /// A Proximity-enabled object scales by this amount when a hand moves into the Medium Proximity range. Default is 1.0, original object size.
         /// </summary>
         public float MediumScale => mediumScale;
     
         [SerializeField]
-        [Tooltip("A Proximity-enabled Handle scales by this amount when a hand moves into the Close Proximity range. Default is 1.5, larger handle size.")]
+        [Tooltip("A Proximity-enabled object scales by this amount when a hand moves into the Close Proximity range. Default is 1.5, larger object size.")]
         private float closeScale = 1.5f;
 
         /// <summary>
-        /// A Proximity-enabled Handle scales by this amount when a hand moves into the Close Proximity range. Default is 1.5, larger handle size
+        /// A Proximity-enabled object scales by this amount when a hand moves into the Close Proximity range. Default is 1.5, larger object size
         /// </summary>
         public float CloseScale => closeScale;
       
         [SerializeField]
-        [Tooltip("At what rate should a Proximity-scaled Handle scale when the Hand moves from Medium proximity to Far proximity?")]
+        [Tooltip("At what rate should a Proximity-scaled object scale when the Hand moves from Medium proximity to Far proximity?")]
         [Range(0.0f, 1.0f)]
         private float farGrowRate = 0.3f;
 
         [SerializeField]
-        [Tooltip("At what rate should a Proximity-scaled Handle scale when the Hand moves to a distance that activates Medium Scale ?")]
+        [Tooltip("At what rate should a Proximity-scaled Object scale when the Hand moves to a distance that activates Medium Scale ?")]
         [Range(0.0f, 1.0f)]
         private float mediumGrowRate = 0.2f;
 
         [SerializeField]
-        [Tooltip("At what rate should a Proximity-scaled Handle scale when the Hand moves to a distance that activates Close Scale ?")]
+        [Tooltip("At what rate should a Proximity-scaled object scale when the Hand moves to a distance that activates Close Scale ?")]
         [Range(0.0f, 1.0f)]
         private float closeGrowRate = 0.3f;
 
         /// <summary>
-        /// Internal state tracking for proximity of a handle
+        /// Internal state tracking for proximity of a object
         /// </summary>
         internal enum ProximityState
         {
@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         }
 
         /// <summary>
-        /// Container for handle references and states (including scale and rotation type handles)
+        /// Container for object references and states
         /// </summary>
         private class ObjectProximityInfo
         {
@@ -92,13 +92,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             public ProximityState ProximityState = ProximityState.FullsizeNoProximity;
         }
 
-
-
-        /// Container for registered bounding box handles and their proximity states
-        /// 
+        /// <summary>
+        /// Container for registered object providers and their proximity infos
+        /// </summary>
         private class RegisteredObjects
         {
-            public IProximityScaleObjectProvider objectProvider;
+            public IProximityEffectObjectProvider objectProvider;
             public List<ObjectProximityInfo> proximityInfos;
         }
 
@@ -116,16 +115,16 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
         }
 
-        public void ResetHandleProximityScale()
+        public void ResetProximityScale()
         {
             if (proximityEffectActive == false)
             {
                 return;
             }
 
-            foreach (var baseHandles in registeredObjects)
+            foreach (var registeredObject in registeredObjects)
             {
-                foreach (var item in baseHandles.proximityInfos)
+                foreach (var item in registeredObject.proximityInfos)
                 {
                     if (item.ProximityState != ProximityState.FullsizeNoProximity)
                     {
@@ -133,10 +132,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                        
                         if (item.ObjectVisualRenderer)
                         {
-                            item.ObjectVisualRenderer.material = baseHandles.objectProvider.GetBaseMaterial();
+                            item.ObjectVisualRenderer.material = registeredObject.objectProvider.GetBaseMaterial();
                         }
 
-                        ScaleObject(item.ProximityState, item.ScaledObject, baseHandles.objectProvider.GetObjectSize());
+                        ScaleObject(item.ProximityState, item.ScaledObject, registeredObject.objectProvider.GetObjectSize());
                     }
                 }
             }
@@ -144,9 +143,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
         private bool IsAnyRegisteredObjectVisible()
         {
-            foreach (var baseHandles in registeredObjects)
+            foreach (var registeredObject in registeredObjects)
             {
-                if (baseHandles.objectProvider.IsActive())
+                if (registeredObject.objectProvider.IsActive())
                 {
                     return true;
                 }
@@ -181,7 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             // Get the max radius possible of our current bounds plus the proximity
             float maxRadius = Mathf.Max(Mathf.Max(currentBoundsExtents.x, currentBoundsExtents.y), currentBoundsExtents.z);
             maxRadius *= maxRadius;
-            maxRadius += handleCloseProximity + handleMediumProximity;
+            maxRadius += objectCloseProximity + objectMediumProximity;
 
             // Grab points within sphere of influence from valid pointers
             foreach (var pointer in proximityPointers)
@@ -197,19 +196,19 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                 }
             }
 
-            // Loop through all handles and find closest one
-            Transform closestHandle = null;
+            // Loop through all objects and find closest one
+            Transform closestObject = null;
             float closestDistanceSqr = float.MaxValue;
             foreach (var point in proximityPoints)
             {
 
-                foreach (var baseHandles in registeredObjects)
+                foreach (var provider in registeredObjects)
                 {
 
-                    foreach (var item in baseHandles.proximityInfos)
+                    foreach (var item in provider.proximityInfos)
                     {
-                        // If handle can't be visible, skip calculations
-                        if (!baseHandles.objectProvider.IsActive())
+                        // If object can't be visible, skip calculations
+                        if (!provider.objectProvider.IsActive())
                         {
                             continue;
                         }
@@ -218,7 +217,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                         float sqrDistance = (item.ScaledObject.transform.position - point).sqrMagnitude;
                         if (sqrDistance < closestDistanceSqr)
                         {
-                            closestHandle = item.ScaledObject;
+                            closestObject = item.ScaledObject;
                             closestDistanceSqr = sqrDistance;
                         }
 
@@ -227,14 +226,14 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                 }
             }
 
-            // Loop through all handles and update visual state based on closest point
-            foreach (var baseHandles in registeredObjects)
+            // Loop through all objects and update visual state based on closest point
+            foreach (var provider in registeredObjects)
             {
-                foreach (var item in baseHandles.proximityInfos)
+                foreach (var item in provider.proximityInfos)
                 {
-                    ProximityState newState = (closestHandle == item.ScaledObject) ? GetProximityState(closestDistanceSqr) : ProximityState.FullsizeNoProximity;
+                    ProximityState newState = (closestObject == item.ScaledObject) ? GetProximityState(closestDistanceSqr) : ProximityState.FullsizeNoProximity;
 
-                    // Only apply updates if handle is in a new state or closest handle needs to lerp scaling
+                    // Only apply updates if object is in a new state or closest object needs to lerp scaling
                     if (item.ProximityState != newState)
                     {
                         // Update and save new state
@@ -242,11 +241,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
                         if (item.ObjectVisualRenderer)
                         {
-                            item.ObjectVisualRenderer.material = newState == ProximityState.CloseProximity ? baseHandles.objectProvider.GetHighlightedMaterial() : baseHandles.objectProvider.GetBaseMaterial();
+                            item.ObjectVisualRenderer.material = newState == ProximityState.CloseProximity ? provider.objectProvider.GetHighlightedMaterial() : provider.objectProvider.GetBaseMaterial();
                         }
                     }
 
-                    ScaleObject(newState, item.ScaledObject, baseHandles.objectProvider.GetObjectSize(), true);
+                    ScaleObject(newState, item.ScaledObject, provider.objectProvider.GetObjectSize(), true);
                 }
             }
         }
@@ -294,14 +293,14 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         /// Get the ProximityState value based on the distanced provided
         /// </summary>
         /// <param name="sqrDistance">distance squared in proximity in meters</param>
-        /// <returns>HandleProximityState for given distance</returns>
+        /// <returns>ProximityState for given distance</returns>
         private ProximityState GetProximityState(float sqrDistance)
         {
-            if (sqrDistance < handleCloseProximity * handleCloseProximity)
+            if (sqrDistance < objectCloseProximity * objectCloseProximity)
             {
                 return ProximityState.CloseProximity;
             }
-            else if (sqrDistance < handleMediumProximity * handleMediumProximity)
+            else if (sqrDistance < objectMediumProximity * objectMediumProximity)
             {
                 return ProximityState.MediumProximity;
             }
@@ -311,8 +310,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
         }
 
-        // register handles for proximity effect
-        internal void AddHandles(IProximityScaleObjectProvider provider)
+        // register objects for proximity effect
+        internal void AddObjects(IProximityEffectObjectProvider provider)
         {
             RegisteredObjects registeredObject = new RegisteredObjects() { objectProvider = provider, proximityInfos = new List<ObjectProximityInfo>() };
             provider.ForEachProximityObject(proximityObject => {

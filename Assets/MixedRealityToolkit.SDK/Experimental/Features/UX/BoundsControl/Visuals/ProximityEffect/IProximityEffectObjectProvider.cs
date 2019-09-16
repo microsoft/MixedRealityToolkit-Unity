@@ -6,7 +6,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
     /// <summary>
     /// Interface for defining a proximity object provider used in <see cref="ProximityEffect" /> of <see cref="BoundsControl" />
     /// </summary>
-    internal interface IProximityScaleObjectProvider
+    internal interface IProximityEffectObjectProvider
     {
         /// <summary>
         /// returns true if the provide has any visible objects
