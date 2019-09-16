@@ -468,32 +468,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 style = EditorStyles.foldout;
             }
-            /*
-            GUIStyle sectionStyle = new GUIStyle(EditorStyles.foldout);
-            sectionStyle.fontStyle = style;
-            if (size > 0)
-            {
-                sectionStyle.fontSize = size;
-                sectionStyle.fixedHeight = size * 2;
-            }*/
 
             using (new EditorGUI.IndentLevelScope())
             {
                 return EditorGUILayout.Foldout(open, headerName, true, style);
             }
-            /*
-            bool drawSection = false;
-
-            // To make foldout render properly, indent only this control
-            //using (new EditorGUI.IndentLevelScope())
-            //{
-                drawSection = EditorGUILayout.Foldout(open, headerName, true, style);
-            //}
-
-            return drawSection;
-            */
         }
-
+        /// <summary>
+        /// Draws a section start with header name and save open/close state to given preference key in SessionState
+        /// </summary>
         public static bool DrawSectionFoldoutWithKey(string headerName, string preferenceKey = null, GUIStyle style = null, int size = 0)
         {
             bool showPref = SessionState.GetBool(preferenceKey, true);
