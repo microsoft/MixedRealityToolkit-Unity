@@ -29,29 +29,31 @@ You can find examples of Bounding Box configurations in the `BoundingBoxExamples
    private BoundingBox bbox;
    bbox = cube.AddComponent<BoundingBox>();
 ```
-2. Configure options such as 'Activation' methods
+2. Configure options such as 'Activation' methods (see [Inspector properties](#inspector-properties) section below)
 ```
    bbox.BoundingBoxActivation = BoundingBox.BoundingBoxActivationType.ActivateOnStart;
    bbox.FlattenAxis = BoundingBox.FlattenModeType.DoNotFlatten;
 ```
-3. (Optional) Assign prefabs and materials for HoloLens 2 style Bounding Box
-```
-bbox.HandleMaterial = Assign BoundingBoxHandleWhite.mat through inspector variable.
-bbox.HandleGrabbedMaterial = Assign BoundingBoxHandleBlueGrabbed.mat through inspector variable.
-bbox.BoxMaterial = Assign BoundingBox.mat through inspector variable.
-bbox.BoxGrabbedMaterial = Assign MRTK_BoundingBox_ScaleHandle.mat through inspector variable.
-bbox.ScaleHandlePrefab = Assign BoundingBoxGrabbed.mat through inspector variable.
-bbox.ScaleHandleSlatePrefab = Assign BoundingBoxGrabbed.mat through inspector variable.
-bbox.ScaleHandleSize = 0.016f;
-bbox.ScaleHandleColliderPadding = 0.016f;
-bbox.RotationHandleSlatePrefab = Assign MRTK_BoundingBox_RotateHandle.prefab through inspector variable.
-bbox.RotationHandleSize = 0.016f;
-bbox.RotateHandleColliderPadding = 0.016f;
-mh.OnManipulationStarted.AddListener((med) => bbox.HighlightWires());
-mh.OnManipulationEnded.AddListener((med) => bbox.UnhighlightWires());
-```
+3. (Optional) Assign prefabs and materials for HoloLens 2 style Bounding Box. This still requires assignments through the inspector since the materials and prefabs should be dynamically loaded. 
 
+> [!NOTE]
+> Using Unity's 'Resources' folder for dynamically loading the materials is not recommended since the shader's permutation could be missing on build time.
 
+```
+   bbox.HandleMaterial = [Assign BoundingBoxHandleWhite.mat]
+   bbox.HandleGrabbedMaterial = [Assign BoundingBoxHandleBlueGrabbed.mat]
+   bbox.BoxMaterial = [Assign BoundingBox.mat]
+   bbox.BoxGrabbedMaterial = [Assign MRTK_BoundingBox_ScaleHandle.mat]
+   bbox.ScaleHandlePrefab = [Assign BoundingBoxGrabbed.mat]
+   bbox.ScaleHandleSlatePrefab = [Assign BoundingBoxGrabbed.mat]
+   bbox.ScaleHandleSize = 0.016f;
+   bbox.ScaleHandleColliderPadding = 0.016f;
+   bbox.RotationHandleSlatePrefab = [Assign MRTK_BoundingBox_RotateHandle.prefab]
+   bbox.RotationHandleSize = 0.016f;
+   bbox.RotateHandleColliderPadding = 0.016f;
+   mh.OnManipulationStarted.AddListener((med) => bbox.HighlightWires());
+   mh.OnManipulationEnded.AddListener((med) => bbox.UnhighlightWires());
+```
 
 ## Inspector properties ##
 
