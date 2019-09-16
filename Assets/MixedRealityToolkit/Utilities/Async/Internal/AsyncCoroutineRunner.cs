@@ -29,7 +29,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
-    /// This Async Coroutine Runner is just a object to
+    /// This Async Coroutine Runner is just an object to
     /// ensure that coroutines run properly with async/await.
     /// </summary>
     /// <remarks>
