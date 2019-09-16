@@ -160,21 +160,21 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         [SerializeField]
         [Range(0, 1)]
         [Tooltip("Enter amount representing amount of smoothing to apply to the movement, scale, rotation.  Smoothing of 0 means no smoothing. Max value means no change to value.")]
-        private float smoothingAmountOneHandManip = 0.001f;
+        private float smoothingAmount = 0.001f;
 
-        public float SmoothingAmoutOneHandManip
+        public float SmoothingAmount
         {
-            get => smoothingAmountOneHandManip;
-            set => smoothingAmountOneHandManip = value;
+            get => smoothingAmount;
+            set => smoothingAmount = value;
         }
 
         #endregion Serialized Fields
 
         #region Event handlers
-        public ManipulationEvent2 OnManipulationStarted = new ManipulationEvent2();
-        public ManipulationEvent2 OnManipulationEnded = new ManipulationEvent2();
-        public ManipulationEvent2 OnHoverEntered = new ManipulationEvent2();
-        public ManipulationEvent2 OnHoverExited = new ManipulationEvent2();
+        public ManipulationEvent OnManipulationStarted = new ManipulationEvent();
+        public ManipulationEvent OnManipulationEnded = new ManipulationEvent();
+        public ManipulationEvent OnHoverEntered = new ManipulationEvent();
+        public ManipulationEvent OnHoverExited = new ManipulationEvent();
         #endregion
 
         #region Private Properties
@@ -589,9 +589,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             // gaze/gesture/voice manipulation. For HoloLens 2, we don't want to do this.
             if (OnManipulationStarted != null)
             {
-                OnManipulationStarted.Invoke(new ManipulationEventData2
+                OnManipulationStarted.Invoke(new ManipulationEventData
                 {
-                    ManipulationSource = this,
+                    ManipulationSource = gameObject,
                     IsNearInteraction = isNearManipulation,
                     PointerCentroid = GetPointersGrabPoint(),
                     PointerVelocity = GetPointersVelocity(),
@@ -613,9 +613,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             // gaze/gesture/voice manipulation. For HoloLens 2, we don't want to do this.
             if (OnManipulationEnded != null)
             {
-                OnManipulationEnded.Invoke(new ManipulationEventData2
+                OnManipulationEnded.Invoke(new ManipulationEventData
                 {
-                    ManipulationSource = this,
+                    ManipulationSource = gameObject,
                     IsNearInteraction = isNearManipulation,
                     PointerCentroid = pointerGrabPoint,
                     PointerVelocity = pointerVelocity,
@@ -639,14 +639,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         private float GetLerpAmount()
         {
-            if (smoothingActive == false || smoothingAmountOneHandManip == 0)
+            if (smoothingActive == false || smoothingAmount == 0)
             {
                 return 1;
             }
             // Obtained from "Frame-rate independent smoothing"
             // www.rorydriscoll.com/2016/03/07/frame-rate-independent-damping-using-lerp/
             // We divide by max value to give the slider a bit more sensitivity.
-            return 1.0f - Mathf.Pow(smoothingAmountOneHandManip, Time.deltaTime);
+            return 1.0f - Mathf.Pow(smoothingAmount, Time.deltaTime);
         }
 
         private Vector3[] GetHandPositionArray()
@@ -673,9 +673,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 if (OnHoverEntered != null)
                 {
-                    OnHoverEntered.Invoke(new ManipulationEventData2
+                    OnHoverEntered.Invoke(new ManipulationEventData
                     {
-                        ManipulationSource = this,
+                        ManipulationSource = gameObject,
                         IsNearInteraction = !isFar
                     });
                 }
@@ -685,9 +685,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 if (OnHoverExited != null)
                 {
-                    OnHoverExited.Invoke(new ManipulationEventData2
+                    OnHoverExited.Invoke(new ManipulationEventData
                     {
-                        ManipulationSource = this,
+                        ManipulationSource = gameObject,
                         IsNearInteraction = !isFar
                     });
                 }

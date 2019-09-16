@@ -36,8 +36,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private void ManipulatorHoverEntered(ManipulationEventData manipEvent)
         {
             hoverCount++;
+            var mh = manipEvent.ManipulationSource.GetComponent<ManipulationHandler>();
             if (hoverCount >= 2 && 
-                manipEvent.ManipulationSource.ManipulationType != ManipulationHandler.HandMovementType.OneHandedOnly)
+                mh.ManipulationType != ManipulationHandler.HandMovementType.OneHandedOnly)
             {
                 contextInfo.CurrentCursorAction = CursorContextInfo.CursorAction.Move;
             }

@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
 {
     [CustomEditor(typeof(ManipulationHandler2))]
     [CanEditMultipleObjects]
-    public class ManipulationHandlerInspector : UnityEditor.Editor
+    public class ManipulationHandler2Inspector : UnityEditor.Editor
     {
         private SerializedProperty hostTransform;
         private SerializedProperty manipulationType;
@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
         private SerializedProperty constraintOnRotation;
         private SerializedProperty constraintOnMovement;
         private SerializedProperty smoothingActive;
-        private SerializedProperty smoothingAmountOneHandManip;
+        private SerializedProperty smoothingAmount;
         private SerializedProperty onManipulationStarted;
         private SerializedProperty onManipulationEnded;
         private SerializedProperty onHoverEntered;
@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
 
             // Smoothing
             smoothingActive = serializedObject.FindProperty("smoothingActive");
-            smoothingAmountOneHandManip = serializedObject.FindProperty("smoothingAmountOneHandManip");
+            smoothingAmount = serializedObject.FindProperty("smoothingAmount");
 
             // Manipulation Events
             onManipulationStarted = serializedObject.FindProperty("OnManipulationStarted");
@@ -143,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
             if (smoothingFoldout)
             {
                 EditorGUILayout.PropertyField(smoothingActive);
-                EditorGUILayout.PropertyField(smoothingAmountOneHandManip);
+                EditorGUILayout.PropertyField(smoothingAmount);
             }
 
             EditorGUILayout.Space();
