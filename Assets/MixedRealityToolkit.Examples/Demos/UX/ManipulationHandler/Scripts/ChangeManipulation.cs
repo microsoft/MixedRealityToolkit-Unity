@@ -1,6 +1,7 @@
 ﻿
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.Experimental.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
@@ -9,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// </summary>
     public class ChangeManipulation : MonoBehaviour
     {
-        public ManipulationHandler manipulatedObject;
+        public GameObject manipulatedObject;
         public Collider collisionTrigger;
 
         private Collider manipulatedObjCollider;
@@ -31,14 +32,28 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         {
             if (manipulatedObject != null && collisionTrigger != null && manipulatedObjCollider != null)
             {
-                if (collisionTrigger.bounds.Intersects(manipulatedObjCollider.bounds))
+                if (!collisionTrigger.bounds.Intersects(manipulatedObjCollider.bounds))
                 {
-                    manipulatedObject.ForceEndManipulation();
+                    return;
+                }
+
+                var mh = manipulatedObject.GetComponent<ManipulationHandler>();
+                var pm = manipulatedObject.GetComponent<PrimitiveManipulator>();
+                if (mh != null)
+                {
+                    mh.ForceEndManipulation();
 
                     // move the object slightly away from the collision point so we can manipulate it again after this
                     Vector3 direction = collisionTrigger.bounds.center - manipulatedObjCollider.bounds.center;
                     manipulatedObject.transform.Translate(direction.normalized * 0.01f);
+                }
+                else if (pm != null)
+                {
+                    pm.ForceEndManipulation();
 
+                    // move the object slightly away from the collision point so we can manipulate it again after this
+                    Vector3 direction = collisionTrigger.bounds.center - manipulatedObjCollider.bounds.center;
+                    manipulatedObject.transform.Translate(direction.normalized * 0.01f);
                 }
             }
         }
