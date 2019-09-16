@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public InteractableColorTheme()
         {
-            Types = new Type[] { typeof(Renderer), typeof(TextMesh), typeof(Text), typeof(TextMeshPro), typeof(TextMeshProUGUI) };
+            Types = new Type[] { typeof(Renderer), typeof(TextMesh), typeof(Text), typeof(TextMeshPro), typeof(TextMeshProUGUI), typeof(Image) };
             Name = "Color Theme";
         }
 
@@ -101,6 +101,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     return color;
                 }
 
+                if (TryGetUnityUiImageColor(property, out color.Color))
+                {
+                    GetColorValue = TryGetUnityUiImageColor;
+                    return color;
+                }
+
                 // no text components exist, fallback to renderer
                 TryGetRendererColor(property, out color.Color);
                 GetColorValue = TryGetRendererColor;
@@ -143,6 +149,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (TrySetTextColor(color, property, index, percentage))
                 {
                     SetColorValue = TrySetTextColor;
+                    return;
+                }
+
+                if (TrySetUnityUiImageColor(color, property, index, percentage))
+                {
+                    SetColorValue = TrySetUnityUiImageColor;
                     return;
                 }
 
@@ -226,6 +238,24 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             return false;
         }
+
+        /// <summary>
+        /// Try to get color from Image
+        /// If no color is found, Image is not on the object
+        /// </summary>
+        protected bool TryGetUnityUiImageColor(InteractableThemeProperty property, out Color color)
+        {
+            Color colour = Color.white;
+            Image img = Host.GetComponent<Image>();
+            if (img)
+            {
+                color = img.color;
+                return true;
+            }
+            color = colour;
+            return false;
+        }
+
 
         /// <summary>
         /// Try to get color from the renderer
@@ -321,6 +351,23 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             base.SetValue(property, index, percentage);
             return true;
+        }
+
+        /// <summary>
+        /// Try to set color on Image
+        /// If false, no Image was found.
+        /// </summary>
+        protected bool TrySetUnityUiImageColor(Color colour, InteractableThemeProperty property, int index, float percentage)
+        {
+            Image img = Host.GetComponent<Image>();
+            if (img)
+            {
+                img.color = colour;
+                img.material.SetColor("_Color",colour);
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
