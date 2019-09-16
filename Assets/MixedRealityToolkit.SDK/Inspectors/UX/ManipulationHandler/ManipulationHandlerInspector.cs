@@ -71,8 +71,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public override void OnInspectorGUI()
         {
-            EditorGUILayout.HelpBox("Manipulation Handler will soon be removed, please upgrade to Manipulation Handler 2", MessageType.Warning);
-            if (GUILayout.Button("Upgrade to Primative Manipulator"))
+            EditorGUILayout.HelpBox("Manipulation Handler will soon be removed, please upgrade to Primitive Manipulator", MessageType.Warning);
+            if (GUILayout.Button("Upgrade to Primitive Manipulator"))
             {
                 Migrate();
             }
