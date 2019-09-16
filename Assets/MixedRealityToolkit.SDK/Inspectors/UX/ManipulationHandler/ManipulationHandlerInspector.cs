@@ -72,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         public override void OnInspectorGUI()
         {
             EditorGUILayout.HelpBox("Manipulation Handler will soon be removed, please upgrade to Manipulation Handler 2", MessageType.Warning);
-            if (GUILayout.Button("Upgrade to Manipulation Handler 2"))
+            if (GUILayout.Button("Upgrade to Primative Manipulator"))
             {
                 Migrate();
             }
@@ -175,21 +175,21 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private void Migrate()
         {
             var mh1 = target as ManipulationHandler;
-            var mh2 = mh1.gameObject.AddComponent<ManipulationHandler2>();
+            var mh2 = mh1.gameObject.AddComponent<PrimitiveManipulator>();
 
             mh2.HostTransform = mh1.HostTransform;
 
             switch (mh1.ManipulationType)
             {
                 case ManipulationHandler.HandMovementType.OneHandedOnly:
-                    mh2.ManipulationType = ManipulationHandler2.HandMovementType.OneHanded;
+                    mh2.ManipulationType = PrimitiveManipulator.HandMovementType.OneHanded;
                     break;
                 case ManipulationHandler.HandMovementType.TwoHandedOnly:
-                    mh2.ManipulationType = ManipulationHandler2.HandMovementType.TwoHanded;
+                    mh2.ManipulationType = PrimitiveManipulator.HandMovementType.TwoHanded;
                     break;
                 case ManipulationHandler.HandMovementType.OneAndTwoHanded:
-                    mh2.ManipulationType = ManipulationHandler2.HandMovementType.OneHanded | 
-                        ManipulationHandler2.HandMovementType.TwoHanded;
+                    mh2.ManipulationType = PrimitiveManipulator.HandMovementType.OneHanded | 
+                        PrimitiveManipulator.HandMovementType.TwoHanded;
                     break;
             }
 
@@ -200,31 +200,31 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             switch (mh1.TwoHandedManipulationType)
             {
                 case ManipulationHandler.TwoHandedManipulation.Scale:
-                    mh2.TwoHandedManipulationType = ManipulationHandler2.TwoHandedManipulation.Scale;
+                    mh2.TwoHandedManipulationType = PrimitiveManipulator.TwoHandedManipulation.Scale;
                     break;
                 case ManipulationHandler.TwoHandedManipulation.Rotate:
-                    mh2.TwoHandedManipulationType = ManipulationHandler2.TwoHandedManipulation.Rotate;
+                    mh2.TwoHandedManipulationType = PrimitiveManipulator.TwoHandedManipulation.Rotate;
                     break;
                 case ManipulationHandler.TwoHandedManipulation.MoveScale:
-                    mh2.TwoHandedManipulationType = ManipulationHandler2.TwoHandedManipulation.Move |
-                        ManipulationHandler2.TwoHandedManipulation.Scale;
+                    mh2.TwoHandedManipulationType = PrimitiveManipulator.TwoHandedManipulation.Move |
+                        PrimitiveManipulator.TwoHandedManipulation.Scale;
                     break;
                 case ManipulationHandler.TwoHandedManipulation.MoveRotate:
-                    mh2.TwoHandedManipulationType = ManipulationHandler2.TwoHandedManipulation.Move |
-                        ManipulationHandler2.TwoHandedManipulation.Rotate;
+                    mh2.TwoHandedManipulationType = PrimitiveManipulator.TwoHandedManipulation.Move |
+                        PrimitiveManipulator.TwoHandedManipulation.Rotate;
                     break;
                 case ManipulationHandler.TwoHandedManipulation.RotateScale:
-                    mh2.TwoHandedManipulationType = ManipulationHandler2.TwoHandedManipulation.Rotate |
-                        ManipulationHandler2.TwoHandedManipulation.Scale;
+                    mh2.TwoHandedManipulationType = PrimitiveManipulator.TwoHandedManipulation.Rotate |
+                        PrimitiveManipulator.TwoHandedManipulation.Scale;
                     break;
                 case ManipulationHandler.TwoHandedManipulation.MoveRotateScale:
-                    mh2.TwoHandedManipulationType = ManipulationHandler2.TwoHandedManipulation.Move |
-                        ManipulationHandler2.TwoHandedManipulation.Rotate |
-                        ManipulationHandler2.TwoHandedManipulation.Scale;
+                    mh2.TwoHandedManipulationType = PrimitiveManipulator.TwoHandedManipulation.Move |
+                        PrimitiveManipulator.TwoHandedManipulation.Rotate |
+                        PrimitiveManipulator.TwoHandedManipulation.Scale;
                     break;
             }
 
-            mh2.ReleaseBehavior = (ManipulationHandler2.ReleaseBehaviorType)mh1.ReleaseBehavior;
+            mh2.ReleaseBehavior = (PrimitiveManipulator.ReleaseBehaviorType)mh1.ReleaseBehavior;
             mh2.ConstraintOnRotation = mh1.ConstraintOnRotation;
             mh2.ConstraintOnMovement = mh1.ConstraintOnMovement;
             mh2.SmoothingActive = mh1.SmoothingActive;
@@ -237,27 +237,27 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             DestroyImmediate(mh1);
         }
 
-        ManipulationHandler2.RotateInOneHandType GetRotateInOneHandType(ManipulationHandler.RotateInOneHandType originalType)
+        PrimitiveManipulator.RotateInOneHandType GetRotateInOneHandType(ManipulationHandler.RotateInOneHandType originalType)
         {
             switch (originalType)
             {
                 case ManipulationHandler.RotateInOneHandType.FaceAwayFromUser:
-                    return ManipulationHandler2.RotateInOneHandType.FaceAwayFromUser;
+                    return PrimitiveManipulator.RotateInOneHandType.FaceAwayFromUser;
 
                 case ManipulationHandler.RotateInOneHandType.FaceUser:
-                    return ManipulationHandler2.RotateInOneHandType.FaceUser;
+                    return PrimitiveManipulator.RotateInOneHandType.FaceUser;
 
                 case ManipulationHandler.RotateInOneHandType.GravityAlignedMaintainRotationToUser:
-                    return ManipulationHandler2.RotateInOneHandType.GravityAlignedMaintainRotationToUser;
+                    return PrimitiveManipulator.RotateInOneHandType.GravityAlignedMaintainRotationToUser;
 
                 case ManipulationHandler.RotateInOneHandType.MaintainOriginalRotation:
-                    return ManipulationHandler2.RotateInOneHandType.MaintainOriginalRotation;
+                    return PrimitiveManipulator.RotateInOneHandType.MaintainOriginalRotation;
 
                 case ManipulationHandler.RotateInOneHandType.MaintainRotationToUser:
-                    return ManipulationHandler2.RotateInOneHandType.MaintainRotationToUser;
+                    return PrimitiveManipulator.RotateInOneHandType.MaintainRotationToUser;
 
                 default:
-                    return ManipulationHandler2.RotateInOneHandType.RotateAboutGrabPoint;
+                    return PrimitiveManipulator.RotateInOneHandType.RotateAboutGrabPoint;
             }
         }
     }
