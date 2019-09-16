@@ -1199,7 +1199,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                         {
                             workingScrollerPos = Solver.SmoothTo(scrollContainer.transform.localPosition, velocityDestinationPos, Time.deltaTime, 0.9275f);
 
-                            if (Vector3.Distance(scrollContainer.transform.localPosition, workingScrollerPos) < 0.00001f)
+                            if (Vector3.Distance(scrollContainer.transform.localPosition, workingScrollerPos) < 0.0001f)
                             {
                                 //Ensure we've actually snapped the position to prevent an extreme in-between state
                                 workingScrollerPos.y = (Mathf.Floor(scrollContainer.transform.localPosition.y / CellHeight)) * CellHeight;
@@ -1226,7 +1226,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                         {
                             workingScrollerPos = Solver.SmoothTo(scrollContainer.transform.localPosition, velocityDestinationPos, Time.deltaTime, 0.9275f);
 
-                            if (Vector3.Distance(scrollContainer.transform.localPosition, workingScrollerPos) < 0.00001f)
+                            if (Vector3.Distance(scrollContainer.transform.localPosition, workingScrollerPos) < 0.0001f)
                             {
                                 //Ensure we've actually snapped the position to prevent an extreme in-between state
                                 workingScrollerPos.y = (Mathf.Floor(scrollContainer.transform.localPosition.x / CellWidth)) * CellWidth;
@@ -1244,13 +1244,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
                 case VelocityState.Bouncing:
                     bool smooth = false;
-                    if (Vector3.Distance(scrollContainer.transform.localPosition, workingScrollerPos) < 0.00001f)
+                    if (Vector3.Distance(scrollContainer.transform.localPosition, workingScrollerPos) < 0.0001f)
                     {
                         smooth = true;
                     }
                     if (scrollDirection == ScrollDirectionType.UpAndDown
-                        && (scrollContainer.transform.localPosition.y - minY > -0.00001
-                        && scrollContainer.transform.localPosition.y - maxY < 0.00001f))
+                        && (scrollContainer.transform.localPosition.y - minY > -0.0001f
+                        && scrollContainer.transform.localPosition.y - maxY < 0.0001f))
                     {
                         velocityState = VelocityState.None;
 
@@ -1260,8 +1260,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                         initialScrollerPos = workingScrollerPos;
                     }
                     else if (scrollDirection == ScrollDirectionType.LeftAndRight
-                             && (scrollContainer.transform.localPosition.x + minX > -0.00001
-                             && scrollContainer.transform.localPosition.x - maxX < 0.00001f))
+                             && (scrollContainer.transform.localPosition.x - minX > -0.0001f
+                             && scrollContainer.transform.localPosition.x + maxX < 0.0001f))
                     {
                         velocityState = VelocityState.None;
 
@@ -1380,7 +1380,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                         smooth = true;
                     }
                     if (scrollDirection == ScrollDirectionType.UpAndDown
-                    && (scrollContainer.transform.localPosition.y - minY > -0.00001
+                    && (scrollContainer.transform.localPosition.y - minY > 0.00001f
                     && scrollContainer.transform.localPosition.y - maxY < 0.00001f))
                     {
                         velocityState = VelocityState.None;
@@ -1391,8 +1391,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                         initialScrollerPos = workingScrollerPos;
                     }
                     else if (scrollDirection == ScrollDirectionType.LeftAndRight
-                             && (scrollContainer.transform.localPosition.x + minX > -0.00001
-                             && scrollContainer.transform.localPosition.x - maxX < 0.00001f))
+                             && (scrollContainer.transform.localPosition.x + minX > -0.00001f
+                             && scrollContainer.transform.localPosition.x - maxX > 0.00001f))
                     {
                         velocityState = VelocityState.None;
 
