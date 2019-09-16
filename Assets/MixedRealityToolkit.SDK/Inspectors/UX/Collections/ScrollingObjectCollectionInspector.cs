@@ -296,11 +296,12 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 float arrowSize = UnityEditor.HandleUtility.GetHandleSize(center) * 0.75f;
 
                 container.transform.rotation.ToAngleAxis(out float ang, out Vector3 currRotAxis);
-                Quaternion rot = Quaternion.LookRotation(container.transform.forward * -1.0f, container.transform.up);
-                UnityEditor.Handles.ArrowHandleCap(0, center, rot, arrowSize, EventType.Repaint);
 
                 Vector3 rightDelta = container.transform.right * container.ClippingObject.transform.localScale.x;
                 Vector3 upDelta = container.transform.up * container.ClippingObject.transform.localScale.y;
+
+                Quaternion rot = Quaternion.LookRotation(container.transform.forward * -1.0f, container.transform.up);
+                UnityEditor.Handles.ArrowHandleCap(0, center + (rightDelta * 0.5f) - (upDelta * 0.5f), rot, arrowSize, EventType.Repaint);
 
                 Vector3[] points = new Vector3[4];
                 points[0] = center;
@@ -308,8 +309,10 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 points[2] = center + rightDelta - upDelta;
                 points[3] = center - upDelta;
 
-                UnityEditor.Handles.DrawSolidRectangleWithOutline(points, Color.clear, arrowColor);
-                UnityEditor.Handles.Label(center + new Vector3(-0.003f, 0.003f, 0.0f), new GUIContent("touch plane", "The plane which the finger will need to cross in order for the touch to be calculated as a scroll"));
+                UnityEditor.Handles.DrawSolidRectangleWithOutline(points, new Color(0.85f, 1.0f, 1.0f, 0.1f), arrowColor);
+                GUIStyle labelStyle = new GUIStyle();
+                labelStyle.normal.textColor = Color.white;
+                UnityEditor.Handles.Label(center + (rightDelta * 0.5f) - (upDelta * 0.5f), new GUIContent("touch plane", "The plane which the finger will need to cross in order for the touch to be calculated as a scroll"), labelStyle);
             }
         }
 
