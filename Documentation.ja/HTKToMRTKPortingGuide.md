@@ -8,7 +8,7 @@
 |---------------------------|----------|-----------|
 | 型                      | 関連する入力タイプの情報を含む、ボタンに対する特定のイベント | イベントを介して渡される、動作 / ジェスチャ ベースの入力|
 | セットアップ                     | シーン内に InputManager を配置します。 | [Configuration Profile](MixedRealityConfigurationGuide.md) 内の input system を有効にし、 input system type の詳細を設定します。|
-| 設定             | シーン内の個々のスクリプトのインスペクタで設定されます。 | 以下に示す Mixed Reality Input System プロファイルおよび関連するプロファイルによって設定されます。 |
+| 設定             | シーン内の個々のスクリプトのインスペクターで設定されます。 | 以下に示す Mixed Reality Input System プロファイルおよび関連するプロファイルによって設定されます。 |
 
 関連するプロファイル:
 
@@ -66,7 +66,7 @@ Windows Mixed Reality Device Manager などのプラットフォームサポー�
 |                           | HTK 2017 |  MRTK v2  |
 |---------------------------|----------|-----------|
 | セットアップ                     | SpeechInputSource をシーンに追加してください。 | Windows Speech Input Manager などのキーワードサービスが入力システムのデータプロバイダに追加されている必要があります。|
-| 設定             | 認識するキーワードをSpeechInputSource のインスペクタで設定します。| キーワードは [Mixed Reality Speech Commands Profile](Input/Speech.md) で設定します。 |
+| 設定             | 認識するキーワードをSpeechInputSource のインスペクターで設定します。| キーワードは [Mixed Reality Speech Commands Profile](Input/Speech.md) で設定します。 |
 | イベントハンドラ            | `ISpeechHandler` | [`IMixedRealitySpeechHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler) |
 
 ### 音声ディクテーション (Dictation)
@@ -83,7 +83,7 @@ Windows Mixed Reality Device Manager などのプラットフォームサポー�
 |                           | HTK 2017 |  MRTK v2  |
 |---------------------------|----------|-----------|
 | セットアップ                     | SpatialMapping プレハブをシーンに追加します。 | Configuration Profile 内の Spatial Awareness System を有効にし、 Windows Mixed Reality Spatial Mesh Observer などの空間オブザーバーを Spatial Awareness System のデータプロバイダに追加します。|
-| 設定             | インスペクタ内でシーンインスタンスを設定します。| それぞれの空間オブザーバーのプロファイルを設定します。 |
+| 設定             | インスペクター内でシーンインスタンスを設定します。| それぞれの空間オブザーバーのプロファイルを設定します。 |
 
 ### 平面 (Plane)
 
@@ -96,21 +96,21 @@ Windows Mixed Reality Device Manager などのプラットフォームサポー�
 |                           | HTK 2017 |  MRTK v2  |
 |---------------------------|----------|-----------|
 | セットアップ                     | SpatialUnderstanding プレハブをシーンに追加します。 | 未実装の状態です。 |
-| 設定             | インスペクタ内でシーンインスタンスを設定します。 | 未実装の状態です。 |
+| 設定             | インスペクター内でシーンインスタンスを設定します。 | 未実装の状態です。 |
 
 ## 移動境界 (Boundary)
 
 |                           | HTK 2017 |  MRTK v2  |
 |---------------------------|----------|-----------|
 | セットアップ                     | `BoundaryManager` スクリプトをシーンに追加します。 | Configuration Profile 内の Boundary Systemを有効にします。|
-| 設定             | インスペクタ内でシーンインスタンスを設定します。 | Boundary Visualization profile 内にて設定します。 |
+| 設定             | インスペクター内でシーンインスタンスを設定します。 | Boundary Visualization profile 内にて設定します。 |
 
 ## シェアリング (Sharing)
 
 |                           | HTK 2017 |  MRTK v2  |
 |---------------------------|----------|-----------|
 | セットアップ                     | Sharing service の場合: Sharing プレハブをシーンに追加します。<br>UNet の場合: SharingWithUNET example を使用してください。 | 更新中の状態です。 |
-| 設定             | インスペクタ内でシーンインスタンスを設定します。 | 更新中の状態です。 |
+| 設定             | インスペクター内でシーンインスタンスを設定します。 | 更新中の状態です。 |
 
 ## UX
 

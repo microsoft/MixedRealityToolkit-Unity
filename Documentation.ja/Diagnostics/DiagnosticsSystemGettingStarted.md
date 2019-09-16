@@ -19,11 +19,11 @@ Mixed Reality Toolkit 診断システムは、アプリケーションの問題�
 
 次の手順では、MixedRealityToolkit オブジェクトの使用を想定しています。他のサービスレジストラに必要な手順は異なる場合があります。
 
-1. シーンヒエラルキーで MixedRealityToolkit オブジェクトを選択します。
+1. シーンの \[Hierarchy](ヒエラルキー) ウィンドウで MixedRealityToolkit オブジェクトを選択します。
 
 ![シーンヒエラルキーでMRTKの設定](../../Documentation/Images/MRTK_ConfiguredHierarchy.png)
 
-2. インスペクターで「Diagnostics System」セクションに移動し、「Enable」にチェックを入れます。
+2. \[Inspector](インスペクター) ウィンドウで「Diagnostics System」セクションに移動し、「Enable」にチェックを入れます。
 
 ![診断を有効にする](../../Documentation/Images/Diagnostics/MRTKConfig_Diagnostics.png)
 
