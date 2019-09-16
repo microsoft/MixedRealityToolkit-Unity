@@ -51,8 +51,8 @@ You can find examples of Bounding Box configurations in the `BoundingBoxExamples
    bbox.RotationHandleSlatePrefab = [Assign MRTK_BoundingBox_RotateHandle.prefab]
    bbox.RotationHandleSize = 0.016f;
    bbox.RotateHandleColliderPadding = 0.016f;
-   mh.OnManipulationStarted.AddListener((med) => bbox.HighlightWires()); // Highlight wires with 
-   mh.OnManipulationEnded.AddListener((med) => bbox.UnhighlightWires());
+   mh.OnManipulationStarted.AddListener((med) => bbox.HighlightWires()); // Highlight wires with BoundingBoxGrabbed.mat on grab
+   mh.OnManipulationEnded.AddListener((med) => bbox.UnhighlightWires()); // Disable highlighted wires on release
 ```
 
 ## Inspector properties ##
