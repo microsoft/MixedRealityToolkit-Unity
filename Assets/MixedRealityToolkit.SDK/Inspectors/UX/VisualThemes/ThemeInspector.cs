@@ -26,19 +26,28 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         private const float ThemeStateFontScale = 1.1f;
         private const int ThemeBoxMargin = 25;
 
-        private static readonly GUIContent AddThemePropertyLabel = new GUIContent("+", "Add Theme Definition");
-        private static readonly GUIContent RemoveThemePropertyContent = new GUIContent("-", "Remove Theme Definition");
+        private static readonly GUIContent AddThemePropertyLabel = new GUIContent("Add Theme Definition", "Add Theme Definition");
+        private static readonly GUIContent RemoveThemePropertyContent = new GUIContent("Delete", "Remove Theme Definition");
         private static readonly GUIContent CreateAnimationsContent = new GUIContent("Create Animations", "Create and add an Animator with AnimationClips");
         private static readonly GUIContent EasingContent = new GUIContent("Easing", "should the theme animate state values");
+
+        public void OnEnable()
+        {
+            themeDefinitions = serializedObject.FindProperty("definitions");
+            states = serializedObject.FindProperty("states");
+
+            // If no theme properties assigned, add a default one
+            if (themeDefinitions.arraySize < 1)
+            {
+                AddThemeDefinition();
+            }
+        }
 
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
 
             theme = target as Theme;
-
-            themeDefinitions = serializedObject.FindProperty("definitions");
-            states = serializedObject.FindProperty("states");
             themeStates = theme.GetStates();
 
             RenderTheme();
@@ -58,18 +67,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
             EditorGUILayout.Space();
 
-            using (new EditorGUILayout.HorizontalScope())
-            {
-                EditorGUILayout.LabelField("Theme Definitions", EditorStyles.boldLabel, GUILayout.ExpandWidth(true));
-
-                // If no theme properties assigned, add a default one
-                if (themeDefinitions.arraySize < 1 || InspectorUIUtility.FlexButton(AddThemePropertyLabel))
-                {
-                    AddThemeDefinition();
-                }
-            }
-
             RenderThemeDefinitions();
+
         }
 
         /// <summary>
@@ -113,9 +112,23 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                 {
                     SerializedProperty themeDefinition = themeDefinitions.GetArrayElementAtIndex(index);
                     SerializedProperty className = themeDefinition.FindPropertyRelative("ClassName");
+
                     string themeDefinition_prefKey = theme.name + "_Definitions" + index;
-                    if (InspectorUIUtility.DrawSectionFoldoutWithKey(className.stringValue, themeDefinition_prefKey, MixedRealityStylesUtility.BoldFoldoutStyle))
+                    bool show = false;
+                    using (new EditorGUILayout.HorizontalScope())
                     {
+                        show = InspectorUIUtility.DrawSectionFoldoutWithKey(className.stringValue, themeDefinition_prefKey, MixedRealityStylesUtility.BoldFoldoutStyle);
+
+                        if (RenderDeleteButton(index))
+                        {
+                            return;
+                        }
+                    }
+
+                    if (show)
+                    {
+                        EditorGUILayout.Space();
+
                         using (new EditorGUI.IndentLevelScope())
                         {
                             EditorGUILayout.LabelField("General Properties", EditorStyles.boldLabel);
@@ -135,24 +148,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                                     ChangeThemeDefinitionType(index, oldType, newType);
                                     return;
                                 }
-
-                                // Create Delete button if we have an array of themes
-                                if (themeDefinitions.arraySize > 1 && InspectorUIUtility.SmallButton(RemoveThemePropertyContent))
-                                {
-                                    ClearHistoryCache(index);
-                                    DeleteThemeDefinition((uint)index);
-
-                                    serializedObject.Update();
-                                    EditorUtility.SetDirty(theme);
-                                    return;
-                                }
                             }
 
                             var themeType = theme.Definitions[index].ThemeType;
                             if (themeType != null)
                             {
-                                EditorGUILayout.Space();
-
                                 SerializedProperty customProperties = themeDefinition.FindPropertyRelative("customProperties");
                                 RenderCustomProperties(customProperties);
 
@@ -179,6 +179,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                         }
                     }
                 }
+            }
+
+            // If no theme properties assigned, add a default one
+            if (themeDefinitions.arraySize < 1 || GUILayout.Button(AddThemePropertyLabel))
+            {
+                AddThemeDefinition();
             }
         }
 
@@ -415,6 +421,22 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                 default:
                     break;
             }
+        }
+
+        protected bool RenderDeleteButton(int index)
+        {
+            // Create Delete button if we have an array of themes
+            if (themeDefinitions.arraySize > 1 && InspectorUIUtility.SmallButton(RemoveThemePropertyContent))
+            {
+                ClearHistoryCache(index);
+                DeleteThemeDefinition((uint)index);
+
+                serializedObject.Update();
+                EditorUtility.SetDirty(theme);
+                return true;
+            }
+
+            return false;
         }
 
         #endregion
