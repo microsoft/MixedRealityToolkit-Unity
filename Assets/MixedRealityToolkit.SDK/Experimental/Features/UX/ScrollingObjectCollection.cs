@@ -775,9 +775,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
             //get a point in front of the scrollContainer to use for the dot product check
             finalOffset = (Vector3.forward * -1.0f) * thresholdOffset;
-            thresholdPoint = transform.TransformVector(finalOffset + transform.localPosition);
+            thresholdPoint = transform.TransformPoint(finalOffset);
 
-            //Use the first element for collection bounds -> for occluder positioning
+            //Use the first element for collection bounds for occluder positioning
             //temporarily zero out the rotation so we can get an accurate bounds
             Quaternion origRot = NodeList[FirstItemInView].Transform.rotation;
             NodeList[FirstItemInView].Transform.rotation = Quaternion.identity;
@@ -912,7 +912,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             if (!nodeLengthCheck)
             {
                 workingScrollerPos = Vector3.zero;
-                CalculateDragMove(workingScrollerPos);
+                ApplyPosition(workingScrollerPos);
             }
 
             //The scroller has detected input and has a valid pointer
@@ -944,8 +944,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
                 //get a point in front of the scrollContainer to use for the dot product check
                 finalOffset = (Vector3.forward * -1.0f) * thresholdOffset;
-                thresholdPoint = transform.TransformPoint(finalOffset + transform.localPosition);
-                Debug.DrawLine(transform.position, thresholdPoint, Color.red, 5.0f);
+                thresholdPoint = transform.TransformPoint(finalOffset);
                 //Make sure we're actually (near) touched and not a pointer event, do a dot product check            
                 bool scrollRelease = UseNearScrollBoundary ? DetectScrollRelease(transform.forward * -1.0f, thresholdPoint, currentPointerPos, clippingObject.transform, transform.worldToLocalMatrix, scrollDirection)
                                                            : DetectScrollRelease(transform.forward * -1.0f, thresholdPoint, currentPointerPos, null, null, null);
@@ -1016,7 +1015,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                     }
 
                     //Update the scrollContainer Position
-                    CalculateDragMove(workingScrollerPos);
+                    ApplyPosition(workingScrollerPos);
 
                     CalculateVelocity();
 
@@ -1030,7 +1029,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 HandleVelocityFalloff();
 
                 //Apply our position
-                CalculateDragMove(workingScrollerPos);
+                ApplyPosition(workingScrollerPos);
             }
         }
 
@@ -1516,7 +1515,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         private static bool DetectScrollRelease(Vector3 initialDirection, Vector3 initialPosition, Vector3 pointToCompare, Transform clippingObj = null, Matrix4x4? transformMatrix = null, ScrollDirectionType? direction = null)
         {
             //true if finger is on the other side (Z) of the initial contact point of the collection
-            if (TouchPassedThreshold(initialDirection, initialPosition, pointToCompare))
+            if (pointToCompare.IsOtherSideOfPoint(initialDirection, initialPosition))
             {
                 return true;
             }
@@ -1559,19 +1558,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         }
 
         /// <summary>
-        /// Grab the child renderers from a specified node from NodeList and add them to the ClippingBox
-        /// </summary>
-        private void AddItemsToClippingObject(ObjectCollectionNode node)
-        {
-            //Register all of the renderers to be clipped by the clippingBox
-            Renderer[] childRends = node.Transform.gameObject.transform.GetComponentsInChildren<Renderer>(true);
-            for (int i = 0; i < childRends.Length; i++)
-            {
-                clipBox.AddRenderer(childRends[i]);
-            }
-        }
-
-        /// <summary>
         /// Grab all child renderers in a list of nodes from NodeList and add them to the ClippingBox
         /// </summary>
         private void AddItemsToClippingObject(List<ObjectCollectionNode> nodes)
@@ -1600,19 +1586,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 {
                     clipBox.RemoveRenderer(childRends[i]);
                 }
-            }
-        }
-
-        /// <summary>
-        /// Grab the child renderers from a specified node from NodeList and remove them to the ClippingBox
-        /// </summary>
-        private void RemoveItemsFromClippingObject(ObjectCollectionNode node)
-        {
-            //Register all of the renderers to be clipped by the clippingBox
-            Renderer[] childRends = node.Transform.gameObject.transform.GetComponentsInChildren<Renderer>(true);
-            for (int i = 0; i < childRends.Length; i++)
-            {
-                clipBox.RemoveRenderer(childRends[i]);
             }
         }
 
@@ -1755,7 +1728,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// Applies <paramref name="workingPos"/> to the <see cref="Transform.localPosition"/> of our <see cref="scrollContainer"/>
         /// </summary>
         /// <param name="workingPos">The new desired position for <see cref="scrollContainer"/> in local space</param>
-        private void CalculateDragMove(Vector3 workingPos)
+        private void ApplyPosition(Vector3 workingPos)
         {
             Vector3 newScrollPos;
 
@@ -2064,21 +2037,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 return true;
             }
             return false;
-        }
-
-        /// <summary>
-        /// Calculates which side a point in world space is on of a plane
-        /// </summary>
-        /// <param name="initialDirection">The plane normal direction. </param>
-        /// <param name="initialPosition">The point representing the plane's origin</param>
-        /// <param name="pointToCompare">The point compared to the normal and origin</param>
-        /// <returns>true when the compared point is on the other side of the plane</returns>
-        public static bool TouchPassedThreshold(Vector3 initialDirection, Vector3 initialPosition, Vector3 pointToCompare)
-        {
-            Vector3 delta = pointToCompare - initialPosition;
-            float dot = Vector3.Dot(delta.normalized, initialDirection);
-
-            return (dot > 0) ? true : false;
         }
 
         /// <summary>

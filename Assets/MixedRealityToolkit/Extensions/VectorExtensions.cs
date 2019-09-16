@@ -163,6 +163,20 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
+        /// Calculates which side a point in world space is on of a plane
+        /// </summary>
+        /// <param name="initialDirection">The normal direction orthagonal to the plane. </param>
+        /// <param name="initialPosition">The point representing the plane's origin</param>
+        /// <returns>true when the compared point is on the other side of the plane</returns>
+        public static bool IsOtherSideOfPoint(this Vector3 vector, Vector3 initialDirection, Vector3 initialPosition)
+        {
+            Vector3 delta = vector - initialPosition;
+            float dot = Vector3.Dot(delta.normalized, initialDirection);
+
+            return (dot > 0) ? true : false;
+        }
+
+        /// <summary>
         /// Calculates how much scale is required for objBounds to match otherbounds.
         /// </summary>
         /// <param name="objBounds">Object representation to be scaled</param>
@@ -252,5 +266,6 @@ namespace Microsoft.MixedReality.Toolkit
             source.y = UnityEngine.Random.Range(-radius, radius);
             return source;
         }
+
     }
 }
