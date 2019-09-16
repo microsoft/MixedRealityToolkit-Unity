@@ -1,12 +1,12 @@
 ﻿using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundingBoxTypes;
+using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes;
 using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 {
     [Serializable]
-    public class BoundingBoxRotationHandles : BoundingBoxHandlesBase
+    public class BoundsControlRotationHandles : BoundsControlHandlesBase
     {
 
         [SerializeField]
@@ -261,7 +261,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                     midpointVisual.transform.localRotation = realignment * midpointVisual.transform.localRotation;
                 }
 
-                Bounds midpointBounds = BoundingBoxVisualUtils.GetMaxBounds(midpointVisual);
+                Bounds midpointBounds = BoundsControlVisualUtils.GetMaxBounds(midpointVisual);
                 float maxDim = Mathf.Max(
                     Mathf.Max(midpointBounds.size.x, midpointBounds.size.y),
                     midpointBounds.size.z);
@@ -272,14 +272,14 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                 midpointVisual.transform.localScale = new Vector3(invScale, invScale, invScale);
                 midpointVisual.transform.localPosition = Vector3.zero;
 
-                BoundingBoxVisualUtils.AddComponentsToAffordance(midpoint, new Bounds(midpointBounds.center * invScale, midpointBounds.size * invScale),
+                BoundsControlVisualUtils.AddComponentsToAffordance(midpoint, new Bounds(midpointBounds.center * invScale, midpointBounds.size * invScale),
                     rotationHandlePrefabColliderType, CursorContextInfo.CursorAction.Rotate, ColliderPadding, parent, drawManipulationTether);
 
                 handles.Add(midpoint.transform);
 
                 if (HandleMaterial != null)
                 {
-                    BoundingBoxVisualUtils.ApplyMaterialToAllRenderers(midpointVisual, HandleMaterial);
+                    BoundsControlVisualUtils.ApplyMaterialToAllRenderers(midpointVisual, HandleMaterial);
                 }
             }
 

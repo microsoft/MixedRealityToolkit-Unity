@@ -1,4 +1,4 @@
-﻿using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundingBoxTypes;
+﻿using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes;
 using System;
 
 using UnityEngine;
@@ -7,7 +7,7 @@ using UnityEngine.Events;
 namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 {
     [Serializable]
-    public class BoundingBoxBoxDisplay
+    public class BoundsControlBoxDisplay
     {
 
         [Header("Box Display")]
@@ -94,7 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                 GameObject.Destroy(boxDisplay.GetComponent<Collider>());
                 boxDisplay.name = "bounding box";
 
-                BoundingBoxVisualUtils.ApplyMaterialToAllRenderers(boxDisplay, boxMaterial);
+                BoundsControlVisualUtils.ApplyMaterialToAllRenderers(boxDisplay, boxMaterial);
 
                 boxDisplay.transform.localScale = GetBoxDisplayScale(currentBoundsExtents, flattenAxis);
                 boxDisplay.transform.parent = parent;
@@ -126,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             //update the box material to the grabbed material
             if (boxDisplay != null)
             {
-                BoundingBoxVisualUtils.ApplyMaterialToAllRenderers(boxDisplay, boxGrabbedMaterial);
+                BoundsControlVisualUtils.ApplyMaterialToAllRenderers(boxDisplay, boxGrabbedMaterial);
             }
         }
 
@@ -136,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             if (boxDisplay != null)
             {
                 boxDisplay.SetActive(activate);
-                BoundingBoxVisualUtils.ApplyMaterialToAllRenderers(boxDisplay, boxMaterial);
+                BoundsControlVisualUtils.ApplyMaterialToAllRenderers(boxDisplay, boxMaterial);
             }
         }
 

@@ -23,7 +23,7 @@ using Microsoft.MixedReality.Toolkit.UI.Experimental;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class BoundingBoxTests2
+    public class BoundsControlTests
     {
         #region Utilities
         [SetUp]
@@ -43,11 +43,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// box is at scale .5, .5, .5
         /// </summary>
         /// <returns></returns>
-        private BoundingBox2 InstantiateSceneAndDefaultBbox()
+        private BoundsControl InstantiateSceneAndDefaultBbox()
         {
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.transform.position = Vector3.forward * 1.5f;
-            BoundingBox2 bbox = cube.AddComponent<BoundingBox2>();
+            BoundsControl bbox = cube.AddComponent<BoundsControl>();
 
             MixedRealityPlayspace.PerformTransformation(
             p =>
@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             var bbox = InstantiateSceneAndDefaultBbox();
             yield return null;
-            bbox.BoundingBoxActivation = UI.Experimental.BoundingBoxTypes.BoundingBoxActivationType.ActivateOnStart;
+            bbox.BoundingBoxActivation = UI.Experimental.BoundsControlTypes.BoundingBoxActivationType.ActivateOnStart;
             bbox.HideElementsInInspector = false;
             yield return null;
 
@@ -293,7 +293,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         /// <param name="bbox"></param>
         /// <returns></returns>
-        private Bounds GetBoundingBoxRigBounds(BoundingBox2 bbox)
+        private Bounds GetBoundingBoxRigBounds(BoundsControl bbox)
         {
             var corners = bbox.ScaleHandles.Handles;
 

@@ -1,13 +1,13 @@
 ﻿
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundingBoxTypes;
+using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes;
 using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 {
     [Serializable]
-    public class BoundingBoxScaleHandles : BoundingBoxHandlesBase
+    public class BoundsControlScaleHandles : BoundsControlHandlesBase
     {
 
         [SerializeField]
@@ -139,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                 cornerVisual.name = "visuals";
 
                 // this is the size of the corner visuals
-                var cornerbounds = BoundingBoxVisualUtils.GetMaxBounds(cornerVisual);
+                var cornerbounds = BoundsControlVisualUtils.GetMaxBounds(cornerVisual);
                 float maxDim = Mathf.Max(Mathf.Max(cornerbounds.size.x, cornerbounds.size.y), cornerbounds.size.z);
                 cornerbounds.size = maxDim * Vector3.one;
 
@@ -147,9 +147,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                 var invScale = HandleSize / cornerbounds.size.x;
                 cornerVisual.transform.localScale = new Vector3(invScale, invScale, invScale);
 
-                BoundingBoxVisualUtils.ApplyMaterialToAllRenderers(cornerVisual, HandleMaterial);
+                BoundsControlVisualUtils.ApplyMaterialToAllRenderers(cornerVisual, HandleMaterial);
 
-                BoundingBoxVisualUtils.AddComponentsToAffordance(corner, new Bounds(cornerbounds.center * invScale, cornerbounds.size * invScale), 
+                BoundsControlVisualUtils.AddComponentsToAffordance(corner, new Bounds(cornerbounds.center * invScale, cornerbounds.size * invScale), 
                     RotationHandlePrefabCollider.Box, CursorContextInfo.CursorAction.Scale, ColliderPadding, parent, drawManipulationTether);
                 handles.Add(corner.transform);       
             }

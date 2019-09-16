@@ -1,4 +1,4 @@
-﻿using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundingBoxTypes;
+﻿using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ using UnityEngine.Events;
 namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 {
     [Serializable]
-    public abstract class BoundingBoxHandlesBase
+    public abstract class BoundsControlHandlesBase
     {
         [SerializeField]
         [Tooltip("Material applied to handles when they are not in a grabbed state")]
@@ -125,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                 for (int i = 0; i < handles.Count; ++i)
                 {
                     handles[i].gameObject.SetActive(isVisible && IsVisible(handles[i]));
-                    BoundingBoxVisualUtils.ApplyMaterialToAllRenderers(handles[i].gameObject, handleMaterial);
+                    BoundsControlVisualUtils.ApplyMaterialToAllRenderers(handles[i].gameObject, handleMaterial);
                 }
             }
         }
@@ -153,7 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                     }
                     else
                     {
-                        BoundingBoxVisualUtils.ApplyMaterialToAllRenderers(handles[i].gameObject, handleGrabbedMaterial);
+                        BoundsControlVisualUtils.ApplyMaterialToAllRenderers(handles[i].gameObject, handleGrabbedMaterial);
                     }
                 }
             }
@@ -161,7 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
         internal void HandleIgnoreCollider(Collider handlesIgnoreCollider)
         {
-            BoundingBoxVisualUtils.HandleIgnoreCollider(handlesIgnoreCollider, handles);
+            BoundsControlVisualUtils.HandleIgnoreCollider(handlesIgnoreCollider, handles);
         }
 
         internal void DestroyHandles()

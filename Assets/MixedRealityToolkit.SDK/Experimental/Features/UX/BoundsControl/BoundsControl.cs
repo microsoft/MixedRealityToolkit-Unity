@@ -7,12 +7,12 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 using UnityPhysics = UnityEngine.Physics;
-using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundingBoxTypes;
+using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes;
 
 namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 {
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_BoundingBox.html")]
-    public class BoundingBox2 : MonoBehaviour,
+    public class BoundsControl : MonoBehaviour,
         IMixedRealitySourceStateHandler,
         IMixedRealityFocusChangedHandler,
         IMixedRealityFocusHandler
@@ -192,28 +192,28 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
         [SerializeField]
         [Tooltip("TODO TOOLTIP")]
-        BoundingBoxBoxDisplay boxDisplay = new BoundingBoxBoxDisplay();
-        public BoundingBoxBoxDisplay BoxDisplay => boxDisplay;
+        BoundsControlBoxDisplay boxDisplay = new BoundsControlBoxDisplay();
+        public BoundsControlBoxDisplay BoxDisplay => boxDisplay;
 
         [SerializeField]
         [Tooltip("TODO TOOLTIP")]
-        BoundingBoxLinks links = new BoundingBoxLinks();
-        public BoundingBoxLinks Links => links;
+        BoundsControlLinks links = new BoundsControlLinks();
+        public BoundsControlLinks Links => links;
 
         [SerializeField]
         [Tooltip("TODO TOOLTIP")]
-        BoundingBoxScaleHandles scaleHandles = new BoundingBoxScaleHandles();
-        public BoundingBoxScaleHandles ScaleHandles => scaleHandles;
+        BoundsControlScaleHandles scaleHandles = new BoundsControlScaleHandles();
+        public BoundsControlScaleHandles ScaleHandles => scaleHandles;
 
 
         [SerializeField]
         [Tooltip("TODO TOOLTIP")]
-        BoundingBoxRotationHandles rotationHandles = new BoundingBoxRotationHandles();
-        public BoundingBoxRotationHandles RotationHandles => rotationHandles;
+        BoundsControlRotationHandles rotationHandles = new BoundsControlRotationHandles();
+        public BoundsControlRotationHandles RotationHandles => rotationHandles;
 
         [SerializeField]
         [Tooltip("Configuration for Proximity Effect")]
-        public BoundingBoxProximityEffect proximityEffect = new BoundingBoxProximityEffect();
+        public BoundsControlProximityEffect proximityEffect = new BoundsControlProximityEffect();
 
 
         [Header("Debug")]

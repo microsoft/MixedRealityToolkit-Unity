@@ -1,5 +1,5 @@
 ﻿
-namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundingBoxTypes
+namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes
 {
     /// <summary>
     /// Enum which describes how an object's boundingbox is to be flattened.

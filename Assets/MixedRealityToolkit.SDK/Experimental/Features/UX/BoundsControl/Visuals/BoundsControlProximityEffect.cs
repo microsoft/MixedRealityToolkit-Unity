@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 {
     [Serializable]
-    public class BoundingBoxProximityEffect 
+    public class BoundsControlProximityEffect 
     {
         [SerializeField]
         [Tooltip("Determines whether proximity feature (scaling and material toggling) for bounding box handles is activated")]
@@ -98,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         /// 
         private class RegisteredHandles
         {
-            public BoundingBoxHandlesBase handleCollection;
+            public BoundsControlHandlesBase handleCollection;
             public List<HandleProximityInfo> proximityInfos;
         }
 
@@ -319,7 +319,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         }
 
         // register handles for proximity effect
-        internal void AddHandles(BoundingBoxHandlesBase bbhandles)
+        internal void AddHandles(BoundsControlHandlesBase bbhandles)
         {
             RegisteredHandles handlesEntry = new RegisteredHandles() { handleCollection = bbhandles, proximityInfos = new List<HandleProximityInfo>() };
             bbhandles.ForEachHandle(handle => {

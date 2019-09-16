@@ -1,5 +1,5 @@
 ﻿
-using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundingBoxTypes;
+using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +8,7 @@ using UnityEngine.Events;
 namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 {
     [Serializable]
-    public class BoundingBoxLinks
+    public class BoundsControlLinks
     {
 
         [SerializeField]
@@ -161,9 +161,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             return (currentBoundsExtents * linkLengthAdjustor) + new Vector3(wireframeEdgeRadius, wireframeEdgeRadius, wireframeEdgeRadius);
         }
 
-        public void Update(BoundingBoxRotationHandles rotationHandles, Transform parent, Vector3 currentBoundsExtents)
+        public void Update(BoundsControlRotationHandles rotationHandles, Transform parent, Vector3 currentBoundsExtents)
         {
-            for (int i = 0; i < BoundingBoxRotationHandles.NumEdges; ++i)
+            for (int i = 0; i < BoundsControlRotationHandles.NumEdges; ++i)
             {
 
                 if (links != null)
@@ -202,7 +202,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
         }
 
-        public void CreateLinks(BoundingBoxRotationHandles rotationHandles, Transform parent, Vector3 currentBoundsExtents)
+        public void CreateLinks(BoundsControlRotationHandles rotationHandles, Transform parent, Vector3 currentBoundsExtents)
         {
             // ensure materials exist 
             SetMaterials();
@@ -212,7 +212,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             {
                 GameObject link;
                 Vector3 linkDimensions = GetLinkDimensions(currentBoundsExtents);
-                for (int i = 0; i < BoundingBoxRotationHandles.NumEdges; ++i)
+                for (int i = 0; i < BoundsControlRotationHandles.NumEdges; ++i)
                 {
                     if (wireframeShape == WireframeType.Cubic)
                     {
