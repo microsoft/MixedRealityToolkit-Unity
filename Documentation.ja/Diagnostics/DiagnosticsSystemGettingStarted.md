@@ -2,7 +2,7 @@
 
 Mixed Reality Toolkit 診断システムは、アプリケーションの問題の分析を可能にするツールです。
 
-診断システムの最初のリリースには、アプリケーションの使用中にパフォーマンスの問題を分析するためのビジュアルプロファイラ (Visual Profiler) が含まれています。
+診断システムの最初のリリースには、アプリケーションの使用中にパフォーマンスの問題を分析するためのビジュアル プロファイラー (Visual Profiler) が含まれています。
 
 ## はじめに
 
@@ -17,11 +17,11 @@ Mixed Reality Toolkit 診断システムは、アプリケーションの問題�
 
 診断システムは、MixedRealityToolkit オブジェクト (または別の[サービス登録 (service registar)](xref:Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar)) コンポーネントによって管理されます。
 
-次の手順では、MixedRealityToolkit オブジェクトの使用を想定しています。他のサービスレジストラに必要な手順は異なる場合があります。
+次の手順では、MixedRealityToolkit オブジェクトの使用を想定しています。他のサービス レジストラーに必要な手順は異なる場合があります。
 
 1. シーンの \[Hierarchy](ヒエラルキー) ウィンドウで MixedRealityToolkit オブジェクトを選択します。
 
-![シーンヒエラルキーでMRTKの設定](../../Documentation/Images/MRTK_ConfiguredHierarchy.png)
+![シーン ヒエラルキーでMRTKの設定](../../Documentation/Images/MRTK_ConfiguredHierarchy.png)
 
 2. \[Inspector](インスペクター) ウィンドウで「Diagnostics System」セクションに移動し、「Enable」にチェックを入れます。
 
@@ -42,14 +42,14 @@ Mixed Reality Toolkit 診断システムは、アプリケーションの問題�
 
 ### ビルドとデプロイ
 
-診断システムが望ましいオプションで設定されていれば、プロジェクトをターゲットプラットフォームにビルド、デプロイできます。
+診断システムが望ましいオプションで設定されていれば、プロジェクトをターゲット プラットフォームにビルド、デプロイできます。
 
 > [!NOTE]
-> アプリケーションを開発する際、ビルドとデプロイの手順が必要ない Unity の Play モードを利用することも可能ですが、ターゲットハードウェアとプラットフォーム上で実行されているコンパイル済みアプリケーションを使用して診断システムの結果を評価することが重要です。
-> ビジュアルプロファイラ (Visual Profiler) などのパフォーマンス診断では、エディター内から実行されたときに実際のアプリケーション のパフォーマンスが正確に反映されない場合があります。
+> アプリケーションを開発する際、ビルドとデプロイの手順が不要な Unity の Play モードを利用することも可能ですが、ターゲット ハードウェアとプラットフォーム上で実行されているコンパイル済みアプリケーションを使用して診断システムの結果を評価することが重要です。
+> ビジュアル プロファイラー (Visual Profiler) などのパフォーマンス診断では、エディター内から実行されたときに実際のアプリケーション のパフォーマンスが正確に反映されない場合があります。
 
 ## 参考
 
 - [診断 API ドキュメンテーション](xref:Microsoft.MixedReality.Toolkit.Diagnostics)
 - [診断システムの設定](ConfiguringDiagnostics.md)
-- [ビジュアルプロファイラー (Visual Profiler) を使用する](UsingVisualProfiler.md)
+- [ビジュアル プロファイラー (Visual Profiler) を使用する](UsingVisualProfiler.md)

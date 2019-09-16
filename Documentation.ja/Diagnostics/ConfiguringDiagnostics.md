@@ -1,14 +1,14 @@
 # 診断システム (Diagnostics System) の構成
 
-診断システムプロファイルには、次の構成オプションが提供されます。
-- [一般的な設定](#一般的な設定)
-- [プロファイラの設定](#プロファイラの設定)
+診断システム プロファイルには、次の構成オプションが提供されます。
+- [General Settings （一般的な設定）](#general-settings-一般的な設定)
+- [Profiler Settings （プロファイラーの設定）](#profiler-settings-プロファイラーの設定)
 
-## 一般設定 (General Settings)
+## General Settings （一般的な設定）
 
 ![診断の一般的な設定](../../Documentation/Images/Diagnostics/DiagnosticsGeneralSettings.png)
 
-### 診断の表示
+### Show Diagnostics （診断の表示）
 
 診断システムが設定された診断オプションを表示するかどうかを示します。
 
@@ -16,8 +16,8 @@
 
 #### プログラムによる診断システムの制御
 
-また、実行時に診断システムとプロファイラの可視性を切り替えることもできます。
-たとえば、次のコードでは、診断システムとプロファイラを非表示にします。
+また、実行時に診断システムとプロファイラーの可視性を切り替えることもできます。
+たとえば、次のコードでは、診断システムとプロファイラーを非表示にします。
 
 ```C#
 if (MixedRealityServiceRegistry.TryGetService<IMixedRealityDiagnosticsSystem>(out var service))
@@ -27,35 +27,35 @@ if (MixedRealityServiceRegistry.TryGetService<IMixedRealityDiagnosticsSystem>(ou
 }
 ```
 
-## Show Profiler （プロファイラの表示）
+## Profiler Settings （プロファイラーの設定）
 
-![診断プロファイラの設定](../../Documentation/Images/Diagnostics/DiagnosticsProfilerSettings.png)
+![診断プロファイラーの設定](../../Documentation/Images/Diagnostics/DiagnosticsProfilerSettings.png)
 
-### プロファイラの表示
+### Show Profiler （プロファイラーの表示）
 
-ビジュアルプロファイラ (Visual Profiler) を表示するかどうかを示します。
+ビジュアル プロファイラー (Visual Profiler) を表示するかどうかを示します。
 
-### Frame Sample Rate (フレームサンプルレート)
+### Frame Sample Rate （フレーム サンプル レート）
 
 フレームレート計算用にフレームを収集する時間 (秒単位) 。範囲は 0 ~ 5 秒です。
 
-### Window Anchor (ウィンドウアンカー)
+### Window Anchor （ウィンドウ アンカー）
 
-プロファイラウィンドウをビューポート (view port) のどの部分に固定するかを設定します。デフォルト値は下中央です。
+プロファイラー ウィンドウをビュー ポート (view port) のどの部分に固定するかを設定します。デフォルト値は下中央です。
 
-### Window Offset (ウィンドウオフセット)
+### Window Offset （ウィンドウ オフセット）
 
-ビューポート (view port) の中心からビジュアルプロファイラを配置するまでのオフセット。オフセットは[ウィンドウアンカー (Window Anchor)](#ウィンドウアンカー (Window Anchor))の方向です。
+ビュー ポート (view port) の中心からビジュアル プロファイラーを配置するまでのオフセット。オフセットは [Window Anchor （ウィンドウ アンカー）](#window-anchor-ウィンドウ-アンカー)の方向です。
 
-### Window Scale (ウィンドウスケール)
+### Window Scale （ウィンドウ スケール）
 
-プロファイラウィンドウ (profiler window) に適用されるサイズ乗数。たとえば、値を 2 に設定すると、ウィンドウのサイズが 2 倍になります。
+プロファイラー ウィンドウ (profiler window) に適用されるサイズ乗数。たとえば、値を 2 に設定すると、ウィンドウのサイズが 2 倍になります。
 
-### Window Follow Speed (ウィンドウ追従スピード)
+### Window Follow Speed （ウィンドウ追従スピード）
 
-ビューポート (view port) 内の可視性を維持するためにプロファイラウィンドウを移動する速度。
+ビュー ポート (view port) 内の可視性を維持するためにプロファイラー ウィンドウを移動する速度。
 
 ## 参考に
 
 - [診断システム (Diagnostic System)](DiagnosticsSystemGettingStarted.md)
-- [ビジュアルプロファイラ (Visual Profiler) を使用する](UsingVisualProfiler.md)
+- [ビジュアル プロファイラー (Visual Profiler) を使用する](UsingVisualProfiler.md)

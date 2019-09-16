@@ -1,15 +1,15 @@
-# ハンドインタラクションのサンプルシーン #
+# ハンド インタラクションのサンプル シーン #
 
 ![Hand Interaction Examples](../Documentation/Images/MRTK_Examples.png)
 
-[HandInteractionExamples.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity) のサンプルシーンには、関節式の手 (articulated hand) の入力をハイライトした様々なタイプのインタラクションと UI コントロールが含まれています。
+[HandInteractionExamples.unity](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity) のサンプル シーンには、関節式の手 (articulated hand) の入力をハイライトした様々なタイプのインタラクションと UI コントロールが含まれています。
 
 > [!NOTE]
-> このサンプルシーンは、*TextMesh Pro* を使用しています。シーンのインポート中にプロンプトが表示された場合、シーンを開くために *「Import TMP Essentials」* をクリックしてください。 Unity は TextMesh Pro のパッケージをインポートします。
+> このサンプル シーンは、*TextMesh Pro* を使用しています。シーンのインポート中にプロンプトが表示された場合、シーンを開くために *「Import TMP Essentials」* をクリックしてください。 Unity は TextMesh Pro のパッケージをインポートします。
 
 <img src="../Documentation/Images/HandInteractionExamples/MRTK_Examples_TMP2.png" width="450">
 
-TextMesh Pro のインポート後に大きなテキストが表示される場合は、別の Unity シーンを開いてから、サンプルシーンをもう一度開いてください。
+TextMesh Pro のインポート後に大きなテキストが表示される場合は、別の Unity シーンを開いてから、サンプル シーンをもう一度開いてください。
 
 <img src="../Documentation/Images/HandInteractionExamples/MRTK_Examples_TMP1.png" width="350">
 
@@ -19,15 +19,15 @@ TextMesh Pro のインポート後に大きなテキストが表示される場�
 
 ![Hand Interaction Examples](../Documentation/Images/HandInteractionExamples/MRTK_Examples_PressTouch.png)
 
-## バウンディングボックス (Bounding box) ##
+## バウンディング ボックス (Bounding box) ##
 
-詳細は、 [バウンディングボックス (bounding box)](README_BoundingBox.md) のページを参照してください。
+詳細は、 [バウンディング ボックス (bounding box)](README_BoundingBox.md) のページを参照してください。
 
 ![Hand Interaction Examples](../Documentation/Images/HandInteractionExamples/MRTK_Examples_BoundingBox.png)
 
-## マニピュレーションハンドラ (Manipulation handler) ##
+## マニピュレーション ハンドラー (Manipulation handler) ##
 
-詳細は、 [マニピュレーションハンドラ (manipulation handler)](README_ManipulationHandler.md) のページを参照してください。
+詳細は、 [マニピュレーション ハンドラー (manipulation handler)](README_ManipulationHandler.md) のページを参照してください。
 
 ![Hand Interaction Examples](../Documentation/Images/HandInteractionExamples/MRTK_Examples_Manipulation.png)
 
@@ -37,8 +37,8 @@ TextMesh Pro のインポート後に大きなテキストが表示される場�
 
 ![Hand Interaction Examples](../Documentation/Images/HandInteractionExamples/MRTK_Examples_Slate.png)
 
-## システムキーボード (System keyboard) ##
+## システム キーボード (System keyboard) ##
 
-詳細は、 [システムキーボード (system keyboard)](README_SystemKeyboard.md) のページを参照してください。
+詳細は、 [システム キーボード (system keyboard)](README_SystemKeyboard.md) のページを参照してください。
 
 ![Hand Interaction Examples](../Documentation/Images/HandInteractionExamples/MRTK_Examples_Keyboard.png)
