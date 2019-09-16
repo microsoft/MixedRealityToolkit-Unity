@@ -40,18 +40,18 @@ You can find examples of Bounding Box configurations in the `BoundingBoxExamples
 > Using Unity's 'Resources' folder for dynamically loading the materials is not recommended since the shader's permutation could be missing on build time.
 
 ```
+   bbox.BoxMaterial = [Assign BoundingBox.mat]
+   bbox.BoxGrabbedMaterial = [Assign BoundingBoxGrabbed.mat]
    bbox.HandleMaterial = [Assign BoundingBoxHandleWhite.mat]
    bbox.HandleGrabbedMaterial = [Assign BoundingBoxHandleBlueGrabbed.mat]
-   bbox.BoxMaterial = [Assign BoundingBox.mat]
-   bbox.BoxGrabbedMaterial = [Assign MRTK_BoundingBox_ScaleHandle.mat]
-   bbox.ScaleHandlePrefab = [Assign BoundingBoxGrabbed.mat]
-   bbox.ScaleHandleSlatePrefab = [Assign BoundingBoxGrabbed.mat]
+   bbox.ScaleHandlePrefab = [Assign MRTK_BoundingBox_ScaleHandle.prefab]
+   bbox.ScaleHandleSlatePrefab = [Assign MRTK_BoundingBox_ScaleHandle_Slate.prefab]
    bbox.ScaleHandleSize = 0.016f;
    bbox.ScaleHandleColliderPadding = 0.016f;
    bbox.RotationHandleSlatePrefab = [Assign MRTK_BoundingBox_RotateHandle.prefab]
    bbox.RotationHandleSize = 0.016f;
    bbox.RotateHandleColliderPadding = 0.016f;
-   mh.OnManipulationStarted.AddListener((med) => bbox.HighlightWires());
+   mh.OnManipulationStarted.AddListener((med) => bbox.HighlightWires()); // Highlight wires with 
    mh.OnManipulationEnded.AddListener((med) => bbox.UnhighlightWires());
 ```
 
