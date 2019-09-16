@@ -106,13 +106,13 @@ Below are the prefabs, materials, and the scaling values for the HoloLens 2 styl
 <img src="../Documentation/Images/BoundingBox/MRTK_BoundingBox_HandleStyles2.png" width="450">
 
 ### Handles (Setup for HoloLens 2 style)
-- **Handle Material**: BoundingBoxHandleWhite
-- **Handle Grabbed Material**: BoundingBoxHandleBlueGrabbed
-- **Scale Handle Prefab**: MRTK_BoundingBox_ScaleHandle
-- **Scale Handle Slate Prefab**: MRTK_BoundingBox_ScaleHandle_Slate
+- **Handle Material**: BoundingBoxHandleWhite.mat
+- **Handle Grabbed Material**: BoundingBoxHandleBlueGrabbed.mat
+- **Scale Handle Prefab**: MRTK_BoundingBox_ScaleHandle.prefab
+- **Scale Handle Slate Prefab**: MRTK_BoundingBox_ScaleHandle_Slate.prefab
 - **Scale Handle Size**: 0.016 (1.6cm)
 - **Scale Handle Collider Padding**: 0.016 (makes the grabbable collider slightly bigger than handle visual)
-- **Rotation Handle Prefab**: MRTK_BoundingBox_RotateHandle
+- **Rotation Handle Prefab**: MRTK_BoundingBox_RotateHandle.prefab
 - **Rotation Handle Size**: 0.016
 - **Rotation Handle Collider Padding**: 0.016 (makes the grabbable collider slightly bigger than handle visual)
 
