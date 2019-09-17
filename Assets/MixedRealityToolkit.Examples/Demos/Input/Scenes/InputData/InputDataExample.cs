@@ -11,7 +11,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     public class InputDataExample : MonoBehaviour
     {
-        public Text debugText;
+        public Text inputUtilsText;
+        public Text rawDataText;
+
         private Tuple<InputSourceType, Handedness> [] inputSources = new Tuple<InputSourceType, Handedness>[]
         {
             new Tuple<InputSourceType, Handedness>(InputSourceType.Controller, Handedness.Right) ,
@@ -48,7 +50,37 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 }
                 sb.AppendLine();
             }
-            debugText.text = sb.ToString();
+            inputUtilsText.text = sb.ToString();
+
+            // Iterate through all controllers and print the position of each input
+            sb.Clear();
+            foreach(var controller in CoreServices.InputSystem.DetectedControllers)
+            {
+                sb.AppendLine("Inputs for " + controller.InputSource.SourceName);
+                sb.AppendLine();
+                // Interactions for a controller is the list of inputs that this controller exposes
+                foreach(MixedRealityInteractionMapping inputMapping in controller.Interactions)
+                {
+                    // 6DOF controllers support the "SpatialPointer" type (pointing direction)
+                    // or "GripPointer" type (direction of the 6DOF controller)
+                    if (inputMapping.InputType == DeviceInputType.SpatialPointer)
+                    {
+                        Debug.Log("spatial pointer PositionData: " + inputMapping.PositionData);
+                        Debug.Log("spatial pointer RotationData: " + inputMapping.RotationData);
+                    }
+                    sb.AppendLine("\tDescription: " + inputMapping.Description);
+                    sb.Append("\tAxisType: " + inputMapping.AxisType);
+                    sb.Append("\tInputType: " + inputMapping.InputType);
+                    sb.Append("\tPositionData: " + inputMapping.PositionData);
+                    sb.Append("\tRotationData: " + inputMapping.RotationData);
+                    sb.Append("\tBoolData: " + inputMapping.BoolData);
+                    sb.Append("\tFloatData: " + inputMapping.FloatData);
+                    sb.AppendLine();
+                    sb.AppendLine();
+                }
+                sb.AppendLine();
+            }
+            rawDataText.text = sb.ToString();
         }
 
         public void SetPointersEnabled(bool isEnabled)
