@@ -253,6 +253,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         private TransformScaleHandler scaleHandler;
 
+        private bool IsOneHandedManipulationEnabled => manipulationType.HasFlag(HandMovementType.OneHanded) && pointerIdToPointerMap.Count == 1;
+        private bool IsTwoHandedManipulationEnabled => manipulationType.HasFlag(HandMovementType.TwoHanded) && pointerIdToPointerMap.Count > 1;
+
         #endregion
 
         #region MonoBehaviour Functions
@@ -402,16 +405,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     pointerIdToPointerMap.Add(id, new PointerData(eventData.Pointer, eventData.Pointer.Result.Details.Point));
 
                     // Call manipulation started handlers
-                    var handsPressedCount = pointerIdToPointerMap.Count;
-                    if (manipulationType.HasFlag(HandMovementType.TwoHanded) && handsPressedCount > 1)
+                    if (IsTwoHandedManipulationEnabled)
                     {
-                        if (!manipulationType.HasFlag(HandMovementType.OneHanded))
+                        if (!isManipulationStarted)
                         {
                             HandleManipulationStarted();
                         }
                         HandleTwoHandManipulationStarted();
                     }
-                    else if (manipulationType.HasFlag(HandMovementType.OneHanded) && handsPressedCount == 1)
+                    else if (IsOneHandedManipulationEnabled)
                     {
                         if (!isManipulationStarted)
                         {
@@ -434,12 +436,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         public void OnPointerDragged(MixedRealityPointerEventData eventData)
         {                    
             // Call manipulation updated handlers
-            var handsPressedCount = pointerIdToPointerMap.Count;
-            if (manipulationType.HasFlag(HandMovementType.OneHanded) && handsPressedCount == 1)
+            if (IsOneHandedManipulationEnabled)
             {
                 HandleOneHandMoveUpdated();
             }
-            else if (manipulationType.HasFlag(HandMovementType.TwoHanded) && handsPressedCount > 1)
+            else if (IsTwoHandedManipulationEnabled)
             {
                 HandleTwoHandManipulationUpdated();
             }
