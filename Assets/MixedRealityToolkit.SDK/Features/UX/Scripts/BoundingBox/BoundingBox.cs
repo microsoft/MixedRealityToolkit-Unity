@@ -2152,7 +2152,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         proximityPoints.Add(pointer.Position);
                     }
 
-                    if (IsPointWithinBounds(pointer.Result.Details.Point, maxRadius))
+                    Vector3? point = pointer.Result?.Details.Point;
+
+                    if (point.HasValue && IsPointWithinBounds(point.Value, maxRadius))
                     {
                         proximityPoints.Add(pointer.Result.Details.Point);
                     }
