@@ -61,13 +61,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 // Interactions for a controller is the list of inputs that this controller exposes
                 foreach(MixedRealityInteractionMapping inputMapping in controller.Interactions)
                 {
-                    // 6DOF controllers support the "SpatialPointer" type (pointing direction)
-                    // or "GripPointer" type (direction of the 6DOF controller)
-                    if (inputMapping.InputType == DeviceInputType.SpatialPointer)
-                    {
-                        Debug.Log("spatial pointer PositionData: " + inputMapping.PositionData);
-                        Debug.Log("spatial pointer RotationData: " + inputMapping.RotationData);
-                    }
                     sb.AppendLine("\tDescription: " + inputMapping.Description);
                     sb.Append("\tAxisType: " + inputMapping.AxisType);
                     sb.Append("\tInputType: " + inputMapping.InputType);
