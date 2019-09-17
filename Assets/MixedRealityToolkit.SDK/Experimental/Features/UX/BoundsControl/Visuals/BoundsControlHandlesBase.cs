@@ -1,15 +1,16 @@
 ﻿using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 {
     [Serializable]
+    /// <summary>
+    /// Base class for any type of <see cref="BoundsControl"/> handle.
+    /// Handles are used for manipulating the BoundsControl by near or far user interaction.
+    /// </summary>
     public abstract class BoundsControlHandlesBase : IProximityEffectObjectProvider
     {
         [SerializeField]
@@ -75,7 +76,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         }
 
         [SerializeField]
-        // [FormerlySerializedAs("cornerRadius")]
         [Tooltip("Size of the handle collidable")]
         private float handleSize = 0.016f; // 1.6cm default handle size
 
@@ -130,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
         }
 
-        public abstract bool IsVisible(Transform handle);
+        internal abstract bool IsVisible(Transform handle);
         
 
         internal protected List<Transform> handles = new List<Transform>();
@@ -191,14 +191,14 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         }
 
 
-        public virtual HandleType GetHandleType()
+        internal virtual HandleType GetHandleType()
         {
             return HandleType.None;
         }
 
         internal protected void SetMaterials()
         {
-            if (handleMaterial == null /*&& handleMaterial != wireframeMaterial*/)
+            if (handleMaterial == null)
             {
                 float[] color = { 1.0f, 1.0f, 1.0f, 0.75f };
 
@@ -210,7 +210,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                 handleMaterial.SetFloat("_InnerGlow", 1.0f);
                 handleMaterial.SetFloatArray("_InnerGlowColor", color);
             }
-            if (handleGrabbedMaterial == null && handleGrabbedMaterial != handleMaterial/* && handleGrabbedMaterial != wireframeMaterial*/)
+            if (handleGrabbedMaterial == null && handleGrabbedMaterial != handleMaterial)
             {
                 float[] color = { 1.0f, 1.0f, 1.0f, 0.75f };
 
@@ -253,6 +253,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
         }
 
-        #endregion
+        #endregion IProximityScaleObjectProvider
     }
 }

@@ -5,10 +5,13 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 {
+    /// <summary>
+    /// Helper class providing some static utility functions for <see cref="BoundsControl"/> <see cref="BoundsControlHandlesBase">handles</see>/>
+    /// </summary>
     internal class BoundsControlVisualUtils
     {
 
-        public static void HandleIgnoreCollider(Collider handlesIgnoreCollider, List<Transform> handles)
+        internal static void HandleIgnoreCollider(Collider handlesIgnoreCollider, List<Transform> handles)
         {
             if (handlesIgnoreCollider != null)
             {
@@ -23,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
         }
 
-        public static Bounds GetMaxBounds(GameObject g)
+        internal static Bounds GetMaxBounds(GameObject g)
         {
             var b = new Bounds();
             Mesh currentMesh;
@@ -43,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             return b;
         }
 
-        public static void ApplyMaterialToAllRenderers(GameObject root, Material material)
+        internal static void ApplyMaterialToAllRenderers(GameObject root, Material material)
         {
             if (material != null)
             {
@@ -61,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         /// </summary>
         /// <param name="afford"></param>
         /// <param name="bounds"></param>
-        public static void AddComponentsToAffordance(GameObject afford, Bounds bounds, RotationHandlePrefabCollider colliderType, 
+        internal static void AddComponentsToAffordance(GameObject afford, Bounds bounds, RotationHandlePrefabCollider colliderType, 
             CursorContextInfo.CursorAction cursorType, Vector3 colliderPadding, Transform parent, bool drawTetherWhenManipulating)
         {
             if (colliderType == RotationHandlePrefabCollider.Box)

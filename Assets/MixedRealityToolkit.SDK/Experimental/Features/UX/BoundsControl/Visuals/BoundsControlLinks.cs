@@ -8,9 +8,12 @@ using UnityEngine.Events;
 namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 {
     [Serializable]
+    /// <summary>
+    /// Links that are rendered inbetween the corners of <see cref="BoundsControl"/>
+    /// </summary>
     public class BoundsControlLinks
     {
-
+        #region Serialized Properties
         [SerializeField]
         [Tooltip("Material used for wireframe display")]
         private Material wireframeMaterial;
@@ -33,7 +36,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         }
 
         [SerializeField]
-       // [FormerlySerializedAs("linkRadius")]
         [Tooltip("Radius for wireframe edges")]
         private float wireframeEdgeRadius = 0.001f;
 
@@ -73,7 +75,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
         }
 
-
         [SerializeField]
         [Tooltip("Show a wireframe around the bounding box when checked. Wireframe parameters below have no effect unless this is checked")]
         private bool showWireframe = true;
@@ -94,13 +95,15 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
         }
 
+        #endregion Serialized Properties
+
         internal protected UnityEvent configurationChanged = new UnityEvent();
 
         private List<Transform> links = new List<Transform>();
         private List<Renderer> linkRenderers = new List<Renderer>();
 
 
-        public void Clear()
+        internal void Clear()
         {
             if (links != null)
             {
@@ -130,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         }
 
 
-        public void UpdateVisibilityInInspector(HideFlags flags)
+        internal void UpdateVisibilityInInspector(HideFlags flags)
         {
             if (links != null)
             {
@@ -141,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
         }
 
-        public void ResetVisibility(bool isVisible)
+        internal void ResetVisibility(bool isVisible)
         {
             if (links != null)
             {
@@ -161,7 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             return (currentBoundsExtents * linkLengthAdjustor) + new Vector3(wireframeEdgeRadius, wireframeEdgeRadius, wireframeEdgeRadius);
         }
 
-        public void Update(BoundsControlRotationHandles rotationHandles, Transform parent, Vector3 currentBoundsExtents)
+        internal void Update(BoundsControlRotationHandles rotationHandles, Transform parent, Vector3 currentBoundsExtents)
         {
             for (int i = 0; i < BoundsControlRotationHandles.NumEdges; ++i)
             {
@@ -191,7 +194,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
         }
 
-        public void Flatten(ref int[] flattenedHandles)
+        internal void Flatten(ref int[] flattenedHandles)
         {
             if (flattenedHandles != null && linkRenderers != null)
             {
@@ -202,7 +205,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
         }
 
-        public void CreateLinks(BoundsControlRotationHandles rotationHandles, Transform parent, Vector3 currentBoundsExtents)
+        internal void CreateLinks(BoundsControlRotationHandles rotationHandles, Transform parent, Vector3 currentBoundsExtents)
         {
             // ensure materials exist 
             SetMaterials();

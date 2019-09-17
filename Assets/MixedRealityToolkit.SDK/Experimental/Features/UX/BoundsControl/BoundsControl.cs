@@ -22,6 +22,19 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         [Tooltip("The object that the bounding box rig will be modifying.")]
         private GameObject targetObject;
 
+        public GameObject Target
+        {
+            get
+            {
+                if (targetObject == null)
+                {
+                    targetObject = gameObject;
+                }
+
+                return targetObject;
+            }
+        }
+
         [Tooltip("For complex objects, automatic bounds calculation may not behave as expected. Use an existing Box Collider (even on a child object) to manually determine bounds of Bounding Box.")]
         [SerializeField]
         [FormerlySerializedAs("BoxColliderToUse")]
@@ -47,7 +60,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                 }
             }
         }
-
 
         [SerializeField]
         [Tooltip("Defines the volume type and the priority for the bounds calculation")]
@@ -168,7 +180,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
         }
 
-
         [SerializeField]
         // [FormerlySerializedAs("wireframePadding")]
         [Tooltip("Extra padding added to the actual Target bounds")]
@@ -191,33 +202,50 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         }
 
         [SerializeField]
-        [Tooltip("TODO TOOLTIP")]
-        BoundsControlBoxDisplay boxDisplay = new BoundsControlBoxDisplay();
+        [Tooltip("Bounds control box display configuration section.")]
+        private BoundsControlBoxDisplay boxDisplay = new BoundsControlBoxDisplay();
+        /// <summary>
+        /// Bounds control box display configuration section.
+        /// </summary>
         public BoundsControlBoxDisplay BoxDisplay => boxDisplay;
 
         [SerializeField]
-        [Tooltip("TODO TOOLTIP")]
-        BoundsControlLinks links = new BoundsControlLinks();
+        [Tooltip("This section defines the links / lines that are drawn between the corners of the control.")]
+        private BoundsControlLinks links = new BoundsControlLinks();
+        /// <summary>
+        /// This section defines the links / lines that are drawn between the corners of the control.
+        /// </summary>
         public BoundsControlLinks Links => links;
 
         [SerializeField]
-        [Tooltip("TODO TOOLTIP")]
-        BoundsControlScaleHandles scaleHandles = new BoundsControlScaleHandles();
+        [Tooltip("Configuration of the scale handles.")]
+        private BoundsControlScaleHandles scaleHandles = new BoundsControlScaleHandles();
+        /// <summary>
+        /// Configuration of the scale handles.
+        /// </summary>
         public BoundsControlScaleHandles ScaleHandles => scaleHandles;
 
-
         [SerializeField]
-        [Tooltip("TODO TOOLTIP")]
-        BoundsControlRotationHandles rotationHandles = new BoundsControlRotationHandles();
+        [Tooltip("Configuration of the rotation handles.")]
+        private BoundsControlRotationHandles rotationHandles = new BoundsControlRotationHandles();
+        /// <summary>
+        /// Configuration of the rotation handles.
+        /// </summary>
         public BoundsControlRotationHandles RotationHandles => rotationHandles;
 
         [SerializeField]
-        [Tooltip("Configuration for Proximity Effect")]
-        public ProximityEffect proximityEffect = new ProximityEffect();
-
+        [Tooltip("Configuration for Proximity Effect to scale handles or change materials on proximity.")]
+        private ProximityEffect proximityEffect = new ProximityEffect();
+        /// <summary>
+        /// Configuration for Proximity Effect to scale handles or change materials on proximity.
+        /// </summary>
+        public ProximityEffect ProximityEffect => proximityEffect;
 
         [Header("Debug")]
-        [Tooltip("Debug only. Component used to display debug messages")]
+        [Tooltip("Debug only. Component used to display debug messages.")]
+        /// <summary>
+        /// Component used to display debug messages.
+        /// </summary>
         public TextMesh debugText;
 
         [SerializeField]
@@ -241,32 +269,13 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         }
 
         [Header("Events")]
+        /// todo: these should be somehow unified with manipulation handler and documented
         public UnityEvent RotateStarted = new UnityEvent();
         public UnityEvent RotateStopped = new UnityEvent();
         public UnityEvent ScaleStarted = new UnityEvent();
         public UnityEvent ScaleStopped = new UnityEvent();
 
-
         #endregion Serialized Fields
-
-
-        public GameObject Target
-        {
-            get
-            {
-                if (targetObject == null)
-                {
-                    targetObject = gameObject;
-                }
-
-                return targetObject;
-            }
-        }
-
-        /// <summary>
-        /// The collider reference tracking the bounds utilized by this component during runtime
-        /// </summary>
-        public BoxCollider TargetBounds { get; private set; }
 
         #region Private Fields
 
@@ -334,6 +343,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         #endregion
 
         #region public Properties
+
+        /// <summary>
+        /// The collider reference tracking the bounds utilized by this component during runtime
+        /// </summary>
+        public BoxCollider TargetBounds { get; private set; }
+
         // TODO Review this, it feels like we should be using Behaviour.enabled instead.
         private bool active = false;
         public bool Active
@@ -362,7 +377,44 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
         #region Public Methods
 
-        public void Awake()
+        /// <summary>
+        /// Allows to manually enable wire (edge) highlighting (edges) of the bounding box.
+        /// This is useful if connected to the Manipulation events of a
+        /// <see cref="Microsoft.MixedReality.Toolkit.UI.ManipulationHandler"/> 
+        /// when used in conjunction with this MonoBehavior.
+        /// </summary>
+        public void HighlightWires()
+        {
+            SetHighlighted(null);
+        }
+
+        public void UnhighlightWires()
+        {
+            ResetVisuals();
+        }
+
+        /// <summary>
+        /// Destroys and re-creates the rig around the bounding box
+        /// TODO: this shouldn't be called every time we change a param - be more specific with what we recreate
+        /// </summary>
+        public void CreateRig()
+        {
+            DestroyRig();
+            InitializeRigRoot();
+            InitializeDataStructures();
+            SetBoundingBoxCollider();
+            UpdateBounds();
+            CreateVisuals();
+            ResetVisuals();
+            rigRoot.gameObject.SetActive(active);
+            UpdateRigVisibilityInInspector();
+        }
+
+        #endregion
+
+        #region MonoBehaviour Methods
+
+        private void Awake()
         {
             if (targetObject == null)
                 targetObject = gameObject;
@@ -376,11 +428,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
             // subscribe visuals to bounds changes
             boundsUpdated.AddListener(() => rotationHandles.CalculateEdgeCenters(ref boundsCorners));
-        }               
-
-        #endregion
-
-        #region MonoBehaviour Methods
+        }
 
         private void OnEnable()
         {
@@ -445,6 +493,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
         }
 
+        #endregion MonoBehaviour Methods
+
+        #region Private Methods
+
         /// <summary>
         /// Assumes that boundsOverride is not null
         /// Returns true if the size / location of boundsOverride has changed.
@@ -459,10 +511,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             prevBoundsOverride = curBounds;
             return result;
         }
-
-        #endregion MonoBehaviour Methods
-
-        #region Private Methods
 
         private void SetBoundingBoxCollider()
         {
@@ -730,6 +778,123 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
         }
 
+        private void DestroyRig()
+        {
+            if (boundsOverride == null)
+            {
+                Destroy(TargetBounds);
+            }
+            else
+            {
+                boundsOverride.size -= boxPadding;
+
+                if (TargetBounds != null)
+                {
+                    if (TargetBounds.gameObject.GetComponent<NearInteractionGrabbable>())
+                    {
+                        Destroy(TargetBounds.gameObject.GetComponent<NearInteractionGrabbable>());
+                    }
+                }
+            }
+
+            // todo: move this out?
+            DestroyVisuals();
+
+            if (rigRoot != null)
+            {
+                Destroy(rigRoot.gameObject);
+                rigRoot = null;
+            }
+
+        }
+
+        private void UpdateRigVisibilityInInspector()
+        {
+            HideFlags desiredFlags = hideElementsInInspector ? HideFlags.HideInHierarchy | HideFlags.HideInInspector : HideFlags.None;
+            scaleHandles.UpdateVisibilityInInspector(desiredFlags);
+            links.UpdateVisibilityInInspector(desiredFlags);
+            boxDisplay.UpdateVisibilityInInspector(desiredFlags);
+
+            if (rigRoot != null)
+            {
+                rigRoot.hideFlags = desiredFlags;
+            }
+
+        }
+
+        private Vector3 GetRotationAxis(Transform handle)
+        {
+            CardinalAxisType axisType = rotationHandles.GetAxisType(handle);
+            if (axisType == CardinalAxisType.X)
+            {
+                return rigRoot.transform.right;
+            }
+            else if (axisType == CardinalAxisType.Y)
+            {
+                return rigRoot.transform.up;
+            }
+            else
+            {
+                return rigRoot.transform.forward;
+            }
+        }
+
+        private void InitializeRigRoot()
+        {
+            var rigRootObj = new GameObject(rigRootName);
+            rigRoot = rigRootObj.transform;
+            rigRoot.parent = transform;
+
+            var pH = rigRootObj.AddComponent<PointerHandler>();
+            pH.OnPointerDown.AddListener(OnPointerDown);
+            pH.OnPointerDragged.AddListener(OnPointerDragged);
+            pH.OnPointerUp.AddListener(OnPointerUp);
+        }
+
+        private void InitializeDataStructures()
+        {
+            sourcesDetected = new List<IMixedRealityController>();
+        }
+
+        private void TransformTarget(HandleType transformType)
+        {
+            if (transformType != HandleType.None)
+            {
+                Vector3 prevGrabPoint = currentGrabPoint;
+                currentGrabPoint = (currentPointer.Rotation * grabPointInPointer) + currentPointer.Position;
+
+                if (transformType == HandleType.Rotation)
+                {
+                    Vector3 prevDir = Vector3.ProjectOnPlane(prevGrabPoint - rigRoot.transform.position, currentRotationAxis).normalized;
+                    Vector3 currentDir = Vector3.ProjectOnPlane(currentGrabPoint - rigRoot.transform.position, currentRotationAxis).normalized;
+                    Quaternion q = Quaternion.FromToRotation(prevDir, currentDir);
+                    q.ToAngleAxis(out float angle, out Vector3 axis);
+
+                    Target.transform.RotateAround(rigRoot.transform.position, axis, angle);
+                }
+                else if (transformType == HandleType.Scale)
+                {
+                    float initialDist = Vector3.Dot(initialGrabPoint - oppositeCorner, diagonalDir);
+                    float currentDist = Vector3.Dot(currentGrabPoint - oppositeCorner, diagonalDir);
+                    float scaleFactor = 1 + (currentDist - initialDist) / initialDist;
+
+                    Vector3 newScale = initialScaleOnGrabStart * scaleFactor;
+                    Vector3 clampedScale = newScale;
+                    if (scaleHandler != null)
+                    {
+                        clampedScale = scaleHandler.ClampScale(newScale);
+                        if (clampedScale != newScale)
+                        {
+                            scaleFactor = clampedScale[0] / initialScaleOnGrabStart[0];
+                        }
+                    }
+
+                    Target.transform.localScale = clampedScale;
+                    Target.transform.position = initialPositionOnGrabStart * scaleFactor + (1 - scaleFactor) * oppositeCorner;
+                }
+            }
+        }
+
         #endregion Private Methods
 
 
@@ -756,7 +921,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             if (handInProximity == wireframeOnly)
             {
                 wireframeOnly = !handInProximity;
-                // TODO BERNI
+                // todo: move this out?
                 ResetVisuals();
             }
         }
@@ -796,7 +961,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                     initialPositionOnGrabStart = Target.transform.position;
                     grabPointInPointer = Quaternion.Inverse(eventData.Pointer.Rotation) * (initialGrabPoint - currentPointer.Position);
 
-                    // TODO BERNI
+                    // todo: move this out?
                     SetHighlighted(grabbedHandleTransform);
 
                     if (currentHandleType == HandleType.Scale)
@@ -860,7 +1025,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
                 currentPointer = null;
                 currentHandleType = HandleType.None;
-                // TODO BERNI
+                // todo: move this out?
                 ResetVisuals();
 
                 if (lastHandleType == HandleType.Scale)
@@ -884,142 +1049,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
         #endregion Unused Event Handlers
 
-        private void DestroyRig()
-        {
-            if (boundsOverride == null)
-            {
-                Destroy(TargetBounds);
-            }
-            else
-            {
-                boundsOverride.size -= boxPadding;
 
-                if (TargetBounds != null)
-                {
-                    if (TargetBounds.gameObject.GetComponent<NearInteractionGrabbable>())
-                    {
-                        Destroy(TargetBounds.gameObject.GetComponent<NearInteractionGrabbable>());
-                    }
-                }
-            }
-
-            // TODO BERNI
-            DestroyVisuals();
-
-            if (rigRoot != null)
-            {
-                Destroy(rigRoot.gameObject);
-                rigRoot = null;
-            }
-
-        }
-
-        private void UpdateRigVisibilityInInspector()
-        {
-            HideFlags desiredFlags = hideElementsInInspector ? HideFlags.HideInHierarchy | HideFlags.HideInInspector : HideFlags.None;
-            scaleHandles.UpdateVisibilityInInspector(desiredFlags);
-            links.UpdateVisibilityInInspector(desiredFlags);
-            boxDisplay.UpdateVisibilityInInspector(desiredFlags);
-
-            if (rigRoot != null)
-            {
-                rigRoot.hideFlags = desiredFlags;
-            }
-
-        }
-
-        private Vector3 GetRotationAxis(Transform handle)
-        {
-            CardinalAxisType axisType = rotationHandles.GetAxisType(handle);
-            if (axisType == CardinalAxisType.X)
-            {
-                return rigRoot.transform.right;
-            }
-            else if (axisType == CardinalAxisType.Y)
-            {
-                return rigRoot.transform.up;
-            }
-            else
-            {
-                return rigRoot.transform.forward;
-            }
-        }
-
-        private void InitializeRigRoot()
-        {
-            var rigRootObj = new GameObject(rigRootName);
-            rigRoot = rigRootObj.transform;
-            rigRoot.parent = transform;
-
-            var pH = rigRootObj.AddComponent<PointerHandler>();
-            pH.OnPointerDown.AddListener(OnPointerDown);
-            pH.OnPointerDragged.AddListener(OnPointerDragged);
-            pH.OnPointerUp.AddListener(OnPointerUp);
-        }
-
-        public void TransformTarget(HandleType transformType)
-        {
-            if (transformType != HandleType.None)
-            {
-                Vector3 prevGrabPoint = currentGrabPoint;
-                currentGrabPoint = (currentPointer.Rotation * grabPointInPointer) + currentPointer.Position;
-
-                if (transformType == HandleType.Rotation)
-                {
-                    Vector3 prevDir = Vector3.ProjectOnPlane(prevGrabPoint - rigRoot.transform.position, currentRotationAxis).normalized;
-                    Vector3 currentDir = Vector3.ProjectOnPlane(currentGrabPoint - rigRoot.transform.position, currentRotationAxis).normalized;
-                    Quaternion q = Quaternion.FromToRotation(prevDir, currentDir);
-                    q.ToAngleAxis(out float angle, out Vector3 axis);
-
-                    Target.transform.RotateAround(rigRoot.transform.position, axis, angle);
-                }
-                else if (transformType == HandleType.Scale)
-                {
-                    float initialDist = Vector3.Dot(initialGrabPoint - oppositeCorner, diagonalDir);
-                    float currentDist = Vector3.Dot(currentGrabPoint - oppositeCorner, diagonalDir);
-                    float scaleFactor = 1 + (currentDist - initialDist) / initialDist;
-
-                    Vector3 newScale = initialScaleOnGrabStart * scaleFactor;
-                    Vector3 clampedScale = newScale;
-                    if (scaleHandler != null)
-                    {
-                        clampedScale = scaleHandler.ClampScale(newScale);
-                        if (clampedScale != newScale)
-                        {
-                            scaleFactor = clampedScale[0] / initialScaleOnGrabStart[0];
-                        }
-                    }
-
-                    Target.transform.localScale = clampedScale;
-                    Target.transform.position = initialPositionOnGrabStart * scaleFactor + (1 - scaleFactor) * oppositeCorner;
-                }
-            }
-        }
-
-        private void InitializeDataStructures()
-        {
-            sourcesDetected = new List<IMixedRealityController>();
-        }
-
-        /// <summary>
-        /// Destroys and re-creates the rig around the bounding box
-        /// </summary>
-        public void CreateRig()
-        {
-            DestroyRig();
-            InitializeRigRoot();
-            InitializeDataStructures();
-            SetBoundingBoxCollider();
-            UpdateBounds();
-            CreateVisuals();
-            ResetVisuals();
-            rigRoot.gameObject.SetActive(active);
-            UpdateRigVisibilityInInspector();
-        }
-
-
-
-        ///TODO BERNI VISUALS
+        #region BoundsControl Visuals Private Methods
 
         private void SetHighlighted(Transform activeHandle)
         {
@@ -1053,7 +1084,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         {
             // add corners
             bool isFlattened = flattenAxis != FlattenModeType.DoNotFlatten;
-            scaleHandles.CreateHandles(rigRoot, ref boundsCorners, drawTetherWhenManipulating, isFlattened);
+            scaleHandles.Create(ref boundsCorners, rigRoot, drawTetherWhenManipulating, isFlattened);
             proximityEffect.AddObjects(scaleHandles);
 
             // add links
@@ -1073,7 +1104,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             UpdateVisuals();
         }
 
-        void DestroyVisuals()
+        private void DestroyVisuals()
         {
             proximityEffect.ClearObjects();
             links.Clear();
@@ -1106,24 +1137,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
         }
 
+        #endregion BoundsControl Visuals Private Methods
 
-        /// <summary>
-        /// Allows to manually enable wire (edge) highlighting (edges) of the bounding box.
-        /// This is useful if connected to the Manipulation events of a
-        /// <see cref="Microsoft.MixedReality.Toolkit.UI.ManipulationHandler"/> 
-        /// when used in conjunction with this MonoBehavior.
-        /// </summary>
-        public void HighlightWires()
-        {
-            SetHighlighted(null);
-        }
-
-        public void UnhighlightWires()
-        {
-            ResetVisuals();
-        }
-
-
-       
     }
 }

@@ -23,6 +23,10 @@ using Microsoft.MixedReality.Toolkit.UI.Experimental;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
+    /// <summary>
+    /// TODO: This test still needs to be adjusted
+    /// Currently it's just a copy of whatever was tested in Bounding Box
+    /// </summary>
     public class BoundsControlTests
     {
         #region Utilities

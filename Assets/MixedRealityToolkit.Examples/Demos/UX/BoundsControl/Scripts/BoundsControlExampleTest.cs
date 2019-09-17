@@ -12,6 +12,10 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
+    /// <summary>
+    /// TODO: This test still needs to be adjusted
+    /// Currently it's just a copy of whatever was tested in Bounding Box
+    /// </summary>
     public class BoundsControlExampleTest : MonoBehaviour, IMixedRealitySpeechHandler
     {
         public TextMeshPro statusText;

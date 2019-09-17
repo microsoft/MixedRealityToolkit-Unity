@@ -7,12 +7,12 @@ using UnityEngine.Events;
 namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 {
     [Serializable]
+    /// <summary> 
+    /// Used to display the bounding box attached to the rig root of a <see cref="BoundsControl"/>
+    /// </summary>
     public class BoundsControlBoxDisplay
     {
-
         [Header("Box Display")]
-
-
 
         [SerializeField]
         [Tooltip("Material used to display the bounding box. If set to null no bounding box will be displayed")]
@@ -54,9 +54,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
         }
 
-      
-
-
         [SerializeField]
         [Tooltip("When an axis is flattened what value to set that axis's scale to for display.")]
         private float flattenAxisDisplayScale = 0.0f;
@@ -81,8 +78,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
         // Game object used to display the bounding box. Parented to the rig root
         private GameObject boxDisplay;
-
-        
 
         internal void AddBoxDisplay(Transform parent, Vector3 currentBoundsExtents, FlattenModeType flattenAxis)
         {
@@ -150,6 +145,5 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                 boxDisplay.transform.localScale = Vector3.Scale(GetBoxDisplayScale(boundsExtents, flattenAxis), invRootScale);
             }
         }
-
     }
 }
