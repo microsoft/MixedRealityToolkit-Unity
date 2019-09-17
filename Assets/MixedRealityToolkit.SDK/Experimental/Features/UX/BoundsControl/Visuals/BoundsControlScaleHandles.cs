@@ -7,9 +7,13 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 {
     [Serializable]
+    /// <summary>
+    /// Scale handles for <see cref="BoundsControl"/> that are used for scaling the
+    /// gameobject BoundsControl is attached to with near or far interaction
+    /// </summary>
     public class BoundsControlScaleHandles : BoundsControlHandlesBase
     {
-
+        #region serialized fields
         [SerializeField]
         [Tooltip("Prefab used to display handles for 2D slate. If not set, default box shape will be used")]
         GameObject handleSlatePrefab = null;
@@ -36,7 +40,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
         /// <summary>
         /// Public property to Set the visibility of the corner cube Scaling handles.
-        /// This property can be set independent of the Rotate handles.
         /// </summary>
         public bool ShowScaleHandles
         {
@@ -54,6 +57,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
         }
 
+        #endregion serialized fields
+
         internal void UpdateVisibilityInInspector(HideFlags flags)
         {
             if (handles != null)
@@ -65,16 +70,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
         }
 
-        public override bool IsVisible(Transform handle)
-        {
-            return ShowScaleHandles;
-        }
-
-        public override bool IsActive()
-        {
-            return ShowScaleHandles;
-        }
-
         internal void UpdateHandles(ref Vector3[] boundsCorners)
         {
             for (int i = 0; i < handles.Count; ++i)
@@ -83,12 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
         }
 
-        public override HandleType GetHandleType()
-        {
-            return HandleType.Scale;
-        }
-
-        internal void CreateHandles(Transform parent, ref Vector3[] boundsCorners, bool drawManipulationTether, bool isFlattened)
+        internal void Create(ref Vector3[] boundsCorners, Transform parent, bool drawManipulationTether, bool isFlattened)
         {
             // ensure materials are set
             SetMaterials();
@@ -155,9 +145,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
         }
 
+        #region BoundsControlHandlerBase
         protected override Transform GetVisual(Transform handle)
         {
-            Transform visual = handle.GetChild(0).GetChild(0);
+            Transform visual = handle.GetChild(0)?.GetChild(0);
             if (visual != null && visual.name == "visuals")
             {
                 return visual;
@@ -165,5 +156,23 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
             return null;
         }
+
+        internal override bool IsVisible(Transform handle)
+        {
+            return ShowScaleHandles;
+        }
+
+        internal override HandleType GetHandleType()
+        {
+            return HandleType.Scale;
+        }
+        #endregion BoundsControlHandlerBase
+
+        #region IProximityScaleObjectProvider 
+        public override bool IsActive()
+        {
+            return ShowScaleHandles;
+        }
+        #endregion IProximityScaleObjectProvider
     }
 }

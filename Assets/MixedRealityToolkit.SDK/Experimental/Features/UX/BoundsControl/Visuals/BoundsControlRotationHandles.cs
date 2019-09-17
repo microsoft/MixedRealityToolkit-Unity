@@ -6,6 +6,10 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 {
     [Serializable]
+    /// <summary>
+    /// Rotation handles for <see cref="BoundsControl"/> that are used for rotating the
+    /// gameobject BoundsControl is attached to with near or far interaction
+    /// </summary>
     public class BoundsControlRotationHandles : BoundsControlHandlesBase
     {
 
@@ -120,9 +124,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             return handles.Count;
         }
 
-
-
-
         internal Vector3 GetEdgeCenter(int index)
         {
             Debug.Assert(index >= 0 && index <= NumEdges, "Edge center index out of bounds");
@@ -151,7 +152,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
         internal void CalculateEdgeCenters(ref Vector3[] boundsCorners)
         {
-            //edgeCenters = new Vector3[12];
             if (boundsCorners != null && edgeCenters != null)
             {
                 edgeCenters[0] = (boundsCorners[0] + boundsCorners[1]) * 0.5f;
@@ -173,8 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
 
         internal void InitEdgeAxis()
-        {
-
+        { 
             edgeAxes = new CardinalAxisType[NumEdges];
             edgeAxes[0] = CardinalAxisType.X;
             edgeAxes[1] = CardinalAxisType.Y;
@@ -199,25 +198,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                     handles[flattenedHandles[i]].gameObject.SetActive(false);
                 }
             }
-        }
-
-        public override bool IsVisible(Transform handle)
-        {
-            CardinalAxisType axisType = GetAxisType(handle);
-            return
-                (axisType == CardinalAxisType.X && ShowRotationHandleForX) ||
-                (axisType == CardinalAxisType.Y && ShowRotationHandleForY) ||
-                (axisType == CardinalAxisType.Z && ShowRotationHandleForZ);
-        }
-
-        public override bool IsActive()
-        {
-            return ShowRotationHandleForX || ShowRotationHandleForY || ShowRotationHandleForZ;
-        }
-
-        public override HandleType GetHandleType()
-        {
-            return HandleType.Rotation;
         }
 
         internal void Create(ref Vector3[] boundsCorners, Transform parent, bool drawManipulationTether)
@@ -282,8 +262,21 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                     BoundsControlVisualUtils.ApplyMaterialToAllRenderers(midpointVisual, HandleMaterial);
                 }
             }
+        }
 
-            //handlesCreated.Invoke();
+        #region BoundsControlHandlerBase 
+        internal override bool IsVisible(Transform handle)
+        {
+            CardinalAxisType axisType = GetAxisType(handle);
+            return
+                (axisType == CardinalAxisType.X && ShowRotationHandleForX) ||
+                (axisType == CardinalAxisType.Y && ShowRotationHandleForY) ||
+                (axisType == CardinalAxisType.Z && ShowRotationHandleForZ);
+        }
+
+        internal override HandleType GetHandleType()
+        {
+            return HandleType.Rotation;
         }
 
         protected override Transform GetVisual(Transform handle)
@@ -297,5 +290,15 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
             return null;
         }
+        #endregion BoundsControlHandlerBase
+
+        #region IProximityScaleObjectProvider 
+        public override bool IsActive()
+        {
+            return ShowRotationHandleForX || ShowRotationHandleForY || ShowRotationHandleForZ;
+        }
+
+        #endregion IProximityScaleObjectProvider
+
     }
 }
