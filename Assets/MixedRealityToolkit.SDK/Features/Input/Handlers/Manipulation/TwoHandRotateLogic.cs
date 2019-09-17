@@ -25,6 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <summary>
         /// Setup the rotation logic.
         /// </summary>
+        /// <param name="handsPressedArray">Array with positions of down pointers</param>
         public void Setup(Vector3[] handsPressedArray, Transform t, RotationConstraintType rotationConstraint)
         {
             startHandlebar = ProjectHandlebarGivenConstraint(rotationConstraint, GetHandlebarDirection(handsPressedArray));
@@ -34,6 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <summary>
         /// Update the rotation based on input.
         /// </summary>
+        /// <param name="handsPressedArray">Array with positions of down pointers, order should be the same as handsPressedArray provided in Setup</param>
         /// <returns>Desired rotation</returns>
         public Quaternion Update(Vector3[] handsPressedArray, Quaternion currentRotation, RotationConstraintType rotationConstraint, bool useLocalSpaceForConstraint)
         {

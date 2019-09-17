@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <summary>
         /// Initialize system with source info from controllers/hands
         /// </summary>
-        /// <param name="handsPressedArray">Dictionary that maps inputSources to states</param>
+        /// <param name="handsPressedArray">Array with positions of down pointers</param>
         /// <param name="manipulationRoot">Transform of gameObject to be manipulated</param>
         public virtual void Setup(Vector3[] handsPressedArray, Transform manipulationRoot)
         {
@@ -36,6 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <summary>
         /// update GameObject with new Scale state
         /// </summary>
+        /// <param name="handsPressedArray">Array with positions of down pointers, order should be the same as handsPressedArray provided in Setup</param>
         /// <returns>a Vector3 describing the new Scale of the object being manipulated</returns>
         public virtual Vector3 UpdateMap(Vector3[] handsPressedArray)
         {
