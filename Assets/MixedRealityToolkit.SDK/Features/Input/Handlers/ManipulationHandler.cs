@@ -665,6 +665,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     break;
                 }
                 case RotateInOneHandType.RotateAboutObjectCenter:
+                    Quaternion controllerRotation;
+                    if (TryGetGripRotation(pointer, out controllerRotation))
+                    {
+                        targetRotation = controllerRotation * objectToHandRotation;
+                    }
+                    else
+                    {
+                        targetRotation = pointer.Rotation * objectToHandRotation;
+                    }
+
+                    break;
                 case RotateInOneHandType.RotateAboutGrabPoint:
                     targetRotation = pointer.Rotation * objectToHandRotation;
                     break;
@@ -678,6 +689,21 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Quaternion smoothedRotation = Quaternion.Lerp(hostTransform.rotation, targetRotation, lerpAmount);
             Vector3 smoothedPosition = Vector3.Lerp(hostTransform.position, targetPosition, lerpAmount);
             hostTransform.SetPositionAndRotation(smoothedPosition, smoothedRotation);
+        }
+
+        private bool TryGetGripRotation(IMixedRealityPointer pointer, out Quaternion rotation)
+        {
+
+            for (int i = 0; i < pointer.Controller.Interactions.Length; i++)
+            {
+                if(pointer.Controller.Interactions[i].InputType == DeviceInputType.SpatialGrip)
+                {
+                    rotation = pointer.Controller.Interactions[i].RotationData;
+                    return true;
+                }
+            }
+            rotation = Quaternion.identity;
+            return false;
         }
 
         private void HandleTwoHandManipulationStarted(State newState)
@@ -714,7 +740,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             hostWorldRotationOnManipulationStart = hostTransform.rotation;
 
             // Calculate relative transform from object to hand.
-            Quaternion worldToPalmRotation = Quaternion.Inverse(pointer.Rotation);
+            Quaternion gripRotation = pointer.Rotation;
+            bool hasGrip = TryGetGripRotation(pointer, out gripRotation);
+            Quaternion worldToPalmRotation = Quaternion.Inverse(hasGrip ? gripRotation : pointer.Rotation);
             objectToHandRotation = worldToPalmRotation * hostTransform.rotation;
 
             MixedRealityPose pointerPose = new MixedRealityPose(pointer.Position, pointer.Rotation);

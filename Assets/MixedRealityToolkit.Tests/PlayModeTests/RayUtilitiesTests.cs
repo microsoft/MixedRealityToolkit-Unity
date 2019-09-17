@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             Debug.Log("Get the head gaze ray");
-            Ray ray = RayUtilities.GetHeadGazeRay();
+            Ray ray = InputUtils.GetHeadGazeRay();
             Assert.True(ray.origin == Vector3.zero);
             Assert.True(ray.direction == new Vector3(0.0f, 0.0f, 1.0f));
 
@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             Debug.Log("Get the head gaze ray");
-            ray = RayUtilities.GetHeadGazeRay();
+            ray = InputUtils.GetHeadGazeRay();
             Debug.Log($"origin: {ray.origin}");
             Assert.True(ray.origin == Vector3.zero);
             Debug.Log($"direction: {ray.direction}");
@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             bool success;
 
             Debug.Log("Get the right hand ray");
-            success = RayUtilities.TryGetHandRay(Handedness.Right, out ray);
+            success = InputUtils.TryGetHandRay(Handedness.Right, out ray);
             Debug.Log($"TryGetHandRaySucceeded : {success}");
             Assert.True(success);
             // There appears to be an amplification of normal floating point error when using
