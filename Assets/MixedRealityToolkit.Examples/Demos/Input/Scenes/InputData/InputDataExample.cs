@@ -1,6 +1,7 @@
 ﻿using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
@@ -79,13 +80,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             rawDataText.text = sb.ToString();
         }
 
-        public void SetPointersEnabled(bool isEnabled)
+        public void Start()
         {
-            PointerBehavior value = isEnabled ? PointerBehavior.Default : PointerBehavior.AlwaysOff;
-            PointerUtils.SetGazePointerBehavior(value);
-            PointerUtils.SetHandRayPointerBehavior(value);
-            PointerUtils.SetHandPokePointerBehavior(value);
-            PointerUtils.SetMotionControllerRayPointerBehavior(value);
+            // Disable the hand and gaze ray, we don't want then for this demo and the conflict
+            // with the visuals
+            PointerUtils.SetGazePointerBehavior(PointerBehavior.AlwaysOff);
+            PointerUtils.SetHandRayPointerBehavior(PointerBehavior.AlwaysOff);
         }
 
     } 
