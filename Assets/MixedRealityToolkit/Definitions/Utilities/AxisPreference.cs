@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-namespace Assets.MixedRealityToolkit.Definitions
+namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
     /// Defines the X, Y, and Z Axes as flag-based preferences.
