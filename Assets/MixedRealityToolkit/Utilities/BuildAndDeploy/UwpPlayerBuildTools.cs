@@ -82,6 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     var uwpBuildInfo = innerBuildInfo as UwpBuildInfo;
                     Debug.Assert(uwpBuildInfo != null);
                     UwpAppxBuildTools.AddCapabilities(uwpBuildInfo);
+                    UwpAppxBuildTools.UpdateAssemblyCSharpProject(uwpBuildInfo);
 
                     if (showDialog &&
                         !EditorUtility.DisplayDialog(PlayerSettings.productName, "Build Complete", "OK", "Build AppX"))
