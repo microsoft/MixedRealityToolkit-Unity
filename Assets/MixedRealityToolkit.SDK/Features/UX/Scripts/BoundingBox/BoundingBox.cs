@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -965,12 +964,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // Half the size of the current bounds
         private Vector3 currentBoundsExtents;
 
-        private BoundsCalculationMethod boundsMethod;
-
         private IMixedRealityEyeGazeProvider EyeTrackingProvider => eyeTrackingProvider ?? (eyeTrackingProvider = CoreServices.InputSystem?.EyeGazeProvider);
         private IMixedRealityEyeGazeProvider eyeTrackingProvider = null;
 
-        private List<IMixedRealityInputSource> touchingSources = new List<IMixedRealityInputSource>();
+        private readonly List<IMixedRealityInputSource> touchingSources = new List<IMixedRealityInputSource>();
 
         private List<Transform> links;
         private List<Renderer> linkRenderers;
@@ -983,10 +980,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         // Scale of the target at the beginning of the current manipulation
         private Vector3 initialScaleOnGrabStart;
-        
+
         // Position of the target at the beginning of the current manipulation
         private Vector3 initialPositionOnGrabStart;
-        
+
         // Point that was initially grabbed in OnPointerDown()
         private Vector3 initialGrabPoint;
 
@@ -1012,7 +1009,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // The size, position of boundsOverride object in the previous frame
         // Used to determine if boundsOverride size has changed.
         private Bounds prevBoundsOverride = new Bounds();
-        private Vector3 lastBounds;
 
         // True if this game object is a child of the Target one
         private bool isChildOfTarget = false;
@@ -1023,7 +1019,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private HashSet<IMixedRealityPointer> proximityPointers = new HashSet<IMixedRealityPointer>();
         private List<Vector3> proximityPoints = new List<Vector3>();
-        private Coroutine closestHandleCoroutine;
 
         #endregion
 
@@ -1413,7 +1408,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 // this is the size of the corner visuals
                 var cornerbounds = GetMaxBounds(cornerVisual);
-                float maxDim = Mathf.Max(Mathf.Max(cornerbounds.size.x, cornerbounds.size.y),cornerbounds.size.z);
+                float maxDim = Mathf.Max(Mathf.Max(cornerbounds.size.x, cornerbounds.size.y), cornerbounds.size.z);
                 cornerbounds.size = maxDim * Vector3.one;
 
                 // we need to multiply by this amount to get to desired scale handle size
@@ -1437,8 +1432,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Add all common components to a corner or rotate affordance
         /// </summary>
-        /// <param name="afford"></param>
-        /// <param name="bounds"></param>
         private void AddComponentsToAffordance(GameObject afford, Bounds bounds, RotationHandlePrefabCollider colliderType, CursorContextInfo.CursorAction cursorType, Vector3 colliderPadding)
         {
             if (colliderType == RotationHandlePrefabCollider.Box)
@@ -1453,7 +1446,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 SphereCollider sphere = afford.AddComponent<SphereCollider>();
                 sphere.center = bounds.center;
                 sphere.radius = bounds.extents.x;
-                sphere.radius += Mathf.Max( Mathf.Max(colliderPadding.x, colliderPadding.y), colliderPadding.z);
+                sphere.radius += Mathf.Max(Mathf.Max(colliderPadding.x, colliderPadding.y), colliderPadding.z);
             }
 
             // In order for the affordance to be grabbed using near interaction we need
@@ -1744,7 +1737,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     }
                     else
                     {
-                        continue;
+                        colliderByTransform = new KeyValuePair<Transform, Collider>();
                     }
                 }
 
@@ -1757,7 +1750,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     }
                     else
                     {
-                        continue;
+                        rendererBoundsByTransform = new KeyValuePair<Transform, Bounds>();
                     }
                 }
 
@@ -1798,14 +1791,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void AddRendererBoundsToTarget(KeyValuePair<Transform, Bounds> rendererBoundsByTarget)
         {
+            if (rendererBoundsByTarget.Key == null) { return; }
+
             Vector3[] cornersToWorld = null;
             rendererBoundsByTarget.Value.GetCornerPositions(rendererBoundsByTarget.Key, ref cornersToWorld);
             totalBoundsCorners.AddRange(cornersToWorld);
-    }
+        }
 
         private void AddColliderBoundsToTarget(KeyValuePair<Transform, Collider> colliderByTransform)
         {
-            BoundsExtensions.GetColliderBoundsPoints(colliderByTransform.Value, totalBoundsCorners, 0);
+            if (colliderByTransform.Key != null)
+            {
+                BoundsExtensions.GetColliderBoundsPoints(colliderByTransform.Value, totalBoundsCorners, 0);
+            }
         }
 
         private void SetMaterials()
@@ -1913,10 +1911,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     scaleHandler = gameObject.AddComponent<TransformScaleHandler>();
 
                     scaleHandler.TargetTransform = Target.transform;
-                #pragma warning disable 0618
+#pragma warning disable 0618
                     scaleHandler.ScaleMinimum = scaleMinimum;
                     scaleHandler.ScaleMaximum = scaleMaximum;
-                #pragma warning restore 0618
+#pragma warning restore 0618
                 }
             }
         }
@@ -2276,7 +2274,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <returns>true if potentially visible, false otherwise</returns>
         private bool IsHandleTypeVisible(HandleType type)
         {
-            return  (type == HandleType.Scale && ShowScaleHandles) ||
+            return (type == HandleType.Scale && ShowScaleHandles) ||
                 (type == HandleType.Rotation && (ShowRotationHandleForX || ShowRotationHandleForY || ShowRotationHandleForZ));
         }
 
