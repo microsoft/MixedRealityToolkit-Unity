@@ -23,7 +23,7 @@ using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class PrimitiveManipulatorTests
+    public class ObjectManipulatorTests
     {
         [SetUp]
         public void Setup()
@@ -42,12 +42,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Should be able to run scene without getting any exceptions.
         /// </summary>
         [UnityTest]
-        public IEnumerator PrimitiveManipulatorInstantiate()
+        public IEnumerator ObjectManipulatorInstantiate()
         {
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one * 0.2f;
 
-            var manipHandler = testObject.AddComponent<PrimitiveManipulator>();
+            var manipHandler = testObject.AddComponent<ObjectManipulator>();
             // Wait for two frames to make sure we don't get null pointer exception.
             yield return null;
             yield return null;
@@ -62,12 +62,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// from gaze provider.
         /// </summary>
         [UnityTest]
-        public IEnumerator PrimitiveManipulatorGazeHover()
+        public IEnumerator ObjectManipulatorGazeHover()
         {
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one * 0.2f;
 
-            var manipHandler = testObject.AddComponent<PrimitiveManipulator>();
+            var manipHandler = testObject.AddComponent<ObjectManipulator>();
             int hoverEnterCount = 0;
             int hoverExitCount = 0;
 
@@ -108,14 +108,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// from gaze provider.
         /// </summary>
         [UnityTest]
-        public IEnumerator PrimitiveManipulatorForceRelease()
+        public IEnumerator ObjectManipulatorForceRelease()
         {
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one * 0.2f;
             Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
             testObject.transform.position = initialObjectPosition;
-            var manipHandler = testObject.AddComponent<PrimitiveManipulator>();
+            var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingActive = false;
 
@@ -173,18 +173,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// MaintainRotationToUser should only align with user / camera on x / y and not apply rotations in z
         /// </summary>
         [UnityTest]
-        public IEnumerator PrimitiveManipulatorRotateWithUser()
+        public IEnumerator ObjectManipulatorRotateWithUser()
         {
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one * 0.2f;
             Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
             testObject.transform.position = initialObjectPosition;
-            var manipHandler = testObject.AddComponent<PrimitiveManipulator>();
+            var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingActive = false;
-            manipHandler.ManipulationType = PrimitiveManipulator.HandMovementType.OneHanded;
-            manipHandler.OneHandRotationModeNear = PrimitiveManipulator.RotateInOneHandType.MaintainRotationToUser;
+            manipHandler.ManipulationType = ObjectManipulator.HandMovementType.OneHanded;
+            manipHandler.OneHandRotationModeNear = ObjectManipulator.RotateInOneHandType.MaintainRotationToUser;
 
             // add near interaction grabbable to be able to grab the cube with the simulated articulated hand
             testObject.AddComponent<NearInteractionGrabbable>();
@@ -238,7 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// certain distance when being released from grab during hand movement
         /// </summary>
         [UnityTest]
-        public IEnumerator PrimitiveManipulatorThrow()
+        public IEnumerator ObjectManipulatorThrow()
         {
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -249,7 +249,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var rigidBody = testObject.AddComponent<Rigidbody>();
             rigidBody.useGravity = false;
 
-            var manipHandler = testObject.AddComponent<PrimitiveManipulator>();
+            var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingActive = false;
 
@@ -294,17 +294,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// out of the object on pointer rotation - this test should be the same in all rotation setups
         /// </summary>
         [UnityTest]
-        public IEnumerator PrimitiveManipulatorOneHandMoveNear()
+        public IEnumerator ObjectManipulatorOneHandMoveNear()
         {
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one * 0.2f;
             Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
             testObject.transform.position = initialObjectPosition;
-            var manipHandler = testObject.AddComponent<PrimitiveManipulator>();
+            var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingActive = false;
-            manipHandler.ManipulationType = PrimitiveManipulator.HandMovementType.OneHanded;
+            manipHandler.ManipulationType = ObjectManipulator.HandMovementType.OneHanded;
 
             // add near interaction grabbable to be able to grab the cube with the simulated articulated hand
             testObject.AddComponent<NearInteractionGrabbable>();
@@ -320,7 +320,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestHand hand = new TestHand(Handedness.Right);
 
             // do this test for every one hand rotation mode
-            foreach (PrimitiveManipulator.RotateInOneHandType type in Enum.GetValues(typeof(PrimitiveManipulator.RotateInOneHandType)))
+            foreach (ObjectManipulator.RotateInOneHandType type in Enum.GetValues(typeof(ObjectManipulator.RotateInOneHandType)))
             {
                 manipHandler.OneHandRotationModeNear = type;
 
@@ -376,17 +376,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// their orientation to camera while camera / pointer rotates as this will modify the far interaction grab point
         /// </summary>
         [UnityTest]
-        public IEnumerator PrimitiveManipulatorOneHandMoveFar()
+        public IEnumerator ObjectManipulatorOneHandMoveFar()
         {
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one * 0.2f;
             Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
             testObject.transform.position = initialObjectPosition;
-            var manipHandler = testObject.AddComponent<PrimitiveManipulator>();
+            var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingActive = false;
-            manipHandler.ManipulationType = PrimitiveManipulator.HandMovementType.OneHanded;
+            manipHandler.ManipulationType = ObjectManipulator.HandMovementType.OneHanded;
 
             // add near interaction grabbable to be able to grab the cube with the simulated articulated hand
             testObject.AddComponent<NearInteractionGrabbable>();
@@ -402,10 +402,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestHand hand = new TestHand(Handedness.Right);     
 
             // do this test for every one hand rotation mode
-            foreach (PrimitiveManipulator.RotateInOneHandType type in Enum.GetValues(typeof(PrimitiveManipulator.RotateInOneHandType)))
+            foreach (ObjectManipulator.RotateInOneHandType type in Enum.GetValues(typeof(ObjectManipulator.RotateInOneHandType)))
             {
                 // TODO: grab point is moving in this test and has to be covered by a different test
-                if (type == PrimitiveManipulator.RotateInOneHandType.MaintainOriginalRotation)
+                if (type == ObjectManipulator.RotateInOneHandType.MaintainOriginalRotation)
                 {
                     continue;
                 }         
@@ -479,18 +479,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// This tests the one hand near rotation and applying different rotation constraints to the object.
         /// </summary>
         [UnityTest]
-        public IEnumerator PrimitiveManipulatorOneHandRotateWithConstraint()
+        public IEnumerator ObjectManipulatorOneHandRotateWithConstraint()
         {
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             testObject.transform.localScale = Vector3.one * 0.2f;
             Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
             testObject.transform.position = initialObjectPosition;
-            var manipHandler = testObject.AddComponent<PrimitiveManipulator>();
+            var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingActive = false;
-            manipHandler.ManipulationType = PrimitiveManipulator.HandMovementType.OneHanded;
-            manipHandler.OneHandRotationModeFar = PrimitiveManipulator.RotateInOneHandType.RotateAboutGrabPoint;
+            manipHandler.ManipulationType = ObjectManipulator.HandMovementType.OneHanded;
+            manipHandler.OneHandRotationModeFar = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
             manipHandler.ReleaseBehavior = 0;
             manipHandler.AllowFarManipulation = false;
 
@@ -659,17 +659,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// The test then compares these poses and scales in order to ensure that they are about equal. 
         /// </summary>
         [UnityTest]
-        public IEnumerator PrimitiveManipulatorOriginOffset()
+        public IEnumerator ObjectManipulatorOriginOffset()
         {
             TestUtilities.PlayspaceToOriginLookingForward();
 
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
 
-            var manipHandler = testObject.AddComponent<PrimitiveManipulator>();
+            var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingActive = false;
-            manipHandler.ManipulationType = PrimitiveManipulator.HandMovementType.OneHanded | PrimitiveManipulator.HandMovementType.TwoHanded;
+            manipHandler.ManipulationType = ObjectManipulator.HandMovementType.OneHanded | ObjectManipulator.HandMovementType.TwoHanded;
 
             // add near interaction grabbable to be able to grab the cube with the simulated articulated hand
             testObject.AddComponent<NearInteractionGrabbable>();
@@ -724,7 +724,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// maximum and minimum scales are not exceeded.
         /// </summary>
         [UnityTest]
-        public IEnumerator PrimitiveManipulatorMinMaxScale()
+        public IEnumerator ObjectManipulatorMinMaxScale()
         {
             float initialScale =  0.2f;
             float minScale = 0.5f;
@@ -735,10 +735,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             testObject.transform.localScale = Vector3.one * initialScale;
             Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
             testObject.transform.position = initialObjectPosition;
-            var manipHandler = testObject.AddComponent<PrimitiveManipulator>();
+            var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingActive = false;
-            manipHandler.ManipulationType = PrimitiveManipulator.HandMovementType.OneHanded | PrimitiveManipulator.HandMovementType.TwoHanded;
+            manipHandler.ManipulationType = ObjectManipulator.HandMovementType.OneHanded | ObjectManipulator.HandMovementType.TwoHanded;
             var scaleHandler = testObject.EnsureComponent<TransformScaleHandler>();
             scaleHandler.ScaleMinimum = minScale;
             scaleHandler.ScaleMaximum = maxScale;
@@ -790,7 +790,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// If the head rotates, without moving the hand, the grabbed object should not move.
         /// </summary>
         [UnityTest]
-        public IEnumerator PrimitiveManipulatorRotateHeadGGV()
+        public IEnumerator ObjectManipulatorRotateHeadGGV()
         {
             TestUtilities.PlayspaceToOriginLookingForward();
 
@@ -808,7 +808,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Quaternion initialObjectRotation = testObject.transform.rotation;
             testObject.transform.position = initialObjectPosition;
 
-            var manipHandler = testObject.AddComponent<PrimitiveManipulator>();
+            var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingActive = false;
             
@@ -847,7 +847,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// to be the head position. It then ensures that there is no weird behaviour as a result of this.
         /// </summary>
         [UnityTest]
-        public IEnumerator PrimitiveManipulatorPositionlessController()
+        public IEnumerator ObjectManipulatorPositionlessController()
         {
             TestUtilities.PlayspaceToOriginLookingForward();
 
@@ -863,7 +863,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             testObject.transform.localScale = Vector3.one * 0.2f;
             testObject.transform.position = new Vector3(0f, 0f, 1f);
 
-            var manipHandler = testObject.AddComponent<PrimitiveManipulator>();
+            var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingActive = false;
 
@@ -911,7 +911,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// for various PrimitiveManipulator configurations.
         /// </summary>
         [UnityTest]
-        public IEnumerator PrimitiveManipulatorEvents()
+        public IEnumerator ObjectManipulatorEvents()
         {
             TestUtilities.PlayspaceToOriginLookingForward();
 
@@ -922,7 +922,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Quaternion initialObjectRotation = testObject.transform.rotation;
             testObject.transform.position = initialObjectPosition;
 
-            var manipHandler = testObject.AddComponent<PrimitiveManipulator>();
+            var manipHandler = testObject.AddComponent<ObjectManipulator>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingActive = false;
 
@@ -939,7 +939,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // One Handed
-            manipHandler.ManipulationType = PrimitiveManipulator.HandMovementType.OneHanded;
+            manipHandler.ManipulationType = ObjectManipulator.HandMovementType.OneHanded;
 
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
             Assert.AreEqual(1, manipulationStartedCount);
@@ -958,7 +958,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(1, manipulationEndedCount);
 
             // Two Handed
-            manipHandler.ManipulationType = PrimitiveManipulator.HandMovementType.TwoHanded;
+            manipHandler.ManipulationType = ObjectManipulator.HandMovementType.TwoHanded;
 
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
             Assert.AreEqual(1, manipulationStartedCount);
@@ -977,7 +977,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(2, manipulationEndedCount);
 
             // One + Two Handed
-            manipHandler.ManipulationType = PrimitiveManipulator.HandMovementType.OneHanded | PrimitiveManipulator.HandMovementType.TwoHanded;
+            manipHandler.ManipulationType = ObjectManipulator.HandMovementType.OneHanded | ObjectManipulator.HandMovementType.TwoHanded;
 
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
             Assert.AreEqual(3, manipulationStartedCount);

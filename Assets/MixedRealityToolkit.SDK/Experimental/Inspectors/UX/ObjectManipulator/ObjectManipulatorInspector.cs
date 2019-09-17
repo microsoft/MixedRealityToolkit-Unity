@@ -9,9 +9,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
 {
-    [CustomEditor(typeof(PrimitiveManipulator))]
+    [CustomEditor(typeof(ObjectManipulator))]
     [CanEditMultipleObjects]
-    public class PrimitiveManipulatorInspector : UnityEditor.Editor
+    public class ObjectManipulatorInspector : UnityEditor.Editor
     {
         private SerializedProperty hostTransform;
         private SerializedProperty manipulationType;
@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
             EditorGUILayout.PropertyField(manipulationType);
             EditorGUILayout.PropertyField(allowFarManipulation);
 
-            var handedness = (PrimitiveManipulator.HandMovementType)manipulationType.intValue;
+            var handedness = (ObjectManipulator.HandMovementType)manipulationType.intValue;
 
             EditorGUILayout.Space();
             GUIStyle style = EditorStyles.foldout;
@@ -84,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
 
             if (oneHandedFoldout)
             {
-                if (handedness.HasFlag(PrimitiveManipulator.HandMovementType.OneHanded))
+                if (handedness.HasFlag(ObjectManipulator.HandMovementType.OneHanded))
                 {
                     EditorGUILayout.PropertyField(oneHandRotationModeNear);
                     EditorGUILayout.PropertyField(oneHandRotationModeFar);
@@ -100,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
 
             if (twoHandedFoldout)
             {
-                if (handedness.HasFlag(PrimitiveManipulator.HandMovementType.TwoHanded))
+                if (handedness.HasFlag(ObjectManipulator.HandMovementType.TwoHanded))
                 {
                     EditorGUILayout.PropertyField(twoHandedManipulationType);
                 }
@@ -110,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
                 }
             }
 
-            var mh = (PrimitiveManipulator)target;
+            var mh = (ObjectManipulator)target;
             var rb = mh.GetComponent<Rigidbody>();
 
             EditorGUILayout.Space();

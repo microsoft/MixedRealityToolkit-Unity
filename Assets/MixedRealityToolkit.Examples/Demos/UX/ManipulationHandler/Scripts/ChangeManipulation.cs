@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 }
 
                 var mh = manipulatedObject.GetComponent<ManipulationHandler>();
-                var pm = manipulatedObject.GetComponent<PrimitiveManipulator>();
+                var pm = manipulatedObject.GetComponent<ObjectManipulator>();
                 if (mh != null)
                 {
                     mh.ForceEndManipulation();
