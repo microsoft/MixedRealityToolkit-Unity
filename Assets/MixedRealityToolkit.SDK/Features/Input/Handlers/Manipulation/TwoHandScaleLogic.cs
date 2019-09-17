@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
     /// When a manipulation starts, call Setup.
     /// Call Update any time to update the move logic and get a new rotation for the object.
     /// </summary>
-    public class TwoHandScaleLogic
+    internal class TwoHandScaleLogic
     {
         private Vector3 startObjectScale;
         private float startHandDistanceMeters;

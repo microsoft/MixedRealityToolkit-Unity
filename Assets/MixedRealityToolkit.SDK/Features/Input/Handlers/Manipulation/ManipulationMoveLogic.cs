@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
     /// When a manipulation starts, call Setup.
     /// Call Update any time to update the move logic and get a new rotation for the object.
     /// </summary>
-    public class ManipulationMoveLogic
+    internal class ManipulationMoveLogic
     {
         private float pointerRefDistance;
 
