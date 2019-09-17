@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
@@ -172,10 +173,42 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         #endregion Serialized Fields
 
         #region Event handlers
-        public ManipulationEvent OnManipulationStarted = new ManipulationEvent();
-        public ManipulationEvent OnManipulationEnded = new ManipulationEvent();
-        public ManipulationEvent OnHoverEntered = new ManipulationEvent();
-        public ManipulationEvent OnHoverExited = new ManipulationEvent();
+        [Header("Manipulation Events")]
+        [SerializeField]
+        [FormerlySerializedAs("OnManipulationStarted")]
+        private ManipulationEvent onManipulationStarted = new ManipulationEvent();
+        public ManipulationEvent OnManipulationStarted
+        {
+            get => onManipulationStarted;
+            set => onManipulationStarted = value;
+        }
+
+        [SerializeField]
+        [FormerlySerializedAs("OnManipulationEnded")]
+        private ManipulationEvent onManipulationEnded = new ManipulationEvent();
+        public ManipulationEvent OnManipulationEnded
+        {
+            get => onManipulationEnded;
+            set => onManipulationEnded = value;
+        }
+
+        [SerializeField]
+        [FormerlySerializedAs("OnHoverEntered")]
+        private ManipulationEvent onHoverEntered = new ManipulationEvent();
+        public ManipulationEvent OnHoverEntered
+        {
+            get => onHoverEntered;
+            set => onHoverEntered = value;
+        }
+
+        [SerializeField]
+        [FormerlySerializedAs("OnHoverExited")]
+        private ManipulationEvent onHoverExited = new ManipulationEvent();
+        public ManipulationEvent OnHoverExited
+        {
+            get => onHoverExited;
+            set => onHoverExited = value;
+        }
         #endregion
 
         #region Private Properties

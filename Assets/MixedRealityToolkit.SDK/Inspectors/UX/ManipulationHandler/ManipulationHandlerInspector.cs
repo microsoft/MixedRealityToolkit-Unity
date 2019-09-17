@@ -63,10 +63,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             smoothingAmountOneHandManip = serializedObject.FindProperty("smoothingAmountOneHandManip");
 
             // Manipulation Events
-            onManipulationStarted = serializedObject.FindProperty("OnManipulationStarted");
-            onManipulationEnded = serializedObject.FindProperty("OnManipulationEnded");
-            onHoverEntered = serializedObject.FindProperty("OnHoverEntered");
-            onHoverExited = serializedObject.FindProperty("OnHoverExited");
+            onManipulationStarted = serializedObject.FindProperty("onManipulationStarted");
+            onManipulationEnded = serializedObject.FindProperty("onManipulationEnded");
+            onHoverEntered = serializedObject.FindProperty("onHoverEntered");
+            onHoverExited = serializedObject.FindProperty("onHoverExited");
         }
 
         public override void OnInspectorGUI()
