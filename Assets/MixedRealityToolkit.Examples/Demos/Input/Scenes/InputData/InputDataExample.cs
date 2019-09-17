@@ -27,7 +27,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             new Tuple<InputSourceType, Handedness>(InputSourceType.Hand, Handedness.Right)
         };
 
-        // Update is called once per frame
         void Update()
         {
             StringBuilder sb = new StringBuilder();

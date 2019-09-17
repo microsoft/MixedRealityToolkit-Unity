@@ -11,7 +11,7 @@ using UnityEngine.Experimental.XR;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Utilities which return, or manipulate ray objects.
+    /// Utilities for accessing input state.
     /// </summary>
     public static class InputUtils
     {
