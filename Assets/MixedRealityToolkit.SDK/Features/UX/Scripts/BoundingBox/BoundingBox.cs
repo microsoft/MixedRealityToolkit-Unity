@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #region Enums
 
         /// <summary>
-        /// Enum which describes how an object's boundingbox is to be flattened.
+        /// Enum which describes how an object's BoundingBox is to be flattened.
         /// </summary>
         public enum FlattenModeType
         {
@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Enum which describes whether a boundingbox handle which has been grabbed, is 
+        /// Enum which describes whether a BoundingBox handle which has been grabbed, is 
         /// a Rotation Handle (sphere) or a Scale Handle( cube)
         /// </summary>
         public enum HandleType
@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// This enum describes which primitive type the wireframe portion of the boundingbox
+        /// This enum describes which primitive type the wireframe portion of the BoundingBox
         /// consists of. 
         /// </summary>
         /// <remarks>
@@ -1711,7 +1711,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             // Collect all Transforms except for the rigRoot(s) transform structure(s)
             // Its possible we have two rigRoots here, the one about to be deleted and the new one
-            // Since those have the gizmo structure childed, be need to ommit them completely in the calculation of the bounds
+            // Since those have the gizmo structure childed, be need to omit them completely in the calculation of the bounds
             // This can only happen by name unless there is a better idea of tracking the rigRoot that needs destruction
 
             List<Transform> childTransforms = new List<Transform>();
@@ -2144,7 +2144,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 maxRadius *= maxRadius;
                 maxRadius += handleCloseProximity + handleMediumProximity;
 
-                // Grab points within sphere of inluence from valid pointers
+                // Grab points within sphere of influence from valid pointers
                 foreach (var pointer in proximityPointers)
                 {
                     if (IsPointWithinBounds(pointer.Position, maxRadius))
@@ -2165,7 +2165,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     for (int i = 0; i < handles.Count; ++i)
                     {
-                        // If handle can't be visisble, skip calculations
+                        // If handle can't be visible, skip calculations
                         if (!IsHandleTypeVisible(handles[i].Type))
                             continue;
 
