@@ -551,7 +551,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc />
         public void OnPointerDown(MixedRealityPointerEventData eventData)
         {
-            if (!allowFarManipulation && eventData.Pointer as IMixedRealityNearPointer == null)
+            if (eventData.used ||
+                (!allowFarManipulation && eventData.Pointer as IMixedRealityNearPointer == null))
             {
                 return;
             }
@@ -561,8 +562,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 uint id = eventData.Pointer.PointerId;
                 // Ignore poke pointer events
-                if (!eventData.used
-                    && !pointerIdToPointerMap.ContainsKey(eventData.Pointer.PointerId))
+                if (!pointerIdToPointerMap.ContainsKey(eventData.Pointer.PointerId))
                 {
                     if (pointerIdToPointerMap.Count == 0)
                     {
