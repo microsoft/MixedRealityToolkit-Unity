@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         new[] { Handedness.Left, Handedness.Right })]
     public class WindowsMixedRealityArticulatedHand : BaseWindowsMixedRealitySource, IMixedRealityHand
     {
-    /// <summary>
+        /// <summary>
         /// Constructor.
         /// </summary>
         public WindowsMixedRealityArticulatedHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
