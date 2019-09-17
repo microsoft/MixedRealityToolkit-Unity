@@ -1,14 +1,16 @@
 ﻿using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
+    /// <summary>
+    /// This class demonstrates how to query input data either by using InputUtils or
+    /// by directly accessing InteractionMappings from all active controllers.
+    /// </summary>
     public class InputDataExample : MonoBehaviour
     {
         public Text inputUtilsText;
@@ -52,7 +54,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             }
             inputUtilsText.text = sb.ToString();
 
-            // Iterate through all controllers and print the position of each input
+            // Iterate through all controllers output position, rotation, and other data from input 
+            // mappings on a controller.
             sb.Clear();
             foreach(var controller in CoreServices.InputSystem.DetectedControllers)
             {
