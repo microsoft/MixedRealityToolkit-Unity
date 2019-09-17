@@ -2,7 +2,7 @@
 namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes
 {
     /// <summary>
-    /// Enum which describes how an object's boundingbox is to be flattened.
+    /// Enum which describes how an object's bounds control is to be flattened.
     /// </summary>
     public enum FlattenModeType
     {
@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes
     }
 
     /// <summary>
-    /// Enum which describes whether a boundingbox handle which has been grabbed, is 
+    /// Enum which describes whether a bounds control handle which has been grabbed, is 
     /// a Rotation Handle (sphere) or a Scale Handle( cube)
     /// </summary>
     public enum HandleType
@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes
     }
 
     /// <summary>
-    /// This enum describes which primitive type the wireframe portion of the boundingbox
+    /// This enum describes which primitive type the wireframe portion of the bounds control
     /// consists of. 
     /// </summary>
     /// <remarks>
@@ -76,9 +76,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes
     }
 
     /// <summary>
-    /// This enum defines how the BoundingBox gets activated
+    /// This enum defines how the bounds control gets activated
     /// </summary>
-    public enum BoundingBoxActivationType
+    public enum BoundsControlActivationType
     {
         ActivateOnStart = 0,
         ActivateByProximity,

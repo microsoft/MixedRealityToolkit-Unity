@@ -11,6 +11,13 @@ using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes;
 
 namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 {
+    /// <summary>
+    /// Bounds Control allows to transform objects (rotate and scale) and draws a cube around the object to visualize 
+    /// the possibility of user triggered transform manipulation. 
+    /// Bounds Control provides scale and rotation handles that can be used for far and near interaction manipulation
+    /// of the object. It further provides a proximity effect for scale and rotation handles that alters scaling and material. 
+    /// Todo: replace doc link - point to BoundsControl docs
+    /// </summary>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_BoundingBox.html")]
     public class BoundsControl : MonoBehaviour,
         IMixedRealitySourceStateHandler,
@@ -19,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
     {
         #region Serialized Fields and Properties
         [SerializeField]
-        [Tooltip("The object that the bounding box rig will be modifying.")]
+        [Tooltip("The object that the bounds control rig will be modifying.")]
         private GameObject targetObject;
 
         public GameObject Target
@@ -35,13 +42,13 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
         }
 
-        [Tooltip("For complex objects, automatic bounds calculation may not behave as expected. Use an existing Box Collider (even on a child object) to manually determine bounds of Bounding Box.")]
+        [Tooltip("For complex objects, automatic bounds calculation may not behave as expected. Use an existing Box Collider (even on a child object) to manually determine bounds of bounds control.")]
         [SerializeField]
         [FormerlySerializedAs("BoxColliderToUse")]
         private BoxCollider boundsOverride = null;
 
         /// <summary>
-        /// For complex objects, automatic bounds calculation may not behave as expected. Use an existing Box Collider (even on a child object) to manually determine bounds of Bounding Box.
+        /// For complex objects, automatic bounds calculation may not behave as expected. Use an existing Box Collider (even on a child object) to manually determine bounds of bounds control.
         /// </summary>
         public BoxCollider BoundsOverride
         {
@@ -83,13 +90,13 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
         [Header("Behavior")]
         [SerializeField]
-        [Tooltip("Type of activation method for showing/hiding bounding box handles and controls")]
-        private BoundingBoxActivationType activation = BoundingBoxActivationType.ActivateOnStart;
+        [Tooltip("Type of activation method for showing/hiding bounds control handles and controls")]
+        private BoundsControlActivationType activation = BoundsControlActivationType.ActivateOnStart;
 
         /// <summary>
-        /// Type of activation method for showing/hiding bounding box handles and controls
+        /// Type of activation method for showing/hiding bounds control handles and controls
         /// </summary>
-        public BoundingBoxActivationType BoundingBoxActivation
+        public BoundsControlActivationType BoundsControlActivation
         {
             get { return activation; }
             set
@@ -282,7 +289,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         // Whether we should be displaying just the wireframe (if enabled) or the handles too
         private bool wireframeOnly = false;
 
-        // Pointer that is being used to manipulate the bounding box
+        // Pointer that is being used to manipulate the bounds control
         private IMixedRealityPointer currentPointer;
 
         private Transform rigRoot;
@@ -378,7 +385,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         #region Public Methods
 
         /// <summary>
-        /// Allows to manually enable wire (edge) highlighting (edges) of the bounding box.
+        /// Allows to manually enable wire (edge) highlighting (edges) of the bounds control.
         /// This is useful if connected to the Manipulation events of a
         /// <see cref="Microsoft.MixedReality.Toolkit.UI.ManipulationHandler"/> 
         /// when used in conjunction with this MonoBehavior.
@@ -394,7 +401,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         }
 
         /// <summary>
-        /// Destroys and re-creates the rig around the bounding box
+        /// Destroys and re-creates the rig around the bounds control
         /// TODO: this shouldn't be called every time we change a param - be more specific with what we recreate
         /// </summary>
         public void CreateRig()
@@ -402,7 +409,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             DestroyRig();
             InitializeRigRoot();
             InitializeDataStructures();
-            SetBoundingBoxCollider();
+            SetBoundsControlCollider();
             UpdateBounds();
             CreateVisuals();
             ResetVisuals();
@@ -436,18 +443,18 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             CreateRig();
             CaptureInitialState();
 
-            if (activation == BoundingBoxActivationType.ActivateByProximityAndPointer ||
-                activation == BoundingBoxActivationType.ActivateByProximity ||
-                activation == BoundingBoxActivationType.ActivateByPointer)
+            if (activation == BoundsControlActivationType.ActivateByProximityAndPointer ||
+                activation == BoundsControlActivationType.ActivateByProximity ||
+                activation == BoundsControlActivationType.ActivateByPointer)
             {
                 wireframeOnly = true;
                 Active = true;
             }
-            else if (activation == BoundingBoxActivationType.ActivateOnStart)
+            else if (activation == BoundsControlActivationType.ActivateOnStart)
             {
                 Active = true;
             }
-            else if (activation == BoundingBoxActivationType.ActivateManually)
+            else if (activation == BoundsControlActivationType.ActivateManually)
             {
                 //activate to create handles etc. then deactivate. 
                 Active = true;
@@ -512,7 +519,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             return result;
         }
 
-        private void SetBoundingBoxCollider()
+        private void SetBoundsControlCollider()
         {
             // Make sure that the bounds of all child objects are up to date before we compute bounds
             UnityPhysics.SyncTransforms();
@@ -587,7 +594,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                     }
                     else
                     {
-                        continue;
+                        colliderByTransform = new KeyValuePair<Transform, Collider>();
                     }
                 }
 
@@ -600,7 +607,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                     }
                     else
                     {
-                        continue;
+                        rendererBoundsByTransform = new KeyValuePair<Transform, Bounds>();
                     }
                 }
 
@@ -641,6 +648,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
         private void AddRendererBoundsToTarget(KeyValuePair<Transform, Bounds> rendererBoundsByTarget)
         {
+            if (rendererBoundsByTarget.Key == null) { return; }
+
             Vector3[] cornersToWorld = null;
             rendererBoundsByTarget.Value.GetCornerPositions(rendererBoundsByTarget.Key, ref cornersToWorld);
             totalBoundsCorners.AddRange(cornersToWorld);
@@ -648,7 +657,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
         private void AddColliderBoundsToTarget(KeyValuePair<Transform, Collider> colliderByTransform)
         {
-            BoundsExtensions.GetColliderBoundsPoints(colliderByTransform.Value, totalBoundsCorners, 0);
+            if (colliderByTransform.Key != null)
+            {
+                BoundsExtensions.GetColliderBoundsPoints(colliderByTransform.Value, totalBoundsCorners, 0);
+            }
         }
 
         private HandleType GetHandleType(Transform handle)
@@ -745,14 +757,14 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         {
             switch (activation)
             {
-                case BoundingBoxActivationType.ActivateOnStart:
-                case BoundingBoxActivationType.ActivateManually:
+                case BoundsControlActivationType.ActivateOnStart:
+                case BoundsControlActivationType.ActivateManually:
                     return false;
-                case BoundingBoxActivationType.ActivateByProximity:
+                case BoundsControlActivationType.ActivateByProximity:
                     return eventData.Pointer is IMixedRealityNearPointer;
-                case BoundingBoxActivationType.ActivateByPointer:
+                case BoundsControlActivationType.ActivateByPointer:
                     return eventData.Pointer is IMixedRealityPointer;
-                case BoundingBoxActivationType.ActivateByProximityAndPointer:
+                case BoundsControlActivationType.ActivateByProximityAndPointer:
                     return true;
                 default:
                     return false;
@@ -907,7 +919,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                 proximityEffect.ResetProximityScale();
             }
 
-            if (activation == BoundingBoxActivationType.ActivateManually || activation == BoundingBoxActivationType.ActivateOnStart)
+            if (activation == BoundsControlActivationType.ActivateManually || activation == BoundsControlActivationType.ActivateOnStart)
             {
                 return;
             }
@@ -996,7 +1008,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             if (currentPointer != null)
             {
                 // Always mark the pointer data as used to prevent any other behavior to handle pointer events
-                // as long as BoundingBox manipulation is active.
+                // as long as bounds control manipulation is active.
                 // This is due to us reacting to both "Select" and "Grip" events.
                 eventData.Use();
             }
