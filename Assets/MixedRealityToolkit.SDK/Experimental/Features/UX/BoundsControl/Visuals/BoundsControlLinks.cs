@@ -76,11 +76,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         }
 
         [SerializeField]
-        [Tooltip("Show a wireframe around the bounding box when checked. Wireframe parameters below have no effect unless this is checked")]
+        [Tooltip("Show a wireframe around the bounds control when checked. Wireframe parameters below have no effect unless this is checked")]
         private bool showWireframe = true;
 
         /// <summary>
-        /// Show a wireframe around the bounding box when checked. Wireframe parameters below have no effect unless this is checked
+        /// Show a wireframe around the bounds control when checked. Wireframe parameters below have no effect unless this is checked
         /// </summary>
         public bool ShowWireFrame
         {

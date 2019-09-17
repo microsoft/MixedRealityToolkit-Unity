@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         private void SetStatus(string status)
         {
-            Debug.Assert(statusText != null, "statusText on BoundingBoxTest should not be null");
+            Debug.Assert(statusText != null, "statusText on BoundsControlTest should not be null");
             StringBuilder b = new StringBuilder();
             b.AppendLine($"{status}");
             b.AppendLine($"Press '1' or say 'select' to continue");
@@ -81,10 +81,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 cube.GetComponent<MeshRenderer>().material = darkGrayMaterial;
                 cube.transform.position = cubePosition;
 
-                SetStatus("Instantiate BoundingBox");
+                SetStatus("Instantiate BoundsControl");
                 bbox = cube.AddComponent<BoundsControl>();
                 bbox.HideElementsInInspector = false;
-                bbox.BoundingBoxActivation = UI.Experimental.BoundsControlTypes.BoundingBoxActivationType.ActivateOnStart;
+                bbox.BoundsControlActivation = UI.Experimental.BoundsControlTypes.BoundsControlActivationType.ActivateOnStart;
                 var mh = cube.AddComponent<ManipulationHandler>();
                 yield return WaitForSpeechCommand();
 
@@ -216,7 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 }
 
                 bbox = multiRoot.AddComponent<BoundsControl>();
-                bbox.BoundingBoxActivation = UI.Experimental.BoundsControlTypes.BoundingBoxActivationType.ActivateOnStart;
+                bbox.BoundsControlActivation = UI.Experimental.BoundsControlTypes.BoundsControlActivationType.ActivateOnStart;
                 bbox.HideElementsInInspector = false;
                 bbox.Links.WireframeEdgeRadius = .05f;
                 multiRoot.AddComponent<ManipulationHandler>();

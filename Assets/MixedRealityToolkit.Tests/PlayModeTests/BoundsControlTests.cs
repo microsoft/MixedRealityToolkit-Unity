@@ -24,7 +24,7 @@ using Microsoft.MixedReality.Toolkit.UI.Experimental;
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
     /// <summary>
-    /// TODO: This test still needs to be adjusted
+    /// TODO: This test still needs to be adjusted 
     /// Currently it's just a copy of whatever was tested in Bounding Box
     /// </summary>
     public class BoundsControlTests
@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Instantiates a bounding box at 0, 0, -1.5f
+        /// Instantiates a bounds control at 0, 0, -1.5f
         /// box is at scale .5, .5, .5
         /// </summary>
         /// <returns></returns>
@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         #endregion
 
         /// <summary>
-        /// Verify that we can instantiate bounding box at runtime
+        /// Verify that we can instantiate bounds control at runtime
         /// </summary>
         /// <returns></returns>
         [UnityTest]
@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             var bbox = InstantiateSceneAndDefaultBbox();
             yield return null;
-            bbox.BoundingBoxActivation = UI.Experimental.BoundsControlTypes.BoundingBoxActivationType.ActivateOnStart;
+            bbox.BoundsControlActivation = UI.Experimental.BoundsControlTypes.BoundsControlActivationType.ActivateOnStart;
             bbox.HideElementsInInspector = false;
             yield return null;
 
@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             bbox.BoundsOverride = bc;
             yield return null;
 
-            Bounds b = GetBoundingBoxRigBounds(bbox);
+            Bounds b = GetBoundsControlRigBounds(bbox);
 
             Debug.Assert(b.center == bc.center, $"bounds center should be {bc.center} but they are {b.center}");
             Debug.Assert(b.size == bc.size, $"bounds size should be {bc.size} but they are {b.size}");
@@ -115,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Uses near interaction to scale the bounding box by directly grabbing corner
+        /// Uses near interaction to scale the bounds control by directly grabbing corner
         /// </summary>
         /// <returns></returns>
         [UnityTest]
@@ -150,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// This tests the minimum and maximum scaling for the bounding box.
+        /// This tests the minimum and maximum scaling for the bounds control.
         /// </summary>
         [UnityTest]
         public IEnumerator ScaleMinMax()
@@ -200,7 +200,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Uses far interaction (HoloLens 1 style) to scale the bounding box
+        /// Uses far interaction (HoloLens 1 style) to scale the bounds control
         /// </summary>
         /// <returns></returns>
         [UnityTest]
@@ -246,7 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Test that changing the transform of the bounding box target (rotation, scale, translation)
+        /// Test that changing the transform of the bounds control target (rotation, scale, translation)
         /// updates the rig bounds
         /// </summary>
         /// <returns></returns>
@@ -257,7 +257,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             bbox.HideElementsInInspector = false;
             yield return null;
 
-            var startBounds = GetBoundingBoxRigBounds(bbox);
+            var startBounds = GetBoundsControlRigBounds(bbox);
             var startCenter = new Vector3(0, 0, 1.5f);
             var startSize = new Vector3(.5f, .5f, .5f);
             TestUtilities.AssertAboutEqual(startBounds.center, startCenter, "bbox incorrect center at start");
@@ -266,14 +266,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             bbox.gameObject.transform.localScale *= 2;
             yield return null;
 
-            var afterScaleBounds = GetBoundingBoxRigBounds(bbox);
+            var afterScaleBounds = GetBoundsControlRigBounds(bbox);
             var scaledSize = startSize * 2;
             TestUtilities.AssertAboutEqual(afterScaleBounds.center, startCenter, "bbox incorrect center after scale");
             TestUtilities.AssertAboutEqual(afterScaleBounds.size, scaledSize, "bbox incorrect size after scale");
 
             bbox.gameObject.transform.position += Vector3.one;
             yield return null;
-            var afterTranslateBounds = GetBoundingBoxRigBounds(bbox);
+            var afterTranslateBounds = GetBoundsControlRigBounds(bbox);
             var afterTranslateCenter = Vector3.one + startCenter;
 
             TestUtilities.AssertAboutEqual(afterTranslateBounds.center, afterTranslateCenter, "bbox incorrect center after translate");
@@ -292,12 +292,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Returns the AABB of the bounding box rig (corners, edges)
-        /// that make up the bounding box by using the positions of the corners
+        /// Returns the AABB of the bounds control rig (corners, edges)
+        /// that make up the bounds control by using the positions of the corners
         /// </summary>
         /// <param name="bbox"></param>
         /// <returns></returns>
-        private Bounds GetBoundingBoxRigBounds(BoundsControl bbox)
+        private Bounds GetBoundsControlRigBounds(BoundsControl bbox)
         {
             var corners = bbox.ScaleHandles.Handles;
 

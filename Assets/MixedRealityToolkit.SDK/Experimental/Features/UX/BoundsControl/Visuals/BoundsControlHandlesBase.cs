@@ -56,11 +56,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         }
 
         [SerializeField]
-        [Tooltip("Prefab used to display this type of bounding box handle. If not set, default shape will be used (scale default: boxes, rotation default: spheres)")]
+        [Tooltip("Prefab used to display this type of bounds control handle. If not set, default shape will be used (scale default: boxes, rotation default: spheres)")]
         GameObject handlePrefab = null;
 
         /// <summary>
-        /// Prefab used to display this type of bounding box handle. If not set, default shape will be used (scale default: boxes, rotation default: spheres)
+        /// Prefab used to display this type of bounds control handle. If not set, default shape will be used (scale default: boxes, rotation default: spheres)
         /// </summary>
         public GameObject HandlePrefab
         {
