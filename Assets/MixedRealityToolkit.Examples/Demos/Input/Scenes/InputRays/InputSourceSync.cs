@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             }
             else
             {
-                Debug.Log("Input type " + sourceType + " is not available!");
+                Debug.Log(Time.time + ": " + "Input type " + sourceType + " is not available!");
             }
         }
     }
