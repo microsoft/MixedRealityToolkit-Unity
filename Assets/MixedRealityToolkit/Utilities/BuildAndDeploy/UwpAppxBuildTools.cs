@@ -233,19 +233,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
 
             UpdateDependenciesElement(dependencies, rootNode.GetDefaultNamespace());
-
-            // The gaze input capability might already exist - this is okay, it will
-            // only add it if required and it's not already present.
-            var uwpBuildInfo = buildInfo as UwpBuildInfo;
-            if (uwpBuildInfo != null && uwpBuildInfo.GazeInputCapabilityEnabled)
-            {
-                AddGazeInputCapability(rootNode);
-            }
-
-            if (uwpBuildInfo != null && EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens && uwpBuildInfo.ResearchModeCapabilityEnabled)
-            {
-                AddResearchModeCapability(rootNode);
-            }
+            AddCapabilities(buildInfo, rootNode);
 
             // We use XName.Get instead of string -> XName implicit conversion because
             // when we pass in the string "Version", the program doesn't find the attribute.
@@ -294,6 +282,30 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
 
             return manifests[0];
+        }
+
+        /// <summary>
+        /// Updates 'Assembly-CSharp.csproj' file according to the values set in buildInfo.
+        /// </summary>
+        /// <param name="buildInfo">An IBuildInfo containing a valid OutputDirectory</param>
+        public static void UpdateAssemblyCSharpProject(IBuildInfo buildInfo)
+        {
+            string projectFilePath = GetAssemblyCSharpProjectFilePath(buildInfo);
+            if (projectFilePath == null)
+            {
+                throw new FileNotFoundException("Unable to find 'Assembly-CSharp.csproj' file.");
+            }
+
+            var rootElement = XElement.Load(projectFilePath);
+            var uwpBuildInfo = buildInfo as UwpBuildInfo;
+            Debug.Assert(uwpBuildInfo != null);
+
+            if (EditorUserBuildSettings.wsaGenerateReferenceProjects && uwpBuildInfo.AllowUnsafeCode)
+            {
+                AllowUnsafeCode(rootElement);
+            }
+
+            rootElement.Save(projectFilePath);
         }
 
         /// <summary>
@@ -389,20 +401,18 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         }
 
         /// <summary>
-        /// An overload of AddResearchModeCapability that will read the AppX manifest
-        /// from the build output and update the manifest file with the rescap aka
-        /// research mode capability.
+        /// Adds capabilities according to the values in the buildInfo to the manifest file.
         /// </summary>
-        /// <param name="buildInfo">An IBuildInfo containing a valid OutputDirectory</param>
-        public static void AddCapabilities(IBuildInfo buildInfo)
+        /// <param name="buildInfo">An IBuildInfo containing a valid OutputDirectory and all capabilities</param>
+        public static void AddCapabilities(IBuildInfo buildInfo, XElement rootElement = null)
         {
-            string manifestFilePath = GetManifestFilePath(buildInfo);
+            var manifestFilePath = GetManifestFilePath(buildInfo);
             if (manifestFilePath == null)
             {
                 throw new FileNotFoundException("Unable to find manifest file");
             }
 
-            var rootElement = XElement.Load(manifestFilePath);
+            rootElement = rootElement ?? XElement.Load(manifestFilePath);
             var uwpBuildInfo = buildInfo as UwpBuildInfo;
 
             Debug.Assert(uwpBuildInfo != null);
@@ -411,17 +421,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 AddGazeInputCapability(rootElement);
             }
 
-            if (EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens)
+            if (uwpBuildInfo.ResearchModeCapabilityEnabled && EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens)
             {
-                if (uwpBuildInfo.ResearchModeCapabilityEnabled)
-                {
-                    AddResearchModeCapability(rootElement);
-                }
-
-                if (EditorUserBuildSettings.wsaGenerateReferenceProjects && uwpBuildInfo.AllowUnsafeCode)
-                {
-                    AllowUnsafeCode(rootElement);
-                }
+                AddResearchModeCapability(rootElement);
             }
 
             rootElement.Save(manifestFilePath);
@@ -431,10 +433,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// Adds a capability to the given rootNode, which must be the read AppX manifest from
         /// the build output.
         /// </summary>
-        /// <param name="rootNode">An <see cref="XElement"/> containing the AppX manifest from 
+        /// <param name="rootNode">An XElement containing the AppX manifest from 
         /// the build output</param>
-        /// <param name="capability">The added capabilites tag as <see cref="XName"/></param>
-        /// <param name="value">Value of the Name-<see cref="XAttribute"/> of the added capability</param>
+        /// <param name="capability">The added capabilites tag as XName</param>
+        /// <param name="value">Value of the Name-XAttribute of the added capability</param>
         public static void AddCapability(XElement rootNode, XName capability, string value)
         {
             // If the capabilities container tag is missing, make sure it gets added.

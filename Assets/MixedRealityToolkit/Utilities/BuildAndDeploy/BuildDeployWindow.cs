@@ -104,9 +104,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private readonly GUIContent uninstallLabel = new GUIContent("Uninstall First", "Uninstall application before installing");
 
-        private readonly GUIContent researchModeCapabilityLabel = new GUIContent("Enable Research Mode", "Enables research mode of HoloLens 1. This allows access to raw sensor data.");
+        private readonly GUIContent researchModeCapabilityLabel = new GUIContent("Enable Research Mode", "Enables research mode of HoloLens. This allows access to raw sensor data.");
 
-        private readonly GUIContent allowUnsafeCode = new GUIContent("Allow Unsafe Code", "Modify 'Assembly-CSharp.csproj' to allow use of unsafe code.");
+        private readonly GUIContent allowUnsafeCode = new GUIContent("Allow Unsafe Code", "Modify 'Assembly-CSharp.csproj' to allow use of unsafe code. Be careful using this in production.");
 
         #endregion Labels
 
