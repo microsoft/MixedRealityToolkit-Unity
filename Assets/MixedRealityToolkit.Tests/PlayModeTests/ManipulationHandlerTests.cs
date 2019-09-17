@@ -19,6 +19,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
 using System;
 using System.Collections.Generic;
+using Assets.MixedRealityToolkit.Definitions;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
@@ -970,6 +971,232 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Restore the input simulation profile
             iss.HandSimulationMode = oldHandSimMode;
             yield return null;
+        }
+
+        /// <summary>
+        /// Verifies that the movement is constrained to the X-axis only, near and
+        /// far manipulation will be restricted to the X-axis
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ManipulationHandlerMoveTranslationAxesXOnly()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+            GameObject testObject = CreateTestCube();
+            ManipulationHandler manipHandler = testObject.GetComponent<ManipulationHandler>();
+            manipHandler.TranslationAxes = AxisPreference.X;
+
+            // First test near interaction.
+            TestHand hand = new TestHand(Handedness.Right);
+            yield return hand.Show(new Vector3(0, 0, 1f));
+            yield return null;
+
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return null;
+
+            yield return hand.Move(new Vector3(1.1f, 1.1f, 1.1f));
+            yield return null;
+
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return null;
+
+            // Since this is restricted to the X axis only, X should be roughly ~1
+            // because it was at zero before, and Y and Z should be unchanged (0 and 1
+            // respectively).
+            AssertHelpers.AlmostEquals(new Vector3(1, 0, 1), testObject.transform.position, .1f);
+
+            // Repeat the same test with far interaction.
+            testObject.transform.position = new Vector3(0f, 0f, 1f);
+            yield return hand.Show(new Vector3(0.04f, -0.18f, 0.3f)); // Grabs the lower right corner of the cube.
+            yield return null;
+
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return null;
+
+            yield return hand.Move(new Vector3(1.1f, 1.1f, 1.1f));
+            yield return null;
+
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return null;
+
+            // Since this is restricted to the X axis only, X should be roughly ~3.1f due
+            // magnification of movement based on hand location and far manipulation.
+            // Y and Z should be unchanged (0 and 1 respectively).
+            AssertHelpers.AlmostEquals(new Vector3(3.1f, 0, 1), testObject.transform.position, .1f);
+
+            GameObject.Destroy(testObject);
+        }
+
+        /// <summary>
+        /// Verifies that the movement is constrained to the Y-axis only, near and
+        /// far manipulation will be restricted to the Y-axis
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ManipulationHandlerMoveTranslationAxesYOnly()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+            GameObject testObject = CreateTestCube();
+            ManipulationHandler manipHandler = testObject.GetComponent<ManipulationHandler>();
+            manipHandler.TranslationAxes = AxisPreference.Y;
+
+            // First test near interaction.
+            TestHand hand = new TestHand(Handedness.Right);
+            yield return hand.Show(new Vector3(0, 0, 1f));
+            yield return null;
+
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return null;
+
+            yield return hand.Move(new Vector3(1.1f, 1.1f, 1.1f));
+            yield return null;
+
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return null;
+
+            // Since this is restricted to the Y axis only, Y should be roughly ~1
+            // because it was at zero before, and X and Z should be unchanged (0 and 1
+            // respectively).
+            AssertHelpers.AlmostEquals(new Vector3(0, 1, 1), testObject.transform.position, .1f);
+
+            // Repeat the same test with far interaction.
+            testObject.transform.position = new Vector3(0f, 0f, 1f);
+            yield return hand.Show(new Vector3(0.04f, -0.18f, 0.3f)); // Grabs the lower right corner of the cube.
+            yield return null;
+
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return null;
+
+            yield return hand.Move(new Vector3(1.1f, 1.1f, 1.1f));
+            yield return null;
+
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return null;
+
+            // Since this is restricted to the Y axis only, Y should be roughly ~3.1f due
+            // magnification of movement based on hand location and far manipulation.
+            // X and Z should be unchanged (0 and 1 respectively).
+            AssertHelpers.AlmostEquals(new Vector3(0, 3.1f, 1), testObject.transform.position, .1f);
+
+            GameObject.Destroy(testObject);
+        }
+
+        /// <summary>
+        /// Verifies that the movement is constrained to the Z-axis only, near and
+        /// far manipulation will be restricted to the Z-axis
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ManipulationHandlerMoveTranslationAxesZOnly()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+            GameObject testObject = CreateTestCube();
+            ManipulationHandler manipHandler = testObject.GetComponent<ManipulationHandler>();
+            manipHandler.TranslationAxes = AxisPreference.Z;
+
+            // First test near interaction.
+            TestHand hand = new TestHand(Handedness.Right);
+            yield return hand.Show(new Vector3(0, 0, 1f));
+            yield return null;
+
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return null;
+
+            yield return hand.Move(new Vector3(1.1f, 1.1f, 1.1f));
+            yield return null;
+
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return null;
+
+            // Since this is restricted to the Z axis only, Z should be roughly ~2.2
+            // because it was at 1 before, and Y and Z should be unchanged (both zero).
+            AssertHelpers.AlmostEquals(new Vector3(0, 0, 2.2f), testObject.transform.position, .1f);
+
+            // Repeat the same test with far interaction.
+            testObject.transform.position = new Vector3(0f, 0f, 1f);
+            yield return hand.Show(new Vector3(0.04f, -0.18f, 0.3f)); // Grabs the lower right corner of the cube.
+            yield return null;
+
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return null;
+
+            yield return hand.Move(new Vector3(1.1f, 1.1f, 1.1f));
+            yield return null;
+
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return null;
+
+            // Since this is restricted to the Z axis only, Z should be roughly ~3.1f due
+            // magnification of movement based on hand location and far manipulation.
+            // X and Y should be unchanged (both zero).
+            AssertHelpers.AlmostEquals(new Vector3(0, 0, 3.6f), testObject.transform.position, .1f);
+
+            GameObject.Destroy(testObject);
+        }
+
+        /// <summary>
+        /// Verifies that the movement is constrained to the X and Y axes only, near and
+        /// far manipulation will be restricted to the X and Y axes
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ManipulationHandlerMoveTranslationAxesXYOnly()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+            GameObject testObject = CreateTestCube();
+            ManipulationHandler manipHandler = testObject.GetComponent<ManipulationHandler>();
+            manipHandler.TranslationAxes = AxisPreference.X | AxisPreference.Y;
+
+            // First test near interaction.
+            TestHand hand = new TestHand(Handedness.Right);
+            yield return hand.Show(new Vector3(0, 0, 1f));
+            yield return null;
+
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return null;
+
+            yield return hand.Move(new Vector3(1.1f, 1.1f, 1.1f));
+            yield return null;
+
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return null;
+
+            // Since this is restricted to the X and Y axes, X and Y should be roughly ~1
+            // because it was at zero before, and Z should be unchanged (it was 1 before).
+            AssertHelpers.AlmostEquals(new Vector3(1, 1, 1), testObject.transform.position, .1f);
+
+            // Repeat the same test with far interaction.
+            testObject.transform.position = new Vector3(0f, 0f, 1f);
+            yield return hand.Show(new Vector3(0.04f, -0.18f, 0.3f)); // Grabs the lower right corner of the cube.
+            yield return null;
+
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return null;
+
+            yield return hand.Move(new Vector3(1.1f, 1.1f, 1.1f));
+            yield return null;
+
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return null;
+
+            // Since this is restricted to the X and Y axes, X and Y should be roughly ~3.1f due
+            // magnification of movement based on hand location and far manipulation.
+            // Z should be unchanged.
+            AssertHelpers.AlmostEquals(new Vector3(3.1f, 3.1f, 1), testObject.transform.position, .1f);
+
+            GameObject.Destroy(testObject);
+        }
+
+        private static GameObject CreateTestCube()
+        {
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.2f;
+            testObject.transform.position = new Vector3(0f, 0f, 1f);
+            testObject.AddComponent<NearInteractionGrabbable>();
+
+            var manipHandler = testObject.AddComponent<ManipulationHandler>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+            manipHandler.ConstraintOnMovement = MovementConstraintType.TranslationAxes;
+
+            return testObject;
         }
     }
 }

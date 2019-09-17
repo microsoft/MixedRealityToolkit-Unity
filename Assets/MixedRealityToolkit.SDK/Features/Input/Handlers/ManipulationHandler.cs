@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Assets.MixedRealityToolkit.Definitions;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -147,6 +148,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             get => constraintOnMovement;
             set => constraintOnMovement = value;
+        }
+
+        [EnumFlags]
+        [SerializeField]
+        [Tooltip("Identifies the set of axes that translation is allowed on. Defaults to every axis. " +
+            "Only used if 'Constraint on Movement' is set to 'TranslationAxes'")]
+        private AxisPreference translationAxes = AxisPreference.X | AxisPreference.Y | AxisPreference.Z;
+
+        /// <summary>
+        /// Identifies the set of axes that translation is allowed on. Defaults to every axis.
+        /// Only used if 'Constraint on Movement' is set to 'TranslationAxes'
+        /// </summary>
+        public AxisPreference TranslationAxes
+        {
+            get => translationAxes;
+            set => translationAxes = value;
         }
 
         [Header("Smoothing")]
@@ -593,7 +610,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if ((currentState & State.Moving) > 0)
             {
                 MixedRealityPose pose = GetAveragePointerPose();
-                targetPosition = moveLogic.Update(pose, targetRotationTwoHands, targetScale, IsNearManipulation(), true, constraintOnMovement);
+                targetPosition = moveLogic.Update(pose, targetRotationTwoHands, targetScale, IsNearManipulation(), true, constraintOnMovement, translationAxes);
             }
 
             float lerpAmount = GetLerpAmount();
@@ -672,7 +689,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             targetRotation = ApplyConstraints(targetRotation);
             MixedRealityPose pointerPose = new MixedRealityPose(pointer.Position, pointer.Rotation);
-            Vector3 targetPosition = moveLogic.Update(pointerPose, targetRotation, hostTransform.localScale, IsNearManipulation(), rotateInOneHandType != RotateInOneHandType.RotateAboutObjectCenter, constraintOnMovement);
+            Vector3 targetPosition = moveLogic.Update(
+                pointerPose, targetRotation, hostTransform.localScale, IsNearManipulation(),
+                rotateInOneHandType != RotateInOneHandType.RotateAboutObjectCenter, constraintOnMovement, translationAxes);
 
             float lerpAmount = GetLerpAmount();
             Quaternion smoothedRotation = Quaternion.Lerp(hostTransform.rotation, targetRotation, lerpAmount);

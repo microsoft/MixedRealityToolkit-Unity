@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Assets.MixedRealityToolkit.Definitions;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using UnityEngine;
@@ -25,12 +26,15 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         private Vector3 pointerLocalGrabPoint;
         private Vector3 objectLocalGrabPoint;
         private Vector3 pointerToObject;
+        private MixedRealityPose initialObjectPose;
 
         /// <summary>
         /// Setup function
         /// </summary>
         public void Setup(MixedRealityPose pointerCentroidPose, Vector3 grabCentroid, MixedRealityPose objectPose, Vector3 objectScale)
         {
+            initialObjectPose = objectPose;
+
             Vector3 headPosition = CameraCache.Main.transform.position;            
             pointerRefDistance = Vector3.Distance(pointerCentroidPose.Position, headPosition);
             pointerPosIndependentOfHead = pointerRefDistance != 0;
@@ -45,11 +49,12 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         }
 
         /// <summary>
-        /// Update the rotation based on input.
+        /// Update the translation based on input.
         /// </summary>
         /// <returns>A Vector3 describing the desired position</returns>
-        public Vector3 Update(MixedRealityPose pointerCentroidPose, Quaternion objectRotation, Vector3 objectScale, bool isNearMode, bool usePointerRotation, MovementConstraintType movementConstraint)
+        public Vector3 Update(MixedRealityPose pointerCentroidPose, Quaternion objectRotation, Vector3 objectScale, bool isNearMode, bool usePointerRotation, MovementConstraintType movementConstraint, AxisPreference translationAxes)
         {
+            Vector3 newPosition;
             if (!isNearMode || usePointerRotation)
             {
                 Vector3 headPosition = CameraCache.Main.transform.position;
@@ -66,12 +71,45 @@ namespace Microsoft.MixedReality.Toolkit.Physics
                 Vector3 adjustedPointerToGrab = (pointerLocalGrabPoint * distanceRatio);
                 adjustedPointerToGrab = pointerCentroidPose.Rotation * adjustedPointerToGrab;
 
-                return adjustedPointerToGrab - objectRotation * scaledGrabToObject + pointerCentroidPose.Position;
+                newPosition = adjustedPointerToGrab - objectRotation * scaledGrabToObject + pointerCentroidPose.Position;
             }
             else
             {
-                return pointerCentroidPose.Position + pointerToObject;
+                newPosition = pointerCentroidPose.Position + pointerToObject;
             }
+
+            // If instructed to restrict movement to a specific axis, enforce that after all other translation logic
+            // has run.
+            if (movementConstraint == MovementConstraintType.TranslationAxes)
+            {
+                newPosition = HandleTranslationAxesRestrictions(translationAxes, newPosition);
+            }
+            return newPosition;
+        }
+
+        /// <summary>
+        /// Returns a Vector3 for the new position of the object being manipulated based on
+        /// the new desired location restricted by the allowed axes of freedom.
+        /// </summary>
+        /// <remarks>
+        /// For example, if translationAxes is only AxisPreference.X, this will ensure that
+        /// the object will only move in the X direction.
+        /// </remarks>
+        private Vector3 HandleTranslationAxesRestrictions(AxisPreference translationAxes, Vector3 position)
+        {
+            if (!translationAxes.HasFlag(AxisPreference.X))
+            {
+                position.x = initialObjectPose.Position.x;
+            }
+            if (!translationAxes.HasFlag(AxisPreference.Y))
+            {
+                position.y = initialObjectPose.Position.y;
+            }
+            if (!translationAxes.HasFlag(AxisPreference.Z))
+            {
+                position.z = initialObjectPose.Position.z;
+            }
+            return position;
         }
     }
 }

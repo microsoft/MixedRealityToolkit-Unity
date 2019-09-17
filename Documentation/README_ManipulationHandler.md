@@ -78,6 +78,15 @@ Specifies on which axis the object will rotate when interacted with.
 **Constraints on Movement**
 * *None*
 * *Fix distance from head*
+* *Translation Axes* - If this option is selected, movement will be constrained to the axes specified in "Translation Axes"
+
+**Translation Axes**
+This will only be used if "Constraints on Movement" is set to "Translation Axes." These axes indicate
+the Axes on which translation are allowed. By default, this is set to "everything" (X, Y, and Z) indicating
+that movement is allowed to happen on all axes.
+
+Changing this value such that only X is selected, for example, will restrict motion to the X-axis. Changing the value
+such that both X and Y are selected will restrict motion to the XY plane.
 
 **Smoothing Active**
 Specifies whether smoothing is active.
