@@ -42,6 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             FaceUser,
             FaceAwayFromUser,
             MaintainOriginalRotation,
+            RotateAboutObjectCenter,
             RotateAboutGrabPoint
         };
         [System.Flags]
@@ -206,6 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         private Dictionary<uint, PointerData> pointerIdToPointerMap = new Dictionary<uint, PointerData>();
         private Quaternion objectToHandRotation;
+        private Quaternion objectToGripRotation;
         private bool isNearManipulation;
         private bool isManipulationStarted;
 
@@ -517,6 +519,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             Quaternion worldToPalmRotation = Quaternion.Inverse(pointer.Rotation);
             objectToHandRotation = worldToPalmRotation * hostTransform.rotation;
 
+            // Calculate relative transform from object to grip.
+            Quaternion gripRotation;
+            TryGetGripRotation(pointer, out gripRotation);
+            Quaternion worldToGripRotation = Quaternion.Inverse(gripRotation);
+            objectToGripRotation = worldToGripRotation * hostTransform.rotation;
+
             MixedRealityPose pointerPose = new MixedRealityPose(pointer.Position, pointer.Rotation);
             MixedRealityPose hostPose = new MixedRealityPose(hostTransform.position, hostTransform.rotation);
             moveLogic.Setup(pointerPose, pointerData.GrabPoint, hostPose, hostTransform.localScale);
@@ -566,6 +574,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     targetRotation = Quaternion.LookRotation(directionToTarget);
                     break;
                 }
+                case RotateInOneHandType.RotateAboutObjectCenter:
+                    Quaternion gripRotation;
+                    TryGetGripRotation(pointer, out gripRotation);
+                    targetRotation = gripRotation * objectToGripRotation;
+                    break;
                 case RotateInOneHandType.RotateAboutGrabPoint:
                     targetRotation = pointer.Rotation * objectToHandRotation;
                     break;
@@ -737,6 +750,21 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             }
 
             return diffRotation * hostWorldRotationOnManipulationStart;
+        }
+
+        private bool TryGetGripRotation(IMixedRealityPointer pointer, out Quaternion rotation)
+        {
+
+            for (int i = 0; i < pointer.Controller.Interactions.Length; i++)
+            {
+                if (pointer.Controller.Interactions[i].InputType == DeviceInputType.SpatialGrip)
+                {
+                    rotation = pointer.Controller.Interactions[i].RotationData;
+                    return true;
+                }
+            }
+            rotation = Quaternion.identity;
+            return false;
         }
 
         #endregion

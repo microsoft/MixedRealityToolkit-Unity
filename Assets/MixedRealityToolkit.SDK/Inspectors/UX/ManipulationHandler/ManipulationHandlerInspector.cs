@@ -194,8 +194,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             mh2.AllowFarManipulation = mh1.AllowFarManipulation;
-            mh2.OneHandRotationModeNear = GetRotateInOneHandType(mh1.OneHandRotationModeNear);
-            mh2.OneHandRotationModeFar = GetRotateInOneHandType(mh1.OneHandRotationModeFar);
+            mh2.OneHandRotationModeNear = (ObjectManipulator.RotateInOneHandType)mh1.OneHandRotationModeNear;
+            mh2.OneHandRotationModeFar = (ObjectManipulator.RotateInOneHandType)mh1.OneHandRotationModeFar;
 
             switch (mh1.TwoHandedManipulationType)
             {
@@ -235,30 +235,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             mh2.OnHoverExited = mh1.OnHoverExited;
 
             DestroyImmediate(mh1);
-        }
-
-        ObjectManipulator.RotateInOneHandType GetRotateInOneHandType(ManipulationHandler.RotateInOneHandType originalType)
-        {
-            switch (originalType)
-            {
-                case ManipulationHandler.RotateInOneHandType.FaceAwayFromUser:
-                    return ObjectManipulator.RotateInOneHandType.FaceAwayFromUser;
-
-                case ManipulationHandler.RotateInOneHandType.FaceUser:
-                    return ObjectManipulator.RotateInOneHandType.FaceUser;
-
-                case ManipulationHandler.RotateInOneHandType.GravityAlignedMaintainRotationToUser:
-                    return ObjectManipulator.RotateInOneHandType.GravityAlignedMaintainRotationToUser;
-
-                case ManipulationHandler.RotateInOneHandType.MaintainOriginalRotation:
-                    return ObjectManipulator.RotateInOneHandType.MaintainOriginalRotation;
-
-                case ManipulationHandler.RotateInOneHandType.MaintainRotationToUser:
-                    return ObjectManipulator.RotateInOneHandType.MaintainRotationToUser;
-
-                default:
-                    return ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
-            }
         }
     }
 }
