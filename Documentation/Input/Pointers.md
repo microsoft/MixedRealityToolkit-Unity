@@ -114,6 +114,18 @@ Useful Sphere Pointer properties:
 
 <img src="../../Documentation/Images/Pointers/MRTK_Pointers_Parabolic.png" width="400">
 
+## Pointers commonly available for Mixed Reality Platforms
+The following table details the pointer types that are typically used for the common platforms in MRTK. NOTE:
+it's possible to add different pointer types to these platforms. For example, you could add a Poke pointer or Sphere pointer to VR. Additionally, VR devices with a gamepad could use the GGV pointer. 
+
+|                     | OpenVR  | Windows Mixed Reality | HoloLens 1 | HoloLens 2 |
+|---------------------|---------|-----------------------|------------|------------|
+| ShellHandRayPointer | Valid   | Valid                 |            | Valid      |
+| TeleportPointer     | Valid   | Valid                 |            |            |
+| GGVPointer          |         |                       | Valid      |            |
+| SpherePointer       |         |                       |            | Valid      |
+| PokePointer         |         |                       |            | Valid      |
+
 ## Pointer interactions via code
 
 ### Pointer event interfaces
@@ -244,6 +256,32 @@ private void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEve
 The [PointerResultExample scene](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_development/Assets/MixedRealityToolkit.Examples/Demos/Input/Scenes/PointerResult/PointerResultExample.unity) shows how to use the pointer [`Result`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.Result) to spawn an object at the hit location.
 
 <img src="../../Documentation/Images/Input/PointerResultExample.png" style="max-width:100%;">
+
+### Disable Pointers
+To turn enable and disable pointers (for example, to disable the hand ray), set the [`PointerBehavior`](xref:Microsoft.MixedReality.Toolkit.Input.PointerBehavior) for a given pointer type via [`PointerUtils`](xref:Microsoft.MixedReality.Toolkit.Input.PointerUtils).
+
+```csharp
+// Disable the hand rays
+PointerUtils.SetHandRayPointerBehavior(PointerBehavior.AlwaysOff);
+
+// Disable hand rays for the right hand only
+PointerUtils.SetHandRayPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Right);
+
+// Disable the gaze pointer
+PointerUtils.SetGazePointerBehavior(PointerBehavior.AlwaysOff);
+
+// Set the behavior to match HoloLens 1
+// Note, if on HoloLens 2, you must configure your pointer profile to make the GGV pointer show up for articulated hands.
+public void SetHoloLens1()
+{
+    PointerUtils.SetPokePointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
+    PointerUtils.SetGrabPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
+    PointerUtils.SetRayPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Any);
+    PointerUtils.SetGGVBehavior(PointerBehavior.Default);
+}
+```
+
+See [`PointerUtils`](xref:Microsoft.MixedReality.Toolkit.Input.PointerUtils) and [`TurnPointersOnOff`](xref:Microsoft.MixedReality.Toolkit.Examples.Demos.DisablePointersExample) for more examples.
 
 ## Pointer interactions via editor
 

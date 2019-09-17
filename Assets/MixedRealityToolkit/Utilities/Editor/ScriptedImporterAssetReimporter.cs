@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     /// </summary>
     public class ScriptedImporterAssetReimporter : AssetPostprocessor
     {
-        private readonly static Dictionary<string, int> assetsAttemptedToReimport = new Dictionary<string, int>();
+        private static readonly Dictionary<string, int> assetsAttemptedToReimport = new Dictionary<string, int>();
 
         public static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
         {
@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     Type assetType = AssetDatabase.GetMainAssetTypeAtPath(asset);
                     if (assetType == typeof(DefaultAsset))
                     {
-                        if (assetsAttemptedToReimport.TryGetValue(asset, out int numAttempts))
+                        if (!assetsAttemptedToReimport.TryGetValue(asset, out int numAttempts))
                         {
                             numAttempts = 0;
                         }
@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                         if (numAttempts <= 3)
                         {
-                            Debug.LogWarning($"Asset '{asset}' appears to have failed importing, will attempt to re-import.");
+                            Debug.LogWarning($"Asset '{asset}' appears to have failed importing, will attempt to re-import. Attempt: {numAttempts}");
                             AssetDatabase.ImportAsset(asset);
                         }
                         else
