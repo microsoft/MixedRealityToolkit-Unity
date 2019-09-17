@@ -8,7 +8,7 @@ using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
-    [CreateAssetMenu(fileName = "States", menuName = "Mixed Reality Toolkit/Interactable/State", order = 1)]
+    [CreateAssetMenu(fileName = "States", menuName = "Mixed Reality Toolkit/State", order = 1)]
     public class States : ScriptableObject
     {
         [FormerlySerializedAs("StateList")]
@@ -58,9 +58,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             set
             {
-                if (!value.IsSubclassOf(typeof(InteractableStateModel)))
+                if (!value.IsSubclassOf(typeof(BaseStateModel)))
                 {
-                    Debug.LogWarning($"Cannot assign type {value} that does not extend {typeof(InteractableStateModel)} to ThemeDefinition");
+                    Debug.LogWarning($"Cannot assign type {value} that does not extend {typeof(BaseStateModel)} to ThemeDefinition");
                     return;
                 }
 
@@ -115,9 +115,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return true;
         }
 
-        public InteractableStateModel CreateStateModel()
+        public BaseStateModel CreateStateModel()
         {
-            InteractableStateModel stateLogic = (InteractableStateModel)Activator.CreateInstance(StateModelType, StateList[DefaultIndex]);
+            BaseStateModel stateLogic = (BaseStateModel)Activator.CreateInstance(StateModelType, StateList[DefaultIndex]);
 
             List<State> stateListCopy = new List<State>();
             for (int i = 0; i < StateList.Count; i++)

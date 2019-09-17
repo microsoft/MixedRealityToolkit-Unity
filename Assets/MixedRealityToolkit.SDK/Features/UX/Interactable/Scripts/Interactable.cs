@@ -1323,7 +1323,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             clickValidTimer = null;
         }
 
-
+        /// <summary>
+        /// Creates the default States ScriptableObject configured for Interactable
+        /// </summary>
+        /// <returns>Default Interactable States asset</returns>
         public static States GetDefaultInteractableStates()
         {
             States result = ScriptableObject.CreateInstance<States>();

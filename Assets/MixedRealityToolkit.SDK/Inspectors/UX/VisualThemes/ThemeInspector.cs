@@ -23,22 +23,31 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         protected Theme theme;
         protected State[] themeStates;
 
-        private const float ThemeStateFontScale = 1.2f;
-        private const int ThemeBoxMargin = 30;
+        private const float ThemeStateFontScale = 1.1f;
+        private const int ThemeBoxMargin = 25;
 
-        private static readonly GUIContent AddThemePropertyLabel = new GUIContent("+ Add Theme Definition", "Add Theme Definition");
-        private static readonly GUIContent RemoveThemePropertyContent = new GUIContent("-", "Remove Theme Definition");
+        private static readonly GUIContent AddThemePropertyLabel = new GUIContent("Add Theme Definition", "Add Theme Definition");
+        private static readonly GUIContent RemoveThemePropertyContent = new GUIContent("Delete", "Remove Theme Definition");
         private static readonly GUIContent CreateAnimationsContent = new GUIContent("Create Animations", "Create and add an Animator with AnimationClips");
         private static readonly GUIContent EasingContent = new GUIContent("Easing", "should the theme animate state values");
+
+        public void OnEnable()
+        {
+            themeDefinitions = serializedObject.FindProperty("definitions");
+            states = serializedObject.FindProperty("states");
+
+            // If no theme properties assigned, add a default one
+            if (themeDefinitions.arraySize < 1)
+            {
+                AddThemeDefinition();
+            }
+        }
 
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
 
             theme = target as Theme;
-
-            themeDefinitions = serializedObject.FindProperty("definitions");
-            states = serializedObject.FindProperty("states");
             themeStates = theme.GetStates();
 
             RenderTheme();
@@ -56,15 +65,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                 return;
             }
 
-            // If no theme properties assigned, add a default one
-            if (themeDefinitions.arraySize < 1 || InspectorUIUtility.FlexButton(AddThemePropertyLabel))
-            {
-                AddThemeDefinition();
-            }
+            EditorGUILayout.Space();
 
-            RenderThemeSettings();
+            RenderThemeDefinitions();
 
-            RenderThemeStates();
         }
 
         /// <summary>
@@ -73,8 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         /// </summary>
         protected bool RenderStates()
         {
-            GUIStyle box = InspectorUIUtility.Box(EditorGUI.indentLevel * ThemeBoxMargin);
-            using (new EditorGUILayout.VerticalScope(box))
+            using (new EditorGUILayout.VerticalScope())
             {
                 GUI.enabled = !(EditorApplication.isPlaying || EditorApplication.isPaused);
                 using (var check = new EditorGUI.ChangeCheckScope())
@@ -97,98 +100,121 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             return true;
         }
 
-        public void RenderThemeSettings()
+        public void RenderThemeDefinitions()
         {
-            GUIStyle box = InspectorUIUtility.Box(EditorGUI.indentLevel * ThemeBoxMargin);
+            GUIStyle box = InspectorUIUtility.HelpBox(EditorGUI.indentLevel * ThemeBoxMargin);
 
             // Loop through all InteractableThemePropertySettings of Theme
             for (int index = 0; index < themeDefinitions.arraySize; index++)
             {
-                SerializedProperty themeDefinition = themeDefinitions.GetArrayElementAtIndex(index);
                 using (new EditorGUILayout.VerticalScope(box))
                 {
+                    SerializedProperty themeDefinition = themeDefinitions.GetArrayElementAtIndex(index);
+                    SerializedProperty className = themeDefinition.FindPropertyRelative("ClassName");
+
+                    string themeDefinition_prefKey = theme.name + "_Definitions" + index;
+                    bool show = false;
                     using (new EditorGUILayout.HorizontalScope())
                     {
-                        SerializedProperty className = themeDefinition.FindPropertyRelative("ClassName");
+                        show = InspectorUIUtility.DrawSectionFoldoutWithKey(className.stringValue, themeDefinition_prefKey, MixedRealityStylesUtility.BoldFoldoutStyle);
 
-                        var themeTypes = TypeCacheUtility.GetSubClasses<InteractableThemeBase>();
-                        var themeClassNames = themeTypes.Select(t => t.Name).ToArray();
-                        int id = Array.IndexOf(themeClassNames, className.stringValue);
-                        int newId = EditorGUILayout.Popup("Theme Runtime", id, themeClassNames);
-
-                        // If user changed the theme type for current themeDefinition
-                        if (id != newId)
+                        if (RenderDeleteButton(index))
                         {
-                            Type oldType = themeTypes[id];
-                            Type newType = themeTypes[newId];
-                            ChangeThemeDefinitionType(index, oldType, newType);
-                            return;
-                        }
-
-                        // Create Delete button if we have an array of themes
-                        if (themeDefinitions.arraySize > 1 && InspectorUIUtility.SmallButton(RemoveThemePropertyContent))
-                        {
-                            ClearHistoryCache(index);
-                            DeleteThemeDefinition((uint)index);
-
-                            serializedObject.Update();
-                            EditorUtility.SetDirty(theme);
                             return;
                         }
                     }
 
-                    SerializedProperty customProperties = themeDefinition.FindPropertyRelative("customProperties");
-                    RenderCustomProperties(customProperties);
-
-                    var themeType = theme.Definitions[index].ThemeType;
-                    var themeExample = (InteractableThemeBase)Activator.CreateInstance(themeType);
-
-                    if (themeExample.IsEasingSupported)
+                    if (show)
                     {
-                        RenderEasingProperties(themeDefinition);
-                    }
+                        EditorGUILayout.Space();
 
-                    if (themeExample.AreShadersSupported)
-                    {
-                        RenderShaderProperties(themeDefinition);
+                        using (new EditorGUI.IndentLevelScope())
+                        {
+                            EditorGUILayout.LabelField("General Properties", EditorStyles.boldLabel);
+
+                            using (new EditorGUILayout.HorizontalScope())
+                            {
+                                var themeTypes = TypeCacheUtility.GetSubClasses<InteractableThemeBase>();
+                                var themeClassNames = themeTypes.Select(t => t.Name).ToArray();
+                                int id = Array.IndexOf(themeClassNames, className.stringValue);
+                                int newId = EditorGUILayout.Popup("Theme Runtime", id, themeClassNames);
+
+                                // If user changed the theme type for current themeDefinition
+                                if (id != newId && newId != -1)
+                                {
+                                    Type oldType = id != -1 ? themeTypes[id] : null;
+                                    Type newType = themeTypes[newId];
+                                    ChangeThemeDefinitionType(index, oldType, newType);
+                                    return;
+                                }
+                            }
+
+                            var themeType = theme.Definitions[index].ThemeType;
+                            if (themeType != null)
+                            {
+                                SerializedProperty customProperties = themeDefinition.FindPropertyRelative("customProperties");
+                                RenderCustomProperties(customProperties);
+
+                                var themeExample = (InteractableThemeBase)Activator.CreateInstance(themeType);
+
+                                if (themeExample.IsEasingSupported)
+                                {
+                                    RenderEasingProperties(themeDefinition);
+                                }
+
+                                if (themeExample.AreShadersSupported)
+                                {
+                                    RenderShaderProperties(themeDefinition);
+                                }
+
+                                EditorGUILayout.Space();
+
+                                RenderThemeStates(themeDefinition);
+                            }
+                            else
+                            {
+                                InspectorUIUtility.DrawError("Theme Runtime Type is not valid");
+                            }
+                        }
                     }
                 }
             }
+
+            // If no theme properties assigned, add a default one
+            if (themeDefinitions.arraySize < 1 || GUILayout.Button(AddThemePropertyLabel))
+            {
+                AddThemeDefinition();
+            }
         }
 
-        public void RenderThemeStates()
+        private void RenderThemeStates(SerializedProperty themeDefinition)
         {
-            GUIStyle box = InspectorUIUtility.Box(EditorGUI.indentLevel * ThemeBoxMargin);
+            EditorGUILayout.LabelField("State Properties", EditorStyles.boldLabel);
 
-            using (new EditorGUILayout.VerticalScope(box))
+            using (new EditorGUI.IndentLevelScope())
             {
                 for (int n = 0; n < themeStates.Length; n++)
                 {
                     InspectorUIUtility.DrawLabel(themeStates[n].Name, (int)(InspectorUIUtility.DefaultFontSize * ThemeStateFontScale), InspectorUIUtility.ColorTint50);
-
-                    for (int j = 0; j < themeDefinitions.arraySize; j++)
+                    SerializedProperty stateProperties = themeDefinition.FindPropertyRelative("stateProperties");
+                    using (new EditorGUI.IndentLevelScope())
                     {
-                        SerializedProperty themeDefinition = themeDefinitions.GetArrayElementAtIndex(j);
-                        SerializedProperty stateProperties = themeDefinition.FindPropertyRelative("stateProperties");
-                        using (new EditorGUI.IndentLevelScope())
+                        for (int i = 0; i < stateProperties.arraySize; i++)
                         {
-                            for (int i = 0; i < stateProperties.arraySize; i++)
+                            SerializedProperty propertyItem = stateProperties.GetArrayElementAtIndex(i);
+                            SerializedProperty values = propertyItem.FindPropertyRelative("values");
+
+                            if (n >= values.arraySize)
                             {
-                                SerializedProperty propertyItem = stateProperties.GetArrayElementAtIndex(i);
-                                SerializedProperty values = propertyItem.FindPropertyRelative("values");
-
-                                if (n >= values.arraySize)
-                                {
-                                    // This property does not have the correct number of state values
-                                    continue;
-                                }
-
-                                SerializedProperty name = propertyItem.FindPropertyRelative("name");
-                                SerializedProperty type = propertyItem.FindPropertyRelative("type");
-                                SerializedProperty statePropertyValue = values.GetArrayElementAtIndex(n);
-
-                                RenderValue(statePropertyValue, name.stringValue, (ThemePropertyTypes)type.intValue);
+                                // This property does not have the correct number of state values
+                                continue;
                             }
+
+                            SerializedProperty name = propertyItem.FindPropertyRelative("name");
+                            SerializedProperty type = propertyItem.FindPropertyRelative("type");
+                            SerializedProperty statePropertyValue = values.GetArrayElementAtIndex(n);
+
+                            RenderValue(statePropertyValue, name.stringValue, (ThemePropertyTypes)type.intValue);
                         }
                     }
                 }
@@ -396,6 +422,22 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             }
         }
 
+        protected bool RenderDeleteButton(int index)
+        {
+            // Create Delete button if we have an array of themes
+            if (themeDefinitions.arraySize > 1 && InspectorUIUtility.SmallButton(RemoveThemePropertyContent))
+            {
+                ClearHistoryCache(index);
+                DeleteThemeDefinition((uint)index);
+
+                serializedObject.Update();
+                EditorUtility.SetDirty(theme);
+                return true;
+            }
+
+            return false;
+        }
+
         #endregion
 
         #region Theme Definition Management
@@ -468,11 +510,16 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         private static bool ValidThemeHistoryAccess(Theme target, uint index)
         {
             return target != null && target.History != null && target.Definitions != null
-                    && index < target.Definitions.Count;
+                    && index < target.History.Count;
         }
 
         protected void SaveThemeDefinitionHistory(int index, Type definitionClassType)
         {
+            if (definitionClassType == null)
+            {
+                return;
+            }
+
             if (theme == null || theme.History == null || theme.Definitions == null)
             {
                 Debug.LogWarning("Could not save ThemeDefinition to history cache");
@@ -498,7 +545,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         {
             if (!ValidThemeHistoryAccess(theme, (uint)index))
             {
-                Debug.LogWarning("Could not save ThemeDefinition to history cache");
+                Debug.LogWarning("Could not load ThemeDefinition to history cache");
                 return null;
             }
 

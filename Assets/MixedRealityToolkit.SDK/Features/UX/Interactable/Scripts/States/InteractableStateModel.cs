@@ -41,8 +41,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 && this.ActiveIndex == other.ActiveIndex;
         }
     }
-    
-    public abstract class InteractableStateModel
+
+    /// <summary>
+    /// Base class for defining state model logic to use in conjunction with the State class
+    /// Allows for retrieving current state mode and comparing states
+    /// </summary>
+    public abstract class BaseStateModel
     {
         protected State currentState;
         protected List<State> stateList;
@@ -117,11 +121,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return new State();
         }
 
-        public InteractableStateModel()
+        public BaseStateModel()
         {
         }
 
-        public InteractableStateModel(State defaultState)
+        public BaseStateModel(State defaultState)
         {
             currentState = defaultState;
         }

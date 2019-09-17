@@ -27,8 +27,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         protected SerializedProperty dimensionIndex;
         protected SerializedProperty dimensions;
 
-        protected static bool showProfiles;
-        protected static bool showEvents;
         protected const string ShowProfilesPrefKey = "InteractableInspectorProfiles";
         protected const string ShowEventsPrefKey = "InteractableInspectorProfiles_ShowEvents";
         protected bool enabled = false;
@@ -61,8 +59,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             startDimensionIndex = serializedObject.FindProperty("StartDimensionIndex");
             dimensionIndex = serializedObject.FindProperty("dimensionIndex");
             dimensions = serializedObject.FindProperty("Dimensions");
-
-            showProfiles = SessionState.GetBool(ShowProfilesPrefKey, showProfiles);
 
             enabled = true;
         }
@@ -106,19 +102,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
         private void RenderProfileSettings()
         {
-            bool isProfilesOpen = InspectorUIUtility.DrawSectionFoldout("Profiles", showProfiles, FontStyle.Bold, InspectorUIUtility.TitleFontSize);
-            if (showProfiles != isProfilesOpen)
-            {
-                showProfiles = isProfilesOpen;
-                SessionState.SetBool(ShowProfilesPrefKey, showProfiles);
-            }
-
             if (profileList.arraySize < 1)
             {
                 AddProfile(0);
             }
 
-            if (showProfiles)
+            if (InspectorUIUtility.DrawSectionFoldoutWithKey("Profiles", ShowProfilesPrefKey, MixedRealityStylesUtility.TitleFoldoutStyle))
             {
                 // Render all profile items. Profiles are per GameObject/ThemeContainer
                 for (int i = 0; i < profileList.arraySize; i++)
@@ -147,6 +136,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                             }
                         }
 
+                        EditorGUILayout.Space();
+
                         SerializedProperty themes = profileItem.FindPropertyRelative("Themes");
                         ValidateThemesForDimensions(dimensions, themes);
 
@@ -154,12 +145,18 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                         for (int t = 0; t < themes.arraySize; t++)
                         {
                             SerializedProperty themeItem = themes.GetArrayElementAtIndex(t);
-
                             string themeLabel = BuildThemeTitle(dimensions.intValue, t);
-                            EditorGUILayout.PropertyField(themeItem, new GUIContent(themeLabel, "Theme properties for interaction feedback"));
 
                             if (themeItem.objectReferenceValue != null)
                             {
+                                bool showThemeSettings = false;
+                                using (new EditorGUILayout.HorizontalScope())
+                                {
+                                    string prefKey = themeItem.objectReferenceValue.name + "Profiles" + i + "_Theme" + t + "_Edit";
+                                    showThemeSettings = InspectorUIUtility.DrawSectionFoldoutWithKey(themeLabel, prefKey);
+                                    EditorGUILayout.PropertyField(themeItem, new GUIContent(string.Empty, "Theme properties for interaction feedback"));
+                                }
+
                                 // TODO: Odd bug where themeStates below is null when it shouldn't be. Use instance object as workaround atm
                                 //SerializedProperty themeStates = themeItem.FindPropertyRelative("States");
                                 var themeInstance = themeItem.objectReferenceValue as Theme;
@@ -168,15 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                                     InspectorUIUtility.DrawWarning($"{themeInstance.name}'s States property does not match Interactable's States property");
                                 }
 
-                                string prefKey = themeItem.objectReferenceValue.name + "Profiles" + i + "_Theme" + t + "_Edit";
-                                bool showSettingsPref = SessionState.GetBool(prefKey, true);
-                                bool show = InspectorUIUtility.DrawSectionFoldout(themeItem.objectReferenceValue.name + " (Click to edit)", showSettingsPref, FontStyle.Normal);
-                                if (show != showSettingsPref)
-                                {
-                                    SessionState.SetBool(prefKey, show);
-                                }
-
-                                if (show)
+                                if (showThemeSettings)
                                 {
                                     using (new EditorGUI.IndentLevelScope())
                                     {
@@ -187,13 +176,17 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                             }
                             else
                             {
-                                InspectorUIUtility.DrawError("Assign a Theme to add visual effect");
+                                EditorGUILayout.PropertyField(themeItem, new GUIContent(themeLabel, "Theme properties for interaction feedback"));
+
+                                InspectorUIUtility.DrawError("Assign a Theme to add visual effects");
                                 if (GUILayout.Button(CreateThemeLabel))
                                 {
                                     themeItem.objectReferenceValue = CreateThemeAsset(hostGameObject.objectReferenceValue.name);
                                     return;
                                 }
                             }
+
+                            EditorGUILayout.Space();
                         }
                     }
                 }
@@ -208,17 +201,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         private void RenderEventSettings()
         {
             bool isPlayMode = EditorApplication.isPlaying || EditorApplication.isPaused;
-            bool isEventsOpen = InspectorUIUtility.DrawSectionFoldout("Events", showEvents, FontStyle.Bold, InspectorUIUtility.TitleFontSize);
-            if (showEvents != isEventsOpen)
+            if (InspectorUIUtility.DrawSectionFoldoutWithKey("Events", ShowEventsPrefKey, MixedRealityStylesUtility.TitleFoldoutStyle))
             {
-                showEvents = isEventsOpen;
-                SessionState.SetBool(ShowEventsPrefKey, showEvents);
-            }
+                EditorGUILayout.Space();
 
-            EditorGUILayout.Space();
-
-            if (showEvents)
-            {
                 SerializedProperty onClick = serializedObject.FindProperty("OnClick");
                 EditorGUILayout.PropertyField(onClick, new GUIContent("OnClick"));
 
@@ -431,7 +417,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             {
                 return "Theme " + (themeIndex % 2 == 0 ? "(Deselected)" : "(Selected)");
             }
-            else if (dimensions > 3)
+            else if (dimensions >= 3)
             {
                 return "Theme " + (themeIndex + 1);
             }
