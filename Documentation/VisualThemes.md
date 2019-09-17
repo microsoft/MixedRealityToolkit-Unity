@@ -122,7 +122,7 @@ For the given property, which can be identified by `ThemeStateProperty.Name`, se
 
 `public abstract ThemePropertyValue GetProperty(ThemeStateProperty property)`(xref:Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.GetProperty)
 
-For the given property, which can be identified by `ThemeStateProperty.Name`, return the current value set on the targeted Host  GameObject (i.e the current material color, the current local position offset, etc). This is primarily used for caching teh start value when easing between states.
+For the given property, which can be identified by `ThemeStateProperty.Name`, return the current value set on the targeted Host  GameObject (i.e the current material color, the current local position offset, etc). This is primarily used for caching the start value when easing between states.
 
 `public abstract ThemeDefinition GetDefaultThemeDefinition()`(xref:Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.GetDefaultThemeDefinition)
 
