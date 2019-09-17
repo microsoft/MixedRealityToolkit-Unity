@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Gets the ray representing the position and direction of the user's head.
         /// </summary>
-        /// <returns>The ray the head gaze</param>
+        /// <returns>The ray the head gaze</returns>
         public static Ray GetHeadGazeRay()
         {
             return new Ray(CameraCache.Main.transform.position, CameraCache.Main.transform.forward);
