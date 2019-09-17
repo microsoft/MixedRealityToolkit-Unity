@@ -1,7 +1,7 @@
 
 # Visual Themes
 
-Themes allow for flexible control of UX assets in respond to various states transitions. This may involve changing a button's color, resizing an element in respond to focus, etc. The Visual Themes framework is made up of two key pieces: 1) configuration and 2) runtime engines.
+Themes allow for flexible control of UX assets in response to various states transitions. This may involve changing a button's color, resizing an element in response to focus, etc. The Visual Themes framework is made up of two key pieces: 1) configuration and 2) runtime engines.
 
 [Theme configurations](#theme-configuration) are definitions of properties and types while [Theme Engines](#theme-engines) are classes that consume the configurations and implement the logic to update transforms, materials, and more at runtime.
 
