@@ -37,19 +37,18 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                     return;
                 }
 
-                var mh = manipulatedObject.GetComponent<ManipulationHandler>();
-                var pm = manipulatedObject.GetComponent<ObjectManipulator>();
-                if (mh != null)
+                var manipulationHandler = manipulatedObject.GetComponent<ManipulationHandler>();
+                var objectManipulator = manipulatedObject.GetComponent<ObjectManipulator>();
+                if (manipulationHandler != null || objectManipulator != null)
                 {
-                    mh.ForceEndManipulation();
-
-                    // move the object slightly away from the collision point so we can manipulate it again after this
-                    Vector3 direction = collisionTrigger.bounds.center - manipulatedObjCollider.bounds.center;
-                    manipulatedObject.transform.Translate(direction.normalized * 0.01f);
-                }
-                else if (pm != null)
-                {
-                    pm.ForceEndManipulation();
+                    if (manipulationHandler != null)
+                    {
+                        manipulationHandler.ForceEndManipulation();
+                    }
+                    else
+                    {
+                        objectManipulator.ForceEndManipulation();
+                    }
 
                     // move the object slightly away from the collision point so we can manipulate it again after this
                     Vector3 direction = collisionTrigger.bounds.center - manipulatedObjCollider.bounds.center;
