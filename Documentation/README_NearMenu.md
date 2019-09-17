@@ -2,14 +2,12 @@
 
 ![Near Menu](../Documentation/Images/NearMenu/MRTK_UX_NearMenu.png)
 
-Near Menu is a common UX control which provides a collection of buttons or other UI components. It is floating around the user's body and easily accessible anytime. Since it is loosely coupled with the user, it does not disturb the user's interaction with the target content. The user can use the 'Pin' button to world-lock/unlock the menu. The menu can be grabbed and placed at a specific position.
+Near Menu is a UX control which provides a collection of buttons or other UI components. It is floating around the user's body and easily accessible anytime. Since it is loosely coupled with the user, it does not disturb the user's interaction with the target content. The user can use the 'Pin' button to world-lock/unlock the menu. The menu can be grabbed and placed at a specific position.
 
-## Behavior ##
-- **Unpinned(Tag-along)**: The menu is floating and stays within 30-60cm range from the user for the near interactions. 
-- **Pinned**: The menu is world-locked. It can be unpinned by pressing the Pin button.
-- The menu is always grabbable and movable. Regardless of the previous state, the menu will be pinned(world-locked) when grabbed and released. 
-- There are visual cues for the grabbable area. They are revealed on hand proximity.
-
+## Interaction behavior ##
+- **Tag-along**: The menu follows you and stays within 30-60cm range from the user for the near interactions. 
+- **Pin**: Using the 'Pin' button, the menu can be world-locked and released. 
+- **Grab and move**: The menu is always grabbable and movable. Regardless of the previous state, the menu will be pinned(world-locked) when grabbed and released. There are visual cues for the grabbable area. They are revealed on hand proximity.
 
 ## Prefabs ##
 Near Menu prefabs are designed to demonstrate how to use MRTK's various components to build menus for near interactions.
@@ -24,10 +22,10 @@ You can find examples of Near Menu prefabs in the `NearMenuExamples` scene.
 
 ## Structure ##
 Near Menu prefabs are made with following MRTK components.
-- PressableButtonHoloLens2.prefab
-- Grid Object Collection: Multiple button layout in grid
-- Manipulation Handler: Grab and move the menu
-- RadialView Solver: Follow Me(tag-along) behavior
+- **PressableButtonHoloLens2** prefab
+- **Grid Object Collection**: Multiple button layout in grid
+- **Manipulation Handler**: Grab and move the menu
+- **RadialView Solver**: Follow Me(tag-along) behavior
 
 ![Near Menu Prefab](../Documentation/Images/NearMenu/MRTK_UX_NearMenu_Structure.png)
 
