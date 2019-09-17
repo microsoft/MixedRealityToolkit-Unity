@@ -1072,10 +1072,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         /// <summary>
         /// Test that OnManipulationStarted and OnManipulationEnded events call as expected
-        /// for various ManipulationHandler configurations.
+        /// for various One Handed Only.
         /// </summary>
         [UnityTest]
-        public IEnumerator ManipulationHandlerEvents()
+        public IEnumerator ManipulationHandlerEventsOneHandedOnly()
         {
             TestUtilities.PlayspaceToOriginLookingForward();
 
@@ -1120,44 +1120,110 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
             Assert.AreEqual(1, manipulationStartedCount);
             Assert.AreEqual(1, manipulationEndedCount);
+        }
+        
+        /// <summary>
+        /// Test that OnManipulationStarted and OnManipulationEnded events call as expected
+        /// for Two Handed Only.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ManipulationHandlerEventsTwoHandedOnly()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.5f;
+            Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
+            Quaternion initialObjectRotation = testObject.transform.rotation;
+            testObject.transform.position = initialObjectPosition;
+
+            var manipHandler = testObject.AddComponent<ManipulationHandler>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+
+            int manipulationStartedCount = 0;
+            int manipulationEndedCount = 0;
+            manipHandler.OnManipulationStarted.AddListener((med) => manipulationStartedCount++);
+            manipHandler.OnManipulationEnded.AddListener((med) => manipulationEndedCount++);
+
+            TestHand rightHand = new TestHand(Handedness.Right);
+            TestHand leftHand = new TestHand(Handedness.Left);
+
+            yield return rightHand.Show(new Vector3(0.1f, -0.1f, 0.5f));
+            yield return leftHand.Show(new Vector3(-0.1f, -0.1f, 0.5f));
+            yield return null;
 
             // Two Handed
             manipHandler.ManipulationType = ManipulationHandler.HandMovementType.TwoHandedOnly;
 
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            Assert.AreEqual(0, manipulationStartedCount);
+            Assert.AreEqual(0, manipulationEndedCount);
+
+            yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            Assert.AreEqual(1, manipulationStartedCount);
+            Assert.AreEqual(0, manipulationEndedCount);
+
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
             Assert.AreEqual(1, manipulationStartedCount);
             Assert.AreEqual(1, manipulationEndedCount);
 
-            yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-            Assert.AreEqual(2, manipulationStartedCount);
-            Assert.AreEqual(1, manipulationEndedCount);
-
-            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
-            Assert.AreEqual(2, manipulationStartedCount);
-            Assert.AreEqual(2, manipulationEndedCount);
-
             yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
-            Assert.AreEqual(2, manipulationStartedCount);
-            Assert.AreEqual(2, manipulationEndedCount);
+            Assert.AreEqual(1, manipulationStartedCount);
+            Assert.AreEqual(1, manipulationEndedCount);
+        }
+
+        /// <summary>
+        /// Test that OnManipulationStarted and OnManipulationEnded events call as expected
+        /// for One Handed and Two Handed.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ManipulationHandlerEventsBothHands()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.5f;
+            Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
+            Quaternion initialObjectRotation = testObject.transform.rotation;
+            testObject.transform.position = initialObjectPosition;
+
+            var manipHandler = testObject.AddComponent<ManipulationHandler>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+
+            int manipulationStartedCount = 0;
+            int manipulationEndedCount = 0;
+            manipHandler.OnManipulationStarted.AddListener((med) => manipulationStartedCount++);
+            manipHandler.OnManipulationEnded.AddListener((med) => manipulationEndedCount++);
+
+            TestHand rightHand = new TestHand(Handedness.Right);
+            TestHand leftHand = new TestHand(Handedness.Left);
+
+            yield return rightHand.Show(new Vector3(0.1f, -0.1f, 0.5f));
+            yield return leftHand.Show(new Vector3(-0.1f, -0.1f, 0.5f));
+            yield return null;
 
             // One + Two Handed
             manipHandler.ManipulationType = ManipulationHandler.HandMovementType.OneAndTwoHanded;
 
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-            Assert.AreEqual(3, manipulationStartedCount);
-            Assert.AreEqual(2, manipulationEndedCount);
+            Assert.AreEqual(1, manipulationStartedCount);
+            Assert.AreEqual(0, manipulationEndedCount);
 
             yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-            Assert.AreEqual(3, manipulationStartedCount);
-            Assert.AreEqual(2, manipulationEndedCount);
+            Assert.AreEqual(1, manipulationStartedCount);
+            Assert.AreEqual(0, manipulationEndedCount);
 
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
-            Assert.AreEqual(3, manipulationStartedCount);
-            Assert.AreEqual(2, manipulationEndedCount);
+            Assert.AreEqual(1, manipulationStartedCount);
+            Assert.AreEqual(0, manipulationEndedCount);
 
             yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
-            Assert.AreEqual(3, manipulationStartedCount);
-            Assert.AreEqual(3, manipulationEndedCount);
+            Assert.AreEqual(1, manipulationStartedCount);
+            Assert.AreEqual(1, manipulationEndedCount);
         }
     }
 }
