@@ -13,13 +13,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Raised when a source is detected.
         /// </summary>
-        /// <param name="eventData"></param>
         void OnSourceDetected(SourceStateEventData eventData);
 
         /// <summary>
         /// Raised when a source is lost.
         /// </summary>
-        /// <param name="eventData"></param>
         void OnSourceLost(SourceStateEventData eventData);
     }
 }

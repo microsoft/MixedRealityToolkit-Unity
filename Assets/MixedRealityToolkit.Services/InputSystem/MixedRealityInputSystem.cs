@@ -568,7 +568,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Unregister a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> from listening to input events.
         /// </summary>
-        /// <param name="listener"></param>
         public override void Unregister(GameObject listener)
         {
             base.Unregister(listener);

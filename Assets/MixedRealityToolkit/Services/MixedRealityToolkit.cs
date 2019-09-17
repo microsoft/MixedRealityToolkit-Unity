@@ -91,7 +91,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// When a configuration Profile is replaced with a new configuration, force all services to reset and read the new values
         /// </summary>
-        /// <param name="profile"></param>
         public void ResetConfiguration(MixedRealityToolkitConfigurationProfile profile)
         {
             if (activeProfile != null)
@@ -551,7 +550,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Static function to determine if the MixedRealityToolkit class has been initialized or not.
         /// </summary>
-        /// <returns></returns>
         public static bool ConfirmInitialized()
         {
             // ReSharper disable once UnusedVariable
@@ -959,18 +957,13 @@ namespace Microsoft.MixedReality.Toolkit
 
         private bool ExecuteOnAllServicesInOrder(Action<IMixedRealityService> execute)
         {
-            var orderedSystems = MixedRealityServiceRegistry.GetAllServices().OrderBy(m => m.Priority);
+            var orderedSystems = MixedRealityServiceRegistry.GetAllServices();
             return ExecuteOnAllServices(orderedSystems, execute);
-        }
-
-        private bool ExecuteOnAllServices(Action<IMixedRealityService> execute)
-        {
-            return ExecuteOnAllServices(MixedRealityServiceRegistry.GetAllServices(), execute);
         }
 
         private bool ExecuteOnAllServicesReverseOrder(Action<IMixedRealityService> execute)
         {
-            var orderedSystems = MixedRealityServiceRegistry.GetAllServices().OrderByDescending(m => m.Priority);
+            var orderedSystems = MixedRealityServiceRegistry.GetAllServices().Reverse();
             return ExecuteOnAllServices(orderedSystems, execute);
         }
 
@@ -1119,7 +1112,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// Checks if the system is ready to get a service.
         /// </summary>
         /// <param name="interfaceType">The interface type of the service being checked.</param>
-        /// <returns></returns>
         private static bool CanGetService(Type interfaceType)
         {
             if (isApplicationQuitting && !internalShutdown)

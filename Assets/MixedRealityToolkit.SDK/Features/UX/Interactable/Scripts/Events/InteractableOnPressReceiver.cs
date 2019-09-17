@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
-using UnityEngine;
 using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.UI
@@ -13,9 +12,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
     public class InteractableOnPressReceiver : ReceiverBase
     {
 
+        /// <summary>
+        /// Invoked on pointer release
+        /// </summary>
         [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Release", Tooltip = "The button is released")]
         public UnityEvent OnRelease = new UnityEvent();
 
+        /// <summary>
+        /// Invoked on pointer press
+        /// </summary>
+        public UnityEvent OnPress => uEvent;
         public enum InteractionType
         {
             NearAndFar = 0,
@@ -27,14 +33,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public int InteractionFilter = (int)InteractionType.NearAndFar;
 
         private bool hasDown;
-        private State lastState;
 
         private bool isNear = false;
 
-        public InteractableOnPressReceiver(UnityEvent ev) : base(ev)
-        {
-            Name = "OnPress";
-        }
+        /// <summary>
+        /// Receiver that raises press and release unity events
+        /// </summary>
+        public InteractableOnPressReceiver(UnityEvent ev) : base(ev, "OnPress") { }
+
+        /// <summary>
+        /// Receiver that raises press and release unity events
+        /// </summary>
+        public InteractableOnPressReceiver() : this(new UnityEvent()) { }
 
         /// <summary>
         /// checks if the received interactable state matches the press filter
@@ -57,13 +67,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc />
         public override void OnUpdate(InteractableStates state, Interactable source)
         {
-            bool changed = state.CurrentState() != lastState;
-
             bool hadDown = hasDown;
             hasDown = state.GetState(InteractableStates.InteractableStateEnum.Pressed).Value > 0;
 
 
-            if (changed && hasDown != hadDown)
+            if (hasDown != hadDown)
             {
                 if (hasDown)
                 {
@@ -81,8 +89,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     }
                 }
             }
-            
-            lastState = state.CurrentState();
         }
     }
 }

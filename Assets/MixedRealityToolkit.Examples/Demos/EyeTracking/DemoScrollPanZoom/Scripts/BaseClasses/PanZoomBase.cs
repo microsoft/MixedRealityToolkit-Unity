@@ -207,7 +207,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <summary>
         /// Scroll sideways.
         /// </summary>
-        /// <param name="speed"></param>
         public void PanHorizontally(float speed)
         {
             offsetRate_Pan = new Vector2(Time.deltaTime * speed, offsetRate_Pan.y);
@@ -216,7 +215,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <summary>
         /// Scroll from top to bottom
         /// </summary>
-        /// <param name="speed"></param>
         public void PanVertically(float speed)
         {
             offsetRate_Pan = new Vector2(offsetRate_Pan.x, Time.deltaTime * speed);
@@ -235,7 +233,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <summary>
         /// Resets the zoom speed and sets the correct zoom direction when first engaging with "zoom in/out"
         /// </summary>
-        /// <param name="zoomIn"></param>
         private void ZoomStart(bool zoomIn)
         {
             zoomSpeed = 0;
@@ -538,9 +535,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// Wrapper to ease keeping parameters up-to-date
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="objBase"></param>
-        /// <param name="objLocal"></param>
-        /// <returns></returns>
         internal bool UpdateValues<T>(ref T objBase, T objLocal)
         {
             if (!EqualityComparer<T>.Default.Equals(objBase, objLocal))

@@ -20,3 +20,5 @@ These are the input providers available out of the box, together with their corr
 Dictation and Speech providers don't create any controllers, they raise their own specialized input events directly.
 
 Custom input providers can be created by implementing the [`IMixedRealityInputDeviceManager`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputDeviceManager) interface.
+
+For more information, please see [creating an input system data provider](CreateDataProvider.md).

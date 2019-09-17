@@ -14,6 +14,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
     public class MixedRealityPointerProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
         private static readonly GUIContent ControllerTypeContent = new GUIContent("Controller Type", "The type of Controller this pointer will attach itself to at runtime.");
+        private static readonly GUIContent MinusButtonContent = new GUIContent("-", "Remove Pointer Option");
+        private static readonly GUIContent AddButtonContent = new GUIContent("+ Add a New Pointer Option", "Add Pointer Option");
 
         private const string ProfileTitle = "Pointer Settings";
         private const string ProfileDescription = "Pointers attach themselves onto controllers as they are initialized.";
@@ -31,8 +33,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private SerializedProperty pointerMediator;
         private SerializedProperty primaryPointerSelector;
 
-        private int currentlySelectedPointerOption = -1;
-
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -47,15 +47,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             showCursorWithEyeGaze = serializedObject.FindProperty("showCursorWithEyeGaze");
             pointerMediator = serializedObject.FindProperty("pointerMediator");
             primaryPointerSelector = serializedObject.FindProperty("primaryPointerSelector");
-
-            pointerOptionList = new ReorderableList(serializedObject, pointerOptions, false, false, true, true)
-            {
-                elementHeight = EditorGUIUtility.singleLineHeight * 4
-            };
-
-            pointerOptionList.drawElementCallback += DrawPointerOptionElement;
-            pointerOptionList.onAddCallback += OnPointerOptionAdded;
-            pointerOptionList.onRemoveCallback += OnPointerOptionRemoved;
         }
 
         public override void OnInspectorGUI()
@@ -65,7 +56,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
             {
                 serializedObject.Update();
-                currentlySelectedPointerOption = -1;
 
                 EditorGUILayout.Space();
                 EditorGUILayout.LabelField("Gaze Settings", EditorStyles.boldLabel);
@@ -95,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     {
                         using (new EditorGUI.IndentLevelScope())
                         {
-                            pointerOptionList.DoLayoutList();
+                            RenderPointerList(pointerOptions);
                         }
                     }
                 }
@@ -120,43 +110,52 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                    profile == MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.PointerProfile;
         }
 
-        private void DrawPointerOptionElement(Rect rect, int index, bool isActive, bool isFocused)
+        private void RenderPointerList(SerializedProperty list)
         {
-            if (isFocused)
+            if (InspectorUIUtility.RenderIndentedButton(AddButtonContent, EditorStyles.miniButton))
             {
-                currentlySelectedPointerOption = index;
+                pointerOptions.arraySize += 1;
+
+                var newPointerOption = list.GetArrayElementAtIndex(list.arraySize - 1);
+                var controllerType = newPointerOption.FindPropertyRelative("controllerType");
+                var handedness = newPointerOption.FindPropertyRelative("handedness");
+                var prefab = newPointerOption.FindPropertyRelative("pointerPrefab");
+
+                // Reset new entry
+                controllerType.intValue = 0;
+                handedness.intValue = 0;
+                prefab.objectReferenceValue = null;
             }
 
-            bool lastMode = EditorGUIUtility.wideMode;
-            EditorGUIUtility.wideMode = true;
-
-            var halfFieldHeight = EditorGUIUtility.singleLineHeight * 0.25f;
-            var controllerTypeRect = new Rect(rect.x, rect.y + halfFieldHeight, rect.width, EditorGUIUtility.singleLineHeight);
-            var handednessControlRect = new Rect(rect.x, rect.y + halfFieldHeight * 6, rect.width, EditorGUIUtility.singleLineHeight);
-            var pointerPrefabRect = new Rect(rect.x, rect.y + halfFieldHeight * 11, rect.width, EditorGUIUtility.singleLineHeight);
-
-            var pointerOption = pointerOptions.GetArrayElementAtIndex(index);
-            var controllerType = pointerOption.FindPropertyRelative("controllerType");
-            var handedness = pointerOption.FindPropertyRelative("handedness");
-            var prefab = pointerOption.FindPropertyRelative("pointerPrefab");
-
-            EditorGUI.PropertyField(controllerTypeRect, controllerType, ControllerTypeContent);
-            EditorGUI.PropertyField(handednessControlRect, handedness);
-            EditorGUI.PropertyField(pointerPrefabRect, prefab);
-
-            EditorGUIUtility.wideMode = lastMode;
-        }
-
-        private void OnPointerOptionAdded(ReorderableList list)
-        {
-            pointerOptions.arraySize += 1;
-        }
-
-        private void OnPointerOptionRemoved(ReorderableList list)
-        {
-            if (currentlySelectedPointerOption >= 0)
+            if (list == null || list.arraySize == 0)
             {
-                pointerOptions.DeleteArrayElementAtIndex(currentlySelectedPointerOption);
+                EditorGUILayout.HelpBox("Create a new Pointer Option entry.", MessageType.Warning);
+                return;
+            }
+
+            for (int i = 0; i < list.arraySize; i++)
+            {
+                using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
+                {
+                    var pointerOption = list.GetArrayElementAtIndex(i);
+                    var controllerType = pointerOption.FindPropertyRelative("controllerType");
+                    var handedness = pointerOption.FindPropertyRelative("handedness");
+                    var prefab = pointerOption.FindPropertyRelative("pointerPrefab");
+
+                    using (new EditorGUILayout.HorizontalScope())
+                    {
+                        EditorGUILayout.PropertyField(prefab);
+                        if (GUILayout.Button(MinusButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
+                        {
+                            list.DeleteArrayElementAtIndex(i);
+                            break;
+                        }
+                    }
+
+                    EditorGUILayout.PropertyField(controllerType, ControllerTypeContent);
+                    EditorGUILayout.PropertyField(handedness);
+                }
+                EditorGUILayout.Space();
             }
         }
     }

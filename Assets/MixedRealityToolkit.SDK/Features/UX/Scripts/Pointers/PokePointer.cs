@@ -174,7 +174,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             for (int i = 0; i < numColliders; ++i)
             {
-                var touchable = queryBuffer[i].GetComponent<ColliderNearInteractionTouchable>();
+                var touchable = queryBuffer[i].GetComponent<BaseNearInteractionTouchable>();
                 if (touchable)
                 {
                     float distance = touchable.DistanceToTouchable(Position, out Vector3 normal);
@@ -208,6 +208,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public override void OnPostSceneQuery()
         {
             base.OnPostSceneQuery();
+
+            // This ensures that we actually hide the finger cursor if the poke pointer is off
+            BaseCursor?.SetVisibility(IsInteractionEnabled);
 
             if (!IsActive)
             {
@@ -386,6 +389,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected override void OnEnable()
         {
             base.OnEnable();
+
+            IsTargetPositionLockedOnFocusLock = false;
 
             Debug.Assert(line != null, "No line renderer found in PokePointer.");
             Debug.Assert(visuals != null, "No visuals object found in PokePointer.");

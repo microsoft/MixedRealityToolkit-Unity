@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// Add a NearInteractionTouchableVolume to your scene and configure a touchable volume
     /// in order to get PointerDown and PointerUp events whenever a PokePointer collides with this volume.
     /// </summary>
-    public class NearInteractionTouchableVolume : ColliderNearInteractionTouchable
+    public class NearInteractionTouchableVolume : BaseNearInteractionTouchable
     {
 #if UNITY_EDITOR
         [UnityEditor.CustomEditor(typeof(NearInteractionTouchableVolume))]
@@ -34,6 +34,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 #endif
 
+        public bool ColliderEnabled { get { return touchableCollider.enabled && touchableCollider.gameObject.activeInHierarchy; } }
+
+        /// <summary>
+        /// The collider used by this touchable.
+        /// </summary>
+        [SerializeField]
+        [FormerlySerializedAs("collider")]
+        private Collider touchableCollider;
+        public Collider TouchableCollider => touchableCollider;
+
+        protected override void OnValidate()
+        {
+            base.OnValidate();
+
+            touchableCollider = GetComponent<Collider>();
+        }
+
         /// <inheritdoc />
         public override float DistanceToTouchable(Vector3 samplePoint, out Vector3 normal)
         {
@@ -43,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (normal == Vector3.zero)
             {
                 // inside object, use vector to centre as normal
-                normal = samplePoint - transform.TransformVector(TouchableCollider.bounds.center);
+                normal = samplePoint - TouchableCollider.bounds.center;
                 normal.Normalize();
                 return 0;
             }

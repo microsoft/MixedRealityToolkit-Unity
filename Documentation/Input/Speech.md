@@ -18,7 +18,6 @@ Assign optional **SpeechConfirmationTooltip.prefab** to display animated confirm
 
 <img src="../../Documentation/Images/Input/SpeechCommands_SpeechInputHandler2.png">
 
-
 Alternatively, developers can implement the [`IMixedRealitySpeechHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler) interface in a custom script component to [handle speech input events](InputEvents.md#input-event-interface-example).
 
 

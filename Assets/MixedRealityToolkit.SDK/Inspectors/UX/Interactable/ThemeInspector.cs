@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
     /// <summary>
     /// Inspector for themes, and used by Interactable
     /// </summary>
-    
+
 #if UNITY_EDITOR
     [CustomEditor(typeof(Theme))]
     public class ThemeInspector : UnityEditor.Editor
@@ -86,7 +87,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         /// draw the states property field for assigning states
         /// Set the default state if one does not exist
         /// </summary>
-        /// <returns></returns>
         protected bool RenderStates()
         {
             // If states value is not provided, try to use Default states type
@@ -111,7 +111,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         /// <summary>
         /// Get the list of states from the theme
         /// </summary>
-        /// <returns></returns>
         protected virtual State[] GetStates()
         {
             Theme theme = (Theme)target;
@@ -136,7 +135,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         /// <summary>
         /// set up the theme properties when a theme property is added
         /// </summary>
-        /// <param name="themeSettings"></param>
         protected virtual void AddThemePropertySettings(SerializedProperty themeSettings)
         {
             SerializedProperty settingsItem = themeSettings.GetArrayElementAtIndex(themeSettings.arraySize - 1);
@@ -361,11 +359,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         /// <summary>
         /// copy custom settings from history
         /// </summary>
-        /// <param name="oldCustom"></param>
-        /// <param name="newCustomSettings"></param>
-        /// <param name="customHistory"></param>
-        /// <param name="customHistoryOut"></param>
-        /// <returns></returns>
         private static SerializedProperty CopyCustomHistory(SerializedProperty oldCustom, List<InteractableCustomSetting> newCustomSettings, SerializedProperty customHistory, out SerializedProperty customHistoryOut)
         {
             int oldCount = oldCustom.arraySize;
@@ -443,11 +436,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         /// <summary>
         /// copy history values to current theme property
         /// </summary>
-        /// <param name="oldProperties"></param>
-        /// <param name="newProperties"></param>
-        /// <param name="history"></param>
-        /// <param name="historyOut"></param>
-        /// <returns></returns>
         public static SerializedProperty CopyPropertiesFromHistory(SerializedProperty oldProperties, List<InteractableThemeProperty> newProperties, SerializedProperty history, out SerializedProperty historyOut)
         {
             int oldCount = oldProperties.arraySize;
@@ -539,9 +527,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         /// <summary>
         /// copy some theme property values from serialized properties
         /// </summary>
-        /// <param name="copyFrom"></param>
-        /// <param name="copyTo"></param>
-        /// <returns></returns>
         public static SerializedProperty CopyThemeProperties(SerializedProperty copyFrom, SerializedProperty copyTo)
         {
             SerializedProperty newName = copyTo.FindPropertyRelative("Name");
@@ -574,9 +559,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         /// <summary>
         /// copy some theme property values from serialized properties
         /// </summary>
-        /// <param name="copyFrom"></param>
-        /// <param name="copyTo"></param>
-        /// <returns></returns>
         public static SerializedProperty CopyCustomSettings(SerializedProperty copyFrom, SerializedProperty copyTo)
         {
             SerializedProperty newName = copyTo.FindPropertyRelative("Name");
@@ -598,10 +580,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         /// <summary>
         /// copy theme values from serialized properties
         /// </summary>
-        /// <param name="copyFrom"></param>
-        /// <param name="copyTo"></param>
-        /// <param name="type"></param>
-        /// <returns></returns>
         public static SerializedProperty CopyThemeValues(SerializedProperty copyFrom, SerializedProperty copyTo, int type)
         {
             SerializedProperty floatFrom;
@@ -708,10 +686,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         /// <summary>
         /// load theme property values into a serialized property
         /// </summary>
-        /// <param name="copyFrom"></param>
-        /// <param name="copyTo"></param>
-        /// <param name="type"></param>
-        /// <returns></returns>
         public static SerializedProperty SerializeThemeValues(InteractableThemePropertyValue copyFrom, SerializedProperty copyTo, int type)
         {
             SerializedProperty floatTo;
@@ -1090,10 +1064,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         /// <summary>
         /// Render a single property value
         /// </summary>
-        /// <param name="item"></param>
-        /// <param name="name"></param>
-        /// <param name="propName"></param>
-        /// <param name="type"></param>
         public static void RenderValue(SerializedProperty item, string name, string propName, InteractableThemePropertyValueTypes type)
         {
             SerializedProperty floatValue = item.FindPropertyRelative("Float");
@@ -1285,7 +1255,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             }
             else
             {
-                material = new Material(Shader.Find("Mixed Reality Toolkit/Standard"));
+                material = new Material(StandardShaderUtility.MrtkStandardShader);
             }
 
             if (material != null)

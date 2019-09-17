@@ -222,7 +222,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <param name="directoryName">
         /// The name of the directory to search for.
         /// </param>
-        /// <param name="path"></param>
         internal static bool FindRelativeDirectory(string directoryPathToSearch, string directoryName, out string path)
         {
             string absolutePath;
@@ -245,7 +244,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <param name="directoryName">
         /// The name of the directory to search for.
         /// </param>
-        /// <param name="path"></param>
         internal static bool FindDirectory(string directoryPathToSearch, string directoryName, out string path)
         {
             path = string.Empty;

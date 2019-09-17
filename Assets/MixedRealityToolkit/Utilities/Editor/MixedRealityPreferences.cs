@@ -96,8 +96,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             var provider = new SettingsProvider("Project/Mixed Reality Toolkit", SettingsScope.Project)
             {
-                label = "Microsoft Mixed Reality Toolkit",
-
                 guiHandler = GUIHandler,
 
                 keywords = new HashSet<string>(new[] { "Mixed", "Reality", "Toolkit" })
@@ -132,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
 
                 EditorGUI.BeginChangeCheck();
-                var scriptLock = EditorGUILayout.Toggle("Is Script Reloading locked?", EditorAssemblyReloadManager.LockReloadAssemblies);
+                var scriptLock = EditorGUILayout.Toggle("Is script reloading locked?", EditorAssemblyReloadManager.LockReloadAssemblies);
 
                 if (EditorGUI.EndChangeCheck())
                 {

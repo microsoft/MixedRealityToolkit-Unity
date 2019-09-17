@@ -290,8 +290,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public bool IsFocusLocked { get; set; }
 
-        /// <inheritdoc />
-        public bool IsTargetPositionLockedOnFocusLock { get; set; }
+        /// <summary>
+        /// Specifies whether the pointer's target position (cursor) is locked to the target object when focus is locked.
+        /// Most pointers want the cursor to "stick" to the object when manipulating, so set this to true by default.
+        /// </summary>
+        public virtual bool IsTargetPositionLockedOnFocusLock { get; set; } = true;
 
         [SerializeField]
         private bool overrideGlobalPointerExtent = false;
