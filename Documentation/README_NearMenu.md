@@ -9,6 +9,8 @@ Near Menu is a UX control which provides a collection of buttons or other UI com
 - **Pin**: Using the 'Pin' button, the menu can be world-locked and released. 
 - **Grab and move**: The menu is always grabbable and movable. Regardless of the previous state, the menu will be pinned(world-locked) when grabbed and released. There are visual cues for the grabbable area. They are revealed on hand proximity.
 
+<img src="../Documentation/Images/NearMenu/MRTK_UX_NearMenu_Grab.png">
+
 ## Prefabs ##
 Near Menu prefabs are designed to demonstrate how to use MRTK's various components to build menus for near interactions.
 - **NearMenuExample4x1.prefab**
