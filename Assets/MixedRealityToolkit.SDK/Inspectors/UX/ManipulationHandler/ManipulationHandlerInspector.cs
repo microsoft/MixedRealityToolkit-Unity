@@ -75,6 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (GUILayout.Button("Upgrade to Object Manipulator"))
             {
                 Migrate();
+                return;
             }
 
             EditorGUILayout.PropertyField(hostTransform);
@@ -228,7 +229,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             mh2.ConstraintOnRotation = mh1.ConstraintOnRotation;
             mh2.ConstraintOnMovement = mh1.ConstraintOnMovement;
             mh2.SmoothingActive = mh1.SmoothingActive;
-            mh2.SmoothingAmount = mh1.SmoothingAmoutOneHandManip;
+            mh2.MoveLerpTime = mh1.SmoothingAmoutOneHandManip;
+            mh2.RotateLerpTime = mh1.SmoothingAmoutOneHandManip;
+            mh2.ScaleLerpTime = mh1.SmoothingAmoutOneHandManip;
             mh2.OnManipulationStarted = mh1.OnManipulationStarted;
             mh2.OnManipulationEnded = mh1.OnManipulationEnded;
             mh2.OnHoverEntered = mh1.OnHoverEntered;

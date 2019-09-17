@@ -16,14 +16,22 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
         private SerializedProperty hostTransform;
         private SerializedProperty manipulationType;
         private SerializedProperty allowFarManipulation;
+
         private SerializedProperty oneHandRotationModeNear;
         private SerializedProperty oneHandRotationModeFar;
+
         private SerializedProperty twoHandedManipulationType;
+
         private SerializedProperty releaseBehavior;
+
         private SerializedProperty constraintOnRotation;
         private SerializedProperty constraintOnMovement;
+
         private SerializedProperty smoothingActive;
-        private SerializedProperty smoothingAmount;
+        private SerializedProperty moveLerpTime;
+        private SerializedProperty rotateLerpTime;
+        private SerializedProperty scaleLerpTime;
+
         private SerializedProperty onManipulationStarted;
         private SerializedProperty onManipulationEnded;
         private SerializedProperty onHoverEntered;
@@ -59,7 +67,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
 
             // Smoothing
             smoothingActive = serializedObject.FindProperty("smoothingActive");
-            smoothingAmount = serializedObject.FindProperty("smoothingAmount");
+            moveLerpTime = serializedObject.FindProperty("moveLerpTime");
+            rotateLerpTime = serializedObject.FindProperty("rotateLerpTime");
+            scaleLerpTime = serializedObject.FindProperty("scaleLerpTime");
 
             // Manipulation Events
             onManipulationStarted = serializedObject.FindProperty("onManipulationStarted");
@@ -143,7 +153,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
             if (smoothingFoldout)
             {
                 EditorGUILayout.PropertyField(smoothingActive);
-                EditorGUILayout.PropertyField(smoothingAmount);
+                EditorGUILayout.PropertyField(moveLerpTime);
+                EditorGUILayout.PropertyField(rotateLerpTime);
+                EditorGUILayout.PropertyField(scaleLerpTime);
             }
 
             EditorGUILayout.Space();

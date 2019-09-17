@@ -161,13 +161,35 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         [SerializeField]
         [Range(0, 1)]
-        [Tooltip("Enter amount representing amount of smoothing to apply to the movement, scale, rotation.  Smoothing of 0 means no smoothing. Max value means no change to value.")]
-        private float smoothingAmount = 0.001f;
+        [Tooltip("Enter amount representing amount of smoothing to apply to the movement. Smoothing of 0 means no smoothing. Max value means no change to value.")]
+        private float moveLerpTime = 0.001f;
 
-        public float SmoothingAmount
+        public float MoveLerpTime
         {
-            get => smoothingAmount;
-            set => smoothingAmount = value;
+            get => moveLerpTime;
+            set => moveLerpTime = value;
+        }
+
+        [SerializeField]
+        [Range(0, 1)]
+        [Tooltip("Enter amount representing amount of smoothing to apply to the rotation. Smoothing of 0 means no smoothing. Max value means no change to value.")]
+        private float rotateLerpTime = 0.001f;
+
+        public float RotateLerpTime
+        {
+            get => rotateLerpTime;
+            set => rotateLerpTime = value;
+        }
+
+        [SerializeField]
+        [Range(0, 1)]
+        [Tooltip("Enter amount representing amount of smoothing to apply to the scale. Smoothing of 0 means no smoothing. Max value means no change to value.")]
+        private float scaleLerpTime = 0.001f;
+
+        public float ScaleLerpTime
+        {
+            get => scaleLerpTime;
+            set => scaleLerpTime = value;
         }
 
         #endregion Serialized Fields
@@ -526,17 +548,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 MixedRealityPose pose = GetPointersPose();
                 targetPosition = moveLogic.Update(pose, targetRotation, targetScale, constraintOnMovement);
             }
-
-            float lerpAmount = GetLerpAmount();
-            hostTransform.position = Vector3.Lerp(hostTransform.position, targetPosition, lerpAmount);
+            
+            hostTransform.position = SmoothTo(hostTransform.position, targetPosition, moveLerpTime);
             // Currently the two hand rotation algorithm doesn't allow for lerping, but it should. Fix this.
-            hostTransform.rotation = Quaternion.Lerp(hostTransform.rotation, targetRotation, lerpAmount);
+            hostTransform.rotation = SmoothTo(hostTransform.rotation, targetRotation, rotateLerpTime);
 
             if (scaleHandler != null)
             {
                 targetScale = scaleHandler.ClampScale(targetScale);
             }
-            hostTransform.localScale = Vector3.Lerp(hostTransform.localScale, targetScale, lerpAmount);
+            hostTransform.localScale = SmoothTo(hostTransform.localScale, targetScale, scaleLerpTime);
         }
 
         private void HandleOneHandMoveStarted()
@@ -622,10 +643,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             targetRotation = ApplyConstraints(targetRotation);
             MixedRealityPose pointerPose = new MixedRealityPose(pointer.Position, pointer.Rotation);
             Vector3 targetPosition = moveLogic.Update(pointerPose, targetRotation, hostTransform.localScale, constraintOnMovement);
-
-            float lerpAmount = GetLerpAmount();
-            Quaternion smoothedRotation = Quaternion.Lerp(hostTransform.rotation, targetRotation, lerpAmount);
-            Vector3 smoothedPosition = Vector3.Lerp(hostTransform.position, targetPosition, lerpAmount);
+            
+            Quaternion smoothedRotation = SmoothTo(hostTransform.rotation, targetRotation, rotateLerpTime);
+            Vector3 smoothedPosition = SmoothTo(hostTransform.position, targetPosition, moveLerpTime);
             hostTransform.SetPositionAndRotation(smoothedPosition, smoothedRotation);
         }
 
@@ -685,16 +705,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         #region Private methods
 
-        private float GetLerpAmount()
+        public static Vector3 SmoothTo(Vector3 source, Vector3 goal, float lerpTime)
         {
-            if (smoothingActive == false || smoothingAmount == 0)
-            {
-                return 1;
-            }
-            // Obtained from "Frame-rate independent smoothing"
-            // www.rorydriscoll.com/2016/03/07/frame-rate-independent-damping-using-lerp/
-            // We divide by max value to give the slider a bit more sensitivity.
-            return 1.0f - Mathf.Pow(smoothingAmount, Time.deltaTime);
+            return Vector3.Lerp(source, goal, lerpTime.Equals(0.0f) ? 1f : Time.deltaTime / lerpTime);
+        }
+
+        public static Quaternion SmoothTo(Quaternion source, Quaternion goal, float lerpTime)
+        {
+            return Quaternion.Slerp(source, goal, lerpTime.Equals(0.0f) ? 1f : Time.deltaTime / lerpTime);
         }
 
         private Vector3[] GetHandPositionArray()
