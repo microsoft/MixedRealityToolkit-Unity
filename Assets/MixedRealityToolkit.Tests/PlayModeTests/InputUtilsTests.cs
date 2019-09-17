@@ -21,10 +21,8 @@ using Microsoft.MixedReality.Toolkit.Input;
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
     // Tests to verify that the ray utilities methods are functioning correctly
-    public class RayUtilitiesTests
+    public class InputUtilsTests
     {
-        // todo
-
         [SetUp]
         public void SetUp()
         {
@@ -82,13 +80,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             success = InputUtils.TryGetHandRay(Handedness.Right, out ray);
             Debug.Log($"TryGetHandRaySucceeded : {success}");
             Assert.True(success);
-            // There appears to be an amplification of normal floating point error when using
-            // the test hand. Comparing the values by string vs Unity's epsilon (Vector3==) gives the expected
-            // and observed results.
-            Debug.Log($"origin: {ray.origin}");
-            Assert.True(ray.origin.ToString() == rightHandOrigin.ToString());
-            Debug.Log($"direction: {ray.direction}");
-            Assert.True(ray.direction.ToString() == new Vector3(-0.7f, 0.2f, 0.7f).ToString());
+            TestUtilities.AssertAboutEqual(ray.origin, rightHandOrigin, "hand ray origin is not correct", 0.1f);
+            TestUtilities.AssertAboutEqual(ray.direction, new Vector3(-0.7f, 0.2f, 0.7f), "hand ray direction is not correct", 0.1f);
         }
     }
 }
