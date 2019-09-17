@@ -20,7 +20,7 @@ Example Theme configuration assets can be found under [MixedRealityToolkit.SDK/F
 
 ### States
 
-When creating a new [`Theme`](xref:Microsoft.MixedReality.Toolkit.UI.Theme), the first thing to set is what states are available. The *States* property indicates how many values a Theme configuration needs to define as there will be one value per state. In the example image above, the default states defined for the [Interactable](README_Interactable.md) component are *Default*, *Focus*, *Pressed*, and *Disabled*. These are defined in the [DefaultInteractableStates](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/States/DefaultInteractableStates.asset) asset file.
+When creating a new [`Theme`](xref:Microsoft.MixedReality.Toolkit.UI.Theme), the first thing to set is what states are available. The *States* property indicates how many values a Theme configuration needs to define as there will be one value per state. In the example image above, the [default states defined for the Interactable](README_Interactable.md#general-input-settings) component are *Default*, *Focus*, *Pressed*, and *Disabled*. These are defined in the [DefaultInteractableStates](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/States/DefaultInteractableStates.asset) asset file.
 
 To create a new [`State`](xref:Microsoft.MixedReality.Toolkit.UI.States) asset:
 

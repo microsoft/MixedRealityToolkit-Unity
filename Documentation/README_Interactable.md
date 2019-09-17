@@ -189,7 +189,7 @@ public Vector3 EffectOffset = Vector3.zero;
 
 ### Building a simple button
 
-One can create a simple button by simply adding the *Interactable* component to a GameObject that has a collider on it or on a child to receive input.
+One can create a simple button by simply adding the *Interactable* component to a GameObject that is configured to receive input events. It can have  has a collider on it or on a child to receive input. If using *Interactable* with a Unity UI based GameObjects it should be under the Canvas GameObject.
 
 Take the button one step further, by creating a new profile, assigning the GameObject itself and creating a new theme. Furthermore, use the *OnClick* event to make something happen.
 
