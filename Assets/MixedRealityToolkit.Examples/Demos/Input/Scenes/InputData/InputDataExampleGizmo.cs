@@ -8,10 +8,26 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
-    public class InputSourceSync : MonoBehaviour
+    public class InputDataExampleGizmo : MonoBehaviour
     {
         public InputSourceType sourceType;
         public Handedness handedness;
+        private bool isDataAvailable = true;
+        private bool IsDataAvailable
+        {
+            get => isDataAvailable;
+            set
+            {
+                if (value != isDataAvailable)
+                {
+                    foreach (var item in GetComponentsInChildren<Renderer>())
+                    {
+                        item.enabled = value;
+                    }
+                }
+                isDataAvailable = value;
+            }
+        }
         public void Update()
         {
             Ray myRay;
@@ -19,10 +35,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             {
                 transform.localPosition= myRay.origin;
                 transform.localRotation = Quaternion.LookRotation(myRay.direction, Vector3.up);
+                IsDataAvailable = true;
             }
             else
             {
-                Debug.Log(Time.time + ": " + "Input type " + sourceType + " is not available!");
+                IsDataAvailable = false;
             }
         }
     }
