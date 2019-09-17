@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
     public interface IProximityEffectObjectProvider
     {
         /// <summary>
-        /// returns true if the provide has any visible objects
+        /// Returns true if the provider has any visible objects
         /// </summary>
         /// <returns></returns>
         bool IsActive();
