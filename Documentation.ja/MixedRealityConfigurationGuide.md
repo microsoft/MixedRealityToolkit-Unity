@@ -224,6 +224,9 @@ Pointers は、Mixed Reality Toolkit によって提供される多くのライ�
 
 必要に応じて、Gaze Provider にすばやく移り、Gaze の特定の値をオーバーライドするための追加のヘルパーボタンがあります。
 
+---
+<a name="gestures"/>
+
 ## ジェスチャ (Gestures) の設定
 
 ジェスチャは、さまざまな SDK (HoloLens など) によって提供されるさまざまな「ジェスチャ」入力メソッドに入力アクションを割り当てることができるシステム固有の実装です。
@@ -243,7 +246,10 @@ Pointers は、Mixed Reality Toolkit によって提供される多くのライ�
 > [!IMPORTANT]
 > このシステムは現在、HoloLens や Windows 10 デスクトップなどの Windows 10 プラットフォームで実行されている場合にのみ音声認識をサポートしており、将来 MRTK に追加される他のシステムでも拡張される予定です (日付はまだありません)。
 
-![mrtk](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpeechCommandsProfile.png)
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpeechCommandsProfile.png" width="650px" style="display:block;">
+
+---
+<a name="mapping"/>
 
 ## コントローラーマッピング (Controller mapping) の設定
 
@@ -251,19 +257,19 @@ Mixed Reality Toolkit の主要な設定画面の1つは、プロジェクトで
 
 以下の設定画面では、ツールキットで現在使われているコントローラーのいずれかを設定できます。
 
-![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerMappingProfile.png)
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerMappingProfile.png" width="650px" style="display:block;">
 
 MRTK は、次のコントローラー/システムのデフォルト設定を提供します。
 
-- マウス (3D 空間マウスのサポートを含む)
-- タッチスクリーン
-- Xbox コントローラー
-- Windows Mixed Reality コントローラー
-- HoloLens ジェスチャー
-- HTC Vive ワンド コントローラー
-- Oculus Touch コントローラー
-- Oculus Remote コントローラー
-- 汎用 OpenVR デバイス (上級ユーザーのみ)
+* マウス (3D 空間マウスのサポートを含む)
+* タッチスクリーン
+* Xbox コントローラー
+* Windows Mixed Reality コントローラー
+* HoloLens ジェスチャー
+* HTC Vive ワンド コントローラー
+* Oculus Touch コントローラー
+* Oculus Remote コントローラー
+* 汎用 OpenVR デバイス (上級ユーザーのみ)
 
 あらかじめ構築されたコントローラー システムのいずれかの画像をクリックすると、対応するすべての入力に対して単一の入力アクションを設定できます (以下の Oculus Touch コントローラーの設定画面を参照)。
 
