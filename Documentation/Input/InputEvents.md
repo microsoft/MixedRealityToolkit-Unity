@@ -25,7 +25,7 @@ At the script level, input events can be consumed by implementing one of the eve
 
 1. The MRTK input system recognizes that an input event has occurred.
 1. The MRTK input system fires the relevant interface function of the input event to all [registered global input handlers](#register-for-global-input-events)
-1. For every active pointer registered with the input system
+1. For every active pointer registered with the input system:
     1. The input system determines which GameObject is in focus for the current pointer.
     1. The input system utilizes [Unity's event system](https://docs.unity3d.com/Manual/EventSystem.html) to fire the relevant interface function for all matching components on the focused GameObject.
     1. If at any point an input event has been [marked as used](#how-to-stop-input-events), the process will end and no further GameObjects will receive callbacks.
@@ -45,7 +45,7 @@ public class ShowHideSpeechHandler : MonoBehavior, IMixedRealitySpeechHandler
 {
     ...
 
-    public void IMixedRealitySpeechHandler.OnSpeechKeywordRecognized(SpeechEventData eventData)
+    void IMixedRealitySpeechHandler.OnSpeechKeywordRecognized(SpeechEventData eventData)
     {
         if (eventData.Command.Keyword == "smaller")
         {
@@ -85,7 +85,8 @@ public class GlobalHandListenerExample : MonoBehaviour,
 
     private void OnDisable()
     {
-        // We are being destroyed so instruct the Input System to disregard us for input event handling
+        // This component is being destroyed
+        // Instruct the Input System to disregard us for input event handling
         CoreServices.InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
         CoreServices.InputSystem?.UnregisterHandler<IMixedRealityHandJointHandler>(this);
     }
@@ -113,7 +114,8 @@ public class GlobalHandListenerExample : MonoBehaviour,
         }
     }
 
-    public void OnHandJointsUpdated(InputEventData<IDictionary<TrackedHandJoint, MixedRealityPose>> eventData)
+    public void OnHandJointsUpdated(
+                InputEventData<IDictionary<TrackedHandJoint, MixedRealityPose>> eventData)
     {
         MixedRealityPose palmPose;
         if (eventData.InputData.TryGetValue(TrackedHandJoint.Palm, out palmPose))
@@ -132,7 +134,7 @@ Fallback input handlers are similar to registered global input handlers but are 
 
 ```csharp
 public class GlobalHandListenerExample : MonoBehaviour,
-    IMixedRealitySourceStateHandler, // Handle source detected and lost
+    IMixedRealitySourceStateHandler // Handle source detected and lost
 {
     private void OnEnable()
     {
@@ -159,9 +161,9 @@ public class GlobalHandListenerExample : MonoBehaviour,
 
 ## How to stop input events
 
-Every input event interface provides a [`BaseInputEventData`](xref: Microsoft.MixedReality.Toolkit.Input.BaseInputEventData) data object as a parameter to each function on the interface. This event data object extends from Unity's own [`AbstractEventData`](https://docs.unity3d.com/2019.1/Documentation/ScriptReference/EventSystems.AbstractEventData.html).
+Every input event interface provides a [`BaseInputEventData`](xref:Microsoft.MixedReality.Toolkit.Input.BaseInputEventData) data object as a parameter to each function on the interface. This event data object extends from Unity's own [`AbstractEventData`](https://docs.unity3d.com/2019.1/Documentation/ScriptReference/EventSystems.AbstractEventData.html).
 
-In order to stop an input event from propagating through it's execution [as outlined](#input-events-in-action), a component can call [`AbstractEventData.Use()`](https://docs.unity3d.com/2019.1/Documentation/ScriptReference/EventSystems.AbstractEventData.Use.html) to mark the event as used. This will stop any other GameObjects from receiving the current input event.
+In order to stop an input event from propagating through it's execution [as outlined](#input-events-in-action), a component can call [`AbstractEventData.Use()`](https://docs.unity3d.com/2019.1/Documentation/ScriptReference/EventSystems.AbstractEventData.Use.html) to mark the event as used. This will stop any other GameObjects from receiving the current input event, with the exception of global input handlers.
 
 > [!NOTE]
 > A component that calls the `Use()` method will stop other GameObjects from receiving it. However, other components on the current GameObject will still receive the input event and fire any related interface functions.
@@ -170,3 +172,4 @@ In order to stop an input event from propagating through it's execution [as outl
 
 - [Pointers](Pointers.md)
 - [Speech](Speech.md)
+- [Input State](InputState.md)

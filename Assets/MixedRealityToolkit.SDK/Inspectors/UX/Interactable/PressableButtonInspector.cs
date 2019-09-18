@@ -17,8 +17,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         // All vectors / distances are in local space.
         private struct ButtonInfo
         {
-            // Convenience fields for box collider info
-            public Bounds TouchCageLocalBounds;
+            public Vector3 LocalCenter;
+            public Vector2 PlaneExtents;
 
             // The rotation of the push space.
             public Quaternion PushRotationLocal;
@@ -41,8 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private PressableButton button;
         private Transform transform;
-        private BoxCollider touchCage;
-        private NearInteractionTouchable touchable;
+        private NearInteractionTouchableSurface touchable;
 
         private ButtonInfo currentInfo;
 
@@ -67,8 +66,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             button = (PressableButton)target;
             transform = button.transform;
 
-            touchCage = button.GetComponent<BoxCollider>();
-
             if (labelStyle == null)
             {
                 labelStyle = new GUIStyle();
@@ -82,17 +79,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             pressDistance = serializedObject.FindProperty("pressDistance");
             releaseDistanceDelta = serializedObject.FindProperty("releaseDistanceDelta");
 
-            touchable = button.GetComponent<NearInteractionTouchable>();
+            touchable = button.GetComponent<NearInteractionTouchableSurface>();
         }
 
         [DrawGizmo(GizmoType.Selected)]
         private void OnSceneGUI()
         {
-            if (touchCage == null)
-            {
-                return;
-            }
-
             if (!VisiblePlanes)
             {
                 return;
@@ -116,10 +108,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             ButtonInfo info = new ButtonInfo();
 
-            info.TouchCageLocalBounds = new Bounds(touchCage.center, touchCage.size);
+            info.LocalCenter = touchable.LocalCenter;
+            info.PlaneExtents = touchable.Bounds;
 
-            Vector3 pressDirLocal = (touchable != null) ? -1.0f * touchable.LocalForward : Vector3.forward;
-            Vector3 upDirLocal = (touchable != null) ? touchable.LocalUp : Vector3.up;
+            Vector3 pressDirLocal = (touchable != null) ? touchable.LocalPressDirection : Vector3.forward;
+            Vector3 upDirLocal = Vector3.up;
+
+            if (touchable is NearInteractionTouchable touchableConcrete)
+            {
+                upDirLocal = touchableConcrete.LocalUp;
+            }
 
             info.PushRotationLocal = Quaternion.LookRotation(pressDirLocal, upDirLocal);
             
@@ -138,18 +136,22 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUI.BeginChangeCheck();
             }
 
+            var targetBehaviour = (MonoBehaviour)target;
+            bool isOpaque = targetBehaviour.isActiveAndEnabled;
+            float alpha = (isOpaque) ? 1.0f : 0.5f;
+
             // START PUSH
-            Handles.color = Color.cyan;
-            float newStartPushDistance = DrawPlaneAndHandle(startPlaneVertices, info.TouchCageLocalBounds.size * 0.5f, info.StartPushDistance, info, "Start Push Distance", editingEnabled);
+            Handles.color = ApplyAlpha(Color.cyan, alpha);
+            float newStartPushDistance = DrawPlaneAndHandle(startPlaneVertices, info.PlaneExtents * 0.5f, info.StartPushDistance, info, "Start Push Distance", editingEnabled);
             if (editingEnabled && newStartPushDistance != info.StartPushDistance)
             {
                 EnforceDistanceOrdering(ref info);
-                info.StartPushDistance = Mathf.Min(newStartPushDistance, info.ReleaseDistance);
+                info.StartPushDistance = ClampStartPushDistance(Mathf.Min(newStartPushDistance, info.ReleaseDistance));
             }
 
             // RELEASE DISTANCE
-            Handles.color = Color.red;
-            float newReleaseDistance = DrawPlaneAndHandle(releasePlaneVertices, info.TouchCageLocalBounds.size * 0.3f, info.ReleaseDistance, info, "Release Distance", editingEnabled);
+            Handles.color = ApplyAlpha(Color.red, alpha);
+            float newReleaseDistance = DrawPlaneAndHandle(releasePlaneVertices, info.PlaneExtents * 0.3f, info.ReleaseDistance, info, "Release Distance", editingEnabled);
             if (editingEnabled && newReleaseDistance != info.ReleaseDistance)
             {
                 EnforceDistanceOrdering(ref info);
@@ -157,8 +159,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             // PRESS DISTANCE
-            Handles.color = Color.yellow;
-            float newPressDistance = DrawPlaneAndHandle(pressPlaneVertices, info.TouchCageLocalBounds.size * 0.35f, info.PressDistance, info, "Press Distance", editingEnabled);
+            Handles.color = ApplyAlpha(Color.yellow, alpha);
+            float newPressDistance = DrawPlaneAndHandle(pressPlaneVertices, info.PlaneExtents * 0.35f, info.PressDistance, info, "Press Distance", editingEnabled);
             if (editingEnabled && newPressDistance != info.PressDistance)
             {
                 EnforceDistanceOrdering(ref info);
@@ -166,8 +168,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             // MAX PUSH
-            Handles.color = Color.cyan;
-            float newMaxPushDistance = DrawPlaneAndHandle(endPlaneVertices, info.TouchCageLocalBounds.size * 0.5f, info.MaxPushDistance, info, "Max Push Distance", editingEnabled);
+            var purple = new Color(0.28f, 0.0f, 0.69f);
+            Handles.color = ApplyAlpha(purple, alpha);
+            float newMaxPushDistance = DrawPlaneAndHandle(endPlaneVertices, info.PlaneExtents * 0.5f, info.MaxPushDistance, info, "Max Push Distance", editingEnabled);
             if (editingEnabled && newMaxPushDistance != info.MaxPushDistance)
             {
                 EnforceDistanceOrdering(ref info);
@@ -196,12 +199,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private void EnforceDistanceOrdering(ref ButtonInfo info)
         {
-            info.StartPushDistance = Mathf.Min(new[] { info.StartPushDistance, info.ReleaseDistance, info.PressDistance, info.MaxPushDistance });
+            info.StartPushDistance = ClampStartPushDistance(Mathf.Min(new[] { info.StartPushDistance, info.ReleaseDistance, info.PressDistance, info.MaxPushDistance }));
             info.ReleaseDistance = Mathf.Min(new[] { info.ReleaseDistance, info.PressDistance, info.MaxPushDistance });
             info.PressDistance = Mathf.Min(info.PressDistance, info.MaxPushDistance);
         }
 
-        private float DrawPlaneAndHandle(Vector3[] vertices, Vector3 halfExtents, float distance, ButtonInfo info, string label, bool editingEnabled)
+        private float DrawPlaneAndHandle(Vector3[] vertices, Vector2 halfExtents, float distance, ButtonInfo info, string label, bool editingEnabled)
         {
             Vector3 centerWorld = button.GetWorldPositionAlongPushDirection(distance);
             MakeQuadFromPoint(vertices, centerWorld, halfExtents, info);
@@ -231,7 +234,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 float handleSize = HandleUtility.GetHandleSize(vertices[1]) * 0.15f;
 
-                Vector3 dir = (touchable != null) ? -1.0f * touchable.LocalForward : Vector3.forward;
+                Vector3 dir = (touchable != null) ? touchable.LocalPressDirection : Vector3.forward;
                 Vector3 planeNormal = button.transform.TransformDirection(dir);
                 Handles.ArrowHandleCap(0, vertices[1], Quaternion.LookRotation(planeNormal), handleSize * 2, EventType.Repaint);
                 Handles.ArrowHandleCap(0, vertices[1], Quaternion.LookRotation(-planeNormal), handleSize * 2, EventType.Repaint);
@@ -269,6 +272,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             DrawPropertiesExcluding(serializedObject, excludeProperties);
 
+            startPushDistance.floatValue = ClampStartPushDistance(startPushDistance.floatValue);
+
             // show button state in play mode
             {
                 EditorGUI.BeginDisabledGroup(Application.isPlaying == false);
@@ -286,21 +291,22 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUI.BeginDisabledGroup(Application.isPlaying == true);
                 EditorGUILayout.Space();
                 EditorGUILayout.LabelField("Editor Settings", EditorStyles.boldLabel);
-                VisiblePlanes = SessionState.GetBool(VisiblePlanesKey, true);
-                bool newValue = EditorGUILayout.Toggle("Show Button Event Planes", VisiblePlanes);
-                if (newValue != VisiblePlanes)
+                var prevVisiblePlanes = SessionState.GetBool(VisiblePlanesKey, true);
+                VisiblePlanes = EditorGUILayout.Toggle("Show Button Event Planes", prevVisiblePlanes);
+                if (VisiblePlanes != prevVisiblePlanes)
                 {
-                    SessionState.SetBool(VisiblePlanesKey, newValue);
+                    SessionState.SetBool(VisiblePlanesKey, VisiblePlanes);
+                    EditorUtility.SetDirty(target);
                 }
 
                 // enable plane editing
                 {
                     EditorGUI.BeginDisabledGroup(VisiblePlanes == false);
-                    EditingEnabled = SessionState.GetBool(EditingEnabledKey, false);
-                    newValue = EditorGUILayout.Toggle("Make Planes Editable", EditingEnabled);
-                    if (newValue != EditingEnabled)
+                    var prevEditingEnabled = SessionState.GetBool(EditingEnabledKey, false);
+                    EditingEnabled = EditorGUILayout.Toggle("Make Planes Editable", EditingEnabled);
+                    if (EditingEnabled != prevEditingEnabled)
                     {
-                        SessionState.SetBool(EditingEnabledKey, newValue);
+                        SessionState.SetBool(EditingEnabledKey, EditingEnabled);
                         EditorUtility.SetDirty(target);
                     }
                     EditorGUI.EndDisabledGroup();
@@ -352,14 +358,32 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             Handles.color = colorOnEnter;
         }
 
-        private void MakeQuadFromPoint(Vector3[] vertices, Vector3 centerWorld, Vector3 halfExtents, ButtonInfo info)
+        private void MakeQuadFromPoint(Vector3[] vertices, Vector3 centerWorld, Vector2 halfExtents, ButtonInfo info)
         {
-            Vector3 touchCageOrigin = touchCage.center;
+            Vector3 touchCageOrigin = touchable.LocalCenter;
             touchCageOrigin.z = 0.0f;
             vertices[0] = transform.TransformVector(info.PushRotationLocal * (new Vector3(-halfExtents.x, -halfExtents.y, 0.0f) + touchCageOrigin)) + centerWorld;
             vertices[1] = transform.TransformVector(info.PushRotationLocal * (new Vector3(-halfExtents.x, +halfExtents.y, 0.0f) + touchCageOrigin)) + centerWorld;
             vertices[2] = transform.TransformVector(info.PushRotationLocal * (new Vector3(+halfExtents.x, +halfExtents.y, 0.0f) + touchCageOrigin)) + centerWorld;
             vertices[3] = transform.TransformVector(info.PushRotationLocal * (new Vector3(+halfExtents.x, -halfExtents.y, 0.0f) + touchCageOrigin)) + centerWorld;
+        }
+
+        private float ClampStartPushDistance(float startDistance)
+        {
+            // If the touchable is UnityUI based, then the start distance must be positive.
+            if (touchable is NearInteractionTouchableUnityUI && startDistance < 0.0f)
+            {
+                return 0.0f;
+            }
+            else
+            {
+                return startDistance;
+            }
+        }
+
+        private static Color ApplyAlpha(Color color, float alpha)
+        {
+            return new Color(color.r, color.g, color.b, color.a * alpha);
         }
     }
 }

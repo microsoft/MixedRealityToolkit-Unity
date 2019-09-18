@@ -95,13 +95,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // corresponding to a triangle. The intent to is to verify that
             // the hand visualizer can be called with different sized
             // input meshes and not crash (which is required on some platforms)
-            var baseHandVisualizer = new BaseHandVisualizer
-            {
-                Controller = new MockController()
-            };
+
+            GameObject baseHandVisualizerGameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            var baseHandVisualizer = baseHandVisualizerGameObject.AddComponent<BaseHandVisualizer>();
+            baseHandVisualizer.Controller = new MockController();
+
             baseHandVisualizer.OnHandMeshUpdated(CreateQuadInputEventData());
             baseHandVisualizer.OnHandMeshUpdated(CreateTriangleInputEventData());
             yield return null;
+
+            Object.Destroy(baseHandVisualizer);
+            Object.Destroy(baseHandVisualizerGameObject);
         }
 
         private static InputEventData<HandMeshInfo> CreateTriangleInputEventData()

@@ -128,10 +128,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var inputSystem = PlayModeTestUtilities.GetInputSystem();
 
             var iss = PlayModeTestUtilities.GetInputSimulationService();
-            var oldIsp = iss.InputSimulationProfile;
-            var isp = ScriptableObject.CreateInstance<MixedRealityInputSimulationProfile>();
-            isp.HandSimulationMode = HandSimulationMode.Gestures;
-            iss.InputSimulationProfile = isp;
+            var oldHandSimMode = iss.HandSimulationMode;
+            iss.HandSimulationMode = HandSimulationMode.Gestures;
 
             Vector3 underPointerPos = new Vector3(0, 0, 2);
             Vector3 abovePointerPos = new Vector3(0, -2, 2);
@@ -204,7 +202,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             VerifyCursorState(inputSystem.GazeProvider.GazeCursor, CursorStateEnum.Select);
 
             // Restore the input simulation profile
-            iss.InputSimulationProfile = oldIsp;
+            iss.HandSimulationMode = oldHandSimMode;
             yield return null;
         }
 
@@ -228,7 +226,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForFixedUpdate();
             yield return null;
 
-            // Move cube back to original postion (described above)
+            // Move cube back to original position (described above)
             cube.transform.localPosition = new Vector3(0, 0, 2);
             yield return new WaitForFixedUpdate();
             yield return null;

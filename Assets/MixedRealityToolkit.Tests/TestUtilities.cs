@@ -60,7 +60,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Creates a number of scenes and loads them additively for testing. Must create a minimum of 1.
         /// Used only in editor stests.
         /// </summary>
-        /// <param name="numScenesToCreate"></param>
         public static void EditorCreateScenes(int numScenesToCreate = 1)
         {
             // Create default test scenes.
@@ -127,8 +126,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Creates the requested number of scenes, then creates one instance of the MixedRealityToolkit in the active scene.
         /// </summary>
-        /// <param name="useDefaultProfile"></param>
-        /// <param name="numScenesToCreate"></param>
         public static void InitializeMixedRealityToolkitAndCreateScenes(bool useDefaultProfile = false, int numScenesToCreate = 1)
         {
             // Setup

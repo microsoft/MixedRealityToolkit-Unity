@@ -24,7 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <remarks>
         /// Reserved for future implementation
         /// </remarks>
-        /// <param name="eventData"></param>
         public override void OnInputDown(InputEventData eventData)
         {
             base.OnInputDown(eventData);
@@ -37,7 +36,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <remarks>
         /// Reserved for future implementation
         /// </remarks>
-        /// <param name="eventData"></param>
         public override void OnInputUp(InputEventData eventData)
         {
             base.OnInputUp(eventData);
@@ -50,7 +48,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <remarks>
         /// Reserved for future implementation
         /// </remarks>
-        /// <param name="eventData"></param>
         public override void OnInputChanged(InputEventData<float> eventData)
         {
             base.OnInputChanged(eventData);
@@ -63,7 +60,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <remarks>
         /// Reserved for future implementation
         /// </remarks>
-        /// <param name="eventData"></param>
         public override void OnInputChanged(InputEventData<Vector2> eventData)
         {
             base.OnInputChanged(eventData);

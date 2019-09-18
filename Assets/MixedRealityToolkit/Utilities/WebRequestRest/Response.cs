@@ -31,10 +31,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="successful"></param>
-        /// <param name="responseBody"></param>
-        /// <param name="responseData"></param>
-        /// <param name="responseCode"></param>
         public Response(bool successful, string responseBody, byte[] responseData, long responseCode)
         {
             Successful = successful;

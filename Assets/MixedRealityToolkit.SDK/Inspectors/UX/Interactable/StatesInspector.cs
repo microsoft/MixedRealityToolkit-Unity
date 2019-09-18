@@ -114,7 +114,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Get a list of state names
         /// </summary>
-        /// <returns></returns>
         protected string[] GetStateOptions()
         {
             return Enum.GetNames(typeof(InteractableStates.InteractableStateEnum));

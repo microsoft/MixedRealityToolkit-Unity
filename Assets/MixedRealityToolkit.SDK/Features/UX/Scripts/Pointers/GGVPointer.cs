@@ -199,12 +199,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // This caused issues when the head rotated, but the hand stayed where it was.
                 // Now we're returning a rotation based on the vector from the camera position
                 // to the hand. This rotation is not affected by rotating your head.
-                //
-                // The y value is set to 0 here as we want the rotation to be about the y axis.
-                // Without this, one-hand manipulating an object would give it unwanted x/z 
-                // rotations as you move your hand up and down.
                 Vector3 look = Position - CameraCache.Main.transform.position;
-                look.y = 0;
                 return Quaternion.LookRotation(look);
             }
         }
@@ -339,14 +334,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
 
                 // Destroy the pointer since nobody else is destroying us
-                if (!Application.isPlaying)
-                {
-                    DestroyImmediate(gameObject);
-                }
-                else
-                {
-                    Destroy(gameObject);
-                }
+                GameObjectExtensions.DestroyGameObject(gameObject);
             }
         }
 

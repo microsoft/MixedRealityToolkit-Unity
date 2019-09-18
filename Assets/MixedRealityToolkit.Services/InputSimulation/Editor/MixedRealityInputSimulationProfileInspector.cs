@@ -11,11 +11,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
     [CustomEditor(typeof(MixedRealityInputSimulationProfile))]
     public class MixedRealityInputSimulationProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
+        private SerializedProperty indicatorsPrefab;
+        private SerializedProperty doublePressTime;
+
         private SerializedProperty isCameraControlEnabled;
 
-        private SerializedProperty extraMouseSensitivityScale;
-        private SerializedProperty defaultMouseSensitivity;
+        private SerializedProperty mouseLookSpeed;
+        private SerializedProperty mouseRotationSensitivity;
         private SerializedProperty mouseLookButton;
+        private SerializedProperty mouseLookToggle;
         private SerializedProperty isControllerLookInverted;
         private SerializedProperty currentControlMode;
         private SerializedProperty fastControlKey;
@@ -23,12 +27,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private SerializedProperty controlFastSpeed;
         private SerializedProperty moveHorizontal;
         private SerializedProperty moveVertical;
+        private SerializedProperty moveUpDown;
         private SerializedProperty mouseX;
         private SerializedProperty mouseY;
+        private SerializedProperty mouseScroll;
         private SerializedProperty lookHorizontal;
         private SerializedProperty lookVertical;
 
-        private SerializedProperty handSimulationMode;
+        private SerializedProperty defaultHandSimulationMode;
 
         private SerializedProperty simulateEyePosition;
 
@@ -37,6 +43,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private SerializedProperty handHideTimeout;
         private SerializedProperty leftHandManipulationKey;
         private SerializedProperty rightHandManipulationKey;
+        private SerializedProperty mouseHandRotationSpeed;
+        private SerializedProperty handRotateButton;
 
         private SerializedProperty defaultHandGesture;
         private SerializedProperty leftMouseHandGesture;
@@ -48,14 +56,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private SerializedProperty handDepthMultiplier;
         private SerializedProperty handJitterAmount;
 
-        private SerializedProperty yawHandCWKey;
-        private SerializedProperty yawHandCCWKey;
-        private SerializedProperty pitchHandCWKey;
-        private SerializedProperty pitchHandCCWKey;
-        private SerializedProperty rollHandCWKey;
-        private SerializedProperty rollHandCCWKey;
-        private SerializedProperty handRotationSpeed;
-
         private SerializedProperty holdStartDuration;
         private SerializedProperty navigationStartThreshold;
 
@@ -66,11 +66,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.OnEnable();
 
+            indicatorsPrefab = serializedObject.FindProperty("indicatorsPrefab");
+            doublePressTime = serializedObject.FindProperty("doublePressTime");
+
             isCameraControlEnabled = serializedObject.FindProperty("isCameraControlEnabled");
 
-            extraMouseSensitivityScale = serializedObject.FindProperty("extraMouseSensitivityScale");
-            defaultMouseSensitivity = serializedObject.FindProperty("defaultMouseSensitivity");
+            mouseLookSpeed = serializedObject.FindProperty("mouseLookSpeed");
+            mouseRotationSensitivity = serializedObject.FindProperty("mouseRotationSensitivity");
             mouseLookButton = serializedObject.FindProperty("mouseLookButton");
+            mouseLookToggle = serializedObject.FindProperty("mouseLookToggle");
             isControllerLookInverted = serializedObject.FindProperty("isControllerLookInverted");
             currentControlMode = serializedObject.FindProperty("currentControlMode");
             fastControlKey = serializedObject.FindProperty("fastControlKey");
@@ -78,12 +82,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             controlFastSpeed = serializedObject.FindProperty("controlFastSpeed");
             moveHorizontal = serializedObject.FindProperty("moveHorizontal");
             moveVertical = serializedObject.FindProperty("moveVertical");
+            moveUpDown = serializedObject.FindProperty("moveUpDown");
             mouseX = serializedObject.FindProperty("mouseX");
             mouseY = serializedObject.FindProperty("mouseY");
+            mouseScroll = serializedObject.FindProperty("mouseScroll");
             lookHorizontal = serializedObject.FindProperty("lookHorizontal");
             lookVertical = serializedObject.FindProperty("lookVertical");
 
-            handSimulationMode = serializedObject.FindProperty("handSimulationMode");
+            defaultHandSimulationMode = serializedObject.FindProperty("defaultHandSimulationMode");
 
             simulateEyePosition = serializedObject.FindProperty("simulateEyePosition");
 
@@ -92,6 +98,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             handHideTimeout = serializedObject.FindProperty("handHideTimeout");
             leftHandManipulationKey = serializedObject.FindProperty("leftHandManipulationKey");
             rightHandManipulationKey = serializedObject.FindProperty("rightHandManipulationKey");
+            mouseHandRotationSpeed = serializedObject.FindProperty("mouseHandRotationSpeed");
+            handRotateButton = serializedObject.FindProperty("handRotateButton");
 
             defaultHandGesture = serializedObject.FindProperty("defaultHandGesture");
             leftMouseHandGesture = serializedObject.FindProperty("leftMouseHandGesture");
@@ -105,14 +113,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             defaultHandDistance = serializedObject.FindProperty("defaultHandDistance");
             handDepthMultiplier = serializedObject.FindProperty("handDepthMultiplier");
             handJitterAmount = serializedObject.FindProperty("handJitterAmount");
-
-            yawHandCWKey = serializedObject.FindProperty("yawHandCWKey");
-            yawHandCCWKey = serializedObject.FindProperty("yawHandCCWKey");
-            pitchHandCWKey = serializedObject.FindProperty("pitchHandCWKey");
-            pitchHandCCWKey = serializedObject.FindProperty("pitchHandCCWKey");
-            rollHandCWKey = serializedObject.FindProperty("rollHandCWKey");
-            rollHandCCWKey = serializedObject.FindProperty("rollHandCCWKey");
-            handRotationSpeed = serializedObject.FindProperty("handRotationSpeed");
         }
 
         public override void OnInspectorGUI()
@@ -123,14 +123,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
             {
+                EditorGUILayout.PropertyField(indicatorsPrefab);
+
+                EditorGUILayout.Space();
+                EditorGUILayout.BeginVertical("Label");
+                EditorGUILayout.PropertyField(mouseRotationSensitivity);
+                EditorGUILayout.PropertyField(mouseX);
+                EditorGUILayout.PropertyField(mouseY);
+                EditorGUILayout.PropertyField(mouseScroll);
+                EditorGUILayout.PropertyField(doublePressTime);
+                EditorGUILayout.EndVertical();
+
                 EditorGUILayout.PropertyField(isCameraControlEnabled);
                 {
                     EditorGUILayout.BeginVertical("Label");
                     using (new GUIEnabledWrapper(isCameraControlEnabled.boolValue))
                     {
-                        EditorGUILayout.PropertyField(extraMouseSensitivityScale);
-                        EditorGUILayout.PropertyField(defaultMouseSensitivity);
+                        EditorGUILayout.PropertyField(mouseLookSpeed);
                         EditorGUILayout.PropertyField(mouseLookButton);
+                        EditorGUILayout.PropertyField(mouseLookToggle);
                         EditorGUILayout.PropertyField(isControllerLookInverted);
                         EditorGUILayout.PropertyField(currentControlMode);
                         EditorGUILayout.PropertyField(fastControlKey);
@@ -138,8 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         EditorGUILayout.PropertyField(controlFastSpeed);
                         EditorGUILayout.PropertyField(moveHorizontal);
                         EditorGUILayout.PropertyField(moveVertical);
-                        EditorGUILayout.PropertyField(mouseX);
-                        EditorGUILayout.PropertyField(mouseY);
+                        EditorGUILayout.PropertyField(moveUpDown);
                         EditorGUILayout.PropertyField(lookHorizontal);
                         EditorGUILayout.PropertyField(lookVertical);
 
@@ -151,46 +161,36 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 EditorGUILayout.PropertyField(simulateEyePosition);
 
                 EditorGUILayout.Space();
-                EditorGUILayout.PropertyField(handSimulationMode);
+                EditorGUILayout.PropertyField(defaultHandSimulationMode);
                 {
                     EditorGUILayout.BeginVertical("Label");
-                    bool isHandSimEnabled = (handSimulationMode.enumValueIndex != (int)HandSimulationMode.Disabled);
-                    using (new GUIEnabledWrapper(isHandSimEnabled))
-                    {
-                        EditorGUILayout.PropertyField(toggleLeftHandKey);
-                        EditorGUILayout.PropertyField(toggleRightHandKey);
-                        EditorGUILayout.PropertyField(handHideTimeout);
-                        EditorGUILayout.PropertyField(leftHandManipulationKey);
-                        EditorGUILayout.PropertyField(rightHandManipulationKey);
-                        EditorGUILayout.Space();
 
-                        EditorGUILayout.PropertyField(defaultHandGesture);
-                        EditorGUILayout.PropertyField(leftMouseHandGesture);
-                        EditorGUILayout.PropertyField(middleMouseHandGesture);
-                        EditorGUILayout.PropertyField(rightMouseHandGesture);
-                        EditorGUILayout.PropertyField(handGestureAnimationSpeed);
-                        EditorGUILayout.Space();
+                    EditorGUILayout.PropertyField(toggleLeftHandKey);
+                    EditorGUILayout.PropertyField(toggleRightHandKey);
+                    EditorGUILayout.PropertyField(handHideTimeout);
+                    EditorGUILayout.PropertyField(leftHandManipulationKey);
+                    EditorGUILayout.PropertyField(rightHandManipulationKey);
+                    EditorGUILayout.PropertyField(mouseHandRotationSpeed);
+                    EditorGUILayout.PropertyField(handRotateButton);
+                    EditorGUILayout.Space();
 
-                        EditorGUILayout.PropertyField(holdStartDuration);
-                        EditorGUILayout.PropertyField(navigationStartThreshold);
-                        EditorGUILayout.Space();
+                    EditorGUILayout.PropertyField(defaultHandGesture);
+                    EditorGUILayout.PropertyField(leftMouseHandGesture);
+                    EditorGUILayout.PropertyField(middleMouseHandGesture);
+                    EditorGUILayout.PropertyField(rightMouseHandGesture);
+                    EditorGUILayout.PropertyField(handGestureAnimationSpeed);
+                    EditorGUILayout.Space();
 
-                        EditorGUILayout.PropertyField(defaultHandDistance);
-                        EditorGUILayout.PropertyField(handDepthMultiplier);
-                        EditorGUILayout.PropertyField(handJitterAmount);
-                        EditorGUILayout.Space();
+                    EditorGUILayout.PropertyField(holdStartDuration);
+                    EditorGUILayout.PropertyField(navigationStartThreshold);
+                    EditorGUILayout.Space();
 
-                        EditorGUILayout.PropertyField(yawHandCWKey);
-                        EditorGUILayout.PropertyField(yawHandCCWKey);
-                        EditorGUILayout.PropertyField(pitchHandCWKey);
-                        EditorGUILayout.PropertyField(pitchHandCCWKey);
-                        EditorGUILayout.PropertyField(rollHandCWKey);
-                        EditorGUILayout.PropertyField(rollHandCCWKey);
-                        EditorGUILayout.PropertyField(handRotationSpeed);
-                        EditorGUILayout.Space();
+                    EditorGUILayout.PropertyField(defaultHandDistance);
+                    EditorGUILayout.PropertyField(handDepthMultiplier);
+                    EditorGUILayout.PropertyField(handJitterAmount);
+                    EditorGUILayout.Space();
 
-                        EditorGUILayout.EndVertical();
-                    }
+                    EditorGUILayout.EndVertical();
                 }
 
                 serializedObject.ApplyModifiedProperties();

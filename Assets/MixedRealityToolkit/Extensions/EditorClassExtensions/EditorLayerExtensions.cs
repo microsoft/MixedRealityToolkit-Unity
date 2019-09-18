@@ -69,8 +69,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <summary>
         /// Attempts to remove the layer from the Project Settings Tag Manager.
         /// </summary>
-        /// <param name="layerName"></param>
-        /// <returns></returns>
         public static void RemoveLayer(string layerName)
         {
             for (int i = 0; i < TagManagerLayers.arraySize; i++)
