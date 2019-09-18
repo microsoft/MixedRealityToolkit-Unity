@@ -1135,6 +1135,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Force re-initialization of Interactable from events, themes and state references
         /// </summary>
+        [System.Obsolete("Use RefreshSetup() instead")]
+        public void ForceUpdateThemes()
+        {
+            RefreshSetup();
+        }
+
+        /// <summary>
+        /// Force re-initialization of Interactable from events, themes and state references
+        /// </summary>
         public void RefreshSetup()
         {
             SetupEvents();
