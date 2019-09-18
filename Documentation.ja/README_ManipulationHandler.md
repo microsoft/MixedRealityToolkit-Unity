@@ -33,9 +33,9 @@
 * *Scale*: スケーリングのみ可能です。
 * *Rotate*: 回転のみ許可されます。。
 * *Move Scale*: 移動とスケーリングが許可されます。
-* *Move Rotate*:移動および回転が許可されます。
+* *Move Rotate*: 移動および回転が許可されます。
 * *Rotate Scale*: 回転とスケーリングが許可されます。
-* *Move Rotate Scale*:移動、回転およびスケーリングが許可されます。
+* *Move Rotate Scale*: 移動、回転およびスケーリングが許可されます。
 
 ![Manipulation Handler](../Documentation/Images/ManipulationHandler/MRTK_ManipulationHandler_TwoHanded.jpg)
 
