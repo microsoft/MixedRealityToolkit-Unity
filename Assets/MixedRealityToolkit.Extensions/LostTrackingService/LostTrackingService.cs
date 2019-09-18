@@ -1,15 +1,19 @@
-using Microsoft.MixedReality.Toolkit.CameraSystem;
-using Microsoft.MixedReality.Toolkit.Experimental.CameraSystem;
-using Microsoft.MixedReality.Toolkit.Utilities;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using System;
 using UnityEngine;
 using UnityEngine.XR.WSA;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
 {
-	[MixedRealityExtensionService(SupportedPlatforms.WindowsStandalone|SupportedPlatforms.MacStandalone|SupportedPlatforms.LinuxStandalone|SupportedPlatforms.WindowsUniversal)]
+	[MixedRealityExtensionService(SupportedPlatforms.WindowsUniversal)]
 	public class LostTrackingService : BaseExtensionService, ILostTrackingService, IMixedRealityExtensionService
 	{
         public bool TrackingLost { get; private set; } = false;
+        public Action OnTrackingLost { get; set; }
+        public Action OnTrackingRestored { get; set; }
 
 		private LostTrackingServiceProfile profile;
         private ILostTrackingVisual visual;
@@ -23,26 +27,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
 
 		public override void Initialize()
 		{
+#if UNITY_WSA
             UnityEngine.XR.WSA.WorldManager.OnPositionalLocatorStateChanged += OnPositionalLocatorStateChanged;
+#else
+            Debug.LogWarning("This service is not supported on this platform.");
+#endif
         }
 
-        public override void Update()
+#if UNITY_EDITOR
+        public void EditorSetTrackingLost(bool trackingLost)
         {
-            if (UnityEngine.Input.GetKeyDown(KeyCode.Alpha0))
-            {
-                Debug.Log("Toggling tracking lost...");
-                if (!TrackingLost)
-                {
-                    TrackingLost = true;
-                    EnableTrackingLostVisual();
-                }
-                else
-                {
-                    TrackingLost = false;
-                    DisableTrackingLostVisual();
-                }
-            }
+            SetTrackingLost(trackingLost);
         }
+#endif
 
         private void DisableTrackingLostVisual()
         {
@@ -103,20 +100,39 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
             }
         }
 
+        private void SetTrackingLost(bool trackingLost)
+        {
+            if (TrackingLost != trackingLost)
+            {
+                TrackingLost = trackingLost;
+                if (TrackingLost)
+                {
+                    OnTrackingLost?.Invoke();
+                    EnableTrackingLostVisual();
+                }
+                else
+                {
+                    OnTrackingRestored?.Invoke();
+                    DisableTrackingLostVisual();
+                }
+            }
+        }
+
+#if UNITY_WSA
         private void OnPositionalLocatorStateChanged(PositionalLocatorState oldState, PositionalLocatorState newState)
         {
+            bool trackingLost = TrackingLost;
             switch (newState)
             {
                 case PositionalLocatorState.Inhibited:
-                    TrackingLost = true;
-                    EnableTrackingLostVisual();
+                    SetTrackingLost(true);
                     break;
 
                 default:
-                    TrackingLost = false;
-                    DisableTrackingLostVisual();
+                    SetTrackingLost(false);
                     break;
             }
         }
+#endif
     }
 }

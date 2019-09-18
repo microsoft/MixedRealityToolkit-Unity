@@ -1,5 +1,11 @@
-﻿namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
 {
+    /// <summary>
+    /// Interface for a lost tracking visual. Used by the ILostTrackingService extension.
+    /// </summary>
     public interface ILostTrackingVisual
     {
         /// <summary>
@@ -14,7 +20,7 @@
         void SetLayer(int layer);
 
         /// <summary>
-        /// Resets the visual state to default
+        /// Resets the visual state to default.
         /// </summary>
         void ResetVisual();
     }
