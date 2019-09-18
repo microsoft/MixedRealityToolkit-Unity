@@ -22,7 +22,7 @@
 
 [`PressableButtonHoloLens2.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab) は、HoloLens 2 のシェル スタイル ボタンで、ダイレクト ハンド トラッキングの入力用に精密な動きをサポートします。 `Interactable` のスクリプトと `PressableButton` のスクリプトを組合わせています。
 
-## Pressable button の使い方
+## 押しボタン (Pressable button) の使い方
 
 単に [`PressableButtonHoloLens2.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab) または[`PressableButtonHoloLens2Unplated.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2Unplated.prefab) をドラッグしてシーンに置くだけです。これらのボタン プレハブは、多関節ハンド (articulated hand) 入力やゲイズなど、様々なタイプの入力に対して視聴覚フィードバックするように既に設定されています。
 
@@ -53,10 +53,10 @@
 **ボックスコライダー (Box Collider)**
 ボタンの前面プレートのための `Box Collider`。
 
-**Pressable Button**
+**押しボタン (Pressable Button)**
 ハンド プレス インタラクションでのボタン移動のロジック。
 
-**Physical Press Event Router**
+**物理的なプレス イベントのルーター (Physical Press Event Router)**
 ハンド プレス インタラクションから [Interactable](README_Interactable.md) へイベントを送るスクリプト。
 
 **Interactable**
@@ -68,7 +68,7 @@
 *NearInteractionTouchable.cs*
 多関節ハンドでオブジェクトをタッチ可能にするために必要です。
 
-## Prefab のレイアウト
+## プレハブのレイアウト
 
 *ButtonContent* オブジェクトには、フロント プレート、テキスト ラベル、およびアイコンが含まれています。 *FrontPlate*は、*Button_Box* シェーダーを使用して、人差し指の近接に応答します。 光る境界線、近接ライト、およびタッチのパルス エフェクトを示します。 テキスト ラベルは TextMesh Pro で作成されます。 *SeeItSayItLabel* の可視性は、[Interactable]（README_Interactable.md）のテーマによって制御されます。
 
@@ -76,7 +76,7 @@
 
 ## 音声コマンド ('See-it, Say-it')
 
-**Speech Input Handler**
+**音声入力ハンドラー (Speech Input Handler)**
 Pressable Buttonの [Interactable]（README_Interactable.md）スクリプトは、すでに `IMixedRealitySpeechHandler`を実装しています。 ここで音声コマンドのキーワードを設定できます。
 
 <img src="../Documentation/Images/Button/MRTK_Button_Speech1.png" width="450">
@@ -91,12 +91,13 @@ Pressable Button プレハブには、*SeeItSayItLabel* オブジェクトの下
 
 <img src="../Documentation/Images/Button/MRTK_Button_Speech3.png" width="450">
 
-## How to make a button from scratch ##
+## ボタンをゼロから作成する方法
+
 これらのボタンの例は、**PressableButtonExample** のシーンにあります。
 
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCube0.png">
 
-### 1. キューブで Pressable Button を作成する (Near interaction のみ)
+### 1. キューブで Pressable Button を作成する (ニア インタラクションのみ)
 
 1. Unity のキューブを作成します (GameObject> 3D Object> Cube)
 2. `PressableButton.cs` のスクリプトを追加します
