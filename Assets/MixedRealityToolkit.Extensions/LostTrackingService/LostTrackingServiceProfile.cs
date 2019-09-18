@@ -6,10 +6,10 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
 {
-	[MixedRealityServiceProfile(typeof(ILostTrackingService))]
-	[CreateAssetMenu(fileName = "LostTrackingServiceProfile", menuName = "MixedRealityToolkit/LostTrackingService Configuration Profile")]
-	public class LostTrackingServiceProfile : BaseMixedRealityProfile
-	{
+    [MixedRealityServiceProfile(typeof(ILostTrackingService))]
+    [CreateAssetMenu(fileName = "LostTrackingServiceProfile", menuName = "MixedRealityToolkit/LostTrackingService Configuration Profile")]
+    public class LostTrackingServiceProfile : BaseMixedRealityProfile
+    {
         public GameObject TrackingLostVisualPrefab => trackingLostVisualPrefab;
 
         public int TrackingLostVisualLayer => trackingLostVisualLayer;

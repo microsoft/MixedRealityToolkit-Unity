@@ -7,10 +7,10 @@ using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking.Editor
-{	
-	[MixedRealityServiceInspector(typeof(ILostTrackingService))]
-	public class LostTrackingServiceInspector : BaseMixedRealityServiceInspector
-	{
+{
+    [MixedRealityServiceInspector(typeof(ILostTrackingService))]
+    public class LostTrackingServiceInspector : BaseMixedRealityServiceInspector
+    {
         public override void DrawInspectorGUI(object target)
         {
             LostTrackingService service = (LostTrackingService)target;
@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking.Editor
             }
             EditorGUI.EndDisabledGroup();
         }
-	}
+    }
 }
 
 #endif

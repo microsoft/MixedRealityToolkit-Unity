@@ -8,25 +8,25 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
 {
-	[MixedRealityExtensionService(SupportedPlatforms.WindowsUniversal)]
-	public class LostTrackingService : BaseExtensionService, ILostTrackingService, IMixedRealityExtensionService
-	{
+    [MixedRealityExtensionService(SupportedPlatforms.WindowsUniversal)]
+    public class LostTrackingService : BaseExtensionService, ILostTrackingService, IMixedRealityExtensionService
+    {
         public bool TrackingLost { get; private set; } = false;
         public Action OnTrackingLost { get; set; }
         public Action OnTrackingRestored { get; set; }
 
-		private LostTrackingServiceProfile profile;
+        private LostTrackingServiceProfile profile;
         private ILostTrackingVisual visual;
         private int cullingMaskOnTrackingLost;
         private float timeScaleOnTrackingLost;
 
-		public LostTrackingService(IMixedRealityServiceRegistrar registrar,  string name,  uint priority,  BaseMixedRealityProfile profile) : base(registrar, name, priority, profile) 
-		{
-			this.profile = (LostTrackingServiceProfile)profile;
-		}
+        public LostTrackingService(IMixedRealityServiceRegistrar registrar, string name, uint priority, BaseMixedRealityProfile profile) : base(registrar, name, priority, profile)
+        {
+            this.profile = (LostTrackingServiceProfile)profile;
+        }
 
-		public override void Initialize()
-		{
+        public override void Initialize()
+        {
 #if UNITY_WSA
             UnityEngine.XR.WSA.WorldManager.OnPositionalLocatorStateChanged += OnPositionalLocatorStateChanged;
 #else

@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
     /// When tracking is restored, the camera mask is restored and the visual indicator is hidden.
     /// </summary>
     public interface ILostTrackingService : IMixedRealityExtensionService
-	{
+    {
         /// <summary>
         /// True if tracking is lost, false if tracking is present.
         /// </summary>
