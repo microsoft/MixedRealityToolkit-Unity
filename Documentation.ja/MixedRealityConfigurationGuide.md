@@ -6,7 +6,7 @@ Mixed Reality Toolkit は、ツールキットを管理するために必要な�
 
 **このガイドは、ツールキットで現在使用できる、設定プロファイル画面の簡単なチュートリアルです。**
 
-# Mixed Reality Toolkit の主な設定プロファイル (Congifuration Profile)
+## Mixed Reality Toolkit の主な設定プロファイル (Congifuration Profile)
 
 シーンの _MixedRealityToolkit_ GameObject にアタッチされている主な設定プロファイル (Congifuration Profile) は、ツールキットの最初のエントリーポイントです。
 
@@ -146,6 +146,9 @@ Mixed Reality Toolkit の空間認識設定を使用すると、アプリケー�
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsProfile.png" width="650px" style="display:block;">
 
+---
+<a name="scenesystem"/>
+
 ## シーン システム (Scene system) の設定
 
 MRTK は、複雑なシーンのロード/アンロードの管理に役立つオプションを提供します。シーン システムがプロジェクトに適しているかどうかを判断するには、[シーン システムの開始ガイド](../Documentation/SceneSystem/SceneSystemGettingStarted.html)を参照してください。
@@ -153,7 +156,7 @@ MRTK は、複雑なシーンのロード/アンロードの管理に役立つ�
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SceneSystemProfile.png" width="650px" style="display:block;">
 
 ---
-<a name="scenesystem"/>
+<a name="services"/>
 
 ## その他のサービスの設定
 
