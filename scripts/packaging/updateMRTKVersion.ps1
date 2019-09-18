@@ -5,15 +5,23 @@
 param(
     [Parameter(Position=0,mandatory=$true)]
     [string]$NewVersion
-#     [ValidatePattern("^\d+\.\d+\.\d+$")]
-#     [string]$Version,
 )
 
 
-function ReplaceVersionInFile($FullName, $NewVersion, $Patterns, $Strict=$False)
+function GetEncoding($Path)
+{
+    [System.Byte[]]$Byte = Get-Content -Encoding byte -ReadCount 4 -TotalCount 4 -Path $Path
+    if ($Byte[0] -eq 0xef -and $Byte[1] -eq 0xbb -and $Byte[2] -eq 0xbf)
+    {
+        return 'UTF8'
+    }
+    return 'ASCII'
+}
+
+function ReplaceVersionInFile($Path, $NewVersion, $Patterns, $Strict=$False)
 {
     $Errors = @()
-    $contents = Get-Content -Path $FullName
+    $contents = Get-Content -Path $Path
     foreach ($pattern in $Patterns)
     {
         $match = [regex]::Match($contents, $pattern)
@@ -22,18 +30,19 @@ function ReplaceVersionInFile($FullName, $NewVersion, $Patterns, $Strict=$False)
             $FromVersion = $match.captures.groups[1].ToString()
             if ($FromVersion -eq $NewVersion)
             {
-                Write-Host "${FullName}: version up to date ($NewVersion)"
+                Write-Host "${Path}: version up to date ($NewVersion)"
             }
             else
             {
-                Write-Host "${FullName}: updating version from $FromVersion to $NewVersion"
+                $Encoding = (GetEncoding $Path)
+                Write-Host "${Path} ($Encoding): updating version from $FromVersion to $NewVersion"
                 $contents = $contents -replace $pattern, $NewVersion
-                $contents | Out-File -FilePath $file.FullName -Encoding UTF8
+                $contents | Out-File -FilePath $Path -Encoding $Encoding
             }
         }
         ElseIf ($Strict)
         {
-            $errors += "$($file.FullName): pattern not found: $pattern"
+            $errors += "${Path}: pattern not found: $pattern"
         }
     }
     return $Errors
@@ -59,22 +68,22 @@ foreach ($file in (Get-ChildItem -Path $GitRoot -Recurse))
     }
     if ($file.Name -eq "version.txt")
     {
-        $Errors += ReplaceVersionInFile -FullName $file.FullName -NewVersion $NewVersion -Patterns @("(?<=Microsoft Mixed Reality Toolkit\s+)(\d+\.\d+\.\d+)") -Strict $True
+        $Errors += ReplaceVersionInFile -Path $file.FullName -NewVersion $NewVersion -Patterns @("(?<=Microsoft Mixed Reality Toolkit\s+)(\d+\.\d+\.\d+)") -Strict $True
     }
     ElseIf ($file.Directory.FullName.StartsWith($PipelinesDir.FullName))
     {
         if (($file.Extension -eq ".yml") -or ($file.Extension -eq ".yaml"))
         {
-            $Errors += ReplaceVersionInFile -FullName $file.FullName -NewVersion $NewVersion -Patterns @("(?<=MRTKVersion:\s+)(\d+\.\d+\.\d+)")
+            $Errors += ReplaceVersionInFile -Path $file.FullName -NewVersion $NewVersion -Patterns @("(?<=MRTKVersion:\s+)(\d+\.\d+\.\d+)")
         }
     }
     ElseIf ($file.Name -eq "ProjectSettings.asset")
     {
-        $Errors += ReplaceVersionInFile -FullName $file.FullName -NewVersion $NewVersion -Patterns @("(?<=bundleVersion:\s+)(\d+\.\d+\.\d+)", "(?<=metroPackageVersion:\s+)(\d+\.\d+\.\d+)(?=\.\d+)")
+        $Errors += ReplaceVersionInFile -Path $file.FullName -NewVersion $NewVersion -Patterns @("(?<=bundleVersion:\s+)(\d+\.\d+\.\d+)", "(?<=metroPackageVersion:\s+)(\d+\.\d+\.\d+)(?=\.\d+)")
     }
     ElseIf ($file.Name -eq "UwpAppxBuildToolsTest.cs")
     {
-        $Errors += ReplaceVersionInFile -FullName $file.FullName -NewVersion $NewVersion -Patterns  @("(?<=\sVersion=')(\d+\.\d+\.\d+)(?=\.\d+\')") -Strict $True
+        $Errors += ReplaceVersionInFile -Path $file.FullName -NewVersion $NewVersion -Patterns  @("(?<=\sVersion=')(\d+\.\d+\.\d+)(?=\.\d+\')") -Strict $True
     }
 }
 
