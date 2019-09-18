@@ -1,5 +1,6 @@
 ﻿using Microsoft.MixedReality.Toolkit.Experimental.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -8,11 +9,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
     public class ScrollableListPopulator : MonoBehaviour
     {
         [SerializeField]
-        [Tooltip("The ScrollingObjectCollection to populate")]
+        [Tooltip("The ScrollingObjectCollection to populate, if left empty. the populator will create on your behalf.")]
         private ScrollingObjectCollection scrollCollection;
 
         /// <summary>
-        /// The ScrollingObjectCollection to populate
+        /// The ScrollingObjectCollection to populate, if left empty. the populator will create on your behalf.
         /// </summary>
         public ScrollingObjectCollection ScrollCollection
         {
@@ -99,9 +100,19 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
             }
         }
 
-        private void Start()
+        public void MakeScrollingList()
         {
-            if (scrollCollection == null) { return; }
+            if (scrollCollection == null)
+            {
+                GameObject newScroll = new GameObject("Scrolling Object Collection");
+                newScroll.transform.parent = transform;
+                newScroll.transform.localPosition = Vector3.zero;
+                newScroll.transform.localRotation = Quaternion.identity;
+
+                scrollCollection = newScroll.AddComponent<ScrollingObjectCollection>();
+                //prevent the scrolling collection from running until we're done dynamically populating it.
+                scrollCollection.SetUpAtRuntime = false;
+            }
 
             if (!lazyLoad)
             {
@@ -152,8 +163,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
             g.SetActive(true);
 
         }
-
-
 
     }
 
