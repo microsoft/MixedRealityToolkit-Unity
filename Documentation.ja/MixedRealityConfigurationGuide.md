@@ -56,7 +56,7 @@ Mixed Reality Toolkit のすべての「デフォルト」プロファイルは�
 ---
 <a name="experience"/>
 
-# エクスペリエンスの設定 (Experience settings)
+## エクスペリエンスの設定 (Experience settings)
 
 Mixed Reality Toolkit のメイン設定ページにあるこの項目では、プロジェクトの Mixed Reality 環境の既定の操作が定義されます。
 
@@ -65,17 +65,13 @@ Mixed Reality Toolkit のメイン設定ページにあるこの項目では、�
 ---
 <a name="camera"/>
 
-# カメラの設定 (Camera settings)
-
+## カメラの設定 (Camera settings)
 
 カメラ設定では、Mixed Reality プロジェクトのカメラの設定方法を定義し、一般的なクリッピング (clipping) 、クオリティ、透明度 (transparency) の設定を定義します。
 
-![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_CameraProfile.png)
-
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_CameraProfile.png" width="650px" style="display:block;">
 
-
-
+---
 ---
 <a name="inputsystem"/>
 
@@ -83,11 +79,11 @@ Mixed Reality Toolkit のメイン設定ページにあるこの項目では、�
 
 Mixed Reality プロジェクトは、デフォルトの設定で、すべての入力イベントを連結するための堅牢で十分にトレーニングされてきた入力システムを提供します。
 
-![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputSystemSelection.png)
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputSystemSelection.png" width="650px" style="display:block;">
 
 MRTK が提供する入力システムの背後にはその他のいくつかのシステムがあり、マルチプラットフォーム / Mixed Reality フレームワークの複雑さを抽象化するために、複雑な絡み合わせを駆動させ、管理するのを補助します。
 
-![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputSystemProfile.png)
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputSystemProfile.png" width="650px" style="display:block;">
 
 個々のプロファイルの詳細は以下のとおりです。
 
