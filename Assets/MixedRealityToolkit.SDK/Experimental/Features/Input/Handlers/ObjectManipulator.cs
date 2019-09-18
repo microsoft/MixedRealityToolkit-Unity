@@ -60,6 +60,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         [Tooltip("Transform that will be dragged. Defaults to the object of the component.")]
         private Transform hostTransform = null;
 
+        /// <summary>
+        /// Transform that will be dragged. Defaults to the object of the component.
+        /// </summary>
         public Transform HostTransform
         {
             get => hostTransform;
@@ -71,6 +74,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         [Tooltip("Can manipulation be done only with one hand, only with two hands, or with both?")]
         private HandMovementType manipulationType = HandMovementType.OneHanded | HandMovementType.TwoHanded;
 
+        /// <summary>
+        /// Can manipulation be done only with one hand, only with two hands, or with both?
+        /// </summary>
         public HandMovementType ManipulationType
         {
             get => manipulationType;
@@ -81,7 +87,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         [EnumFlags]
         [Tooltip("What manipulation will two hands perform?")]
         private TwoHandedManipulation twoHandedManipulationType = TwoHandedManipulation.Move | TwoHandedManipulation.Rotate | TwoHandedManipulation.Scale;
-        
+
+        /// <summary>
+        /// What manipulation will two hands perform?
+        /// </summary>
         public TwoHandedManipulation TwoHandedManipulationType
         {
             get => twoHandedManipulationType;
@@ -92,6 +101,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         [Tooltip("Specifies whether manipulation can be done using far interaction with pointers.")]
         private bool allowFarManipulation = true;
 
+        /// <summary>
+        /// Specifies whether manipulation can be done using far interaction with pointers.
+        /// </summary>
         public bool AllowFarManipulation
         {
             get => allowFarManipulation;
@@ -102,6 +114,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         [Tooltip("Rotation behavior of object when using one hand near")]
         private RotateInOneHandType oneHandRotationModeNear = RotateInOneHandType.RotateAboutGrabPoint;
 
+        /// <summary>
+        /// Rotation behavior of object when using one hand near
+        /// </summary>
         public RotateInOneHandType OneHandRotationModeNear
         {
             get => oneHandRotationModeNear;
@@ -112,6 +127,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         [Tooltip("Rotation behavior of object when using one hand at distance")]
         private RotateInOneHandType oneHandRotationModeFar = RotateInOneHandType.RotateAboutGrabPoint;
 
+        /// <summary>
+        /// Rotation behavior of object when using one hand at distance
+        /// </summary>
         public RotateInOneHandType OneHandRotationModeFar
         {
             get => oneHandRotationModeFar;
@@ -123,6 +141,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         [Tooltip("Rigid body behavior of the dragged object when releasing it.")]
         private ReleaseBehaviorType releaseBehavior = ReleaseBehaviorType.KeepVelocity | ReleaseBehaviorType.KeepAngularVelocity;
 
+        /// <summary>
+        /// Rigid body behavior of the dragged object when releasing it.
+        /// </summary>
         public ReleaseBehaviorType ReleaseBehavior
         {
             get => releaseBehavior;
@@ -133,6 +154,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         [Tooltip("Constrain rotation along an axis")]
         private RotationConstraintType constraintOnRotation = RotationConstraintType.None;
 
+        /// <summary>
+        /// Constrain rotation along an axis
+        /// </summary>
         public RotationConstraintType ConstraintOnRotation
         {
             get => constraintOnRotation;
@@ -143,6 +167,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         [Tooltip("Constrain movement")]
         private MovementConstraintType constraintOnMovement = MovementConstraintType.None;
 
+        /// <summary>
+        /// Constrain movement
+        /// </summary>
         public MovementConstraintType ConstraintOnMovement
         {
             get => constraintOnMovement;
@@ -150,9 +177,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
         
         [SerializeField]
-        [Tooltip("Check to enable frame-rate independent smoothing. ")]
+        [Tooltip("Check to enable frame-rate independent smoothing.")]
         private bool smoothingActive = true;
 
+        /// <summary>
+        /// Check to enable frame-rate independent smoothing.
+        /// </summary>
         public bool SmoothingActive
         {
             get => smoothingActive;
@@ -164,6 +194,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         [Tooltip("Enter amount representing amount of smoothing to apply to the movement. Smoothing of 0 means no smoothing. Max value means no change to value.")]
         private float moveLerpTime = 0.001f;
 
+        /// <summary>
+        /// Enter amount representing amount of smoothing to apply to the movement. Smoothing of 0 means no smoothing. Max value means no change to value.
+        /// </summary>
         public float MoveLerpTime
         {
             get => moveLerpTime;
@@ -175,6 +208,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         [Tooltip("Enter amount representing amount of smoothing to apply to the rotation. Smoothing of 0 means no smoothing. Max value means no change to value.")]
         private float rotateLerpTime = 0.001f;
 
+        /// <summary>
+        /// Enter amount representing amount of smoothing to apply to the rotation. Smoothing of 0 means no smoothing. Max value means no change to value.
+        /// </summary>
         public float RotateLerpTime
         {
             get => rotateLerpTime;
@@ -186,6 +222,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         [Tooltip("Enter amount representing amount of smoothing to apply to the scale. Smoothing of 0 means no smoothing. Max value means no change to value.")]
         private float scaleLerpTime = 0.001f;
 
+        /// <summary>
+        /// Enter amount representing amount of smoothing to apply to the scale. Smoothing of 0 means no smoothing. Max value means no change to value.
+        /// </summary>
         public float ScaleLerpTime
         {
             get => scaleLerpTime;
@@ -199,6 +238,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         [SerializeField]
         [FormerlySerializedAs("OnManipulationStarted")]
         private ManipulationEvent onManipulationStarted = new ManipulationEvent();
+
+        /// <summary>
+        /// Unity event raised on manipulation started
+        /// </summary>
         public ManipulationEvent OnManipulationStarted
         {
             get => onManipulationStarted;
@@ -208,6 +251,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         [SerializeField]
         [FormerlySerializedAs("OnManipulationEnded")]
         private ManipulationEvent onManipulationEnded = new ManipulationEvent();
+
+        /// <summary>
+        /// Unity event raised on manipulation ended
+        /// </summary>
         public ManipulationEvent OnManipulationEnded
         {
             get => onManipulationEnded;
@@ -217,6 +264,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         [SerializeField]
         [FormerlySerializedAs("OnHoverEntered")]
         private ManipulationEvent onHoverEntered = new ManipulationEvent();
+
+        /// <summary>
+        /// Unity event raised on hover started
+        /// </summary>
         public ManipulationEvent OnHoverEntered
         {
             get => onHoverEntered;
@@ -226,6 +277,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         [SerializeField]
         [FormerlySerializedAs("OnHoverExited")]
         private ManipulationEvent onHoverExited = new ManipulationEvent();
+
+        /// <summary>
+        /// Unity event raised on hover ended
+        /// </summary>
         public ManipulationEvent OnHoverExited
         {
             get => onHoverExited;
