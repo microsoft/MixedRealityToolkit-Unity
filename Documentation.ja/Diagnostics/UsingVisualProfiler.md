@@ -1,67 +1,67 @@
-# Using the Visual Profiler
+# ビジュアル プロファイラー (Visual Profiler) を使用する
 
-The VisualProfiler provides an easy to use, in application view of a mixed reality application's performance. The profiler is supported on all Mixed Reality Toolkit platforms, including:
+ビジュアル プロファイラー (Visual Profiler) は、Mixed Reality アプリケーションのパフォーマンスを観察できる、便利な機能を提供します。プロファイラーは、以下の Mixed Reality Toolkit プラットフォームでサポートされています：
 
 - Microsoft HoloLens
 - Microsoft HoloLens 2
-- Windows Mixed Reality Immersive headsets
+- Windows Mixed Reality 没入型ヘッドセット
 - OpenVR
 
-While developing an application, be sure to focus on multiple parts of the scene as the Visual Profiler displays data relative to the current view. 
+アプリケーションの開発中は、ビジュアル プロファイラーが現在シーンと関連のあるデータを表示するため、シーンの複数の部分に注目してください。
 
 > [!IMPORTANT]
-> Focus attention on portions of the scene with complex objects, particle effects or activity. These and other factors often contribute to reduction in application performance and a less than ideal user experience.
+> シーン内にある複雑なオブジェクト、パーティクル エフェクト　(particle effects) 、またはアクティビティなどにご注意ください。これらの要因か、その他の要因は、多くの場合、アプリケーションのパフォーマンスとユーザー エクスペリエンスを低下させてしまいます。
 
-## Visual Profiler Interface
+## Visual Profiler Interface (ビジュアル プロファイラー インターフェイス)
 
-![Visual Profiler Interface](../../Documentation/Images/Diagnostics/VisualProfiler.png)
+![ビジュアル プロファイラー インターフェイス](../../Documentation/Images/Diagnostics/VisualProfiler.png)
 
-The Visual Profiler interface includes the following components:
+ビジュアル プロファイラー インターフェイスには、次のコンポーネントが含まれます。
 
-- [Frame Rate](#frame-rate)
-- [Frame Time](#frame-time)
-- [Frame Graph](#frame-graph)
-- [Memory Utilization](#memory-utilization)
+- [フレーム レート](#frame-rate-フレーム-レート)
+- [フレーム時間](#frame-time-フレーム時間)
+- [フレーム グラフ](#frame-graph-フレーム-グラフ)
+- [メモリ使用率](#メモリ使用率)
 
-### Frame Rate
+### Frame Rate (フレーム レート)
 
-In the upper left corner of the interface is the frame rate, measured in frames per second. For the best user experience and comfort, this value should be as high as possible. 
+インターフェイスの左上隅には、1 秒あたりのフレーム レートで測定されるフレーム レートがあります。最高のユーザー エクスペリエンスと快適性を実現するために、この値は可能な限り高くする必要があります。
 
-The specific platform and hardware configuration will play a significant role in the maximum achievable frame rate. Some common target values include:
+特定のプラットフォームとハードウェア構成は、達成可能なフレーム レートの最大値で重要な役割を果たします。一般的にターゲット値の例は次の通りです：
 
 - Microsoft HoloLens: 60
 - Windows Mixed Reality Ultra: 90
 
-### Frame Time
+### Frame Time (フレーム時間)
 
-To the right of the frame rate is the frame time, in milliseconds, spent on the CPU. To achieve the target frame rates mentioned previously, an application can spend the following amount of time per frame:
+フレーム レートの右側は、CPU に費やされるフレーム時間 (ミリ秒単位)です。前述の目標フレーム レートを実現するために、アプリケーションがフレームごとに費やすことのできる時間は以下の通りです。
 
 - 60 fps: 16.6 ms
 - 90 fps: 11.1 ms
 
-GPU time is planned to be added in a future release.
+GPU 時間は、これからのリリースで追加される予定です。
 
-### Frame Graph
+### Frame Graph (フレーム グラフ)
 
-The frame graph provides a graphical display of the application frame rate history.
+フレーム グラフは、アプリケーション フレーム レート履歴のグラフを提供します。
 
-![Visual Profiler Frame Graph](../../Documentation/Images/Diagnostics/VisualProfilerMissedFrames.png)
+![ビジュアル プロファイラー フレーム グラフ](../../Documentation/Images/Diagnostics/VisualProfilerMissedFrames.png)
 
-When using the application, look for missed frames. Missed frames indicate the application is not hitting its target frame rate and may need optimization work.
+アプリケーションを使用する場合は、欠落したフレームを探します。フレームの欠落は、アプリケーションがターゲット フレーム レートに達しておらず、最適化の作業が必要かもしれないことを示しています。
 
-### Memory Utilization
+### メモリ使用率
 
-The memory utilization display allows for easy understanding of how the current view is impacting an application's memory consumption. 
+メモリ使用率表示を使用すると、現在のビューがアプリケーションのメモリ消費に与える影響を容易に理解できます。
 
-![Visual Profiler Frame Graph](../../Documentation/Images/Diagnostics/VisualProfilerMemory.png)
+![ビジュアル プロファイラーフレーム グラフ](../../Documentation/Images/Diagnostics/VisualProfilerMemory.png)
 
-When using application, look for total memory usage. Key indicators include: nearing the memory limit and rapid changes in usage.
+アプリケーションを使用する場合は、メモリの合計使用量を探します。主な指標に、メモリ使用制限の近さと使用状況の急激な変化を含んでいます。
 
-## Customizing the Visual Profiler
+## Visual Profiler (ビジュアル プロファイラー) のカスタマイズ
 
-The Visual Profiler's appearance and behavior are customizable via the diagnostics system profile. Please see [Configuring the Diagnostics System](ConfiguringDiagnostics.md) for more information.
+ビジュアル プロファイラーの見た目と動きは、診断システム プロファイルを通じてカスタマイズできます。詳細については、[診断システム (Diagnostic System) の構成](ConfiguringDiagnostics.md) を参照してください。
 
-## See Also
+## 参考
 
-- [Diagnostics System](DiagnosticsSystemGettingStarted.md)
-- [Configuring the Diagnostics System](ConfiguringDiagnostics.md)
+- [診断システム (Diagnostic System)](DiagnosticsSystemGettingStarted.md)
+- [診断システム (Diagnostic System) の構成](ConfiguringDiagnostics.md)
