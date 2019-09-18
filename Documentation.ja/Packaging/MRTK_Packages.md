@@ -75,7 +75,7 @@ Windows Mixed Reality パッケージは、Microsoft HoloLens、HoloLens 2 お�
 
 - 多関節ハンド
 - アイトラッキング
-- 視線ターゲティング
+- ゲイズ ターゲティング
 - ジェスチャー
 - 空間マッピング
 - Windows Mixed Reality モーション コントローラー
@@ -98,15 +98,15 @@ MRTK foundation には、以下のシステムサービスが含まれていま�
 - [診断システム](#診断システム-diagnostic-system)
 - [入力システム](#入力システム-input-system)
 - [空間認識システム](#空間認識システム-spatial-awareness-system)
-- [テレポートシステム](#テレポートシステム-teleport-system)
+- [テレポート システム](#テレポート-システム-teleport-system)
 
 #### 境界システム (Boundary System)
 
-MRTK 境界システムは、仮想現実 (VR) プレイスペースに関するデータを提供します。ユーザーが境界を構成しているシステムでは、床の平面、長方形のプレイスペース、トラッキング領域などを提供できます。
+MRTK 境界システムは、仮想現実 (VR) プレイスペースに関するデータを提供します。ユーザーが境界を設定しているシステムでは、床の平面、長方形のプレイスペース、トラッキング領域などを提供できます。
 
 #### 診断システム (Diagnostic System)
 
-MRTK 診断システムは、アプリケーション エクスペリエンス内のリアルタイムのパフォーマンス データを提供します。アプリケーションを使用する場合は、フレーム レート、プロセッサ時間、およびその他の主要なパフォーマンス メトリックを簡単に視野の中に確認できます。
+MRTK 診断システムは、アプリケーション エクスペリエンス内のリアルタイムのパフォーマンス データを提供します。アプリケーションを使用する際、フレーム レート、プロセッサー時間、およびその他の主要なパフォーマンス指標をひと目で見ることができます。
 
 #### 入力システム (Input System)
 
@@ -116,7 +116,7 @@ MRTK 入力システムを使用すると、クロスプラットフォームで
 
 MRTK 空間認識システムを使用することで、Microsoft HoloLens などのデバイスから実際の環境データにアクセスできます。
 
-#### テレポートシステム (Teleport System)
+#### テレポート システム (Teleport System)
 
 MRTK テレポートシステムは、仮想現実 (VR) 移動サポートを提供します。
 
@@ -136,19 +136,19 @@ Extensions パッケージには、Foundation パッケージの機能を拡張�
 
 ## Examples パッケージ
 
-Examples パッケージには、デモ、サンプル スクリプト、および Foundation パッケージの機能を使用するサンプル シーンが含まれています。
+Examples パッケージには、Foundation パッケージの機能を使用するデモ、サンプル スクリプト、およびサンプル シーンが含まれています
 
-たとえば、このパッケージには、さまざまなタイプの手のインプット (多関節および非多関節) に対応するサンプル オブジェクトを含む HandInteractionExample シーン (下図) が含まれています。
+たとえば、このパッケージには、さまざまなタイプのハンド インプット (多関節および非多関節) に対応するサンプル オブジェクトを含む HandInteractionExample シーン (下図) が含まれています。
 
 ![HandInteractionExample シーン](../Images/MRTK_Examples.png)
 
-このパッケージには、アイトラッキングデモも含まれています。ここに記載されています：[documented here](../EyeTracking/EyeTracking_ExamplesOverview.md)
+このパッケージには、アイトラッキングデモも含まれています。詳細は[こちら](../EyeTracking/EyeTracking_ExamplesOverview.md)に記載されています：
 
-一般的には、MRTK に追加される新機能は、ほぼ同じフォルダ構造と場所に従って、Examples パッケージに対応するサンプルはあります。
+より一般的には、MRTK のすべての新機能について、同じフォルダ構造と場所にほぼ従って、対応するサンプルが Examples パッケージに含まれているべきです。
 
 ## Tools パッケージ
 
-Tools パッケージには、Mixed Reality エクスペリエンスを作成するのに役立つツールが含まれています。最終的にコードがアプリケーションの一部としてリリースされません。
+Tools パッケージには、Mixed Reality エクスペリエンスを作成するのに役立つツールが含まれています。これらのコードは、最終的にはアプリケーションの一部としてリリースされることはありません。
 
 - [Dependency Window](../Tools/DependencyWindow.md)
 - [Extension Service Creation Wizard](../Tools/ExtensionServiceCreationWizard.md)
