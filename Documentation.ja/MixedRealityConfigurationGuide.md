@@ -223,6 +223,7 @@ Pointers は、Mixed Reality Toolkit によって提供される多くのライ�
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputPointerProfile.png" width="650px" style="display:block;">
 
+
 * Pointing Extent: 注視を含むすべてのポインターのグローバル ポインティング範囲を決定。
 * Pointing Raycast Layer Masks: レイキャストに対してどのレイキャストを行うレイヤーを決定します。
 * Debug Draw Pointing Rays: レイキャストに使用されるレイを可視化するためのデバッグ ヘルパー。
@@ -303,7 +304,6 @@ MRTK は、次のコントローラー/システムのデフォルト設定を�
 
 
 <a name="inspectors"/>
-
 
 ## Service Inspectors
 
