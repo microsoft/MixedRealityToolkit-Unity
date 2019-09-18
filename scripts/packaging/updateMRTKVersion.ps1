@@ -10,7 +10,7 @@ param(
 )
 
 
-function ReplaceVersionInFile($FullName, $NewVersion, $Patterns)
+function ReplaceVersionInFile($FullName, $NewVersion, $Patterns, $Strict=$False)
 {
     $Errors = @()
     $contents = Get-Content -Path $FullName
@@ -31,7 +31,7 @@ function ReplaceVersionInFile($FullName, $NewVersion, $Patterns)
                 $contents | Out-File -FilePath $file.FullName -Encoding UTF8
             }
         }
-        else
+        ElseIf ($Strict)
         {
             $errors += "$($file.FullName): pattern not found: $pattern"
         }
@@ -49,11 +49,32 @@ $FullProductName = "Microsoft Mixed Reality Toolkit"
 
 $Errors = @()
 
+$PipelinesDir = Get-Item (Join-Path $GitRoot "pipelines")
+
 foreach ($file in (Get-ChildItem -Path $GitRoot -Recurse))
 {
+    if ($file -is [System.IO.DirectoryInfo])
+    {
+        continue;
+    }
     if ($file.Name -eq "version.txt")
     {
-        $Errors += ReplaceVersionInFile -FullName $file.FullName -NewVersion $NewVersion -Patterns @("(?<=Microsoft Mixed Reality Toolkit\s+)(\d+\.\d+\.\d+)")
+        $Errors += ReplaceVersionInFile -FullName $file.FullName -NewVersion $NewVersion -Patterns @("(?<=Microsoft Mixed Reality Toolkit\s+)(\d+\.\d+\.\d+)") -Strict $True
+    }
+    ElseIf ($file.Directory.FullName.StartsWith($PipelinesDir.FullName))
+    {
+        if (($file.Extension -eq ".yml") -or ($file.Extension -eq ".yaml"))
+        {
+            $Errors += ReplaceVersionInFile -FullName $file.FullName -NewVersion $NewVersion -Patterns @("(?<=MRTKVersion:\s+)(\d+\.\d+\.\d+)")
+        }
+    }
+    ElseIf ($file.Name -eq "ProjectSettings.asset")
+    {
+        $Errors += ReplaceVersionInFile -FullName $file.FullName -NewVersion $NewVersion -Patterns @("(?<=bundleVersion:\s+)(\d+\.\d+\.\d+)", "(?<=metroPackageVersion:\s+)(\d+\.\d+\.\d+)(?=\.\d+)")
+    }
+    ElseIf ($file.Name -eq "UwpAppxBuildToolsTest.cs")
+    {
+        $Errors += ReplaceVersionInFile -FullName $file.FullName -NewVersion $NewVersion -Patterns  @("(?<=\sVersion=')(\d+\.\d+\.\d+)(?=\.\d+\')") -Strict $True
     }
 }
 
