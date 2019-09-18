@@ -130,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             currentState = defaultState;
         }
         
-        public virtual void SetSate(State state)
+        public virtual void SetState(State state)
         {
             currentState = state;
         }

@@ -108,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public InteractableStates()
         {
             base.allStates = allStates;
-            SetSate(allStates[0]);
+            SetState(allStates[0]);
         }
 
         public InteractableStates(State defaultState) : base(defaultState)
@@ -141,13 +141,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             int bit = GetBit();
 
-            SetSate(stateList[0]);
+            SetState(stateList[0]);
 
             for (int i = stateList.Count - 1; i > -1; i--)
             {
                 if (bit >= stateList[i].Bit)
                 {
-                    SetSate(stateList[i]);
+                    SetState(stateList[i]);
                     break;
                 }
             }
