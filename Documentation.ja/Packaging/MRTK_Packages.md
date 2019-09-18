@@ -1,69 +1,69 @@
-# Mixed Reality Toolkit Packages
+# Mixed Reality Toolkit パッケージ
 
-The Mixed Reality Toolkit (MRTK) is a collection of packages that enable cross platform Mixed Reality application development by providing support for Mixed Reality hardware and platforms.
+Mixed Reality Toolkit (MRTK) は、Mixed Reality ハードウェアとプラットフォームをサポートすることにより、クロスプラットフォーム Mixed Reality アプリケーション開発を可能にするパッケージのコレクションです。
 
-The MRTK ships via the following packages:
+MRTK は、次のパッケージを介してリリースしています。
 
-- [Foundation](#foundation-package)
-- [Extensions](#extensions-package)
-- [Examples](#examples-package)
-- [Tools](#tools-package)
+- [Foundation](#foundation-パッケージ)
+- [Extensions](#extensions-パッケージ)
+- [Examples](#examples-パッケージ)
+- [Tools](#tools-パッケージ)
 
-## Foundation Package
+## Foundation パッケージ
 
-The Mixed Reality Toolkit Foundation is the set of packages that enable your application to leverage common functionality across Mixed Reality Platforms. These packages are released and supported by Microsoft from source code in the [mrtk_release](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release) branch on GitHub.
+Mixed Reality Toolkit Foundation は、アプリケーションが Mixed Reality プラットフォーム間で共通の機能を活用できるようにするパッケージのセットです。これらのパッケージは、GitHub の [mrtk_release](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release) ブランチのソース コードからマイクロソフトによってリリースされ、サポートされています。
 
 <img src="../../Documentation/Images/Input/MRTK_Package_Foundation.png" width="350px" style="display:block;"><br/>
-<sup>MRTK Foundation Package</sup>
+<sup>MRTK Foundation パッケージ</sup>
 
-The MRTK Foundation is comprised of:
+MRTK Foundation は以下の通りに構成されています。
 
-- [Core Package](#core-package)
-- [Platform Providers](#platform-providers)
-- [System Services](#system-services)
-- [Feature Assets](#feature-assets)
+- [Core パッケージ](#core-パッケージ)
+- [プラットフォーム プロバイダー](#プラットフォーム-プロバイダー)
+- [システム サービス](#システム-サービス)
+- [機能アセット](#機能アセット)
 
-The following sections describe the types of packages in each category.
+次のセクションでは、各カテゴリのパッケージの種類について説明します。
 
-### Core Package
+### Core パッケージ
 
-The core package is a _required_ component and is taken as a dependency by all MRTK foundation packages.
+Core パッケージは _必須_ コンポーネントであり、すべての MRTK Foundation パッケージが依存しています。
 
-The MRTK Core package includes:
+MRTK Core パッケージには以下が含まれます。
 
-- [Common interfaces, classes and data types](#common-types)
-- [MixedRealityToolkit scene component](#mixedrealitytoolkit-scene-component)
-- [MRTK Standard Shader](#mrtk-standard-shader)
-- [Unity Input Provider](#unity-input-provider)
-- [Package Management](#package-management)
+- [共通のインターフェイス、クラス、データ型](#共通型)
+- [MixedRealityToolkit シーン コンポーネント](#mixedrealitytoolkit-シーン-コンポーネント)
+- [MRTK スタンダード シェーダー](#mrtk-スタンダード-シェーダー)
+- [Unity インプット プロバイダー (Unity Input Provider)](#unity-インプット-プロバイダー-unity-input-provider)
+- [パッケージ管理](#パッケージ管理)
 
-#### Common types
+#### 共通型
 
-The Mixed Reality Toolkit Core package contains the definitions for all of the common interfaces, classes and data types that are used by all other components. It is highly recommended that applications access MRTK components exclusively through the defined interfaces to enable the highest level of compatibility across platforms.
+Mixed Reality Toolkit Core パッケージには、他のすべてのコンポーネントで使用される共通のインターフェイス、クラス、データ型のすべての定義が含まれています。プラットフォーム間で最高レベルの互換性を実現するために、定義されたインターフェイスのみを介して MRTK コンポーネントにアクセスすることを強くお勧めします。
 
-#### MixedRealityToolkit scene component
+#### MixedRealityToolkit シーン コンポーネント
 
-The MixedRealityToolkit scene component is the single, centralized resource manager for the Mixed Reality Toolkit. This component loads and manages the lifespan of the platform and service modules and provides resources for the systems to access their configuration settings. 
+MixedRealityToolkit シーン コンポーネントは、Mixed Reality Toolkit の単一の集中化されたリソース マネージャーです。このコンポーネントは、プラットフォーム モジュールとサービス モジュールのライフスパンをロードおよび管理し、システムが構成設定にアクセスするためのリソースを提供します。
 
-#### MRTK Standard Shader
+#### MRTK スタンダード シェーダー
 
-The MRTK Standard Shader provides the basis for virtually all of the materials provided by the MRTK. This shader is extremely flexible and optimized for the variety of platforms on which MRTK is supported. It is _highly_ recommended that your application's materials use the MRTK standard shader for optimal performance.
+MRTK のスタンダード シェーダーは MRTK によって提供される事実上すべてのマテリアルの基礎を提供します。このシェーダは非常に柔軟性が高く、MRTK がサポートされているさまざまなプラットフォームに最適化されています。最適なパフォーマンスを実現するには、アプリケーションのマテリアルで MRTK スタンダード シェーダーを使用することを _強く_ お勧めします。
 
-#### Unity Input Provider
+#### Unity インプット プロバイダー (Unity Input Provider)
 
-The Unity Input Provider provides access to common input devices such as game controllers, touch screens and a 3D spatial mouse.
+Unity インプット プロバイダーは、ゲーム コントローラ、タッチ スクリーン、3D 空間マウスなどの一般的な入力デバイスへのアクセスを提供します。
 
-#### Package Management
+#### パッケージ管理
 
 _Coming soon_
 
-The Mixed Reality Toolkit Core package provides support for discovering and managing the optional foundation, extension and experimental MRTK packages.
+Mixed Reality Toolkit Core パッケージは、オプションの Foundation、Extensions、Experimental（実験的な）MRTK パッケージを発見し、管理するためのサポートを提供します。
 
-### Platform Providers
+### プラットフォーム プロバイダー
 
-The MRTK Platform Provider packages are the components that enable the Mixed Reality Toolkit to target Mixed Reality hardware and platform functionality.
+MRTK プラットフォーム プロバイダー パッケージは、Mixed Reality Toolkit が Mixed Reality ハードウェアおよびプラットフォーム機能を対象とすることを可能にするコンポーネントです。
 
-Supported platforms include:
+サポートされているプラットフォームは次のとおりです。
 
 - [Windows Mixed Reality](#windows-mixed-reality)
 - [OpenVR](#openvr)
@@ -71,87 +71,84 @@ Supported platforms include:
 
 #### Windows Mixed Reality
 
-The Windows Mixed Reality package provides support for Microsoft HoloLens, HoloLens 2 and Windows Mixed Reality Immersive devices. The package contains full platform support, including:
+Windows Mixed Reality パッケージは、Microsoft HoloLens、HoloLens 2 および Windows Mixed Reality 没入型デバイスをサポートします。パッケージには、次を含む完全なプラットフォーム サポートが含まれています。
 
-- Articulated Hands
-- Eye Tracking
-- Gaze targeting
-- Gestures
-- Spatial Mapping
-- Windows Mixed Reality Motion controllers
+- 多関節ハンド
+- アイ トラッキング
+- ゲイズ ターゲティング
+- ジェスチャー
+- 空間マッピング
+- Windows Mixed Reality モーション コントローラー
 
 #### OpenVR
 
-The OpenVR package provides hardware and platform support for devices using the OpenVR platform.
+OpenVR パッケージは、OpenVR プラットフォームを使用するデバイスのハードウェアとプラットフォームのサポートを提供します。
 
 #### Windows Voice
 
-The Windows Voice package provides support for keyword recognition and dictation functionality on Microsoft Windows 10 devices.
+Windows Voice パッケージは、Microsoft Windows 10 デバイスでのキーワード認識と聞き取り (dictation) 機能のサポートを提供します。
 
-### System Services
+### システム サービス
 
-Core platform services are provided in system service packages. These packages contain the Mixed Reality Toolkit's default implementations of the system service interfaces, defined in the [core](#core-package) package.
+Core プラットフォーム サービスは、システム サービス パッケージで提供されます。これらのパッケージには、[Core](#core-パッケージ) パッケージで定義されたシステム サービス インターフェイスの Mixed Reality Toolkit のデフォルトの実装が含まれています。
 
-The MRTK foundation includes the following system services:
+MRTK foundation には、以下のシステムサービスが含まれています。
 
-- [Boundary System](#boundary-system)
-- [Diagnostic System](#diagnostic-system)
-- [Input System](#input-system)
-- [Spatial Awareness System](#spatial-awareness-system)
-- [Teleport System](#teleport-system)
+- [境界システム](#境界システム-boundary-system)
+- [診断システム](#診断システム-diagnostic-system)
+- [入力システム](#入力システム-input-system)
+- [空間認識システム](#空間認識システム-spatial-awareness-system)
+- [テレポート システム](#テレポート-システム-teleport-system)
 
-#### Boundary System
+#### 境界システム (Boundary System)
 
-The MRTK Boundary System provides data about the to virtual reality playspace. On systems for which the user has configured the boundary, the system can provide a floor plane, rectangular playspace, tracked area, and more.
+MRTK 境界システムは、仮想現実 (VR) プレイスペースに関するデータを提供します。ユーザーが境界を設定しているシステムでは、床の平面、長方形のプレイスペース、トラッキング領域などを提供できます。
 
-#### Diagnostic System
+#### 診断システム (Diagnostic System)
 
-The MRTK Diagnostic System provides real-time performance data within your application experience. At a glace, you will be able to view frame rate, processor time and other key performance metrics as you use your application.
+MRTK 診断システムは、アプリケーション エクスペリエンス内のリアルタイムのパフォーマンス データを提供します。アプリケーションを使用する際、フレーム レート、プロセッサー時間、およびその他の主要なパフォーマンス指標をひと目で見ることができます。
 
-#### Input System
+#### 入力システム (Input System)
 
-The MRTK Input Systems enables applications to access input in a cross platform manner by specifying user actions and assigning those actions to the most appropriate buttons and axes on target controllers.
+MRTK 入力システムを使用すると、クロスプラットフォームでの入力にアクセスできます。ユーザー アクションを指定し、ターゲット コントローラー上の最も適切なボタンと軸にそれらのアクションを割り当てることにより設定することができます。
 
-#### Spatial Awareness System
+#### 空間認識システム (Spatial Awareness System)
 
-The MRTK Spatial Awareness System enables access to real-world environmental data from devices such as the Microsoft HoloLens.
+MRTK 空間認識システムを使用することで、Microsoft HoloLens などのデバイスから実際の環境データにアクセスできます。
 
-#### Teleport System
+#### テレポート システム (Teleport System)
 
-The MRTK Teleport System provides virtual reality locomotion support.
+MRTK テレポートシステムは、仮想現実 (VR) 移動サポートを提供します。
 
-### Feature Assets
+### 機能アセット
 
-Feature Assets are collections of related functionality delivered as Unity assets and scripts. Some of these features include:
+機能アセットは、Unity アセットとスクリプトとして提供される関連機能のコレクションです。これらの機能の一部：
 
-- User Interface Controls
-- Standard Assets
-- more
+- ユーザー インターフェイスの制御
+- スタンダード アセット
+- 更に
 
-## Extensions Package
+## Extensions パッケージ
 
-The extensions package contains additional services and components that extend the functionality of the foundation package.
+Extensions パッケージには、Foundation パッケージの機能を拡張する追加のサービスとコンポーネントが含まれています。
 
-- [Scene Transition Service](../Extensions/SceneTransitionService/SceneTransitionServiceOverview.md)
+- [シーン遷移サービス](../Extensions/SceneTransitionService/SceneTransitionServiceOverview.md)
 
-## Examples Package
+## Examples パッケージ
 
-The examples package contains demos, sample scripts, and sample scenes that exercise functionality in the foundation package.
+Examples パッケージには、Foundation パッケージの機能を使用するデモ、サンプル スクリプト、およびサンプル シーンが含まれています
 
-For example, this package contains the HandInteractionExample scene (pictured below) which contains sample objects
-that respond to various types of hand input (articulated and non-articulated).
+たとえば、このパッケージには、さまざまなタイプのハンド インプット (多関節および非多関節) に対応するサンプル オブジェクトを含む HandInteractionExample シーン (下図) が含まれています。
 
-![HandInteractionExample scene](../Images/MRTK_Examples.png)
+![HandInteractionExample シーン](../Images/MRTK_Examples.png)
 
-This package also contains eye tracking demos, which are [documented here](../EyeTracking/EyeTracking_ExamplesOverview.md)
+このパッケージには、アイ トラッキング デモも含まれています。詳細は[こちら](../EyeTracking/EyeTracking_ExamplesOverview.md)に記載されています。
 
-More generally, any new feature in the MRTK should contain a corresponding example in the examples package, roughly following
-the same folder structure and location.
+より一般的には、MRTK のすべての新機能について、同じフォルダ構造と場所にほぼ従って、対応するサンプルが Examples パッケージに含まれているべきです。
 
-## Tools Package
+## Tools パッケージ
 
-The tools package contains tools that are useful for creating mixed reality experiences whose code will ultimately not
-ship as part of an application.
+Tools パッケージには、Mixed Reality エクスペリエンスを作成するのに役立つツールが含まれています。これらのコードは、最終的にはアプリケーションの一部としてリリースされることはありません。
 
 - [Dependency Window](../Tools/DependencyWindow.md)
 - [Extension Service Creation Wizard](../Tools/ExtensionServiceCreationWizard.md)
