@@ -77,7 +77,7 @@ Mixed Reality Toolkit のメイン設定ページにあるこの項目では、�
 
 ## 入力システムの設定 (Input system settings)
 
-Mixed Reality プロジェクトは、デフォルトの設定で、すべての入力イベントを取り扱うための堅牢で十分に熟練した入力システムを提供します。
+Mixed Reality プロジェクトは、すべての入力イベントを取り扱うための堅牢で十分に熟練した入力システムを提供しており、これはデフォルトで選択されています。
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputSystemSelection.png" width="650px" style="display:block;">
 
@@ -102,7 +102,7 @@ MRTK が提供する入力システムの背後にはその他のいくつかの
 
 ## 境界 (Boundary) 可視化の設定
 
-境界 (Boundary) システムは、基底になるプラットフォームの境界線/保護システムにより、体感できる境界に変換します。境界ビジュアライザー (Boundary visualizer) 設定を使用すると、シーン内で記録された境界をユーザーの位置に対して自動的に表示できます。境界線は、ユーザーがシーン内でテレポートする場所に基づいて反応/更新も行われます。
+境界 (Boundary) システムは、元となるプラットフォームの境界/ガーディアン システムから取得した境界を解釈します。境界ビジュアライザー (Boundary visualizer) 設定を使用すると、シーン内で記録された境界をユーザーの位置に対して自動的に表示できます。境界線は、ユーザーがシーン内でテレポートする場所に基づいて反応/更新も行われます。
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_BoundaryVisualizationProfile.png" width="650px" style="display:block;">
 
@@ -112,7 +112,7 @@ MRTK が提供する入力システムの背後にはその他のいくつかの
 
 ## テレポーテーション システム (Teleportation system) の選択
 
-Mixed Reality プロジェクトは、デフォルトで選択されたプロジェクトのテレポーテーション イベントを管理するための完全な機能を備えています。
+Mixed Reality プロジェクトは、プロジェクトでのテレポーテーション イベントを管理するための完全な機能を備えたテレポーテーション システムを提供しており、これはデフォルトで選択されています。
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_TeleportationSystemSelection.png" width="650px" style="display:block;">
 
