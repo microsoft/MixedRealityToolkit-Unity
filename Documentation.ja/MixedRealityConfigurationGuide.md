@@ -196,6 +196,9 @@ Mixed Reality Toolkit のより高度な領域の1つは、フレームワーク
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionsProfile.png" width="650px" style="display:block;">
 
+---
+<a name="inputactionrules"/>
+
 ## Input Action Rules プロフィル
 
 Input Action Rules を使用すると、1 つの入力アクションに対して発生したイベントを、そのデータ値に基づいて別のアクションに自動的に変換できます。これらはフレームワーク内でシームレスに管理され、パフォーマンスコストは発生しません。
@@ -248,6 +251,7 @@ Pointers は、Mixed Reality Toolkit によって提供される多くのライ�
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpeechCommandsProfile.png" width="650px" style="display:block;">
 
+
 ---
 <a name="mapping"/>
 
@@ -273,7 +277,7 @@ MRTK は、次のコントローラー/システムのデフォルト設定を�
 
 あらかじめ構築されたコントローラー システムのいずれかの画像をクリックすると、対応するすべての入力に対して単一の入力アクションを設定できます (以下の Oculus Touch コントローラーの設定画面を参照)。
 
-![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_OculusTouchConfigScreen.png)
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_OculusTouchConfigScreen.png" width="650px" style="display:block;">
 
 上記で識別されていない他の OpenVR または Unity 入力コントローラーを設定するための高度な画面もあります。
 
@@ -291,7 +295,11 @@ MRTK は、次のコントローラー/システムのデフォルト設定を�
 
 シーン内のコントローラー リプレゼンテーションを物理コントローラーの位置からオフセットする必要がある場合は、コントローラー モデルのプレハブに対してオフセットを設定するだけです (例えば、コントローラー プレハブの変換位置をオフセット位置で設定します)。
 
-![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerVisualizationProfile.png)
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerVisualizationProfile.png" width="650px" style="display:block;">
+
+
+<a name="inspectors"/>
+
 
 ## Service Inspectors
 
@@ -302,5 +310,4 @@ MRTK は、次のコントローラー/システムのデフォルト設定を�
 Configuration Profile の Editor Settings の Use Service Inspectors をオンにすると、サービスインスペクタを有効にできます。
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_EnableServiceInspectors.PNG" width="650px" style="display:block;"><br/>
-
 <sup>サービス インスペクタを有効にする</sup>
