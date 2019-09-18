@@ -142,7 +142,7 @@ Examples パッケージには、Foundation パッケージの機能を使用す
 
 ![HandInteractionExample シーン](../Images/MRTK_Examples.png)
 
-このパッケージには、アイ トラッキングデモも含まれています。詳細は[こちら](../EyeTracking/EyeTracking_ExamplesOverview.md)に記載されています。
+このパッケージには、アイ トラッキング デモも含まれています。詳細は[こちら](../EyeTracking/EyeTracking_ExamplesOverview.md)に記載されています。
 
 より一般的には、MRTK のすべての新機能について、同じフォルダ構造と場所にほぼ従って、対応するサンプルが Examples パッケージに含まれているべきです。
 
