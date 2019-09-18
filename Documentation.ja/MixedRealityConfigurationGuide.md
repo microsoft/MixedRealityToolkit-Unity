@@ -96,7 +96,7 @@ MRTK が提供する入力システムの背後にはその他のいくつかの
 * [Controller visualization settings](../Documentation/MixedRealityConfigurationGuide.html#visualization)
 
 
----	
+---
 <a name="boundary"/>
 
 ## 境界 (Boundary) 可視化の設定
@@ -166,7 +166,11 @@ Mixed Reality Toolkit のより高度な領域の1つは、フレームワーク
 
 登録済みのサービスは、MonoBehaviour または不格好なシングルトン パターンを実装するオーバーヘッドとコストなしで、すべての Unity イベントを最大限に活用できます。これにより、フォアグラウンド（foreground）プロセスとバックグラウンド (background) プロセス (スポーン システム、ランタイム ゲーム ロジックなど)の両方を実行するためのシーン オーバーヘッドのない純粋な C# コンポーネントを使用できます。
 
-![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProfidersProfile.png)
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProfidersProfile.png" width="650px" style="display:block;">
+
+
+---
+<a name="inputactions"/>
 
 ## 入力アクション (Input actions) の設定
 
@@ -190,7 +194,7 @@ Mixed Reality Toolkit のより高度な領域の1つは、フレームワーク
 > [!NOTE]
 > 入力アクションは、実行時に編集できない数少ないコンポーネントの 1 つであり、設計時のみ変更できます。このプロファイルは、各アクションに対して生成された ID に対するフレームワーク (およびプロジェクト) の依存関係により、プロジェクトの実行中に入れ替えをしないでください。
 
-![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionsProfile.png)
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionsProfile.png" width="650px" style="display:block;">
 
 ## Input Action Rules プロフィル
 
@@ -202,7 +206,7 @@ Input Action Rules を使用すると、1 つの入力アクションに対し�
 
 Input Action Rules は、使用可能な入力軸のいずれかに対して設定できます。ただし、1つの軸タイプからの入力アクションは、同じ軸タイプの別の入力アクションに変換できます。デュアル軸アクションを別のデュアル軸アクションにマップできますが、デジタルアクションまたはアクションなしにはマップできません。
 
-![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionRulesProfile.png)
+![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionRulesProfile.png)
 
 ## Pointers の設定
 
@@ -210,17 +214,13 @@ Input Action Rules は、使用可能な入力軸のいずれかに対して設�
 
 Pointers は、Mixed Reality Toolkit によって提供される多くのラインコンポーネントの 1 つを使用してアクティブシーン内で可視化することも、 MRTK IMixedRealityPointer インターフェイスを実装している場合は独自の要素を使用して可視化することもできます。
 
-![Mrtk](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputPointerProfile.png)
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputPointerProfile.png" width="650px" style="display:block;">
 
-- Pointing Extent : 注視を含むすべてのポインターのグローバル ポインティング範囲を決定。
-
-- Pointing Raycast Layer Masks : レイキャストに対してどのレイキャストを行うレイヤーを決定します。
-
-- Debug Draw Pointing Rays : レイキャストに使用されるレイを可視化するためのデバッグ ヘルパー。
-
-- Debug Draw Pointing Rays Colors : 可視化に使用する一連の色。
-
-- Gaze cursor prefab : 任意のシーンにグローバルな視線カーソルを簡単に指定できます。
+* Pointing Extent : 注視を含むすべてのポインターのグローバル ポインティング範囲を決定。
+* Pointing Raycast Layer Masks : レイキャストに対してどのレイキャストを行うレイヤーを決定します。
+* Debug Draw Pointing Rays : レイキャストに使用されるレイを可視化するためのデバッグ ヘルパー。
+* Debug Draw Pointing Rays Colors : 可視化に使用する一連の色。
+* Gaze cursor prefab : 任意のシーンにグローバルな視線カーソルを簡単に指定できます。
 
 必要に応じて、Gaze Provider にすばやく移り、Gaze の特定の値をオーバーライドするための追加のヘルパーボタンがあります。
 
@@ -231,7 +231,10 @@ Pointers は、Mixed Reality Toolkit によって提供される多くのライ�
 > [!NOTE]
 > 現在のジェスチャの実装は HoloLens 専用で、将来ツールキットに追加される他のシステムに対して拡張されます (日付は未定です)。
 
-![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_GesturesProfile.png)
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_GesturesProfile.png" width="650px" style="display:block;">
+
+---
+<a name="speech"/>
 
 ## 音声コマンド (Speech Commands)
 
