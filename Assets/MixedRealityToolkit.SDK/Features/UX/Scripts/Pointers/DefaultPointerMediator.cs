@@ -187,36 +187,32 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 unassignedPointer.IsActive = true;
             }
-
         }
 
         private void ApplyCustomPointerBehaviors()
         {
             if (pointerPreferences != null)
             {
-                if (CoreServices.InputSystem.FocusProvider is FocusProvider focusProvider)
-                {
-                    Action<IMixedRealityPointer, PointerBehavior> setPointerState =
-                        (ptr, behavior) =>
-                        {
-                            if (behavior == PointerBehavior.Default)
-                            {
-                                return;
-                            }
-
-                            bool isPointerOn = behavior == PointerBehavior.AlwaysOn;
-                            ptr.IsActive = isPointerOn;
-                            if (ptr is GenericPointer genericPtr)
-                            {
-                                genericPtr.IsInteractionEnabled = isPointerOn;
-                            }
-                            unassignedPointers.Remove(ptr);
-                        };
-
-                    foreach (IMixedRealityPointer pointer in allPointers)
+                Action<IMixedRealityPointer, PointerBehavior> setPointerState =
+                    (ptr, behavior) =>
                     {
-                        setPointerState(pointer, pointerPreferences.GetPointerBehavior(pointer));
-                    }
+                        if (behavior == PointerBehavior.Default)
+                        {
+                            return;
+                        }
+
+                        bool isPointerOn = behavior == PointerBehavior.AlwaysOn;
+                        ptr.IsActive = isPointerOn;
+                        if (ptr is GenericPointer genericPtr)
+                        {
+                            genericPtr.IsInteractionEnabled = isPointerOn;
+                        }
+                        unassignedPointers.Remove(ptr);
+                    };
+
+                foreach (IMixedRealityPointer pointer in allPointers)
+                {
+                    setPointerState(pointer, pointerPreferences.GetPointerBehavior(pointer));
                 }
             }
         }
