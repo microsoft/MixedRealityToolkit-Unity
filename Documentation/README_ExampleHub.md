@@ -31,7 +31,7 @@ In the **LoadContentScene** script's Inspector, you can define the scene name to
 <br/><br/><img src="../Documentation/Images/ExamplesHub/MRTK_ExamplesHub_SceneSystem7.png" width="450">
 
 The script uses the Scene System's LoadContent() function to load the scene. 
-Please refer to the [Scene System](SceneSystem/SceneSystemGetingStarted.md) page for more details.
+Please refer to the [Scene System](SceneSystem/SceneSystemGettingStarted.md) page for more details.
 ```csharp
 MixedRealityToolkit.SceneSystem.LoadContent(contentName, loadSceneMode);
 ```
