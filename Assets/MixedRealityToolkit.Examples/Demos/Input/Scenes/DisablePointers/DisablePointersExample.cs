@@ -143,7 +143,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 toggle.SetToggled(PointerUtils.GetPointerBehavior<T>(Handedness.Any, inputType) != PointerBehavior.AlwaysOff);
             }
         }
-
     }
 
 }
