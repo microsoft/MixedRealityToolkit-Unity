@@ -1188,7 +1188,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     UpdateBounds();
                     UpdateRigHandles();
                 }
-                else if (!isChildOfTarget && Target.transform.hasChanged)
+                else if ((!isChildOfTarget && Target.transform.hasChanged)
+                    || boundsOverride != null && HasBoundsOverrideChanged())
                 {
                     UpdateBounds();
                     UpdateRigHandles();
@@ -1206,11 +1207,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         HandleProximityScaling();
                     }
                 }
-            }
-            else if (boundsOverride != null && HasBoundsOverrideChanged())
-            {
-                UpdateBounds();
-                UpdateRigHandles();
             }
         }
 
