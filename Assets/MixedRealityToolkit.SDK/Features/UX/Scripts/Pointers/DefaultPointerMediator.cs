@@ -17,6 +17,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected readonly Dictionary<IMixedRealityInputSource, HashSet<IMixedRealityPointer>> pointerByInputSourceParent = new Dictionary<IMixedRealityInputSource, HashSet<IMixedRealityPointer>>();
 
         private IPointerPreferences pointerPreferences;
+
+        public DefaultPointerMediator()
+            : this(null)
+        {
+        }
+
         public DefaultPointerMediator(IPointerPreferences pointerPrefs)
         {
             this.pointerPreferences = pointerPrefs;
@@ -182,27 +188,31 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void ApplyCustomPointerBehaviors()
         {
-            if (CoreServices.InputSystem.FocusProvider is FocusProvider focusProvider)
+            if (this.pointerPreferences != null)
             {
-                Action<IMixedRealityPointer, PointerBehavior> setPointerState =
-                    (ptr, behavior) =>
-                    {
-                        if (behavior == PointerBehavior.Default)
-                        {
-                            return;
-                        }
-
-                        bool isPointerOn = behavior == PointerBehavior.AlwaysOn;
-                        ptr.IsActive = isPointerOn;
-                        if (ptr is GenericPointer genericPtr)
-                        {
-                            genericPtr.IsInteractionEnabled = isPointerOn;
-                        }
-                        unassignedPointers.Remove(ptr);
-                    };
-                foreach (IMixedRealityPointer pointer in allPointers)
+                if (CoreServices.InputSystem.FocusProvider is FocusProvider focusProvider)
                 {
-                    setPointerState(pointer, pointerPreferences.GetPointerBehavior(pointer));
+                    Action<IMixedRealityPointer, PointerBehavior> setPointerState =
+                        (ptr, behavior) =>
+                        {
+                            if (behavior == PointerBehavior.Default)
+                            {
+                                return;
+                            }
+
+                            bool isPointerOn = behavior == PointerBehavior.AlwaysOn;
+                            ptr.IsActive = isPointerOn;
+                            if (ptr is GenericPointer genericPtr)
+                            {
+                                genericPtr.IsInteractionEnabled = isPointerOn;
+                            }
+                            unassignedPointers.Remove(ptr);
+                        };
+
+                    foreach (IMixedRealityPointer pointer in allPointers)
+                    {
+                        setPointerState(pointer, pointerPreferences.GetPointerBehavior(pointer));
+                    }
                 }
             }
         }
