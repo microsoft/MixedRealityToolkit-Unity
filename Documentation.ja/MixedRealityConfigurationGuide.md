@@ -211,6 +211,9 @@ Input Action Rules は、使用可能な入力軸のいずれかに対して設�
 
 ![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionRulesProfile.png)
 
+---
+<a name="pointer"/>
+
 ## Pointers の設定
 
 入力の向きとヒットテストの両方を、シーン内の任意のオブジェクト (コライダがアタッチされている、または UI コンポーネント) に対して行います。Pointers は、デフォルトでは、コントローラー、ヘッドセット(視線/フォーカス)、マウス/タッチ入力用に自動的に設定されます。
