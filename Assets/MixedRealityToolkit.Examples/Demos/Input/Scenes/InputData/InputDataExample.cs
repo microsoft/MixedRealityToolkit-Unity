@@ -1,7 +1,6 @@
 ﻿using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
-using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
@@ -41,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 }
                 sb.Append(": ");
                 Ray myRay;
-                if (InputUtils.TryGetRay(sourceType, handedness, out myRay))
+                if (InputRayUtils.TryGetRay(sourceType, handedness, out myRay))
                 {
                     sb.Append($"pos: ({myRay.origin.x:F2}, {myRay.origin.y:F2}, {myRay.origin.z:F2}");
                     sb.Append($" forward: ({myRay.direction.x:F2}, {myRay.direction.y:F2}, {myRay.direction.z:F2}");

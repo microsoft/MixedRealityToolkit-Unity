@@ -21,7 +21,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
     // Tests to verify that the ray utilities methods are functioning correctly
-    public class InputUtilsTests
+    public class InputRayUtilsTests
     {
         [SetUp]
         public void SetUp()

@@ -1,19 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.WindowsDevicePortal;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
-using UnityEngine.Experimental.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Utilities for accessing input state.
     /// </summary>
-    public static class InputUtils
+    public static class InputRayUtils
     {
         /// <summary>
         /// Gets the ray representing the position and direction of the user's head.
