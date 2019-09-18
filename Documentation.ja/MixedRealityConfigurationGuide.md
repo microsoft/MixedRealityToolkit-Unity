@@ -71,6 +71,7 @@ Mixed Reality Toolkit のメイン設定ページにあるこの項目では、�
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_CameraProfile.png" width="650px" style="display:block;">
 
+
 ---
 <a name="inputsystem"/>
 
@@ -121,10 +122,10 @@ Mixed Reality プロジェクトは、デフォルトで選択されたプロジ
 ## 空間認識 (Spatial Awareness) の設定
 
 Mixed Reality プロジェクトは、デフォルトで選択されたプロジェクト内の空間スキャン システムを操作するための再構築された空間認識システムを提供します。
-
 [MRTK 空間認識システム](../Documentation/Architecture/SpatialAwareness.html)の裏にあるアーキテクチャはこちらで表示できます。
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpatialAwarenessSystemSelection.png" width="650px" style="display:block;">
+
 Mixed Reality Toolkit の空間認識設定を使用すると、アプリケーションの起動時に自動的に行うか、プログラムで後で行うかにかかわらず、システムの起動方法を調整したり、視野の範囲を設定することができます。
 
 また、メッシュとサーフェスの設定を行い、プロジェクトが周囲の環境をどのように認識するかをさらにカスタマイズすることもできます。
@@ -222,11 +223,11 @@ Pointers は、Mixed Reality Toolkit によって提供される多くのライ�
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputPointerProfile.png" width="650px" style="display:block;">
 
-* Pointing Extent : 注視を含むすべてのポインターのグローバル ポインティング範囲を決定。
-* Pointing Raycast Layer Masks : レイキャストに対してどのレイキャストを行うレイヤーを決定します。
-* Debug Draw Pointing Rays : レイキャストに使用されるレイを可視化するためのデバッグ ヘルパー。
-* Debug Draw Pointing Rays Colors : 可視化に使用する一連の色。
-* Gaze cursor prefab : 任意のシーンにグローバルな視線カーソルを簡単に指定できます。
+* Pointing Extent: 注視を含むすべてのポインターのグローバル ポインティング範囲を決定。
+* Pointing Raycast Layer Masks: レイキャストに対してどのレイキャストを行うレイヤーを決定します。
+* Debug Draw Pointing Rays: レイキャストに使用されるレイを可視化するためのデバッグ ヘルパー。
+* Debug Draw Pointing Rays Colors: 可視化に使用する一連の色。
+* Gaze cursor prefab: 任意のシーンにグローバルな視線カーソルを簡単に指定できます。
 
 必要に応じて、Gaze Provider にすばやく移り、Gaze の特定の値をオーバーライドするための追加のヘルパーボタンがあります。
 
