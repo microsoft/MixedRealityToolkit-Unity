@@ -277,6 +277,9 @@ MRTK は、次のコントローラー/システムのデフォルト設定を�
 
 上記で識別されていない他の OpenVR または Unity 入力コントローラーを設定するための高度な画面もあります。
 
+---
+<a name="visualization"/>
+
 ## コントローラーの可視化の設定
 
 コントローラー マッピングに加えて、シーン内でのコントローラーの表示方法をカスタマイズするための個別の設定プロファイルが用意されています。
@@ -294,10 +297,10 @@ MRTK は、次のコントローラー/システムのデフォルト設定を�
 
 サービス インスペクタは、シーン内オブジェクトを生成する、エディタ上のみの機能です。これらのオブジェクトを選択すると、ドキュメントリンクを提供するインスペクタが表示され、エディタの見た目を制御し、サービスの状態に関する情報が表示されます。
 
-![mrtk](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ServiceInspectors.PNG)
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ServiceInspectors.PNG" width="350px" style="display:block;">
 
 Configuration Profile の Editor Settings の Use Service Inspectors をオンにすると、サービスインスペクタを有効にできます。
 
-![mrtk](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_EnableServiceInspectors.PNG)
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_EnableServiceInspectors.PNG" width="650px" style="display:block;"><br/>
 
-サービス インスペクタを有効にする
+<sup>サービス インスペクタを有効にする</sup>
