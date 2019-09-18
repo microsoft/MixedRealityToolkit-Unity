@@ -148,6 +148,7 @@ Mixed Reality Toolkit の空間認識設定を使用すると、アプリケー�
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsProfile.png" width="650px" style="display:block;">
 
+
 ---
 <a name="scenesystem"/>
 
