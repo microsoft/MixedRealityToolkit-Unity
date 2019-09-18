@@ -19,7 +19,7 @@
 <img src="../Documentation/Images/ManipulationHandler/MRTK_ManipulationHandler_Structure.png" width="450">
 
 **Host Transform**
-引っ張れる Transform。デフォルトでは、コンポーネントのオブジェクトが設定されます。
+ドラッグされる Transform。デフォルトでは、コンポーネントのオブジェクトが設定されます。
 
 **Manipulation Type**
 片手、両手、または両方を使用してオブジェクトを操作できるかどうかを指定します。
@@ -31,10 +31,10 @@
 **Two Handed Manipulation Type**
 
 * *Scale*: スケーリングのみ可能です。
-* *Rotate*:回転のみが許可されています。
-* *Move Scale*: 移動とスケーリングが許可されています。
-* *Move Rotate*:移動および回転が許可される。
-* *Rotate Scale*: 回転とスケーリングが可能です。
+* *Rotate*: 回転のみ許可されます。。
+* *Move Scale*: 移動とスケーリングが許可されます。
+* *Move Rotate*:移動および回転が許可されます。
+* *Rotate Scale*: 回転とスケーリングが許可されます。
 * *Move Rotate Scale*:移動、回転およびスケーリングが許可されます。
 
 ![Manipulation Handler](../Documentation/Images/ManipulationHandler/MRTK_ManipulationHandler_TwoHanded.jpg)
