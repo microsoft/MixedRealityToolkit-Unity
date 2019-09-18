@@ -26,7 +26,7 @@
 
 単に [`PressableButtonHoloLens2.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab) または[`PressableButtonHoloLens2Unplated.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2Unplated.prefab) をドラッグしてシーンに置くだけです。これらのボタンプレハブは、多関節ハンド (articulated hand) 入力やゲイズなど、様々なタイプの入力に対して視聴覚フィードバックするように既に設定されています。
 
-プレハブ自体と [Interactable](README_Interactable.md) コンポーネントで公開されるイベントを使用して、追加のアクションをトリガーできます。 [HandInteractionExample のシーン](README_HandInteractionExamples.md)の pressable buttons は、Interactable の *OnClick* イベントを使って、キューブの色の変更をトリガーします。このイベントは、Gaze、AirTap、HandRay などの様々なタイプの入力メソッド、及び pressable button のスクリプトを介した物理的なボタンの押下に対してトリガーされます。
+プレハブ自体と [Interactable](README_Interactable.md) コンポーネントで公開されているイベントを使用して、追加のアクションをトリガーできます。 [HandInteractionExample のシーン](README_HandInteractionExamples.md)の pressable buttons は、Interactable の *OnClick* イベントを使って、キューブの色の変更をトリガーします。このイベントは、Gaze、AirTap、HandRay などの様々なタイプの入力メソッド、及び pressable button のスクリプトを介した物理的なボタンの押下に対してトリガーされます。
 
 <img src="../Documentation/Images/Button/MRTK_Button_HowToUse_Interactable.png" width="450">
 
@@ -46,24 +46,24 @@ Articulated hand の入力状態情報を活用するには、pressable button �
 
 このわずかなパルスエフェクトは、現在インタラクションしているポインター上に存在する  *ProximityLight(s)* を探す、pressable button によってトリガーされます。近接ライトが見つかった場合、  `ProximityLight.Pulse` メソッドが呼び出され、シェーダーパラメーターを自動的にアニメーション化してパルスを表示します。
 
-## [Inspector] (インスペクタ―) プロパティ
+## [Inspector] (インスペクター) プロパティ
 
 ![Button](../Documentation/Images/Button/MRTK_Button_Structure.png)
 
-**ボックスコライダー**
+**ボックスコライダー (Box Collider)**
 ボタンの前面プレートのための `Box Collider`。
 
 **Pressable Button**
-ハンドプレス インタラクション を使ったボタン移動のロジック。
+ハンド プレス インタラクションでのボタン移動のロジック。
 
 **Physical Press Event Router**
-ハンドプレス インタラクションから [Interactable](README_Interactable.md) へイベントを送るスクリプト。
+ハンド プレス インタラクションから [Interactable](README_Interactable.md) へイベントを送るスクリプト。
 
 **Interactable**
-[Interactable](README_Interactable.md) は様々なタイプのインタラクションの状態とイベントを処理します。HoloLens のゲイズ，ジェスチャ，及び音声入力と，没入型ヘッドセットのモーションコントローラの入力は，このスクリプトによって直接処理されます。
+[Interactable](README_Interactable.md) は様々なタイプのインタラクションの状態とイベントを処理します。HoloLens のゲイズ、ジェスチャ、及び音声入力と、没入型ヘッドセットのモーションコントローラーの入力は、このスクリプトによって直接処理されます。
 
-**オーディオソース**
-音声フィードバッククリップ用の Unity のオーディオソース。
+**オーディオ ソース**
+音声フィードバッククリップ用の Unity のオーディオ ソース。
 
 *NearInteractionTouchable.cs*
 多関節ハンドでオブジェクトをタッチ可能にするために必要です。
@@ -98,25 +98,25 @@ Pressable Button プレハブには、*SeeItSayItLabel* オブジェクトの下
 
 ### 1. キューブで Pressable Button を作成する (Near interaction のみ)
 
-1. Unity のキューブを作成します（GameObject> 3D Object> Cube）
+1. Unity のキューブを作成します (GameObject> 3D Object> Cube)
 2. `PressableButton.cs` のスクリプトを追加します
 3. `NearInteractionTouchable.cs` のスクリプトを追加します
 
-`PressableButton` の [Inspector] (インスペクター) パネルで、キューブオブジェクトを **Moving Button Visuals** に割り当てます。
+`PressableButton` の [Inspector] (インスペクター) パネルで、キューブ オブジェクトを **Moving Button Visuals** に割り当てます。
 
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCube3.png" width="450">
 
-キューブを選択すると、オブジェクト上に複数の色付きのレイヤーが表示されます。 これにより、**Press Settings** の下の距離の値が視覚化されます。 ハンドルを使用して、プレスを開始するタイミング（オブジェクトを動かす）とイベントをトリガーするタイミングを設定できます。
+キューブを選択すると、オブジェクト上に複数の色付きのレイヤーが表示されます。 これにより、**Press Settings** 以下で設定されている距離の値が可視化されます。ハンドルを使用して、プレスを開始する (オブジェクトが動く) タイミングとイベントをトリガーするタイミングを設定できます。
 
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCube1.jpg" width="450">
 
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCube2.png" width="450">
 
-ボタンを押すと、ボタンが移動し，TouchBegin()、TouchEnd()、ButtonPressed()、ButtonReleased() などの `PressableButton.cs` のスクリプトで公開される適切なイベントが生成されます。
+ボタンを押すと、ボタンが移動し、TouchBegin()、TouchEnd()、ButtonPressed()、ButtonReleased() などの `PressableButton.cs` のスクリプトで公開されている適切なイベントが生成されます。
 
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCubeRun1.jpg">
 
-### 2. 視覚的なフィードバックをベーシックなキューブボタンに加える
+### 2. 視覚的なフィードバックをベーシックなキューブ ボタンに加える
 
 MRTK Standard Shader は、視覚的なフィードバックを簡単に追加できるさまざまな機能を提供しています。 マテリアルを作成し、シェーダー `Mixed Reality Toolkit/Standard` を選択します。 または、MRTK 標準シェーダーを使用している `/SDK/StandardAssets/Materials/` にある既存のマテリアルの１つを使用または複製できます。
 
@@ -128,27 +128,27 @@ MRTK Standard Shader は、視覚的なフィードバックを簡単に追加�
 
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCubeRun2.jpg">
 
-### 3. オーディオフィードバックをベーシックなキューブボタンに加える
+### 3. オーディオ フィードバックをベーシックなキューブ ボタンに加える
 
-`PressableButton.cs` のスクリプトは TouchBegin()、TouchEnd()、ButtonPressed()、ButtonReleased() などのイベントを公開するため、音声フィードバックを簡単に割り当てることができます。Unity の `Audio Source` をキューブオブジェクトに追加し、AudioSource.PlayOneShot() を選択してオーディオクリップを割り当てます。`/SDK/StandardAssets/Audio/` フォルダーの下のMRTK_Select_Main および MRTK_Select_Secondary オーディオクリップを使用できます。
+`PressableButton.cs` のスクリプトは TouchBegin()、TouchEnd()、ButtonPressed()、ButtonReleased() などのイベントを公開するため、音声フィードバックを簡単に割り当てることができます。Unity の `Audio Source` をキューブ オブジェクトに追加し、AudioSource.PlayOneShot() を選択してオーディオ クリップを割り当てます。`/SDK/StandardAssets/Audio/` フォルダーの下の MRTK_Select_Main および MRTK_Select_Secondary オーディオ クリップを使用できます。
 
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCube7.png" width="450">
 
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCube6.png" width="450">
 
-### 4. 視覚的な状態と遠方のインタラクションイベントの処理を加える
+### 4. 視覚的な状態とファー インタラクションイベントの処理を加える
 
-[Interactable]（README_Interactable.md）は、さまざまなタイプの入力インタラクションの視覚的な状態を簡単に作成できるスクリプトです。 また、遠方のインタラクションイベントも処理します。`Interactable.cs` を追加し、キューブオブジェクトを **Profiles** の下の **Target** フィールドにドラッグアンドドロップします。 次に、**ScaleOffsetColorTheme** タイプの新しいテーマを作成します。このテーマでは、**Focus** や **Pressed** などの特定のインタラクションの状態におけるオブジェクトの色を指定できます。スケールとオフセットも制御できます。**Easing** をチェックし、継続時間を設定して視覚的な移行をスムーズにします。
+[Interactable]（README_Interactable.md）は、さまざまなタイプの入力インタラクションの視覚的な状態を簡単に作成できるスクリプトです。 また、ファー インタラクション イベントも処理します。`Interactable.cs` を追加し、キューブ オブジェクトを **Profiles** の下の **Target** フィールドにドラッグ アンド ドロップします。 次に、**ScaleOffsetColorTheme** タイプの新しいテーマを作成します。このテーマでは、**Focus** や **Pressed** などの特定のインタラクションの状態におけるオブジェクトの色を指定できます。スケールとオフセットも制御できます。**Easing** をチェックし、継続時間を設定して視覚的な変化をスムーズにします。
 
  <img src="../Documentation/Images/Button/MRTK_PressableButtonCube8.png" width="450">
  <img src="../Documentation/Images/Button/MRTK_PressableButtonCube9.png" width="450">
 
-オブジェクトが遠く（ハンドレイ，またはゲイズカーソル）と近く（ハンド）の両方のインタラクションに応答するのがわかります。
+オブジェクトが遠く（ハンド レイ、またはゲイズ カーソル）と近く（ハンド）の両方のインタラクションに応答するのがわかります。
 
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCubeRun3.jpg">
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCubeRun4.jpg">
 
-## カスタムボタンのサンプル ##
+## カスタム ボタンのサンプル ##
 
 [HandInteractionExample のシーン](README_HandInteractionExamples.md) で、ピアノと丸ボタンの例を見てみましょう。どちらも `PressableButton` を使用しています。
 
@@ -156,6 +156,6 @@ MRTK Standard Shader は、視覚的なフィードバックを簡単に追加�
 
 <img src="../Documentation/Images/Button/MRTK_Button_Custom2.png" width="450">
 
-各ピアノのキーには、`PressableButton` と `NearInteractionTouchable` のスクリプトが割り当てられています。`NearInteractionTouchable` の *Local Forward* の方向が正しいことを確認することが重要です。エディターでは白い矢印で表されます。矢印がボタンの前面から離れていることを確認してください。
+各ピアノのキーには、`PressableButton` と `NearInteractionTouchable` のスクリプトが割り当てられています。`NearInteractionTouchable` の *Local Forward* の方向が正しいことを確認することが重要です。エディターでは白い矢印で表されます。矢印がボタンの前面からその先を指していることを確認してください。
 
 <img src="../Documentation/Images/Button/MRTK_Button_Custom3.png" width="450">
