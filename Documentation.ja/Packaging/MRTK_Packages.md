@@ -11,7 +11,7 @@ MRTK は、次のパッケージを介してリリースしています。
 
 ## Foundation パッケージ
 
-Mixed Reality Toolkit Foundation は、アプリケーションが Mixed Reality プラットフォーム間で共通の機能を活用できるようにするパッケージのセットです。これらのパッケージは、GitHub の [mrtk_release](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release) ブランチのソースコードからマイクロソフトによってリリースされ、サポートされています。
+Mixed Reality Toolkit Foundation は、アプリケーションが Mixed Reality プラットフォーム間で共通の機能を活用できるようにするパッケージのセットです。これらのパッケージは、GitHub の [mrtk_release](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release) ブランチのソース コードからマイクロソフトによってリリースされ、サポートされています。
 
 <img src="../../Documentation/Images/Input/MRTK_Package_Foundation.png" width="350px" style="display:block;"><br/>
 <sup>MRTK Foundation パッケージ</sup>
@@ -20,38 +20,38 @@ MRTK Foundation は以下の通りに構成されています。
 
 - [Core パッケージ](#core-パッケージ)
 - [プラットフォーム プロバイダー](#プラットフォーム-プロバイダー)
-- [システムサービス](#システムサービス)
+- [システム サービス](#システム-サービス)
 - [機能アセット](#機能アセット)
 
 次のセクションでは、各カテゴリのパッケージの種類について説明します。
 
 ### Core パッケージ
 
-Core パッケージは _必須_ コンポーネントであり、すべての MRTK Foundation パッケージが依存しています。。
+Core パッケージは _必須_ コンポーネントであり、すべての MRTK Foundation パッケージが依存しています。
 
 MRTK Core パッケージには以下が含まれます。
 
 - [共通のインターフェイス、クラス、データ型](#共通型)
 - [MixedRealityToolkit シーン コンポーネント](#mixedrealitytoolkit-シーン-コンポーネント)
 - [MRTK スタンダード シェーダー](#mrtk-スタンダード-シェーダー)
-- [Unity インプットプロバイダ (Unity Input Provider)](#unity-インプットプロバイダ-unity-input-provider)
+- [Unity インプット プロバイダ (Unity Input Provider)](#unity-インプット-プロバイダ-unity-input-provider)
 - [パッケージ管理](#パッケージ管理)
 
 #### 共通型
 
-Mixed Reality Toolkit Core パッケージには、他のすべてのコンポーネントで使用される共通のインターフェイス、クラス、データ型のすべての定義が含まれています。プラットフォーム間で最高レベルの互換性を実現するために、定義されたインターフェイスのみを介して MRTK コンポーネントにアクセスすることを _強く_ お勧めします。
+Mixed Reality Toolkit Core パッケージには、他のすべてのコンポーネントで使用される共通のインターフェイス、クラス、データ型のすべての定義が含まれています。プラットフォーム間で最高レベルの互換性を実現するために、定義されたインターフェイスのみを介して MRTK コンポーネントにアクセスすることをお勧めします。
 
 #### MixedRealityToolkit シーン コンポーネント
 
-MixedRealityToolkit シーン コンポーネントは、Mixed Reality Toolkit の単一の集中化されたリソースマネージャです。このコンポーネントは、プラットフォームモジュールとサービスモジュールのライフスパンをロードおよび管理し、システムが構成設定にアクセスするためのリソースを提供します。
+MixedRealityToolkit シーン コンポーネントは、Mixed Reality Toolkit の単一の集中化されたリソース マネージャです。このコンポーネントは、プラットフォーム モジュールとサービス モジュールのライフスパンをロードおよび管理し、システムが構成設定にアクセスするためのリソースを提供します。
 
 #### MRTK スタンダード シェーダー
 
-MRTK のスタンダードシェーダーは MRTK によって提供される事実上すべてのマテリアルの基礎を提供します。このシェーダは非常に柔軟性が高く、MRTK がサポートされているさまざまなプラットフォームに最適化されています。最適なパフォーマンスを実現するには、アプリケーションのマテリアルで MRTK スタンダードシェーダーを使用することを強くお勧めします。
+MRTK のスタンダード シェーダーは MRTK によって提供される事実上すべてのマテリアルの基礎を提供します。このシェーダは非常に柔軟性が高く、MRTK がサポートされているさまざまなプラットフォームに最適化されています。最適なパフォーマンスを実現するには、アプリケーションのマテリアルで MRTK スタンダード シェーダーを使用することを _強く_ お勧めします。
 
-#### Unity インプットプロバイダ (Unity Input Provider)
+#### Unity インプット プロバイダ (Unity Input Provider)
 
-Unity 入力プロバイダは、ゲームコントローラ、タッチスクリーン、3D 空間マウスなどの一般的な入力デバイスにへのアクセスを提供します。
+Unity インプット プロバイダは、ゲーム コントローラ、タッチ スクリーン、3D 空間マウスなどの一般的な入力デバイスへのアクセスを提供します。
 
 #### パッケージ管理
 
@@ -88,7 +88,7 @@ The OpenVR package provides hardware and platform support for devices using the 
 
 The Windows Voice package provides support for keyword recognition and dictation functionality on Microsoft Windows 10 devices.
 
-### システムサービス
+### システム サービス
 
 Core platform services are provided in system service packages. These packages contain the Mixed Reality Toolkit's default implementations of the system service interfaces, defined in the [core](#core-package) package.
 
