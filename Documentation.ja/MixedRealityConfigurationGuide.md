@@ -317,3 +317,4 @@ Configuration Profile の Editor Settings の Use Service Inspectors をオン�
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_EnableServiceInspectors.PNG" width="650px" style="display:block;"><br/>
 <sup>サービス インスペクタを有効にする</sup>
+
