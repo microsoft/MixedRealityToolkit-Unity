@@ -20,6 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty cellHeight;
         private SerializedProperty cellWidth;
 
+        private SerializedProperty canScroll;
         private SerializedProperty scrollDirection;
         private SerializedProperty useNearScrollBoundary;
         private SerializedProperty viewableArea;
@@ -61,6 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             cellWidth = serializedObject.FindProperty("cellWidth");
 
             tiers = serializedObject.FindProperty("tiers");
+            canScroll = serializedObject.FindProperty("canScroll");
             scrollDirection = serializedObject.FindProperty("scrollDirection");
             useNearScrollBoundary = serializedObject.FindProperty("useNearScrollBoundary");
             viewableArea = serializedObject.FindProperty("viewableArea");
@@ -110,6 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 EditorGUILayout.Space();
                 EditorGUILayout.PropertyField(scrollDirection);
                 EditorGUILayout.Space();
+                EditorGUILayout.PropertyField(canScroll);
                 EditorGUILayout.PropertyField(setUpAtRuntime);
                 EditorGUILayout.PropertyField(useCameraPreRender);
                 EditorGUILayout.Space();
