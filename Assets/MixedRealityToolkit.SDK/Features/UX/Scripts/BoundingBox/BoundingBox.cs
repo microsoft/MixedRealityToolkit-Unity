@@ -1188,7 +1188,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     UpdateBounds();
                     UpdateRigHandles();
                 }
-                else if (!isChildOfTarget && Target.transform.hasChanged)
+                else if ((!isChildOfTarget && Target.transform.hasChanged)
+                    || boundsOverride != null && HasBoundsOverrideChanged())
                 {
                     UpdateBounds();
                     UpdateRigHandles();
