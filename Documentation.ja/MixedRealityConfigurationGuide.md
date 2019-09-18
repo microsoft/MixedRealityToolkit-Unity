@@ -20,7 +20,7 @@ Mixed Reality Toolkit のすべての「デフォルト」プロファイルは�
 > [!IMPORTANT]
 > デフォルトの HoloLens 2 の設定プロファイルは、HoloLens 2 用に最適化されています。 [Profiles](Profiles/Profiles.md) をご確認ください。
 
-メインの Mixed Reality Toolkit 設定プロファイルを開くと、インスペクタに次の画面が表示されます。
+メインの Mixed Reality Toolkit 設定プロファイルを開くと、Inspector (インスペクター)に次の画面が表示されます。
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_MixedRealityToolkitConfigurationScreen.png" width="650px" style="display:block;">
 
@@ -309,12 +309,12 @@ MRTK は、次のコントローラー/システムのデフォルト設定を�
 
 ## Service Inspectors
 
-サービス インスペクタは、シーン内オブジェクトを生成する、エディタ上のみの機能です。これらのオブジェクトを選択すると、ドキュメントリンクを提供するインスペクタが表示され、エディタの見た目を制御し、サービスの状態に関する情報が表示されます。
+サービス インスペクターは、シーン内オブジェクトを生成する、エディタ上のみの機能です。これらのオブジェクトを選択すると、ドキュメントリンクを提供する Inspector (インスペクター) が表示され、エディタの見た目を制御し、サービスの状態に関する情報が表示されます。
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ServiceInspectors.PNG" width="350px" style="display:block;">
 
-Configuration Profile の Editor Settings の Use Service Inspectors をオンにすると、サービスインスペクタを有効にできます。
+Configuration Profile の Editor Settings の Use Service Inspectors をオンにすると、サービスインスペクターを有効にできます。
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_EnableServiceInspectors.PNG" width="650px" style="display:block;"><br/>
-<sup>サービス インスペクタを有効にする</sup>
+<sup>サービス インスペクターを有効にする</sup>
 
