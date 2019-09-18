@@ -6,6 +6,11 @@ using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    /// <summary>
+    /// The default implementation for pointer mediation in MRTK which is responsible for
+    /// determining which pointers are active based on the state of all pointers.
+    /// For example, one of the key things this class does is disable far pointers when a near pointer is close to an object.
+    /// </summary>
     public class DefaultPointerMediator : IMixedRealityPointerMediator
     {
         protected readonly HashSet<IMixedRealityPointer> allPointers = new HashSet<IMixedRealityPointer>();
