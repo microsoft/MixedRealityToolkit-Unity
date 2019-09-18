@@ -86,9 +86,9 @@
 移動、スケール、回転に適用するスムージングの量。0 は、スムージングがないことを意味します。最大値は、値に変更がないことを意味します。
 
 ## Events ##
-Manipulation handlerは、次のイベントを提供します:
+Manipulation handler は、次のイベントを提供します:
 
-* *OnManipulationStarted*: 操作が開始されたときに起動されます。
-* *OnManipulationEnded*: 操作が終了すると起動します。
-* *OnHoverStarted*: ハンド/コントローラーが操作可能な、近くまたは遠くにホバー (hover) したときに起動します。
-* *OnHoverEnded*: ハンド/コントローラーが操作可能な、近くまたは遠くにホバー (hover) を解除すると起動します。
+* *OnManipulationStarted*: 操作が開始されたときに起動します。
+* *OnManipulationEnded*: 操作が終了した時に起動します。
+* *OnHoverStarted*: ハンド/コントローラーが操作可能な物の、近くまたは遠くにホバー (hover) したときに起動します。
+* *OnHoverEnded*: ハンド/コントローラーが操作可能な物の、近くまたは遠くにホバー (hover) を解除すると起動します。
