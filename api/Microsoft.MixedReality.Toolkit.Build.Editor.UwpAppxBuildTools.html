@@ -155,15 +155,14 @@
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Build_Editor_UwpAppxBuildTools_AddGazeInputCapability_" data-uid="Microsoft.MixedReality.Toolkit.Build.Editor.UwpAppxBuildTools.AddGazeInputCapability*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Build_Editor_UwpAppxBuildTools_AddGazeInputCapability_Microsoft_MixedReality_Toolkit_Build_Editor_IBuildInfo_" data-uid="Microsoft.MixedReality.Toolkit.Build.Editor.UwpAppxBuildTools.AddGazeInputCapability(Microsoft.MixedReality.Toolkit.Build.Editor.IBuildInfo)">AddGazeInputCapability(IBuildInfo)</h4>
-  <div class="markdown level1 summary"><p>An overload of AddGazeInputCapability that will read the AppX manifest from
-the build output and update the manifest file with the gazeInput capability.</p>
+  <a id="Microsoft_MixedReality_Toolkit_Build_Editor_UwpAppxBuildTools_AddCapabilities_" data-uid="Microsoft.MixedReality.Toolkit.Build.Editor.UwpAppxBuildTools.AddCapabilities*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Build_Editor_UwpAppxBuildTools_AddCapabilities_Microsoft_MixedReality_Toolkit_Build_Editor_IBuildInfo_XElement_" data-uid="Microsoft.MixedReality.Toolkit.Build.Editor.UwpAppxBuildTools.AddCapabilities(Microsoft.MixedReality.Toolkit.Build.Editor.IBuildInfo,XElement)">AddCapabilities(IBuildInfo, XElement)</h4>
+  <div class="markdown level1 summary"><p>Adds capabilities according to the values in the buildInfo to the manifest file.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void AddGazeInputCapability(IBuildInfo buildInfo)</code></pre>
+    <pre><code class="lang-csharp hljs">public static void AddCapabilities(IBuildInfo buildInfo, XElement rootElement = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -178,7 +177,55 @@ the build output and update the manifest file with the gazeInput capability.</p>
       <tr>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Build.Editor.IBuildInfo.html">IBuildInfo</a></td>
         <td><span class="parametername">buildInfo</span></td>
-        <td><p>An IBuildInfo containing a valid OutputDirectory</p>
+        <td><p>An IBuildInfo containing a valid OutputDirectory and all capabilities</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">XElement</span></td>
+        <td><span class="parametername">rootElement</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Build_Editor_UwpAppxBuildTools_AddCapability_" data-uid="Microsoft.MixedReality.Toolkit.Build.Editor.UwpAppxBuildTools.AddCapability*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Build_Editor_UwpAppxBuildTools_AddCapability_XElement_XName_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Build.Editor.UwpAppxBuildTools.AddCapability(XElement,XName,System.String)">AddCapability(XElement, XName, String)</h4>
+  <div class="markdown level1 summary"><p>Adds a capability to the given rootNode, which must be the read AppX manifest from
+the build output.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void AddCapability(XElement rootNode, XName capability, string value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">XElement</span></td>
+        <td><span class="parametername">rootNode</span></td>
+        <td><p>An XElement containing the AppX manifest from
+the build output</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">XName</span></td>
+        <td><span class="parametername">capability</span></td>
+        <td><p>The added capabilites tag as XName</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>Value of the Name-XAttribute of the added capability</p>
 </td>
       </tr>
     </tbody>
@@ -214,6 +261,76 @@ the build output and update the manifest file with the gazeInput capability.</p>
   <h5 id="Microsoft_MixedReality_Toolkit_Build_Editor_UwpAppxBuildTools_AddGazeInputCapability_XElement__remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This is a workaround for versions of Unity which don't have native support
 for the 'Gaze Input' capability in its Player Settings preference location.
+Note that this function is only public to poke a hole for testing - do not
+take a dependency on this function.</p>
+</div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Build_Editor_UwpAppxBuildTools_AddResearchModeCapability_" data-uid="Microsoft.MixedReality.Toolkit.Build.Editor.UwpAppxBuildTools.AddResearchModeCapability*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Build_Editor_UwpAppxBuildTools_AddResearchModeCapability_XElement_" data-uid="Microsoft.MixedReality.Toolkit.Build.Editor.UwpAppxBuildTools.AddResearchModeCapability(XElement)">AddResearchModeCapability(XElement)</h4>
+  <div class="markdown level1 summary"><p>Adds the 'Research Mode' capability to the manifest.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void AddResearchModeCapability(XElement rootNode)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">XElement</span></td>
+        <td><span class="parametername">rootNode</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Build_Editor_UwpAppxBuildTools_AddResearchModeCapability_XElement__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This is only for research projects and should not be used in production.
+For further information take a look at <a href="https://docs.microsoft.com/en-us/windows/mixed-reality/research-mode">https://docs.microsoft.com/en-us/windows/mixed-reality/research-mode</a>.
+Note that this function is only public to poke a hole for testing - do not
+take a dependency on this function.</p>
+</div>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Build_Editor_UwpAppxBuildTools_AllowUnsafeCode_" data-uid="Microsoft.MixedReality.Toolkit.Build.Editor.UwpAppxBuildTools.AllowUnsafeCode*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Build_Editor_UwpAppxBuildTools_AllowUnsafeCode_XElement_" data-uid="Microsoft.MixedReality.Toolkit.Build.Editor.UwpAppxBuildTools.AllowUnsafeCode(XElement)">AllowUnsafeCode(XElement)</h4>
+  <div class="markdown level1 summary"><p>Enables unsafe code in the generated Assembly-CSharp project.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void AllowUnsafeCode(XElement rootNode)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">XElement</span></td>
+        <td><span class="parametername">rootNode</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Build_Editor_UwpAppxBuildTools_AllowUnsafeCode_XElement__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This is not required by the research mode, but not using unsafe code with
+direct memory access results in poor performance. So its kinda recommended
+to use unsafe code.
+For further information take a look at <a href="https://docs.microsoft.com/en-us/windows/mixed-reality/research-mode">https://docs.microsoft.com/en-us/windows/mixed-reality/research-mode</a>.
 Note that this function is only public to poke a hole for testing - do not
 take a dependency on this function.</p>
 </div>
@@ -263,6 +380,35 @@ previously built the Unity Player with the WSA Player as the Build Target.</p>
       <tr>
         <td><span class="xref">Task</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
         <td><p>True, if the appx build was successful.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Build_Editor_UwpAppxBuildTools_UpdateAssemblyCSharpProject_" data-uid="Microsoft.MixedReality.Toolkit.Build.Editor.UwpAppxBuildTools.UpdateAssemblyCSharpProject*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Build_Editor_UwpAppxBuildTools_UpdateAssemblyCSharpProject_Microsoft_MixedReality_Toolkit_Build_Editor_IBuildInfo_" data-uid="Microsoft.MixedReality.Toolkit.Build.Editor.UwpAppxBuildTools.UpdateAssemblyCSharpProject(Microsoft.MixedReality.Toolkit.Build.Editor.IBuildInfo)">UpdateAssemblyCSharpProject(IBuildInfo)</h4>
+  <div class="markdown level1 summary"><p>Updates 'Assembly-CSharp.csproj' file according to the values set in buildInfo.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void UpdateAssemblyCSharpProject(IBuildInfo buildInfo)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Build.Editor.IBuildInfo.html">IBuildInfo</a></td>
+        <td><span class="parametername">buildInfo</span></td>
+        <td><p>An IBuildInfo containing a valid OutputDirectory</p>
 </td>
       </tr>
     </tbody>
