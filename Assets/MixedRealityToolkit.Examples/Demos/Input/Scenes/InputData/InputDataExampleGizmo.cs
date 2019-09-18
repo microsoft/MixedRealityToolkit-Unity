@@ -1,9 +1,5 @@
 ﻿using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System.Collections;
-using System.Collections.Generic;
-using System.Security.Permissions;
-using System.Security.Policy;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
