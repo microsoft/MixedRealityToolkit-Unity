@@ -8,7 +8,7 @@ Dependency Window は、どのようにアセットが参照され、お互い�
 
 ### 使い方
 
-Dependency Window を開くには、 *Mixed Reality Toolkit->Utilities->Dependency Window* を選択します。これによってウィンドウが開き、自動的にプロジェクトの依存関係グラフが作られ始めます。依存関係グラフができると、プロジェクトタブ内で、依存関係を見るためにアセットを選択できるようになります。
+Dependency Window を開くには、 *Mixed Reality Toolkit->Utilities->Dependency Window* を選択します。これによってウィンドウが開き、自動的にプロジェクトの依存関係グラフが作られ始めます。依存関係グラフができると、プロジェクト タブ内で、依存関係を見るためにアセットを選択できるようになります。
 
 ![](../../Documentation/Images/DependencyWindow/MRTK_Dependency_Window.png)
 

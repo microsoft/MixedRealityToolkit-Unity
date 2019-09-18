@@ -3,7 +3,7 @@
 MRTK を設定する主な方法の一つは、foundation パッケージに含まれる多数の Profile を使用することです。
 メインとなる MixedRealityToolkit オブジェクトは Profile を持っており、これは実装としては ScriptableObject で、他の ScriptableObject への参照を含みます。参照される各 ScriptableObject は MRTK の各機能を設定するようデザインされています。
 
-例えば入力機能の設定はinput の[ Profile ](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/DefaultMixedRealityInputSystemProfile.asset)にまとめられています。 Profile の編集にはエディターのインスペクタを使用することをお勧めします。
+例えば入力機能の設定は input の [Profile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/DefaultMixedRealityInputSystemProfile.asset) にまとめられています。 Profile の編集にはエディターの \[Inspector](インスペクター) ウィンドウを使用することをお勧めします。
 
 <img src="../../Documentation/Images/Profiles/input_profile.png" width="650px" style="display:block;"><br/>
 <sup>Profile Inspector</sup>
