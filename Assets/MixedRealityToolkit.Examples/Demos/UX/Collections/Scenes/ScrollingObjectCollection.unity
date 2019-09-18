@@ -543,8 +543,8 @@ MonoBehaviour:
   sortType: 0
   setUpAtRuntime: 1
   viewableArea: 5
-  handDeltaMagThreshold: 0.1
-  dragTimeThreshold: 0.25
+  handDeltaMagThreshold: 0.4
+  dragTimeThreshold: 0.75
   useNearScrollBoundary: 0
   scrollDirection: 0
   useOnPreRender: 0
@@ -1193,8 +1193,8 @@ MonoBehaviour:
   sortType: 0
   setUpAtRuntime: 1
   viewableArea: 5
-  handDeltaMagThreshold: 0.1
-  dragTimeThreshold: 0.25
+  handDeltaMagThreshold: 0.4
+  dragTimeThreshold: 0.75
   useNearScrollBoundary: 0
   scrollDirection: 0
   useOnPreRender: 0
@@ -4002,8 +4002,8 @@ MonoBehaviour:
   sortType: 0
   setUpAtRuntime: 1
   viewableArea: 5
-  handDeltaMagThreshold: 0.1
-  dragTimeThreshold: 0.25
+  handDeltaMagThreshold: 0.4
+  dragTimeThreshold: 0.75
   useNearScrollBoundary: 0
   scrollDirection: 0
   useOnPreRender: 0
@@ -17401,8 +17401,8 @@ MonoBehaviour:
   sortType: 0
   setUpAtRuntime: 1
   viewableArea: 3
-  handDeltaMagThreshold: 0.1
-  dragTimeThreshold: 0.25
+  handDeltaMagThreshold: 0.4
+  dragTimeThreshold: 0.75
   useNearScrollBoundary: 0
   scrollDirection: 1
   useOnPreRender: 0
