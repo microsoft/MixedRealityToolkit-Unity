@@ -1,6 +1,6 @@
 ﻿# Mixed Reality Toolkit プロファイル設定ガイド
 
-![enter image description here](../Documentation/Images/MRTK_Logo_Rev.png)
+![](../Documentation/Images/MRTK_Logo_Rev.png)
 
 Mixed Reality Toolkit は、ツールキットを管理するために必要な設定を可能な限り集中化しています (ランタイムの「モノ」は除く)。
 
@@ -13,16 +13,16 @@ Mixed Reality Toolkit は、ツールキットを管理するために必要な�
 > [!NOTE]
 > Mixed Reality Toolkit は、プロジェクトの共通のスタートポイントを常に持たせるように、デフォルトの設定画面を「ロック」しています。そして、プロジェクトの進捗に合わせて独自の設定を定義することをお勧めします。MRTK の設定はプレイモード中は編集できません。
 
-![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ActiveConfiguration.png)
+![](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ActiveConfiguration.png)
 
 Mixed Reality Toolkit のすべての「デフォルト」プロファイルは、Assets\MixedRealityToolkit.SDK\Profiles フォルダ内の SDK プロジェクトにあります。
 
 > [!IMPORTANT]
-> デフォルトの HoloLens 2 の設定プロファイルは、HoloLens 2 用に最適化されています。 [Profiles](../Documentation/Profiles/Profiles.html) をご確認ください。
+> デフォルトの HoloLens 2 の設定プロファイルは、HoloLens 2 用に最適化されています。 [Profiles](Profiles/Profiles.md) をご確認ください。
 
 メインの Mixed Reality Toolkit 設定プロファイルを開くと、インスペクタに次の画面が表示されます。
 
-![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_MixedRealityToolkitConfigurationScreen.png)
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_MixedRealityToolkitConfigurationScreen.png" width="650px" style="display:block;">
 
 シーン内で MixedRealityToolkit を使用せずに MixedRealityToolkitConfigurationProfile アセットを選択すると、MRTK がシーンを自動的に設定するかどうかを確認するメッセージが表示されます。これはオプションですが、すべての設定画面にアクセスするには、シーン内にアクティブな MixedRealityToolkit オブジェクトが存在する必要があります。
 
@@ -52,6 +52,9 @@ Mixed Reality Toolkit のすべての「デフォルト」プロファイルは�
 -[Service Inspectors](../Documentation/MixedRealityConfigurationGuide.html#inspectors)
 
 これらの設定プロファイルについては、以下の関連セクションで詳しく説明します。
+
+---
+<a name="experience"/>
 
 # エクスペリエンスの設定 (Experience settings)
 
