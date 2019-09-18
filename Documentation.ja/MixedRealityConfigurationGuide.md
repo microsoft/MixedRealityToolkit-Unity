@@ -72,7 +72,6 @@ Mixed Reality Toolkit のメイン設定ページにあるこの項目では、�
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_CameraProfile.png" width="650px" style="display:block;">
 
 ---
----
 <a name="inputsystem"/>
 
 ## 入力システムの設定 (Input system settings)
@@ -96,17 +95,27 @@ MRTK が提供する入力システムの背後にはその他のいくつかの
 * [Controller mapping configuration](../Documentation/MixedRealityConfigurationGuide.html#mapping)
 * [Controller visualization settings](../Documentation/MixedRealityConfigurationGuide.html#visualization)
 
+---	
+<a name="boundary"/>
+
 ## 境界 (Boundary) 可視化の設定
 
 境界 (Boundary) システムは、基底になるプラットフォームの境界線/保護システムにより、体感できる境界に変換します。境界ビジュアライザー (Boundary visualizer) 設定を使用すると、シーン内で記録された境界をユーザーの位置に対して自動的に表示できます。境界線は、ユーザーがシーン内でテレポートする場所に基づいて反応/更新も行われます。
 
-![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_BoundaryVisualizationProfile.png)
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_BoundaryVisualizationProfile.png" width="650px" style="display:block;">
+
+
+---
+<a name="teleportation"/>
 
 ## テレポーテーション システム (Teleportation system) の選択
 
 Mixed Reality プロジェクトは、デフォルトで選択されたプロジェクトのテレポーテーション イベントを管理するための完全な機能を備えています。
 
-![mrtk](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_TeleportationSystemSelection.png)
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_TeleportationSystemSelection.png" width="650px" style="display:block;">
+
+---
+<a name="spatialawareness"/>
 
 # 空間認識 (Spatial Awareness) の設定
 
