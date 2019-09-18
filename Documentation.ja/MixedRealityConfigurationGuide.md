@@ -33,23 +33,23 @@ Mixed Reality Toolkit のすべての「デフォルト」プロファイルは�
 
 ここから、MRTK のすべての設定プロファイルに移動できます。
 
--[Experience settings](../Documentation/MixedRealityConfigurationGuide.html#experience)
--[Camera settings](../Documentation/MixedRealityConfigurationGuide.html#camera)
--[Input system settings](../Documentation/MixedRealityConfigurationGuide.html#input-system-settings)
--[Boundary settings](../Documentation/MixedRealityConfigurationGuide.html#boundary)
--[Teleporting settings](../Documentation/MixedRealityConfigurationGuide.html#teleportation)
--[Spatial awareness settings](../Documentation/MixedRealityConfigurationGuide.html#spatialawareness)
--[Diagnostics settings](../Documentation/MixedRealityConfigurationGuide.html#diagnostic)
--[Scene system settings](../Documentation/MixedRealityConfigurationGuide.html#scenesystem)
--[Additional services settings](../Documentation/MixedRealityConfigurationGuide.html#services)
--[Input actions settings](../Documentation/MixedRealityConfigurationGuide.html#inputactions)
--[Input actions rules](../Documentation/MixedRealityConfigurationGuide.html#inputactionrules)
--[Pointer configuration](../Documentation/MixedRealityConfigurationGuide.html#pointer)
--[Gestures configuration](../Documentation/MixedRealityConfigurationGuide.html#gestures)
--[Speech commands](../Documentation/MixedRealityConfigurationGuide.html#speech)
--[Controller mapping configuration](../Documentation/MixedRealityConfigurationGuide.html#mapping)
--[Controller visualization settings](../Documentation/MixedRealityConfigurationGuide.html#visualization)
--[Service Inspectors](../Documentation/MixedRealityConfigurationGuide.html#inspectors)
+* [エクスペリエンスの設定 (Experience settings)](#experience)
+* [カメラの設定 (Camera settings)](#camera)
+* [入力システムの設定 (Input system settings)](#inputsystem)
+* [境界 (Boundary) 可視化の設定](#boundary)
+* [テレポーテーション システム (Teleportation system) の選択](#teleportation)
+* [空間認識 (Spatial Awareness) の設定](#spatialawareness)
+* [診断 (Diagnostics) の設定](#diagnostic)
+* [シーン システム (Scene system) の設定](#scenesystem)
+* [その他のサービスの設定](#services)
+* [入力アクション (Input actions) の設定](#inputactions)
+* [Input Action Rules プロフィル](#inputactionrules)
+* [Pointers の設定](#pointer)
+* [ジェスチャ (Gestures) の設定](#gestures)
+* [音声コマンド (Speech Commands)](#speech)
+* [コントローラーマッピング (Controller mapping) の設定](#mapping)
+* [コントローラーの可視化の設定](#visualization)
+* [Service Inspectors](#inspectors)
 
 これらの設定プロファイルについては、以下の関連セクションで詳しく説明します。
 
@@ -88,13 +88,13 @@ MRTK が提供する入力システムの背後にはその他のいくつかの
 個々のプロファイルの詳細は以下のとおりです。
 
 * Focus Settings
-* [Input actions settings](../Documentation/MixedRealityConfigurationGuide.html#input-actions-settings)
-* [Input actions rules](../Documentation/MixedRealityConfigurationGuide.html#inputactionrules)
-* [Pointer configuration](../Documentation/MixedRealityConfigurationGuide.html#pointer)
-* [Gestures configuration](../Documentation/MixedRealityConfigurationGuide.html#gestures)
-* [Speech commands](../Documentation/MixedRealityConfigurationGuide.html#speech)
-* [Controller mapping configuration](../Documentation/MixedRealityConfigurationGuide.html#mapping)
-* [Controller visualization settings](../Documentation/MixedRealityConfigurationGuide.html#visualization)
+* [Input actions settings](#inputactions)
+* [Input actions rules](#inputactionrules)
+* [Pointer configuration](#pointer)
+* [Gestures configuration](#gestures)
+* [Speech commands](#speech)
+* [Controller mapping configuration](#mapping)
+* [Controller visualization settings](#visualization)
 
 
 ---
@@ -122,7 +122,7 @@ Mixed Reality プロジェクトは、デフォルトで選択されたプロジ
 ## 空間認識 (Spatial Awareness) の設定
 
 Mixed Reality プロジェクトは、デフォルトで選択されたプロジェクト内の空間スキャン システムを操作するための再構築された空間認識システムを提供します。
-[MRTK 空間認識システム](../Documentation/Architecture/SpatialAwareness.html)の裏にあるアーキテクチャはこちらで表示できます。
+[MRTK 空間認識システム](../Documentation.ja/Architecture/SpatialAwareness.html)の裏にあるアーキテクチャはこちらで表示できます。
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpatialAwarenessSystemSelection.png" width="650px" style="display:block;">
 
@@ -154,7 +154,7 @@ Mixed Reality Toolkit の空間認識設定を使用すると、アプリケー�
 
 ## シーン システム (Scene system) の設定
 
-MRTK は、複雑なシーンのロード/アンロードの管理に役立つオプションを提供します。シーン システムがプロジェクトに適しているかどうかを判断するには、[シーン システムの開始ガイド](../Documentation/SceneSystem/SceneSystemGettingStarted.html)を参照してください。
+MRTK は、複雑なシーンのロード/アンロードの管理に役立つオプションを提供します。シーン システムがプロジェクトに適しているかどうかを判断するには、[シーン システムの開始ガイド](../Documentation.ja/SceneSystem/SceneSystemGettingStarted.html)を参照してください。
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SceneSystemProfile.png" width="650px" style="display:block;">
 
