@@ -108,10 +108,18 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
                 newScroll.transform.parent = transform;
                 newScroll.transform.localPosition = Vector3.zero;
                 newScroll.transform.localRotation = Quaternion.identity;
-
+                newScroll.SetActive(false);
                 scrollCollection = newScroll.AddComponent<ScrollingObjectCollection>();
+
                 //prevent the scrolling collection from running until we're done dynamically populating it.
                 scrollCollection.SetUpAtRuntime = false;
+                scrollCollection.CellHeight = 0.06f;
+                scrollCollection.CellWidth = 0.06f;
+                scrollCollection.Tiers = 3;
+                scrollCollection.ViewableArea = 4;
+                scrollCollection.DragTimeThreshold = 0.75f;
+                scrollCollection.HandDeltaMagThreshold = 0.8f;
+                scrollCollection.TypeOfVelocity = ScrollingObjectCollection.VelocityType.FalloffPerItem;
             }
 
             if (!lazyLoad)
@@ -125,6 +133,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
             }
             else
             {
+                if(loader != null)
+                {
+                    loader.SetActive(true);
+                }
+
                 loadOverTime = UpdateListOverTime(loader, itemsPerFrame);
                 StartCoroutine(loadOverTime);
             }
