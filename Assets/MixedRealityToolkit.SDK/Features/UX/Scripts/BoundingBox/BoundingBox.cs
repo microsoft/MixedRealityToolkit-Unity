@@ -1208,6 +1208,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     }
                 }
             }
+            else if (boundsOverride != null && HasBoundsOverrideChanged())
+            {
+                UpdateBounds();
+                UpdateRigHandles();
+            }
         }
 
         /// <summary>
