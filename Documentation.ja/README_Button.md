@@ -70,14 +70,14 @@
 
 ## プレハブのレイアウト
 
-*ButtonContent* オブジェクトには、フロント プレート、テキスト ラベル、およびアイコンが含まれています。 *FrontPlate*は、*Button_Box* シェーダーを使用して、人差し指の近接に応答します。 光る境界線、近接ライト、およびタッチのパルス エフェクトを示します。 テキスト ラベルは TextMesh Pro で作成されます。 *SeeItSayItLabel* の可視性は、[Interactable]（README_Interactable.md）のテーマによって制御されます。
+*ButtonContent* オブジェクトには、フロント プレート、テキスト ラベル、およびアイコンが含まれています。 *FrontPlate*は、*Button_Box* シェーダーを使用して、人差し指の近接に応答します。 光る境界線、近接ライト、およびタッチのパルス エフェクトを示します。 テキスト ラベルは TextMesh Pro で作成されます。 *SeeItSayItLabel* の可視性は、[Interactable](README_Interactable.md) のテーマによって制御されます。
 
 ![Button](../Documentation/Images/Button/MRTK_Button_Layout.png)
 
 ## 音声コマンド ('See-it, Say-it')
 
 **音声入力ハンドラー (Speech Input Handler)**
-Pressable Buttonの [Interactable]（README_Interactable.md）スクリプトは、すでに `IMixedRealitySpeechHandler`を実装しています。 ここで音声コマンドのキーワードを設定できます。
+Pressable Buttonの [Interactable](README_Interactable.md) スクリプトは、すでに `IMixedRealitySpeechHandler`を実装しています。 ここで音声コマンドのキーワードを設定できます。
 
 <img src="../Documentation/Images/Button/MRTK_Button_Speech1.png" width="450">
 
@@ -139,12 +139,12 @@ MRTK Standard Shader は、視覚的なフィードバックを簡単に追加�
 
 ### 4. 視覚的な状態とファー インタラクションイベントの処理を加える
 
-[Interactable]（README_Interactable.md）は、さまざまなタイプの入力インタラクションの視覚的な状態を簡単に作成できるスクリプトです。 また、ファー インタラクション イベントも処理します。`Interactable.cs` を追加し、キューブ オブジェクトを **Profiles** の下の **Target** フィールドにドラッグ アンド ドロップします。 次に、**ScaleOffsetColorTheme** タイプの新しいテーマを作成します。このテーマでは、**Focus** や **Pressed** などの特定のインタラクションの状態におけるオブジェクトの色を指定できます。スケールとオフセットも制御できます。**Easing** をチェックし、継続時間を設定して視覚的な変化をスムーズにします。
+[Interactable](README_Interactable.md) は、さまざまなタイプの入力インタラクションの視覚的な状態を簡単に作成できるスクリプトです。 また、ファー インタラクション イベントも処理します。`Interactable.cs` を追加し、キューブ オブジェクトを **Profiles** の下の **Target** フィールドにドラッグ アンド ドロップします。 次に、**ScaleOffsetColorTheme** タイプの新しいテーマを作成します。このテーマでは、**Focus** や **Pressed** などの特定のインタラクションの状態におけるオブジェクトの色を指定できます。スケールとオフセットも制御できます。**Easing** をチェックし、継続時間を設定して視覚的な変化をスムーズにします。
 
  <img src="../Documentation/Images/Button/MRTK_PressableButtonCube8.png" width="450">
  <img src="../Documentation/Images/Button/MRTK_PressableButtonCube9.png" width="450">
 
-オブジェクトが遠く（ハンド レイ、またはゲイズ カーソル）と近く（ハンド）の両方のインタラクションに応答するのがわかります。
+オブジェクトが遠く (ハンド レイ、またはゲイズ カーソル) と近く (ハンド) の両方のインタラクションに応答するのがわかります。
 
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCubeRun3.jpg">
 <img src="../Documentation/Images/Button/MRTK_PressableButtonCubeRun4.jpg">
