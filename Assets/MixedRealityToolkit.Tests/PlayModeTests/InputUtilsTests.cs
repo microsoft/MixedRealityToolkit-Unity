@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             TestContext.Out.WriteLine("Get the head gaze ray");
-            Ray ray = InputUtils.GetHeadGazeRay();
+            Ray ray = InputRayUtils.GetHeadGazeRay();
             Assert.True(ray.origin == Vector3.zero);
             Assert.True(ray.direction == new Vector3(0.0f, 0.0f, 1.0f));
 
@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             TestContext.Out.WriteLine("Get the head gaze ray");
-            ray = InputUtils.GetHeadGazeRay();
+            ray = InputRayUtils.GetHeadGazeRay();
             TestContext.Out.WriteLine($"origin: {ray.origin}");
             Assert.True(ray.origin == Vector3.zero);
             TestContext.Out.WriteLine($"direction: {ray.direction}");
@@ -77,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             bool success;
 
             TestContext.Out.WriteLine("Get the right hand ray");
-            success = InputUtils.TryGetHandRay(Handedness.Right, out ray);
+            success = InputRayUtils.TryGetHandRay(Handedness.Right, out ray);
             Assert.True(success, "TryGetHandRay did not succeed");
             TestUtilities.AssertAboutEqual(ray.origin, rightHandOrigin, "hand ray origin is not correct", 0.1f);
             TestUtilities.AssertAboutEqual(ray.direction, new Vector3(-0.7f, 0.2f, 0.7f), "hand ray direction is not correct", 0.1f);
