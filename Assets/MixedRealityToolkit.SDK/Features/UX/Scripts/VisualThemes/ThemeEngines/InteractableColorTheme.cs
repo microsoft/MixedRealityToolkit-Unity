@@ -243,7 +243,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Try to get color from Image
         /// If no color is found, Image is not on the object
         /// </summary>
-        protected bool TryGetUnityUiImageColor(InteractableThemeProperty property, out Color color)
+        protected bool TryGetUnityUiImageColor(ThemeStateProperty property, out Color color)
         {
             Color colour = Color.white;
             Image img = Host.GetComponent<Image>();
@@ -357,7 +357,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Try to set color on Image
         /// If false, no Image was found.
         /// </summary>
-        protected bool TrySetUnityUiImageColor(Color colour, InteractableThemeProperty property, int index, float percentage)
+        protected bool TrySetUnityUiImageColor(Color colour, ThemeStateProperty property, int index, float percentage)
         {
             Image img = Host.GetComponent<Image>();
             if (img)

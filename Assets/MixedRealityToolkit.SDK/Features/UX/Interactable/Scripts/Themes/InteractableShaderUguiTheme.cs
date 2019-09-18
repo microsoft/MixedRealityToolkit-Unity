@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
@@ -10,39 +11,56 @@ namespace Microsoft.MixedReality.Toolkit.UI
 {
     public class InteractableShaderUguiTheme : InteractableThemeBase
     {
-        private static InteractableThemePropertyValue emptyValue = new InteractableThemePropertyValue();
+        /// <inheritdoc />
+        public override bool AreShadersSupported => true;
 
-        protected List<ShaderProperties> shaderProperties;
+        private static ThemePropertyValue emptyValue = new ThemePropertyValue();
+
+        protected List<ThemeStateProperty> shaderProperties;
         protected Material material;
 
-        private InteractableThemePropertyValue startValue = new InteractableThemePropertyValue();
+        private ThemePropertyValue startValue = new ThemePropertyValue();
+
+        protected const string DefaultShaderProperty = "_Color";
 
         public InteractableShaderUguiTheme()
         {
             Types = new Type[] { typeof(Image) };
             Name = "Shader Float Ugui";
-            ThemeProperties.Add(
-                new InteractableThemeProperty()
+        }
+
+        public override ThemeDefinition GetDefaultThemeDefinition()
+        {
+            return new ThemeDefinition()
+            {
+                ThemeType = GetType(),
+                StateProperties = new List<ThemeStateProperty>()
                 {
-                    Name = "Shader",
-                    Type = InteractableThemePropertyValueTypes.ShaderFloat,
-                    Values = new List<InteractableThemePropertyValue>(),
-                    Default = new InteractableThemePropertyValue() { Float = 0 }
-                });
+                    new ThemeStateProperty()
+                    {
+                        Name = "Shader Value",
+                        Type = ThemePropertyTypes.ShaderFloat,
+                        Values = new List<ThemePropertyValue>(),
+                        Default = new ThemePropertyValue() { Float = 0},
+                        TargetShader = StandardShaderUtility.MrtkStandardShader,
+                        ShaderPropertyName = DefaultShaderProperty,
+                    },
+                },
+                CustomProperties = new List<ThemeProperty>(),
+            };
         }
 
         /// <inheritdoc />
-        public override void Init(GameObject host, InteractableThemePropertySettings settings)
+        public override void Init(GameObject host, ThemeDefinition settings)
         {
             base.Init(host, settings);
 
-            shaderProperties = new List<ShaderProperties>();
-            for (int i = 0; i < ThemeProperties.Count; i++)
+            shaderProperties = new List<ThemeStateProperty>();
+            foreach (var prop in StateProperties)
             {
-                InteractableThemeProperty prop = ThemeProperties[i];
-                if (prop.ShaderOptions.Count > 0)
+                if (ThemeStateProperty.IsShaderPropertyType(prop.Type))
                 {
-                    shaderProperties.Add(prop.ShaderOptions[prop.PropId]);
+                    shaderProperties.Add(prop);
                 }
             }
 
@@ -50,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <inheritdoc />
-        public override void SetValue(InteractableThemeProperty property, int index, float percentage)
+        public override void SetValue(ThemeStateProperty property, int index, float percentage)
         {
             if (Host == null)
                 return;
@@ -59,15 +77,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
             float newValue;
             switch (property.Type)
             {
-                case InteractableThemePropertyValueTypes.Color:
+                case ThemePropertyTypes.Color:
                     Color newColor = Color.Lerp(property.StartValue.Color, property.Values[index].Color, percentage);
                     material.SetColor(propId, newColor);
                     break;
-                case InteractableThemePropertyValueTypes.ShaderFloat:
+                case ThemePropertyTypes.ShaderFloat:
                     newValue = LerpFloat(property.StartValue.Float, property.Values[index].Float, percentage);
                     material.SetFloat(propId, newValue);
                     break;
-                case InteractableThemePropertyValueTypes.ShaderRange:
+                case ThemePropertyTypes.ShaderRange:
                     newValue = LerpFloat(property.StartValue.Float, property.Values[index].Float, percentage);
                     material.SetFloat(propId, newValue);
                     break;
@@ -77,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <inheritdoc />
-        public override InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)
+        public override ThemePropertyValue GetProperty(ThemeStateProperty property)
         {
             if (Host == null)
                 return emptyValue;
@@ -87,13 +105,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             int propId = property.GetShaderPropertyId();
             switch (property.Type)
             {
-                case InteractableThemePropertyValueTypes.Color:
+                case ThemePropertyTypes.Color:
                     startValue.Color = material.GetVector(propId);
                     break;
-                case InteractableThemePropertyValueTypes.ShaderFloat:
+                case ThemePropertyTypes.ShaderFloat:
                     startValue.Float = material.GetFloat(propId);
                     break;
-                case InteractableThemePropertyValueTypes.ShaderRange:
+                case ThemePropertyTypes.ShaderRange:
                     startValue.Float = material.GetFloat(propId);
                     break;
                 default:
