@@ -75,7 +75,7 @@ Mixed Reality Toolkit のメイン設定ページにあるこの項目では、�
 ---
 <a name="inputsystem"/>
 
-# 入力システムの設定 (Input system settings)
+## 入力システムの設定 (Input system settings)
 
 Mixed Reality プロジェクトは、デフォルトの設定で、すべての入力イベントを連結するための堅牢で十分にトレーニングされてきた入力システムを提供します。
 
@@ -87,22 +87,22 @@ MRTK が提供する入力システムの背後にはその他のいくつかの
 
 個々のプロファイルの詳細は以下のとおりです。
 
-- Focus Settings
-- [Input actions settings](../Documentation/MixedRealityConfigurationGuide.html#input-actions-settings)
-- [Input actions rules](../Documentation/MixedRealityConfigurationGuide.html#inputactionrules)
-- [Pointer configuration](../Documentation/MixedRealityConfigurationGuide.html#pointer)
-- [Gestures configuration](../Documentation/MixedRealityConfigurationGuide.html#gestures)
-- [Speech commands](../Documentation/MixedRealityConfigurationGuide.html#speech)
-- [Controller mapping configuration](../Documentation/MixedRealityConfigurationGuide.html#mapping)
-- [Controller visualization settings](../Documentation/MixedRealityConfigurationGuide.html#visualization)
+* Focus Settings
+* [Input actions settings](../Documentation/MixedRealityConfigurationGuide.html#input-actions-settings)
+* [Input actions rules](../Documentation/MixedRealityConfigurationGuide.html#inputactionrules)
+* [Pointer configuration](../Documentation/MixedRealityConfigurationGuide.html#pointer)
+* [Gestures configuration](../Documentation/MixedRealityConfigurationGuide.html#gestures)
+* [Speech commands](../Documentation/MixedRealityConfigurationGuide.html#speech)
+* [Controller mapping configuration](../Documentation/MixedRealityConfigurationGuide.html#mapping)
+* [Controller visualization settings](../Documentation/MixedRealityConfigurationGuide.html#visualization)
 
-# 境界 (Boundary) 可視化の設定
+## 境界 (Boundary) 可視化の設定
 
 境界 (Boundary) システムは、基底になるプラットフォームの境界線/保護システムにより、体感できる境界に変換します。境界ビジュアライザー (Boundary visualizer) 設定を使用すると、シーン内で記録された境界をユーザーの位置に対して自動的に表示できます。境界線は、ユーザーがシーン内でテレポートする場所に基づいて反応/更新も行われます。
 
 ![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_BoundaryVisualizationProfile.png)
 
-# テレポーテーション システム (Teleportation system) の選択
+## テレポーテーション システム (Teleportation system) の選択
 
 Mixed Reality プロジェクトは、デフォルトで選択されたプロジェクトのテレポーテーション イベントを管理するための完全な機能を備えています。
 
