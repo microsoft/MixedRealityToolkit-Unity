@@ -9,6 +9,36 @@ param(
 #     [string]$Version,
 )
 
+
+function ReplaceVersionInFile($FullName, $NewVersion, $Patterns)
+{
+    $Errors = @()
+    $contents = Get-Content -Path $FullName
+    foreach ($pattern in $Patterns)
+    {
+        $match = [regex]::Match($contents, $pattern)
+        if ($match.Success)
+        {
+            $FromVersion = $match.captures.groups[1].ToString()
+            if ($FromVersion -eq $NewVersion)
+            {
+                Write-Host "${FullName}: version up to date ($NewVersion)"
+            }
+            else
+            {
+                Write-Host "${FullName}: updating version from $FromVersion to $NewVersion"
+                $contents = $contents -replace $pattern, $NewVersion
+                $contents | Out-File -FilePath $file.FullName -Encoding UTF8
+            }
+        }
+        else
+        {
+            $errors += "$($file.FullName): pattern not found: $pattern"
+        }
+    }
+    return $Errors
+}
+
 Push-Location  # save current working directory
 
 Set-Location $PSScriptRoot
@@ -23,27 +53,7 @@ foreach ($file in (Get-ChildItem -Path $GitRoot -Recurse))
 {
     if ($file.Name -eq "version.txt")
     {
-        $contents = Get-Content -Path $file.FullName
-        $pattern = "(?<=Microsoft Mixed Reality Toolkit\s+)(\d+\.\d+\.\d+)"
-        $match = [regex]::Match($contents, $pattern)
-        if ($match.Success)
-        {
-            $FromVersion = $match.captures.groups[1].ToString()
-            if ($FromVersion -eq $NewVersion)
-            {
-                Write-Host "$($file.FullName): version up to date ($NewVersion)"
-            }
-            else
-            {
-                Write-Host "$($file.FullName): updating version from $FromVersion to $NewVersion"
-                $contents = $contents -replace $pattern, $NewVersion
-                $contents | Out-File -FilePath $file.FullName -Encoding UTF8
-            }
-        }
-        else
-        {
-            $errors += "$($file.FullName): pattern not found: $pattern"
-        }
+        $Errors += ReplaceVersionInFile -FullName $file.FullName -NewVersion $NewVersion -Patterns @("(?<=Microsoft Mixed Reality Toolkit\s+)(\d+\.\d+\.\d+)")
     }
 }
 
