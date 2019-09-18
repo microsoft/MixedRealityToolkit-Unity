@@ -8,7 +8,7 @@ Mixed Reality Toolkit は、ツールキットを管理するために必要な�
 
 # Mixed Reality Toolkit の主な設定プロファイル (Congifuration Profile)
 
-シーンの _MixedRealityToolkit_ GameObject にアタッチされている主な設定プロファイル (Congifuration Profile) は、ツールキットの第一のエントリーポイントです。
+シーンの _MixedRealityToolkit_ GameObject にアタッチされている主な設定プロファイル (Congifuration Profile) は、ツールキットの最初のエントリーポイントです。
 
 > [!NOTE]
 > Mixed Reality Toolkit は、プロジェクトの共通のスタートポイントを常に持たせるように、デフォルトの設定画面を「ロック」しています。そして、プロジェクトの進捗に合わせて独自の設定を定義することをお勧めします。MRTK の設定はプレイモード中は編集できません。
@@ -92,15 +92,15 @@ MRTK が提供する入力システムの背後にはその他のいくつかの
 
 ![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_BoundaryVisualizationProfile.png)
 
-# テレポーテーションシステム (Teleportation system) の選択
+# テレポーテーション システム (Teleportation system) の選択
 
-Mixed Reality プロジェクトは、デフォルトで選択されたプロジェクトのテレポーテーションイベントを管理するための完全な機能を備えています。
+Mixed Reality プロジェクトは、デフォルトで選択されたプロジェクトのテレポーテーション イベントを管理するための完全な機能を備えています。
 
 ![mrtk](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_TeleportationSystemSelection.png)
 
 # 空間認識 (Spatial Awareness) の設定
 
-Mixed Reality プロジェクトは、デフォルトで選択されたプロジェクト内の空間スキャンシステムを操作するための再構築された空間認識システムを提供します。[MRTK 空間認識システム](../Documentation/Architecture/SpatialAwareness.html)の裏にあるアーキテクチャはこちらで表示できます。
+Mixed Reality プロジェクトは、デフォルトで選択されたプロジェクト内の空間スキャン システムを操作するための再構築された空間認識システムを提供します。[MRTK 空間認識システム](../Documentation/Architecture/SpatialAwareness.html)の裏にあるアーキテクチャはこちらで表示できます。
 
 ![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpatialAwarenessSystemSelection.png)
 
@@ -122,9 +122,9 @@ Mixed Reality Toolkit の空間認識設定を使用すると、アプリケー�
 
 ![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsProfile.png)
 
-# シーンシステム (Scene system) の設定
+# シーン システム (Scene system) の設定
 
-MRTK は、複雑なシーンのロード/アンロードの管理に役立つオプションを提供します。シーンシステムがプロジェクトに適しているかどうかを判断するには、[シーン システムの開始ガイド](../Documentation/SceneSystem/SceneSystemGettingStarted.html)を参照してください。
+MRTK は、複雑なシーンのロード/アンロードの管理に役立つオプションを提供します。シーン システムがプロジェクトに適しているかどうかを判断するには、[シーン システムの開始ガイド](../Documentation/SceneSystem/SceneSystemGettingStarted.html)を参照してください。
 
 ![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SceneSystemProfile.png)
 
@@ -134,15 +134,15 @@ Mixed Reality Toolkit のより高度な領域の1つは、フレームワーク
 
 [Stephen Hodgson の Mixed Reality フレームワークに関する記事](https://medium.com/@stephen_hodgson/the-mixed-reality-framework-6fdb5c11feb2)で、基礎となるフレームワークとその実装についての詳細を読むことができます。
 
-登録済みのサービスは、MonoBehaviour または不格好なシングルトンパターンを実装するオーバーヘッドとコストなしで、すべての Unity イベントを最大限に活用できます。これにより、フォアグラウンド（foreground）プロセスとバックグラウンド (background) プロセス (スポーンシステム、ランタイムゲームロジックなど)の両方を実行するためのシーンオーバーヘッドのない純粋な C# コンポーネントを使用できます。
+登録済みのサービスは、MonoBehaviour または不格好なシングルトン パターンを実装するオーバーヘッドとコストなしで、すべての Unity イベントを最大限に活用できます。これにより、フォアグラウンド（foreground）プロセスとバックグラウンド (background) プロセス (スポーン システム、ランタイム ゲーム ロジックなど)の両方を実行するためのシーン オーバーヘッドのない純粋な C# コンポーネントを使用できます。
 
 ![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProfidersProfile.png)
 
 # 入力アクション (Input actions) の設定
 
-入力アクションを使用すると、ランタイムプロジェクトからの物理的なインタラクションや入力を抽象化することができます。すべての物理入力 (コントローラ/手/マウス等) は、ランタイムプロジェクトで使用するための論理入力アクションに変換されます。これにより、入力元に関係なく、プロジェクトはシーン内でこれらのアクションを「実行する操作」または「対象とインタラクションする」として実装するだけでできます。
+入力アクションを使用すると、ランタイムプロジェクトからの物理的なインタラクションや入力を抽象化することができます。すべての物理入力 (コントローラー/手/マウス等) は、ランタイムプロジェクトで使用するための論理入力アクションに変換されます。これにより、入力元に関係なく、プロジェクトはシーン内でこれらのアクションを「実行する操作」または「対象とインタラクションする」として実装するだけでできます。
 
-新しい入力アクションを作成するには、[Add a new Action] ボタンをクリックし、その内容にわかりやすいテキスト名を入力します。次に、アクションの軸 (データの１種類) のみを選択するか、物理コントローラの場合は、それがアタッチできる物理入力タイプを選択するだけです。
+新しい入力アクションを作成するには、[Add a new Action] ボタンをクリックし、その内容にわかりやすいテキスト名を入力します。次に、アクションの軸 (データの１種類) のみを選択するか、物理コントローラーの場合は、それがアタッチできる物理入力タイプを選択するだけです。
 
 |     軸拘束              |     データ型                                    |     説明                                                                                         |     使用例                                                   |
 |-------------------------|-------------------------------------------------|--------------------------------------------------------------------------------------------------|--------------------------------------------------------------|
@@ -152,10 +152,10 @@ Mixed Reality Toolkit のより高度な領域の1つは、フレームワーク
 |    単一軸               |    float                                     |    単一の精度データ値                                                                            |    トリガなど、範囲の入力                                    |
 |    デュアル軸           |    Vector2                                      |    複数軸のデュアル浮動小数点型日付                                                              |    Dpad またはサムスティック                                 |
 |    3 つの Dof 位置      |    Vector3                                      |    3つの浮動軸からの位置タイプデータ                                                             |    3D 位置スタイルのみコントローラー                         |
-|    3 つのドフ回転       |    Quaternion                                     |    4つの浮動軸を持つ回転のみの入力                                                               |    3度スタイルのコントローラ、例えばOculus Goコントローラ    |
-|   Six Dof       |    Mixed Reality ポーズ (Vector3, Quaternion)    |    Vector3 コンポーネントと Quaternion コンポーネントの両方を使用した位置と回転スタイルの入力    |    モーション コントローラまたはPointer                     |
+|    3 つのドフ回転       |    Quaternion                                     |    4つの浮動軸を持つ回転のみの入力                                                               |    3度スタイルのコントローラー、例えばOculus Goコントローラー    |
+|   Six Dof       |    Mixed Reality ポーズ (Vector3, Quaternion)    |    Vector3 コンポーネントと Quaternion コンポーネントの両方を使用した位置と回転スタイルの入力    |    モーション コントローラーまたはPointer                     |
 
-入力アクションを利用するイベントは物理コントローラに限定されず、プロジェクト内で実行時に新しいアクションを生成できます。
+入力アクションを利用するイベントは物理コントローラーに限定されず、プロジェクト内で実行時に新しいアクションを生成できます。
 
 > [!NOTE]
 > 入力アクションは、実行時に編集できない数少ないコンポーネントの 1 つであり、設計時のみ変更できます。このプロファイルは、各アクションに対して生成された ID に対するフレームワーク (およびプロジェクト) の依存関係により、プロジェクトの実行中に入れ替えをしないでください。
@@ -176,17 +176,17 @@ Input Action Rules は、使用可能な入力軸のいずれかに対して設�
 
 # Pointers の設定
 
-入力の向きとヒットテストの両方を、シーン内の任意のオブジェクト (コライダがアタッチされている、または UI コンポーネント) に対して行います。Pointers は、デフォルトでは、コントローラ、ヘッドセット(視線/フォーカス)、マウス/タッチ入力用に自動的に設定されます。
+入力の向きとヒットテストの両方を、シーン内の任意のオブジェクト (コライダがアタッチされている、または UI コンポーネント) に対して行います。Pointers は、デフォルトでは、コントローラー、ヘッドセット(視線/フォーカス)、マウス/タッチ入力用に自動的に設定されます。
 
 Pointers は、Mixed Reality Toolkit によって提供される多くのラインコンポーネントの 1 つを使用してアクティブシーン内で可視化することも、 MRTK IMixedRealityPointer インターフェイスを実装している場合は独自の要素を使用して可視化することもできます。
 
 ![Mrtk](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputPointerProfile.png)
 
-- Pointing Extent : 注視を含むすべてのポインターのグローバルポインティング範囲を決定。
+- Pointing Extent : 注視を含むすべてのポインターのグローバル ポインティング範囲を決定。
 
 - Pointing Raycast Layer Masks : レイキャストに対してどのレイキャストを行うレイヤーを決定します。
 
-- Debug Draw Pointing Rays : レイキャストに使用されるレイを可視化するためのデバッグヘルパー。
+- Debug Draw Pointing Rays : レイキャストに使用されるレイを可視化するためのデバッグ ヘルパー。
 
 - Debug Draw Pointing Rays Colors : 可視化に使用する一連の色。
 
@@ -205,55 +205,55 @@ Pointers は、Mixed Reality Toolkit によって提供される多くのライ�
 
 # 音声コマンド (Speech Commands)
 
-ジェスチャと同様に、一部のランタイムプラットフォームでは、Unity プロジェクトで受信できるコマンドを生成する機能を備えたインテリジェントな "Speech to Text" 機能も提供します。この設定プロファイルを使用すると、登録済みの 「単語」を設定し、プロジェクトで受信できる入力アクションに変換できます。必要に応じて、キーボードアクションにアタッチすることもできます。
+ジェスチャと同様に、一部のランタイム プラットフォームでは、Unity プロジェクトで受信できるコマンドを生成する機能を備えたインテリジェントな "Speech to Text" 機能も提供します。この設定プロファイルを使用すると、登録済みの 「単語」を設定し、プロジェクトで受信できる入力アクションに変換できます。必要に応じて、キーボード アクションにアタッチすることもできます。
 
 > [!IMPORTANT]
 > このシステムは現在、HoloLens や Windows 10 デスクトップなどの Windows 10 プラットフォームで実行されている場合にのみ音声認識をサポートしており、将来 MRTK に追加される他のシステムでも拡張される予定です (日付はまだありません)。
 
 ![mrtk](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpeechCommandsProfile.png)
 
-# コントローラマッピング (Controller mapping) の設定
+# コントローラーマッピング (Controller mapping) の設定
 
-Mixed Reality Toolkit の主要な設定画面の1つは、プロジェクトで使用できるさまざまな種類のコントローラを設定およびマッピングする機能です。
+Mixed Reality Toolkit の主要な設定画面の1つは、プロジェクトで使用できるさまざまな種類のコントローラーを設定およびマッピングする機能です。
 
-以下の設定画面では、ツールキットで現在使われているコントローラのいずれかを設定できます。
+以下の設定画面では、ツールキットで現在使われているコントローラーのいずれかを設定できます。
 
 ![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerMappingProfile.png)
 
-MRTK は、次のコントローラ/システムのデフォルト設定を提供します。
+MRTK は、次のコントローラー/システムのデフォルト設定を提供します。
 
 - マウス (3D 空間マウスのサポートを含む)
 - タッチスクリーン
 - Xbox コントローラー
-- Windows Mixed Reality コントローラ
+- Windows Mixed Reality コントローラー
 - HoloLens ジェスチャー
 - HTC Vive ワンド コントローラー
 - Oculus Touch コントローラー
 - Oculus Remote コントローラー
 - 汎用 OpenVR デバイス (上級ユーザーのみ)
 
-あらかじめ構築されたコントローラシステムのいずれかの画像をクリックすると、対応するすべての入力に対して単一の入力アクションを設定できます (以下の Oculus Touch コントローラーの設定画面を参照)。
+あらかじめ構築されたコントローラー システムのいずれかの画像をクリックすると、対応するすべての入力に対して単一の入力アクションを設定できます (以下の Oculus Touch コントローラーの設定画面を参照)。
 
 ![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_OculusTouchConfigScreen.png)
 
-上記で識別されていない他の OpenVR または Unity 入力コントローラを設定するための高度な画面もあります。
+上記で識別されていない他の OpenVR または Unity 入力コントローラーを設定するための高度な画面もあります。
 
-# コントローラの可視化の設定
+# コントローラーの可視化の設定
 
-コントローラーマッピングに加えて、シーン内でのコントローラーの表示方法をカスタマイズするための個別の設定プロファイルが用意されています。
+コントローラー マッピングに加えて、シーン内でのコントローラーの表示方法をカスタマイズするための個別の設定プロファイルが用意されています。
 
-これは、「Global」(特定のハンド用コントローラのすべてのインスタンス) または個々のコントローラタイプ/ハンドに固有の設定が可能です。
+これは、「Global」(特定のハンド用コントローラーのすべてのインスタンス) または個々のコントローラー タイプ/ハンドに固有の設定が可能です。
 
 > [!IMPORTANT]
 > MRTK は現在、Unity が提供されていない、数多くのネイティブ SDKのコントローラーのモデルの gLTF モデルをロード/レンダリングする機能をサポートしていません。これは、使用可能なときに追加されます。
 
-シーン内のコントローラリプレゼンテーションを物理コントローラの位置からオフセットする必要がある場合は、コントローラモデルのプレハブに対してオフセットを設定するだけです (例えば、コントローラプレハブの変換位置をオフセット位置で設定します)。
+シーン内のコントローラー リプレゼンテーションを物理コントローラーの位置からオフセットする必要がある場合は、コントローラー モデルのプレハブに対してオフセットを設定するだけです (例えば、コントローラー プレハブの変換位置をオフセット位置で設定します)。
 
 ![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerVisualizationProfile.png)
 
 # Service Inspectors
 
-サービスインスペクタは、シーン内オブジェクトを生成する、エディタ上のみの機能です。これらのオブジェクトを選択すると、ドキュメントリンクを提供するインスペクタが表示され、エディタの見た目を制御し、サービスの状態に関する情報が表示されます。
+サービス インスペクタは、シーン内オブジェクトを生成する、エディタ上のみの機能です。これらのオブジェクトを選択すると、ドキュメントリンクを提供するインスペクタが表示され、エディタの見た目を制御し、サービスの状態に関する情報が表示されます。
 
 ![mrtk](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ServiceInspectors.PNG)
 
@@ -261,4 +261,4 @@ Configuration Profile の Editor Settings の Use Service Inspectors をオン�
 
 ![mrtk](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_EnableServiceInspectors.PNG)
 
-サービスインスペクタを有効にする
+サービス インスペクタを有効にする
