@@ -95,6 +95,7 @@ MRTK が提供する入力システムの背後にはその他のいくつかの
 * [Controller mapping configuration](../Documentation/MixedRealityConfigurationGuide.html#mapping)
 * [Controller visualization settings](../Documentation/MixedRealityConfigurationGuide.html#visualization)
 
+
 ---	
 <a name="boundary"/>
 
@@ -119,7 +120,9 @@ Mixed Reality プロジェクトは、デフォルトで選択されたプロジ
 
 ## 空間認識 (Spatial Awareness) の設定
 
-Mixed Reality プロジェクトは、デフォルトで選択されたプロジェクト内の空間スキャン システムを操作するための再構築された空間認識システムを提供します。[MRTK 空間認識システム](../Documentation/Architecture/SpatialAwareness.html)の裏にあるアーキテクチャはこちらで表示できます。
+Mixed Reality プロジェクトは、デフォルトで選択されたプロジェクト内の空間スキャン システムを操作するための再構築された空間認識システムを提供します。
+
+[MRTK 空間認識システム](../Documentation/Architecture/SpatialAwareness.html)の裏にあるアーキテクチャはこちらで表示できます。
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpatialAwarenessSystemSelection.png" width="650px" style="display:block;">
 Mixed Reality Toolkit の空間認識設定を使用すると、アプリケーションの起動時に自動的に行うか、プログラムで後で行うかにかかわらず、システムの起動方法を調整したり、視野の範囲を設定することができます。
@@ -133,7 +136,7 @@ Mixed Reality Toolkit の空間認識設定を使用すると、アプリケー�
 ---
 <a name="diagnostic"/>
 
-# 診断 (Diagnostics) の設定
+## 診断 (Diagnostics) の設定
 
 オプションですが、MRTK に非常に便利な機能は、プラグイン診断機能です。これにより、シーンへのデバッグログのスタイルが表示されます。
 
@@ -143,13 +146,16 @@ Mixed Reality Toolkit の空間認識設定を使用すると、アプリケー�
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsProfile.png" width="650px" style="display:block;">
 
-# シーン システム (Scene system) の設定
+## シーン システム (Scene system) の設定
 
 MRTK は、複雑なシーンのロード/アンロードの管理に役立つオプションを提供します。シーン システムがプロジェクトに適しているかどうかを判断するには、[シーン システムの開始ガイド](../Documentation/SceneSystem/SceneSystemGettingStarted.html)を参照してください。
 
-![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SceneSystemProfile.png)
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SceneSystemProfile.png" width="650px" style="display:block;">
 
-# その他のサービスの設定
+---
+<a name="scenesystem"/>
+
+## その他のサービスの設定
 
 Mixed Reality Toolkit のより高度な領域の1つは、フレームワークと任意の「サービス」の登録を可能にする[サービスロケータパターン](https://en.wikipedia.org/wiki/Service_locator_pattern)の実装です。これにより、フレームワークに新しい機能/システムを簡単に拡張でき、プロジェクトはこれらの機能を利用して独自のランタイムコンポーネントも登録できます。
 
@@ -159,7 +165,7 @@ Mixed Reality Toolkit のより高度な領域の1つは、フレームワーク
 
 ![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_RegisteredServiceProfidersProfile.png)
 
-# 入力アクション (Input actions) の設定
+## 入力アクション (Input actions) の設定
 
 入力アクションを使用すると、ランタイムプロジェクトからの物理的なインタラクションや入力を抽象化することができます。すべての物理入力 (コントローラー/手/マウス等) は、ランタイムプロジェクトで使用するための論理入力アクションに変換されます。これにより、入力元に関係なく、プロジェクトはシーン内でこれらのアクションを「実行する操作」または「対象とインタラクションする」として実装するだけでできます。
 
@@ -183,7 +189,7 @@ Mixed Reality Toolkit のより高度な領域の1つは、フレームワーク
 
 ![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionsProfile.png)
 
-# Input Action Rules プロフィル
+## Input Action Rules プロフィル
 
 Input Action Rules を使用すると、1 つの入力アクションに対して発生したイベントを、そのデータ値に基づいて別のアクションに自動的に変換できます。これらはフレームワーク内でシームレスに管理され、パフォーマンスコストは発生しません。
 
@@ -195,7 +201,7 @@ Input Action Rules は、使用可能な入力軸のいずれかに対して設�
 
 ![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_InputActionRulesProfile.png)
 
-# Pointers の設定
+## Pointers の設定
 
 入力の向きとヒットテストの両方を、シーン内の任意のオブジェクト (コライダがアタッチされている、または UI コンポーネント) に対して行います。Pointers は、デフォルトでは、コントローラー、ヘッドセット(視線/フォーカス)、マウス/タッチ入力用に自動的に設定されます。
 
@@ -215,7 +221,7 @@ Pointers は、Mixed Reality Toolkit によって提供される多くのライ�
 
 必要に応じて、Gaze Provider にすばやく移り、Gaze の特定の値をオーバーライドするための追加のヘルパーボタンがあります。
 
-# ジェスチャ (Gestures) の設定
+## ジェスチャ (Gestures) の設定
 
 ジェスチャは、さまざまな SDK (HoloLens など) によって提供されるさまざまな「ジェスチャ」入力メソッドに入力アクションを割り当てることができるシステム固有の実装です。
 
@@ -224,7 +230,7 @@ Pointers は、Mixed Reality Toolkit によって提供される多くのライ�
 
 ![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_GesturesProfile.png)
 
-# 音声コマンド (Speech Commands)
+## 音声コマンド (Speech Commands)
 
 ジェスチャと同様に、一部のランタイム プラットフォームでは、Unity プロジェクトで受信できるコマンドを生成する機能を備えたインテリジェントな "Speech to Text" 機能も提供します。この設定プロファイルを使用すると、登録済みの 「単語」を設定し、プロジェクトで受信できる入力アクションに変換できます。必要に応じて、キーボード アクションにアタッチすることもできます。
 
@@ -233,7 +239,7 @@ Pointers は、Mixed Reality Toolkit によって提供される多くのライ�
 
 ![mrtk](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpeechCommandsProfile.png)
 
-# コントローラーマッピング (Controller mapping) の設定
+## コントローラーマッピング (Controller mapping) の設定
 
 Mixed Reality Toolkit の主要な設定画面の1つは、プロジェクトで使用できるさまざまな種類のコントローラーを設定およびマッピングする機能です。
 
@@ -259,7 +265,7 @@ MRTK は、次のコントローラー/システムのデフォルト設定を�
 
 上記で識別されていない他の OpenVR または Unity 入力コントローラーを設定するための高度な画面もあります。
 
-# コントローラーの可視化の設定
+## コントローラーの可視化の設定
 
 コントローラー マッピングに加えて、シーン内でのコントローラーの表示方法をカスタマイズするための個別の設定プロファイルが用意されています。
 
@@ -272,7 +278,7 @@ MRTK は、次のコントローラー/システムのデフォルト設定を�
 
 ![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerVisualizationProfile.png)
 
-# Service Inspectors
+## Service Inspectors
 
 サービス インスペクタは、シーン内オブジェクトを生成する、エディタ上のみの機能です。これらのオブジェクトを選択すると、ドキュメントリンクを提供するインスペクタが表示され、エディタの見た目を制御し、サービスの状態に関する情報が表示されます。
 
