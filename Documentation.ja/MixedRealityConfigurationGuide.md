@@ -60,13 +60,22 @@ Mixed Reality Toolkit のすべての「デフォルト」プロファイルは�
 
 Mixed Reality Toolkit のメイン設定ページにあるこの項目では、プロジェクトの Mixed Reality 環境の既定の操作が定義されます。
 
-![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ExperienceSettings.png)
-
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ExperienceSettings.png" width="650px" style="display:block;">
 # カメラの設定 (Camera settings)
+
+---
+<a name="camera"/>
 
 カメラ設定では、Mixed Reality プロジェクトのカメラの設定方法を定義し、一般的なクリッピング (clipping) 、クオリティ、透明度 (transparency) の設定を定義します。
 
 ![enter image description here](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_CameraProfile.png)
+
+<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_CameraProfile.png" width="650px" style="display:block;">
+
+
+
+---
+<a name="inputsystem"/>
 
 # 入力システムの設定 (Input system settings)
 
