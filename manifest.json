@@ -5329,7 +5329,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/InputEvents.html",
-          "hash": "jR7xw+g9+a6STbtDCHS4+A=="
+          "hash": "uFFYNl3ZGr/Wl4JqXFfQWQ=="
         }
       },
       "is_incremental": false,
@@ -5349,11 +5349,23 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/Input/InputState.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Input/InputState.html",
+          "hash": "8UqPdbkm6vMnWh8OcFz3ZA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/Input/Overview.md",
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/Overview.html",
-          "hash": "ioFRelZuIaifGMQ5iDP8gw=="
+          "hash": "8oiAHPH0iXAJoRQhYBoP5g=="
         }
       },
       "is_incremental": false,
@@ -8540,6 +8552,30 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.InputDataExample.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.InputDataExample.html",
+          "hash": "9Q9owAcHdbjOhuH8wYttug=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.InputDataExampleGizmo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.InputDataExampleGizmo.html",
+          "hash": "q+8wXVwRXfC8VapG6522lw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.LaunchUri.yml",
       "output": {
         ".html": {
@@ -8760,7 +8796,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.html",
-          "hash": "I9vDRT5ZxItoP+8ljgiyNw=="
+          "hash": "Ge+Fpu+4gErbKQyJkWer+w=="
         }
       },
       "is_incremental": false,
@@ -11120,6 +11156,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.InputRayUtils.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.InputRayUtils.html",
+          "hash": "gKUQKkzFrW9a68SAH6LPfQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Input.InputRecordingService.yml",
       "output": {
         ".html": {
@@ -12444,7 +12492,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.html",
-          "hash": "6x6j1KB/rxTbgT2sZ/tvbA=="
+          "hash": "JwpfKfel1PfcR41mbHWYbQ=="
         }
       },
       "is_incremental": false,
@@ -14156,6 +14204,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.InputRayUtilsTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.InputRayUtilsTests.html",
+          "hash": "zCraTPjleu4XFFbNVwHPZQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.InputSystem.DefaultPrimaryPointerSelectorTests.yml",
       "output": {
         ".html": {
@@ -14556,7 +14616,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.html",
-          "hash": "rim9alIj8KgSmFEeh2MFrg=="
+          "hash": "0j11DD+Pgj5SKv/Wx3Fyqw=="
         }
       },
       "is_incremental": false,
@@ -18180,7 +18240,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.MathUtilities.html",
-          "hash": "k/xjnz8Su+EGr9PTcX8V2A=="
+          "hash": "eJB4y1duZaaug+jcyxd8Eg=="
         }
       },
       "is_incremental": false,
@@ -19524,7 +19584,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "Tb58yw4JHAfy1twm/E9urw=="
+          "hash": "hDUWgMQC9IwT5WDWQKRuYg=="
         }
       },
       "is_incremental": false,
@@ -19576,28 +19636,28 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ManagedReferenceDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 1129,
+          "total_file_count": 0,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 124,
+          "total_file_count": 125,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1133,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
