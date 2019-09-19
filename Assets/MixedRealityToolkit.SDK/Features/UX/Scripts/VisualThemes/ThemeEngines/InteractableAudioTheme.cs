@@ -7,6 +7,10 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
+    /// <summary>
+    /// Theme Engine to play particular audio files based on state changes.
+    /// Add AudioSource component if none is found on initialized GameObject or in children
+    /// </summary>
     public class InteractableAudioTheme : InteractableThemeBase
     {
         /// <inheritdoc />

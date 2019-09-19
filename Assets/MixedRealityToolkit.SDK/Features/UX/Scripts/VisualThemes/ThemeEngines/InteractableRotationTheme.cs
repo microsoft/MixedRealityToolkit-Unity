@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
+    /// <summary>
+    /// Theme Engine to control a GameObject's rotation based on state changes
+    /// </summary>
     public class InteractableRotationTheme : InteractableThemeBase
     {
         private Transform hostTransform;

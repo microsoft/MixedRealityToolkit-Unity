@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
+    /// <summary>
+    /// Theme engine that allows control to enable/disable a GameObject based on the current state
+    /// </summary>
     public class InteractableActivateTheme : InteractableThemeBase
     {
         /// <inheritdoc />

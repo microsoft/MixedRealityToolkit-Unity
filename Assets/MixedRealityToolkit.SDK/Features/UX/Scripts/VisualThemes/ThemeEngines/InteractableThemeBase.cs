@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
-    /// Base class for themes
+    /// Base abstract class for all Theme Engines. Extend to create custom Theme logic
     /// </summary>
     public abstract class InteractableThemeBase
     {

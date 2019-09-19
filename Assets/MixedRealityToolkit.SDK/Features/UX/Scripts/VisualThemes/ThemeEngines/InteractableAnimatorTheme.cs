@@ -8,7 +8,8 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
-    /// Uses Animator to control Interactable feedback based on state changes.
+    /// ThemeEngine that controls Animator state based on state changes
+    /// Targets first Animator component returned on initialized GameObject
     /// </summary>
     public class InteractableAnimatorTheme : InteractableThemeBase
     {

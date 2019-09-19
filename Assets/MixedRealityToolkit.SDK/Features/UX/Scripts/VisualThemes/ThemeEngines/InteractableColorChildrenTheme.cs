@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
+    /// <summary>
+    /// Theme engine to control the color for all Renderer children under the initialized GameObject based on state changes
+    /// </summary>
     public class InteractableColorChildrenTheme : InteractableShaderTheme
     {
         public struct BlocksAndRenderer

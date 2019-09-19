@@ -8,7 +8,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// <summary>
     /// Base values of a theme property, used for serialization
     /// </summary>
-
     [System.Serializable]
     public class ThemePropertyValue
     {
@@ -29,6 +28,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public AudioClip AudioClip;
         public Animation Animation;
 
+        /// <summary>
+        /// Create new ThemePropertyValue and copy over internal data
+        /// </summary>
+        /// <returns>New ThemePropertyValue with identical primitive and reference values as this ThemePropertyValue</returns>
         public ThemePropertyValue Copy()
         {
             return new ThemePropertyValue()
@@ -52,6 +55,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             };
         }
 
+        /// <summary>
+        /// Reset all fields to default type values
+        /// </summary>
         public void Reset()
         {
             Name = string.Empty;

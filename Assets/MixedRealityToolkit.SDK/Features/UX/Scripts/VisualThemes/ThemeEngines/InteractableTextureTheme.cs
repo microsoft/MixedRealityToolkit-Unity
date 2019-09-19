@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
+    /// <summary>
+    /// Theme Engine to change the texture on a GameObject based on state changes
+    /// </summary>
     public class InteractableTextureTheme : InteractableShaderTheme
     {
         /// <inheritdoc />

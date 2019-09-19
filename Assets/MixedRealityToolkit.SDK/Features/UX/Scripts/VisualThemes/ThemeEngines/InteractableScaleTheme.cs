@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
+    /// <summary>
+    /// Theme Engine to control initialized GameObject's scale based on state changes
+    /// </summary>
     public class InteractableScaleTheme : InteractableThemeBase
     {
         private Transform hostTransform;

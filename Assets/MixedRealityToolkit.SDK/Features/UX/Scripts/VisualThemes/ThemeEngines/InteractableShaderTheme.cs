@@ -8,6 +8,10 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
+    /// <summary>
+    /// Theme Engine to control the value of a particular Shader Property based on state changes
+    /// Targets the first Renderer component on the initialized GameObject and use MaterialPropertyBlocks
+    /// </summary>
     public class InteractableShaderTheme : InteractableThemeBase
     {
         /// <inheritdoc />

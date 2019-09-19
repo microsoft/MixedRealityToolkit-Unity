@@ -9,19 +9,16 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
+    /// <summary>
+    /// Theme Engine to control initialized GameObject's scale, local position offset, and color based on state changes
+    /// For color, will try to set on first available text object in order of TextMesh, Text, TextMeshPro, and TextMeshProUGUI
+    /// If none found, then Theme will target first Renderer component available and target the associated shader property found in ThemeDefinition
+    /// </summary>
     public class ScaleOffsetColorTheme : InteractableColorTheme
     {
         protected Vector3 startPosition;
         protected Vector3 startScale;
         protected Transform hostTransform;
-
-        public override void Init(GameObject host, ThemeDefinition settings)
-        {
-            base.Init(host, settings);
-            hostTransform = Host.transform;
-            startPosition = hostTransform.localPosition;
-            startScale = hostTransform.localScale;
-        }
 
         public ScaleOffsetColorTheme()
         {
@@ -65,6 +62,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
             };
         }
 
+        /// <inheritdoc />
+        public override void Init(GameObject host, ThemeDefinition settings)
+        {
+            base.Init(host, settings);
+            hostTransform = Host.transform;
+            startPosition = hostTransform.localPosition;
+            startScale = hostTransform.localScale;
+        }
+
+        /// <inheritdoc />
         public override ThemePropertyValue GetProperty(ThemeStateProperty property)
         {
             ThemePropertyValue start = new ThemePropertyValue();
@@ -86,6 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return start;
         }
 
+        /// <inheritdoc />
         public override void SetValue(ThemeStateProperty property, int index, float percentage)
         {
             switch (property.Name)

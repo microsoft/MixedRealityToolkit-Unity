@@ -11,9 +11,10 @@ using UnityEngine.UI;
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
-    /// A color theme that can set colors on renderers or common text objects
-    /// This theme will try to set color on text objects first, if none can be found,
-    /// then we fall back to renderer color setting using the parent class.
+    /// Theme Engine that can set colors on a Renderer or text object based on state changes
+    /// This Theme will try to set color on first available text object in order of TextMesh, Text, TextMeshPro, and TextMeshProUGUI
+    /// If no text-based component can be found, then will fall back to first Renderer component found on the initialized GameObject
+    /// and target the color shader property provided in the ThemeDefinition.
     /// </summary>
     public class InteractableColorTheme : InteractableShaderTheme
     {

@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
+    /// <summary>
+    /// ThemeEngine to control initialized GameObject's scale based on associated Interactable grab state and related state changes
+    /// </summary>
     public class InteractableGrabScaleTheme : InteractableThemeBase
     {
         protected ThemePropertyValue startScaleValue = new ThemePropertyValue();

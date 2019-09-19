@@ -7,6 +7,10 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
+    /// <summary>
+    /// Theme Engine to control the material used based on state changes
+    /// Changes the material for the first Renderer component on the initialized GameObject
+    /// </summary>
     public class InteractableMaterialTheme : InteractableThemeBase
     {
         /// <inheritdoc />

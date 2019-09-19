@@ -10,7 +10,8 @@ using UnityEngine.UI;
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
-    /// Change string on a text object based on state
+    /// Theme Engine to change the string value on a Text type object based on state changes
+    /// Finds the first available component searching in order of TextMesh, Text, TextMeshPro, TextMeshProUGUI
     /// </summary>
     public class InteractableStringTheme : InteractableThemeBase
     {
