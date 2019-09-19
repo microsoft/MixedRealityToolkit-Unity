@@ -13,9 +13,11 @@ Near Menu is a UX control which provides a collection of buttons or other UI com
 
 ## Prefabs ##
 Near Menu prefabs are designed to demonstrate how to use MRTK's various components to build menus for near interactions.
+- **NearMenuExample3x1.prefab**
+- **NearMenuExample3x2.prefab**
+- **NearMenuExample3x3.prefab**
 - **NearMenuExample4x1.prefab**
 - **NearMenuExample4x2.prefab**
-- **NearMenuExample3x3.prefab**
 
 ## Example scene ##
 You can find examples of Near Menu prefabs in the `NearMenuExamples` scene.
