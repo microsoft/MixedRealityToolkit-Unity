@@ -2,7 +2,7 @@
 
 ![Interactable](../Documentation/Images/Interactable/InteractableExamples.png)
 
-The [`Interactable`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable) component is an all-in-one container to make any object easily *interactable* and responsive to input. Interactable acts as a catch-all for all types of input including touch, hand rays, speech etc and funnel these interactions into [events] and [visual theme](visualthemes.md) responses. This component provides an easy way to make buttons, change color on objects with focus, and more.
+The [`Interactable`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable) component is an all-in-one container to make any object easily *interactable* and responsive to input. Interactable acts as a catch-all for all types of input including touch, hand rays, speech etc and funnel these interactions into [events](#events) and [visual theme](visualthemes.md) responses. This component provides an easy way to make buttons, change color on objects with focus, and more.
 
 ## How to configure Interactable
 
@@ -39,7 +39,7 @@ A bit value (#) is assigned to the state depending on the order in the list.
 > [!NOTE]
 > It is generally recommended to utilize the [**DefaultInteractableStates**](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/States/DefaultInteractableStates.asset) when creating *Interactable* components.
 >
-> However, there are 17 Interactable states available that can be used to drive themes, though some are meant to be driven by other components. Here's a list of those with built-in functionality.
+> However, there are 17 Interactable states available that can be used to drive themes, though some are meant to be driven by other components. Here is a list of those with built-in functionality.
 >
 > * Visited: the Interactable has been clicked.
 > * Toggled: The button is in a toggled state or Dimension index is an odd number.
@@ -70,13 +70,13 @@ If true, the voice command will only activate the *Interactable* if and only if 
 
 **Selection Mode**
 
-This property defines the selection logic. When an *Interactable* is clicked, it iterates into a next *dimension* level. *Dimensions* is similar to rank and defines a state outside of inputs (i.e focus, press etc). Dimensions are useful for defining Toggle states or other multi-rank states associated with a button.
+This property defines the selection logic. When an *Interactable* is clicked, it iterates into a next *Dimension* level. *Dimensions* is similar to rank and defines a state outside of inputs (i.e focus, press etc). They are useful for defining Toggle states or other multi-rank states associated with a button. The current Dimension level is tracked by `Interactable.DimensionIndex`.
 
 The selection modes available are:
 
-* Button - Dimensions = 1, simple clickable *Interactable*
-* Toggle - Dimensions = 2, *Interactable* alternates between *on*/*off* state
-* Multi-dimension - Dimensions >= 3, every click increases the current dimension level + 1. Useful for defining a button state to a list, etc.
+* **Button** - *Dimensions* = 1, simple clickable *Interactable*
+* **Toggle** - *Dimensions* = 2, *Interactable* alternates between *on*/*off* state
+* **Multi-dimension** - *Dimensions* >= 3, every click increases the current dimension level + 1. Useful for defining a button state to a list, etc.
 
 *Interactable* also allows for multiple Themes to be defined per *Dimension*. For example when *SelectionMode=Toggle*, one theme may be applied when the *Interactable* is *deselected* and another theme applied when the component is *selected*.
 
@@ -90,7 +90,7 @@ Themes work a lot like materials. They are scriptable objects that contain a lis
 
 ## Events
 
-Every *Interactable* component has an *OnClick* event that fires when the component is simply selected. However,*Interactable* can be used to detect input events other than just *OnClick*.
+Every *Interactable* component has an *OnClick* event that fires when the component is simply selected. However, *Interactable* can be used to detect input events other than just *OnClick*.
 
 Click the *Add Event* button to add a new type of Event Receiver definition. Once added, select the type of Event desired.
 
@@ -155,11 +155,8 @@ public override void OnUpdate(InteractableStates state, Interactable source)
     }
 }
 
-public virtual void OnVoiceCommand(InteractableStates state,
-                                    Interactable source,
-                                    string command,
-                                    int index = 0,
-                                    int length = 1)
+public virtual void OnVoiceCommand(InteractableStates state, Interactable source,
+                                    string command, int index = 0, int length = 1)
 {
     base.OnVoiceCommand(state, source, command, index, length);
     // voice command called, perform some action
@@ -179,9 +176,7 @@ public virtual void OnClick(InteractableStates state,
 *ReceiverBase* scripts use [`InspectorField`](xref:Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorField) attributes to expose custom properties in the inspector. Here's an example of Vector3 a custom property with tooltip and label information. This property will show up as configurable in the inspector when an *Interactable* GameObject is selected and has the associated *Event Receiver* type added.
 
 ```csharp
-[InspectorField(Label = "<Property label>",
-    Tooltip = "<Insert tooltip info>",
-    Type = InspectorField.FieldTypes.Vector3)]
+[InspectorField(Label = "<Property label>",Tooltip = "<Insert tooltip info>",Type = InspectorField.FieldTypes.Vector3)]
 public Vector3 EffectOffset = Vector3.zero;
 ```
 
