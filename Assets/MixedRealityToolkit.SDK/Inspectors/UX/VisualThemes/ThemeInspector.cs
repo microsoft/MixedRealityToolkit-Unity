@@ -33,6 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
         public void OnEnable()
         {
+            theme = target as Theme;
             themeDefinitions = serializedObject.FindProperty("definitions");
             states = serializedObject.FindProperty("states");
 
@@ -47,7 +48,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         {
             serializedObject.Update();
 
-            theme = target as Theme;
             themeStates = theme.GetStates();
 
             RenderTheme();

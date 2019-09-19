@@ -157,20 +157,23 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                                     EditorGUILayout.PropertyField(themeItem, new GUIContent(string.Empty, "Theme properties for interaction feedback"));
                                 }
 
-                                // TODO: Odd bug where themeStates below is null when it shouldn't be. Use instance object as workaround atm
-                                //SerializedProperty themeStates = themeItem.FindPropertyRelative("States");
-                                var themeInstance = themeItem.objectReferenceValue as Theme;
-                                if (statesProperty.objectReferenceValue != themeInstance.States)
+                                if (themeItem.objectReferenceValue != null)
                                 {
-                                    InspectorUIUtility.DrawWarning($"{themeInstance.name}'s States property does not match Interactable's States property");
-                                }
-
-                                if (showThemeSettings)
-                                {
-                                    using (new EditorGUI.IndentLevelScope())
+                                    // TODO: Odd bug where themeStates below is null when it shouldn't be. Use instance object as workaround atm
+                                    //SerializedProperty themeStates = themeItem.FindPropertyRelative("States");
+                                    var themeInstance = themeItem.objectReferenceValue as Theme;
+                                    if (statesProperty.objectReferenceValue != themeInstance.States)
                                     {
-                                        UnityEditor.Editor themeEditor = UnityEditor.Editor.CreateEditor(themeItem.objectReferenceValue);
-                                        themeEditor.OnInspectorGUI();
+                                        InspectorUIUtility.DrawWarning($"{themeInstance.name}'s States property does not match Interactable's States property");
+                                    }
+
+                                    if (showThemeSettings)
+                                    {
+                                        using (new EditorGUI.IndentLevelScope())
+                                        {
+                                            UnityEditor.Editor themeEditor = UnityEditor.Editor.CreateEditor(themeItem.objectReferenceValue);
+                                            themeEditor.OnInspectorGUI();
+                                        }
                                     }
                                 }
                             }
