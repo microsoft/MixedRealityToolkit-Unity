@@ -1,8 +1,8 @@
-# 空間認識
+# 空間認識 (Spatial Awareness)
 
 ![Spatial Awareness](../../Documentation/Images/SpatialAwareness/MRTK_SpatialAwareness_Main.png)
 
-空間認識システムは、複合現実アプリケーションで現実世界の環境認識を提供します。 Microsoft HoloLens で導入されたとき、空間認識は環境のジオメトリを表すメッシュのコレクションを提供し、ホログラムと現実世界の間の魅力的な相互作用を可能にしました。
+空間認識システムは、複合現実アプリケーションで現実世界の環境認識を提供します。 Microsoft HoloLens で導入されたとき、空間認識は環境のジオメトリを表すメッシュのコレクションを提供し、ホログラムと現実世界の間の魅力的なインタラクションを可能にしました。
 
 ## はじめに
 
@@ -12,18 +12,18 @@
 2. 1 つ以上の空間オブザーバーを[登録](#register-observers)して[設定](#configure-observers)する
 3. 空間認識をサポートするプラットフォームに[ビルドしてデプロイ](#build-and-deploy)する
 
-### 空間認識を有効にする
+### 空間認識 (Spatial Awareness) を有効にする
 
-空間認識システムは、MixedRealityToolkit オブジェクト (または別の [サービス レジストラ](xref:Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar) コンポーネント) によって管理されます。以下の手順は、このシステムが既に有効になっている既定のプロファイル (DefaultMixedRealityToolkitConfigurationProfile) のユーザーには必要ありません。次の手順では、MixedRealityToolkit オブジェクトの使用を想定しています。他のサービスレジストラで必要な手順は異なる場合があります。
+空間認識システムは、MixedRealityToolkit オブジェクト (または別の [サービス レジストラ](xref:Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar) コンポーネント) によって管理されます。以下の手順は、このシステムが既に有効になっている既定のプロファイル (DefaultMixedRealityToolkitConfigurationProfile) のユーザーには必要ありません。次の手順では、MixedRealityToolkit オブジェクトの使用を想定しています。他のサービス レジストラで必要な手順は異なる場合があります。
 
 > [!NOTE]
 > 空間認識システムは、既定の HoloLens 2 プロファイル (DefaultHoloLens2ConfigurationProfile) ではデフォルトで無効になっており、その目的は、メッシュの計算とレンダリングの視覚的なオーバーヘッドを回避することです。
 
-1. Hierarchy から MixedRealityToolkit オブジェクトを選択する
+1. [Hierarchy] (ヒエラルキー) から MixedRealityToolkit オブジェクトを選択する
 
 ![MRTK Configured Scene Hierarchy](../../Documentation/Images/MRTK_ConfiguredHierarchy.png)
 
-2. インスペクタの空間認識システムセクションに移動し、*Enable Spatial Awareness System* にチェックを入れる
+2. [Inspector] (インスペクター) の空間認識システム セクションに移動し、*Enable Spatial Awareness System* にチェックを入れる
 
 ![Enable Spatial Awareness](../../Documentation/Images/SpatialAwareness/MRTKConfig_SpatialAwareness.png)
 
