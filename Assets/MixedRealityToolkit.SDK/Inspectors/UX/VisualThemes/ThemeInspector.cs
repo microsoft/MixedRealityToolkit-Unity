@@ -140,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                             using (new EditorGUILayout.HorizontalScope())
                             {
                                 var themeTypes = TypeCacheUtility.GetSubClasses<InteractableThemeBase>();
-                                var themeClassNames = themeTypes.Select(t => t.Name).ToArray();
+                                var themeClassNames = themeTypes.Select(t => t?.Name).ToArray();
                                 int id = Array.IndexOf(themeClassNames, className.stringValue);
                                 int newId = EditorGUILayout.Popup("Theme Runtime", id, themeClassNames);
 

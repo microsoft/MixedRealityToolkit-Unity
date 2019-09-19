@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     using (new EditorGUI.PropertyScope(position, SelectEventLabel, className))
                     {
                         var receiverTypes = TypeCacheUtility.GetSubClasses<ReceiverBase>();
-                        var recevierClassNames = receiverTypes.Select(t => t.Name).ToArray();
+                        var recevierClassNames = receiverTypes.Select(t => t?.Name).ToArray();
                         int id = Array.IndexOf(recevierClassNames, className.stringValue);
                         int newId = EditorGUI.Popup(position, id, recevierClassNames);
                         if (newId == -1) { newId = 0; }

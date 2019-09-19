@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             SerializedProperty assemblyQualifiedName  = serializedObject.FindProperty("AssemblyQualifiedName");
 
             var stateModelTypes = TypeCacheUtility.GetSubClasses<BaseStateModel>();
-            var stateModelClassNames = stateModelTypes.Select(t => t.Name).ToArray();
+            var stateModelClassNames = stateModelTypes.Select(t => t?.Name).ToArray();
             int id = Array.IndexOf(stateModelClassNames, stateModelClassName.stringValue);
             int newId = EditorGUILayout.Popup("State Model", id, stateModelClassNames);
             if (id != newId)

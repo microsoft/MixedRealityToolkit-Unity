@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             // This is to fix a bug in GA where the AssemblyQualifiedName was never actually saved. Functionality would work in editor...but never on device player
             if (iEvent.ReceiverType == null)
             {
-                var correctType = TypeCacheUtility.GetSubClasses<ReceiverBase>().Where(s => s.Name == iEvent.ClassName).First();
+                var correctType = TypeCacheUtility.GetSubClasses<ReceiverBase>().Where(s => s?.Name == iEvent.ClassName).First();
                 iEvent.ReceiverType = correctType;
             }
 
