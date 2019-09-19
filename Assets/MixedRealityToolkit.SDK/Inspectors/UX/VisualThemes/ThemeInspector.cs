@@ -85,6 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                     EditorGUILayout.PropertyField(states, new GUIContent("States", "The States this Interactable is based on"));
                     if (check.changed)
                     {
+                        theme.States = states.objectReferenceValue as States;
                         theme.ValidateDefinitions();
                     }
                 }
