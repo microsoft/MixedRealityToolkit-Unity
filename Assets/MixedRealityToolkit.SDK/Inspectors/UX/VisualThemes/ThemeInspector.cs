@@ -497,9 +497,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
         protected void ClearHistoryCache(int index)
         {
-            if (theme == null || theme.History == null || index > theme.History.Count)
+            if (theme == null || theme.History == null || index >= theme.History.Count)
             {
-                Debug.LogWarning("Could not clear theme history cache as invalid access");
                 return;
             }
 
