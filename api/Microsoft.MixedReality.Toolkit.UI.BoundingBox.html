@@ -86,7 +86,11 @@
   
   <h1 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox" class="text-break">Class BoundingBox
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>BoundingBox allows to transform objects (rotate and scale) and draws a cube around the object to visualize
+the possibility of user triggered transform manipulation.
+BoundingBox provides scale and rotation handles that can be used for far and near interaction manipulation
+of the object. It further provides a proximity effect for scale and rotation handles that alters scaling and material.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -158,7 +162,8 @@
   
   
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_RotateStopped" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.RotateStopped">RotateStopped</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Event that gets fired when interaction with a rotation handle stops.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -182,7 +187,8 @@
   
   
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ScaleStarted" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ScaleStarted">ScaleStarted</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Event that gets fired when interaction with a scale handle starts.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -206,7 +212,8 @@
   
   
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ScaleStopped" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ScaleStopped">ScaleStopped</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Event that gets fired when interaction with a scale handle stops.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -233,7 +240,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_Active_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.Active*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_Active" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.Active">Active</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Flag that indicates if the bounding box is currently active / visible.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -960,7 +968,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ScaleMaximum_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ScaleMaximum*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ScaleMaximum" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ScaleMaximum">ScaleMaximum</h4>
-  <div class="markdown level1 summary"><p>Public property for the scale maximum, in the target's local scale.
+  <div class="markdown level1 summary"><p>Deprecated: Use TransformScaleHandler component instead.
+Public property for the scale maximum, in the target's local scale.
 Set this value with SetScaleLimits.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -988,7 +997,8 @@ public float ScaleMaximum { get; }</code></pre>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ScaleMinimum_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ScaleMinimum*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_ScaleMinimum" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.ScaleMinimum">ScaleMinimum</h4>
-  <div class="markdown level1 summary"><p>Public property for the scale minimum, in the target's local scale.
+  <div class="markdown level1 summary"><p>Deprecated: Use TransformScaleHandler component instead.
+Public property for the scale minimum, in the target's local scale.
 Set this value with SetScaleLimits.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1147,7 +1157,8 @@ This property can be set independent of the Rotate handles.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_Target_" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.Target*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_BoundingBox_Target" data-uid="Microsoft.MixedReality.Toolkit.UI.BoundingBox.Target">Target</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The object that the bounding box rig will be modifying.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
