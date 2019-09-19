@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     {
         [FormerlySerializedAs("Settings")]
         [SerializeField]
-        private List<ThemeDefinition> definitions = new List<ThemeDefinition>();
+        private List<ThemeDefinition> definitions;
 
         /// <summary>
         /// List of Theme Definition configurations. Each definition defines what type of Theme Engine to create and how to configure it

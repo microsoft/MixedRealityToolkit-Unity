@@ -36,12 +36,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             theme = target as Theme;
             themeDefinitions = serializedObject.FindProperty("definitions");
             states = serializedObject.FindProperty("states");
-
-            // If no theme properties assigned, add a default one
-            if (themeDefinitions.arraySize < 1)
-            {
-                AddThemeDefinition();
-            }
         }
 
         public override void OnInspectorGUI()
@@ -49,6 +43,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             serializedObject.Update();
 
             themeStates = theme.GetStates();
+
+            // If no theme properties assigned, add a default one
+            if (themeDefinitions.arraySize < 1)
+            {
+                AddThemeDefinition();
+            }
 
             RenderTheme();
 
@@ -447,6 +447,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             Type defaultType = typeof(InteractableActivateTheme);
 
             ThemeDefinition newDefinition = ThemeDefinition.GetDefaultThemeDefinition(defaultType).Value;
+            if (theme.Definitions == null)
+            {
+                theme.Definitions = new List<ThemeDefinition>();
+            }
             theme.Definitions.Add(newDefinition);
             theme.History.Add(new Dictionary<Type, ThemeDefinition>());
             theme.ValidateDefinitions();
