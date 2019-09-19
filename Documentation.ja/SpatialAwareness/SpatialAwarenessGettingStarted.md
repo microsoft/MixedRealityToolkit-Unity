@@ -1,72 +1,72 @@
-# Spatial Awareness
+# 空間認識 (Spatial Awareness)
 
 ![Spatial Awareness](../../Documentation/Images/SpatialAwareness/MRTK_SpatialAwareness_Main.png)
 
-The Spatial Awareness system provides real-world environmental awareness in mixed reality applications. When introduced on Microsoft HoloLens, spatial awareness provided a collection of meshes, representing the geometry of the environment, which allowed for compelling interactions between holograms and the real-world.
+空間認識システムは、複合現実アプリケーションで現実世界の環境認識を提供します。 Microsoft HoloLens で導入されたとき、空間認識は環境のジオメトリを表すメッシュのコレクションを提供し、ホログラムと現実世界の間の魅力的なインタラクションを可能にしました。
 
-## Getting Started
+## はじめに
 
-Adding support for spatial awareness requires two key components of the Mixed Reality Toolkit: the spatial awareness system and a supported platform provider.
+空間認識のサポートを追加するには、Mixed Reality Toolkit の 2 つの主要なコンポーネント (空間認識システムとサポートされているプラットフォーム プロバイダー) が必要です。
 
-1. [Enable](#enable-spatial-awareness) the spatial awareness system
-2. [Register](#register-observers) and [configure](#configure-observers) one or more spatial observers
-3. [Build and deploy](#build-and-deploy) to a platform that supports spatial awareness
+1. 空間認識システムを[有効](#enable-spatial-awareness)にする
+2. 1 つ以上の空間オブザーバーを[登録](#register-observers)して[設定](#configure-observers)する
+3. 空間認識をサポートするプラットフォームに[ビルドしてデプロイ](#build-and-deploy)する
 
-### Enable Spatial Awareness
+### 空間認識 (Spatial Awareness) を有効にする
 
-The spatial awareness system is managed by the MixedRealityToolkit object (or another [service registrar](xref:Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar) component). The steps below are not necessary for users of the default profile (DefaultMixedRealityToolkitConfigurationProfile) which has this system already enabled. The following steps presume use of the MixedRealityToolkit object. Steps required for other service registrars may be different.
+空間認識システムは、MixedRealityToolkit オブジェクト (または別の [サービス レジストラ](xref:Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar) コンポーネント) によって管理されます。以下の手順は、このシステムが既に有効になっている既定のプロファイル (DefaultMixedRealityToolkitConfigurationProfile) のユーザーには必要ありません。次の手順では、MixedRealityToolkit オブジェクトの使用を想定しています。他のサービス レジストラで必要な手順は異なる場合があります。
 
 > [!NOTE]
-> The spatial awareness system is disabled by default on the default HoloLens 2 profile (DefaultHoloLens2ConfigurationProfile), and the intent of this is to avoid the visual overhead of calculating and rendering the meshes.
+> 空間認識システムは、既定の HoloLens 2 プロファイル (DefaultHoloLens2ConfigurationProfile) ではデフォルトで無効になっており、その目的は、メッシュの計算とレンダリングの視覚的なオーバーヘッドを回避することです。
 
-1. Select the MixedRealityToolkit object in the scene hierarchy.
+1. [Hierarchy] (ヒエラルキー) から MixedRealityToolkit オブジェクトを選択する
 
 ![MRTK Configured Scene Hierarchy](../../Documentation/Images/MRTK_ConfiguredHierarchy.png)
 
-2. Navigate the Inspector panel to the Spatial Awareness System section and check *Enable Spatial Awareness System*
+2. [Inspector] (インスペクター) の空間認識システム セクションに移動し、*Enable Spatial Awareness System* にチェックを入れる
 
 ![Enable Spatial Awareness](../../Documentation/Images/SpatialAwareness/MRTKConfig_SpatialAwareness.png)
 
-3. Select the Spatial Awareness System implementation
+3. Spatial Awareness System の実装を選択する
 
 ![Select the Spatial Awareness System Implementation](../../Documentation/Images/SpatialAwareness/SpatialAwarenessSelectSystemType.png)
 
-### Register observers
+### オブザーバーの登録
 
-Before the spatial awareness system can provide applications with data about the real-world, at least one spatial observer must be registered. Spatial observers are generally platform specific components that may vary in the type(s) of data (ex: meshes) provided.
+空間認識システムがアプリケーションに現実世界に関するデータを提供する前に、少なくとも 1 つの空間オブザーバーを登録する必要があります。空間オブザーバーは、一般にプラットフォーム固有のコンポーネントで、提供されるデータの種類 (例: メッシュ) が異なる可能性があります。
 
-1. Open or expand the Spatial Awareness System profile
+1. Spatial Awareness System プロファイルを開く
 
 ![Spatial Awareness System Profile](../../Documentation/Images/SpatialAwareness/SpatialAwarenessProfile.png)
 
-2. Click "Add Spatial Observer"
-3. Select the Spatial Observer implementation
+2. "Add Spatial Observer" をクリックする
+3. Spatial Observer の実装を選択する
 
 ![Select the Spatial Observer Implementation](../../Documentation/Images/SpatialAwareness/SpatialAwarenessSelectObserver.png)
 
 > [!NOTE]
-> Users of the default profile (DefaultMixedRealitSpatialAwarenessSystemProfile) will have the spatial awareness system pre-configured to use the [WindowsMixedRealitySpatialMeshObserver](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver) from the Mixed Reality Toolkit Windows Mixed Reality Provider package.
+> 既定のプロファイル (DefaultMixedRealitSpatialAwarenessSystemProfile) のユーザーは、Mixed Reality Toolkit Windows Mixed Reality Provider パッケージの [WindowsMixedRealitySpatialMeshObserver](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver) を使用するように事前設定された空間認識システムを使用できます。
 
-#### Configure observers
+#### オブザーバーの設定
 
-Once the spatial observer(s) have been registered with the system, they can be configured to provide the desired data. When configuring a spatial observer, many implementations will auto-populate the observer's configuration profile with common default values.
+空間オブザーバーがシステムに登録されると、目的のデータを提供するように構成されます。空間オブザーバーを構成する場合、多くの実装では、オブザーバーの構成プロファイルに共通の既定値を自動設定します。
 
-1. Open or expand the Spatial Observer profile
+1. Spatial Observer プロファイルを開く
 
 ![Spatial Mesh Observer Profile](../../Documentation/Images/SpatialAwareness/SpatialAwarenessMeshObserverProfile.png)
 
-2. Configure the desired options
+2. 必要なオプションを設定する
 
-The illustration in the previous step shows the configuration profile for a spatial mesh observer. Please see [Configuring the Spatial Awareness Mesh Observer](ConfiguringSpatialAwarenessMeshObserver.md) for more information pertaining to the specific settings available to mesh observers. Other observers may have similar settings.
+前の手順の図は、空間メッシュ オブザーバーの構成プロファイルを示しています。メッシュ オブザーバーが使用できる特定の設定に関する詳細については、[Configuring the Spatial Awareness Mesh Observer](ConfiguringSpatialAwarenessMeshObserver.md) を参照してください。他のオブザーバーも同様の設定を持つ可能性があります。
 
-### Build and Deploy
+### ビルドとデプロイ
 
-Once the spatial awareness system is configured with the desired observer(s), the project can be built and deployed to the target platform.
+空間認識システムを目的のオブザーバーで構成すると、プロジェクトをビルドしてターゲット プラットフォームにデプロイできます。
 
 > [!WARNING]
-> Some platforms, including Microsoft HoloLens, provide support for remote execution from within Unity. This feature enables rapid development and testing without requiring the build and deploy step. Be sure to do final acceptance testing using a built and deployed version of the application, running on the target hardware and platform.
+> Microsoft HoloLens を含む一部のプラットフォームでは、Unity 内からリモート実行をサポートしています。この機能により、ビルドとデプロイの手順を必要とせずに、迅速な開発とテストが可能になります。ターゲット ハードウェアとプラットフォームで実行される、ビルドおよびデプロイされたバージョンのアプリケーションを使用して、最終的な受け入れテストを行うようにしてください。
 
-## See Also
+## 以下参照
 
 - [Spatial Awareness API documentation](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness)
 - [Configuring the Spatial Awareness Mesh Observer](ConfiguringSpatialAwarenessMeshObserver.md)
