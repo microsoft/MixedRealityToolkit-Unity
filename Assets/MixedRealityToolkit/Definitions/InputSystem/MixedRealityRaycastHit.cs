@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 triangleIndex = hitInfo.triangleIndex;
                 textureCoord = hitInfo.textureCoord;
                 textureCoord2 = hitInfo.textureCoord2;
-                transform = hitInfo.collider.transform;
+                transform = hitInfo.collider.transform; // we're using collider transform because hitInfo.transform might point us to a different gameobject in case there's a rigidbody in the hierarchy
                 lightmapCoord = hitInfo.lightmapCoord;
                 collider = hitInfo.collider;
             }
