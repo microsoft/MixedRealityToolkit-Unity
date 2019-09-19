@@ -158,7 +158,10 @@ modify the <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedReal
 focused by a <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointer.html">IMixedRealityPointer</a>.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.DefaultPointerMediator.html">DefaultPointerMediator</a></h4>
-      <section></section>
+      <section><p>The default implementation for pointer mediation in MRTK which is responsible for
+determining which pointers are active based on the state of all pointers.
+For example, one of the key things this class does is disable far pointers when a near pointer is close to an object.</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.Input.DefaultPrimaryPointerSelector.html">DefaultPrimaryPointerSelector</a></h4>
       <section><p>Default primary pointer selector. The primary pointer is chosen among all interaction enabled ones using the following rules in order:</p>
 <ol>
