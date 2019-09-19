@@ -641,6 +641,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 }
             }
 
+            //ensure IgnoreInactiveTransforms is set to false, otherwise the node prune will remove any hidden items in the list.g
+            IgnoreInactiveTransforms = false;
             //stash our children in a list so the count doesn't change or reverse the order if we were to count down
             List<Transform> children = new List<Transform>();
             for (int i = 0; i < transform.childCount; i++)

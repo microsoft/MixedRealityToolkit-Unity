@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         [Tooltip("Whether to include space for inactive transforms in the layout")]
         [SerializeField]
-        private bool ignoreInactiveTransforms = false;
+        private bool ignoreInactiveTransforms = true;
 
         /// <summary>
         /// Whether to include space for inactive transforms in the layout
