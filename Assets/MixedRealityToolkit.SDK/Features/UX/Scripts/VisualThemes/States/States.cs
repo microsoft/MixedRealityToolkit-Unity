@@ -8,6 +8,9 @@ using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
+    /// <summary>
+    /// States scriptableObject for storing available states and related state model
+    /// </summary>
     [CreateAssetMenu(fileName = "States", menuName = "Mixed Reality Toolkit/State", order = 1)]
     public class States : ScriptableObject
     {
@@ -90,12 +93,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
             StateModelType = typeof(InteractableStates);
         }
 
+        [System.Obsolete("Use the StateList property instead")]
         public State[] GetStates()
         {
             return StateList.ToArray();
         }
 
-        public bool CompareStates(States other)
+        /// <summary>
+        /// Test whether the current States object and the argument States object have the same internal values and configurations
+        /// </summary>
+        /// <param name="other">other States object to compare against self</param>
+        /// <returns>true if internal list of state values and class configuration matches other, false otherwise</returns>
+        public bool Equals(States other)
         {
             if (this.StateList.Count != other.StateList.Count 
                 || this.StateModelType != other.StateModelType 
@@ -115,20 +124,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return true;
         }
 
+        /// <summary>
+        /// Create a State Model class and initialize it with the configuration data from this States ScriptableObject
+        /// </summary>
+        /// <returns>BaseStateModel or inherited class implemention object initialized with the StateList in this ScriptableObject</returns>
         public BaseStateModel CreateStateModel()
         {
             BaseStateModel stateLogic = (BaseStateModel)Activator.CreateInstance(StateModelType, StateList[DefaultIndex]);
 
             List<State> stateListCopy = new List<State>();
-            for (int i = 0; i < StateList.Count; i++)
+            foreach (State s in StateList)
             {
-                State state = new State();
-                state.ActiveIndex = StateList[i].ActiveIndex;
-                state.Bit = StateList[i].Bit;
-                state.Index = StateList[i].Index;
-                state.Name = StateList[i].Name;
-                state.Value = StateList[i].Value;
-                stateListCopy.Add(state);
+                stateListCopy.Add(s.Copy());
             }
 
             stateLogic.ImportStates(stateListCopy);

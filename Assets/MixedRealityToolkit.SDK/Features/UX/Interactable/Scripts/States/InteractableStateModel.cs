@@ -32,6 +32,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return Bit;
         }
 
+        public State Copy()
+        {
+            return new State()
+            {
+                ActiveIndex = this.ActiveIndex,
+                Bit = this.Bit,
+                Index = this.Index,
+                Name = this.Name,
+                Value = this.Value,
+            };
+        }
+
         public bool CompareState(State other)
         {
             return this.Name == other.Name

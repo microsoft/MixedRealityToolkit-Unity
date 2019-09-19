@@ -499,11 +499,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                 }
             }
         }
-
-        protected virtual State[] GetStates()
-        {
-            return instance.GetStates();
-        }
         
         #endregion Themes
 

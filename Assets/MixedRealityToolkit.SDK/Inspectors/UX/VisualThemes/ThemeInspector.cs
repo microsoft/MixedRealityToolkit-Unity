@@ -42,7 +42,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         {
             serializedObject.Update();
 
-            themeStates = theme.GetStates();
+            themeStates = theme.States?.StateList.ToArray();
+            if (themeStates == null)
+            {
+                themeStates = new State[0];
+            }
 
             // If no theme properties assigned, add a default one
             if (themeDefinitions.arraySize < 1)

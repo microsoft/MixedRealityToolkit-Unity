@@ -58,11 +58,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Helper function to convert States scriptableobject into an array of available State values 
         /// </summary>
         /// <returns>Array of available State values for currently assigned States property in this Theme</returns>
+        [System.Obsolete("Use States.StateList instead")]
         public State[] GetStates()
         {
             if (States != null)
             {
-                return States.GetStates();
+                return States.StateList.ToArray();
             }
 
             return new State[0];
@@ -73,9 +74,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void ValidateDefinitions()
         {
-            int numOfStates = GetStates().Length;
-            if (Definitions != null)
+            if (Definitions != null && States != null)
             {
+                int numOfStates = States.StateList.Count;
                 foreach (var definition in Definitions)
                 {
                     // For each theme property with values per possible state

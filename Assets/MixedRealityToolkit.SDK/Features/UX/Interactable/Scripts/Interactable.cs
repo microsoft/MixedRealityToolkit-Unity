@@ -482,11 +482,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Returns a list of states assigned to the Interactable
         /// </summary>
+        [System.Obsolete("Use States.StateList instead")]
         public State[] GetStates()
         {
             if (States != null)
             {
-                return States.GetStates();
+                return States.StateList.ToArray();
             }
 
             return new State[0];
