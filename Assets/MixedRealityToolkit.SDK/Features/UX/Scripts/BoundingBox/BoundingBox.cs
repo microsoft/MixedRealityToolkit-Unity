@@ -987,7 +987,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public UnityEvent RotateStarted = new UnityEvent();
         /// <summary>
-        /// Event that gets fired when interaction with a rotation handle ends.
+        /// Event that gets fired when interaction with a rotation handle stops.
         /// </summary>
         public UnityEvent RotateStopped = new UnityEvent();
         /// <summary>
