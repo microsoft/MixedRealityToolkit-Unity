@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
 {
+    /// <summary>
+    /// Simple demonstration of how to instantiate a <see cref="ScrollingObjectCollection"/> as well as use lazy loading to mitigate the perf cost of a large list of items.
+    /// </summary>
     public class ScrollableListPopulator : MonoBehaviour
     {
         [SerializeField]
