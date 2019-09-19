@@ -81,7 +81,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 
             if (destroyGameObject)
             {
+#if UNITY_EDITOR
+                UnityEngine.Object.DestroyImmediate(meshObject.GameObject);
+#else
                 UnityEngine.Object.Destroy(meshObject.GameObject);
+#endif
                 meshObject.GameObject = null;
                 return;
             }
