@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 triangleIndex = hitInfo.triangleIndex;
                 textureCoord = hitInfo.textureCoord;
                 textureCoord2 = hitInfo.textureCoord2;
-                transform = hitInfo.transform;
+                transform = hitInfo.collider.transform;
                 lightmapCoord = hitInfo.lightmapCoord;
                 collider = hitInfo.collider;
             }
