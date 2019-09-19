@@ -109,7 +109,7 @@ To improve parity with the Unity Standard shader per pixel metallic, smoothness,
 
 ![channel map example](../Documentation/Images/MRTKStandardShader/MRTK_ChannelMap.gif)
 
-When you use channel packing, you only have to sample and load one texture into memory instead of four separate ones. When you write your texture maps in a program like Substance or Photoshop, you can pack hand pack them like so:
+When you use channel packing, you only have to sample and load one texture into memory instead of four separate ones. When you write your texture maps in a program like Substance or Photoshop, you can hand pack them like so:
 
 | Channel | Property             |
 |---------|----------------------|

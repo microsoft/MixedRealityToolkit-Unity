@@ -458,5 +458,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             return pos;
         }
+        
+        /// Calculates the direction vector from a rotation.
+        /// </summary>
+        /// <param name="rotation">Quaternion representing the rotation of the object.</param>
+        /// <returns>
+        /// Normalized Vector3 representing the direction vector.
+        /// </returns>
+        public static Vector3 GetDirection(Quaternion rotation)
+        {
+            return (rotation * Vector3.forward).normalized;
+        }
+
     }
 }
