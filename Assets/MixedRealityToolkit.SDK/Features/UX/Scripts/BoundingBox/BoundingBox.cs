@@ -1176,6 +1176,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private void OnDisable()
         {
             DestroyRig();
+
+            if (currentPointer != null)
+            {
+                DropController();
+            }
         }
 
         private void Update()
