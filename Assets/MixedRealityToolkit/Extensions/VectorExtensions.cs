@@ -163,56 +163,6 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Calculates which side a point in world space is on of a plane
-        /// </summary>
-        /// <param name="initialDirection">The normal direction orthagonal to the plane. </param>
-        /// <param name="initialPosition">The point representing the plane's origin</param>
-        /// <returns>true when the compared point is on the other side of the plane</returns>
-        public static bool IsOtherSideOfPoint(this Vector3 vector, Vector3 initialDirection, Vector3 initialPosition)
-        {
-            Vector3 delta = vector - initialPosition;
-            float dot = Vector3.Dot(delta.normalized, initialDirection);
-
-            return (dot > 0) ? true : false;
-        }
-
-        /// <summary>
-        /// Projects a pointer's actual direction on the same plane as a previous point in space.
-        /// </summary>
-        /// <param name="initialPoint">The original point representing the plane to project <paramref name="newDir"/> on.</param>
-        /// <param name="origin">Where <paramref name="newDir"/> is originating from in world space.</param>
-        /// <param name="newDir">The direction to project</param>
-        /// <param name="axisConstraint">The (optional) axis to scale to</param>
-        /// <returns>><see cref="Vector3"/> representing the new point on the plane as the hit point in world space</returns>
-        public static Vector3 GetProjectedPoint(Vector3 initialPoint, Vector3 origin, Vector3 newDir, Vector3? directionalConstraint)
-        {
-            Vector3 hitDir = initialPoint - origin;
-            float mag = Vector3.Dot(hitDir, newDir);
-            Vector3 trackedPoint = origin + (newDir * mag);
-
-            if (directionalConstraint != null)
-            {
-                trackedPoint.Scale((Vector3)directionalConstraint);
-            }
-
-            return trackedPoint;
-        }
-
-        /// <summary>
-        /// Calculates how much scale is required for objBounds to match otherbounds.
-        /// </summary>
-        /// <param name="objBounds">Object representation to be scaled</param>
-        /// <param name="otherBounds">Object representation to be scaled to</param>
-        /// <param name="padding">padding multitplied into otherbounds</param>
-        /// <returns>scale represented as a <see cref="Vector3"/> </returns>
-        public static Vector3 ScaleFromBounds(Bounds objBounds, Bounds otherBounds, Vector3 padding = default)
-        {
-            Vector3 szA = otherBounds.size + new Vector3(otherBounds.size.x * padding.x, otherBounds.size.y * padding.y, otherBounds.size.z * padding.z);
-            Vector3 szB = objBounds.size;
-            return new Vector3(szA.x / szB.x, szA.y / szB.y, szA.z / szB.z);
-        }
-
-        /// <summary>
         /// Get the relative mapping based on a source Vec3 and a radius for spherical mapping.
         /// </summary>
         /// <param name="source">The source <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> to be mapped to sphere</param>

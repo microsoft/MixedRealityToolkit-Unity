@@ -337,6 +337,19 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
+        /// Calculates how much scale is required for for bounds to match otherbounds.
+        /// </summary>
+        /// <param name="otherBounds">Object representation to be scaled to</param>
+        /// <param name="padding">padding multitplied into otherbounds</param>
+        /// <returns>scale represented as a <see cref="Vector3"/> </returns>
+        public static Vector3 ScaleFromBounds(this Bounds bounds, Bounds otherBounds, Vector3 padding = default)
+        {
+            Vector3 szA = otherBounds.size + new Vector3(otherBounds.size.x * padding.x, otherBounds.size.y * padding.y, otherBounds.size.z * padding.z);
+            Vector3 szB = bounds.size;
+            return new Vector3(szA.x / szB.x, szA.y / szB.y, szA.z / szB.z);
+        }
+
+        /// <summary>
         /// Method to get bounding box points using Collider method.
         /// </summary>
         /// <param name="target">gameObject that boundingBox bounds.</param>
@@ -455,88 +468,6 @@ namespace Microsoft.MixedReality.Toolkit
                 rectTransforms[i].GetWorldCorners(rectTransformCorners);
                 boundsPoints.AddRange(rectTransformCorners);
             }
-        }
-
-        /// <summary>
-        /// Finds the object-aligned size of a <see cref="UnityEngine.Transform"/> 
-        /// </summary>
-        /// <param name="obj"><see cref="UnityEngine.Transform"/> representing the object to get offset from</param>
-        /// <param name="alignedSize">the object-aligned size of  <param name="obj"></param></param>
-        /// <returns><see cref="true"/> if <param name="alignedSize"> is valid</returns>
-        public static bool TryGetObjectAlignedBoundsSize(Transform obj, out Vector3 alignedSize)
-        {
-            Collider c = obj.GetComponentInChildren<Collider>();
-            alignedSize = Vector3.zero;
-
-            //store and clear the original rotation
-            Quaternion origRot = obj.rotation;
-            obj.rotation = Quaternion.identity;
-
-            bool canGetSize = false;
-
-            if (c != null)
-            {
-                if (c.GetType() == typeof(BoxCollider))
-                {
-                    BoxCollider bC = c as BoxCollider;
-                    alignedSize = bC.bounds.size;
-                    canGetSize = true;
-                }
-                else if (c.GetType() == typeof(SphereCollider))
-                {
-                    SphereCollider sC = c as SphereCollider;
-                    alignedSize = new Vector3(sC.radius, sC.radius, sC.radius);
-                    canGetSize = true;
-                }
-                else if(c.GetType() == typeof(CapsuleCollider))
-                {
-                    CapsuleCollider cc = c as CapsuleCollider;
-                    Bounds capsuleBounds = new Bounds(cc.center, Vector3.zero);
-                    switch (cc.direction)
-                    {
-                        case CAPSULE_X_AXIS:
-                            alignedSize = new Vector3(cc.height, cc.radius * 2, cc.radius * 2);
-                            break;
-
-                        case CAPSULE_Y_AXIS:
-                            alignedSize = new Vector3(cc.radius * 2, cc.height, cc.radius * 2);
-                            break;
-
-                        case CAPSULE_Z_AXIS:
-                            alignedSize = new Vector3(cc.radius * 2, cc.radius * 2, cc.height);
-                            break;
-                    }
-                }
-                else
-                {
-                    canGetSize = false;
-                }
-
-            }
-            else if (obj.GetComponentInChildren<Renderer>() != null)
-            {
-                List<Vector3> points = new List<Vector3>();
-                Bounds rendBound = new Bounds();
-                GetRenderBoundsPoints(obj.gameObject, points, 0);
-                rendBound.center = points[0];
-
-                foreach (Vector3 p in points)
-                {
-                    rendBound.Encapsulate(p);
-                }
-
-                alignedSize = rendBound.size;
-                canGetSize = true;
-            }
-            else
-            {
-                canGetSize = false;
-            }
-
-            //reapply our rotation
-            obj.rotation = origRot;
-
-            return (canGetSize) ? true : false;
         }
 
         /// <summary>
