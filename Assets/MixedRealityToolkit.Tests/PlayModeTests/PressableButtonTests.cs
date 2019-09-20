@@ -16,6 +16,7 @@ using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -92,6 +93,32 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
             PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
             Assert.IsNotNull(buttonComponent);
+
+            Object.Destroy(testButton);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator ButtonInstantiateDisableThenEnableBeforeStart([ValueSource(nameof(PressableButtonsTestPrefabFilenames))] string prefabFilename)
+        {
+            // Some apps will instantiate a button, disable it while they do other setup, then enable it.  This caused a bug where the button front plate would be flattened against the button.
+            // This tests to confirm that this has not regressed.
+
+            GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
+            testButton.SetActive(false);
+            testButton.SetActive(true);
+
+            yield return null;
+
+            PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
+
+            var movingButtonVisualsTransform = GetPrivateMovingButtonVisuals(buttonComponent).transform;
+            var backPlateTransform = testButton.transform.Find("BackPlate");
+
+            var deltaPosition = movingButtonVisualsTransform.position - backPlateTransform.position;
+
+            Assert.IsTrue(deltaPosition.magnitude > 0.007f, "The button prefabs should all have their front plates at least 8mm away from the back plates.");
 
             Object.Destroy(testButton);
             // Wait for a frame to give Unity a change to actually destroy the object
@@ -495,6 +522,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             return Mathf.Abs(f0 - f1) < tolerance;
         }
+
+        private static GameObject GetPrivateMovingButtonVisuals(PressableButton button)
+        {
+            // Use reflection to get the private field that contains the front plate.
+            // This is a bit cheeky, but I didn't want to expose a public getter property for it at this time.
+            var movingButtonVisualsField = typeof(PressableButton).GetField("movingButtonVisuals", BindingFlags.NonPublic | BindingFlags.Instance);
+            return (GameObject)movingButtonVisualsField.GetValue(button);
+        }
+
         #endregion
     }
 }
