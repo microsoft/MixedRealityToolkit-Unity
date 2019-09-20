@@ -29,7 +29,7 @@
       href: Architecture/InputSystem/ControllersPointersAndFocus.md
 - name: 機能概要
   items:
-  - name: プロファイル (Profile)
+  - name: Profile（プロファイル）
     href: Profiles/Profiles.md
   - name: プロファイル設定
     href: MixedRealityConfigurationGuide.md
@@ -65,11 +65,11 @@
     items:
     - name: Interactable
       href: README_Interactable.md
-    - name: ボタン (Button)
+    - name: Button（ボタン）
       href: README_Button.md
     - name: Bounding Box
       href: README_BoundingBox.md
-    - name: 物体操作 (Object Manipulation)
+    - name: Object Manipulation（物体操作）
       href: README_ManipulationHandler.md
     - name: Sliders
       href: README_Sliders.md
@@ -95,7 +95,7 @@
     href: DetectingPlatformCapabilities.md
   - name: MRTK Standard Shader
     href: README_MRTKStandardShader.md
-  - name: 空間認識 (Spatial Awareness)
+  - name: Spatial Awareness（空間認識）
     items:
     - name: 空間認識の概要
       href: SpatialAwareness/SpatialAwarenessGettingStarted.md
@@ -125,7 +125,7 @@
       href: Boundary/BoundarySystemGettingStarted.md
     - name: Configuring the Boundary Visualization
       href: Boundary/ConfiguringBoundaryVisualization.md
-  - name: 診断システム (Diagnostic System)
+  - name: Diagnostic System（診断システム）
     items:
     - name: 診断システムの概要
       href: Diagnostics/DiagnosticsSystemGettingStarted.md
