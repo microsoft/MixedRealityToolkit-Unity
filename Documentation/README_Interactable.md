@@ -264,11 +264,28 @@ myInteractable.IncreaseDimension();
 var interactableObject = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
 var interactable = interactableObject.AddComponent<Interactable>();
 
+// Get the default configuration for the Theme engine InteractableColorTheme
+var newThemeType = ThemeDefinition.GetDefaultThemeDefinition<InteractableColorTheme>().Value;
+
+// Define a color for every state in our Default Interactable States
+newThemeType.StateProperties[0].Values = new List<ThemePropertyValue>()
+{
+    new ThemePropertyValue() { Color = Color.black},  // Default
+    new ThemePropertyValue() { Color = Color.black}, // Focus
+    new ThemePropertyValue() { Color = Random.ColorHSV()},   // Pressed
+    new ThemePropertyValue() { Color = Color.black},   // Disabled
+};
+
+// Create the Theme configuration asset
+Theme testTheme = ScriptableObject.CreateInstance<Theme>();
+testTheme.States = Interactable.GetDefaultInteractableStates();
+testTheme.Definitions = new List<ThemeDefinition>() { newThemeType };
+
 interactable.Profiles = new List<InteractableProfileItem>()
 {
     new InteractableProfileItem()
     {
-        Themes = new List<Theme>() { <insert Theme asset here> },
+        Themes = new List<Theme>() { testTheme },
         Target = interactableObject,
     },
 };
