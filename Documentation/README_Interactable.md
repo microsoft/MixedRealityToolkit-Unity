@@ -276,16 +276,14 @@ newThemeType.StateProperties[0].Values = new List<ThemePropertyValue>()
     new ThemePropertyValue() { Color = Color.black},   // Disabled
 };
 
-// Create the Theme configuration asset
-Theme testTheme = ScriptableObject.CreateInstance<Theme>();
-testTheme.States = Interactable.GetDefaultInteractableStates();
-testTheme.Definitions = new List<ThemeDefinition>() { newThemeType };
-
 interactable.Profiles = new List<InteractableProfileItem>()
 {
     new InteractableProfileItem()
     {
-        Themes = new List<Theme>() { testTheme },
+        Themes = new List<Theme>()
+        {
+            Interactable.GetDefaultThemeAsset(new List<ThemeDefinition>() { newThemeType })
+        },
         Target = interactableObject,
     },
 };

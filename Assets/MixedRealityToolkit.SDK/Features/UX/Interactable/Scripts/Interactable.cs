@@ -1352,6 +1352,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return result;
         }
 
+        /// <summary>
+        /// Helper function to create a new Theme asset using Default Interactable States and provided theme definitions
+        /// </summary>
+        /// <param name="themeDefintions">List of Theme Definitions to associate with Theme asset</param>
+        /// <returns>Theme ScriptableObject instance</returns>
+        public static Theme GetDefaultThemeAsset(List<ThemeDefinition> themeDefintions)
+        {
+            // Create the Theme configuration asset
+            Theme newTheme = ScriptableObject.CreateInstance<Theme>();
+            newTheme.States = GetDefaultInteractableStates();
+            newTheme.Definitions = themeDefintions;
+            return newTheme;
+        }
+
         #endregion InteractableUtilities
 
         #region VoiceCommands
