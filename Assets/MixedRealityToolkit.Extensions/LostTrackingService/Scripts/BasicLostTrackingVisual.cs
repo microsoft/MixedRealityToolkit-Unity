@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
     public class BasicLostTrackingVisual : MonoBehaviour, ILostTrackingVisual
     {
         [SerializeField]
-        private new MeshRenderer renderer = null;
+        private MeshRenderer gridRenderer = null;
         [SerializeField]
         private AudioClip loopClip = null;
         [SerializeField]
@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
             audioSource.Play();
 
             pulseTimer = 0.0f;
-            renderer?.material.SetFloat("_Pulse_", 0.0f);
+            gridRenderer?.material.SetFloat("_Pulse_", 0.0f);
         }
 
         public void SetLayer(int layer)
@@ -56,8 +56,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
                 pulseTimer = 0;
             }
 
-            renderer.material.SetFloat("_Pulse_", normalizedPulseValue);
-            renderer.material.SetVector("_Pulse_Origin_", renderer.transform.position);
+            gridRenderer.material.SetFloat("_Pulse_", normalizedPulseValue);
+            gridRenderer.material.SetVector("_Pulse_Origin_", gridRenderer.transform.position);
         }
     }
 }

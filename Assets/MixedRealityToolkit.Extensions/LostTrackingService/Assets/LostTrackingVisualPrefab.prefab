@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d166f51ac592f1d49962a799f331adad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  renderer: {fileID: 5438758763433720000}
+  gridRenderer: {fileID: 5438758763433720000}
   loopClip: {fileID: 8300000, guid: 3e31be11b607dfd4d84a1313922956b4, type: 3}
   audioSource: {fileID: 2190822873648424094}
   pulseTimer: 0
@@ -293,7 +293,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  - {fileID: 21184075213967186, guid: cf40b52fb3478de4ea4adf277e3b75ef, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -336,7 +336,8 @@ MonoBehaviour:
   m_text: Finding your space...
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cf40b52fb3478de4ea4adf277e3b75ef, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 21184075213967186, guid: cf40b52fb3478de4ea4adf277e3b75ef,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
