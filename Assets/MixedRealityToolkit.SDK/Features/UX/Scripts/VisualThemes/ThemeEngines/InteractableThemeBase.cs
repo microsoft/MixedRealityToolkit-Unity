@@ -13,13 +13,40 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     public abstract class InteractableThemeBase
     {
-        public Type[] Types;
-        public string Name = "Base Theme";
-        public List<ThemeStateProperty> StateProperties = new List<ThemeStateProperty>();
-        public List<ThemeProperty> Properties = new List<ThemeProperty>();
-        public GameObject Host;
-        public Easing Ease = new Easing();
-        public bool Loaded;
+        /// <summary>
+        /// Types of component this Theme Engine will target on the initialized GameObject or related GameObjects
+        /// </summary>
+        public Type[] Types { get; protected set; } = new Type[0];
+
+        /// <summary>
+        /// Name of Theme Engine
+        /// </summary>
+        public string Name { get; protected set; } = "Base Theme";
+
+        /// <summary>
+        /// List of Properties with values per state
+        /// </summary>
+        public List<ThemeStateProperty> StateProperties { get; set; } = new List<ThemeStateProperty>();
+
+        /// <summary>
+        /// List of global Theme Engine properties
+        /// </summary>
+        public List<ThemeProperty> Properties { get; set; } = new List<ThemeProperty>();
+
+        /// <summary>
+        /// GameObject initialized with this ThemeEngine and being targeted based on state changes
+        /// </summary>
+        public GameObject Host { get; set; }
+
+        /// <summary>
+        /// Defines how to ease between values during state changes
+        /// </summary>
+        public Easing Ease { get; set; } = new Easing();
+
+        /// <summary>
+        /// True if Theme Engine has been initialized, false otherwise
+        /// </summary>
+        public bool Loaded { get; protected set; } = false;
 
         /// <summary>
         /// Indicates whether the current Theme engine implementation supports easing between state values
@@ -55,6 +82,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private bool hasFirstState = false;
         private int lastState = -1;
 
+        /// <summary>
+        /// Helper method to instantiate a Theme Engine of provided type. Type must extend InteractableThemeBase
+        /// </summary>
+        /// <param name="themeType">Type of ThemeEngine to create</param>
+        /// <returns>Instance of ThemeEngine of given type</returns>
         public static InteractableThemeBase CreateTheme(Type themeType)
         {
             if (!themeType.IsSubclassOf(typeof(InteractableThemeBase)))
@@ -66,6 +98,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return (InteractableThemeBase)Activator.CreateInstance(themeType);
         }
 
+        /// <summary>
+        /// Helper method to create and initialize a Theme Engine for given configuration and targeted GameObject
+        /// </summary>
+        /// <param name="definition">Theme configuration with type information and properties to initialize ThemeEngine with</param>
+        /// <param name="host">GameObject for Theme Engine to target</param>
+        /// <returns>Instance of Theme Engine initialized</returns>
         public static InteractableThemeBase CreateAndInitTheme(ThemeDefinition definition, GameObject host = null)
         {
             var theme = CreateTheme(definition.ThemeType);
@@ -73,6 +111,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return theme;
         }
 
+        /// <summary>
+        /// Initialize current Theme Engine with given configuration and target the provided GameObject
+        /// </summary>
+        /// <param name="host">GameObject to target changes against</param>
+        /// <param name="definition">Configuration information to intialize Theme Engine</param>
         public virtual void Init(GameObject host, ThemeDefinition definition)
         {
             Host = host;
@@ -119,6 +162,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Loaded = true;
         }
 
+        /// <summary>
+        /// Update ThemeEngine for given state based on Theme logic. Check, sets, and possibly eases values based on given state
+        /// </summary>
+        /// <param name="state">current state to target</param>
+        /// <param name="force">force update call even if state is not new</param>
         public virtual void OnUpdate(int state, bool force = false)
         {
             if (state != lastState || force)

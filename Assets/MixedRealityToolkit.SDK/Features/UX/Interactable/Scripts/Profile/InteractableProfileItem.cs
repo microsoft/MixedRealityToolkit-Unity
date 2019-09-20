@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,7 +13,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
     [System.Serializable]
     public class InteractableProfileItem
     {
+        /// <summary>
+        /// GameObject to target with associated Themes
+        /// </summary>
         public GameObject Target;
-        public List<Theme> Themes;
+
+        /// <summary>
+        /// List of Theme configuration data to intialize with an Interactable
+        /// </summary>
+        public List<Theme> Themes = new List<Theme>();
     }
 }

@@ -17,8 +17,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
     [System.Serializable]
     public class InteractableEvent
     {
+        /// <summary>
+        /// Base Event used to initialize EventReceiver class
+        /// </summary>
         public UnityEvent Event = new UnityEvent();
 
+        /// <summary>
+        /// ReceiverBase instantiation for this InteractableEvent. Used at runtime by Interactable class
+        /// </summary>
         [NonSerialized]
         public ReceiverBase Receiver;
 

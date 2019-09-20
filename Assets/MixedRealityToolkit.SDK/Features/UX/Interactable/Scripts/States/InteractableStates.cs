@@ -11,6 +11,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     public class InteractableStates : BaseStateModel
     {
+        /// <summary>
+        /// List of valid state types for Interactable
+        /// </summary>
         public enum InteractableStateEnum
         {
             /// <summary>

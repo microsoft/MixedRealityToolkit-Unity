@@ -9,11 +9,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// An example of building an Interactable receiver that uses built-in receivers that extend ReceiverBase
-    /// This is a mono behavior, place on a gameObject and assign the Interactable
     /// </summary>
     public class InteractableReceiverList : ReceiverBaseMonoBehavior
     {
-        // list of events added to this interactable
+        /// <summary>
+        /// List of events added to this interactable
+        /// </summary>
         [HideInInspector]
         public List<InteractableEvent> Events = new List<InteractableEvent>();
 
@@ -48,7 +49,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     Events[i].Receiver.OnUpdate(state, source);
                 }
             }
-
         }
 
         /// <summary>

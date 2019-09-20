@@ -13,17 +13,26 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     public abstract class ReceiverBase
     {
-        public string Name;
+        /// <summary>
+        /// Name of Event Receiver
+        /// </summary>
+        public string Name { get; protected set; }
 
-        public bool HideUnityEvents;
+        /// <summary>
+        /// Defines whether Unity Events should be hidden in inspector for this type of EventReceiver
+        /// </summary>
+        public virtual bool HideUnityEvents => false;
+
         protected UnityEvent uEvent;
-
         /// <summary>
         /// Each Receiver has a base Event it raises, (in addition to others).
         /// </summary>
         public UnityEvent Event { get => uEvent; set => uEvent = value; }
 
-        public MonoBehaviour Host;
+        /// <summary>
+        /// Targeted component for Event Receiver at runtime
+        /// </summary>
+        public MonoBehaviour Host { get; set; }
 
         /// <summary>
         /// Constructs an interaction receiver that will raise unity event when triggered.
@@ -46,7 +55,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public virtual void OnVoiceCommand(InteractableStates state, Interactable source, string command, int index = 0, int length = 1)
         {
-            // voice command called
         }
 
         /// <summary>
@@ -54,7 +62,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public virtual void OnClick(InteractableStates state, Interactable source, IMixedRealityPointer pointer = null)
         {
-            // click called
         }
     }
 }

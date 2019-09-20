@@ -6,55 +6,6 @@ using System.Collections.Generic;
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
-    /// State data model, state management and comparison instructions
-    /// </summary>
-    [System.Serializable]
-    public class State
-    {
-        public string Name;
-        public int Index;
-        public int Bit;
-        public int Value;
-        public int ActiveIndex;
-
-        public override string ToString()
-        {
-            return Name;
-        }
-
-        public int ToInt()
-        {
-            return Index;
-        }
-
-        public int ToBit()
-        {
-            return Bit;
-        }
-
-        public State Copy()
-        {
-            return new State()
-            {
-                ActiveIndex = this.ActiveIndex,
-                Bit = this.Bit,
-                Index = this.Index,
-                Name = this.Name,
-                Value = this.Value,
-            };
-        }
-
-        public bool CompareState(State other)
-        {
-            return this.Name == other.Name
-                && this.Index == other.Index
-                && this.Bit == other.Bit
-                && this.Value == other.Value
-                && this.ActiveIndex == other.ActiveIndex;
-        }
-    }
-
-    /// <summary>
     /// Base class for defining state model logic to use in conjunction with the State class
     /// Allows for retrieving current state mode and comparing states
     /// </summary>
