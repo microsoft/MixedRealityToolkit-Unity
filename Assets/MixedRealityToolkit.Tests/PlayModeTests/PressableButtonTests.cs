@@ -102,6 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Some apps will instantiate a button, disable it while they do other setup, then enable it.  This caused a bug where the button front plate would be flattened against the button.
         /// This tests to confirm that this has not regressed.
+        /// https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6024
         /// </summary>
         [UnityTest]
         public IEnumerator ButtonInstantiateDisableThenEnableBeforeStart([ValueSource(nameof(PressableButtonsTestPrefabFilenames))] string prefabFilename)
@@ -126,7 +127,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// There was an issue where rotating a button after Start() had executed resulted in the front plate going in the wrong direction.  This tests that it has not regressed.
+        /// There was an issue where rotating a button after Start() had executed resulted in the front plate going in the wrong direction.
+        /// This tests that it has not regressed.
+        /// https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6025
         /// </summary>
         [UnityTest]
         public IEnumerator RotateButton([ValueSource(nameof(PressableButtonsTestPrefabFilenames))] string prefabFilename)
