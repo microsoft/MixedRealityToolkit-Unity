@@ -12,27 +12,27 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Name of state
         /// </summary>
-        public string Name { get; set; }
+        public string Name;
 
         /// <summary>
         /// Index of State in all available state list
         /// </summary>
-        public int Index { get; set; }
+        public int Index;
 
         /// <summary>
         /// Bitwise value of state for comparison
         /// </summary>
-        public int Bit { get; set; }
+        public int Bit;
 
         /// <summary>
         /// Current value of state (e.g on/off etc)
         /// </summary>
-        public int Value { get; set; }
+        public int Value;
 
         /// <summary>
         /// Index of state in current list
         /// </summary>
-        public int ActiveIndex { get; set; }
+        public int ActiveIndex;
 
         /// <inheritdoc/>
         public override string ToString()
