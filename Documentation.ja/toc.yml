@@ -27,11 +27,11 @@
       href: Architecture/InputSystem/CoreSystem.md
     - name: Controllers, Pointers, and Focus
       href: Architecture/InputSystem/ControllersPointersAndFocus.md
-- name: Feature Overviews
+- name: 機能概要
   items:
-  - name: Profiles
+  - name: Profile（プロファイル）
     href: Profiles/Profiles.md
-  - name: Profiles Configuration
+  - name: プロファイル設定
     href: MixedRealityConfigurationGuide.md
   - name: Input
     items:
@@ -61,15 +61,15 @@
       href: EyeTracking/EyeTracking_Main.md
   - name: エディター内入力シミュレーション
     href: InputSimulation/InputSimulationService.md
-  - name: UX Building Blocks
+  - name: UX ビルディング ブロック
     items:
     - name: Interactable
       href: README_Interactable.md
-    - name: Button
+    - name: Button（ボタン）
       href: README_Button.md
     - name: Bounding Box
       href: README_BoundingBox.md
-    - name: Object Manipulation
+    - name: Object Manipulation（物体操作）
       href: README_ManipulationHandler.md
     - name: Sliders
       href: README_Sliders.md
@@ -95,9 +95,9 @@
     href: DetectingPlatformCapabilities.md
   - name: MRTK Standard Shader
     href: README_MRTKStandardShader.md
-  - name: Spatial Awareness
+  - name: Spatial Awareness（空間認識）
     items:
-    - name: Spatial Awareness Overview
+    - name: 空間認識の概要
       href: SpatialAwareness/SpatialAwarenessGettingStarted.md
     - name: Configuring the Spatial Awareness Mesh Observer
       href: SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.md
@@ -125,13 +125,13 @@
       href: Boundary/BoundarySystemGettingStarted.md
     - name: Configuring the Boundary Visualization
       href: Boundary/ConfiguringBoundaryVisualization.md
-  - name: Diagnostics System
+  - name: Diagnostic System（診断システム）
     items:
-    - name: Diagnostics System Overview
+    - name: 診断システムの概要
       href: Diagnostics/DiagnosticsSystemGettingStarted.md
-    - name: Configuring the Diagnostics System
+    - name: 診断システムの構成
       href: Diagnostics/ConfiguringDiagnostics.md
-    - name: Using the Visual Profiler
+    - name: ビジュアル プロファイラーを使用する
       href: Diagnostics/UsingVisualProfiler.md
   - name: Services
     items:
@@ -139,15 +139,15 @@
       href: MixedRealityServices.md
     - name: What are the MixedRealityServiceRegistry and IMixedRealityServiceRegistrar
       href: ServiceUtilities/MixedRealityServiceRegistryAndIMixedRealityServiceRegistrar.md
-  - name: Packages
+  - name: パッケージ
     items:
-    - name: MRTK Packages
+    - name: MRTK パッケージ
       href: Packaging/MRTK_Packages.md
     - name: MRTK Componentization
       href: Packaging/MRTK_Modularization.md
-  - name: Tools
+  - name: ツール
     items:
-    - name: Dependency Window
+    - name: Dependency Window（依存関係ウィンドウ）
       href: Tools/DependencyWindow.md
     - name: Optimize Window
       href: Tools/OptimizeWindow.md
