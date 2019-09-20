@@ -140,7 +140,7 @@ Examples パッケージには、Foundation パッケージの機能を使用す
 
 たとえば、このパッケージには、さまざまなタイプのハンド インプット (多関節および非多関節) に対応するサンプル オブジェクトを含む HandInteractionExample シーン (下図) が含まれています。
 
-![HandInteractionExample シーン](../Images/MRTK_Examples.png)
+![HandInteractionExample シーン](../../Documentation/Images/MRTK_Examples.png)
 
 このパッケージには、アイ トラッキング デモも含まれています。詳細は[こちら](../EyeTracking/EyeTracking_ExamplesOverview.md)に記載されています。
 
