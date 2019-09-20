@@ -78,8 +78,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         [SerializeField]
         [FormerlySerializedAs("collider")]
-        private Collider touchableCollider;
-        public Collider TouchableCollider => touchableCollider;
+        private BoxCollider touchableCollider;
+        public BoxCollider TouchableCollider => touchableCollider;
 
         protected override void OnValidate()
         {
@@ -90,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             base.OnValidate();
 
-            touchableCollider = GetComponent<Collider>();
+            touchableCollider = GetComponent<BoxCollider>();
 
             Debug.Assert(localForward.magnitude > 0);
             Debug.Assert(localUp.magnitude > 0);
@@ -127,6 +127,32 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public void SetBounds(Vector2 newBounds)
         {
             bounds = newBounds;
+        }
+
+        /// <summary>
+        /// Adjust the bounds, local center and local forward to match a given box collider
+        /// </summary>
+        public void SetTouchableCollider(BoxCollider newCollider)
+        {
+            if (newCollider != null)
+            {
+                touchableCollider = newCollider;
+
+                Vector2 adjustedSize = new Vector2(
+                            Math.Abs(Vector3.Dot(newCollider.size, LocalRight)),
+                            Math.Abs(Vector3.Dot(newCollider.size, LocalUp)));
+
+                bounds = adjustedSize;
+                localForward = new Vector3(0, 0,-1);
+
+                // Set x and y center to match the newCollider but change the position of the
+                // z axis so the plane is always in front of the object
+                localCenter = newCollider.center + Vector3.Scale(newCollider.size / 2.0f, LocalForward);
+            }
+            else
+            {
+                Debug.Assert(newCollider != null, "BoxCollider is null, cannot set bounds");
+            }
         }
 
         /// <inheritdoc />

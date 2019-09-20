@@ -589,6 +589,60 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return PlayModeTestUtilities.HideHand(handedness, inputSim);
         }
+
+
+        /// <summary>
+        /// Test the SetTouchableCollider(BoxCollider collider) method by changing the size of the new
+        /// box collider and rotating the object. This test is checking if the NearInteractionTouchable plane
+        /// is the same size as the box collider and in front of the object.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator NearInteractionTouchableSetTouchableCollider()
+        {
+            GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.position = new Vector3(0, 0, 1.5f);
+            cube.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+
+            cube.AddComponent<NearInteractionTouchable>();
+
+            var nearIT = cube.GetComponent<NearInteractionTouchable>();
+            var boxCollider = cube.GetComponent<BoxCollider>();
+
+            // SetTouchableCollider to a new Box Collider
+            nearIT.SetTouchableCollider(boxCollider);
+
+            Assert.AreEqual(nearIT.Bounds.x, boxCollider.size.x);
+            Assert.AreEqual(nearIT.Bounds.y,boxCollider.size.y);
+            Assert.AreEqual(nearIT.LocalCenter.x, boxCollider.center.x);
+            Assert.AreEqual(nearIT.LocalCenter.y, boxCollider.center.y);
+            Assert.AreEqual(nearIT.LocalCenter.z, boxCollider.center.z - (boxCollider.size.z / 2));
+
+            yield return null;
+
+            // Change Size of Box Collider
+            boxCollider.size = new Vector3(2, 3, 4);
+            nearIT.SetTouchableCollider(boxCollider);
+
+            Assert.AreEqual(nearIT.Bounds.x, boxCollider.size.x);
+            Assert.AreEqual(nearIT.Bounds.y, boxCollider.size.y);
+            Assert.AreEqual(nearIT.LocalCenter.x, boxCollider.center.x);
+            Assert.AreEqual(nearIT.LocalCenter.y, boxCollider.center.y);
+            Assert.AreEqual(nearIT.LocalCenter.z, boxCollider.center.z - (boxCollider.size.z / 2));
+
+            yield return null;
+
+            // Rotate and change size of Box collider
+            cube.transform.Rotate(0, 45, 0);
+            boxCollider.size = new Vector3(3, 2, 0.5f);
+
+            nearIT.SetTouchableCollider(boxCollider);
+
+            Assert.AreEqual(nearIT.Bounds.x, boxCollider.size.x);
+            Assert.AreEqual(nearIT.Bounds.y, boxCollider.size.y);
+            Assert.AreEqual(nearIT.LocalCenter.x, boxCollider.center.x);
+            Assert.AreEqual(nearIT.LocalCenter.y, boxCollider.center.y);
+            Assert.AreEqual(nearIT.LocalCenter.z, boxCollider.center.z - (boxCollider.size.z / 2));
+        }
     }
 }
 #endif
