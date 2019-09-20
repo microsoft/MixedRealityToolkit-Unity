@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using System.Collections;
@@ -467,33 +468,36 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
         #region scroll state variables
 
-        // The currently tracked finger/pointer objects
-        private Transform currentPointerTransform;
-
-        private Handedness currentHand;
-
         private IMixedRealityPointer currentPointer;
 
-        //The point where the original PointerDown occured
+        // The point where the original PointerDown occured
         private Vector3 pointerHitPoint;
+        // The ray length of original pointer down
+        private float pointerHitDistance;
 
-        //Helper to get the current (actual) position of the pointer
-        private Vector3 currentPointerPos
+        Vector3 currentPointerPos;
+
+        /// <summary>
+        /// Gets the cursor position (pointer end point) on the scrollable plane,
+        /// projected onto the direction being scrolled.
+        /// Returns false if the pointer is null or pointer details is null.
+        /// </summary>
+        private bool TryGetPointerPositionOnPlane(out Vector3 result)
         {
-            get
+            if (currentPointer.GetType() == typeof(PokePointer))
             {
-                if (currentPointer == null) { return Vector3.zero; } //bail
-
-                if (currentPointer.GetType() == typeof(PokePointer))
-                {
-                    //this is a hand pointer
-                    return UpdateFingerPosition(TrackedHandJoint.IndexTip, currentHand);
-                }
-                else
-                {
-                    return VectorExtensions.GetProjectedPoint(pointerHitPoint, currentPointerTransform.position, currentPointer.Position + currentPointer.Rotation * Vector3.forward, (scrollDirection == ScrollDirectionType.UpAndDown) ? transform.up : transform.right);
-                }
+                result = currentPointer.Position;
+                return true;
             }
+            if (currentPointer?.Result?.Details != null) 
+            { 
+                var endPoint = RayStep.GetPointByDistance(currentPointer.Rays, pointerHitDistance);
+                var scrollVector = (scrollDirection == ScrollDirectionType.UpAndDown) ? transform.up : transform.right;
+                result =  pointerHitPoint + Vector3.Project(endPoint - pointerHitPoint, scrollVector);
+                return true;
+            } 
+            result = Vector3.zero;
+            return false;
         }
 
         #endregion scroll state variables
@@ -919,7 +923,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             thresholdPoint = transform.TransformPoint(finalOffset);
 
             //The scroller has detected input and has a valid pointer
-            if (isEngaged)
+            if (isEngaged && TryGetPointerPositionOnPlane(out currentPointerPos))
             {
                 handDelta = initialHandPos - currentPointerPos;
 
@@ -983,7 +987,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                     //Release the pointer
                     if (currentPointer.GetType() != typeof(PokePointer))
                     {
-                        currentPointer.IsFocusLocked = false;
                         currentPointer = null;
                     }
 
@@ -2004,15 +2007,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 return;
             }
 
-            //we ignore this for touch events and calculate PointerUp in the Update() loop;
-
             if (!isTouched && isEngaged && !animatingToPosition)
             {
                 //Its a drag release
                 initialScrollerPos = workingScrollerPos;
 
                 //Release the pointer
-                currentPointer.IsFocusLocked = false;
+                currentPointer.IsTargetPositionLockedOnFocusLock = true;
                 currentPointer = null;
 
                 //Clear our states
@@ -2037,12 +2038,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                     }
 
                     currentPointer = eventData.Pointer;
-                    currentPointer.IsFocusLocked = true;
 
-                    IMixedRealityControllerVisualizer controllerViz = eventData.Pointer.Controller.Visualizer as IMixedRealityControllerVisualizer;
-                    currentPointerTransform = controllerViz.GameObjectProxy.transform;
+                    currentPointer.IsTargetPositionLockedOnFocusLock = false;
 
                     pointerHitPoint = currentPointer.Result.Details.Point;
+                    pointerHitDistance = currentPointer.Result.Details.RayDistance;
 
                     focusedObject = eventData.Pointer.Result.CurrentPointerTarget;
 
@@ -2100,8 +2100,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
                 if (!isTouched && !isEngaged)
                 {
-                    currentHand = eventData.Controller.ControllerHandedness;
-
                     initialHandPos = UpdateFingerPosition(TrackedHandJoint.IndexTip, eventData.Controller.ControllerHandedness);
                     initialPressTime = Time.time;
 
@@ -2175,7 +2173,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 //Release the pointer
                 if (currentPointer.GetType() != typeof(PokePointer))
                 {
-                    currentPointer.IsFocusLocked = false;
                     currentPointer = null;
                 }
 
