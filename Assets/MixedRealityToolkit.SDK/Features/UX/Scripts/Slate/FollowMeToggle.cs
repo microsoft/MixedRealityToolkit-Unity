@@ -8,6 +8,10 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
+    /// <summary>
+    /// A utility script for toggling the 'Follow Me' behavior by activating/deactivating the Radial View Solver.
+    /// This script also provides optional toggle at specified distance.
+    /// </summary>
     [RequireComponent(typeof(RadialView))]
     public class FollowMeToggle : MonoBehaviour
     {
@@ -20,9 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set { visualizationObject = value; }
         }
 
-        /// <summary>
-        /// An optional object for visualizing the 'Follow Me' mode state.
-        /// </summary>
         [SerializeField]
         [Tooltip("An optional object for visualizing the 'Follow Me' mode state.")]
         private GameObject visualizationObject = null;
