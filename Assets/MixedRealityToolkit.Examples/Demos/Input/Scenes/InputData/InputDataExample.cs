@@ -13,8 +13,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// </summary>
     public class InputDataExample : MonoBehaviour
     {
-        public Text inputUtilsText;
-        public Text rawDataText;
+        public TextMesh inputUtilsText;
+        public TextMesh rawDataText;
 
         private Tuple<InputSourceType, Handedness> [] inputSources = new Tuple<InputSourceType, Handedness>[]
         {
