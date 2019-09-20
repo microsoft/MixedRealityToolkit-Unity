@@ -157,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Coroutine which checks how far away this transom is from the user and enables the follow behavior at a specified distance.
+        /// Coroutine which checks how far away this transform is from the user and enables the follow behavior at a specified distance.
         /// </summary>
         /// <returns>Coroutine enumerator.</returns>
         private IEnumerator AutoFollowDistanceCheck()
