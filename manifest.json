@@ -8556,7 +8556,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.InputDataExample.html",
-          "hash": "9Q9owAcHdbjOhuH8wYttug=="
+          "hash": "ifdB3X+tGWL2zjiSfh0cGQ=="
         }
       },
       "is_incremental": false,
@@ -11160,7 +11160,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.InputRayUtils.html",
-          "hash": "gKUQKkzFrW9a68SAH6LPfQ=="
+          "hash": "VlH6KsMmFzyYT37H2o8/BQ=="
         }
       },
       "is_incremental": false,
@@ -12492,7 +12492,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.html",
-          "hash": "WGzjQNjpnYaODLMqeblALw=="
+          "hash": "OftKd8hC0fA7Hws5H1nqJw=="
         }
       },
       "is_incremental": false,
