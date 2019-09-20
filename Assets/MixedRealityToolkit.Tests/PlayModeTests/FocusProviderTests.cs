@@ -17,6 +17,7 @@ using UnityEngine.TestTools;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Linq;
+using Microsoft.MixedReality.Toolkit.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
@@ -124,6 +125,169 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(newFocusDetails.RayDistance, focusDetails.RayDistance);
             Assert.AreEqual(newFocusDetails.Point, focusDetails.Point);
             Assert.AreEqual(newFocusDetails.Object, focusProvider.GetFocusedObject(pointer));
+        }
+
+        /// <summary>
+        /// Ensure that focused object is set to null when we disable the currently focused object
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestDisableFocusObject()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.position = Vector3.right;
+            cube.transform.localScale = Vector3.one * 0.2f;
+
+            const int numHandSteps = 1;
+
+            // No initial focus
+            cube.transform.position = Vector3.forward;
+            TestHand hand = new TestHand(Handedness.Right);
+            yield return hand.Show(Vector3.forward * 0.5f);
+            yield return null;
+
+            Assert.IsNull(hand.GetPointer<ShellHandRayPointer>().Result.CurrentPointerTarget);
+
+            // Focus on cube
+            yield return hand.MoveTo(new Vector3(0.06f, -0.1f, 0.5f), numHandSteps);
+            yield return null;
+
+            Assert.AreEqual(cube, hand.GetPointer<ShellHandRayPointer>().Result.CurrentPointerTarget);
+
+            // Deactivate the cube
+            cube.SetActive(false);
+            yield return null;
+
+            Assert.IsNull(hand.GetPointer<ShellHandRayPointer>().Result.CurrentPointerTarget);
+
+            // Reactivate the cube
+            cube.SetActive(true);
+            yield return null;
+
+            Assert.AreEqual(cube, hand.GetPointer<ShellHandRayPointer>().Result.CurrentPointerTarget);
+        }
+
+        /// <summary>
+        /// Ensure that focused object is set to null, and that focus lock is reset when we disable 
+        /// the currently focused object
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestDisableFocusLockedObject()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.AddComponent<ManipulationHandler>(); // Add focus handler so focus can lock
+            cube.transform.position = Vector3.right;
+            cube.transform.localScale = Vector3.one * 0.2f;
+
+            const int numHandSteps = 1;
+
+            // No initial focus
+            cube.transform.position = Vector3.forward;
+            TestHand hand = new TestHand(Handedness.Right);
+            yield return hand.Show(Vector3.forward * 0.5f);
+            yield return null;
+
+            Assert.IsNull(hand.GetPointer<ShellHandRayPointer>().Result.CurrentPointerTarget);
+
+            // Focus lock cube
+            yield return hand.MoveTo(new Vector3(0.06f, -0.1f, 0.5f), numHandSteps);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return null;
+
+            Assert.IsTrue(hand.GetPointer<ShellHandRayPointer>().IsFocusLocked);
+            Assert.AreEqual(cube, hand.GetPointer<ShellHandRayPointer>().Result.CurrentPointerTarget);
+
+            // Deactivate the cube
+            cube.SetActive(false);
+            yield return null;
+
+            Assert.IsFalse(hand.GetPointer<ShellHandRayPointer>().IsFocusLocked);
+            Assert.IsNull(hand.GetPointer<ShellHandRayPointer>().Result.CurrentPointerTarget);
+
+            // Reactivate the cube
+            cube.SetActive(true);
+            yield return null;
+
+            Assert.IsFalse(hand.GetPointer<ShellHandRayPointer>().IsFocusLocked);
+            Assert.AreEqual(cube, hand.GetPointer<ShellHandRayPointer>().Result.CurrentPointerTarget);
+        }
+
+        /// <summary>
+        /// Ensure that focused object is set to null when we destroy the currently focused object
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestDestroyFocusObject()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.position = Vector3.right;
+            cube.transform.localScale = Vector3.one * 0.2f;
+
+            const int numHandSteps = 1;
+
+            // No initial focus
+            cube.transform.position = Vector3.forward;
+            TestHand hand = new TestHand(Handedness.Right);
+            yield return hand.Show(Vector3.forward * 0.5f);
+            yield return null;
+
+            Assert.IsNull(hand.GetPointer<ShellHandRayPointer>().Result.CurrentPointerTarget);
+
+            // Focus on cube
+            yield return hand.MoveTo(new Vector3(0.06f, -0.1f, 0.5f), numHandSteps);
+            yield return null;
+
+            Assert.AreEqual(cube, hand.GetPointer<ShellHandRayPointer>().Result.CurrentPointerTarget);
+
+            // Destroy the cube
+            Object.DestroyImmediate(cube);
+            yield return null;
+
+            Assert.IsNull(hand.GetPointer<ShellHandRayPointer>().Result.CurrentPointerTarget);
+            // Verify that CurrentPointer is not still referencing the destroyed GameObject
+            Assert.IsTrue(ReferenceEquals(hand.GetPointer<ShellHandRayPointer>().Result.CurrentPointerTarget, null));
+        }
+
+        /// <summary>
+        /// Ensure that focused object is set to null, and that focus lock is reset when we destroy 
+        /// the currently focused object
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestDestroyFocusLockedObject()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.AddComponent<ManipulationHandler>(); // Add focus handler so focus can lock
+            cube.transform.position = Vector3.right;
+            cube.transform.localScale = Vector3.one * 0.2f;
+
+            const int numHandSteps = 1;
+
+            // No initial focus
+            cube.transform.position = Vector3.forward;
+            TestHand hand = new TestHand(Handedness.Right);
+            yield return hand.Show(Vector3.forward * 0.5f);
+            yield return null;
+
+            Assert.IsNull(hand.GetPointer<ShellHandRayPointer>().Result.CurrentPointerTarget);
+
+            // Focus lock cube
+            yield return hand.MoveTo(new Vector3(0.06f, -0.1f, 0.5f), numHandSteps);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return null;
+
+            Assert.IsTrue(hand.GetPointer<ShellHandRayPointer>().IsFocusLocked);
+            Assert.AreEqual(cube, hand.GetPointer<ShellHandRayPointer>().Result.CurrentPointerTarget);
+
+            // Destroy the cube
+            Object.DestroyImmediate(cube);
+            yield return null;
+
+            Assert.IsFalse(hand.GetPointer<ShellHandRayPointer>().IsFocusLocked);
+            Assert.IsNull(hand.GetPointer<ShellHandRayPointer>().Result.CurrentPointerTarget);
+            // Verify that CurrentPointer is not still referencing the destroyed GameObject
+            Assert.IsTrue(ReferenceEquals(hand.GetPointer<ShellHandRayPointer>().Result.CurrentPointerTarget, null));
         }
     }
 }
