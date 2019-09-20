@@ -15,17 +15,26 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public string Name { get; set; }
 
         /// <summary>
-        /// TODO: Troy - Deprecate this
+        /// Index of State in all available state list
         /// </summary>
         public int Index { get; set; }
 
-
+        /// <summary>
+        /// Bitwise value of state for comparison
+        /// </summary>
         public int Bit { get; set; }
 
+        /// <summary>
+        /// Current value of state (e.g on/off etc)
+        /// </summary>
         public int Value { get; set; }
 
+        /// <summary>
+        /// Index of state in current list
+        /// </summary>
         public int ActiveIndex { get; set; }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return Name;
@@ -37,11 +46,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return Index;
         }
 
+        [System.Obsolete("Use Bit property")]
         public int ToBit()
         {
             return Bit;
         }
 
+        /// <summary>
+        /// Create copy of current State with identical values
+        /// </summary>
+        /// <returns>copied instance of this State</returns>
         public State Copy()
         {
             return new State()
@@ -54,13 +68,23 @@ namespace Microsoft.MixedReality.Toolkit.UI
             };
         }
 
-        public bool CompareState(State other)
+        /// <summary>
+        /// Returns true if two state objects have identical internal values, false otherwise
+        /// </summary>
+        /// <param name="s">other State object to compare against</param>
+        /// <returns>true if identical internal values, false otherwise</returns>
+        public bool CompareState(State s)
         {
-            return this.Name == other.Name
-                && this.Index == other.Index
-                && this.Bit == other.Bit
-                && this.Value == other.Value
-                && this.ActiveIndex == other.ActiveIndex;
+            if (s == null)
+            {
+                return false;
+            }
+
+            return this.Name == s.Name
+                && this.Index == s.Index
+                && this.Bit == s.Bit
+                && this.Value == s.Value
+                && this.ActiveIndex == s.ActiveIndex;
         }
     }
 }
