@@ -28,6 +28,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             }
         }
 
+        /// <summary>
+        /// Load a scene with contentScene.Name
+        /// </summary>
         public void LoadContent()
 		{
 			ISceneTransitionService transitions = MixedRealityToolkit.Instance.GetService<ISceneTransitionService>();
