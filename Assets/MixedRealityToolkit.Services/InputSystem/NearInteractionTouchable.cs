@@ -78,8 +78,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         [SerializeField]
         [FormerlySerializedAs("collider")]
-        private BoxCollider touchableCollider;
-        public BoxCollider TouchableCollider => touchableCollider;
+        private Collider touchableCollider;
+        public Collider TouchableCollider => touchableCollider;
 
         protected override void OnValidate()
         {
@@ -90,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             base.OnValidate();
 
-            touchableCollider = GetComponent<BoxCollider>();
+            touchableCollider = GetComponent<Collider>();
 
             Debug.Assert(localForward.magnitude > 0);
             Debug.Assert(localUp.magnitude > 0);
