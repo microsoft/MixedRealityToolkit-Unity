@@ -41,6 +41,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             Stop();
         }
 
+        /// <summary>
+        /// Create Easing object with copied internal properties
+        /// </summary>
+        /// <returns>Copy of current Easing instance</returns>
         public Easing Copy()
         {
             return new Easing()

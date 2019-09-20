@@ -13,9 +13,20 @@ namespace Microsoft.MixedReality.Toolkit.UI
     [Serializable]
     public class VisualProfile
     {
+        /// <summary>
+        /// GameObject to Target
+        /// </summary>
         public GameObject Target;
+
+        /// <summary>
+        /// Theme definition to build
+        /// </summary>
         public Theme Theme;
 
+        /// <summary>
+        /// Create and initialize Theme Engines with the associated Target and Theme property
+        /// </summary>
+        /// <returns>List of Theme Engine instances</returns>
         public List<InteractableThemeBase> CreateThemeEngines()
         {
             List<InteractableThemeBase> results = new List<InteractableThemeBase>();
