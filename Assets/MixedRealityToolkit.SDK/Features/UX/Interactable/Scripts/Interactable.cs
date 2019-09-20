@@ -692,7 +692,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     if (dimensionIndex >= 0 && dimensionIndex < profile.Themes.Count)
                     {
                         var themeContainer = profile.Themes[dimensionIndex];
-                        if (themeContainer.States == States)
+                        if (themeContainer.States.Equals(States))
                         {
                             foreach (var themeDefinition in themeContainer.Definitions)
                             {
