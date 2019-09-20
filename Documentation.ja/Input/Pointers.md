@@ -14,13 +14,13 @@ Pointers are configured as part of the Input System in MRTK via a [`MixedReality
 
 - *Pointing Raycast Layer Masks* - This is a prioritized array of LayerMasks to determine what possible GameObjects any given Pointer can interact and the order of interaction to attempt. This is may be useful to ensure Pointers interact with UI elements first before other scene objects.
 
-![Pointer Profile Example](../Images/Input/Pointers/PointerProfile.PNG)
+![Pointer Profile Example](../../Documentation/Images/Input/Pointers/PointerProfile.PNG)
 
 ### Pointer options configuration
 
 The default MRTK Pointer Profile configuration includes the following pointer classes and associated prefabs out-of-box. The list of pointers available to the system at runtime is defined under *Pointer Options* in the Pointer profile. Developers can utilize this list to reconfigure existing Pointers, add new Pointers, or delete one.
 
-![Pointer Options Profile Example](../Images/Input/Pointers/PointerOptionsProfile.PNG)
+![Pointer Options Profile Example](../../Documentation/Images/Input/Pointers/PointerOptionsProfile.PNG)
 
 Each pointer entry pointer is defined by the following set of data:
 
@@ -44,7 +44,7 @@ the articulated hand controller is associated with the *PokePointer*, *GrabPoint
 
 The following classes are the out-of-box MRTK pointers available and defined in the default *MRTK Pointer Profile* outlined above. Each pointer prefab provided under *Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Pointers* contains one of these pointer components attached.
 
-![MRTK Default Pointers](../Images/Input/Pointers/MRTK_Pointers.png)
+![MRTK Default Pointers](../../Documentation/Images/Input/Pointers/MRTK_Pointers.png)
 
 #### Far pointers
 

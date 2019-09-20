@@ -11,7 +11,7 @@ If you have any questions, please reach out on [Stack Overflow](https://stackove
 # Submission process
 We provide several paths to enable developers to contribute to the Mixed Reality Toolkit, all starting with [creating a new Issue](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues/new/choose).
 
-![Select Issue Type](../Images/Contributing/SelectIssueType.png)
+![Select Issue Type](../../Documentation/Images/Contributing/SelectIssueType.png)
 
 From here you file:
 

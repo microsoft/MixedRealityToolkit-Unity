@@ -14,7 +14,7 @@
 
 ![Manipulation Handler](../Documentation/Images/ManipulationHandler/MRTK_ManipulationHandler_Howto.png)
 
-## [Inspector](インスペクター)のプロパティ ##
+## \[Inspector](インスペクター)のプロパティ ##
 
 <img src="../Documentation/Images/ManipulationHandler/MRTK_ManipulationHandler_Structure.png" width="450">
 

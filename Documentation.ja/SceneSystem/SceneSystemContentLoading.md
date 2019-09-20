@@ -34,7 +34,7 @@ await sceneSystem.LoadContent("SingleContentScene", LoadSceneMode.Single);
 ## Next / Previous Scene Loading
 Content can be singly loaded in order of build index. This is useful for showcase applications that take users through a set of demonstration scenes one-by-one.
 
-![MRTK_SceneSystemBuildSettings](../Images/SceneSystem/MRTK_SceneSystemBuildSettings.png)
+![MRTK_SceneSystemBuildSettings](../../Documentation/Images/SceneSystem/MRTK_SceneSystemBuildSettings.png)
 
 Note that next / prev content loading uses LoadSceneMode.Single by default to ensure that the previous content is unloaded.
 ```
@@ -68,7 +68,7 @@ if (prevSceneRequested)
 ```
 
 ## Loading by Tag
-![MRTK_SceneSystemLoadingByTag](../Images/SceneSystem/MRTK_SceneSystemLoadingByTag.png)
+![MRTK_SceneSystemLoadingByTag](../../Documentation/Images/SceneSystem/MRTK_SceneSystemLoadingByTag.png)
 
 It's sometimes desirable to load content scenes in groups. Eg, a stage of an experience may be composed of multiple scenes, all of which must be loaded simultaneously to function. To facilitate this, you can tag your scenes and then load them or unload them with that tag.
 
@@ -119,4 +119,4 @@ Trees | Vegetation | •
 ## Editor Behavior
 You can perform all these operations in editor and in play mode by using the Scene System's [service inspector.](../MixedRealityConfigurationGuide.md#inspectors) In edit mode scene loads will be instantaneous, while in play mode you can observe loading progress and use [activation tokens.](SceneSystemLoadProgress.md)
 
-![MRTK_SceneSystemServiceInspector](../Images/SceneSystem/MRTK_SceneSystemServiceInspector.PNG)
+![MRTK_SceneSystemServiceInspector](../../Documentation/Images/SceneSystem/MRTK_SceneSystemServiceInspector.PNG)

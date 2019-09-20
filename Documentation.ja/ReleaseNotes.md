@@ -99,7 +99,7 @@ recommended MRTK configurations for best performance.
 To configure the application for HoloLens (1st gen) optimized settings, set the
 Mixed Reality Toolkit's **Active Profile** to **DefaultHoloLens1ConfigurationProfile**.
 
-![Default HoloLens (1st gen) Configuration Profile](./Images/ReleaseNotes/DefaultHoloLens1ConfigurationProfile.png)
+![Default HoloLens (1st gen) Configuration Profile](../Documentation/Images/ReleaseNotes/DefaultHoloLens1ConfigurationProfile.png)
 
 **Dependency window**
 
@@ -146,7 +146,7 @@ The input system was updated to allow for raycast customization, via custom impl
 
 Specify the desired raycast provider in the Input System's configuration profile. 
 
-![Selecting the Raycast provider](Images/ReleaseNotes/SelectRaycastProvider.png)
+![Selecting the Raycast provider](../Documentation/Images/ReleaseNotes/SelectRaycastProvider.png)
 
 **Improved solvers**
 
@@ -305,4 +305,4 @@ To work around the issues, please check for a newer version or roll back to vers
 Some demo scenes contained in the Examples package are optimized for HoloLens device's (headset's y position is 0). These scenes
 may place objects below the user when run on VR/Immersive device's (headset's Y position is the distance from the floor). To work around this issue, select the **Scene Content** object, in the Hierarchy, and set the Transform's Position Y value to **1.5** (1.5 meters, or the preferred headset height).
 
-![Adjusting Scene Content Height](Images/ReleaseNotes/AdjustContentHeight.png)
+![Adjusting Scene Content Height](../Documentation/Images/ReleaseNotes/AdjustContentHeight.png)

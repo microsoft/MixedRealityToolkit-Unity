@@ -122,7 +122,7 @@ Mixed Reality プロジェクトは、プロジェクトでのテレポーテー
 ## 空間認識 (Spatial Awareness) の設定
 
 Mixed Reality プロジェクトは、デフォルトで選択されたプロジェクト内の空間スキャン システムを操作するための再構築された空間認識システムを提供します。
-[MRTK 空間認識システム](../Documentation.ja/Architecture/SpatialAwareness.html)の裏にあるアーキテクチャはこちらで表示できます。
+[MRTK 空間認識システム](Architecture/SpatialAwareness.html)の裏にあるアーキテクチャはこちらで表示できます。
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SpatialAwarenessSystemSelection.png" width="650px" style="display:block;">
 
@@ -154,7 +154,7 @@ Mixed Reality Toolkit の空間認識設定を使用すると、アプリケー�
 
 ## シーン システム (Scene system) の設定
 
-MRTK は、複雑なシーンのロード/アンロードの管理に役立つオプションを提供します。シーン システムがプロジェクトに適しているかどうかを判断するには、[シーン システムの開始ガイド](../Documentation.ja/SceneSystem/SceneSystemGettingStarted.html)を参照してください。
+MRTK は、複雑なシーンのロード/アンロードの管理に役立つオプションを提供します。シーン システムがプロジェクトに適しているかどうかを判断するには、[シーン システムの開始ガイド](SceneSystem/SceneSystemGettingStarted.html)を参照してください。
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_SceneSystemProfile.png" width="650px" style="display:block;">
 

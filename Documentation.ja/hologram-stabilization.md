@@ -52,17 +52,17 @@ For transparent materials using the [MRTK Standard shader](README_MRTKStandardSh
 
 Before
 
-![Depth Buffer Before Fix MRTK Standard Shader](Images/Performance/DepthBufferFixNow_Before.png)
+![Depth Buffer Before Fix MRTK Standard Shader](../Documentation/Images/Performance/DepthBufferFixNow_Before.png)
 
 After 
 
-![Depth Buffer Fixed MRTK Standard Shader](Images/Performance/DepthBufferFixNow_After.png)
+![Depth Buffer Fixed MRTK Standard Shader](../Documentation/Images/Performance/DepthBufferFixNow_After.png)
 
 ##### Text Mesh Pro
 
 For Text Mesh Pro objects, select the TMP GameObject to view it in the inspector. Under the material component, switch the shader for the assigned material to use the MRTK TextMeshPro shader.
 
-![Text Mesh Pro Depth Buffer Fix](Images/Performance/TextMeshPro-DepthBuffer-Fix.PNG)
+![Text Mesh Pro Depth Buffer Fix](../Documentation/Images/Performance/TextMeshPro-DepthBuffer-Fix.PNG)
 
 ##### Custom shader
 

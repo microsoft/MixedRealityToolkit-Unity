@@ -66,11 +66,11 @@ Using the new CoreSystem class will ensure that your application code will not n
 
 With the addition of the IMixedRealityRaycastProvider, the input system configuration profile was changed. If you have a custom profile, you may receive the errors in the following image when you run your application.
 
-![Selecting the Raycast provider](Images/ReleaseNotes/UnableToRegisterRaycastProvider.png)
+![Selecting the Raycast provider](../Documentation/Images/ReleaseNotes/UnableToRegisterRaycastProvider.png)
 
 To fix these, please add an IMixedRealityRaycastProvider instance to your input system profile.
 
-![Selecting the Raycast provider](Images/ReleaseNotes/SelectRaycastProvider.png)
+![Selecting the Raycast provider](../Documentation/Images/ReleaseNotes/SelectRaycastProvider.png)
 
 ### Event System
 

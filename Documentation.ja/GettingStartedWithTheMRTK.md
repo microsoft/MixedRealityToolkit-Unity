@@ -91,7 +91,7 @@ MRTK は、以下を実行することで Mixed Reality ソリューションを
 
 ## Editor 内ハンド入力シミュレーションを使ってシーンをテストする
 
-Editor 内の入力シミュレーション を使って、[手](InputSimulation/InputSimulationService.md#hand-simulation)や[目](EyeTracking/EyeTracking_BasicSetup.md#simulating-eye-tracking-in-the-unity-editor)などの特定のタイプの入力に対し、バーチャルなオブジェクトの動作をテストすることができます。
+Editor 内の入力シミュレーション を使って、[手](InputSimulation/InputSimulationService.md#ハンド-シミュレーション)や[目](EyeTracking/EyeTracking_BasicSetup.md#simulating-eye-tracking-in-the-unity-editor)などの特定のタイプの入力に対し、バーチャルなオブジェクトの動作をテストすることができます。
 
 シーン内を移動する：
 

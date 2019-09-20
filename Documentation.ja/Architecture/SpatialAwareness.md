@@ -18,7 +18,7 @@ collections, no events, etc.
 
 ## Architecture diagram
 
-![](../Images/SpatialAwareness/SpatialAwarenessSystemArchitecture.png)
+![](../../Documentation/Images/SpatialAwareness/SpatialAwarenessSystemArchitecture.png)
 
 ## Breakdown
 

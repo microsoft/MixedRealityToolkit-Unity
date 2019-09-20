@@ -24,7 +24,7 @@ The MRTK-provided build tooling (i.e. Mixed Reality Toolkit -> Utilities -> Buil
 can automatically enable the GazeInput capability for you. In order to do this,
 you need to make sure that the 'Gaze Input Capability' is checked on the 'Appx Build Options' tab:
 
-![MRTK Build Tools](../Images/EyeTracking/mrtk_et_buildsetup.png)
+![MRTK Build Tools](../../Documentation/Images/EyeTracking/mrtk_et_buildsetup.png)
 
 This tooling will find the AppX manifest after the Unity build is completed and manually add the GazeInput capability.
 **Note that this tooling is NOT active when using Unity's built-in Build Window** (i.e. File -> Build Settings).
@@ -34,14 +34,14 @@ When using Unity's build window, the capability will need to manually added afte
 ### Setting up the scene
 Set up the _MixedRealityToolkit_ by simply clicking _'Mixed Reality Toolkit -> Configure…'_ in the menu bar.
 
-![MRTK](../Images/EyeTracking/mrtk_setup_configure.jpg)
+![MRTK](../../Documentation/Images/EyeTracking/mrtk_setup_configure.jpg)
 
 
 ### Setting up the MRTK profiles required for eye tracking
 After setting up your MRTK scene, you will be asked to choose a profile for MRTK. 
 You can simply select _DefaultMixedRealityToolkitConfigurationProfile_ and then select the _'Copy & Customize'_ option.
 
-![MRTK](../Images/EyeTracking/mrtk_setup_configprofile.jpg)
+![MRTK](../../Documentation/Images/EyeTracking/mrtk_setup_configprofile.jpg)
 
 
 ### Create an "Eye Gaze Data Provider"
@@ -56,14 +56,14 @@ You can simply select _DefaultMixedRealityToolkitConfigurationProfile_ and then 
     
     - For **Platform(s)** select _'Windows Universal'_.
 
-![MRTK](../Images/EyeTracking/mrtk_setup_eyes_dataprovider.jpg)
+![MRTK](../../Documentation/Images/EyeTracking/mrtk_setup_eyes_dataprovider.jpg)
 
 
 ### Enabling eye tracking in the GazeProvider
 In HoloLens v1, head gaze was used as primary pointing technique. 
 While head gaze is still available via the _GazeProvider_ in MRTK which is attached to your [Camera](https://docs.unity3d.com/ScriptReference/Camera.html), you can check to use eye gaze instead by ticking the _'UseEyeTracking'_ checkbox as shown in the screenshot below.
 
-![MRTK](../Images/EyeTracking/mrtk_setup_eyes_gazeprovider.png)
+![MRTK](../../Documentation/Images/EyeTracking/mrtk_setup_eyes_gazeprovider.png)
 
 **NOTE:** Developers can toggle between eye tracking and head tracking in code by changing the _'UseEyeTracking'_ property of _'GazeProvider'_.  
 
@@ -79,7 +79,7 @@ For this, it is better to ensure frequent tests of your eye-based interactions o
     - From there, navigate to _'Input Data Providers'_ -> _'Input Simulation Service'_.
     - Check the _'Simulate Eye Position'_ checkbox.
 
-![MRTK](../Images/EyeTracking/mrtk_setup_eyes_simulate.jpg)
+![MRTK](../../Documentation/Images/EyeTracking/mrtk_setup_eyes_simulate.jpg)
 
 2. **Disable default head gaze cursor**: 
 In general, it is recommended to avoid showing an eye gaze cursor or if absolutely required to make it _very_ subtle.
@@ -88,7 +88,7 @@ We do recommend to hide the default head gaze cursor that is attached to the MRT
     - Clone the _'DefaultMixedRealityInputPointerProfile'_ to make changes to it.
     - At the top of the _'Pointer Settings'_, you should assign an invisible cursor prefab to the _'GazeCursor'_. If you downloaded the MRTK Examples folder, you can simply reference the included _'EyeGazeCursor'_ prefab.
 
-![MRTK](../Images/EyeTracking/mrtk_setup_eyes_gazesettings.jpg)
+![MRTK](../../Documentation/Images/EyeTracking/mrtk_setup_eyes_gazesettings.jpg)
 
 
 ### Accessing eye gaze data
@@ -110,10 +110,10 @@ _Please note:_
 You only have to do this if you build into a new build folder.
 This means that if you had already built your Unity project and set up the appxmanifest before and now target the same folder again, the appxmanifest should stay untouched.
 
-![Enabling Gaze Input in Visual Studio](../Images/EyeTracking/mrtk_et_gazeinput.jpg)
+![Enabling Gaze Input in Visual Studio](../../Documentation/Images/EyeTracking/mrtk_et_gazeinput.jpg)
 
 You don't see a _'GazeInput'_ capability? 
-   - Check that your system meets the [prerequisites for using MRTK](../GettingStartedWithTheMRTK.md#prerequisites) (in particular the Windows SDK version). 
+   - Check that your system meets the [prerequisites for using MRTK](../GettingStartedWithTheMRTK.md#前提条件) (in particular the Windows SDK version). 
    - You can also manually add the entry by opening the appxmanifest in an XML editor and adding the following:
 
 ```xml

@@ -101,7 +101,7 @@ MaxRotX | Maximum horizontal rotation angle. This is to limit the rotation in di
 MinRotY | Minimal vertical rotation angle to limit the rotation around the x axis.
 MaxRotY | Maximum vertical rotation angle to limit the rotation around the y axis.
 
-![Eye-supported 3D rotation setup in Unity](../Images/EyeTracking/mrtk_et_nav_rotate.jpg)
+![Eye-supported 3D rotation setup in Unity](../../Documentation/Images/EyeTracking/mrtk_et_nav_rotate.jpg)
 
 In summary, the above scripts should enable you to  get started to use eye gaze for various input navigation tasks such as scrolling texts, zooming and panning textures as well as rotating investigating 3D holograms.
 

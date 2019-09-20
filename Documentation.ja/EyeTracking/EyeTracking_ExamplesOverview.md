@@ -7,7 +7,7 @@ The demos also include an example for eye-gaze-directed scroll, pan and zoom of 
 Finally, an example is provided for recording and visualizing the user's visual attention on a 2D slate.
 In the following, we will go into more detail what each of the different samples in the [MRTK eye tracking example package](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/EyeTracking) includes:
 
-![List of eye tracking scenes](../Images/EyeTracking/mrtk_et_list_et_scenes.jpg)
+![List of eye tracking scenes](../../Documentation/Images/EyeTracking/mrtk_et_list_et_scenes.jpg)
 
 We will start with a quick overview of what the individual eye tracking demo scenes are about.
 The MRTK eye tracking demo scenes are [loaded additively](https://docs.unity3d.com/ScriptReference/SceneManagement.LoadSceneMode.Additive.html) which we will explain below how to set up.
@@ -77,31 +77,31 @@ The *EyeTrackingDemo-00-RootScene* is the base (_root_) scene that has all the c
 This is the scene that you need to load first and from which you will run the eye tracking demos. 
 It comes with a graphical scene menu that allows you to easily switch between the different eye tracking samples which will be [loaded additively](https://docs.unity3d.com/ScriptReference/SceneManagement.LoadSceneMode.Additive.html).
 
-![Scene menu in eye tracking sample](../Images/EyeTracking/mrtk_et_scenemenu.jpg)
+![Scene menu in eye tracking sample](../../Documentation/Images/EyeTracking/mrtk_et_scenemenu.jpg)
 
 The root scene includes a few core components that will persist across the additively loaded scenes, such as the MRTK configured profiles and scene camera. 
 The _MixedRealityBasicSceneSetup_ (see screenshot below) includes a script that will automatically load the referenced scene on startup. 
 By default this is _EyeTrackingDemo-02-TargetSelection_.  
 
-![Example for the OnLoadStartScene script](../Images/EyeTracking/mrtk_et_onloadstartscene.jpg)
+![Example for the OnLoadStartScene script](../../Documentation/Images/EyeTracking/mrtk_et_onloadstartscene.jpg)
 
 
 ### 2. Adding scenes to the Build menu
 To load additive scenes during runtime, you must add these scenes to your _Build Settings -> Scenes in Build_ menu first.
 It is important that the root scene is shown as the first scene in the list:
 
-![Build Settings scene menu for eye tracking samples](../Images/EyeTracking/mrtk_et_build_settings.jpg)
+![Build Settings scene menu for eye tracking samples](../../Documentation/Images/EyeTracking/mrtk_et_build_settings.jpg)
 
 
 ### 3. Play the eye tracking samples in the Unity Editor
 After adding the eye tracking scenes to the Build Settings and loading the _EyeTrackingDemo-00-RootScene_, there is one last thing you may want to check: Is the _'OnLoadStartScene'_ script that is attached to the _MixedRealityBasicSceneSetup_ GameObject enabled? This is to let the root scene know which demo scene to load first.
 
-![Example for the OnLoad_StartScene script](../Images/EyeTracking/mrtk_et_onloadstartscene.jpg)
+![Example for the OnLoad_StartScene script](../../Documentation/Images/EyeTracking/mrtk_et_onloadstartscene.jpg)
 
 Let's roll! Hit _"Play"_!
 You should see several gems appear and should see the scene menu at the top.
 
-![Sample screenshot from the ET target select scene](../Images/EyeTracking/mrtk_et_targetselect.png)
+![Sample screenshot from the ET target select scene](../../Documentation/Images/EyeTracking/mrtk_et_targetselect.png)
 
 You should notice a small semitransparent circle at the center of your game view. 
 This acts as an indicator (cursor) of your _simulated eye gaze_: 
@@ -129,7 +129,7 @@ No problem! Here is what you can do:
 2. In the _root_ scene, disable the _'OnLoadStartScene'_ script 
 3. _Drag and drop_ one of the eye tracking test scenes that are described below (or any other scene) into your _Hierarchy_ view as shown in the screenshot below. 
 
-![Example for additive scene](../Images/EyeTracking/mrtk_et_additivescene.jpg)
+![Example for additive scene](../../Documentation/Images/EyeTracking/mrtk_et_additivescene.jpg)
 
 4. Press _Play_
 
