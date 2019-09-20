@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         EditorGUILayout.Space();
                         // show warning and button to reconfigure profile
                         EditorGUILayout.HelpBox($"When using Bounding Box in combination with Rigidbody 'Focus Individual Compound Collider' must be enabled in Input Profile.", UnityEditor.MessageType.Warning);
-                        if (GUILayout.Button($"Enable 'Focus Individual Compound Collider in Input Profile'"))
+                        if (GUILayout.Button($"Enable 'Focus Individual Compound Collider' in Input Profile"))
                         {
                             profile.FocusIndividualCompoundCollider = true;
                         }
