@@ -144,6 +144,13 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                                 int id = Array.IndexOf(themeClassNames, className.stringValue);
                                 int newId = EditorGUILayout.Popup("Theme Runtime", id, themeClassNames);
 
+                                // Some old Themes did not properly save a value here
+                                SerializedProperty assemblyQualifiedName = themeDefinition.FindPropertyRelative("AssemblyQualifiedName");
+                                if (string.IsNullOrEmpty(assemblyQualifiedName.stringValue) && newId != -1)
+                                {
+                                    assemblyQualifiedName.stringValue = themeTypes[newId].AssemblyQualifiedName;
+                                }
+
                                 // If user changed the theme type for current themeDefinition
                                 if (id != newId && newId != -1)
                                 {

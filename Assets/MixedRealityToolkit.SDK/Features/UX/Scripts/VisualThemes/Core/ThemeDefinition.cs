@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -26,7 +27,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     if (string.IsNullOrEmpty(AssemblyQualifiedName))
                     {
-                        return null;
+                        var className = ClassName;
+                        // Temporary workaround
+                        // This is to fix a bug in RC2.1 where the AssemblyQualifiedName was never actually saved.
+                        var correctType = TypeCacheUtility.GetSubClasses<ReceiverBase>().Where(s => s?.Name == className);
+                        if (!correctType.Any())
+                        {
+                            return null;
+                        }
+
+                        AssemblyQualifiedName = correctType.First().AssemblyQualifiedName;
                     }
 
                     Type = Type.GetType(AssemblyQualifiedName);
