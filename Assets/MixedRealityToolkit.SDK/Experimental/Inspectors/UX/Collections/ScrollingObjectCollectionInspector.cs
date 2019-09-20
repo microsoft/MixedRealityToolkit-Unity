@@ -6,7 +6,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Inspectors
+namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 {
     [CustomEditor(typeof(ScrollingObjectCollection))]
     public class ScrollingObjectCollectionInspector : UnityEditor.Editor
@@ -52,7 +52,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         //Serialized properties purely for inspector visualization
         private SerializedProperty pressPlane;
 
-        private Shader MRTKstd;
         private Shader MRTKtmp;
 
         private void OnEnable()
@@ -190,43 +189,47 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                     animateTransition = EditorGUILayout.Toggle("Animate", animateTransition);
 
                     EditorGUILayout.BeginHorizontal();
-                    if (GUILayout.Button("Page Up"))
+                    using (new EditorGUILayout.HorizontalScope())
                     {
-                        scrollContainer.PageBy(1, animateTransition);
-                    }
-                    if (GUILayout.Button("Page Down"))
-                    {
-                        scrollContainer.PageBy(-1, animateTransition);
-                    }
-                    EditorGUILayout.EndHorizontal();
-
-                    EditorGUILayout.BeginHorizontal();
-
-                    amountOfLinesToMoveTo = EditorGUILayout.IntField(amountOfLinesToMoveTo);
-                    if (GUILayout.Button("Move By Tiers"))
-                    {
-                        scrollContainer.MoveByLines(amountOfLinesToMoveTo, animateTransition);
+                        if (GUILayout.Button("Page Up"))
+                        {
+                            scrollContainer.PageBy(1, animateTransition);
+                        }
+                        if (GUILayout.Button("Page Down"))
+                        {
+                            scrollContainer.PageBy(-1, animateTransition);
+                        }
                     }
 
-                    EditorGUILayout.EndHorizontal();
-
-                    EditorGUILayout.BeginHorizontal();
-
-                    amountOfItemsToMoveBy = EditorGUILayout.IntField(amountOfItemsToMoveBy);
-                    if (GUILayout.Button("Move By Items"))
+                    using (new EditorGUILayout.HorizontalScope())
                     {
-                        scrollContainer.MoveByItems(amountOfItemsToMoveBy, animateTransition);
+
+                        amountOfLinesToMoveTo = EditorGUILayout.IntField(amountOfLinesToMoveTo);
+                        if (GUILayout.Button("Move By Tiers"))
+                        {
+                            scrollContainer.MoveByLines(amountOfLinesToMoveTo, animateTransition);
+                        }
                     }
-                    EditorGUILayout.EndHorizontal();
 
-                    EditorGUILayout.BeginHorizontal();
-
-                    indexToMoveTo = EditorGUILayout.IntField(indexToMoveTo);
-                    if (GUILayout.Button("Move To Index"))
+                    using (new EditorGUILayout.HorizontalScope())
                     {
-                        scrollContainer.MoveTo(indexToMoveTo, animateTransition);
+
+                        amountOfItemsToMoveBy = EditorGUILayout.IntField(amountOfItemsToMoveBy);
+                        if (GUILayout.Button("Move By Items"))
+                        {
+                            scrollContainer.MoveByItems(amountOfItemsToMoveBy, animateTransition);
+                        }
                     }
-                    EditorGUILayout.EndHorizontal();
+
+                    using (new EditorGUILayout.HorizontalScope())
+                    {
+
+                        indexToMoveTo = EditorGUILayout.IntField(indexToMoveTo);
+                        if (GUILayout.Button("Move To Index"))
+                        {
+                            scrollContainer.MoveTo(indexToMoveTo, animateTransition);
+                        }
+                    }
                 }
             }
 
@@ -242,7 +245,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
                     if (!CheckForStandardShader(node.GameObject.GetComponentsInChildren<Renderer>()))
                     {
-                        Debug.LogWarning(node.GameObject.name + " has a renderer that is not using " + MRTKstd.ToString() + ". This will result in unexpected results with ScrollingObjectCollection");
+                        Debug.LogWarning(node.GameObject.name + " has a renderer that is not using " +  StandardShaderUtility.MrtkStandardShaderName + ". This will result in unexpected results with ScrollingObjectCollection");
                     }
                 }
             }
@@ -253,8 +256,6 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private void OnSceneGUI()
         {
             ScrollingObjectCollection scrollContainer = (ScrollingObjectCollection)target;
-
-            MRTKstd = Shader.Find("Mixed Reality Toolkit/Standard");
             MRTKtmp = Shader.Find("Mixed Reality Toolkit/TextMeshPro");
 
             if (scrollContainer.ClippingObject == null) { return; }
@@ -327,8 +328,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private bool CheckForStandardShader(Renderer[] rends)
         {
             foreach (Renderer rend in rends)
-            {
-                if (rend.sharedMaterial.shader != MRTKstd && rend.sharedMaterial.shader != MRTKtmp)
+            {                
+                if (!StandardShaderUtility.IsUsingMrtkStandardShader(rend.sharedMaterial) && rend.sharedMaterial.shader != MRTKtmp)
                 {
                     return false;
                 }

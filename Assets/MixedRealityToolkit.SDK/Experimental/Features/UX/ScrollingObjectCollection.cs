@@ -807,7 +807,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                     //apply the viewable area and column/row multiplier
                     //use a dummy bounds of one to get the local scale to match;
                     clippingBounds.size = new Vector3((clippingBounds.size.x * Tiers), (clippingBounds.size.y * ViewableArea), clippingBounds.size.z);
-                    clipBox.transform.localScale = VectorExtensions.ScaleFromBounds(new Bounds(Vector3.zero, Vector3.one), clippingBounds, OcclusionScalePadding);
+                    clipBox.transform.localScale = new Bounds(Vector3.zero, Vector3.one).ScaleFromBounds(clippingBounds, OcclusionScalePadding);
 
                     //adjust where the center of the clipping box is
                     viewableCenter.x = (clipBox.transform.localScale.x * 0.5f) - (OcclusionScalePadding.x * 0.5f) + OcclusionPositionPadding.x;
@@ -819,7 +819,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
                     //Same as above for L <-> R
                     clippingBounds.size = new Vector3(clippingBounds.size.x * ViewableArea, clippingBounds.size.y * Tiers, clippingBounds.size.z);
-                    clipBox.transform.localScale = VectorExtensions.ScaleFromBounds(new Bounds(Vector3.zero, Vector3.one), clippingBounds) + OcclusionScalePadding;
+                    clipBox.transform.localScale = new Bounds(Vector3.zero, Vector3.one).ScaleFromBounds(clippingBounds, OcclusionScalePadding);
 
                     //Same as above for L <-> R
                     viewableCenter.x = (clipBox.transform.localScale.x * 0.5f) - (OcclusionScalePadding.x * 0.5f) + OcclusionPositionPadding.x;
@@ -1444,15 +1444,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         private static bool DetectScrollRelease(Vector3 initialDirection, Vector3 initialPosition, Vector3 pointToCompare, Transform clippingObj = null, Matrix4x4? transformMatrix = null, ScrollDirectionType? direction = null)
         {
             Plane testPlane = new Plane(initialDirection.normalized, initialPosition);
-            bool side = testPlane.GetSide(pointToCompare);
 
-            if(side)
-            {
-                return true;
-            }
-            
-            //true if finger is on the other side (Z) of the initial contact point of the collection
-            if (pointToCompare.IsOtherSideOfPoint(initialDirection, initialPosition))
+            if(testPlane.GetSide(pointToCompare))
             {
                 return true;
             }
@@ -1939,6 +1932,88 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Finds the object-aligned size of a <see cref="UnityEngine.Transform"/> 
+        /// </summary>
+        /// <param name="obj"><see cref="UnityEngine.Transform"/> representing the object to get offset from</param>
+        /// <param name="alignedSize">the object-aligned size of  <param name="obj"></param></param>
+        /// <returns><see cref="true"/> if <param name="alignedSize"> is valid</returns>
+        public static bool TryGetObjectAlignedBoundsSize(Transform obj, out Vector3 alignedSize)
+        {
+            Collider c = obj.GetComponentInChildren<Collider>();
+            alignedSize = Vector3.zero;
+
+            //store and clear the original rotation
+            Quaternion origRot = obj.rotation;
+            obj.rotation = Quaternion.identity;
+
+            bool canGetSize = false;
+
+            if (c != null)
+            {
+                if (c.GetType() == typeof(BoxCollider))
+                {
+                    BoxCollider bC = c as BoxCollider;
+                    alignedSize = bC.bounds.size;
+                    canGetSize = true;
+                }
+                else if (c.GetType() == typeof(SphereCollider))
+                {
+                    SphereCollider sC = c as SphereCollider;
+                    alignedSize = new Vector3(sC.radius, sC.radius, sC.radius);
+                    canGetSize = true;
+                }
+                else if (c.GetType() == typeof(CapsuleCollider))
+                {
+                    CapsuleCollider cc = c as CapsuleCollider;
+                    Bounds capsuleBounds = new Bounds(cc.center, Vector3.zero);
+                    switch (cc.direction)
+                    {
+                        case CAPSULE_X_AXIS:
+                            alignedSize = new Vector3(cc.height, cc.radius * 2, cc.radius * 2);
+                            break;
+
+                        case CAPSULE_Y_AXIS:
+                            alignedSize = new Vector3(cc.radius * 2, cc.height, cc.radius * 2);
+                            break;
+
+                        case CAPSULE_Z_AXIS:
+                            alignedSize = new Vector3(cc.radius * 2, cc.radius * 2, cc.height);
+                            break;
+                    }
+                }
+                else
+                {
+                    canGetSize = false;
+                }
+
+            }
+            else if (obj.GetComponentInChildren<Renderer>() != null)
+            {
+                List<Vector3> points = new List<Vector3>();
+                Bounds rendBound = new Bounds();
+                GetRenderBoundsPoints(obj.gameObject, points, 0);
+                rendBound.center = points[0];
+
+                foreach (Vector3 p in points)
+                {
+                    rendBound.Encapsulate(p);
+                }
+
+                alignedSize = rendBound.size;
+                canGetSize = true;
+            }
+            else
+            {
+                canGetSize = false;
+            }
+
+            //reapply our rotation
+            obj.rotation = origRot;
+
+            return (canGetSize) ? true : false;
         }
 
         #endregion public methods
