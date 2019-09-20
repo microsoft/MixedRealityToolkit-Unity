@@ -85,23 +85,23 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Optional transform to use when using autoFollowAtDistance. If not specified the local transform is used.
         /// </summary>
-        public Transform AutoFollowTransform
+        public Transform AutoFollowTransformTarget
         {
-            get { return autoFollowTransform; }
+            get { return autoFollowTransformTarget; }
             set
             {
-                autoFollowTransform = value;
+                autoFollowTransformTarget = value;
 
-                if (autoFollowTransform == null)
+                if (autoFollowTransformTarget == null)
                 {
-                    autoFollowTransform = transform;
+                    autoFollowTransformTarget = transform;
                 }
             }
         }
 
         [SerializeField]
         [Tooltip("Optional transform to use when using autoFollowAtDistance. If not specified the local transform is used.")]
-        private Transform autoFollowTransform = null;
+        private Transform autoFollowTransformTarget = null;
 
         private RadialView radialView = null;
         private Coroutine autoFollowDistanceCheck = null;
@@ -112,9 +112,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             radialView = GetComponent<RadialView>();
 
-            if (autoFollowTransform == null)
+            if (autoFollowTransformTarget == null)
             {
-                autoFollowTransform = transform;
+                autoFollowTransformTarget = transform;
             }
 
             if (autoFollowAtDistance)
@@ -174,7 +174,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     float autoFollowDistanceSq = autoFollowDistance * autoFollowDistance;
 
-                    if ((mainCamera.transform.position - autoFollowTransform.position).sqrMagnitude >= autoFollowDistanceSq)
+                    if ((mainCamera.transform.position - autoFollowTransformTarget.position).sqrMagnitude >= autoFollowDistanceSq)
                     {
                         SetFollowMeBehavior(true);
                     }
