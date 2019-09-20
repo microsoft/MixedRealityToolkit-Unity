@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
 
         private SerializedProperty velocityType;
         private SerializedProperty velocityMultiplier;
-        private SerializedProperty velocityFalloff;
+        private SerializedProperty velocityDampen;
         private SerializedProperty bounceMultiplier;
         private SerializedProperty animationCurve;
         private SerializedProperty animationLength;
@@ -78,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             snapListItems = serializedObject.FindProperty("snapListItems");
             velocityType = serializedObject.FindProperty("typeOfVelocity");
             velocityMultiplier = serializedObject.FindProperty("velocityMultiplier");
-            velocityFalloff = serializedObject.FindProperty("velocityFalloff");
+            velocityDampen = serializedObject.FindProperty("velocityDampen");
             bounceMultiplier = serializedObject.FindProperty("bounceMultiplier");
             animationCurve = serializedObject.FindProperty("paginationCurve");
             animationLength = serializedObject.FindProperty("animationLength");
@@ -156,7 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 if (velocityType.enumValueIndex <= 1)
                 {
                     EditorGUILayout.PropertyField(velocityMultiplier);
-                    EditorGUILayout.PropertyField(velocityFalloff);
+                    EditorGUILayout.PropertyField(velocityDampen);
                     EditorGUILayout.PropertyField(bounceMultiplier);
                 }
             }

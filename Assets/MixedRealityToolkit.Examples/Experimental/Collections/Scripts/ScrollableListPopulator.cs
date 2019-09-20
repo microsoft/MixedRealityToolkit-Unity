@@ -25,7 +25,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             set { scrollCollection = value; }
         }
 
-
         [SerializeField]
         [Tooltip("Object to duplicate in ScrollCollection")]
         private GameObject dynamicItem;
@@ -52,40 +51,39 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             set { numItems = value; }
         }
 
-        /// <summary>
-        /// Demonstrate lazy loading 
-        /// </summary>
         [SerializeField]
         [Tooltip("Demonstrate lazy loading")]
         private bool lazyLoad;
 
+        /// <summary>
+        /// Demonstrate lazy loading 
+        /// </summary>
         public bool LazyLoad
         {
             get { return lazyLoad; }
             set { lazyLoad = value; }
         }
 
-
-        /// <summary>
-        /// Number of items to load each frame during lazy load 
-        /// </summary>
         [SerializeField]
         [Tooltip("Number of items to load each frame during lazy load")]
         private int itemsPerFrame = 3;
 
+        /// <summary>
+        /// Number of items to load each frame during lazy load 
+        /// </summary>
         public int ItemsPerFrame
         {
             get { return itemsPerFrame; }
             set { itemsPerFrame = value; }
         }
 
-        /// <summary>
-        /// Indeterminate loader to hide / show for <see cref="LazyLoad"/> 
-        /// </summary>
         [SerializeField]
         [Tooltip("Indeterminate loader to hide / show for LazyLoad")]
         private GameObject loader;
 
+        /// <summary>
+        /// Indeterminate loader to hide / show for <see cref="LazyLoad"/> 
+        /// </summary>
         public GameObject Loader
         {
             get { return loader; }
