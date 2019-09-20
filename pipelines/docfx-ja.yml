@@ -44,7 +44,7 @@ steps:
 
 - powershell: |
     $env:GIT_REDIRECT_STDERR = '2>&1'
-    Remove-Item -Recurse -Force docfx.console.2.45.0
+    Remove-Item -Recurse -Force docfx.console.*
     git checkout gh-pages
     Write-Host "remove old files"
     Remove-Item -Recurse -Force api
