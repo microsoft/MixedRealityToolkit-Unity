@@ -252,6 +252,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public bool IsToggled { get { return Dimensions == 2 && dimensionIndex > 0; } }
 
         /// <summary>
+        /// True if Selection is "Toggle" (Dimensions == 2)
+        /// </summary>
+        public bool IsToggleButton { get { return Dimensions == 2; } }
+
+        /// <summary>
         /// Currently pressed and some movement has occurred
         /// </summary>
         public bool HasGesture { get; private set; }
@@ -489,7 +494,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             requiresFocusValueCheck = RequiresFocus;
             isGlobalValueCheck = IsGlobal;
 
-            focusingPointers.RemoveAll((focusingPointer) => (Interactable)focusingPointer.FocusTarget != this);
+            focusingPointers.RemoveAll((focusingPointer) => (focusingPointer.FocusTarget as Interactable) != this);
 
             if (focusingPointers.Count == 0)
             {
@@ -784,7 +789,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             SetState(InteractableStates.InteractableStateEnum.Toggled, toggled);
 
             // if in toggle mode
-            if (Dimensions == 2)
+            if (IsToggleButton)
             {
                 SetDimensionIndex(toggled ? 1 : 0);
             }

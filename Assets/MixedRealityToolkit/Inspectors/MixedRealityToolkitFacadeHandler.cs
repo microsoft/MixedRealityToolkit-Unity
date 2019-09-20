@@ -3,7 +3,9 @@
 
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
 {
@@ -19,6 +21,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
         private static short editorUpdateTicks;
         private const short EditorUpdateTickInterval = 15;
 
+        // While a scene save is occuring, facade creation is disabled
+        // and currently present facades get deleted.
+        private static bool sceneSaving = false;
+
         static MixedRealityToolkitFacadeHandler()
         {
 #if UNITY_2019_1_OR_NEWER
@@ -28,6 +34,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
 #endif
             EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
             EditorApplication.update += OnUpdate;
+            EditorSceneManager.sceneSaving += OnSceneSaving;
+            EditorSceneManager.sceneSaved += OnSceneSaved;
         }
 
         #region callbacks
@@ -51,14 +59,28 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
         private static void OnScriptsReloaded()
         {
             // If scripts were reloaded, nuke everything and start over
-            foreach (MixedRealityToolkit toolkitInstance in GameObject.FindObjectsOfType<MixedRealityToolkit>())
-            {
-                DestroyAllChildren(toolkitInstance);
-            }
-            previousActiveInstance = null;
+            CleanupCurrentFacades();
         }
 
         private static void OnPlayModeStateChanged(PlayModeStateChange state)
+        {
+            CleanupCurrentFacades();
+        }
+
+        private static void OnSceneSaving(Scene scene, string path)
+        {
+            sceneSaving = true;
+            CleanupCurrentFacades();
+        }
+
+        private static void OnSceneSaved(Scene scene)
+        {
+            sceneSaving = false;
+        }
+
+        #endregion
+
+        private static void CleanupCurrentFacades()
         {
             foreach (MixedRealityToolkit toolkitInstance in GameObject.FindObjectsOfType<MixedRealityToolkit>())
             {
@@ -66,8 +88,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             }
             previousActiveInstance = null;
         }
-
-        #endregion
 
         private static HashSet<IMixedRealityService> GetAllServices()
         {
@@ -93,8 +113,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
 
         private static void UpdateServiceFacades()
         {
-            // If compiling, don't modify service facades
-            if (EditorApplication.isCompiling)
+            // If compiling or saving, don't modify service facades
+            if (sceneSaving || EditorApplication.isCompiling)
             {
                 return;
             }

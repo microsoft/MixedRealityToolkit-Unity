@@ -363,6 +363,29 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return null;
         }
 
+        /// <summary>
+        /// Finds the module type, if found, from the specified package folder name.
+        /// </summary>
+        /// <param name="packageFolder">The asset folder name (ex: MixedRealityToolkit.Providers)</param>
+        /// <returns>
+        /// <see cref="MixedRealityToolkitModuleType"/> associated with the package folder name. Returns
+        /// MixedRealityToolkitModuleType.None if an appropriate module type could not be found.
+        /// </returns>
+        public static MixedRealityToolkitModuleType GetModuleFromPackageFolder(string packageFolder)
+        {
+            if (!packageFolder.StartsWith("MixedRealityToolkit"))
+            {
+                // There are no mappings for folders that do not start with "MixedRealityToolkit"
+                return MixedRealityToolkitModuleType.None;
+            }
+
+            int separatorIndex = packageFolder.IndexOf('.');
+            packageFolder = (separatorIndex != -1) ? packageFolder.Substring(separatorIndex+1) : "Core";
+
+            MixedRealityToolkitModuleType moduleType;
+            return moduleNameMap.TryGetValue(packageFolder, out moduleType) ? moduleType: MixedRealityToolkitModuleType.None;
+        }
+
         private static readonly Dictionary<string, MixedRealityToolkitModuleType> moduleNameMap = new Dictionary<string, MixedRealityToolkitModuleType>()
         {
             { "Core", MixedRealityToolkitModuleType.Core },

@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Light light = lightObj.AddComponent<Light>();
             light.type = LightType.Directional;
 
-            var shader = Shader.Find("Mixed Reality Toolkit/Standard");
+            var shader = StandardShaderUtility.MrtkStandardShader;
 
             idleMaterial = new Material(shader);
             idleMaterial.color = Color.yellow;

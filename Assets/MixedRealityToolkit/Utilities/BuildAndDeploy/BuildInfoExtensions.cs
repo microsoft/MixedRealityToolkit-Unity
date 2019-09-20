@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// <param name="symbolsToRemove">The string collection to remove.</param>
         public static void RemoveSymbols(this IBuildInfo buildInfo, IEnumerable<string> symbolsToRemove)
         {
-            var toKeep = buildInfo.BuildSymbols.Split(';').Except(symbolsToRemove).ToString();
+            string[] toKeep = buildInfo.BuildSymbols.Split(';').Except(symbolsToRemove).ToArray();
 
             if (!toKeep.Any())
             {
@@ -108,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 UnityPlayerBuildTools.BuildSymbolDebug,
                 UnityPlayerBuildTools.BuildSymbolRelease,
                 UnityPlayerBuildTools.BuildSymbolMaster
-            }).ToString());
+            }).ToArray());
         }
 
         /// <summary>
