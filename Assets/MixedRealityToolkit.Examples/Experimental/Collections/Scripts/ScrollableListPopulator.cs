@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Experimental.Utilities;
 using System.Collections;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
+namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 {
     /// <summary>
     /// Simple demonstration of how to instantiate a <see cref="ScrollingObjectCollection"/> as well as use lazy loading to mitigate the perf cost of a large list of items.
@@ -79,9 +79,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
             set { itemsPerFrame = value; }
         }
 
-
-        private IEnumerator loadOverTime;
-
         /// <summary>
         /// Indeterminate loader to hide / show for <see cref="LazyLoad"/> 
         /// </summary>
@@ -132,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
                 {
                     MakeItem(dynamicItem, scrollCollection.transform);
                 }
-
+                scrollCollection.gameObject.SetActive(true);
                 scrollCollection.UpdateCollection();
             }
             else
@@ -142,8 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
                     loader.SetActive(true);
                 }
 
-                loadOverTime = UpdateListOverTime(loader, itemsPerFrame);
-                StartCoroutine(loadOverTime);
+                StartCoroutine(UpdateListOverTime(loader, itemsPerFrame));
             }
         }
 
