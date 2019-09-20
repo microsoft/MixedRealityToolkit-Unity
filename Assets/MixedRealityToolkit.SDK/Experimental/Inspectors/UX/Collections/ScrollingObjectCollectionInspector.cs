@@ -188,7 +188,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                 {
                     animateTransition = EditorGUILayout.Toggle("Animate", animateTransition);
 
-                    EditorGUILayout.BeginHorizontal();
                     using (new EditorGUILayout.HorizontalScope())
                     {
                         if (GUILayout.Button("Page Up"))

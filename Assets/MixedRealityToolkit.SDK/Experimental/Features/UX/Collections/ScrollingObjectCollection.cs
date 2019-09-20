@@ -752,7 +752,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
             // create the offset for our thesholdCalculation -- grab the first item in the list
 
-            BoundsExtensions.TryGetObjectAlignedBoundsSize(NodeList[FirstItemInView].Transform, out Vector3 offsetSize);
+            TryGetObjectAlignedBoundsSize(NodeList[FirstItemInView].Transform, out Vector3 offsetSize);
             thresholdOffset = offsetSize.z * 0.5f;
 
             // get a point in front of the scrollContainer to use for touch plane test
@@ -842,8 +842,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         private void OnEnable()
         {
             //Register for global input events
-            CoreServices.InputSystem.RegisterHandler<IMixedRealityTouchHandler>(this);
-            CoreServices.InputSystem.RegisterHandler<IMixedRealityPointerHandler>(this);
+            if(CoreServices.InputSystem != null)
+            {
+                CoreServices.InputSystem.RegisterHandler<IMixedRealityTouchHandler>(this);
+                CoreServices.InputSystem.RegisterHandler<IMixedRealityPointerHandler>(this);
+            }
 
             if (useOnPreRender)
             {
@@ -976,8 +979,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         private void OnDisable()
         {
             //Unregister global input events
-            CoreServices.InputSystem.RegisterHandler<IMixedRealityTouchHandler>(this);
-            CoreServices.InputSystem.RegisterHandler<IMixedRealityPointerHandler>(this);
+            if (CoreServices.InputSystem != null)
+            {
+                CoreServices.InputSystem.RegisterHandler<IMixedRealityTouchHandler>(this);
+                CoreServices.InputSystem.RegisterHandler<IMixedRealityPointerHandler>(this);
+            }
 
             if (useOnPreRender && cameraMethods != null)
             {
@@ -1971,15 +1977,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                     Bounds capsuleBounds = new Bounds(cc.center, Vector3.zero);
                     switch (cc.direction)
                     {
-                        case CAPSULE_X_AXIS:
+                        case 0:
                             alignedSize = new Vector3(cc.height, cc.radius * 2, cc.radius * 2);
                             break;
 
-                        case CAPSULE_Y_AXIS:
+                        case 1:
                             alignedSize = new Vector3(cc.radius * 2, cc.height, cc.radius * 2);
                             break;
 
-                        case CAPSULE_Z_AXIS:
+                        case 2:
                             alignedSize = new Vector3(cc.radius * 2, cc.radius * 2, cc.height);
                             break;
                     }
@@ -1994,7 +2000,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             {
                 List<Vector3> points = new List<Vector3>();
                 Bounds rendBound = new Bounds();
-                GetRenderBoundsPoints(obj.gameObject, points, 0);
+                BoundsExtensions.GetRenderBoundsPoints(obj.gameObject, points, 0);
                 rendBound.center = points[0];
 
                 foreach (Vector3 p in points)
