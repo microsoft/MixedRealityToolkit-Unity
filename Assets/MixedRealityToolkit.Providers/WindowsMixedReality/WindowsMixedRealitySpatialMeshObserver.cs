@@ -427,11 +427,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         {
             if (Application.isPlaying)
             {
-                // Cleanup the scene objects are managing
-                if (observedObjectParent != null)
-                {
-                    observedObjectParent.transform.DetachChildren();
-                }
 
                 foreach (SpatialAwarenessMeshObject meshObject in meshes.Values)
                 {
