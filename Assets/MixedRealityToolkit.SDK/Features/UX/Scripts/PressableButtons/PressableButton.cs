@@ -147,7 +147,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public float CurrentPushDistance { get => currentPushDistance; protected set => currentPushDistance = value; }
 
-
         private bool isTouching = false;
 
         ///<summary>
