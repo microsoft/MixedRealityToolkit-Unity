@@ -38,16 +38,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public GameObject SpeechConfirmationTooltipPrefab
         {
             get { return speechConfirmationTooltipPrefab; }
-            set
-            {
-                if (speechConfirmationTooltipPrefab != value)
-                {
-                    speechConfirmationTooltipPrefab = value;
-                }
-            }
+            set { speechConfirmationTooltipPrefab = value; }
         }
 
-        [SerializeField]
         [Tooltip("Instance of the Speech confirmation tooltip prefab.")]
         private GameObject speechConfirmationTooltipPrefabInstance = null;
 
