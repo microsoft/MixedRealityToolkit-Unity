@@ -223,13 +223,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 var currentPos = objectPosition;
                 for (int i = 0; i < cornerPositions.Length; i++)
                 {
-                    TestContext.Out.WriteLine("Move hand to " + cornerPositions[i]);
                     yield return PlayModeTestUtilities.MoveHandFromTo(currentPos, cornerPositions[i], numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
                     currentPos = cornerPositions[i];
-                    Assert.AreEqual(1, catcher.EventsStarted, "Received extra touch down when moving through volume");
-                    Assert.AreEqual(0, catcher.EventsCompleted, "Received extra touch up when moving through volume");
+                    Assert.AreEqual(1, catcher.EventsStarted, "Received extra touch down when moving through volume to position " + currentPos);
+                    Assert.AreEqual(0, catcher.EventsCompleted, "Received extra touch up when moving through volume to position " + currentPos);
                 }
-
 
                 // Touch up when exit collider
                 yield return PlayModeTestUtilities.MoveHandFromTo(currentPos, rightPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
