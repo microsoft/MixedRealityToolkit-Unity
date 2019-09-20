@@ -32,9 +32,10 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 		{
 			ISceneTransitionService transitions = MixedRealityToolkit.Instance.GetService<ISceneTransitionService>();
 			if (transitions.TransitionInProgress)
-				return;
-
-			transitions.DoSceneTransition(() => CoreServices.SceneSystem.LoadContent(contentScene.Name, loadSceneMode));
+            {
+                return;
+            }
+            transitions.DoSceneTransition(() => CoreServices.SceneSystem.LoadContent(contentScene.Name, loadSceneMode));
         }
 	}
 }
