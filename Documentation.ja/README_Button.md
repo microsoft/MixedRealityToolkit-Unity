@@ -99,7 +99,7 @@ Pressable Button プレハブには、*SeeItSayItLabel* オブジェクトの下
 
 ### 1. キューブで Pressable Button を作成する (ニア インタラクションのみ)
 
-1. Unity のキューブを作成します (GameObject> 3D Object> Cube)
+1. Unity のキューブを作成します (GameObject > 3D Object > Cube)
 2. `PressableButton.cs` のスクリプトを追加します
 3. `NearInteractionTouchable.cs` のスクリプトを追加します
 
