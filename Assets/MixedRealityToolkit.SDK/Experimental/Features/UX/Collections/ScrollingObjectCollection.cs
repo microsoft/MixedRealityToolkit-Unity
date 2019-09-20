@@ -478,7 +478,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             if (currentPointer.GetType() == typeof(PokePointer))
             {
                 result = currentPointer.Position;
-                Debug.DrawLine(initialHandPos, result, Color.red, 5.0f);
                 return true;
             }
             if (currentPointer?.Result?.Details != null) 
@@ -497,10 +496,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         #region drag position calculation variables
 
         // Hand position when starting a motion
-        private Vector3 initialHandPos;
+        private Vector3 initialPointerPos;
 
         // Hand position previous frame
-        private Vector3 lastHandPos;
+        private Vector3 lastPointerPos;
 
         //The depth in front of the scroller local space for thresholdPoint to calculate.
         [SerializeField]
@@ -894,7 +893,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
             if (isEngaged && TryGetPointerPositionOnPlane(out Vector3 currentPointerPos))
             {
-                Vector3 handDelta = initialHandPos - currentPointerPos;
+                Vector3 handDelta = initialPointerPos - currentPointerPos;
 
                 //Lets see if this is gonna be a click or a drag
                 //Check the scroller's length state to prevent resetting calculation
@@ -914,7 +913,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
                         //reset initialHandPos to prevent the scroller from jumping
                         initialScrollerPos = scrollContainer.transform.localPosition;
-                        initialHandPos = currentPointerPos;
+                        initialPointerPos = currentPointerPos;
                     }
                 }
 
@@ -957,7 +956,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                     CalculateVelocity();
 
                     //Update the prev val for velocity
-                    lastHandPos = currentPointerPos;
+                    lastPointerPos = currentPointerPos;
                 }
             }
             else if (animateScroller == null && nodeLengthCheck)// Prevent the Animation coroutine from being overridden
@@ -1098,15 +1097,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                         }
                         else
                         {
-                            //calculate velocity one more time to prevent any sort of edge case where we didn't have enough frames to calculate properly
-                            CalculateVelocity();
-
                             //Precalculate where the velocity falloff WOULD land our scrollContainer, then round it to the nearest item so it feels "natural"
                             velocitySnapshot = IterateFalloff(avgVelocity, out numSteps);
                             newPosAfterVelocity = initialScrollerPos.y + velocitySnapshot;
                         }
 
-                        velocityDestinationPos.y = (Mathf.Floor(newPosAfterVelocity / CellHeight)) * CellHeight;
+                        velocityDestinationPos.y = (Mathf.Round(newPosAfterVelocity / CellHeight)) * CellHeight;
 
                         velocityState = VelocityState.Resolving;
                     }
@@ -1119,15 +1115,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                         }
                         else
                         {
-                            //calculate velocity one more time to prevent any sort of edge case where we didn't have enough frames to calculate properly
-                            CalculateVelocity();
-
                             //Precalculate where the velocity falloff WOULD land our scrollContainer, then round it to the nearest item so it feels "natural"
                             velocitySnapshot = IterateFalloff(avgVelocity, out numSteps);
                             newPosAfterVelocity = initialScrollerPos.x + velocitySnapshot;
                         }
 
-                        velocityDestinationPos.x = (Mathf.Floor(newPosAfterVelocity / CellWidth)) * CellWidth;
+                        velocityDestinationPos.x = (Mathf.Round(newPosAfterVelocity / CellWidth)) * CellWidth;
 
                         velocityState = VelocityState.Resolving;
                     }
@@ -1376,9 +1369,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         private void CalculateVelocity()
         {
             //update simple velocity
-            scrollVelocity = (scrollDirection == ScrollDirectionType.UpAndDown)
-                             ? (currentPointer.Position.y - lastHandPos.y) / Time.deltaTime * (velocityMultiplier * 0.01f)
-                             : (currentPointer.Position.x - lastHandPos.x) / Time.deltaTime * (velocityMultiplier * 0.01f);
+            Vector3 newPos = new Vector3();
+            scrollVelocity = (scrollDirection == ScrollDirectionType.UpAndDown && TryGetPointerPositionOnPlane(out newPos))
+                             ? (newPos.y - lastPointerPos.y) / Time.deltaTime * (velocityMultiplier * 0.01f)
+                             : (newPos.x - lastPointerPos.x) / Time.deltaTime * (velocityMultiplier * 0.01f);
 
             //And filter it...
             avgVelocity = (avgVelocity * (1.0f - velocityFilterWeight)) + (scrollVelocity * velocityFilterWeight);
@@ -1706,10 +1700,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         private void ResetState()
         {
             //Release the pointer
-            if (currentPointer.GetType() != typeof(PokePointer))
-            {
-                currentPointer = null;
-            }
+            currentPointer = null;
 
             //Clear our states
             isTouched = false;
@@ -2037,17 +2028,19 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
             if (!isTouched && isEngaged && animateScroller == null)
             {
-                //Its a drag release
-                initialScrollerPos = workingScrollerPos;
+                if(isDragging)
+                {
+                    eventData.Use();
+
+                    //Its a drag release
+                    initialScrollerPos = workingScrollerPos;
+                    velocityState = VelocityState.Calculating;
+                }
 
                 //Release the pointer
                 currentPointer.IsTargetPositionLockedOnFocusLock = true;
-                currentPointer = null;
-
-                //Clear our states
-                isTouched = false;
-                isEngaged = false;
-                isDragging = false;
+ 
+                ResetState();
             }
         }
 
@@ -2072,13 +2065,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 //Reset the scroll state
                 scrollVelocity = 0.0f;
 
-                initialHandPos = currentPointer.Position;
-                initialPressTime = Time.time;
-                initialScrollerPos = scrollContainer.transform.localPosition;
+                if(TryGetPointerPositionOnPlane(out initialPointerPos))
+                {
+                    initialPressTime = Time.time;
+                    initialScrollerPos = scrollContainer.transform.localPosition;
+                    velocityState = VelocityState.None;
 
-                isTouched = false;
-                isEngaged = true;
-                isDragging = false;
+                    isTouched = false;
+                    isEngaged = true;
+                    isDragging = false;
+                }
             }
             else
             {
@@ -2114,7 +2110,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
                 if (!isTouched && !isEngaged)
                 {
-                    initialHandPos = currentPointer.Position;//UpdateFingerPosition(TrackedHandJoint.IndexTip, eventData.Controller.ControllerHandedness);
+                    initialPointerPos = currentPointer.Position;//UpdateFingerPosition(TrackedHandJoint.IndexTip, eventData.Controller.ControllerHandedness);
                     initialPressTime = Time.time;
 
                     initialScrollerPos = scrollContainer.transform.localPosition;
