@@ -1,6 +1,7 @@
-﻿using Microsoft.MixedReality.Toolkit.Experimental.Utilities;
-using Microsoft.MixedReality.Toolkit.Input;
-using System;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
+using Microsoft.MixedReality.Toolkit.Experimental.Utilities;
 using System.Collections;
 using UnityEngine;
 
@@ -20,8 +21,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
         /// </summary>
         public ScrollingObjectCollection ScrollCollection
         {
-            get => scrollCollection;
-            set => scrollCollection = value;
+            get { return scrollCollection; }
+            set { scrollCollection = value; }
         }
 
 
@@ -47,8 +48,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental
         /// </summary>
         public int NumItems
         {
-            get => numItems;
-            set => numItems = value;
+            get { return numItems; }
+            set { numItems = value; }
         }
 
         /// <summary>
