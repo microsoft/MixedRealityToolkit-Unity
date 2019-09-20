@@ -20,6 +20,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set { visualizationObject = value; }
         }
 
+        /// <summary>
+        /// An optional object for visualizing the 'Follow Me' mode state.
+        /// </summary>
         [SerializeField]
         [Tooltip("An optional object for visualizing the 'Follow Me' mode state.")]
         private GameObject visualizationObject = null;
@@ -151,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 if (interactableObject != null)
                 {
-                    interactableObject.SetDimensionIndex(follow ? 0 : 1);
+                    interactableObject.SetToggled(follow);
                 }
             }
         }
@@ -175,7 +178,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         SetFollowMeBehavior(true);
                     }
                 }
-
                 yield return null;
             }
         }
