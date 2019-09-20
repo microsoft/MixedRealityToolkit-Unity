@@ -62,7 +62,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // inside object, use vector to centre as normal
                 normal = samplePoint - TouchableCollider.bounds.center;
                 normal.Normalize();
-                return 0;
+                // Return value less than zero so that poke pointer always considers this a touch down (it checks if distance < 0)
+                return -1;
             }
             else
             {
