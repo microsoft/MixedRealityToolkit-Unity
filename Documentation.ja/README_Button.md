@@ -1,8 +1,8 @@
-# ボタン (Button)
+# Button (ボタン)
 
 ![Button](../Documentation/Images/Button/MRTK_Button_Main.png)
 
-ボタン (button) を使うと、ユーザは即座にアクションを引き起こすことができます。Mixed Reality の最も基本的なコンポーネントの１つです。MRTK は、様々なタイプのボタン プレハブを提供しています。
+Button (ボタン) を使うと、ユーザは即座にアクションを引き起こすことができます。Mixed Reality の最も基本的なコンポーネントの１つです。MRTK は、様々なタイプのボタン プレハブを提供しています。
 
 ## MRTK のボタン プレハブ
 
@@ -10,7 +10,7 @@
 
 |  ![PressableButtonHoloLens2](../Documentation/Images/Button/MRTK_Button_Prefabs_HoloLens2.png) PressableButtonHoloLens2 | ![PressableButtonHoloLens2Unplated](../Documentation/Images/Button/MRTK_Button_Prefabs_HoloLens2Unplated.png) PressableButtonHoloLens2Unplated | ![PressableButtonHoloLens2Circular](../Documentation/Images/Button/MRTK_Button_Prefabs_HoloLens2Circular.png) PressableButtonHoloLens2Circular |
 |:--- | :--- | :--- |
-| HoloLens 2 のバック プレート付きのシェル スタイル ボタンは、ボーダー ライト (border light)、近接ライト (proximity light)、扁平なフロント プレート (compressed front plate) などの様々な視覚フィードバックをサポートします。 | バックプレートのない HoloLens 2 のシェル スタイル ボタン | HoloLens 2 の円形シェル スタイル ボタン |
+| HoloLens 2 のバック プレート付きのシェル スタイル ボタンは、Border light (ボーダー ライト)、Proximity light (近接ライト)、Compressed front plate (扁平なフロント プレート) などの様々な視覚フィードバックをサポートします。 | バックプレートのない HoloLens 2 のシェル スタイル ボタン | HoloLens 2 の円形シェル スタイル ボタン |
 |  ![PressableButtonHoloLens2_32x96](../Documentation/Images/Button/MRTK_Button_Prefabs_HoloLens2_32x96.png) **PressableButtonHoloLens2_32x96** | ![PressableButtonHoloLens2Bar3H](../Documentation/Images/Button/MRTK_Button_Prefabs_HoloLens2BarH.png) **PressableButtonHoloLens2Bar3H** | ![PressableButtonHoloLens2Bar3V](../Documentation/Images/Button/MRTK_Button_Prefabs_HoloLens2BarV.png) **PressableButtonHoloLens2Bar3V** |
 | ワイドな HoloLens 2 のシェル スタイル ボタン 32x96mm | バック プレートを共有する水平な HoloLens 2 ボタン バー | バック プレートを共有する垂直な HoloLens 2 ボタン バー |
 |  ![Radial](../Documentation/Images/Button/MRTK_Button_Radial.png) **Radial** | ![Checkbox](../Documentation/Images/Button/MRTK_Button_Checkbox.png) **Checkbox** | ![ToggleSwitch](../Documentation/Images/Button/MRTK_Button_ToggleSwitch.png) **ToggleSwitch** |
@@ -18,13 +18,13 @@
 |  ![ButtonHoloLens1](../Documentation/Images/Button/MRTK_Button_HoloLens1.png) **ButtonHoloLens1** | ![PressableRoundButton](../Documentation/Images/Button/MRTK_Button_Round.png) **PressableRoundButton** | ![Button](../Documentation/Images/Button/MRTK_Button_Base.png) **Button** |
 | HoloLens 1 のシェル スタイル ボタン | 丸型押しボタン | ベーシックなボタン |
 
-[`Button.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/Button.prefab) は、 [Interactable](README_Interactable.md) のコンセプトに基づいており、ボタンまたはその他のタイプのインタラクション可能な面に簡単な UI コントロールを提供します。 ベースライン ボタンは、近くのインタラクション要素に対して多関節ハンド (articulated hand) で入力する場合や、遠くのインタラクション要素に対してゲイズ＋エアタップなど、利用可能な全ての入力方法をサポートします。音声コマンドを使用してボタンをトリガーすることもできます。
+[`Button.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/Button.prefab) は、 [Interactable](README_Interactable.md) のコンセプトに基づいており、ボタンまたはその他のタイプのインタラクション可能な面に簡単な UI コントロールを提供します。 ベースライン ボタンは、近くのインタラクション要素に対して Articulated hand (多関節ハンド) で入力する場合や、遠くのインタラクション要素に対してゲイズ＋エアタップなど、利用可能な全ての入力方法をサポートします。音声コマンドを使用してボタンをトリガーすることもできます。
 
 [`PressableButtonHoloLens2.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab) は、HoloLens 2 のシェル スタイル ボタンで、ダイレクト ハンド トラッキングの入力用に精密な動きをサポートします。 `Interactable` のスクリプトと `PressableButton` のスクリプトを組合わせています。
 
-## 押しボタン (Pressable button) の使い方
+## Pressable button (押しボタン) の使い方
 
-単に [`PressableButtonHoloLens2.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab) または[`PressableButtonHoloLens2Unplated.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2Unplated.prefab) をドラッグしてシーンに置くだけです。これらのボタン プレハブは、多関節ハンド (articulated hand) 入力やゲイズなど、様々なタイプの入力に対して視聴覚フィードバックするように既に設定されています。
+単に [`PressableButtonHoloLens2.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2.prefab) または[`PressableButtonHoloLens2Unplated.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2Unplated.prefab) をドラッグしてシーンに置くだけです。これらのボタン プレハブは、Articulated hand (多関節ハンド) 入力やゲイズなど、様々なタイプの入力に対して視聴覚フィードバックするように既に設定されています。
 
 プレハブ自体と [Interactable](README_Interactable.md) コンポーネントで公開されているイベントを使用して、追加のアクションをトリガーできます。 [HandInteractionExample のシーン](README_HandInteractionExamples.md)の pressable buttons は、Interactable の *OnClick* イベントを使って、キューブの色の変更をトリガーします。このイベントは、ゲイズ、エアタップ、ハンド レイ などの様々なタイプの入力メソッド、及び pressable button のスクリプトを介した物理的なボタンの押下に対してトリガーされます。
 
@@ -50,13 +50,13 @@
 
 ![Button](../Documentation/Images/Button/MRTK_Button_Structure.png)
 
-**ボックスコライダー (Box Collider)**
+**Box Collider (ボックスコライダー)**
 ボタンの前面プレートのための `Box Collider`。
 
-**押しボタン (Pressable Button)**
+**Pressable Button (押しボタン)**
 ハンド プレス インタラクションでのボタン移動のロジック。
 
-**物理的なプレス イベントのルーター (Physical Press Event Router)**
+**Physical Press Event Router (物理的なプレス イベントのルーター)**
 ハンド プレス インタラクションから [Interactable](README_Interactable.md) へイベントを送るスクリプト。
 
 **Interactable**
@@ -76,12 +76,12 @@
 
 ## 音声コマンド ('See-it, Say-it')
 
-**音声入力ハンドラー (Speech Input Handler)**
+**Speech Input Handler (音声入力ハンドラー)**
 Pressable Buttonの [Interactable](README_Interactable.md) スクリプトは、すでに `IMixedRealitySpeechHandler`を実装しています。 ここで音声コマンドのキーワードを設定できます。
 
 <img src="../Documentation/Images/Button/MRTK_Button_Speech1.png" width="450">
 
-**音声入力プロファイル (Speech Input Profile)**
+**Speech Input Profile (音声入力プロファイル)**
 さらに、グローバルな *Speech Commands Profile* に音声コマンド キーワードを登録する必要があります。
 
 <img src="../Documentation/Images/Button/MRTK_Button_Speech2.png" width="450">
