@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
-        private const int numSteps = 30;
+        private const int numSteps = 10;
         // Scale larger than bounds vector to test bounds checks
         private float objectScale = 0.4f;
         private Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
@@ -111,11 +111,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private InputSimulationService inputSim;
         private IMixedRealityInputSystem inputSystem;
 
-        private T CreateTouchable<T>(float scale) where T : BaseNearInteractionTouchable
+        private T CreateTouchable<T>(float cubeScale) where T : BaseNearInteractionTouchable
+        {
+            return CreateTouchable<T>(new Vector3(1.0f, 1.0f, 0.1f) * cubeScale);
+        }
+
+        private T CreateTouchable<T>(Vector3 cubeDimensions) where T : BaseNearInteractionTouchable
         {
             // Set up cube with touchable
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            testObject.transform.localScale = new Vector3(1.0f, 1.0f, 0.1f) * scale;
+            testObject.transform.localScale = cubeDimensions;
             testObject.transform.position = objectPosition;
 
             testObject.GetComponent<Renderer>().material = idleMaterial;
@@ -124,6 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             return touchable;
         }
+
 
         private TouchEventCatcher CreateEventCatcher(BaseNearInteractionTouchable touchable)
         {
@@ -197,7 +203,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator NearInteractionTouchableVolumeVariant()
         {
-            var touchable = CreateTouchable<NearInteractionTouchableVolume>(objectScale);
+            var touchable = CreateTouchable<NearInteractionTouchableVolume>(Vector3.one);
 
             yield return new WaitForFixedUpdate();
             yield return null;
@@ -206,11 +212,27 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             using (var catcher = CreateEventCatcher(touchable))
             {
-                // Touch started and completed when entering and exiting the collider
+                // Touch started when entering collider
                 yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
                 Assert.AreEqual(1, catcher.EventsStarted);
                 Assert.AreEqual(0, catcher.EventsCompleted);
-                yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition, rightPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+
+                // No touch up when moving through collider
+                Vector3[] cornerPositions = new Vector3[8];
+                touchable.GetComponent<BoxCollider>().bounds.GetCornerPositions(ref cornerPositions);
+                var currentPos = objectPosition;
+                for (int i = 0; i < cornerPositions.Length; i++)
+                {
+                    TestContext.Out.WriteLine("Move hand to " + cornerPositions[i]);
+                    yield return PlayModeTestUtilities.MoveHandFromTo(currentPos, cornerPositions[i], numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                    currentPos = cornerPositions[i];
+                    Assert.AreEqual(1, catcher.EventsStarted, "Received extra touch down when moving through volume");
+                    Assert.AreEqual(0, catcher.EventsCompleted, "Received extra touch up when moving through volume");
+                }
+
+
+                // Touch up when exit collider
+                yield return PlayModeTestUtilities.MoveHandFromTo(currentPos, rightPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
                 Assert.AreEqual(1, catcher.EventsStarted);
                 Assert.AreEqual(1, catcher.EventsCompleted);
 
