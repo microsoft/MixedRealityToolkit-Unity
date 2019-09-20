@@ -2067,6 +2067,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 // We move the rigRoot to the scene root to ensure that non-uniform scaling performed
                 // anywhere above the rigRoot does not impact the position of rig corners / edges
+
+                // before detaching the parent we have to store the local scale of rigroot so we can restore it after reattaching.
+                // unity will recompute the localscale based on the parents scale and will return unexptected local scale values
+                // for parents that have a zero scaling value applied.
+                Vector3 prevLocalScale = rigRoot.localScale; 
                 rigRoot.parent = null;
 
                 rigRoot.rotation = Quaternion.identity;
@@ -2113,10 +2118,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     boxDisplay.transform.localScale = Vector3.Scale(GetBoxDisplayScale(), invRootScale);
                 }
 
-                //move rig into position and rotation
+                // move rig into position and rotation
                 rigRoot.position = TargetBounds.bounds.center;
                 rigRoot.rotation = Target.transform.rotation;
                 rigRoot.parent = transform;
+                // restore local scale
+                rigRoot.localScale =  prevLocalScale;
             }
         }
 
