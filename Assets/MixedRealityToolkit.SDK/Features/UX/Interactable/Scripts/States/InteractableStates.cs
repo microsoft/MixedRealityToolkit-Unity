@@ -9,8 +9,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// <summary>
     /// list of Interactable states and basic comparison
     /// </summary>
-    public class InteractableStates : InteractableStateModel
+    public class InteractableStates : BaseStateModel
     {
+        /// <summary>
+        /// List of valid state types for Interactable
+        /// </summary>
         public enum InteractableStateEnum
         {
             /// <summary>
@@ -108,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public InteractableStates()
         {
             base.allStates = allStates;
-            currentState = allStates[0];
+            SetCurrentState(allStates[0]);
         }
 
         public InteractableStates(State defaultState) : base(defaultState)
@@ -116,21 +119,25 @@ namespace Microsoft.MixedReality.Toolkit.UI
             base.allStates = allStates;
         }
 
+        /// <inheritdoc />
         public virtual void SetStateOn(InteractableStateEnum state)
         {
             SetStateOn((int)state);
         }
 
+        /// <inheritdoc />
         public virtual void SetStateOff(InteractableStateEnum state)
         {
             SetStateOff((int)state);
         }
 
+        /// <inheritdoc />
         public virtual void SetStateValue(InteractableStateEnum state, int value)
         {
             SetStateValue((int)state, value);
         }
 
+        /// <inheritdoc />
         public State GetState(InteractableStateEnum state)
         {
             return GetState((int)state);
@@ -141,20 +148,21 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             int bit = GetBit();
 
-            currentState = stateList[0];
+            SetCurrentState(stateList[0]);
 
             for (int i = stateList.Count - 1; i > -1; i--)
             {
                 if (bit >= stateList[i].Bit)
                 {
-                    currentState = stateList[i];
+                    SetCurrentState(stateList[i]);
                     break;
                 }
             }
 
-            return currentState;
+            return CurrentState();
         }
 
+        /// <inheritdoc />
         public override State[] GetStates()
         {
             return stateList.ToArray();
@@ -173,6 +181,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             result.Add(GetState(InteractableStateEnum.Focus));
             result.Add(GetState(InteractableStateEnum.Pressed));
             result.Add(GetState(InteractableStateEnum.Disabled));
+
+            for (int i = 0; i < result.Count; i++)
+            {
+                result[i].Bit = 1 << i;
+                result[i].ActiveIndex = i;
+            }
+
             return result;
         }
     }
