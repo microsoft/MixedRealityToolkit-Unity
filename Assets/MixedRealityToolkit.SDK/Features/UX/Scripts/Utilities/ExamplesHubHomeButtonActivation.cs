@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos
+namespace Microsoft.MixedReality.Toolkit.UI
 {
     public class ExamplesHubHomeButtonActivation : MonoBehaviour
     {
