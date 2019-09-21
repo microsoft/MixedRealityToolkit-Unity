@@ -146,30 +146,32 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.Show(Vector3.forward * 0.5f);
             yield return null;
 
-            Assert.IsNull(hand.GetPointer<ShellHandRayPointer>().Result.CurrentPointerTarget);
+            var handRayPointer = hand.GetPointer<ShellHandRayPointer>();
+
+            Assert.IsNull(handRayPointer.Result.CurrentPointerTarget);
 
             // Focus on cube
             yield return hand.MoveTo(new Vector3(0.06f, -0.1f, 0.5f), numHandSteps);
             yield return null;
 
-            Assert.AreEqual(cube, hand.GetPointer<ShellHandRayPointer>().Result.CurrentPointerTarget);
+            Assert.AreEqual(cube, handRayPointer.Result.CurrentPointerTarget);
 
             // Deactivate the cube
             cube.SetActive(false);
             yield return null;
 
-            Assert.IsNull(hand.GetPointer<ShellHandRayPointer>().Result.CurrentPointerTarget);
+            Assert.IsNull(handRayPointer.Result.CurrentPointerTarget);
 
             // Reactivate the cube
             cube.SetActive(true);
             yield return null;
 
-            Assert.AreEqual(cube, hand.GetPointer<ShellHandRayPointer>().Result.CurrentPointerTarget);
+            Assert.AreEqual(cube, handRayPointer.Result.CurrentPointerTarget);
         }
 
         /// <summary>
         /// Ensure that focused object is set to null, and that focus lock is reset when we disable 
-        /// the currently focused object
+        /// the currently focus-locked (aka grabbed) object
         /// </summary>
         [UnityTest]
         public IEnumerator TestDisableFocusLockedObject()
@@ -188,29 +190,31 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.Show(Vector3.forward * 0.5f);
             yield return null;
 
-            Assert.IsNull(hand.GetPointer<ShellHandRayPointer>().Result.CurrentPointerTarget);
+            var handRayPointer = hand.GetPointer<ShellHandRayPointer>();
+
+            Assert.IsNull(handRayPointer.Result.CurrentPointerTarget);
 
             // Focus lock cube
             yield return hand.MoveTo(new Vector3(0.06f, -0.1f, 0.5f), numHandSteps);
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
             yield return null;
 
-            Assert.IsTrue(hand.GetPointer<ShellHandRayPointer>().IsFocusLocked);
-            Assert.AreEqual(cube, hand.GetPointer<ShellHandRayPointer>().Result.CurrentPointerTarget);
+            Assert.IsTrue(handRayPointer.IsFocusLocked);
+            Assert.AreEqual(cube, handRayPointer.Result.CurrentPointerTarget);
 
             // Deactivate the cube
             cube.SetActive(false);
             yield return null;
 
-            Assert.IsFalse(hand.GetPointer<ShellHandRayPointer>().IsFocusLocked);
-            Assert.IsNull(hand.GetPointer<ShellHandRayPointer>().Result.CurrentPointerTarget);
+            Assert.IsFalse(handRayPointer.IsFocusLocked);
+            Assert.IsNull(handRayPointer.Result.CurrentPointerTarget);
 
             // Reactivate the cube
             cube.SetActive(true);
             yield return null;
 
-            Assert.IsFalse(hand.GetPointer<ShellHandRayPointer>().IsFocusLocked);
-            Assert.AreEqual(cube, hand.GetPointer<ShellHandRayPointer>().Result.CurrentPointerTarget);
+            Assert.IsFalse(handRayPointer.IsFocusLocked);
+            Assert.AreEqual(cube, handRayPointer.Result.CurrentPointerTarget);
         }
 
         /// <summary>
@@ -232,26 +236,28 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.Show(Vector3.forward * 0.5f);
             yield return null;
 
-            Assert.IsNull(hand.GetPointer<ShellHandRayPointer>().Result.CurrentPointerTarget);
+            var handRayPointer = hand.GetPointer<ShellHandRayPointer>();
+
+            Assert.IsNull(handRayPointer.Result.CurrentPointerTarget);
 
             // Focus on cube
             yield return hand.MoveTo(new Vector3(0.06f, -0.1f, 0.5f), numHandSteps);
             yield return null;
 
-            Assert.AreEqual(cube, hand.GetPointer<ShellHandRayPointer>().Result.CurrentPointerTarget);
+            Assert.AreEqual(cube, handRayPointer.Result.CurrentPointerTarget);
 
             // Destroy the cube
             Object.DestroyImmediate(cube);
             yield return null;
 
-            Assert.IsNull(hand.GetPointer<ShellHandRayPointer>().Result.CurrentPointerTarget);
+            Assert.IsNull(handRayPointer.Result.CurrentPointerTarget);
             // Verify that CurrentPointer is not still referencing the destroyed GameObject
-            Assert.IsTrue(ReferenceEquals(hand.GetPointer<ShellHandRayPointer>().Result.CurrentPointerTarget, null));
+            Assert.IsTrue(ReferenceEquals(handRayPointer.Result.CurrentPointerTarget, null));
         }
 
         /// <summary>
         /// Ensure that focused object is set to null, and that focus lock is reset when we destroy 
-        /// the currently focused object
+        /// the currently focus-locked (aka grabbed) object
         /// </summary>
         [UnityTest]
         public IEnumerator TestDestroyFocusLockedObject()
@@ -270,24 +276,26 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.Show(Vector3.forward * 0.5f);
             yield return null;
 
-            Assert.IsNull(hand.GetPointer<ShellHandRayPointer>().Result.CurrentPointerTarget);
+            var handRayPointer = hand.GetPointer<ShellHandRayPointer>();
+
+            Assert.IsNull(handRayPointer.Result.CurrentPointerTarget);
 
             // Focus lock cube
             yield return hand.MoveTo(new Vector3(0.06f, -0.1f, 0.5f), numHandSteps);
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
             yield return null;
 
-            Assert.IsTrue(hand.GetPointer<ShellHandRayPointer>().IsFocusLocked);
-            Assert.AreEqual(cube, hand.GetPointer<ShellHandRayPointer>().Result.CurrentPointerTarget);
+            Assert.IsTrue(handRayPointer.IsFocusLocked);
+            Assert.AreEqual(cube, handRayPointer.Result.CurrentPointerTarget);
 
             // Destroy the cube
             Object.DestroyImmediate(cube);
             yield return null;
 
-            Assert.IsFalse(hand.GetPointer<ShellHandRayPointer>().IsFocusLocked);
-            Assert.IsNull(hand.GetPointer<ShellHandRayPointer>().Result.CurrentPointerTarget);
+            Assert.IsFalse(handRayPointer.IsFocusLocked);
+            Assert.IsNull(handRayPointer.Result.CurrentPointerTarget);
             // Verify that CurrentPointer is not still referencing the destroyed GameObject
-            Assert.IsTrue(ReferenceEquals(hand.GetPointer<ShellHandRayPointer>().Result.CurrentPointerTarget, null));
+            Assert.IsTrue(ReferenceEquals(handRayPointer.Result.CurrentPointerTarget, null));
         }
     }
 }
