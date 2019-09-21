@@ -131,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // Ignore "Select" keyword since OS will display the tooltip. 
                 if (SpeechConfirmationTooltipPrefab != null
                     && speechConfirmationTooltipPrefabInstance == null
-                    && eventData.Command.Keyword.Equals("select", StringComparison.CurrentCultureIgnoreCase))
+                    && !eventData.Command.Keyword.Equals("select", StringComparison.CurrentCultureIgnoreCase))
                 {
                     speechConfirmationTooltipPrefabInstance = Instantiate(speechConfirmationTooltipPrefab);
 
