@@ -2050,7 +2050,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             if (eventData.Pointer.Controller.IsPositionAvailable)
             {
                 //Quick check for the global listener to bail if the object is not in the list
-                if (eventData.Pointer.Result.CurrentPointerTarget == null || !ContainsNode(eventData.Pointer.Result.CurrentPointerTarget.transform))
+                if (eventData.Pointer?.Result?.CurrentPointerTarget == null 
+                    || !ContainsNode(eventData.Pointer.Result.CurrentPointerTarget.transform))
                 {
                     return;
                 }
@@ -2100,7 +2101,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             if (currentPointer != null)
             {
                 //Quick check for the global listener to bail if the object is not in the list
-                if (!ContainsNode(currentPointer.Result.CurrentPointerTarget.transform))
+                if (currentPointer.Result?.CurrentPointerTarget == null ||
+                    !ContainsNode(currentPointer.Result?.CurrentPointerTarget.transform))
                 {
                     return;
                 }
@@ -2127,7 +2129,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData)
         {
             //Quick check for the global listener to bail if the object is not in the list
-            if (ContainsNode(currentPointer.Result.CurrentPointerTarget.transform))
+            if (currentPointer != null && currentPointer.Result?.CurrentPointerTarget != null 
+                && ContainsNode(currentPointer.Result.CurrentPointerTarget.transform))
             {
                 if (isDragging)
                 {
@@ -2145,7 +2148,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             if (p != null)
             {
                 //Quick check for the global listener to bail if the object is not in the list
-                if (!ContainsNode(p.Result.CurrentPointerTarget.transform))
+                if (currentPointer == null || 
+                    currentPointer.Result?.CurrentPointerTarget == null ||
+                    !ContainsNode(p.Result.CurrentPointerTarget.transform))
                 {
                     return;
                 }
