@@ -101,7 +101,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DirectionalLight: 0
     - _DstBlend: 10
-    - _EdgeSmoothingValue: 0.002
+    - _EdgeSmoothingValue: 0.001
     - _EnableChannelMap: 0
     - _EnableEmission: 0
     - _EnableHoverColorOpaqueOverride: 0
@@ -123,6 +123,7 @@ Material:
     - _GlossyReflections: 1
     - _HoverLight: 1
     - _HoverLightOpaque: 0
+    - _IgnoreZScale: 0
     - _InnerGlow: 1
     - _InnerGlowPower: 4
     - _InstancedColor: 0
@@ -146,7 +147,7 @@ Material:
     - _RenderQueueOverride: -1
     - _RimLight: 0
     - _RimPower: 3
-    - _RoundCornerMargin: 0.01
+    - _RoundCornerMargin: 0.025
     - _RoundCornerPower: 0.4
     - _RoundCornerRadius: 0.01
     - _RoundCorners: 1
@@ -163,6 +164,7 @@ Material:
     - _UVSec: 0
     - _VertexColors: 0
     - _VertexExtrusion: 0
+    - _VertexExtrusionSmoothNormals: 0
     - _VertexExtrusionValue: 0
     - _ZOffsetFactor: 0
     - _ZOffsetUnits: 0
