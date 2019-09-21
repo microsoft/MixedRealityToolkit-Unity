@@ -570,9 +570,8 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
   persistentKeywords: 0
-  speechConfirmationTooltipPrefab: {fileID: 779914303111114550, guid: 271778f6c957b524981067a81d238394,
+  speechConfirmationTooltipPrefab: {fileID: 8046114618238072051, guid: 271778f6c957b524981067a81d238394,
     type: 3}
-  speechConfirmationTooltipPrefabInstance: {fileID: 0}
 --- !u!1 &245513944
 GameObject:
   m_ObjectHideFlags: 0
@@ -770,9 +769,8 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
   persistentKeywords: 0
-  speechConfirmationTooltipPrefab: {fileID: 779914303111114550, guid: 271778f6c957b524981067a81d238394,
+  speechConfirmationTooltipPrefab: {fileID: 8046114618238072051, guid: 271778f6c957b524981067a81d238394,
     type: 3}
-  speechConfirmationTooltipPrefabInstance: {fileID: 0}
 --- !u!114 &508823837
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1783,9 +1781,8 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
   persistentKeywords: 0
-  speechConfirmationTooltipPrefab: {fileID: 779914303111114550, guid: 271778f6c957b524981067a81d238394,
+  speechConfirmationTooltipPrefab: {fileID: 8046114618238072051, guid: 271778f6c957b524981067a81d238394,
     type: 3}
-  speechConfirmationTooltipPrefabInstance: {fileID: 0}
 --- !u!114 &1553729208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2281,9 +2278,8 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
   persistentKeywords: 0
-  speechConfirmationTooltipPrefab: {fileID: 779914303111114550, guid: 271778f6c957b524981067a81d238394,
+  speechConfirmationTooltipPrefab: {fileID: 8046114618238072051, guid: 271778f6c957b524981067a81d238394,
     type: 3}
-  speechConfirmationTooltipPrefabInstance: {fileID: 0}
 --- !u!114 &1686769494
 MonoBehaviour:
   m_ObjectHideFlags: 0

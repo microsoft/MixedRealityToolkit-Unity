@@ -8,6 +8,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Destroys the Game Object after the length of the Animator component.
     /// Attach this script to any game object with Animator component to destroy on animation complete.
     /// </summary>
+    [RequireComponent(typeof(Animator))]
     public class DestroyOnAnimationComplete : MonoBehaviour
     {
         [SerializeField]
