@@ -142,6 +142,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (newClosestTouchable != null)
             {
                 // Build ray (poke from in front to the back of the pointer position)
+                // We make a very long ray if we are touching a touchable volume to ensure that we actually 
+                // hit the volume when we are inside of the volume, which could be very large.
                 var lengthOfPointerRay = newClosestTouchable is NearInteractionTouchableVolume ?
                     maximumTouchableVolumeSize : touchableDistance;
                 Vector3 start = Position + lengthOfPointerRay * closestNormal;

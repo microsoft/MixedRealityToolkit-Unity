@@ -217,7 +217,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 Assert.AreEqual(1, catcher.EventsStarted);
                 Assert.AreEqual(0, catcher.EventsCompleted);
 
-                // No touch up when moving through collider
+                // Ensure no touch up event fires while moving hand/pokepointer through collider to each corner of volume
                 Vector3[] cornerPositions = new Vector3[8];
                 touchable.GetComponent<BoxCollider>().bounds.GetCornerPositions(ref cornerPositions);
                 var currentPos = objectPosition;
