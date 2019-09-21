@@ -107,6 +107,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             bounds.y = Mathf.Max(bounds.y, 0);
         }
 
+        void OnEnable()
+        {
+            if (touchableCollider == null)
+            {
+                SetTouchableCollider(GetComponent<BoxCollider>());
+            }
+        }
+
         public void SetLocalForward(Vector3 newLocalForward)
         {
             localForward = newLocalForward;
@@ -138,20 +146,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 touchableCollider = newCollider;
 
+                SetLocalForward(-Vector3.forward);
+
                 Vector2 adjustedSize = new Vector2(
                             Math.Abs(Vector3.Dot(newCollider.size, LocalRight)),
                             Math.Abs(Vector3.Dot(newCollider.size, LocalUp)));
 
-                bounds = adjustedSize;
-                localForward = new Vector3(0, 0,-1);
-
+                SetBounds(adjustedSize);
+                
                 // Set x and y center to match the newCollider but change the position of the
                 // z axis so the plane is always in front of the object
                 localCenter = newCollider.center + Vector3.Scale(newCollider.size / 2.0f, LocalForward);
             }
             else
             {
-                Debug.Assert(newCollider != null, "BoxCollider is null, cannot set bounds");
+                Debug.LogError("BoxCollider is null, cannot set bounds");
             }
         }
 

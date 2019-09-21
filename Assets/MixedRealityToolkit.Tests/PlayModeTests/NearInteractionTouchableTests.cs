@@ -592,56 +592,41 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
 
         /// <summary>
-        /// Test the SetTouchableCollider(BoxCollider collider) method by changing the size of the new
-        /// box collider and rotating the object. This test is checking if the NearInteractionTouchable plane
-        /// is the same size as the box collider and in front of the object.
+        /// Test the SetTouchableCollider(BoxCollider collider) method by checking the state of 
+        /// isNearObject through the PokePointer.  IsNearObject should return false without the 
+        /// NearInteractionTouchable component and true if NearInteractionTouchable is attached and
+        /// the hand is near the game object.
         /// </summary>
         [UnityTest]
         public IEnumerator NearInteractionTouchableSetTouchableCollider()
         {
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.position = new Vector3(0, 0, 1.5f);
+            cube.transform.position = new Vector3(0, 0, 2f);
             cube.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
 
-            cube.AddComponent<NearInteractionTouchable>();
+            var rightHand = new TestHand(Handedness.Right);
+            yield return rightHand.Show(new Vector3(0, 0, 1.5f));
+            var pokePointer = PointerUtils.GetPointer<PokePointer>(Handedness.Right);
+            Assert.IsNotNull(pokePointer);
 
-            var nearIT = cube.GetComponent<NearInteractionTouchable>();
-            var boxCollider = cube.GetComponent<BoxCollider>();
+            // Test isNearObject without NearInteractionTouchable
+            Assert.False(pokePointer.IsNearObject);
 
-            // SetTouchableCollider to a new Box Collider
-            nearIT.SetTouchableCollider(boxCollider);
+            yield return rightHand.Move(new Vector3(0, 0, 0.3f));
 
-            Assert.AreEqual(nearIT.Bounds.x, boxCollider.size.x);
-            Assert.AreEqual(nearIT.Bounds.y,boxCollider.size.y);
-            Assert.AreEqual(nearIT.LocalCenter.x, boxCollider.center.x);
-            Assert.AreEqual(nearIT.LocalCenter.y, boxCollider.center.y);
-            Assert.AreEqual(nearIT.LocalCenter.z, boxCollider.center.z - (boxCollider.size.z / 2));
+            Assert.False(pokePointer.IsNearObject);
 
-            yield return null;
+            // Move the hand back
+            yield return rightHand.Move(new Vector3(0, 0, -0.3f));
 
-            // Change Size of Box Collider
-            boxCollider.size = new Vector3(2, 3, 4);
-            nearIT.SetTouchableCollider(boxCollider);
+            // Test isNearObject with NearInteractionTouchable
+            var nearIT = cube.AddComponent<NearInteractionTouchable>();
 
-            Assert.AreEqual(nearIT.Bounds.x, boxCollider.size.x);
-            Assert.AreEqual(nearIT.Bounds.y, boxCollider.size.y);
-            Assert.AreEqual(nearIT.LocalCenter.x, boxCollider.center.x);
-            Assert.AreEqual(nearIT.LocalCenter.y, boxCollider.center.y);
-            Assert.AreEqual(nearIT.LocalCenter.z, boxCollider.center.z - (boxCollider.size.z / 2));
+            Assert.False(pokePointer.IsNearObject);
 
-            yield return null;
+            yield return rightHand.Move(new Vector3(0, 0, 0.3f));
 
-            // Rotate and change size of Box collider
-            cube.transform.Rotate(0, 45, 0);
-            boxCollider.size = new Vector3(3, 2, 0.5f);
-
-            nearIT.SetTouchableCollider(boxCollider);
-
-            Assert.AreEqual(nearIT.Bounds.x, boxCollider.size.x);
-            Assert.AreEqual(nearIT.Bounds.y, boxCollider.size.y);
-            Assert.AreEqual(nearIT.LocalCenter.x, boxCollider.center.x);
-            Assert.AreEqual(nearIT.LocalCenter.y, boxCollider.center.y);
-            Assert.AreEqual(nearIT.LocalCenter.z, boxCollider.center.z - (boxCollider.size.z / 2));
+            Assert.True(pokePointer.IsNearObject);
         }
     }
 }
