@@ -86,7 +86,8 @@
   
   <h1 id="Microsoft_MixedReality_Toolkit_UI_States" data-uid="Microsoft.MixedReality.Toolkit.UI.States" class="text-break">Class States
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>States scriptableObject for storing available states and related state model</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -99,42 +100,32 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class States : ScriptableObject</code></pre>
   </div>
-  <h3 id="fields">Fields
+  <h3 id="constructors">Constructors
   </h3>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_States_AssemblyQualifiedName" data-uid="Microsoft.MixedReality.Toolkit.UI.States.AssemblyQualifiedName">AssemblyQualifiedName</h4>
+  <a id="Microsoft_MixedReality_Toolkit_UI_States__ctor_" data-uid="Microsoft.MixedReality.Toolkit.UI.States.#ctor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_States__ctor" data-uid="Microsoft.MixedReality.Toolkit.UI.States.#ctor">States()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string AssemblyQualifiedName</code></pre>
+    <pre><code class="lang-csharp hljs">public States()</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <h3 id="properties">Properties
+  </h3>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_UI_States_DefaultIndex_" data-uid="Microsoft.MixedReality.Toolkit.UI.States.DefaultIndex*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_States_DefaultIndex" data-uid="Microsoft.MixedReality.Toolkit.UI.States.DefaultIndex">DefaultIndex</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Default index into state list</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int DefaultIndex</code></pre>
+    <pre><code class="lang-csharp hljs">public int DefaultIndex { get; set; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -151,14 +142,16 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_UI_States_StateList_" data-uid="Microsoft.MixedReality.Toolkit.UI.States.StateList*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_States_StateList" data-uid="Microsoft.MixedReality.Toolkit.UI.States.StateList">StateList</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>List of available states defined by asset</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public List&lt;State&gt; StateList</code></pre>
+    <pre><code class="lang-csharp hljs">public List&lt;State&gt; StateList { get; set; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -175,62 +168,16 @@
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_States_StateLogicName" data-uid="Microsoft.MixedReality.Toolkit.UI.States.StateLogicName">StateLogicName</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Microsoft_MixedReality_Toolkit_UI_States_StateModelType_" data-uid="Microsoft.MixedReality.Toolkit.UI.States.StateModelType*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_States_StateModelType" data-uid="Microsoft.MixedReality.Toolkit.UI.States.StateModelType">StateModelType</h4>
+  <div class="markdown level1 summary"><p>Defines the type of State Model to associate with this States asset. Type must be a class that extends InteractableStateModel</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string StateLogicName</code></pre>
+    <pre><code class="lang-csharp hljs">public Type StateModelType { get; set; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_States_StateOptions" data-uid="Microsoft.MixedReality.Toolkit.UI.States.StateOptions">StateOptions</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public InteractableTypesContainer StateOptions</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableTypesContainer.html">InteractableTypesContainer</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_States_StateType" data-uid="Microsoft.MixedReality.Toolkit.UI.States.StateType">StateType</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Type StateType</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -249,13 +196,14 @@
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_UI_States_GetDefaultInteractableStates_" data-uid="Microsoft.MixedReality.Toolkit.UI.States.GetDefaultInteractableStates*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_States_GetDefaultInteractableStates" data-uid="Microsoft.MixedReality.Toolkit.UI.States.GetDefaultInteractableStates">GetDefaultInteractableStates()</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Microsoft_MixedReality_Toolkit_UI_States_CreateStateModel_" data-uid="Microsoft.MixedReality.Toolkit.UI.States.CreateStateModel*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_States_CreateStateModel" data-uid="Microsoft.MixedReality.Toolkit.UI.States.CreateStateModel">CreateStateModel()</h4>
+  <div class="markdown level1 summary"><p>Create a State Model class and initialize it with the configuration data from this States ScriptableObject</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static States GetDefaultInteractableStates()</code></pre>
+    <pre><code class="lang-csharp hljs">public BaseStateModel CreateStateModel()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -267,8 +215,54 @@
     </thead>
     <tbody>
       <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.BaseStateModel.html">BaseStateModel</a></td>
+        <td><p>BaseStateModel or inherited class implemention object initialized with the StateList in this ScriptableObject</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_States_Equals_" data-uid="Microsoft.MixedReality.Toolkit.UI.States.Equals*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_States_Equals_Microsoft_MixedReality_Toolkit_UI_States_" data-uid="Microsoft.MixedReality.Toolkit.UI.States.Equals(Microsoft.MixedReality.Toolkit.UI.States)">Equals(States)</h4>
+  <div class="markdown level1 summary"><p>Test whether the current States object and the argument States object have the same internal values and configurations</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Equals(States other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.States.html">States</a></td>
-        <td></td>
+        <td><span class="parametername">other</span></td>
+        <td><p>other States object to compare against self</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>true if internal list of state values and class configuration matches other, false otherwise</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -280,7 +274,8 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public State[] GetStates()</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use the StateList property instead&quot;)]
+public State[] GetStates()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -297,88 +292,6 @@
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_UI_States_ReverseLookup_" data-uid="Microsoft.MixedReality.Toolkit.UI.States.ReverseLookup*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_States_ReverseLookup_System_String_System_String___" data-uid="Microsoft.MixedReality.Toolkit.UI.States.ReverseLookup(System.String,System.String[])">ReverseLookup(String, String[])</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static int ReverseLookup(string option, string[] options)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">option</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>[]</td>
-        <td><span class="parametername">options</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_UI_States_SetupLogic_" data-uid="Microsoft.MixedReality.Toolkit.UI.States.SetupLogic*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_States_SetupLogic" data-uid="Microsoft.MixedReality.Toolkit.UI.States.SetupLogic">SetupLogic()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public InteractableStates SetupLogic()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableStates.html">InteractableStates</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_UI_States_SetupStateOptions_" data-uid="Microsoft.MixedReality.Toolkit.UI.States.SetupStateOptions*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_States_SetupStateOptions" data-uid="Microsoft.MixedReality.Toolkit.UI.States.SetupStateOptions">SetupStateOptions()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SetupStateOptions()</code></pre>
-  </div>
 </article>
           </div>
           

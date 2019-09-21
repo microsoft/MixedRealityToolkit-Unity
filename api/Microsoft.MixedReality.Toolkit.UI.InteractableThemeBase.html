@@ -86,7 +86,7 @@
   
   <h1 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase" class="text-break">Class InteractableThemeBase
   </h1>
-  <div class="markdown level0 summary"><p>Base class for themes</p>
+  <div class="markdown level0 summary"><p>Base abstract class for all Theme Engines. Extend to create custom Theme logic</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -103,7 +103,6 @@
       <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableScaleTheme.html">InteractableScaleTheme</a></div>
       <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableShaderTheme.html">InteractableShaderTheme</a></div>
       <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableStringTheme.html">InteractableStringTheme</a></div>
-      <div class="level2"><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableTextureTheme.html">InteractableTextureTheme</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -135,18 +134,20 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public abstract class InteractableThemeBase</code></pre>
   </div>
-  <h3 id="fields">Fields
+  <h3 id="properties">Properties
   </h3>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_AssemblyQualifiedName" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.AssemblyQualifiedName">AssemblyQualifiedName</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_AreShadersSupported_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.AreShadersSupported*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_AreShadersSupported" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.AreShadersSupported">AreShadersSupported</h4>
+  <div class="markdown level1 summary"><p>Indicates whether the current Theme engine implementation supports shader targeting on state properties</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string AssemblyQualifiedName</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual bool AreShadersSupported { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -156,45 +157,23 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_CustomSettings" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.CustomSettings">CustomSettings</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public List&lt;InteractableCustomSetting&gt; CustomSettings</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">List</span>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableCustomSetting.html">InteractableCustomSetting</a>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
+  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_Ease_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.Ease*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_Ease" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.Ease">Ease</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Defines how to ease between values during state changes</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Easing Ease</code></pre>
+    <pre><code class="lang-csharp hljs">public Easing Ease { get; set; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -211,14 +190,16 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_Host_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.Host*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_Host" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.Host">Host</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>GameObject initialized with this ThemeEngine and being targeted based on state changes</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public GameObject Host</code></pre>
+    <pre><code class="lang-csharp hljs">public GameObject Host { get; set; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -235,14 +216,16 @@
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_Loaded" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.Loaded">Loaded</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_IsEasingSupported_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.IsEasingSupported*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_IsEasingSupported" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.IsEasingSupported">IsEasingSupported</h4>
+  <div class="markdown level1 summary"><p>Indicates whether the current Theme engine implementation supports easing between state values</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool Loaded</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual bool IsEasingSupported { get; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -259,14 +242,42 @@
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_Name" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.Name">Name</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_Loaded_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.Loaded*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_Loaded" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.Loaded">Loaded</h4>
+  <div class="markdown level1 summary"><p>True if Theme Engine has been initialized, false otherwise</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string Name</code></pre>
+    <pre><code class="lang-csharp hljs">public bool Loaded { get; protected set; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_Name_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.Name*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_Name" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.Name">Name</h4>
+  <div class="markdown level1 summary"><p>Name of Theme Engine</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Name { get; protected set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -283,14 +294,16 @@
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_NoEasing" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.NoEasing">NoEasing</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_Properties_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.Properties*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_Properties" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.Properties">Properties</h4>
+  <div class="markdown level1 summary"><p>List of global Theme Engine properties</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool NoEasing</code></pre>
+    <pre><code class="lang-csharp hljs">public List&lt;ThemeProperty&gt; Properties { get; set; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -300,21 +313,23 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ThemeProperty.html">ThemeProperty</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_ThemeProperties" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.ThemeProperties">ThemeProperties</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_StateProperties_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.StateProperties*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_StateProperties" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.StateProperties">StateProperties</h4>
+  <div class="markdown level1 summary"><p>List of Properties with values per state</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public List&lt;InteractableThemeProperty&gt; ThemeProperties</code></pre>
+    <pre><code class="lang-csharp hljs">public List&lt;ThemeStateProperty&gt; StateProperties { get; set; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -324,21 +339,23 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">List</span>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableThemeProperty.html">InteractableThemeProperty</a>&gt;</td>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ThemeStateProperty.html">ThemeStateProperty</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_Types_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.Types*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_Types" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.Types">Types</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Types of component this Theme Engine will target on the initialized GameObject or related GameObjects</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Type[] Types</code></pre>
+    <pre><code class="lang-csharp hljs">public Type[] Types { get; protected set; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -357,13 +374,14 @@
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_CopyEase_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.CopyEase*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_CopyEase_Easing_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.CopyEase(Easing)">CopyEase(Easing)</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_CreateAndInitTheme_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.CreateAndInitTheme*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_CreateAndInitTheme_Microsoft_MixedReality_Toolkit_UI_ThemeDefinition_GameObject_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.CreateAndInitTheme(Microsoft.MixedReality.Toolkit.UI.ThemeDefinition,GameObject)">CreateAndInitTheme(ThemeDefinition, GameObject)</h4>
+  <div class="markdown level1 summary"><p>Helper method to create and initialize a Theme Engine for given configuration and targeted GameObject</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Easing CopyEase(Easing ease)</code></pre>
+    <pre><code class="lang-csharp hljs">public static InteractableThemeBase CreateAndInitTheme(ThemeDefinition definition, GameObject host = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -376,9 +394,16 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Easing</span></td>
-        <td><span class="parametername">ease</span></td>
-        <td></td>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ThemeDefinition.html">ThemeDefinition</a></td>
+        <td><span class="parametername">definition</span></td>
+        <td><p>Theme configuration with type information and properties to initialize ThemeEngine with</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">GameObject</span></td>
+        <td><span class="parametername">host</span></td>
+        <td><p>GameObject for Theme Engine to target</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -392,20 +417,94 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Easing</span></td>
-        <td></td>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.html">InteractableThemeBase</a></td>
+        <td><p>Instance of Theme Engine initialized</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_CreateTheme_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.CreateTheme*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_CreateTheme_System_Type_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.CreateTheme(System.Type)">CreateTheme(Type)</h4>
+  <div class="markdown level1 summary"><p>Helper method to instantiate a Theme Engine of provided type. Type must extend InteractableThemeBase</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static InteractableThemeBase CreateTheme(Type themeType)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">themeType</span></td>
+        <td><p>Type of ThemeEngine to create</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.html">InteractableThemeBase</a></td>
+        <td><p>Instance of ThemeEngine of given type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_GetDefaultThemeDefinition_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.GetDefaultThemeDefinition*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_GetDefaultThemeDefinition" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.GetDefaultThemeDefinition">GetDefaultThemeDefinition()</h4>
+  <div class="markdown level1 summary"><p>Generates the default theme definition configuration for the current theme implementation</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract ThemeDefinition GetDefaultThemeDefinition()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ThemeDefinition.html">ThemeDefinition</a></td>
+        <td><p>Default ThemeDefinition to initialize with the current theme engine implemenetation</p>
+</td>
       </tr>
     </tbody>
   </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_GetProperty_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.GetProperty*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_GetProperty_Microsoft_MixedReality_Toolkit_UI_InteractableThemeProperty_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.GetProperty(Microsoft.MixedReality.Toolkit.UI.InteractableThemeProperty)">GetProperty(InteractableThemeProperty)</h4>
-  <div class="markdown level1 summary"></div>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_GetProperty_Microsoft_MixedReality_Toolkit_UI_ThemeStateProperty_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.GetProperty(Microsoft.MixedReality.Toolkit.UI.ThemeStateProperty)">GetProperty(ThemeStateProperty)</h4>
+  <div class="markdown level1 summary"><p>Get the current property value for the provided state property</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract InteractableThemePropertyValue GetProperty(InteractableThemeProperty property)</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract ThemePropertyValue GetProperty(ThemeStateProperty property)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -418,9 +517,10 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableThemeProperty.html">InteractableThemeProperty</a></td>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ThemeStateProperty.html">ThemeStateProperty</a></td>
         <td><span class="parametername">property</span></td>
-        <td></td>
+        <td><p>state property to access</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -434,20 +534,22 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableThemePropertyValue.html">InteractableThemePropertyValue</a></td>
-        <td></td>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ThemePropertyValue.html">ThemePropertyValue</a></td>
+        <td><p>Value currently for given state property</p>
+</td>
       </tr>
     </tbody>
   </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_Init_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.Init*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_Init_GameObject_Microsoft_MixedReality_Toolkit_UI_InteractableThemePropertySettings_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.Init(GameObject,Microsoft.MixedReality.Toolkit.UI.InteractableThemePropertySettings)">Init(GameObject, InteractableThemePropertySettings)</h4>
-  <div class="markdown level1 summary"></div>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_Init_GameObject_Microsoft_MixedReality_Toolkit_UI_ThemeDefinition_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.Init(GameObject,Microsoft.MixedReality.Toolkit.UI.ThemeDefinition)">Init(GameObject, ThemeDefinition)</h4>
+  <div class="markdown level1 summary"><p>Initialize current Theme Engine with given configuration and target the provided GameObject</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual void Init(GameObject host, InteractableThemePropertySettings settings)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual void Init(GameObject host, ThemeDefinition definition)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -462,12 +564,14 @@
       <tr>
         <td><span class="xref">GameObject</span></td>
         <td><span class="parametername">host</span></td>
-        <td></td>
+        <td><p>GameObject to target changes against</p>
+</td>
       </tr>
       <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableThemePropertySettings.html">InteractableThemePropertySettings</a></td>
-        <td><span class="parametername">settings</span></td>
-        <td></td>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ThemeDefinition.html">ThemeDefinition</a></td>
+        <td><span class="parametername">definition</span></td>
+        <td><p>Configuration information to intialize Theme Engine</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -578,12 +682,13 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_OnUpdate_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.OnUpdate*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_OnUpdate_System_Int32_Microsoft_MixedReality_Toolkit_UI_Interactable_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.OnUpdate(System.Int32,Microsoft.MixedReality.Toolkit.UI.Interactable,System.Boolean)">OnUpdate(Int32, Interactable, Boolean)</h4>
-  <div class="markdown level1 summary"></div>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_OnUpdate_System_Int32_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.OnUpdate(System.Int32,System.Boolean)">OnUpdate(Int32, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Update ThemeEngine for given state based on Theme logic. Check, sets, and possibly eases values based on given state</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual void OnUpdate(int state, Interactable source, bool force = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual void OnUpdate(int state, bool force = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -598,29 +703,27 @@
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><span class="parametername">state</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.Interactable.html">Interactable</a></td>
-        <td><span class="parametername">source</span></td>
-        <td></td>
+        <td><p>current state to target</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">force</span></td>
-        <td></td>
+        <td><p>force update call even if state is not new</p>
+</td>
       </tr>
     </tbody>
   </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_SetValue_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.SetValue*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_SetValue_Microsoft_MixedReality_Toolkit_UI_InteractableThemeProperty_System_Int32_System_Single_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.SetValue(Microsoft.MixedReality.Toolkit.UI.InteractableThemeProperty,System.Int32,System.Single)">SetValue(InteractableThemeProperty, Int32, Single)</h4>
-  <div class="markdown level1 summary"></div>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeBase_SetValue_Microsoft_MixedReality_Toolkit_UI_ThemeStateProperty_System_Int32_System_Single_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.SetValue(Microsoft.MixedReality.Toolkit.UI.ThemeStateProperty,System.Int32,System.Single)">SetValue(ThemeStateProperty, Int32, Single)</h4>
+  <div class="markdown level1 summary"><p>Instruct theme to set value for current property with given index state and at given lerp percentage</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract void SetValue(InteractableThemeProperty property, int index, float percentage)</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract void SetValue(ThemeStateProperty property, int index, float percentage)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -633,19 +736,22 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableThemeProperty.html">InteractableThemeProperty</a></td>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ThemeStateProperty.html">ThemeStateProperty</a></td>
         <td><span class="parametername">property</span></td>
-        <td></td>
+        <td><p>property to update value</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
         <td><span class="parametername">index</span></td>
-        <td></td>
+        <td><p>index of state to access array of values</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
         <td><span class="parametername">percentage</span></td>
-        <td></td>
+        <td><p>percentage transition between values</p>
+</td>
       </tr>
     </tbody>
   </table>

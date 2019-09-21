@@ -96,6 +96,10 @@
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.AppBarButton.html">AppBarButton</a></h4>
       <section><p>Button class used by AppBar.</p>
 </section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.BaseStateModel.html">BaseStateModel</a></h4>
+      <section><p>Base class for defining state model logic to use in conjunction with the State class
+Allows for retrieving current state mode and comparing states</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.Billboard.html">Billboard</a></h4>
       <section><p>The Billboard class implements the behaviors needed to keep a GameObject oriented towards the user.</p>
 </section>
@@ -186,36 +190,43 @@ Maintains a collection of themes that react to state changes and provide sensory
 Passes state information and input data on to receivers that detect patterns and does stuff.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableActivateTheme.html">InteractableActivateTheme</a></h4>
-      <section></section>
+      <section><p>Theme engine that allows control to enable/disable a GameObject based on the current state</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableAnimatorTheme.html">InteractableAnimatorTheme</a></h4>
-      <section><p>Uses Animator to control Interactable feedback based on state changes.</p>
+      <section><p>ThemeEngine that controls Animator state based on state changes
+Targets first Animator component returned on initialized GameObject</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableAudioReceiver.html">InteractableAudioReceiver</a></h4>
       <section><p>Add audio clip to play onClick or on Voice Command</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableAudioTheme.html">InteractableAudioTheme</a></h4>
-      <section></section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableColorChildrenTheme.html">InteractableColorChildrenTheme</a></h4>
-      <section></section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme.html">InteractableColorTheme</a></h4>
-      <section><p>A color theme that can set colors on renderers or common text objects
-This theme will try to set color on text objects first, if none can be found,
-then we fall back to renderer color setting using the parent class.</p>
+      <section><p>Theme Engine to play particular audio files based on state changes.
+Add AudioSource component if none is found on initialized GameObject or in children</p>
 </section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableCustomSetting.html">InteractableCustomSetting</a></h4>
-      <section><p>A simple property with name value and type, used for serialization
-The custom settings are used in themes to expose properties needed to enhance theme functionality</p>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableColorChildrenTheme.html">InteractableColorChildrenTheme</a></h4>
+      <section><p>Theme engine to control the color for all Renderer children under the initialized GameObject based on state changes</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme.html">InteractableColorTheme</a></h4>
+      <section><p>Theme Engine that can set colors on a Renderer or text object based on state changes
+This Theme will try to set color on first available text object in order of TextMesh, Text, TextMeshPro, and TextMeshProUGUI
+If no text-based component can be found, then will fall back to first Renderer component found on the initialized GameObject
+and target the color shader property provided in the ThemeDefinition.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableEvent.html">InteractableEvent</a></h4>
       <section><p>Event base class for events attached to Interactables.</p>
 </section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableGrabScaleTheme.html">InteractableGrabScaleTheme</a></h4>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableEventInspector.html">InteractableEventInspector</a></h4>
       <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableGrabScaleTheme.html">InteractableGrabScaleTheme</a></h4>
+      <section><p>ThemeEngine to control initialized GameObject's scale based on associated Interactable grab state and related state changes</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableHighlight.html">InteractableHighlight</a></h4>
       <section><p>Adds or removes materials to target renderer for highlighting Focused <a href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</a>s.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableMaterialTheme.html">InteractableMaterialTheme</a></h4>
-      <section></section>
+      <section><p>Theme Engine to control the material used based on state changes
+Changes the material for the first Renderer component on the initialized GameObject</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableOffsetTheme.html">InteractableOffsetTheme</a></h4>
       <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableOnClickReceiver.html">InteractableOnClickReceiver</a></h4>
@@ -238,7 +249,7 @@ When the grab states change, on or off, these events are triggered</p>
       <section><p>Basic press event receiver</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableOnToggleReceiver.html">InteractableOnToggleReceiver</a></h4>
-      <section><p>A receiver that listens to toggle events</p>
+      <section><p>An event receiver that listens to toggle events</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableOnTouchReceiver.html">InteractableOnTouchReceiver</a></h4>
       <section><p>A basic touch event receiver for detecting Physical Touch state changes in the Interactable
@@ -249,7 +260,7 @@ When the physical touch states change, these events are triggered.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableProfileItem.html">InteractableProfileItem</a></h4>
       <section><p>The foundation of profiles that exist on an Interactable
-Profiles pair themes with the objects they manipulate, based on state changes</p>
+Profiles pair ThemeContainers with the objects they manipulate, based on state changes</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableReceiver.html">InteractableReceiver</a></h4>
       <section><p>Example of building an event system for Interactable that still uses ReceiverBase events</p>
@@ -257,54 +268,38 @@ Profiles pair themes with the objects they manipulate, based on state changes</p
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableReceiverInspector.html">InteractableReceiverInspector</a></h4>
       <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableReceiverList.html">InteractableReceiverList</a></h4>
-      <section><p>An example of building an Interactable receiver that uses built-in receivers that extend ReceiverBase
-This is a mono behavior, place on a gameObject and assign the Interactable</p>
+      <section><p>An example of building an Interactable receiver that uses built-in receivers that extend ReceiverBase</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableReceiverListInspector.html">InteractableReceiverListInspector</a></h4>
       <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableRotationTheme.html">InteractableRotationTheme</a></h4>
-      <section></section>
+      <section><p>Theme Engine to control a GameObject's rotation based on state changes</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableScaleTheme.html">InteractableScaleTheme</a></h4>
-      <section></section>
+      <section><p>Theme Engine to control initialized GameObject's scale based on state changes</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableShaderTheme.html">InteractableShaderTheme</a></h4>
-      <section></section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableStateModel.html">InteractableStateModel</a></h4>
-      <section></section>
+      <section><p>Theme Engine to control the value of a particular Shader Property based on state changes
+Targets the first Renderer component on the initialized GameObject and use MaterialPropertyBlocks</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableStates.html">InteractableStates</a></h4>
       <section><p>list of Interactable states and basic comparison</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableStringTheme.html">InteractableStringTheme</a></h4>
-      <section><p>Change string on a text object based on state</p>
+      <section><p>Theme Engine to change the string value on a Text type object based on state changes
+Finds the first available component searching in order of TextMesh, Text, TextMeshPro, TextMeshProUGUI</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableTextureTheme.html">InteractableTextureTheme</a></h4>
-      <section></section>
+      <section><p>Theme Engine to change the texture on a GameObject based on state changes</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableThemeBase.html">InteractableThemeBase</a></h4>
-      <section><p>Base class for themes</p>
-</section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableThemeProperty.html">InteractableThemeProperty</a></h4>
-      <section><p>Base class for themes</p>
-</section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableThemePropertyValue.html">InteractableThemePropertyValue</a></h4>
-      <section><p>Base values of a theme property, used for serialization</p>
+      <section><p>Base abstract class for all Theme Engines. Extend to create custom Theme logic</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableThemeShaderUtils.html">InteractableThemeShaderUtils</a></h4>
       <section><p>Collection of shader and material utilities</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableToggleCollection.html">InteractableToggleCollection</a></h4>
       <section><p>A way to control a list of radial type buttons or tabs</p>
-</section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableType.html">InteractableType</a></h4>
-      <section><p>A wrapper for a Type which gives a &quot;friendly name&quot; for the type (i.e.
-the class name) along with the assembly qualified name (which can be used
-to new instances of this type).</p>
-</section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableTypeFinder.html">InteractableTypeFinder</a></h4>
-      <section><p>A helper that uses reflection to find objects that implement base types of the
-Interactable types that populate the various state, theme, and event inspectors.</p>
-</section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableTypesContainer.html">InteractableTypesContainer</a></h4>
-      <section><p>A convenience class that holds arrays of class names, fully qualified assembly names
-and their corresponding actual types.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.LoaderController.html">LoaderController</a></h4>
       <section><p>Controls how the standard indeterminate loader moves and behaves over time.</p>
@@ -353,7 +348,10 @@ Extend this class to build new events or receivers from Interactables</p>
 <p>InteractableReceiver or InteractableReceiverList can be used with ReceiverBase - built-in receivers</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ScaleOffsetColorTheme.html">ScaleOffsetColorTheme</a></h4>
-      <section></section>
+      <section><p>Theme Engine to control initialized GameObject's scale, local position offset, and color based on state changes
+For color, will try to set on first available text object in order of TextMesh, Text, TextMeshPro, and TextMeshProUGUI
+If none found, then Theme will target first Renderer component available and target the associated shader property found in ThemeDefinition</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.SliderEvent.html">SliderEvent</a></h4>
       <section><p>A UnityEvent callback containing a SliderEventData payload.</p>
 </section>
@@ -366,15 +364,23 @@ Extend this class to build new events or receivers from Interactables</p>
       <section><p>State data model, state management and comparison instructions</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.States.html">States</a></h4>
-      <section></section>
+      <section><p>States scriptableObject for storing available states and related state model</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.Theme.html">Theme</a></h4>
       <section><p>Theme scriptableObject for loading theme settings</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ThemeEaseSettings.html">ThemeEaseSettings</a></h4>
       <section><p>Ease settings and functionality for themes</p>
 </section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ThemeTarget.html">ThemeTarget</a></h4>
-      <section><p>A way to cache some serializes values to pass between buttons and handlers</p>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ThemeProperty.html">ThemeProperty</a></h4>
+      <section><p>A simple property with name value and type, used for serialization
+The custom settings are used in themes to expose properties needed to enhance theme functionality</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ThemePropertyValue.html">ThemePropertyValue</a></h4>
+      <section><p>Base values of a theme property, used for serialization</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ThemeStateProperty.html">ThemeStateProperty</a></h4>
+      <section><p>Class to store information about a Theme property that contains values per available state</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ToggleHandVisualisation.html">ToggleHandVisualisation</a></h4>
       <section></section>
@@ -422,22 +428,11 @@ or BoundingBox</p>
   </h3>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableColorChildrenTheme.BlocksAndRenderer.html">InteractableColorChildrenTheme.BlocksAndRenderer</a></h4>
       <section></section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableEvent.ReceiverData.html">InteractableEvent.ReceiverData</a></h4>
-      <section></section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableThemePropertySettings.html">InteractableThemePropertySettings</a></h4>
-      <section><p>The main settings found in Themes</p>
-</section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ProfileSettings.html">ProfileSettings</a></h4>
-      <section><p>list of theme settings to virtualize theme values</p>
-</section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ShaderInfo.html">ShaderInfo</a></h4>
-      <section><p>collection of properties found in a shader</p>
-</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ShaderProperties.html">ShaderProperties</a></h4>
-      <section><p>property format for each property</p>
+      <section><p>Obsolete container. Only exists to support backward compatibility to copy values from old scriptableobjects</p>
 </section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ThemeSettings.html">ThemeSettings</a></h4>
-      <section><p>List of settings that are copied from themes</p>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ThemeDefinition.html">ThemeDefinition</a></h4>
+      <section><p>Defines configuration properties and settings to use when initializing a class extending InteractableThemeBase</p>
 </section>
     <h3 id="interfaces">Interfaces
   </h3>
@@ -496,11 +491,10 @@ consists of.</p>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableHighlight.HighlightedMaterialStyle.html">InteractableHighlight.HighlightedMaterialStyle</a></h4>
       <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableOnPressReceiver.InteractionType.html">InteractableOnPressReceiver.InteractionType</a></h4>
-      <section></section>
+      <section><p>Type of valid interaction distances to fire press events</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableStates.InteractableStateEnum.html">InteractableStates.InteractableStateEnum</a></h4>
-      <section></section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableThemePropertyValueTypes.html">InteractableThemePropertyValueTypes</a></h4>
-      <section><p>Theme property value types used for converting theme values back and forth from serialized objects</p>
+      <section><p>List of valid state types for Interactable</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ManipulationHandler.HandMovementType.html">ManipulationHandler.HandMovementType</a></h4>
       <section></section>
@@ -516,7 +510,8 @@ consists of.</p>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ProgressIndicatorState.html">ProgressIndicatorState</a></h4>
       <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ReceiverBaseMonoBehavior.SearchScopes.html">ReceiverBaseMonoBehavior.SearchScopes</a></h4>
-      <section></section>
+      <section><p>Types of directions to search for Interactable component in transform heirachy</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.SelectionModes.html">SelectionModes</a></h4>
       <section><p>Values for user-friendly dimensions settings</p>
 </section>
@@ -524,6 +519,9 @@ consists of.</p>
       <section></section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ThemeEaseSettings.BasicEaseCurves.html">ThemeEaseSettings.BasicEaseCurves</a></h4>
       <section></section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ThemePropertyTypes.html">ThemePropertyTypes</a></h4>
+      <section><p>Theme property value types used for converting theme values back and forth from serialized objects</p>
+</section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ToolTipAttachPoint.html">ToolTipAttachPoint</a></h4>
       <section><p>Used to find a pivot point that is closest to the
 anchor. This ensures a natural-looking attachment where the connector line
@@ -531,10 +529,6 @@ meets the label.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ToolTipSpawner.RemainType.html">ToolTipSpawner.RemainType</a></h4>
       <section></section>
-      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.TypeRestriction.html">TypeRestriction</a></h4>
-      <section><p>Controls the behavior of the InteractableTypeFinder.FindTypes function. See individual
-enum values for more details.</p>
-</section>
 </article>
           </div>
           

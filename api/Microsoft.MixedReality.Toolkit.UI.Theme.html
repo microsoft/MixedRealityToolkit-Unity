@@ -104,12 +104,15 @@
   </h3>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Theme_CustomSettings" data-uid="Microsoft.MixedReality.Toolkit.UI.Theme.CustomSettings">CustomSettings</h4>
-  <div class="markdown level1 summary"></div>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Theme_History" data-uid="Microsoft.MixedReality.Toolkit.UI.Theme.History">History</h4>
+  <div class="markdown level1 summary"><p>Stores historical values of different ThemeDefinition selections. Useful for editor design
+Each item in list corresponds to item in Definitions list property
+Each Dictionary keeps track of last used ThemeDefinition configuration for a given Theme type (type must extend from InteractableThemeBase)</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public List&lt;InteractableThemePropertyValue&gt; CustomSettings</code></pre>
+    <pre><code class="lang-csharp hljs">public List&lt;Dictionary&lt;Type, ThemeDefinition&gt;&gt; History</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -121,21 +124,25 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">List</span>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableThemePropertyValue.html">InteractableThemePropertyValue</a>&gt;</td>
+        <td><span class="xref">List</span>&lt;<span class="xref">Dictionary</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a>, <a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ThemeDefinition.html">ThemeDefinition</a>&gt;&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
+  <h3 id="properties">Properties
+  </h3>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Theme_Name" data-uid="Microsoft.MixedReality.Toolkit.UI.Theme.Name">Name</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Microsoft_MixedReality_Toolkit_UI_Theme_Definitions_" data-uid="Microsoft.MixedReality.Toolkit.UI.Theme.Definitions*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Theme_Definitions" data-uid="Microsoft.MixedReality.Toolkit.UI.Theme.Definitions">Definitions</h4>
+  <div class="markdown level1 summary"><p>List of Theme Definition configurations. Each definition defines what type of Theme Engine to create and how to configure it</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string Name</code></pre>
+    <pre><code class="lang-csharp hljs">public List&lt;ThemeDefinition&gt; Definitions { get; set; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -145,45 +152,23 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ThemeDefinition.html">ThemeDefinition</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_Theme_Settings" data-uid="Microsoft.MixedReality.Toolkit.UI.Theme.Settings">Settings</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public List&lt;InteractableThemePropertySettings&gt; Settings</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">List</span>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableThemePropertySettings.html">InteractableThemePropertySettings</a>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
+  <a id="Microsoft_MixedReality_Toolkit_UI_Theme_States_" data-uid="Microsoft.MixedReality.Toolkit.UI.Theme.States*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Theme_States" data-uid="Microsoft.MixedReality.Toolkit.UI.Theme.States">States</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Associated States object to use with this theme. Defines the states available for each Theme to utilize</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public States States</code></pre>
+    <pre><code class="lang-csharp hljs">public States States { get; set; }</code></pre>
   </div>
-  <h5 class="fieldValue">Field Value</h5>
+  <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
       <tr>
@@ -204,11 +189,13 @@
   
   <a id="Microsoft_MixedReality_Toolkit_UI_Theme_GetStates_" data-uid="Microsoft.MixedReality.Toolkit.UI.Theme.GetStates*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_Theme_GetStates" data-uid="Microsoft.MixedReality.Toolkit.UI.Theme.GetStates">GetStates()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Helper function to convert States scriptableobject into an array of available State values</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public State[] GetStates()</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use States.StateList instead&quot;)]
+public State[] GetStates()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -221,10 +208,22 @@
     <tbody>
       <tr>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.State.html">State</a>[]</td>
-        <td></td>
+        <td><p>Array of available State values for currently assigned States property in this Theme</p>
+</td>
       </tr>
     </tbody>
   </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_Theme_ValidateDefinitions_" data-uid="Microsoft.MixedReality.Toolkit.UI.Theme.ValidateDefinitions*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_Theme_ValidateDefinitions" data-uid="Microsoft.MixedReality.Toolkit.UI.Theme.ValidateDefinitions">ValidateDefinitions()</h4>
+  <div class="markdown level1 summary"><p>Validate list of ThemeDefinitions with current States object</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ValidateDefinitions()</code></pre>
+  </div>
 </article>
           </div>
           

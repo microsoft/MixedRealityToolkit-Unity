@@ -94,62 +94,38 @@
     <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
     <div class="level1"><span class="xref">InteractableThemeShaderUtils</span></div>
   </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#System_Object_ToString">Object.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#System_Object_Equals_System_Object_System_Object_">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#System_Object_ReferenceEquals_System_Object_System_Object_">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#System_Object_GetHashCode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#System_Object_GetType">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#System_Object_MemberwiseClone">Object.MemberwiseClone()</a>
+    </div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.UI.html">Microsoft.MixedReality.Toolkit.UI</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeShaderUtils_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class InteractableThemeShaderUtils : MonoBehaviour</code></pre>
+    <pre><code class="lang-csharp hljs">public static class InteractableThemeShaderUtils</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeShaderUtils_GetMaterialPropertyBlock_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeShaderUtils.GetMaterialPropertyBlock*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeShaderUtils_GetMaterialPropertyBlock_GameObject_Microsoft_MixedReality_Toolkit_UI_ShaderProperties___" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeShaderUtils.GetMaterialPropertyBlock(GameObject,Microsoft.MixedReality.Toolkit.UI.ShaderProperties[])">GetMaterialPropertyBlock(GameObject, ShaderProperties[])</h4>
-  <div class="markdown level1 summary"><p>Get a MaterialPropertyBlock and copy the designated properties</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static MaterialPropertyBlock GetMaterialPropertyBlock(GameObject gameObject, ShaderProperties[] props)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">GameObject</span></td>
-        <td><span class="parametername">gameObject</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ShaderProperties.html">ShaderProperties</a>[]</td>
-        <td><span class="parametername">props</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">MaterialPropertyBlock</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeShaderUtils_GetPropertyBlock_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeShaderUtils.GetPropertyBlock*"></a>
@@ -234,6 +210,54 @@ used to set the initial state of the MaterialPropertyBlock(s) before mutating st
     <tbody>
       <tr>
         <td><span class="xref">Material</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeShaderUtils_InitMaterialPropertyBlock_" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeShaderUtils.InitMaterialPropertyBlock*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_InteractableThemeShaderUtils_InitMaterialPropertyBlock_GameObject_List_Microsoft_MixedReality_Toolkit_UI_ThemeStateProperty__" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableThemeShaderUtils.InitMaterialPropertyBlock(GameObject,List{Microsoft.MixedReality.Toolkit.UI.ThemeStateProperty})">InitMaterialPropertyBlock(GameObject, List&lt;ThemeStateProperty&gt;)</h4>
+  <div class="markdown level1 summary"><p>Get a MaterialPropertyBlock and copy the designated properties</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static MaterialPropertyBlock InitMaterialPropertyBlock(GameObject gameObject, List&lt;ThemeStateProperty&gt; props)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GameObject</span></td>
+        <td><span class="parametername">gameObject</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">List</span>&lt;<a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ThemeStateProperty.html">ThemeStateProperty</a>&gt;</td>
+        <td><span class="parametername">props</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">MaterialPropertyBlock</span></td>
         <td></td>
       </tr>
     </tbody>

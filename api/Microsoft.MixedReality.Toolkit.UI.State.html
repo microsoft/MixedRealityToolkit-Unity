@@ -127,7 +127,8 @@ public class State</code></pre>
   
   
   <h4 id="Microsoft_MixedReality_Toolkit_UI_State_ActiveIndex" data-uid="Microsoft.MixedReality.Toolkit.UI.State.ActiveIndex">ActiveIndex</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Index of state in current list</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -151,7 +152,8 @@ public class State</code></pre>
   
   
   <h4 id="Microsoft_MixedReality_Toolkit_UI_State_Bit" data-uid="Microsoft.MixedReality.Toolkit.UI.State.Bit">Bit</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Bitwise value of state for comparison</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -175,7 +177,8 @@ public class State</code></pre>
   
   
   <h4 id="Microsoft_MixedReality_Toolkit_UI_State_Index" data-uid="Microsoft.MixedReality.Toolkit.UI.State.Index">Index</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Index of State in all available state list</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -199,7 +202,8 @@ public class State</code></pre>
   
   
   <h4 id="Microsoft_MixedReality_Toolkit_UI_State_Name" data-uid="Microsoft.MixedReality.Toolkit.UI.State.Name">Name</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Name of state</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -223,7 +227,8 @@ public class State</code></pre>
   
   
   <h4 id="Microsoft_MixedReality_Toolkit_UI_State_Value" data-uid="Microsoft.MixedReality.Toolkit.UI.State.Value">Value</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Current value of state (e.g on/off etc)</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -248,13 +253,86 @@ public class State</code></pre>
   </h3>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_UI_State_CompareState_" data-uid="Microsoft.MixedReality.Toolkit.UI.State.CompareState*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_State_CompareState_Microsoft_MixedReality_Toolkit_UI_State_" data-uid="Microsoft.MixedReality.Toolkit.UI.State.CompareState(Microsoft.MixedReality.Toolkit.UI.State)">CompareState(State)</h4>
+  <div class="markdown level1 summary"><p>Returns true if two state objects have identical internal values, false otherwise</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool CompareState(State s)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.State.html">State</a></td>
+        <td><span class="parametername">s</span></td>
+        <td><p>other State object to compare against</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>true if identical internal values, false otherwise</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_UI_State_Copy_" data-uid="Microsoft.MixedReality.Toolkit.UI.State.Copy*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_UI_State_Copy" data-uid="Microsoft.MixedReality.Toolkit.UI.State.Copy">Copy()</h4>
+  <div class="markdown level1 summary"><p>Create copy of current State with identical values</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public State Copy()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.State.html">State</a></td>
+        <td><p>copied instance of this State</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_UI_State_ToBit_" data-uid="Microsoft.MixedReality.Toolkit.UI.State.ToBit*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_UI_State_ToBit" data-uid="Microsoft.MixedReality.Toolkit.UI.State.ToBit">ToBit()</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int ToBit()</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use Bit property&quot;)]
+public int ToBit()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -279,7 +357,8 @@ public class State</code></pre>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int ToInt()</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use Index property&quot;)]
+public int ToInt()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
