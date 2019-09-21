@@ -137,6 +137,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         protected bool ContainsNode(Transform node)
         {
+            if (node == null)
+            {
+                return false;
+            }
             for (int i = 0; i < NodeList.Count; i++)
             {
                 if (NodeList[i].Transform == node)
