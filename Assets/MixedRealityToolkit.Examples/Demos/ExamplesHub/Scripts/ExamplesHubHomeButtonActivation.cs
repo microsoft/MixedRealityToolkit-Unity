@@ -5,20 +5,22 @@ using Microsoft.MixedReality.Toolkit;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class ExamplesHubHomeButtonActivation : MonoBehaviour
+namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
-    [SerializeField]
-    [Tooltip("Home button which brings the user back to examples hub")]
-    private GameObject buttonHubHome = null;
-
-    private void OnEnable()
+    public class ExamplesHubHomeButtonActivation : MonoBehaviour
     {
-        if (MixedRealityToolkit.IsSceneSystemEnabled == true)
+        [SerializeField]
+        [Tooltip("Home button which brings the user back to examples hub")]
+        private GameObject buttonHubHome = null;
+
+        private void OnEnable()
         {
-            if (buttonHubHome != null)
+            if (MixedRealityToolkit.IsSceneSystemEnabled == true)
             {
-                buttonHubHome.SetActive(true);
+                if (buttonHubHome != null)
+                {
+                    buttonHubHome.SetActive(true);
+                }
             }
         }
     }
