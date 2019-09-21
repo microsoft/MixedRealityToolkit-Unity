@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// Utilities for accessing input state.
+    /// Utilities for accessing position, rotation of rays.
     /// </summary>
     public static class InputRayUtils
     {
