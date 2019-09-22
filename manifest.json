@@ -1731,6 +1731,28 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/ExamplesHub/MRTK_ExamplesHubHomeButton.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ExamplesHub/MRTK_ExamplesHubHomeButton.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ExamplesHub/MRTK_ExamplesHubToggleFeaturesPanel.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ExamplesHub/MRTK_ExamplesHubToggleFeaturesPanel.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/ExamplesHub/MRTK_ExamplesHub_Hierarchy.png",
       "output": {
         "resource": {
@@ -5645,7 +5667,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_ExampleHub.html",
-          "hash": "MQsuOhEdNYuWxZZy9OLihA=="
+          "hash": "/VmkuRb09/kpTr3jTXKkJA=="
         }
       },
       "is_incremental": false,
@@ -19713,17 +19735,17 @@
           "total_file_count": 127,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1129,
-          "skipped_file_count": 0
-        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1129,
           "skipped_file_count": 0
         }
       }

@@ -109,6 +109,10 @@ In the <strong>LoadContentScene</strong> script's Inspector, you can define the 
 Please refer to the <a href="SceneSystem/SceneSystemGettingStarted.html">Scene System</a> page for more details.</p>
 <pre><code class="lang-csharp">MixedRealityToolkit.SceneSystem.LoadContent(contentName, loadSceneMode);
 </code></pre>
+<h2 id="returning-to-the-main-menu-scene">Returning to the main menu scene</h2>
+<p>To return to the main menu scene (MRTKExamplesHubMainMenu scene), you can use the exact same method. <strong>ToggleFeaturesPanelExamplesHub.prefab</strong> provides the 'Home' button which contains the <strong>LoadContentScene</strong> script. Use this prefab or provide your custom home button in each scene to allow the user to return to the main scene.</p>
+<img src="Images/ExamplesHub/MRTK_ExamplesHubToggleFeaturesPanel.png" width="450">
+<img src="Images/ExamplesHub/MRTK_ExamplesHubHomeButton.png" width="450">
 <h2 id="adding-additional-buttons">Adding additional buttons</h2>
 <p>In the <strong>CubeCollection</strong> object, duplicate (or add) <em>ExampleHubButton</em> prefabs and click <strong>Update Collection</strong> in the <code>GridObjectCollection</code>.
 This will update the cylinder layout based on the new total number of buttons.
