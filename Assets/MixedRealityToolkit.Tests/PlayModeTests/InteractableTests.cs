@@ -51,14 +51,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestSimulatedHandInputOnPrefab()
         {
             // Load interactable prefab
-            GameObject interactableObject;
             Interactable interactable;
             Transform translateTargetObject;
 
-            InstantiateDefaultInteractablePrefab(
+            InstantiatePressButtonPrefab(
                 new Vector3(0.025f, 0.05f, 0.5f),
                 new Vector3(-90f, 0f, 0f),
-                out interactableObject,
                 out interactable,
                 out translateTargetObject);
 
@@ -102,23 +100,20 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestSimulatedGlobalSelectInputOnPrefab()
         {
             // Face the camera in the opposite direction so we don't focus on button
-            MixedRealityPlayspace.PerformTransformation(
-            p =>
+            MixedRealityPlayspace.PerformTransformation(p =>
             {
                 p.position = Vector3.zero;
                 p.LookAt(Vector3.back);
             });
 
             // Load interactable prefab
-            GameObject interactableObject;
             Interactable interactable;
             Transform translateTargetObject;
 
             // Place out of the way of any pointers
-            InstantiateDefaultInteractablePrefab(
+            InstantiatePressButtonPrefab(
                 new Vector3(10f, 0.0f, 0.5f),
                 new Vector3(-90f, 0f, 0f),
-                out interactableObject,
                 out interactable,
                 out translateTargetObject);
 
@@ -139,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Add interactable as a global listener
             // This is only necessary if IsGlobal is being set manually. If it's set in the inspector, interactable will register itself in OnEnable automatically.
-            CoreServices.InputSystem.PushModalInputHandler(interactableObject);
+            CoreServices.InputSystem.PushModalInputHandler(interactable.gameObject);
 
             // Raise a select down input event, then wait for transition to take place
             CoreServices.InputSystem.RaiseOnInputDown(defaultInputSource, Handedness.None, interactable.InputAction);
@@ -175,17 +170,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestSimulatedHandInputOnRuntimeAssembled()
         {
             // Load interactable prefab
-            GameObject interactableObject;
             Interactable interactable;
             Transform translateTargetObject;
 
             AssembleInteractableButton(
-                out interactableObject,
                 out interactable,
                 out translateTargetObject);
 
-            interactableObject.transform.position = new Vector3(0.025f, 0.05f, 0.65f);
-            interactableObject.transform.eulerAngles = new Vector3(-90f, 0f, 0f);
+            interactable.transform.position = new Vector3(0.025f, 0.05f, 0.65f);
+            interactable.transform.eulerAngles = new Vector3(-90f, 0f, 0f);
 
             // Subscribe to interactable's on click so we know the click went through
             bool wasClicked = false;
@@ -196,7 +189,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Add a touchable and configure for touch events
-            NearInteractionTouchable touchable = interactableObject.AddComponent<NearInteractionTouchable>();
+            NearInteractionTouchable touchable = interactable.gameObject.AddComponent<NearInteractionTouchable>();
             touchable.EventsToReceive = TouchableEventType.Touch;
             touchable.SetBounds(Vector2.one);
             touchable.SetLocalForward(Vector3.up);
@@ -204,7 +197,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             touchable.SetLocalCenter(Vector3.up * 2.75f);
 
             // Add a touch handler and link touch started / touch completed events
-            TouchHandler touchHandler = interactableObject.AddComponent<TouchHandler>();
+            TouchHandler touchHandler = interactable.gameObject.AddComponent<TouchHandler>();
             touchHandler.OnTouchStarted.AddListener((HandTrackingInputEventData e) => interactable.SetInputDown());
             touchHandler.OnTouchCompleted.AddListener((HandTrackingInputEventData e) => interactable.SetInputUp());
 
@@ -242,17 +235,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestSimulatedSelectInputOnRuntimeAssembled()
         {
             // Load interactable prefab
-            GameObject interactableObject;
             Interactable interactable;
             Transform translateTargetObject;
 
             AssembleInteractableButton(
-                out interactableObject,
                 out interactable,
                 out translateTargetObject);
 
-            interactableObject.transform.position = new Vector3(0.0f, 0.0f, 0.5f);
-            interactableObject.transform.eulerAngles = new Vector3(-90f, 0f, 0f);
+            interactable.transform.position = new Vector3(0.0f, 0.0f, 0.5f);
+            interactable.transform.eulerAngles = new Vector3(-90f, 0f, 0f);
 
             // Subscribe to interactable's on click so we know the click went through
             bool wasClicked = false;
@@ -303,6 +294,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var thirdRadialButton = radialSet.transform.Find("Radial (3)");
             var testHand = new TestHand(Handedness.Right);
             yield return testHand.Show(Vector3.zero);
+
             Assert.IsTrue(firstRadialButton.GetComponent<Interactable>().IsToggled);
             Assert.IsFalse(secondRadialButton.GetComponent<Interactable>().IsToggled);
             Assert.IsFalse(thirdRadialButton.GetComponent<Interactable>().IsToggled);
@@ -329,14 +321,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestSimulatedMenuInputOnPrefab()
         {
             // Load interactable prefab
-            GameObject interactableObject;
             Interactable interactable;
             Transform translateTargetObject;
 
-            InstantiateDefaultInteractablePrefab(
+            InstantiatePressButtonPrefab(
                 new Vector3(0.0f, 0.0f, 0.5f),
                 new Vector3(-90f, 0f, 0f),
-                out interactableObject,
                 out interactable,
                 out translateTargetObject);
 
@@ -390,14 +380,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestSimulatedVoiceInputOnPrefab()
         {
             // Load interactable prefab
-            GameObject interactableObject;
             Interactable interactable;
             Transform translateTargetObject;
 
-            InstantiateDefaultInteractablePrefab(
+            InstantiatePressButtonPrefab(
                 new Vector3(0.0f, 0.0f, 0.5f),
                 new Vector3(-90f, 0f, 0f),
-                out interactableObject,
                 out interactable,
                 out translateTargetObject);
 
@@ -437,14 +425,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.True(wasTranslated, "Transform target object was not translated by action.");
         }
 
+        #region Helpers
+
         /// <summary>
         /// Generates an interactable from primitives and assigns a select action.
         /// </summary>
-        private void AssembleInteractableButton(out GameObject interactableObject, out Interactable interactable, out Transform translateTargetObject, string selectActionDescription = "Select")
+        private void AssembleInteractableButton(out Interactable interactable, out Transform translateTargetObject, string selectActionDescription = "Select")
         {
             // Assemble an interactable out of a set of primitives
             // This will be the button housing
-            interactableObject = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            var interactableObject = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             interactableObject.name = "RuntimeInteractable";
             interactableObject.transform.position = new Vector3(0.05f, 0.05f, 0.625f);
             interactableObject.transform.localScale = new Vector3(0.15f, 0.025f, 0.15f);
@@ -465,7 +455,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Add an interactable
             interactable = interactableObject.AddComponent<Interactable>();
 
-#if UNITY_EDITOR
             // Find our states and themes via the asset database
             Theme cylinderTheme = ScriptableObjectExtensions.GetAllInstances<Theme>().FirstOrDefault(profile => profile.name.Equals($"CylinderTheme"));
             States defaultStates = ScriptableObjectExtensions.GetAllInstances<States>().FirstOrDefault(profile => profile.name.Equals($"DefaultInteractableStates"));
@@ -478,7 +467,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             interactable.Profiles = new System.Collections.Generic.List<InteractableProfileItem>() { profileItem };
             interactable.ForceUpdateThemes();
-#endif
 
             // Set the interactable to respond to the requested input action
             MixedRealityInputAction selectAction = CoreServices.InputSystem.InputSystemProfile.InputActionsProfile.InputActions.Where(m => m.Description == selectActionDescription).FirstOrDefault();
@@ -502,21 +490,23 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Instantiates the default interactable button.
         /// </summary>
-        private void InstantiateDefaultInteractablePrefab(Vector3 position, Vector3 rotation, out GameObject interactableObject, out Interactable interactable, out Transform translateTargetObject)
+        private void InstantiatePressButtonPrefab(Vector3 position, Vector3 rotation, out Interactable interactable, out Transform pressButtonCylinder)
         {
             // Load interactable prefab
-            interactableObject = InstantiateInteractableFromPath(position, rotation, defaultInteractablePrefabAssetPath);
+            var interactableObject = InstantiateInteractableFromPath(position, rotation, defaultInteractablePrefabAssetPath);
             interactable = interactableObject.GetComponent<Interactable>();
             Assert.IsNotNull(interactable);
 
             // Find the target object for the interactable transformation
-            translateTargetObject = interactableObject.transform.Find("Cylinder");
-            Assert.IsNotNull(translateTargetObject, "Object 'Cylinder' could not be found under example object Model_PushButton.");
+            pressButtonCylinder = interactableObject.transform.Find("Cylinder");
+            Assert.IsNotNull(pressButtonCylinder, "Object 'Cylinder' could not be found under example object Model_PushButton.");
 
             // Move the object into position
             interactableObject.transform.position = position;
             interactableObject.transform.eulerAngles = rotation;
         }
+
+        #endregion
     }
 }
 #endif
