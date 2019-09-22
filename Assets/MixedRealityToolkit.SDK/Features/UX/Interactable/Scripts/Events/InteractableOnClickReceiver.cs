@@ -11,6 +11,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     public class InteractableOnClickReceiver : ReceiverBase
     {
+        /// <summary>
+        /// Invoked on pointer clicked
+        /// </summary>
         public UnityEvent OnClicked => uEvent;
 
         /// <summary>

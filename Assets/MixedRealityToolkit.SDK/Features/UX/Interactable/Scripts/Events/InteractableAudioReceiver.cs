@@ -13,8 +13,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     public class InteractableAudioReceiver : ReceiverBase
     {
+        /// <summary>
+        /// AudioClip to play when event is selected
+        /// </summary>
         [InspectorField(Type = InspectorField.FieldTypes.AudioClip, Label = "Audio Clip", Tooltip = "Assign an audioclip to play on click")]
         public AudioClip AudioClip;
+
+        /// <inheritdoc />
+        public override bool HideUnityEvents => true;
 
         private State lastState;
 
@@ -23,9 +29,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public InteractableAudioReceiver(UnityEvent ev) : base(ev, "AudioEvent")
         {
-            HideUnityEvents = true; // hides Unity events in the receiver - meant to be code only
         }
-        
+
         /// <summary>
         /// Called on update, check to see if the state has changed sense the last call
         /// </summary>
