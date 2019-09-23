@@ -36,6 +36,15 @@ Please refer to the [Scene System](SceneSystem/SceneSystemGettingStarted.md) pag
 MixedRealityToolkit.SceneSystem.LoadContent(contentName, loadSceneMode);
 ```
  
+## Returning to the main menu scene ##
+To return to the main menu scene (MRTKExamplesHubMainMenu scene), you can use the exact same method. **ToggleFeaturesPanelExamplesHub.prefab** provides the 'Home' button which contains the **LoadContentScene** script. Use this prefab or provide your custom home button in each scene to allow the user to return to the main scene.
+
+<img src="../Documentation/Images/ExamplesHub/MRTK_ExamplesHubToggleFeaturesPanel.png" width="450">
+
+<img src="../Documentation/Images/ExamplesHub/MRTK_ExamplesHubHomeButton.png" width="450">
+
+
+
 ## Adding additional buttons ##
 In the **CubeCollection** object, duplicate (or add) _ExampleHubButton_ prefabs and click **Update Collection** in the ``GridObjectCollection``. 
 This will update the cylinder layout based on the new total number of buttons. 
