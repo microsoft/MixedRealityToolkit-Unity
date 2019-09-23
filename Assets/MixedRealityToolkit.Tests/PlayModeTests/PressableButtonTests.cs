@@ -23,7 +23,7 @@ using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class PressableButtonTests : BasePlayModeTests//, IPrebuildSetup
+    public class PressableButtonTests : BasePlayModeTests
     {
         public override void Setup()
         {
