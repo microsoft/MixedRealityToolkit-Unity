@@ -19,4 +19,6 @@ Controllers can have [**Pointers**](Pointers.md) attached to them that query the
 <img src="../../Documentation/Images/Input/MRTK_Input_EventFlow.png" width="200px" style="display:block;margin-left:auto;margin-right:auto;">
 <sup>Event flow.</sup>
 
-While you can handle input events directly in UI components it is recommended to use pointer events to keep the implementation device-independent.
+While you can handle [input events directly in UI components](InputEvents.md) it is recommended to use [pointer events](pointers.md#pointer-event-interfaces) to keep the implementation device-independent.
+
+MRTK also provides several convenience methods to query input state directly in a device-independent way. See [Accessing Input State in MRTK](InputState.md) for more details.
