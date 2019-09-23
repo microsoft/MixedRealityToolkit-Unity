@@ -16,7 +16,6 @@ using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -93,74 +92,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
             PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
             Assert.IsNotNull(buttonComponent);
-
-            Object.Destroy(testButton);
-            // Wait for a frame to give Unity a change to actually destroy the object
-            yield return null;
-        }
-
-        /// <summary>
-        /// Some apps will instantiate a button, disable it while they do other setup, then enable it.  This caused a bug where the button front plate would be flattened against the button.
-        /// This tests to confirm that this has not regressed.
-        /// https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6024
-        /// </summary>
-        [UnityTest]
-        public IEnumerator ButtonInstantiateDisableThenEnableBeforeStart([ValueSource(nameof(PressableButtonsTestPrefabFilenames))] string prefabFilename)
-        {
-            GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
-
-            // Disable then re-enable the button in the same frame as it was instantiated, so that Start() does not execute.
-            testButton.SetActive(false);
-            testButton.SetActive(true);
-
-            yield return null;
-
-            PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
-
-            var deltaPosition = GetBackPlateToFrontPlateVector(buttonComponent);
-
-            Assert.IsTrue(deltaPosition.magnitude > 0.007f, "The button prefabs should all have their front plates at least 8mm away from the back plates.");
-
-            Object.Destroy(testButton);
-            // Wait for a frame to give Unity a change to actually destroy the object
-            yield return null;
-        }
-
-        /// <summary>
-        /// There was an issue where rotating a button after Start() had executed resulted in the front plate going in the wrong direction.
-        /// This tests that it has not regressed.
-        /// https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6025
-        /// </summary>
-        [UnityTest]
-        public IEnumerator RotateButton([ValueSource(nameof(PressableButtonsTestPrefabFilenames))] string prefabFilename)
-        {
-            GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
-
-            yield return null;
-
-            PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
-            var initialOffset = GetBackPlateToFrontPlateVector(buttonComponent);
-
-            // Rotate the button 90 degrees about the Y axis.
-            testButton.transform.Rotate(new Vector3(0.0f, 90.0f, 0.0f));
-
-            yield return null;
-
-            ForceInvoke_UpdateMovingVisualsPosition(buttonComponent);
-
-            yield return null;
-
-            var rotatedOffset = GetBackPlateToFrontPlateVector(buttonComponent);
-
-            // Before rotating, the offset should be in the negative Z direction.  After rotating, it should be in the negative X direction.
-
-            Assert.IsTrue(initialOffset.z < -0.007f);
-            Assert.IsTrue(rotatedOffset.x < -0.007f);
-
-            // Test that most of the magnitude of the offset is in the specified direction.  Give a large-ish tolerance.
-            float tolerance = 0.00001f;
-            Assert.IsTrue(AreApproximatelyEqual(initialOffset.magnitude, Mathf.Abs(initialOffset.z), tolerance));
-            Assert.IsTrue(AreApproximatelyEqual(rotatedOffset.magnitude, Mathf.Abs(rotatedOffset.x), tolerance));
 
             Object.Destroy(testButton);
             // Wait for a frame to give Unity a change to actually destroy the object
@@ -564,29 +495,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             return Mathf.Abs(f0 - f1) < tolerance;
         }
-
-        private static Vector3 GetBackPlateToFrontPlateVector(PressableButton button)
-        {
-            var movingButtonVisualsTransform = GetPrivateMovingButtonVisuals(button).transform;
-            var backPlateTransform = button.transform.Find("BackPlate");
-
-            return movingButtonVisualsTransform.position - backPlateTransform.position;
-        }
-
-        private static GameObject GetPrivateMovingButtonVisuals(PressableButton button)
-        {
-            // Use reflection to get the private field that contains the front plate.
-            var movingButtonVisualsField = typeof(PressableButton).GetField("movingButtonVisuals", BindingFlags.NonPublic | BindingFlags.Instance);
-            return (GameObject)movingButtonVisualsField.GetValue(button);
-        }
-
-        private static void ForceInvoke_UpdateMovingVisualsPosition(PressableButton button)
-        {
-            // Use reflection to invoke a non-public method.
-            var method = typeof(PressableButton).GetMethod("UpdateMovingVisualsPosition", BindingFlags.NonPublic | BindingFlags.Instance);
-            method.Invoke(button, new object[0]);
-        }
-
         #endregion
     }
 }
