@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
     /// </summary>
     public class CameraFaderQuad : ICameraFader
     {
-        const string QuadMaterialShaderName = "UI/Unlit/Transparent";
+        const string QuadMaterialShaderName = "Sprites/Default";
         const string QuadMaterialColorName = "_Color";
 
         /// <summary>

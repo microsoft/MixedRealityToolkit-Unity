@@ -67,8 +67,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     indexKnucklePosition = transform.position;
                 }
-
-                if (nearPointer.IsNearObject)
+                
+                if (!nearPointer.IsInteractionEnabled)
+                {
+                    // If the pointer is disabled, make sure to turn the ring cursor off
+                    // but still want show the proximity effect on bounding content
+                    if (indexFingerRingRenderer != null)
+                    {
+                        UpdateVisuals(indexFingerRingRenderer, 1, false);
+                    }
+                }
+                else if (nearPointer.IsNearObject)
                 {
                     // If the pointer is near an object translate the primary ring to the index finger tip and rotate to surface normal if close.
                     // The secondary ring should be hidden.

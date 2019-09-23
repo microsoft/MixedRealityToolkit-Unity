@@ -55,18 +55,23 @@ This guide will give a starting point on how to add tests to MRTK. It will not e
 
 There's two types of tests that can be added for new code
 
-* Edit mode tests
 * Play mode tests
+* Edit mode tests
+
 
 ## Play mode tests
 
-Play mode tests will be executed in Unity's play mode and should be added into MixedRealityToolkit.Tests > PlaymodeTests.
-To create a new test the following template can be used:
+ MRTK play mode tests have the ability to test how your new feature responds to different input sources such as hands or eyes.
+
+ New play mode tests can inherit [BasePlayModeTests](xref:Microsoft.MixedReality.Toolkit.Tests.BasePlayModeTests) or the skeleton below can be used.
+
+## Creating a new play mode test
+To create a new play mode test:
+- Navigate to Assets > MixedRealityToolkit.Tests > PlayModeTests
+- Right click, Create > Testing > C# Test Script
+- Replace the default template with the skeleton below
 
 ``` csharp
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
-
 #if !WINDOWS_UWP
 // When the .NET scripting backend is enabled and C# projects are built
 // The assembly that this file is part of is still built for the player,
@@ -76,56 +81,71 @@ To create a new test the following template can be used:
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
-using UnityEngine.TestTools;
+using System;
 using System.Collections;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class ExampleTest : IPrebuildSetup
+    class ExamplePlayModeTests
     {
-
-        // this method is called once before we enter play mode and execute any of the tests
-        // do any kind of setup here that can't be done in playmode
+        // Setup a scene, initialize MRTK and the playspace - this method is called before the start of each test listed below
+        [SetUp]
         public void Setup()
         {
-            // eg installing unity packages is only possible in edit mode
-            // so if a test requires TextMeshPro we will need to check for the package before entering play mode
-            PlayModeTestUtilities.EnsureTextMeshProEssentials();
+            PlayModeTestUtilities.Setup();
+
+            // Change the position of the main camera to (0, 0, 0), in PlayModeTestUtilites.Setup() 
+            // the camera is set to position (1, 1.5, -2)
+            TestUtilities.PlayspaceToOriginLookingForward();
         }
 
-        // do common setup for each of your tests here - this will be called for each individual test after entering playmode
-        [SetUp]
-        public void Init()
-        {
-            // in most play mode test cases you would want to at least create an MRTK GameObject using the default profile
-            TestUtilities.InitializeMixedRealityToolkit(true);
-        }
-
-
-        // destroy commonly initialized objects here - this will be called after each of your tests has finished
+        // Destroy the scene - this method is called after each test listed below has completed 
         [TearDown]
-        public void Shutdown()
+        public void TearDown()
         {
-            // call shutdown if you've created an mrtk GameObject in your test
-            TestUtilities.ShutdownMixedRealityToolkit();
+            PlayModeTestUtilities.TearDown();
         }
-
 
         #region Tests
 
+        /// <summary>
+        /// Skeleton for a new MRTK play mode test.
+        /// </summary>
         [UnityTest]
-        /// the name of this method will be used as test name in the unity test runner
         public IEnumerator TestMyFeature()
         {
-            // write your test here
+            // ----------------------------------------------------------
+            // EXAMPLE PLAY MODE TEST METHODS
+            // ----------------------------------------------------------
+            // Getting the input system
+            // var inputSystem = PlayModeTestUtilities.GetInputSystem();
+
+            // Creating a new test hand for input
+            // var rightHand = new TestHand(Handedness.Right);
+            // yield return rightHand.Show(new Vector3(0, 0, 0.5f));
+
+            // Moving the new test hand
+            // We are doing a yield return here because moving the hand to a new position
+            // requires multiple frames to complete the action.
+            // yield return rightHand.MoveTo(new Vector3(0, 0, 2.0f));
+
+            // Getting a specific pointer from the hand
+            // var linePointer = PointerUtils.GetPointer<LinePointer>(Handedness.Right);
+            // Assert.IsNotNull(linePointer);
+            // ---------------------------------------------------------
+
+            // Your new test here
             yield return null;
         }
-
         #endregion
     }
 }
-
 #endif
 
 ```
