@@ -14,6 +14,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Microsoft.MixedReality.Toolkit.SceneSystem;
 using Microsoft.MixedReality.Toolkit.CameraSystem;
+using System.ComponentModel.Design;
 
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Input.Editor;
@@ -967,9 +968,26 @@ namespace Microsoft.MixedReality.Toolkit
         private bool ExecuteOnAllServices(IEnumerable<IMixedRealityService> services, Action<IMixedRealityService> execute)
         {
             if (!HasProfileAndIsInitialized) { return false; }
+
+            // Get the count of services, so that we can protect against the count changing during iteration.
+            int serviceCount = -1;
+            // The MixedRealityServiceRegistry returns the service collection as an IReadOnlyCollection
+            IReadOnlyCollection<IMixedRealityService> serviceCollection = services as IReadOnlyCollection<IMixedRealityService>;
+            if (serviceCollection != null)
+            {
+                serviceCount = serviceCollection.Count();
+            }
+
             foreach (var system in services)
             {
                 execute(system);
+
+                // If we successfully got the count of services and the count has changed, exit the loop.
+                if ((serviceCount != -1) &&
+                    (serviceCount != MixedRealityServiceRegistry.GetAllServices().Count()))
+                {
+                    break;
+                }
             }
             return true;
         }
