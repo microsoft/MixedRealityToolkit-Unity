@@ -6,6 +6,7 @@ using UnityEngine.UI;
 #if WINDOWS_UWP
 using Windows.UI.ViewManagement;
 using Microsoft.MixedReality.Toolkit.Input;
+using System.Collections;
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
@@ -35,6 +36,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         private TouchScreenKeyboard keyboard = null;
 
         private KeyboardState State = KeyboardState.Hidden;
+
+        private Coroutine stateUpdate;
 
         #endregion private fields
 
@@ -67,11 +70,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 inputPane.Hiding += (inputPane, args) => OnKeyboardHiding();
                 inputPane.Showing += (inputPane, args) => OnKeyboardShowing();
             }, false);
-
-            enabled = false;
         }
 
-        private void Update()
+        private IEnumerator UpdateState()
         {
             switch (State)
             {
@@ -84,6 +85,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     State = KeyboardState.Hidden;
                     break;
             }
+
+            yield return null;
         }
 
         private void OnDisable()
@@ -98,7 +101,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             ClearText();
             State = KeyboardState.Hidden;
             UnityEngine.WSA.Application.InvokeOnUIThread(() => inputPane?.TryHide(), false);
-            enabled = false;
+
+            if (stateUpdate != null)
+            {
+                StopCoroutine(stateUpdate);
+                stateUpdate = null;
+            }
         }
 
         protected void ShowKeyboard()
@@ -123,7 +131,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default, false, false, false, false);
             }
 
-            enabled = true;
+            if (stateUpdate == null)
+            {
+                stateUpdate = StartCoroutine(UpdateState());
+            }
         }
 
         #region Input pane event handlers
