@@ -14,18 +14,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public class NearInteractionTouchable : NearInteractionTouchableSurface
     {
-        /// <summary>
-        /// Local space forward direction
-        /// </summary>
         [SerializeField]
         protected Vector3 localForward = Vector3.forward;
-        public Vector3 LocalForward { get => localForward; }
 
         /// <summary>
         /// Local space forward direction
         /// </summary>
+        public Vector3 LocalForward { get => localForward; }
+
         [SerializeField]
         protected Vector3 localUp = Vector3.up;
+
+        /// <summary>
+        /// Local space up direction
+        /// </summary>
         public Vector3 LocalUp { get => localUp; }
 
         /// <summary>
@@ -36,13 +38,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </remarks>
         public bool AreLocalVectorsOrthogonal => Vector3.Dot(localForward, localUp) == 0;
 
+        [SerializeField]
+        protected Vector3 localCenter = Vector3.zero;
+
         /// <summary>
         /// Local space object center
         /// </summary>
-        [SerializeField]
-        protected Vector3 localCenter = Vector3.zero;
         public override Vector3 LocalCenter { get => localCenter; }
 
+        /// <summary>
+        /// Local space and gameObject right
+        /// </summary>
         public Vector3 LocalRight
         {
             get
@@ -60,26 +66,39 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// Forward direction of the gameObject
+        /// </summary>
         public Vector3 Forward => transform.TransformDirection(localForward);
 
+        /// <summary>
+        /// Forward direction of the NearInteractionTouchable plane, the press direction needs to face the 
+        /// camera.
+        /// </summary>
         public override Vector3 LocalPressDirection => -localForward;
 
-        /// <summary>
-        /// Local space forward direction
-        /// </summary>
         [SerializeField]
         protected Vector2 bounds = Vector2.zero;
-        public override Vector2 Bounds { get => bounds; }
-
-        public bool ColliderEnabled { get { return touchableCollider.enabled && touchableCollider.gameObject.activeInHierarchy; } }
 
         /// <summary>
-        /// The collider used by this touchable.
+        /// Bounds or size of the 2D NearInteractionTouchablePlane
         /// </summary>
+        public override Vector2 Bounds { get => bounds; }
+
+        /// <summary>
+        /// Check if the touchableCollider is enabled and in the gameObject hierarchy
+        /// </summary>
+        public bool ColliderEnabled { get { return touchableCollider.enabled && touchableCollider.gameObject.activeInHierarchy; } }
+
+
         [SerializeField]
         [FormerlySerializedAs("collider")]
         [Tooltip("BoxCollider used to calulate bounds and local center, if not set before runtime the gameObjects's BoxCollider will be used by default")]
         private Collider touchableCollider;
+
+        /// <summary>
+        /// The collider used by this touchable.
+        /// </summary>
         public Collider TouchableCollider => touchableCollider;
 
         protected override void OnValidate()
@@ -116,23 +135,39 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// Set local forward direction and ensure that local up is perpendicular to the new local forward and 
+        /// local right direction.  The forward position should be facing the camera. The direction is indicated in scene view by a 
+        /// white arrow in the center of the plane.
+        /// </summary>
         public void SetLocalForward(Vector3 newLocalForward)
         {
             localForward = newLocalForward;
             localUp = Vector3.Cross(localForward, LocalRight).normalized;
         }
 
+        /// <summary>
+        /// Set new local up direction and ensure that local forward is perpendicualr to the new local up and 
+        /// local right direction.
+        /// </summary>
         public void SetLocalUp(Vector3 newLocalUp)
         {
             localUp = newLocalUp;
             localForward = Vector3.Cross(LocalRight, localUp).normalized;
         }
 
+        /// <summary>
+        /// Set the position (center) of the NearInteractionTouchable plane relative to the gameObject.  
+        /// The position of the plane should be in front of the gameObject.
+        /// </summary>
         public void SetLocalCenter(Vector3 newLocalCenter)
         {
             localCenter = newLocalCenter;
         }
 
+        /// <summary>
+        /// Set the size (bounds) of the 2D NearInteractionTouchable plane.
+        /// </summary>
         public void SetBounds(Vector2 newBounds)
         {
             bounds = newBounds;
@@ -148,6 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (newCollider != null)
             {
+                // Set touchableCollider for possible reference in the future
                 touchableCollider = newCollider;
 
                 SetLocalForward(-Vector3.forward);
@@ -164,8 +200,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 // Set size and center of the gameObject's box collider to match the collider given, if there 
                 // is no box collider behind the NearInteractionTouchable plane, an event will not be raised
-                GetComponent<BoxCollider>().size = newCollider.size;
-                GetComponent<BoxCollider>().center = newCollider.center;
+                BoxCollider attachedBoxCollider = GetComponent<BoxCollider>();
+                attachedBoxCollider.size = newCollider.size;
+                attachedBoxCollider.center = newCollider.center;
             }
             else
             {
