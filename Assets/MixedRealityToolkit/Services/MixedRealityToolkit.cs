@@ -106,15 +106,6 @@ namespace Microsoft.MixedReality.Toolkit
 
             activeProfile = profile;
 
-            //if (profile != null)
-            //{
-            //    if (Application.IsPlaying(profile))
-            //    {
-            //        DisableAllServices();
-            //    }
-            //    DestroyAllServices();
-            //}
-
             InitializeServiceLocator();
 
             if (profile != null && Application.IsPlaying(profile))
@@ -888,6 +879,12 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void UpdateAllServices()
         {
+            // If the Mixed Reality Toolkit is not configured, stop.
+            if (activeProfile == null) { return; }
+
+            // If the Mixed Reality Toolkit is not initialized, stop.
+            if (!IsInitialized) { return; }
+
             // Update all systems
             ExecuteOnAllServicesInOrder(service => service.Update());
         }
