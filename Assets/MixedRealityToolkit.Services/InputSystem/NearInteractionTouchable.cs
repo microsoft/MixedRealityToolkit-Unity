@@ -78,6 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         [SerializeField]
         [FormerlySerializedAs("collider")]
+        [Tooltip("BoxCollider used to calulate bounds and local center, if not set before runtime the gameObjects's BoxCollider will be used by default")]
         private Collider touchableCollider;
         public Collider TouchableCollider => touchableCollider;
 
@@ -138,7 +139,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Adjust the bounds, local center and local forward to match a given box collider
+        /// Adjust the bounds, local center and local forward to match a given box collider.  This method
+        /// also changes the size of the box collider attached to the gameObject.
+        /// Default Behavior:  if touchableCollider is null at runtime, the object's box collider will be used
+        /// to size and place the NearInteractionTouchable plane in front of the gameObject
         /// </summary>
         public void SetTouchableCollider(BoxCollider newCollider)
         {
@@ -156,11 +160,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 
                 // Set x and y center to match the newCollider but change the position of the
                 // z axis so the plane is always in front of the object
-                localCenter = newCollider.center + Vector3.Scale(newCollider.size / 2.0f, LocalForward);
+                SetLocalCenter(newCollider.center + Vector3.Scale(newCollider.size / 2.0f, LocalForward));
+
+                // Set size and center of the gameObject's box collider to match the collider given, if there 
+                // is no box collider behind the NearInteractionTouchable plane, an event will not be raised
+                GetComponent<BoxCollider>().size = newCollider.size;
+                GetComponent<BoxCollider>().center = newCollider.center;
             }
             else
             {
-                Debug.LogError("BoxCollider is null, cannot set bounds");
+                Debug.LogWarning("BoxCollider is null, cannot set bounds of NearInteractionTouchable plane");
             }
         }
 
