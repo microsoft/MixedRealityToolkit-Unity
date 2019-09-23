@@ -52,6 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 
         //Serialized properties purely for inspector visualization
         private SerializedProperty pressPlane;
+        private SerializedProperty nodeList;
 
         private Shader MRTKtmp;
 
@@ -83,12 +84,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             animationCurve = serializedObject.FindProperty("paginationCurve");
             animationLength = serializedObject.FindProperty("animationLength");
 
-            clickEvent = serializedObject.FindProperty("ClickEvent");
-            touchEvent = serializedObject.FindProperty("TouchStarted");
-            untouchEvent = serializedObject.FindProperty("TouchEnded");
             momentumEvent = serializedObject.FindProperty("ListMomentumEnded");
 
             //serialized properties for vizualisation
+            nodeList = serializedObject.FindProperty("nodeList");
             pressPlane = serializedObject.FindProperty("thresholdPoint");
         }
 
@@ -185,10 +184,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
-
-                    EditorGUILayout.PropertyField(clickEvent);
-                    EditorGUILayout.PropertyField(touchEvent);
-                    EditorGUILayout.PropertyField(untouchEvent);
                     EditorGUILayout.PropertyField(momentumEvent);
                 }
             }
@@ -253,15 +248,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 
             if (EditorGUI.EndChangeCheck())
             {
-                for (int i = 0; i < scrollContainer.CollectionNodes.Count; i++)
+                for (int i = 0; i < nodeList.arraySize; i++)
                 {
-                    ObjectCollectionNode node = scrollContainer.CollectionNodes[i];
+                    var node = nodeList.GetArrayElementAtIndex(i);
+                    Transform nodeTransform = node.FindPropertyRelative("Transform").objectReferenceValue as Transform;
+                    GameObject nodeGameObject = node.FindPropertyRelative("GameObject").objectReferenceValue as GameObject;
 
-                    if (node.Transform == null) { continue; }
+                    if (nodeTransform == null) { continue; }
 
-                    if (!CheckForStandardShader(node.GameObject.GetComponentsInChildren<Renderer>()))
+                    if (!CheckForStandardShader(nodeGameObject.GetComponentsInChildren<Renderer>()))
                     {
-                        Debug.LogWarning(node.GameObject.name + " has a renderer that is not using " +  StandardShaderUtility.MrtkStandardShaderName + ". This will result in unexpected results with ScrollingObjectCollection");
+                        Debug.LogWarning(nodeGameObject.name + " has a renderer that is not using " +  StandardShaderUtility.MrtkStandardShaderName + ". This will result in unexpected results with ScrollingObjectCollection");
                     }
                 }
             }
@@ -281,13 +278,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                 DisplayTouchPlane(scrollContainer);
 
                 //Display the item number on the list items
-                for (int i = 0; i < scrollContainer.CollectionNodes.Count; i++)
+                for (int i = 0; i <= nodeList.arraySize-1; i++)
                 {
-                    ObjectCollectionNode node = scrollContainer.CollectionNodes[i];
+                    var node = nodeList.GetArrayElementAtIndex(i);
+                    Transform nodeTransform = node.FindPropertyRelative("Transform").objectReferenceValue as Transform;
 
-                    if (node.Transform == null) { continue; }
+                    if (nodeTransform == null) { continue; }
 
-                    Vector3 cp = node.Transform.position;
+                    Vector3 cp = nodeTransform.position;
 
                     UnityEditor.Handles.Label(cp, new GUIContent(i.ToString()));
                 }

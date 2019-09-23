@@ -15,16 +15,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public Action<BaseObjectCollection> OnCollectionUpdated { get; set; }
 
+        [HideInInspector]
+        [SerializeField]
+        private List<ObjectCollectionNode> nodeList = new List<ObjectCollectionNode>();
+
         /// <summary>
         /// List of objects with generated data on the object.
         /// </summary>
-        protected List<ObjectCollectionNode> NodeList { get; } = new List<ObjectCollectionNode>();
-
-        /// <summary>
-        /// Read only list of objects in the collection with generated data on the object.
-        /// </summary>
-        public IReadOnlyList<ObjectCollectionNode> CollectionNodes => new List<ObjectCollectionNode>(NodeList) as IReadOnlyList<ObjectCollectionNode>;
-
+        protected List<ObjectCollectionNode> NodeList
+        {
+            get { return nodeList; }
+        }
 
         [Tooltip("Whether to include space for inactive transforms in the layout")]
         [SerializeField]

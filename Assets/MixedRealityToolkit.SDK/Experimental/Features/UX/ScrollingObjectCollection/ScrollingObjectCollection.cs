@@ -370,8 +370,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
             get
             {
-                return NodeList.Count != 0 ? -((StepMultiplier(NodeList.Count + Tiers - ModuloCheck(NodeList.Count, Tiers), Tiers) - ViewableArea) * CellWidth) : 0.0f;
+                var test = NodeList.Count != 0 ? Mathf.Ceil(StepMultiplier(NodeList.Count - (ViewableArea * Tiers), ViewableArea)) * CellWidth : 0.0f;
+                //var boop = NodeList.Count != 0 ? (StepMultiplier(NodeList.Count + Tiers + ModuloCheck(NodeList.Count, Tiers), Tiers) - ViewableArea) * CellWidth) : 0.0f;
+                Debug.Log(-test);
+                return -test;
             }
+
         }
 
         // Item index for items that should be visible
@@ -894,8 +898,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                         isDragging = true;
                         velocityState = VelocityState.None;
 
-                        //now that we're dragging, reset the interacted with interactable if it exsists
-                        Interactable ixable = currentPointer.Result.CurrentPointerTarget.GetComponent<Interactable>();
+                        //now that we're dragging, reset the interacted with interactable if it exists
+                        Interactable ixable = FocusedObject.GetComponent<Interactable>();
                         if(ixable != null)
                         {
                            ixable.ResetAllStates();
@@ -1021,6 +1025,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         private bool TryGetPointerPositionOnPlane(out Vector3 result)
         {
+            result = Vector3.zero;
+
+            if (currentPointer == null)
+            {
+                return false;
+            }
             if (currentPointer.GetType() == typeof(PokePointer))
             {
                 result = currentPointer.Position;
@@ -1033,7 +1043,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 result = pointerHitPoint + Vector3.Project(endPoint - pointerHitPoint, scrollVector);
                 return true;
             }
-            result = Vector3.zero;
+
             return false;
         }
 
@@ -1717,6 +1727,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
             //Release the pointer
             currentPointer = null;
+            FocusedObject = null;
 
             //Clear our states
             isTouched = false;
@@ -2067,7 +2078,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 //Quick check for the global listener to bail if the object is not in the list
                 if (eventData.Pointer?.Result?.CurrentPointerTarget == null 
-                    || !ContainsNode(eventData.Pointer.Result.CurrentPointerTarget.transform))
+                    || !ContainsNode(eventData.Pointer.Result.CurrentPointerTarget.transform) || FocusedObject != null)
                 {
                     return;
                 }
@@ -2078,6 +2089,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
                 pointerHitPoint = currentPointer.Result.Details.Point;
                 pointerHitDistance = currentPointer.Result.Details.RayDistance;
+
+                FocusedObject = currentPointer.Result?.CurrentPointerTarget;
 
                 //Reset the scroll state
                 scrollVelocity = 0.0f;
@@ -2113,6 +2126,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         ///</inheritdoc>
         void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
         {
+            if(isDragging || FocusedObject)
+            {
+                eventData.Use();
+                return;
+            }
+
             currentPointer = PointerUtils.GetPointer<PokePointer>(eventData.Handedness);
             if (currentPointer != null)
             {
@@ -2128,10 +2147,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
                 if (!isTouched && !isEngaged)
                 {
-                    initialPointerPos = currentPointer.Position;//UpdateFingerPosition(TrackedHandJoint.IndexTip, eventData.Controller.ControllerHandedness);
+                    initialPointerPos = currentPointer.Position;
                     initialPressTime = Time.time;
-
+                    FocusedObject = currentPointer.Result?.CurrentPointerTarget;
                     initialScrollerPos = scrollContainer.transform.localPosition;
+                    shouldSwallowEvents = true;
 
                     isTouched = true;
                     isEngaged = true;
@@ -2166,7 +2186,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 //Quick check for the global listener to bail if the object is not in the list
                 if (currentPointer == null || 
                     currentPointer.Result?.CurrentPointerTarget == null ||
-                    !ContainsNode(p.Result.CurrentPointerTarget.transform))
+                    !ContainsNode(p.Result.CurrentPointerTarget.transform) || FocusedObject != p.Result.CurrentPointerTarget)
                 {
                     return;
                 }
@@ -2189,14 +2209,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             //We'll consider this a drag release
             if (isEngaged && animateScroller == null)
             {
-                if (isTouched)
+                if (isTouched || isDragging)
                 {
                     //Its a drag release
-                    initialScrollerPos = workingScrollerPos;
-                }
-
-                if (isDragging)
-                {
                     initialScrollerPos = workingScrollerPos;
                 }
 
@@ -2218,8 +2233,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             }
         }
 
-        void IMixedRealityInputHandler.OnInputDown(InputEventData eventData) {  }
+        void IMixedRealityInputHandler.OnInputDown(InputEventData eventData) { }
 
         #endregion IMixedRealitySourceStateHandler implementation
+
+        private GameObject FocusedObject;
     }
 }
