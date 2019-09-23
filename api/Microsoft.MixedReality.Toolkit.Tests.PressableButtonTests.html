@@ -172,51 +172,6 @@
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Tests_PressableButtonTests_ButtonInstantiateDisableThenEnableBeforeStart_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PressableButtonTests.ButtonInstantiateDisableThenEnableBeforeStart*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PressableButtonTests_ButtonInstantiateDisableThenEnableBeforeStart_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PressableButtonTests.ButtonInstantiateDisableThenEnableBeforeStart(System.String)">ButtonInstantiateDisableThenEnableBeforeStart(String)</h4>
-  <div class="markdown level1 summary"><p>Some apps will instantiate a button, disable it while they do other setup, then enable it.  This caused a bug where the button front plate would be flattened against the button.
-This tests to confirm that this has not regressed.
-<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6024">https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6024</a></p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerator ButtonInstantiateDisableThenEnableBeforeStart(string prefabFilename)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">prefabFilename</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IEnumerator</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_Tests_PressableButtonTests_PressButtonFast_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PressableButtonTests.PressButtonFast*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Tests_PressableButtonTests_PressButtonFast_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PressableButtonTests.PressButtonFast(System.String)">PressButtonFast(String)</h4>
   <div class="markdown level1 summary"><p>This test reproduces P0 issue 4566 which didn't trigger a button with enabled backpressprotection
@@ -313,51 +268,6 @@ See <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4683"
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public IEnumerator ReleaseButton(string prefabFilename)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><span class="parametername">prefabFilename</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IEnumerator</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Tests_PressableButtonTests_RotateButton_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PressableButtonTests.RotateButton*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Tests_PressableButtonTests_RotateButton_System_String_" data-uid="Microsoft.MixedReality.Toolkit.Tests.PressableButtonTests.RotateButton(System.String)">RotateButton(String)</h4>
-  <div class="markdown level1 summary"><p>There was an issue where rotating a button after Start() had executed resulted in the front plate going in the wrong direction.
-This tests that it has not regressed.
-<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6025">https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6025</a></p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerator RotateButton(string prefabFilename)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
