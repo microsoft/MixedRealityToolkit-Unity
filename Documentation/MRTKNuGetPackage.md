@@ -17,7 +17,7 @@ Follow these instructions to add the Mixed Reality Toolkit as a NuGet package to
 1. Choose the package you would like to install:
     - **Microsoft.MixedReality.Toolkit.Foundation** – The core package for MRTK.
     - **Microsoft.MixedReality.Toolkit.Examples** – The package that contains all of our examples.
-    - **Microsoft.MixedReality.Toolkit.Extensions** – The package that contains extensions services and/or data providers. (more information).
+    - **Microsoft.MixedReality.Toolkit.Extensions** – The package that contains extensions services and/or data providers.
     - **Microsoft.MixedReality.Toolkit.Tools** – Contains some of the tooling that comes with MRTK (Build Window, etc).
 
 ### Updating MRTK NuGet Packages
@@ -44,7 +44,7 @@ NuGet package consists of compiled binaries as opposed to loose script files, an
 Since the NuGet package contains the compiled binaries instead of scripts, this has two major advantages:
 
 - Reduced compilation time
-- No more 40+ C# Project files in Visual Studio
+- Considerably fewer C# Project files in Visual Studio
 
 ### Debugging Mixed Reality Toolkit
 
