@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         [SerializeField]
         [Tooltip("The distance the user's pointer can make before its considered a drag.")]
         [Range(0.0f, 2.0f)]
-        private float handDeltaMagThreshold = 0.1f;
+        private float handDeltaMagThreshold = 0.4f;
 
         /// <summary>
         /// The distance the user's pointer can make before its considered a drag.
@@ -96,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         [SerializeField]
         [Tooltip("Seconds the user's pointer can intersect a controller item before it is considerd a drag.")]
         [Range(0.0f, 2.0f)]
-        private float dragTimeThreshold = 0.25f;
+        private float dragTimeThreshold = 0.75f;
 
         /// <summary>
         /// Seconds the user's pointer can intersect a controller item before it is considerd a drag.
