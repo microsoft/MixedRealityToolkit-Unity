@@ -140,7 +140,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public static float GetFloat(GameObject host, int propId)
         {
             if (host == null)
+            {
                 return 0;
+            }
 
             MaterialPropertyBlock block = InteractableThemeShaderUtils.GetPropertyBlock(host);
             return block.GetFloat(propId);

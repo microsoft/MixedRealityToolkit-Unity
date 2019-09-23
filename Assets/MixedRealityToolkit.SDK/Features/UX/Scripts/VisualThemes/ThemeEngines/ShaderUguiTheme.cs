@@ -9,7 +9,11 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
-    public class InteractableShaderUguiTheme : InteractableThemeBase
+    /// <summary>
+    /// This class is used to apply changes to shader properties on Unity UI based elements, since they do not support MaterialPropertyBlocks. 
+    /// Use this only on a Unity UI based target component.
+    /// </summary>
+    public class ShaderUguiTheme : InteractableThemeBase
     {
         /// <inheritdoc />
         public override bool AreShadersSupported => true;
@@ -23,12 +27,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         protected const string DefaultShaderProperty = "_Color";
 
-        public InteractableShaderUguiTheme()
+        public ShaderUguiTheme()
         {
-            Types = new Type[] { typeof(Image) };
+            Types = new Type[] { typeof(Graphic) };
             Name = "Shader Float Ugui";
         }
 
+        /// <inheritdoc />
         public override ThemeDefinition GetDefaultThemeDefinition()
         {
             return new ThemeDefinition()
@@ -63,15 +68,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     shaderProperties.Add(prop);
                 }
             }
+            var targetGraphic = host.GetComponent<Graphic>();
+            if (targetGraphic == null)
+            {
+                Debug.LogError("Target Graphic is null for shader theme.");
+            }
 
-            material = host.GetComponent<Image>()?.material;
+            material = targetGraphic.material;
         }
 
         /// <inheritdoc />
         public override void SetValue(ThemeStateProperty property, int index, float percentage)
         {
             if (Host == null)
+            {
                 return;
+            }
 
             int propId = property.GetShaderPropertyId();
             float newValue;
@@ -98,7 +110,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public override ThemePropertyValue GetProperty(ThemeStateProperty property)
         {
             if (Host == null)
+            {
                 return emptyValue;
+            }
 
             startValue.Reset();
 

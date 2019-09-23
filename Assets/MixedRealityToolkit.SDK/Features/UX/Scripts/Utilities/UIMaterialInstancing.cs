@@ -6,14 +6,15 @@ using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
-    public class MaterialInstancing : MonoBehaviour
+    [RequireComponent(typeof(CanvasRenderer))]
+    public class UIMaterialInstancing : MonoBehaviour
     {
         private void Awake()
         {
-            var images =  gameObject.GetComponentsInChildren<Image>(true);
-            foreach (var image in images)
+            var graphics =  gameObject.GetComponentsInChildren<Graphic>(true);
+            foreach (var graphic in graphics)
             {
-                image.material = Instantiate(image.material);
+                graphic.material = Instantiate(graphic.material);
             }
 
             enabled = false;
