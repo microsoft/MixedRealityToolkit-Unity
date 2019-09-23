@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
     /// <summary>
     /// A set of child objects organized in a series of Rows/Columns that can scroll in either the X or Y direction.
     /// </summary>
-    public class ScrollingObjectCollection : BaseObjectCollection, IMixedRealityPointerHandler, IMixedRealityTouchHandler, IMixedRealitySourceStateHandler
+    public class ScrollingObjectCollection : BaseObjectCollection, IMixedRealityPointerHandler, IMixedRealityTouchHandler, IMixedRealitySourceStateHandler, IMixedRealityInputHandler
     {
 
         /// <summary>
@@ -438,6 +438,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             get { return clipBox; }
         }
 
+        #region scroll state variables
+
         // Tracks whether an item in the list is being interacted with
         private bool isEngaged = false;
 
@@ -459,37 +461,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         // A list of new child nodes that have new child renderers that need to be removed to the clippingBox
         private List<ObjectCollectionNode> nodesToUnclip = new List<ObjectCollectionNode>();
 
-        #region scroll state variables
-
         private IMixedRealityPointer currentPointer;
 
         // The point where the original PointerDown occured
         private Vector3 pointerHitPoint;
+
         // The ray length of original pointer down
         private float pointerHitDistance;
 
-        /// <summary>
-        /// Gets the cursor position (pointer end point) on the scrollable plane,
-        /// projected onto the direction being scrolled.
-        /// Returns false if the pointer is null or pointer details is null.
-        /// </summary>
-        private bool TryGetPointerPositionOnPlane(out Vector3 result)
-        {
-            if (currentPointer.GetType() == typeof(PokePointer))
-            {
-                result = currentPointer.Position;
-                return true;
-            }
-            if (currentPointer?.Result?.Details != null) 
-            { 
-                var endPoint = RayStep.GetPointByDistance(currentPointer.Rays, pointerHitDistance);
-                var scrollVector = (scrollDirection == ScrollDirectionType.UpAndDown) ? transform.up : transform.right;
-                result =  pointerHitPoint + Vector3.Project(endPoint - pointerHitPoint, scrollVector);
-                return true;
-            } 
-            result = Vector3.zero;
-            return false;
-        }
+        // This flag is set by PointerUp to prevent InputUp from continuing to propigate. e.g. Interactables
+        private bool shouldSwallowEvents = false;
 
         #endregion scroll state variables
 
@@ -841,8 +822,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         private void OnEnable()
         {
             //Register for global input events
-            if(CoreServices.InputSystem != null)
+            if (CoreServices.InputSystem != null)
             {
+                CoreServices.InputSystem.RegisterHandler<IMixedRealityInputHandler>(this);
                 CoreServices.InputSystem.RegisterHandler<IMixedRealityTouchHandler>(this);
                 CoreServices.InputSystem.RegisterHandler<IMixedRealityPointerHandler>(this);
             }
@@ -980,8 +962,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             //Unregister global input events
             if (CoreServices.InputSystem != null)
             {
-                CoreServices.InputSystem.RegisterHandler<IMixedRealityTouchHandler>(this);
-                CoreServices.InputSystem.RegisterHandler<IMixedRealityPointerHandler>(this);
+                CoreServices.InputSystem.UnregisterHandler<IMixedRealityInputHandler>(this);
+                CoreServices.InputSystem.UnregisterHandler<IMixedRealityTouchHandler>(this);
+                CoreServices.InputSystem.UnregisterHandler<IMixedRealityPointerHandler>(this);
             }
 
             if (useOnPreRender && cameraMethods != null)
@@ -1019,6 +1002,29 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 nodesToUnclip.Clear();
             }
 
+        }
+
+        /// <summary>
+        /// Gets the cursor position (pointer end point) on the scrollable plane,
+        /// projected onto the direction being scrolled.
+        /// Returns false if the pointer is null or pointer details is null.
+        /// </summary>
+        private bool TryGetPointerPositionOnPlane(out Vector3 result)
+        {
+            if (currentPointer.GetType() == typeof(PokePointer))
+            {
+                result = currentPointer.Position;
+                return true;
+            }
+            if (currentPointer?.Result?.Details != null)
+            {
+                var endPoint = RayStep.GetPointByDistance(currentPointer.Rays, pointerHitDistance);
+                var scrollVector = (scrollDirection == ScrollDirectionType.UpAndDown) ? transform.up : transform.right;
+                result = pointerHitPoint + Vector3.Project(endPoint - pointerHitPoint, scrollVector);
+                return true;
+            }
+            result = Vector3.zero;
+            return false;
         }
 
         /// <summary>
@@ -2031,7 +2037,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 if(isDragging)
                 {
                     eventData.Use();
-
+                    shouldSwallowEvents = true;
                     //Its a drag release
                     initialScrollerPos = workingScrollerPos;
                     velocityState = VelocityState.Calculating;
@@ -2177,7 +2183,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 {
                     //Its a drag release
                     initialScrollerPos = workingScrollerPos;
-
                 }
 
                 if (isDragging)
@@ -2192,6 +2197,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         }
 
         void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData) { }
+
+        void IMixedRealityInputHandler.OnInputUp(InputEventData eventData)
+        {
+            if(shouldSwallowEvents)
+            {
+                //Prevents the handled event from PointerUp to continue propigating
+                eventData.Use();
+                shouldSwallowEvents = false;
+            }
+        }
+
+        void IMixedRealityInputHandler.OnInputDown(InputEventData eventData) {  }
 
         #endregion IMixedRealitySourceStateHandler implementation
     }
