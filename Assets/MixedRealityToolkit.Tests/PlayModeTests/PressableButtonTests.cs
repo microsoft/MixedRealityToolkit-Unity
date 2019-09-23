@@ -23,10 +23,11 @@ using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class PressableButtonTests : IPrebuildSetup
+    public class PressableButtonTests : BasePlayModeTests
     {
-        public void Setup()
+        public override void Setup()
         {
+            base.Setup();
             PlayModeTestUtilities.EnsureTextMeshProEssentials();
         }
 
@@ -69,16 +70,26 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             return testButton;
         }
 
-        [SetUp]
-        public void TestSetup()
+        private static bool AreApproximatelyEqual(float f0, float f1, float tolerance)
         {
-            PlayModeTestUtilities.Setup();
+            return Mathf.Abs(f0 - f1) < tolerance;
         }
 
-        [TearDown]
-        public void TearDown()
+        /// <summary>
+        /// Move the hand forward to press button, then off to the right
+        /// </summary>
+        private IEnumerator PressButtonWithHand()
         {
-            PlayModeTestUtilities.TearDown();
+            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
+            int numSteps = 42;
+            Vector3 p1 = new Vector3(0, 0, 0.5f);
+            Vector3 p2 = new Vector3(0, 0, 1.08f);
+            Vector3 p3 = new Vector3(0.1f, 0, 1.08f);
+
+            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService, ArticulatedHandPose.GestureId.Open, p1);
+            yield return PlayModeTestUtilities.MoveHandFromTo(p1, p2, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHandFromTo(p2, p3, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
         }
 
         #endregion
@@ -126,16 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             });
 
             // Move the hand forward to press button, then off to the right
-            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
-            int numSteps = 30;
-            Vector3 p1 = new Vector3(0, 0, 0.5f);
-            Vector3 p2 = new Vector3(0, 0, 1.08f);
-            Vector3 p3 = new Vector3(0.1f, 0, 1.08f);
-
-            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
-            yield return PlayModeTestUtilities.MoveHandFromTo(p1, p2, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
-            yield return PlayModeTestUtilities.MoveHandFromTo(p2, p3, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSimulationService);
-            yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
+            yield return PressButtonWithHand();
 
             Assert.IsTrue(buttonPressed, "Button did not get pressed when hand moved to press it.");
 
@@ -143,6 +145,50 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return null;
         }
+
+        /// <summary>
+        /// Test disabling the PressableButton gameobject and re-enabling
+        /// </summary>
+        [UnityTest]
+        public IEnumerator DisablePressableButton([ValueSource(nameof(PressableButtonsTestPrefabFilenames))] string prefabFilename)
+        {
+            GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
+
+            // Move the camera to origin looking at +z to more easily see the button.
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // For some reason, we would only get null pointers when the hand tries to click a button
+            // at specific positions, hence the unusal z value.
+            testButton.transform.position = new Vector3(0, 0, 1.067121f);
+            // The scale of the button was also unusual in the repro case
+            testButton.transform.localScale = Vector3.one * 1.5f;
+
+            PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
+            Assert.IsNotNull(buttonComponent);
+
+            bool buttonPressed = false;
+            buttonComponent.ButtonPressed.AddListener(() =>
+            {
+                buttonPressed = true;
+            });
+
+            yield return null;
+
+            // Test pressing button with hand when disabled
+            testButton.SetActive(false);
+            yield return PressButtonWithHand();
+            Assert.IsFalse(buttonPressed, "Button got pressed when component was disabled.");
+
+            // Test pressing button with hand when enabled
+            testButton.SetActive(true);
+            yield return PressButtonWithHand();
+            Assert.IsTrue(buttonPressed, "Button did not get pressed when hand moved to press it.");
+
+            Object.Destroy(testButton);
+
+            yield return null;
+        }
+
 
         /// <summary>
         /// This test reproduces P0 issue 4566 which didn't trigger a button with enabled backpressprotection 
@@ -489,11 +535,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Object.Destroy(testButton);
 
             yield return null;
-        }
-
-        private static bool AreApproximatelyEqual(float f0, float f1, float tolerance)
-        {
-            return Mathf.Abs(f0 - f1) < tolerance;
         }
         #endregion
     }
