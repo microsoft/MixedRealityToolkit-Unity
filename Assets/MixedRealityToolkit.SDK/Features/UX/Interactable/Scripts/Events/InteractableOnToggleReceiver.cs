@@ -8,7 +8,7 @@ using UnityEngine.Events;
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
-    /// A receiver that listens to toggle events
+    /// An event receiver that listens to toggle events
     /// </summary>
     public class InteractableOnToggleReceiver : ReceiverBase
     {

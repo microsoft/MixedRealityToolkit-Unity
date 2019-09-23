@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
@@ -15,8 +16,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Maintains a collection of themes that react to state changes and provide sensory feedback
     /// Passes state information and input data on to receivers that detect patterns and does stuff.
     /// </summary>
-    // TODO: Make sure all shader values are batched by theme
-
     [System.Serializable]
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Interactable.html")]
     public class Interactable :
@@ -46,28 +45,39 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        protected readonly List<IMixedRealityPointer> focusingPointers = new List<IMixedRealityPointer>();
-
         /// <summary>
         /// Pointers that are focusing the interactable
         /// </summary>
         public List<IMixedRealityPointer> FocusingPointers => focusingPointers;
+        protected readonly List<IMixedRealityPointer> focusingPointers = new List<IMixedRealityPointer>();
 
-        protected readonly HashSet<IMixedRealityInputSource> pressingInputSources = new HashSet<IMixedRealityInputSource>();
         /// <summary>
         /// Input sources that are pressing the interactable
         /// </summary>
         public HashSet<IMixedRealityInputSource> PressingInputSources => pressingInputSources;
-        
+        protected readonly HashSet<IMixedRealityInputSource> pressingInputSources = new HashSet<IMixedRealityInputSource>();
+
         /// <summary>
         /// Is the interactable enabled?
         /// </summary>
         public bool Enabled = true;
 
+        [FormerlySerializedAs("States")]
+        [SerializeField]
+        private States states;
+
         /// <summary>
         /// A collection of states and basic state logic
         /// </summary>
-        public States States;
+        public States States
+        {
+            get { return states; }
+            set
+            {
+                states = value;
+                SetupStates();
+            }
+        }
 
         /// <summary>
         /// The state logic for comparing state
@@ -138,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             var result = new T();
             result.Event = interactableEvent.Event;
             interactableEvent.Receiver = result;
-            Events.Add(interactableEvent);
+            InteractableEvents.Add(interactableEvent);
             return result;
         }
 
@@ -148,11 +158,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public T GetReceiver<T>() where T : ReceiverBase
         {
-            for (int i = 0; i < Events.Count; i++)
+            for (int i = 0; i < InteractableEvents.Count; i++)
             {
-                if (Events[i] != null && Events[i].Receiver is T)
+                if (InteractableEvents[i] != null && InteractableEvents[i].Receiver is T)
                 {
-                    return (T) Events[i].Receiver;
+                    return (T) InteractableEvents[i].Receiver;
                 }
             }
             return null;
@@ -165,45 +175,62 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public List<T> GetReceivers<T>() where T : ReceiverBase
         {
             List<T> result = new List<T>();
-            for (int i = 0; i < Events.Count; i++)
+            for (int i = 0; i < InteractableEvents.Count; i++)
             {
-                if (Events[i] != null && Events[i].Receiver is T)
+                if (InteractableEvents[i] != null && InteractableEvents[i].Receiver is T)
                 {
-                    result.Add((T)Events[i].Receiver);
+                    result.Add((T)InteractableEvents[i].Receiver);
                 }
             }
             return result;
         }
 
+        [FormerlySerializedAs("Profiles")]
+        [SerializeField]
+        private List<InteractableProfileItem> profiles = new List<InteractableProfileItem>();
         /// <summary>
         /// List of profiles can match themes with gameObjects
         /// </summary>
-        public List<InteractableProfileItem> Profiles = new List<InteractableProfileItem>();
+        public List<InteractableProfileItem> Profiles
+        {
+            get { return profiles; }
+            set 
+            {
+                profiles = value;
+                SetupThemes();
+            }
+        }
 
         /// <summary>
         /// Base onclick event
         /// </summary>
         public UnityEvent OnClick = new UnityEvent();
 
+        [SerializeField]
+        private List<InteractableEvent> Events = new List<InteractableEvent>();
         /// <summary>
         /// List of events added to this interactable
         /// </summary>
-        public List<InteractableEvent> Events = new List<InteractableEvent>();
+        public List<InteractableEvent> InteractableEvents
+        {
+            get { return Events; }
+            set
+            {
+                Events = value;
+                SetupEvents();
+            }
+        }
 
         /// <summary>
         /// The list of running theme instances to receive state changes
         /// When the dimension index changes, the list of themes that are updated changes to those assigned to that dimension.
         /// </summary>
-        public List<InteractableThemeBase> runningThemesList = new List<InteractableThemeBase>();
+        private List<InteractableThemeBase> activeThemes = new List<InteractableThemeBase>();
 
-        // the list of profile settings, so theme values are not directly effected
-        protected List<ProfileSettings> runningProfileSettings = new List<ProfileSettings>();
         // directly manipulate a theme value, skip blending
         protected bool forceUpdate = false;
 
-        //
-        // States
-        //
+        #region States
 
         /// <summary>
         /// Has focus
@@ -296,6 +323,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected State lastState;
         protected bool wasDisabled = false;
 
+        #endregion
+
         // check for isGlobal or RequiresFocus changes
         protected bool requiresFocusValueCheck;
         protected bool isGlobalValueCheck;
@@ -317,39 +346,43 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         protected Coroutine globalTimer;
 
-        // 
-        // Clicking
-        //
+        #region Click Variables
 
         // A click must occur within this many seconds after an input down
         protected float clickTime = 1.5f;
         protected Coroutine clickValidTimer;
-        // how many clicks does it take?
         protected int clickCount = 0;
         protected float globalFeedbackClickTime = 0.3f;
 
         /// <summary>
-        /// how many times this interactable was clicked
-        /// good for checking when a click event occurs.
+        /// How many times this interactable was clicked
         /// </summary>
+        /// <remarks>
+        /// Useful for checking when a click event occurs.
+        /// </remarks>
         public int ClickCount => clickCount;
 
-        // 
-        // Variables for determining gesture state
-        //
+        #endregion
+
+        #region Gesture State Variables
 
         /// <summary>
         /// The position of the controller when input down occurs.
         /// Used to determine when controller has moved far enough to trigger gesture
         /// </summary>
         protected Vector3? dragStartPosition = null;
+
         // Input must move at least this distance before a gesture is considered started, for 2D input like thumbstick
         static readonly float gestureStartThresholdVector2 = 0.1f;
+
         // Input must move at least this distance before a gesture is considered started, for 3D input
         static readonly float gestureStartThresholdVector3 = 0.05f;
+
         // Input must move at least this distance before a gesture is considered started, for
         // mixed reality pose input. This is the distance and hand or controller needs to move
         static readonly float gestureStartThresholdMixedRealityPose = 0.1f;
+
+        #endregion
 
         /// <summary>
         /// Register OnClick extra handlers
@@ -374,6 +407,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         #region InspectorHelpers
+
         /// <summary>
         /// Get a list of Mixed Reality Input Actions from the input actions profile.
         /// </summary>
@@ -448,32 +482,33 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Returns a list of states assigned to the Interactable
         /// </summary>
+        [System.Obsolete("Use States.StateList instead")]
         public State[] GetStates()
         {
             if (States != null)
             {
-                return States.GetStates();
+                return States.StateList.ToArray();
             }
 
             return new State[0];
         }
+
         #endregion InspectorHelpers
 
         #region MonoBehaviorImplementation
 
         protected virtual void Awake()
         {
-
             if (States == null)
             {
-                States = States.GetDefaultInteractableStates();
+                States = GetDefaultInteractableStates();
             }
-            InputAction = ResolveInputAction(InputActionId);
-            SetupEvents();
-            SetupThemes();
-            SetupStates();
 
-            if(StartDimensionIndex > 0)
+            InputAction = ResolveInputAction(InputActionId);
+
+            RefreshSetup();
+
+            if (StartDimensionIndex > 0)
             {
                 SetDimensionIndex(StartDimensionIndex);
             }
@@ -499,7 +534,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (focusingPointers.Count == 0)
             {
                 ResetBaseStates();
-                ForceUpdateThemes();
+                RefreshSetup();
             }
         }
 
@@ -562,19 +597,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
             }
 
-            for (int i = 0; i < Events.Count; i++)
+            for (int i = 0; i < InteractableEvents.Count; i++)
             {
-                if (Events[i].Receiver != null)
+                if (InteractableEvents[i].Receiver != null)
                 {
-                    Events[i].Receiver.OnUpdate(StateManager, this);
+                    InteractableEvents[i].Receiver.OnUpdate(StateManager, this);
                 }
             }
 
-            for (int i = 0; i < runningThemesList.Count; i++)
+            for (int i = 0; i < activeThemes.Count; i++)
             {
-                if (runningThemesList[i].Loaded)
+                if (activeThemes[i].Loaded)
                 {
-                    runningThemesList[i].OnUpdate(StateManager.CurrentState().ActiveIndex, this, forceUpdate);
+                    activeThemes[i].OnUpdate(StateManager.CurrentState().ActiveIndex, forceUpdate);
                 }
             }
 
@@ -623,7 +658,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         protected virtual void SetupStates()
         {
-            StateManager = States.SetupLogic();
+            Debug.Assert(typeof(InteractableStates).IsAssignableFrom(States.StateModelType), $"Invalid state model of type {States.StateModelType}. State model must extend from {typeof(InteractableStates)}");
+            StateManager = (InteractableStates)States.CreateStateModel();
         }
 
         /// <summary>
@@ -631,54 +667,44 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         protected virtual void SetupEvents()
         {
-            InteractableTypesContainer interactableTypes = InteractableEvent.GetEventTypes();
-
-            for (int i = 0; i < Events.Count; i++)
+            for (int i = 0; i < InteractableEvents.Count; i++)
             {
-                Events[i].Receiver = InteractableEvent.GetReceiver(Events[i], interactableTypes);
-                Events[i].Receiver.Host = this;
+                InteractableEvents[i].Receiver = InteractableEvent.CreateReceiver(InteractableEvents[i]);
+                InteractableEvents[i].Receiver.Host = this;
             }
         }
 
         /// <summary>
         /// Creates the list of theme instances based on all the theme settings
+        /// Themes will be created for the current dimension index
         /// </summary>
         protected virtual void SetupThemes()
         {
-            runningThemesList = new List<InteractableThemeBase>();
-            runningProfileSettings = new List<ProfileSettings>();
-            for (int i = 0; i < Profiles.Count; i++)
+            activeThemes.Clear();
+
+            // Profiles are one per GameObject/ThemeContainer
+            // ThemeContainers are one per dimension
+            // ThemeDefinitions are one per desired effect (i.e theme)
+            foreach (var profile in Profiles)
             {
-                ProfileSettings profileSettings = new ProfileSettings();
-                List<ThemeSettings> themeSettingsList = new List<ThemeSettings>();
-                for (int j = 0; j < Profiles[i].Themes.Count; j++)
+                if (profile.Target != null && profile.Themes != null)
                 {
-                    Theme theme = Profiles[i].Themes[j];
-                    ThemeSettings themeSettings = new ThemeSettings();
-                    if (Profiles[i].Target != null && theme != null)
+                    if (dimensionIndex >= 0 && dimensionIndex < profile.Themes.Count)
                     {
-                        List<InteractableThemePropertySettings> tempSettings = new List<InteractableThemePropertySettings>();
-                        for (int n = 0; n < theme.Settings.Count; n++)
+                        var themeContainer = profile.Themes[dimensionIndex];
+                        if (themeContainer.States.Equals(States))
                         {
-                            InteractableThemePropertySettings settings = theme.Settings[n];
-                            settings.Theme = InteractableProfileItem.GetTheme(settings, Profiles[i].Target);
-
-                            // add themes to theme list based on dimension
-                            if (j == dimensionIndex)
+                            foreach (var themeDefinition in themeContainer.Definitions)
                             {
-                                runningThemesList.Add(settings.Theme);
+                                activeThemes.Add(InteractableThemeBase.CreateAndInitTheme(themeDefinition, profile.Target));
                             }
-
-                            tempSettings.Add(settings);
                         }
-
-                        themeSettings.Settings = tempSettings;
-                        themeSettingsList.Add(themeSettings);
+                        else
+                        {
+                            Debug.LogWarning($"Could not use {themeContainer.name} in Interactable on {gameObject.name} because Theme's States does not match {States.name}");
+                        }
                     }
                 }
-
-                profileSettings.ThemeSettings = themeSettingsList;
-                runningProfileSettings.Add(profileSettings);
             }
         }
 
@@ -1078,7 +1104,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 if (currentIndex != dimensionIndex)
                 {
-                    FilterThemesByDimensions();
+                    SetupThemes();
                     forceUpdate = true;
                 }
             }
@@ -1102,12 +1128,24 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (currentIndex != dimensionIndex)
             {
-                FilterThemesByDimensions();
+                SetupThemes();
                 forceUpdate = true;
             }
         }
 
+        /// <summary>
+        /// Force re-initialization of Interactable from events, themes and state references
+        /// </summary>
+        [System.Obsolete("Use RefreshSetup() instead")]
         public void ForceUpdateThemes()
+        {
+            RefreshSetup();
+        }
+
+        /// <summary>
+        /// Force re-initialization of Interactable from events, themes and state references
+        /// </summary>
+        public void RefreshSetup()
         {
             SetupEvents();
             SetupThemes();
@@ -1126,24 +1164,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             MixedRealityInputAction[] actions = InputSystem.InputSystemProfile.InputActionsProfile.InputActions;
             index = Mathf.Clamp(index, 0, actions.Length - 1);
             return actions[index];
-        }
-
-        /// <summary>
-        /// Get the themes based on the current dimesionIndex
-        /// </summary>
-        protected void FilterThemesByDimensions()
-        {
-            runningThemesList = new List<InteractableThemeBase>();
-
-            for (int i = 0; i < runningProfileSettings.Count; i++)
-            {
-                ProfileSettings settings = runningProfileSettings[i];
-                ThemeSettings themeSettings = settings.ThemeSettings[dimensionIndex];
-                for (int j = 0; j < themeSettings.Settings.Count; j++)
-                {
-                    runningThemesList.Add(themeSettings.Settings[j].Theme);
-                }
-            }
         }
 
         /// <summary>
@@ -1246,11 +1266,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             OnClick.Invoke();
             clickCount++;
 
-            for (int i = 0; i < Events.Count; i++)
+            for (int i = 0; i < InteractableEvents.Count; i++)
             {
-                if (Events[i].Receiver != null)
+                if (InteractableEvents[i].Receiver != null)
                 {
-                    Events[i].Receiver.OnClick(StateManager, this, pointer);
+                    InteractableEvents[i].Receiver.OnClick(StateManager, this, pointer);
                 }
             }
 
@@ -1318,6 +1338,34 @@ namespace Microsoft.MixedReality.Toolkit.UI
             clickValidTimer = null;
         }
 
+        /// <summary>
+        /// Creates the default States ScriptableObject configured for Interactable
+        /// </summary>
+        /// <returns>Default Interactable States asset</returns>
+        public static States GetDefaultInteractableStates()
+        {
+            States result = ScriptableObject.CreateInstance<States>();
+            InteractableStates allInteractableStates = new InteractableStates();
+            result.StateModelType = typeof(InteractableStates);
+            result.StateList = allInteractableStates.GetDefaultStates();
+            result.DefaultIndex = 0;
+            return result;
+        }
+
+        /// <summary>
+        /// Helper function to create a new Theme asset using Default Interactable States and provided theme definitions
+        /// </summary>
+        /// <param name="themeDefintions">List of Theme Definitions to associate with Theme asset</param>
+        /// <returns>Theme ScriptableObject instance</returns>
+        public static Theme GetDefaultThemeAsset(List<ThemeDefinition> themeDefintions)
+        {
+            // Create the Theme configuration asset
+            Theme newTheme = ScriptableObject.CreateInstance<Theme>();
+            newTheme.States = GetDefaultInteractableStates();
+            newTheme.Definitions = themeDefintions;
+            return newTheme;
+        }
+
         #endregion InteractableUtilities
 
         #region VoiceCommands
@@ -1343,11 +1391,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         protected void SendVoiceCommands(string command, int index, int length)
         {
-            for (int i = 0; i < Events.Count; i++)
+            for (int i = 0; i < InteractableEvents.Count; i++)
             {
-                if (Events[i].Receiver != null)
+                if (InteractableEvents[i].Receiver != null)
                 {
-                    Events[i].Receiver.OnVoiceCommand(StateManager, this, command, index, length);
+                    InteractableEvents[i].Receiver.OnVoiceCommand(StateManager, this, command, index, length);
                 }
             }
 

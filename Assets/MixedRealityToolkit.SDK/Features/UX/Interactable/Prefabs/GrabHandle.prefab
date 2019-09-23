@@ -77,11 +77,9 @@ MonoBehaviour:
   - Target: {fileID: 6956884834071603112}
     Themes:
     - {fileID: 11400000, guid: d7354f15f868b394f9c15dc5c1209056, type: 2}
-    HadDefaultTheme: 1
   - Target: {fileID: 6956884834527463984}
     Themes:
     - {fileID: 11400000, guid: d5acbeaf80ef1244bbf7ec3a5ab9de10, type: 2}
-    HadDefaultTheme: 1
   OnClick:
     m_PersistentCalls:
       m_Calls: []
