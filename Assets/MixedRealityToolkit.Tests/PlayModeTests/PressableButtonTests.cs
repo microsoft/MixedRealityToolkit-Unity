@@ -459,10 +459,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             testButton.transform.localScale = zScale;
             yield return null;
 
-            float startPushDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.StartPushDistance).z - zeroPushDistanceWorld;
-            float maxPushDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.MaxPushDistance).z - zeroPushDistanceWorld;
-            float pressDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.PressDistance).z - zeroPushDistanceWorld;
-            float releaseDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.PressDistance - button.ReleaseDistanceDelta).z - zeroPushDistanceWorld;
+            float zeroPushDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(0.0f).z;
+
+            float startPushDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.StartPushDistance).z - zeroPushDistanceWorld_Scaled;
+            float maxPushDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.MaxPushDistance).z - zeroPushDistanceWorld_Scaled;
+            float pressDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.PressDistance).z - zeroPushDistanceWorld_Scaled;
+            float releaseDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.PressDistance - button.ReleaseDistanceDelta).z - zeroPushDistanceWorld_Scaled;
 
             float tolerance = 0.00000001f;
 
