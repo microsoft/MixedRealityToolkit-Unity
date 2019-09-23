@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Physics;
+using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using System.Collections;
@@ -10,7 +11,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
+namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
     /// <summary>
     /// A set of child objects organized in a series of Rows/Columns that can scroll in either the X or Y direction.
@@ -892,6 +893,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
                         isDragging = true;
                         velocityState = VelocityState.None;
+
+                        //now that we're dragging, reset the interacted with interactable if it exsists
+                        Interactable ixable = currentPointer.Result.CurrentPointerTarget.GetComponent<Interactable>();
+                        if(ixable != null)
+                        {
+                           ixable.ResetAllStates();
+                        }
+
+                        //TODO: Reset the state of PressableButton, when possible. 
 
                         //reset initialHandPos to prevent the scroller from jumping
                         initialScrollerPos = scrollContainer.transform.localPosition;

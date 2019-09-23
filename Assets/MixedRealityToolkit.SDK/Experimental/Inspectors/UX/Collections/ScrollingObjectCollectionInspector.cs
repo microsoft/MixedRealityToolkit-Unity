@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Experimental.Utilities;
+using Microsoft.MixedReality.Toolkit.Experimental.UI;
+using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEditor;
 using UnityEngine;
@@ -127,6 +128,22 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 
             EditorGUILayout.Space();
 
+            EditorGUILayout.HelpBox("In order for a ScrollableObjectCollection to work properly with PressableButton, ReleaseOnTouchEnd must be inactive, and InteractableOnClick should be set to EventOnClickCompletion.", MessageType.Info);
+
+            if (GUILayout.Button("Set Up PressableButtons"))
+            {
+                PressableButton[] pBs = scrollContainer.transform.GetComponentsInChildren<PressableButton>();
+                foreach (PressableButton p in pBs)
+                {
+                    p.ReleaseOnTouchEnd = false;
+                }
+
+                PhysicalPressEventRouter[] routers = scrollContainer.transform.GetComponentsInChildren<PhysicalPressEventRouter>();
+                foreach (PhysicalPressEventRouter r in routers)
+                {
+                    r.InteractableOnClick = PhysicalPressEventRouter.PhysicalPressEventBehavior.EventOnClickCompletion;
+                }
+            }
 
             EditorGUILayout.LabelField("Scrolling Properties", EditorStyles.boldLabel);
 
