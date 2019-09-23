@@ -49,17 +49,21 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get { return autoFollowAtDistance; }
             set
             {
-                if (autoFollowAtDistance != value)
-                {
-                    autoFollowAtDistance = value;
+                autoFollowAtDistance = value;
 
-                    if (autoFollowAtDistance)
+                if (autoFollowAtDistance)
+                {
+                    if (autoFollowDistanceCheck == null)
                     {
                         autoFollowDistanceCheck = StartCoroutine(AutoFollowDistanceCheck());
                     }
-                    else
+                }
+                else
+                {
+                    if (autoFollowDistanceCheck != null)
                     {
                         StopCoroutine(autoFollowDistanceCheck);
+                        autoFollowDistanceCheck = null;
                     }
                 }
             }
@@ -117,9 +121,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 autoFollowTransformTarget = transform;
             }
 
-            if (autoFollowAtDistance)
+            // Begin the follow coroutine if requested at the beginning.
+            AutoFollowAtDistance = autoFollowAtDistance;
+        }
+
+        private void OnValidate()
+        {
+            // When playing make sure the coroutine starts and stops based on inspector updates.
+            if (Application.isPlaying)
             {
-                autoFollowDistanceCheck = StartCoroutine(AutoFollowDistanceCheck());
+                AutoFollowAtDistance = autoFollowAtDistance;
             }
         }
 
@@ -174,9 +185,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     float autoFollowDistanceSq = autoFollowDistance * autoFollowDistance;
 
-                    if ((mainCamera.transform.position - autoFollowTransformTarget.position).sqrMagnitude >= autoFollowDistanceSq)
+                    if (autoFollowTransformTarget != null)
                     {
-                        SetFollowMeBehavior(true);
+                        if ((mainCamera.transform.position - autoFollowTransformTarget.position).sqrMagnitude >= autoFollowDistanceSq)
+                        {
+                            SetFollowMeBehavior(true);
+                        }
                     }
                 }
                 yield return null;
