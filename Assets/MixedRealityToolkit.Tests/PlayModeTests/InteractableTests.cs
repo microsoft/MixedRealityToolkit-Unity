@@ -25,31 +25,30 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    class InteractableTests
+    public class InteractableTests : BasePlayModeTests
     {
-        const float buttonPressAnimationDelay = 0.25f;
-        const float buttonReleaseAnimationDelay = 0.25f;
-        const string defaultInteractablePrefabAssetPath = "Assets/MixedRealityToolkit.Examples/Demos/UX/Interactables/Prefabs/Model_PushButton.prefab";
-        const string radialSetPrefabAssetPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/RadialSet.prefab";
+        private const float ButtonPressAnimationDelay = 0.25f;
+        private const float ButtonReleaseAnimationDelay = 0.25f;
+        private const float EaseDelay = 0.25f;
+        private const string DefaultInteractablePrefabAssetPath = "Assets/MixedRealityToolkit.Examples/Demos/UX/Interactables/Prefabs/Model_PushButton.prefab";
+        private const string RadialSetPrefabAssetPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/RadialSet.prefab";
+
+        private readonly Color DefaultColor = Color.blue;
+        private readonly Color FocusColor = Color.yellow;
+        private readonly Color DisabledColor = Color.gray;
 
         [SetUp]
-        public void Setup()
+        public override void Setup()
         {
-            PlayModeTestUtilities.Setup();
+            base.Setup();
             TestUtilities.PlayspaceToOriginLookingForward();
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            PlayModeTestUtilities.TearDown();
         }
 
         /// <summary>
         /// Instantiates a push button prefab and uses simulated hand input to press it.
         /// </summary>
         [UnityTest]
-        public IEnumerator TestSimulatedHandInputOnPrefab()
+        public IEnumerator TestHandInputOnPrefab()
         {
             // Load interactable prefab
             Interactable interactable;
@@ -77,28 +76,21 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
             yield return PlayModeTestUtilities.MoveHandFromTo(p1, p2, numSteps, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
 
-            float pressStartTime = Time.time;
-            bool wasTranslated = false;
-            while (Time.time < pressStartTime + buttonPressAnimationDelay)
-            {   // If the transform is moved at any point during this interval, we were successful
-                yield return new WaitForFixedUpdate();
-                wasTranslated |= targetStartPosition != translateTargetObject.localPosition;
-            }
+            yield return CheckButtonTranslation(targetStartPosition, translateTargetObject);
 
             // Move the hand back
             yield return PlayModeTestUtilities.MoveHandFromTo(p2, p3, numSteps, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
             yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
-            yield return new WaitForSeconds(buttonReleaseAnimationDelay);
+            yield return new WaitForSeconds(ButtonReleaseAnimationDelay);
 
             Assert.True(wasClicked, "Interactable was not clicked.");
-            Assert.True(wasTranslated, "Transform target object was not translated by action.");
         }
 
         /// <summary>
         /// Instantiates a push button prefab and uses simulated global input events to press it.
         /// </summary>
         [UnityTest]
-        public IEnumerator TestSimulatedGlobalSelectInputOnPrefab()
+        public IEnumerator TestSelectGlobalInput()
         {
             // Face the camera in the opposite direction so we don't focus on button
             MixedRealityPlayspace.PerformTransformation(p =>
@@ -142,22 +134,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Wait for at least one frame explicitly to ensure the input goes through
             yield return new WaitForFixedUpdate();
 
-            float pressStartTime = Time.time;
-            bool wasTranslated = false;
-            while (Time.time < pressStartTime + buttonPressAnimationDelay)
-            {   // If the transform is moved at any point during this interval, we were successful
-                yield return new WaitForFixedUpdate();
-                wasTranslated |= targetStartPosition != translateTargetObject.localPosition;
-            }
+            yield return CheckButtonTranslation(targetStartPosition, translateTargetObject);
 
             // Raise a select up input event, then wait for transition to take place
             CoreServices.InputSystem.RaiseOnInputUp(defaultInputSource, Handedness.Right, interactable.InputAction);
-            // Wait for at least one frame explicitly to ensure the input goes through
-            yield return new WaitForFixedUpdate();
-            yield return new WaitForSeconds(buttonReleaseAnimationDelay);
+            // Wait for at button release animation to finish
+            yield return new WaitForSeconds(ButtonReleaseAnimationDelay);
 
             Assert.True(wasClicked, "Interactable was not clicked.");
-            Assert.True(wasTranslated, "Transform target object was not translated by action.");
             Assert.False(interactable.HasFocus, "Interactable had focus");
 
             // Remove as global listener
@@ -168,9 +152,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Assembles a push button from primitives and uses simulated hand input to press it.
         /// </summary>
         [UnityTest]
-        public IEnumerator TestSimulatedHandInputOnRuntimeAssembled()
+        public IEnumerator TestHandInputOnRuntimeAssembled()
         {
-            // Load interactable prefab
+            // Load interactable
             Interactable interactable;
             Transform translateTargetObject;
 
@@ -212,30 +196,23 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
             yield return PlayModeTestUtilities.MoveHandFromTo(p1, p2, numSteps, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
 
-            float pressStartTime = Time.time;
-            bool wasTranslated = false;
-            while (Time.time < pressStartTime + buttonPressAnimationDelay)
-            {   // If the transform is moved at any point during this interval, we were successful
-                yield return new WaitForFixedUpdate();
-                wasTranslated |= targetStartPosition != translateTargetObject.localPosition;
-            }
+            yield return CheckButtonTranslation(targetStartPosition, translateTargetObject);
 
             // Move the hand back
             yield return PlayModeTestUtilities.MoveHandFromTo(p2, p3, numSteps, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
             yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
-            yield return new WaitForSeconds(buttonReleaseAnimationDelay);
+            yield return new WaitForSeconds(ButtonReleaseAnimationDelay);
 
             Assert.True(wasClicked, "Interactable was not clicked.");
-            Assert.True(wasTranslated, "Transform target object was not translated by action.");
         }
 
         /// <summary>
         /// Assembles a push button from primitives and uses simulated input events to press it.
         /// </summary>
         [UnityTest]
-        public IEnumerator TestSimulatedSelectInputOnRuntimeAssembled()
+        public IEnumerator TestInputActionSelectInput()
         {
-            // Load interactable prefab
+            // Load interactable
             Interactable interactable;
             Transform translateTargetObject;
 
@@ -263,22 +240,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Wait for at least one frame explicitly to ensure the input goes through
             yield return new WaitForFixedUpdate();
 
-            float pressStartTime = Time.time;
-            bool wasTranslated = false;
-            while (Time.time < pressStartTime + buttonPressAnimationDelay)
-            {   // If the transform is moved at any point during this interval, we were successful
-                yield return new WaitForFixedUpdate();
-                wasTranslated |= targetStartPosition != translateTargetObject.localPosition;
-            }
+            yield return CheckButtonTranslation(targetStartPosition, translateTargetObject);
 
             // Raise an input up event, then wait for transition to take place
             CoreServices.InputSystem.RaiseOnInputUp(defaultInputSource, Handedness.None, interactable.InputAction);
             // Wait for at least one frame explicitly to ensure the input goes through
-            yield return new WaitForFixedUpdate();
-            yield return new WaitForSeconds(buttonReleaseAnimationDelay);
+            yield return new WaitForSeconds(ButtonReleaseAnimationDelay);
 
             Assert.True(wasClicked, "Interactable was not clicked.");
-            Assert.True(wasTranslated, "Transform target object was not translated by action.");
             Assert.AreEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated back by action.");
         }
 
@@ -287,9 +256,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// set allows just one button to be selected at a time
         /// </summary>
         [UnityTest]
-        public IEnumerator TestRadialButtons()
+        public IEnumerator TestRadialSetPrefab()
         {
-            var radialSet = InstantiateInteractableFromPath(Vector3.forward, Vector3.zero, radialSetPrefabAssetPath);
+            var radialSet = InstantiateInteractableFromPath(Vector3.forward, Vector3.zero, RadialSetPrefabAssetPath);
             var firstRadialButton = radialSet.transform.Find("Radial (1)");
             var secondRadialButton = radialSet.transform.Find("Radial (2)");
             var thirdRadialButton = radialSet.transform.Find("Radial (3)");
@@ -317,9 +286,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Instantiates a push button prefab and uses simulated input events to press it.
         /// </summary>
-        /// https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5153
-        // [UnityTest]
-        public IEnumerator TestSimulatedMenuInputOnPrefab()
+        [UnityTest]
+        public IEnumerator TestInputActionMenuInput()
         {
             // Load interactable prefab
             Interactable interactable;
@@ -355,30 +323,21 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Wait for at least one frame explicitly to ensure the input goes through
             yield return new WaitForFixedUpdate();
 
-            float pressStartTime = Time.time;
-            bool wasTranslated = false;
-            while (Time.time < pressStartTime + buttonPressAnimationDelay)
-            {   // If the transform is moved at any point during this interval, we were successful
-                yield return new WaitForFixedUpdate();
-                wasTranslated |= targetStartPosition != translateTargetObject.localPosition;
-            }
+            yield return CheckButtonTranslation(targetStartPosition, translateTargetObject);
 
             // Raise a menu up input event, then wait for transition to take place
             CoreServices.InputSystem.RaiseOnInputUp(defaultInputSource, Handedness.Right, menuAction);
             // Wait for at least one frame explicitly to ensure the input goes through
-            yield return new WaitForFixedUpdate();
-            yield return new WaitForSeconds(buttonReleaseAnimationDelay);
+            yield return new WaitForSeconds(ButtonReleaseAnimationDelay);
 
             Assert.True(wasClicked, "Interactable was not clicked.");
-            Assert.True(wasTranslated, "Transform target object was not translated by action.");
         }
 
         /// <summary>
         /// Instantiates a push button prefab and uses simulated voice input events to press it.
         /// </summary>
-        /// https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5153
-        // [UnityTest]
-        public IEnumerator TestSimulatedVoiceInputOnPrefab()
+        [UnityTest]
+        public IEnumerator TestVoiceInputOnPrefab()
         {
             // Load interactable prefab
             Interactable interactable;
@@ -394,10 +353,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             bool wasClicked = false;
             interactable.OnClick.AddListener(() => { wasClicked = true; });
 
+            Vector3 targetStartPosition = translateTargetObject.localPosition;
+
             // Set up its voice command
             interactable.VoiceCommand = "Select";
-
-            Vector3 targetStartPosition = translateTargetObject.localPosition;
 
             yield return null;
 
@@ -411,22 +370,75 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Wait for at least one frame explicitly to ensure the input goes through
             yield return new WaitForFixedUpdate();
 
-            float pressStartTime = Time.time;
-            bool wasTranslated = false;
-            while (Time.time < pressStartTime + buttonPressAnimationDelay)
-            {   // If the transform is moved at any point during this interval, we were successful
-                yield return new WaitForFixedUpdate();
-                wasTranslated |= targetStartPosition != translateTargetObject.localPosition;
-            }
+            yield return CheckButtonTranslation(targetStartPosition, translateTargetObject);
 
             // Wait for button press to expire
-            yield return new WaitForSeconds(buttonReleaseAnimationDelay);
+            yield return new WaitForSeconds(ButtonReleaseAnimationDelay);
 
             Assert.True(wasClicked, "Interactable was not clicked.");
-            Assert.True(wasTranslated, "Transform target object was not translated by action.");
         }
 
-        #region Helpers
+        /// <summary>
+        /// Instantiates a runtime assembled Interactable and set Interactable state to disabled (not disabling the GameObject/component)
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestDisableState()
+        {
+            // Load interactable
+            Interactable interactable;
+            Transform translateTargetObject;
+
+            AssembleInteractableButton(
+                out interactable,
+                out translateTargetObject);
+
+            CameraCache.Main.transform.LookAt(interactable.transform.position);
+
+            yield return new WaitForSeconds(EaseDelay);
+            var propBlock = InteractableThemeShaderUtils.GetPropertyBlock(translateTargetObject.gameObject);
+            Assert.AreEqual(propBlock.GetColor("_Color"), FocusColor);
+
+            interactable.Enabled = false;
+
+            yield return new WaitForSeconds(EaseDelay);
+            propBlock = InteractableThemeShaderUtils.GetPropertyBlock(translateTargetObject.gameObject);
+            Assert.AreEqual(propBlock.GetColor("_Color"), DisabledColor);
+            Assert.AreEqual(interactable.IsDisabled, true);
+        }
+
+        /// <summary>
+        /// Instantiates a runtime assembled Interactable and destroy the Interactable component
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestDestroy()
+        {
+            // Load interactable
+            Interactable interactable;
+            Transform translateTargetObject;
+
+            AssembleInteractableButton(
+                out interactable,
+                out translateTargetObject);
+
+            // Put GGV focus on the Interactable button
+            CameraCache.Main.transform.LookAt(interactable.transform.position);
+
+            yield return new WaitForSeconds(EaseDelay);
+            var propBlock = InteractableThemeShaderUtils.GetPropertyBlock(translateTargetObject.gameObject);
+            Assert.AreEqual(propBlock.GetColor("_Color"), FocusColor);
+
+            // Destroy the interactable component
+            GameObject.Destroy(interactable);
+
+            // Remove focus
+            CameraCache.Main.transform.LookAt(Vector3.zero);
+
+            yield return null;
+            propBlock = InteractableThemeShaderUtils.GetPropertyBlock(translateTargetObject.gameObject);
+            Assert.AreEqual(propBlock.GetColor("_Color"), FocusColor);
+        }
+
+        #region Test Helpers
 
         /// <summary>
         /// Generates an interactable from primitives and assigns a select action.
@@ -443,7 +455,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // This will be the part that gets scaled
             GameObject childObject = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-            childObject.GetComponent<Renderer>().material.color = Color.blue;
+            var renderer = childObject.GetComponent<Renderer>();
+            renderer.material.color = DefaultColor;
+            renderer.material.shader = StandardShaderUtility.MrtkStandardShader;
+
             childObject.transform.parent = interactableObject.transform;
             childObject.transform.localScale = new Vector3(0.9f, 1f, 0.9f);
             childObject.transform.localPosition = new Vector3(0f, 1.5f, 0f);
@@ -456,20 +471,28 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Add an interactable
             interactable = interactableObject.AddComponent<Interactable>();
 
-            Theme testTheme = ScriptableObject.CreateInstance<Theme>();
-            testTheme.States = interactable.States;
-            testTheme.Definitions = new List<ThemeDefinition>()
-            {
-                ThemeDefinition.GetDefaultThemeDefinition<ScaleOffsetColorTheme>().Value
-            };
+            var themeDefinition = ThemeDefinition.GetDefaultThemeDefinition<ScaleOffsetColorTheme>().Value;
+            // themeDefinition.Easing.Enabled = false;
             // Set the offset state property (index = 1) to move on the Pressed state (index = 2)
-            testTheme.Definitions[0].StateProperties[1].Values = new List<ThemePropertyValue>()
+            themeDefinition.StateProperties[1].Values = new List<ThemePropertyValue>()
             {
                 new ThemePropertyValue() { Vector3 = Vector3.zero},
                 new ThemePropertyValue() { Vector3 = Vector3.zero},
                 new ThemePropertyValue() { Vector3 = new Vector3(0.0f, -0.32f, 0.0f)},
                 new ThemePropertyValue() { Vector3 = Vector3.zero},
             };
+            // Set the color state property (index = 2) values
+            themeDefinition.StateProperties[2].Values = new List<ThemePropertyValue>()
+            {
+                new ThemePropertyValue() { Color = DefaultColor},
+                new ThemePropertyValue() { Color = FocusColor},
+                new ThemePropertyValue() { Color = Color.green},
+                new ThemePropertyValue() { Color = DisabledColor},
+            };
+
+            Theme testTheme = ScriptableObject.CreateInstance<Theme>();
+            testTheme.States = interactable.States;
+            testTheme.Definitions = new List<ThemeDefinition>() { themeDefinition };
 
             interactable.Profiles = new List<InteractableProfileItem>()
             {
@@ -505,7 +528,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private void InstantiatePressButtonPrefab(Vector3 position, Vector3 rotation, out Interactable interactable, out Transform pressButtonCylinder)
         {
             // Load interactable prefab
-            var interactableObject = InstantiateInteractableFromPath(position, rotation, defaultInteractablePrefabAssetPath);
+            var interactableObject = InstantiateInteractableFromPath(position, rotation, DefaultInteractablePrefabAssetPath);
             interactable = interactableObject.GetComponent<Interactable>();
             Assert.IsNotNull(interactable);
 
@@ -516,6 +539,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Move the object into position
             interactableObject.transform.position = position;
             interactableObject.transform.eulerAngles = rotation;
+        }
+
+        private IEnumerator CheckButtonTranslation(Vector3 targetStartPosition, Transform translateTarget)
+        {
+            bool wasTranslated = false;
+            float pressEndTime = Time.time + ButtonPressAnimationDelay;
+            while (Time.time < pressEndTime)
+            {   // If the transform is moved at any point during this interval, we were successful
+                yield return new WaitForFixedUpdate();
+                wasTranslated |= targetStartPosition != translateTarget.localPosition;
+            }
+
+            Assert.True(wasTranslated, "Transform target object was not translated by action.");
         }
 
         #endregion
