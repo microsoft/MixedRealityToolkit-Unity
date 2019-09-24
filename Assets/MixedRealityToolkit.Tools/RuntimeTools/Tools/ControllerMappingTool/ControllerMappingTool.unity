@@ -5131,18 +5131,18 @@ PrefabInstance:
     - target: {fileID: 114121190672569774, guid: 4f4e45632f741eb49a4c265afc815789,
         type: 3}
       propertyPath: m_Text
-      value: Active Controls Panel
+      value: Active Controls
       objectReference: {fileID: 0}
     - target: {fileID: 114125765304321574, guid: 4f4e45632f741eb49a4c265afc815789,
         type: 3}
       propertyPath: m_Text
-      value: All Controls Panel
+      value: All Controls
       objectReference: {fileID: 0}
     - target: {fileID: 114995780653097258, guid: 4f4e45632f741eb49a4c265afc815789,
         type: 3}
       propertyPath: m_Text
-      value: 'The Controller Mapping Tool enables developers to examine the Unity
-        input axis and button mappings for a physical controller.
+      value: 'The controller mapping tool enables developers to examine the Unity
+        input axis and button mappings for a hardware controller.
 
 
         This tool is ideal for
