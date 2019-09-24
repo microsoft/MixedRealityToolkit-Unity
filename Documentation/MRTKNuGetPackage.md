@@ -14,8 +14,9 @@ Follow these instructions to add the Mixed Reality Toolkit as a NuGet package to
 1. In the Search box, enter `Microsoft.MixedReality.Toolkit`.
 
     ![Manage NuGet Packages](Images/NuGet/SearchBox.png)
-1. Choose the package you would like to install:
+1. Choose the MRTK core package:
     - **Microsoft.MixedReality.Toolkit.Foundation** – The core package for MRTK.
+1. (Optional) Choose the MRTK optional packages.
     - **Microsoft.MixedReality.Toolkit.Examples** – The package that contains all of our examples.
     - **Microsoft.MixedReality.Toolkit.Extensions** – The package that contains extensions services and/or data providers.
     - **Microsoft.MixedReality.Toolkit.Tools** – Contains some of the tooling that comes with MRTK (Build Window, etc).
@@ -33,7 +34,7 @@ Steps 1-2 above will only need to be done once for your project, and the update 
 
 The release of MRTK as NuGet package is a new delivery mechanism being explored and there are a couple of key benefits and considerations one must make when choosing whether to consume the NuGet version of MRTK.
 
-### Migrating to NuGet from .unitypackage or Source (Coming Soon)
+### Migrating to NuGet from .unitypackage or Source (Not Yet Supported)
 
 NuGet package consists of compiled binaries as opposed to loose script files, and the C# script asset identifiers are different. As such, the assets like prefabs in the MRTK package have been updated to reference the appropriate compiled script. A project using the .unitypackage or source version of MRTK will have to re-target it's assets as well, and although there is code for it this is not a supported scenario, yet.
 
