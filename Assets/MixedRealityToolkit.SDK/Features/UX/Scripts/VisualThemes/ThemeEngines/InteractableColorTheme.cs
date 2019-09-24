@@ -101,9 +101,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     return color;
                 }
 
-                if (TryGetUnityUiImageColor(property, out color.Color))
+                if (TryGetUnityUiIGraphicColor(property, out color.Color))
                 {
-                    GetColorValue = TryGetUnityUiImageColor;
+                    GetColorValue = TryGetUnityUiIGraphicColor;
                     return color;
                 }
 
@@ -152,9 +152,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     return;
                 }
 
-                if (TrySetUnityUiImageColor(color, property, index, percentage))
+                if (TrySetUnityUiGraphicColor(color, property, index, percentage))
                 {
-                    SetColorValue = TrySetUnityUiImageColor;
+                    SetColorValue = TrySetUnityUiGraphicColor;
                     return;
                 }
 
@@ -242,7 +242,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Try to get color from Image
         /// If no color is found, Image is not on the object
         /// </summary>
-        protected bool TryGetUnityUiImageColor(ThemeStateProperty property, out Color color)
+        protected bool TryGetUnityUiIGraphicColor(ThemeStateProperty property, out Color color)
         {
             Graphic img = Host.GetComponent<Graphic>();
             if (img)
@@ -355,9 +355,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Try to set color on Image
         /// If false, no Image was found.
         /// </summary>
-        protected bool TrySetUnityUiImageColor(Color color, ThemeStateProperty property, int index, float percentage)
+        protected bool TrySetUnityUiGraphicColor(Color color, ThemeStateProperty property, int index, float percentage)
         {
-            Image img = Host.GetComponent<Image>();
+            Graphic img = Host.GetComponent<Graphic>();
             if (img)
             {
                 img.material.SetColor("_Color", color);
