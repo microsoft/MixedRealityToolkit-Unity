@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 // Input simulation service is only built on editor platforms
-#if UNITY_EDITOR
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
@@ -51,6 +50,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Icon for right hand when untracked.
         /// </summary>
         public Sprite iconHandUntrackedRight = null;
+
+#if UNITY_EDITOR
 
         private IInputSimulationService inputSimService = null;
         private IInputSimulationService InputSimService
@@ -143,7 +144,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             InputSimService.ResetHandRight();
         }
+#endif
     }
 }
-
-#endif

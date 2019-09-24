@@ -333,19 +333,23 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             float pressDistance = button.PressDistance;
             float releaseDistance = pressDistance - button.ReleaseDistanceDelta;
 
-            Vector3 startPushDistanceWorld = button.GetWorldPositionAlongPushDirection(startPushDistance);
-            Vector3 maxPushDistanceWorld = button.GetWorldPositionAlongPushDirection(maxPushDistance);
-            Vector3 pressDistanceWorld = button.GetWorldPositionAlongPushDirection(pressDistance);
-            Vector3 releaseDistanceWorld = button.GetWorldPositionAlongPushDirection(releaseDistance);
+            Vector3 zeroPushDistanceWorld = button.GetWorldPositionAlongPushDirection(0.0f);
+
+            Vector3 startPushDistanceWorld = button.GetWorldPositionAlongPushDirection(startPushDistance) - zeroPushDistanceWorld;
+            Vector3 maxPushDistanceWorld = button.GetWorldPositionAlongPushDirection(maxPushDistance) - zeroPushDistanceWorld;
+            Vector3 pressDistanceWorld = button.GetWorldPositionAlongPushDirection(pressDistance) - zeroPushDistanceWorld;
+            Vector3 releaseDistanceWorld = button.GetWorldPositionAlongPushDirection(releaseDistance) - zeroPushDistanceWorld;
 
             // scale the button in z direction
             // scaling the button while in world space shouldn't influence our button plane distances
             testButton.transform.localScale = new Vector3(1.0f, 1.0f, 2.0f);
 
-            Vector3 startPushDistanceWorldScaled = button.GetWorldPositionAlongPushDirection(startPushDistance);
-            Vector3 maxPushDistanceWorldScaled = button.GetWorldPositionAlongPushDirection(maxPushDistance);
-            Vector3 pressDistanceWorldScaled = button.GetWorldPositionAlongPushDirection(pressDistance);
-            Vector3 releaseDistanceWorldScaled = button.GetWorldPositionAlongPushDirection(releaseDistance);
+            Vector3 zeroPushDistanceWorldScaled = button.GetWorldPositionAlongPushDirection(0.0f);
+
+            Vector3 startPushDistanceWorldScaled = button.GetWorldPositionAlongPushDirection(startPushDistance) - zeroPushDistanceWorldScaled;
+            Vector3 maxPushDistanceWorldScaled = button.GetWorldPositionAlongPushDirection(maxPushDistance) - zeroPushDistanceWorldScaled;
+            Vector3 pressDistanceWorldScaled = button.GetWorldPositionAlongPushDirection(pressDistance) - zeroPushDistanceWorldScaled;
+            Vector3 releaseDistanceWorldScaled = button.GetWorldPositionAlongPushDirection(releaseDistance) - zeroPushDistanceWorldScaled;
 
             // compare our distances
             Assert.IsTrue(startPushDistanceWorld == startPushDistanceWorldScaled, "Start Distance was modified while scaling button gameobject");
@@ -459,10 +463,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             testButton.transform.localScale = zScale;
             yield return null;
 
-            float startPushDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.StartPushDistance).z - zeroPushDistanceWorld;
-            float maxPushDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.MaxPushDistance).z - zeroPushDistanceWorld;
-            float pressDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.PressDistance).z - zeroPushDistanceWorld;
-            float releaseDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.PressDistance - button.ReleaseDistanceDelta).z - zeroPushDistanceWorld;
+            float zeroPushDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(0.0f).z;
+
+            float startPushDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.StartPushDistance).z - zeroPushDistanceWorld_Scaled;
+            float maxPushDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.MaxPushDistance).z - zeroPushDistanceWorld_Scaled;
+            float pressDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.PressDistance).z - zeroPushDistanceWorld_Scaled;
+            float releaseDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.PressDistance - button.ReleaseDistanceDelta).z - zeroPushDistanceWorld_Scaled;
 
             float tolerance = 0.00000001f;
 
