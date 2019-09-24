@@ -5126,7 +5126,7 @@ PrefabInstance:
     - target: {fileID: 114107642412081004, guid: 4f4e45632f741eb49a4c265afc815789,
         type: 3}
       propertyPath: m_Text
-      value: Input Information Tool
+      value: Controller Mapping Tool
       objectReference: {fileID: 0}
     - target: {fileID: 114121190672569774, guid: 4f4e45632f741eb49a4c265afc815789,
         type: 3}
@@ -5141,8 +5141,8 @@ PrefabInstance:
     - target: {fileID: 114995780653097258, guid: 4f4e45632f741eb49a4c265afc815789,
         type: 3}
       propertyPath: m_Text
-      value: 'The Input Information Tool enables developers to examine the Unity input
-        axis and button mappings for a controller.
+      value: 'The Controller Mapping Tool enables developers to examine the Unity
+        input axis and button mappings for a physical controller.
 
 
         This tool is ideal for
