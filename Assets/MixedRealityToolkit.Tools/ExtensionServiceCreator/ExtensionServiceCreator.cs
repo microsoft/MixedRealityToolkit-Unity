@@ -52,6 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public bool UsesProfile;
             public bool UsesInspector;
             public SupportedPlatforms Platforms;
+            public SupportedApplicationModes ApplicationModes;
             public CreationStage Stage;
             public string ServiceFolderPath;
             public string InspectorFolderPath;
@@ -76,6 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly string ProfileNameSearchString = "#PROFILE_NAME#";
         private static readonly string ProfileFieldNameSearchString = "#PROFILE_FIELD_NAME#";
         private static readonly string SupportedPlatformsSearchString = "#SUPPORTED_PLATFORMS_PARAM#";
+        private static readonly string SupportedApplicationModesSearchString = "#SUPPORTED_APPLICATION_MODES_PARAM#";
         private static readonly string ExtensionNamespaceSearchString = "#NAMESPACE#";
         private static readonly string SampleCodeTemplate = "#INTERFACE_NAME# #SERVICE_NAME# = MixedRealityToolkit.Instance.GetService<#INTERFACE_NAME#>();";
 
@@ -115,6 +117,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             get { return state.Platforms; }
             set { state.Platforms = value; }
+        }
+
+        public SupportedApplicationModes ApplicationModes
+        {
+            get { return state.ApplicationModes; }
+            set { state.ApplicationModes = value; }
         }
 
         public CreationStage Stage
@@ -434,6 +442,18 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             return errors.Count == 0;
         }
 
+        public bool ValidateApplicationModes(List<string> errors)
+        {
+            errors.Clear();
+
+            if ((int)ApplicationModes == 0)
+            {
+                errors.Add("Service must support at least one application mode.");
+            }
+
+            return errors.Count == 0;
+        }
+
         public bool ValidateNamespace(List<string> errors)
         {
             errors.Clear();
@@ -636,15 +656,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             scriptContents = scriptContents.Replace(ProfileFieldNameSearchString, ProfileFieldName);
             scriptContents = scriptContents.Replace(ExtensionNamespaceSearchString, Namespace);
 
-            List<string> platformValues = new List<string>();
-            foreach (SupportedPlatforms platform in Enum.GetValues(typeof(SupportedPlatforms)))
-            {
-                if ((platform & Platforms) != 0)
-                {
-                    platformValues.Add("SupportedPlatforms." + platform.ToString());
-                }
-            }
-            scriptContents = scriptContents.Replace(SupportedPlatformsSearchString, String.Join("|", platformValues.ToArray()));
+            WriteEnumMask(Platforms, SupportedPlatformsSearchString, ref scriptContents);
+            WriteEnumMask(ApplicationModes, SupportedApplicationModesSearchString, ref scriptContents);
 
             if (string.IsNullOrEmpty(scriptContents))
             {
@@ -653,6 +666,21 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             return scriptContents;
+        }
+
+        private void WriteEnumMask<T>(T flagMask, string maskKey, ref string scriptContents) where T : System.Enum
+        {
+            Type enumType = typeof(T);
+            List<string> writeValues = new List<string>();
+            foreach (T currentFlag in Enum.GetValues(enumType))
+            {
+                if (flagMask.HasFlag(currentFlag))
+                {
+                    writeValues.Add($"{enumType.Name}." + currentFlag.ToString());
+                }
+            }
+
+            scriptContents = scriptContents.Replace(maskKey, string.Join("|", writeValues.ToArray()));
         }
 
         private void WriteTextAssetToDisk(string contents, string assetName, string folderPath)

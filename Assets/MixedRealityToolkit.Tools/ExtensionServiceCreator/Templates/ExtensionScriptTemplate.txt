@@ -4,7 +4,9 @@ using Microsoft.MixedReality.Toolkit;
 
 namespace #NAMESPACE#
 {
-	[MixedRealityExtensionService(#SUPPORTED_PLATFORMS_PARAM#)]
+	[MixedRealityExtensionService(#SUPPORTED_PLATFORMS_PARAM#,
+        name:"#SERVICE_NAME#",
+        runtimeModes:#SUPPORTED_APPLICATION_MODES_PARAM#)]
 	public class #SERVICE_NAME# : BaseExtensionService, #INTERFACE_NAME#, IMixedRealityExtensionService
 	{
 		private #PROFILE_NAME# #PROFILE_FIELD_NAME#;
