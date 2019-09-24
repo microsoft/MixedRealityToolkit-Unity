@@ -273,8 +273,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
                 if (material != null && !materialClones.TryGetValue(material, out output))
                 {
-                    // Maintain a clone of the material much like renderer.material does while
-                    // the app is playing.
+                    // Create a material clone. This keeps the code path the same at edit time and 
+                    // run time since renderer.material cannot be invoked when editing.
                     output = new Material(material);
                     output.name += " (Clone)";
                     materialClones.Add(output, material);

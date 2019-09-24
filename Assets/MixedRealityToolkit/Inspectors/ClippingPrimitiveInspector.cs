@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
+    /// <summary>
+    /// An abstract editor component to improve the editor experience with ClippingPrimitives.
+    /// </summary>
     [CustomEditor(typeof(ClippingPrimitive))]
     public abstract class ClippingPrimitiveEditor : UnityEditor.Editor
     {

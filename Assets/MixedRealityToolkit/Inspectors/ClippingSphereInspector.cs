@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
+    /// <summary>
+    /// A custom editor for the ClippingSphere to allow for specification of the framing bounds.
+    /// </summary>
     [CustomEditor(typeof(ClippingSphere))]
     public class ClippingSphereEditor : ClippingPrimitiveEditor
     {
