@@ -80,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [Tooltip("What manipulation will two hands perform?")]
         private TwoHandedManipulation twoHandedManipulationType = TwoHandedManipulation.MoveRotateScale;
-        
+
         public TwoHandedManipulation TwoHandedManipulationType
         {
             get => twoHandedManipulationType;
@@ -138,6 +138,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get => constraintOnRotation;
             set => constraintOnRotation = value;
         }
+
+        [SerializeField]
+        private Transform rotationConstraintPivot = null;
 
         [SerializeField]
         [Tooltip("Constrain movement")]
@@ -240,7 +243,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private Quaternion startObjectRotationCameraSpace;
         private Quaternion startObjectRotationFlatCameraSpace;
-        private Quaternion hostWorldRotationOnManipulationStart;
+        private Quaternion lastHostWorldRotation;
 
         private TransformScaleHandler scaleHandler;
 
@@ -583,7 +586,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if ((currentState & State.Rotating) > 0)
             {
-                targetRotationTwoHands = rotateLogic.Update(handPositionMap, targetRotationTwoHands, constraintOnRotation);
+                targetRotationTwoHands = rotateLogic.Update(handPositionMap, targetRotationTwoHands, constraintOnRotation, rotationConstraintPivot);
             }
             if ((currentState & State.Scaling) > 0)
             {
@@ -608,26 +611,43 @@ namespace Microsoft.MixedReality.Toolkit.UI
             hostTransform.localScale = Vector3.Lerp(hostTransform.localScale, targetScale, lerpAmount);
         }
 
-        private Quaternion ApplyConstraints(Quaternion newRotation)
+        private Quaternion ApplyConstraints(Quaternion newWorldRotation)
         {
-            // apply constraint on rotation diff
-            Quaternion diffRotation = newRotation * Quaternion.Inverse(hostWorldRotationOnManipulationStart);
+            if (constraintOnRotation == RotationConstraintType.None)
+            {
+                return newWorldRotation;
+            }
+
+            bool usePivot = rotationConstraintPivot != null;
+
+            // Get world rotation difference
+            Quaternion diffRotation = newWorldRotation * Quaternion.Inverse(lastHostWorldRotation);
+
+            if (usePivot)
+            {
+                // Convert from world space to pivot local space
+                Quaternion worldToPivot = Quaternion.Inverse(rotationConstraintPivot.rotation);
+                diffRotation = diffRotation * worldToPivot;
+            }
+
+            // Now that we have the diff in the applicable space (world or pivot), we can take the constraint component as the angle, and use the pivot's axis or the world axis for the AngleAxis rotation.
             switch (constraintOnRotation)
             {
                 case RotationConstraintType.XAxisOnly:
-                    diffRotation.eulerAngles = Vector3.Scale(diffRotation.eulerAngles, Vector3.right);
+                    diffRotation = Quaternion.AngleAxis(diffRotation.eulerAngles.x, usePivot ? rotationConstraintPivot.right : Vector3.right);
                     break;
                 case RotationConstraintType.YAxisOnly:
-                    diffRotation.eulerAngles = Vector3.Scale(diffRotation.eulerAngles, Vector3.up);
+                    diffRotation = Quaternion.AngleAxis(diffRotation.eulerAngles.y, usePivot ? rotationConstraintPivot.up : Vector3.up);
                     break;
                 case RotationConstraintType.ZAxisOnly:
-                    diffRotation.eulerAngles = Vector3.Scale(diffRotation.eulerAngles, Vector3.forward);
+                    diffRotation = Quaternion.AngleAxis(diffRotation.eulerAngles.z, usePivot ? rotationConstraintPivot.forward : Vector3.forward);
                     break;
             }
 
-            return diffRotation * hostWorldRotationOnManipulationStart;
+            // Since both the pivot axis (right, up, forward) are in world space and the Vector.right/up/forward is, we can just apply the new diff to world rotation 
+            return diffRotation * lastHostWorldRotation;
         }
-		
+
         private void HandleOneHandMoveUpdated()
         {
             Debug.Assert(pointerIdToPointerMap.Count == 1);
@@ -687,9 +707,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if ((newState & State.Rotating) > 0)
             {
-                rotateLogic.Setup(handPositionMap, hostTransform, ConstraintOnRotation);
+                rotateLogic.Setup(handPositionMap, hostTransform, ConstraintOnRotation, rotationConstraintPivot);
             }
-            if ((newState & State.Moving) > 0) 
+            if ((newState & State.Moving) > 0)
             {
                 MixedRealityPose pointerPose = GetAveragePointerPose();
                 MixedRealityPose hostPose = new MixedRealityPose(hostTransform.position, hostTransform.rotation);
@@ -711,7 +731,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             // cache objects rotation on start to have a reference for constraint calculations
             // if we don't cache this on manipulation start the near rotation might drift off the hand
             // over time
-            hostWorldRotationOnManipulationStart = hostTransform.rotation;
+            lastHostWorldRotation = hostTransform.rotation;
 
             // Calculate relative transform from object to hand.
             Quaternion worldToPalmRotation = Quaternion.Inverse(pointer.Rotation);
@@ -763,7 +783,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     PointerCentroid = GetPointersCentroid(),
                     PointerVelocity = GetPointersVelocity(),
                     PointerAngularVelocity = GetPointersAngularVelocity()
-                }); 
+                });
             }
         }
 

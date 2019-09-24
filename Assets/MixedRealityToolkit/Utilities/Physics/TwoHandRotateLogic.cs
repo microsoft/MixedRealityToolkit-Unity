@@ -19,26 +19,52 @@ namespace Microsoft.MixedReality.Toolkit.Physics
     /// </summary>
     public class TwoHandRotateLogic
     {
-        private Vector3 startHandlebar;
-        private Quaternion startRotation;
+        private Vector3 previousHandleBarDirection;
 
         /// <summary>
         /// Setup the rotation logic.
         /// </summary>
-        public void Setup(Dictionary<uint, Vector3> handsPressedMap, Transform t, RotationConstraintType rotationConstraint)
+        public void Setup(Dictionary<uint, Vector3> handsPressedMap, Transform t, RotationConstraintType rotationConstraint, Transform rotationConstraintPivot)
         {
-            startHandlebar = ProjectHandlebarGivenConstraint(rotationConstraint, GetHandlebarDirection(handsPressedMap));
-            startRotation = t.rotation;
+            Vector3 handleBarDirection = GetHandlebarDirection(handsPressedMap);
+            if (rotationConstraintPivot != null)
+            {
+                // Get Pivot local direction
+                handleBarDirection = rotationConstraintPivot.InverseTransformDirection(handleBarDirection);
+            }
+
+            // Get constraints pivot local direction
+            previousHandleBarDirection = ProjectHandlebarGivenConstraint(rotationConstraint, handleBarDirection);
         }
 
         /// <summary>
         /// Update the rotation based on input.
         /// </summary>
         /// <returns>Desired rotation</returns>
-        public Quaternion Update(Dictionary<uint, Vector3> handsPressedMap, Quaternion currentRotation, RotationConstraintType rotationConstraint)
+        public Quaternion Update(Dictionary<uint, Vector3> handsPressedMap, Quaternion currentRotationWorldSpace, RotationConstraintType rotationConstraint, Transform rotationConstraintPivot)
         {
-            var handlebarDirection = ProjectHandlebarGivenConstraint(rotationConstraint, GetHandlebarDirection(handsPressedMap));
-            return Quaternion.FromToRotation(startHandlebar, handlebarDirection) * startRotation;
+            Vector3 handleBarDirection = GetHandlebarDirection(handsPressedMap);
+
+            if (rotationConstraintPivot != null)
+            {
+                // Get Pivot local direction to compare against the other pivot local direction
+                handleBarDirection = rotationConstraintPivot.InverseTransformDirection(handleBarDirection);
+            }
+
+            // Apply constraints on the pivot local
+            handleBarDirection = ProjectHandlebarGivenConstraint(rotationConstraint, handleBarDirection);
+
+            // Perform the operation in world space, to get worldspace rotation difference. Either we are already in world space, or convert both using the pivot
+            Quaternion rotationDifferenceWorldSpace = rotationConstraintPivot == null
+                ? Quaternion.FromToRotation(previousHandleBarDirection, handleBarDirection)
+                : Quaternion.FromToRotation(rotationConstraintPivot.TransformDirection(previousHandleBarDirection), rotationConstraintPivot.TransformDirection(handleBarDirection));
+
+            // Update startHandlebar with new direction to use in next iteration
+            previousHandleBarDirection = handleBarDirection;
+
+            Quaternion toReturn = rotationDifferenceWorldSpace * currentRotationWorldSpace;
+            Debug.LogWarning($"Rotation Difference:{rotationDifferenceWorldSpace.eulerAngles.ToString("G3")}");
+            return toReturn;
         }
 
         private static Vector3 ProjectHandlebarGivenConstraint(RotationConstraintType constraint, Vector3 handlebarRotation)
