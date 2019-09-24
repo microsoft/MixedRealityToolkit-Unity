@@ -360,7 +360,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Image img = Host.GetComponent<Image>();
             if (img)
             {
-                img.color = color;
                 img.material.SetColor("_Color", color);
                 return true;
             }

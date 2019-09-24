@@ -89,9 +89,8 @@ GameObject:
   - component: {fileID: 5168285722132125209}
   - component: {fileID: 5168285722132125210}
   - component: {fileID: 5168285722132125214}
-  - component: {fileID: 546630907}
   m_Layer: 0
-  m_Name: ButtonHololens1UnityUI
+  m_Name: UnityUIInteractableButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
