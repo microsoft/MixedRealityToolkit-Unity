@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// Defines a system, feature, or manager to be registered with as a <see cref="IMixedRealityExtensionService"/> on startup.
     /// </summary>
     [Serializable]
-    public struct MixedRealityServiceConfiguration : IMixedRealityServiceConfiguration
+    public class MixedRealityServiceConfiguration : IMixedRealityServiceConfiguration
     {
         /// <summary>
         /// Constructor.
@@ -19,13 +19,15 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="componentType">The concrete type for the system, feature or manager.</param>
         /// <param name="componentName">The simple, human readable name for the system, feature, or manager.</param>
         /// <param name="priority">The priority this system, feature, or manager will be initialized in.</param>
-        /// <param name="runtimePlatform">The runtime platform(s) to run this system, feature, or manager on.</param>
+        /// <param name="runtimePlatform">The runtime build target platform(s) to run this system, feature, or manager on.</param>
+        /// <param name="runtimeModes">The runtime environment mode(s) to run this system, feature, or manager</param>
         /// <param name="configurationProfile">The configuration profile for the service.</param>
         public MixedRealityServiceConfiguration(
             SystemType componentType,
             string componentName,
             uint priority,
             SupportedPlatforms runtimePlatform,
+            SupportedApplicationModes runtimeModes,
             BaseMixedRealityProfile configurationProfile)
         {
             this.componentType = componentType;
@@ -33,6 +35,7 @@ namespace Microsoft.MixedReality.Toolkit
             this.priority = priority;
             this.runtimePlatform = runtimePlatform;
             this.configurationProfile = configurationProfile;
+            this.runtimeModes = runtimeModes;
         }
 
         [SerializeField]
@@ -56,10 +59,17 @@ namespace Microsoft.MixedReality.Toolkit
 
         [EnumFlags]
         [SerializeField]
-        private SupportedPlatforms runtimePlatform;
+        private SupportedPlatforms runtimePlatform = (SupportedPlatforms)(-1);
 
         /// <inheritdoc />
         public SupportedPlatforms RuntimePlatform => runtimePlatform;
+
+        [EnumFlags]
+        [SerializeField]
+        private SupportedApplicationModes runtimeModes = (SupportedApplicationModes)(-1);
+
+        /// <inheritdoc />
+        public SupportedApplicationModes RuntimeModes => runtimeModes;
 
         [SerializeField]
         private BaseMixedRealityProfile configurationProfile;

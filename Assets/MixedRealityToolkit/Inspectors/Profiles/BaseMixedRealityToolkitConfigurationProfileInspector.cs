@@ -13,6 +13,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     /// </summary>
     public abstract class BaseMixedRealityToolkitConfigurationProfileInspector : BaseMixedRealityProfileInspector
     {
+        protected static readonly GUIContent ComponentTypeContent = new GUIContent("Type");
+        protected static readonly GUIContent RuntimePlatformContent = new GUIContent("Supported Platform(s)");
+        protected static readonly GUIContent RuntimeModeContent = new GUIContent("Environment Mode(s)");
+
         public bool RenderAsSubProfile { get; set; }
 
         private static GUIContent WarningIconContent = null;
@@ -242,6 +246,32 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 {
                     EditorGUILayout.HelpBox("This profile is not assigned to the active MRTK instance in your scene. Some properties may not be editable", MessageType.Error);
                 }
+            }
+        }
+
+        protected void ApplyDataProviderConfiguration(
+           System.Type type,
+           SerializedProperty dataProviderName,
+           SerializedProperty configurationProfile,
+           SerializedProperty runtimePlatform,
+           SerializedProperty runtimeModes)
+        {
+            if (type != null)
+            {
+                MixedRealityDataProviderAttribute dataProviderAttribute = MixedRealityDataProviderAttribute.Find(type) as MixedRealityDataProviderAttribute;
+                if (dataProviderAttribute != null)
+                {
+                    dataProviderName.stringValue = !string.IsNullOrWhiteSpace(dataProviderAttribute.Name) ? dataProviderAttribute.Name : type.Name;
+                    configurationProfile.objectReferenceValue = dataProviderAttribute.DefaultProfile;
+                    runtimePlatform.intValue = (int)dataProviderAttribute.RuntimePlatforms;
+                    runtimeModes.intValue = (int)dataProviderAttribute.RuntimeModes;
+                }
+                else
+                {
+                    dataProviderName.stringValue = type.Name;
+                }
+
+                serializedObject.ApplyModifiedProperties();
             }
         }
     }

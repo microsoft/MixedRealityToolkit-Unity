@@ -133,13 +133,11 @@ namespace Microsoft.MixedReality.Toolkit
         protected bool RegisterDataProvider<T>(
             Type concreteType,
             SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1),
+            SupportedApplicationModes supportedApplicationModes = (SupportedApplicationModes)(-1),
             params object[] args) where T : IMixedRealityDataProvider
         {
-#if !UNITY_EDITOR
-            if (!Application.platform.IsPlatformSupported(supportedPlatforms))
-#else
-            if (!EditorUserBuildSettings.activeBuildTarget.IsPlatformSupported(supportedPlatforms))
-#endif
+            if (!PlatformUtility.IsPlatformSupported(supportedPlatforms) ||
+                !PlatformUtility.IsSupportedApplicationMode(supportedApplicationModes))
             {
                 return false;
             }

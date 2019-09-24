@@ -26,12 +26,14 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         /// <typeparam name="T">The interface type of the service to be registered (ex: IMixedRealityBoundarySystem).</typeparam>
         /// <param name="concreteType">The concrete type to instantiate.</param>
-        /// <param name="supportedPlatforms">The platform(s) on which the service is supported.</param>
+        /// <param name="supportedPlatforms">The runtime build target platform(s) on which the service is supported.</param>
+        /// <param name="supportedApplicationModes">The runtime environment modes on which the service is supported.</param>
         /// <param name="args">Optional arguments used when instantiating the concrete type.</param>
         /// <returns>True if the service was successfully registered, false otherwise.</returns>
         bool RegisterService<T>(
             Type concreteType,
             SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1),
+            SupportedApplicationModes supportedApplicationModes = (SupportedApplicationModes)(-1),
             params object[] args) where T : IMixedRealityService;
 
         /// <summary>
