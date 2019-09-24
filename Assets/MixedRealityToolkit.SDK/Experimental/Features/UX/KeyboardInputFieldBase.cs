@@ -3,6 +3,7 @@
 
 using UnityEngine.UI;
 #if WINDOWS_UWP
+using UnityEngine;
 using UnityEngine.EventSystems;
 using Microsoft.MixedReality.Toolkit.Input;
 #endif

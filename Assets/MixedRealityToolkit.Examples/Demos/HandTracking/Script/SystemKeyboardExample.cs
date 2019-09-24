@@ -54,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 #if WINDOWS_UWP
             // Windows mixed reality keyboard update goes here
             KeyboardText = wmrKeyboard.Text;
-            if (wmrKeyboard.Visible)
+            if (wmrKeyboard.IsVisible)
             {
                 if (debugMessage != null)
                 {
