@@ -22,7 +22,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
     public abstract class MixedRealityKeyboardBase : MonoBehaviour
     {
         [Experimental]
+#pragma warning disable 414
         private object exp = null;
+#pragma warning restore 414
 
 #if WINDOWS_UWP
         #region Properties
