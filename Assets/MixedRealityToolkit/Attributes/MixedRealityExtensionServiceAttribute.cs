@@ -11,10 +11,6 @@ using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 #endif
 
-#if WINDOWS_UWP && !ENABLE_IL2CPP
-using Microsoft.MixedReality.Toolkit;
-#endif // WINDOWS_UWP && !ENABLE_IL2CPP
-
 namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
@@ -29,9 +25,14 @@ namespace Microsoft.MixedReality.Toolkit
         public virtual string Name { get; }
 
         /// <summary>
-        /// The runtime platform(s) to run this service.
+        /// The runtime build target platform(s) to run this service.
         /// </summary>
         public virtual SupportedPlatforms RuntimePlatforms { get; }
+
+        /// <summary>
+        /// The runtime platform(s) to run this service.
+        /// </summary>
+        public virtual SupportedApplicationModes RuntimeModes { get; }
 
         /// <summary>
         /// The file path to the default profile asset relative to the package folder.
@@ -83,16 +84,19 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="runtimePlatforms">The platforms on which the extension service is supported.</param>
         /// <param name="defaultProfilePath">The relative path to the default profile asset.</param>
         /// <param name="packageFolder">The package folder to which the path is relative.</param>
+        /// <param name="runtimeModes">The runtime modes which the extension service is supported and can run. Default is support on all runtime modes</param>
         public MixedRealityExtensionServiceAttribute(
             SupportedPlatforms runtimePlatforms,
             string name = "",
             string defaultProfilePath = "",
-            string packageFolder = "MixedRealityToolkit")
+            string packageFolder = "MixedRealityToolkit",
+            SupportedApplicationModes runtimeModes = (SupportedApplicationModes)(-1))
         {
             RuntimePlatforms = runtimePlatforms;
             Name = name;
             DefaultProfilePath = defaultProfilePath;
             PackageFolder = packageFolder;
+            RuntimeModes = runtimeModes;
         }
 
 #if UNITY_EDITOR

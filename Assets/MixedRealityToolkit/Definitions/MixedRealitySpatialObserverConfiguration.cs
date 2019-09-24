@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 {
     [Serializable]
-    public struct MixedRealitySpatialObserverConfiguration : IMixedRealityServiceConfiguration
+    public class MixedRealitySpatialObserverConfiguration : IMixedRealityServiceConfiguration
     {
         [SerializeField]
         [Implements(typeof(IMixedRealitySpatialAwarenessObserver), TypeGrouping.ByNamespaceFlat)]
@@ -31,16 +31,35 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
 
         [SerializeField]
         [EnumFlags]
-        private SupportedPlatforms runtimePlatform;
+        private SupportedPlatforms runtimePlatform = (SupportedPlatforms)(-1);
 
         /// <inheritdoc />
         public SupportedPlatforms RuntimePlatform => runtimePlatform;
+
+        [EnumFlags]
+        [SerializeField]
+        private SupportedApplicationModes runtimeModes = (SupportedApplicationModes)(-1);
+
+        /// <inheritdoc />
+        public SupportedApplicationModes RuntimeModes
+        {
+            get
+            {
+                // Flag cannot be none
+                if (runtimeModes == (SupportedApplicationModes)0)
+                {
+                    runtimeModes = (SupportedApplicationModes)(-1);
+                }
+
+                return runtimeModes;
+            }
+        }
 
         [SerializeField]
         private BaseSpatialAwarenessObserverProfile observerProfile;
 
         /// <summary>
-        /// 
+        /// The Observer profile containing the revelant 
         /// </summary>
         public BaseSpatialAwarenessObserverProfile ObserverProfile => observerProfile;
 
@@ -50,19 +69,22 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <param name="componentType">The <see cref="Microsoft.MixedReality.Toolkit.Utilities.SystemType"/> of the observer.</param>
         /// <param name="componentName">The friendly name of the observer.</param>
         /// <param name="priority">The load priority of the observer.</param>
-        /// <param name="runtimePlatform">The runtime platform(s) supported by the observer.</param>
+        /// <param name="runtimePlatform">The runtime build target platform(s) supported by the observer.</param>
+        /// <param name="applicationModes">The runtime environment mode(s) supported by the observer</param>
         /// <param name="configurationProfile">The configuration profile for the observer.</param>
         public MixedRealitySpatialObserverConfiguration(
             SystemType componentType,
             string componentName,
             uint priority,
             SupportedPlatforms runtimePlatform,
+            SupportedApplicationModes applicationModes,
             BaseSpatialAwarenessObserverProfile configurationProfile)
         {
             this.componentType = componentType;
             this.componentName = componentName;
             this.priority = priority;
             this.runtimePlatform = runtimePlatform;
+            this.runtimeModes = applicationModes;
             this.observerProfile = configurationProfile;
         }
     }

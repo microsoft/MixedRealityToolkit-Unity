@@ -2,8 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit
 {
@@ -28,8 +26,13 @@ namespace Microsoft.MixedReality.Toolkit
         uint Priority { get; }
 
         /// <summary>
-        /// The runtime platform(s) to run this service.
+        /// The runtime build target platform(s) to run this service.
         /// </summary>
         SupportedPlatforms RuntimePlatform { get; }
+
+        /// <summary>
+        /// The runtime environment modes (i.e editor) to run this service. None is not a valid value
+        /// </summary>
+        SupportedApplicationModes RuntimeModes { get; }
     }
 }

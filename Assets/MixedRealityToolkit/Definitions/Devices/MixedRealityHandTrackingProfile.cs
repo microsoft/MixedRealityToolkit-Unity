@@ -61,12 +61,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get
             {
-                return IsSupportedApplicationMode(handMeshVisualizationModes);
+                return PlatformUtility.IsSupportedApplicationMode(handMeshVisualizationModes);
             }
 
             set
             {
-                handMeshVisualizationModes = UpdateSupportedApplicationMode(value, handMeshVisualizationModes);
+                handMeshVisualizationModes = PlatformUtility.UpdateSupportedApplicationMode(value, handMeshVisualizationModes);
             }
         }
 
@@ -83,12 +83,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get
             {
-                return IsSupportedApplicationMode(handJointVisualizationModes);
+                return PlatformUtility.IsSupportedApplicationMode(handJointVisualizationModes);
             }
 
             set
             {
-                handJointVisualizationModes = UpdateSupportedApplicationMode(value, handJointVisualizationModes);
+                handJointVisualizationModes = PlatformUtility.UpdateSupportedApplicationMode(value, handJointVisualizationModes);
             }
         }
 
@@ -124,44 +124,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 handJointVisualizationModes = value;
             }
-        }
-
-        /// <summary>
-        /// Returns true if the modes specified by the specified SupportedApplicationModes matches
-        /// the current mode that the code is running in.
-        /// </summary>
-        /// <remarks>
-        /// For example, if the code is currently running in editor mode (for testing in-editor
-        /// simulation), this would return true if modes contained the SupportedApplicationModes.Editor 
-        /// bit.
-        /// </remarks>
-        private static bool IsSupportedApplicationMode(SupportedApplicationModes modes)
-        {
-#if UNITY_EDITOR
-            return (modes & SupportedApplicationModes.Editor) != 0;
-#else // !UNITY_EDITOR
-            return (modes & SupportedApplicationModes.Player) != 0;
-#endif
-        }
-
-        /// <summary>
-        /// Updates the given SupportedApplicationModes by setting the bit associated with the
-        /// currently active application mode.
-        /// </summary>
-        /// <remarks>
-        /// For example, if the code is currently running in editor mode (for testing in-editor
-        /// simulation), and modes is currently SupportedApplicationModes.Player | SupportedApplicationModes.Editor
-        /// and enabled is 'false', this would return SupportedApplicationModes.Player.
-        /// </remarks>
-        private static SupportedApplicationModes UpdateSupportedApplicationMode(bool enabled, SupportedApplicationModes modes)
-        {
-#if UNITY_EDITOR
-            var bitValue = enabled ? SupportedApplicationModes.Editor : 0;
-            return (modes & ~SupportedApplicationModes.Editor) | bitValue;
-#else // !UNITY_EDITOR
-            var bitValue = enabled ? SupportedApplicationModes.Player : 0;
-            return (modes & ~SupportedApplicationModes.Player) | bitValue;
-#endif
         }
     }
 }

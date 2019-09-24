@@ -244,6 +244,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     RegisterDataProvider<IMixedRealityInputDeviceManager>(
                         configuration.ComponentType.Type,
                         configuration.RuntimePlatform,
+                        configuration.RuntimeModes,
                         args);
                 }
             }

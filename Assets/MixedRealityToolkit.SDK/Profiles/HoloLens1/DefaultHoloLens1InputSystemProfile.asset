@@ -20,6 +20,7 @@ MonoBehaviour:
     componentName: Windows Mixed Reality Device Manager
     priority: 0
     runtimePlatform: 8
+    runtimeModes: -1
     deviceManagerProfile: {fileID: 0}
   - componentType:
       reference: Microsoft.MixedReality.Toolkit.OpenVR.Input.OpenVRDeviceManager,
@@ -27,6 +28,7 @@ MonoBehaviour:
     componentName: OpenVR Device Manager
     priority: 0
     runtimePlatform: 7
+    runtimeModes: -1
     deviceManagerProfile: {fileID: 0}
   - componentType:
       reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.UnityJoystickManager,
@@ -34,6 +36,7 @@ MonoBehaviour:
     componentName: Unity Joystick Manager
     priority: 0
     runtimePlatform: -1
+    runtimeModes: -1
     deviceManagerProfile: {fileID: 0}
   - componentType:
       reference: Microsoft.MixedReality.Toolkit.Input.UnityInput.UnityTouchDeviceManager,
@@ -41,6 +44,7 @@ MonoBehaviour:
     componentName: Unity Touch Device Manager
     priority: 0
     runtimePlatform: -1
+    runtimeModes: -1
     deviceManagerProfile: {fileID: 0}
   - componentType:
       reference: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsSpeechInputProvider,
@@ -48,6 +52,7 @@ MonoBehaviour:
     componentName: Windows Speech Input
     priority: 0
     runtimePlatform: 25
+    runtimeModes: -1
     deviceManagerProfile: {fileID: 0}
   - componentType:
       reference: Microsoft.MixedReality.Toolkit.Windows.Input.WindowsDictationInputProvider,
@@ -55,18 +60,21 @@ MonoBehaviour:
     componentName: Windows Dictation Input
     priority: 0
     runtimePlatform: 25
+    runtimeModes: -1
     deviceManagerProfile: {fileID: 0}
   - componentType:
       reference: Microsoft.MixedReality.Toolkit.Input.HandJointService, Microsoft.MixedReality.Toolkit
     componentName: Hand Joint Service
     priority: 0
     runtimePlatform: -1
+    runtimeModes: -1
     deviceManagerProfile: {fileID: 0}
   - componentType:
       reference: Microsoft.MixedReality.Toolkit.Input.InputSimulationService, Microsoft.MixedReality.Toolkit.Services.InputSimulation.Editor
     componentName: Input Simulation Service
     priority: 0
     runtimePlatform: 208
+    runtimeModes: -1
     deviceManagerProfile: {fileID: 11400000, guid: 427bea38105dc76429738a52f25940ce,
       type: 2}
   - componentType:
@@ -75,6 +83,7 @@ MonoBehaviour:
     componentName: Windows Mixed Reality Eye Gaze Provider
     priority: 0
     runtimePlatform: 8
+    runtimeModes: -1
     deviceManagerProfile: {fileID: 11400000, guid: 2d87dd11b18f700449c9dab320d19b99,
       type: 2}
   - componentType:
@@ -82,6 +91,7 @@ MonoBehaviour:
     componentName: Input Recording Service
     priority: 0
     runtimePlatform: -1
+    runtimeModes: -1
     deviceManagerProfile: {fileID: 11400000, guid: d0f5a7f6d1f9f0b4cb6eb35c797a0f04,
       type: 2}
   - componentType:
@@ -89,6 +99,7 @@ MonoBehaviour:
     componentName: Input Playback Service
     priority: 0
     runtimePlatform: 208
+    runtimeModes: -1
     deviceManagerProfile: {fileID: 0}
   focusProviderType:
     reference: Microsoft.MixedReality.Toolkit.Input.FocusProvider, Microsoft.MixedReality.Toolkit.Services.InputSystem

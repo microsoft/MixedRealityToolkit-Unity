@@ -298,7 +298,11 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             var uwpBuildInfo = buildInfo as UwpBuildInfo;
             Debug.Assert(uwpBuildInfo != null);
 
-            if (EditorUserBuildSettings.wsaGenerateReferenceProjects && uwpBuildInfo.AllowUnsafeCode)
+            if (
+#if !UNITY_2019_1_OR_NEWER
+            EditorUserBuildSettings.wsaGenerateReferenceProjects &&
+#endif
+            uwpBuildInfo.AllowUnsafeCode)
             {
                 AllowUnsafeCode(rootElement);
             }

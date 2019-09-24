@@ -21,6 +21,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </remarks>
     public class PokePointer : BaseControllerPointer, IMixedRealityNearPointer
     {
+        /// <summary>
+        /// If touchable volumes are larger than this size (meters), pointer will raise
+        /// touch up even when pointer is inside the volume
+        /// </summary>
+        private const int maximumTouchableVolumeSize = 1000;
+
         [SerializeField]
         protected LineRenderer line;
 
@@ -136,8 +142,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (newClosestTouchable != null)
             {
                 // Build ray (poke from in front to the back of the pointer position)
-                Vector3 start = Position + touchableDistance * closestNormal;
-                Vector3 end = Position - touchableDistance * closestNormal;
+                // We make a very long ray if we are touching a touchable volume to ensure that we actually 
+                // hit the volume when we are inside of the volume, which could be very large.
+                var lengthOfPointerRay = newClosestTouchable is NearInteractionTouchableVolume ?
+                    maximumTouchableVolumeSize : touchableDistance;
+                Vector3 start = Position + lengthOfPointerRay * closestNormal;
+                Vector3 end = Position - lengthOfPointerRay * closestNormal;
                 Rays[0].UpdateRayStep(ref start, ref end);
 
                 line.SetPosition(0, Position);
@@ -209,9 +219,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.OnPostSceneQuery();
 
-            // This ensures that we actually hide the finger cursor if the poke pointer is off
-            BaseCursor?.SetVisibility(IsInteractionEnabled);
-
             if (!IsActive)
             {
                 return;
@@ -219,10 +226,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (Result?.CurrentPointerTarget != null && closestProximityTouchable != null)
             {
-                // Start position of the ray is offset by TouchableDistance, subtract to get distance between surface and pointer position.
-                float distToFront = Vector3.Distance(Result.StartPoint, Result.Details.Point) - touchableDistance;
-                bool newIsDown = (distToFront < 0.0f);
-                bool newIsUp = (distToFront > closestProximityTouchable.DebounceThreshold);
+                float distToTouchable;
+                if (closestProximityTouchable is NearInteractionTouchableVolume)
+                {
+                    // Volumes can be arbitrary size, so don't rely on the length of the raycast ray
+                    // instead just have the volume itself give us the distance.
+                    distToTouchable = closestProximityTouchable.DistanceToTouchable(Position, out _);
+                }
+                else
+                {
+                    // Start position of the ray is offset by TouchableDistance, subtract to get distance between surface and pointer position.
+                    distToTouchable = Vector3.Distance(Result.StartPoint, Result.Details.Point) - touchableDistance;
+                }
+
+                bool newIsDown = (distToTouchable < 0.0f);
+                bool newIsUp = (distToTouchable > closestProximityTouchable.DebounceThreshold);
 
                 if (newIsDown)
                 {

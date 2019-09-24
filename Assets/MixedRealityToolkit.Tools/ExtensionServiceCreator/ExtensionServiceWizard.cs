@@ -138,6 +138,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Choose which environment modes your service will support.", EditorStyles.miniLabel);
+
+            creator.ApplicationModes = (SupportedApplicationModes)EditorGUILayout.EnumFlagsField("Environment Modes", creator.ApplicationModes);
+            readyToProgress &= creator.ValidateApplicationModes(errors);
+            foreach (string error in errors)
+            {
+                EditorGUILayout.HelpBox(error, MessageType.Error);
+            }
+
+            EditorGUILayout.Space();
             EditorGUILayout.LabelField("Choose a namespace for your service.", EditorStyles.miniLabel);
 
             creator.Namespace = EditorGUILayout.TextField("Namespace", creator.Namespace);
@@ -384,6 +394,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             SerializedProperty componentName = newConfig.FindPropertyRelative("componentName");
             SerializedProperty priority = newConfig.FindPropertyRelative("priority");
             SerializedProperty runtimePlatform = newConfig.FindPropertyRelative("runtimePlatform");
+            SerializedProperty runtimeModes = newConfig.FindPropertyRelative("runtimeModes");
             SerializedProperty configurationProfile = newConfig.FindPropertyRelative("configurationProfile");
 
             componentTypeReference.stringValue = creator.ServiceType.AssemblyQualifiedName;
@@ -391,6 +402,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             componentName.stringValue = System.Text.RegularExpressions.Regex.Replace(creator.ServiceName, "(\\B[A-Z])", " $1");
             configurationProfile.objectReferenceValue = creator.ProfileInstance;
             runtimePlatform.intValue = (int)creator.Platforms;
+            runtimeModes.intValue = (int)creator.ApplicationModes;
 
             servicesProfileObject.ApplyModifiedProperties();
 

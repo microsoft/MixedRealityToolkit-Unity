@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     [Serializable]
-    public struct MixedRealityInputDataProviderConfiguration : IMixedRealityServiceConfiguration
+    public class MixedRealityInputDataProviderConfiguration : IMixedRealityServiceConfiguration
     {
         [SerializeField]
         [Implements(typeof(IMixedRealityInputDeviceManager), TypeGrouping.ByNamespaceFlat)]
@@ -31,10 +31,29 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [EnumFlags]
-        private SupportedPlatforms runtimePlatform;
+        private SupportedPlatforms runtimePlatform = (SupportedPlatforms)(-1);
 
         /// <inheritdoc />
         public SupportedPlatforms RuntimePlatform => runtimePlatform;
+
+        [EnumFlags]
+        [SerializeField]
+        private SupportedApplicationModes runtimeModes = (SupportedApplicationModes)(-1);
+
+        /// <inheritdoc />
+        public SupportedApplicationModes RuntimeModes
+        {
+            get
+            {
+                // Flag cannot be none
+                if (runtimeModes == (SupportedApplicationModes)0)
+                {
+                    runtimeModes = (SupportedApplicationModes)(-1);
+                }
+
+                return runtimeModes;
+            }
+        }
 
         [SerializeField]
         private BaseMixedRealityProfile deviceManagerProfile;
@@ -44,7 +63,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public BaseMixedRealityProfile DeviceManagerProfile => deviceManagerProfile;
 
-
         /// <summary>
         /// Constructor.
         /// </summary>
@@ -52,19 +70,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="componentName">The friendly name of the data provider.</param>
         /// <param name="priority">The load priority of the data provider.</param>
         /// <param name="runtimePlatform">The runtime platform(s) supported by the data provider.</param>
+        /// <param name="applicationModes">The runtime environment mode(s) supported by the data provider</param>
         /// <param name="profile">The configuration profile for the data provider.</param>
         public MixedRealityInputDataProviderConfiguration(
             SystemType componentType,
             string componentName,
             uint priority,
             SupportedPlatforms runtimePlatform,
+            SupportedApplicationModes applicationModes,
             BaseMixedRealityProfile profile)
         {
             this.componentType = componentType;
             this.componentName = componentName;
             this.priority = priority;
             this.runtimePlatform = runtimePlatform;
-            deviceManagerProfile = profile;
+            this.runtimeModes = applicationModes;
+            this.deviceManagerProfile = profile;
         }
     }
 }

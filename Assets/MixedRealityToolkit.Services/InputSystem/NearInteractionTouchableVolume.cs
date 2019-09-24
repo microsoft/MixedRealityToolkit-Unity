@@ -62,7 +62,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // inside object, use vector to centre as normal
                 normal = samplePoint - TouchableCollider.bounds.center;
                 normal.Normalize();
-                return 0;
+                // Return value less than zero so that when poke pointer is inside
+                // object, it will not raise a touch up event.
+                return -1;
             }
             else
             {

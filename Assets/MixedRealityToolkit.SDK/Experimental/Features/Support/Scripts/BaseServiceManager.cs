@@ -148,9 +148,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         }
 
         /// <inheritdoc />
-        public bool RegisterService<T>(Type concreteType, SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1), params object[] args) where T : IMixedRealityService
+        public bool RegisterService<T>(Type concreteType, 
+            SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1),
+            SupportedApplicationModes supportedApplicationModes = (SupportedApplicationModes)(-1),
+            params object[] args) where T : IMixedRealityService
         {
-            T serviceInstance = ActivateInstance<T>(concreteType, supportedPlatforms, args);
+            T serviceInstance = ActivateInstance<T>(concreteType, supportedPlatforms, supportedApplicationModes, args);
 
             if (serviceInstance == null)
             {
@@ -187,18 +190,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         /// </summary>
         /// <typeparam name="T">The interface which must be implemented by the concrete type.</typeparam>
         /// <param name="concreteType">The type of object to be instantiated.</param>
-        /// <param name="supportedPlatforms">The platform(s) on which the concrete type is supported.</param>
+        /// <param name="supportedPlatforms">The runtime build target platform(s) on which the concrete type is supported.</param>
+        /// <param name="applicationModes">The runtime environment mode(s) on which the concrete type is supported</param>
         /// <param name="args">Collection of arguments to provide to the concrete type's constructor.</param>
         /// <returns>An instance of the concrete type. Returns a default value of T (typically null) in the event of a failure.</returns>
-        private T ActivateInstance<T>(Type concreteType, SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1), params object[] args) where T : IMixedRealityService
+        private T ActivateInstance<T>(Type concreteType, 
+            SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1), 
+            SupportedApplicationModes applicationModes = (SupportedApplicationModes)(-1),
+            params object[] args) where T : IMixedRealityService
         {
-            if (concreteType == null) { return default(T); }
-
-#if UNITY_EDITOR
-            if (!UnityEditor.EditorUserBuildSettings.activeBuildTarget.IsPlatformSupported(supportedPlatforms))
-#else
-            if (!Application.platform.IsPlatformSupported(supportedPlatforms))
-#endif
+            if (concreteType == null ||
+                !PlatformUtility.IsPlatformSupported(supportedPlatforms) ||
+                !PlatformUtility.IsSupportedApplicationMode(applicationModes))
             {
                 return default(T);
             }
@@ -228,11 +231,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         /// </summary>
         /// <typeparam name="T">The interface type for the service to be intialized.</typeparam>
         /// <param name="concreteType">The concrete type of the service to initialize.</param>
-        /// <param name="supportedPlatforms">The platoform(s) on which the service is supported.</param>
+        /// <param name="supportedPlatforms">The runtime build target platform(s) on which the service is supported.</param>
+        /// <param name="supportedApplicationModes">The runtime environment mode(s) on which the service is supported</param>
         /// <param name="args">Arguments to provide to the service class constructor.</param>
-        protected virtual void Initialize<T>(Type concreteType, SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1), params object[] args) where T : IMixedRealityService
+        protected virtual void Initialize<T>(Type concreteType, 
+            SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1),
+            SupportedApplicationModes supportedApplicationModes = (SupportedApplicationModes)(-1),
+            params object[] args) where T : IMixedRealityService
         {
-            if (!RegisterService<T>(concreteType, supportedPlatforms, args))
+            if (!RegisterService<T>(concreteType, supportedPlatforms, supportedApplicationModes, args))
             {
                 Debug.LogError($"Failed to register the {concreteType.Name} service.");
             }

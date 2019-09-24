@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit;
 namespace #NAMESPACE#
 {
 	[MixedRealityServiceProfile(typeof(#INTERFACE_NAME#))]
-	[CreateAssetMenu(fileName = "#PROFILE_NAME#", menuName = "MixedRealityToolkit/#SERVICE_NAME# Configuration Profile")]
+	[CreateAssetMenu(fileName = "#PROFILE_NAME#", menuName = "MixedRealityToolkit/Extension Services/#SERVICE_NAME# Configuration Profile")]
 	public class #PROFILE_NAME# : BaseMixedRealityProfile
 	{
 		// Store config data in serialized fields
