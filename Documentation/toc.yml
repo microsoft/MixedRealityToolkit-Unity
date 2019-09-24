@@ -168,6 +168,10 @@
         href: InputSimulation/InputAnimationFileFormat.md
     - name: Extension Service Creation Wizard
       href: Tools/ExtensionServiceCreationWizard.md
+    - name: Runtime tools
+      items:
+      - name: Controller Mapping tool
+        href: Tools/ControllerMappingTool.md 
   - name: Scene Transition Service
     href: Extensions/SceneTransitionService/SceneTransitionServiceOverview.md
   - name: Experimental Features
