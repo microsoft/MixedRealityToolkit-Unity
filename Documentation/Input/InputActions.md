@@ -27,11 +27,11 @@ The way you map an input to and action depends on the type of the input source:
 
 Go to the **Controller Input Mapping Profile**, under the *Input System Profile*. There you will find a list of all supported controllers:
 
-<img src="../../Documentation/Images/Input/ControllerInputMappingProfile.png" style="max-width:100%;">
+<img src="../../Documentation/Images/Input/ControllerInputMappingProfile.PNG" style="max-width:100%;">
 
 Select the one you want to configure and a dialog window will appear with all the controller inputs, allowing you to set an action for each of them:
 
-<img src="../../Documentation/Images/Input/InputActionAssignment.png" style="max-width:100%;">
+<img src="../../Documentation/Images/Input/InputActionAssignment.PNG" style="max-width:100%;">
 
 ### Speech Inputs
 
