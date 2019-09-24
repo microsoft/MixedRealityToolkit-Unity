@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        public Color GetVector(int propertyId)
+        public Color GetColor(int propertyId)
         {
             return material.GetColor(propertyId);
         }

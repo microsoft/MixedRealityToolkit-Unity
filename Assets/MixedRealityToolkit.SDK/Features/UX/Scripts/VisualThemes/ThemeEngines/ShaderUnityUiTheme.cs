@@ -121,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             switch (property.Type)
             {
                 case ThemePropertyTypes.Color:
-                    startValue.Color = materialInstance.GetVector(propId);
+                    startValue.Color = materialInstance.GetColor(propId);
                     break;
                 case ThemePropertyTypes.ShaderFloat:
                     startValue.Float = materialInstance.GetFloat(propId);
