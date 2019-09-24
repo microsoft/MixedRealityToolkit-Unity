@@ -7,9 +7,10 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: HolographicButtonIconHome
+  m_Name: HolographicButtonIconGrabAreaDoubleProximity
   m_Shader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
-  m_ShaderKeywords: _ALPHABLEND_ON _SPECULAR_HIGHLIGHTS _USECOLOR_ON _USEMAINTEX_ON
+  m_ShaderKeywords: _ALPHABLEND_ON _NEAR_LIGHT_FADE _NEAR_PLANE_FADE _SPECULAR_HIGHLIGHTS
+    _USECOLOR_ON _USEMAINTEX_ON
   m_LightmapFlags: 5
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -49,7 +50,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 85835ae0b6c3c1c418a57400fcbb788c, type: 3}
+        m_Texture: {fileID: 2800000, guid: ed822fedd9a3ed640a9a7aaedabcaef4, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -83,9 +84,6 @@ Material:
     - _BumpScale: 1
     - _ClippingBorder: 0
     - _ClippingBorderWidth: 0.025
-    - _ClippingBox: 0
-    - _ClippingPlane: 0
-    - _ClippingSphere: 0
     - _ColorMask: 15
     - _ColorWriteMask: 15
     - _Cull: 2
@@ -106,8 +104,8 @@ Material:
     - _EnvironmentColorIntensity: 0.5
     - _EnvironmentColorThreshold: 1.5
     - _EnvironmentColoring: 0
-    - _FadeBeginDistance: 0.85
-    - _FadeCompleteDistance: 0.5
+    - _FadeBeginDistance: 0
+    - _FadeCompleteDistance: 0.18
     - _FadeMinValue: 0
     - _FluentLightIntensity: 1
     - _Glossiness: 0.5
@@ -122,8 +120,8 @@ Material:
     - _IridescenceThreshold: 0.05
     - _Metallic: 0
     - _Mode: 2
-    - _NearLightFade: 0
-    - _NearPlaneFade: 0
+    - _NearLightFade: 1
+    - _NearPlaneFade: 1
     - _NormalMapScale: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02

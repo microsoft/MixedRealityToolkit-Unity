@@ -7,10 +7,10 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: HolographicButtonIconHome
+  m_Name: MRTK_GrabbableDots2RowsH
   m_Shader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
-  m_ShaderKeywords: _ALPHABLEND_ON _SPECULAR_HIGHLIGHTS _USECOLOR_ON _USEMAINTEX_ON
-  m_LightmapFlags: 5
+  m_ShaderKeywords: _ALPHABLEND_ON _NEAR_LIGHT_FADE _NEAR_PLANE_FADE _SPECULAR_HIGHLIGHTS
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 3000
@@ -20,27 +20,7 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _BumpMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _ChannelMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DetailAlbedoMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DetailMask:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DetailNormalMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _EmissionMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -49,22 +29,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 85835ae0b6c3c1c418a57400fcbb788c, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MetallicGlossMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 2e264b2035e178e4dac9e40cfcf38662, type: 3}
+        m_Scale: {x: 40, y: 2}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _OcclusionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _ParallaxMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -80,19 +48,12 @@ Material:
     - _BorderLightUsesHoverColor: 0
     - _BorderMinValue: 0.1
     - _BorderWidth: 0.1
-    - _BumpScale: 1
     - _ClippingBorder: 0
     - _ClippingBorderWidth: 0.025
-    - _ClippingBox: 0
-    - _ClippingPlane: 0
-    - _ClippingSphere: 0
-    - _ColorMask: 15
     - _ColorWriteMask: 15
-    - _Cull: 2
     - _CullMode: 2
     - _CustomMode: 2
     - _Cutoff: 0.5
-    - _DetailNormalMapScale: 1
     - _DirectionalLight: 0
     - _DstBlend: 10
     - _EdgeSmoothingValue: 0.002
@@ -106,11 +67,10 @@ Material:
     - _EnvironmentColorIntensity: 0.5
     - _EnvironmentColorThreshold: 1.5
     - _EnvironmentColoring: 0
-    - _FadeBeginDistance: 0.85
-    - _FadeCompleteDistance: 0.5
+    - _FadeBeginDistance: 0.01
+    - _FadeCompleteDistance: 0.08
     - _FadeMinValue: 0
     - _FluentLightIntensity: 1
-    - _Glossiness: 0.5
     - _HoverLight: 0
     - _IgnoreZScale: 0
     - _InnerGlow: 0
@@ -122,11 +82,9 @@ Material:
     - _IridescenceThreshold: 0.05
     - _Metallic: 0
     - _Mode: 2
-    - _NearLightFade: 0
-    - _NearPlaneFade: 0
+    - _NearLightFade: 1
+    - _NearPlaneFade: 1
     - _NormalMapScale: 1
-    - _OcclusionStrength: 1
-    - _Parallax: 0.02
     - _ProximityLight: 0
     - _ProximityLightSubtractive: 0
     - _ProximityLightTwoSided: 0
@@ -144,18 +102,10 @@ Material:
     - _SphericalHarmonics: 0
     - _SrcBlend: 5
     - _Stencil: 0
-    - _StencilComp: 8
     - _StencilComparison: 0
-    - _StencilOp: 0
     - _StencilOperation: 0
-    - _StencilReadMask: 255
     - _StencilReference: 0
-    - _StencilWriteMask: 255
     - _TriplanarMappingBlendSharpness: 4
-    - _UVSec: 0
-    - _UseColor: 1
-    - _UseMainTex: 1
-    - _UseUIAlphaClip: 0
     - _VertexColors: 0
     - _VertexExtrusion: 0
     - _VertexExtrusionValue: 0
@@ -166,7 +116,6 @@ Material:
     m_Colors:
     - _ClippingBorderColor: {r: 1, g: 0.2, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EnvironmentColorX: {r: 1, g: 0, b: 0, a: 1}
     - _EnvironmentColorY: {r: 0, g: 1, b: 0, a: 1}
