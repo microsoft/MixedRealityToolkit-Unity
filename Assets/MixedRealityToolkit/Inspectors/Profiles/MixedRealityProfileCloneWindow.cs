@@ -376,7 +376,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             System.Type type = null;
             foreach (Assembly assembly in System.AppDomain.CurrentDomain.GetAssemblies())
             {
-                foreach (System.Type checkType in assembly.GetTypes())
+                foreach (System.Type checkType in assembly.GetLoadableTypes())
                 {
                     if (checkType.Name == profileTypeName)
                     {
