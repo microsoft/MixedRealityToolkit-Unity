@@ -2,7 +2,7 @@
 
 The controller mapping tool is a runtime (on device or in the editor) tool that enables developers to quickly determine the Unity input axis and button mappings for a hardware controller (ex: motion controller).
 
-THis tool is very useful when developing support for a new hardware controller. It can also help to confirm a suspected control mapping issue in the support class for an existing controller.
+This tool is very useful when developing support for a new hardware controller. It can also help to confirm a suspected control mapping issue in the support class for an existing controller.
 
 ![Controller mapping tool](../Images/ControllerMappingTool/ControllerMappingTool.png)
 
