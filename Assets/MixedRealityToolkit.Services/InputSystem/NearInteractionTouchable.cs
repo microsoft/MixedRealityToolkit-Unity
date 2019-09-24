@@ -93,11 +93,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [FormerlySerializedAs("collider")]
-        [Tooltip("BoxCollider used to calulate bounds and local center, if not set before runtime the gameObjects's BoxCollider will be used by default")]
+        [Tooltip("BoxCollider used to calculate bounds and local center, if not set before runtime the gameObjects's BoxCollider will be used by default")]
         private Collider touchableCollider;
 
         /// <summary>
-        /// The collider used by this touchable.
+        /// BoxCollider used to calculate bounds and local center, if not set before runtime the gameObjects's BoxCollider will be used by default
         /// </summary>
         public Collider TouchableCollider => touchableCollider;
 
@@ -147,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Set new local up direction and ensure that local forward is perpendicualr to the new local up and 
+        /// Set new local up direction and ensure that local forward is perpendicular to the new local up and 
         /// local right direction.
         /// </summary>
         public void SetLocalUp(Vector3 newLocalUp)
