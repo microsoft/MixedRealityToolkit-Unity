@@ -8,11 +8,10 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
     [CustomEditor(typeof(ClippingBox))]
-    public class ClippingBoxEditor : UnityEditor.Editor
+    public class ClippingBoxEditor : ClippingPrimitiveEditor
     {
-        private bool HasFrameBounds() { return true; }
-
-        private Bounds OnGetFrameBounds()
+        /// <inheritdoc/>
+        protected override Bounds OnGetFrameBounds()
         {
             var primitive = target as ClippingBox;
             Debug.Assert(primitive != null);
