@@ -20,6 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 #endif
     where T : Selectable
     {
+        [Experimental]
         protected T inputField;
 
         void OnValidate()
@@ -59,11 +60,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         #region IMixedRealityPointerHandler implementation
 
         public void OnPointerDown(MixedRealityPointerEventData eventData) { }
-
         public void OnPointerDragged(MixedRealityPointerEventData eventData) { }
-
         public void OnPointerUp(MixedRealityPointerEventData eventData) { }
-
         public void OnPointerClicked(MixedRealityPointerEventData eventData) => ShowKeyboard();
 
         #endregion

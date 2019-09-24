@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
+    /// <summary>
+    /// A component that can be added to InputField to make them work with Windows Mixed Reality's system keyboard
+    /// </summary>
     [RequireComponent(typeof(InputField))]
     public class UI_KeyboardInputField : KeyboardInputFieldBase<InputField>
     {

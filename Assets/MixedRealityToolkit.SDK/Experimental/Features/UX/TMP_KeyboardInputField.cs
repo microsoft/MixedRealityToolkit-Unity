@@ -7,6 +7,9 @@ using TMPro;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
+    /// <summary>
+    /// A component that can be added to TMP_InputField to make them work with Windows Mixed Reality's system keyboard
+    /// </summary>
     [RequireComponent(typeof(TMP_InputField))]
     public class TMP_KeyboardInputField : KeyboardInputFieldBase<TMP_InputField>
     {

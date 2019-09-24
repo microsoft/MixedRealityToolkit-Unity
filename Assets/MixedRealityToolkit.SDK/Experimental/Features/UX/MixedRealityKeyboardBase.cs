@@ -21,8 +21,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
     /// </summary>
     public abstract class MixedRealityKeyboardBase : MonoBehaviour
     {
-#if WINDOWS_UWP
+        [Experimental]
+        private object exp = null;
 
+#if WINDOWS_UWP
         #region Properties
 
         public bool IsVisible => State == KeyboardState.Shown;

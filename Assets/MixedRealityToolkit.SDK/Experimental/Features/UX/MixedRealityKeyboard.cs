@@ -11,11 +11,10 @@ using Windows.UI.ViewManagement;
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
     /// <summary>
-    /// Class with simple access to the UWP system keyboards text
+    /// Class for manually handling the Windows Mixed Reality system keyboard
     /// </summary>
     public class MixedRealityKeyboard : MixedRealityKeyboardBase
     {
-        [Experimental]
         #region Properties
 
         private string text;
