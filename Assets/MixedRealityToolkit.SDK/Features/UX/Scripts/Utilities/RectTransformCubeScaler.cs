@@ -17,6 +17,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         private RectTransform rectTransform;
         private Vector2 prevRectSize = Vector2.zero;
 
+        [SerializeField]
+        private Transform objectToScale = null;
+        private Transform prevObjectToScale = null;
+
         private void Start()
         {
             rectTransform = GetComponent<RectTransform>();
@@ -26,11 +30,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             var size = rectTransform.rect.size;
 
-            if (prevRectSize != size)
+            if (prevRectSize != size
+                || prevObjectToScale != objectToScale)
             {
                 prevRectSize = size;
+                prevObjectToScale = objectToScale;
 
-                this.transform.localScale = new Vector3(size.x, size.y, Mathf.Min(size.x, size.y));
+                if (objectToScale != null)
+                {
+                    objectToScale.localScale = new Vector3(size.x, size.y, Mathf.Min(size.x, size.y));
+                }
             }
         }
     }
