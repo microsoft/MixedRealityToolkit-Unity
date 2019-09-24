@@ -11,8 +11,8 @@ using UnityEngine.UI;
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
-    /// Theme Engine that can set colors on a Renderer or Graphic or text object based on state changes
-    /// This Theme will try to set color on first available text object in order of TextMesh, Text, TextMeshPro, and TextMeshProUGUI or Graphic object
+    /// Theme Engine that can set colors on a Renderer or text object based on state changes
+    /// This Theme will try to set color on first available text object in order of TextMesh, Text, TextMeshPro, and TextMeshProUGUI object
     /// If no text-based component can be found, then will fall back to first Renderer component found on the initialized GameObject
     /// and target the color shader property provided in the ThemeDefinition.
     /// </summary>
@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public InteractableColorTheme()
         {
-            Types = new Type[] { typeof(Renderer), typeof(TextMesh), typeof(Text), typeof(TextMeshPro), typeof(TextMeshProUGUI), typeof(Graphic) };
+            Types = new Type[] { typeof(Renderer), typeof(TextMesh), typeof(Text), typeof(TextMeshPro), typeof(TextMeshProUGUI)};
             Name = "Color Theme";
         }
 
@@ -101,12 +101,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     return color;
                 }
 
-                if (TryGetUnityUiIGraphicColor(property, out color.Color))
-                {
-                    GetColorValue = TryGetUnityUiIGraphicColor;
-                    return color;
-                }
-
                 // no text components exist, fallback to renderer
                 TryGetRendererColor(property, out color.Color);
                 GetColorValue = TryGetRendererColor;
@@ -149,12 +143,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (TrySetTextColor(color, property, index, percentage))
                 {
                     SetColorValue = TrySetTextColor;
-                    return;
-                }
-
-                if (TrySetUnityUiGraphicColor(color, property, index, percentage))
-                {
-                    SetColorValue = TrySetUnityUiGraphicColor;
                     return;
                 }
 
@@ -237,23 +225,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             return false;
         }
-
-        /// <summary>
-        /// Try to get color from Image
-        /// If no color is found, Image is not on the object
-        /// </summary>
-        protected bool TryGetUnityUiIGraphicColor(ThemeStateProperty property, out Color color)
-        {
-            Graphic img = Host.GetComponent<Graphic>();
-            if (img)
-            {
-                color = img.color;
-                return true;
-            }
-            color = Color.white;
-            return false;
-        }
-
 
         /// <summary>
         /// Try to get color from the renderer
@@ -349,22 +320,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             base.SetValue(property, index, percentage);
             return true;
-        }
-
-        /// <summary>
-        /// Try to set color on Image
-        /// If false, no Image was found.
-        /// </summary>
-        protected bool TrySetUnityUiGraphicColor(Color color, ThemeStateProperty property, int index, float percentage)
-        {
-            Graphic img = Host.GetComponent<Graphic>();
-            if (img)
-            {
-                img.material.SetColor("_Color", color);
-                return true;
-            }
-
-            return false;
         }
 
         /// <summary>

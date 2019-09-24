@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// This class is used to apply changes to shader properties on Unity UI based elements, since they do not support MaterialPropertyBlocks. 
     /// Use this only on a Unity UI based target component.
     /// </summary>
-    public class ShaderUguiTheme : InteractableThemeBase
+    public class ShaderUnityUiTheme : InteractableThemeBase
     {
         /// <inheritdoc />
         public override bool AreShadersSupported => true;
@@ -21,13 +21,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private static ThemePropertyValue emptyValue = new ThemePropertyValue();
 
         protected List<ThemeStateProperty> shaderProperties;
-        protected Material material;
+        protected UIMaterialInstance materialInstance;
 
         private ThemePropertyValue startValue = new ThemePropertyValue();
 
-        protected const string DefaultShaderProperty = "_Color";
+        private const string DefaultShaderProperty = "_BorderLight";
 
-        public ShaderUguiTheme()
+        public ShaderUnityUiTheme()
         {
             Types = new Type[] { typeof(Graphic) };
             Name = "Shader Float Ugui";
@@ -74,7 +74,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 Debug.LogError("Target Graphic is null for shader theme.");
             }
 
-            material = targetGraphic.material;
+            materialInstance = new UIMaterialInstance(targetGraphic);
+            materialInstance.TryCreateMaterialCopy();
         }
 
         /// <inheritdoc />
@@ -91,15 +92,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 case ThemePropertyTypes.Color:
                     Color newColor = Color.Lerp(property.StartValue.Color, property.Values[index].Color, percentage);
-                    material.SetColor(propId, newColor);
+                    materialInstance.SetColor(propId, newColor);
                     break;
                 case ThemePropertyTypes.ShaderFloat:
                     newValue = LerpFloat(property.StartValue.Float, property.Values[index].Float, percentage);
-                    material.SetFloat(propId, newValue);
+                    materialInstance.SetFloat(propId, newValue);
                     break;
                 case ThemePropertyTypes.ShaderRange:
                     newValue = LerpFloat(property.StartValue.Float, property.Values[index].Float, percentage);
-                    material.SetFloat(propId, newValue);
+                    materialInstance.SetFloat(propId, newValue);
                     break;
                 default:
                     break;
@@ -120,13 +121,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             switch (property.Type)
             {
                 case ThemePropertyTypes.Color:
-                    startValue.Color = material.GetVector(propId);
+                    startValue.Color = materialInstance.GetVector(propId);
                     break;
                 case ThemePropertyTypes.ShaderFloat:
-                    startValue.Float = material.GetFloat(propId);
+                    startValue.Float = materialInstance.GetFloat(propId);
                     break;
                 case ThemePropertyTypes.ShaderRange:
-                    startValue.Float = material.GetFloat(propId);
+                    startValue.Float = materialInstance.GetFloat(propId);
                     break;
                 default:
                     break;
