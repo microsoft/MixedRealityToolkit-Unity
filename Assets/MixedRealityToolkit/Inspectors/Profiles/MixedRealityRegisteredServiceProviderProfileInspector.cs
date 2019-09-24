@@ -172,21 +172,5 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
             }
         }
-
-        // TODO: Troy
-        private void AssignDefaultConfigurationValues(System.Type componentType, SerializedProperty configurationProfile, SerializedProperty runtimePlatform)
-        {
-            configurationProfile.objectReferenceValue = null;
-            runtimePlatform.intValue = -1;
-
-            if (componentType != null &&
-                MixedRealityExtensionServiceAttribute.Find(componentType) is MixedRealityExtensionServiceAttribute attr)
-            {
-                configurationProfile.objectReferenceValue = attr.DefaultProfile;
-                runtimePlatform.intValue = (int)attr.RuntimePlatforms;
-            }
-
-            serializedObject.ApplyModifiedProperties();
-        }
     }
 }
