@@ -106,7 +106,7 @@ MRTK ships with a default set of Theme Engines listed below:
 - [`InteractableStringTheme`](xref:Microsoft.MixedReality.Toolkit.UI.InteractableStringTheme)
 - [`InteractableTextureTheme`](xref:Microsoft.MixedReality.Toolkit.UI.InteractableTextureTheme)
 - [`ScaleOffsetColorTheme`](xref:Microsoft.MixedReality.Toolkit.UI.ScaleOffsetColorTheme)
-- [`ShaderUnityUiTheme`](xref:Microsoft.MixedReality.Toolkit.UI.ShaderUguiTheme)
+- [`ShaderUnityUiTheme`](xref:Microsoft.MixedReality.Toolkit.UI.ShaderUnityUiTheme)
 - [`ShaderUnityUiColorTheme`](xref:Microsoft.MixedReality.Toolkit.UI.ShaderUnityUiColorTheme)
 
 The default Theme Engines can be found under [MixedRealityToolkit.SDK/Features/UX/Scripts/VisualThemes/ThemeEngines](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/VisualThemes/ThemeEngines).
