@@ -19,14 +19,28 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
     /// UWP keyboard from showing up again after it is closed.
     /// Unity bug tracking the issue https://fogbugz.unity3d.com/default.asp?1137074_rttdnt8t1lccmtd3
     /// </summary>
-    public abstract class MixedRealityKeyboardBase<T> : MonoBehaviour where T : Selectable
+    public abstract class MixedRealityKeyboardBase : MonoBehaviour
     {
 #if WINDOWS_UWP
-        protected T inputField;
 
         #region Properties
 
-        public bool Visible => State == KeyboardState.Showing;
+        public bool IsVisible => State == KeyboardState.Shown;
+
+        protected string KeyboardText
+        {
+            get
+            {
+                return keyboard?.text;
+            }
+            set
+            {
+                if (keyboard != null)
+                {
+                    keyboard.text = value;
+                }
+            }
+        }
 
         #endregion properties
 
@@ -47,20 +61,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
             Hiding,
             Hidden,
-            Showing,
+            Shown,
         }
 
         #endregion Private enums
 
         #region Unity functions
-
-        private void Awake()
-        {
-            if ((inputField = GetComponent<T>()) == null)
-            {
-                Destroy(this);
-            }
-        }
 
         private void Start()
         {
@@ -76,13 +82,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
             switch (State)
             {
-                case KeyboardState.Showing:
+                case KeyboardState.Shown:
                     UpdateText(keyboard?.text);
                     break;
 
                 case KeyboardState.Hiding:
                     ClearText();
-                    State = KeyboardState.Hidden;
                     break;
             }
 
@@ -96,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         #endregion unity functions
 
-        protected void HideKeyboard()
+        public void HideKeyboard()
         {
             ClearText();
             State = KeyboardState.Hidden;
@@ -109,7 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             }
         }
 
-        protected void ShowKeyboard()
+        public virtual void ShowKeyboard()
         {
             // 2019/08/14: We show the keyboard even when the keyboard is already visible because on HoloLens 1
             // and WMR the events OnKeyboardShowing and OnKeyboardHiding do not fire
@@ -119,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             //    return;
             //}
 
-            State = KeyboardState.Showing;
+            State = KeyboardState.Shown;
 
             if (keyboard != null)
             {
@@ -151,10 +156,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         #endregion Input pane event handlers
 
-        protected abstract void UpdateText(string text);
 
-        protected abstract void ClearText();
+        private void ClearText()
+        {
+            if (keyboard != null)
+            {
+                keyboard.text = string.Empty;
+            }
+        }
 
 #endif
+        protected abstract void UpdateText(string text);
     }
 }

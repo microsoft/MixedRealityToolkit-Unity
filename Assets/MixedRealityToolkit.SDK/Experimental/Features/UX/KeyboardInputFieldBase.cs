@@ -9,15 +9,22 @@ using Microsoft.MixedReality.Toolkit.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
-    public abstract class KeyboardInputFieldBase<T> : MixedRealityKeyboardBase<T>
+    /// <summary>
+    /// Base class explicitly launching Windows Mixed Reality's system keyboard for InputField and TMP_InputField
+    /// To be attached to the same GameObject with either of the components
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public abstract class KeyboardInputFieldBase<T> : MixedRealityKeyboardBase
 #if WINDOWS_UWP
     , IDeselectHandler, IMixedRealityPointerHandler
-# endif
+#endif
     where T : Selectable
     {
+        protected T inputField;
+
         void OnValidate()
         {
-            T inputField = GetComponent<T>();
+            inputField = GetComponent<T>();
 
             DisableRaycastTarget(Text(inputField));
             DisableRaycastTarget(PlaceHolder(inputField));
@@ -33,13 +40,23 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
 #if WINDOWS_UWP
 
-#region IDeselectHandler implementation
+        protected virtual void Awake()
+        {
+            if ((inputField = GetComponent<T>()) == null)
+            {
+                Destroy(this);
+            }
+
+            Debug.LogWarning($"There is no {typeof(T).ToString()} on GameObject {name}, removing this component");
+        }
+
+        #region IDeselectHandler implementation
 
         public void OnDeselect(BaseEventData eventData) => HideKeyboard();
 
-#endregion
+        #endregion
 
-#region IMixedRealityPointerHandler implementation
+        #region IMixedRealityPointerHandler implementation
 
         public void OnPointerDown(MixedRealityPointerEventData eventData) { }
 
@@ -49,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         public void OnPointerClicked(MixedRealityPointerEventData eventData) => ShowKeyboard();
 
-#endregion
+        #endregion
 
 #endif
         protected abstract Graphic Text(T inputField);
