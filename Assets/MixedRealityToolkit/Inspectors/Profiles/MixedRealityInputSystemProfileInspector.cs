@@ -272,12 +272,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                                 EditorGUI.BeginChangeCheck();
                                 EditorGUILayout.PropertyField(runtimePlatform, RuntimePlatformContent);
-                                EditorGUILayout.PropertyField(runtimeApplicationModes, RuntimeModeContent);
-                                if (runtimeApplicationModes.intValue == 0)
-                                {
-                                    Debug.Log("Cannot set Environment Mode(s) to Nothing. Resetting");
-                                    runtimeApplicationModes.intValue = -1;
-                                }
+                                RenderRuntimeMode(runtimeApplicationModes);
                                 changed |= EditorGUI.EndChangeCheck();
 
                                 System.Type serviceType = null;

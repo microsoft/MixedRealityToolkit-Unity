@@ -135,7 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
 
                             EditorGUI.BeginChangeCheck();
                             EditorGUILayout.PropertyField(runtimePlatform, RuntimePlatformContent);
-                            EditorGUILayout.PropertyField(runtimeApplicationModes, RuntimeModeContent);
+                            RenderRuntimeMode(runtimeApplicationModes);
                             changed |= EditorGUI.EndChangeCheck();
 
                             System.Type serviceType = null;

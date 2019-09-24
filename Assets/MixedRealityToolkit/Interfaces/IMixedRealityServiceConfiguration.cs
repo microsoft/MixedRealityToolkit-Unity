@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit
         SupportedPlatforms RuntimePlatform { get; }
 
         /// <summary>
-        /// The runtime modes (i.e editor) to run this service.
+        /// The runtime environment modes (i.e editor) to run this service. None is not a valid value
         /// </summary>
         SupportedApplicationModes RuntimeModes { get; }
     }

@@ -148,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                 EditorGUI.BeginChangeCheck();
                                 EditorGUILayout.PropertyField(priority);
                                 EditorGUILayout.PropertyField(runtimePlatform, RuntimePlatformContent);
-                                EditorGUILayout.PropertyField(runtimeModes, RuntimeModeContent);
+                                RenderRuntimeMode(runtimeModes);
                                 changed |= EditorGUI.EndChangeCheck();
 
                                 Type serviceType = null;

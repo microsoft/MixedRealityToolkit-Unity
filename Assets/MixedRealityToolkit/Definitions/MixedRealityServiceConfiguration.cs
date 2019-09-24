@@ -69,7 +69,19 @@ namespace Microsoft.MixedReality.Toolkit
         private SupportedApplicationModes runtimeModes = (SupportedApplicationModes)(-1);
 
         /// <inheritdoc />
-        public SupportedApplicationModes RuntimeModes => runtimeModes;
+        public SupportedApplicationModes RuntimeModes
+        {
+            get
+            {
+                // Flag cannot be none
+                if (runtimeModes == (SupportedApplicationModes)0)
+                {
+                    runtimeModes = (SupportedApplicationModes)(-1);
+                }
+
+                return runtimeModes;
+            }
+        }
 
         [SerializeField]
         private BaseMixedRealityProfile configurationProfile;
