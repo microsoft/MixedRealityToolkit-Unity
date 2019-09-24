@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             {
                 Scene loadedScene = SceneManager.GetSceneAt(i);
                 if (!loadedScene.isLoaded)
-                {   // Oh, Unity.
+                {
                     continue;
                 }
 
