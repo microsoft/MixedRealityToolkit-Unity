@@ -19,7 +19,6 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
 using System;
 using System.Collections.Generic;
-using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
