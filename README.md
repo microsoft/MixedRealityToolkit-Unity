@@ -74,6 +74,8 @@ You can find  other example scenes under [**Assets/MixedRealityToolkit.Examples/
 With MRTK Examples Hub, you can try various example scenes in MRTK.
 You can find pre-built app packages for HoloLens(x86), HoloLens 2(ARM), and Windows Mixed Reality immersive headsets(x64) under [**Release Assets**](https://github.com/microsoft/MixedRealityToolkit-Unity/releases/tag/v2.0.0) folder. [Use the Windows Device Portal to install apps on HoloLens](https://docs.microsoft.com/en-us/hololens/hololens-install-apps#use-the-windows-device-portal-to-install-apps-on-hololens).
 
+See [Examples Hub README page](Documentation/README_ExampleHub.md) to learn about the details on creating multi-scene hub with MRTK's scene system and scene transition service.
+
 [![Example Scene](Documentation/Images/MRTK_ExamplesHub.png)](Documentation/README_HandInteractionExamples.md)
 
 
