@@ -674,6 +674,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator ManipulationHandlerOriginOffset()
         {
             TestUtilities.PlayspaceToOriginLookingForward();
+            // Without this background object that contains a collider, Unity will rarely
+            // return no colliders hit for raycasts and sphere casts, even if a ray / sphere is 
+            // intersecting the collider. Causes tests to be unreliable.
+            // It seems to only happen when one collider is in the scene.
+            var backgroundObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            backgroundObject.transform.position = Vector3.forward * 10;
+            backgroundObject.transform.localScale = new Vector3(100, 100, 1);
+            var backgroundmaterial = new Material(StandardShaderUtility.MrtkStandardShader);
+            backgroundmaterial.color = Color.green;
+            backgroundObject.GetComponent<MeshRenderer>().material = backgroundmaterial;
+
 
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -684,7 +695,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // add near interaction grabbable to be able to grab the cube with the simulated articulated hand
             testObject.AddComponent<NearInteractionGrabbable>();
-
             testObject.transform.localScale = Vector3.one * 0.2f;
             testObject.transform.position = Vector3.forward;
 
@@ -694,7 +704,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Modify cube mesh so origin is offset from centre
-            Vector3 offset = Vector3.one * 5f;
+            Vector3 offset = Vector3.one * 5;
 
             testObject.transform.localScale = Vector3.one * 0.2f;
             testObject.transform.rotation = Quaternion.identity;
@@ -708,10 +718,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             mesh.RecalculateNormals();
             mesh.RecalculateBounds();
             testObject.GetComponent<BoxCollider>().center = offset;
-
             testObject.transform.position = Vector3.forward - testObject.transform.TransformVector(offset);
 
             // Collect data for modified cube
+
             OriginOffsetTest actualTest = new OriginOffsetTest();
             yield return actualTest.RecordTransformValues(testObject);
             yield return null;

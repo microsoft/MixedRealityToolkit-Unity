@@ -67,10 +67,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
             if (waitForFixedUpdate)
             {
-                // We wait for two frames here because sometimes sphere pointer physics queries
-                // (sphere overlap) are returning null causing objects to not get grabbed.
-                // Waiting for two frames removes this intermittent error.
-                yield return new WaitForFixedUpdate();
                 yield return new WaitForFixedUpdate();
             }
         }
