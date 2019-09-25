@@ -19,6 +19,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
 using System;
 using System.Collections.Generic;
+using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
@@ -570,7 +571,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private class OriginOffsetTest
         {
-            const int numSteps = 1;
+            const int numSteps = 10;
 
             public struct TestData
             {
@@ -618,7 +619,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
                 // Two hand rotate/scale far
                 yield return rightHand.MoveTo(rightHandNearPos, numSteps);
+                yield return new WaitForFixedUpdate();
                 yield return leftHand.MoveTo(leftHandNearPos, numSteps);
+                yield return new WaitForFixedUpdate();
                 yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
                 yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
                 yield return rightHand.MoveTo(rightHandFarPos, numSteps);
@@ -675,7 +678,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-
             var manipHandler = testObject.AddComponent<ManipulationHandler>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingActive = false;
@@ -693,7 +695,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             // Modify cube mesh so origin is offset from centre
-            Vector3 offset = Vector3.one * 5;
+            Vector3 offset = Vector3.one * 5f;
 
             testObject.transform.localScale = Vector3.one * 0.2f;
             testObject.transform.rotation = Quaternion.identity;
@@ -705,6 +707,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
             mesh.vertices = vertices;
             mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
             testObject.GetComponent<BoxCollider>().center = offset;
 
             testObject.transform.position = Vector3.forward - testObject.transform.TransformVector(offset);
@@ -723,7 +726,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             {
                 Vector3 transformedOffset = actualData[i].pose.Rotation * Vector3.Scale(offset, actualData[i].scale);
                 TestUtilities.AssertAboutEqual(expectedData[i].pose.Position, actualData[i].pose.Position + transformedOffset, $"Failed for position of object for {actualData[i].manipDescription}");
-                TestUtilities.AssertAboutEqual(expectedData[i].pose.Rotation, actualData[i].pose.Rotation, $"Failed for rotation of object for {actualData[i].manipDescription}");
+                TestUtilities.AssertAboutEqual(expectedData[i].pose.Rotation, actualData[i].pose.Rotation, $"Failed for rotation of object for {actualData[i].manipDescription}", 1.0f);
                 TestUtilities.AssertAboutEqual(expectedData[i].scale, actualData[i].scale, $"Failed for scale of object for {actualData[i].manipDescription}");
             }
         }

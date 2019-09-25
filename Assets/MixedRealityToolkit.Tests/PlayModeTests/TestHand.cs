@@ -68,6 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             if (waitForFixedUpdate)
             {
                 yield return new WaitForFixedUpdate();
+                yield return new WaitForFixedUpdate();
             }
         }
 
