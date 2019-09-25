@@ -375,7 +375,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Wait for at least one frame explicitly to ensure the input goes through
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
-            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             Assert.True(wasClicked, "Interactable was not clicked.");
         }
