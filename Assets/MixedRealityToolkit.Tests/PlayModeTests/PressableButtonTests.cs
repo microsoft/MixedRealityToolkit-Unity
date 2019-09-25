@@ -24,12 +24,11 @@ using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    public class PressableButtonTests : BasePlayModeTests
+    public class PressableButtonTests : BasePlayModeTests, IPrebuildSetup
     {
-        public override void Setup()
+        void IPrebuildSetup.Setup()
         {
-            base.Setup();
-            PlayModeTestUtilities.EnsureTextMeshProEssentials();
+            PlayModeTestUtilities.InstallTextMeshProEssentials();
         }
 
         #region Utilities
