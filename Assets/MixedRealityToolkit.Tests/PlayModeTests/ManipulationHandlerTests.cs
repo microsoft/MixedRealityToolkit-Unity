@@ -971,6 +971,53 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             iss.HandSimulationMode = oldHandSimMode;
             yield return null;
         }
+
+        /// <summary>
+        /// Ensure that while manipulating an object, if that object gets
+        /// deactivated, that manipulation no longer moves that object.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ManipulationHandlerDisableObject()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.2f;
+            Vector3 originalObjectPos = Vector3.forward;
+            testObject.transform.position = originalObjectPos;
+
+            var manipHandler = testObject.AddComponent<ManipulationHandler>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+
+            TestHand hand = new TestHand(Handedness.Right);
+            const int numHandSteps = 1;
+
+            // Move the object without disabling and assure it moves
+            Vector3 originalHandPos = new Vector3(0.06f, -0.1f, 0.5f);
+            yield return hand.Show(originalHandPos);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return null;
+
+            yield return hand.Move(new Vector3(0.2f, 0, 0), numHandSteps);
+            yield return null;
+
+            Assert.AreNotEqual(originalObjectPos, testObject.transform.position);
+
+            // Disable the object and move the hand and assure the object does not move
+            yield return hand.MoveTo(originalHandPos, numHandSteps);
+            yield return null;
+
+            testObject.SetActive(false);
+            yield return null;
+            testObject.SetActive(true);
+
+            yield return hand.Move(new Vector3(0.2f, 0, 0), numHandSteps);
+            yield return null;
+
+            TestUtilities.AssertAboutEqual(originalObjectPos, testObject.transform.position, "Object moved after it was disabled");
+        }
     }
 }
 #endif
