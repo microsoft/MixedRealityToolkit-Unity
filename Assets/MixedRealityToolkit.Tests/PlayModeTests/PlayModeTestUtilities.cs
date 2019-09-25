@@ -358,6 +358,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
         }
 
+        /// <summary>
+        /// Sometimes it take a few frames for inputs raised via InputSystem.OnInput*
+        /// to actually get sent to input handlers. This method waits for enough frames
+        /// to pass so that any events raised actually have time to send to handlers.
+        /// We set it fairly conservatively to ensure that after waiting
+        /// all input events have been sent.
+        /// </summary>
+        internal static IEnumerator WaitForInputSystemUpdate()
+        {
+            const int inputSystemUpdateFrames = 10;
+            for (int i = 0; i < inputSystemUpdateFrames; i++)
+            {
+                yield return null;
+            }
+        }
+
     }
 }
 #endif
