@@ -105,30 +105,228 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Wait for a frame to give Unity a change to actually destroy the object
             yield return null;
         }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration1() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration2() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration3() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration4() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration5() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration6() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration7() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration8() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration9() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration10() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration11() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration12() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration13() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration14() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration15() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration16() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration17() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration18() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration19() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration20() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration21() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration22() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration23() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration24() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration25() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration26() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration27() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration28() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration29() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration30() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration31() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration32() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration33() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration34() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration35() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration36() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration37() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration38() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration39() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration40() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration41() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration42() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration43() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration44() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration45() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration46() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration47() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration48() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration49() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration50() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration51() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration52() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration53() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration54() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration55() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration56() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration57() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration58() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration59() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration60() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration61() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration62() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration63() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration64() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration65() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration66() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration67() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration68() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration69() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration70() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration71() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration72() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration73() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration74() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration75() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration76() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration77() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration78() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration79() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration80() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration81() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration82() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration83() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration84() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration85() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration86() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration87() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration88() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration89() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration90() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration91() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration92() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration93() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration94() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration95() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration96() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration97() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration98() { yield return ScaleViaNearInteration(); }
+        [UnityTest]
+        public IEnumerator ScaleViaNearInteration99() { yield return ScaleViaNearInteration(); }
 
         /// <summary>
         /// Uses near interaction to scale the bounding box by directly grabbing corner
         /// </summary>
-        [UnityTest]
         public IEnumerator ScaleViaNearInteration()
         {
             var bbox = InstantiateSceneAndDefaultBbox();
+            bbox.ScaleHandleSize = 0.1f;
             yield return null;
             var bounds = bbox.GetComponent<BoxCollider>().bounds;
-            Debug.Assert(bounds.center == new Vector3(0, 0, 1.5f));
-            Debug.Assert(bounds.size == new Vector3(.5f, .5f, .5f));
+            Assert.AreEqual(new Vector3(0, 0, 1.5f), bounds.center);
+            Assert.AreEqual(new Vector3(.5f, .5f, .5f), bounds.size);
 
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
 
             // front right corner is corner 3
             var frontRightCornerPos = bbox.ScaleCorners[3].transform.position;
 
-            Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
-            int numSteps = 30;
+            TestHand rightHand = new TestHand(Handedness.Right);
+            yield return rightHand.Show(new Vector3(0, 0, 0.5f));
             var delta = new Vector3(0.1f, 0.1f, 0f);
-            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService, ArticulatedHandPose.GestureId.OpenSteadyGrabPoint, initialHandPosition);
-            yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, frontRightCornerPos, numSteps, ArticulatedHandPose.GestureId.OpenSteadyGrabPoint, Handedness.Right, inputSimulationService);
-            yield return PlayModeTestUtilities.MoveHandFromTo(frontRightCornerPos, frontRightCornerPos + delta, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService);
+            yield return rightHand.MoveTo(frontRightCornerPos, 2);
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return rightHand.Move(delta, 2);
 
             var endBounds = bbox.GetComponent<BoxCollider>().bounds;
             TestUtilities.AssertAboutEqual(endBounds.center, new Vector3(0.033f, 0.033f, 1.467f), "endBounds incorrect center");
