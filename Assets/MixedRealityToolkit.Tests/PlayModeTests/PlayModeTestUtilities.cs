@@ -329,17 +329,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
-        internal static void EnsureTextMeshProEssentials()
+        internal static void InstallTextMeshProEssentials()
         {
 #if UNITY_EDITOR
-            // Special handling for TMP Settings and importing Essential Resources
-            if (TMP_Settings.instance == null)
+            // Import the TMP Essential Resources package
+            string packageFullPath = Path.GetFullPath("Packages/com.unity.textmeshpro");
+            if (Directory.Exists(packageFullPath))
             {
-                string packageFullPath = Path.GetFullPath("Packages/com.unity.textmeshpro");
-                if (Directory.Exists(packageFullPath))
-                {
-                    AssetDatabase.ImportPackage(packageFullPath + "/Package Resources/TMP Essential Resources.unitypackage", false);
-                }
+                AssetDatabase.ImportPackage(packageFullPath + "/Package Resources/TMP Essential Resources.unitypackage", false);
             }
 #endif
         }
