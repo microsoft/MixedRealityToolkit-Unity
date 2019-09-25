@@ -17,7 +17,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    // Utility class to use a simulated hand
+    /// <summary>
+    ///  Utility class to use a simulated hand
+    /// </summary>
     internal class TestHand
     {
         private Handedness handedness;
@@ -32,12 +34,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             simulationService = PlayModeTestUtilities.GetInputSimulationService();
         }
 
+        /// <summary>
+        /// Returns the velocity of the simulated hand
+        /// </summary>
+        /// <returns></returns>
         public Vector3 GetVelocity()
         {
             var hand = simulationService.GetHandDevice(handedness);
             return hand.Velocity;
         }
 
+        /// <summary>
+        /// Show the hand at a specified position
+        /// </summary>
+        /// <param name="position">Where to show the hand</param>
+        /// <param name="waitForFixedUpdate">If true, will wait for a physics frame after showing the hand.</param>
+        /// <returns></returns>
         public IEnumerator Show(Vector3 position, bool waitForFixedUpdate = true)
         {
             this.position = position;
@@ -48,6 +60,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
         }
 
+        /// <summary>
+        /// Hide the hand
+        /// </summary>
+        /// <param name="waitForFixedUpdate">If true, will wait a physics frame after hiding</param>
+        /// <returns></returns>
         public IEnumerator Hide(bool waitForFixedUpdate = true)
         {
             yield return PlayModeTestUtilities.HideHand(handedness, simulationService);
@@ -57,6 +74,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
         }
 
+        /// <summary>
+        /// Moves hand to given position over some number of frames.
+        /// </summary>
+        /// <param name="newPosition">Where to move hand to</param>
+        /// <param name="numSteps">How many frames to move over</param>
+        /// <param name="waitForFixedUpdate">If true, waits a physics frame after moving the hand</param>
+        /// <returns></returns>
         public IEnumerator MoveTo(Vector3 newPosition, int numSteps = 30, bool waitForFixedUpdate = true)
         {
             Vector3 oldPosition = position;
@@ -71,6 +95,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
         }
 
+        /// <summary>
+        /// Move the hand by some given delta.
+        /// </summary>
+        /// <param name="delta">Amount to move the hand by.</param>
+        /// <param name="numSteps">Number of frames to move over.</param>
+        /// <returns></returns>
         public IEnumerator Move(Vector3 delta, int numSteps = 30)
         {
             for (var iter = MoveTo(position + delta, numSteps); iter.MoveNext(); )
@@ -79,6 +109,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
         }
 
+        /// <summary>
+        /// Rotates the hand to new rotation.
+        /// </summary>
+        /// <param name="newRotation">New rotation of hand</param>
+        /// <param name="numSteps">Number of frames to rotate over.</param>
+        /// <returns></returns>
         public IEnumerator SetRotation(Quaternion newRotation, int numSteps = 30)
         {
             Quaternion oldRotation = rotation;
@@ -86,6 +122,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return PlayModeTestUtilities.SetHandRotation(oldRotation, newRotation, position, gestureId, handedness, numSteps, simulationService);
         }
 
+        /// <summary>
+        /// Changes the hand's pose to the given gesture.  Does not animate the hand between the current pose and new pose.
+        /// </summary>
+        /// <param name="newGestureId">The new hand pose</param>
+        /// <param name="waitForFixedUpdate">If true, waits for a fixed update after moving to the new pose.</param>
+        /// <returns></returns>
         public IEnumerator SetGesture(ArticulatedHandPose.GestureId newGestureId, bool waitForFixedUpdate = true)
         {
             gestureId = newGestureId;
@@ -132,6 +174,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
         }
 
+        /// <summary>
+        /// Returns the first poitner of given type that is associated with this hand.
+        /// </summary>
+        /// <typeparam name="T">Type of pointer to look for.</typeparam>
+        /// <returns></returns>
         public T GetPointer<T>() where T : class, IMixedRealityPointer
         {
             var hand = simulationService.GetHandDevice(handedness);
