@@ -570,7 +570,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private class OriginOffsetTest
         {
-            const int numSteps = 1;
+            const int numSteps = 10;
 
             public struct TestData
             {
@@ -672,10 +672,20 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator ManipulationHandlerOriginOffset()
         {
             TestUtilities.PlayspaceToOriginLookingForward();
+            // Without this background object that contains a collider, Unity will rarely
+            // return no colliders hit for raycasts and sphere casts, even if a ray / sphere is 
+            // intersecting the collider. Causes tests to be unreliable.
+            // It seems to only happen when one collider is in the scene.
+            var backgroundObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            backgroundObject.transform.position = Vector3.forward * 10;
+            backgroundObject.transform.localScale = new Vector3(100, 100, 1);
+            var backgroundmaterial = new Material(StandardShaderUtility.MrtkStandardShader);
+            backgroundmaterial.color = Color.green;
+            backgroundObject.GetComponent<MeshRenderer>().material = backgroundmaterial;
+
 
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-
             var manipHandler = testObject.AddComponent<ManipulationHandler>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingActive = false;
@@ -683,7 +693,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // add near interaction grabbable to be able to grab the cube with the simulated articulated hand
             testObject.AddComponent<NearInteractionGrabbable>();
-
             testObject.transform.localScale = Vector3.one * 0.2f;
             testObject.transform.position = Vector3.forward;
 
@@ -705,11 +714,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
             mesh.vertices = vertices;
             mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
             testObject.GetComponent<BoxCollider>().center = offset;
-
             testObject.transform.position = Vector3.forward - testObject.transform.TransformVector(offset);
 
             // Collect data for modified cube
+
             OriginOffsetTest actualTest = new OriginOffsetTest();
             yield return actualTest.RecordTransformValues(testObject);
             yield return null;
@@ -723,7 +733,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             {
                 Vector3 transformedOffset = actualData[i].pose.Rotation * Vector3.Scale(offset, actualData[i].scale);
                 TestUtilities.AssertAboutEqual(expectedData[i].pose.Position, actualData[i].pose.Position + transformedOffset, $"Failed for position of object for {actualData[i].manipDescription}");
-                TestUtilities.AssertAboutEqual(expectedData[i].pose.Rotation, actualData[i].pose.Rotation, $"Failed for rotation of object for {actualData[i].manipDescription}");
+                TestUtilities.AssertAboutEqual(expectedData[i].pose.Rotation, actualData[i].pose.Rotation, $"Failed for rotation of object for {actualData[i].manipDescription}", 1.0f);
                 TestUtilities.AssertAboutEqual(expectedData[i].scale, actualData[i].scale, $"Failed for scale of object for {actualData[i].manipDescription}");
             }
         }
