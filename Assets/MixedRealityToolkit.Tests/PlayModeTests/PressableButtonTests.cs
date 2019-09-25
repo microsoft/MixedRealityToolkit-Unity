@@ -612,11 +612,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
-        private static bool AreApproximatelyEqual(float f0, float f1, float tolerance)
-        {
-            return Mathf.Abs(f0 - f1) < tolerance;
-        }
-
         private static Vector3 GetBackPlateToFrontPlateVector(PressableButton button)
         {
             var movingButtonVisualsTransform = GetPrivateMovingButtonVisuals(button).transform;
