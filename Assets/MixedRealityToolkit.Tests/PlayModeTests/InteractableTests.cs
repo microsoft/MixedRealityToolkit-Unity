@@ -338,7 +338,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.True(wasReleased, "interactable not released");
             Assert.True(wasClicked, "Interactable was not clicked.");
         }
-
         /// <summary>
         /// Instantiates a push button prefab and uses simulated voice input events to press it.
         /// </summary>
@@ -358,13 +357,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Subscribe to interactable's on click so we know the click went through
             bool wasClicked = false;
             interactable.OnClick.AddListener(() => { wasClicked = true; });
-
+            
             Vector3 targetStartPosition = translateTargetObject.localPosition;
 
             // Set up its voice command
             interactable.VoiceCommand = "Select";
 
-            yield return null;
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             // Find an input source to associate with the input event (doesn't matter which one)
             IMixedRealityInputSource defaultInputSource = CoreServices.InputSystem.DetectedInputSources.FirstOrDefault();
@@ -374,12 +373,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             SpeechCommands commands = new SpeechCommands("Select", KeyCode.None, interactable.InputAction);
             CoreServices.InputSystem.RaiseSpeechCommandRecognized(defaultInputSource, RecognitionConfidenceLevel.High, new System.TimeSpan(100), System.DateTime.Now, commands);
             // Wait for at least one frame explicitly to ensure the input goes through
-            yield return new WaitForFixedUpdate();
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
-            yield return CheckButtonTranslation(targetStartPosition, translateTargetObject);
-
-            // Wait for button press to expire
-            yield return new WaitForSeconds(ButtonReleaseAnimationDelay);
 
             Assert.True(wasClicked, "Interactable was not clicked.");
         }
