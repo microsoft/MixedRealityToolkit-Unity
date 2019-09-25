@@ -516,12 +516,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void OnEnable()
         {
-            if(!Enabled)
-            {
-                // Re-enable Interactable
-                SetDisabled(false);
-            }
-
             if (!RequiresFocus)
             {
                 RegisterGlobalSpeechHandler(true);
@@ -555,11 +549,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 RegisterGlobalInputHandler(false);
             }
 
-            // If the gameObject or script is disabled we need to also internally disable Interactable
-            SetDisabled(true);
-
-            // Set the states before object or script is disabled
-            InternalUpdate();
+            // Set all base states to false when the gameObject or script is disabled
+            ResetBaseStates();
         }
 
         private void RegisterGlobalInputHandler(bool globalInput)
@@ -773,7 +764,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             SetState(InteractableStates.InteractableStateEnum.Disabled, disabled);
 
             // Clear the focus if interactable is disabled
-            if(disabled)
+            if (disabled)
             {
                 SetFocus(false);
             }  
