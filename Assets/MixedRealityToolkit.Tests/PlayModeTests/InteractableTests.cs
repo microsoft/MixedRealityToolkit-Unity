@@ -302,10 +302,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Subscribe to interactable's on click so we know the click went through
             bool wasClicked = false;
             interactable.OnClick.AddListener(() => { wasClicked = true; });
-
+            bool wasPressed = false;
+            bool wasReleased = false;
+            var pressReceiver = interactable.AddReceiver<InteractableOnPressReceiver>();
+            pressReceiver.OnPress.AddListener(() => { wasPressed = true; Debug.Log("pressReciever wasPressed true"); });
+            pressReceiver.OnRelease.AddListener(() => { wasReleased = true; Debug.Log("pressReciever wasReleased true"); });
             Vector3 targetStartPosition = translateTargetObject.localPosition;
 
-            yield return null;
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             // Find the menu action from the input system profile
             MixedRealityInputAction menuAction = CoreServices.InputSystem.InputSystemProfile.InputActionsProfile.InputActions.Where(m => m.Description == "Menu").FirstOrDefault();
@@ -317,19 +321,21 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Find an input source to associate with the input event (doesn't matter which one)
             IMixedRealityInputSource defaultInputSource = CoreServices.InputSystem.DetectedInputSources.FirstOrDefault();
             Assert.NotNull(defaultInputSource, "At least one input source must be present for this test to work.");
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             // Raise a menu down input event, then wait for transition to take place
             CoreServices.InputSystem.RaiseOnInputDown(defaultInputSource, Handedness.Right, menuAction);
             // Wait for at least one frame explicitly to ensure the input goes through
-            yield return new WaitForFixedUpdate();
-
-            yield return CheckButtonTranslation(targetStartPosition, translateTargetObject);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             // Raise a menu up input event, then wait for transition to take place
             CoreServices.InputSystem.RaiseOnInputUp(defaultInputSource, Handedness.Right, menuAction);
             // Wait for at least one frame explicitly to ensure the input goes through
-            yield return new WaitForSeconds(ButtonReleaseAnimationDelay);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
+
+            Assert.True(wasPressed, "interactable not pressed");
+            Assert.True(wasReleased, "interactable not released");
             Assert.True(wasClicked, "Interactable was not clicked.");
         }
 
