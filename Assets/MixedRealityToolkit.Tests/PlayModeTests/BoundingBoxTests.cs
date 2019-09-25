@@ -112,6 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator ScaleViaNearInteration()
         {
+            const int numSteps = 2;
             var bbox = InstantiateSceneAndDefaultBbox();
             bbox.ScaleHandleSize = 0.1f;
             yield return null;
@@ -127,9 +128,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             TestHand rightHand = new TestHand(Handedness.Right);
             yield return rightHand.Show(new Vector3(0, 0, 0.5f));
             var delta = new Vector3(0.1f, 0.1f, 0f);
-            yield return rightHand.MoveTo(frontRightCornerPos, 2);
+            yield return rightHand.MoveTo(frontRightCornerPos, numSteps);
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-            yield return rightHand.Move(delta, 2);
+            yield return rightHand.Move(delta, numSteps);
 
             var endBounds = bbox.GetComponent<BoxCollider>().bounds;
             TestUtilities.AssertAboutEqual(endBounds.center, new Vector3(0.033f, 0.033f, 1.467f), "endBounds incorrect center");
