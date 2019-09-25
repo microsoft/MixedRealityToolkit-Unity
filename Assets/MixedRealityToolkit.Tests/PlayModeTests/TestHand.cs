@@ -109,7 +109,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// </summary>
         /// <param name="newRotation">New rotation of hand</param>
         /// <param name="numSteps">Number of frames to rotate over.</param>
-        /// <returns></returns>
         public IEnumerator SetRotation(Quaternion newRotation, int numSteps = 30)
         {
             Quaternion oldRotation = rotation;
