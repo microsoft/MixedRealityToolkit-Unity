@@ -355,7 +355,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
             get
             {
-                return NodeList.Count != 0 ? (StepMultiplier(NodeList.Count + Tiers - ModuloCheck(NodeList.Count, Tiers), Tiers) - ViewableArea) * CellHeight : 0.0f;
+                return NodeList.Count != 0 ? (StepMultiplier(NodeList.Count - (ViewableArea * Tiers), Tiers) + ModuloCheck(NodeList.Count, Tiers)) * CellHeight : 0.0f;
             }
         }
 
@@ -370,10 +370,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
             get
             {
-                var test = NodeList.Count != 0 ? Mathf.Ceil(StepMultiplier(NodeList.Count - (ViewableArea * Tiers), ViewableArea)) * CellWidth : 0.0f;
-                //var boop = NodeList.Count != 0 ? (StepMultiplier(NodeList.Count + Tiers + ModuloCheck(NodeList.Count, Tiers), Tiers) - ViewableArea) * CellWidth) : 0.0f;
-                Debug.Log(-test);
-                return -test;
+                return NodeList.Count != 0 ? -((StepMultiplier(NodeList.Count - (ViewableArea * Tiers), Tiers) + ModuloCheck(NodeList.Count, Tiers)) * CellWidth) : 0.0f;
             }
 
         }
