@@ -345,7 +345,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             });
 
             TestHand hand = new TestHand(Handedness.Right);
-            Vector3 initialHandPosition = new Vector3(0.0f, 0f, 0.3f); // orient hand so far interaction ray will hit button
+            Vector3 initialHandPosition = new Vector3(0.05f, -0.05f, 0.3f); // orient hand so far interaction ray will hit button
             yield return hand.Show(initialHandPosition);
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
