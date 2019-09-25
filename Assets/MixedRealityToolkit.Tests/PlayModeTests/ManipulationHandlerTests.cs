@@ -407,35 +407,30 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             const int numCircleSteps = 10;
             const int numHandSteps = 3;
 
-            Vector3 initialHandPosition = new Vector3(0.04f, -0.18f, 0.3f); // grab point on the lower center part of the cube
-            
+            Vector3 initialHandPosition = new Vector3(0.044f, -0.1f, 0.45f);
             TestHand hand = new TestHand(Handedness.Right);     
 
             // do this test for every one hand rotation mode
             foreach (ManipulationHandler.RotateInOneHandType type in Enum.GetValues(typeof(ManipulationHandler.RotateInOneHandType)))
             {
                 // TODO: grab point is moving in this test and has to be covered by a different test
-                if (type == ManipulationHandler.RotateInOneHandType.MaintainOriginalRotation)
+                if (type == ManipulationHandler.RotateInOneHandType.MaintainOriginalRotation ||
+                    type == ManipulationHandler.RotateInOneHandType.FaceAwayFromUser ||
+                    type == ManipulationHandler.RotateInOneHandType.FaceUser)
                 {
                     continue;
-                }         
+                }
 
                 manipHandler.OneHandRotationModeFar = type;
 
                 TestUtilities.PlayspaceToOriginLookingForward();
 
                 yield return hand.Show(initialHandPosition);
-                yield return null;
+                yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
                
                 // pinch and let go of the object again to make sure that any rotation adjustment we're doing is applied 
                 // at the beginning of our test and doesn't interfere with our grab position on the cubes surface while we're moving around
                 yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-                yield return new WaitForFixedUpdate();
-                yield return null;
-
-                yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
-                yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-
 
                 // save relative pos grab point to object - for far interaction we need to check the grab point where the pointer ray hits the manipulated object
                 InputSimulationService simulationService = PlayModeTestUtilities.GetInputSimulationService();
