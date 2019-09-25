@@ -7028,7 +7028,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.ClippingBoxEditor.html",
-          "hash": "OFgZ6X9NswrbrI+xc6ksFA=="
+          "hash": "e7l8DndxYvWBs5mtb+rnfw=="
         }
       },
       "is_incremental": false,
@@ -7040,7 +7040,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.ClippingPlaneEditor.html",
-          "hash": "0/UVbXrnram5GeppOxfgrw=="
+          "hash": "A/9JG2XewYkvDx1/5lO6pg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Editor.ClippingPrimitiveEditor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.ClippingPrimitiveEditor.html",
+          "hash": "HxFOBH3r5xXyVvVN0AWNkQ=="
         }
       },
       "is_incremental": false,
@@ -7052,7 +7064,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.ClippingSphereEditor.html",
-          "hash": "N1boa1DdBJdl44L235BsmA=="
+          "hash": "Rxp24jeovdnw21T2HSJ+mg=="
         }
       },
       "is_incremental": false,
@@ -7772,7 +7784,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.html",
-          "hash": "+iKiA9GZzPiLCJyEpT5qJw=="
+          "hash": "eOTaW6p6R2e7aaGbEqwYYA=="
         }
       },
       "is_incremental": false,
@@ -16784,7 +16796,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.ClippingBox.html",
-          "hash": "omPEKyNnUcd4JGEOgwMWng=="
+          "hash": "DQVLilf/sL88HNv7QKs7uA=="
         }
       },
       "is_incremental": false,
@@ -16796,7 +16808,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.ClippingPlane.html",
-          "hash": "g/9fXSFOLO7RZdT9a38FoA=="
+          "hash": "gKz1OsmPp/znIdsEo+jIEw=="
         }
       },
       "is_incremental": false,
@@ -16820,7 +16832,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html",
-          "hash": "Kyc8bFmrnRjEjwtCNfoA3w=="
+          "hash": "GkqgWHM0Hi3ZvOSEJYGwmQ=="
         }
       },
       "is_incremental": false,
@@ -16832,7 +16844,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.ClippingSphere.html",
-          "hash": "mbdviF2+UdRXY1U8HfCAvA=="
+          "hash": "pP65S7BFGg0DwgQ6hB8/5Q=="
         }
       },
       "is_incremental": false,
@@ -19808,7 +19820,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "xJYtVf5twMhl+sI96UCnPw=="
+          "hash": "zizXDFTFyOWnj2WE/lOuxQ=="
         }
       },
       "is_incremental": false,
@@ -19860,11 +19872,10 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "TocDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 1135,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
@@ -19873,10 +19884,11 @@
           "total_file_count": 128,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 1134,
+          "total_file_count": 0,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

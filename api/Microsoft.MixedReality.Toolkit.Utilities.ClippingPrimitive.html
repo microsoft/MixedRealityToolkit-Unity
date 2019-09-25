@@ -108,30 +108,6 @@ used to drive per pixel based clipping.</p>
   </h3>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_allocatedMaterials" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.allocatedMaterials">allocatedMaterials</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected List&lt;Material&gt; allocatedMaterials</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">List</span>&lt;<span class="xref">Material</span>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_clippingSide" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.clippingSide">clippingSide</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
@@ -156,6 +132,30 @@ used to drive per pixel based clipping.</p>
   </table>
   
   
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_materialClones" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.materialClones">materialClones</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected static Dictionary&lt;Material, Material&gt; materialClones</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Dictionary</span>&lt;<span class="xref">Material</span>, <span class="xref">Material</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_materialPropertyBlock" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.materialPropertyBlock">materialPropertyBlock</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
@@ -174,30 +174,6 @@ used to drive per pixel based clipping.</p>
     <tbody>
       <tr>
         <td><span class="xref">MaterialPropertyBlock</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_modifiedMaterials" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.modifiedMaterials">modifiedMaterials</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Dictionary&lt;Material, bool&gt; modifiedMaterials</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Dictionary</span>&lt;<span class="xref">Material</span>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -308,7 +284,8 @@ used to drive per pixel based clipping.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_UseOnPreRender_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.UseOnPreRender*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_UseOnPreRender" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.UseOnPreRender">UseOnPreRender</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Toggles whether the primitive will use the Camera OnPreRender event.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -329,13 +306,17 @@ used to drive per pixel based clipping.</p>
       </tr>
     </tbody>
   </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_UseOnPreRender_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This is especially helpful if you're trying to clip dynamically created objects that may be added to the scene after LateUpdate such as OnWillRender</p>
+</div>
   <h3 id="methods">Methods
   </h3>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_AddRenderer_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.AddRenderer*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_AddRenderer_Renderer_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.AddRenderer(Renderer)">AddRenderer(Renderer)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Adds a renderer to the list of objects this clipping primitive clips.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -361,12 +342,12 @@ used to drive per pixel based clipping.</p>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_GetMaterial_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.GetMaterial*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_GetMaterial_Renderer_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.GetMaterial(Renderer,System.Boolean)">GetMaterial(Renderer, Boolean)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_GetMaterial_Renderer_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.GetMaterial(Renderer)">GetMaterial(Renderer)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected Material GetMaterial(Renderer _renderer, bool trackAllocations = true)</code></pre>
+    <pre><code class="lang-csharp hljs">protected Material GetMaterial(Renderer _renderer)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -383,11 +364,6 @@ used to drive per pixel based clipping.</p>
         <td><span class="parametername">_renderer</span></td>
         <td></td>
       </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><span class="parametername">trackAllocations</span></td>
-        <td></td>
-      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -402,6 +378,33 @@ used to drive per pixel based clipping.</p>
       <tr>
         <td><span class="xref">Material</span></td>
         <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_GetRenderersCopy_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.GetRenderersCopy*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_GetRenderersCopy" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.GetRenderersCopy">GetRenderersCopy()</h4>
+  <div class="markdown level1 summary"><p>Returns a copy of the current list of renderers.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;Renderer&gt; GetRenderersCopy()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<span class="xref">Renderer</span>&gt;</td>
+        <td><p>The current list of renderers.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -484,19 +487,10 @@ used to drive per pixel based clipping.</p>
   </div>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_OnValidate_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.OnValidate*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_OnValidate" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.OnValidate">OnValidate()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void OnValidate()</code></pre>
-  </div>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_RemoveRenderer_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.RemoveRenderer*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_RemoveRenderer_Renderer_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.RemoveRenderer(Renderer)">RemoveRenderer(Renderer)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Removes a renderer to the list of objects this clipping primitive clips.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -519,26 +513,6 @@ used to drive per pixel based clipping.</p>
       </tr>
     </tbody>
   </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_RestoreUnassignedMaterials_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.RestoreUnassignedMaterials*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_RestoreUnassignedMaterials" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.RestoreUnassignedMaterials">RestoreUnassignedMaterials()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void RestoreUnassignedMaterials()</code></pre>
-  </div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_Start_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.Start*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_Start" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.Start">Start()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void Start()</code></pre>
-  </div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_ToggleClippingFeature_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.ToggleClippingFeature*"></a>
