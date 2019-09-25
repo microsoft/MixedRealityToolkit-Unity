@@ -618,9 +618,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
                 // Two hand rotate/scale far
                 yield return rightHand.MoveTo(rightHandNearPos, numSteps);
-                yield return new WaitForFixedUpdate();
                 yield return leftHand.MoveTo(leftHandNearPos, numSteps);
-                yield return new WaitForFixedUpdate();
                 yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
                 yield return leftHand.SetGesture(ArticulatedHandPose.GestureId.Open);
                 yield return rightHand.MoveTo(rightHandFarPos, numSteps);
