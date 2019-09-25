@@ -552,9 +552,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 buttonReleased = true;
             });
 
-            Vector3 startHand = new Vector3(0, 0, -0.008f);
+            Vector3 startHand = new Vector3(0, 0, -0.0081f);
             Vector3 inButtonOnPress = new Vector3(0, 0, 0.002f); // past press plane of mrtk pressablebutton prefab
-            Vector3 rightOfButtonPress = new Vector3(1.0f, 0, 0.002f); // right of press plane, outside button
+            Vector3 rightOfButtonPress = new Vector3(0.02f, 0, 0.002f); // right of press plane, outside button
             Vector3 inButtonOnRelease = new Vector3(0, 0, -0.0015f); // release plane of mrtk pressablebutton prefab
             TestHand hand = new TestHand(Handedness.Right);
 
@@ -570,8 +570,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield return hand.MoveTo(inButtonOnRelease, numSteps);
                 yield return hand.Hide();
 
-                Assert.IsTrue(buttonPressed, "Button did not get pressed when hand moved to press it.");
-                Assert.IsTrue(buttonReleased, "Button did not get released.");
+                Assert.IsTrue(buttonPressed, $"A{i} - Button did not get pressed when hand moved to press it.");
+                Assert.IsTrue(buttonReleased, $"A{i} - Button did not get released.");
 
                 buttonPressed = false;
                 buttonReleased = false;
@@ -584,8 +584,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield return hand.MoveTo(rightOfButtonPress, numSteps);
                 yield return hand.Hide();
 
-                Assert.IsTrue(buttonPressed, "Button did not get pressed when hand moved to press it.");
-                Assert.IsTrue(buttonReleased, "Button did not get released when hand exited the button.");
+                Assert.IsTrue(buttonPressed, $"B{i} - Button did not get pressed when hand moved to press it.");
+                Assert.IsTrue(buttonReleased, $"B{i} - Button did not get released when hand exited the button.");
 
                 buttonPressed = false;
                 buttonReleased = false;
@@ -598,8 +598,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield return hand.MoveTo(rightOfButtonPress, numSteps);
                 yield return hand.Hide();
 
-                Assert.IsTrue(buttonPressed, "Button did not get pressed when hand moved to press it.");
-                Assert.IsFalse(buttonReleased, "Button did got released on exit even though releaseOnTouchEnd wasn't set");
+                Assert.IsTrue(buttonPressed, $"C{i} - Button did not get pressed when hand moved to press it.");
+                Assert.IsFalse(buttonReleased, $"C{i} - Button did got released on exit even though releaseOnTouchEnd wasn't set");
 
                 buttonPressed = false;
                 buttonReleased = false;
