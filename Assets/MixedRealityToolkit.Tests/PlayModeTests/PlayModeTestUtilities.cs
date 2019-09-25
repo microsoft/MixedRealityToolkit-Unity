@@ -338,6 +338,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             {
                 AssetDatabase.ImportPackage(packageFullPath + "/Package Resources/TMP Essential Resources.unitypackage", false);
             }
+            else
+            {
+                Debug.LogError("Unable to locate the Text Mesh Pro package.");
+            }
 #endif
         }
 
