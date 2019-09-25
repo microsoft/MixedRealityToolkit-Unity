@@ -16,6 +16,7 @@ using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -103,6 +104,74 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
             PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
             Assert.IsNotNull(buttonComponent);
+
+            Object.Destroy(testButton);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        /// <summary>
+        /// Some apps will instantiate a button, disable it while they do other setup, then enable it.  This caused a bug where the button front plate would be flattened against the button.
+        /// This tests to confirm that this has not regressed.
+        /// https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6024
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ButtonInstantiateDisableThenEnableBeforeStart([ValueSource(nameof(PressableButtonsTestPrefabFilenames))] string prefabFilename)
+        {
+            GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
+
+            // Disable then re-enable the button in the same frame as it was instantiated, so that Start() does not execute.
+            testButton.SetActive(false);
+            testButton.SetActive(true);
+
+            yield return null;
+
+            PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
+
+            var deltaPosition = GetBackPlateToFrontPlateVector(buttonComponent);
+
+            Assert.IsTrue(deltaPosition.magnitude > 0.007f, "The button prefabs should all have their front plates at least 8mm away from the back plates.");
+
+            Object.Destroy(testButton);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+        }
+
+        /// <summary>
+        /// There was an issue where rotating a button after Start() had executed resulted in the front plate going in the wrong direction.
+        /// This tests that it has not regressed.
+        /// https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6025
+        /// </summary>
+        [UnityTest]
+        public IEnumerator RotateButton([ValueSource(nameof(PressableButtonsTestPrefabFilenames))] string prefabFilename)
+        {
+            GameObject testButton = InstantiateDefaultPressableButton(prefabFilename);
+
+            yield return null;
+
+            PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
+            var initialOffset = GetBackPlateToFrontPlateVector(buttonComponent);
+
+            // Rotate the button 90 degrees about the Y axis.
+            testButton.transform.Rotate(new Vector3(0.0f, 90.0f, 0.0f));
+
+            yield return null;
+
+            ForceInvoke_UpdateMovingVisualsPosition(buttonComponent);
+
+            yield return null;
+
+            var rotatedOffset = GetBackPlateToFrontPlateVector(buttonComponent);
+
+            // Before rotating, the offset should be in the negative Z direction.  After rotating, it should be in the negative X direction.
+
+            Assert.IsTrue(initialOffset.z < -0.007f);
+            Assert.IsTrue(rotatedOffset.x < -0.007f);
+
+            // Test that most of the magnitude of the offset is in the specified direction.  Give a large-ish tolerance.
+            float tolerance = 0.00001f;
+            Assert.IsTrue(AreApproximatelyEqual(initialOffset.magnitude, Mathf.Abs(initialOffset.z), tolerance));
+            Assert.IsTrue(AreApproximatelyEqual(rotatedOffset.magnitude, Mathf.Abs(rotatedOffset.x), tolerance));
 
             Object.Destroy(testButton);
             // Wait for a frame to give Unity a change to actually destroy the object
@@ -310,19 +379,23 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             float pressDistance = button.PressDistance;
             float releaseDistance = pressDistance - button.ReleaseDistanceDelta;
 
-            Vector3 startPushDistanceWorld = button.GetWorldPositionAlongPushDirection(startPushDistance);
-            Vector3 maxPushDistanceWorld = button.GetWorldPositionAlongPushDirection(maxPushDistance);
-            Vector3 pressDistanceWorld = button.GetWorldPositionAlongPushDirection(pressDistance);
-            Vector3 releaseDistanceWorld = button.GetWorldPositionAlongPushDirection(releaseDistance);
+            Vector3 zeroPushDistanceWorld = button.GetWorldPositionAlongPushDirection(0.0f);
+
+            Vector3 startPushDistanceWorld = button.GetWorldPositionAlongPushDirection(startPushDistance) - zeroPushDistanceWorld;
+            Vector3 maxPushDistanceWorld = button.GetWorldPositionAlongPushDirection(maxPushDistance) - zeroPushDistanceWorld;
+            Vector3 pressDistanceWorld = button.GetWorldPositionAlongPushDirection(pressDistance) - zeroPushDistanceWorld;
+            Vector3 releaseDistanceWorld = button.GetWorldPositionAlongPushDirection(releaseDistance) - zeroPushDistanceWorld;
 
             // scale the button in z direction
             // scaling the button while in world space shouldn't influence our button plane distances
             testButton.transform.localScale = new Vector3(1.0f, 1.0f, 2.0f);
 
-            Vector3 startPushDistanceWorldScaled = button.GetWorldPositionAlongPushDirection(startPushDistance);
-            Vector3 maxPushDistanceWorldScaled = button.GetWorldPositionAlongPushDirection(maxPushDistance);
-            Vector3 pressDistanceWorldScaled = button.GetWorldPositionAlongPushDirection(pressDistance);
-            Vector3 releaseDistanceWorldScaled = button.GetWorldPositionAlongPushDirection(releaseDistance);
+            Vector3 zeroPushDistanceWorldScaled = button.GetWorldPositionAlongPushDirection(0.0f);
+
+            Vector3 startPushDistanceWorldScaled = button.GetWorldPositionAlongPushDirection(startPushDistance) - zeroPushDistanceWorldScaled;
+            Vector3 maxPushDistanceWorldScaled = button.GetWorldPositionAlongPushDirection(maxPushDistance) - zeroPushDistanceWorldScaled;
+            Vector3 pressDistanceWorldScaled = button.GetWorldPositionAlongPushDirection(pressDistance) - zeroPushDistanceWorldScaled;
+            Vector3 releaseDistanceWorldScaled = button.GetWorldPositionAlongPushDirection(releaseDistance) - zeroPushDistanceWorldScaled;
 
             // compare our distances
             Assert.IsTrue(startPushDistanceWorld == startPushDistanceWorldScaled, "Start Distance was modified while scaling button gameobject");
@@ -436,10 +509,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             testButton.transform.localScale = zScale;
             yield return null;
 
-            float startPushDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.StartPushDistance).z - zeroPushDistanceWorld;
-            float maxPushDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.MaxPushDistance).z - zeroPushDistanceWorld;
-            float pressDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.PressDistance).z - zeroPushDistanceWorld;
-            float releaseDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.PressDistance - button.ReleaseDistanceDelta).z - zeroPushDistanceWorld;
+            float zeroPushDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(0.0f).z;
+
+            float startPushDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.StartPushDistance).z - zeroPushDistanceWorld_Scaled;
+            float maxPushDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.MaxPushDistance).z - zeroPushDistanceWorld_Scaled;
+            float pressDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.PressDistance).z - zeroPushDistanceWorld_Scaled;
+            float releaseDistanceWorld_Scaled = button.GetWorldPositionAlongPushDirection(button.PressDistance - button.ReleaseDistanceDelta).z - zeroPushDistanceWorld_Scaled;
 
             float tolerance = 0.00000001f;
 
@@ -536,6 +611,29 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return null;
         }
+
+        private static Vector3 GetBackPlateToFrontPlateVector(PressableButton button)
+        {
+            var movingButtonVisualsTransform = GetPrivateMovingButtonVisuals(button).transform;
+            var backPlateTransform = button.transform.Find("BackPlate");
+
+            return movingButtonVisualsTransform.position - backPlateTransform.position;
+        }
+
+        private static GameObject GetPrivateMovingButtonVisuals(PressableButton button)
+        {
+            // Use reflection to get the private field that contains the front plate.
+            var movingButtonVisualsField = typeof(PressableButton).GetField("movingButtonVisuals", BindingFlags.NonPublic | BindingFlags.Instance);
+            return (GameObject)movingButtonVisualsField.GetValue(button);
+        }
+
+        private static void ForceInvoke_UpdateMovingVisualsPosition(PressableButton button)
+        {
+            // Use reflection to invoke a non-public method.
+            var method = typeof(PressableButton).GetMethod("UpdateMovingVisualsPosition", BindingFlags.NonPublic | BindingFlags.Instance);
+            method.Invoke(button, new object[0]);
+        }
+
         #endregion
     }
 }
