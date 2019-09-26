@@ -220,49 +220,6 @@ Transform:
   m_Father: {fileID: 2065359338}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &44612728
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 44612729}
-  - component: {fileID: 44612730}
-  m_Layer: 0
-  m_Name: DefaultRaycastProvider
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &44612729
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 44612728}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1976815591}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &44612730
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 44612728}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09c04dafcb77c1e4195a36bd131cbdec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &72192836
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -334,16 +291,11 @@ PrefabInstance:
         type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2084319449}
+      objectReference: {fileID: 2084319451}
     - target: {fileID: 5487525929659315375, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetVR
-      objectReference: {fileID: 0}
-    - target: {fileID: 3456123869903824599, guid: 4f44c0d070528944c9bff425c6932763,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3126786009469193090, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
@@ -434,6 +386,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -0.016400006
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456123869903824599, guid: 4f44c0d070528944c9bff425c6932763,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3126786010441234080, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
@@ -1844,7 +1801,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Enabled: 1
-  States: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
+  states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
   InputAction:
     id: 0
     description: 
@@ -1857,25 +1814,22 @@ MonoBehaviour:
   CanDeselect: 1
   VoiceCommand: Select
   RequiresFocus: 1
-  Profiles:
+  profiles:
   - Target: {fileID: 1806166995}
     Themes:
     - {fileID: 11400000, guid: 8f8cfb3041153fa45bccb6d664a563ec, type: 2}
     - {fileID: 11400000, guid: 8f8cfb3041153fa45bccb6d664a563ec, type: 2}
-    HadDefaultTheme: 1
   - Target: {fileID: 880591885}
     Themes:
     - {fileID: 11400000, guid: 452ab0b768e73aa45a65adeb08147cec, type: 2}
     - {fileID: 11400000, guid: c020ebf06513a084caa57aa68a245a6b, type: 2}
-    HadDefaultTheme: 1
   OnClick:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Events:
-  - Name: OnFocus
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 275564933}
@@ -1937,9 +1891,7 @@ MonoBehaviour:
         m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       Options: []
-    HideUnityEvents: 0
-  - Name: OnPress
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 275564931}
@@ -2037,12 +1989,10 @@ MonoBehaviour:
       - Near and Far
       - Near Only
       - Far Only
-    HideUnityEvents: 0
-  - Name: OnSelect
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 2084319449}
+        - m_Target: {fileID: 2084319451}
           m_MethodName: SetGrabEnabled
           m_Mode: 6
           m_Arguments:
@@ -2087,7 +2037,7 @@ MonoBehaviour:
       EventValue:
         m_PersistentCalls:
           m_Calls:
-          - m_Target: {fileID: 2084319449}
+          - m_Target: {fileID: 2084319451}
             m_MethodName: SetGrabEnabled
             m_Mode: 6
             m_Arguments:
@@ -2101,7 +2051,6 @@ MonoBehaviour:
         m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       Options: []
-    HideUnityEvents: 0
   dimensionIndex: 0
 --- !u!114 &275564933
 MonoBehaviour:
@@ -2482,7 +2431,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Enabled: 1
-  States: {fileID: 11400000, guid: 5eac1712038236e4b8ffdb3893804fe1, type: 2}
+  states: {fileID: 11400000, guid: 5eac1712038236e4b8ffdb3893804fe1, type: 2}
   InputAction:
     id: 0
     description: 
@@ -2495,15 +2444,13 @@ MonoBehaviour:
   CanDeselect: 1
   VoiceCommand: 
   RequiresFocus: 1
-  Profiles:
+  profiles:
   - Target: {fileID: 245704822}
     Themes:
     - {fileID: 11400000, guid: d37afabc007bf774d9431b9a7cbe6fba, type: 2}
-    HadDefaultTheme: 1
   - Target: {fileID: 1508734944}
     Themes:
     - {fileID: 11400000, guid: cbde7890146c3024d928b7afc2e16065, type: 2}
-    HadDefaultTheme: 1
   OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -2929,7 +2876,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Enabled: 1
-  States: {fileID: 11400000, guid: 5eac1712038236e4b8ffdb3893804fe1, type: 2}
+  states: {fileID: 11400000, guid: 5eac1712038236e4b8ffdb3893804fe1, type: 2}
   InputAction:
     id: 0
     description: 
@@ -2942,15 +2889,13 @@ MonoBehaviour:
   CanDeselect: 1
   VoiceCommand: 
   RequiresFocus: 1
-  Profiles:
+  profiles:
   - Target: {fileID: 1442748973}
     Themes:
     - {fileID: 11400000, guid: d37afabc007bf774d9431b9a7cbe6fba, type: 2}
-    HadDefaultTheme: 1
   - Target: {fileID: 1737876628}
     Themes:
     - {fileID: 11400000, guid: cbde7890146c3024d928b7afc2e16065, type: 2}
-    HadDefaultTheme: 1
   OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -5075,49 +5020,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 494355998}
   m_Mesh: {fileID: 4300000, guid: bb88669a3463b36438d9225a3ecd3a35, type: 3}
---- !u!1 &499426274
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 499426275}
-  - component: {fileID: 499426276}
-  m_Layer: 0
-  m_Name: MixedRealityTeleportSystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &499426275
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 499426274}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1976815591}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &499426276
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 499426274}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09c04dafcb77c1e4195a36bd131cbdec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &534220773
 GameObject:
   m_ObjectHideFlags: 0
@@ -5153,7 +5055,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Enabled: 1
-  States: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
+  states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
   InputAction:
     id: 0
     description: 
@@ -5166,25 +5068,22 @@ MonoBehaviour:
   CanDeselect: 1
   VoiceCommand: Select
   RequiresFocus: 1
-  Profiles:
+  profiles:
   - Target: {fileID: 1611805876}
     Themes:
     - {fileID: 11400000, guid: 8f8cfb3041153fa45bccb6d664a563ec, type: 2}
     - {fileID: 11400000, guid: 8f8cfb3041153fa45bccb6d664a563ec, type: 2}
-    HadDefaultTheme: 1
   - Target: {fileID: 2077453483}
     Themes:
     - {fileID: 11400000, guid: 452ab0b768e73aa45a65adeb08147cec, type: 2}
     - {fileID: 11400000, guid: c020ebf06513a084caa57aa68a245a6b, type: 2}
-    HadDefaultTheme: 1
   OnClick:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Events:
-  - Name: OnFocus
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 534220776}
@@ -5246,9 +5145,7 @@ MonoBehaviour:
         m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       Options: []
-    HideUnityEvents: 0
-  - Name: OnPress
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 534220775}
@@ -5346,12 +5243,10 @@ MonoBehaviour:
       - Near and Far
       - Near Only
       - Far Only
-    HideUnityEvents: 0
-  - Name: OnSelect
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 2084319449}
+        - m_Target: {fileID: 2084319451}
           m_MethodName: SetControllerRayEnabled
           m_Mode: 6
           m_Arguments:
@@ -5396,7 +5291,7 @@ MonoBehaviour:
       EventValue:
         m_PersistentCalls:
           m_Calls:
-          - m_Target: {fileID: 2084319449}
+          - m_Target: {fileID: 2084319451}
             m_MethodName: SetControllerRayEnabled
             m_Mode: 6
             m_Arguments:
@@ -5410,7 +5305,6 @@ MonoBehaviour:
         m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       Options: []
-    HideUnityEvents: 0
   dimensionIndex: 0
 --- !u!82 &534220775
 AudioSource:
@@ -7970,7 +7864,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Enabled: 1
-  States: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
+  states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
   InputAction:
     id: 0
     description: 
@@ -7983,25 +7877,22 @@ MonoBehaviour:
   CanDeselect: 1
   VoiceCommand: Select
   RequiresFocus: 1
-  Profiles:
+  profiles:
   - Target: {fileID: 983114583}
     Themes:
     - {fileID: 11400000, guid: 8f8cfb3041153fa45bccb6d664a563ec, type: 2}
     - {fileID: 11400000, guid: 8f8cfb3041153fa45bccb6d664a563ec, type: 2}
-    HadDefaultTheme: 1
   - Target: {fileID: 1668613972}
     Themes:
     - {fileID: 11400000, guid: 452ab0b768e73aa45a65adeb08147cec, type: 2}
     - {fileID: 11400000, guid: c020ebf06513a084caa57aa68a245a6b, type: 2}
-    HadDefaultTheme: 1
   OnClick:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Events:
-  - Name: OnFocus
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 908299792}
@@ -8063,9 +7954,7 @@ MonoBehaviour:
         m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       Options: []
-    HideUnityEvents: 0
-  - Name: OnPress
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 908299790}
@@ -8163,12 +8052,10 @@ MonoBehaviour:
       - Near and Far
       - Near Only
       - Far Only
-    HideUnityEvents: 0
-  - Name: OnSelect
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 2084319449}
+        - m_Target: {fileID: 2084319451}
           m_MethodName: SetPokeEnabled
           m_Mode: 6
           m_Arguments:
@@ -8213,7 +8100,7 @@ MonoBehaviour:
       EventValue:
         m_PersistentCalls:
           m_Calls:
-          - m_Target: {fileID: 2084319449}
+          - m_Target: {fileID: 2084319451}
             m_MethodName: SetPokeEnabled
             m_Mode: 6
             m_Arguments:
@@ -8227,7 +8114,6 @@ MonoBehaviour:
         m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       Options: []
-    HideUnityEvents: 0
   dimensionIndex: 0
 --- !u!114 &908299792
 MonoBehaviour:
@@ -8954,16 +8840,11 @@ PrefabInstance:
         type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2084319449}
+      objectReference: {fileID: 2084319451}
     - target: {fileID: 5487525929659315375, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetHoloLens2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3456123869903824599, guid: 4f44c0d070528944c9bff425c6932763,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3126786009469193090, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
@@ -9054,6 +8935,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -0.0164
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456123869903824599, guid: 4f44c0d070528944c9bff425c6932763,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3126786010441234080, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
@@ -9162,6 +9048,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visualizationObject: {fileID: 0}
+  interactableObject: {fileID: 0}
+  autoFollowAtDistance: 0
+  autoFollowDistance: 2
+  autoFollowTransformTarget: {fileID: 0}
 --- !u!114 &1158173231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9348,49 +9238,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1161179316}
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1192166591
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1192166592}
-  - component: {fileID: 1192166593}
-  m_Layer: 0
-  m_Name: FocusProvider
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1192166592
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1192166591}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1976815591}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1192166593
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1192166591}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09c04dafcb77c1e4195a36bd131cbdec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1200691402
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10249,7 +10096,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Enabled: 1
-  States: {fileID: 11400000, guid: 5eac1712038236e4b8ffdb3893804fe1, type: 2}
+  states: {fileID: 11400000, guid: 5eac1712038236e4b8ffdb3893804fe1, type: 2}
   InputAction:
     id: 0
     description: 
@@ -10262,15 +10109,13 @@ MonoBehaviour:
   CanDeselect: 1
   VoiceCommand: 
   RequiresFocus: 1
-  Profiles:
+  profiles:
   - Target: {fileID: 723004242}
     Themes:
     - {fileID: 11400000, guid: d37afabc007bf774d9431b9a7cbe6fba, type: 2}
-    HadDefaultTheme: 1
   - Target: {fileID: 1498986148}
     Themes:
     - {fileID: 11400000, guid: cbde7890146c3024d928b7afc2e16065, type: 2}
-    HadDefaultTheme: 1
   OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -10349,16 +10194,11 @@ PrefabInstance:
         type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2084319449}
+      objectReference: {fileID: 2084319451}
     - target: {fileID: 5487525929659315375, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetHoloLens1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3456123869903824599, guid: 4f44c0d070528944c9bff425c6932763,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3126786009469193090, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
@@ -10449,6 +10289,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -0.016400006
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456123869903824599, guid: 4f44c0d070528944c9bff425c6932763,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3126786010441234080, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
@@ -11123,49 +10968,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!1 &1392158372
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1392158373}
-  - component: {fileID: 1392158374}
-  m_Layer: 0
-  m_Name: MixedRealityInputSystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1392158373
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1392158372}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1976815591}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1392158374
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1392158372}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09c04dafcb77c1e4195a36bd131cbdec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1392441496
 GameObject:
   m_ObjectHideFlags: 0
@@ -11349,7 +11151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Enabled: 1
-  States: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
+  states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
   InputAction:
     id: 0
     description: 
@@ -11362,25 +11164,22 @@ MonoBehaviour:
   CanDeselect: 1
   VoiceCommand: Select
   RequiresFocus: 1
-  Profiles:
+  profiles:
   - Target: {fileID: 1259235647}
     Themes:
     - {fileID: 11400000, guid: 8f8cfb3041153fa45bccb6d664a563ec, type: 2}
     - {fileID: 11400000, guid: 8f8cfb3041153fa45bccb6d664a563ec, type: 2}
-    HadDefaultTheme: 1
   - Target: {fileID: 1774942392}
     Themes:
     - {fileID: 11400000, guid: 452ab0b768e73aa45a65adeb08147cec, type: 2}
     - {fileID: 11400000, guid: c020ebf06513a084caa57aa68a245a6b, type: 2}
-    HadDefaultTheme: 1
   OnClick:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Events:
-  - Name: OnFocus
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 1392441502}
@@ -11442,9 +11241,7 @@ MonoBehaviour:
         m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       Options: []
-    HideUnityEvents: 0
-  - Name: OnPress
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 1392441500}
@@ -11542,12 +11339,10 @@ MonoBehaviour:
       - Near and Far
       - Near Only
       - Far Only
-    HideUnityEvents: 0
-  - Name: OnSelect
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 2084319449}
+        - m_Target: {fileID: 2084319451}
           m_MethodName: SetHandRayEnabled
           m_Mode: 6
           m_Arguments:
@@ -11592,7 +11387,7 @@ MonoBehaviour:
       EventValue:
         m_PersistentCalls:
           m_Calls:
-          - m_Target: {fileID: 2084319449}
+          - m_Target: {fileID: 2084319451}
             m_MethodName: SetHandRayEnabled
             m_Mode: 6
             m_Arguments:
@@ -11606,7 +11401,6 @@ MonoBehaviour:
         m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       Options: []
-    HideUnityEvents: 0
   dimensionIndex: 0
 --- !u!114 &1392441502
 MonoBehaviour:
@@ -13657,6 +13451,41 @@ PrefabInstance:
       propertyPath: m_FontData.m_MinSize
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114995780653097258, guid: a900c08743a94c328074df8bbe3eb63c,
+        type: 3}
+      propertyPath: m_Text
+      value: "This scene demonstrates use of PointerUtils to turn pointers like the
+        hand ray, gaze, grab, and poke pointers on and off from code.\n\n\n\nClick
+        on the toggle buttons under \u201CToggle Pointers\u201D to turn different
+        rays on / off. You can also set the UI to certain common modes used by HoloLens
+        1 (GGV Pointer only), HoloLens 2 (Grab, Poke, Line pointers), and VR (Line
+        and teleport pointers only).  If you get stuck, say \"reset example\".\n\n\n\nThis
+        example has a custom profile which enables both the HoloLens 1 \u2013 style
+        GGV pointer as well as HoloLens 2 \u2013 style  Line Pointer. To switch between
+        HoloLens 1 and 2 style interactions, make sure your profile copies the pointer
+        profile in this example.\r\n\nHave a look at TurnPointersOnOffController to
+        see how to call PointerUtils to enable / disable the various pointers in the
+        input system. \r\n"
+      objectReference: {fileID: 0}
+    - target: {fileID: 114121190672569774, guid: a900c08743a94c328074df8bbe3eb63c,
+        type: 3}
+      propertyPath: m_Text
+      value: Setup
+      objectReference: {fileID: 0}
+    - target: {fileID: 114125765304321574, guid: a900c08743a94c328074df8bbe3eb63c,
+        type: 3}
+      propertyPath: m_Text
+      value: Usage
+      objectReference: {fileID: 0}
+    - target: {fileID: 1149545904682892, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224849082003076088, guid: a900c08743a94c328074df8bbe3eb63c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.215
+      objectReference: {fileID: 0}
     - target: {fileID: 114713125240876806, guid: a900c08743a94c328074df8bbe3eb63c,
         type: 3}
       propertyPath: m_Text
@@ -13678,45 +13507,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.6498856
       objectReference: {fileID: 0}
-    - target: {fileID: 114995780653097258, guid: a900c08743a94c328074df8bbe3eb63c,
-        type: 3}
-      propertyPath: m_Text
-      value: "This scene demonstrates use of PointerUtils to turn pointers like the
-        hand ray, gaze, grab, and poke pointers on and off from code.\n\n\n\nClick
-        on the toggle buttons under \u201CToggle Pointers\u201D to turn different
-        rays on / off. You can also set the UI to certain common modes used by HoloLens
-        1 (GGV Pointer only), HoloLens 2 (Grab, Poke, Line pointers), and VR (Line
-        and teleport pointers only).  If you get stuck, say \"reset example\".\n\n\n\nThis
-        example has a custom profile which enables both the HoloLens 1 \u2013 style
-        GGV pointer as well as HoloLens 2 \u2013 style  Line Pointer. To switch between
-        HoloLens 1 and 2 style interactions, make sure your profile copies the pointer
-        profile in this example.\r\n\nHave a look at TurnPointersOnOffController to
-        see how to call PointerUtils to enable / disable the various pointers in the
-        input system. \r\n"
-      objectReference: {fileID: 0}
-    - target: {fileID: 224849082003076088, guid: a900c08743a94c328074df8bbe3eb63c,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0.215
-      objectReference: {fileID: 0}
     - target: {fileID: 224745427211728820, guid: a900c08743a94c328074df8bbe3eb63c,
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0.0673
-      objectReference: {fileID: 0}
-    - target: {fileID: 1149545904682892, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114121190672569774, guid: a900c08743a94c328074df8bbe3eb63c,
-        type: 3}
-      propertyPath: m_Text
-      value: Setup
-      objectReference: {fileID: 0}
-    - target: {fileID: 114125765304321574, guid: a900c08743a94c328074df8bbe3eb63c,
-        type: 3}
-      propertyPath: m_Text
-      value: Usage
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
@@ -14205,92 +13999,6 @@ Transform:
   m_Father: {fileID: 908299787}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1691613714
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1691613715}
-  - component: {fileID: 1691613716}
-  m_Layer: 0
-  m_Name: MixedRealityBoundarySystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1691613715
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1691613714}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1976815591}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1691613716
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1691613714}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09c04dafcb77c1e4195a36bd131cbdec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!1 &1713020620
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1713020621}
-  - component: {fileID: 1713020622}
-  m_Layer: 0
-  m_Name: MixedRealityCameraSystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1713020621
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1713020620}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1976815591}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1713020622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1713020620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09c04dafcb77c1e4195a36bd131cbdec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1737876628
 GameObject:
   m_ObjectHideFlags: 0
@@ -14728,6 +14436,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visualizationObject: {fileID: 0}
+  interactableObject: {fileID: 0}
+  autoFollowAtDistance: 0
+  autoFollowDistance: 2
+  autoFollowTransformTarget: {fileID: 0}
 --- !u!114 &1756802796
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15956,13 +15668,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 44612729}
-  - {fileID: 1192166592}
-  - {fileID: 1691613715}
-  - {fileID: 1713020621}
-  - {fileID: 1392158373}
-  - {fileID: 499426275}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -16614,7 +16320,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Enabled: 1
-  States: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
+  states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
   InputAction:
     id: 0
     description: 
@@ -16627,25 +16333,22 @@ MonoBehaviour:
   CanDeselect: 1
   VoiceCommand: Select
   RequiresFocus: 1
-  Profiles:
+  profiles:
   - Target: {fileID: 1057394252}
     Themes:
     - {fileID: 11400000, guid: 8f8cfb3041153fa45bccb6d664a563ec, type: 2}
     - {fileID: 11400000, guid: 8f8cfb3041153fa45bccb6d664a563ec, type: 2}
-    HadDefaultTheme: 1
   - Target: {fileID: 804096097}
     Themes:
     - {fileID: 11400000, guid: 452ab0b768e73aa45a65adeb08147cec, type: 2}
     - {fileID: 11400000, guid: c020ebf06513a084caa57aa68a245a6b, type: 2}
-    HadDefaultTheme: 1
   OnClick:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Events:
-  - Name: OnFocus
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 2065359343}
@@ -16707,9 +16410,7 @@ MonoBehaviour:
         m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       Options: []
-    HideUnityEvents: 0
-  - Name: OnPress
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 2065359341}
@@ -16807,12 +16508,10 @@ MonoBehaviour:
       - Near and Far
       - Near Only
       - Far Only
-    HideUnityEvents: 0
-  - Name: OnSelect
-    Event:
+  - Event:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 2084319449}
+        - m_Target: {fileID: 2084319451}
           m_MethodName: SetGazeEnabled
           m_Mode: 6
           m_Arguments:
@@ -16857,7 +16556,7 @@ MonoBehaviour:
       EventValue:
         m_PersistentCalls:
           m_Calls:
-          - m_Target: {fileID: 2084319449}
+          - m_Target: {fileID: 2084319451}
             m_MethodName: SetGazeEnabled
             m_Mode: 6
             m_Arguments:
@@ -16871,7 +16570,6 @@ MonoBehaviour:
         m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       Options: []
-    HideUnityEvents: 0
   dimensionIndex: 0
 --- !u!114 &2065359343
 MonoBehaviour:
@@ -17317,6 +17015,7 @@ GameObject:
   - component: {fileID: 2084319448}
   - component: {fileID: 2084319449}
   - component: {fileID: 2084319450}
+  - component: {fileID: 2084319451}
   m_Layer: 0
   m_Name: DisablePointers
   m_TagString: Untagged
@@ -17355,8 +17054,6 @@ MonoBehaviour:
   PokeToggle: {fileID: 908299791}
   HandRayToggle: {fileID: 1392441501}
   ControllerRayToggle: {fileID: 534220774}
-  LeftRayToggle: {fileID: 0}
-  RightRayToggle: {fileID: 0}
 --- !u!114 &2084319450
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17389,6 +17086,19 @@ MonoBehaviour:
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
   persistentKeywords: 0
+  speechConfirmationTooltipPrefab: {fileID: 0}
+--- !u!114 &2084319451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2084319447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63eaf86d83dad1241bea44bea33e29aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2085401668
 GameObject:
   m_ObjectHideFlags: 0
