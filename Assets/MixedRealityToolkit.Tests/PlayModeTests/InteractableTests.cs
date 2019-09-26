@@ -84,6 +84,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForSeconds(ButtonReleaseAnimationDelay);
 
             Assert.True(wasClicked, "Interactable was not clicked.");
+
+            //Cleanup
+            GameObject.Destroy(interactable.gameObject);
         }
 
         /// <summary>
@@ -144,8 +147,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.True(wasClicked, "Interactable was not clicked.");
             Assert.False(interactable.HasFocus, "Interactable had focus");
 
-            // Remove as global listener
+            // Remove as global listener and cleanup
             CoreServices.InputSystem.PopModalInputHandler();
+            GameObject.Destroy(interactable.gameObject);
         }
 
         /// <summary>
@@ -204,6 +208,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return new WaitForSeconds(ButtonReleaseAnimationDelay);
 
             Assert.True(wasClicked, "Interactable was not clicked.");
+
+            //Cleanup
+            GameObject.Destroy(interactable.gameObject);
         }
 
         /// <summary>
@@ -249,6 +256,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Assert.True(wasClicked, "Interactable was not clicked.");
             Assert.AreEqual(targetStartPosition, translateTargetObject.localPosition, "Transform target object was not translated back by action.");
+
+            //Cleanup
+            GameObject.Destroy(interactable.gameObject);
         }
 
         /// <summary>
@@ -281,6 +291,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsFalse(firstRadialButton.GetComponent<Interactable>().IsToggled);
             Assert.IsTrue(secondRadialButton.GetComponent<Interactable>().IsToggled);
             Assert.IsFalse(thirdRadialButton.GetComponent<Interactable>().IsToggled);
+
+            //Cleanup
+            GameObject.Destroy(radialSet);
         }
 
         /// <summary>
@@ -333,10 +346,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Wait for at least one frame explicitly to ensure the input goes through
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
-
             Assert.True(wasPressed, "interactable not pressed");
             Assert.True(wasReleased, "interactable not released");
             Assert.True(wasClicked, "Interactable was not clicked.");
+
+            GameObject.Destroy(interactable.gameObject);
         }
         /// <summary>
         /// Instantiates a push button prefab and uses simulated voice input events to press it.
@@ -375,8 +389,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Wait for at least one frame explicitly to ensure the input goes through
             yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
-
             Assert.True(wasClicked, "Interactable was not clicked.");
+
+            //Cleanup
+            GameObject.Destroy(interactable.gameObject);
         }
 
         /// <summary>
@@ -405,6 +421,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             propBlock = InteractableThemeShaderUtils.GetPropertyBlock(translateTargetObject.gameObject);
             Assert.AreEqual(propBlock.GetColor("_Color"), DisabledColor);
             Assert.AreEqual(interactable.IsEnabled, false);
+
+            //Cleanup
+            GameObject.Destroy(interactable.gameObject);
         }
 
         /// <summary>

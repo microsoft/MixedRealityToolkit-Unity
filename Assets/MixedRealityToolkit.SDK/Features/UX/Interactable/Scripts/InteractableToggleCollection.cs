@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("exposed selection changed event")]
         public UnityEvent OnSelectionEvents;
 
-        private void OnEnable()
+        private void Start()
         {
             for (int i = 0; i < ToggleList.Length; ++i)
             {
@@ -29,7 +29,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 ToggleList[i].OnClick.AddListener(() => OnSelection(itemIndex));
                 ToggleList[i].CanDeselect = false;
             }
-            
+
+            OnSelection(CurrentIndex, true);
+        }
+
+        private void OnEnable()
+        {
             OnSelection(CurrentIndex, true);
         }
 

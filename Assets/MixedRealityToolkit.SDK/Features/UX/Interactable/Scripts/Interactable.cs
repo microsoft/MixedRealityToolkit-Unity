@@ -988,11 +988,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (enable)
             {
-                CoreServices.InputSystem.RegisterHandler<T>(this);
+                CoreServices.InputSystem?.RegisterHandler<T>(this);
             }
             else
             {
-                CoreServices.InputSystem.UnregisterHandler<T>(this);
+                CoreServices.InputSystem?.UnregisterHandler<T>(this);
             }
         }
 
