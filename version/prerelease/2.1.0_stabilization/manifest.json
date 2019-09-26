@@ -1599,6 +1599,39 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/ControllerMappingTool/ActiveControls.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ControllerMappingTool/ActiveControls.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ControllerMappingTool/AllControls.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ControllerMappingTool/AllControls.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ControllerMappingTool/ControllerMappingTool.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ControllerMappingTool/ControllerMappingTool.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/ControllerVisualizer/ControllerVisualizerInspector.png",
       "output": {
         "resource": {
@@ -5454,7 +5487,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/CreateDataProvider.html",
-          "hash": "2qqSjqmpWAREd2thBXFrvQ=="
+          "hash": "2NCCVjXVFDrEoHNHwWGaGA=="
         }
       },
       "is_incremental": false,
@@ -6110,6 +6143,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/Tools/ControllerMappingTool.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Tools/ControllerMappingTool.html",
+          "hash": "bLXjDNGbLpSCEayvw+NKgw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/Tools/DependencyWindow.md",
       "output": {
         ".html": {
@@ -6198,7 +6243,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "H/JyDHNZgYuUaLF288g8sQ=="
+          "hash": "uFBKbMeXdb/8UYc/TcwH/A=="
         }
       },
       "is_incremental": false,
@@ -19917,19 +19962,6 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ResourceDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 128,
-          "skipped_file_count": 0
-        },
         "TocDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
@@ -19941,6 +19973,19 @@
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 1136,
+          "skipped_file_count": 0
+        },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 129,
+          "skipped_file_count": 0
+        },
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
           "skipped_file_count": 0
         }
       }

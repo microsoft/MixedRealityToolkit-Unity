@@ -186,12 +186,28 @@ interface.</p>
     &quot;StandardAssets/Textures/MotionController&quot;)]
 { }
 </code></pre>
+<h4 id="configure-the-interaction-mappings">Configure the interaction mappings</h4>
+<p>The next step is to define the set of interaction mappings supported by the controller. For devices that receive their data via Unity's Input class, the <a href="../Tools/ControllerMappingTool.html">controller mapping tool</a> is a helpful resource to confirm the correct axis and button mappings to assign to interactions.</p>
+<p>The following example is abbreviated from the <code>GenericOpenVRController</code> class, located in the MixedRealityToolkit.Providers\OpenVR folder.</p>
+<pre><code class="lang-c#">public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions =&gt; new[]
+{
+    // Controller Pose
+    new MixedRealityInteractionMapping(0, &quot;Spatial Pointer&quot;, AxisType.SixDof, DeviceInputType.SpatialPointer, MixedRealityInputAction.None),
+    // Left Trigger Squeeze
+    new MixedRealityInteractionMapping(1, &quot;Trigger Position&quot;, AxisType.SingleAxis, DeviceInputType.Trigger, ControllerMappingLibrary.AXIS_9),
+    // Left Trigger Press (Select)
+    new MixedRealityInteractionMapping(2, &quot;Trigger Press (Select)&quot;, AxisType.Digital, DeviceInputType.TriggerPress, KeyCode.JoystickButton14),
+};
+</code></pre>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.ControllerMappingLibrary.html"><code>ControllerMappingLibrary</code></a> class provides symbolic constants for the Unity input axis and button definitions.</p>
+</div>
 <h3 id="raise-notification-events">Raise notification events</h3>
 <p>To enable applications to respond to input from the user, the data provider raises notification events corresponding to controller state changes as defined in
 the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler.html"><code>IMixedRealityInputHandler</code></a> and <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler-1.html"><code>IMixedRealityInputHandler&lt;T&gt;</code></a> interfaces.</p>
 <p>For digital (button) type controls, raise the OnInputDown and OnInputUp events.</p>
 <pre><code class="lang-c#">// inputAction is the input event that is to be raised.
-
 if (interactionSourceState.touchpadPressed)
 {
     InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, inputAction);
@@ -261,6 +277,7 @@ common solution will be to generate a .unitypackage and distribute via the Unity
 <li><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler-1.html"><code>IMixedRealityInputHandler&lt;T&gt;</code> interface</a></li>
 <li><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html"><code>IMixedRealityDataProvider</code> interface</a></li>
 <li><a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedRealityCapabilityCheck.html"><code>IMixedRealityCapabilityCheck</code> interface</a></li>
+<li><a href="../Tools/ControllerMappingTool.html">Controller Mapping Tool</a></li>
 </ul>
 </article>
           </div>
