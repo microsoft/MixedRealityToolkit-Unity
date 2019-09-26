@@ -36,15 +36,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             set { clippingSide = value; }
         }
 
-
-        /// <summary>
-        /// Toggles whether the primitive will use the Camera OnPreRender event 
-        /// </summary>
-        /// <remarks>This is especially helpful if you're trying to clip dynamically created objects that may be added to the scene after LateUpdate such as OnWillRender</remarks>
         [SerializeField]
         [Tooltip("Toggles whether the primitive will use the Camera OnPreRender event")]
         private bool useOnPreRender;
 
+        /// <summary>
+        /// Toggles whether the primitive will use the Camera OnPreRender event.
+        /// </summary>
+        /// <remarks>This is especially helpful if you're trying to clip dynamically created objects that may be added to the scene after LateUpdate such as OnWillRender</remarks>
         public bool UseOnPreRender
         {
             get { return useOnPreRender; }
@@ -68,55 +67,70 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
-
         protected abstract string Keyword { get; }
         protected abstract string ClippingSideProperty { get; }
 
         protected MaterialPropertyBlock materialPropertyBlock;
-        protected Dictionary<Material, bool> modifiedMaterials = new Dictionary<Material, bool>();
-        protected List<Material> allocatedMaterials = new List<Material>();
+        protected static Dictionary<Material, Material> materialClones = new Dictionary<Material, Material>();
 
         private int clippingSideID;
-
-        [SerializeField]
-        [HideInInspector]
         private CameraEventRouter cameraMethods;
 
+        /// <summary>
+        /// Adds a renderer to the list of objects this clipping primitive clips.
+        /// </summary>
+        /// <param name="_renderer"></param>
         public void AddRenderer(Renderer _renderer)
         {
-            if (_renderer != null && !renderers.Contains(_renderer))
+            if (!renderers.Contains(_renderer))
             {
                 renderers.Add(_renderer);
+            }
 
-                Material material = GetMaterial(_renderer, false);
+            var material = GetMaterial(_renderer);
 
-                if (material != null)
-                {
-                    ToggleClippingFeature(material, true);
-                }
+            if (material != null)
+            {
+                ToggleClippingFeature(material, true);
             }
         }
 
+        /// <summary>
+        /// Removes a renderer to the list of objects this clipping primitive clips.
+        /// </summary>
         public void RemoveRenderer(Renderer _renderer)
         {
-            if (renderers.Contains(_renderer))
+            renderers.Remove(_renderer);
+
+            // Restore the original material.
+            var material = GetMaterial(_renderer);
+
+            if (material != null)
             {
-                Material material = GetMaterial(_renderer, false);
+                _renderer.sharedMaterial = materialClones[material];
+                materialClones.Remove(material);
 
-                if (material != null)
+                if (Application.isPlaying)
                 {
-                    ToggleClippingFeature(material, false);
+                    Destroy(material);
                 }
-
-                renderers.Remove(_renderer);
+                else
+                {
+                    DestroyImmediate(material);
+                }
             }
         }
 
-        protected void OnValidate()
+        /// <summary>
+        /// Returns a copy of the current list of renderers.
+        /// </summary>
+        /// <returns>The current list of renderers.</returns>
+        public IEnumerable<Renderer> GetRenderersCopy()
         {
-            ToggleClippingFeature(true);
-            RestoreUnassignedMaterials();
+            return new List<Renderer>(renderers);
         }
+
+        #region MonoBehaviour Implementation
 
         protected void OnEnable()
         {
@@ -139,15 +153,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             if (cameraMethods != null)
             {
                 cameraMethods.OnCameraPreRender -= OnCameraPreRender;
-            }
-        }
-
-        protected void Start()
-        {
-            if (useOnPreRender)
-            {
-                cameraMethods = CameraCache.Main.gameObject.EnsureComponent<CameraEventRouter>();
-                cameraMethods.OnCameraPreRender += OnCameraPreRender;
             }
         }
 
@@ -189,29 +194,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 return;
             }
 
-            for (int i = 0; i < renderers.Count; ++i)
+            while (renderers.Count != 0)
             {
-                Material material = GetMaterial(renderers[i]);
-
-                if (material != null)
-                {
-                    bool clippingPlaneOn;
-
-                    if (modifiedMaterials.TryGetValue(material, out clippingPlaneOn))
-                    {
-                        ToggleClippingFeature(material, clippingPlaneOn);
-                        modifiedMaterials.Remove(material);
-                    }
-                }
-            }
-
-            RestoreUnassignedMaterials();
-
-            for (int i = 0; i < allocatedMaterials.Count; ++i)
-            {
-                Destroy(allocatedMaterials[i]);
+                RemoveRenderer(renderers[0]);
             }
         }
+
+        #endregion MonoBehaviour Implementation
 
         protected virtual void Initialize()
         {
@@ -226,9 +215,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 return;
             }
 
-            for (int i = 0; i < renderers.Count; ++i)
+            for (var i = 0; i < renderers.Count; ++i)
             {
-                Renderer _renderer = renderers[i];
+                var _renderer = renderers[i];
 
                 if (_renderer == null)
                 {
@@ -251,18 +240,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 return;
             }
 
-            for (int i = 0; i < renderers.Count; ++i)
+            for (var i = 0; i < renderers.Count; ++i)
             {
-                Material material = GetMaterial(renderers[i]);
+                var material = GetMaterial(renderers[i]);
 
                 if (material != null)
                 {
-                    // Cache the initial keyword state of the material.
-                    if (!modifiedMaterials.ContainsKey(material))
-                    {
-                        modifiedMaterials[material] = material.IsKeywordEnabled(Keyword);
-                    }
-
                     ToggleClippingFeature(material, keywordOn);
                 }
             }
@@ -280,51 +263,30 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
-        protected Material GetMaterial(Renderer _renderer, bool trackAllocations = true)
+        protected Material GetMaterial(Renderer _renderer)
         {
-            if (_renderer == null)
-            {
-                return null;
-            }
+            Material output = null;
 
-            if (Application.isEditor && !Application.isPlaying)
+            if (_renderer != null)
             {
-                return _renderer.sharedMaterial;
-            }
-            else
-            {
-                Material material = _renderer.material;
+                var material = _renderer.sharedMaterial;
 
-                if (trackAllocations && !allocatedMaterials.Contains(material))
+                if (material != null && !materialClones.TryGetValue(material, out output))
                 {
-                    allocatedMaterials.Add(material);
+                    // Create a material clone. This keeps the code path the same at edit time and 
+                    // run time since renderer.material cannot be invoked when editing.
+                    output = new Material(material);
+                    output.name += " (Clone)";
+                    materialClones.Add(output, material);
+                    _renderer.sharedMaterial = output;
                 }
-
-                return material;
-            }
-        }
-
-        protected void RestoreUnassignedMaterials()
-        {
-            List<Material> toRemove = new List<Material>();
-
-            foreach (var modifiedMaterial in modifiedMaterials)
-            {
-                if (modifiedMaterial.Key == null)
+                else
                 {
-                    toRemove.Add(modifiedMaterial.Key);
-                }
-                else if (renderers.Find(x => (GetMaterial(x) == modifiedMaterial.Key)) == null)
-                {
-                    ToggleClippingFeature(modifiedMaterial.Key, modifiedMaterial.Value);
-                    toRemove.Add(modifiedMaterial.Key);
+                    output = material;
                 }
             }
 
-            foreach (var material in toRemove)
-            {
-                modifiedMaterials.Remove(material);
-            }
+            return output;
         }
     }
 }
