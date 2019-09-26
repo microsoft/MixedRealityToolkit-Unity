@@ -30,22 +30,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         IMixedRealityInputHandler<MixedRealityPose>
     {
         /// <summary>
-        /// Setup the input system
-        /// </summary>
-        private static IMixedRealityInputSystem inputSystem = null;
-        protected static IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
-                return inputSystem;
-            }
-        }
-
-        /// <summary>
         /// Pointers that are focusing the interactable
         /// </summary>
         public List<IMixedRealityPointer> FocusingPointers => focusingPointers;
@@ -286,7 +270,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Currently pressed and some movement has occurred
         /// </summary>
-        public bool HasGesture { get; private set; }
+        public bool HasGesture { get; protected set; }
 
         /// <summary>
         /// Gesture reached max threshold or limits - custom: not set by Interactable
@@ -419,7 +403,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return false;
             }
 
-            MixedRealityInputAction[] actions = InputSystem.InputSystemProfile.InputActionsProfile.InputActions;
+            MixedRealityInputAction[] actions = CoreServices.InputSystem.InputSystemProfile.InputActionsProfile.InputActions;
 
             descriptionsArray = new string[actions.Length];
             for (int i = 0; i < actions.Length; i++)
@@ -441,7 +425,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return false;
             }
 
-            commands = InputSystem.InputSystemProfile.SpeechCommandsProfile?.SpeechCommands;
+            commands = CoreServices.InputSystem.InputSystemProfile.SpeechCommandsProfile?.SpeechCommands;
 
             if (commands == null || commands.Length < 1)
             {
@@ -555,11 +539,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (globalInput)
             {
-                InputSystem.RegisterHandler<IMixedRealityInputHandler>(this);
+                CoreServices.InputSystem.RegisterHandler<IMixedRealityInputHandler>(this);
             }
             else
             {
-                InputSystem.UnregisterHandler<IMixedRealityInputHandler>(this);
+                CoreServices.InputSystem.UnregisterHandler<IMixedRealityInputHandler>(this);
             }
         }
 
@@ -567,11 +551,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (globalSpeech)
             {
-                InputSystem.RegisterHandler<IMixedRealitySpeechHandler>(this);
+                CoreServices.InputSystem.RegisterHandler<IMixedRealitySpeechHandler>(this);
             }
             else
             {
-                InputSystem.UnregisterHandler<IMixedRealitySpeechHandler>(this);
+                CoreServices.InputSystem.UnregisterHandler<IMixedRealitySpeechHandler>(this);
             }
         }
 
@@ -1161,7 +1145,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public static MixedRealityInputAction ResolveInputAction(int index)
         {
-            MixedRealityInputAction[] actions = InputSystem.InputSystemProfile.InputActionsProfile.InputActions;
+            MixedRealityInputAction[] actions = CoreServices.InputSystem.InputSystemProfile.InputActionsProfile.InputActions;
             index = Mathf.Clamp(index, 0, actions.Length - 1);
             return actions[index];
         }
