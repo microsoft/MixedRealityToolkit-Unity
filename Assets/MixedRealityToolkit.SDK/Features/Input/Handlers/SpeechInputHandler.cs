@@ -1,7 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.UI;
+using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -25,6 +28,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         [Tooltip("Keywords are persistent across all scenes.  This Speech Input Handler instance will not be destroyed when loading a new scene.")]
         private bool persistentKeywords = false;
+
+        [SerializeField]
+        [Tooltip("Assign SpeechConfirmationTooltip.prefab here to display confirmation label. Optional.")]
+        private SpeechConfirmationTooltip speechConfirmationTooltipPrefab = null;
+
+        /// <summary>
+        /// Tooltip prefab used to display confirmation label. Optional.
+        /// </summary>
+        public SpeechConfirmationTooltip SpeechConfirmationTooltipPrefab
+        {
+            get { return speechConfirmationTooltipPrefab; }
+            set { speechConfirmationTooltipPrefab = value; }
+        }
+
+        private SpeechConfirmationTooltip speechConfirmationTooltipPrefabInstance = null;
 
         private readonly Dictionary<string, UnityEvent> responses = new Dictionary<string, UnityEvent>();
 
@@ -108,9 +126,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 keywordResponse.Invoke();
                 eventData.Use();
+
+                // Instantiate the Speech Confirmation Tooltip prefab if assigned
+                // Ignore "Select" keyword since OS will display the tooltip. 
+                if (SpeechConfirmationTooltipPrefab != null
+                    && speechConfirmationTooltipPrefabInstance == null
+                    && !eventData.Command.Keyword.Equals("select", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    speechConfirmationTooltipPrefabInstance = Instantiate(speechConfirmationTooltipPrefab);
+
+                    // Update the text label with recognized keyword
+                    speechConfirmationTooltipPrefabInstance.SetText(eventData.Command.Keyword);
+
+                    // Trigger animation of the Speech Confirmation Tooltip prefab
+                    speechConfirmationTooltipPrefabInstance.TriggerConfirmedAnimation();
+
+                    // Tooltip prefab instance will be destroyed on animation complete 
+                    // by DestroyOnAnimationComplete.cs in the SpeechConfirmationTooltip.prefab
+                }
             }
         }
-
         #endregion  IMixedRealitySpeechHandler Implementation
     }
 }
