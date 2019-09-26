@@ -113,8 +113,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set
             {
                 // Value cannot be negative or zero
-                if (value > 0)
+                if (value > 0 && dimensions != value)
                 {
+                    // If we are currently in Toggle mode, we are about to not be
+                    // Auto-turn off state
+                    if (ButtonMode == SelectionModes.Toggle)
+                    {
+                        IsToggled = false;
+                    }
+
                     dimensions = value;
 
                     CurrentDimension = Mathf.Clamp(CurrentDimension, 0, Dimensions - 1);
@@ -175,7 +182,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         private int StartDimensionIndex = 0;
 
-        // TODO: Troy -> Only makes sense for type Toggle? How do you Select/Deselect in multi-dimension button?
         /// <summary>
         /// Is the interactive selectable?
         /// When a multi-dimension button, can the user initiate switching dimensions?
@@ -293,13 +299,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get { return !(GetStateValue(InteractableStates.InteractableStateEnum.Disabled) > 0); }
             set
             {
-                // If we are disabling input, we should reset our base input tracking states since we will not be responding to input while disabled
-                if (!value)
+                if (IsEnabled != value)
                 {
-                    ResetBaseStates();
-                }
+                    // If we are disabling input, we should reset our base input tracking states since we will not be responding to input while disabled
+                    if (!value)
+                    {
+                        ResetBaseStates();
+                    }
 
-                SetState(InteractableStates.InteractableStateEnum.Disabled, !value);
+                    SetState(InteractableStates.InteractableStateEnum.Disabled, !value);
+                }
             }
         }
 
@@ -311,16 +320,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get { return GetStateValue(InteractableStates.InteractableStateEnum.Focus) > 0; }
             set
             {
-                if (!value && HasPress)
+                if (HasFocus != value)
                 {
-                    rollOffTimer = 0;
-                }
-                else
-                {
-                    rollOffTimer = rollOffTime;
-                }
+                    if (!value && HasPress)
+                    {
+                        rollOffTimer = 0;
+                    }
+                    else
+                    {
+                        rollOffTimer = rollOffTime;
+                    }
 
-                SetState(InteractableStates.InteractableStateEnum.Focus, value);
+                    SetState(InteractableStates.InteractableStateEnum.Focus, value);
+                }
             }
         }
 
@@ -344,8 +356,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// TODO: Troy - Comments below
-        /// No focus, finger is up - custom: not set by Interactable
+        /// State that corresponds to no focus,and finger is up.
+        /// Currently not controlled by Interactable directly
         /// </summary>
         public virtual bool IsInteractive
         {
@@ -354,7 +366,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Has focus, finger down - custom: not set by Interactable
+        /// State that corresponds to has focus,and finger down.
+        /// Currently not controlled by Interactable directly
         /// </summary>
         public virtual bool HasObservationTargeted
         {
@@ -363,7 +376,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// No focus, finger down - custom: not set by Interactable
+        /// State that corresponds to no focus,and finger is down.
+        /// Currently not controlled by Interactable directly
         /// </summary>
         public virtual bool HasObservation
         {
@@ -381,9 +395,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// TODO: Troy - revisit
-        /// True if SelectionMode is "Toggle" (Dimensions == 2) and the dimension index is not zero.
+        /// Determines whether Interactable is toggled or not. If true, CurrentDimension should be 1 and if false, CurrentDimension should be 0
         /// </summary>
+        /// <remarks>
+        /// Only valid when ButtonMode == SelectionMode.Toggle (i.e Dimensions == 2)
+        /// </remarks>
         public virtual bool IsToggled
         {
             get
@@ -392,17 +408,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             set
             {
-                // TODO: Troy revisit
-                // Only valid if button mode is type Toggle
-                if (ButtonMode == SelectionModes.Toggle)
+                if (IsToggled != value)
                 {
-                    SetState(InteractableStates.InteractableStateEnum.Toggled, value);
+                    // We can only change Toggle state if we are in Toggle mode
+                    if (ButtonMode == SelectionModes.Toggle)
+                    {
+                        SetState(InteractableStates.InteractableStateEnum.Toggled, value);
 
-                    CurrentDimension = value ? 1 : 0;
-                }
-                else
-                {
-                    Debug.LogWarning($"SetToggled(bool) called, but SelectionMode is set to {ButtonMode}, so Current Dimension was unchanged.");
+                        CurrentDimension = value ? 1 : 0;
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"SetToggled(bool) called, but SelectionMode is set to {ButtonMode}, so Current Dimension was unchanged.");
+                    }
                 }
             }
         }
@@ -417,7 +435,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Gesture reached max threshold or limits - custom: not set by Interactable
+        /// State that corresponds to Gesture reaching max threshold or limits
+        /// Currently not controlled by Interactable directly
         /// </summary>
         public virtual bool HasGestureMax
         {
@@ -426,7 +445,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Interactable is touching another object - custom: not set by Interactable
+        /// State that corresponds to Interactable is touching another object 
+        /// Currently not controlled by Interactable directly
         /// </summary>
         public virtual bool HasCollision
         {
@@ -435,7 +455,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// A voice command has occurred, this does not automatically reset
+        /// A voice command has just occurred
         /// </summary>
         public virtual bool HasVoiceCommand
         {
@@ -453,7 +473,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Misc - custom: not set by Interactable
+        /// State that corresponds to miscellaneous/custom use by consumers
+        /// Currently not controlled by Interactable directly
         /// </summary>
         public virtual bool HasCustom
         {
@@ -462,7 +483,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// A near interaction grabbable is actively being grabbed/
+        /// A near interaction grabbable is actively being grabbed
         /// </summary>
         public virtual bool HasGrab
         {
@@ -643,8 +664,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         protected virtual void SetupStates()
         {
-            // TODO: Troy
-            // Note that statemanager will clear states but need to update local related properties*
+            // Note that statemanager will clear states by allocating a new object
+            // But resetting states directly will call setters which may perform necessary steps to enter appropriate state
             ResetAllStates();
 
             Debug.Assert(typeof(InteractableStates).IsAssignableFrom(States.StateModelType), $"Invalid state model of type {States.StateModelType}. State model must extend from {typeof(InteractableStates)}");
@@ -1092,14 +1113,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// sets some visual states for automating button events like clicks from a keyword
+        /// For input "clicks" that do not have corresponding input up/down tracking such as voice commands
+        /// Simulate pressed and start timer to reset states after some click time
         /// </summary>
         protected void StartGlobalVisual(bool voiceCommand = false)
         {
-            // TODO: Troy what is this used for?????
-            // Seems like simulate states like focus/press when activated via Speech Command that does not have up/down etc
-            // Issue here if disable or something else because of the timer* or like canInteract?
-            // Try to simplify with SetInputUp? and then SetInputDown?
             if (voiceCommand)
             {
                 HasVoiceCommand = true;
@@ -1419,7 +1437,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 SetInputUp();
                 if (IsInputFromNearInteraction(eventData))
                 {
-                    // TODO:what if we have two hands grabbing?
                     HasGrab = false;
                 }
 
@@ -1562,7 +1579,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Change the disabled state, will override the Enabled property
         /// </summary>
-        [System.Obsolete("Use TODO property instead")]
+        [System.Obsolete("Use IsEnabled property instead")]
         public virtual void SetDisabled(bool disabled)
         {
             IsEnabled = !disabled;
@@ -1616,7 +1633,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Change the toggled state
         /// </summary>
-        [System.Obsolete("Use TODO property instead")]
+        [System.Obsolete("Use IsToggled property instead")]
         public virtual void SetToggled(bool toggled)
         {
             IsToggled = toggled;
