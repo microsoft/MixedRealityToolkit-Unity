@@ -124,6 +124,27 @@ Next, apply the [`MixedRealityController`](xref:Microsoft.MixedReality.Toolkit.I
 { }
 ```
 
+#### Configure the interaction mappings
+
+The next step is to define the set of interaction mappings supported by the controller. For devices that receive their data via Unity's Input class, the [controller mapping tool](../Tools/ControllerMappingTool.md) is a helpful resource to confirm the correct axis and button mappings to assign to interactions.
+
+The following example is abbreviated from the `GenericOpenVRController` class, located in the MixedRealityToolkit.Providers\OpenVR folder.
+
+```c#
+public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => new[]
+{
+    // Controller Pose
+    new MixedRealityInteractionMapping(0, "Spatial Pointer", AxisType.SixDof, DeviceInputType.SpatialPointer, MixedRealityInputAction.None),
+    // Left Trigger Squeeze
+    new MixedRealityInteractionMapping(1, "Trigger Position", AxisType.SingleAxis, DeviceInputType.Trigger, ControllerMappingLibrary.AXIS_9),
+    // Left Trigger Press (Select)
+    new MixedRealityInteractionMapping(2, "Trigger Press (Select)", AxisType.Digital, DeviceInputType.TriggerPress, KeyCode.JoystickButton14),
+};
+```
+
+>[!Note]
+>The [`ControllerMappingLibrary`](xref:Microsoft.MixedReality.Toolkit.Input.ControllerMappingLibrary) class provides symbolic constants for the Unity input axis and button definitions.
+
 ### Raise notification events
 
 To enable applications to respond to input from the user, the data provider raises notification events corresponding to controller state changes as defined in
@@ -133,7 +154,6 @@ For digital (button) type controls, raise the OnInputDown and OnInputUp events.
 
 ``` c#
 // inputAction is the input event that is to be raised.
-
 if (interactionSourceState.touchpadPressed)
 {
     InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, inputAction);
@@ -230,3 +250,4 @@ If a data provider is submitted and accepted as a part of the Microsoft Mixed Re
 - [`IMixedRealityInputHandler<T>` interface](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputHandler`1)
 - [`IMixedRealityDataProvider` interface](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider)
 - [`IMixedRealityCapabilityCheck` interface](xref:Microsoft.MixedReality.Toolkit.IMixedRealityCapabilityCheck)
+- [Controller Mapping Tool](../Tools/ControllerMappingTool.md)

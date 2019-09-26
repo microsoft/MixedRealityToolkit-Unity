@@ -407,35 +407,29 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             const int numCircleSteps = 10;
             const int numHandSteps = 3;
 
-            Vector3 initialHandPosition = new Vector3(0.04f, -0.18f, 0.3f); // grab point on the lower center part of the cube
-            
+            // Hand pointing at middle of cube
+            Vector3 initialHandPosition = new Vector3(0.044f, -0.1f, 0.45f);
             TestHand hand = new TestHand(Handedness.Right);     
 
             // do this test for every one hand rotation mode
             foreach (ManipulationHandler.RotateInOneHandType type in Enum.GetValues(typeof(ManipulationHandler.RotateInOneHandType)))
             {
-                // TODO: grab point is moving in this test and has to be covered by a different test
-                if (type == ManipulationHandler.RotateInOneHandType.MaintainOriginalRotation)
+                // Some rotation modes move the object on grab, don't test those
+                if (type == ManipulationHandler.RotateInOneHandType.MaintainOriginalRotation ||
+                    type == ManipulationHandler.RotateInOneHandType.FaceAwayFromUser ||
+                    type == ManipulationHandler.RotateInOneHandType.FaceUser)
                 {
                     continue;
-                }         
+                }
 
                 manipHandler.OneHandRotationModeFar = type;
 
                 TestUtilities.PlayspaceToOriginLookingForward();
 
                 yield return hand.Show(initialHandPosition);
-                yield return null;
+                yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
                
-                // pinch and let go of the object again to make sure that any rotation adjustment we're doing is applied 
-                // at the beginning of our test and doesn't interfere with our grab position on the cubes surface while we're moving around
                 yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-                yield return new WaitForFixedUpdate();
-                yield return null;
-
-                yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
-                yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-
 
                 // save relative pos grab point to object - for far interaction we need to check the grab point where the pointer ray hits the manipulated object
                 InputSimulationService simulationService = PlayModeTestUtilities.GetInputSimulationService();
@@ -570,7 +564,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private class OriginOffsetTest
         {
-            const int numSteps = 1;
+            const int numSteps = 10;
 
             public struct TestData
             {
@@ -672,10 +666,20 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator ManipulationHandlerOriginOffset()
         {
             TestUtilities.PlayspaceToOriginLookingForward();
+            // Without this background object that contains a collider, Unity will rarely
+            // return no colliders hit for raycasts and sphere casts, even if a ray / sphere is 
+            // intersecting the collider. Causes tests to be unreliable.
+            // It seems to only happen when one collider is in the scene.
+            var backgroundObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            backgroundObject.transform.position = Vector3.forward * 10;
+            backgroundObject.transform.localScale = new Vector3(100, 100, 1);
+            var backgroundmaterial = new Material(StandardShaderUtility.MrtkStandardShader);
+            backgroundmaterial.color = Color.green;
+            backgroundObject.GetComponent<MeshRenderer>().material = backgroundmaterial;
+
 
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-
             var manipHandler = testObject.AddComponent<ManipulationHandler>();
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingActive = false;
@@ -683,7 +687,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // add near interaction grabbable to be able to grab the cube with the simulated articulated hand
             testObject.AddComponent<NearInteractionGrabbable>();
-
             testObject.transform.localScale = Vector3.one * 0.2f;
             testObject.transform.position = Vector3.forward;
 
@@ -705,11 +708,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
             mesh.vertices = vertices;
             mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
             testObject.GetComponent<BoxCollider>().center = offset;
-
             testObject.transform.position = Vector3.forward - testObject.transform.TransformVector(offset);
 
             // Collect data for modified cube
+
             OriginOffsetTest actualTest = new OriginOffsetTest();
             yield return actualTest.RecordTransformValues(testObject);
             yield return null;
@@ -723,7 +727,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             {
                 Vector3 transformedOffset = actualData[i].pose.Rotation * Vector3.Scale(offset, actualData[i].scale);
                 TestUtilities.AssertAboutEqual(expectedData[i].pose.Position, actualData[i].pose.Position + transformedOffset, $"Failed for position of object for {actualData[i].manipDescription}");
-                TestUtilities.AssertAboutEqual(expectedData[i].pose.Rotation, actualData[i].pose.Rotation, $"Failed for rotation of object for {actualData[i].manipDescription}");
+                TestUtilities.AssertAboutEqual(expectedData[i].pose.Rotation, actualData[i].pose.Rotation, $"Failed for rotation of object for {actualData[i].manipDescription}", 1.0f);
                 TestUtilities.AssertAboutEqual(expectedData[i].scale, actualData[i].scale, $"Failed for scale of object for {actualData[i].manipDescription}");
             }
         }
