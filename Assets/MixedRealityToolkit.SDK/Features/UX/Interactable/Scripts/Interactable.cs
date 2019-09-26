@@ -1535,6 +1535,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
+        /// Do oice commands require focus?
+        /// </summary>
+        [System.Obsolete("Use VoiceRequiresFocus instead")]
+        public bool RequiresFocus
+        {
+            get => VoiceRequiresFocus;
+            set => VoiceRequiresFocus = value;
+        }
+
+        /// <summary>
         /// Is disabled
         /// </summary>
         [System.Obsolete("Use IsEnabled instead")]
