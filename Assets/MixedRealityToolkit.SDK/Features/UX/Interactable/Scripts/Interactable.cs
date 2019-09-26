@@ -534,7 +534,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (focusingPointers.Count == 0)
             {
                 ResetBaseStates();
-                RefreshSetup();
             }
         }
 
@@ -549,6 +548,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 RegisterGlobalInputHandler(false);
             }
+
+            // Set all base states to false when the gameObject or script is disabled
+            ResetBaseStates();
         }
 
         private void RegisterGlobalInputHandler(bool globalInput)
@@ -760,6 +762,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             IsDisabled = disabled;
             Enabled = !disabled;
             SetState(InteractableStates.InteractableStateEnum.Disabled, disabled);
+
+            // Clear the focus if interactable is disabled
+            if (disabled)
+            {
+                SetFocus(false);
+            }  
         }
 
         /// <summary>
