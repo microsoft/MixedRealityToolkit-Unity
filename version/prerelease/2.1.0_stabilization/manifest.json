@@ -2688,10 +2688,43 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/Input/SpeechCommands.PNG",
+      "source_relative_path": "Documentation/Images/Input/SpeechCommandsProfile.png",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/Input/SpeechCommands.PNG"
+          "relative_path": "Documentation/Images/Input/SpeechCommandsProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Input/SpeechCommands_SpeechInputHandler1.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Input/SpeechCommands_SpeechInputHandler1.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Input/SpeechCommands_SpeechInputHandler2.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Input/SpeechCommands_SpeechInputHandler2.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Input/SpeechExampleScene.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Input/SpeechExampleScene.png"
         }
       },
       "is_incremental": false,
@@ -5559,7 +5592,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/InputActions.html",
-          "hash": "QPH61AVXoEunSm5NlR/yEQ=="
+          "hash": "XoB28QEas5ltmJTEcps4gw=="
         }
       },
       "is_incremental": false,
@@ -5631,7 +5664,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/Speech.html",
-          "hash": "KKClz65IC5vrdG6r8VR2WA=="
+          "hash": "YdpgtQkeLANYsWy+RkhEAg=="
         }
       },
       "is_incremental": false,
@@ -12542,7 +12575,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SpeechInputHandler.html",
-          "hash": "v8zZmn/IQNLKZeoa13yDZw=="
+          "hash": "iz6HdnGvxz9CNIwoXNEm0w=="
         }
       },
       "is_incremental": false,
@@ -15406,6 +15439,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.DestroyOnAnimationComplete.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.DestroyOnAnimationComplete.html",
+          "hash": "VeTXkwoOLUcZnYxIr8lUhQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.DisplayMode.yml",
       "output": {
         ".html": {
@@ -16378,6 +16423,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.SpeechConfirmationTooltip.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.SpeechConfirmationTooltip.html",
+          "hash": "SqGSU9Rpzca0WgapU6dOOw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.State.yml",
       "output": {
         ".html": {
@@ -16514,7 +16571,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ToolTip.html",
-          "hash": "1ohEZ5NRJ/DnetuP45fqyw=="
+          "hash": "Mi/hAOggc5LBjr1vViuvGw=="
         }
       },
       "is_incremental": false,
@@ -16670,7 +16727,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.html",
-          "hash": "S7sUtYIA0rPJXgB7MO2wJQ=="
+          "hash": "d4H0CSz7nUEJqcJOs+PIKA=="
         }
       },
       "is_incremental": false,
@@ -19910,7 +19967,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "4fLz/fiweM4l9FJwgVbzXA=="
+          "hash": "Waoofwacx0VEVdwCAf+idQ=="
         }
       },
       "is_incremental": false,
@@ -19969,16 +20026,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1136,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 129,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1138,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
