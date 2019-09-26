@@ -69,7 +69,7 @@ To set the minimum and maximum scale, use the [`TransformScaleHandler`](cref:Mic
    GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
    bbox = cube.AddComponent<BoundingBox>();
    // Important: BoundingBox creates a scale handler on start if one does not exist
-   // do not use AddComponent, as that will createa  duplicate handler that will not be used 
+   // do not use AddComponent, as that will create a  duplicate handler that will not be used 
    TransformScaleHandler scaleHandler = bbox.gameObject.GetComponent<TransformScaleHandler>();
    scaleHandler.ScaleMinimum = 1f;
    scaleHandler.ScaleMaximum = 2f;
