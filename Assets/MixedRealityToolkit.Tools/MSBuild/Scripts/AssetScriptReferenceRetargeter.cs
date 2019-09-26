@@ -250,7 +250,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     }
                     else if (line.Contains(ScriptFileIdConstant))
                     {
-                        throw new InvalidDataException($"Line contains script type but not m_Script: {line}");
+                        throw new InvalidDataException($"Line in file {filePath} contains script type but not m_Script: {line.Trim()}");
                     }
                     //{ fileID: 11500000, guid: 83d9acc7968244a8886f3af591305bcb, type: 3}
 
