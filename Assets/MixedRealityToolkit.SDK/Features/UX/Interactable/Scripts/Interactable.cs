@@ -41,11 +41,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public HashSet<IMixedRealityInputSource> PressingInputSources => pressingInputSources;
         protected readonly HashSet<IMixedRealityInputSource> pressingInputSources = new HashSet<IMixedRealityInputSource>();
 
-        /// <summary>
-        /// Is the interactable enabled?
-        /// </summary>
-        public bool Enabled = true;
-
         [FormerlySerializedAs("States")]
         [SerializeField]
         private States states;
@@ -86,6 +81,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// A way of adding more layers of states for controls like toggles
         /// </summary>
         public int Dimensions = 1;
+
+        // TODO: Add selection mode? Deprecate this*
+        /// <summary>
+        /// TODO: Troy - revisit
+        /// True if Selection is "Toggle" (Dimensions == 2)
+        /// </summary>
+        public bool IsToggleButton { get { return Dimensions == 2; } }
 
         /// <summary>
         /// The Dimension value to set on start
@@ -217,95 +219,190 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #region States
 
         /// <summary>
+        /// Is the interactable enabled?
+        /// TODO: TROY - Update comment here to be better
+        /// </summary>
+        public bool IsEnabled
+        {
+            // Note the inverse setting since targeting "Disable" state but property is concerning "Enabled"
+            get { return !(GetStateValue(InteractableStates.InteractableStateEnum.Disabled) > 0); }
+            set
+            {
+                // TODO: DO STUFF HERE!!!
+                SetState(InteractableStates.InteractableStateEnum.Disabled, !value);
+            }
+        }
+
+        /// <summary>
         /// Has focus
         /// </summary>
-        public bool HasFocus { get; private set; }
+        public bool HasFocus
+        {
+            get { return GetStateValue(InteractableStates.InteractableStateEnum.Focus) > 0; }
+            set
+            {
+                if (!value && HasPress)
+                {
+                    rollOffTimer = 0;
+                }
+                else
+                {
+                    rollOffTimer = rollOffTime;
+                }
+
+                SetState(InteractableStates.InteractableStateEnum.Focus, value);
+            }
+        }
 
         /// <summary>
         /// Currently being pressed
         /// </summary>
-        public bool HasPress { get; private set; }
+        public bool HasPress
+        {
+            get { return GetStateValue(InteractableStates.InteractableStateEnum.Pressed) > 0; }
+            set { SetState(InteractableStates.InteractableStateEnum.Pressed, value); }
+        }
 
         /// <summary>
-        /// Is disabled
-        /// </summary>
-        public bool IsDisabled { get; private set; }
-
-        // advanced button states from InteractableStates.InteractableStateEnum
-        /// <summary>
+        /// TODO: TROY - Update better comments
         /// Has focus, finger up - custom: not set by Interactable
         /// </summary>
-        public bool IsTargeted { get; private set; }
+        public bool IsTargeted
+        {
+            get { return GetStateValue(InteractableStates.InteractableStateEnum.Targeted) > 0; }
+            set { SetState(InteractableStates.InteractableStateEnum.Targeted, value); }
+        }
 
         /// <summary>
         /// No focus, finger is up - custom: not set by Interactable
         /// </summary>
-        public bool IsInteractive { get; private set; }
+        public bool IsInteractive
+        {
+            get { return GetStateValue(InteractableStates.InteractableStateEnum.Interactive) > 0; }
+            set { SetState(InteractableStates.InteractableStateEnum.Interactive, value); }
+        }
 
         /// <summary>
         /// Has focus, finger down - custom: not set by Interactable
         /// </summary>
-        public bool HasObservationTargeted { get; private set; }
+        public bool HasObservationTargeted
+        {
+            get { return GetStateValue(InteractableStates.InteractableStateEnum.ObservationTargeted) > 0; }
+            set { SetState(InteractableStates.InteractableStateEnum.ObservationTargeted, value); }
+        }
 
         /// <summary>
         /// No focus, finger down - custom: not set by Interactable
         /// </summary>
-        public bool HasObservation { get; private set; }
+        public bool HasObservation
+        {
+            get { return GetStateValue(InteractableStates.InteractableStateEnum.Observation) > 0; }
+            set { SetState(InteractableStates.InteractableStateEnum.Observation, value); }
+        }
 
         /// <summary>
         /// The Interactable has been clicked
         /// </summary>
-        public bool IsVisited { get; private set; }
+        public bool IsVisited
+        {
+            get { return GetStateValue(InteractableStates.InteractableStateEnum.Visited) > 0; }
+            set { SetState(InteractableStates.InteractableStateEnum.Visited, value); }
+        }
 
         /// <summary>
+        /// TODO: Troy - revisit
         /// True if SelectionMode is "Toggle" (Dimensions == 2) and the dimension index is not zero.
         /// </summary>
-        public bool IsToggled { get { return Dimensions == 2 && dimensionIndex > 0; } }
-
-        /// <summary>
-        /// True if Selection is "Toggle" (Dimensions == 2)
-        /// </summary>
-        public bool IsToggleButton { get { return Dimensions == 2; } }
+        public bool IsToggled
+        {
+            get
+            {
+                return GetStateValue(InteractableStates.InteractableStateEnum.Toggled) > 0;
+                //return Dimensions == 2 && dimensionIndex > 0;
+            }
+            set
+            {
+                // TODO: Troy revisit
+                // if in toggle mode
+                if (IsToggleButton)
+                {
+                    SetState(InteractableStates.InteractableStateEnum.Toggled, value);
+                    SetDimensionIndex(value ? 1 : 0);
+                }
+                else
+                {
+                    // TODO: Troy WTF?!??!?!?
+                    int selectedMode = Mathf.Clamp(Dimensions, 1, 3);
+                    Debug.Log("SetToggled(bool) called, but SelectionMode is set to " + (SelectionModes)(selectedMode - 1) + ", so DimensionIndex was unchanged.");
+                }
+            }
+        }
 
         /// <summary>
         /// Currently pressed and some movement has occurred
         /// </summary>
-        public bool HasGesture { get; protected set; }
+        public bool HasGesture
+        {
+            get { return GetStateValue(InteractableStates.InteractableStateEnum.Gesture) > 0; }
+            set { SetState(InteractableStates.InteractableStateEnum.Gesture, value); }
+        }
 
         /// <summary>
         /// Gesture reached max threshold or limits - custom: not set by Interactable
         /// </summary>
-        public bool HasGestureMax { get; private set; }
+        public bool HasGestureMax
+        {
+            get { return GetStateValue(InteractableStates.InteractableStateEnum.GestureMax) > 0; }
+            set { SetState(InteractableStates.InteractableStateEnum.GestureMax, value); }
+        }
 
         /// <summary>
         /// Interactable is touching another object - custom: not set by Interactable
         /// </summary>
-        public bool HasCollision { get; private set; }
+        public bool HasCollision
+        {
+            get { return GetStateValue(InteractableStates.InteractableStateEnum.Collision) > 0; }
+            set { SetState(InteractableStates.InteractableStateEnum.Collision, value); }
+        }
 
         /// <summary>
         /// A voice command has occurred, this does not automatically reset
-        /// Can be reset using the SetVoiceCommand(bool) method.
         /// </summary>
-        public bool HasVoiceCommand { get; private set; }
+        public bool HasVoiceCommand
+        {
+            get { return GetStateValue(InteractableStates.InteractableStateEnum.VoiceCommand) > 0; }
+            set { SetState(InteractableStates.InteractableStateEnum.VoiceCommand, value); }
+        }
 
         /// <summary>
         /// A near interaction touchable is actively being touched
         /// </summary>
-        public bool HasPhysicalTouch { get; private set; }
+        public bool HasPhysicalTouch
+        {
+            get { return GetStateValue(InteractableStates.InteractableStateEnum.PhysicalTouch) > 0; }
+            set { SetState(InteractableStates.InteractableStateEnum.PhysicalTouch, value); }
+        }
 
         /// <summary>
         /// Misc - custom: not set by Interactable
         /// </summary>
-        public bool HasCustom { get; private set; }
+        public bool HasCustom
+        {
+            get { return GetStateValue(InteractableStates.InteractableStateEnum.Custom) > 0; }
+            set { SetState(InteractableStates.InteractableStateEnum.Custom, value); }
+        }
 
         /// <summary>
         /// A near interaction grabbable is actively being grabbed/
         /// </summary>
-        public bool HasGrab { get; private set; }
+        public bool HasGrab
+        {
+            get { return GetStateValue(InteractableStates.InteractableStateEnum.Grab) > 0; }
+            set { SetState(InteractableStates.InteractableStateEnum.Grab, value); }
+        }
 
         // internal cached states
         protected State lastState;
-        protected bool wasDisabled = false;
 
         #endregion
 
@@ -463,20 +560,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return true;
         }
 
-        /// <summary>
-        /// Returns a list of states assigned to the Interactable
-        /// </summary>
-        [System.Obsolete("Use States.StateList instead")]
-        public State[] GetStates()
-        {
-            if (States != null)
-            {
-                return States.StateList.ToArray();
-            }
-
-            return new State[0];
-        }
-
         #endregion InspectorHelpers
 
         #region MonoBehaviorImplementation
@@ -613,11 +696,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 forceUpdate = false;
             }
 
-            if (IsDisabled == Enabled)
-            {
-                SetDisabled(!Enabled);
-            }
-
             lastState = StateManager.CurrentState();
 
             if (isGlobalValueCheck != IsGlobal)
@@ -709,169 +787,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return 0;
         }
 
-        /// <summary>
-        /// Handle focus state changes
-        /// </summary>
-        public virtual void SetFocus(bool focus)
-        {
-            HasFocus = focus;
-            if (!focus && HasPress)
-            {
-                rollOffTimer = 0;
-            }
-            else
-            {
-                rollOffTimer = rollOffTime;
-            }
-
-            SetState(InteractableStates.InteractableStateEnum.Focus, focus);
-        }
-
-        /// <summary>
-        /// Change the press state
-        /// </summary>
-        public virtual void SetPress(bool press)
-        {
-            HasPress = press;
-            SetState(InteractableStates.InteractableStateEnum.Pressed, press);
-        }
-
-        /// <summary>
-        /// Change the disabled state, will override the Enabled property
-        /// </summary>
-        public virtual void SetDisabled(bool disabled)
-        {
-            IsDisabled = disabled;
-            Enabled = !disabled;
-            SetState(InteractableStates.InteractableStateEnum.Disabled, disabled);
-        }
-
-        /// <summary>
-        /// Change the targeted state
-        /// </summary>
-        public virtual void SetTargeted(bool targeted)
-        {
-            IsTargeted = targeted;
-            SetState(InteractableStates.InteractableStateEnum.Targeted, targeted);
-        }
-
-        /// <summary>
-        /// Change the Interactive state
-        /// </summary>
-        public virtual void SetInteractive(bool interactive)
-        {
-            IsInteractive = interactive;
-            SetState(InteractableStates.InteractableStateEnum.Interactive, interactive);
-        }
-
-        /// <summary>
-        /// Change the observation targeted state
-        /// </summary>
-        public virtual void SetObservationTargeted(bool targeted)
-        {
-            HasObservationTargeted = targeted;
-            SetState(InteractableStates.InteractableStateEnum.ObservationTargeted, targeted);
-        }
-
-        /// <summary>
-        /// Change the observation state
-        /// </summary>
-        public virtual void SetObservation(bool observation)
-        {
-            HasObservation = observation;
-            SetState(InteractableStates.InteractableStateEnum.Observation, observation);
-        }
-
-        /// <summary>
-        /// Change the visited state
-        /// </summary>
-        public virtual void SetVisited(bool visited)
-        {
-            IsVisited = visited;
-            SetState(InteractableStates.InteractableStateEnum.Visited, visited);
-        }
-
-        /// <summary>
-        /// Change the toggled state
-        /// </summary>
-        public virtual void SetToggled(bool toggled)
-        {
-            SetState(InteractableStates.InteractableStateEnum.Toggled, toggled);
-
-            // if in toggle mode
-            if (IsToggleButton)
-            {
-                SetDimensionIndex(toggled ? 1 : 0);
-            }
-            else
-            {
-                int selectedMode = Mathf.Clamp(Dimensions, 1, 3);
-                Debug.Log("SetToggled(bool) called, but SelectionMode is set to " + (SelectionModes)(selectedMode - 1) + ", so DimensionIndex was unchanged.");
-            }
-        }
-
-        /// <summary>
-        /// Change the gesture state
-        /// </summary>
-        public virtual void SetGesture(bool gesture)
-        {
-            HasGesture = gesture;
-            SetState(InteractableStates.InteractableStateEnum.Gesture, gesture);
-        }
-
-        /// <summary>
-        /// Change the gesture max state
-        /// </summary>
-        public virtual void SetGestureMax(bool gesture)
-        {
-            HasGestureMax = gesture;
-            SetState(InteractableStates.InteractableStateEnum.GestureMax, gesture);
-        }
-
-        /// <summary>
-        /// Change the collision state
-        /// </summary>
-        public virtual void SetCollision(bool collision)
-        {
-            HasCollision = collision;
-            SetState(InteractableStates.InteractableStateEnum.Collision, collision);
-        }
-
-        /// <summary>
-        /// Change the custom state
-        /// </summary>
-        public virtual void SetCustom(bool custom)
-        {
-            HasCustom = custom;
-            SetState(InteractableStates.InteractableStateEnum.Custom, custom);
-        }
-
-        /// <summary>
-        /// Change the voice command state
-        /// </summary>
-        public virtual void SetVoiceCommand(bool voice)
-        {
-            HasVoiceCommand = voice;
-            SetState(InteractableStates.InteractableStateEnum.VoiceCommand, voice);
-        }
-
-        /// <summary>
-        /// Change the physical touch state
-        /// </summary>
-        public virtual void SetPhysicalTouch(bool touch)
-        {
-            HasPhysicalTouch = touch;
-            SetState(InteractableStates.InteractableStateEnum.PhysicalTouch, touch);
-        }
-
-        /// <summary>
-        /// Change the grab state
-        /// </summary>
-        public virtual void SetGrab(bool grab)
-        {
-            HasGrab = grab;
-            SetState(InteractableStates.InteractableStateEnum.Grab, grab);
-        }
 
         /// <summary>
         /// a public way to set state directly
@@ -900,6 +815,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public void ResetBaseStates()
         {
             // reset states
+            HasFocus = false;
             SetFocus(false);
             SetPress(false);
             SetPhysicalTouch(false);
@@ -1574,5 +1490,192 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return matchingPointerCount > 0;
         }
         #endregion InputHandlers
+
+        #region Deprecated
+
+
+        /// <summary>
+        /// Is the interactable enabled?
+        /// </summary>
+        [System.Obsolete("Use IsEnabled instead")]
+        public bool Enabled = true;
+
+        /// <summary>
+        /// Is disabled
+        /// </summary>
+        [System.Obsolete("Use IsEnabled instead")]
+        public bool IsDisabled { get; private set; }
+
+        /// <summary>
+        /// Returns a list of states assigned to the Interactable
+        /// </summary>
+        [System.Obsolete("Use States.StateList instead")]
+        public State[] GetStates()
+        {
+            if (States != null)
+            {
+                return States.StateList.ToArray();
+            }
+
+            return new State[0];
+        }
+
+        /// <summary>
+        /// Handle focus state changes
+        /// </summary>
+        [System.Obsolete("Use Focus property instead")]
+        public virtual void SetFocus(bool focus)
+        {
+            HasFocus = focus;
+        }
+
+        /// <summary>
+        /// Change the press state
+        /// </summary>
+        [System.Obsolete("Use Press property instead")]
+        public virtual void SetPress(bool press)
+        {
+            HasPress = press;
+        }
+
+        /// <summary>
+        /// Change the disabled state, will override the Enabled property
+        /// </summary>
+        [System.Obsolete("Use TODO property instead")]
+        public virtual void SetDisabled(bool disabled)
+        {
+            IsEnabled = !disabled;
+        }
+
+        /// <summary>
+        /// Change the targeted state
+        /// </summary>
+        [System.Obsolete("Use IsTargeted property instead")]
+        public virtual void SetTargeted(bool targeted)
+        {
+            IsTargeted = targeted;
+        }
+
+        /// <summary>
+        /// Change the Interactive state
+        /// </summary>
+        [System.Obsolete("Use IsInteractive property instead")]
+        public virtual void SetInteractive(bool interactive)
+        {
+            IsInteractive = interactive;
+        }
+
+        /// <summary>
+        /// Change the observation targeted state
+        /// </summary>
+        [System.Obsolete("Use HasObservationTargeted property instead")]
+        public virtual void SetObservationTargeted(bool targeted)
+        {
+            HasObservationTargeted = targeted;
+        }
+
+        /// <summary>
+        /// Change the observation state
+        /// </summary>
+        [System.Obsolete("Use HasObservation property instead")]
+        public virtual void SetObservation(bool observation)
+        {
+            HasObservation = observation;
+        }
+
+        /// <summary>
+        /// Change the visited state
+        /// </summary>
+        [System.Obsolete("Use IsVisited property instead")]
+        public virtual void SetVisited(bool visited)
+        {
+            IsVisited = visited;
+        }
+
+        /// <summary>
+        /// Change the toggled state
+        /// </summary>
+        [System.Obsolete("Use TODO property instead")]
+        public virtual void SetToggled(bool toggled)
+        {
+            // TODO: Troy
+            SetState(InteractableStates.InteractableStateEnum.Toggled, toggled);
+
+            // if in toggle mode
+            if (IsToggleButton)
+            {
+                SetDimensionIndex(toggled ? 1 : 0);
+            }
+            else
+            {
+                int selectedMode = Mathf.Clamp(Dimensions, 1, 3);
+                Debug.Log("SetToggled(bool) called, but SelectionMode is set to " + (SelectionModes)(selectedMode - 1) + ", so DimensionIndex was unchanged.");
+            }
+        }
+
+        /// <summary>
+        /// Change the gesture state
+        /// </summary>
+        [System.Obsolete("Use HasGesture property instead")]
+        public virtual void SetGesture(bool gesture)
+        {
+            HasGesture = gesture;
+        }
+
+        /// <summary>
+        /// Change the gesture max state
+        /// </summary>
+        [System.Obsolete("Use HasGestureMax property instead")]
+        public virtual void SetGestureMax(bool gesture)
+        {
+            HasGestureMax = gesture;
+        }
+
+        /// <summary>
+        /// Change the collision state
+        /// </summary>
+        [System.Obsolete("Use HasCollision property instead")]
+        public virtual void SetCollision(bool collision)
+        {
+            HasCollision = collision;
+        }
+
+        /// <summary>
+        /// Change the custom state
+        /// </summary>
+        [System.Obsolete("Use HasCustom property instead")]
+        public virtual void SetCustom(bool custom)
+        {
+            HasCustom = custom;
+        }
+
+        /// <summary>
+        /// Change the voice command state
+        /// </summary>
+        [System.Obsolete("Use HasVoiceCommand property instead")]
+        public virtual void SetVoiceCommand(bool voice)
+        {
+            HasVoiceCommand = voice;
+        }
+
+        /// <summary>
+        /// Change the physical touch state
+        /// </summary>
+        [System.Obsolete("Use HasPhysicalTouch property instead")]
+        public virtual void SetPhysicalTouch(bool touch)
+        {
+            HasPhysicalTouch = touch;
+        }
+
+        /// <summary>
+        /// Change the grab state
+        /// </summary>
+        [System.Obsolete("Use HasGrab property instead")]
+        public virtual void SetGrab(bool grab)
+        {
+            HasGrab = grab;
+        }
+
+        #endregion
     }
 }
