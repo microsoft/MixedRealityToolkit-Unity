@@ -798,7 +798,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/GettingStartedWithTheMRTK.html",
-          "hash": "4Msf8awFzBY6g9B5ktNENg=="
+          "hash": "KmYxJuCcOWAU1HZp+IP9eg=="
         }
       },
       "is_incremental": false,
@@ -2688,43 +2688,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/Input/SpeechCommandsProfile.png",
+      "source_relative_path": "Documentation/Images/Input/SpeechCommands.PNG",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/Input/SpeechCommandsProfile.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "Documentation/Images/Input/SpeechCommands_SpeechInputHandler1.png",
-      "output": {
-        "resource": {
-          "relative_path": "Documentation/Images/Input/SpeechCommands_SpeechInputHandler1.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "Documentation/Images/Input/SpeechCommands_SpeechInputHandler2.png",
-      "output": {
-        "resource": {
-          "relative_path": "Documentation/Images/Input/SpeechCommands_SpeechInputHandler2.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "Documentation/Images/Input/SpeechExampleScene.png",
-      "output": {
-        "resource": {
-          "relative_path": "Documentation/Images/Input/SpeechExampleScene.png"
+          "relative_path": "Documentation/Images/Input/SpeechCommands.PNG"
         }
       },
       "is_incremental": false,
@@ -4144,72 +4111,6 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/NearMenu/MRTK_UX_NearMenu_Structure.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "Documentation/Images/NuGet/AddNewSource.png",
-      "output": {
-        "resource": {
-          "relative_path": "Documentation/Images/NuGet/AddNewSource.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "Documentation/Images/NuGet/ManageNuGetPackages.png",
-      "output": {
-        "resource": {
-          "relative_path": "Documentation/Images/NuGet/ManageNuGetPackages.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "Documentation/Images/NuGet/NuGetForUnityPreferencesTab.png",
-      "output": {
-        "resource": {
-          "relative_path": "Documentation/Images/NuGet/NuGetForUnityPreferencesTab.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "Documentation/Images/NuGet/ProjectPreferences.png",
-      "output": {
-        "resource": {
-          "relative_path": "Documentation/Images/NuGet/ProjectPreferences.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "Documentation/Images/NuGet/SearchBox.png",
-      "output": {
-        "resource": {
-          "relative_path": "Documentation/Images/NuGet/SearchBox.png"
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "Documentation/Images/NuGet/UpdatesTab.png",
-      "output": {
-        "resource": {
-          "relative_path": "Documentation/Images/NuGet/UpdatesTab.png"
         }
       },
       "is_incremental": false,
@@ -5658,7 +5559,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/InputActions.html",
-          "hash": "XoB28QEas5ltmJTEcps4gw=="
+          "hash": "QPH61AVXoEunSm5NlR/yEQ=="
         }
       },
       "is_incremental": false,
@@ -5730,7 +5631,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/Speech.html",
-          "hash": "YdpgtQkeLANYsWy+RkhEAg=="
+          "hash": "KKClz65IC5vrdG6r8VR2WA=="
         }
       },
       "is_incremental": false,
@@ -5779,18 +5680,6 @@
         ".html": {
           "relative_path": "Documentation/Legal/NOTICE.html",
           "hash": "gTBZd7fq3/DhheHjm3O04g=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
-      "source_relative_path": "Documentation/MRTKNuGetPackage.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/MRTKNuGetPackage.html",
-          "hash": "JWyqffmvyBDIzhuk7xqyiA=="
         }
       },
       "is_incremental": false,
@@ -12653,7 +12542,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SpeechInputHandler.html",
-          "hash": "iz6HdnGvxz9CNIwoXNEm0w=="
+          "hash": "v8zZmn/IQNLKZeoa13yDZw=="
         }
       },
       "is_incremental": false,
@@ -15517,18 +15406,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.DestroyOnAnimationComplete.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.DestroyOnAnimationComplete.html",
-          "hash": "VeTXkwoOLUcZnYxIr8lUhQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.DisplayMode.yml",
       "output": {
         ".html": {
@@ -16501,18 +16378,6 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.SpeechConfirmationTooltip.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.SpeechConfirmationTooltip.html",
-          "hash": "SqGSU9Rpzca0WgapU6dOOw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.State.yml",
       "output": {
         ".html": {
@@ -16649,7 +16514,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.ToolTip.html",
-          "hash": "Mi/hAOggc5LBjr1vViuvGw=="
+          "hash": "1ohEZ5NRJ/DnetuP45fqyw=="
         }
       },
       "is_incremental": false,
@@ -16805,7 +16670,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.html",
-          "hash": "d4H0CSz7nUEJqcJOs+PIKA=="
+          "hash": "S7sUtYIA0rPJXgB7MO2wJQ=="
         }
       },
       "is_incremental": false,
@@ -20045,7 +19910,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "Waoofwacx0VEVdwCAf+idQ=="
+          "hash": "4fLz/fiweM4l9FJwgVbzXA=="
         }
       },
       "is_incremental": false,
@@ -20097,19 +19962,6 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ResourceDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 130,
-          "skipped_file_count": 0
-        },
         "TocDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
@@ -20117,10 +19969,23 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 129,
+          "skipped_file_count": 0
+        },
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1138,
+          "total_file_count": 1136,
           "skipped_file_count": 0
         }
       }
