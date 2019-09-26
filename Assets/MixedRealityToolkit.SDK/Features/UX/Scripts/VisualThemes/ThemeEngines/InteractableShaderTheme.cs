@@ -24,7 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected List<ThemeStateProperty> shaderProperties;
         protected Renderer renderer;
         private Graphic graphic;
-        private Material material;
 
         private ThemePropertyValue startValue = new ThemePropertyValue();
 
@@ -79,8 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             else if (graphic != null)
             {
-                UIMaterialInstiator.TryCreateMaterialCopy(ref graphic);
-                material = graphic.material;
+                UIMaterialInstantiator.TryCreateMaterialCopy(ref graphic);
             }
         }
 
@@ -132,14 +130,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 switch (property.Type)
                 {
                     case ThemePropertyTypes.Color:
-                        material.SetColor(propId, newColor);
+                        graphic.material.SetColor(propId, newColor);
                         break;
                     case ThemePropertyTypes.Texture:
-                        material.SetTexture(propId, propValue.Texture);
+                        graphic.material.SetTexture(propId, propValue.Texture);
                         break;
                     case ThemePropertyTypes.ShaderFloat:
                     case ThemePropertyTypes.ShaderRange:
-                        material.SetFloat(propId, newFloatValue);
+                        graphic.material.SetFloat(propId, newFloatValue);
                         break;
                     default:
                         break;
@@ -177,14 +175,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 switch (property.Type)
                 {
                     case ThemePropertyTypes.Color:
-                        startValue.Color = material.GetVector(propId);
+                        startValue.Color = graphic.material.GetVector(propId);
                         break;
                     case ThemePropertyTypes.Texture:
-                        startValue.Texture = material.GetTexture(propId);
+                        startValue.Texture = graphic.material.GetTexture(propId);
                         break;
                     case ThemePropertyTypes.ShaderFloat:
                     case ThemePropertyTypes.ShaderRange:
-                        startValue.Float = material.GetFloat(propId);
+                        startValue.Float = graphic.material.GetFloat(propId);
                         break;
                     default:
                         break;

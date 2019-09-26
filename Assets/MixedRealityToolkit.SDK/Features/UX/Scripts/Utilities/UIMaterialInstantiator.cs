@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
-    public class UIMaterialInstiator
+    public class UIMaterialInstantiator
     {
         // this set ensures that we do not end up creating multiple copies of materials for every theme targetting the same instance
         private static HashSet<int> targetInstances = new HashSet<int>();
