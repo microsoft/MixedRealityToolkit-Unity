@@ -140,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             }
             else
             {
-                toggle.SetToggled(PointerUtils.GetPointerBehavior<T>(Handedness.Any, inputType) != PointerBehavior.AlwaysOff);
+                toggle.IsToggled = PointerUtils.GetPointerBehavior<T>(Handedness.Any, inputType) != PointerBehavior.AlwaysOff;
             }
         }
     }

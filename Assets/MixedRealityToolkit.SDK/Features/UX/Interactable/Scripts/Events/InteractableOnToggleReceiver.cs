@@ -42,8 +42,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc />
         public override void OnClick(InteractableStates state, Interactable source, IMixedRealityPointer pointer = null)
         {
-            int currentIndex = source.GetDimensionIndex();
-            
+            // TODO: Troy - Simplify this?
+            int currentIndex = source.CurrentDimension;
+
             if (currentIndex % 2 == 0)
             {
                 OnDeselect.Invoke();
