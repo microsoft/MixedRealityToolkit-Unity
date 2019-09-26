@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
             profileList = serializedObject.FindProperty("profiles");
             statesProperty = serializedObject.FindProperty("states");
-            enabledProperty = serializedObject.FindProperty("Enabled"); // TODO: Troy - Fix
+            enabledProperty = serializedObject.FindProperty("startEnabled");
             voiceCommands = serializedObject.FindProperty("VoiceCommand");
             actionId = serializedObject.FindProperty("InputActionId");
             isGlobal = serializedObject.FindProperty("isGlobal");
@@ -273,7 +273,14 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                     return;
                 }
 
+                // TODO: Troy Need to disable GUI? Need to set value based on current state propogated*
+                // if playmode do one, if not do other?
+                bool isEnabled = enabledProperty.boolValue;
                 EditorGUILayout.PropertyField(enabledProperty, new GUIContent("Enabled", "Is this Interactable Enabled?"));
+                if (isPlayMode && isEnabled != enabledProperty.boolValue)
+                {
+                    instance.IsEnabled = enabledProperty.boolValue;
+                }
 
                 // Input Actions
                 bool validActionOptions = inputActionOptions != null;

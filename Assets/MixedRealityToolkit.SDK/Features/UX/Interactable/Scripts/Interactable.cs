@@ -186,6 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         private int StartDimensionIndex = 0;
 
+        // TODO: Troy -> Only makes sense for type Toggle? How do you Select/Deselect in multi-dimension button?
         /// <summary>
         /// Is the interactive selectable?
         /// When a multi-dimension button, can the user initiate switching dimensions?
@@ -281,7 +282,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #region States
 
-        // TODO: Troy - add serialized field just for inspector and to convert?, but this is also editable in inspector***
+        // Field just used for serialization to save if the Interactable should start enabled or disabled
         [FormerlySerializedAs("Enabled")]
         [SerializeField]
         private bool startEnabled = false;
@@ -332,8 +333,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// TODO: TROY - Update better comments
-        /// Has focus, finger up - custom: not set by Interactable
+        /// Targeted means the item has focus and finger is up
+        /// Currently not controlled by Interactable directly
         /// </summary>
         public virtual bool IsTargeted
         {
@@ -342,6 +343,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
+        /// TODO: Troy - Comments below
         /// No focus, finger is up - custom: not set by Interactable
         /// </summary>
         public virtual bool IsInteractive
@@ -386,12 +388,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get
             {
                 return GetStateValue(InteractableStates.InteractableStateEnum.Toggled) > 0;
-                //return Dimensions == 2 && dimensionIndex > 0;
             }
             set
             {
                 // TODO: Troy revisit
-                // if in toggle mode
+                // Only valid if button mode is type Toggle
                 if (ButtonMode == SelectionModes.Toggle)
                 {
                     SetState(InteractableStates.InteractableStateEnum.Toggled, value);
@@ -400,7 +401,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
                 else
                 {
-                    Debug.Log($"SetToggled(bool) called, but SelectionMode is set to {ButtonMode}, so Current Dimension was unchanged.");
+                    Debug.LogWarning($"SetToggled(bool) called, but SelectionMode is set to {ButtonMode}, so Current Dimension was unchanged.");
                 }
             }
         }
@@ -766,9 +767,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             ResetBaseStates();
 
-            // TODO: Troy -> Disable?
             IsEnabled = true;
-
             HasObservation = false;
             HasObservationTargeted = false;
             IsInteractive = false;
@@ -1022,18 +1021,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         protected virtual bool CanInteract()
         {
-            // TODO: Troy clean up code
-            if (!IsEnabled)
-            {
-                return false;
-            }
-
-            if (Dimensions > 1 && ((dimensionIndex != Dimensions - 1 && !CanSelect) || (dimensionIndex == Dimensions - 1 && !CanDeselect)))
-            {
-                return false;
-            }
-
-            return true;
+            // Interactable can interact if we are enabled and we are not a toggle button
+            // If we are a toggle button, then we can only toggle if CanSelect (to turn on) or CanDeslect (to turn off)
+            return IsEnabled &&
+                (ButtonMode != SelectionModes.Toggle
+                || (CurrentDimension == 0 && CanSelect)
+                || (CurrentDimension == 1 && CanDeselect));
         }
 
         /// <summary>
@@ -1078,17 +1071,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         protected void StartGlobalVisual(bool voiceCommand = false)
         {
-            // TODO: WHAT??S?D?SD?F?SDF?
+            // TODO: Troy what is this used for?????
+            // Seems like simulate states like focus/press when activated via Speech Command that does not have up/down etc
             if (voiceCommand)
             {
-                StateManager.SetStateValue(InteractableStates.InteractableStateEnum.VoiceCommand, 1);
+                HasVoiceCommand = true;
             }
 
             IsVisited = true;
-
-            StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Focus, 1);
-            StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Pressed, 1);
-            UpdateState();
+            HasFocus = true;
+            HasPress = true;
 
             if (globalTimer != null)
             {
@@ -1103,21 +1095,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         protected IEnumerator GlobalVisualReset(float time)
         {
-            // TODO: WHATFFEWEF
             yield return new WaitForSeconds(time);
 
-            StateManager.SetStateValue(InteractableStates.InteractableStateEnum.VoiceCommand, 0);
+            HasVoiceCommand = false;
             if (!HasFocus)
             {
-                StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Focus, 0);
+                HasFocus = false;
             }
 
             if (!HasPress)
             {
-                StateManager.SetStateValue(InteractableStates.InteractableStateEnum.Pressed, 0);
+                HasPress = false;
             }
-
-            UpdateState();
 
             globalTimer = null;
         }
@@ -1132,6 +1121,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 return;
             }
+
             dragStartPosition = null;
 
             HasPress = true;
@@ -1602,19 +1592,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [System.Obsolete("Use TODO property instead")]
         public virtual void SetToggled(bool toggled)
         {
-            // TODO: Troy
-            SetState(InteractableStates.InteractableStateEnum.Toggled, toggled);
-
-            // if in toggle mode
-            if (IsToggleButton)
-            {
-                SetDimensionIndex(toggled ? 1 : 0);
-            }
-            else
-            {
-                int selectedMode = Mathf.Clamp(Dimensions, 1, 3);
-                Debug.Log("SetToggled(bool) called, but SelectionMode is set to " + (SelectionModes)(selectedMode - 1) + ", so DimensionIndex was unchanged.");
-            }
+            IsToggled = toggled;
         }
 
         /// <summary>

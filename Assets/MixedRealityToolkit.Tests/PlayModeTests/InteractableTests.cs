@@ -399,12 +399,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var propBlock = InteractableThemeShaderUtils.GetPropertyBlock(translateTargetObject.gameObject);
             Assert.AreEqual(propBlock.GetColor("_Color"), FocusColor);
 
-            interactable.Enabled = false;
+            interactable.IsEnabled = false;
 
             yield return new WaitForSeconds(EaseDelay);
             propBlock = InteractableThemeShaderUtils.GetPropertyBlock(translateTargetObject.gameObject);
             Assert.AreEqual(propBlock.GetColor("_Color"), DisabledColor);
-            Assert.AreEqual(interactable.IsDisabled, true);
+            Assert.AreEqual(interactable.IsEnabled, false);
         }
 
         /// <summary>
