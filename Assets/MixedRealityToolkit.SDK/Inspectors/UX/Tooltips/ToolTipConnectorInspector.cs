@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         public override void OnInspectorGUI()
         {
-            serializedObject.Update();
+            //serializedObject.Update();
 
             if (multiLineHelpBoxStyle == null)
             {
@@ -171,8 +171,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             serializedObject.ApplyModifiedProperties();
+        }
 
-            EditorUtility.SetDirty(connector);
+        public override bool RequiresConstantRepaint()
+        {
+            return true;
         }
 
         private ConnectorPivotDirection DrawPivotDirection(ConnectorPivotDirection selection)
