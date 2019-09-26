@@ -59,16 +59,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        // TODO: Troy make this private?
         /// <summary>
         /// The state logic for comparing state
         /// </summary>
-        public InteractableStates StateManager;
+        public InteractableStates StateManager { get; protected set; }
 
         /// <summary>
         /// Which action is this interactable listening for
         /// </summary>
-        public MixedRealityInputAction InputAction;
+        public MixedRealityInputAction InputAction { get; protected set; }
 
         /// <summary>
         /// The id of the selected inputAction, for serialization
@@ -285,7 +284,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // Field just used for serialization to save if the Interactable should start enabled or disabled
         [FormerlySerializedAs("Enabled")]
         [SerializeField]
-        private bool startEnabled = false;
+        private bool enabledOnStart = false;
 
         /// <summary>
         /// Is the interactable enabled?
@@ -297,7 +296,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get { return !(GetStateValue(InteractableStates.InteractableStateEnum.Disabled) > 0); }
             set
             {
+                // Need to resetbasestates here?
+                // if we are disabled, we !CanInteract() so focus and globalTimer doesn't truly stop?
                 // TODO: DO STUFF HERE!!!
+
+                // TODO: consider for all the other generic setters, only activate if new value
+
                 SetState(InteractableStates.InteractableStateEnum.Disabled, !value);
             }
         }
@@ -522,7 +526,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             // TODO: Troy temp?
-            IsEnabled = startEnabled;
+            IsEnabled = enabledOnStart;
 
             InputAction = ResolveInputAction(InputActionId);
 
@@ -1073,6 +1077,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             // TODO: Troy what is this used for?????
             // Seems like simulate states like focus/press when activated via Speech Command that does not have up/down etc
+            // Issue here if disable or something else because of the timer* or like canInteract?
+            // Try to simplify with SetInputUp? and then SetInputDown?
             if (voiceCommand)
             {
                 HasVoiceCommand = true;

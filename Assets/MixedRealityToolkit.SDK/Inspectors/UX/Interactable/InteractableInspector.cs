@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
             profileList = serializedObject.FindProperty("profiles");
             statesProperty = serializedObject.FindProperty("states");
-            enabledProperty = serializedObject.FindProperty("startEnabled");
+            enabledProperty = serializedObject.FindProperty("enabledOnStart");
             voiceCommands = serializedObject.FindProperty("VoiceCommand");
             actionId = serializedObject.FindProperty("InputActionId");
             isGlobal = serializedObject.FindProperty("isGlobal");
