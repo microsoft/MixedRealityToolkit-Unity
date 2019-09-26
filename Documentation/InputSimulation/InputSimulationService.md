@@ -28,7 +28,7 @@ Enable the input simulation tools window from the  _Mixed Reality Toolkit > Util
 A prefab for in-editor buttons to control basic hand placement can be specified in the input simulation profile under __Indicators Prefab__. This is an optional utility, the same features can be accessed in the [input simulation tools window](#input-simulation-tools-window).
 
 > [!NOTE]
-> The viewport indicators are disabled by default, as they currently sometimes interfere with Unity UI interactions, see issue [#6107](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6106). To enable, add the InputSimulationIndicators prefab to __Indicators Prefab__.
+> The viewport indicators are disabled by default, as they currently sometimes interfere with Unity UI interactions, see issue [#6106](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6106). To enable, add the InputSimulationIndicators prefab to __Indicators Prefab__.
 
 
 Hand icons show the state of the simulated hands:
