@@ -798,7 +798,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/GettingStartedWithTheMRTK.html",
-          "hash": "KmYxJuCcOWAU1HZp+IP9eg=="
+          "hash": "4Msf8awFzBY6g9B5ktNENg=="
         }
       },
       "is_incremental": false,
@@ -4118,6 +4118,72 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/NuGet/AddNewSource.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/NuGet/AddNewSource.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/NuGet/ManageNuGetPackages.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/NuGet/ManageNuGetPackages.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/NuGet/NuGetForUnityPreferencesTab.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/NuGet/NuGetForUnityPreferencesTab.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/NuGet/ProjectPreferences.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/NuGet/ProjectPreferences.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/NuGet/SearchBox.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/NuGet/SearchBox.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/NuGet/UpdatesTab.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/NuGet/UpdatesTab.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/ObjectCollection/MRTK_ObjectCollectionCylinder.png",
       "output": {
         "resource": {
@@ -5680,6 +5746,18 @@
         ".html": {
           "relative_path": "Documentation/Legal/NOTICE.html",
           "hash": "gTBZd7fq3/DhheHjm3O04g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/MRTKNuGetPackage.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/MRTKNuGetPackage.html",
+          "hash": "JWyqffmvyBDIzhuk7xqyiA=="
         }
       },
       "is_incremental": false,
@@ -19972,7 +20050,13 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 129,
+          "total_file_count": 130,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1136,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
@@ -19980,12 +20064,6 @@
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1136,
           "skipped_file_count": 0
         }
       }
