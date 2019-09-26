@@ -48,6 +48,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             for (int i = 0; i < SceneManager.sceneCount; i++)
             {
                 Scene loadedScene = SceneManager.GetSceneAt(i);
+                if (!loadedScene.isLoaded)
+                {
+                    continue;
+                }
+
                 foreach (GameObject rootGameObject in loadedScene.GetRootGameObjects())
                 {
                     yield return rootGameObject;
