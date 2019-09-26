@@ -407,13 +407,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             const int numCircleSteps = 10;
             const int numHandSteps = 3;
 
+            // Hand pointing at middle of cube
             Vector3 initialHandPosition = new Vector3(0.044f, -0.1f, 0.45f);
             TestHand hand = new TestHand(Handedness.Right);     
 
             // do this test for every one hand rotation mode
             foreach (ManipulationHandler.RotateInOneHandType type in Enum.GetValues(typeof(ManipulationHandler.RotateInOneHandType)))
             {
-                // TODO: grab point is moving in this test and has to be covered by a different test
+                // Some rotation modes move the object on grab, don't test those
                 if (type == ManipulationHandler.RotateInOneHandType.MaintainOriginalRotation ||
                     type == ManipulationHandler.RotateInOneHandType.FaceAwayFromUser ||
                     type == ManipulationHandler.RotateInOneHandType.FaceUser)
