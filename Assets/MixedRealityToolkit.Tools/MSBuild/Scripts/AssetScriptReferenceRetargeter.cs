@@ -209,7 +209,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 {
                     string line = await reader.ReadLineAsync();
                     lineNum++;
-                    if (line.Contains("m_Script"))
+                    if (line.Contains("m_Script") || (filePath.EndsWith(".anim") && line.Contains("script")))
                     {
                         if (!line.Contains('}'))
                         {
