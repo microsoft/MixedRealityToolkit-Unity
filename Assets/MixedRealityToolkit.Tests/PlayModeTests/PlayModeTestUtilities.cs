@@ -329,17 +329,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
-        internal static void EnsureTextMeshProEssentials()
+        internal static void InstallTextMeshProEssentials()
         {
 #if UNITY_EDITOR
-            // Special handling for TMP Settings and importing Essential Resources
-            if (TMP_Settings.instance == null)
+            // Import the TMP Essential Resources package
+            string packageFullPath = Path.GetFullPath("Packages/com.unity.textmeshpro");
+            if (Directory.Exists(packageFullPath))
             {
-                string packageFullPath = Path.GetFullPath("Packages/com.unity.textmeshpro");
-                if (Directory.Exists(packageFullPath))
-                {
-                    AssetDatabase.ImportPackage(packageFullPath + "/Package Resources/TMP Essential Resources.unitypackage", false);
-                }
+                AssetDatabase.ImportPackage(packageFullPath + "/Package Resources/TMP Essential Resources.unitypackage", false);
+            }
+            else
+            {
+                Debug.LogError("Unable to locate the Text Mesh Pro package.");
             }
 #endif
         }
@@ -353,6 +354,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             Debug.Log(Time.time + "Press Enter...");
             while (!UnityEngine.Input.GetKeyDown(KeyCode.Return))
+            {
+                yield return null;
+            }
+        }
+
+        /// <summary>
+        /// Sometimes it take a few frames for inputs raised via InputSystem.OnInput*
+        /// to actually get sent to input handlers. This method waits for enough frames
+        /// to pass so that any events raised actually have time to send to handlers.
+        /// We set it fairly conservatively to ensure that after waiting
+        /// all input events have been sent.
+        /// </summary>
+        internal static IEnumerator WaitForInputSystemUpdate()
+        {
+            const int inputSystemUpdateFrames = 10;
+            for (int i = 0; i < inputSystemUpdateFrames; i++)
             {
                 yield return null;
             }

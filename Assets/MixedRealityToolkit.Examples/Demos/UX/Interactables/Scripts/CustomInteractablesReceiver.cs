@@ -16,6 +16,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     public class CustomInteractablesReceiver : ReceiverBase
     {
+        /// <inheritdoc />
+        public override bool HideUnityEvents => true;
+
         private State lastState;
         private string statusString = "State: %state%";
         private string clickString = "Clicked!";
@@ -31,7 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public CustomInteractablesReceiver(UnityEvent ev) : base(ev, "CustomEvent")
         {
-            HideUnityEvents = true; // hides Unity events in the receiver - meant to be code only
         }
 
         /// <summary>

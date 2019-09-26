@@ -19,9 +19,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         public static readonly Color ColorTint75 = new Color(0.75f, 0.75f, 0.75f);
         public static readonly Color ColorTint50 = new Color(0.5f, 0.5f, 0.5f);
         public static readonly Color ColorTint25 = new Color(0.25f, 0.25f, 0.25f);
+        public static readonly Color ColorTint10 = new Color(0.10f, 0.10f, 0.10f);
 
         // default UI sizes
         public const int TitleFontSize = 14;
+        public const int HeaderFontSize = 11;
         public const int DefaultFontSize = 10;
         public const float DocLinkWidth = 175f;
 
@@ -72,6 +74,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         public static GUIStyle Box(int margin)
         {
             GUIStyle box = new GUIStyle(GUI.skin.box);
+            box.margin.left = margin;
+            return box;
+        }
+
+        /// <summary>
+        /// Help box style with left margin
+        /// </summary>
+        /// <param name="margin">amount of left margin</param>
+        /// <returns>Configured helpbox GUIStyle</returns>
+        public static GUIStyle HelpBox(int margin)
+        {
+            GUIStyle box = new GUIStyle(EditorStyles.helpBox);
             box.margin.left = margin;
             return box;
         }
@@ -359,13 +373,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         /// <summary>
+        /// Medium title format
+        /// </summary>
+        /// <param name="header">string content to render</param>
+        public static void DrawHeader(string header)
+        {
+            GUIStyle labelStyle = LableStyle(HeaderFontSize, ColorTint10);
+            EditorGUILayout.LabelField(new GUIContent(header), labelStyle);
+        }
+
+        /// <summary>
         /// Draw a basic label
         /// </summary>
         public static void DrawLabel(string title, int size, Color color)
         {
             GUIStyle labelStyle = LableStyle(size, color);
             EditorGUILayout.LabelField(new GUIContent(title), labelStyle);
-            GUILayout.Space(TitleFontSize * 0.5f);
         }
 
         /// <summary>
@@ -439,36 +462,42 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Draws a section start (initiated by the Header attribute)
         /// </summary>
-        public static bool DrawSectionFoldout(string headerName, bool open = true, FontStyle style = FontStyle.Bold, int size = 0)
+        public static bool DrawSectionFoldout(string headerName, bool open = true, GUIStyle style = null, int size = 0)
         {
-            GUIStyle sectionStyle = new GUIStyle(EditorStyles.foldout);
-            sectionStyle.fontStyle = style;
-            if (size > 0)
+            if (style == null)
             {
-                sectionStyle.fontSize = size;
-                sectionStyle.fixedHeight = size * 2;
+                style = EditorStyles.foldout;
             }
 
-            bool drawSection = false;
-
-            // To make foldout render properly, indent only this control
             using (new EditorGUI.IndentLevelScope())
             {
-                drawSection = EditorGUILayout.Foldout(open, headerName, true, sectionStyle);
+                return EditorGUILayout.Foldout(open, headerName, true, style);
+            }
+        }
+        /// <summary>
+        /// Draws a section start with header name and save open/close state to given preference key in SessionState
+        /// </summary>
+        public static bool DrawSectionFoldoutWithKey(string headerName, string preferenceKey = null, GUIStyle style = null, int size = 0)
+        {
+            bool showPref = SessionState.GetBool(preferenceKey, true);
+            bool show = DrawSectionFoldout(headerName, showPref, style, size);
+            if (show != showPref)
+            {
+                SessionState.SetBool(preferenceKey, show);
             }
 
-            return drawSection;
+            return show;
         }
 
-        /// <summary>
-        /// Draws a popup UI with PropertyField type features.
-        /// Displays prefab pending updates
-        /// </summary>
-        /// <param name="prop">serialized property corresponding to Enum</param>
-        /// <param name="label">label for property</param>
-        /// <param name="propValue">Current enum value for property</param>
-        /// <returns>New enum value after draw</returns>
-        public static Enum DrawEnumSerializedProperty(SerializedProperty prop, GUIContent label, Enum propValue)
+    /// <summary>
+    /// Draws a popup UI with PropertyField type features.
+    /// Displays prefab pending updates
+    /// </summary>
+    /// <param name="prop">serialized property corresponding to Enum</param>
+    /// <param name="label">label for property</param>
+    /// <param name="propValue">Current enum value for property</param>
+    /// <returns>New enum value after draw</returns>
+    public static Enum DrawEnumSerializedProperty(SerializedProperty prop, GUIContent label, Enum propValue)
         {
             return DrawEnumSerializedProperty(EditorGUILayout.GetControlRect(), prop, label, propValue);
         }
@@ -551,22 +580,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             for (int i = 0; i < options.arraySize; i++)
             {
                 if (options.GetArrayElementAtIndex(i).stringValue == selection)
-                {
-                    return i;
-                }
-            }
-
-            return 0;
-        }
-
-        /// <summary>
-        /// Get the index of an array item based on it's name, pop-up field helper
-        /// </summary>
-        public static int ReverseLookup(string option, string[] options)
-        {
-            for (int i = 0; i < options.Length; i++)
-            {
-                if (options[i] == option)
                 {
                     return i;
                 }

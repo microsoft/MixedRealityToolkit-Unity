@@ -12,6 +12,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     public class InteractableOnHoldReceiver : ReceiverBase
     {
+        /// <summary>
+        /// The amount of time to press before triggering event
+        /// </summary>
         [InspectorField(Type = InspectorField.FieldTypes.Float, Label = "Hold Time", Tooltip = "The amount of time to press before triggering event")]
         public float HoldTime = 1f;
 

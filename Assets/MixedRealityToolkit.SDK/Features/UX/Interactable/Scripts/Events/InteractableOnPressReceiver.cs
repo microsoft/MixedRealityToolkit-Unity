@@ -11,7 +11,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     public class InteractableOnPressReceiver : ReceiverBase
     {
-
         /// <summary>
         /// Invoked on pointer release
         /// </summary>
@@ -22,14 +21,32 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Invoked on pointer press
         /// </summary>
         public UnityEvent OnPress => uEvent;
+
+        /// <summary>
+        /// Type of valid interaction distances to fire press events
+        /// </summary>
         public enum InteractionType
         {
+            /// <summary>
+            /// Support Near and Far press interactions
+            /// </summary>
             NearAndFar = 0,
+            /// <summary>
+            /// Support Near press interactions only
+            /// </summary>
             NearOnly = 1,
+            /// <summary>
+            /// Support Far press interactions only
+            /// </summary>
             FarOnly = 2
         }
 
-        [InspectorField(Label = "Interaction Filter", Tooltip = "Specify whether press event is for near or far interaction", Type = InspectorField.FieldTypes.DropdownInt, Options = new string[] { "Near and Far", "Near Only", "Far Only" })]
+        /// <summary>
+        /// Specify whether press event is for near or far interaction
+        /// </summary>
+        [InspectorField(Label = "Interaction Filter", 
+            Tooltip = "Specify whether press event is for near or far interaction", 
+            Type = InspectorField.FieldTypes.DropdownInt, Options = new string[] { "Near and Far", "Near Only", "Far Only" })]
         public int InteractionFilter = (int)InteractionType.NearAndFar;
 
         private bool hasDown;
