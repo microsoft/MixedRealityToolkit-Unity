@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Which action is this interactable listening for
         /// </summary>
-        public MixedRealityInputAction InputAction { get; protected set; }
+        public MixedRealityInputAction InputAction { get; set; }
 
         /// <summary>
         /// The id of the selected inputAction, for serialization
@@ -156,6 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         /// <remarks>
         /// Returns the following under the associated conditions:
+        /// SelectionModes.Invalid => Dimensions less than or equal to 0
         /// SelectionModes.Button => Dimensions == 1
         /// SelectionModes.Toggle => Dimensions == 2
         /// SelectionModes.MultiDimension => Dimensions > 2
@@ -164,18 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             get
             {
-                if (Dimensions == 1)
-                {
-                    return SelectionModes.Button;
-                }
-                else if (Dimensions == 2)
-                {
-                    return SelectionModes.Toggle;
-                }
-                else
-                {
-                    return SelectionModes.MultiDimension;
-                }
+                return ConvertToSelectionMode(Dimensions);
             }
         }
 
@@ -233,7 +223,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         private List<InteractableProfileItem> profiles = new List<InteractableProfileItem>();
         /// <summary>
-        /// List of profiles can match themes with gameObjects
+        /// List of profile configurations that match Visual Themes with GameObjects targets
+        /// Setting at runtime will re-create the runtime Theme Engines (i.e ActiveThemes property) being used by this class
         /// </summary>
         public List<InteractableProfileItem> Profiles
         {
@@ -265,11 +256,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        private List<InteractableThemeBase> activeThemes = new List<InteractableThemeBase>();
+
         /// <summary>
         /// The list of running theme instances to receive state changes
         /// When the dimension index changes, the list of themes that are updated changes to those assigned to that dimension.
         /// </summary>
-        private List<InteractableThemeBase> activeThemes = new List<InteractableThemeBase>();
+        public IReadOnlyList<InteractableThemeBase> ActiveThemes => activeThemes.AsReadOnly();
 
         /// <summary>
         /// How many times this interactable was clicked
@@ -284,23 +277,27 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // Field just used for serialization to save if the Interactable should start enabled or disabled
         [FormerlySerializedAs("Enabled")]
         [SerializeField]
-        private bool enabledOnStart = false;
+        private bool enabledOnStart = true;
 
         /// <summary>
-        /// Is the interactable enabled?
-        /// TODO: TROY - Update comment here to be better
+        /// Defines whether the Interactable is enabled or not internally
+        /// This is different than the Enabled property at the GameObject/Component level
+        /// When false, Interactable will continue to run in Unity but not respond to Input.
         /// </summary>
+        /// <remarks>
+        /// Property is useful for disabling UX, such as greying out a button, until a user completes some pre-mandatory step such as fill out their name, etc
+        /// </remarks>
         public virtual bool IsEnabled
         {
             // Note the inverse setting since targeting "Disable" state but property is concerning "Enabled"
             get { return !(GetStateValue(InteractableStates.InteractableStateEnum.Disabled) > 0); }
             set
             {
-                // Need to resetbasestates here?
-                // if we are disabled, we !CanInteract() so focus and globalTimer doesn't truly stop?
-                // TODO: DO STUFF HERE!!!
-
-                // TODO: consider for all the other generic setters, only activate if new value
+                // If we are disabling input, we should reset our base input tracking states since we will not be responding to input while disabled
+                if (!value)
+                {
+                    ResetBaseStates();
+                }
 
                 SetState(InteractableStates.InteractableStateEnum.Disabled, !value);
             }
@@ -525,7 +522,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 States = GetDefaultInteractableStates();
             }
 
-            // TODO: Troy temp?
             IsEnabled = enabledOnStart;
 
             InputAction = ResolveInputAction(InputActionId);
@@ -552,7 +548,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             if (focusingPointers.Count == 0)
             {
                 ResetBaseStates();
-                RefreshSetup();
             }
         }
 
@@ -568,9 +563,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 RegisterHandler<IMixedRealityInputHandler>(false);
             }
+
+            ResetBaseStates();
         }
 
-        // TODO: Troy necessary??
         protected virtual void Start()
         {
             InternalUpdate();
@@ -813,6 +809,31 @@ namespace Microsoft.MixedReality.Toolkit.UI
             else
             {
                 CurrentDimension--;
+            }
+        }
+
+        /// <summary>
+        /// Helper method to convert number of dimensions to the appropriate SelectionModes
+        /// </summary>
+        /// <param name="dimensions">number of dimensions</param>
+        /// <returns>SelectionModes for corresponding number of dimensions</returns>
+        public static SelectionModes ConvertToSelectionMode(int dimensions)
+        {
+            if (dimensions <= 0)
+            {
+                return SelectionModes.Invalid;
+            }
+            else if (dimensions == 1)
+            {
+                return SelectionModes.Button;
+            }
+            else if (dimensions == 2)
+            {
+                return SelectionModes.Toggle;
+            }
+            else
+            {
+                return SelectionModes.MultiDimension;
             }
         }
 

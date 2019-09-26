@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
@@ -88,15 +89,20 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         {
             serializedObject.Update();
 
-            RenderGeneralSettings();
+            // Disable inspector UI if in play mode
+            bool isPlayMode = EditorApplication.isPlaying || EditorApplication.isPaused;
+            using (new EditorGUI.DisabledScope(isPlayMode))
+            {
+                RenderGeneralSettings();
 
-            EditorGUILayout.Space();
+                EditorGUILayout.Space();
 
-            RenderProfileSettings();
+                RenderProfileSettings();
 
-            EditorGUILayout.Space();
+                EditorGUILayout.Space();
 
-            RenderEventSettings();
+                RenderEventSettings();
+            }
 
             serializedObject.ApplyModifiedProperties();
         }
@@ -204,7 +210,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
         private void RenderEventSettings()
         {
-            bool isPlayMode = EditorApplication.isPlaying || EditorApplication.isPaused;
             if (InspectorUIUtility.DrawSectionFoldoutWithKey("Events", ShowEventsPrefKey, MixedRealityStylesUtility.TitleFoldoutStyle))
             {
                 EditorGUILayout.Space();
@@ -213,7 +218,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                 EditorGUILayout.PropertyField(onClick, new GUIContent("OnClick"));
 
                 SerializedProperty events = serializedObject.FindProperty("Events");
-                GUI.enabled = !isPlayMode;
                 for (int i = 0; i < events.arraySize; i++)
                 {
                     SerializedProperty eventItem = events.GetArrayElementAtIndex(i);
@@ -226,7 +230,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
                     EditorGUILayout.Space();
                 }
-                GUI.enabled = true;
 
                 if (GUILayout.Button(new GUIContent("Add Event")))
                 {
@@ -238,8 +241,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         protected void RenderGeneralSettings()
         {
             Rect position;
-            bool isPlayMode = EditorApplication.isPlaying || EditorApplication.isPaused;
-
             using (new EditorGUILayout.HorizontalScope())
             {
                 InspectorUIUtility.DrawLabel("General", InspectorUIUtility.TitleFontSize, InspectorUIUtility.ColorTint10);
@@ -262,9 +263,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                     statesProperty.objectReferenceValue = GetDefaultInteractableStatesFile();
                 }
 
-                GUI.enabled = !isPlayMode;
                 EditorGUILayout.PropertyField(statesProperty, new GUIContent("States", "The States this Interactable is based on"));
-                GUI.enabled = true;
 
                 if (statesProperty.objectReferenceValue == null)
                 {
@@ -273,23 +272,15 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                     return;
                 }
 
-                // TODO: Troy Need to disable GUI? Need to set value based on current state propogated*
-                // if playmode do one, if not do other?
-                bool isEnabled = enabledProperty.boolValue;
                 EditorGUILayout.PropertyField(enabledProperty, new GUIContent("Enabled", "Is this Interactable Enabled?"));
-                if (isPlayMode && isEnabled != enabledProperty.boolValue)
-                {
-                    instance.IsEnabled = enabledProperty.boolValue;
-                }
 
                 // Input Actions
                 bool validActionOptions = inputActionOptions != null;
-                GUI.enabled = validActionOptions && !isPlayMode;
-
-                var actionOptions = validActionOptions ? inputActionOptions : new string[] { "Missing Mixed Reality Toolkit" };
-                DrawDropDownProperty(EditorGUILayout.GetControlRect(), actionId, actionOptions, InputActionsLabel);
-
-                GUI.enabled = true;
+                using (new EditorGUI.DisabledScope(!validActionOptions))
+                {
+                    var actionOptions = validActionOptions ? inputActionOptions : new string[] { "Missing Mixed Reality Toolkit" };
+                    DrawDropDownProperty(EditorGUILayout.GetControlRect(), actionId, actionOptions, InputActionsLabel);
+                }
 
                 using (new EditorGUI.IndentLevelScope())
                 {
@@ -298,22 +289,22 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
                 // Speech keywords
                 bool validSpeechKeywords = speechKeywordOptions != null;
-                GUI.enabled = validSpeechKeywords && !isPlayMode;
-
-                string[] keywordOptions = validSpeechKeywords ? speechKeywordOptions : new string[] { "Missing Speech Commands" };
-                int currentIndex = validSpeechKeywords ? SpeechKeywordLookup(voiceCommands.stringValue, speechKeywordOptions) : 0;
-                position = EditorGUILayout.GetControlRect();
-
-                //BeginProperty allows tracking of serialized properties for bolding prefab changes etc
-                using (new EditorGUI.PropertyScope(position, SpeechComamndsLabel, voiceCommands))
+                using (new EditorGUI.DisabledScope(!validSpeechKeywords))
                 {
-                    currentIndex = EditorGUI.Popup(position, SpeechComamndsLabel.text, currentIndex, keywordOptions);
-                    if (validSpeechKeywords)
+                    string[] keywordOptions = validSpeechKeywords ? speechKeywordOptions : new string[] { "Missing Speech Commands" };
+                    int currentIndex = validSpeechKeywords ? SpeechKeywordLookup(voiceCommands.stringValue, speechKeywordOptions) : 0;
+                    position = EditorGUILayout.GetControlRect();
+
+                    //BeginProperty allows tracking of serialized properties for bolding prefab changes etc
+                    using (new EditorGUI.PropertyScope(position, SpeechComamndsLabel, voiceCommands))
                     {
-                        voiceCommands.stringValue = currentIndex > 0 ? speechKeywordOptions[currentIndex] : string.Empty;
+                        currentIndex = EditorGUI.Popup(position, SpeechComamndsLabel.text, currentIndex, keywordOptions);
+                        if (validSpeechKeywords)
+                        {
+                            voiceCommands.stringValue = currentIndex > 0 ? speechKeywordOptions[currentIndex] : string.Empty;
+                        }
                     }
                 }
-                GUI.enabled = true;
 
                 // show requires gaze because voice command has a value
                 if (!string.IsNullOrEmpty(voiceCommands.stringValue))
@@ -327,17 +318,16 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
                 // should be 1 or more
                 dimensions.intValue = Mathf.Clamp(dimensions.intValue, 1, 9);
-                string[] selectionModeNames = Enum.GetNames(typeof(SelectionModes));
-                // clamp to values in the enum
-                int selectionModeIndex = Mathf.Clamp(dimensions.intValue, 1, selectionModeNames.Length) - 1;
 
                 // user-friendly dimension settings
                 SelectionModes selectionMode = SelectionModes.Button;
                 position = EditorGUILayout.GetControlRect();
-                GUI.enabled = !isPlayMode;
                 using (new EditorGUI.PropertyScope(position, selectionModeLabel, dimensions))
                 {
-                    selectionMode = (SelectionModes)EditorGUI.EnumPopup(position, selectionModeLabel, (SelectionModes)(selectionModeIndex));
+                    // Show enum popup for selection mode, hide option to select SelectionModes.Invalid
+                    selectionMode = (SelectionModes)EditorGUI.EnumPopup(position, selectionModeLabel, 
+                        Interactable.ConvertToSelectionMode(dimensions.intValue), 
+                        (value) => { return (SelectionModes)value != SelectionModes.Invalid; } );
 
                     switch (selectionMode)
                     {
@@ -369,36 +359,21 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                         position = EditorGUILayout.GetControlRect();
                         using (new EditorGUI.PropertyScope(position, startDimensionLabel, startDimensionIndex))
                         {
-                            if (dimensions.intValue >= selectionModeNames.Length)
+                            var mode = Interactable.ConvertToSelectionMode(dimensions.intValue);
+                            if (mode == SelectionModes.Toggle)
                             {
-                                // multi dimensions
-                                if (!isPlayMode)
-                                {
-                                    startDimensionIndex.intValue = EditorGUI.IntField(position, startDimensionLabel, startDimensionIndex.intValue);
-                                }
-                                else
-                                {
-                                    EditorGUI.IntField(position, CurrentDimensionLabel, dimensionIndex.intValue);
-                                }
+                                bool isToggled = EditorGUI.Toggle(position, isToggledLabel, startDimensionIndex.intValue > 0);
+                                startDimensionIndex.intValue = isToggled ? 1 : 0;
                             }
-                            else if (dimensions.intValue == (int)SelectionModes.Toggle + 1)
+                            else if (mode == SelectionModes.MultiDimension)
                             {
-                                if (!isPlayMode)
-                                {
-                                    bool isToggled = EditorGUI.Toggle(position, isToggledLabel, startDimensionIndex.intValue > 0);
-                                    startDimensionIndex.intValue = isToggled ? 1 : 0;
-                                }
-                                else
-                                {
-                                    bool isToggled = EditorGUI.Toggle(position, isToggledLabel, dimensionIndex.intValue > 0);
-                                }
+                                startDimensionIndex.intValue = EditorGUI.IntField(position, startDimensionLabel, startDimensionIndex.intValue);
                             }
 
                             startDimensionIndex.intValue = Mathf.Clamp(startDimensionIndex.intValue, 0, dimensions.intValue - 1);
                         }
                     }
                 }
-                GUI.enabled = true;
             }
         }
 
