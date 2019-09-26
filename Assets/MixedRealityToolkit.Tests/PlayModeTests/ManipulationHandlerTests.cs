@@ -428,8 +428,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield return hand.Show(initialHandPosition);
                 yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
                
-                // pinch and let go of the object again to make sure that any rotation adjustment we're doing is applied 
-                // at the beginning of our test and doesn't interfere with our grab position on the cubes surface while we're moving around
                 yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
 
                 // save relative pos grab point to object - for far interaction we need to check the grab point where the pointer ray hits the manipulated object
