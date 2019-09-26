@@ -78,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             else if (graphic != null)
             {
-                UIMaterialInstantiator.TryCreateMaterialCopy(ref graphic);
+                UIMaterialInstantiator.TryCreateMaterialCopy(graphic);
             }
         }
 

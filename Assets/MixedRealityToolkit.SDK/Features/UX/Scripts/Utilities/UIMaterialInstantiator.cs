@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Invoke this method to create a copy of the material and use that copy at runtime for Graphic objects to prevent modifying materials in editor or impact shared materials.
         /// </summary>
         /// <param name="targetGraphic">Graphic element that needs to clone its material </param>
-        public static void TryCreateMaterialCopy(ref Graphic targetGraphic)
+        public static void TryCreateMaterialCopy(Graphic targetGraphic)
         {
             int targetId = targetGraphic.GetInstanceID();
             if (!targetInstances.Contains(targetId))
