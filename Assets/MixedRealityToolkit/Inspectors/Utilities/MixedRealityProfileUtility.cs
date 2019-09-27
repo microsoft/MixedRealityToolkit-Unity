@@ -22,22 +22,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             public static Action OnAssetsChanged { get; set; }
 
-            private static int lastFrameUpdated;
-
             public static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
             {
                 if (Application.isPlaying)
                 {
                     return;
                 }
-                if (deletedAssets.Length > 0 || importedAssets.Length > 0)
-                {   // We only care if profiles are created or destroyed, not moved
-                    if (Time.frameCount > lastFrameUpdated)
-                    {   // Don't spam updates
-                        lastFrameUpdated = Time.frameCount;
-                        OnAssetsChanged?.Invoke();
-                    }
-                }
+
+                OnAssetsChanged?.Invoke();
             }
         }
 
@@ -64,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         /// <summary>
         /// Returns an array of GUIContent for use in a dropdown for a type of profile.
-        /// Includes a (None) option at the very end. This option will always be one greater than the number of available profiles.
+        /// Includes a (None) option at the start. This means that the array length will always be 1 greater than the available profiles.
         /// </summary>
         /// <param name="profileType"></param>
         /// <returns></returns>
@@ -75,11 +67,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 ScriptableObject[] profilesOfType = GetProfilesOfType(profileType);
                 profileContent = new GUIContent[profilesOfType.Length + 1];
+                profileContent[0] = new GUIContent("(None)");
                 for (int i = 0; i < profilesOfType.Length; i++)
                 {
-                    profileContent[i] = new GUIContent(profilesOfType[i].name);
+                    profileContent[i + 1] = new GUIContent(profilesOfType[i].name);
                 }
-                profileContent[profilesOfType.Length] = new GUIContent("(None)");
                 profileContentCaches.Add(profileType, profileContent);
             }
             return profileContent;
@@ -154,17 +146,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private static void RefreshProfileCaches()
         {
-            Debug.Log("RefreshProfileCaches");
-
             List<Type> cachedTypes = new List<Type>(profileCaches.Keys);
+            profileContentCaches.Clear();
             foreach (Type profileType in cachedTypes)
             {
                 profileCaches[profileType] = ScriptableObjectExtensions.GetAllInstances(profileType);
-            }
-
-            foreach (Type profileType in cachedTypes)
-            {
-                GetProfilePopupOptionsByType(profileType);
             }
         }
     }

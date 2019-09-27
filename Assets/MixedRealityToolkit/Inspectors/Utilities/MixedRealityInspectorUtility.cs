@@ -517,13 +517,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 ScriptableObject[] profileInstances = MixedRealityProfileUtility.GetProfilesOfType(profileType);
                 GUIContent[] profileContent = MixedRealityProfileUtility.GetProfilePopupOptionsByType(profileType);
                 // Set our selected index to our '(None)' option by default
-                int selectedIndex = profileContent.Length - 1;
+                int selectedIndex = 0;
                 // Find our selected index
                 for (int i = 0; i < profileInstances.Length; i++)
                 {
                     if (profileInstances[i] == oldProfileObject)
-                    {
-                        selectedIndex = i;
+                    {   // Our profile content has a '(None)' option at the start
+                        selectedIndex = i + 1;
                         break;
                     }
                 }
@@ -534,13 +534,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     profileContent,
                     GUILayout.ExpandWidth(true));
 
-                property.objectReferenceValue = (newIndex < profileInstances.Length) ? profileInstances[newIndex] : null;
+                property.objectReferenceValue = (newIndex > 0) ? profileInstances[newIndex - 1] : null;
                 changed = property.objectReferenceValue != oldProfileObject;
 
                 // Draw a button that finds the profile in the project window
                 if (property.objectReferenceValue != null)
                 {
-                    if (GUILayout.Button("View Asset", EditorStyles.miniButton, GUILayout.Width(100)))
+                    if (GUILayout.Button("View Asset", EditorStyles.miniButton, GUILayout.Width(80)))
                     {
                         EditorGUIUtility.PingObject(property.objectReferenceValue);
                     }
