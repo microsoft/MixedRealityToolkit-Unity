@@ -42,6 +42,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // will roughly wait for frame to also pass.
             Application.targetFrameRate = 50;
 
+            // Add a second cube in the background, sometimes physics checks fail with just one collider
+            // in scene
+            GameObject backgroundCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            backgroundCube.transform.position = Vector3.forward * 30;
+
             cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.transform.localPosition = new Vector3(0, 0, 2);
             cube.transform.localScale = new Vector3(.2f, .2f, .2f);
