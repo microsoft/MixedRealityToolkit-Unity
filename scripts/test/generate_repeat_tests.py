@@ -8,7 +8,7 @@ def print_tests(testnames, repeat):
 
 def main(argv):
     import argparse
-    parser = argparse.ArgumentParser(description="Print code to paste in that repeats tests")
+    parser = argparse.ArgumentParser(description="Prints code that you can copy / paste into your test file to run tests repeatedly")
     parser.add_argument("-t", "--tests", nargs="+", help="list of tests to repeat")
     parser.add_argument("-n", "--count", type=int, default=100, help="number of times to repeat test sequence (default 100)")
 
