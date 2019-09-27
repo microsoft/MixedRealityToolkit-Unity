@@ -12,6 +12,7 @@ using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
+
     /// <summary>
     /// This class has handy inspector utilities and functions.
     /// </summary>
@@ -453,5 +454,130 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         #endregion Handles
+
+        #region Profiles
+
+        private static readonly GUIContent NewProfileContent = new GUIContent("+", "Create New Profile");
+        private static Dictionary<Object, UnityEditor.Editor> profileEditorCache = new Dictionary<Object, UnityEditor.Editor>();
+
+        /// <summary>
+        /// Draws an editor for a profile object.
+        /// </summary>
+        /// <param name="objectReferenceValue"></param>
+        public static void DrawSubProfileEditor(Object profileObject, bool renderProfileInBox)
+        {
+            if (profileObject == null)
+            {
+                return;
+            }
+
+            UnityEditor.Editor subProfileEditor = null;
+            if (!profileEditorCache.TryGetValue(profileObject, out subProfileEditor))
+            {
+                subProfileEditor = UnityEditor.Editor.CreateEditor(profileObject);
+                profileEditorCache.Add(profileObject, subProfileEditor);
+            }
+
+            // If this is a default MRTK configuration profile, ask it to render as a sub-profile
+            if (typeof(BaseMixedRealityToolkitConfigurationProfileInspector).IsAssignableFrom(subProfileEditor.GetType()))
+            {
+                BaseMixedRealityToolkitConfigurationProfileInspector configProfile = (BaseMixedRealityToolkitConfigurationProfileInspector)subProfileEditor;
+                configProfile.RenderAsSubProfile = true;
+            }
+
+            var subProfile = profileObject as BaseMixedRealityProfile;
+            if (subProfile != null && !subProfile.IsCustomProfile)
+            {
+                EditorGUILayout.HelpBox("Clone this default profile to edit properties below", MessageType.Warning);
+            }
+
+            if (renderProfileInBox)
+            {
+                EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            }
+            else
+            {
+                EditorGUILayout.BeginVertical();
+            }
+
+            EditorGUILayout.Space();
+            subProfileEditor.OnInspectorGUI();
+            EditorGUILayout.Space();
+
+            EditorGUILayout.EndVertical();
+        }
+
+        public static bool DrawProfileDropDownList(SerializedProperty property, BaseMixedRealityProfile profile, Object oldProfileObject, Type profileType, bool showAddButton)
+        {
+            bool changed = false;
+
+            // Begin the horizontal group
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                ScriptableObject[] profileInstances = MixedRealityProfileUtility.GetProfilesOfType(profileType);
+                GUIContent[] profileContent = MixedRealityProfileUtility.GetProfilePopupOptionsByType(profileType);
+                // Set our selected index to our '(None)' option by default
+                int selectedIndex = profileContent.Length - 1;
+                // Find our selected index
+                for (int i = 0; i < profileInstances.Length; i++)
+                {
+                    if (profileInstances[i] == oldProfileObject)
+                    {
+                        selectedIndex = i;
+                        break;
+                    }
+                }
+
+                int newIndex = EditorGUILayout.Popup(
+                    new GUIContent(oldProfileObject != null ? "" : property.displayName),
+                    selectedIndex, 
+                    profileContent,
+                    GUILayout.ExpandWidth(true));
+
+                property.objectReferenceValue = (newIndex < profileInstances.Length) ? profileInstances[newIndex] : null;
+                changed = property.objectReferenceValue != oldProfileObject;
+
+                // Draw a button that finds the profile in the project window
+                if (property.objectReferenceValue != null)
+                {
+                    if (GUILayout.Button("View Asset", EditorStyles.miniButton, GUILayout.Width(100)))
+                    {
+                        EditorGUIUtility.PingObject(property.objectReferenceValue);
+                    }
+                }
+
+                // Draw the clone button
+                if (property.objectReferenceValue == null)
+                {
+                    var profileTypeName = property.type.Replace("PPtr<$", string.Empty).Replace(">", string.Empty);
+                    if (showAddButton && MixedRealityProfileUtility.IsConcreteProfileType(profileTypeName))
+                    {
+                        if (GUILayout.Button(NewProfileContent, EditorStyles.miniButton, GUILayout.Width(20f)))
+                        {
+                            Debug.Assert(profileTypeName != null, "No Type Found");
+
+                            ScriptableObject instance = ScriptableObject.CreateInstance(profileTypeName);
+                            var newProfile = instance.CreateAsset(AssetDatabase.GetAssetPath(Selection.activeObject)) as BaseMixedRealityProfile;
+                            property.objectReferenceValue = newProfile;
+                            property.serializedObject.ApplyModifiedProperties();
+                            changed = true;
+                        }
+                    }
+                }
+                else
+                {
+                    var renderedProfile = property.objectReferenceValue as BaseMixedRealityProfile;
+                    Debug.Assert(renderedProfile != null);
+                    if (GUILayout.Button(new GUIContent("Clone", "Replace with a copy of the default profile."), EditorStyles.miniButton, GUILayout.Width(45f)))
+                    {
+                        MixedRealityProfileCloneWindow.OpenWindow(profile, renderedProfile, property);
+                    }
+                }
+            }
+
+            return changed;
+        }
+
+        #endregion
     }
 }

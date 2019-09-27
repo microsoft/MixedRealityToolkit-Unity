@@ -67,5 +67,25 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             return instances;
         }
+
+        /// <summary>
+        /// Gets all the scriptable object instances in the project.
+        /// </summary>
+        /// <param name="profileType">The Type of <see href="https://docs.unity3d.com/ScriptReference/ScriptableObject.html">ScriptableObject</see> you're wanting to find instances of.</typeparam></param>
+        /// <returns></returns>
+        public static ScriptableObject[] GetAllInstances(Type profileType)
+        {
+            // FindAssets uses tags check documentation for more info
+            string[] guids = AssetDatabase.FindAssets($"t:{profileType.Name}");
+            var instances = new ScriptableObject[guids.Length];
+
+            for (int i = 0; i < guids.Length; i++)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guids[i]);
+                instances[i] = AssetDatabase.LoadAssetAtPath<ScriptableObject>(path);
+            }
+
+            return instances;
+        }
     }
 }
