@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 if (i != index)
                 {
-                    ToggleList[i].CurrentDimension = 0;
+                    ToggleList[i].IsToggled = false;
                 }
             }
 
@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (force)
             {
-                ToggleList[index].CurrentDimension = 1;
+                ToggleList[index].IsToggled = true;
             }
             else
             {

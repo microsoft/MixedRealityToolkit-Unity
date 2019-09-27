@@ -611,7 +611,5 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         }
 
         #endregion
-
-
     }
 }

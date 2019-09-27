@@ -91,8 +91,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     isGlobal = value;
 
-                    // If we are active, then change global speech registeration. 
-                    // Register handle if we do not require focus, unregister otherwise
+                    // If we are active, then register or unregister our the global input handler with the InputSystem
+                    // If we are disabled, then we will re-register OnEnable()
                     if (gameObject.activeInHierarchy)
                     {
                         RegisterHandler<IMixedRealityInputHandler>(isGlobal);
@@ -112,19 +112,26 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get { return dimensions; }
             set
             {
-                // Value cannot be negative or zero
-                if (value > 0 && dimensions != value)
+                if (dimensions != value)
                 {
-                    // If we are currently in Toggle mode, we are about to not be
-                    // Auto-turn off state
-                    if (ButtonMode == SelectionModes.Toggle)
+                    // Value cannot be negative or zero
+                    if (value > 0)
                     {
-                        IsToggled = false;
+                        // If we are currently in Toggle mode, we are about to not be
+                        // Auto-turn off state
+                        if (ButtonMode == SelectionModes.Toggle)
+                        {
+                            IsToggled = false;
+                        }
+
+                        dimensions = value;
+
+                        CurrentDimension = Mathf.Clamp(CurrentDimension, 0, Dimensions - 1);
                     }
-
-                    dimensions = value;
-
-                    CurrentDimension = Mathf.Clamp(CurrentDimension, 0, Dimensions - 1);
+                    else
+                    {
+                        Debug.LogWarning($"Value {value} for Dimensions property setter cannot be negative or zero.");
+                    }
                 }
             }
         }
@@ -140,20 +147,27 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get { return dimensionIndex; }
             set
             {
-                // If valid value and not our current value, then update
-                if (value >= 0 && value < Dimensions && dimensionIndex != value)
+                if (dimensionIndex != value)
                 {
-                    dimensionIndex = value;
-
-                    // If we are in toggle mode, update IsToggled state based on current dimension
-                    // This needs to happen after updating dimensionIndex, since IsToggled.set will call CurrentDimension.set again
-                    if (ButtonMode == SelectionModes.Toggle)
+                    // If valid value and not our current value, then update
+                    if (value >= 0 && value < Dimensions)
                     {
-                        IsToggled = dimensionIndex > 0;
-                    }
+                        dimensionIndex = value;
 
-                    SetupThemes();
-                    forceUpdate = true;
+                        // If we are in toggle mode, update IsToggled state based on current dimension
+                        // This needs to happen after updating dimensionIndex, since IsToggled.set will call CurrentDimension.set again
+                        if (ButtonMode == SelectionModes.Toggle)
+                        {
+                            IsToggled = dimensionIndex > 0;
+                        }
+
+                        SetupThemes();
+                        forceUpdate = true;
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Value {value} for property setter CurrentDimension cannot be less than 0 and cannot be greater than or equal to Dimensions={Dimensions}");
+                    }
                 }
             }
         }
@@ -179,8 +193,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// The Dimension value to set on start
         /// </summary>
+        [FormerlySerializedAs("StartDimensionIndex")]
         [SerializeField]
-        private int StartDimensionIndex = 0;
+        private int startDimensionIndex = 0;
 
         /// <summary>
         /// Is the interactive selectable?
@@ -503,8 +518,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         protected float rollOffTime = 0.25f;
         protected float rollOffTimer = 0.25f;
 
-        protected string[] voiceCommands;
-
         protected List<IInteractableHandler> handlers = new List<IInteractableHandler>();
 
         protected Coroutine globalTimer;
@@ -512,7 +525,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // A click must occur within this many seconds after an input down
         protected float clickTime = 1.5f;
         protected Coroutine clickValidTimer;
-        protected float globalFeedbackClickTime = 0.3f;
+        protected const float globalFeedbackClickTime = 0.3f;
 
         #region Gesture State Variables
 
@@ -547,7 +560,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             InputAction = ResolveInputAction(InputActionId);
 
-            CurrentDimension = StartDimensionIndex;
+            CurrentDimension = startDimensionIndex;
 
             RefreshSetup();
         }
@@ -1296,7 +1309,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     focusingPointers.Add(eventData.Pointer);
                 }
             }
-            else if (eventData.OldFocusedObject.transform.IsChildOf(gameObject.transform))
+            else if (eventData.OldFocusedObject != null 
+                && eventData.OldFocusedObject.transform.IsChildOf(gameObject.transform))
             {
                 focusingPointers.Remove(eventData.Pointer);
             }
@@ -1379,25 +1393,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     handlers[i].OnVoiceCommand(StateManager, this, command, index, length);
                 }
             }
-        }
-
-        /// <summary>
-        /// checks the voiceCommand array for a keyword and returns it's index
-        /// </summary>
-        protected int GetVoiceCommandIndex(string command)
-        {
-            if (voiceCommands.Length > 1)
-            {
-                for (int i = 0; i < voiceCommands.Length; i++)
-                {
-                    if (command == voiceCommands[i])
-                    {
-                        return i;
-                    }
-                }
-            }
-
-            return 0;
         }
 
         #endregion VoiceCommands

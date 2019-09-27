@@ -640,12 +640,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Raise a select down input event, then wait for transition to take place
             // Wait for at least one frame explicitly to ensure the input goes through
             CoreServices.InputSystem.RaiseOnInputDown(defaultInputSource, Handedness.Right, inputAction);
-            yield return new WaitForFixedUpdate();
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
 
             yield return CheckButtonTranslation(targetStartPosition, translateTargetObject, shouldTranslate);
 
             // Raise a select up input event, then wait for transition to take place
             CoreServices.InputSystem.RaiseOnInputUp(defaultInputSource, Handedness.Right, inputAction);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
             // Wait for at button release animation to finish
             yield return new WaitForSeconds(ButtonReleaseAnimationDelay);
         }
