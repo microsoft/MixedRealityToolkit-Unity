@@ -140,9 +140,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [SerializeField]
-        [Tooltip("Use world or local space for the constraining on an axis.")]
+        [Tooltip("Check if object rotation should be in local space of object being manipulated instead of world space.")]
         private bool useLocalSpaceForConstraint = false;
 
+        /// <summary>
+        /// Gets or sets whether the constraints should be applied in local space of the object being manipulated or world space.
+        /// </summary>
         public bool UseLocalSpaceForConstraint
         {
             get => useLocalSpaceForConstraint;
