@@ -234,7 +234,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                             string guid = regexResults.Groups[1].Captures[0].Value;
                             if (remapDictionary.TryGetValue(guid, out Tuple<string, long> tuple))
                             {
-                                line = $"  m_Script: {{fileID: {tuple.Item2}, guid: {tuple.Item1}, type: 3}}";
+                                line = Regex.Replace(line, @"fileID: \d+, guid: \w+", $"fileID: {tuple.Item2}, guid: {tuple.Item1}");
                             }
                             else if (nonClassDictionary.ContainsKey(guid))
                             {
