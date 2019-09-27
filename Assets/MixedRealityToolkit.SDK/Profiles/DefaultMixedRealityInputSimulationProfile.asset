@@ -52,7 +52,7 @@ MonoBehaviour:
   rightHandManipulationKey:
     bindingType: 2
     code: 32
-  mouseHandRotationSpeed: 6
+  mouseHandRotationSpeed: 30
   handRotateButton:
     bindingType: 2
     code: 306
