@@ -1599,6 +1599,39 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/ControllerMappingTool/ActiveControls.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ControllerMappingTool/ActiveControls.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ControllerMappingTool/AllControls.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ControllerMappingTool/AllControls.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/ControllerMappingTool/ControllerMappingTool.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/ControllerMappingTool/ControllerMappingTool.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/ControllerVisualizer/ControllerVisualizerInspector.png",
       "output": {
         "resource": {
@@ -3986,6 +4019,105 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/NearMenu/MRTK_UX_NearMenu.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/NearMenu/MRTK_UX_NearMenu.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/NearMenu/MRTK_UX_NearMenu_Custom0.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/NearMenu/MRTK_UX_NearMenu_Custom0.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/NearMenu/MRTK_UX_NearMenu_Custom1.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/NearMenu/MRTK_UX_NearMenu_Custom1.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/NearMenu/MRTK_UX_NearMenu_Custom2.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/NearMenu/MRTK_UX_NearMenu_Custom2.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/NearMenu/MRTK_UX_NearMenu_Custom3.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/NearMenu/MRTK_UX_NearMenu_Custom3.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/NearMenu/MRTK_UX_NearMenu_Custom4.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/NearMenu/MRTK_UX_NearMenu_Custom4.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/NearMenu/MRTK_UX_NearMenu_Examples.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/NearMenu/MRTK_UX_NearMenu_Examples.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/NearMenu/MRTK_UX_NearMenu_Grab.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/NearMenu/MRTK_UX_NearMenu_Grab.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/NearMenu/MRTK_UX_NearMenu_Structure.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/NearMenu/MRTK_UX_NearMenu_Structure.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/NuGet/AddNewSource.png",
       "output": {
         "resource": {
@@ -5421,7 +5553,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Input/CreateDataProvider.html",
-          "hash": "2qqSjqmpWAREd2thBXFrvQ=="
+          "hash": "2NCCVjXVFDrEoHNHwWGaGA=="
         }
       },
       "is_incremental": false,
@@ -5825,6 +5957,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/README_NearMenu.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/README_NearMenu.html",
+          "hash": "eyRrYrCZMqDsO4dXGeNpgA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/README_ObjectCollection.md",
       "output": {
         ".html": {
@@ -6077,6 +6221,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/Tools/ControllerMappingTool.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/Tools/ControllerMappingTool.html",
+          "hash": "bLXjDNGbLpSCEayvw+NKgw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/Tools/DependencyWindow.md",
       "output": {
         ".html": {
@@ -6165,7 +6321,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "H/JyDHNZgYuUaLF288g8sQ=="
+          "hash": "uFBKbMeXdb/8UYc/TcwH/A=="
         }
       },
       "is_incremental": false,
@@ -6177,7 +6333,7 @@
       "output": {
         ".html": {
           "relative_path": "README.html",
-          "hash": "zuo4542QU9qxkCsKRLzlXg=="
+          "hash": "k4dL6+b5IupNMg+CWqHueg=="
         }
       },
       "is_incremental": false,
@@ -6213,6 +6369,18 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.ArrayExtensions.html",
           "hash": "xDP5kirgUDOa8kL4+CAJ/g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.AssemblyExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.AssemblyExtensions.html",
+          "hash": "5M+GOvZo0J0o4y+SzJoSrA=="
         }
       },
       "is_incremental": false,
@@ -12140,7 +12308,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.html",
-          "hash": "cjXsvKYDrlyqXdFyLJN+ug=="
+          "hash": "WpBpZwEkMWrFLbFMut4Wmw=="
         }
       },
       "is_incremental": false,
@@ -14360,7 +14528,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.BasePlayModeTests.html",
-          "hash": "/qNbf/DldQVdivpO1ztBJg=="
+          "hash": "e+ev+L75LDVzGe7To/rA7w=="
         }
       },
       "is_incremental": false,
@@ -14372,7 +14540,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.BoundingBoxTests.html",
-          "hash": "EgeWPj8tvchDQow8vEHZpw=="
+          "hash": "d1JbE/IUIPFoPKeiPtH4BA=="
         }
       },
       "is_incremental": false,
@@ -14444,7 +14612,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.FocusProviderTests.html",
-          "hash": "kzZMzAn+vAeqgSHNb3fKtg=="
+          "hash": "Z7d3kRbxD02FlrPqt7DUjQ=="
         }
       },
       "is_incremental": false,
@@ -14572,11 +14740,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.InteractableTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.InteractableTests.html",
+          "hash": "706wLShsFPRMGo7qppTSHg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.ManipulationHandlerTests.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.ManipulationHandlerTests.html",
-          "hash": "94EEk818aYJTJmUKtGgW7Q=="
+          "hash": "a/FOnt53ahgvvMY5fxjyrg=="
         }
       },
       "is_incremental": false,
@@ -14588,7 +14768,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.NearInteractionTouchableTests.html",
-          "hash": "FDCXub1iN4I/+ljYEYYKZQ=="
+          "hash": "c7c1ncJpT96KeC0W0fmcsQ=="
         }
       },
       "is_incremental": false,
@@ -14636,7 +14816,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.PressableButtonTests.html",
-          "hash": "1Au8IjJflzRZRJ3/MHCfFg=="
+          "hash": "6msYNRemCXV0RmcTT3KH+g=="
         }
       },
       "is_incremental": false,
@@ -14900,7 +15080,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.html",
-          "hash": "0j11DD+Pgj5SKv/Wx3Fyqw=="
+          "hash": "FS9JYPVrKFYDJrnhVmwCPw=="
         }
       },
       "is_incremental": false,
@@ -15392,7 +15572,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.FollowMeToggle.html",
-          "hash": "dXC3cucgx5iESU5yQRp30Q=="
+          "hash": "7LTcvPGgKBb3FLm6nx/tBA=="
         }
       },
       "is_incremental": false,
@@ -16616,7 +16796,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.html",
-          "hash": "wMbQ1B8r4CdXnjuHr3QJxg=="
+          "hash": "mugWhXZaXk5QLy7zAu/fwg=="
         }
       },
       "is_incremental": false,
@@ -19844,7 +20024,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.html",
-          "hash": "HOMPPwuD7KnjFNSj7w2FTA=="
+          "hash": "gIC6OSJ8VkRUNdwZuy4f5w=="
         }
       },
       "is_incremental": false,
@@ -19856,7 +20036,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "wARD+jCNe5f4NAVqceuPAw=="
+          "hash": "g2rW1TMZypSYC7IB36hc1Q=="
         }
       },
       "is_incremental": false,
@@ -19908,18 +20088,6 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1138,
-          "skipped_file_count": 0
-        },
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 128,
-          "skipped_file_count": 0
-        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
@@ -19927,11 +20095,23 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 130,
+          "skipped_file_count": 0
+        },
         "TocDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1140,
           "skipped_file_count": 0
         }
       }
