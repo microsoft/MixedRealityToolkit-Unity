@@ -129,9 +129,6 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <summary>
         /// Returns a point along an array of RaySteps by distance
         /// </summary>
-        /// <param name="steps"></param>
-        /// <param name="distance"></param>
-        /// <returns></returns>
         public static Vector3 GetPointByDistance(RayStep[] steps, float distance)
         {
             Debug.Assert(steps != null);
@@ -152,9 +149,6 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <summary>
         /// Returns a RayStep along an array of RaySteps by distance
         /// </summary>
-        /// <param name="steps"></param>
-        /// <param name="distance"></param>
-        /// <returns></returns>
         public static RayStep GetStepByDistance(RayStep[] steps, float distance, ref float remainingDistance)
         {
             Debug.Assert(steps != null && steps.Length > 0);
@@ -187,9 +181,6 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <summary>
         /// Returns a direction along an array of RaySteps by distance
         /// </summary>
-        /// <param name="steps"></param>
-        /// <param name="distance"></param>
-        /// <returns></returns>
         public static Vector3 GetDirectionByDistance(RayStep[] steps, float distance)
         {
             Debug.Assert(steps != null);

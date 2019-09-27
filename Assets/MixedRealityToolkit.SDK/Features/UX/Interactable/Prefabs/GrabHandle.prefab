@@ -68,27 +68,25 @@ MonoBehaviour:
   InputActionId: 0
   IsGlobal: 0
   Dimensions: 1
+  StartDimensionIndex: 0
   CanSelect: 1
   CanDeselect: 1
   VoiceCommand: 
   RequiresFocus: 1
-  PhysicalPressOnClickTrigger: 0
   Profiles:
   - Target: {fileID: 6956884834071603112}
     Themes:
     - {fileID: 11400000, guid: d7354f15f868b394f9c15dc5c1209056, type: 2}
-    HadDefaultTheme: 1
   - Target: {fileID: 6956884834527463984}
     Themes:
     - {fileID: 11400000, guid: d5acbeaf80ef1244bbf7ec3a5ab9de10, type: 2}
-    HadDefaultTheme: 1
   OnClick:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Events: []
-  PhysicalPressDistance: 0.05
+  dimensionIndex: 0
 --- !u!114 &6956884833964320617
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -4,10 +4,10 @@
 using Microsoft.MixedReality.Toolkit.UI;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos
+namespace Microsoft.MixedReality.Toolkit
 {
     ///<summary>
-    /// This class exists to route <see cref="Microsoft.MixedReality.Toolkit.UI.PressableButton"/> events through to Interactable.
+    /// This class exists to route <see cref="Microsoft.MixedReality.Toolkit.UI.PressableButton"/> events through to <see cref="Microsoft.MixedReality.Toolkit.UI.Interactable"/>.
     /// The result is being able to have physical touch call Interactable.OnPointerClicked.
     ///</summary>
     public class PhysicalPressEventRouter : MonoBehaviour
@@ -48,11 +48,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         public void OnHandPressUntouched()
         {
-            if (InteractableOnClick == PhysicalPressEventBehavior.EventOnTouch &&
-                routingTarget != null)
+            if (routingTarget != null)
             {
                 routingTarget.SetPhysicalTouch(false);
-                routingTarget.SetPress(true);
+                if (InteractableOnClick == PhysicalPressEventBehavior.EventOnTouch)
+                {
+                    routingTarget.SetPress(true);
+                }
             }
         }
 
@@ -80,6 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                     routingTarget.TriggerOnClick();
                 }
                 routingTarget.SetPress(false);
+                routingTarget.SetPhysicalTouch(false);
             }
         }
     }

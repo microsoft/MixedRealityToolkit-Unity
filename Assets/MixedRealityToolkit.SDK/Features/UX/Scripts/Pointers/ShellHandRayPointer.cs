@@ -47,10 +47,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return;
             }
 
-
             BaseMixedRealityLineRenderer lineToShow = lineRendererNoTarget;
 
-            if (Result?.CurrentPointerTarget != null || IsSelectPressed )
+            // Make the line solid when pressed
+            if (IsSelectPressed)
             {
                 lineToShow = lineRendererSelected;
             }
@@ -62,6 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
         protected override void SetLinePoints(Vector3 startPoint, Vector3 endPoint, float distance)
         {
             LineBase.FirstPoint = startPoint;

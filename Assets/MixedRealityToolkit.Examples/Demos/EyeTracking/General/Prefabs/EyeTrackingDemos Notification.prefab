@@ -502,6 +502,8 @@ MonoBehaviour:
   LookAtTransparency: 0.9
   IdleTransparency: 0.9
   DestroyAfterBlendOut: 1
+  DisableAfterBlendOut: 0
+  DwellRequired: 0
   shaderPropsToCheckForBlending:
   - _Color
   - _FaceColor

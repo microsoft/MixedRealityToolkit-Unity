@@ -322,6 +322,7 @@ MonoBehaviour:
   InputActionId: 0
   IsGlobal: 0
   Dimensions: 1
+  StartDimensionIndex: 0
   CanSelect: 1
   CanDeselect: 1
   VoiceCommand: 
@@ -337,6 +338,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Events: []
+  dimensionIndex: 0
 --- !u!114 &1181576808188907290
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -350,13 +352,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  touchableCollider: {fileID: 65169310230401214}
-  distBack: 0.25
   debounceThreshold: 0.01
+  touchableCollider: {fileID: 65169310230401214}
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
   localCenter: {x: 0, y: 0, z: -0.012441406}
-  touchableSurface: 0
   bounds: {x: 0.22007813, y: 0.063828126}
 --- !u!114 &6267116981273118353
 MonoBehaviour:

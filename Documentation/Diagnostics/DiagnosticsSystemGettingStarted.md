@@ -8,6 +8,7 @@ performance issues while using the application.
 
 ## Getting Started
 
+> [!IMPORTANT]
 > It is **_highly_** recommended that the diagnostics system be enabled throughout the entire product 
 development cycle and disabled as the last change prior to building and releasing the final version.
 
@@ -17,10 +18,9 @@ development cycle and disabled as the last change prior to building and releasin
 
 ### Enable Diagnostics
 
-The diagnostics system is managed by the MixedRealityToolkit object (or another 
-[service registrar](xref:Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar) component). 
+The diagnostics system is managed by the MixedRealityToolkit object (or another [service registrar](xref:Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar) component). 
 
-> The following steps presume use of the MixedRealityToolkit object. Steps required for other service registrars may be different.
+The following steps presume use of the MixedRealityToolkit object. Steps required for other service registrars may be different.
 
 1. Select the MixedRealityToolkit object in the scene hierarchy.
 
@@ -34,6 +34,7 @@ The diagnostics system is managed by the MixedRealityToolkit object (or another
 
 ![Select the Diagnostics System Implementation](../../Documentation/Images/Diagnostics/DiagnosticsSelectSystemType.png)
 
+> [!NOTE]
 > Users of the default profile (DefaultMixedRealityToolkitConfigurationProfile) will have the 
 diagnostics system pre-configured to use the MixedRealityDiagnosticsSystem object.
 
@@ -50,10 +51,10 @@ for more information pertaining to the available component settings.
 Once the diagnostic system is configured with the desired options, the project can be built 
 and deployed to the target platform.
 
-> While it is possible to use Unity's Play Mode while developing applications without requiring the build 
-and deploy steps, it is important to evaluate the diagnostics system results using a compiled application 
-running on the target hardware and platform. Performance diagnostics, such as the Visual Profiler, may not 
-accurately reflect actual application performance when run from within the editor.
+> [!NOTE]
+> While it is possible to use Unity's Play Mode while developing applications without requiring the build and deploy steps, it is important to evaluate the diagnostics system results using a compiled application running on the target hardware and platform. 
+> 
+> Performance diagnostics, such as the Visual Profiler, may not accurately reflect actual application performance when run from within the editor.
 
 ## See Also
 

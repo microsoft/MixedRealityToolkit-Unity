@@ -6,9 +6,11 @@ Speech input providers, like *Windows Speech Input*, don't create any controller
 - Specify a **key code** that will produce the same speech event when pressed.
 - Add a **localization key** that will be used in UWP apps to obtain the localized keyword from the app resources.
 
-<img src="../../Documentation/Images/Input/SpeechCommands.png" style="max-width:100%;">
+<img src="../../Documentation/Images/Input/SpeechCommands.PNG" width="550px">
 
-You can use the [**`Speech Input Handler`**](xref:Microsoft.MixedReality.Toolkit.Input.SpeechInputHandler) script to handle speech commands using [**UnityEvents**](https://docs.unity3d.com/Manual/UnityEvents.html). 
+The [**`Speech Input Handler`**](xref:Microsoft.MixedReality.Toolkit.Input.SpeechInputHandler) script can be added to a GameObject to handle speech commands using [**UnityEvents**](https://docs.unity3d.com/Manual/UnityEvents.html).
+
+Alternatively, developers can implement the [`IMixedRealitySpeechHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler) interface in a custom script component to [handle speech input events](InputEvents.md#input-event-interface-example).
 
 ## Example Scene
 

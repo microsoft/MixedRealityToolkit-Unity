@@ -83,8 +83,14 @@ $packages = @{
         "Assets\MixedRealityToolkit.SDK",
         "Assets\MixedRealityToolkit.Services"
     );
+    "Extensions" = @(
+        "Assets\MixedRealityToolkit.Extensions"
+    );
     "Examples" = @(
         "Assets\MixedRealityToolkit.Examples"
+    );
+    "Tools" = @(
+        "Assets\MixedRealityToolkit.Tools"
     );
 }
 

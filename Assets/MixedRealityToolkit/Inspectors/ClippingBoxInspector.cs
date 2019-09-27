@@ -7,12 +7,14 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
+    /// <summary>
+    /// A custom editor for the ClippingBox to allow for specification of the framing bounds.
+    /// </summary>
     [CustomEditor(typeof(ClippingBox))]
-    public class ClippingBoxEditor : UnityEditor.Editor
+    public class ClippingBoxEditor : ClippingPrimitiveEditor
     {
-        private bool HasFrameBounds() { return true; }
-
-        private Bounds OnGetFrameBounds()
+        /// <inheritdoc/>
+        protected override Bounds OnGetFrameBounds()
         {
             var primitive = target as ClippingBox;
             Debug.Assert(primitive != null);

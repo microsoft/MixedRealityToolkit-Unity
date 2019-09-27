@@ -28,22 +28,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         new[] { Handedness.Left, Handedness.Right })]
     public class WindowsMixedRealityArticulatedHand : BaseWindowsMixedRealitySource, IMixedRealityHand
     {
-    /// <summary>
+        /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="trackingState"></param>
-        /// <param name="controllerHandedness"></param>
-        /// <param name="inputSource"></param>
-        /// <param name="interactions"></param>
         public WindowsMixedRealityArticulatedHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions)
         {
-#if WINDOWS_UWP
-            UnityEngine.WSA.Application.InvokeOnUIThread(() =>
-            {
-                spatialInteractionManager = SpatialInteractionManager.GetForCurrentView();
-            }, true);
-#endif // WINDOWS_UWP
         }
 
         /// <summary>
@@ -107,6 +97,22 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         private readonly HandRay handRay = new HandRay();
 
 #if WINDOWS_UWP
+        private SpatialInteractionManager SpatialInteractionManager
+        {
+            get
+            {
+                if (spatialInteractionManager == null)
+                {
+                    UnityEngine.WSA.Application.InvokeOnUIThread(() =>
+                    {
+                        spatialInteractionManager = SpatialInteractionManager.GetForCurrentView();
+                    }, true);
+                }
+
+                return spatialInteractionManager;
+            }
+        }
+
         private SpatialInteractionManager spatialInteractionManager = null;
         private HandMeshObserver handMeshObserver = null;
         private int[] handMeshTriangleIndices = null;
@@ -206,7 +212,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
 
             PerceptionTimestamp perceptionTimestamp = PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now);
-            IReadOnlyList<SpatialInteractionSourceState> sources = spatialInteractionManager?.GetDetectedSourcesAtTimestamp(perceptionTimestamp);
+            IReadOnlyList<SpatialInteractionSourceState> sources = SpatialInteractionManager?.GetDetectedSourcesAtTimestamp(perceptionTimestamp);
             foreach (SpatialInteractionSourceState sourceState in sources)
             {
                 if (sourceState.Source.Id.Equals(interactionSourceState.source.id))

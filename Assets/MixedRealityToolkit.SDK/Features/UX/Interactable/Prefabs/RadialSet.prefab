@@ -239,7 +239,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 27e8d7c95f97434681887029d5c7a928, type: 2}
+  - {fileID: 2100000, guid: 995259be68dc4fa98ed72600bc3cc149, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -277,7 +277,7 @@ TextMesh:
   m_FontSize: 42
   m_FontStyle: 0
   m_RichText: 1
-  m_Font: {fileID: 12800000, guid: e48b920555144c6da3ee2ab03f0fda88, type: 3}
+  m_Font: {fileID: 12800000, guid: e869342c56e54acf989b2422b4b80dcc, type: 3}
   m_Color:
     serializedVersion: 2
     rgba: 4292335575
@@ -891,6 +891,7 @@ MonoBehaviour:
   InputActionId: 0
   IsGlobal: 0
   Dimensions: 2
+  StartDimensionIndex: 0
   CanSelect: 1
   CanDeselect: 0
   VoiceCommand: Radial Three
@@ -922,6 +923,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Events: []
+  dimensionIndex: 0
 --- !u!114 &4754899564184264502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -935,13 +937,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  touchableCollider: {fileID: 65613013962320470}
-  distBack: 0.25
   debounceThreshold: 0.01
+  touchableCollider: {fileID: 65613013962320470}
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
   localCenter: {x: 0.08, y: 0, z: -0.0125}
-  touchableSurface: 0
   bounds: {x: 0.22, y: 0.05}
 --- !u!114 &6038524530610883207
 MonoBehaviour:
@@ -1061,6 +1061,7 @@ MonoBehaviour:
   InputActionId: 0
   IsGlobal: 0
   Dimensions: 2
+  StartDimensionIndex: 0
   CanSelect: 1
   CanDeselect: 0
   VoiceCommand: Radial Two
@@ -1092,6 +1093,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Events: []
+  dimensionIndex: 0
 --- !u!114 &3360437626877041567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1105,13 +1107,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  touchableCollider: {fileID: 65735667765749806}
-  distBack: 0.25
   debounceThreshold: 0.01
+  touchableCollider: {fileID: 65735667765749806}
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
   localCenter: {x: 0.08, y: 0, z: -0.0125}
-  touchableSurface: 0
   bounds: {x: 0.22, y: 0.05}
 --- !u!114 &7598597865625919146
 MonoBehaviour:
@@ -1211,7 +1211,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 27e8d7c95f97434681887029d5c7a928, type: 2}
+  - {fileID: 2100000, guid: 995259be68dc4fa98ed72600bc3cc149, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1249,7 +1249,7 @@ TextMesh:
   m_FontSize: 42
   m_FontStyle: 0
   m_RichText: 1
-  m_Font: {fileID: 12800000, guid: e48b920555144c6da3ee2ab03f0fda88, type: 3}
+  m_Font: {fileID: 12800000, guid: e869342c56e54acf989b2422b4b80dcc, type: 3}
   m_Color:
     serializedVersion: 2
     rgba: 4292335575
@@ -1302,7 +1302,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 27e8d7c95f97434681887029d5c7a928, type: 2}
+  - {fileID: 2100000, guid: 995259be68dc4fa98ed72600bc3cc149, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1340,7 +1340,7 @@ TextMesh:
   m_FontSize: 42
   m_FontStyle: 0
   m_RichText: 1
-  m_Font: {fileID: 12800000, guid: e48b920555144c6da3ee2ab03f0fda88, type: 3}
+  m_Font: {fileID: 12800000, guid: e869342c56e54acf989b2422b4b80dcc, type: 3}
   m_Color:
     serializedVersion: 2
     rgba: 4292335575
@@ -1413,9 +1413,10 @@ MonoBehaviour:
   InputActionId: 0
   IsGlobal: 0
   Dimensions: 2
+  StartDimensionIndex: 0
   CanSelect: 1
   CanDeselect: 0
-  VoiceCommand: Radial One
+  VoiceCommand: 
   RequiresFocus: 1
   Profiles:
   - Target: {fileID: 1903041749280706}
@@ -1444,6 +1445,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Events: []
+  dimensionIndex: 0
 --- !u!114 &5855375433444044948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1457,13 +1459,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventsToReceive: 0
-  touchableCollider: {fileID: 65959922074838590}
-  distBack: 0.25
   debounceThreshold: 0.01
+  touchableCollider: {fileID: 65959922074838590}
   localForward: {x: 0, y: 0, z: -1}
   localUp: {x: 0, y: 1, z: 0}
   localCenter: {x: 0.08, y: 0, z: -0.0125}
-  touchableSurface: 0
   bounds: {x: 0.22, y: 0.05}
 --- !u!114 &6898648981884554674
 MonoBehaviour:

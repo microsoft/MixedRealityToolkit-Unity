@@ -27,7 +27,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Tests that prefab can be opened and closed at runtime.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestOpenCloseLoadingBarPrefab()
         {
@@ -48,7 +47,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Tests that prefab can be opened and closed at runtime.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestOpenCloseRotatingObjectPrefab()
         {
@@ -69,7 +67,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Tests that prefab can be opened and closed at runtime.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestOpenCloseRotatingOrbsPrefab()
         {

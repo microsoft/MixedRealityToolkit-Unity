@@ -25,17 +25,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
     /// </summary>
     [MixedRealityController(
         SupportedControllerType.WindowsMixedReality,
-        new[] { Handedness.Left, Handedness.Right, Handedness.None },
+        new[] { Handedness.Left, Handedness.Right },
         "StandardAssets/Textures/MotionController")]
     public class WindowsMixedRealityController : BaseWindowsMixedRealitySource
     {
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="trackingState"></param>
-        /// <param name="controllerHandedness"></param>
-        /// <param name="inputSource"></param>
-        /// <param name="interactions"></param>
         public WindowsMixedRealityController(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions)
         {
@@ -106,7 +102,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// Update the touchpad input from the device.
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
-        /// <param name="interactionMapping"></param>
         private void UpdateTouchpadData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
             switch (interactionMapping.InputType)
@@ -171,7 +166,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// Update the thumbstick input from the device.
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
-        /// <param name="interactionMapping"></param>
         private void UpdateThumbstickData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
             switch (interactionMapping.InputType)
@@ -216,7 +210,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// Update the menu button state.
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
-        /// <param name="interactionMapping"></param>
         private void UpdateMenuData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
             // Update the interaction data source

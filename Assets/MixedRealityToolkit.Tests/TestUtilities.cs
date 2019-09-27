@@ -1,16 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.UI;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
-using Microsoft.MixedReality.Toolkit.Utilities;
 
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Editor;
@@ -27,8 +21,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public static class TestUtilities
     {
-        const float vector3DistanceEpsilon = 0.01f;
-
         const string primaryTestSceneTemporarySavePath = "Assets/__temp_primary_test_scene.unity";
         const string additiveTestSceneTemporarySavePath = "Assets/__temp_additive_test_scene_#.unity";
         public static Scene primaryTestScene;
@@ -68,7 +60,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Creates a number of scenes and loads them additively for testing. Must create a minimum of 1.
         /// Used only in editor stests.
         /// </summary>
-        /// <param name="numScenesToCreate"></param>
         public static void EditorCreateScenes(int numScenesToCreate = 1)
         {
             // Create default test scenes.
@@ -135,8 +126,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Creates the requested number of scenes, then creates one instance of the MixedRealityToolkit in the active scene.
         /// </summary>
-        /// <param name="useDefaultProfile"></param>
-        /// <param name="numScenesToCreate"></param>
         public static void InitializeMixedRealityToolkitAndCreateScenes(bool useDefaultProfile = false, int numScenesToCreate = 1)
         {
             // Setup
@@ -144,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityToolkit(useDefaultProfile);
         }
 
-        public static void InitializeMixedRealityToolkit(bool useDefaultProfile = false)
+        public static void InitializeMixedRealityToolkit(MixedRealityToolkitConfigurationProfile configuration)
         {
             if (!MixedRealityToolkit.IsInitialized)
             {
@@ -162,19 +151,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 BaseEventSystem.enableDanglingHandlerDiagnostics = true;
             }
 
-            // Tests
             Assert.IsTrue(MixedRealityToolkit.IsInitialized);
             Assert.IsNotNull(MixedRealityToolkit.Instance);
-            if (!MixedRealityToolkit.Instance.HasActiveProfile)
-            {
-                var configuration = useDefaultProfile
-                    ? GetDefaultMixedRealityProfile<MixedRealityToolkitConfigurationProfile>()
-                    : ScriptableObject.CreateInstance<MixedRealityToolkitConfigurationProfile>();
 
-                Assert.IsTrue(configuration != null, "Failed to find the Default Mixed Reality Configuration Profile");
-                MixedRealityToolkit.Instance.ActiveProfile = configuration;
-                Assert.IsTrue(MixedRealityToolkit.Instance.ActiveProfile != null);
-            }
+
+            MixedRealityToolkit.Instance.ActiveProfile = configuration;
+            Assert.IsTrue(MixedRealityToolkit.Instance.ActiveProfile != null);
+        }
+
+        public static void InitializeMixedRealityToolkit(bool useDefaultProfile = false)
+        {
+            var configuration = useDefaultProfile
+                ? GetDefaultMixedRealityProfile<MixedRealityToolkitConfigurationProfile>()
+                : ScriptableObject.CreateInstance<MixedRealityToolkitConfigurationProfile>();
+
+            Assert.IsTrue(configuration != null, "Failed to find the Default Mixed Reality Configuration Profile");
+            InitializeMixedRealityToolkit(configuration);
         }
 
         public static void ShutdownMixedRealityToolkit()
@@ -197,16 +189,28 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 #endif
         }
 
-        public static void AssertAboutEqual(Vector3 actual, Vector3 expected, string message)
+        public static void AssertAboutEqual(Vector3 actual, Vector3 expected, string message, float tolerance = 0.01f)
         {
             var dist = (actual - expected).magnitude;
-            Debug.Assert(dist < vector3DistanceEpsilon, $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}");
+            Debug.Assert(dist < tolerance, $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}");
         }
 
-        public static void AssertNotAboutEqual(Vector3 val1, Vector3 val2, string message)
+        public static void AssertAboutEqual(Quaternion actual, Quaternion expected, string message, float tolerance = 0.01f)
+        {
+            var angle = Quaternion.Angle(actual, expected);
+            Debug.Assert(angle < tolerance, $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}");
+        }
+
+        public static void AssertNotAboutEqual(Vector3 val1, Vector3 val2, string message, float tolerance = 0.01f)
         {
             var dist = (val1 - val2).magnitude;
-            Debug.Assert(dist >= vector3DistanceEpsilon, $"{message}, val1 {val1.ToString("0.000")} almost equals val2 {val2.ToString("0.000")}");
+            Debug.Assert(dist >= tolerance, $"{message}, val1 {val1.ToString("0.000")} almost equals val2 {val2.ToString("0.000")}");
+        }
+
+        public static void AssertNotAboutEqual(Quaternion val1, Quaternion val2, string message, float tolerance = 0.01f)
+        {
+            var angle = Quaternion.Angle(val1, val2);
+            Debug.Assert(angle >= tolerance, $"{message}, val1 {val1.ToString("0.000")} almost equals val2 {val2.ToString("0.000")}");
         }
     }
 }

@@ -10,6 +10,7 @@
 [Aa]pp/
 UWP/
 WindowsStoreApp/
+WSA/
 UnityGenerated/
 UnityPackageManager/
 .out/
@@ -74,7 +75,19 @@ Assets/StreamingAssets.meta
 # =============== #
 doc/
 
-# =========================================== #
-# Asset Script Reference Retargeter Generated #
-# =========================================== #
-NuGet/
+# This is only needed because docfx chooses the first alphebetically occuring
+# .cs file's folder to create an obj/xdoc cache folder inside.
+# When https://github.com/dotnet/docfx/issues/1156 is addressed, it should be
+# possible to remove the rule on the following line and update our docfx
+# configuration to place its cache in a deterministic folder.
+[Oo]bj.meta
+
+# ============================= #
+# NuGet Build Process Generated #
+# ============================= #
+/NuGet/*
+!/NuGet/BuildSource.proj
+/MRTKBuild/
+/MSBuild/
+/PackagesCopy/
+!/scripts/Packaging/NuGetRestoreProject.csproj

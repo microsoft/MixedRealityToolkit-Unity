@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,18 +12,70 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     /// <summary>
     /// A collection of helper functions for adding InspectorFields to a custom Inspector
     /// </summary>
-
     public static class InspectorFieldsUtility
     {
+        public static bool AreFieldsSame(SerializedProperty settings, List<InspectorFieldData> fieldList)
+        {
+            // If number of fields don't match, automaticaly not the same
+            if (settings.arraySize != fieldList.Count)
+            {
+                return false;
+            }
+
+            // If same number of fields, ensure union of two lists is a perfect match
+            for (int idx = 0; idx < settings.arraySize - 1; idx++)
+            {
+                SerializedProperty name = settings.GetArrayElementAtIndex(idx).FindPropertyRelative("Name");
+
+                if (fieldList.FindIndex(s => s.Name == name.stringValue) == -1)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+        /// <summary>
+        /// Update list of serialized PropertySettings from new or removed InspectorFields
+        /// </summary>
+        public static void UpdateSettingsList(SerializedProperty settings, List<InspectorFieldData> fieldList)
+        {
+            // Delete existing settings that now have missing field
+            // Remove data entries for existing setting matches
+            for (int idx = settings.arraySize - 1; idx >= 0; idx--)
+            {
+                SerializedProperty settingItem = settings.GetArrayElementAtIndex(idx);
+                SerializedProperty name = settingItem.FindPropertyRelative("Name");
+
+                int index = fieldList.FindIndex(s => s.Name == name.stringValue);
+                if (index != -1)
+                {
+                    fieldList.RemoveAt(index);
+                }
+                else
+                {
+                    settings.DeleteArrayElementAtIndex(idx);
+                }
+            }
+
+            AddFieldsToSettingsList(settings, fieldList);
+        }
+
         /// <summary>
         /// Create a new list of serialized PropertySettings from InspectorFields
         /// </summary>
-        /// <param name="settings"></param>
-        /// <param name="data"></param>
-        public static void PropertySettingsList(SerializedProperty settings, List<InspectorFieldData> data)
+        public static void ClearSettingsList(SerializedProperty settings, List<InspectorFieldData> data)
         {
             settings.ClearArray();
 
+            AddFieldsToSettingsList(settings, data);
+        }
+
+        /// <summary>
+        /// Adds InspectorFields to list of serialized PropertySettings
+        /// </summary>
+        public static void AddFieldsToSettingsList(SerializedProperty settings, List<InspectorFieldData> data)
+        {
             for (int i = 0; i < data.Count; i++)
             {
                 settings.InsertArrayElementAtIndex(settings.arraySize);
@@ -57,9 +111,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Update a property value in a serialized PropertySettings
         /// </summary>
-        /// <param name="prop"></param>
-        /// <param name="type"></param>
-        /// <param name="update"></param>
         public static void UpdatePropertySettings(SerializedProperty prop, int type, object update)
         {
             SerializedProperty intValue = prop.FindPropertyRelative("IntValue");
@@ -144,12 +195,35 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
         }
 
+        public static List<InspectorFieldData> GetInspectorFields(System.Object target)
+        {
+            List<InspectorFieldData> fields = new List<InspectorFieldData>();
+            Type myType = target.GetType();
+
+            foreach (PropertyInfo prop in myType.GetProperties())
+            {
+                var attrs = (InspectorField[])prop.GetCustomAttributes(typeof(InspectorField), false);
+                foreach (var attr in attrs)
+                {
+                    fields.Add(new InspectorFieldData() { Name = prop.Name, Attributes = attr, Value = prop.GetValue(target, null) });
+                }
+            }
+
+            foreach (FieldInfo field in myType.GetFields())
+            {
+                var attrs = (InspectorField[])field.GetCustomAttributes(typeof(InspectorField), false);
+                foreach (var attr in attrs)
+                {
+                    fields.Add(new InspectorFieldData() { Name = field.Name, Attributes = attr, Value = field.GetValue(target) });
+                }
+            }
+
+            return fields;
+        }
+
         /// <summary>
         /// Checks the type a property field and returns if it matches the passed in type
         /// </summary>
-        /// <param name="prop"></param>
-        /// <param name="type"></param>
-        /// <returns></returns>
         public static bool IsPropertyType(SerializedProperty prop, InspectorField.FieldTypes type)
         {
             SerializedProperty propType = prop.FindPropertyRelative("Type");
@@ -159,7 +233,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Render a PropertySettings UI field based on the InspectorField Settings
         /// </summary>
-        /// <param name="prop"></param>
         public static void DisplayPropertyField(SerializedProperty prop)
         {
             SerializedProperty type = prop.FindPropertyRelative("Type");
@@ -198,6 +271,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     {
                         intValue.intValue = EditorGUI.Popup(position, label.stringValue, intValue.intValue, InspectorUIUtility.GetOptions(options));
                     }
+                    EditorGUI.EndProperty();
                     break;
                 case InspectorField.FieldTypes.DropdownString:
                     string[] stringOptions = InspectorUIUtility.GetOptions(options);

@@ -38,30 +38,40 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             Array.Copy(_localJointPoses, localJointPoses, jointCount);
         }
 
+        public MixedRealityPose GetLocalJointPose(TrackedHandJoint joint, Handedness handedness)
+        {
+            MixedRealityPose pose = localJointPoses[(int)joint];
+
+            // Pose offset are for right hand, mirror on X axis if left hand is needed
+            if (handedness == Handedness.Left)
+            {
+                pose = new MixedRealityPose(
+                    new Vector3(-pose.Position.x, pose.Position.y, pose.Position.z),
+                    new Quaternion(pose.Rotation.x, -pose.Rotation.y, -pose.Rotation.z, pose.Rotation.w));
+            }
+
+            return pose;
+        }
+
         /// <summary>
         /// Compute world space poses from camera-space joint data.
         /// </summary>
-        public void ComputeJointPoses(Handedness handedness, Quaternion rotation, Vector3 position, MixedRealityPose[] jointsOut)
+        /// <param name="handedness">Handedness of the resulting pose</param>
+        /// <param name="rotation">Rotational offset of the resulting pose</param>
+        /// <param name="position">Translational offset of the resulting pose</param>
+        /// <param name="jointsOut">Output array of joint poses</param>
+        public void ComputeJointPoses(
+            Handedness handedness,
+            Quaternion rotation,
+            Vector3 position,
+            MixedRealityPose[] jointsOut)
         {
-            var cameraRotation = CameraCache.Main.transform.rotation;
-
             for (int i = 0; i < jointCount; i++)
             {
                 // Initialize from local offsets
-                Vector3 p = localJointPoses[i].Position;
-                Quaternion r = localJointPoses[i].Rotation;
-
-                // Pose offset are for right hand, mirror on X axis if left hand is needed
-                if (handedness == Handedness.Left)
-                {
-                    p.x = -p.x;
-                    r.y = -r.y;
-                    r.z = -r.z;
-                }
-
-                // Apply camera transform
-                p = cameraRotation * p;
-                r = cameraRotation * r;
+                MixedRealityPose pose = GetLocalJointPose((TrackedHandJoint)i, handedness);
+                Vector3 p = pose.Position;
+                Quaternion r = pose.Rotation;
 
                 // Apply external transform
                 p = position + rotation * p;
@@ -74,10 +84,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Take world space joint poses from any hand and convert into right-hand, camera-space poses.
         /// </summary>
-        public void ParseFromJointPoses(MixedRealityPose[] joints, Handedness handedness, Quaternion rotation, Vector3 position)
+        /// <param name="joints">Input joint poses</param>
+        /// <param name="handedness">Handedness of the input data</param>
+        /// <param name="rotation">Rotational offset of the input data</param>
+        /// <param name="position">Translational offset of the input data</param>
+        public void ParseFromJointPoses(
+            MixedRealityPose[] joints,
+            Handedness handedness,
+            Quaternion rotation,
+            Vector3 position)
         {
-            var invRotation = Quaternion.Inverse(rotation);
-            var invCameraRotation = Quaternion.Inverse(CameraCache.Main.transform.rotation);
+            Quaternion invRotation = Quaternion.Inverse(rotation);
+            Quaternion invCameraRotation = Quaternion.Inverse(CameraCache.Main.transform.rotation);
 
             for (int i = 0; i < jointCount; i++)
             {
@@ -154,7 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             /// </summary>
             Open,
             /// <summary>
-            /// Index finger and Thumb touching, index tip does not move
+            /// Index finger and Thumb touching, grab point does not move
             /// </summary>
             Pinch,
             /// <summary>
@@ -177,6 +195,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             /// Victory sign
             /// </summary>
             Victory,
+            /// <summary>
+            /// Relaxed hand pose, grab point does not move
+            /// </summary>
+            OpenSteadyGrabPoint,
         }
 
         private static readonly Dictionary<GestureId, ArticulatedHandPose> handPoses = new Dictionary<GestureId, ArticulatedHandPose>();
@@ -301,7 +323,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             var dict = new ArticulatedHandPoseDictionary();
             dict.FromJointPoses(localJointPoses);
-            return JsonUtility.ToJson(dict);
+            return JsonUtility.ToJson(dict, true);
         }
 
         /// <summary>

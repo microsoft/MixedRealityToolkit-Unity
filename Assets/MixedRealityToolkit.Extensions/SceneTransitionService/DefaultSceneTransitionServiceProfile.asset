@@ -9,13 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_GeneratorAsset: {fileID: 0}
   m_Script: {fileID: 11500000, guid: 8d8965cb7573e04429e22a5a476b4703, type: 3}
   m_Name: DefaultSceneTransitionServiceProfile
   m_EditorClassIdentifier: 
-  isCustomProfile: 1
+  isCustomProfile: 0
   useDefaultProgressIndicator: 1
-  defaultProgressIndicatorPrefab: {fileID: 1993071269674472, guid: ee519d5fb10a6db4f84d116e66f872b6,
+  defaultProgressIndicatorPrefab: {fileID: 1993071269674472, guid: 57d2436112e7d424da7e9a8e41c608dc,
     type: 3}
   useFadeColor: 1
   fadeColor: {r: 0, g: 0, b: 0, a: 1}

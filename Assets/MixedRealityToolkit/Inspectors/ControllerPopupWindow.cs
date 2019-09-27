@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 {
     public class ControllerPopupWindow : EditorWindow
     {
-        private const string EditorWindowOptionsPath = "/MixedRealityToolkit/Inspectors/Data/EditorWindowOptions.json";
+        private const string EditorWindowOptionsPath = "Inspectors/Data/EditorWindowOptions.json";
         private const float InputActionLabelWidth = 128f;
 
         /// <summary>
@@ -202,7 +202,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             window.currentInteractionList = interactionsList;
             isMouseInRects = new bool[interactionsList.arraySize];
 
-            if (!File.Exists($"{Application.dataPath}{EditorWindowOptionsPath}"))
+            string editorWindowOptionsPath = ResolveEditorWindowOptionsPath();
+            if (!File.Exists(editorWindowOptionsPath))
             {
                 var empty = new ControllerInputActionOptions
                 {
@@ -218,12 +219,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     }
                 };
 
-                File.WriteAllText($"{Application.dataPath}{EditorWindowOptionsPath}", JsonUtility.ToJson(empty));
+                File.WriteAllText(editorWindowOptionsPath, JsonUtility.ToJson(empty, true));
                 AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
             }
             else
             {
-                controllerInputActionOptions = JsonUtility.FromJson<ControllerInputActionOptions>(File.ReadAllText($"{Application.dataPath}{EditorWindowOptionsPath}"));
+                controllerInputActionOptions = JsonUtility.FromJson<ControllerInputActionOptions>(File.ReadAllText(editorWindowOptionsPath));
 
                 if (controllerInputActionOptions.Controllers.Any(option => option.Controller == controllerMapping.SupportedControllerType && option.Handedness == handedness))
                 {
@@ -332,9 +333,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                 if (EditorGUI.EndChangeCheck())
                 {
+                    string editorWindowOptionsPath = ResolveEditorWindowOptionsPath();
                     if (!editInputActionPositions)
                     {
-                        File.WriteAllText($"{Application.dataPath}{EditorWindowOptionsPath}", JsonUtility.ToJson(controllerInputActionOptions));
+                        File.WriteAllText(editorWindowOptionsPath, JsonUtility.ToJson(controllerInputActionOptions, true));
                     }
                     else
                     {
@@ -359,7 +361,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                         option.Controller == 0));
                             }
 
-                            File.WriteAllText($"{Application.dataPath}{EditorWindowOptionsPath}", JsonUtility.ToJson(controllerInputActionOptions));
+                            File.WriteAllText(editorWindowOptionsPath, JsonUtility.ToJson(controllerInputActionOptions, true));
                         }
                     }
                 }
@@ -389,320 +391,306 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             for (int i = 0; i < interactionList.arraySize; i++)
             {
-                EditorGUILayout.BeginHorizontal();
-                SerializedProperty interaction = interactionList.GetArrayElementAtIndex(i);
-
-                if (useCustomInteractionMapping)
+                using (new EditorGUILayout.HorizontalScope())
                 {
-                    EditorGUILayout.LabelField($"{i + 1}", GUILayout.Width(32f));
-                    var inputType = interaction.FindPropertyRelative("inputType");
-                    EditorGUILayout.PropertyField(inputType, GUIContent.none, GUILayout.Width(InputActionLabelWidth));
-                    var axisType = interaction.FindPropertyRelative("axisType");
-                    EditorGUILayout.PropertyField(axisType, GUIContent.none, GUILayout.Width(InputActionLabelWidth));
-                    var invertXAxis = interaction.FindPropertyRelative("invertXAxis");
-                    var invertYAxis = interaction.FindPropertyRelative("invertYAxis");
-                    var interactionAxisConstraint = interaction.FindPropertyRelative("axisType");
+                    SerializedProperty interaction = interactionList.GetArrayElementAtIndex(i);
 
-                    var action = interaction.FindPropertyRelative("inputAction");
-                    var actionId = action.FindPropertyRelative("id");
-                    var actionDescription = action.FindPropertyRelative("description");
-                    var actionConstraint = action.FindPropertyRelative("axisConstraint");
-
-                    GUIContent[] labels;
-                    int[] ids;
-
-                    switch ((AxisType)interactionAxisConstraint.intValue)
+                    if (useCustomInteractionMapping)
                     {
-                        default:
-                        case AxisType.None:
-                            labels = actionLabels;
-                            ids = actionIds;
-                            break;
-                        case AxisType.Raw:
-                            labels = rawActionLabels;
-                            ids = rawActionIds;
-                            break;
-                        case AxisType.Digital:
-                            labels = digitalActionLabels;
-                            ids = digitalActionIds;
-                            break;
-                        case AxisType.SingleAxis:
-                            labels = singleAxisActionLabels;
-                            ids = singleAxisActionIds;
-                            break;
-                        case AxisType.DualAxis:
-                            labels = dualAxisActionLabels;
-                            ids = dualAxisActionIds;
-                            break;
-                        case AxisType.ThreeDofPosition:
-                            labels = threeDofPositionActionLabels;
-                            ids = threeDofPositionActionIds;
-                            break;
-                        case AxisType.ThreeDofRotation:
-                            labels = threeDofRotationActionLabels;
-                            ids = threeDofRotationActionIds;
-                            break;
-                        case AxisType.SixDof:
-                            labels = sixDofActionLabels;
-                            ids = sixDofActionIds;
-                            break;
-                    }
+                        EditorGUILayout.LabelField($"{i + 1}", GUILayout.Width(32f));
+                        var inputType = interaction.FindPropertyRelative("inputType");
+                        EditorGUILayout.PropertyField(inputType, GUIContent.none, GUILayout.Width(InputActionLabelWidth));
+                        var axisType = interaction.FindPropertyRelative("axisType");
+                        EditorGUILayout.PropertyField(axisType, GUIContent.none, GUILayout.Width(InputActionLabelWidth));
+                        var invertXAxis = interaction.FindPropertyRelative("invertXAxis");
+                        var invertYAxis = interaction.FindPropertyRelative("invertYAxis");
+                        var interactionAxisConstraint = interaction.FindPropertyRelative("axisType");
 
-                    EditorGUI.BeginChangeCheck();
-                    actionId.intValue = EditorGUILayout.IntPopup(GUIContent.none, actionId.intValue, labels, ids, GUILayout.Width(InputActionLabelWidth));
+                        var action = interaction.FindPropertyRelative("inputAction");
+                        var actionId = action.FindPropertyRelative("id");
+                        var actionDescription = action.FindPropertyRelative("description");
+                        var actionConstraint = action.FindPropertyRelative("axisConstraint");
 
-                    if (EditorGUI.EndChangeCheck())
-                    {
-                        var inputAction = actionId.intValue == 0 ? MixedRealityInputAction.None : MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions[actionId.intValue - 1];
-                        actionDescription.stringValue = inputAction.Description;
-                        actionConstraint.enumValueIndex = (int)inputAction.AxisConstraint;
-                    }
+                        GUIContent[] labels;
+                        int[] ids;
 
-                    if ((AxisType)axisType.intValue == AxisType.Digital)
-                    {
-                        var keyCode = interaction.FindPropertyRelative("keyCode");
-                        EditorGUILayout.PropertyField(keyCode, GUIContent.none, GUILayout.Width(InputActionLabelWidth));
-                    }
-                    else
-                    {
-                        if ((AxisType)axisType.intValue == AxisType.DualAxis)
+                        switch ((AxisType)interactionAxisConstraint.intValue)
                         {
-                            EditorGUIUtility.labelWidth = InputActionLabelWidth * 0.5f;
-                            EditorGUIUtility.fieldWidth = InputActionLabelWidth * 0.5f;
-
-                            int currentAxisSetting = 0;
-
-                            if (invertXAxis.boolValue)
-                            {
-                                currentAxisSetting += 1;
-                            }
-
-                            if (invertYAxis.boolValue)
-                            {
-                                currentAxisSetting += 2;
-                            }
-
-                            EditorGUI.BeginChangeCheck();
-                            currentAxisSetting = EditorGUILayout.IntPopup(InvertContent, currentAxisSetting, InvertAxisContent, InvertAxisValues, GUILayout.Width(InputActionLabelWidth));
-
-                            if (EditorGUI.EndChangeCheck())
-                            {
-                                switch (currentAxisSetting)
-                                {
-                                    case 0:
-                                        invertXAxis.boolValue = false;
-                                        invertYAxis.boolValue = false;
-                                        break;
-                                    case 1:
-                                        invertXAxis.boolValue = true;
-                                        invertYAxis.boolValue = false;
-                                        break;
-                                    case 2:
-                                        invertXAxis.boolValue = false;
-                                        invertYAxis.boolValue = true;
-                                        break;
-                                    case 3:
-                                        invertXAxis.boolValue = true;
-                                        invertYAxis.boolValue = true;
-                                        break;
-                                }
-                            }
-
-                            EditorGUIUtility.labelWidth = defaultLabelWidth;
-                            EditorGUIUtility.fieldWidth = defaultFieldWidth;
+                            default:
+                            case AxisType.None:
+                                labels = actionLabels;
+                                ids = actionIds;
+                                break;
+                            case AxisType.Raw:
+                                labels = rawActionLabels;
+                                ids = rawActionIds;
+                                break;
+                            case AxisType.Digital:
+                                labels = digitalActionLabels;
+                                ids = digitalActionIds;
+                                break;
+                            case AxisType.SingleAxis:
+                                labels = singleAxisActionLabels;
+                                ids = singleAxisActionIds;
+                                break;
+                            case AxisType.DualAxis:
+                                labels = dualAxisActionLabels;
+                                ids = dualAxisActionIds;
+                                break;
+                            case AxisType.ThreeDofPosition:
+                                labels = threeDofPositionActionLabels;
+                                ids = threeDofPositionActionIds;
+                                break;
+                            case AxisType.ThreeDofRotation:
+                                labels = threeDofRotationActionLabels;
+                                ids = threeDofRotationActionIds;
+                                break;
+                            case AxisType.SixDof:
+                                labels = sixDofActionLabels;
+                                ids = sixDofActionIds;
+                                break;
                         }
-                        else if ((AxisType)axisType.intValue == AxisType.SingleAxis)
+
+                        EditorGUI.BeginChangeCheck();
+                        actionId.intValue = EditorGUILayout.IntPopup(GUIContent.none, actionId.intValue, labels, ids, GUILayout.Width(InputActionLabelWidth));
+
+                        if (EditorGUI.EndChangeCheck())
                         {
-                            invertXAxis.boolValue = EditorGUILayout.ToggleLeft("Invert X", invertXAxis.boolValue, GUILayout.Width(InputActionLabelWidth));
-                            EditorGUIUtility.labelWidth = defaultLabelWidth;
+                            var inputAction = actionId.intValue == 0 ? MixedRealityInputAction.None : MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions[actionId.intValue - 1];
+                            actionDescription.stringValue = inputAction.Description;
+                            actionConstraint.enumValueIndex = (int)inputAction.AxisConstraint;
+                        }
+
+                        if ((AxisType)axisType.intValue == AxisType.Digital)
+                        {
+                            var keyCode = interaction.FindPropertyRelative("keyCode");
+                            EditorGUILayout.PropertyField(keyCode, GUIContent.none, GUILayout.Width(InputActionLabelWidth));
+                        }
+                        else
+                        {
+                            if ((AxisType)axisType.intValue == AxisType.DualAxis)
+                            {
+                                EditorGUIUtility.labelWidth = InputActionLabelWidth * 0.5f;
+                                EditorGUIUtility.fieldWidth = InputActionLabelWidth * 0.5f;
+
+                                int currentAxisSetting = 0;
+
+                                if (invertXAxis.boolValue)
+                                {
+                                    currentAxisSetting += 1;
+                                }
+
+                                if (invertYAxis.boolValue)
+                                {
+                                    currentAxisSetting += 2;
+                                }
+
+                                EditorGUI.BeginChangeCheck();
+                                currentAxisSetting = EditorGUILayout.IntPopup(InvertContent, currentAxisSetting, InvertAxisContent, InvertAxisValues, GUILayout.Width(InputActionLabelWidth));
+
+                                if (EditorGUI.EndChangeCheck())
+                                {
+                                    switch (currentAxisSetting)
+                                    {
+                                        case 0:
+                                            invertXAxis.boolValue = false;
+                                            invertYAxis.boolValue = false;
+                                            break;
+                                        case 1:
+                                            invertXAxis.boolValue = true;
+                                            invertYAxis.boolValue = false;
+                                            break;
+                                        case 2:
+                                            invertXAxis.boolValue = false;
+                                            invertYAxis.boolValue = true;
+                                            break;
+                                        case 3:
+                                            invertXAxis.boolValue = true;
+                                            invertYAxis.boolValue = true;
+                                            break;
+                                    }
+                                }
+
+                                EditorGUIUtility.labelWidth = defaultLabelWidth;
+                                EditorGUIUtility.fieldWidth = defaultFieldWidth;
+                            }
+                            else if ((AxisType)axisType.intValue == AxisType.SingleAxis)
+                            {
+                                invertXAxis.boolValue = EditorGUILayout.ToggleLeft("Invert X", invertXAxis.boolValue, GUILayout.Width(InputActionLabelWidth));
+                                EditorGUIUtility.labelWidth = defaultLabelWidth;
+                            }
+                            else
+                            {
+                                EditorGUILayout.LabelField(GUIContent.none, GUILayout.Width(InputActionLabelWidth));
+                            }
+                        }
+
+                        if ((AxisType)axisType.intValue == AxisType.SingleAxis ||
+                            (AxisType)axisType.intValue == AxisType.DualAxis)
+                        {
+                            var axisCodeX = interaction.FindPropertyRelative("axisCodeX");
+                            RenderAxisPopup(axisCodeX, InputActionLabelWidth);
                         }
                         else
                         {
                             EditorGUILayout.LabelField(GUIContent.none, GUILayout.Width(InputActionLabelWidth));
                         }
-                    }
 
-                    if ((AxisType)axisType.intValue == AxisType.SingleAxis ||
-                        (AxisType)axisType.intValue == AxisType.DualAxis)
-                    {
-                        var axisCodeX = interaction.FindPropertyRelative("axisCodeX");
-                        RenderAxisPopup(axisCodeX, InputActionLabelWidth);
+                        if ((AxisType)axisType.intValue == AxisType.DualAxis)
+                        {
+                            var axisCodeY = interaction.FindPropertyRelative("axisCodeY");
+                            RenderAxisPopup(axisCodeY, InputActionLabelWidth);
+                        }
+                        else
+                        {
+                            EditorGUILayout.LabelField(GUIContent.none, GUILayout.Width(InputActionLabelWidth));
+                        }
+
+                        if (GUILayout.Button(InteractionMinusButtonContent, EditorStyles.miniButtonRight, GUILayout.ExpandWidth(true)))
+                        {
+                            interactionList.DeleteArrayElementAtIndex(i);
+                        }
                     }
                     else
                     {
-                        EditorGUILayout.LabelField(GUIContent.none, GUILayout.Width(InputActionLabelWidth));
-                    }
+                        var interactionDescription = interaction.FindPropertyRelative("description");
+                        var interactionAxisConstraint = interaction.FindPropertyRelative("axisType");
+                        var action = interaction.FindPropertyRelative("inputAction");
+                        var actionId = action.FindPropertyRelative("id");
+                        var actionDescription = action.FindPropertyRelative("description");
+                        var actionConstraint = action.FindPropertyRelative("axisConstraint");
 
-                    if ((AxisType)axisType.intValue == AxisType.DualAxis)
-                    {
-                        var axisCodeY = interaction.FindPropertyRelative("axisCodeY");
-                        RenderAxisPopup(axisCodeY, InputActionLabelWidth);
-                    }
-                    else
-                    {
-                        EditorGUILayout.LabelField(GUIContent.none, GUILayout.Width(InputActionLabelWidth));
-                    }
+                        GUIContent[] labels;
+                        int[] ids;
 
-                    if (GUILayout.Button(InteractionMinusButtonContent, EditorStyles.miniButtonRight, GUILayout.ExpandWidth(true)))
-                    {
-                        interactionList.DeleteArrayElementAtIndex(i);
+                        switch ((AxisType)interactionAxisConstraint.intValue)
+                        {
+                            default:
+                            case AxisType.None:
+                                labels = actionLabels;
+                                ids = actionIds;
+                                break;
+                            case AxisType.Raw:
+                                labels = rawActionLabels;
+                                ids = rawActionIds;
+                                break;
+                            case AxisType.Digital:
+                                labels = digitalActionLabels;
+                                ids = digitalActionIds;
+                                break;
+                            case AxisType.SingleAxis:
+                                labels = singleAxisActionLabels;
+                                ids = singleAxisActionIds;
+                                break;
+                            case AxisType.DualAxis:
+                                labels = dualAxisActionLabels;
+                                ids = dualAxisActionIds;
+                                break;
+                            case AxisType.ThreeDofPosition:
+                                labels = threeDofPositionActionLabels;
+                                ids = threeDofPositionActionIds;
+                                break;
+                            case AxisType.ThreeDofRotation:
+                                labels = threeDofRotationActionLabels;
+                                ids = threeDofRotationActionIds;
+                                break;
+                            case AxisType.SixDof:
+                                labels = sixDofActionLabels;
+                                ids = sixDofActionIds;
+                                break;
+                        }
+
+                        EditorGUI.BeginChangeCheck();
+
+                        if (currentControllerOption == null || currentControllerTexture == null)
+                        {
+                            bool skip = false;
+                            var description = interactionDescription.stringValue;
+                            if (currentControllerMapping.SupportedControllerType == SupportedControllerType.GGVHand
+                                && currentControllerMapping.Handedness == Handedness.None)
+                            {
+                                if (description != "Select")
+                                {
+                                    skip = true;
+                                }
+                            }
+
+                            if (!skip)
+                            {
+                                actionId.intValue = EditorGUILayout.IntPopup(GUIContent.none, actionId.intValue, labels, ids, GUILayout.Width(80f));
+                                EditorGUILayout.LabelField(description, GUILayout.ExpandWidth(true));
+                            }
+                        }
+                        else
+                        {
+                            var rectPosition = currentControllerOption.InputLabelPositions[i];
+                            var rectSize = InputActionLabelPosition + InputActionDropdownPosition + new Vector2(currentControllerOption.IsLabelFlipped[i] ? 0f : 8f, EditorGUIUtility.singleLineHeight);
+                            GUI.Box(new Rect(rectPosition, rectSize), GUIContent.none, EditorGUIUtility.isProSkin ? "ObjectPickerBackground" : "ObjectPickerResultsEven");
+                            var offset = currentControllerOption.IsLabelFlipped[i] ? InputActionLabelPosition : Vector2.zero;
+                            var popupRect = new Rect(rectPosition + offset, new Vector2(InputActionDropdownPosition.x, EditorGUIUtility.singleLineHeight));
+
+                            actionId.intValue = EditorGUI.IntPopup(popupRect, actionId.intValue, labels, ids);
+                            offset = currentControllerOption.IsLabelFlipped[i] ? Vector2.zero : InputActionDropdownPosition;
+                            var labelRect = new Rect(rectPosition + offset, new Vector2(InputActionLabelPosition.x, EditorGUIUtility.singleLineHeight));
+                            EditorGUI.LabelField(labelRect, interactionDescription.stringValue, currentControllerOption.IsLabelFlipped[i] ? flippedLabelStyle : EditorStyles.label);
+
+                            if (editInputActionPositions)
+                            {
+                                offset = currentControllerOption.IsLabelFlipped[i] ? InputActionLabelPosition + InputActionDropdownPosition + HorizontalSpace : InputActionFlipTogglePosition;
+                                var toggleRect = new Rect(rectPosition + offset, new Vector2(-InputActionFlipTogglePosition.x, EditorGUIUtility.singleLineHeight));
+
+                                EditorGUI.BeginChangeCheck();
+                                currentControllerOption.IsLabelFlipped[i] = EditorGUI.Toggle(toggleRect, currentControllerOption.IsLabelFlipped[i]);
+
+                                if (EditorGUI.EndChangeCheck())
+                                {
+                                    if (currentControllerOption.IsLabelFlipped[i])
+                                    {
+                                        currentControllerOption.InputLabelPositions[i] -= InputActionLabelPosition;
+                                    }
+                                    else
+                                    {
+                                        currentControllerOption.InputLabelPositions[i] += InputActionLabelPosition;
+                                    }
+                                }
+
+                                if (!isMouseInRects.Any(value => value) || isMouseInRects[i])
+                                {
+                                    if (Event.current.type == EventType.MouseDrag && labelRect.Contains(Event.current.mousePosition) && !isMouseInRects[i])
+                                    {
+                                        isMouseInRects[i] = true;
+                                        mouseDragOffset = Event.current.mousePosition - currentControllerOption.InputLabelPositions[i];
+                                    }
+                                    else if (Event.current.type == EventType.Repaint && isMouseInRects[i])
+                                    {
+                                        currentControllerOption.InputLabelPositions[i] = Event.current.mousePosition - mouseDragOffset;
+                                    }
+                                    else if (Event.current.type == EventType.DragUpdated && isMouseInRects[i])
+                                    {
+                                        currentControllerOption.InputLabelPositions[i] = Event.current.mousePosition - mouseDragOffset;
+                                    }
+                                    else if (Event.current.type == EventType.MouseUp && isMouseInRects[i])
+                                    {
+                                        currentControllerOption.InputLabelPositions[i] = Event.current.mousePosition - mouseDragOffset;
+                                        mouseDragOffset = Vector2.zero;
+                                        isMouseInRects[i] = false;
+                                    }
+                                }
+                            }
+                        }
+
+                        if (EditorGUI.EndChangeCheck())
+                        {
+                            MixedRealityInputAction inputAction = actionId.intValue == 0 ?
+                                MixedRealityInputAction.None :
+                                MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions[actionId.intValue - 1];
+                            actionId.intValue = (int)inputAction.Id;
+                            actionDescription.stringValue = inputAction.Description;
+                            actionConstraint.enumValueIndex = (int)inputAction.AxisConstraint;
+                            interactionList.serializedObject.ApplyModifiedProperties();
+                        }
                     }
                 }
-                else
-                {
-                    var interactionDescription = interaction.FindPropertyRelative("description");
-                    var interactionAxisConstraint = interaction.FindPropertyRelative("axisType");
-                    var action = interaction.FindPropertyRelative("inputAction");
-                    var actionId = action.FindPropertyRelative("id");
-                    var actionDescription = action.FindPropertyRelative("description");
-                    var actionConstraint = action.FindPropertyRelative("axisConstraint");
-
-                    GUIContent[] labels;
-                    int[] ids;
-
-                    switch ((AxisType)interactionAxisConstraint.intValue)
-                    {
-                        default:
-                        case AxisType.None:
-                            labels = actionLabels;
-                            ids = actionIds;
-                            break;
-                        case AxisType.Raw:
-                            labels = rawActionLabels;
-                            ids = rawActionIds;
-                            break;
-                        case AxisType.Digital:
-                            labels = digitalActionLabels;
-                            ids = digitalActionIds;
-                            break;
-                        case AxisType.SingleAxis:
-                            labels = singleAxisActionLabels;
-                            ids = singleAxisActionIds;
-                            break;
-                        case AxisType.DualAxis:
-                            labels = dualAxisActionLabels;
-                            ids = dualAxisActionIds;
-                            break;
-                        case AxisType.ThreeDofPosition:
-                            labels = threeDofPositionActionLabels;
-                            ids = threeDofPositionActionIds;
-                            break;
-                        case AxisType.ThreeDofRotation:
-                            labels = threeDofRotationActionLabels;
-                            ids = threeDofRotationActionIds;
-                            break;
-                        case AxisType.SixDof:
-                            labels = sixDofActionLabels;
-                            ids = sixDofActionIds;
-                            break;
-                    }
-
-                    EditorGUI.BeginChangeCheck();
-
-                    if (currentControllerOption == null || currentControllerTexture == null)
-                    {
-                        bool skip = false;
-                        var description = interactionDescription.stringValue;
-                        if (currentControllerMapping.SupportedControllerType == SupportedControllerType.WindowsMixedReality
-                            && currentControllerMapping.Handedness == Handedness.None)
-                        {
-                            if (description == "Grip Press" ||
-                                description == "Trigger Position" ||
-                                description == "Trigger Touch" ||
-                                description == "Touchpad Position" ||
-                                description == "Touchpad Touch" ||
-                                description == "Touchpad Press" ||
-                                description == "Menu Press" ||
-                                description == "Thumbstick Position" ||
-                                description == "Thumbstick Press"
-                                )
-                            {
-                                skip = true;
-                            }
-
-                            if (description == "Trigger Press (Select)")
-                            {
-                                description = "Air Tap (Select)";
-                            }
-                        }
-
-                        if (!skip)
-                        {
-                            actionId.intValue = EditorGUILayout.IntPopup(GUIContent.none, actionId.intValue, labels, ids, GUILayout.Width(80f));
-                            EditorGUILayout.LabelField(description, GUILayout.ExpandWidth(true));
-                        }
-                    }
-                    else
-                    {
-                        var rectPosition = currentControllerOption.InputLabelPositions[i];
-                        var rectSize = InputActionLabelPosition + InputActionDropdownPosition + new Vector2(currentControllerOption.IsLabelFlipped[i] ? 0f : 8f, EditorGUIUtility.singleLineHeight);
-                        GUI.Box(new Rect(rectPosition, rectSize), GUIContent.none, EditorGUIUtility.isProSkin ? "ObjectPickerBackground" : "ObjectPickerResultsEven");
-                        var offset = currentControllerOption.IsLabelFlipped[i] ? InputActionLabelPosition : Vector2.zero;
-                        var popupRect = new Rect(rectPosition + offset, new Vector2(InputActionDropdownPosition.x, EditorGUIUtility.singleLineHeight));
-
-                        actionId.intValue = EditorGUI.IntPopup(popupRect, actionId.intValue, labels, ids);
-                        offset = currentControllerOption.IsLabelFlipped[i] ? Vector2.zero : InputActionDropdownPosition;
-                        var labelRect = new Rect(rectPosition + offset, new Vector2(InputActionLabelPosition.x, EditorGUIUtility.singleLineHeight));
-                        EditorGUI.LabelField(labelRect, interactionDescription.stringValue, currentControllerOption.IsLabelFlipped[i] ? flippedLabelStyle : EditorStyles.label);
-
-                        if (editInputActionPositions)
-                        {
-                            offset = currentControllerOption.IsLabelFlipped[i] ? InputActionLabelPosition + InputActionDropdownPosition + HorizontalSpace : InputActionFlipTogglePosition;
-                            var toggleRect = new Rect(rectPosition + offset, new Vector2(-InputActionFlipTogglePosition.x, EditorGUIUtility.singleLineHeight));
-
-                            EditorGUI.BeginChangeCheck();
-                            currentControllerOption.IsLabelFlipped[i] = EditorGUI.Toggle(toggleRect, currentControllerOption.IsLabelFlipped[i]);
-
-                            if (EditorGUI.EndChangeCheck())
-                            {
-                                if (currentControllerOption.IsLabelFlipped[i])
-                                {
-                                    currentControllerOption.InputLabelPositions[i] -= InputActionLabelPosition;
-                                }
-                                else
-                                {
-                                    currentControllerOption.InputLabelPositions[i] += InputActionLabelPosition;
-                                }
-                            }
-
-                            if (!isMouseInRects.Any(value => value) || isMouseInRects[i])
-                            {
-                                if (Event.current.type == EventType.MouseDrag && labelRect.Contains(Event.current.mousePosition) && !isMouseInRects[i])
-                                {
-                                    isMouseInRects[i] = true;
-                                    mouseDragOffset = Event.current.mousePosition - currentControllerOption.InputLabelPositions[i];
-                                }
-                                else if (Event.current.type == EventType.Repaint && isMouseInRects[i])
-                                {
-                                    currentControllerOption.InputLabelPositions[i] = Event.current.mousePosition - mouseDragOffset;
-                                }
-                                else if (Event.current.type == EventType.DragUpdated && isMouseInRects[i])
-                                {
-                                    currentControllerOption.InputLabelPositions[i] = Event.current.mousePosition - mouseDragOffset;
-                                }
-                                else if (Event.current.type == EventType.MouseUp && isMouseInRects[i])
-                                {
-                                    currentControllerOption.InputLabelPositions[i] = Event.current.mousePosition - mouseDragOffset;
-                                    mouseDragOffset = Vector2.zero;
-                                    isMouseInRects[i] = false;
-                                }
-                            }
-                        }
-                    }
-
-                    if (EditorGUI.EndChangeCheck())
-                    {
-                        MixedRealityInputAction inputAction = actionId.intValue == 0 ?
-                            MixedRealityInputAction.None :
-                            MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile.InputActionsProfile.InputActions[actionId.intValue - 1];
-                        actionId.intValue = (int)inputAction.Id;
-                        actionDescription.stringValue = inputAction.Description;
-                        actionConstraint.enumValueIndex = (int)inputAction.AxisConstraint;
-                        interactionList.serializedObject.ApplyModifiedProperties();
-                    }
-                }
-
-                EditorGUILayout.EndHorizontal();
             }
 
             if (useCustomInteractionMapping)
@@ -750,6 +738,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     }
                 }
             }
+        }
+
+        private static string ResolveEditorWindowOptionsPath()
+        {
+            return MixedRealityToolkitFiles.MapRelativeFilePathToAbsolutePath(EditorWindowOptionsPath);
         }
     }
 }

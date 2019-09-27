@@ -131,113 +131,109 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             using (new GUIEnabledWrapper(isInitialized, false))
             {
                 EditorGUILayout.Space();
-                GUILayout.BeginVertical();
-
-                if (InspectorUIUtility.RenderIndentedButton(AddButtonContent, EditorStyles.miniButton))
+                using (new EditorGUILayout.VerticalScope())
                 {
-                    list.arraySize += 1;
-                    var speechCommand = list.GetArrayElementAtIndex(list.arraySize - 1);
-                    var keyword = speechCommand.FindPropertyRelative("description");
-                    keyword.stringValue = string.Empty;
-                    var gestureType = speechCommand.FindPropertyRelative("gestureType");
-                    gestureType.intValue = (int)GestureInputType.None;
-                    var action = speechCommand.FindPropertyRelative("action");
-                    var actionId = action.FindPropertyRelative("id");
-                    actionId.intValue = 0;
-                    var actionDescription = action.FindPropertyRelative("description");
-                    actionDescription.stringValue = string.Empty;
-                    var actionConstraint = action.FindPropertyRelative("axisConstraint");
-                    actionConstraint.intValue = 0;
-                }
-
-                if (list == null || list.arraySize == 0)
-                {
-                    EditorGUILayout.HelpBox("Define a new Gesture.", MessageType.Warning);
-                    GUILayout.EndVertical();
-                    UpdateGestureLabels();
-                    return;
-                }
-
-                GUILayout.BeginVertical();
-
-                GUILayout.BeginHorizontal();
-                var labelWidth = EditorGUIUtility.labelWidth;
-                EditorGUIUtility.labelWidth = 24f;
-                EditorGUILayout.LabelField(DescriptionContent, GUILayout.ExpandWidth(true));
-                EditorGUILayout.LabelField(GestureTypeContent, GUILayout.Width(80f));
-                EditorGUILayout.LabelField(ActionContent, GUILayout.Width(64f));
-                EditorGUILayout.LabelField(string.Empty, GUILayout.Width(24f));
-                EditorGUIUtility.labelWidth = labelWidth;
-                GUILayout.EndHorizontal();
-
-                var inputActions = GetInputActions();
-
-                for (int i = 0; i < list.arraySize; i++)
-                {
-                    EditorGUILayout.BeginHorizontal();
-                    SerializedProperty gesture = list.GetArrayElementAtIndex(i);
-                    var keyword = gesture.FindPropertyRelative("description");
-                    var gestureType = gesture.FindPropertyRelative("gestureType");
-                    var action = gesture.FindPropertyRelative("action");
-                    var actionId = action.FindPropertyRelative("id");
-                    var actionDescription = action.FindPropertyRelative("description");
-                    var actionConstraint = action.FindPropertyRelative("axisConstraint");
-
-                    EditorGUILayout.PropertyField(keyword, GUIContent.none, GUILayout.ExpandWidth(true));
-
-                    Debug.Assert(allGestureLabels.Length == allGestureIds.Length);
-
-                    var gestureLabels = new GUIContent[allGestureLabels.Length + 1];
-                    var gestureIds = new int[allGestureIds.Length + 1];
-
-                    gestureLabels[0] = new GUIContent(((GestureInputType)gestureType.intValue).ToString());
-                    gestureIds[0] = gestureType.intValue;
-
-                    for (int j = 0; j < allGestureLabels.Length; j++)
+                    if (InspectorUIUtility.RenderIndentedButton(AddButtonContent, EditorStyles.miniButton))
                     {
-                        gestureLabels[j + 1] = allGestureLabels[j];
-                        gestureIds[j + 1] = allGestureIds[j];
+                        list.arraySize += 1;
+                        var speechCommand = list.GetArrayElementAtIndex(list.arraySize - 1);
+                        var keyword = speechCommand.FindPropertyRelative("description");
+                        keyword.stringValue = string.Empty;
+                        var gestureType = speechCommand.FindPropertyRelative("gestureType");
+                        gestureType.intValue = (int)GestureInputType.None;
+                        var action = speechCommand.FindPropertyRelative("action");
+                        var actionId = action.FindPropertyRelative("id");
+                        actionId.intValue = 0;
+                        var actionDescription = action.FindPropertyRelative("description");
+                        actionDescription.stringValue = string.Empty;
+                        var actionConstraint = action.FindPropertyRelative("axisConstraint");
+                        actionConstraint.intValue = 0;
                     }
 
-                    EditorGUI.BeginChangeCheck();
-                    gestureType.intValue = EditorGUILayout.IntPopup(GUIContent.none, gestureType.intValue, gestureLabels, gestureIds, GUILayout.Width(80f));
-
-                    if (EditorGUI.EndChangeCheck())
+                    if (list == null || list.arraySize == 0)
                     {
-                        serializedObject.ApplyModifiedProperties();
+                        EditorGUILayout.HelpBox("Define a new Gesture.", MessageType.Warning);
                         UpdateGestureLabels();
+                        return;
                     }
 
-                    EditorGUI.BeginChangeCheck();
-
-                    actionId.intValue = EditorGUILayout.IntPopup(GUIContent.none, actionId.intValue, actionLabels, actionIds, GUILayout.Width(64f));
-
-                    if (EditorGUI.EndChangeCheck())
+                    using (new EditorGUILayout.HorizontalScope())
                     {
-                        MixedRealityInputAction inputAction = MixedRealityInputAction.None;
-                        int idx = actionId.intValue - 1;
-                        if (idx > 0 && idx < inputActions.Length)
+                        var labelWidth = EditorGUIUtility.labelWidth;
+                        EditorGUIUtility.labelWidth = 24f;
+                        EditorGUILayout.LabelField(DescriptionContent, GUILayout.ExpandWidth(true));
+                        EditorGUILayout.LabelField(GestureTypeContent, GUILayout.Width(80f));
+                        EditorGUILayout.LabelField(ActionContent, GUILayout.Width(64f));
+                        EditorGUILayout.LabelField(string.Empty, GUILayout.Width(24f));
+                        EditorGUIUtility.labelWidth = labelWidth;
+                    }
+
+                    var inputActions = GetInputActions();
+
+                    for (int i = 0; i < list.arraySize; i++)
+                    {
+                        using (new EditorGUILayout.HorizontalScope())
                         {
-                            inputAction = inputActions[idx];
+                            SerializedProperty gesture = list.GetArrayElementAtIndex(i);
+                            var keyword = gesture.FindPropertyRelative("description");
+                            var gestureType = gesture.FindPropertyRelative("gestureType");
+                            var action = gesture.FindPropertyRelative("action");
+                            var actionId = action.FindPropertyRelative("id");
+                            var actionDescription = action.FindPropertyRelative("description");
+                            var actionConstraint = action.FindPropertyRelative("axisConstraint");
+
+                            EditorGUILayout.PropertyField(keyword, GUIContent.none, GUILayout.ExpandWidth(true));
+
+                            Debug.Assert(allGestureLabels.Length == allGestureIds.Length);
+
+                            var gestureLabels = new GUIContent[allGestureLabels.Length + 1];
+                            var gestureIds = new int[allGestureIds.Length + 1];
+
+                            gestureLabels[0] = new GUIContent(((GestureInputType)gestureType.intValue).ToString());
+                            gestureIds[0] = gestureType.intValue;
+
+                            for (int j = 0; j < allGestureLabels.Length; j++)
+                            {
+                                gestureLabels[j + 1] = allGestureLabels[j];
+                                gestureIds[j + 1] = allGestureIds[j];
+                            }
+
+                            EditorGUI.BeginChangeCheck();
+                            gestureType.intValue = EditorGUILayout.IntPopup(GUIContent.none, gestureType.intValue, gestureLabels, gestureIds, GUILayout.Width(80f));
+
+                            if (EditorGUI.EndChangeCheck())
+                            {
+                                serializedObject.ApplyModifiedProperties();
+                                UpdateGestureLabels();
+                            }
+
+                            EditorGUI.BeginChangeCheck();
+
+                            actionId.intValue = EditorGUILayout.IntPopup(GUIContent.none, actionId.intValue, actionLabels, actionIds, GUILayout.Width(64f));
+
+                            if (EditorGUI.EndChangeCheck())
+                            {
+                                MixedRealityInputAction inputAction = MixedRealityInputAction.None;
+                                int idx = actionId.intValue - 1;
+                                if (idx >= 0 && idx < inputActions.Length)
+                                {
+                                    inputAction = inputActions[idx];
+                                }
+
+                                actionDescription.stringValue = inputAction.Description;
+                                actionConstraint.enumValueIndex = (int)inputAction.AxisConstraint;
+                                serializedObject.ApplyModifiedProperties();
+                            }
+
+                            if (GUILayout.Button(MinusButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
+                            {
+                                list.DeleteArrayElementAtIndex(i);
+                                serializedObject.ApplyModifiedProperties();
+                                UpdateGestureLabels();
+                            }
                         }
-
-                        actionDescription.stringValue = inputAction.Description;
-                        actionConstraint.enumValueIndex = (int)inputAction.AxisConstraint;
-                        serializedObject.ApplyModifiedProperties();
                     }
-
-                    if (GUILayout.Button(MinusButtonContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
-                    {
-                        list.DeleteArrayElementAtIndex(i);
-                        serializedObject.ApplyModifiedProperties();
-                        UpdateGestureLabels();
-                    }
-
-                    EditorGUILayout.EndHorizontal();
                 }
-
-                GUILayout.EndVertical();
-                GUILayout.EndVertical();
             }
         }
 

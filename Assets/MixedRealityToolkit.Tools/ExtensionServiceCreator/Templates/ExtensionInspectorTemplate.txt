@@ -1,0 +1,22 @@
+#if UNITY_EDITOR
+using System;
+using Microsoft.MixedReality.Toolkit.Editor;
+using Microsoft.MixedReality.Toolkit;
+using UnityEngine;
+using UnityEditor;
+
+namespace #NAMESPACE#.Editor
+{	
+	[MixedRealityServiceInspector(typeof(#INTERFACE_NAME#))]
+	public class #INSPECTOR_NAME# : BaseMixedRealityServiceInspector
+	{
+		public override void DrawInspectorGUI(object target)
+		{
+			#SERVICE_NAME# service = (#SERVICE_NAME#)target;
+			
+			// Draw inspector here
+		}
+	}
+}
+
+#endif

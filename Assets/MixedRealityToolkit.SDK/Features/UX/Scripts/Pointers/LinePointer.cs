@@ -140,10 +140,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.OnPostSceneQuery();
 
-            LineBase.enabled = IsInteractionEnabled;
-            BaseCursor?.SetVisibility(IsInteractionEnabled);
+            bool isEnabled = IsInteractionEnabled;
+            LineBase.enabled = isEnabled;
+            BaseCursor?.SetVisibility(isEnabled);
 
-            if (!LineBase.enabled) 
+            if (!isEnabled) 
             {
                 return;
             }
@@ -200,6 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             lineBase.LastPoint = endPoint;
         }
 
+        /// <inheritdoc />
         public override bool IsInteractionEnabled =>
                 // If IsTracked is not true, then we don't have position data yet (or have stale data),
                 // so remain disabled until we know where to appear (not just at the origin).

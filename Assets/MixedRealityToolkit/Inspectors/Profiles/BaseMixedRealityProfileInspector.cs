@@ -34,38 +34,36 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <summary>
         /// Renders a non-editable object field and an editable dropdown of a profile.
         /// </summary>
-        /// <param name="property"></param>
-        /// <returns></returns>
         public static void RenderReadOnlyProfile(SerializedProperty property)
         {
-            EditorGUILayout.BeginHorizontal();
-
-            EditorGUI.BeginDisabledGroup(true);
-            EditorGUILayout.ObjectField(property.objectReferenceValue != null ? "" : property.displayName, property.objectReferenceValue, typeof(BaseMixedRealityProfile), false, GUILayout.ExpandWidth(true));      
-            EditorGUI.EndDisabledGroup();
-
-            EditorGUILayout.EndHorizontal();
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                EditorGUI.BeginDisabledGroup(true);
+                EditorGUILayout.ObjectField(property.objectReferenceValue != null ? "" : property.displayName, property.objectReferenceValue, typeof(BaseMixedRealityProfile), false, GUILayout.ExpandWidth(true));
+                EditorGUI.EndDisabledGroup();
+            }
 
             if (property.objectReferenceValue != null)
             {
                 bool showReadOnlyProfile = SessionState.GetBool(property.name + ".ReadOnlyProfile", false);
 
-                EditorGUI.indentLevel++;
-                RenderFoldout(ref showReadOnlyProfile, property.displayName, () =>
+                using (new EditorGUI.IndentLevelScope())
                 {
-                    using (new EditorGUI.IndentLevelScope())
+                    RenderFoldout(ref showReadOnlyProfile, property.displayName, () =>
                     {
-                        UnityEditor.Editor subProfileEditor = UnityEditor.Editor.CreateEditor(property.objectReferenceValue);
+                        using (new EditorGUI.IndentLevelScope())
+                        {
+                            UnityEditor.Editor subProfileEditor = UnityEditor.Editor.CreateEditor(property.objectReferenceValue);
                         // If this is a default MRTK configuration profile, ask it to render as a sub-profile
                         if (typeof(BaseMixedRealityToolkitConfigurationProfileInspector).IsAssignableFrom(subProfileEditor.GetType()))
-                        {
-                            BaseMixedRealityToolkitConfigurationProfileInspector configProfile = (BaseMixedRealityToolkitConfigurationProfileInspector)subProfileEditor;
-                            configProfile.RenderAsSubProfile = true;
+                            {
+                                BaseMixedRealityToolkitConfigurationProfileInspector configProfile = (BaseMixedRealityToolkitConfigurationProfileInspector)subProfileEditor;
+                                configProfile.RenderAsSubProfile = true;
+                            }
+                            subProfileEditor.OnInspectorGUI();
                         }
-                        subProfileEditor.OnInspectorGUI();
-                    }
-                });
-                EditorGUI.indentLevel--;
+                    });
+                }
 
                 SessionState.SetBool(property.name + ".ReadOnlyProfile", showReadOnlyProfile);
             }
@@ -135,8 +133,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             // Begin the horizontal group
-            EditorGUILayout.BeginHorizontal();
-
+            using (new EditorGUILayout.HorizontalScope())
+            {
                 // Draw the object field with an empty label - label is kept in the foldout
                 property.objectReferenceValue = EditorGUILayout.ObjectField(oldObject != null ? "" : property.displayName, oldObject, profileType, false, GUILayout.ExpandWidth(true));
                 changed = (property.objectReferenceValue != oldObject);
@@ -164,14 +162,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     var renderedProfile = property.objectReferenceValue as BaseMixedRealityProfile;
                     Debug.Assert(renderedProfile != null);
                     Debug.Assert(profile != null, "No profile was set in OnEnable. Did you forget to call base.OnEnable in a derived profile class?");
-                    
+
                     if (GUILayout.Button(new GUIContent("Clone", "Replace with a copy of the default profile."), EditorStyles.miniButton, GUILayout.Width(42f)))
                     {
                         MixedRealityProfileCloneWindow.OpenWindow(profile, renderedProfile, property);
                     }
                 }
-
-            EditorGUILayout.EndHorizontal();
+            }
 
             if (property.objectReferenceValue != null)
             {
@@ -224,14 +221,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             bool state = currentState;
             if (isValidPreferenceKey)
             {
-                state = EditorPrefs.GetBool(preferenceKey, currentState);
+                state = SessionState.GetBool(preferenceKey, currentState);
             }
 
             currentState = EditorGUILayout.Foldout(state, title, true, MixedRealityStylesUtility.BoldFoldoutStyle);
 
             if (isValidPreferenceKey && currentState != state)
             {
-                EditorPrefs.SetBool(preferenceKey, currentState);
+                SessionState.SetBool(preferenceKey, currentState);
             }
 
             if (currentState)
@@ -309,8 +306,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <summary>
         /// Checks if the profile is locked
         /// </summary>
-        /// <param name="target"></param>
-        /// <param name="lockProfile"></param>
         protected static bool IsProfileLock(BaseMixedRealityProfile profile)
         {
             return MixedRealityPreferences.LockProfiles && !profile.IsCustomProfile;
