@@ -220,7 +220,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         /// <param name="target">The gameObject whose bounding box is desired</param>
         /// <param name="boundsPoints">the array of 8 points that will be filled</param>
-        /// <param name="ignoreLayers">a LayerMask variable</param>
         public static void GetUntransformedCornersFromObject(BoxCollider targetBounds, List<Vector3> boundsPoints)
         {
             Bounds cloneBounds = new Bounds(targetBounds.center, targetBounds.size);

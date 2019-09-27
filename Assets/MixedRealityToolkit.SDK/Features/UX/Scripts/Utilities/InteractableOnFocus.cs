@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             foreach (var theme in themes)
             {
-                theme.OnUpdate((int)State, null, false);
+                theme.OnUpdate((int)State, false);
             }
         }
     }
