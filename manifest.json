@@ -5733,7 +5733,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Button.html",
-          "hash": "5BgJ06BCUyS9lmqO2gENvw=="
+          "hash": "24IuFEmtP2dmpz++L3etZg=="
         }
       },
       "is_incremental": false,
@@ -8997,6 +8997,30 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.ToggleBoundingBox.html",
           "hash": "bnX+lApG3G5UB8xgWa8ahg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.UI.HideAfterEnabled.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.UI.HideAfterEnabled.html",
+          "hash": "RDEUc5b9ojzMfrZ9x+1JQA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.UI.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.UI.html",
+          "hash": "V8lmydwyEw3DWiaruXUAYg=="
         }
       },
       "is_incremental": false,
@@ -15572,7 +15596,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme.html",
-          "hash": "s9TI51fPpGekW+cDHeMGag=="
+          "hash": "hmqyx0IrwW4rPtzsjKDNMg=="
         }
       },
       "is_incremental": false,
@@ -16564,6 +16588,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.UIMaterialInstantiator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.UIMaterialInstantiator.html",
+          "hash": "fpihY3AmQc2S7d3Z+63mEQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.VisualProfile.yml",
       "output": {
         ".html": {
@@ -16580,7 +16616,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.html",
-          "hash": "Zsue3Zo/2ur3vgTONPufXg=="
+          "hash": "wMbQ1B8r4CdXnjuHr3QJxg=="
         }
       },
       "is_incremental": false,
@@ -19820,7 +19856,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "zizXDFTFyOWnj2WE/lOuxQ=="
+          "hash": "wARD+jCNe5f4NAVqceuPAw=="
         }
       },
       "is_incremental": false,
@@ -19872,11 +19908,10 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ResourceDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 1138,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
@@ -19885,17 +19920,18 @@
           "total_file_count": 128,
           "skipped_file_count": 0
         },
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
         "TocDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1135,
           "skipped_file_count": 0
         }
       }

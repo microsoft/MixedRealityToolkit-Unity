@@ -208,7 +208,7 @@ Add AudioSource component if none is found on initialized GameObject or in child
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme.html">InteractableColorTheme</a></h4>
       <section><p>Theme Engine that can set colors on a Renderer or text object based on state changes
-This Theme will try to set color on first available text object in order of TextMesh, Text, TextMeshPro, and TextMeshProUGUI
+This Theme will try to set color on first available text object in order of TextMesh, Text, TextMeshPro, and TextMeshProUGUI object
 If no text-based component can be found, then will fall back to first Renderer component found on the initialized GameObject
 and target the color shader property provided in the ThemeDefinition.</p>
 </section>
@@ -420,6 +420,10 @@ finding ToolTip Attach point information.</p>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.TransformScaleHandler.html">TransformScaleHandler</a></h4>
       <section><p>Component for setting the min/max scale values for ManipulationHandler
 or BoundingBox</p>
+</section>
+      <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.UIMaterialInstantiator.html">UIMaterialInstantiator</a></h4>
+      <section><p>This is required since UnityUI Graphic elements do not support MaterialPropertyBlocks, and any shader operations can end up modifying the material permanenetly across all shared instances.
+To prevent that we create a runtime copy of the material.</p>
 </section>
       <h4><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.VisualProfile.html">VisualProfile</a></h4>
       <section><p>Profile container for theme and for loading theme settings</p>

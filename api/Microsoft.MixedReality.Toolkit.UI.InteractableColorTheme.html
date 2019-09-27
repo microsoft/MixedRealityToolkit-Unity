@@ -87,7 +87,7 @@
   <h1 id="Microsoft_MixedReality_Toolkit_UI_InteractableColorTheme" data-uid="Microsoft.MixedReality.Toolkit.UI.InteractableColorTheme" class="text-break">Class InteractableColorTheme
   </h1>
   <div class="markdown level0 summary"><p>Theme Engine that can set colors on a Renderer or text object based on state changes
-This Theme will try to set color on first available text object in order of TextMesh, Text, TextMeshPro, and TextMeshProUGUI
+This Theme will try to set color on first available text object in order of TextMesh, Text, TextMeshPro, and TextMeshProUGUI object
 If no text-based component can be found, then will fall back to first Renderer component found on the initialized GameObject
 and target the color shader property provided in the ThemeDefinition.</p>
 </div>
@@ -692,7 +692,7 @@ should just return true - falling back to base</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected bool TrySetRendererColor(Color colour, ThemeStateProperty property, int index, float percentage)</code></pre>
+    <pre><code class="lang-csharp hljs">protected bool TrySetRendererColor(Color color, ThemeStateProperty property, int index, float percentage)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -706,8 +706,9 @@ should just return true - falling back to base</p>
     <tbody>
       <tr>
         <td><span class="xref">Color</span></td>
-        <td><span class="parametername">colour</span></td>
-        <td></td>
+        <td><span class="parametername">color</span></td>
+        <td><p>Color to try to set</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ThemeStateProperty.html">ThemeStateProperty</a></td>
@@ -874,7 +875,7 @@ If false, no TextMeshPro was found</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected bool TrySetTextMeshProColor(Color colour, ThemeStateProperty property, int index, float percentage)</code></pre>
+    <pre><code class="lang-csharp hljs">protected bool TrySetTextMeshProColor(Color color, ThemeStateProperty property, int index, float percentage)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -888,8 +889,9 @@ If false, no TextMeshPro was found</p>
     <tbody>
       <tr>
         <td><span class="xref">Color</span></td>
-        <td><span class="parametername">colour</span></td>
-        <td></td>
+        <td><span class="parametername">color</span></td>
+        <td><p>Color to try to set</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.UI.ThemeStateProperty.html">ThemeStateProperty</a></td>
