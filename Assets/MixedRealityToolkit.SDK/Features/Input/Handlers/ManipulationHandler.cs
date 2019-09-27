@@ -143,6 +143,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("Use world or local space for the constraining on an axis.")]
         private bool useLocalSpaceForConstraint = false;
 
+        public bool UseLocalSpaceForConstraint
+        {
+            get => useLocalSpaceForConstraint;
+            set => useLocalSpaceForConstraint = value;
+        }
+
         [SerializeField]
         [Tooltip("Constrain movement")]
         private MovementConstraintType constraintOnMovement = MovementConstraintType.None;
