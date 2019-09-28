@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Extensions
     public class CameraExtensionTests
     {
         private static Camera testCamera = null;
+        private const float MarginTolerance = 0.005f;
 
         [SetUp]
         public void SetUp()
@@ -28,6 +29,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Extensions
             GameObjectExtensions.DestroyGameObject(testCamera.gameObject);
         }
 
+        /// <summary>
+        /// Test that the Camera extension method IsInFov returns valid points that would be renderable on the camera
+        /// </summary>
         [Test]
         public void TestIsInFOV()
         {
@@ -37,12 +41,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Extensions
             Assert.IsFalse(testCamera.IsInFOV(Vector3.zero));
 
             Assert.IsTrue(testCamera.IsInFOV(new Vector3(0.0f, 0.0f, testCamera.nearClipPlane)));
+            Assert.IsFalse(testCamera.IsInFOV(new Vector3(0.0f, 0.0f, testCamera.nearClipPlane - MarginTolerance)));
 
-            float far = testCamera.farClipPlane - 1.0f;
+            float far = testCamera.farClipPlane;
             Assert.IsTrue(testCamera.IsInFOV(new Vector3(0.0f, 0.0f, far)));
+            Assert.IsFalse(testCamera.IsInFOV(new Vector3(0.0f, 0.0f, far + MarginTolerance)));
 
-            var frustrumSize = testCamera.GetFrustumSizeForDistance(far);
-            Assert.IsTrue(testCamera.IsInFOV(new Vector3(frustrumSize.x / 2.0f, frustrumSize.y / 2.0f, far)));
+            var frustrumSize = testCamera.GetFrustumSizeForDistance(far/2.0f);
+            Assert.IsTrue(testCamera.IsInFOV(new Vector3(frustrumSize.x / 2.0f, frustrumSize.y / 2.0f, far/2.0f)));
 
             Assert.IsFalse(testCamera.IsInFOV(2.0f * Vector3.right));
             Assert.IsFalse(testCamera.IsInFOV(2.0f * Vector3.up));
