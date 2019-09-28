@@ -254,6 +254,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                             }
                         }
 
+                        SystemType systemType = null;
+                        string typeName = null;
+                        MixedRealityDataProviderAttribute providerAttribute = null;
+
                         if (providerFoldouts[i])
                         {
                             using (new EditorGUI.IndentLevelScope())
@@ -263,8 +267,14 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                                 if (EditorGUI.EndChangeCheck())
                                 {
                                     serializedObject.ApplyModifiedProperties();
-                                    System.Type type = ((MixedRealityInputSystemProfile)serializedObject.targetObject).DataProviderConfigurations[i].ComponentType.Type;
-                                    ApplyDataProviderConfiguration(type, providerName, configurationProfile, runtimePlatform);
+                                    systemType = ((MixedRealityInputSystemProfile)serializedObject.targetObject).DataProviderConfigurations[i].ComponentType;
+                                    if (systemType != null)
+                                    {
+                                        typeName = systemType.Type?.Name;
+                                        providerAttribute = typeName != null ? GetTypeNameAndProvider(systemType) : null;
+                                    }
+
+                                    ApplyDataProviderConfiguration(typeName, providerAttribute, providerName, configurationProfile, runtimePlatform);
                                     changed = true;
                                     break;
                                 }
@@ -284,6 +294,18 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                             serializedObject.ApplyModifiedProperties();
                         }
+
+                        systemType = ((MixedRealityInputSystemProfile)serializedObject.targetObject).DataProviderConfigurations[i].ComponentType;
+                        if (systemType != null)
+                        {
+                            typeName = systemType.Type?.Name;
+                            providerAttribute = typeName != null ? GetTypeNameAndProvider(systemType) : null;
+                        }
+
+                        if (providerAttribute != null && providerAttribute.RequiredProfileName != null && configurationProfile.objectReferenceValue == null)
+                        {
+                            EditorGUILayout.HelpBox($"{(string.IsNullOrEmpty(providerAttribute.Name) ? typeName : providerAttribute.Name)} requires a {providerAttribute.RequiredProfileName}", MessageType.Warning);
+                        }
                     }
                 }
             }
@@ -291,30 +313,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             if (changed && MixedRealityToolkit.IsInitialized)
             {
                 EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
-            }
-        }
-
-        private void ApplyDataProviderConfiguration(
-            System.Type type,
-            SerializedProperty providerName,
-            SerializedProperty configurationProfile,
-            SerializedProperty runtimePlatform)
-        {
-            if (type != null)
-            {
-                MixedRealityDataProviderAttribute providerAttribute = MixedRealityDataProviderAttribute.Find(type) as MixedRealityDataProviderAttribute;
-                if (providerAttribute != null)
-                {
-                    providerName.stringValue = !string.IsNullOrWhiteSpace(providerAttribute.Name) ? providerAttribute.Name : type.Name;
-                    configurationProfile.objectReferenceValue = providerAttribute.DefaultProfile;
-                    runtimePlatform.intValue = (int)providerAttribute.RuntimePlatforms;
-                }
-                else
-                {
-                    providerName.stringValue = type.Name;
-                }
-
-                serializedObject.ApplyModifiedProperties();
             }
         }
     }

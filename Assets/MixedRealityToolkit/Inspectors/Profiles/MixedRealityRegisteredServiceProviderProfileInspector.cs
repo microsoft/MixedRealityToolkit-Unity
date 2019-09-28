@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using UnityEditor;
@@ -114,6 +115,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             }
                         }
 
+                        SystemType systemType = null;
+                        string typeName = null;
+                        MixedRealityExtensionServiceAttribute providerAttribute = null;
+
                         if (configFoldouts[i] || RenderAsSubProfile)
                         {
                             using (new EditorGUI.IndentLevelScope())
@@ -150,6 +155,18 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                             serializedObject.ApplyModifiedProperties();
                         }
+
+                        systemType = ((MixedRealityRegisteredServiceProvidersProfile)serializedObject.targetObject).Configurations[i].ComponentType;
+                        if (systemType != null)
+                        {
+                            typeName = systemType.Type?.Name;
+                            providerAttribute = typeName != null ? MixedRealityExtensionServiceAttribute.Find(systemType) : null;
+                        }
+
+                        if (providerAttribute != null && providerAttribute.RequiredProfileName != null && configurationProfile.objectReferenceValue == null)
+                        {
+                            EditorGUILayout.HelpBox($"{(string.IsNullOrEmpty(providerAttribute.Name) ? typeName : providerAttribute.Name)} requires a {providerAttribute.RequiredProfileName}", MessageType.Warning);
+                        }
                     }
                     EditorGUILayout.Space();
                 }
@@ -161,7 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
-        private void AssignDefaultConfigurationValues(System.Type componentType, SerializedProperty configurationProfile, SerializedProperty runtimePlatform)
+        private void AssignDefaultConfigurationValues(Type componentType, SerializedProperty configurationProfile, SerializedProperty runtimePlatform)
         {
             configurationProfile.objectReferenceValue = null;
             runtimePlatform.intValue = -1;

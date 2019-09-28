@@ -120,6 +120,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
                             }
                         }
 
+                        SystemType systemType = null;
+                        string typeName = null;
+                        MixedRealityDataProviderAttribute providerAttribute = null;
+
                         if (observerFoldouts[i])
                         {
                             EditorGUI.BeginChangeCheck();
@@ -127,8 +131,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
                             if (EditorGUI.EndChangeCheck())
                             {
                                 serializedObject.ApplyModifiedProperties();
-                                System.Type type = ((MixedRealitySpatialAwarenessSystemProfile)serializedObject.targetObject).ObserverConfigurations[i].ComponentType.Type;
-                                ApplyObserverConfiguration(type, observerName, observerProfile, runtimePlatform);
+                                systemType = ((MixedRealitySpatialAwarenessSystemProfile)serializedObject.targetObject).ObserverConfigurations[i].ComponentType;
+                                if (systemType != null)
+                                {
+                                    typeName = systemType.Type?.Name;
+                                    providerAttribute = typeName != null ? GetTypeNameAndProvider(systemType) : null;
+                                }
+                                ApplyDataProviderConfiguration(typeName, providerAttribute, observerName, observerProfile, runtimePlatform);
                                 break;
                             }
 
@@ -146,6 +155,18 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
 
                             serializedObject.ApplyModifiedProperties();
                         }
+
+                        systemType = ((MixedRealitySpatialAwarenessSystemProfile)serializedObject.targetObject).ObserverConfigurations[i].ComponentType;
+                        if (systemType != null)
+                        {
+                            typeName = systemType.Type?.Name;
+                            providerAttribute = typeName != null ? GetTypeNameAndProvider(systemType) : null;
+                        }
+
+                        if (providerAttribute != null && providerAttribute.RequiredProfileName != null && observerProfile.objectReferenceValue == null)
+                        {
+                            EditorGUILayout.HelpBox($"{(string.IsNullOrEmpty(providerAttribute.Name) ? typeName : providerAttribute.Name)} requires a {providerAttribute.RequiredProfileName}", MessageType.Warning);
+                        }
                     }
                 }
 
@@ -153,29 +174,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
                 {
                     EditorApplication.delayCall += () => MixedRealityToolkit.Instance.ResetConfiguration(MixedRealityToolkit.Instance.ActiveProfile);
                 }
-            }
-        }
-        private void ApplyObserverConfiguration(
-            System.Type type, 
-            SerializedProperty observerName,
-            SerializedProperty configurationProfile,
-            SerializedProperty runtimePlatform)
-        {
-            if (type != null)
-            {
-                MixedRealityDataProviderAttribute observerAttribute = MixedRealityDataProviderAttribute.Find(type) as MixedRealityDataProviderAttribute;
-                if (observerAttribute != null)
-                {
-                    observerName.stringValue = !string.IsNullOrWhiteSpace(observerAttribute.Name) ? observerAttribute.Name : type.Name;
-                    configurationProfile.objectReferenceValue = observerAttribute.DefaultProfile;
-                    runtimePlatform.intValue = (int)observerAttribute.RuntimePlatforms;
-                }
-                else
-                {
-                    observerName.stringValue = type.Name;
-                }
-
-                serializedObject.ApplyModifiedProperties();
             }
         }
     }

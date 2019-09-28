@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System.Reflection;
 using UnityEditor;
@@ -243,6 +244,51 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     EditorGUILayout.HelpBox("This profile is not assigned to the active MRTK instance in your scene. Some properties may not be editable", MessageType.Error);
                 }
             }
+        }
+
+        /// <summary>
+        /// Applies the most relevant settings of DataProviderConfigurations
+        /// </summary>
+        /// <param name="typeName">name of the Type of the Data Provider</param>
+        /// <param name="providerAttribute"> the corresponding attribute</param>
+        /// <param name="providerName"> the target provider Name</param>
+        /// <param name="configurationProfile">the target configuration profile</param>
+        /// <param name="runtimePlatform">the target runtime plaform</param>
+        protected void ApplyDataProviderConfiguration(
+            string typeName,
+            MixedRealityDataProviderAttribute providerAttribute,
+            SerializedProperty providerName,
+            SerializedProperty configurationProfile,
+            SerializedProperty runtimePlatform)
+        {
+            if (typeName != null)
+            {
+                if (providerAttribute != null)
+                {
+                    providerName.stringValue = !string.IsNullOrWhiteSpace(providerAttribute.Name) ? providerAttribute.Name : typeName;
+                    configurationProfile.objectReferenceValue = providerAttribute.DefaultProfile;
+                    runtimePlatform.intValue = (int)providerAttribute.RuntimePlatforms;
+                }
+                else
+                {
+                    providerName.stringValue = typeName;
+                }
+
+                serializedObject.ApplyModifiedProperties();
+            }
+        }
+
+        /// <summary>
+        /// Returns the MixedRealityDataProviderAttribute on a given type
+        /// </summary>
+        /// <param name="type">The type on which to look after the attribute</param>
+        /// <returns>The MixedRealityDataProviderAttribute for the given type</returns>
+        protected MixedRealityDataProviderAttribute GetTypeNameAndProvider(SystemType type)
+        {
+            if (type == null) { return null; }
+
+            MixedRealityExtensionServiceAttribute serviceAttribute = MixedRealityExtensionServiceAttribute.Find(type);
+            return serviceAttribute != null ? MixedRealityExtensionServiceAttribute.Find(type) as MixedRealityDataProviderAttribute : null;
         }
     }
 }

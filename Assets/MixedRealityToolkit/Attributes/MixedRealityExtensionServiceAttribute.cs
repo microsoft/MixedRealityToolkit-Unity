@@ -34,6 +34,11 @@ namespace Microsoft.MixedReality.Toolkit
         public virtual SupportedPlatforms RuntimePlatforms { get; }
 
         /// <summary>
+        /// Is a Profile explicitly required?
+        /// </summary>
+        public virtual string RequiredProfileName { get; }
+
+        /// <summary>
         /// The file path to the default profile asset relative to the package folder.
         /// </summary>
         public virtual string DefaultProfilePath { get; }
@@ -87,12 +92,14 @@ namespace Microsoft.MixedReality.Toolkit
             SupportedPlatforms runtimePlatforms,
             string name = "",
             string defaultProfilePath = "",
-            string packageFolder = "MixedRealityToolkit")
+            string packageFolder = "MixedRealityToolkit",
+            string requiredProfileName = null)
         {
             RuntimePlatforms = runtimePlatforms;
             Name = name;
             DefaultProfilePath = defaultProfilePath;
             PackageFolder = packageFolder;
+            RequiredProfileName = requiredProfileName;
         }
 
 #if UNITY_EDITOR

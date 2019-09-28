@@ -22,7 +22,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         SupportedPlatforms.WindowsEditor | SupportedPlatforms.MacEditor | SupportedPlatforms.LinuxEditor,
         "Input Simulation Service",
         "Profiles/DefaultMixedRealityInputSimulationProfile.asset",
-        "MixedRealityToolkit.SDK")]
+        "MixedRealityToolkit.SDK",
+        "MixedRealityInputSimulationProfile")]
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/InputSimulation/InputSimulationService.html")]
     public class InputSimulationService :
         BaseInputSimulationService,

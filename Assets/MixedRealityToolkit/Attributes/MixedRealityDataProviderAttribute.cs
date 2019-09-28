@@ -22,7 +22,8 @@ namespace Microsoft.MixedReality.Toolkit
             SupportedPlatforms runtimePlatforms,
             string name = "",
             string profilePath = "",
-            string packageFolder = "MixedRealityToolkit") : base(runtimePlatforms, name, profilePath, packageFolder)
+            string packageFolder = "MixedRealityToolkit",
+            string requiredProfileName = null) : base(runtimePlatforms, name, profilePath, packageFolder, requiredProfileName)
         {
             ServiceInterfaceType = serviceInterfaceType;
         }
