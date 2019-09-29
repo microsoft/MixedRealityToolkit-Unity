@@ -39,7 +39,7 @@ MixedRealityToolkit.SceneSystem.LoadContent(contentName, loadSceneMode);
 ```
  
 ## Returning to the main menu scene ##
-To return to the main menu scene (MRTKExamplesHubMainMenu scene), you can use the exact same method. **ToggleFeaturesPanelExamplesHub.prefab** provides the 'Home' button which contains the **LoadContentScene** script. Use this prefab or provide your custom home button in each scene to allow the user to return to the main scene. You can put this **ToggleFeaturesPanelExamplesHub.prefab** in the **MRTKExamplesHub** scene to make it always visible since **MRTKExamplesHub** is shared container scene. Make sure to hide/deactivate **ToggleFeaturesPanel.prefab** in each example scene.
+To return to the main menu scene (MRTKExamplesHubMainMenu scene), you can use the same Scene System `LoadContent()` method. The **ToggleFeaturesPanelExamplesHub.prefab** provides the 'Home' button which contains the **LoadContentScene** script. Use this prefab or provide a custom home button in each scene to allow the user to return to the main scene. One can put the **ToggleFeaturesPanelExamplesHub.prefab** in the **MRTKExamplesHub** scene to make it always visible since **MRTKExamplesHub** is a shared container scene. Make sure to hide/deactivate **ToggleFeaturesPanel.prefab** in each example scene.
 
 <img src="../Documentation/Images/ExamplesHub/MRTK_ExamplesHubToggleFeaturesPanel.png">
 
