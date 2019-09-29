@@ -19,7 +19,7 @@ On the bottom of the Inspector, it displays the list of the scenes defined in th
 Example of loading multiple scenes.
 
 ## Running the scene ##
-The scene works on both Unity's game mode and the device. Run **MRTKExamplesHub** scene in the Unity editor and use MRTK's input simulation to enter and interact with the scene contents. To build and deploy, simply build **MRTKExamplesHub** scene with other scenes that are included in the Scene System's list. The inspector also makes it easy to add scenes to the Build Settings. In the Building Settings, make sure **MRTKExamplesHub** scene is on the top of the list.
+The scene works in both Unity's game mode and on device. Run the **MRTKExamplesHub** scene in the Unity editor and use MRTK's input simulation to interact with the scene contents. To build and deploy, simply build **MRTKExamplesHub** scene with other scenes that are included in the Scene System's list. The inspector also makes it easy to add scenes to the Build Settings. In the Building Settings, make sure **MRTKExamplesHub** scene is on the top of the list at index 0.
 
 <img src="../Documentation/Images/ExamplesHub/MRTK_ExamlesHub_BuildSettings.png" width="450">
 
