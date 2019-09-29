@@ -99,7 +99,7 @@ To change the text of the button, update the *Text* component of the *TextMeshPr
 
 <img src="../Documentation/Images/Button/MRTK_Button_IconUpdate1.png">
 
-To create a new icon material, duplicate one of the existing icon materials. You can find these materials under ``MixedRealityToolkit.SDK/Features/UX/Interactable/Materials`` folder. 
+To create a new icon material, duplicate one of the existing icon materials. These can be found under ``MixedRealityToolkit.SDK/Features/UX/Interactable/Materials`` folder. 
 
 <img src="../Documentation/Images/Button/MRTK_Button_IconUpdate2.png"  width="350">
 
