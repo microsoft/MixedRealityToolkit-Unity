@@ -95,7 +95,7 @@ The *ButtonContent* object contains front plate, text label and icon. The *Fron
 
 ## How to change the icon and text
 
-To change the text of the button, update the *Text* component of the *TextMeshPro* object under *IconAndText*. You can change the icon by replacing the material that is assigned to *UIButtonSquareIcon* object. By default, *HolographicButtonIconFontMaterial* is assigned. 
+To change the text of the button, update the *Text* component of the *TextMeshPro* object under *IconAndText*. Changing the icon can be done by replacing the material that is assigned to *UIButtonSquareIcon* object. By default, *HolographicButtonIconFontMaterial* is assigned. 
 
 <img src="../Documentation/Images/Button/MRTK_Button_IconUpdate1.png">
 
