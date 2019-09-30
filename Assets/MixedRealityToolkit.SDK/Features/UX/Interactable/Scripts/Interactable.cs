@@ -319,7 +319,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     // If we are disabling input, we should reset our base input tracking states since we will not be responding to input while disabled
                     if (!value)
                     {
-                        ResetBaseStates();
+                        ResetInputTrackingStates();
                     }
 
                     SetState(InteractableStates.InteractableStateEnum.Disabled, !value);
@@ -520,12 +520,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         protected List<IInteractableHandler> handlers = new List<IInteractableHandler>();
 
-        protected Coroutine globalTimer;
-
-        // A click must occur within this many seconds after an input down
+        /// <summary>
+        /// A click must occur within this many seconds after an input down
+        /// </summary>
         protected float clickTime = 1.5f;
         protected Coroutine clickValidTimer;
+        
+        /// <summary>
+        /// Amount of time to "simulate" press states for interactions that do not utilize input up/down such as voice command
+        /// This allows for visual feedbacks and other typical UX responsiveness and behavior to occur
+        /// </summary>
         protected const float globalFeedbackClickTime = 0.3f;
+        protected Coroutine globalTimer;
 
         #region Gesture State Variables
 
@@ -581,7 +587,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (focusingPointers.Count == 0)
             {
-                ResetBaseStates();
+                ResetInputTrackingStates();
             }
         }
 
@@ -598,7 +604,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 RegisterHandler<IMixedRealityInputHandler>(false);
             }
 
-            ResetBaseStates();
+            ResetInputTrackingStates();
         }
 
         protected virtual void Start()
@@ -769,11 +775,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Reset the basic interaction states
+        /// Reset the input tracking states directly managed by Interactable such as whether the component has focus or is being grabbed
+        /// Useful for when needing to reset input interactions
         /// </summary>
-        public void ResetBaseStates()
+        public void ResetInputTrackingStates()
         {
-            // reset states
             HasFocus = false;
             HasPress = false;
             HasPhysicalTouch = false;
@@ -799,7 +805,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             focusingPointers.Clear();
             pressingInputSources.Clear();
 
-            ResetBaseStates();
+            ResetInputTrackingStates();
 
             IsEnabled = true;
             HasObservation = false;
@@ -1479,6 +1485,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion InputHandlers
 
         #region Deprecated
+
+        /// <summary>
+        /// Resets input tracking states such as focus or grab that are directly controlled by Interactable
+        /// </summary>
+        [System.Obsolete("Use ResetInputTrackingStates property instead")]
+        public void ResetBaseStates()
+        {
+            ResetInputTrackingStates();
+        }
 
         /// <summary>
         /// A public way to access the current dimension
