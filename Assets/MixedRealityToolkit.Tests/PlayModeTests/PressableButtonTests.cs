@@ -655,7 +655,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return PressButtonWithHand();
 
-            Assert.True(wasClicked, "Interactable is enabled, and should recieve click events");
+            Assert.True(wasClicked, "Interactable is enabled, and should receive click events");
             wasClicked = false;
 
             // Disable Interactable, should not recieve click events
