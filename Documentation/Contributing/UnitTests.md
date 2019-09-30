@@ -54,7 +54,7 @@ cd scripts\tests
 python .\generate_repeat_tests.py -n 5 -t MyTest
 ```
 
-Copy and paste the output into your test file. If you need to run multiple tests in sequence:
+Copy and paste the output into your test file. The following script is for running multiple tests in sequence:
 
 ```
 cd scripts\tests
