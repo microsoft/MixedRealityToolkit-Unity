@@ -6,7 +6,7 @@ MRTK has a set of tests to ensure that changes to our code do not regress existi
 
 2. If fixing a bug, write a test to verify the fix and ensure that future code modifications won't break it again.
 
-2. If writing a feature, write new tests to ensure that other people don't break your feature in the future.
+2. If writing a feature, write new tests to prevent upcoming code changes breaking this feature.
 
 ## Running tests
 ### Running tests from Unity editor
