@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -439,15 +438,14 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
             TryIOWithRetries(() => Directory.Delete(targetDir, false), 2, TimeSpan.FromMilliseconds(100), true);
 
-            if (waitForDirectoryDelete)
+            if (waitForDirectoryDelete && Application.isEditor)
             {
-#if UNITY_EDITOR // Just in case make sure this is forced to be Editor only
+                // Just in case make sure this is forced to be Editor only
                 // Sometimes the delete isn't committed fast enough, lets spin and wait for this to happen
                 for (int i = 0; i < 10 && Directory.Exists(targetDir); i++)
                 {
                     Thread.Sleep(100);
                 }
-#endif
             }
         }
 
@@ -595,4 +593,3 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         }
     }
 }
-#endif
