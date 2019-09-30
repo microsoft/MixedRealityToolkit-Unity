@@ -33,7 +33,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
         }
 
-        private static readonly String BaseMixedRealityProfileClassName = typeof(BaseMixedRealityProfile).Name;
         private static Dictionary<Type, ScriptableObject[]> profileCaches = new Dictionary<Type, ScriptableObject[]>();
         private static Dictionary<Type, GUIContent[]> profileContentCaches = new Dictionary<Type, GUIContent[]>();
         private static Dictionary<Type, Type[]> profileTypesForServiceCaches = new Dictionary<Type, Type[]>();
@@ -99,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <returns></returns>
         public static bool IsConcreteProfileType(Type profileType)
         {
-            return profileType.Name != BaseMixedRealityProfileClassName;
+            return profileType != typeof(BaseMixedRealityProfile);
         }
 
         /// <summary>
