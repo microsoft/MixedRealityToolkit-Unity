@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit
 
         private bool CanRouteInput()
         {
-            return routingTarget != null && routingTarget.Enabled;
+            return routingTarget != null && routingTarget.IsEnabled;
         }
 
         /// <summary>

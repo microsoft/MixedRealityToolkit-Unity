@@ -659,7 +659,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             wasClicked = false;
 
             // Disable Interactable, should not recieve click events
-            interactable.Enabled = false;
+            interactable.IsEnabled = false;
 
             yield return PressButtonWithHand();
 
