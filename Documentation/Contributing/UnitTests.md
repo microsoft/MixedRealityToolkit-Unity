@@ -77,7 +77,7 @@ public IEnumerator A4MyTest0(){ yield return MyTest();}
 public IEnumerator MyTest() {...}
 ```
 
-Open the test runner and you should see your new tests that you can call repeatedly.
+Open the test runner and observe the new tests that can now be called repeatedly.
 
 ## Writing Tests
 To ensure MRTK being a stable and reliable toolkit, every feature should come with unit tests and sample usage in one of the example scenes. Having good test coverage in a big codebase like MRTK is crucial for stability and having confidence when doing changes in code.
