@@ -39,7 +39,7 @@ To have multiple test runs locally, modify the according test scripts. The follo
 
 Prerequisite for running the python script is having [Python 3.X installed](https://www.python.org/downloads/).
 
-Let's say you have a test that you want to run many times:
+For a single test that needs to me executed multiple times:
 
 ```
 [UnityTest]
