@@ -35,7 +35,7 @@ Only after all of the tests passed successfully the PR can be merged into mrtk_d
 ### Running stress tests / bulk tests
 Sometimes tests only fail occasionally, it can be frustrating to debug these failures. The best way we have found to reliably repeat tests is to modify scripts locally, since unity's test system [does not currently support the Retry attribute](https://docs.unity3d.com/Packages/com.unity.test-framework@1.0/manual/index.html).
 
-To run multiple tests locally, modify your test to call your test multiple times. We have provided a python script to make this more convenient.
+To have multiple test runs locally, modify the according test scripts. The following python script should make this scenario more convenient.
 
 First, make sure you have [Python 3.X installed](https://www.python.org/downloads/).
 
