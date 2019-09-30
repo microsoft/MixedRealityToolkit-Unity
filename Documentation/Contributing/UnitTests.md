@@ -2,7 +2,7 @@
 # Writing and Running Tests in MRTK
 MRTK has a set of tests to ensure that changes to our code do not regress existing behavior. Before submitting a pull request, make sure to :
 
-1. Run the tests locally to make sure your changes don't regress existing behavior (you will not be able to check in if any tests fail)
+1. Run the tests locally so your changes don't regress existing behavior (completing PRs won't be allowed if any tests fail)
 
 2. If fixing a bug, write a test to prevent others from breaking your bugfix.
 
