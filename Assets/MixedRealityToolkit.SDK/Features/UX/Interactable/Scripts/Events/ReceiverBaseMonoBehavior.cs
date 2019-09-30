@@ -14,9 +14,21 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     public class ReceiverBaseMonoBehavior : MonoBehaviour, IInteractableHandler
     {
+        /// <summary>
+        /// Types of directions to search for Interactable component in transform heirachy
+        /// </summary>
         public enum SearchScopes { Self, Parent, Children };
+
+        /// <summary>
+        /// Interactable to target
+        /// </summary>
         public Interactable Interactable;
+
+        /// <summary>
+        /// directions to search for Interactable component in transform heirachy if none assigned
+        /// </summary>
         public SearchScopes InteractableSearchScope;
+
         protected State lastState;
 
         /// <summary>

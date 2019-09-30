@@ -104,6 +104,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private readonly GUIContent uninstallLabel = new GUIContent("Uninstall First", "Uninstall application before installing");
 
+        private readonly GUIContent researchModeCapabilityLabel = new GUIContent("Enable Research Mode", "Enables research mode of HoloLens. This allows access to raw sensor data.");
+
+        private readonly GUIContent allowUnsafeCode = new GUIContent("Allow Unsafe Code", "Modify 'Assembly-CSharp.csproj' to allow use of unsafe code. Be careful using this in production.");
+
         #endregion Labels
 
         #region Properties
@@ -366,6 +370,28 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
                 using (new EditorGUILayout.HorizontalScope())
                 {
+                    // If the WSA target device is HoloLens, show the checkboxes for research mode
+                    if (EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens)
+                    {
+                        // Enable Research Mode Capability
+                        bool curResearchModeCapabilityEnabled = UwpBuildDeployPreferences.ResearchModeCapabilityEnabled;
+                        bool newResearchModeCapabilityEnabled = EditorGUILayout.ToggleLeft(researchModeCapabilityLabel, curResearchModeCapabilityEnabled);
+
+                        if (newResearchModeCapabilityEnabled != curResearchModeCapabilityEnabled)
+                        {
+                            UwpBuildDeployPreferences.ResearchModeCapabilityEnabled = newResearchModeCapabilityEnabled;
+                        }
+
+                        // Allow unsafe code
+                        bool curAllowUnsafeCode = UwpBuildDeployPreferences.AllowUnsafeCode;
+                        bool newAllowUnsafeCode = EditorGUILayout.ToggleLeft(allowUnsafeCode, curAllowUnsafeCode);
+
+                        if (newAllowUnsafeCode != curAllowUnsafeCode)
+                        {
+                            UwpBuildDeployPreferences.AllowUnsafeCode = newAllowUnsafeCode;
+                        }
+                    }
+
                     GUILayout.FlexibleSpace();
                     GUI.enabled = ShouldOpenSLNBeEnabled;
 

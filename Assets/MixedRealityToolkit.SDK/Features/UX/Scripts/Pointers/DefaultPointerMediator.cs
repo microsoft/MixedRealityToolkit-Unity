@@ -1,12 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    /// <summary>
+    /// The default implementation for pointer mediation in MRTK which is responsible for
+    /// determining which pointers are active based on the state of all pointers.
+    /// For example, one of the key things this class does is disable far pointers when a near pointer is close to an object.
+    /// </summary>
     public class DefaultPointerMediator : IMixedRealityPointerMediator
     {
         protected readonly HashSet<IMixedRealityPointer> allPointers = new HashSet<IMixedRealityPointer>();
@@ -17,9 +21,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected readonly Dictionary<IMixedRealityInputSource, HashSet<IMixedRealityPointer>> pointerByInputSourceParent = new Dictionary<IMixedRealityInputSource, HashSet<IMixedRealityPointer>>();
 
         private IPointerPreferences pointerPreferences;
+
+        public DefaultPointerMediator()
+            : this(null)
+        {
+        }
+
         public DefaultPointerMediator(IPointerPreferences pointerPrefs)
         {
-            this.pointerPreferences = pointerPrefs;
+            pointerPreferences = pointerPrefs;
         }
 
         public virtual void RegisterPointers(IMixedRealityPointer[] pointers)
@@ -177,12 +187,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 unassignedPointer.IsActive = true;
             }
-
         }
 
         private void ApplyCustomPointerBehaviors()
         {
-            if (CoreServices.InputSystem.FocusProvider is FocusProvider focusProvider)
+            if (pointerPreferences != null)
             {
                 Action<IMixedRealityPointer, PointerBehavior> setPointerState =
                     (ptr, behavior) =>
@@ -200,6 +209,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
                         unassignedPointers.Remove(ptr);
                     };
+
                 foreach (IMixedRealityPointer pointer in allPointers)
                 {
                     setPointerState(pointer, pointerPreferences.GetPointerBehavior(pointer));

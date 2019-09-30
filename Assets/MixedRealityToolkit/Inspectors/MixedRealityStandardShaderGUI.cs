@@ -411,7 +411,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 EditorGUI.indentLevel += 2;
 
-                albedoAlphaMode.floatValue = EditorGUILayout.Popup(albedoAlphaMode.displayName, (int)albedoAlphaMode.floatValue, Styles.albedoAlphaModeNames);
+                materialEditor.ShaderProperty(albedoAlphaMode, albedoAlphaMode.displayName);
 
                 if ((RenderingMode)renderingMode.floatValue == RenderingMode.Cutout || 
                     (RenderingMode)renderingMode.floatValue == RenderingMode.Custom)
