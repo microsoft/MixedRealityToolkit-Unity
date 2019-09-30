@@ -79,7 +79,7 @@ public IEnumerator MyTest() {...}
 
 Open the test runner and observe the new tests that can now be called repeatedly.
 
-## Writing Tests
+## Writing tests
 To ensure MRTK being a stable and reliable toolkit, every feature should come with unit tests and sample usage in one of the example scenes. Having good test coverage in a big codebase like MRTK is crucial for stability and having confidence when doing changes in code.
 
 MRTK uses the [Unity Test Runner](https://docs.unity3d.com/Manual/testing-editortestsrunner.html) which uses a Unity
