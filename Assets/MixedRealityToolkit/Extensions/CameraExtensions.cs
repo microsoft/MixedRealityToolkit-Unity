@@ -25,16 +25,22 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="camera">The camera to check the point against</param>
         public static bool IsInFOV(this Camera camera, Vector3 position)
         {
+            Vector3 deltaPos = position - camera.transform.position;
+            Vector3 headDeltaPos = MathUtilities.TransformDirectionFromTo(null, camera.transform, deltaPos);
+
+            if (headDeltaPos.z < camera.nearClipPlane || headDeltaPos.z > camera.farClipPlane)
+            {
+                return false;
+            }
+
             float verticalFovHalf = camera.fieldOfView * 0.5f;
             float horizontalFovHalf = camera.GetHorizontalFieldOfViewRadians() * Mathf.Rad2Deg * 0.5f;
 
-            Vector3 deltaPos = position - camera.transform.position;
-            Vector3 headDeltaPos = MathUtilities.TransformDirectionFromTo(null, camera.transform, deltaPos).normalized;
-
+            headDeltaPos = headDeltaPos.normalized;
             float yaw = Mathf.Asin(headDeltaPos.x) * Mathf.Rad2Deg;
             float pitch = Mathf.Asin(headDeltaPos.y) * Mathf.Rad2Deg;
 
-            return (Mathf.Abs(yaw) < horizontalFovHalf && Mathf.Abs(pitch) < verticalFovHalf);
+            return Mathf.Abs(yaw) < horizontalFovHalf && Mathf.Abs(pitch) < verticalFovHalf;
         }
 
         /// <summary>
