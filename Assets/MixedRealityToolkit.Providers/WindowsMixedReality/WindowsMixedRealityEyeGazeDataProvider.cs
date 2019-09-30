@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.Windows.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -92,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <inheritdoc />
         public bool CheckCapability(MixedRealityCapability capability)
         {
-            if (WindowsApiChecker.UniversalApiContractV8_IsAvailable)
+            if (eyesApiAvailable)
             {
 #if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
                 return (capability == MixedRealityCapability.EyeTracking) && EyesPose.IsSupported();
@@ -117,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             {
 #if (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
                 AskForETPermission();
-#endif
+#endif // (UNITY_WSA && DOTNETWINRT_PRESENT) || WINDOWS_UWP
                 ReadProfile();
             }
         }
