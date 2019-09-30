@@ -84,13 +84,80 @@
 
 <p><img src="Images/BoundingBox/MRTK_BoundingBox_Main.png" alt="Bounding box"></p>
 <p>The <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/BoundingBox/BoundingBox.cs"><code>BoundingBox.cs</code></a> script provides basic functionality for transforming objects in mixed reality. A bounding box will show a cube around the hologram to indicate that it can be interacted with. Handles on the corners and edges of the cube allow scaling or rotating the object. The bounding box also reacts to user input. On HoloLens 2 for example the bounding box responds to finger proximity, providing visual feedback to help perceive the distance from the object. All interactions and visuals can be easily customized. </p>
-<p>For more information please see <a href="https://docs.microsoft.com/en-us/windows/mixed-reality/app-bar-and-bounding-box">App Bar and Bounding Box</a> on Windows Dev Center.</p>
+<p>For more information please see <a href="https://docs.microsoft.com/en-us/windows/mixed-reality/app-bar-and-bounding-box">Bounding Box and App Bar</a> on Windows Dev Center.</p>
 <h2 id="example-scene">Example scene</h2>
 <p>You can find examples of Bounding Box configurations in the <code>BoundingBoxExamples</code> scene.</p>
-<img src="Images/BoundingBox/MRTK_BoundingBox_Examples.png" width="550">
-<h2 id="how-to-use-a-bounding-box">How to use a bounding box</h2>
-<p>To enable a bounding box around an object, simply assign the <code>BoundingBox</code> script to any GameObject. Note that the object will need a box collider, added in the <em>Bounds Override</em> field in the inspector.</p>
+<img src="Images/BoundingBox/MRTK_BoundingBox_Examples.png">
+<h2 id="how-to-add-and-configure-a-bounding-box-using-unity-inspector">How to add and configure a bounding box using Unity Inspector</h2>
+<ol>
+<li>Add Box Collider to an object</li>
+<li>Assign <code>BoundingBox</code> script to an object</li>
+<li>Configure options such as 'Activation' methods (see <a href="#inspector-properties">Inspector properties</a> section below)</li>
+<li>(Optional) Assign prefabs and materials for HoloLens 2 style Bounding Box (see <a href="#handle-styles">Handle styles</a> section below)</li>
+</ol>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Use <em>Target Object</em> and <em>Bounds Override</em> field in the inspector to assign specific object and collider in the object with multiple child components.</p>
+</div>
 <p><img src="Images/BoundingBox/MRTK_BoundingBox_Assign.png" alt="Bounding Box"></p>
+<h2 id="how-to-add-and-configure-a-bounding-box-in-the-code">How to add and configure a bounding box in the code</h2>
+<ol>
+<li>Instantiate cube gameobject</li>
+</ol>
+<pre><code class="lang-csharp">   GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+</code></pre>
+<ol>
+<li>Assign <code>BoundingBox</code> script to an object with collider, using AddComponent&lt;&gt;()</li>
+</ol>
+<pre><code class="lang-csharp">   private BoundingBox bbox;
+   bbox = cube.AddComponent&lt;BoundingBox&gt;();
+</code></pre>
+<ol>
+<li>Configure options (see <a href="#inspector-properties">Inspector properties</a> section below)</li>
+</ol>
+<pre><code class="lang-csharp">   // Make the scale handles large
+   bbox.ScaleHandleSize = 0.1f;
+   // Hide rotation handles
+   bbox.ShowRotationHandleForX = false;
+   bbox.ShowRotationHandleForY = false;
+   bbox.ShowRotationHandleForZ = false;
+</code></pre>
+<ol>
+<li>(Optional) Assign prefabs and materials for HoloLens 2 style Bounding Box. This still requires assignments through the inspector since the materials and prefabs should be dynamically loaded.</li>
+</ol>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Using Unity's 'Resources' folder or <a href="https://docs.unity3d.com/ScriptReference/Shader.Find.html">Shader.Find</a> for dynamically loading shaders is not recommended since shader permutations may be missing at runtime.</p>
+</div>
+<pre><code class="lang-csharp">   bbox.BoxMaterial = [Assign BoundingBox.mat]
+   bbox.BoxGrabbedMaterial = [Assign BoundingBoxGrabbed.mat]
+   bbox.HandleMaterial = [Assign BoundingBoxHandleWhite.mat]
+   bbox.HandleGrabbedMaterial = [Assign BoundingBoxHandleBlueGrabbed.mat]
+   bbox.ScaleHandlePrefab = [Assign MRTK_BoundingBox_ScaleHandle.prefab]
+   bbox.ScaleHandleSlatePrefab = [Assign MRTK_BoundingBox_ScaleHandle_Slate.prefab]
+   bbox.ScaleHandleSize = 0.016f;
+   bbox.ScaleHandleColliderPadding = 0.016f;
+   bbox.RotationHandleSlatePrefab = [Assign MRTK_BoundingBox_RotateHandle.prefab]
+   bbox.RotationHandleSize = 0.016f;
+   bbox.RotateHandleColliderPadding = 0.016f;
+</code></pre>
+<h3 id="example-set-minimum-maximum-bounding-box-scale-using-transformscalehandler">Example: Set minimum, maximum bounding box scale using TransformScaleHandler</h3>
+<p>To set the minimum and maximum scale, use the <a href="cref:Microsoft.MixedReality.Toolkit.UI.TransformScaleHander"><code>TransformScaleHandler</code></a>. You can also use TransformScaleHandler to set minimum and maximum scale for <a href="cref:Microsoft.MixedReality.Toolkit.UI.ManipulationHandler"><code>ManipulationHandler</code></a>.</p>
+<pre><code class="lang-csharp">   GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+   bbox = cube.AddComponent&lt;BoundingBox&gt;();
+   // Important: BoundingBox creates a scale handler on start if one does not exist
+   // do not use AddComponent, as that will create a  duplicate handler that will not be used 
+   TransformScaleHandler scaleHandler = bbox.gameObject.GetComponent&lt;TransformScaleHandler&gt;();
+   scaleHandler.ScaleMinimum = 1f;
+   scaleHandler.ScaleMaximum = 2f;
+</code></pre>
+<h2 id="example-add-bounding-box-around-a-game-object">Example: Add bounding box around a game object</h2>
+<p>To add a bounding box around an object, just add a bounding box component to it:</p>
+<pre><code class="lang-csharp">private void PutABoxAroundIt(GameObject target)
+{
+   target.AddComponent&lt;BoundingBox&gt;();
+}
+</code></pre>
 <h2 id="inspector-properties">Inspector properties</h2>
 <p><strong>Target Object</strong>
 This property specifies which object will get transformed by the bounding box manipulation. If no object is set, the bounding box defaults to the owner object.</p>
@@ -122,20 +189,20 @@ You can assign the material and prefab to override the handle style. If no handl
 <li><strong>Scale Ended</strong>: Fires when scaling ends.</li>
 </ul>
 <img src="Images/BoundingBox/MRTK_BoundingBox_Events.png" width="450">
-<h2 id="bounding-box-handle-styles">Bounding box handle styles</h2>
+<h2 id="handle-styles">Handle styles</h2>
 <p>By default, when you just assign the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/BoundingBox/BoundingBox.cs"><code>BoundingBox.cs</code></a> script, it will show the handle of the HoloLens 1st gen style. To use HoloLens 2 style handles, you need to assign proper handle prefabs and materials.</p>
 <p><img src="Images/BoundingBox/MRTK_BoundingBox_HandleStyles1.png" alt="Bounding Box"></p>
 <p>Below are the prefabs, materials, and the scaling values for the HoloLens 2 style Bounding Box handles. You can find this example in the <code>BoundingBoxExamples</code> scene.</p>
 <img src="Images/BoundingBox/MRTK_BoundingBox_HandleStyles2.png" width="450">
 <h3 id="handles-setup-for-hololens-2-style">Handles (Setup for HoloLens 2 style)</h3>
 <ul>
-<li><strong>Handle Material</strong>: BoundingBoxHandleWhite</li>
-<li><strong>Handle Grabbed Material</strong>: BoundingBoxHandleBlueGrabbed</li>
-<li><strong>Scale Handle Prefab</strong>: MRTK_BoundingBox_ScaleWidget</li>
-<li><strong>Scale Handle Slate Prefab</strong>: MRTK_BoundingBox_ScaleWidget_Slate</li>
+<li><strong>Handle Material</strong>: BoundingBoxHandleWhite.mat</li>
+<li><strong>Handle Grabbed Material</strong>: BoundingBoxHandleBlueGrabbed.mat</li>
+<li><strong>Scale Handle Prefab</strong>: MRTK_BoundingBox_ScaleHandle.prefab</li>
+<li><strong>Scale Handle Slate Prefab</strong>: MRTK_BoundingBox_ScaleHandle_Slate.prefab</li>
 <li><strong>Scale Handle Size</strong>: 0.016 (1.6cm)</li>
 <li><strong>Scale Handle Collider Padding</strong>: 0.016 (makes the grabbable collider slightly bigger than handle visual)</li>
-<li><strong>Rotation Handle Prefab</strong>: MRTK_BoundingBox_RotateWidget</li>
+<li><strong>Rotation Handle Prefab</strong>: MRTK_BoundingBox_RotateHandle.prefab</li>
 <li><strong>Rotation Handle Size</strong>: 0.016</li>
 <li><strong>Rotation Handle Collider Padding</strong>: 0.016 (makes the grabbable collider slightly bigger than handle visual)</li>
 </ul>

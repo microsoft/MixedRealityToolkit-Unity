@@ -1170,6 +1170,50 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_IconUpdate1.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_IconUpdate1.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_IconUpdate2.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_IconUpdate2.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_IconUpdate3.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_IconUpdate3.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/Button/MRTK_Button_IconUpdate4.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/Button/MRTK_Button_IconUpdate4.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/Button/MRTK_Button_InteractionStates.png",
       "output": {
         "resource": {
@@ -5864,7 +5908,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_BoundingBox.html",
-          "hash": "AhqaRsTx60CPLLxwDlkFiw=="
+          "hash": "Gv93DgMlbOHwJc3jLH+lAg=="
         }
       },
       "is_incremental": false,
@@ -5876,7 +5920,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_Button.html",
-          "hash": "5BgJ06BCUyS9lmqO2gENvw=="
+          "hash": "Aim901cedhdDNEbBjgGeWg=="
         }
       },
       "is_incremental": false,

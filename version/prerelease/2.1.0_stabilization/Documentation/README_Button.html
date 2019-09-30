@@ -179,6 +179,16 @@ Required to make any object touchable with articulated hand input.</p>
 <h2 id="prefab-layout">Prefab Layout</h2>
 <p>The <em>ButtonContent</em> object contains front plate, text label and icon. The <em>FrontPlate</em> responds to the proximity of the index fingertip using the <em>Button_Box</em> shader. It shows glowing borders, proximity light, and a pulse effect on touch. The text label is made with TextMesh Pro. <em>SeeItSayItLabel</em>'s visibility is controlled by <a href="README_Interactable.html">Interactable</a>'s theme.</p>
 <p><img src="Images/Button/MRTK_Button_Layout.png" alt="Button"></p>
+<h2 id="how-to-change-the-icon-and-text">How to change the icon and text</h2>
+<p>To change the text of the button, update the <em>Text</em> component of the <em>TextMeshPro</em> object under <em>IconAndText</em>. Changing the icon can be done by replacing the material that is assigned to <em>UIButtonSquareIcon</em> object. By default, <em>HolographicButtonIconFontMaterial</em> is assigned.</p>
+<img src="Images/Button/MRTK_Button_IconUpdate1.png">
+<p>To create a new icon material, duplicate one of the existing icon materials. These can be found under <code>MixedRealityToolkit.SDK/Features/UX/Interactable/Materials</code> folder.</p>
+<img src="Images/Button/MRTK_Button_IconUpdate2.png" width="350">
+<p>Create a new PNG texture and import into Unity. Use existing icon PNG file examples as reference. <code>MixedRealityToolkit.SDK/Features/UX/Interactable/Textures</code></p>
+<p>Drag and drop newly created PNG texture onto the <em>Albedo</em> property in the material.</p>
+<img src="Images/Button/MRTK_Button_IconUpdate3.png">
+<p>Assgin the material to the <em>UIButtonSquareIcon</em> object.</p>
+<img src="Images/Button/MRTK_Button_IconUpdate4.png">
 <h2 id="voice-command-see-it-say-it">Voice command ('See-it, Say-it')</h2>
 <p><strong>Speech Input Handler</strong>
 The <a href="README_Interactable.html">Interactable</a> script in Pressable Button already implements <code>IMixedRealitySpeechHandler</code>. A voice command keyword can be set here.</p>
