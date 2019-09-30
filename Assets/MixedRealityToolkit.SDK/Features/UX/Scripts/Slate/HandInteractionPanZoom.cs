@@ -293,9 +293,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             else
             {
-                if (this.GetComponent<Renderer>()?.material?.mainTexture != null)
+                Renderer renderer = this.GetComponent<Renderer>();
+                Material material = (renderer != null) ? renderer.material : null;
+                if ((material != null) && (material.mainTexture != null))
                 {
-                    this.GetComponent<Renderer>().material.mainTexture.wrapMode = TextureWrapMode.Repeat;
+                    material.mainTexture.wrapMode = TextureWrapMode.Repeat;
                 }
             }
 
@@ -467,8 +469,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 rightPoint.SetActive(affordancesVisible);
             }
 
-            currentMaterial?.SetColor(proximityLightCenterColorID, active ? proximityLightCenterColor : defaultProximityLightCenterColor);
+            if (currentMaterial != null)
+            {
+                currentMaterial.SetColor(proximityLightCenterColorID, active ? proximityLightCenterColor : defaultProximityLightCenterColor);
+            }
         }
+
         private Vector3 GetContactForHand(Handedness hand)
         {
             Vector3 handPoint = Vector3.zero;
