@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
@@ -11,6 +13,52 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     [ExecuteAlways, RequireComponent(typeof(Renderer))]
     public class MaterialInstance : MonoBehaviour
     {
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="owner"></param>
+        /// <returns></returns>
+        public Material AcquireMaterial(object owner)
+        {
+            materialOwners.Add(owner);
+
+            return Material;
+        }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="owner"></param>
+        /// <returns></returns>
+        public Material[] AcquireMaterials(object owner)
+        {
+            materialOwners.Add(owner);
+
+            return Materials;
+        }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="owner"></param>
+        /// <param name="autoDestroy"></param>
+        public void ReleaseMaterial(object owner, bool autoDestroy = true)
+        {
+            materialOwners.Remove(owner);
+
+            if (autoDestroy && materialOwners.Count == 0)
+            {
+                if (Application.isPlaying)
+                {
+                    Destroy(this);
+                }
+                else
+                {
+                    DestroyImmediate(this);
+                }
+            }
+        }
+
         /// <summary>
         /// TODO
         /// </summary>
@@ -42,9 +90,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
-        [SerializeField]//, HideInInspector]
+        [SerializeField, HideInInspector]
         private Material[] defaultMaterials = null;
         private Material[] instanceMaterials = null;
+        private bool materialsInstanced = false;
+        private HashSet<object> materialOwners = new HashSet<object>();
 
         private const string instancePostfix = " (Clone)";
 
@@ -52,14 +102,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             var _renderer = GetComponent<Renderer>();
 
-            // Cache the default materials if ones do not already exist.
-            if (defaultMaterials == null || defaultMaterials.Length == 0)
+            if (_renderer != null)
             {
-                defaultMaterials = _renderer?.sharedMaterials;
-            }
-            else // Restore the clone to it's initial state.
-            {
-                if (_renderer != null)
+                // Cache the default materials if ones do not already exist.
+                if (defaultMaterials == null || defaultMaterials.Length == 0)
+                {
+                    defaultMaterials = _renderer.sharedMaterials;
+                }
+                else if (!materialsInstanced) // Restore the clone to it's initial state.
                 {
                     _renderer.sharedMaterials = defaultMaterials;
                 }
@@ -80,16 +130,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         private void AcquireInstances()
         {
-            if (!MaterialsMatch(defaultMaterials, instanceMaterials))
+            var _renderer = GetComponent<Renderer>();
+
+            if (_renderer != null)
             {
-                DestroyMaterials(instanceMaterials);
-                instanceMaterials = InstanceMaterials(defaultMaterials);
-
-                var _renderer = GetComponent<Renderer>();
-
-                if (_renderer != null)
+                if (!MaterialsMatch(_renderer.sharedMaterials, instanceMaterials))
                 {
-                    _renderer.sharedMaterials = instanceMaterials;
+                    DestroyMaterials(instanceMaterials);
+                    instanceMaterials = InstanceMaterials(defaultMaterials);
+
+                    if (_renderer != null)
+                    {
+                        _renderer.sharedMaterials = instanceMaterials;
+                    }
+
+                    materialsInstanced = true;
                 }
             }
         }
@@ -151,7 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     }
                 }
 
-                materials = null;
+                Array.Clear(materials, 0, materials.Length);
             }
         }
     }

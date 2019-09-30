@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     renderers.Add(_renderer);
                 }
 
-                var material = _renderer.EnsureComponent<MaterialInstance>().Material;
+                var material = _renderer.EnsureComponent<MaterialInstance>().AcquireMaterial(this);
 
                 if (material != null)
                 {
@@ -106,15 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             if (_renderer != null)
             {
-                // Restore the original material.
-                if (Application.isPlaying)
-                {
-                    Destroy(_renderer.GetComponent<MaterialInstance>());
-                }
-                else
-                {
-                    DestroyImmediate(_renderer.GetComponent<MaterialInstance>());
-                }
+                _renderer.GetComponent<MaterialInstance>()?.ReleaseMaterial(this);
             }
         }
 
@@ -243,7 +235,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
                 if (_renderer != null)
                 {
-                    var material = _renderer.EnsureComponent<MaterialInstance>().Material;
+                    var material = _renderer.EnsureComponent<MaterialInstance>().AcquireMaterial(this);
 
                     if (material != null)
                     {
