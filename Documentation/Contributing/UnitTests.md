@@ -37,7 +37,7 @@ Sometimes tests only fail occasionally, it can be frustrating to debug these fai
 
 To have multiple test runs locally, modify the according test scripts. The following python script should make this scenario more convenient.
 
-First, make sure you have [Python 3.X installed](https://www.python.org/downloads/).
+Prerequisite for running the python script is having [Python 3.X installed](https://www.python.org/downloads/).
 
 Let's say you have a test that you want to run many times:
 
