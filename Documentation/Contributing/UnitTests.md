@@ -46,7 +46,7 @@ For a single test that needs to me executed multiple times:
 public IEnumerator MyTest() {...}
 ```
 
-Run the following from a command line (we recommend [PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-6#powershell-core))
+Run the following from a command line ([PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-6#powershell-core) is recommended)
 
 ```
 cd scripts\tests
