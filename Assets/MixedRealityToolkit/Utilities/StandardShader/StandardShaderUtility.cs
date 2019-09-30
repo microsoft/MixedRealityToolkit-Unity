@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <returns>True if the material is using the Mixed Reality Toolkit/Standard shader</returns>
         public static bool IsUsingMrtkStandardShader(Material material)
         {
-            return IsMrtkStandardShader(material?.shader);
+            return IsMrtkStandardShader((material != null) ? material.shader : null);
         }
 
         /// <summary>
