@@ -1,19 +1,19 @@
 
 # Writing and Running Tests in MRTK
-MRTK has a set of tests to ensure that changes to our code do not regress existing behavior. Before you submit a pull request, make sure to :
+MRTK has a set of tests to ensure that changes to our code do not regress existing behavior. Before submitting a pull request, make sure to :
 
-1. Run the tests locally to make sure your changes don't regress existing behavior (you will not be able to check in if any tests fail)
+1. Run the tests locally so your changes don't regress existing behavior (completing PRs won't be allowed if any tests fail)
 
-2. If fixing a bug, write a test to prevent others from breaking your bugfix.
+2. If fixing a bug, write a test to verify the fix and ensure that future code modifications won't break it again.
 
-2. If writing a feature, write new tests to ensure that other people don't break your feature in the future.
+2. If writing a feature, write new tests to prevent upcoming code changes breaking this feature.
 
 ## Running tests
 ### Running tests from Unity editor
 The [Unity Test Runner](https://docs.unity3d.com/Manual/testing-editortestsrunner.html) can be found under Window > General > Test Runner and will show all available MRTK play and edit mode tests. 
 
 ### Running tests from command line
-You can also run the [powershell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-6) script located at `Scripts\test\run_playmode_tests.ps1`. This will run the playmode tests exactly as they are executed on github / CI (see below), and print results. Here are some examples of how to run the script
+Tests can also be run by a [powershell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-6) script located at `Scripts\test\run_playmode_tests.ps1`. This will run the playmode tests exactly as they are executed on github / CI (see below), and print results. Here are some examples of how to run the script
 
 Run the tests on the project located at H:\mrtk.dev, with Unity 2018.4.1f1
 
@@ -35,18 +35,18 @@ Only after all of the tests passed successfully the PR can be merged into mrtk_d
 ### Running stress tests / bulk tests
 Sometimes tests only fail occasionally, it can be frustrating to debug these failures. The best way we have found to reliably repeat tests is to modify scripts locally, since unity's test system [does not currently support the Retry attribute](https://docs.unity3d.com/Packages/com.unity.test-framework@1.0/manual/index.html).
 
-To run multiple tests locally, modify your test to call your test multiple times. We have provided a python script to make this more convenient.
+To have multiple test runs locally, modify the according test scripts. The following python script should make this scenario more convenient.
 
-First, make sure you have [Python 3.X installed](https://www.python.org/downloads/).
+Prerequisite for running the python script is having [Python 3.X installed](https://www.python.org/downloads/).
 
-Let's say you have a test that you want to run many times:
+For a single test that needs to me executed multiple times:
 
 ```
 [UnityTest]
 public IEnumerator MyTest() {...}
 ```
 
-Run the following from a command line (we recommend [PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-6#powershell-core))
+Run the following from a command line ([PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-6#powershell-core) is recommended)
 
 ```
 cd scripts\tests
@@ -54,7 +54,7 @@ cd scripts\tests
 python .\generate_repeat_tests.py -n 5 -t MyTest
 ```
 
-Copy and paste the output into your test file. If you need to run multiple tests in sequence:
+Copy and paste the output into your test file. The following script is for running multiple tests in sequence:
 
 ```
 cd scripts\tests
@@ -77,9 +77,9 @@ public IEnumerator A4MyTest0(){ yield return MyTest();}
 public IEnumerator MyTest() {...}
 ```
 
-Open the test runner and you should see your new tests that you can call repeatedly.
+Open the test runner and observe the new tests that can now be called repeatedly.
 
-## Writing Tests
+## Writing tests
 To ensure MRTK being a stable and reliable toolkit, every feature should come with unit tests and sample usage in one of the example scenes. Having good test coverage in a big codebase like MRTK is crucial for stability and having confidence when doing changes in code.
 
 MRTK uses the [Unity Test Runner](https://docs.unity3d.com/Manual/testing-editortestsrunner.html) which uses a Unity
