@@ -62,7 +62,7 @@ cd scripts\tests
 python .\generate_repeat_tests.py -n 5 -t MyTest MySecondTest
 ```
 
-Your new test file should now contain
+The new test file should now contain
 
 ```
 [UnityTest]
