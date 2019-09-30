@@ -31,6 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         [Tooltip("The focus provider service concrete type to use when raycasting.")]
         [Implements(typeof(IMixedRealityFocusProvider), TypeGrouping.ByNamespaceFlat)]
+        [Subject(SubjectTag.Focus | SubjectTag.Pointers)]
         private SystemType focusProviderType;
 
         /// <summary>
@@ -45,6 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         [Tooltip("The raycast provider service concrete type to use when raycasting.")]
         [Implements(typeof(IMixedRealityRaycastProvider), TypeGrouping.ByNamespaceFlat)]
+        [Subject(SubjectTag.Focus | SubjectTag.Pointers)]
         private SystemType raycastProviderType;
 
         /// <summary>
@@ -81,6 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("Input System Action Mapping profile for wiring up Controller input to Actions.")]
+        [Subject(SubjectTag.Input)]
         private MixedRealityInputActionsProfile inputActionsProfile;
 
         /// <summary>

@@ -19,6 +19,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     {
         #region Colors
 
+        public static Color DefaultBackgroundColor
+        {
+            get
+            {
+                return EditorGUIUtility.isProSkin
+                    ? new Color32(56, 56, 56, 255)
+                    : new Color32(194, 194, 194, 255);
+            }
+        }
+
         public static readonly Color DisabledColor = new Color(0.6f, 0.6f, 0.6f);
         public static readonly Color WarningColor = new Color(1f, 0.85f, 0.6f);
         public static readonly Color ErrorColor = new Color(1f, 0.55f, 0.5f);
