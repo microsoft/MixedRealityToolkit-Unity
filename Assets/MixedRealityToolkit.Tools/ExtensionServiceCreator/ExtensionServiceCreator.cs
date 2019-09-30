@@ -690,7 +690,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
-                foreach (Type type in assembly.GetTypes())
+                foreach (Type type in assembly.GetLoadableTypes())
                 {
                     if (!type.IsClass || type.IsAutoClass || type.IsAbstract || type.IsGenericType || type.IsArray) { continue; }
 
