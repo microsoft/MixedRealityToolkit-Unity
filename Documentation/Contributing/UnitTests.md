@@ -4,7 +4,7 @@ MRTK has a set of tests to ensure that changes to our code do not regress existi
 
 1. Run the tests locally so your changes don't regress existing behavior (completing PRs won't be allowed if any tests fail)
 
-2. If fixing a bug, write a test to prevent others from breaking your bugfix.
+2. If fixing a bug, write a test to verify the fix and ensure that future code modifications won't break it again.
 
 2. If writing a feature, write new tests to ensure that other people don't break your feature in the future.
 
