@@ -96,7 +96,8 @@
 <br><br><img src="Images/ExamplesHub/MRTK_ExamplesHub_SceneSystem5.png">
 Example of loading multiple scenes.</p>
 <h2 id="running-the-scene">Running the scene</h2>
-<p>The scene works on both Unity's game mode and the device. To build and deploy, simply build <strong>DefaultManagerScene</strong> with other scenes that are included in the Scene System's list. The inspector also makes it easy to add scenes to the Build Settings.</p>
+<p>The scene works in both Unity's game mode and on device. Run the <strong>MRTKExamplesHub</strong> scene in the Unity editor and use MRTK's input simulation to interact with the scene contents. To build and deploy, simply build <strong>MRTKExamplesHub</strong> scene with other scenes that are included in the Scene System's list. The inspector also makes it easy to add scenes to the Build Settings. In the Building Settings, make sure <strong>MRTKExamplesHub</strong> scene is on the top of the list at index 0.</p>
+<img src="Images/ExamplesHub/MRTK_ExamlesHub_BuildSettings.png" width="450">
 <h2 id="how-mrtkexampleshub-loads-a-scene">How MRTKExamplesHub loads a scene</h2>
 <p>In the <strong>MRTKExamplesHub</strong> scene, you can find the <code>ExamplesHubButton</code> prefab.
 There is a <strong>FrontPlate</strong> object in the prefab which contains <code>Interactable</code>.
@@ -110,8 +111,8 @@ Please refer to the <a href="SceneSystem/SceneSystemGettingStarted.html">Scene S
 <pre><code class="lang-csharp">MixedRealityToolkit.SceneSystem.LoadContent(contentName, loadSceneMode);
 </code></pre>
 <h2 id="returning-to-the-main-menu-scene">Returning to the main menu scene</h2>
-<p>To return to the main menu scene (MRTKExamplesHubMainMenu scene), you can use the exact same method. <strong>ToggleFeaturesPanelExamplesHub.prefab</strong> provides the 'Home' button which contains the <strong>LoadContentScene</strong> script. Use this prefab or provide your custom home button in each scene to allow the user to return to the main scene.</p>
-<img src="Images/ExamplesHub/MRTK_ExamplesHubToggleFeaturesPanel.png" width="450">
+<p>To return to the main menu scene (MRTKExamplesHubMainMenu scene), you can use the same Scene System <code>LoadContent()</code> method. The <strong>ToggleFeaturesPanelExamplesHub.prefab</strong> provides the 'Home' button which contains the <strong>LoadContentScene</strong> script. Use this prefab or provide a custom home button in each scene to allow the user to return to the main scene. One can put the <strong>ToggleFeaturesPanelExamplesHub.prefab</strong> in the <strong>MRTKExamplesHub</strong> scene to make it always visible since <strong>MRTKExamplesHub</strong> is a shared container scene. Make sure to hide/deactivate <strong>ToggleFeaturesPanel.prefab</strong> in each example scene.</p>
+<img src="Images/ExamplesHub/MRTK_ExamplesHubToggleFeaturesPanel.png">
 <img src="Images/ExamplesHub/MRTK_ExamplesHubHomeButton.png" width="450">
 <h2 id="adding-additional-buttons">Adding additional buttons</h2>
 <p>In the <strong>CubeCollection</strong> object, duplicate (or add) <em>ExampleHubButton</em> prefabs and click <strong>Update Collection</strong> in the <code>GridObjectCollection</code>.
