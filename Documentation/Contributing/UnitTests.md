@@ -30,7 +30,7 @@ Run the tests on the project located at H:\mrtk.dev, with Unity 2018.4.1f1, outp
 ### Running tests via pull request validation
 MRTK's CI will build MRTK in all configurations and run all edit and play mode tests. CI can be triggered by posting a comment on the github PR `/azp run mrtk_pr` if the user has sufficient rights. CI runs can be seen in the 'checks' tab of the PR. 
 
-Only after all of the tests passed successfully the PR can be merged into mrtk_development. 
+Only after all of the tests have passed successfully can the PR be merged into mrtk_development. 
 
 ### Running stress tests / bulk tests
 Sometimes tests will only fail occasionally which can be frustrating to debug. 
