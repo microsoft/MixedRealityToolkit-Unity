@@ -95,11 +95,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Returns true if profile is NOT a BaseMixedRealityProfile class type.
         /// </summary>
-        /// <param name="profileTypeName"></param>
+        /// <param name="profileType"></param>
         /// <returns></returns>
-        public static bool IsConcreteProfileType(String profileTypeName)
+        public static bool IsConcreteProfileType(Type profileType)
         {
-            return profileTypeName != BaseMixedRealityProfileClassName;
+            return profileType.Name != BaseMixedRealityProfileClassName;
         }
 
         /// <summary>

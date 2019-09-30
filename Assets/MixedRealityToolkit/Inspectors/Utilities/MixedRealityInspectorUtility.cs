@@ -549,14 +549,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 // Draw the clone button
                 if (property.objectReferenceValue == null)
                 {
-                    var profileTypeName = property.type.Replace("PPtr<$", string.Empty).Replace(">", string.Empty);
-                    if (showAddButton && MixedRealityProfileUtility.IsConcreteProfileType(profileTypeName))
+                    if (showAddButton && MixedRealityProfileUtility.IsConcreteProfileType(profileType))
                     {
                         if (GUILayout.Button(NewProfileContent, EditorStyles.miniButton, GUILayout.Width(20f)))
                         {
-                            Debug.Assert(profileTypeName != null, "No Type Found");
-
-                            ScriptableObject instance = ScriptableObject.CreateInstance(profileTypeName);
+                            ScriptableObject instance = ScriptableObject.CreateInstance(profileType);
                             var newProfile = instance.CreateAsset(AssetDatabase.GetAssetPath(Selection.activeObject)) as BaseMixedRealityProfile;
                             property.objectReferenceValue = newProfile;
                             property.serializedObject.ApplyModifiedProperties();
