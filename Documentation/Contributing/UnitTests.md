@@ -33,7 +33,7 @@ MRTK's CI will build MRTK in all configurations and run all edit and play mode t
 Only after all of the tests passed successfully the PR can be merged into mrtk_development. 
 
 ### Running stress tests / bulk tests
-Sometimes tests only fail occasionally, it can be frustrating to debug these failures. The best way we have found to reliably repeat tests is to modify scripts locally, since unity's test system [does not currently support the Retry attribute](https://docs.unity3d.com/Packages/com.unity.test-framework@1.0/manual/index.html).
+Sometimes tests will only fail occasionally which can be frustrating to debug. 
 
 To have multiple test runs locally, modify the according test scripts. The following python script should make this scenario more convenient.
 
