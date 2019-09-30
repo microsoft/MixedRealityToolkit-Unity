@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
     /// </summary>
     public class CameraFaderQuad : ICameraFader
     {
-        const string QuadMaterialShaderName = "Sprites/Default";
+        const string QuadMaterialShaderName = "Particles/Standard Unlit";
         const string QuadMaterialColorName = "_Color";
 
         /// <summary>
@@ -66,6 +66,15 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
                 try
                 {
                     quadMaterial = new Material(Shader.Find(QuadMaterialShaderName));
+                    // Set to fade
+                    quadMaterial.SetInt("_Mode", 2);
+                    quadMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+                    quadMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                    quadMaterial.SetInt("_ZWrite", 0);
+                    quadMaterial.DisableKeyword("_ALPHATEST_ON");
+                    quadMaterial.EnableKeyword("_ALPHABLEND_ON");
+                    quadMaterial.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+                    quadMaterial.renderQueue = 3000;
                 }
                 catch (Exception e)
                 {
@@ -75,6 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
                 }
             }
 
+            quadMaterial.enableInstancing = true;
             quadMaterial.SetColor(QuadMaterialColorName, currentColor);
 
             // Create our quads
@@ -192,14 +202,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             {
                 if (quad.Renderer != null)
                 {
-                    if (Application.isPlaying)
-                    {
-                        GameObject.Destroy(quad.Renderer.gameObject);
-                    }
-                    else
-                    {
-                        GameObject.DestroyImmediate(quad.Renderer.gameObject);
-                    }
+                    GameObjectExtensions.DestroyGameObject(quad.Renderer.gameObject);
                 }
             }
 
