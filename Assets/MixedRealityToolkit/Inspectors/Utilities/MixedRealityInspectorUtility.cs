@@ -463,7 +463,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Draws an editor for a profile object.
         /// </summary>
-        /// <param name="objectReferenceValue"></param>
         public static void DrawSubProfileEditor(Object profileObject, bool renderProfileInBox)
         {
             if (profileObject == null)
@@ -507,13 +506,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             EditorGUILayout.EndVertical();
         }
 
+        /// <summary>
+        /// Draws a dropdown with all available profiles of profilyType.
+        /// </summary>
+        /// <returns>True if property was changed.</returns>
         public static bool DrawProfileDropDownList(SerializedProperty property, BaseMixedRealityProfile profile, Object oldProfileObject, Type profileType, bool showAddButton)
         {
             bool changed = false;
 
-            // Begin the horizontal group
             using (new EditorGUILayout.HorizontalScope())
             {
+                // Pull profile instances and profile content from cache
                 ScriptableObject[] profileInstances = MixedRealityProfileUtility.GetProfilesOfType(profileType);
                 GUIContent[] profileContent = MixedRealityProfileUtility.GetProfilePopupOptionsByType(profileType);
                 // Set our selected index to our '(None)' option by default
