@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
     /// <summary>
     /// Obsolete base class for all touchables using colliders.
-    /// Use <cref="BaseNearIntearctionTouchable"> instead.
+    /// Use <see cref="BaseNearInteractionTouchable"/> instead.
     /// </summary>
     [RequireComponent(typeof(Collider))]
     [System.Obsolete("Use BaseNearIntearctionTouchable instead of ColliderNearInteractionTouchable", true)]
