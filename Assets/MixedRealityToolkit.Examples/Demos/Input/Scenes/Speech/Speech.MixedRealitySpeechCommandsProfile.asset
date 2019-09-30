@@ -37,3 +37,10 @@ MonoBehaviour:
       id: 0
       description: Toggle Diagnostics
       axisConstraint: 0
+  - localizationKey: 
+    keyword: Change Color
+    keyCode: 114
+    action:
+      id: 0
+      description: Toggle Diagnostics
+      axisConstraint: 0

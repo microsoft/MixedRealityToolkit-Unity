@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             newMesh.Id = meshId;
             newMesh.GameObject = new GameObject(name, requiredMeshComponents);
             newMesh.GameObject.layer = layer;
-            newMesh.GameObject.transform.parent = meshParent?.transform;
+            newMesh.GameObject.transform.parent = (meshParent != null) ? meshParent.transform : null;
 
             newMesh.Filter = newMesh.GameObject.GetComponent<MeshFilter>();
             newMesh.Filter.sharedMesh = mesh;
