@@ -609,6 +609,64 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return PlayModeTestUtilities.HideHand(handedness, inputSim);
         }
+
+
+        /// <summary>
+        /// Test the SetTouchableCollider(BoxCollider collider) method by checking if the touch
+        /// event is raised when NearInteractionTouchable is added to a gameObject and if the 
+        /// bounds and box collider size is changed.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator NearInteractionTouchableSetTouchableCollider()
+        {
+            GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.position = new Vector3(0, 0, 2f);
+            cube.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+            BoxCollider boxCollider = cube.GetComponent<BoxCollider>();
+
+            var rightHand = new TestHand(Handedness.Right);
+            yield return rightHand.Show(new Vector3(0, 0, 1.5f));
+
+            // Add NearInteractionTouchable
+            var nearIT = cube.AddComponent<NearInteractionTouchable>();
+
+            // Create new gameObject for testing a new BoxCollider
+            GameObject cube2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube2.transform.position = new Vector3(-1f, 0, 2f);
+            cube2.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+
+            // Change touchableCollider to a new BoxCollider with a different size from another object
+            BoxCollider newBoxCollider = cube2.GetComponent<BoxCollider>();
+            newBoxCollider.size = new Vector3(4, 2, 1.2f);
+
+            using (var catcher = CreateEventCatcher(nearIT))
+            {
+                // Touch started and completed when entering and exiting the collider
+                yield return rightHand.Move(new Vector3(0, 0, 0.4f));
+                Assert.AreEqual(1, catcher.EventsStarted);
+                Assert.AreEqual(0, catcher.EventsCompleted);
+
+                yield return rightHand.Move(new Vector3(0, 0, -0.4f));
+                Assert.AreEqual(1, catcher.EventsStarted);
+                Assert.AreEqual(1, catcher.EventsCompleted);
+
+                // Set new touchableCollider bounds
+                nearIT.SetTouchableCollider(newBoxCollider);
+
+                // Move hand to the side 
+                yield return rightHand.Move(new Vector3(0.5f, 0, 0));
+                Assert.AreEqual(1, catcher.EventsStarted);
+                Assert.AreEqual(1, catcher.EventsCompleted);
+
+                // Move hand forward, on touch
+                yield return rightHand.Move(new Vector3(0, 0, 0.5f));
+                Assert.AreEqual(2, catcher.EventsStarted);
+
+                // Move the hand back, on touch exit
+                yield return rightHand.Move(new Vector3(0, 0, -0.5f));
+                Assert.AreEqual(2, catcher.EventsCompleted);
+            }
+        }
     }
 }
 #endif

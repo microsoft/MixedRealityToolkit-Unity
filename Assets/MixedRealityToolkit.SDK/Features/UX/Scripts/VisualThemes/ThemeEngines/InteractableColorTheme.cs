@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
     /// Theme Engine that can set colors on a Renderer or text object based on state changes
-    /// This Theme will try to set color on first available text object in order of TextMesh, Text, TextMeshPro, and TextMeshProUGUI
+    /// This Theme will try to set color on first available text object in order of TextMesh, Text, TextMeshPro, and TextMeshProUGUI object
     /// If no text-based component can be found, then will fall back to first Renderer component found on the initialized GameObject
     /// and target the color shader property provided in the ThemeDefinition.
     /// </summary>
@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         public InteractableColorTheme()
         {
-            Types = new Type[] { typeof(Renderer), typeof(TextMesh), typeof(Text), typeof(TextMeshPro), typeof(TextMeshProUGUI) };
+            Types = new Type[] { typeof(Renderer), typeof(TextMesh), typeof(Text), typeof(TextMeshPro), typeof(TextMeshProUGUI), typeof(Graphic)};
             Name = "Color Theme";
         }
 
@@ -219,7 +219,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             TextMeshProUGUI tmp = Host.GetComponent<TextMeshProUGUI>();
             if (tmp)
             {
-                
                 color = tmp.color;
                 return true;
             }
@@ -281,12 +280,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         /// <param name="color">Color to try to set</param>
         /// <returns>true if succesfully set color on TextMeshPro</returns>
-        protected bool TrySetTextMeshProColor(Color colour, ThemeStateProperty property, int index, float percentage)
+        protected bool TrySetTextMeshProColor(Color color, ThemeStateProperty property, int index, float percentage)
         {
             TextMeshPro tmp = Host.GetComponent<TextMeshPro>();
             if (tmp)
             {
-                tmp.color = colour;
+                tmp.color = color;
                 return true;
             }
 
@@ -317,7 +316,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         /// <param name="color">Color to try to set</param>
         /// <returns>true if succesfully set color on Renderer</returns>
-        protected bool TrySetRendererColor(Color colour, ThemeStateProperty property, int index, float percentage)
+        protected bool TrySetRendererColor(Color color, ThemeStateProperty property, int index, float percentage)
         {
             base.SetValue(property, index, percentage);
             return true;
