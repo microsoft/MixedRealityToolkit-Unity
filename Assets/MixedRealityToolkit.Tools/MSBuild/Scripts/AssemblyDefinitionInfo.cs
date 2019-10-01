@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,7 +12,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.MSBuild
 {
     /// <summary>
-    /// This class represents an AssemblyDefinition file of a Unity project. It can be used to parse the file contents using <see cref="JsonUtility.FromJson{T}(string)"/>.
+    /// This class represents an AssemblyDefinition file of a Unity project. It can be used to parse the file contents using <see href="https://docs.unity3d.com/ScriptReference/JsonUtility.FromJson.html">JsonUtility.FromJson</see>.
     /// </summary>
     public class AssemblyDefinitionInfo
     {
@@ -39,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         /// Parses an asmdef file creating a new instance of <see cref="AssemblyDefinitionInfo"/>.
         /// </summary>
         /// <param name="file">The file representing asmdef.</param>
-        /// <param name="unityProjectInfo">Instance of <see cref="UnityProjectInfo"/>,</param>
+        /// <param name="unityProjectInfo">Instance of <see cref="UnityProjectInfo"/>.</param>
         /// <param name="assembly">The Unity assembly reference.</param>
         /// <param name="isBuiltInPackage">True whether this asmdef lives in the editor installation folder.</param>
         public static AssemblyDefinitionInfo Parse(FileInfo file, UnityProjectInfo unityProjectInfo, Assembly assembly, bool isBuiltInPackage = false)
@@ -235,4 +234,3 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         }
     }
 }
-#endif

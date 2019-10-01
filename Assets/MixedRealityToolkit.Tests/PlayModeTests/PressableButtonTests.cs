@@ -633,6 +633,42 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             method.Invoke(button, new object[0]);
         }
 
+
+        /// <summary>
+        /// Tests if Interactable is internally disabled, then the PhysicalPressEventRouter
+        /// should not invoke events in Interactable.  Addresses issue 5833.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator CheckPhysicalPressableRouterEventsOnDisableInteractable()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            GameObject testButton = InstantiateDefaultPressableButton("PressableButtonHoloLens2.prefab");
+            testButton.transform.position = new Vector3(0, 0, 1);
+            testButton.transform.localScale = Vector3.one * 1.5f;
+
+            Interactable interactable = testButton.GetComponent<Interactable>();
+            Assert.IsNotNull(interactable);
+
+            bool wasClicked = false;
+            interactable.OnClick.AddListener(() => { wasClicked = true; } );
+
+            yield return PressButtonWithHand();
+
+            Assert.True(wasClicked, "Interactable is enabled, and should receive click events");
+            wasClicked = false;
+
+            // Disable Interactable, should not recieve click events
+            interactable.IsEnabled = false;
+
+            yield return PressButtonWithHand();
+
+            // Check if events were raised if interactable is not enabled
+            Assert.False(wasClicked, "Interactable is disabled, we should not recieve a click event");
+
+            GameObject.Destroy(testButton);
+        }
+
         #endregion
     }
 }

@@ -55,17 +55,15 @@ The input system has some of its own terminology that are worth defining:
 
 - **Interaction and Manipulation**
 
-    Objects can be tagged with an interaction or manipulation script (this may be Interactable.cs, or something like
-    NearInteractionGrabbable.cs/ManipulationHandler.cs).
-    
+    Objects can be tagged with an interaction or manipulation script. This may be via a [`Interactable`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable), or something like
+    [`NearInteractionGrabbable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable)/[`ManipulationHandler`](xref:Microsoft.MixedReality.Toolkit.UI.ManipulationHandler).
+
     For example, NearInteractionGrabbable and NearInteractionTouchable allow for certain pointers (especially
     near interaction pointers) to know which objects can be focused on.
 
     Interactable and ManipulationHandler, are examples of components that listen to pointer events to modify
     UI visuals or move/scale/rotate game objects.
-     
 
 The image below captures the high level build up (from bottom up) of the MRTK input stack:
 
 ![Input System Diagram](../../Images/Input/MRTK_InputSystem.png)
-
