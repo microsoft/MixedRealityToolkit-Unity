@@ -11,14 +11,18 @@ If a component is marked experimental you can expect the following:
 
 # Experimental feature guidelines
 ### Experimental code should live in a separate folder
- Make sure to mirror the same folder structure of MRTK. [You can use the following PR as an example](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/4532). 
+Experimental code should go into a top-level experimental folder followed by the experimental feature name. For example, if trying to contribute a new feature FooBar, put code in the following:
 
+- Example scenes, scripts go into `MRTK.Examples/Experimental/FooBar/`
+- Component scripts, prefabs go into `MRTK.SDK/Experimental/FooBar/`
+- Component inspectors go into `MRTK.SDK/Inspectors/Experimental/FooBar`
 
-In that PR the experimental code went into:
-`MRTK.SDK/Experimental/Features/Utilities/Solvers/HandConstraintPalmUp.cs`
+When using sub-folders under the experimental feature name, try to mirror the same folder structure of MRTK.
 
-The example scene went into:
-`MRTK.Examples/Experimental/HandTracking/Scenes/HandBasedMenuExample.unity`
+For example, solvers would go under 
+`MRTK.SDK/Experimental/FooBar/Features/Utilities/Solvers/FooBarSolver.cs`
+
+Keep scenes in a scene folder near the top: `MRTK.Examples/Experimental/FooBar/Scenes/FooBarExample.unity`
 
 > [!NOTE]
 > We considered not having a single Experimental root folder and instead putting Experimental under say `MRTK.Examples/HandTracking/Scenes/Experimental/HandBasedMenuExample.unity`. We decided to go with folders at the base to make the experimental features easier to discover.
@@ -33,9 +37,13 @@ See [this PR](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/4532) 
 While your MRTK change might get your experiment to work, it could impact other people in ways you do not expect.
 Any regressions you make to the MRTK core code would result in your pull request getting reverted. 
 
-Aim to have zero impact on MRTK core code. 
+Aim to have zero changes in folders other than experimental folders. Here is a list of folders that can have experimental changes:
 
-If you do have impact on MRTK code, write tests to ensure that your changes do not regress in the future.
+- MixedRealityToolkit.SDK\Experimental
+- MixedRealityToolkit.SDK\Inspectors\Experimental
+- MixedRealityTolkit.Examples\Examples\Experimental
+
+Changes outside of these folders should be treated very carefully. If your experimental feature must include changes to MRTK core code, consider splitting out MRTK changes into a separate pull request that includes tests and documentation.
 
 ### Using you experimental feature should not impact people's ability to use core controls
 Most people use core UX components like the button, ManipulationHandler and Interactable very frequently. They will likely not use your experimental feature if it prevents them from using buttons. 
