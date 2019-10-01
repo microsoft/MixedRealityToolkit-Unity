@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit
 
         private bool CanRouteInput()
         {
-            return routingTarget != null && routingTarget.Enabled;
+            return routingTarget != null && routingTarget.IsEnabled;
         }
 
         /// <summary>
@@ -46,12 +46,12 @@ namespace Microsoft.MixedReality.Toolkit
         {
             if (CanRouteInput())
             {
-                routingTarget.SetPhysicalTouch(true);
+                routingTarget.HasPhysicalTouch = true;
                 if (InteractableOnClick == PhysicalPressEventBehavior.EventOnTouch)
                 {
-                    routingTarget.SetPress(true);
+                    routingTarget.HasPress = true;
                     routingTarget.TriggerOnClick();
-                    routingTarget.SetPress(false);
+                    routingTarget.HasPress = false;
                 }
             }
         }
@@ -65,10 +65,10 @@ namespace Microsoft.MixedReality.Toolkit
         {
             if (CanRouteInput())
             {
-                routingTarget.SetPhysicalTouch(false);
+                routingTarget.HasPhysicalTouch = false;
                 if (InteractableOnClick == PhysicalPressEventBehavior.EventOnTouch)
                 {
-                    routingTarget.SetPress(true);
+                    routingTarget.HasPress = true;
                 }
             }
         }
@@ -82,8 +82,8 @@ namespace Microsoft.MixedReality.Toolkit
         {
             if (CanRouteInput())
             {
-                routingTarget.SetPhysicalTouch(true);
-                routingTarget.SetPress(true);
+                routingTarget.HasPhysicalTouch = true;
+                routingTarget.HasPress = true;
                 if (InteractableOnClick == PhysicalPressEventBehavior.EventOnPress)
                 {
                     routingTarget.TriggerOnClick();
@@ -100,14 +100,14 @@ namespace Microsoft.MixedReality.Toolkit
         {
             if (CanRouteInput())
             {
-                routingTarget.SetPhysicalTouch(true);
-                routingTarget.SetPress(true);
+                routingTarget.HasPhysicalTouch = true;
+                routingTarget.HasPress = true;
                 if (InteractableOnClick == PhysicalPressEventBehavior.EventOnClickCompletion)
                 {
                     routingTarget.TriggerOnClick();
                 }
-                routingTarget.SetPress(false);
-                routingTarget.SetPhysicalTouch(false);
+                routingTarget.HasPress = false;
+                routingTarget.HasPhysicalTouch = false;
             }
         }
     }

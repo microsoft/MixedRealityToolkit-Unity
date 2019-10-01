@@ -166,7 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 if (interactableObject != null)
                 {
-                    interactableObject.SetToggled(follow);
+                    interactableObject.IsToggled = follow;
                 }
             }
         }
