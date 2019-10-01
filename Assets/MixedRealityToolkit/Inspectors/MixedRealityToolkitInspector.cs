@@ -3,9 +3,9 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor.Search;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -22,19 +22,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly string searchDisplaySelectedTagsKey = "MixedRealityToolkitInspector.SelectedTags";
         private static readonly string searchDisplayRequireAllTagsKey = "MixedRealityToolkitInspector.RequireAllTags";
         private static readonly string searchDisplayRequireAllKeywordsKey = "MixedRealityToolkitInspector.RequireAllKeywords";
+        private static readonly string searchDisplayOptionsFoldoutKey = "MixedRealityToolkitInspector.SearchOptionsFoldout";
+        private static readonly string searchDisplaySearchTooltipsKey = "MixedRealityToolkitInspector.SearchTooltips";
+        private static readonly string searchDisplaySearchFieldObjectNamesKey = "MixedRealityToolkitInspector.SearchFieldObjectNames";
+        private static readonly string searchDisplaySearchChildPropertiesKey = "MixedRealityToolkitInspector.SearchChildProperties";
+
         private const int maxDisplayedSearchResults = 30;
         private const int maxSubjectButtonsPerLine = 5;
-        private const int minSearchStringLength = 3;
 
-        private static string prevSearchFieldString = string.Empty;
-        private static SubjectTag prevSelectedTags = 0;
-        private static bool prevRequireAllTags = false;
-        private static bool prevRequireAllKeywords = false;
-
-        // Raw list of search results
-        private static List<MixedRealityProfileUtility.ProfileSearchResult> fieldSearchResults = new List<MixedRealityProfileUtility.ProfileSearchResult>();
-        // Filtered list of profile-only search results
-        private static List<MixedRealityProfileUtility.ProfileSearchResult> profileSearchResults = new List<MixedRealityProfileUtility.ProfileSearchResult>();
+        private MixedRealitySearchUtility.SearchConfig prevConfig = new MixedRealitySearchUtility.SearchConfig();
+        private static List<MixedRealitySearchUtility.ProfileSearchResult> fieldSearchResults = new List<MixedRealitySearchUtility.ProfileSearchResult>();
 
         #endregion
 
@@ -172,10 +169,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             EditorGUILayout.Space();
 
-            SubjectTag selectedTags = (SubjectTag)SessionState.GetInt(searchDisplaySelectedTagsKey, 0);
-            bool requireAllTags = SessionState.GetBool(searchDisplayRequireAllTagsKey, false);
-            string searchFieldString = SessionState.GetString(searchDisplaySearchFieldKey, string.Empty);
-            bool requireAllKeywords = SessionState.GetBool(searchDisplayRequireAllKeywordsKey, false);
+            MixedRealitySearchUtility.SearchConfig config = new MixedRealitySearchUtility.SearchConfig()
+            {
+                SelectedSubjects = (SubjectTag)SessionState.GetInt(searchDisplaySelectedTagsKey, 0),
+                SearchFieldString = SessionState.GetString(searchDisplaySearchFieldKey, string.Empty),
+                RequireAllSubjects = SessionState.GetBool(searchDisplayRequireAllTagsKey, true),
+                RequireAllKeywords = SessionState.GetBool(searchDisplayRequireAllKeywordsKey, true),
+                SearchTooltips = SessionState.GetBool(searchDisplaySearchTooltipsKey, true),
+                SearchFieldObjectNames = SessionState.GetBool(searchDisplaySearchFieldObjectNamesKey, true),
+                SearchChildProperties = SessionState.GetBool(searchDisplaySearchChildPropertiesKey, true)
+            };
 
             // Draw our subject tags in a clump
             EditorGUILayout.HelpBox("Select subjects below to search for profiles and fields tagged with that subject.", MessageType.Info);
@@ -189,16 +192,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    GUI.color = selectedTags == 0 ? MixedRealityInspectorUtility.SuccessColor : MixedRealityInspectorUtility.DisabledColor;
+                    GUI.color = config.SelectedSubjects == 0 ? MixedRealityInspectorUtility.SuccessColor : MixedRealityInspectorUtility.DisabledColor;
                     if (GUILayout.Button("(None)", EditorStyles.miniButton))
                     {
-                        selectedTags = 0;
+                        config.SelectedSubjects = 0;
                     }
 
-                    GUI.color = selectedTags == SubjectTag.All ? MixedRealityInspectorUtility.SuccessColor : MixedRealityInspectorUtility.DisabledColor;
+                    GUI.color = config.SelectedSubjects == SubjectTag.All ? MixedRealityInspectorUtility.SuccessColor : MixedRealityInspectorUtility.DisabledColor;
                     if (GUILayout.Button("(All)", EditorStyles.miniButton))
                     {
-                        selectedTags = SubjectTag.All;
+                        config.SelectedSubjects = SubjectTag.All;
                     }
                 }
 
@@ -217,17 +220,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     }
 
 
-                    bool selected = (selectedTags & tag) != 0;
+                    bool selected = (config.SelectedSubjects & tag) != 0;
                     GUI.color = selected ? MixedRealityInspectorUtility.SuccessColor : MixedRealityInspectorUtility.DisabledColor;
                     if (GUILayout.Button(tag.ToString(), EditorStyles.miniButton))
                     {
                         if (selected)
                         {
-                            selectedTags &= ~tag;
+                            config.SelectedSubjects &= ~tag;
                         }
                         else
                         {
-                            selectedTags |= tag;
+                            config.SelectedSubjects |= tag;
                         }
                     }
                     GUI.color = Color.white;
@@ -252,38 +255,41 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             EditorGUILayout.Space();
 
             EditorGUILayout.HelpBox("Enter keywords below to search field names and tooltips.\nIf any subjects are selected, those will be used to narrow your search. Select (None) to search all fields.", MessageType.Info);
-            searchFieldString = EditorGUILayout.TextField(searchFieldString);
+            config.SearchFieldString = EditorGUILayout.TextField(config.SearchFieldString);
 
             EditorGUILayout.Space();
             EditorGUILayout.Space();
 
-            /*using (new GUILayout.HorizontalScope())
+            bool optionsFoldout = SessionState.GetBool(searchDisplayOptionsFoldoutKey, false);
+            optionsFoldout = EditorGUILayout.Foldout(optionsFoldout, "Options", true);
+            if (optionsFoldout)
             {
-                requireAllKeywords = GUILayout.Toggle(requireAllKeywords, "Require All Keywords");
-                requireAllTags = GUILayout.Toggle(requireAllTags, "Require All Tags");
-            }*/
+                config.RequireAllKeywords = EditorGUILayout.Toggle("Require All Keywords", config.RequireAllKeywords);
+                config.RequireAllSubjects = EditorGUILayout.Toggle("Require All Tags", config.RequireAllSubjects);
+                config.SearchTooltips = EditorGUILayout.Toggle("Search Tooltips", config.SearchTooltips);
+                config.SearchFieldObjectNames = EditorGUILayout.Toggle("Search GameObject Names", config.SearchFieldObjectNames);
+                config.SearchChildProperties = EditorGUILayout.Toggle("Search Child Properties", config.SearchChildProperties);
+            }
 
             EditorGUILayout.Space();
             EditorGUILayout.Space();
 
-            SessionState.SetString(searchDisplaySearchFieldKey, searchFieldString);
-            SessionState.SetInt(searchDisplaySelectedTagsKey, (int)selectedTags);
-            SessionState.SetBool(searchDisplayRequireAllTagsKey, requireAllTags);
-            SessionState.SetBool(searchDisplayRequireAllKeywordsKey, requireAllKeywords);
+            SessionState.SetString(searchDisplaySearchFieldKey, config.SearchFieldString);
+            SessionState.SetInt(searchDisplaySelectedTagsKey, (int)config.SelectedSubjects);
+            SessionState.SetBool(searchDisplayRequireAllTagsKey, config.RequireAllSubjects);
+            SessionState.SetBool(searchDisplayRequireAllKeywordsKey, config.RequireAllKeywords);
+            SessionState.SetBool(searchDisplayOptionsFoldoutKey, optionsFoldout);
+            SessionState.SetBool(searchDisplaySearchTooltipsKey, config.SearchTooltips);
+            SessionState.SetBool(searchDisplaySearchFieldObjectNamesKey, config.SearchFieldObjectNames);
+            SessionState.SetBool(searchDisplaySearchChildPropertiesKey, config.SearchChildProperties);
 
             #region execute search
 
-            if (prevSearchFieldString != searchFieldString || prevSelectedTags != selectedTags || prevRequireAllTags != requireAllTags || prevRequireAllKeywords != requireAllKeywords)
+            if (!config.Equals(prevConfig))
             {
-                HashSet<string> searchFieldStrings = new HashSet<string>(searchFieldString.Split(new string[] { " ", "," }, StringSplitOptions.RemoveEmptyEntries));
-                searchFieldStrings.RemoveWhere(s => s.Length < minSearchStringLength);
-
-                List<MixedRealityProfileUtility.ProfileSearchResult> allSearchResults = new List<MixedRealityProfileUtility.ProfileSearchResult>(
-                    MixedRealityProfileUtility.SearchProfileFields(activeProfileObject, searchFieldStrings, selectedTags, requireAllTags, requireAllKeywords));
-
                 fieldSearchResults.Clear();
-                fieldSearchResults.AddRange(allSearchResults.Where(r => r.MaxFieldMatchStrength > 0));
-                fieldSearchResults.Sort(delegate (MixedRealityProfileUtility.ProfileSearchResult r1, MixedRealityProfileUtility.ProfileSearchResult r2)
+                fieldSearchResults.AddRange(MixedRealitySearchUtility.SearchProfileFields(activeProfileObject, config));
+                fieldSearchResults.Sort(delegate (MixedRealitySearchUtility.ProfileSearchResult r1, MixedRealitySearchUtility.ProfileSearchResult r2)
                 {
                     if (r1.MaxFieldMatchStrength != r2.MaxFieldMatchStrength)
                     {
@@ -291,22 +297,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     }
                     return r2.Profile.name.CompareTo(r1.Profile.name);
                 });
-
-                profileSearchResults.Clear();
-                profileSearchResults.AddRange(allSearchResults.Where(r => r.ProfileMatchStrength > 0));
-                profileSearchResults.Sort(delegate (MixedRealityProfileUtility.ProfileSearchResult r1, MixedRealityProfileUtility.ProfileSearchResult r2)
-                {
-                    if (r1.ProfileMatchStrength != r2.ProfileMatchStrength)
-                    {
-                        return r2.ProfileMatchStrength.CompareTo(r1.ProfileMatchStrength);
-                    }
-                    return r2.Profile.name.CompareTo(r1.Profile.name);
-                });
-
-                prevSearchFieldString = searchFieldString;
-                prevSelectedTags = selectedTags;
-                prevRequireAllTags = requireAllTags;
-                prevRequireAllKeywords = requireAllKeywords;
+                prevConfig = config;
             }
 
             #endregion
@@ -315,29 +306,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             using (new EditorGUILayout.VerticalScope())
             {
-                if (fieldSearchResults.Count == 0 && profileSearchResults.Count == 0)
+                if (fieldSearchResults.Count == 0)
                 {
                     EditorGUILayout.HelpBox("No search results. Try selecting a subject or entering a keyword.", MessageType.Warning);
-                }
-
-                if (profileSearchResults.Count > 0)
-                {
-                    EditorGUILayout.LabelField("Profiles:");
-                    using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
-                    {
-                        foreach (MixedRealityProfileUtility.ProfileSearchResult search in profileSearchResults)
-                        {
-                            EditorGUILayout.ObjectField(search.Profile, typeof(UnityEngine.Object), false);
-                        }
-                    }
-                    EditorGUILayout.Space();
                 }
 
                 int numDisplayedSearchResults = 0;
                 if (fieldSearchResults.Count > 0)
                 {
                     EditorGUILayout.LabelField("Fields:");
-                    foreach (MixedRealityProfileUtility.ProfileSearchResult search in fieldSearchResults)
+                    foreach (MixedRealitySearchUtility.ProfileSearchResult search in fieldSearchResults)
                     {
                         using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
                         {
@@ -345,14 +323,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             EditorGUI.indentLevel++;
                             EditorGUILayout.Space();
 
-                            foreach (MixedRealityProfileUtility.FieldResult r in search.Fields)
+                            foreach (MixedRealitySearchUtility.FieldResult r in search.Fields)
                             {
                                 numDisplayedSearchResults++;
 
-                                if (r.ToolTip != null)
+                                if (!string.IsNullOrEmpty(r.Property.tooltip))
                                 {
                                     GUI.color = MixedRealityInspectorUtility.DisabledColor;
-                                    EditorGUILayout.LabelField(r.ToolTip.tooltip + "(" + r.MatchStrength + ")", EditorStyles.wordWrappedMiniLabel);
+                                    EditorGUILayout.LabelField(r.Property.tooltip + " (" + r.MatchStrength + ")", EditorStyles.wordWrappedMiniLabel);
                                 }
 
                                 GUI.color = Color.white;
