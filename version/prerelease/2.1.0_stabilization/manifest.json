@@ -13112,11 +13112,203 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.MSBuild.AssemblyDefinitionInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.MSBuild.AssemblyDefinitionInfo.html",
+          "hash": "DuHarB2DqfpObNuWbmmcMw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.MSBuild.AssetLocation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.MSBuild.AssetLocation.html",
+          "hash": "bPEwjSNFmhuMqmlgqlJvNQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.MSBuild.AssetScriptReferenceRetargeter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.MSBuild.AssetScriptReferenceRetargeter.html",
+          "hash": "ACC7pHbT+k6ngCBK2P7ulw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.MSBuild.CSProjectDependency-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.MSBuild.CSProjectDependency-1.html",
+          "hash": "4JJ4n2iEWjsCTeVcF/syyQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.MSBuild.CSProjectInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.MSBuild.CSProjectInfo.html",
+          "hash": "khyWGTmz+YAEJ3YH7S32tA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.MSBuild.CompilationPlatformInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.MSBuild.CompilationPlatformInfo.html",
+          "hash": "Ld2tjHgFWgHK+zM3LjLFjw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.MSBuild.MSBuildTools.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.MSBuild.MSBuildTools.html",
+          "hash": "qFhL379Q3lSoMhH4M9bkOg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.MSBuild.PluginAssemblyInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.MSBuild.PluginAssemblyInfo.html",
+          "hash": "UPWZ0i6GhTvRH9XaJ+tnhQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.MSBuild.PluginType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.MSBuild.PluginType.html",
+          "hash": "enkNmOnfooixr06tbdv/QA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.MSBuild.ProjectType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.MSBuild.ProjectType.html",
+          "hash": "ZDzS7ekzl0MRJc+trbdsTg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.MSBuild.ReferenceItemInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.MSBuild.ReferenceItemInfo.html",
+          "hash": "yHzlCS6OkB5W5Da0WXIKHg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.MSBuild.SourceFileInfo.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.MSBuild.SourceFileInfo.html",
-          "hash": "yXw4EPecrGDaEOCFuTknzQ=="
+          "hash": "xkh1S2/kCXvciQ9KKPXp2w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.MSBuild.TargetFramework.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.MSBuild.TargetFramework.html",
+          "hash": "qpkfVc0vELhXkIkz6xPLHw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.MSBuild.TargetFrameworkExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.MSBuild.TargetFrameworkExtensions.html",
+          "hash": "naey7z/wXOVeemxwUnDVdA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.MSBuild.TemplateFiles.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.MSBuild.TemplateFiles.html",
+          "hash": "qYm1KcPuFZNEa+wamT3OjQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.MSBuild.UnityProjectInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.MSBuild.UnityProjectInfo.html",
+          "hash": "ZqnmaNkR9dooqs73Q0uxQQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.MSBuild.Utilities.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.MSBuild.Utilities.html",
+          "hash": "ZsM8sGp2QPhZkTi/CKbfiA=="
         }
       },
       "is_incremental": false,
@@ -13128,7 +13320,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.MSBuild.html",
-          "hash": "csnz/b4n3T6KczfdyuzR8w=="
+          "hash": "ZsGtfJXTpe7k3G8ps66RHg=="
         }
       },
       "is_incremental": false,
@@ -20124,7 +20316,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "3Mxrpg39isCyZAPiW9zTaw=="
+          "hash": "LBGw72+LktUfh5Lp4G7F7A=="
         }
       },
       "is_incremental": false,
@@ -20183,12 +20375,6 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ConceptualDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 130,
-          "skipped_file_count": 0
-        },
         "TocDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
@@ -20196,10 +20382,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 130,
+          "skipped_file_count": 0
+        },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1140,
+          "total_file_count": 1156,
           "skipped_file_count": 0
         }
       }
