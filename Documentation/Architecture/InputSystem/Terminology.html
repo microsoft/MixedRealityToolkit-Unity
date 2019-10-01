@@ -127,8 +127,8 @@ the FingerCursor will render a ring around your finger, and may rotate that ring
 ‘near interactable’ objects. A pointer can be associated with a single cursor at time.</p>
 </li>
 <li><p><strong>Interaction and Manipulation</strong></p>
-<p>Objects can be tagged with an interaction or manipulation script (this may be Interactable.cs, or something like
-NearInteractionGrabbable.cs/ManipulationHandler.cs).</p>
+<p>Objects can be tagged with an interaction or manipulation script. This may be via a <a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.UI.Interactable.html"><code>Interactable</code></a>, or something like
+<a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable.html"><code>NearInteractionGrabbable</code></a>/<a class="xref" href="../../../api/Microsoft.MixedReality.Toolkit.UI.ManipulationHandler.html"><code>ManipulationHandler</code></a>.</p>
 <p>For example, NearInteractionGrabbable and NearInteractionTouchable allow for certain pointers (especially
 near interaction pointers) to know which objects can be focused on.</p>
 <p>Interactable and ManipulationHandler, are examples of components that listen to pointer events to modify
