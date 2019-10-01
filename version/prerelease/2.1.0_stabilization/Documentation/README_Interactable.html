@@ -87,9 +87,9 @@
 <h2 id="how-to-configure-interactable">How to configure Interactable</h2>
 <p>The component allows for three primary sections of configuration:</p>
 <ol>
-<li><a href="#general-input-settings">types of input</a></li>
-<li><a href="VisualThemes.html">visual themes</a> targeted against multiple GameObjects</li>
-<li><a href="#events">event handlers</a></li>
+<li><a href="#general-input-settings">General input configuration</a></li>
+<li><a href="VisualThemes.html">Visual Themes</a> targeted against multiple GameObjects</li>
+<li><a href="#events">Event handlers</a></li>
 </ol>
 <h3 id="general-input-settings">General input settings</h3>
 <p><img src="Images/Interactable/InputFeatures_short.png" alt="General Interactable Settings"></p>
@@ -117,21 +117,26 @@
 <li>Visited: the Interactable has been clicked.</li>
 <li>Toggled: The button is in a toggled state or Dimension index is an odd number.</li>
 <li>Gesture: The hand or controller was pressed and has moved from the original position.</li>
-<li>VoiceCommand: A speech command was used to trigger an Interactable.</li>
+<li>VoiceCommand: A speech command was used to trigger the Interactable.</li>
 <li>PhysicalTouch: A touch input is currently detected, use <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable.html"><code>NearInteractionTouchable</code></a> to enable.</li>
 <li>Grab: A hand is currently grabbing in the bounds of the object, use <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable.html"><code>NearInteractionGrabbable</code></a> to enable</li>
 </ul>
 </div>
 <p><strong>Enabled</strong></p>
-<p>Toggles whether an Interactable is enabled or not. When disabled, some input handling will be disable and themes wil be updated to reflect the current disabled state. A typical example of this would be a submit button waiting for all the required input fields to be completed.</p>
+<p>Toggles whether an Interactable will start enabled or not. This corresponds to the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.Interactable.html#Microsoft_MixedReality_Toolkit_UI_Interactable_IsEnabled"><code>Interactable.IsEnabled</code></a> in code.</p>
+<p>An <em>Interactable's</em> enabled property is different than the enabled property configured via GameObject/Component (i.e SetActive etc). Disabling the GameObject or <em>Interactable</em> MonoBehavior will disable everything in the class from running including input, visual themes, events, etc. Disabling via <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.Interactable.html#Microsoft_MixedReality_Toolkit_UI_Interactable_IsEnabled"><code>Interactable.IsEnabled</code></a> will disable most input handling, reseting related input states. However, the class will still run every frame and receive input events which will be ignored. This is useful for displaying the Interactable in a disabled state which can be done via Visual Themes. A typical example of this would be a submit button waiting for all the required input fields to be completed.</p>
 <p><strong>Input Actions</strong></p>
 <p>Select the <a href="Input/InputActions.html">input action</a>, from the input configuration or controller mapping profile, that the <em>Interactable</em> component should react to.</p>
+<p>This property can be configured at runtime in code via <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.Interactable.html#Microsoft_MixedReality_Toolkit_UI_Interactable_InputAction"><code>Interactable.InputAction</code></a>.</p>
 <p><strong>IsGlobal</strong></p>
 <p>If true, this will mark the component as a global input listener for the selected <a href="Input/InputActions.html">input action</a>. Default behavior is false which will restrict input to only this <em>Interactable</em> collider/GameObject.</p>
+<p>This property can be configured at runtime in code via <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.Interactable.html#Microsoft_MixedReality_Toolkit_UI_Interactable_IsGlobal"><code>Interactable.IsGlobal</code></a>.</p>
 <p><strong>Speech Command</strong></p>
 <p><a href="Input/Speech.html">Speech command</a>, from the MRTK Speech Commands Profile, to trigger an OnClick event for voice interaction.</p>
+<p>This property can be configured at runtime in code via <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.Interactable.html#Microsoft_MixedReality_Toolkit_UI_Interactable_VoiceCommand"><code>Interactable.VoiceCommand</code></a>.</p>
 <p><strong>Requires Focus</strong></p>
 <p>If true, the voice command will only activate the <em>Interactable</em> if and only if it already has focus from a pointer. If false, then the <em>Interactable</em> will act as a global listener for the selected voice command. The default behavior is true, as multiple global speech listeners can be difficult to organize in a scene.</p>
+<p>This property can be configured at runtime in code via <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.Interactable.html#Microsoft_MixedReality_Toolkit_UI_Interactable_VoiceRequiresFocus"><code>Interactable.VoiceRequiresFocus</code></a>.</p>
 <p><strong>Selection Mode</strong></p>
 <p>This property defines the selection logic. When an <em>Interactable</em> is clicked, it iterates into a next <em>Dimension</em> level. <em>Dimensions</em> is similar to rank and defines a state outside of inputs (i.e focus, press etc). They are useful for defining Toggle states or other multi-rank states associated with a button. The current Dimension level is tracked by <code>Interactable.DimensionIndex</code>.</p>
 <p>The selection modes available are:</p>
@@ -141,6 +146,7 @@
 <li><strong>Multi-dimension</strong> - <em>Dimensions</em> &gt;= 3, every click increases the current dimension level + 1. Useful for defining a button state to a list, etc.</li>
 </ul>
 <p><em>Interactable</em> also allows for multiple Themes to be defined per <em>Dimension</em>. For example when <em>SelectionMode=Toggle</em>, one theme may be applied when the <em>Interactable</em> is <em>deselected</em> and another theme applied when the component is <em>selected</em>.</p>
+<p>The current Selection Mode can be queried at runtime via <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.Interactable.html#Microsoft_MixedReality_Toolkit_UI_Interactable_ButtonMode"><code>Interactable.ButtonMode</code></a>. Updating the mode at runtime can be achieved by setting the  <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.Interactable.html#Microsoft_MixedReality_Toolkit_UI_Interactable_Dimensions"><code>Interactable.Dimensions</code></a> property to match the desired functionality. Furthermore, the current dimension, useful for <em>Toggle</em> and <em>Multi-Dimension</em> modes, can be accessed via <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.Interactable.html#Microsoft_MixedReality_Toolkit_UI_Interactable_CurrentDimension"><code>Interactable.CurrentDimension</code></a>.</p>
 <h3 id="interactable-profiles">Interactable Profiles</h3>
 <p><em>Profiles</em> are items that create a relationship between a GameObject and a <a href="VisualThemes.html">Visual Theme</a>. The profile defines what content will be manipulated by a theme when a <a href="#general-input-settings">state change occurs</a>.</p>
 <p>Themes work a lot like materials. They are scriptable objects that contain a list of properties that will be assigned to an object based on the current state. Themes are also re-usable and can be assigned across multiple <em>Interactable</em> UX objects.</p>
@@ -232,10 +238,10 @@ public Vector3 EffectOffset = Vector3.zero;
 <pre><code class="lang-csharp">// If using SelectionMode = Toggle (i.e Dimensions == 2)
 
 // Make the Interactable selected and toggled on
-myInteractable.SetToggled(true)
+myInteractable.IsToggled = true;
 
 // Get whether the Interactable is selected or not
-bool isSelected = myInteractable.IsToggled();
+bool isSelected = myInteractable.IsToggled;
 </code></pre>
 <h5 id="toggle-button-collection">Toggle button collection</h5>
 <p>It is common to have a list of toggle buttons where only one can be active at any given time, also known as a radial set or radio buttons etc.</p>
@@ -258,10 +264,10 @@ bool isSelected = myInteractable.IsToggled();
 <pre><code class="lang-csharp">// If using SelectionMode = Multi-dimension (i.e Dimensions &gt;= 3)
 
 //Access the current DimensionIndex
-int currentDimension = myInteractable.GetDimensionIndex();
+int currentDimension = myInteractable.CurrentDimension;
 
 //Set the current DimensionIndex to 2
-myInteractable.SetDimensionIndex(2);
+myInteractable.CurrentDimension = 2;
 
 // Promote Dimension to next level
 myInteractable.IncreaseDimension();
