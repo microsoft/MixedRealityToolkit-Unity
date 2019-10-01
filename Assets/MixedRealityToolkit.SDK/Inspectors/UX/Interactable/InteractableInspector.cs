@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             isGlobal = serializedObject.FindProperty("isGlobal");
             canSelect = serializedObject.FindProperty("CanSelect");
             canDeselect = serializedObject.FindProperty("CanDeselect");
-            startDimensionIndex = serializedObject.FindProperty("StartDimensionIndex");
+            startDimensionIndex = serializedObject.FindProperty("startDimensionIndex");
             dimensionIndex = serializedObject.FindProperty("dimensionIndex");
             dimensions = serializedObject.FindProperty("dimensions");
 
