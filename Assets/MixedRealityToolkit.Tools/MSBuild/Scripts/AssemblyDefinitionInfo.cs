@@ -12,7 +12,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.MSBuild
 {
     /// <summary>
-    /// This class represents an AssemblyDefinition file of a Unity project. It can be used to parse the file contents using <see cref="JsonUtility.FromJson{T}(string)"/>.
+    /// This class represents an AssemblyDefinition file of a Unity project. It can be used to parse the file contents using <see href="https://docs.unity3d.com/ScriptReference/JsonUtility.FromJson.html">JsonUtility.FromJson</see>.
     /// </summary>
     public class AssemblyDefinitionInfo
     {

@@ -237,7 +237,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         /// <summary>
         /// Reads until some contents is encountered, or the end of the stream is reached.
         /// </summary>
-        /// <param name="reader">The <see cref="StreamReader"/> to use for reading.</param>
+        /// <param name="reader">The <see cref="System.IO.StreamReader"/> to use for reading.</param>
         /// <param name="contents">The contents to search for in the lines being read.</param>
         /// <returns>The line on which some of the contents was found.</returns>
         public static string ReadUntil(this StreamReader reader, params string[] contents)
@@ -318,7 +318,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         /// <summary>
         /// Reads while the predicate is satisifed, returns the line on which it failed.
         /// </summary>
-        /// <param name="reader">The <see cref="StreamReader"/> to use for reading.</param>
+        /// <param name="reader">The <see cref="System.IO.StreamReader"/> to use for reading.</param>
         /// <param name="predicate">The predicate that should return false when reading should stop.</param>
         /// <returns>The line on which the predicate returned false.</returns>
         public static string ReadWhile(this StreamReader reader, System.Func<string, bool> predicate)
@@ -384,7 +384,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         /// <summary>
         /// Helper to perform an IO operation with retries.
         /// </summary>
-        public static bool TryIOWithRetries(Action operation, int numRetries, TimeSpan sleepBetweenRetrie, bool throwOnLastRetry = false)
+        public static bool TryIOWithRetries(Action operation, int numRetries, TimeSpan sleepBetweenRetries, bool throwOnLastRetry = false)
         {
             do
             {
@@ -555,7 +555,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         }
 
         /// <summary>
-        /// Gets a <see cref="BuildTargetGroup"/> for a specified <see cref="BuildTarget"/>.
+        /// Gets a <see href="https://docs.unity3d.com/ScriptReference/BuildTargetGroup.html">BuildTargetGroup</see> for a specified <see href="https://docs.unity3d.com/ScriptReference/BuildTarget.html">BuildTarget</see>.
         /// </summary>
         public static BuildTargetGroup GetBuildTargetGroup(BuildTarget buildTarget)
         {
