@@ -85,6 +85,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         [DrawGizmo(GizmoType.Selected)]
         private void OnSceneGUI()
         {
+            if (touchable == null)
+            {
+                // The inspector code will prompt a developer to add a touchable.
+                return;
+            }
+
             if (!VisiblePlanes)
             {
                 return;
@@ -252,6 +258,37 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
+
+            if (touchable == null)
+            {
+                EditorGUILayout.HelpBox($"{target.GetType().Name} requires a {nameof(NearInteractionTouchableSurface)}-derived component on this game object to function.", MessageType.Warning);
+
+                bool isUnityUI = (button.GetComponent<RectTransform>() != null);
+                var typeToAdd = isUnityUI ? typeof(NearInteractionTouchableUnityUI) : typeof(NearInteractionTouchable);
+
+                if (GUILayout.Button($"Add {typeToAdd.Name} component"))
+                {
+                    Undo.RecordObject(target, string.Concat($"Add {typeToAdd.Name}"));
+                    var addedComponent = button.gameObject.AddComponent(typeToAdd);
+                    touchable = (NearInteractionTouchableSurface)addedComponent;
+                }
+                else
+                {
+                    // It won't work without it, return to avoid nullrefs.
+                    return;
+                }
+            }
+
+            if (touchable.EventsToReceive != TouchableEventType.Touch)
+            {
+                EditorGUILayout.HelpBox($"The {nameof(NearInteractionTouchableSurface)}-derived component on this game object currently has its EventsToReceive set to '{touchable.EventsToReceive}'.  It must be set to 'Touch' in order for PressableButton to function propertly.", MessageType.Warning);
+
+                if (GUILayout.Button("Set EventsToReceive to 'Touch'"))
+                {
+                    Undo.RecordObject(touchable, string.Concat("Set EventsToReceive to Touch on ", touchable.name));
+                    touchable.EventsToReceive = TouchableEventType.Touch;
+                }
+            }
 
             EditorGUILayout.Space();
             EditorGUILayout.PropertyField(movingButtonVisuals);
