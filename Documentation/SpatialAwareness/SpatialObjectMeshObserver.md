@@ -64,7 +64,8 @@ The [Windows Device Portal](https://docs.microsoft.com/en-us/windows/mixed-reali
 1. Click the *Update* button under *Spatial Mapping* section
 1. Click the *Save* button under *Spatial Mapping* section to save the obj file to PC
 
-> [!NOTE] **HoloToolkit .room files**
+> [!NOTE]
+> **HoloToolkit .room files**
 >
 > Many developers will have previously used HoloToolkit to scan environments and create .room files. The Mixed Reality Toolkit now supports importing these files as GameObjects in Unity and use them as *Spatial Mesh Objects* in the observer.
 

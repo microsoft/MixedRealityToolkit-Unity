@@ -83,7 +83,7 @@ Specifies the level of detail (LOD) of the spatial mesh data. Currently defined 
 
 **Triangles per Cubic Meter**
 
-When using the *Custom* [Level of Detail](#level-of-detail) setting, this property specifies the triangle density for the spatial mesh.
+Valid when using the *Custom* setting for the **Level of Detail** property and specifies the triangle density for the spatial mesh.
 
 ### Display Settings
 

@@ -11,8 +11,8 @@ The Spatial Awareness system provides real-world environmental awareness in mixe
 
 Adding support for Spatial Awareness requires two key components of the Mixed Reality Toolkit: the Spatial Awareness system and a supported platform provider.
 
-1. [Enable](#enable-spatial-awareness) the Spatial Awareness system
-2. [Register](#register-observers) and [configure](#configure-observers) one or more spatial observers to provide mesh data
+1. [Enable](#enable-the-spatial-awareness) the Spatial Awareness system
+2. [Register](#register-observers) and [configure](ConfiguringSpatialAwarenessMeshObserver.md) one or more spatial observers to provide mesh data
 3. [Build and deploy](#build-and-deploy) to a platform that supports Spatial Awareness
 
 ### Enable the Spatial Awareness system
@@ -41,7 +41,7 @@ The Mixed Reality Toolkit ships with a few default pre-configured profiles. Some
 
 ### Register observers
 
-Services in the Mixed Reality Toolkit can have [Data Provider services](../Architecture/SystemsExtensionsProviders.md) that supplement the main service with platform specific data and implementation controls. An example of this is the Mixed Reality Input System which has [multiple data providers](../Input/InputProviders.html) to get controller and other related input information from various platform-specific APIs.
+Services in the Mixed Reality Toolkit can have [Data Provider services](../Architecture/SystemsExtensionsProviders.md) that supplement the main service with platform specific data and implementation controls. An example of this is the Mixed Reality Input System which has [multiple data providers](../Input/InputProviders.md) to get controller and other related input information from various platform-specific APIs.
 
 The Spatial Awareness system is similar in that data providers supply the system with mesh data about the real-world. The Spatial Awareness profile must have at least one Spatial Observer registered. Spatial Observers are generally platform specific components that act as the provider for surfacing various types of mesh data from a platform specific endpoint (i.e HoloLens).
 
