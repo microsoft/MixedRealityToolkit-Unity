@@ -4,19 +4,20 @@
 
 Tooltip は、通常、オブジェクトを詳しく調べるときにヒントや追加情報を伝えるために使用されます。Tooltip を使用して、物理環境内のオブジェクトにアノテーションを付けることができます。
 
-## How to use a tooltip ##
-A tooltip can be added directly to the hierarchy and targeted to an object.
+## Tooltip の使い方 ##
 
-To use this method simply add a game object and one of the [tooltip prefabs](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Tooltips) to the scene hierarchy. In the prefab's inspector panel, expand the *Tool Tip* (script). Select a tip state and configure the tooltip.  Enter the respective text for the tool tip in the text field. Expand the *ToolTipConnector* (Script) and drag the object that is to have the tooltip from the hierarchy into the field labelled *Target*. This attaches the tooltip to the object. 
+Tooltip は、[Hierarchy](ヒエラルキー) ウィンドウ に直接追加し、オブジェクトをターゲットとすることができます。
+
+この方法を使用するには、単にゲームオブジェクトと[Tooltip プレハブ](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Tooltips) をシーンの[Hierarchy](ヒエラルキー)に追加するだけです。プレハブのインスペクタ パネルで、*Tooltip* (スクリプト)を展開します。チップの状態を選択し、Tooltip の設定を行います。 それぞれの Tooltip のテキスト フィールドに入力します。*ToolTipConnector* (スクリプト) を展開し、Tooltip を持つオブジェクトを[Hierarchy](ヒエラルキー) ウィンドウから *Target* というラベルの付いたフィールドにドラッグします。これにより、Tooltip がオブジェクトにアタッチされます。
 ![Tooltip](../Documentation/Images/Tooltip/MRTK_Tooltip_Connector.png)
 
 
-This use assumes a tooltip that is always showing or that is shown / hidden via script by changing the tooltip state property of the tooltip component.
+この使用では、Tooltip ンポーネントのツールチップ状態プロパティを変更して、常に表示されるツールチップ、またはスクリプトを介して表示/非表示のツールチップを想定しています。
  
-## Dynamically spawning tooltips ##
-A tooltip can be dynamically added to an object at runtime as well as pre-set to show and hide on a tap or focus. Simply add the [`ToolTipSpawner`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Tooltips/ToolTipSpawner.cs) script to any game object. Delays for appearing and disappearing can be set in the scripts inspector as well as a lifetime so that the tooltip will disappear after a set duration. Tooltips also feature style properties such as background visuals in the spawner script. By default the tooltip will be anchored to the object with the spawner script. This can be changed by assigning a GameObject to the anchor field.
+## 動的に tooltips を作成##
+ツールチップは、実行時にオブジェクトに動的に追加できるだけでなく、タップまたはフォーカスに表示および非表示にする事前設定もできます。 [`ToolTipSpawner`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Tooltips/ToolTipSpawner.cs) スクリプトを任意のゲームオブジェクトに追加するだけです。表示と消失の遅延は、スクリプトインスペクタと有効期間で設定できるため、Tooltip は設定された期間が過ぎに消えます。Tooltip には、スポーン スクリプトの背景ビジュアルなどのスタイル プロパティも備えています。デフォルトでは、Tooltip は spawner スクリプトを使用してオブジェクトに固定されます。これは、アンカー フィールドに GameObject を割り当てることで変更できます。
 
-## Example scene ##
-In the [example scene files](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/UX/Tooltips/Scenes), you will be able to find various examples of tooltips. 
+## サンプルシーン ##
+[サンプルシーン](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/UX/Tooltips/Scenes)では、ツールヒントのさまざまな例を見つけることができます。
 
 ![Tooltip](../Documentation/Images/Tooltip/MRTK_Tooltip_Examples.png)
