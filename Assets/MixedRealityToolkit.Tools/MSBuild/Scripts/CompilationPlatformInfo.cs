@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
     public class CompilationPlatformInfo
     {
         /// <summary>
-        /// Given a non-editor <see cref="AssemblyDefinitionPlatform"/> platform, creates an instances of CompilationPlatform fetching defines and references.
+        /// Given a non-editor <see href="https://docs.unity3d.com/ScriptReference/Compilation.AssemblyDefinitionPlatform.html">AssemblyDefinitionPlatform</see> platform, creates an instances of CompilationPlatform fetching defines and references.
         /// </summary>
         /// <param name="platform">The platform to use for parsing.</param>
         /// <returns>The <see cref="CompilationPlatformInfo"/> containing building information for the platform.</returns>
