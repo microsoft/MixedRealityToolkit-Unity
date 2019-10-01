@@ -2,7 +2,7 @@
 
 ![Tooltip](../Documentation/Images/Tooltip/MRTK_Tooltip_Main.png)
 
-Tooltips are usually used to convey a hint or extra information upon closer inspection of an object. Tooltips can be used to annotate objects in the physical environment.
+Tooltip は、通常、オブジェクトを詳しく調べるときにヒントや追加情報を伝えるために使用されます。Tooltip を使用して、物理環境内のオブジェクトにアノテーションを付けることができます。
 
 ## How to use a tooltip ##
 A tooltip can be added directly to the hierarchy and targeted to an object.
