@@ -172,13 +172,13 @@ Call Update any time to update the move logic and get a new rotation for the obj
   
   
   <a id="Microsoft_MixedReality_Toolkit_Physics_TwoHandRotateLogic_Update_" data-uid="Microsoft.MixedReality.Toolkit.Physics.TwoHandRotateLogic.Update*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Physics_TwoHandRotateLogic_Update_Dictionary_System_UInt32_Vector3__Quaternion_RotationConstraintType_" data-uid="Microsoft.MixedReality.Toolkit.Physics.TwoHandRotateLogic.Update(Dictionary{System.UInt32,Vector3},Quaternion,RotationConstraintType)">Update(Dictionary&lt;UInt32, Vector3&gt;, Quaternion, RotationConstraintType)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Physics_TwoHandRotateLogic_Update_Dictionary_System_UInt32_Vector3__Quaternion_RotationConstraintType_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Physics.TwoHandRotateLogic.Update(Dictionary{System.UInt32,Vector3},Quaternion,RotationConstraintType,System.Boolean)">Update(Dictionary&lt;UInt32, Vector3&gt;, Quaternion, RotationConstraintType, Boolean)</h4>
   <div class="markdown level1 summary"><p>Update the rotation based on input.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Quaternion Update(Dictionary&lt;uint, Vector3&gt; handsPressedMap, Quaternion currentRotation, RotationConstraintType rotationConstraint)</code></pre>
+    <pre><code class="lang-csharp hljs">public Quaternion Update(Dictionary&lt;uint, Vector3&gt; handsPressedMap, Quaternion currentRotation, RotationConstraintType rotationConstraint, bool useLocalSpaceForConstraint)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -203,6 +203,11 @@ Call Update any time to update the move logic and get a new rotation for the obj
       <tr>
         <td><span class="xref">RotationConstraintType</span></td>
         <td><span class="parametername">rotationConstraint</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">useLocalSpaceForConstraint</span></td>
         <td></td>
       </tr>
     </tbody>
