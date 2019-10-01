@@ -259,6 +259,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             serializedObject.Update();
 
+            // Ensure there is a touchable.
             if (touchable == null)
             {
                 EditorGUILayout.HelpBox($"{target.GetType().Name} requires a {nameof(NearInteractionTouchableSurface)}-derived component on this game object to function.", MessageType.Warning);
@@ -279,6 +280,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
             }
 
+            // Ensure that the touchable has EventsToReceive set to Touch
             if (touchable.EventsToReceive != TouchableEventType.Touch)
             {
                 EditorGUILayout.HelpBox($"The {nameof(NearInteractionTouchableSurface)}-derived component on this game object currently has its EventsToReceive set to '{touchable.EventsToReceive}'.  It must be set to 'Touch' in order for PressableButton to function propertly.", MessageType.Warning);
@@ -287,6 +289,18 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 {
                     Undo.RecordObject(touchable, string.Concat("Set EventsToReceive to Touch on ", touchable.name));
                     touchable.EventsToReceive = TouchableEventType.Touch;
+                }
+            }
+
+            // Ensure that no ancestors have touchables, as this will cause this PressableButton to fail to function.
+            var ancestorTouchable = button.FindAncestorComponent<NearInteractionTouchableSurface>(includeSelf: false);
+            if (ancestorTouchable != null)
+            {
+                EditorGUILayout.HelpBox($"An ancestor of this game object contains a {ancestorTouchable.GetType().Name}, which will cause this {target.GetType().Name} to fail to work properly.  You must remove the {ancestorTouchable.GetType().Name} from the ancestor, {ancestorTouchable.name}", MessageType.Warning);
+
+                if (GUILayout.Button($"Select ancestor"))
+                {
+                    Selection.activeGameObject = ancestorTouchable.gameObject;
                 }
             }
 
