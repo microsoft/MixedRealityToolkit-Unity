@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Rendering;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// used to drive per pixel based clipping.
     /// </summary>
     [ExecuteAlways]
-    public abstract class ClippingPrimitive : MonoBehaviour
+    public abstract class ClippingPrimitive : MonoBehaviour, IMaterialInstanceOwner
     {
         [Tooltip("The renderer(s) that should be affected by the primitive.")]
         [SerializeField]
@@ -88,11 +89,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     renderers.Add(_renderer);
                 }
 
-                var material = _renderer.EnsureComponent<MaterialInstance>().AcquireMaterial(this);
+                var materials = _renderer.EnsureComponent<MaterialInstance>().AcquireMaterials(this);
 
-                if (material != null)
+                if (materials != null)
                 {
-                    ToggleClippingFeature(material, true);
+                    foreach (var material in materials)
+                    {
+                        ToggleClippingFeature(material, true);
+                    }
                 }
             }
         }
@@ -191,6 +195,26 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         #endregion MonoBehaviour Implementation
 
+        #region IMaterialInstanceOwner Implementation
+
+        /// <inheritdoc />
+        public void OnMaterialChanged(MaterialInstance materialInstance)
+        {
+            var materials = materialInstance.AcquireMaterials(this);
+
+            if (materials != null)
+            {
+                foreach (var material in materials)
+                {
+                    ToggleClippingFeature(material, gameObject.activeInHierarchy);
+                }
+            }
+
+            UpdateRenderers();
+        }
+
+        #endregion IMaterialInstanceOwner Implementation
+
         protected virtual void Initialize()
         {
             materialPropertyBlock = new MaterialPropertyBlock();
@@ -235,11 +259,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
                 if (_renderer != null)
                 {
-                    var material = _renderer.EnsureComponent<MaterialInstance>().AcquireMaterial(this);
+                    var materials = _renderer.EnsureComponent<MaterialInstance>().AcquireMaterials(this);
 
-                    if (material != null)
+                    if (materials != null)
                     {
-                        ToggleClippingFeature(material, keywordOn);
+                        foreach (var material in materials)
+                        {
+                            ToggleClippingFeature(material, keywordOn);
+                        }
                     }
                 }
             }
@@ -247,13 +274,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         protected void ToggleClippingFeature(Material material, bool keywordOn)
         {
-            if (keywordOn)
+            if (material != null)
             {
-                material.EnableKeyword(Keyword);
-            }
-            else
-            {
-                material.DisableKeyword(Keyword);
+                if (keywordOn)
+                {
+                    material.EnableKeyword(Keyword);
+                }
+                else
+                {
+                    material.DisableKeyword(Keyword);
+                }
             }
         }
     }
