@@ -1,8 +1,5 @@
 # Configuring Mesh Observers for Device
 
-SDFSDFSDF
-Explain here
-
 All observers must extend the [IMixedRealitySpatialAwarenessMeshObserver](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessMeshObserver) interface. Furthermore, the default implementation provided by the Mixed Reality Toolkit is the [WindowsMixedRealitySpatialMeshObserver](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver) for the Windows Mixed Reality platform.
 
 ## Profile Settings
