@@ -1,6 +1,6 @@
 # Configuring Mesh Observers for Device
 
-All observers must extend the [IMixedRealitySpatialAwarenessMeshObserver](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessMeshObserver) interface. Furthermore, the default implementation provided by the Mixed Reality Toolkit is the [WindowsMixedRealitySpatialMeshObserver](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver) for the Windows Mixed Reality platform.
+This guide will walk through configuring the out-of-box Spatial Mesh Observer in MRTK which supports the Windows Mixed Reality platform (i.e HoloLens). The default implementation provided by the Mixed Reality Toolkit is the [WindowsMixedRealitySpatialMeshObserver](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver) class. Many of the properties in this article though apply for other [custom Observer implementations](CreateDataProvider.md).
 
 ## Profile Settings
 
@@ -10,7 +10,7 @@ The following two items must be defined first when configuring a Spatial Mesh Ob
 1. list of supported platform(s) to run this observer
 
 > [!NOTE]
-> All observers must extend the [IMixedRealitySpatialAwarenessMeshObserver](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessMeshObserver) interface. Furthermore, the default implementation provided by the Mixed Reality Toolkit is the [WindowsMixedRealitySpatialMeshObserver](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver) for the Windows Mixed Reality platform.
+> All observers must extend the [IMixedRealitySpatialAwarenessMeshObserver](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessMeshObserver) interface.
 
 ![Mesh Observer General Settings](../../Documentation/Images/SpatialAwareness/SpatialAwarenessMeshObserverProfile_TypesPlatforms.png)
 
