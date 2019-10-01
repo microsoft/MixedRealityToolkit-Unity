@@ -181,16 +181,18 @@
 
   - name: Coding Guidelines
     href: Contributing/CodingGuidelines.md
-  - name: Writing Documentation
-    href: Contributing/DocumentationGuide.md
-  - name: Developer portal generation with DocFX
-    href: Contributing/DevDocGuide.md
   - name: Writing and Running Tests
     href: Contributing/UnitTests.md
-  - name: Breaking Changes
-    href: Contributing/BreakingChanges.md
+  - name: Writing Documentation
+    href: Contributing/DocumentationGuide.md
+  - name: Pull Requests
+    href: Contributing/PullRequests.md
   - name: Experimental Features
     href: Contributing/ExperimentalFeatures.md
+  - name: Breaking Changes
+    href: Contributing/BreakingChanges.md
+  - name: Generate docs portal with DocFX
+    href: Contributing/DevDocGuide.md
 - name: Planning
   items:
   - name: Roadmap

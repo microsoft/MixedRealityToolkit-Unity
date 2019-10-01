@@ -6,19 +6,15 @@ This document outlines coding principles and convetions to follow when contribut
 ## Philosophy
 
 ### Be consise and strive for simplicity
-**Reason**
 The simplest solution is often the best. This is an overriding aim of these guidelines and should be the goal of all coding activity. Part of being simple is being concise, and consistent with existing code. Try to keep your code simple.
 
-**Notes**
 Readers should only encounter artifacts that provide useful information. For example, comments that restate what is obvious provide no extra information and increase the noise to signal ratio.
 
 Keep code logic simple. Note that this is not a statement about using the fewest number of lines, minimizing the size of identifier names or brace style, but about reducing the number of concepts and maximizing the visibility of those through familiar patterns.
 
 ### Produce consistent, readable code
-**Reason**
 Code readability is correlated with low defect rates. Strive to create code that is easy to read. 
 
-**Notes**
 Strive to create code that has simple logic and re-uses existing components as it will also help ensure correctness.
 
 All details of the code you produce matter, from the most basic detail of correctness to consistent style and formatting. 
@@ -26,31 +22,23 @@ All details of the code you produce matter, from the most basic detail of correc
 Keep your coding style consistent with what already exists, even if it is not matching your preference. This increases the readability of the overall codebase.
 
 ### Support configuring components both in editor and at run-time
-**Reason**
 MRTK supports a diverse set of users – people who prefer to configure components in the Unity editor and load prefabs, and people who need to instantiate and configure objects at run-time.
 
-**Notes**
 All your code should work by BOTH adding a component to a GameObject in a saved scene, and by instantiating that component in code. Tests should include a test case both for instantiating prefabs and instantiating, configuring the component at runtime. 
 
 ### Play-In-Editor is your first and primary target platform
-**Reason**
 Play-In-Editor is the fastest way to iterate in Unity. Providing ways for our customers to iterate quickly allows them to both develop solutions more quickly and try out more ideas. In other words, maximizing the speed of iteration empowers our customers to achieve more.
 
-**Notes**
 Make everything work in editor, then make it work on any other platform. Keep it working in the editor. It is easy to add a new platform to Play-In-Editor. It is very difficult to get Play-In-Editor working if your app only works on a device.
 
 ### Add new public fields, properties, methods and serialized private fields with care
-**Reason**
 Every time you add a public method, field, property, it becomes part of MRTK’s public API surface. Private fields marked with `[SerializeField]` also expose fields to the editor and are part of the public API surface. Other people might use that public method, configure custom prefabs with your public field, and take a dependency on it.
 
-**Notes**
 New public members should be carefully examined. Any public field will need to be maintained in the future. Remember that if the type of a public field (or serialized private field) changes or gets removed from a MonoBehaviour, that could break other people. The field will need to first be deprecated for a release, and code to migrate changes for people that have taken dependencies would need to be provided.
 
 ### Prioritize Writing Tests 
-**Reason**
 MRTK is a community project, modified by a diverse range of contributors. These contributors may not know the details of your bug fix / feature, and accidentally break your feature. [MRTK runs continuous integration tests](https://dev.azure.com/aipmr/MixedRealityToolkit-Unity-CI/_build/results?buildId=5428) before completing every pull request. Changes that break tests cannot be checked in. Therefore, tests are the best way to ensure that other people do not break your feature.
 
-**Notes**
 When you fix a bug, write a test to ensure it does not regress in the future.
 
 If you add a feature, write tests that verify your feature works. This is required for all UX features except experimental features.
