@@ -38,7 +38,7 @@ Run the tests on the project located at H:\mrtk.dev, with Unity 2018.4.1f1, outp
 It's also possible to run the playmode tests multiple times via the `run_repeat_tests.ps1` script. All parameters used in `run_playmode_tests.ps1` may be used.
 
 ```
-    .\run_repeat_tests.ps1 -Times 5"
+    .\run_repeat_tests.ps1 -Times 5
 ```
 
 ### Pull Request Validation
