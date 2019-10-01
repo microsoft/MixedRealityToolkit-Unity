@@ -1,10 +1,6 @@
-# Configuring the Spatial Awareness system via code
+# Configuring Mesh Observers via code
 
-TOC
-Configuring via Inspector
--> Spatial AW Mesh Obsever
--> Spatial Object Mesh Observer
-Configuring via Code
+
 
 TSDFSDFSDFSDF
 TODO: Rename to be like title in yaml

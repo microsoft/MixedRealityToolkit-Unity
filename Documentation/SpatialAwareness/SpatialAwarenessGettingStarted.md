@@ -14,29 +14,27 @@ Adding support for spatial awareness requires two key components of the Mixed Re
 
 ### Enable the Spatial Awareness system
 
-The spatial awareness system is managed by the MixedRealityToolkit object (or another [service registrar](xref:Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar) component). 
+The spatial awareness system is managed by the MixedRealityToolkit object (or another [service registrar](xref:Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar) component). Follow the steps below to enable or disable the *Spatial Awareness system* in the *MixedRealityToolkit* profile.
 
-Follow the steps below to enable or disable the Spatial Awareness system in the MixedRealityToolkit profile.
+The Mixed Reality Toolkit ships with a few default pre-configured profiles. Some of these have the *Spatial Awareness system* enabled OR disabled by default. The intent of this pre-configuration, particularly for when disabled, is to avoid the visual overhead of calculating and rendering the meshes.
 
-> [!NOTE]
-TIDIDIDIDI
+| Profile | System Enabled by Default |
+| --- | --- |
+| [DefaultHoloLens1ConfigurationProfile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/HoloLens1/DefaultHoloLens1ConfigurationProfile.asset) | False |
+| [DefaultHoloLens2ConfigurationProfile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/HoloLens2/DefaultHoloLens2ConfigurationProfile.asset) | False |
+| [DefaultMixedRealityToolkitConfigurationProfile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/DefaultMixedRealityToolkitConfigurationProfile.asset) | True |
 
-TODO: Insert table here for default profiles*
+1. Select the MixedRealityToolkit object in the scene hierarchy to open in the Inspector Panel.
 
-The steps below are not necessary for users of the default profile (i.e DefaultMixedRealityToolkitConfigurationProfile) which has this system already enabled. 
-> The spatial awareness system is disabled by default on the default HoloLens 2 profile (i.e DefaultHoloLens2ConfigurationProfile), and the intent of this is to avoid the visual overhead of calculating and rendering the meshes.
+    ![MRTK Configured Scene Hierarchy](../../Documentation/Images/MRTK_ConfiguredHierarchy.png)
 
-1. Select the MixedRealityToolkit object in the scene hierarchy.
+1. Navigate to the *Spatial Awareness System* section and check *Enable Spatial Awareness System*
 
-![MRTK Configured Scene Hierarchy](../../Documentation/Images/MRTK_ConfiguredHierarchy.png)
+    ![Enable Spatial Awareness](../../Documentation/Images/SpatialAwareness/MRTKConfig_SpatialAwareness.png)
 
-2. Navigate the Inspector panel to the Spatial Awareness System section and check *Enable Spatial Awareness System*
+1. Select the desired *Spatial Awareness System* implementation type. The [`MixedRealitySpatialAwarenessSystem`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessSystem) is the default provided.
 
-![Enable Spatial Awareness](../../Documentation/Images/SpatialAwareness/MRTKConfig_SpatialAwareness.png)
-
-3. Select the Spatial Awareness System implementation
-
-![Select the Spatial Awareness System Implementation](../../Documentation/Images/SpatialAwareness/SpatialAwarenessSelectSystemType.png)
+    ![Select the Spatial Awareness System Implementation](../../Documentation/Images/SpatialAwareness/SpatialAwarenessSelectSystemType.png)
 
 ### Register observers
 
@@ -44,17 +42,17 @@ Before the spatial awareness system can provide applications with data about the
 
 1. Open or expand the Spatial Awareness System profile
 
-![Spatial Awareness System Profile](../../Documentation/Images/SpatialAwareness/SpatialAwarenessProfile.png)
+    ![Spatial Awareness System Profile](../../Documentation/Images/SpatialAwareness/SpatialAwarenessProfile.png)
 
 1. Click the "Add Spatial Observer" button
 1. Select the desired Spatial Observer implementation type
 
-![Select the Spatial Observer Implementation](../../Documentation/Images/SpatialAwareness/SpatialAwarenessSelectObserver.png)
+    ![Select the Spatial Observer Implementation](../../Documentation/Images/SpatialAwareness/SpatialAwarenessSelectObserver.png)
 
 1. [Modify configuration properties on the observer](ConfiguringSpatialAwarenessMeshObserver.md) as necessary
 
 > [!NOTE]
-> Users of the default profile (DefaultMixedRealitSpatialAwarenessSystemProfile) will have the spatial awareness system pre-configured for the Windows Mixed Reality platform which uses
+> Users of the [DefaultMixedRealityToolkitConfigurationProfile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/DefaultMixedRealityToolkitConfigurationProfile.asset) will have the Spatial Awareness system pre-configured for the Windows Mixed Reality platform which uses
 the [`WindowsMixedRealitySpatialMeshObserver`](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver) class.
 
 ### Build and Deploy
@@ -62,7 +60,7 @@ the [`WindowsMixedRealitySpatialMeshObserver`](xref:Microsoft.MixedReality.Toolk
 Once the spatial awareness system is configured with the desired observer(s), the project can be built and deployed to the target platform.
 
 > [!IMPORTANT]
-> If targeting the Windows Mixed Reality platform (ex: HoloLens), it is important to ensure the [Spatial Perception capability](https://docs.microsoft.com/en-us/windows/mixed-reality/spatial-mapping-in-unity) is enabled in order to use the Spatial Awareness system on device. 
+> If targeting the Windows Mixed Reality platform (ex: HoloLens), it is important to ensure the [Spatial Perception capability](https://docs.microsoft.com/en-us/windows/mixed-reality/spatial-mapping-in-unity) is enabled in order to use the Spatial Awareness system on device.
 
 > [!WARNING]
 > Some platforms, including Microsoft HoloLens, provide support for remote execution from within Unity. This feature enables rapid development and testing without requiring the build and deploy step. Be sure to do final acceptance testing using a built and deployed version of the application, running on the target hardware and platform.

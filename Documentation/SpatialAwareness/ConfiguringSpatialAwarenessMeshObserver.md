@@ -1,4 +1,11 @@
-# Configuring the Spatial Awareness Mesh Observer
+# Configuring Mesh Observers for Device
+
+SDFSDFSDF
+Explain here
+
+All observers must extend the [IMixedRealitySpatialAwarenessMeshObserver](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessMeshObserver) interface. Furthermore, the default implementation provided by the Mixed Reality Toolkit is the [WindowsMixedRealitySpatialMeshObserver](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver) for the Windows Mixed Reality platform.
+
+## Profile Settings
 
 The following two items must be defined first when configuring a Spatial Mesh Observer profile for the [Spatial Awareness system](SpatialAwarenessGettingStarted.md).
 
@@ -6,11 +13,11 @@ The following two items must be defined first when configuring a Spatial Mesh Ob
 1. list of supported platform(s) to run this observer
 
 > [!NOTE]
-> All observers must extend and [IMixedRealitySpatialAwarenessMeshObserver](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessMeshObserver) interface. Furthermore, the default implementation provided by the Mixed Reality Toolkit is the [WindowsMixedRealitySpatialMeshObserver](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver) for the Windows Mixed Reality platform.
+> All observers must extend the [IMixedRealitySpatialAwarenessMeshObserver](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessMeshObserver) interface. Furthermore, the default implementation provided by the Mixed Reality Toolkit is the [WindowsMixedRealitySpatialMeshObserver](xref:Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness.WindowsMixedRealitySpatialMeshObserver) for the Windows Mixed Reality platform.
 
 ![Mesh Observer General Settings](../../Documentation/Images/SpatialAwareness/SpatialAwarenessMeshObserverProfile_TypesPlatforms.png)
 
-## General Settings
+### General Settings
 
 ![Mesh Observer General Settings](../../Documentation/Images/SpatialAwareness/MeshObserverGeneralSettings.png)
 
@@ -25,39 +32,42 @@ If using *Manual Start*, one must [resume and suspend them at runtime via code](
 
 **Update Interval**
 
-The time, in seconds, between requests to the platform to update spatial mesh data. Typical values fall in the range of 0.1 and 5.0 seconds. 
+The time, in seconds, between requests to the platform to update spatial mesh data. Typical values fall in the range of 0.1 and 5.0 seconds.
 
 **Is Stationary Observer**
 
-Indicates whether or not the observer is to remain stationary or to move and update with the user.
+Indicates whether or not the observer is to remain stationary or to move and update with the user. If true, the *Observer Shape* with volume defined by *Observation Extents* will remain at the origin on startup. If false, the Observer space will follow the user's head as the shape's origin.
 
-When stationary, if the user moves further than the [Observation Extents](#observation-extents) away from the origin, there will be no mesh data calculated until the users moves closer back to the origin.
+There will be no mesh data calculated for any physical area outside of the Observer space as defined by these properties: *Is Stationary Observer*, *Observer Shape**, and *Observation Extents*.
 
 **Observer Shape**
 
 The observer shape defines the type of volume that the mesh observer will use when observing meshes. The supported options are:
 
-* [Axis Aligned Cube](#axis-aligned-cube) - A rectangular shape that stays aligned with the axes of the world coordinate system, as determined at application startup.
-* [User Aligned Cube](#user-aligned-cube) - A rectangular shape that rotates to align with the users local coordinate system.
-* [Sphere](#sphere) - A spherical volume with a center at the world space origin. The X value of the [Observation Extents](#observation-extents) property will be used as the radius of the sphere.
+* *Axis Aligned Cube* - Rectangular shape that stays aligned with the axes of the world coordinate system, as determined at application startup.
+* *User Aligned Cube* - Rectangular shape that rotates to align with the users local coordinate system.
+* *Sphere* - A spherical volume with a center at the world space origin. The X value of the *Observation Extents* property will be used as the radius of the sphere.
 
 **Observation Extents**
 
 The observation extents define the distance from the observation point that meshes will be observed.
 
-## Physics Settings
+### Physics Settings
 
 ![Mesh Observer Physics Settings](../../Documentation/Images/SpatialAwareness/MeshObserverPhysicsSettings.png)
 
-**Physics Lyer**
+**Physics Layer**
 
-The physics layer specifies which layer on which the spatial mesh objects will be placed in order to interact with the Unity Physics and RayCast systems. The Mixed Reality Toolkit reserves layer 31 by default for use by Spatial Awareness observers.
+The physics layer on which spatial mesh objects will be placed in order to interact with the Unity Physics and RayCast systems.
+
+> [!NOTE]
+> The Mixed Reality Toolkit reserves *layer 31* by default for use by Spatial Awareness observers.
 
 **Recalculate Normals**
 
-Specifies whether or not the mesh observer will recalculate the normals of the mesh following observation. This setting is available to ensure applications receive meshes that contain valid normals data on platforms that do not return them with meshes. 
+Specifies whether or not the mesh observer will recalculate the normals of the mesh following observation. This setting is available to ensure applications receive meshes that contain valid normals data on platforms that do not return them with meshes.
 
-## Level of Detail Settings
+### Level of Detail Settings
 
 ![Mesh Observer Level of Detail Settings](../../Documentation/Images/SpatialAwareness/MeshObserverLevelOfDetailSettings.png)
 
@@ -69,35 +79,31 @@ Specifies the level of detail (LOD) of the spatial mesh data. Currently defined 
 
 * *Fine* - Generally exacts a higher impact on application performance and is a great option for occlusion meshes.
 
-* *Custom* - Requires the application to specify the **Triangles / Cubic Meter** property and allows applications to tune the accuracy vs. performance impact of the spatial mesh observer.
+* *Custom* - Requires the application to specify the *Triangles / Cubic Meter* property and allows applications to tune the accuracy vs. performance impact of the spatial mesh observer.
 
 > [!NOTE]
-> It is not guaranteed that all **Triangles/Cubic Meter** values are honored by all platforms. Experimentation and profiling is highly recommended when using a custom LOD. 
+> It is not guaranteed that all *Triangles/Cubic Meter* values are honored by all platforms. Experimentation and profiling is highly recommended when using a custom LOD.
 
 **Triangles per Cubic Meter**
 
 When using the *Custom* [Level of Detail](#level-of-detail) setting, this property specifies the triangle density for the spatial mesh.
 
-## Display Settings
+### Display Settings
 
 ![Mesh Observer Display Settings](../../Documentation/Images/SpatialAwareness/MeshObserverDisplaySettings.png)
 
-### Display Option
+**Display Option**
 
-Specifies how spatial meshes are to be displayed by the observer. Supported values are None, Visible and Occlusion. Setting Visible or Occlusion instructs the observer to select the appropriate material. Specifying None causes the observer to not render the mesh.
+Specifies how spatial meshes are to be displayed by the observer. Supported values are:
+
+* *None* - Observer will not render the mesh
+* *Visisble* - Mesh data will be visible using the *Visible Material*
+* *Occlusion* - Mesh data will be occlude items in scene using teh *Occlusion Material*
+
+Spatial Observers can be [resumed/suspended at runtime via code.](UsageGuide.md#starting-and-stopping-mesh-observation)
 
 > [!WARNING]
-> Setting Display Option to None does _not_ stop the observer from running. If you wish to stop the observer, applications will need to call one of the following [IMixedRealitySpatialAwarenessSystem]
-
-sdfsdfsdfasdfsdfsdfsdaf
-
-TODO: Point out to the usage guide
-
-(xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSystem) methods:
->
-> - SuspendObserver&lt;T&gt;(string name)
-> - SuspendObservers()
-> - SuspendObservers&lt;T&gt;()
+> Setting *Display Option* to *None* does **NOT** stop the observer from running. If you wish to stop all observers, applications will need to suspend all observers via [`CoreServices.SpatialAwareness.SuspendObservers()`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSystem.SuspendObservers)
 
 **Visible Material**
 
