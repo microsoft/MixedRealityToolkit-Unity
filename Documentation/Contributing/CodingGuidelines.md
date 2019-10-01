@@ -90,9 +90,6 @@ Omitting the namespace for an interface, class or data type will cause your chan
 
 Please be sure to use 4 spaces instead of tabs when contributing to this project.
 
-Additionally, ensure that spaces are added for conditional / loop functions like if / while / for
-
-
 ### Spacing
 
 Do not to add additional spaces between square brackets and parenthesis:
