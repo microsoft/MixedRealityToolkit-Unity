@@ -13,13 +13,9 @@ Readers should only encounter artifacts that provide useful information. For exa
 Keep code logic simple. Note that this is not a statement about using the fewest number of lines, minimizing the size of identifier names or brace style, but about reducing the number of concepts and maximizing the visibility of those through familiar patterns.
 
 ### Produce consistent, readable code
-Code readability is correlated with low defect rates. Strive to create code that is easy to read. 
+Code readability is correlated with low defect rates. Strive to create code that is easy to read. Strive to create code that has simple logic and re-uses existing components as it will also help ensure correctness.
 
-Strive to create code that has simple logic and re-uses existing components as it will also help ensure correctness.
-
-All details of the code you produce matter, from the most basic detail of correctness to consistent style and formatting. 
-
-Keep your coding style consistent with what already exists, even if it is not matching your preference. This increases the readability of the overall codebase.
+All details of the code you produce matter, from the most basic detail of correctness to consistent style and formatting. Keep your coding style consistent with what already exists, even if it is not matching your preference. This increases the readability of the overall codebase.
 
 ### Support configuring components both in editor and at run-time
 MRTK supports a diverse set of users – people who prefer to configure components in the Unity editor and load prefabs, and people who need to instantiate and configure objects at run-time.
@@ -39,9 +35,7 @@ New public members should be carefully examined. Any public field will need to b
 ### Prioritize Writing Tests 
 MRTK is a community project, modified by a diverse range of contributors. These contributors may not know the details of your bug fix / feature, and accidentally break your feature. [MRTK runs continuous integration tests](https://dev.azure.com/aipmr/MixedRealityToolkit-Unity-CI/_build/results?buildId=5428) before completing every pull request. Changes that break tests cannot be checked in. Therefore, tests are the best way to ensure that other people do not break your feature.
 
-When you fix a bug, write a test to ensure it does not regress in the future.
-
-If you add a feature, write tests that verify your feature works. This is required for all UX features except experimental features.
+When you fix a bug, write a test to ensure it does not regress in the future. If adding a feature, write tests that verify your feature works. This is required for all UX features except experimental features.
 
 ## Coding Conventions
 ### Script license information headers

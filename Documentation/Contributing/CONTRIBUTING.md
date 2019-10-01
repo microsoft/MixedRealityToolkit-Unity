@@ -1,8 +1,6 @@
 # Contributing
 
-The Mixed Reality Toolkit (MRTK) welcomes contributions from the community. Whether it is for a minor change like fixing typos and small bug fixes, or a new feature or component.
-
-All changes be they small or large, need to adhere to the [MRTK coding standards](CodingGuidelines.md), so please ensure you are familiar with these while developing to avoid delays when the change is being reviewed.
+The Mixed Reality Toolkit (MRTK) welcomes contributions from the community. All changes be they small or large, need to adhere to the [MRTK coding standards](CodingGuidelines.md), so please ensure you are familiar with these while developing to avoid delays when the change is being reviewed.
 
 If you have any questions, please reach out on [Stack Overflow](https://stackoverflow.com/questions/tagged/mrtk) or the [HoloDevelopers slack](https://holodevelopers.slack.com/). You can join the Slack community via the [automatic invitation sender](https://holodevelopersslack.azurewebsites.net/).
 
@@ -18,10 +16,7 @@ From here you file:
 - **Feature request** - Proposal for a new Mixed Reality Toolkit feature
 
 # Proposing Feature Requests
-
 When requesting a new Mixed Reality Toolkit feature, it is important to document the customer benefit / problem to be solved.
-
-This documentation can be as simple as a few sentences describing the problem and solution, or it can be a formal design specification.
 
 Once submitted, a feature request will be reviewed and discussed on GitHub. We encourage open and constructive discussion of each feature proposal to ensure that the work is beneficial to a large segment of customers.
 
