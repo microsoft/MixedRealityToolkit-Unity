@@ -65,6 +65,10 @@ CoreServices.SpatialAwarenessSystem.SuspendObservers();
 Accessing the meshes can be done per Observer and then enumerating through the
 meshes known to that Mesh Observer via the [`IMixedRealitySpatialAwarenessMeshObserver`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessMeshObserver) API.
 
+If running in editor, one can use the [`AssetDatabase.CreateAsset()`](https://docs.unity3d.com/ScriptReference/AssetDatabase.CreateAsset.html) to save the `Mesh` object to an asset file.
+
+If running on device, there are many community and store plugins available to serialize the `MeshFilter` data into a model file type([OBJ Example](http://wiki.unity3d.com/index.php/ObjExporter)).
+
 ```csharp
 // Cast the Spatial Awareness system to IMixedRealityDataProviderAccess to get an Observer
 var access = CoreServices.SpatialAwarenessSystem as IMixedRealityDataProviderAccess;
