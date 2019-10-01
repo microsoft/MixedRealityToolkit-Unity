@@ -199,7 +199,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
 ### Edit mode tests
 
-Edit mode tests are executed in Unity's edit mode and can be added in MixedRealityToolkit.Tests > EditModeTests.
+Edit mode tests are executed in Unity's edit mode and can be added under the **MixedRealityToolkit.Tests** > **EditModeTests** folder in the Mixed Reality Toolkit repo.
 To create a new test the following template can be used:
 
 ``` csharp
