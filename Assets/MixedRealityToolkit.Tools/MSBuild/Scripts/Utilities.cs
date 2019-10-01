@@ -96,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         /// </summary>
         /// <param name="assetPath">The path to the asset (not the .meta file).</param>
         /// <param name="guid">The guid extracted.</param>
-        /// <returns>True if the operation was succesful.</returns>
+        /// <returns>True if the operation was successful.</returns>
         public static bool TryGetGuidForAsset(FileInfo assetPath, out Guid guid)
         {
             string metaFile = $"{assetPath.FullName}.meta";
@@ -316,7 +316,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         }
 
         /// <summary>
-        /// Reads while the predicate is satisifed, returns the line on which it failed.
+        /// Reads while the predicate is satisfied, returns the line on which it failed.
         /// </summary>
         /// <param name="reader">The <see cref="System.IO.StreamReader"/> to use for reading.</param>
         /// <param name="predicate">The predicate that should return false when reading should stop.</param>
@@ -408,7 +408,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     }
                 }
 
-                Thread.Sleep(sleepBetweenRetrie);
+                Thread.Sleep(sleepBetweenRetries);
                 numRetries--;
             } while (numRetries >= 0);
 
@@ -416,7 +416,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         }
 
         /// <summary>
-        /// Delete directory helper that also waits for delete to completely propogate through the system.
+        /// Delete directory helper that also waits for delete to completely propagate through the system.
         /// </summary>
         public static void DeleteDirectory(string targetDir, bool waitForDirectoryDelete = false)
         {

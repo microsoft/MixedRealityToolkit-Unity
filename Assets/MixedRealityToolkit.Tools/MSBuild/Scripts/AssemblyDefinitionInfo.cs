@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         /// Parses an asmdef file creating a new instance of <see cref="AssemblyDefinitionInfo"/>.
         /// </summary>
         /// <param name="file">The file representing asmdef.</param>
-        /// <param name="unityProjectInfo">Instance of <see cref="UnityProjectInfo"/>,</param>
+        /// <param name="unityProjectInfo">Instance of <see cref="UnityProjectInfo"/>.</param>
         /// <param name="assembly">The Unity assembly reference.</param>
         /// <param name="isBuiltInPackage">True whether this asmdef lives in the editor installation folder.</param>
         public static AssemblyDefinitionInfo Parse(FileInfo file, UnityProjectInfo unityProjectInfo, Assembly assembly, bool isBuiltInPackage = false)
