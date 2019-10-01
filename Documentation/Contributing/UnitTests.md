@@ -12,9 +12,9 @@ Before submitting a pull request, make sure to:
 
 1. Run the tests locally so your changes don't regress existing behavior (completing PRs won't be allowed if any tests fail).
 
-2. If fixing a bug, write a test to test the fix and ensure that future code modifications won't break it again.
+1. If fixing a bug, write a test to test the fix and ensure that future code modifications won't break it again.
 
-2. If writing a feature, write new tests to prevent upcoming code changes breaking this feature.
+1. If writing a feature, write new tests to prevent upcoming code changes breaking this feature.
 
 ## Running tests
 ### Unity editor
@@ -35,10 +35,10 @@ Run the tests on the project located at H:\mrtk.dev, with Unity 2018.4.1f1, outp
     .\run_playmode_tests.ps1 H:\mrtk.dev -unityExePath = "C:\Program Files\Unity\Hub\Editor\2018.4.1f1\Editor\Unity.exe" -outFolder "C:\playmode_test_out\"
 ```
 
-It's also possible to run the playmode tests multiple times.
+It's also possible to run the playmode tests multiple times via the `run_repeat_tests.ps1` script. All parameters used in `run_playmode_tests.ps1` may be used.
 
 ```
-    .\run_playmode_tests_repeat.ps1 -Times 5 -unityExePath = "C:\Program Files\Unity\Hub\Editor\2018.4.1f1\Editor\Unity.exe" -outFolder "C:\playmode_test_out\"
+    .\run_repeat_tests.ps1 -Times 5"
 ```
 
 ### Pull Request Validation
