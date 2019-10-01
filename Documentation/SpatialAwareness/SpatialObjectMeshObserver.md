@@ -71,7 +71,8 @@ The [Windows Device Portal](https://docs.microsoft.com/en-us/windows/mixed-reali
 ## See also
 
 - [Profiles](../Profiles/Profiles.md)
-- [Mixed Reality Toolkit Profile configuration guide](../MixedRealityConfigurationGuide.md) 
-- [Spatial Awareness](SpatialAwarenessGettingStarted.md)
-- [Configuring the Spatial Awareness Mesh Observer](ConfiguringSpatialAwarenessMeshObserver.md)
+- [Mixed Reality Toolkit Profile configuration guide](../MixedRealityConfigurationGuide.md)
+- [Spatial Awareness Getting started](SpatialAwarenessGettingStarted.md)
+- [Configuring Mesh Observers on Device](ConfiguringSpatialAwarenessMeshObserver.md)
+- [Configuring Mesh Observers via code](UsageGuide.md)
 - [Using the Windows Device Portal](https://docs.microsoft.com/en-us/windows/mixed-reality/using-the-windows-device-portal)
