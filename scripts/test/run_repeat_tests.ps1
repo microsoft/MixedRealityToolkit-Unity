@@ -30,6 +30,7 @@ $passThruParams = $PsBoundParameters
 $passThruParams.Remove("Times")
 for ($i = 0; $i -lt $Times; $i++) 
 {
-    Write-Host -ForegroundColor Cyan "Run $i of $Times"
+    $user_i = $i + 1
+    Write-Host -ForegroundColor Cyan "Run $user_i of $Times"
     Invoke-Expression $PSScriptRoot\run_playmode_tests.ps1 @passThruParams
 }
