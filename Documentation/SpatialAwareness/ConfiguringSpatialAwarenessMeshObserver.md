@@ -74,6 +74,8 @@ Specifies the level of detail (LOD) of the spatial mesh data. Currently defined 
 
 * *Coarse* - Places a smaller impact on application performance and is an excellent choice for navigation/plane finding.
 
+* *Medium* - Balanced setting often useful for experiences that continually scan the environment for both large features, floors and walls, as well as occlusion details.
+
 * *Fine* - Generally exacts a higher impact on application performance and is a great option for occlusion meshes.
 
 * *Custom* - Requires the application to specify the *Triangles / Cubic Meter* property and allows applications to tune the accuracy vs. performance impact of the spatial mesh observer.
