@@ -3,21 +3,21 @@
 
 using System;
 using System.Collections.Generic;
-using UnityEditor;
-
-#if UNITY_EDITOR
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.Rendering
 {
     /// <summary>
-    /// The MaterialInstance behavior aides in tracking instance material lifetime(s) and automatically destroys instanced materials. 
-    /// This utility component can be uses as a replacement to <see href="https://docs.unity3d.com/ScriptReference/Renderer-material.html">Renderer.material</see> or 
-    /// <see href="https://docs.unity3d.com/ScriptReference/Renderer-materials.html">Renderer.materials</see>. When invoking Unity's Renderer.material(s) Unity 
-    /// automatically instantiates new materials. It is the caller's responsibility to destroy the materials when the game object is destroyed. The MaterialInstance helps 
-    /// avoid material leaks. The MaterialInstance behavior also keeps material allocation paths consistent for during edit time and run time.
+    /// The MaterialInstance behavior aides in tracking instance material lifetime and automatically destroys instanced materials for the user. 
+    /// This utility component can be used as a replacement to <see href="https://docs.unity3d.com/ScriptReference/Renderer-material.html">Renderer.material</see> or 
+    /// <see href="https://docs.unity3d.com/ScriptReference/Renderer-materials.html">Renderer.materials</see>. When invoking Unity's Renderer.material(s), Unity 
+    /// automatically instantiates new materials. It is the caller's responsibility to destroy the materials when a material is no longer needed or the game object is 
+    /// destroyed. The MaterialInstance behavior helps avoid material leaks and keeps material allocation paths consistent during edit and run time.
     /// </summary>
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Rendering/MaterialInstance.html")]
     [ExecuteAlways, RequireComponent(typeof(Renderer))]
     public class MaterialInstance : MonoBehaviour
     {
@@ -28,14 +28,24 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         /// </summary>
         /// <param name="owner">An optional owner to track instance ownership.</param>
         /// <returns>The first instantiated Material.</returns>
-        public Material AcquireMaterial(object owner)
+        public Material AcquireMaterial(object owner = null, bool instance = true)
         {
             if (owner != null)
             {
                 materialOwners.Add(owner);
             }
 
-            return Material;
+            if (instance)
+            {
+                AcquireInstances();
+            }
+
+            if (instanceMaterials?.Length > 0)
+            {
+                return instanceMaterials[0];
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -44,15 +54,21 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         /// is no longer needed ReleaseMaterial should be called with the matching owner.
         /// </summary>
         /// <param name="owner">An optional owner to track instance ownership.</param>
+        /// <param name="instance">Should this acquisition attempt to instance materials?</param>
         /// <returns>All the instantiated materials.</returns>
-        public Material[] AcquireMaterials(object owner)
+        public Material[] AcquireMaterials(object owner = null, bool instance = true)
         {
             if (owner != null)
             {
                 materialOwners.Add(owner);
             }
 
-            return Materials;
+            if (instance)
+            {
+                AcquireInstances();
+            }
+
+            return instanceMaterials;
         }
 
         /// <summary>
@@ -60,6 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         /// after acquire ownership with AcquireMaterial(s).
         /// </summary>
         /// <param name="owner">The same owner which originally acquire ownership via AcquireMaterial(s).</param>
+        /// <param name="instance">Should this acquisition attempt to instance materials?</param>
         /// <param name="autoDestroy">When ownership count hits zero should the MaterialInstance component be destroyed?</param>
         public void ReleaseMaterial(object owner, bool autoDestroy = true)
         {
@@ -76,17 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         /// </summary>
         public Material Material
         {
-            get
-            {
-                AcquireInstances();
-
-                if (instanceMaterials?.Length > 0)
-                {
-                    return instanceMaterials[0];
-                }
-
-                return null;
-            }
+            get { return AcquireMaterial(); }
         }
 
         /// <summary>
@@ -94,12 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         /// </summary>
         public Material[] Materials
         {
-            get
-            {
-                AcquireInstances();
-
-                return instanceMaterials;
-            }
+            get { return AcquireMaterials(); }
         }
 
         private Renderer CachedRenderer
@@ -177,9 +179,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
                 // Notify owners of the change.
                 foreach (var owner in materialOwners)
                 {
-                    var materialInstanceOwner = owner as IMaterialInstanceOwner;
-
-                    materialInstanceOwner?.OnMaterialChanged(this);
+                    (owner as IMaterialInstanceOwner)?.OnMaterialChanged(this);
                 }
             }
         }
@@ -192,6 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
             }
 
             DestroyMaterials(instanceMaterials);
+            instanceMaterials = null;
         }
 
 #endregion MonoBehaviour Implementation
@@ -269,8 +270,6 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
                 {
                     DestorySafe(materials[i]);
                 }
-
-                Array.Clear(materials, 0, materials.Length);
             }
         }
 
@@ -281,22 +280,25 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
 
         private static void DestorySafe(UnityEngine.Object toDestroy)
         {
-            if (Application.isPlaying)
+            if (toDestroy != null)
             {
-                Destroy(toDestroy);
-            }
-            else
-            {
-#if UNITY_EDITOR
-                // Defer the destructing in case the object is in the act of being destroyed.
-                EditorApplication.delayCall += () =>
+                if (Application.isPlaying)
                 {
-                    if (toDestroy != null)
+                    Destroy(toDestroy);
+                }
+                else
+                {
+#if UNITY_EDITOR
+                    // Defer the destructing in case the object is in the act of being destroyed.
+                    EditorApplication.delayCall += () =>
                     {
-                        DestroyImmediate(toDestroy);
-                    }
-                };
+                        if (toDestroy != null)
+                        {
+                            DestroyImmediate(toDestroy);
+                        }
+                    };
 #endif
+                }
             }
         }
     }

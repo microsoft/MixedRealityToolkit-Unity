@@ -18,10 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// Notifies the editor that this object has custom frame bounds.
         /// </summary>
         /// <returns>True for all clipping primitives.</returns>
-        private bool HasFrameBounds()
-        {
-            return true;
-        }
+        protected abstract bool HasFrameBounds();
 
         /// <summary>
         /// Returns the bounds the editor should focus on.

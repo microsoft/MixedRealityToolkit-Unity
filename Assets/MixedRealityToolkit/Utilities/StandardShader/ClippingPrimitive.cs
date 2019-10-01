@@ -89,15 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     renderers.Add(_renderer);
                 }
 
-                var materials = _renderer.EnsureComponent<MaterialInstance>().AcquireMaterials(this);
-
-                if (materials != null)
-                {
-                    foreach (var material in materials)
-                    {
-                        ToggleClippingFeature(material, true);
-                    }
-                }
+                ToggleClippingFeature(_renderer.EnsureComponent<MaterialInstance>().AcquireMaterials(this), gameObject.activeInHierarchy);
             }
         }
 
@@ -110,7 +102,29 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             if (_renderer != null)
             {
-                _renderer.GetComponent<MaterialInstance>()?.ReleaseMaterial(this);
+                var materialInstance = _renderer.GetComponent<MaterialInstance>();
+
+                if (materialInstance != null)
+                {
+                    // There is no need to acquire new instances if ones do not already exist since we are 
+                    // in the process of removing.
+                    ToggleClippingFeature(materialInstance.AcquireMaterials(this, false), false);
+                    materialInstance.ReleaseMaterial(this);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Removes all renderers in the list of objects this clipping primitive clips.
+        /// </summary>
+        public void ClearRenderers()
+        {
+            if (renderers != null)
+            {
+                while (renderers.Count != 0)
+                {
+                    RemoveRenderer(renderers[0]);
+                }
             }
         }
 
@@ -182,15 +196,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         protected void OnDestroy()
         {
-            if (renderers == null)
-            {
-                return;
-            }
-
-            while (renderers.Count != 0)
-            {
-                RemoveRenderer(renderers[0]);
-            }
+            ClearRenderers();
         }
 
         #endregion MonoBehaviour Implementation
@@ -200,14 +206,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <inheritdoc />
         public void OnMaterialChanged(MaterialInstance materialInstance)
         {
-            var materials = materialInstance.AcquireMaterials(this);
-
-            if (materials != null)
+            if (materialInstance != null)
             {
-                foreach (var material in materials)
-                {
-                    ToggleClippingFeature(material, gameObject.activeInHierarchy);
-                }
+                ToggleClippingFeature(materialInstance.AcquireMaterials(this), gameObject.activeInHierarchy);
             }
 
             UpdateRenderers();
@@ -248,26 +249,27 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         protected void ToggleClippingFeature(bool keywordOn)
         {
-            if (renderers == null)
+            if (renderers != null)
             {
-                return;
-            }
-
-            for (var i = 0; i < renderers.Count; ++i)
-            {
-                var _renderer = renderers[i];
-
-                if (_renderer != null)
+                for (var i = 0; i < renderers.Count; ++i)
                 {
-                    var materials = _renderer.EnsureComponent<MaterialInstance>().AcquireMaterials(this);
+                    var _renderer = renderers[i];
 
-                    if (materials != null)
+                    if (_renderer != null)
                     {
-                        foreach (var material in materials)
-                        {
-                            ToggleClippingFeature(material, keywordOn);
-                        }
+                        ToggleClippingFeature(_renderer.EnsureComponent<MaterialInstance>().AcquireMaterials(this), keywordOn);
                     }
+                }
+            }
+        }
+
+        protected void ToggleClippingFeature(Material[] materials, bool keywordOn)
+        {
+            if (materials != null)
+            {
+                foreach (var material in materials)
+                {
+                    ToggleClippingFeature(material, keywordOn);
                 }
             }
         }
