@@ -306,6 +306,25 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             EditorGUILayout.Space();
             EditorGUILayout.PropertyField(movingButtonVisuals);
+
+            // Ensure that there is a moving button visuals in the UnityUI case.  Even if it is not visible, it must be present to receive GraphicsRaycasts.
+            if (touchable is NearInteractionTouchableUnityUI)
+            {
+                if (movingButtonVisuals.objectReferenceValue == null)
+                {
+                    EditorGUILayout.HelpBox($"When used with a NearInteractionTouchableUnityUI, a MovingButtonVisuals is required, as it receives the GraphicsRaycast that allows pressing the button with near/hand interactions.  It does not need to be visible, but it must be able to receive GraphicsRaycasts.", MessageType.Warning);
+                }
+                else
+                {
+                    var movingVisualGameObject = (GameObject)movingButtonVisuals.objectReferenceValue;
+                    var movingGraphic = movingVisualGameObject.GetComponentInChildren<UnityEngine.UI.Graphic>();
+                    if (movingGraphic == null)
+                    {
+                        EditorGUILayout.HelpBox($"When used with a NearInteractionTouchableUnityUI, the MovingButtonVisuals must contain an Image, RawImage, or other Graphic element so that it can receive a GraphicsRaycast.", MessageType.Warning);
+                    }
+                }
+            }
+
             EditorGUILayout.LabelField("Press Settings", EditorStyles.boldLabel);
 
             EditorGUI.BeginChangeCheck();
