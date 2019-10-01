@@ -52,7 +52,7 @@ Provide an example under MRTK.Examples/Experimental/YOUR_FEATURE
 ### Minimize user visible flaws in experimental features
 Others will not use the experimental feature if it does not work, it will not graduate to a feature.
 
-Test your example scene on your target platform, make sure it works as expected. Make sure your feature also works in editor, so people can rapidly iterate and see your feature even if they don’t have the target platform.
+Test your example scene on your target platform, make sure it works as expected. Make sure your feature also works in editor, so people can rapidly iteragate and see your feature even if they don’t have the target platform.
 
 
 # Graduating experimental code into MRTK code  
