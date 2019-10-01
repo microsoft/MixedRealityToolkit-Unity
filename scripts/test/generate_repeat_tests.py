@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+
+"""Prints code that can be copy / pasted to run multiple Unity Playmode tests
+"""
+
 def test_str(j, s, i):
     return "[UnityTest]\npublic IEnumerator A%i%s%i(){ yield return %s();}" % ( i, s, j, s)
 
@@ -8,7 +13,7 @@ def print_tests(testnames, repeat):
 
 def main(argv):
     import argparse
-    parser = argparse.ArgumentParser(description="Prints code that you can copy / paste into your test file to run tests repeatedly")
+    parser = argparse.ArgumentParser(description="Prints code that can be copy/pasted into test files to run tests repeatedly")
     parser.add_argument("-t", "--tests", nargs="+", help="list of tests to repeat")
     parser.add_argument("-n", "--count", type=int, default=100, help="number of times to repeat test sequence (default 100)")
 
