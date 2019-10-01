@@ -292,18 +292,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
             }
 
-            // Ensure that no ancestors have touchables, as this will cause this PressableButton to fail to function.
-            var ancestorTouchable = button.FindAncestorComponent<NearInteractionTouchableSurface>(includeSelf: false);
-            if (ancestorTouchable != null)
-            {
-                EditorGUILayout.HelpBox($"An ancestor of this game object contains a {ancestorTouchable.GetType().Name}, which will cause this {target.GetType().Name} to fail to work properly.  You must remove the {ancestorTouchable.GetType().Name} from the ancestor, {ancestorTouchable.name}", MessageType.Warning);
-
-                if (GUILayout.Button($"Select ancestor"))
-                {
-                    Selection.activeGameObject = ancestorTouchable.gameObject;
-                }
-            }
-
             EditorGUILayout.Space();
             EditorGUILayout.PropertyField(movingButtonVisuals);
 
