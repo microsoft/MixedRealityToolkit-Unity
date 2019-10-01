@@ -1,18 +1,26 @@
 
 # Writing and Running Tests in MRTK
-MRTK has a set of tests to ensure that changes to our code do not regress existing behavior. Before submitting a pull request, make sure to :
+To ensure MRTK is reliable, MRTK has a set of tests to ensure that changes to the code does not regress existing behavior. Having good test coverage in a big codebase like MRTK is crucial for stability and having confidence when making changes.
 
-1. Run the tests locally so your changes don't regress existing behavior (completing PRs won't be allowed if any tests fail)
+MRTK uses the [Unity Test Runner](https://docs.unity3d.com/Manual/testing-editortestsrunner.html) which uses a Unity
+integration of [NUnit](https://nunit.org/). This guide will provide a starting point on how to add tests to MRTK. It will not explain the 
+[Unity Test Runner](https://docs.unity3d.com/Manual/testing-editortestsrunner.html) and
+[NUnit](https://nunit.org/) which can be looked up in the links provided.
 
-2. If fixing a bug, write a test to verify the fix and ensure that future code modifications won't break it again.
+
+Before submitting a pull request, make sure to:
+
+1. Run the tests locally so your changes don't regress existing behavior (completing PRs won't be allowed if any tests fail).
+
+2. If fixing a bug, write a test to test the fix and ensure that future code modifications won't break it again.
 
 2. If writing a feature, write new tests to prevent upcoming code changes breaking this feature.
 
 ## Running tests
-### Running tests from Unity editor
+### Unity editor
 The [Unity Test Runner](https://docs.unity3d.com/Manual/testing-editortestsrunner.html) can be found under **Window** > **General** > **Test Runner** and will show all available MRTK play and edit mode tests. 
 
-### Running tests from command line
+### Command line
 Tests can also be run by a [powershell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-6) script located at `Scripts\test\run_playmode_tests.ps1`. This will run the playmode tests exactly as they are executed on github / CI (see below), and print results. Here are some examples of how to run the script
 
 Run the tests on the project located at H:\mrtk.dev, with Unity 2018.4.1f1
@@ -27,12 +35,18 @@ Run the tests on the project located at H:\mrtk.dev, with Unity 2018.4.1f1, outp
     .\run_playmode_tests.ps1 H:\mrtk.dev -unityExePath = "C:\Program Files\Unity\Hub\Editor\2018.4.1f1\Editor\Unity.exe" -outFolder "C:\playmode_test_out\"
 ```
 
-### Running tests via pull request validation
+It's also possible to run the playmode tests multiple times.
+
+```
+    .\run_playmode_tests_repeat.ps1 -Times 5 -unityExePath = "C:\Program Files\Unity\Hub\Editor\2018.4.1f1\Editor\Unity.exe" -outFolder "C:\playmode_test_out\"
+```
+
+### Pull Request Validation
 MRTK's CI will build MRTK in all configurations and run all edit and play mode tests. CI can be triggered by posting a comment on the github PR `/azp run mrtk_pr` if the user has sufficient rights. CI runs can be seen in the 'checks' tab of the PR. 
 
 Only after all of the tests have passed successfully can the PR be merged into mrtk_development. 
 
-### Running stress tests / bulk tests
+### Stress tests / bulk tests
 Sometimes tests will only fail occasionally which can be frustrating to debug. 
 
 To have multiple test runs locally, modify the according test scripts. The following python script should make this scenario more convenient.
@@ -80,16 +94,7 @@ public IEnumerator MyTest() {...}
 Open the test runner and observe the new tests that can now be called repeatedly.
 
 ## Writing tests
-To ensure MRTK being a stable and reliable toolkit, every feature should come with unit tests and sample usage in one of the example scenes. Having good test coverage in a big codebase like MRTK is crucial for stability and having confidence when doing changes in code.
-
-MRTK uses the [Unity Test Runner](https://docs.unity3d.com/Manual/testing-editortestsrunner.html) which uses a Unity
-integration of [NUnit](https://nunit.org/).
-
-This guide will give a starting point on how to add tests to MRTK. It will not explain the
-[Unity Test Runner](https://docs.unity3d.com/Manual/testing-editortestsrunner.html) and
-[NUnit](https://nunit.org/) which can be looked up in the links provided.
-
-There's two types of tests that can be added for new code
+There are two types of tests that can be added for new code
 
 * Play mode tests
 * Edit mode tests
@@ -97,11 +102,10 @@ There's two types of tests that can be added for new code
 
 ### Play mode tests
 
- MRTK play mode tests have the ability to test how your new feature responds to different input sources such as hands or eyes.
+MRTK play mode tests have the ability to test how your new feature responds to different input sources such as hands or eyes.
 
- New play mode tests can inherit [BasePlayModeTests](xref:Microsoft.MixedReality.Toolkit.Tests.BasePlayModeTests) or the skeleton below can be used.
+New play mode tests can inherit [BasePlayModeTests](xref:Microsoft.MixedReality.Toolkit.Tests.BasePlayModeTests) or the skeleton below can be used.
 
-## Creating a new play mode test
 To create a new play mode test:
 - Navigate to Assets > MixedRealityToolkit.Tests > PlayModeTests
 - Right click, Create > Testing > C# Test Script
@@ -193,8 +197,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
 ```
 
-
-
 ### Edit mode tests
 
 Edit mode tests are executed in Unity's edit mode and can be added in MixedRealityToolkit.Tests > EditModeTests.
@@ -221,7 +223,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
 ```
 
-## Test naming conventions
+### Test naming conventions
 
 Tests should generally be named based on the class they are testing, or the scenario that they are testing.
 For example, given a to-be-tested class:
@@ -263,7 +265,7 @@ Placement of scenario based tests is less defined - if the test exercises the ov
 for example, consider putting it into an "InputSystem" folder in the corresponding edit mode
 or play mode test folder.
 
-## MRTK Utility methods
+### MRTK Utility methods
 
 This section shows some of the commonly used code snippets / methods when writing tests for MRTK.
 
