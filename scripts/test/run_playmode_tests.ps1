@@ -58,16 +58,16 @@ while (-not $handle.HasExited)
 }
 
 Write-Output "`nTest completed! Results written to $testResultPath"
-Write-Output "`nTest results:" -ForegroundColor Cyan
-Write-Output "Tests took: $($timer.Elapsed)"
+Write-Output -ForegroundColor Cyan "`nTest results:" 
+Write-Output -ForegroundColor Cyan "Tests took: $($timer.Elapsed)"
 
 [xml]$cn = Get-Content $testResultPath
 $cnx = $cn["test-run"]
-Write-Output "passed: $($cnx.passed) failed: $($cnx.failed)"
+Write-Output -ForegroundColor Cyan "passed: $($cnx.passed) failed: $($cnx.failed)"
 if ($cnx.failed -gt 0)
 {
     Write-Output ""
-    Write-Output "Failed tests:"
+    Write-Output -ForegroundColor Cyan "Failed tests:"
     $testcases = $cnx.GetElementsByTagName("test-case")
     foreach ($item in $testcases) {
         if($item.result -ne "Passed")
