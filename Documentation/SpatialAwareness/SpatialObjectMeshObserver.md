@@ -1,6 +1,6 @@
 # Configuring Mesh Observers for Editor
 
-A convenient way to provide environment mesh data in the Unity editor is to use the [SpatialObjectMeshObserver](xref:) class. The *Spatial Object Mesh Observer* is an editor-only data provider for the [Spatial Awareness system](SpatialAwarenessGettingStarted.md) that enables importing 3D model data to represent a spatial mesh. One common use of the *Spatial Object Mesh Observer* is to import data scanned via a Microsoft HoloLens to test how an
+A convenient way to provide environment mesh data in the Unity editor is to use the [`SpatialObjectMeshObserver`](xref:Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver) class. The *Spatial Object Mesh Observer* is an editor-only data provider for the [Spatial Awareness system](SpatialAwarenessGettingStarted.md) that enables importing 3D model data to represent a spatial mesh. One common use of the *Spatial Object Mesh Observer* is to import data scanned via a Microsoft HoloLens to test how an
 experience adapts to different environments from within Unity.
 
 ## Getting started
@@ -36,7 +36,7 @@ observer settings which are outlined below.
 **Update Interval**
 
 The  *Spatial Object Mesh Observer* sends all meshes to an application when the model is loaded. It does not
-simulate time deltas between updates. An application can re-receive the mesh events by calling [`myObserver.ClearObservation()`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.ClearObservations) and [`myObserver.Resume()`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.Resume).
+simulate time deltas between updates. An application can re-receive the mesh events by calling [`myObserver.ClearObservation()`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver.ClearObservations) and [`myObserver.Resume()`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver.Resume).
 
 **Is Stationary Observer**
 

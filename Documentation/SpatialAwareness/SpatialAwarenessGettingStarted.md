@@ -11,7 +11,7 @@ The Spatial Awareness system provides real-world environmental awareness in mixe
 
 Adding support for Spatial Awareness requires two key components of the Mixed Reality Toolkit: the Spatial Awareness system and a supported platform provider.
 
-1. [Enable](#enable-the-spatial-awareness) the Spatial Awareness system
+1. [Enable](#enable-the-spatial-awareness-system) the Spatial Awareness system
 2. [Register](#register-observers) and [configure](ConfiguringSpatialAwarenessMeshObserver.md) one or more spatial observers to provide mesh data
 3. [Build and deploy](#build-and-deploy) to a platform that supports Spatial Awareness
 

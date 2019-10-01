@@ -25,7 +25,7 @@ var spatialObjectMeshObserver = dataProviderAccess.GetDataProvider<IMixedReality
 
 ## Starting and stopping mesh observation
 
-One of the most common tasks when dealing with the Spatial Awareness system is turning the feature off/on dynamically at runtime. This is done per Observer via the [`IMixedRealitySpatialAwarenessMeshObserver.Resume()`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessMeshObserver.Resume) and [`IMixedRealitySpatialAwarenessMeshObserver.Suspend()`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessMeshObserver.Suspend) APIs.
+One of the most common tasks when dealing with the Spatial Awareness system is turning the feature off/on dynamically at runtime. This is done per Observer via the [`IMixedRealitySpatialAwarenessObserver.Resume`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver.Resume) and [`IMixedRealitySpatialAwarenessObserver.Suspend`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver.Suspend) APIs.
 
 ```csharp
 // Cast the Spatial Awareness system to IMixedRealityDataProviderAccess to get an Observer
@@ -50,7 +50,7 @@ CoreServices.SpatialAwarenessSystem.ResumeObserver<IMixedRealitySpatialAwareness
 
 ### Starting and stopping all mesh observation
 
-It is generally convenient to start/stop all mesh observation in the application. This can be achieved through the helpful Spatial Awareness system APIs, [`ResumeObservers()`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSystem.ResumeObservers) and [`SuspendObservers()`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSystem.ResumeObservers).
+It is generally convenient to start/stop all mesh observation in the application. This can be achieved through the helpful Spatial Awareness system APIs, [`ResumeObservers()`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSystem.ResumeObservers) and [`SuspendObservers()`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessSystem.SuspendObservers).
 
 ```csharp
 // Resume Mesh Observation from all Observers
@@ -104,7 +104,7 @@ observer.DisplayOption = SpatialAwarenessMeshDisplayOptions.Occlusion;
 
 ## Registering for Mesh Observation events
 
-Components can implement the [`IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject>`](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObservationHandler) and then register with the Spatial Awareness system to receive Mesh Observation events.
+Components can implement the `IMixedRealitySpatialAwarenessObservationHandler<SpatialAwarenessMeshObject>` and then register with the Spatial Awareness system to receive Mesh Observation events.
 
 The [DemoSpatialMeshHandler](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Examples/Demos/SpatialAwareness/Scripts/DemoSpatialMeshHandler.cs) script is a useful example and starting point for listening to Mesh Observer events.
 
