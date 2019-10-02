@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         /// <summary>
         /// Initializes the camera fader class with a transition profile.
         /// </summary>
-        /// <param name="profile"></param>
+        /// <param name="profile">The scene transition service profile.</param>
         void Initialize(SceneTransitionServiceProfile profile);
 
         /// <summary>
