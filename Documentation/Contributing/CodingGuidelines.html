@@ -82,15 +82,35 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="coding-guidelines">Coding Guidelines</h1>
 
-<p>This document outlines the recommended coding guidelines for the Mixed Reality Toolkit.  The majority of these suggestions follow the <a href="https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/coding-conventions">recommended standards from MSDN</a>.</p>
+<p>This document outlines coding principles and convetions to follow when contributing to MRTK.</p>
 <hr>
-<h2 id="script-license-information-headers">Script license information headers</h2>
+<h2 id="philosophy">Philosophy</h2>
+<h3 id="be-consise-and-strive-for-simplicity">Be consise and strive for simplicity</h3>
+<p>The simplest solution is often the best. This is an overriding aim of these guidelines and should be the goal of all coding activity. Part of being simple is being concise, and consistent with existing code. Try to keep your code simple.</p>
+<p>Readers should only encounter artifacts that provide useful information. For example, comments that restate what is obvious provide no extra information and increase the noise to signal ratio.</p>
+<p>Keep code logic simple. Note that this is not a statement about using the fewest number of lines, minimizing the size of identifier names or brace style, but about reducing the number of concepts and maximizing the visibility of those through familiar patterns.</p>
+<h3 id="produce-consistent-readable-code">Produce consistent, readable code</h3>
+<p>Code readability is correlated with low defect rates. Strive to create code that is easy to read. Strive to create code that has simple logic and re-uses existing components as it will also help ensure correctness.</p>
+<p>All details of the code you produce matter, from the most basic detail of correctness to consistent style and formatting. Keep your coding style consistent with what already exists, even if it is not matching your preference. This increases the readability of the overall codebase.</p>
+<h3 id="support-configuring-components-both-in-editor-and-at-run-time">Support configuring components both in editor and at run-time</h3>
+<p>MRTK supports a diverse set of users – people who prefer to configure components in the Unity editor and load prefabs, and people who need to instantiate and configure objects at run-time.</p>
+<p>All your code should work by BOTH adding a component to a GameObject in a saved scene, and by instantiating that component in code. Tests should include a test case both for instantiating prefabs and instantiating, configuring the component at runtime.</p>
+<h3 id="play-in-editor-is-your-first-and-primary-target-platform">Play-In-Editor is your first and primary target platform</h3>
+<p>Play-In-Editor is the fastest way to iterate in Unity. Providing ways for our customers to iterate quickly allows them to both develop solutions more quickly and try out more ideas. In other words, maximizing the speed of iteration empowers our customers to achieve more.</p>
+<p>Make everything work in editor, then make it work on any other platform. Keep it working in the editor. It is easy to add a new platform to Play-In-Editor. It is very difficult to get Play-In-Editor working if your app only works on a device.</p>
+<h3 id="add-new-public-fields-properties-methods-and-serialized-private-fields-with-care">Add new public fields, properties, methods and serialized private fields with care</h3>
+<p>Every time you add a public method, field, property, it becomes part of MRTK’s public API surface. Private fields marked with <code>[SerializeField]</code> also expose fields to the editor and are part of the public API surface. Other people might use that public method, configure custom prefabs with your public field, and take a dependency on it.</p>
+<p>New public members should be carefully examined. Any public field will need to be maintained in the future. Remember that if the type of a public field (or serialized private field) changes or gets removed from a MonoBehaviour, that could break other people. The field will need to first be deprecated for a release, and code to migrate changes for people that have taken dependencies would need to be provided.</p>
+<h3 id="prioritize-writing-tests">Prioritize Writing Tests</h3>
+<p>MRTK is a community project, modified by a diverse range of contributors. These contributors may not know the details of your bug fix / feature, and accidentally break your feature. <a href="https://dev.azure.com/aipmr/MixedRealityToolkit-Unity-CI/_build/results?buildId=5428">MRTK runs continuous integration tests</a> before completing every pull request. Changes that break tests cannot be checked in. Therefore, tests are the best way to ensure that other people do not break your feature.</p>
+<p>When you fix a bug, write a test to ensure it does not regress in the future. If adding a feature, write tests that verify your feature works. This is required for all UX features except experimental features.</p>
+<h2 id="coding-conventions">Coding Conventions</h2>
+<h3 id="script-license-information-headers">Script license information headers</h3>
 <p>All scripts posted to the MRTK should have the standard License header attached, exactly as shown below:</p>
 <pre><code class="lang-c#">// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 </code></pre>
-<p>Any script files submitted without the license header will be rejected</p>
-<h2 id="function--method-summary-headers">Function / Method summary headers</h2>
+<h3 id="function--method-summary-headers">Function / Method summary headers</h3>
 <p>All public classes, structs, enums, functions, properties, fields posted to the MRTK should be described as to it's purpose and use, exactly as shown below:</p>
 <pre><code class="lang-c#">    /// &lt;summary&gt;
     /// The Controller definition defines the Controller as defined by the SDK / Unity.
@@ -105,7 +125,7 @@
 </code></pre>
 <p>This ensures documentation is properly generated and disseminated for all all classes, methods, and properties.</p>
 <p>Any script files submitted without proper summary tags will be rejected.</p>
-<h2 id="mrtk-namespace-rules">MRTK namespace rules</h2>
+<h3 id="mrtk-namespace-rules">MRTK namespace rules</h3>
 <p>The Mixed Reality Toolkit uses a feature based namespace model, where all foundational namespaces begin with &quot;Microsoft.MixedReality.Toolkit&quot;. In general, you need not specify the toolkit layer (ex: Core, Providers, Services) in your namespaces.</p>
 <p>The currently defined namespaces are:</p>
 <ul>
@@ -119,47 +139,12 @@
 <li>Microsoft.MixedReality.Toolkit.Utilities</li>
 </ul>
 <p>For namespaces with a large amount of types, it is acceptable to create a limited number of sub-namespaces to aid in scoping usage.</p>
-<h3 id="do">Do</h3>
-<pre><code class="lang-c#">namespace Microsoft.MixedReality.Toolkit.Boundary
-{
-    // Interface, class or data type definition.
-}
-</code></pre>
 <p>Omitting the namespace for an interface, class or data type will cause your change to be blocked.</p>
-<h2 id="spaces-vs-tabs">Spaces vs Tabs</h2>
+<h3 id="spaces-vs-tabs">Spaces vs Tabs</h3>
 <p>Please be sure to use 4 spaces instead of tabs when contributing to this project.</p>
-<p>Additionally, ensure that spaces are added for conditional / loop functions like if / while / for</p>
-<h3 id="dont">Don't</h3>
-<pre><code class="lang-c#">private Foo () // &lt; - space between Foo and ()
-{
-    if(Bar==null) // &lt;- no space between if and ()
-    {
-        DoThing();
-    }
-
-    while(true) // &lt;- no space between while and ()
-    {
-        Do();
-    }
-}
-</code></pre>
-<h3 id="do-1">Do</h3>
-<pre><code class="lang-c#">private Foo()
-{
-   if (Bar==null)
-   {
-       DoThing();
-   }
-
-   while (true)
-   {
-       Do();
-   }
-}
-</code></pre>
-<h2 id="spacing">Spacing</h2>
+<h3 id="spacing">Spacing</h3>
 <p>Do not to add additional spaces between square brackets and parenthesis:</p>
-<h3 id="dont-1">Don't</h3>
+<h4 id="dont">Don't</h4>
 <pre><code class="lang-c#">private Foo()
 {
     int[ ] var = new int [ 9 ];
@@ -167,25 +152,25 @@
 }
 
 </code></pre>
-<h3 id="do-2">Do</h3>
+<h4 id="do">Do</h4>
 <pre><code class="lang-c#">private Foo()
 {
     int[] var = new int[9];
     Vector2 vector = new Vector2(0f, 10f);
 }
 </code></pre>
-<h2 id="naming-conventions">Naming Conventions</h2>
+<h3 id="naming-conventions">Naming Conventions</h3>
 <p>Always use <code>PascalCase</code> for public / protected / virtual properties, and <code>camelCase</code> for private properties and fields. The only exception to this is for data structures that require the fields to be serialized by the <code>JsonUtility</code>.</p>
-<h3 id="dont-2">Don't</h3>
+<h4 id="dont-1">Don't</h4>
 <pre><code class="lang-c#">public string myProperty; // &lt;- Starts with a lower case letter
 private string MyProperty; // &lt;- Starts with an uppercase case letter
 </code></pre>
-<h3 id="do-3">Do</h3>
+<h4 id="do-1">Do</h4>
 <pre><code class="lang-c#">public string MyProperty;
 protected string MyProperty;
 private string myProperty;
 </code></pre>
-<h2 id="access-modifiers">Access Modifiers</h2>
+<h3 id="access-modifiers">Access Modifiers</h3>
 <p>Always declare an access modifier for all fields, properties and methods.</p>
 <ul>
 <li><p>All Unity API Methods should be <code>private</code> by default, unless you need to override them in a derived class. In this case <code>protected</code> should be used.</p>
@@ -195,7 +180,7 @@ private string myProperty;
 <li><p>Use <a href="https://github.com/dotnet/roslyn/wiki/New-Language-Features-in-C%23-6#expression-bodied-function-members">expression-bodied members</a> and <a href="https://github.com/dotnet/roslyn/wiki/New-Language-Features-in-C%23-6#auto-property-enhancements">auto properties</a> where possible</p>
 </li>
 </ul>
-<h3 id="dont-3">Don't</h3>
+<h4 id="dont-2">Don't</h4>
 <pre><code class="lang-c#">// protected field should be private
 protected int myVariable = 0;
 
@@ -206,16 +191,16 @@ public int MyVariable { get { return myVariable; } }
 void Foo() { }
 void Bar() { }
 </code></pre>
-<h3 id="do-4">Do</h3>
+<h4 id="do-2">Do</h4>
 <pre><code class="lang-c#">public int MyVariable { get; protected set; } = 0;
 
 private void Foo() { }
 public void Bar() { }
 protected virtual void FooBar() { }
 </code></pre>
-<h2 id="use-braces">Use Braces</h2>
+<h3 id="use-braces">Use Braces</h3>
 <p>Always use braces after each statement block, and place them on the next line.</p>
-<h3 id="dont-4">Don't</h3>
+<h4 id="dont-3">Don't</h4>
 <pre><code class="lang-c#">private Foo()
 {
     if (Bar==null) // &lt;- missing braces surrounding if action
@@ -224,13 +209,13 @@ protected virtual void FooBar() { }
         DoTheOtherThing();
 }
 </code></pre>
-<h3 id="dont-5">Don't</h3>
+<h4 id="dont-4">Don't</h4>
 <pre><code class="lang-c#">private Foo() { // &lt;- Open bracket on same line
     if (Bar==null) DoThing(); &lt;- if action on same line with no surrounding brackets 
     else DoTheOtherThing();
 }
 </code></pre>
-<h3 id="do-5">Do</h3>
+<h4 id="do-3">Do</h4>
 <pre><code class="lang-c#">private Foo()
 {
     if (Bar==true)
@@ -243,9 +228,9 @@ protected virtual void FooBar() { }
     }
 }
 </code></pre>
-<h2 id="public-classes-structs-and-enums-should-all-go-in-their-own-files">Public classes, structs, and enums should all go in their own files.</h2>
+<h3 id="public-classes-structs-and-enums-should-all-go-in-their-own-files">Public classes, structs, and enums should all go in their own files.</h3>
 <p>If the class, struct, or enum can be made private then it's okay to be included in the same file.  This avoids compilations issues with Unity and ensure that proper code abstraction occurs, it also reduces conflicts and breaking changes when code needs to change.</p>
-<h3 id="dont-6">Don't</h3>
+<h4 id="dont-5">Don't</h4>
 <pre><code class="lang-c#">public class MyClass
 {
     public struct MyStruct() { }
@@ -253,7 +238,7 @@ protected virtual void FooBar() { }
     public class MyNestedClass() { }
 }
 </code></pre>
-<h3 id="do-6">Do</h3>
+<h4 id="do-4">Do</h4>
 <pre><code class="lang-c#">// Private references for use inside the class only
 public class MyClass
 {
@@ -262,7 +247,7 @@ public class MyClass
    private class MyNestedClass() { }
 }
 </code></pre>
-<h3 id="do-7">Do</h3>
+<h4 id="do-5">Do</h4>
 <p>MyStruct.cs</p>
 <pre><code class="lang-c#">// Public Struct / Enum definitions for use in your class.  Try to make them generic for reuse.
 public struct MyStruct
@@ -285,9 +270,9 @@ public struct MyStruct
     private MyEnumType myEnumReference;
 }
 </code></pre>
-<h2 id="initialize-enums">Initialize Enums</h2>
+<h3 id="initialize-enums">Initialize Enums</h3>
 <p>To ensure all Enum's are initialized correctly starting at 0, .NET gives you a tidy shortcut to automatically initialize the enum by just adding the first (starter) value. (e.g Value 1 = 0 Remaining values are not required)</p>
-<h3 id="dont-7">Don't</h3>
+<h4 id="dont-6">Don't</h4>
 <pre><code class="lang-c#">public enum Value
 {
     Value1, &lt;- no initializer
@@ -295,7 +280,7 @@ public struct MyStruct
     Value3
 }
 </code></pre>
-<h3 id="do-8">Do</h3>
+<h4 id="do-6">Do</h4>
 <pre><code class="lang-c#">public enum ValueType
 {
    Value1 = 0,
@@ -303,9 +288,9 @@ public struct MyStruct
    Value3
 }
 </code></pre>
-<h2 id="order-enums-for-appropriate-extension">Order Enums for appropriate extension</h2>
+<h3 id="order-enums-for-appropriate-extension">Order Enums for appropriate extension</h3>
 <p>It is critical that if an Enum is likely to be extended in the future, to order defaults at the top of the Enum, this ensures Enum indexes are not affected with new additions.</p>
-<h3 id="dont-8">Don't</h3>
+<h4 id="dont-7">Don't</h4>
 <pre><code class="lang-c#">public enum SDKType
 {
     WindowsMR,
@@ -315,7 +300,7 @@ public struct MyStruct
     Other &lt;- anonymous value left to end of enum
 }
 </code></pre>
-<h3 id="do-9">Do</h3>
+<h4 id="do-7">Do</h4>
 <pre><code class="lang-c#">   /// &lt;summary&gt;
    /// The SDKType lists the VR SDK's that are supported by the MRTK
    /// Initially, this lists proposed SDK's, not all may be implemented at this time (please see ReleaseNotes for more details)
@@ -344,35 +329,10 @@ public struct MyStruct
        OpenXR
    }
 </code></pre>
-<h2 id="end-enum-names-with-type">End Enum names with &quot;Type&quot;</h2>
-<p>Enum names should clearly indicate their nature by using the Type suffix.</p>
-<h3 id="dont-9">Don't</h3>
-<pre><code class="lang-c#">public enum Ordering
-{
-    First,
-    Second,
-    Third
-}
-</code></pre>
-<pre><code class="lang-c#">public enum OrderingEnum
-{
-    First,
-    Second,
-    Third
-}
-</code></pre>
-<h3 id="do-10">Do</h3>
-<pre><code class="lang-c#">public enum OrderingType
-{
-    First = 0,
-    Second,
-    Third
-}
-</code></pre>
-<h2 id="review-enum-use-for-bitfields">Review Enum use for Bitfields</h2>
+<h3 id="review-enum-use-for-bitfields">Review Enum use for Bitfields</h3>
 <p>If there is a possibility for an enum to require multiple states as a value, e.g. Handedness = Left &amp; Right. Then the Enum needs to be decorated correctly with BitFlags to enable it to be used correctly</p>
 <p>The Handedness.cs file has a concrete implementation for this</p>
-<h3 id="dont-10">Don't</h3>
+<h3 id="dont-8">Don't</h3>
 <pre><code class="lang-c#">public enum Handedness
 {
     None,
@@ -380,9 +340,9 @@ public struct MyStruct
     Right
 }
 </code></pre>
-<h3 id="do-11">Do</h3>
+<h3 id="do-8">Do</h3>
 <pre><code class="lang-c#">[flags]
-public enum HandednessType
+public enum Handedness
 {
    None = 0 &lt;&lt; 0,
    Left = 1 &lt;&lt; 0,
@@ -392,27 +352,13 @@ public enum HandednessType
 </code></pre>
 <h2 id="best-practices-including-unity-recommendations">Best Practices, including Unity recommendations</h2>
 <p>Some of the target platforms of this project require to take performance into consideration. With this in mind always be careful when allocating memory in frequently called code in tight update loops or algorithms.</p>
-<h2 id="encapsulation">Encapsulation</h2>
+<h3 id="encapsulation">Encapsulation</h3>
 <p>Always use private fields and public properties if access to the field is needed from outside the class or struct.  Be sure to co-locate the private field and the public property. This makes it easier to see, at a glance, what backs the property and that the field is modifiable by script.</p>
-<p>If you need to have the ability to edit your field in the inspector, it's best practice to follow the rules for Encapsulation and serialize your backing field.</p>
 <div class="NOTE">
 <h5>Note</h5>
 <p>The only exception to this is for data structures that require the fields to be serialized by the <code>JsonUtility</code>, where a data class is required to have all public fields for the serialization to work.</p>
 </div>
-<h3 id="dont-11">Don't</h3>
-<pre><code class="lang-c#">public float MyValue;
-</code></pre>
-<h3 id="do-12">Do</h3>
-<pre><code class="lang-c#">// private field, only accessible within script (field is not serialized in Unity)
-private float myValue;
-</code></pre>
-<h3 id="do-13">Do</h3>
-<pre><code class="lang-c#">// Enable private field to be configurable only in editor (field is correctly serialized in Unity)
-[SerializeField] 
-private float myValue;
-</code></pre>
-<hr>
-<h3 id="dont-12">Don't</h3>
+<h4 id="dont-9">Don't</h4>
 <pre><code class="lang-c#">private float myValue1;
 private float myValue2;
 
@@ -428,7 +374,7 @@ public float MyValue2
     set{ myValue2 = value }
 }
 </code></pre>
-<h3 id="do-14">Do</h3>
+<h4 id="do-9">Do</h4>
 <pre><code class="lang-c#">// Enable field to be configurable in the editor and available externally to other scripts (field is correctly serialized in Unity)
 [SerializeField]
 [ToolTip(&quot;If using a tooltip, the text should match the public property's summary documentation, if appropriate.&quot;)]
@@ -443,24 +389,24 @@ public float MyValue
     set{ myValue = value }
 }
 </code></pre>
-<h2 id="use-for-instead-of-foreach-when-possible">Use <code>for</code> instead of <code>foreach</code> when possible</h2>
+<h3 id="use-for-instead-of-foreach-when-possible">Use <code>for</code> instead of <code>foreach</code> when possible</h3>
 <p>In some cases a foreach is required, e.g. when looping over an IEnumerable.  But for performance benefit, avoid foreach when you can.</p>
-<h3 id="dont-13">Don't</h3>
+<h4 id="dont-10">Don't</h4>
 <pre><code class="lang-c#">foreach(var item in items)
 </code></pre>
-<h3 id="do-15">Do</h3>
+<h4 id="do-10">Do</h4>
 <pre><code class="lang-c#">int length = items.length; // cache reference to list/array length
 for(int i=0; i &lt; length; i++)
 </code></pre>
-<h2 id="cache-values-and-serialize-them-in-the-sceneprefab-whenever-possible">Cache values and serialize them in the scene/prefab whenever possible.</h2>
+<h3 id="cache-values-and-serialize-them-in-the-sceneprefab-whenever-possible">Cache values and serialize them in the scene/prefab whenever possible.</h3>
 <p>With the HoloLens in mind, it's best to optimize for performance and cache references in the scene or prefab to limit runtime memory allocations.</p>
-<h3 id="dont-14">Don't</h3>
+<h4 id="dont-11">Don't</h4>
 <pre><code class="lang-c#">void Update()
 {
     gameObject.GetComponent&lt;Renderer&gt;().Foo(Bar);
 }
 </code></pre>
-<h3 id="do-16">Do</h3>
+<h4 id="do-11">Do</h4>
 <pre><code class="lang-c#">[SerializeField] // To enable setting the reference in the inspector.
 private Renderer myRenderer;
 
@@ -478,9 +424,9 @@ private void Update()
     myRenderer.Foo(Bar);
 }
 </code></pre>
-<h2 id="cache-references-to-materials-do-not-call-the-material-each-time">Cache references to materials, do not call the &quot;.material&quot; each time.</h2>
+<h3 id="cache-references-to-materials-do-not-call-the-material-each-time">Cache references to materials, do not call the &quot;.material&quot; each time.</h3>
 <p>Unity will create a new material each time you use &quot;.material&quot;, which will cause a memory leak if not cleaned up properly.</p>
-<h3 id="dont-15">Don't</h3>
+<h4 id="dont-12">Don't</h4>
 <pre><code class="lang-c#">public class MyClass
 {
     void Update()
@@ -490,7 +436,7 @@ private void Update()
     }
 }
 </code></pre>
-<h3 id="do-17">Do:</h3>
+<h4 id="do-12">Do:</h4>
 <pre><code class="lang-c#">// Private references for use inside the class only
 public class MyClass
 {
@@ -516,7 +462,7 @@ public class MyClass
 <h5>Note</h5>
 <p>Alternatively, use Unity's &quot;SharedMaterial&quot; property which does not create a new material each time it is referenced.</p>
 </div>
-<h2 id="use-platform-dependent-compilation-to-ensure-the-toolkit-wont-break-the-build-on-another-platform">Use <a href="https://docs.unity3d.com/Manual/PlatformDependentCompilation.html">platform dependent compilation</a> to ensure the Toolkit won't break the build on another platform</h2>
+<h3 id="use-platform-dependent-compilation-to-ensure-the-toolkit-wont-break-the-build-on-another-platform">Use <a href="https://docs.unity3d.com/Manual/PlatformDependentCompilation.html">platform dependent compilation</a> to ensure the Toolkit won't break the build on another platform</h3>
 <ul>
 <li><p>Use <code>WINDOWS_UWP</code> in order to use UWP-specific, non-Unity APIs. This will prevent them from trying to run in the Editor or on unsupported platforms. This is equivalent to <code>UNITY_WSA &amp;&amp; !UNITY_EDITOR</code> and should be used in favor of.</p>
 </li>
@@ -572,9 +518,11 @@ public class MyClass
 </tr>
 </tbody>
 </table>
-<h2 id="prefer-datetimeutcnow-over-datetimenow">Prefer DateTime.UtcNow over DateTime.Now</h2>
+<h3 id="prefer-datetimeutcnow-over-datetimenow">Prefer DateTime.UtcNow over DateTime.Now</h3>
 <p>DateTime.UtcNow is faster than DateTime.Now. In previous performance investigations we've found that using DateTime.Now adds significant overhead especially when used in the Update() loop. <a href="https://stackoverflow.com/questions/1561791/optimizing-alternatives-to-datetime-now">Others have hit the same issue</a>.</p>
 <p>Prefer using DateTime.UtcNow unless you actually need the localized times (a legitmate reason may be you wanting to show the current time in the user's time zone). If you are dealing with relative times (i.e. the delta between some last update and now), it's best to use DateTime.UtcNow to avoid the overhead of doing timezone conversions.</p>
+<h2 id="set-also">Set also</h2>
+<p><a href="https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/coding-conventions">C# coding conventions from MSDN</a>.</p>
 </article>
           </div>
           

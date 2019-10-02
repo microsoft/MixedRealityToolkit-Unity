@@ -10,14 +10,14 @@
     <meta name="title" content="Experimental Features | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.45.1.0">
     
-    <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
-    <link rel="stylesheet" href="../styles/docfx.vendor.css">
-    <link rel="stylesheet" href="../styles/docfx.css">
-    <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="../toc.html">
-    <meta property="docfx:tocrel" content="toc.html">
+    <link rel="shortcut icon" href="../../Documentation/Images/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
     
-    <meta property="docfx:rel" content="../">
+    <meta property="docfx:rel" content="../../">
     
   </head>
   <body data-spy="scroll" data-target="#affix" data-offset="120">
@@ -34,8 +34,8 @@
                 <span class="icon-bar"></span>
               </button>
               
-              <a class="navbar-brand" href="../index.html">
-                <img id="logo" class="svg" src="../Documentation/Images/mrt_logo_icon.png" alt="">
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../Documentation/Images/mrt_logo_icon.png" alt="">
               </a>
             </div>
           
@@ -83,22 +83,26 @@
 <h1 id="experimental-features">Experimental Features</h1>
 
 <p>Some features the MRTK team works on appear to have a lot of initial value even if we haven’t fully fleshed out the details. For these types of features, we want the community to get a chance to see them early. Because they are early in the cycle, we label them as experimental to indicate that they are still evolving, and subject to change over time.</p>
-<p><strong>Experimental UI/UX features are new as of the upcoming MRTK RC2 release.</strong> You will see these features published under <code>MixedRealityToolkit.SDK\Experimental</code> and <code>MixedRealityToolkit.Examples\Experimental</code> folders. These features are in mrtk_development as of commit <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/commit/8e7aba9157687421c437b694beb6760c3270d765">8e7aba9</a> and will be in the RC2 release.</p>
 <h3 id="what-to-expect-from-an-experimental-feature">What to expect from an experimental feature</h3>
 <p>If a component is marked experimental you can expect the following:</p>
 <ul>
-<li>An example scene demonstrating usage, located under <code>MixedRealityToolkit.Examples\Experimental</code> subfolder</li>
+<li>An example scene demonstrating usage, located under <code>MixedRealityToolkit.Examples\Experimental</code> sub-folder</li>
 <li>Experimental features may not have docs.</li>
 <li>They probably don't have tests.</li>
 <li>Experimental features are subject to change.</li>
 </ul>
-<h1 id="how-to-contribute-an-experimental-feature">How to contribute an Experimental feature</h1>
+<h1 id="experimental-feature-guidelines">Experimental feature guidelines</h1>
 <h3 id="experimental-code-should-live-in-a-separate-folder">Experimental code should live in a separate folder</h3>
-<p>Make sure to mirror the same folder structure of MRTK. <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/4532">You can use the following PR as an example</a>.</p>
-<p>In that PR the experimental code went into:
-<code>MRTK.SDK/Experimental/Features/Utilities/Solvers/HandConstraintPalmUp.cs</code></p>
-<p>The example scene went into:
-<code>MRTK.Examples/Experimental/HandTracking/Scenes/HandBasedMenuExample.unity</code></p>
+<p>Experimental code should go into a top-level experimental folder followed by the experimental feature name. For example, if trying to contribute a new feature FooBar, put code in the following:</p>
+<ul>
+<li>Example scenes, scripts go into <code>MRTK.Examples/Experimental/FooBar/</code></li>
+<li>Component scripts, prefabs go into <code>MRTK.SDK/Experimental/FooBar/</code></li>
+<li>Component inspectors go into <code>MRTK.SDK/Inspectors/Experimental/FooBar</code></li>
+</ul>
+<p>When using sub-folders under the experimental feature name, try to mirror the same folder structure of MRTK.</p>
+<p>For example, solvers would go under
+<code>MRTK.SDK/Experimental/FooBar/Features/Utilities/Solvers/FooBarSolver.cs</code></p>
+<p>Keep scenes in a scene folder near the top: <code>MRTK.Examples/Experimental/FooBar/Scenes/FooBarExample.unity</code></p>
 <div class="NOTE">
 <h5>Note</h5>
 <p>We considered not having a single Experimental root folder and instead putting Experimental under say <code>MRTK.Examples/HandTracking/Scenes/Experimental/HandBasedMenuExample.unity</code>. We decided to go with folders at the base to make the experimental features easier to discover.</p>
@@ -107,7 +111,27 @@
 <p>Ensure that the experimental code lives in an experimental namespace that matches the non-experimental location. For example,
 if your component is part of solvers at <code>Microsoft.MixedReality.Toolkit.Utilities.Solvers</code>, its namespace should be <code>Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers</code>.</p>
 <p>See <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/4532">this PR</a> for an example.</p>
-<h3 id="graduating-experimental-code-into-mrtk-code">Graduating experimental code into MRTK code</h3>
+<h3 id="minimize-impact-to-mrtk-code">Minimize impact to MRTK code</h3>
+<p>While your MRTK change might get your experiment to work, it could impact other people in ways you do not expect.
+Any regressions you make to the MRTK core code would result in your pull request getting reverted.</p>
+<p>Aim to have zero changes in folders other than experimental folders. Here is a list of folders that can have experimental changes:</p>
+<ul>
+<li>MixedRealityToolkit.SDK\Experimental</li>
+<li>MixedRealityToolkit.SDK\Inspectors\Experimental</li>
+<li>MixedRealityToolkit.Examples\Examples\Experimental</li>
+</ul>
+<p>Changes outside of these folders should be treated very carefully. If your experimental feature must include changes to MRTK core code, consider splitting out MRTK changes into a separate pull request that includes tests and documentation.</p>
+<h3 id="using-you-experimental-feature-should-not-impact-peoples-ability-to-use-core-controls">Using you experimental feature should not impact people's ability to use core controls</h3>
+<p>Most people use core UX components like the button, ManipulationHandler and Interactable very frequently. They will likely not use your experimental feature if it prevents them from using buttons.</p>
+<p>Using your component should not break buttons, ManipulationHandler, BoundingBox, or interactable.</p>
+<p>For example, in <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6001">this ScrollableObjectCollection PR</a>, adding a ScrollableObjectCollection caused people to not be able to use the HoloLens button prefabs. Even though this was not caused by a bug in the PR (but rather exposed an existing bug), it prevented the PR from getting checked in.</p>
+<h3 id="provide-and-example-scene-that-demonstrates-how-to-use-the-feature">Provide and example scene that demonstrates how to use the feature</h3>
+<p>People need to see how to use your feature, and how to test it.</p>
+<p>Provide an example under MRTK.Examples/Experimental/YOUR_FEATURE</p>
+<h3 id="minimize-user-visible-flaws-in-experimental-features">Minimize user visible flaws in experimental features</h3>
+<p>Others will not use the experimental feature if it does not work, it will not graduate to a feature.</p>
+<p>Test your example scene on your target platform, make sure it works as expected. Make sure your feature also works in editor, so people can rapidly iterate and see your feature even if they don’t have the target platform.</p>
+<h1 id="graduating-experimental-code-into-mrtk-code">Graduating experimental code into MRTK code</h1>
 <p>If a feature ends up seeing quite a lot of use, then we should graduate it into core MRTK code. To do this, the feature should have tests, documentation, and an example scene.</p>
 <p>When you are ready to graduate the feature MRTK, create an issue to check in your PR against. The PR should include all the things needed to make this a core feature: tests, documentation, and an example scene showing usage.</p>
 <p>Also, don’t forget to update the namespaces to remove the “Experimental” subspace.</p>
@@ -119,7 +143,7 @@ if your component is part of solvers at <code>Microsoft.MixedReality.Toolkit.Uti
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/ExperimentalFeatures.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/Contributing/ExperimentalFeatures.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
@@ -145,8 +169,8 @@ if your component is part of solvers at <code>Microsoft.MixedReality.Toolkit.Uti
       </footer>
     </div>
     
-    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
-    <script type="text/javascript" src="../styles/docfx.js"></script>
-    <script type="text/javascript" src="../styles/main.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
   </body>
 </html>
