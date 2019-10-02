@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -258,6 +259,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
+
+            if (target != null)
+            {
+                var helpURL = target.GetType().GetCustomAttribute<HelpURLAttribute>();
+                if (helpURL != null)
+                {
+                    InspectorUIUtility.RenderDocumentationButton(helpURL.URL);
+                }
+            }
 
             // Ensure there is a touchable.
             if (touchable == null)
