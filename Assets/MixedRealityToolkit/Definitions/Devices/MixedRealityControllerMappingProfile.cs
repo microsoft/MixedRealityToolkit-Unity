@@ -183,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void SortMappings()
         {
-            Array.Sort(mixedRealityControllerMappings, (profile1, profile2) => 
+            Array.Sort(mixedRealityControllerMappings, (profile1, profile2) =>
             {
                 bool isOptional1 = (profile1.ControllerType.Type == null || profile1.HasCustomInteractionMappings);
                 bool isOptional2 = (profile2.ControllerType.Type == null || profile2.HasCustomInteractionMappings);
