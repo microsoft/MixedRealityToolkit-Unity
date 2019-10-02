@@ -19,6 +19,9 @@ using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
+    /// <summary>
+    /// Unit tests to check the functionality of a handful of rendering systems.
+    /// </summary>
     public class RenderingTests : BasePlayModeTests
     {
         private const float VisualizatonWaitTime = 1.0f;
@@ -27,6 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Tests if <see cref="MaterialInstance"/> can be instantiated and manipulated at runtime.
         /// </summary>
+        /// <returns>Enumerator for Unity</returns>
         [UnityTest]
         public IEnumerator TestMaterialInstance()
         {
