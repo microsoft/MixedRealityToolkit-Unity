@@ -346,6 +346,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         EditorGUILayout.LabelField("Matching Fields:");
                         foreach (ProfileSearchResult search in fieldSearchResults)
                         {
+                            if (search.Fields.Count == 0)
+                            {   // Don't display results with no fields
+                                continue;
+                            }
+
                             using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
                             {
                                 using (new EditorGUILayout.HorizontalScope())
