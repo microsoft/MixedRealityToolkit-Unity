@@ -127,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 
             EditorGUILayout.Space();
 
-            EditorGUILayout.HelpBox("In order for a ScrollableObjectCollection to work properly with PressableButton, ReleaseOnTouchEnd must be inactive, and InteractableOnClick should be set to EventOnClickCompletion.", MessageType.Info);
+            EditorGUILayout.HelpBox("In order for a ScrollableObjectCollection to work properly with PressableButton, ReleaseOnTouchEnd must be inactive.", MessageType.Info);
 
             if (GUILayout.Button("Set Up PressableButtons"))
             {
@@ -330,7 +330,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                 UnityEditor.Handles.DrawSolidRectangleWithOutline(points, new Color(0.85f, 1.0f, 1.0f, 0.1f), arrowColor);
                 GUIStyle labelStyle = new GUIStyle();
                 labelStyle.normal.textColor = Color.white;
-                UnityEditor.Handles.Label(center + (rightDelta * 0.5f) - (upDelta * 0.5f), new GUIContent("touch plane", "The plane which the finger will need to cross in order for the touch to be calculated as a scroll"), labelStyle);
+                UnityEditor.Handles.Label(center + (rightDelta * 0.5f) - (upDelta * 0.5f), new GUIContent("touch plane", "The plane which the finger will need to cross in order for the touch to be calculated as a scroll or release."), labelStyle);
             }
         }
 

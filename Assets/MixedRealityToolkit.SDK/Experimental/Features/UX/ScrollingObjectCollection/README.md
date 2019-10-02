@@ -15,6 +15,6 @@ When using touch, the list will continue to scroll, until the PokePointer has cr
 This control works out of the box with MRTK's PressableButtons. The only caveat is how they are set up.
 
 - PressableButton.ReleaseOnTouch must be disabled.
-- PhysicalPressEventRouter.InteractableOnClick most be set to EventOnClickCompletion.
+- PhysicalPressEventRouter.InteractableOnClick most be set to EventOnClickCompletion or EventOnPress.
 
 At edit time, ScrollingObjectCollection can automatically fix these components. But when dynamically instantiating Prefabs or components, make sure these properties are set properly.
