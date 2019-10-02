@@ -1475,9 +1475,9 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
     - id: 2
-      description: Trigger Press
+      description: Trigger Press (Select)
       axisType: 2
-      inputType: 13
+      inputType: 25
       inputAction:
         id: 1
         description: Select
@@ -1662,9 +1662,9 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
     - id: 2
-      description: Trigger Press
+      description: Trigger Press (Select)
       axisType: 2
-      inputType: 13
+      inputType: 25
       inputAction:
         id: 1
         description: Select
@@ -1848,9 +1848,9 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
     - id: 2
-      description: Trigger Press
+      description: Trigger Press (Select)
       axisType: 2
-      inputType: 13
+      inputType: 25
       inputAction:
         id: 1
         description: Select
@@ -1969,9 +1969,9 @@ MonoBehaviour:
       invertXAxis: 0
       invertYAxis: 0
     - id: 2
-      description: Trigger Press
+      description: Trigger Press (Select)
       axisType: 2
-      inputType: 13
+      inputType: 25
       inputAction:
         id: 1
         description: Select
