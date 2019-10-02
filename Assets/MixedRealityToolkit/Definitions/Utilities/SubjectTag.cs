@@ -10,19 +10,27 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// </summary>
     [Flags]
     [Serializable]
-    public enum SubjectTag
+    public enum SubjectTag : ulong
     {
         Input = 1,
         Pointers = 2,
-        Buttons = 4,
-        Hands = 8,
-        Scenes = 16,
-        Editor = 32,
-        Camera = 64,
-        Speech = 128,
-        Simulation = 256,
-        Prefabs = 512,
+        Hands = 4,
+        Scenes = 8,
+        Editor = 16,
+        Camera = 32,
+        Speech = 64,
+        Simulation = 128,
+        Prefabs = 256,
+        Controllers = 512,
+        EyeTracking = 1024,
+        Performance = 2048,
+        Gestures = 4096,
+        Spatial = 8192,
+        Visuals = 16384,
 
-        All = Input | Pointers | Buttons | Hands | Scenes | Editor | Camera | Simulation | Speech | Prefabs
+        All = Input | Pointers | Hands |  Scenes | 
+            Editor | Camera | Simulation | Speech | 
+            Prefabs | Controllers | Performance | 
+            EyeTracking | Gestures | Spatial | Visuals
     }
 }

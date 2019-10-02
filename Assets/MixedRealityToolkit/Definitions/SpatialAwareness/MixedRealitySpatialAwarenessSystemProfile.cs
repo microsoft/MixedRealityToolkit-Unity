@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Spatial Awareness System Profile", fileName = "MixedRealitySpatialAwarenessSystemProfile", order = (int)CreateProfileMenuItemIndices.SpatialAwareness)]
     [MixedRealityServiceProfile(typeof(IMixedRealitySpatialAwarenessSystem))]
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
+    [Subject(SubjectTag.Spatial)]
     public class MixedRealitySpatialAwarenessSystemProfile : BaseMixedRealityProfile
     {
         [SerializeField]

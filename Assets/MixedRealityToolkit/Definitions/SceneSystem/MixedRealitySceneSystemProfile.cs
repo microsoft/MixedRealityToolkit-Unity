@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Scene System Profile", fileName = "MixedRealitySceneSystemProfile", order = (int)CreateProfileMenuItemIndices.SceneSystem)]
     [MixedRealityServiceProfile(typeof(IMixedRealitySceneSystem))]
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SceneSystem/SceneSystemGettingStarted.html")]
+    [Subject(SubjectTag.Scenes | SubjectTag.Editor)]
     public class MixedRealitySceneSystemProfile : BaseMixedRealityProfile
     {
         /// <summary>
@@ -119,17 +120,14 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         #pragma warning disable 414
         [SerializeField]
         [Tooltip("If true, the service will update your build settings automatically, ensuring that all manager, lighting and content scenes are added. Disable this if you want total control over build settings.")]
-        [Subject(SubjectTag.Editor)]
         private bool editorManageBuildSettings = true;
 
         [SerializeField]
         [Tooltip("If true, the service will ensure manager scene is displayed first in scene heirarchy, followed by lighting and then content. Disable this if you want total control over scene heirarchy.")]
-        [Subject(SubjectTag.Editor)]
         private bool editorEnforceSceneOrder = true;
 
         [SerializeField]
         [Tooltip("If true, service will ensure that manager scenes and lighting scenes are always loaded. Disable if you want total control over which scenes are loaded in editor.")]
-        [Subject(SubjectTag.Editor)]
         private bool editorManageLoadedScenes = true;
 
         [SerializeField]

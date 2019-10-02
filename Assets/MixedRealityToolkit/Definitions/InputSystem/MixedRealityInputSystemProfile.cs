@@ -17,6 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Input System Profile", fileName = "MixedRealityInputSystemProfile", order = (int)CreateProfileMenuItemIndices.Input)]
     [MixedRealityServiceProfile(typeof(IMixedRealityInputSystem))]
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html")]
+    [Subject(SubjectTag.Input | SubjectTag.Pointers)]
     public class MixedRealityInputSystemProfile : BaseMixedRealityProfile
     {
         [SerializeField]
@@ -31,7 +32,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         [Tooltip("The focus provider service concrete type to use when raycasting.")]
         [Implements(typeof(IMixedRealityFocusProvider), TypeGrouping.ByNamespaceFlat)]
-        [Subject(SubjectTag.Focus | SubjectTag.Pointers)]
         private SystemType focusProviderType;
 
         /// <summary>
@@ -46,7 +46,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         [Tooltip("The raycast provider service concrete type to use when raycasting.")]
         [Implements(typeof(IMixedRealityRaycastProvider), TypeGrouping.ByNamespaceFlat)]
-        [Subject(SubjectTag.Focus | SubjectTag.Pointers)]
         private SystemType raycastProviderType;
 
         /// <summary>
@@ -83,7 +82,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("Input System Action Mapping profile for wiring up Controller input to Actions.")]
-        [Subject(SubjectTag.Input)]
         private MixedRealityInputActionsProfile inputActionsProfile;
 
         /// <summary>

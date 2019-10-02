@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Controller Visualization Profile", fileName = "MixedRealityControllerVisualizationProfile", order = (int)CreateProfileMenuItemIndices.ControllerVisualization)]
     [MixedRealityServiceProfile(typeof(IMixedRealityControllerVisualizer))]
+    [Subject(SubjectTag.Controllers | SubjectTag.Input | SubjectTag.Prefabs | SubjectTag.Visuals)]
     public class MixedRealityControllerVisualizationProfile : BaseMixedRealityProfile
     {
         [SerializeField]

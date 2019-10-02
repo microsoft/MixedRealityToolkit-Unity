@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Gestures Profile", fileName = "MixedRealityGesturesProfile", order = (int)CreateProfileMenuItemIndices.Gestures)]
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Gestures.html")]
+    [Subject(SubjectTag.Input | SubjectTag.Hands | SubjectTag.Gestures)]
     public class MixedRealityGesturesProfile : BaseMixedRealityProfile
     {
         [EnumFlags]

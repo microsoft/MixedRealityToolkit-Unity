@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Pointer Profile", fileName = "MixedRealityInputPointerProfile", order = (int)CreateProfileMenuItemIndices.Pointer)]
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Pointers.html")]
+    [Subject(SubjectTag.Input | SubjectTag.Pointers)]
     public class MixedRealityPointerProfile : BaseMixedRealityProfile
     {
         [SerializeField]

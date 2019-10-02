@@ -7,9 +7,9 @@ using System;
 namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
-    /// Used to tag fields by subject to make profiles easier to search.
+    /// Used to tag profiles by subject to make profiles easier to search.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class SubjectAttribute : Attribute
     {
         public SubjectAttribute(SubjectTag tags) { Tags = tags; }

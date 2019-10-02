@@ -9,6 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 {
     [MixedRealityServiceProfile(typeof(ISceneTransitionService))]
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Scene Transition Service Profile", fileName = "SceneTransitionServiceProfile", order = 100)]
+    [Subject(SubjectTag.Scenes | SubjectTag.Camera | SubjectTag.Visuals)]
     public class SceneTransitionServiceProfile : BaseMixedRealityProfile
     {
         public bool UseDefaultProgressIndicator => useDefaultProgressIndicator;

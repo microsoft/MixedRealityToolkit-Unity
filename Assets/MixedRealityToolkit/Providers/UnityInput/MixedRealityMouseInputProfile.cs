@@ -13,6 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         fileName = "MixedRealityMouseInputProfile", 
         order = (int)CreateProfileMenuItemIndices.MouseInput)]
     [MixedRealityServiceProfile(typeof(MouseDeviceManager))]
+    [Subject(SubjectTag.Input)]
     public class MixedRealityMouseInputProfile : BaseMixedRealityProfile
     {
         [SerializeField]

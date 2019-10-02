@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Input Actions Profile", fileName = "MixedRealityInputActionsProfile", order = (int)CreateProfileMenuItemIndices.InputActions)]
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/InputActions.html")]
+    [Subject(SubjectTag.Input | SubjectTag.Controllers)]
     public class MixedRealityInputActionsProfile : BaseMixedRealityProfile
     {
         private readonly string[] defaultInputActions =

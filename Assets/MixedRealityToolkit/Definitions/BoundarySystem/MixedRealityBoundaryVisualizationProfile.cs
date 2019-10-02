@@ -13,6 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Boundary Visualization Profile", fileName = "MixedRealityBoundaryVisualizationProfile", order = (int)CreateProfileMenuItemIndices.BoundaryVisualization)]
     [MixedRealityServiceProfile(typeof(IMixedRealityBoundarySystem))]
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Boundary/BoundarySystemGettingStarted.html")]
+    [Subject(SubjectTag.Spatial | SubjectTag.Visuals)]
     public class MixedRealityBoundaryVisualizationProfile : BaseMixedRealityProfile
     {
         [SerializeField]

@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Input;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -10,50 +9,11 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
 {
-    public static class MixedRealitySearchUtility
+    /// <summary>
+    /// Utility for searching profile 
+    /// </summary>
+    public static partial class MixedRealitySearchUtility
     {
-        /// <summary>
-        /// Struct for configuring a search.
-        /// </summary>
-        public struct SearchConfig
-        {
-            public SubjectTag SelectedSubjects;
-            public string SearchFieldString;
-            public bool RequireAllKeywords;
-            public bool RequireAllSubjects;
-            public bool SearchTooltips;
-            public bool SearchFieldObjectNames;
-            public bool SearchChildProperties;
-            public HashSet<string> Keywords;
-        }
-
-        /// <summary>
-        /// Struct for storing search results
-        /// </summary>
-        public struct FieldResult
-        {
-            public FieldInfo Field;
-            public SerializedProperty Property;
-            public SubjectAttribute Subject;
-            public int MatchStrength;
-        }
-
-        /// <summary>
-        /// Struct for pairing profiles with a set of search results
-        /// </summary>
-        public struct ProfileSearchResult
-        {
-            public static bool IsEmpty(ProfileSearchResult result)
-            {
-                return result.Profile == null || result.Fields == null;
-            }
-
-            public int ProfileMatchStrength;
-            public int MaxFieldMatchStrength;
-            public UnityEngine.Object Profile;
-            public List<FieldResult> Fields;
-        }
-
         /// <summary>
         /// Field names that shouldn't be displayed in a profile field search.
         /// </summary>
@@ -75,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
         };
 
         /// <summary>
-        /// Field types that don't need their child properties displayed
+        /// Field types that don't need their child properties displayed.
         /// </summary>
         private static readonly HashSet<string> serializedPropertyTypesToFlatten = new HashSet<string>()
         {
@@ -103,36 +63,24 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
                 config.Keywords.RemoveWhere(s => s.Length < minSearchStringLength);
             }
 
-            // Ignore these requirements if criteria is empty
-            config.RequireAllKeywords &= config.Keywords.Count > 0;
-            config.RequireAllSubjects &= config.SelectedSubjects != 0;
-
-            // We will use these to evaluate match strength
-            List<SubjectTag> subjectValues = new List<SubjectTag>();
-            foreach (SubjectTag value in Enum.GetValues(typeof(SubjectTag)))
-            {
-                if ((value & config.SelectedSubjects) != 0)
-                    subjectValues.Add(value);
-            }
-
             // The result that we will return, if not empty
             ProfileSearchResult result = new ProfileSearchResult();
 
-            // First check the profile for subject matches
-            // Profile tags will be combined with field tags
-            Type profileType = profile.GetType();
-            SubjectTag profileTags = 0;
-
-            if (config.SelectedSubjects != 0)
-            {
-                SubjectAttribute subject = profileType.GetCustomAttribute<SubjectAttribute>();
-                if (subject != null)
-                {
-                    profileTags = subject.Tags;
-                }
+            // Ignore these requirements if criteria is empty
+            config.RequireAllKeywords &= config.Keywords.Count > 0;
+            config.RequireAllSubjects &= config.SelectedSubjects != 0;
+            // Subject requirements are met by the profile's subject tag
+            // If not all subjects are required, a profile with the wrong tags or no tags can still match
+            int profileMatchStrength = 0;
+            bool subjectReqsMet = CheckProfileSubjects(config, profile, out profileMatchStrength);            
+            if (subjectReqsMet)
+            { 
+                result.Profile = profile;
+                result.ProfileMatchStrength = profileMatchStrength;
+                result.Fields = new List<FieldSearchResult>();
             }
 
-            // Now go through the profile's serialized fields
+            // Otherwise go through the profile's serialized fields
             SerializedProperty iterator = new SerializedObject(profile).GetIterator();
             bool hasNextProperty = iterator.Next(true);
 
@@ -144,6 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
                     continue;
                 }
 
+                // Check to see if this is a profile - if it is, enter the profile and check its children
                 bool isProfileField = false;
                 if (iterator.propertyType == SerializedPropertyType.ObjectReference && iterator.objectReferenceValue != null)
                 {   // If the property is itself a profile, perform a recursive search
@@ -160,15 +109,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
 
                 // Gather our top-level info
                 bool keywordReqsMet = !config.RequireAllKeywords;
-                bool subjectReqsMet = !config.RequireAllSubjects;
                 int fieldMatchStrength = 0;
-                int subjectMatchStrength = 0;
 
-                FieldInfo fieldInfo = profileType.GetField(iterator.name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-                SubjectAttribute subject = fieldInfo.GetCustomAttribute<SubjectAttribute>();
-
-                CheckKeywords(config, iterator, ref fieldMatchStrength, ref keywordReqsMet);
-                CheckSubjects(config, subjectValues, profileTags, subject, iterator, ref subjectMatchStrength, ref subjectReqsMet);
+                if (subjectReqsMet)
+                {   // Only check keywords if our subject requirements are met
+                    CheckFieldKeywords(config, iterator, ref fieldMatchStrength, ref keywordReqsMet);
+                }
 
                 if (config.SearchChildProperties)
                 {
@@ -183,36 +129,51 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
                             int depthOnEnter = childIterator.depth;
                             while (hasChildProperties)
                             {
-                                if (CheckKeywords(config, childIterator, ref fieldMatchStrength, ref keywordReqsMet))
+                                // Check to see if this is a profile - if it is, enter the profile and check its children
+                                if (childIterator.propertyType == SerializedPropertyType.ObjectReference && childIterator.objectReferenceValue != null)
+                                {   // If the property is itself a profile, perform a recursive search
+                                    Type referenceType = childIterator.objectReferenceValue.GetType();
+                                    if (typeof(BaseMixedRealityProfile).IsAssignableFrom(referenceType))
+                                    {
+                                        isProfileField = true;
+                                        foreach (ProfileSearchResult subResult in SearchProfileFields(childIterator.objectReferenceValue, config))
+                                        {
+                                            yield return subResult;
+                                        }
+                                    }
+                                }
+
+                                if (CheckFieldKeywords(config, childIterator, ref fieldMatchStrength, ref keywordReqsMet))
                                 {
                                     childIterator.isExpanded = true;
                                 }
+
                                 if (childIterator.depth < depthOnEnter)
                                 {
                                     break;
                                 }
+
                                 hasChildProperties = childIterator.Next(true);
                             }
                         }
                     }
                 }
 
-                if (keywordReqsMet & subjectReqsMet)
+                if (subjectReqsMet && keywordReqsMet)
                 {
-                    int matchStrength = fieldMatchStrength + subjectMatchStrength;
+                    int matchStrength = fieldMatchStrength + profileMatchStrength;
                     if (ProfileSearchResult.IsEmpty(result))
                     {
                         result.Profile = profile;
-                        result.Fields = new List<FieldResult>();
+                        result.ProfileMatchStrength = profileMatchStrength;
+                        result.Fields = new List<FieldSearchResult>();
                     }
 
                     result.MaxFieldMatchStrength = Mathf.Max(result.MaxFieldMatchStrength, matchStrength);
                     result.Fields.Add(
-                        new FieldResult()
+                        new FieldSearchResult()
                         {
                             Property = iterator.Copy(),
-                            Field = fieldInfo,
-                            Subject = subject,
                             MatchStrength = matchStrength,
                         });
                 }
@@ -223,7 +184,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
             if (!ProfileSearchResult.IsEmpty(result))
             {
                 // Sort results by match, then by name
-                result.Fields.Sort(delegate (FieldResult r1, FieldResult r2)
+                result.Fields.Sort(delegate (FieldSearchResult r1, FieldSearchResult r2)
                 {
                     if (r1.MatchStrength != r2.MatchStrength)
                     {
@@ -237,15 +198,59 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
             yield break;
         }
 
-        private static void CheckSubjects(SearchConfig config, List<SubjectTag> subjectValues, SubjectTag profileTags, SubjectAttribute subject, SerializedProperty iterator, ref int subjectMatchStrength, ref bool subjectReqsMet)
+        /// <summary>
+        /// Converts a string flags value to a subject tag. Useful for storing in a session state string value.
+        /// </summary>
+        public static SubjectTag SubjectFlagsFromString(string subjectFlagValueString)
         {
-            if (subject != null && config.SelectedSubjects != 0)
+            ulong ulongValue;
+            ulong.TryParse(subjectFlagValueString, out ulongValue);
+            return (SubjectTag)ulongValue;
+        }
+
+        /// <summary>
+        /// Converts a subject tag to string flags value. Useful for storing in a session state string value.
+        /// </summary>
+        public static string SubjectFlagsToString(SubjectTag subjectFlags)
+        {
+            ulong ulongValue = (ulong)subjectFlags;
+            return ulongValue.ToString();
+        }
+
+        private static bool CheckProfileSubjects(SearchConfig config, UnityEngine.Object profile, out int subjectMatchStrength)
+        {
+            subjectMatchStrength = 0;
+
+            if (config.SelectedSubjects == 0)
             {
-                // Combine the subject tags with the profile's tags
-                SubjectTag fieldTags = profileTags | subject.Tags;
+                // If we haven't selected any subjects then we're done
+                return true;
+            }
+
+            bool subjectReqsMet = !config.RequireAllSubjects;
+
+            List<SubjectTag> subjectValues = new List<SubjectTag>();
+            foreach (SubjectTag value in Enum.GetValues(typeof(SubjectTag)))
+            {
+                if (value == SubjectTag.All)
+                {
+                    continue;
+                }
+
+                if ((value & config.SelectedSubjects) != 0)
+                {
+                    subjectValues.Add(value);
+                }
+            }
+
+            Type profileType = profile.GetType();
+            SubjectAttribute subject = profileType.GetCustomAttribute<SubjectAttribute>();
+            if (subject != null)
+            {
+                SubjectTag profileTags = subject.Tags;
                 foreach (SubjectTag value in subjectValues)
                 {
-                    subjectMatchStrength += (value & fieldTags) != 0 ? 1 : 0;
+                    subjectMatchStrength += (value & profileTags) != 0 ? 1 : 0;
                 }
 
                 if (subjectValues.Count > 1 && subjectMatchStrength >= subjectValues.Count)
@@ -255,9 +260,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
 
                 subjectReqsMet = config.RequireAllSubjects ? subjectMatchStrength >= subjectValues.Count : subjectMatchStrength > 0;
             }
+
+            return subjectReqsMet;
         }
 
-        private static bool CheckKeywords(SearchConfig config, SerializedProperty property, ref int fieldMatchStrength, ref bool keywordReqsMet)
+
+        private static bool CheckFieldKeywords(SearchConfig config, SerializedProperty property, ref int fieldMatchStrength, ref bool keywordReqsMet)
         {
             bool increasedMatchStrength = false;
 

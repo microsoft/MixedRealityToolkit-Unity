@@ -651,7 +651,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 Assert.AreEqual(1, catcher.EventsCompleted);
 
                 // Set new touchableCollider bounds
-                nearIT.SetTouchableCollider(newBoxCollider);
+                //nearIT.SetTouchableCollider(newBoxCollider);
 
                 // Move hand to the side 
                 yield return rightHand.Move(new Vector3(0.5f, 0, 0));
