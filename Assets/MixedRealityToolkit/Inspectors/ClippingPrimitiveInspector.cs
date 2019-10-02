@@ -15,9 +15,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     public abstract class ClippingPrimitiveEditor : UnityEditor.Editor
     {
         /// <summary>
-        /// Notifies the editor that this object has custom frame bounds.
+        /// Notifies the Unity editor if this object has custom frame bounds.
         /// </summary>
-        /// <returns>True for all clipping primitives.</returns>
+        /// <returns>True if custom frame bounds can be used from OnGetFrameBounds.</returns>
         protected abstract bool HasFrameBounds();
 
         /// <summary>

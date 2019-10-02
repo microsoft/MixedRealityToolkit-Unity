@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Object = UnityEngine.Object;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -28,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         /// </summary>
         /// <param name="owner">An optional owner to track instance ownership.</param>
         /// <returns>The first instantiated Material.</returns>
-        public Material AcquireMaterial(object owner = null, bool instance = true)
+        public Material AcquireMaterial(Object owner = null, bool instance = true)
         {
             if (owner != null)
             {
@@ -56,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         /// <param name="owner">An optional owner to track instance ownership.</param>
         /// <param name="instance">Should this acquisition attempt to instance materials?</param>
         /// <returns>All the instantiated materials.</returns>
-        public Material[] AcquireMaterials(object owner = null, bool instance = true)
+        public Material[] AcquireMaterials(Object owner = null, bool instance = true)
         {
             if (owner != null)
             {
@@ -78,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         /// <param name="owner">The same owner which originally acquire ownership via AcquireMaterial(s).</param>
         /// <param name="instance">Should this acquisition attempt to instance materials?</param>
         /// <param name="autoDestroy">When ownership count hits zero should the MaterialInstance component be destroyed?</param>
-        public void ReleaseMaterial(object owner, bool autoDestroy = true)
+        public void ReleaseMaterial(Object owner, bool autoDestroy = true)
         {
             materialOwners.Remove(owner);
 
@@ -123,9 +124,9 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         private Material[] defaultMaterials = null;
         private Material[] instanceMaterials = null;
         private bool materialsInstanced = false;
-        private HashSet<object> materialOwners = new HashSet<object>();
+        private HashSet<Object> materialOwners = new HashSet<Object>();
 
-        private const string instancePostfix = " (Clone)";
+        private const string instancePostfix = " (Instance)";
 
 #region MonoBehaviour Implementation
 

@@ -30,7 +30,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestMaterialInstance()
         {
+            // Light only used for developers to visually inspect test.
             var light = InstantiateDirectionalLight(LightDirection);
+
             var gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
             var redMaterial = InstantiateStandardShaderMaterial(Color.red);
             gameObject.GetComponent<Renderer>().sharedMaterial = redMaterial;

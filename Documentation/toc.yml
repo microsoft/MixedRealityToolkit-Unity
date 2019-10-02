@@ -133,6 +133,10 @@
       href: Boundary/BoundarySystemGettingStarted.md
     - name: Configuring the Boundary Visualization
       href: Boundary/ConfiguringBoundaryVisualization.md
+  - name: Rendering
+    items:
+    - name: Material Instance Overview
+      href: Rendering/MaterialInstance.md
   - name: Diagnostics System
     items:
     - name: Diagnostics System Overview
