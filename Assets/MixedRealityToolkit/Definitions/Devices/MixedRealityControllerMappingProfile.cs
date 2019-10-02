@@ -6,6 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif // UNITY_EDITOR
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -32,6 +35,35 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public MixedRealityControllerMapping[] MixedRealityControllerMappingProfiles => mixedRealityControllerMappings;
 
 #if UNITY_EDITOR
+        [MenuItem("Mixed Reality Toolkit/Update/Update Controller Mapping Profiles")]
+        private static void UpdateAllControllerMappingProfiles()
+        {
+            foreach (string guid in AssetDatabase.FindAssets("t:MixedRealityControllerMappingProfile"))
+            {
+                MixedRealityControllerMappingProfile asset = AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guid), typeof(MixedRealityControllerMappingProfile)) as MixedRealityControllerMappingProfile;
+
+                List<MixedRealityControllerMapping> updatedMappings = new List<MixedRealityControllerMapping>();
+
+                foreach (MixedRealityControllerMapping mapping in asset.MixedRealityControllerMappings)
+                {
+                    if (mapping.ControllerType.Type == null)
+                    {
+                        continue;
+                    }
+
+                    if (!mapping.HasCustomInteractionMappings)
+                    {
+                        mapping.UpdateInteractionSettingsFromDefault();
+                    }
+
+                    updatedMappings.Add(mapping);
+                }
+
+                asset.mixedRealityControllerMappings = updatedMappings.ToArray();
+                EditorUtility.SetDirty(asset);
+            }
+        }
+
 
         private static Type[] controllerMappingTypes;
 
