@@ -83,7 +83,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         {
             using (new EditorGUILayout.VerticalScope())
             {
-                GUI.enabled = !(EditorApplication.isPlaying || EditorApplication.isPaused);
                 using (var check = new EditorGUI.ChangeCheckScope())
                 {
                     EditorGUILayout.PropertyField(states, new GUIContent("States", "The States this Interactable is based on"));
@@ -93,7 +92,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                         theme.ValidateDefinitions();
                     }
                 }
-                GUI.enabled = true;
 
                 if (states.objectReferenceValue == null || themeStates.Length < 1)
                 {

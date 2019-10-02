@@ -168,26 +168,31 @@
         href: InputSimulation/InputAnimationFileFormat.md
     - name: Extension Service Creation Wizard
       href: Tools/ExtensionServiceCreationWizard.md
+    - name: Runtime tools
+      items:
+      - name: Controller Mapping tool
+        href: Tools/ControllerMappingTool.md 
   - name: Scene Transition Service
     href: Extensions/SceneTransitionService/SceneTransitionServiceOverview.md
-  - name: Experimental Features
-    href: ExperimentalFeatures.md
 - name: Contributing
   items:
   - name: Contributing Overview
     href: Contributing/CONTRIBUTING.md
-  - name: Feature Contribution Process
-    href: Contributing/Feature_Contribution_Process.md
+
   - name: Coding Guidelines
     href: Contributing/CodingGuidelines.md
-  - name: Documentation guide
-    href: Contributing/DocumentationGuide.md
-  - name: Developer portal generation with DocFX
-    href: Contributing/DevDocGuide.md
-  - name: Testing
+  - name: Writing and Running Tests
     href: Contributing/UnitTests.md
+  - name: Writing Documentation
+    href: Contributing/DocumentationGuide.md
+  - name: Pull Requests
+    href: Contributing/PullRequests.md
+  - name: Experimental Features
+    href: Contributing/ExperimentalFeatures.md
   - name: Breaking Changes
     href: Contributing/BreakingChanges.md
+  - name: How to use DocFX
+    href: Contributing/DevDocGuide.md
 - name: Planning
   items:
   - name: Roadmap

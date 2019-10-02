@@ -10,7 +10,8 @@ This document outlines the roadmap of the Mixed Reality Toolkit.
  
 | Product | Description | Timeline | Project board |
 | --- | --- | --- | --- |
-| MRTK V2.1 | Next iteration of MRTK, currently tagged as V2.1 | TBD |  |
+| MRTK V2.1 | Next iteration of MRTK, currently tagged as V2.1 | October 2019 |  |
+| MRTK V2.2 | Next iteration of MRTK, currently tagged as V2.1 | TBD |  |
 
 Release details, including backlog items, can be found on the [GitHub project pages](https://github.com/Microsoft/MixedRealityToolkit-Unity/projects).
 

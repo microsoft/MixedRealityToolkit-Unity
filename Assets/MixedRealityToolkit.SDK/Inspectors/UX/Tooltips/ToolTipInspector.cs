@@ -210,8 +210,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             serializedObject.ApplyModifiedProperties();
+        }
 
-            EditorUtility.SetDirty(toolTip);
+        public override bool RequiresConstantRepaint()
+        {
+            return true;
         }
 
         protected virtual void OnSceneGUI()

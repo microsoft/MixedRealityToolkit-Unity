@@ -229,7 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                     RefreshTrackedObject();
                 }
 
-                return trackingTarget?.transform;
+                return (trackingTarget != null) ? trackingTarget.transform : null;
             }
         }
 
