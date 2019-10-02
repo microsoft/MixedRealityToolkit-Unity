@@ -350,7 +350,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             {
                                 using (new EditorGUILayout.HorizontalScope())
                                 {
-                                    EditorGUILayout.LabelField("Fields found in: ", EditorStyles.boldLabel, GUILayout.MaxWidth(95));
+                                    EditorGUILayout.LabelField("Fields found in: ", EditorStyles.boldLabel, GUILayout.MaxWidth(105));
                                     EditorGUILayout.ObjectField(search.Profile, typeof(UnityEngine.Object), false, GUILayout.ExpandWidth(true));
                                 }
 
