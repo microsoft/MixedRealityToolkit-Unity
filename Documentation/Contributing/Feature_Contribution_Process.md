@@ -1,3 +1,5 @@
+10/1/2019: This page is deprecated because it provides guidelines for contributing very large systems to MRTK before the 2.0 release. After the 2.0 release, large changes need to be performed more carefully, and the process for this is not yet decided. We expect most MRTK contributions to have much smaller changes than what is covered here.
+
 # Feature Contribution Process
 
 Adding features to the Mixed Reality Toolkit (MRTK) is split up into a few iteration steps, so maintainers can have time to review and and ensure the process goes smoothly. Please be sure to review the list of [feature requirements](#new-feature-requirements) before you get started.

@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 Parallel.ForEach(assembly.GetTypes(), (type) =>
                 {
-                    if (type.IsClass && !type.IsAbstract && type.IsSubclassOf(rootType))
+                    if (type != null && type.IsClass && !type.IsAbstract && type.IsSubclassOf(rootType))
                     {
                         results.Add(type);
                     }

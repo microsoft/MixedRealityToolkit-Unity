@@ -13,12 +13,14 @@ MonoBehaviour:
   m_Name: DefaultMixedRealityInputSimulationProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 0
-  indicatorsPrefab: {fileID: 88827165642526427, guid: 9639144363d7b8b45ba926081168805a,
-    type: 3}
+  indicatorsPrefab: {fileID: 0}
+  mouseRotationSensitivity: 0.1
+  mouseX: Mouse X
+  mouseY: Mouse Y
+  mouseScroll: Mouse ScrollWheel
   doublePressTime: 0.4
   isCameraControlEnabled: 1
-  mouseRotationSensitivity: 0.1
-  extraMouseRotationScale: 3
+  mouseLookSpeed: 3
   mouseLookButton:
     bindingType: 1
     code: 1
@@ -33,9 +35,6 @@ MonoBehaviour:
   moveHorizontal: Horizontal
   moveVertical: Vertical
   moveUpDown: UpDown
-  mouseX: Mouse X
-  mouseY: Mouse Y
-  mouseScroll: Mouse ScrollWheel
   lookHorizontal: AXIS_4
   lookVertical: AXIS_5
   simulateEyePosition: 0
@@ -53,6 +52,7 @@ MonoBehaviour:
   rightHandManipulationKey:
     bindingType: 2
     code: 32
+  mouseHandRotationSpeed: 30
   handRotateButton:
     bindingType: 2
     code: 306

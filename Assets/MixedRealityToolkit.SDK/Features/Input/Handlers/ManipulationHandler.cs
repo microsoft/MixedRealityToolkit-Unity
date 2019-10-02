@@ -80,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [SerializeField]
         [Tooltip("What manipulation will two hands perform?")]
         private TwoHandedManipulation twoHandedManipulationType = TwoHandedManipulation.MoveRotateScale;
-        
+
         public TwoHandedManipulation TwoHandedManipulationType
         {
             get => twoHandedManipulationType;
@@ -137,6 +137,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             get => constraintOnRotation;
             set => constraintOnRotation = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Check if object rotation should be in local space of object being manipulated instead of world space.")]
+        private bool useLocalSpaceForConstraint = false;
+
+        /// <summary>
+        /// Gets or sets whether the constraints should be applied in local space of the object being manipulated or world space.
+        /// </summary>
+        public bool UseLocalSpaceForConstraint
+        {
+            get => useLocalSpaceForConstraint;
+            set => useLocalSpaceForConstraint = value;
         }
 
         [SerializeField]
@@ -587,7 +600,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if ((currentState & State.Rotating) > 0)
             {
-                targetRotationTwoHands = rotateLogic.Update(handPositionMap, targetRotationTwoHands, constraintOnRotation);
+                targetRotationTwoHands = rotateLogic.Update(handPositionMap, targetRotationTwoHands, constraintOnRotation, useLocalSpaceForConstraint);
             }
             if ((currentState & State.Scaling) > 0)
             {
@@ -629,9 +642,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     break;
             }
 
-            return diffRotation * hostWorldRotationOnManipulationStart;
+            return useLocalSpaceForConstraint
+                ? hostWorldRotationOnManipulationStart * diffRotation
+                : diffRotation * hostWorldRotationOnManipulationStart;
         }
-		
+
         private void HandleOneHandMoveUpdated()
         {
             Debug.Assert(pointerIdToPointerMap.Count == 1);
@@ -693,7 +708,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 rotateLogic.Setup(handPositionMap, hostTransform, ConstraintOnRotation);
             }
-            if ((newState & State.Moving) > 0) 
+            if ((newState & State.Moving) > 0)
             {
                 MixedRealityPose pointerPose = GetAveragePointerPose();
                 MixedRealityPose hostPose = new MixedRealityPose(hostTransform.position, hostTransform.rotation);
@@ -767,7 +782,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     PointerCentroid = GetPointersCentroid(),
                     PointerVelocity = GetPointersVelocity(),
                     PointerAngularVelocity = GetPointersAngularVelocity()
-                }); 
+                });
             }
         }
 

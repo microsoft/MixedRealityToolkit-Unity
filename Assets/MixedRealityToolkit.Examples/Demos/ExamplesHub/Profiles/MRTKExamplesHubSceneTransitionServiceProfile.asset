@@ -24,3 +24,4 @@ MonoBehaviour:
   cameraFaderType:
     reference: Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.CameraFaderQuad,
       Assembly-CSharp
+  cameraFaderMaterial: {fileID: 2100000, guid: 625ee7fe9fc9cb549b4f5ee443687d00, type: 2}

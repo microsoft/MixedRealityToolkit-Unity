@@ -45,4 +45,31 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public abstract float DistanceToTouchable(Vector3 samplePoint, out Vector3 normal);
     }
+
+    /// <summary>
+    /// Obsolete base class for all touchables using colliders.
+    /// Use <see cref="BaseNearInteractionTouchable"/> instead.
+    /// </summary>
+    [RequireComponent(typeof(Collider))]
+    [System.Obsolete("Use BaseNearIntearctionTouchable instead of ColliderNearInteractionTouchable", true)]
+    public abstract class ColliderNearInteractionTouchable : BaseNearInteractionTouchable
+    {
+        public bool ColliderEnabled { get { return touchableCollider.enabled && touchableCollider.gameObject.activeInHierarchy; } }
+
+        /// <summary>
+        /// The collider used by this touchable.
+        /// </summary>
+        [SerializeField]
+        [FormerlySerializedAs("collider")]
+        private Collider touchableCollider;
+        public Collider TouchableCollider => touchableCollider;
+
+        protected override void OnValidate()
+        {
+            base.OnValidate();
+
+            touchableCollider = GetComponent<Collider>();
+        }
+    }
+
 }

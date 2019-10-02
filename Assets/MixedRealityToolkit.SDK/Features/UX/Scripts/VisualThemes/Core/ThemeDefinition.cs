@@ -101,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         [FormerlySerializedAs("Easing")]
         [SerializeField]
-        public Easing easing;
+        private Easing easing;
         /// <summary>
         /// Object to configure easing between values. Type of Theme Engine, as defined by the ThemeType property, must have IsEasingSupported set to true
         /// </summary>
