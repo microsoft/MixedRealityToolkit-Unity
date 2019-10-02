@@ -37,7 +37,7 @@ Tests are the best way to ensure changes do not regress existing code, but it is
 Every feature and bugfix should have tests associated with it. If you do not have the expertise or time to write a test, create an issue to write the tests, and mark them for “Consider for Current Iteration”.
 
 ### Documentation should be added in the same pull request as a fix / feature
-Most developers look first at documentation, not code, when understanding how to use a feature. Ensuring documentation is up to date make it much easier for people to consume MRTK. Requiring documentation goes in with a pull request is a great way to ensure you write documentation for each feature.
+Most developers look first at documentation, not code, when understanding how to use a feature. Ensuring documentation is up to date makes it much easier for people to consume and rely MRTK.  Documentation should always be bundled with the related pull to ensure items remain up-to-date and consistent.
 
 Ensure every public field, method, property has [triple slash summary comments](https://dotnet.github.io/docfx/spec/triple_slash_comments_spec.html) so our docfx site can generate descriptions for fields / methods. If needed, update markdown files in Documentation folder.
 
