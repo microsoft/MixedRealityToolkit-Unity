@@ -1033,7 +1033,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 return false;
             }
-            if (currentPointer.GetType() == typeof(PokePointer))
+            if (currentPointer?.GetType() == typeof(PokePointer))
             {
                 result = currentPointer.Position;
                 return true;
@@ -1351,7 +1351,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
             //And filter it...
             avgVelocity = (avgVelocity * (1.0f - velocityFilterWeight)) + (scrollVelocity * velocityFilterWeight);
-            Debug.Log("Average Velocity is currently: " + avgVelocity);
         }
 
         /// <summary>
