@@ -5,7 +5,6 @@
 Tooltip は通常、オブジェクトを詳しく調べるときにヒントや追加情報を伝えるために使用されます。Tooltip を使用して、物理環境内のオブジェクトにアノテーションを付けることができます。
 
 ## Tooltip の使い方 ##
-
 Tooltip は、[Hierarchy](ヒエラルキー) ウィンドウ に直接追加し、オブジェクトをターゲットとすることができます。
 
 この方法を使用するには、単にゲームオブジェクトと[Tooltip プレハブ](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Prefabs/Tooltips) をシーンの[Hierarchy](ヒエラルキー)に追加するだけです。プレハブのインスペクタ パネルで、*Tooltip* (スクリプト)を展開します。Tip State を選択し、Tooltip の設定を行います。それぞれの Tooltip のテキスト フィールドに入力します。*ToolTipConnector* (スクリプト) を展開し、Tooltip を持つオブジェクトを[Hierarchy](ヒエラルキー) ウィンドウから *Target* というフィールドにドラッグします。これにより、Tooltip がオブジェクトにアタッチされます。
