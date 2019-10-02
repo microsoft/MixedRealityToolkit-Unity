@@ -209,6 +209,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
         type: 3}
+      propertyPath: Events.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].Event.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].Settings.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].Settings.Array.data[0].EventValue.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].Settings.Array.data[1].Options.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
       propertyPath: Dimensions
       value: 2
       objectReference: {fileID: 0}
@@ -285,6 +310,165 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: c020ebf06513a084caa57aa68a245a6b,
         type: 2}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: dimensions
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].Event.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 6742094791252829598}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].Event.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlayOneShot
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].Event.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].Event.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 8300000, guid: 291bf9326e517b0489c2ee53d0a6a63f, type: 3}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].Event.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.AudioClip, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].Event.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].Event.m_TypeName
+      value: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].ClassName
+      value: InteractableOnToggleReceiver
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].AssemblyQualifiedName
+      value: Microsoft.MixedReality.Toolkit.UI.InteractableOnToggleReceiver, Microsoft.MixedReality.Toolkit.SDK,
+        Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].Settings.Array.data[0].Type
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].Settings.Array.data[0].Label
+      value: On Deselect
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].Settings.Array.data[0].Name
+      value: OnDeselect
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].Settings.Array.data[0].Tooltip
+      value: The toggle is deselected
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].Settings.Array.data[0].EventValue.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 6742094791252829598}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].Settings.Array.data[0].EventValue.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlayOneShot
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].Settings.Array.data[0].EventValue.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].Settings.Array.data[0].EventValue.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 8300000, guid: 40ae713ddf420714bbc1a3b5c3f2eac1, type: 3}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].Settings.Array.data[0].EventValue.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.AudioClip, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].Settings.Array.data[0].EventValue.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].Settings.Array.data[0].EventValue.m_TypeName
+      value: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].Settings.Array.data[1].Type
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].Settings.Array.data[1].Label
+      value: Interaction Filter
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].Settings.Array.data[1].Name
+      value: InteractionFilter
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].Settings.Array.data[1].Tooltip
+      value: Specify whether press event is for near or far interaction
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].Settings.Array.data[1].IntValue
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].Settings.Array.data[1].EventValue.m_TypeName
+      value: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].Settings.Array.data[1].Options.Array.data[0]
+      value: Near and Far
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].Settings.Array.data[1].Options.Array.data[1]
+      value: Near Only
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: Events.Array.data[2].Settings.Array.data[1].Options.Array.data[2]
+      value: Far Only
+      objectReference: {fileID: 0}
+    - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+        type: 3}
+      propertyPath: startDimensionIndex
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4607504470098667674, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
         type: 3}
       propertyPath: m_Mesh
@@ -320,6 +504,12 @@ PrefabInstance:
 --- !u!4 &6742094790733259646 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2204069623020599746, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
+    type: 3}
+  m_PrefabInstance: {fileID: 4829783879239195324}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &6742094791252829598 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 2204069621426241314, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
     type: 3}
   m_PrefabInstance: {fileID: 4829783879239195324}
   m_PrefabAsset: {fileID: 0}
