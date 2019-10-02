@@ -2132,7 +2132,7 @@ MonoBehaviour:
     - id: 5
       description: Trigger Press (Select)
       axisType: 2
-      inputType: 13
+      inputType: 25
       inputAction:
         id: 1
         description: Select
@@ -2293,7 +2293,7 @@ MonoBehaviour:
     - id: 5
       description: Trigger Press (Select)
       axisType: 2
-      inputType: 13
+      inputType: 25
       inputAction:
         id: 1
         description: Select
