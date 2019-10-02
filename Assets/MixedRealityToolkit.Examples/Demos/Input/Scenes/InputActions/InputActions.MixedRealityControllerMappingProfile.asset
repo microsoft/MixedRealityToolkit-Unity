@@ -1173,7 +1173,7 @@ MonoBehaviour:
         id: 0
         description: None
         axisConstraint: 0
-      keyCode: 337
+      keyCode: 336
       axisCodeX: 
       axisCodeY: 
       invertXAxis: 0
