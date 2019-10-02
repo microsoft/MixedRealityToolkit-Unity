@@ -29,7 +29,7 @@ To avoid needing to rework the feature, it is generally recommended that develop
 To get started, simply follow these steps:
 
 1. Fork the repository. Click on the "Fork" button on the top right of the page and follow the flow.
-1. Create a branch in your fork (off of the [mrtk_development](https://github.com/microsoft/mixedrealitytoolkit-unity/tree/mrtk_development) branch) to make it easier for you to isolate your fork. For the legacy HoloToolkit use the [htk_development](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/htk_development) branch.
+1. Create a branch in your fork (off of the [mrtk_development](https://github.com/microsoft/mixedrealitytoolkit-unity/tree/mrtk_development) branch) to make it easier for you to isolate any changes until ready for submission. For the legacy HoloToolkit use the [htk_development](https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/htk_development) branch.
 
 If you are new to to the Git workflow, [check out this introduction from Github](https://guides.github.com/activities/hello-world/).
 
