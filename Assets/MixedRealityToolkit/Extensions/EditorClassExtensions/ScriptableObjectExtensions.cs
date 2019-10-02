@@ -71,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <summary>
         /// Gets all the scriptable object instances in the project.
         /// </summary>
-        /// <param name="assetType">The Type of <see href="https://docs.unity3d.com/ScriptReference/ScriptableObject.html">ScriptableObject</see> you're wanting to find instances of.</typeparam></param>
+        /// <param name="assetType">The Type of <see href="https://docs.unity3d.com/ScriptReference/ScriptableObject.html">ScriptableObject</see> you're wanting to find instances of.</param>
         /// <returns>An Array of instances for the type.</returns>
         public static ScriptableObject[] GetAllInstances(Type assetType)
         {
