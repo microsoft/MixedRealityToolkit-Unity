@@ -32,7 +32,7 @@ Smaller PRs are reviewed more quickly and thoroughly, are less likely to introdu
 Pull requests should be small enough that an engineer could review it in under 30 minutes. Try to make a minimal change that addresses just one thing. If you must create a large PR, split it into several PRs that go into either your local branch, or a feature branch of MRTK. Make sure any assets (e.g. fbx, obj files) are small.
 
 ### Tests should be added in the same PR as your fix / feature, except for emergencies
-Tests are the best way to ensure changes do not regress existing code, but it is also easy to forget about tests as people write new features. Requiring that they go in with your PR are a great way to ensure that tests get written.
+Tests are the best way to ensure changes do not regress existing code, but it is also easy to forget about tests when submitting pull requests. Requiring that they go in with your PR are a great way to ensure that tests get written.
 
 Every feature and bug fix should have tests associated with it. If you do not have the expertise or time to write a test, create an issue to write the tests, and mark them with label **Consider for Current Iteration**.
 
