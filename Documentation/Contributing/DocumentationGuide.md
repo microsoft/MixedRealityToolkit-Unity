@@ -273,7 +273,6 @@ When a feature is added (or the usage is changed), overview documentation must b
 
 As part of this documentation, how-to sections, including illustrations, should be provided to assist customers new to a feature or concept in getting started.
 
-
 ## Design documentation
 
 Mixed Reality provides an opportunity to create entirely new worlds. Part of this is likely to involve the creation of custom assets for use with the MRTK. To make this as friction free as possible for customers, components should provide design documentation describing any formatting or other requirements for art assets.
@@ -297,7 +296,7 @@ For example:
 When using the spatial mapping component, the performance impact will increase with the level of detail requested. It is recommended to use the least detail possible for your experience.
 ```
 
-Performance notes are recommended for CPU and/or GPU heavy components and **may** be requested as part of a pull request review. Any applicable performance notes are to be included in API **and** overiew documentation. 
+Performance notes are recommended for CPU and/or GPU heavy components and **may** be requested as part of a pull request review. Any applicable performance notes are to be included in API **and** overview documentation. 
 
 
 ## Breaking changes
@@ -324,6 +323,15 @@ No known breaking changes
 The information contained within the feature level BreakingChanges.md files will be aggregated to the release notes for each new MRTK release.
 
 Any breaking changes that are part of a change **must** be documented as part of a Pull Request.
+
+## Tools for editing MarkDown
+[Visual Studio Code](https://code.visualstudio.com/) is a great tool for editing markdown files that are part of MRTK's documentation. 
+
+When writing documentation, installing the following two extensions is also highly recommended:
+
+- Docs Markdown Extension for Visual Studio Code - Use Alt+M to bring up a menu of docs authoring options.
+
+- Code Spell Checker - misspelled words will be underlined; right-click on a misspelled word to change it or save it to the dictionary.
 
 
 ## See also
