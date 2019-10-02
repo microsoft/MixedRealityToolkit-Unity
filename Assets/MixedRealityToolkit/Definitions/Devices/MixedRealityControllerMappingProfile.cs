@@ -153,8 +153,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             Array.Sort(mixedRealityControllerMappings, (profile1, profile2) => 
             {
-                bool isOptional1 = (profile1.ControllerType.Type == null || UsesCustomInteractionMapping(profile1.ControllerType.Type));
-                bool isOptional2 = (profile2.ControllerType.Type == null || UsesCustomInteractionMapping(profile2.ControllerType.Type));
+                bool isOptional1 = (profile1.ControllerType.Type == null || profile1.HasCustomInteractionMappings);
+                bool isOptional2 = (profile2.ControllerType.Type == null || profile2.HasCustomInteractionMappings);
                 if (!isOptional1 && !isOptional2)
                 {
                     int idx1 = Array.FindIndex(ControllerMappingTypes, type => type == profile1.ControllerType.Type);
