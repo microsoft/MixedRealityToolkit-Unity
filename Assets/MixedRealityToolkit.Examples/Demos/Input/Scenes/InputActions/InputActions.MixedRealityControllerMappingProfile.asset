@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: InputActions.MixedRealityControllerMappingProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 1
-  mixedRealityControllerMappingProfiles:
+  mixedRealityControllerMappings:
   - controllerType:
       reference: Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityArticulatedHand,
         Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
