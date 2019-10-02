@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Creating a spatial awareness system data provider | Mixed Reality Toolkit Documentation </title>
+    <title>Creating a Spatial Awareness system data provider | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Creating a spatial awareness system data provider | Mixed Reality Toolkit Documentation ">
+    <meta name="title" content="Creating a Spatial Awareness system data provider | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.45.1.0">
     
     <link rel="shortcut icon" href="../../Documentation/Images/favicon.ico">
@@ -80,39 +80,42 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="creating-a-spatial-awareness-system-data-provider">Creating a spatial awareness system data provider</h1>
+<h1 id="creating-a-spatial-awareness-system-data-provider">Creating a Spatial Awareness system data provider</h1>
 
-<p>The Mixed Reality Toolkit spatial awareness system is an extensible system for providing applications with data about real world environments.
-To add support for a new hardware platform or a new form of spatial awareness data, a custom data provider may be required.</p>
-<p>This article describes how to create custom data providers, also called observers, for the spatial awareness system. The example code shown here is
-from the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.html"><code>SpatialObjectMeshObserver</code></a>.</p>
-<blockquote>
-<p>The complete source code used in this example can be found in the MixedRealityToolkit.Providers\ObjectMeshObserver folder.</p>
-</blockquote>
-<h2 id="namespace-and-folder-structure">Namespace and folder structure</h2>
-<p>Data providers can be distributed as a third party add-on or as a part of the Microsoft Mixed Reality Toolkit. The approval process for submissions of
-new data providers to the MRTK will vary on a case-by-case basis and will be communicated at the time of the initial proposal.</p>
-<div class="IMPORTANT">
-<h5>Important</h5>
-<p>If a spatial awareness system data provider is being submitted to the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity">Mixed Reality Toolkit repository</a>, the
-namespace <strong>must</strong> begin with Microsoft.MixedReality.Toolkit (ex: Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver) and the code should be
-located in a folder beneath MixedRealityToolkit.Providers (ex: MixedRealityToolkit.Providers\ObjectMeshObserver).</p>
+<p>The Spatial Awareness system is an extensible system for providing applications with data about real world environments. To add support for a new hardware platform or a new form of Spatial Awareness data, a custom data provider may be required.</p>
+<p>This article describes how to create <a href="../Architecture/SystemsExtensionsProviders.html">custom data providers</a>, also called Spatial Observers, for the Spatial Awareness system. The example code shown here is from the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.html"><code>SpatialObjectMeshObserver</code></a> class implementation which is <a href="SpatialObjectMeshObserver.html">useful for loading 3D mesh data in-editor</a>.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The complete source code used in this example can be found in the <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Providers/ObjectMeshObserver">MixedRealityToolkit.Providers\ObjectMeshObserver folder</a>.</p>
 </div>
-<h3 id="namespace">Namespace</h3>
+<h2 id="namespace-and-folder-structure">Namespace and folder structure</h2>
+<p>Data providers can be distributed in one of two ways:</p>
+<ol>
+<li>Third party add-ons</li>
+<li>Part of the Microsoft Mixed Reality Toolkit</li>
+</ol>
+<p>The approval process for submissions of new data providers to the MRTK will vary on a case-by-case basis and will be communicated at the time of the initial proposal. Proposals can be submitted by creating a new <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues"><em>Feature Request</em> type issue</a>.</p>
+<h3 id="third-party-add-on">Third Party add-on</h3>
+<p><strong>Namespace</strong></p>
 <p>Data providers are required to have a namespace to mitigate potential name collisions. It is recommended that the namespace includes the following components.</p>
 <ul>
-<li>Company name</li>
+<li>Company name producing the add-on</li>
 <li>Feature area</li>
 </ul>
-<p>For example, a spatial awareness data provider created by the Contoso company may be &quot;Contoso.MixedReality.Toolkit.SpatialAwareness&quot;.</p>
-<h3 id="recommended-folder-structure">Recommended folder structure</h3>
-<p>It is recommended that the source code for data providers be layed out in a folder heirarchy as shown in the following image.</p>
+<p>For example, a Spatial Awareness data provider created and shipped by the Contoso company may be <em>&quot;Contoso.MixedReality.Toolkit.SpatialAwareness&quot;</em>.</p>
+<p><strong>Folder structure</strong></p>
+<p>It is recommended that the source code for data providers be layed out in a folder hierarchy as shown in the following image.</p>
 <p><img src="../Images/SpatialAwareness/ExampleProviderFolderStructure.png" alt="Example folder structure"></p>
-<p>Where ContosoSpatialAwareness contains the implementation of the data provider, the Editor folder contains the inspector (and any other Unity editor specific code) and Profiles
-contains one or more pre-made profiles.</p>
+<p>Where the <em>ContosoSpatialAwareness</em> folder contains the implementation of the data provider, the <em>Editor</em> folder contains the inspector (and any other Unity editor specific code), and the <em>Profiles</em> folder contains one or more pre-made profile scriptable objects.</p>
+<h3 id="mrtk-submission">MRTK submission</h3>
+<p><strong>Namespace</strong></p>
+<p>If a spatial awareness system data provider is being submitted to the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity">Mixed Reality Toolkit repository</a>, the namespace <strong>must</strong> begin with Microsoft.MixedReality.Toolkit (ex: <em>Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver</em>)</p>
+<p>and the code should be located in a folder beneath MixedRealityToolkit.Providers (ex: <em>MixedRealityToolkit.Providers\ObjectMeshObserver</em>).</p>
+<p><strong>Folder structure</strong></p>
+<p>All code should be located in a folder beneath MixedRealityToolkit.Providers (ex: MixedRealityToolkit.Providers\ObjectMeshObserver).</p>
 <h2 id="define-the-spatial-data-object">Define the spatial data object</h2>
-<p>The first step in creating a spatial awareness data provider is determining the type of data (ex: meshes or planes) it will provider to applications.</p>
-<p>All spatial data objects must implement the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObject.html"><code>IMixedRealitySpatialAwrenessObject</code></a>
+<p>The first step in creating a Spatial Awareness data provider is determining the type of data (ex: meshes or planes) it will provide to applications.</p>
+<p>All spatial data objects must implement the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObject.html"><code>IMixedRealitySpatialAwarenessObject</code></a>
 interface.</p>
 <p>The Mixed Reality Toolkit foundation provides the following spatial objects that can be used or extended in new data providers.</p>
 <ul>
@@ -122,38 +125,39 @@ interface.</p>
 </ul>
 <h2 id="implement-the-data-provider">Implement the data provider</h2>
 <h3 id="specify-interface-andor-base-class-inheritance">Specify interface and/or base class inheritance</h3>
-<p>All spatial awareness data providers must implement the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver.html"><code>IMixedRealitySpatialAwarenessObserver</code></a>
-interface, which specifies the minimium functionality required by the spatial awareness system. The MRTK foundation includes the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver.html"><code>BaseSpatialObserver</code></a>
+<p>All Spatial Awareness data providers must implement the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObserver.html"><code>IMixedRealitySpatialAwarenessObserver</code></a>
+interface, which specifies the minimium functionality required by the Spatial Awareness system. The MRTK foundation includes the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver.html"><code>BaseSpatialObserver</code></a>
 class which provides a default implementation of this required functionality.</p>
-<pre><code class="lang-c#">public class SpatialObjectMeshObserver : 
+<pre><code class="lang-c#">public class SpatialObjectMeshObserver :
     BaseSpatialObserver,
     IMixedRealitySpatialAwarenessMeshObserver,
     IMixedRealityCapabilityCheck
 { }
 </code></pre>
-<blockquote>
-<p><code>IMixedRealityCapabilityCheck</code> is used by the <code>SpatialObjectMeshObserver</code> to indicate that it provides support for the SpatialAwarenessMesh capability.</p>
-</blockquote>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedRealityCapabilityCheck.html"><code>IMixedRealityCapabilityCheck</code></a> interface is used by the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.html"><code>SpatialObjectMeshObserver</code></a> class to indicate that it provides support for the SpatialAwarenessMesh capability.</p>
+</div>
 <h4 id="apply-the-mixedrealitydataprovider-attribute">Apply the MixedRealityDataProvider attribute</h4>
-<p>A key step of creating a spatial awareness data provider is to apply the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.MixedRealityDataProviderAttribute.html"><code>MixedRealityDataProvider</code></a>
-attribute to the class. This step enables setting the default profile and platform(s) for the data provider, when selected in the spatial awareness profile.</p>
+<p>A key step in creating a Spatial Awareness data provider is to apply the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.MixedRealityDataProviderAttribute.html"><code>MixedRealityDataProvider</code></a>
+attribute to the class. This step enables setting the default profile and platform(s) for the data provider, when selected in the Spatial Awareness profile as well as Name, folder path, and more.</p>
 <pre><code class="lang-c#">[MixedRealityDataProvider(
     typeof(IMixedRealitySpatialAwarenessSystem),
     SupportedPlatforms.WindowsEditor | SupportedPlatforms.MacEditor | SupportedPlatforms.LinuxEditor,
     &quot;Spatial Object Mesh Observer&quot;,
     &quot;ObjectMeshObserver/Profiles/DefaultObjectMeshObserverProfile.asset&quot;,
     &quot;MixedRealityToolkit.Providers&quot;)]
-public class SpatialObjectMeshObserver : 
+public class SpatialObjectMeshObserver :
     BaseSpatialObserver,
     IMixedRealitySpatialAwarenessMeshObserver,
     IMixedRealityCapabilityCheck
-{ } 
+{ }
 </code></pre>
 <h3 id="implement-the-imixedrealitydataprovider-methods">Implement the IMixedRealityDataProvider methods</h3>
 <p>Once the class has been defined, the next step is to provide the implementation of the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html"><code>IMixedRealityDataProvider</code></a> interface.</p>
 <div class="NOTE">
 <h5>Note</h5>
-<p>The <code>BaseSpatialObserver</code> class, via the <code>BaseService</code> class , provides only an empty implementations for <code>IMixedRealityDataProvider</code> methods. The details of these methods are generally data provider specific.</p>
+<p>The <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.BaseSpatialObserver.html"><code>BaseSpatialObserver</code></a> class, via the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.BaseService.html"><code>BaseService</code></a> class, provides only an empty implementations for <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider.html"><code>IMixedRealityDataProvider</code></a> methods. The details of these methods are generally data provider specific.</p>
 </div>
 <p>The methods that should be implemented by the data provider are:</p>
 <ul>
@@ -166,22 +170,16 @@ public class SpatialObjectMeshObserver :
 </ul>
 <h3 id="implement-the-data-provider-logic">Implement the data provider logic</h3>
 <p>The next step is to add the logic of the data provider by implementing the specific data provider interface, for
-example <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessMeshObserver.html"><code>IMixedRealitySpatialAwarenessMeshObserver</code></a>.</p>
-<div class="NOTE">
-<h5>Note</h5>
-<p>This portion of the data provider will typically be platform specific.</p>
-</div>
+example <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessMeshObserver.html"><code>IMixedRealitySpatialAwarenessMeshObserver</code></a>. This portion of the data provider will typically be platform specific.</p>
 <h3 id="observation-change-notifications">Observation change notifications</h3>
-<p>To enable applications to respond to changes in the device's understanding of the enviornment, the data provider raises notification events as defined in the
-<a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObservationHandler-1.html"><code>IMixedRealitySpatialAwarenessObservationtHandler&lt;T&gt;</code></a> interface.</p>
+<p>To allow applications to respond to changes in the device's understanding of the environment, the data provider raises notification events as defined in the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.IMixedRealitySpatialAwarenessObservationHandler-1.html"><code>IMixedRealitySpatialAwarenessObservationtHandler&lt;T&gt;</code></a> interface.</p>
 <ul>
 <li><code>OnObservationAdded()</code></li>
 <li><code>OnObservationRemoved()</code></li>
 <li><code>OnObservationUpdated()</code></li>
 </ul>
-<p>The example of the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.html"><code>SpatialObjectMeshObserver</code></a>
-raises events when meshes are added or removed. The following code demonstrates raising and event when mesh data is added.</p>
-<pre><code class="lang-c#">// The data to be sent when mesh observation events occur.
+<p>The following code from the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.html"><code>SpatialObjectMeshObserver</code></a> examples demonstrates raising and event when mesh data is added.</p>
+<pre><code class="lang-csharp">// The data to be sent when mesh observation events occur.
 // This member variable is initialized as part of the Initialize() method.
 private MixedRealitySpatialAwarenessEventData&lt;SpatialAwarenessMeshObject&gt; meshEventData = null;
 
@@ -225,19 +223,14 @@ private void SendMeshObjects()
 </code></pre>
 <div class="NOTE">
 <h5>Note</h5>
-<p>By it's nature, the <code>SpatialObjectMeshObserver</code> does not raise <code>OnObservationUpdated</code> events. Please see the implementation of the
-<code>WindowsMixedRealitySpatialMeshObserver</code> (in the MixedRealityToolkit.Providers\WindowsMixedReality\WindowsMixedRealitySpatialMeshObserver.cs file) for an
-example of raising an <code>OnObservationUpdated</code> event for an observed mesh.</p>
+<p>The <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserver.html"><code>SpatialObjectMeshObserver</code></a> does not raise <code>OnObservationUpdated</code> events since the 3D model is only loaded once. The implementation in the <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.Providers/WindowsMixedReality/WindowsMixedRealitySpatialMeshObserver.cs"><code>WindowsMixedRealitySpatialMeshObserver</code> file</a> provides an example of raising an <code>OnObservationUpdated</code> event for an observed mesh.</p>
 </div>
 <h2 id="create-the-profile-and-inspector">Create the profile and inspector</h2>
 <p>In the Mixed Reality Toolkit, data providers are configured using <a href="../Profiles/Profiles.html">profiles</a>.</p>
 <h3 id="define-the-profile">Define the profile</h3>
-<p>Profile contents should mirror the accessible properties of the data provider (ex: update interval). All of the user configurable properties defined in each
-interface should be contained with the profile.</p>
-<p>Base classes are encouraged if a new data provider extends an existing provider. For example, the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserverProfile.html"><code>SpatialObjectMeshObserverProfile</code></a>
-extends the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessMeshObserverProfile.html"><code>MixedRealitySpatialAwarenessMeshObserverProfile</code></a> to enable
-customers to provide a 3D model to be used as the environment data.</p>
-<pre><code class="lang-c#">[CreateAssetMenu(
+<p>Profile contents should mirror the accessible properties of the data provider (ex: update interval). All of the user configurable properties defined in each interface should be contained with the profile.</p>
+<p>Base classes are encouraged if a new data provider extends an existing provider. For example, the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver.SpatialObjectMeshObserverProfile.html"><code>SpatialObjectMeshObserverProfile</code></a> extends the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialAwarenessMeshObserverProfile.html"><code>MixedRealitySpatialAwarenessMeshObserverProfile</code></a> to enable customers to provide a 3D model to be used as the environment data.</p>
+<pre><code class="lang-csharp">[CreateAssetMenu(
     menuName = &quot;Mixed Reality Toolkit/Profiles/Spatial Object Mesh Observer Profile&quot;,
     fileName = &quot;SpatialObjectMeshObserverProfile&quot;,
     order = 100)]
@@ -253,13 +246,11 @@ public class SpatialObjectMeshObserverProfile : MixedRealitySpatialAwarenessMesh
     public GameObject SpatialMeshObject =&gt; spatialMeshObject;
 }
 </code></pre>
-<p>The <code>CreateAssetMenu</code> attribute can be applied to the profile class to enable customers to create a profile instance using the
-<strong>Create &gt; Assets &gt; Mixed Reality Toolkit &gt; Profiles</strong> menu.</p>
+<p>The <code>CreateAssetMenu</code> attribute can be applied to the profile class to enable customers to create a profile instance using the <strong>Create</strong> &gt; <strong>Assets</strong> &gt; <strong>Mixed Reality Toolkit</strong> &gt; <strong>Profiles</strong> menu.</p>
 <h3 id="implement-the-inspector">Implement the inspector</h3>
-<p>Profile inspectors are the user interface for configuring and viewing profile contents. Each profile inspector should extend the
-<a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityToolkitConfigurationProfileInspector.html">`BaseMixedRealityToolkitConfigurationProfileInspector</a> class.</p>
+<p>Profile inspectors are the user interface for configuring and viewing profile contents. Each profile inspector should extend the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityToolkitConfigurationProfileInspector.html"><code>BaseMixedRealityToolkitConfigurationProfileInspector</code></a> class.</p>
 <p>The <code>CustomEditor</code> attribute informs Unity the type of asset to which the inspector applies.</p>
-<pre><code class="lang-c#">[CustomEditor(typeof(SpatialObjectMeshObserverProfile))]
+<pre><code class="lang-csharp">[CustomEditor(typeof(SpatialObjectMeshObserverProfile))]
 public class SpatialObjectMeshObserverProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
 { }
 </code></pre>
@@ -267,22 +258,19 @@ public class SpatialObjectMeshObserverProfileInspector : BaseMixedRealityToolkit
 <p>The Mixed Reality Toolkit uses assembly definition (<a href="https://docs.unity3d.com/Manual/ScriptCompilationAssemblyDefinitionFiles.html">.asmdef</a>) files to specify dependencies
 between components as well as to assist Unity in reducing compilation time.</p>
 <p>It is recommended that assembly definition files are created for all data providers and their editor components.</p>
-<p>Using the <a href="#recommended-folder-structure">folder structure</a> in the earlier example, there would be two .asmdef files for the ContosoSpatialAwareness data provider.</p>
-<p>The first assembly definition is for the data provider. For this example, it will be called ContosoSpatialAwareness and will be located in the example's ContosoSpatialAwareness folder.
-This assembly definition must specify a dependency on Microsoft.MixedReality.Toolkit and any other assemblies upon which it depends.</p>
-<p>The ContosoInputEditor assembly definition will specify the profile inspector and any editor specific code. This file must be located in the root folder of the editor code. In this example,
-the file will be located in the ContosoSpatialAwareness\Editor folder. This assembly definition will contain a reference to the ContosoSpatialAwareness assembly as well as:</p>
+<p>Using the <a href="#namespace-and-folder-structure">folder structure</a> in the earlier example, there would be two .asmdef files for the ContosoSpatialAwareness data provider.</p>
+<p>The first assembly definition is for the data provider. For this example, it will be called ContosoSpatialAwareness and will be located in the example's <em>ContosoSpatialAwareness</em> folder. This assembly definition must specify a dependency on Microsoft.MixedReality.Toolkit and any other assemblies upon which it depends.</p>
+<p>The ContosoInputEditor assembly definition will specify the profile inspector and any editor specific code. This file must be located in the root folder of the editor code. In this example, the file will be located in the <em>ContosoSpatialAwareness\Editor</em> folder. This assembly definition will contain a reference to the ContosoSpatialAwareness assembly as well as:</p>
 <ul>
 <li>Microsoft.MixedReality.Toolkit</li>
 <li>Microsoft.MixedReality.Toolkit.Editor.Inspectors</li>
 <li>Microsoft.MixedReality.Toolkit.Editor.Utilities</li>
 </ul>
 <h2 id="register-the-data-provider">Register the data provider</h2>
-<p>Once created, the data provider can be registered with the spatial awareness system be used in the application.</p>
+<p>Once created, the data provider can be registered with the Spatial Awareness system to be used in the application.</p>
 <p><img src="../Images/SpatialAwareness/SelectObjectObserver.png" alt="Selecting the spatial object mesh observer"></p>
 <h2 id="packaging-and-distribution">Packaging and distribution</h2>
-<p>Data providers that are distributed as third party components have the specific details of packaging and distribution left to the preference of the developer. Likely, the most
-common solution will be to generate a .unitypackage and distribute via the Unity Asset Store.</p>
+<p>Data providers that are distributed as third party components have the specific details of packaging and distribution left to the preference of the developer. Likely, the most common solution will be to generate a .unitypackage and distribute via the Unity Asset Store.</p>
 <p>If a data provider is submitted and accepted as a part of the Microsoft Mixed Reality Toolkit package, the Microsoft MRTK team will package and distribute it as part of the MRTK offerings.</p>
 <h2 id="see-also">See also</h2>
 <ul>
