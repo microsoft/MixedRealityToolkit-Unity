@@ -182,18 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (profile.PointerProfile != null)
             {
-                if (profile.PointerProfile.GazeProviderType?.Type != null)
-                {
-                    GazeProvider = CameraCache.Main.gameObject.EnsureComponent(profile.PointerProfile.GazeProviderType.Type) as IMixedRealityGazeProvider;
-                    GazeProvider.GazeCursorPrefab = profile.PointerProfile.GazeCursorPrefab;
-                    // Current implementation implements both provider types in one concrete class.
-                    EyeGazeProvider = GazeProvider as IMixedRealityEyeGazeProvider;
-                }
-                else
-                {
-                    Debug.LogError("The Input system is missing the required GazeProviderType!");
-                    return;
-                }
+                InstantiateGazeProvider(profile.PointerProfile);
             }
             else
             {
@@ -228,10 +217,33 @@ namespace Microsoft.MixedReality.Toolkit.Input
             handTrackingInputEventData = new HandTrackingInputEventData(EventSystem.current);
         }
 
+        private void InstantiateGazeProvider(MixedRealityPointerProfile pointerProfile)
+        {
+            if (pointerProfile?.GazeProviderType?.Type != null)
+            {
+                GazeProvider = CameraCache.Main.gameObject.EnsureComponent(pointerProfile.GazeProviderType.Type) as IMixedRealityGazeProvider;
+                GazeProvider.GazeCursorPrefab = pointerProfile.GazeCursorPrefab;
+                // Current implementation implements both provider types in one concrete class.
+                EyeGazeProvider = GazeProvider as IMixedRealityEyeGazeProvider;
+            }
+            else
+            {
+                Debug.LogError("The Input system is missing the required GazeProviderType!");
+                return;
+            }
+        }
+
         /// <inheritdoc />
         public override void Enable()
         {
             MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
+
+            // If the system gets disabled, the gaze provider is destroyed.
+            // Ensure that it gets recreated on when reenabled.
+            if (GazeProvider == null)
+            {
+                InstantiateGazeProvider(profile?.PointerProfile);
+            }
 
             if ((GetDataProviders().Count == 0) && (profile != null))
             {

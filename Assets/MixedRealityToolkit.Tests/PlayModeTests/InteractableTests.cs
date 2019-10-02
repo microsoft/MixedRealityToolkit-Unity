@@ -71,9 +71,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Move the hand forward to intersect the interactable
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
             int numSteps = 32;
-            Vector3 p1 = new Vector3(0.0f, 0f, 0f);
+            Vector3 p1 = Vector3.zero;
             Vector3 p2 = new Vector3(0.05f, 0f, 0.51f);
-            Vector3 p3 = new Vector3(0.0f, 0f, 0.0f);
+            Vector3 p3 = Vector3.zero;
 
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
             yield return PlayModeTestUtilities.MoveHandFromTo(p1, p2, numSteps, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
@@ -217,9 +217,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Move the hand forward to intersect the interactable
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
             int numSteps = 32;
-            Vector3 p1 = new Vector3(0.0f, 0f, 0f);
+            Vector3 p1 = Vector3.zero;
             Vector3 p2 = new Vector3(0.05f, 0f, 0.51f);
-            Vector3 p3 = new Vector3(0.0f, 0f, 0.0f);
+            Vector3 p3 = Vector3.zero;
 
             yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
             yield return PlayModeTestUtilities.MoveHandFromTo(p1, p2, numSteps, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
@@ -517,6 +517,63 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
             propBlock = InteractableThemeShaderUtils.GetPropertyBlock(translateTargetObject.gameObject);
             Assert.AreEqual(propBlock.GetColor("_Color"), FocusColor);
+        }
+
+        [UnityTest]
+        /// <summary>
+        /// Tests button depth and focus state after enabling, disabling and re-enabling Interactable 
+        /// internally via IsEnabled. The focus state after re-enabling should be false and button
+        /// depth should be in its default position.  This test is specifically addressing behavior described 
+        /// in issue 4967.
+        /// </summary>
+        public IEnumerator TestInteractableDisableOnClick()
+        {
+            var rightHand = new TestHand(Handedness.Right);
+            Vector3 p1 = Vector3.zero;
+            Vector3 p2 = new Vector3(0.05f, 0f, 0.51f);
+
+            // Load the Model_PushButton interactable prefab
+            Interactable interactable;
+            Transform innerCylinderTransform;
+
+            InstantiatePressButtonPrefab(
+                new Vector3(0.0f, 0.0f, 0.5f),
+                DefaultRotation,
+                out interactable,
+                out innerCylinderTransform);
+
+            Assert.True(interactable.IsEnabled);
+
+            // OnClick, disable Interactable 
+            interactable.OnClick.AddListener(() => { interactable.IsEnabled = false; });
+
+            // Get start position of the inner cylinder before button is pressed
+            Vector3 innerCylinderStartPosition = innerCylinderTransform.localPosition;
+
+            // Move the hand forward to press button
+            yield return rightHand.Show(p1);
+            yield return rightHand.MoveTo(p2);
+
+            // Ensure that the inner cylinder in the button has moved on press
+            yield return CheckButtonTranslation(innerCylinderStartPosition, innerCylinderTransform);
+
+            // Move the hand back
+            yield return rightHand.MoveTo(p1);
+            yield return new WaitForSeconds(ButtonReleaseAnimationDelay);
+
+            Assert.False(interactable.IsEnabled);
+
+            // Re-enable Interactable
+            interactable.IsEnabled = true;
+            yield return null;
+
+            // Make sure the button depth is back at the starting position when re-enable the gameObject
+            Assert.True(innerCylinderTransform.localPosition == innerCylinderStartPosition);
+
+            // Make sure the focus state is false after we re-enable Interactable
+            Assert.False(interactable.HasFocus);
+
+            GameObject.Destroy(interactable.gameObject);
         }
 
         #region Test Helpers
