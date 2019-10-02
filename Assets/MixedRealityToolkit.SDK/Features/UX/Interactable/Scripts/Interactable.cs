@@ -101,18 +101,24 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        [FormerlySerializedAs("Dimensions")]
+        /// <summary>
+        /// A way of adding more layers of states for controls like toggles.
+        /// This is capitalized and doesn't match conventions for backwards compatability
+        /// (to not break people using Interactable). We tried using FormerlySerializedAs("Dimensions)
+        /// and renaming to "dimensions", however Unity did not properly pick up the former serialization,
+        /// so we maintained the old value. See https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6169
+        /// </summary>
         [SerializeField]
-        protected int dimensions = 1;
+        protected int Dimensions = 1;
         /// <summary>
         /// A way of adding more layers of states for controls like toggles
         /// </summary>
-        public int Dimensions
+        public int NumOfDimensions
         {
-            get { return dimensions; }
+            get { return Dimensions; }
             set
             {
-                if (dimensions != value)
+                if (Dimensions != value)
                 {
                     // Value cannot be negative or zero
                     if (value > 0)
@@ -124,9 +130,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                             IsToggled = false;
                         }
 
-                        dimensions = value;
+                        NumOfDimensions = value;
 
-                        CurrentDimension = Mathf.Clamp(CurrentDimension, 0, Dimensions - 1);
+                        CurrentDimension = Mathf.Clamp(CurrentDimension, 0, NumOfDimensions - 1);
                     }
                     else
                     {
@@ -150,7 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (dimensionIndex != value)
                 {
                     // If valid value and not our current value, then update
-                    if (value >= 0 && value < Dimensions)
+                    if (value >= 0 && value < NumOfDimensions)
                     {
                         dimensionIndex = value;
 
@@ -166,7 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     }
                     else
                     {
-                        Debug.LogWarning($"Value {value} for property setter CurrentDimension cannot be less than 0 and cannot be greater than or equal to Dimensions={Dimensions}");
+                        Debug.LogWarning($"Value {value} for property setter CurrentDimension cannot be less than 0 and cannot be greater than or equal to Dimensions={NumOfDimensions}");
                     }
                 }
             }
@@ -186,7 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             get
             {
-                return ConvertToSelectionMode(Dimensions);
+                return ConvertToSelectionMode(NumOfDimensions);
             }
         }
 
@@ -827,7 +833,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void IncreaseDimension()
         {
-            if (CurrentDimension == Dimensions - 1)
+            if (CurrentDimension == NumOfDimensions - 1)
             {
                 CurrentDimension = 0;
             }
@@ -844,7 +850,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (CurrentDimension == 0)
             {
-                CurrentDimension = Dimensions - 1;
+                CurrentDimension = NumOfDimensions - 1;
             }
             else
             {
@@ -1532,7 +1538,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// True if Selection is "Toggle" (Dimensions == 2)
         /// </summary>
         [System.Obsolete("Use ButtonMode to test if equal to SelectionModes.Toggle instead")]
-        public bool IsToggleButton { get { return Dimensions == 2; } }
+        public bool IsToggleButton { get { return NumOfDimensions == 2; } }
 
         /// <summary>
         /// Is the interactable enabled?

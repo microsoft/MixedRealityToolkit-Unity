@@ -325,14 +325,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 out translateTargetObject);
 
             // Test Button type
-            interactable.Dimensions = 1;
+            interactable.NumOfDimensions = 1;
             Assert.AreEqual(SelectionModes.Button, interactable.ButtonMode, "Interactable should be in button selection mode");
 
             interactable.IsToggled = true;
             Assert.IsFalse(interactable.IsToggled, "Interactable should not be in toggle state because not in Toggle selection mode");
 
             // Test Multi-Dimension type
-            interactable.Dimensions = 4;
+            interactable.NumOfDimensions = 4;
             interactable.CurrentDimension = 1;
             Assert.AreEqual(SelectionModes.MultiDimension, interactable.ButtonMode, "Interactable should be in MultiDimension selection mode");
 
@@ -340,7 +340,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsFalse(interactable.IsToggled, "Interactable should not be in toggle state because not in Toggle selection mode");
 
             // Test Toggle type
-            interactable.Dimensions = 2;
+            interactable.NumOfDimensions = 2;
             interactable.CurrentDimension = 0;
             Assert.AreEqual(SelectionModes.Toggle, interactable.ButtonMode, "Interactable should not be in button selection mode");
             Assert.IsFalse(interactable.IsToggled, "Switching dimensions and setting CurrentDimension to 0 should make IsToggled off");
@@ -349,8 +349,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(interactable.IsToggled, "Interactable should be in toggle state because in Toggle selection mode");
 
             // Test Invalid type
-            interactable.Dimensions = -1;
-            Assert.AreEqual(2, interactable.Dimensions, "Interactable should be in Toggle selection mode");
+            interactable.NumOfDimensions = -1;
+            Assert.AreEqual(2, interactable.NumOfDimensions, "Interactable should be in Toggle selection mode");
             Assert.AreEqual(1, interactable.CurrentDimension, "Interactable should be Toggled");
             Assert.AreEqual(SelectionModes.Toggle, interactable.ButtonMode, "Interactable should be in Toggle selection mode");
             Assert.IsTrue(interactable.IsToggled, "Invalid Dimension should not change state");
