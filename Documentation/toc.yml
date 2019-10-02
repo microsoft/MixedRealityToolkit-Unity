@@ -191,7 +191,7 @@
     href: Contributing/ExperimentalFeatures.md
   - name: Breaking Changes
     href: Contributing/BreakingChanges.md
-  - name: Generate docs portal with DocFX
+  - name: How to use DocFX
     href: Contributing/DevDocGuide.md
 - name: Planning
   items:

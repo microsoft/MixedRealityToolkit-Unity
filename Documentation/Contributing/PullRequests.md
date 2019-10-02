@@ -29,7 +29,7 @@ These guidelines are based off of the [Google's engineering practices](https://g
 ### Keep pull requests small
 Smaller PRs are reviewed more quickly and thoroughly, are less likely to introduce bugs, easier to roll back, and easier to merge.
 
-Pull requests should be small enough that an engineer could review it in under 30 minutes. Try to make a minimal change that addresses just one thing. If you must create a large PR, split it into several PRs that go into either your local branch, or a feature branch of MRTK. Make sure any assets (e.g. fbx, obj files) are small.
+Pull requests should be small enough that an engineer could review it in under 30 minutes. Try to make a minimal change that addresses just one thing. If you must create a large PR, split it into several PRs that go into either your local branch, or a feature branch of MRTK. Avoid adding new assets (e.g. fbx, obj files) and instead aim to re-use existing assets.
 
 ### Tests should be added in the same PR as your fix / feature, except for emergencies
 Tests are the best way to ensure changes do not regress existing code, but it is also easy to forget about tests when submitting pull requests. Requiring that they go in with your PR are a great way to ensure that tests get written.

@@ -3,7 +3,7 @@ Some features the MRTK team works on appear to have a lot of initial value even 
 
 ### What to expect from an experimental feature
 If a component is marked experimental you can expect the following:
-- An example scene demonstrating usage, located under `MixedRealityToolkit.Examples\Experimental` subfolder
+- An example scene demonstrating usage, located under `MixedRealityToolkit.Examples\Experimental` sub-folder
 - Experimental features may not have docs.
 - They probably don't have tests.
 - Experimental features are subject to change. 
@@ -41,7 +41,7 @@ Aim to have zero changes in folders other than experimental folders. Here is a l
 
 - MixedRealityToolkit.SDK\Experimental
 - MixedRealityToolkit.SDK\Inspectors\Experimental
-- MixedRealityTolkit.Examples\Examples\Experimental
+- MixedRealityToolkit.Examples\Examples\Experimental
 
 Changes outside of these folders should be treated very carefully. If your experimental feature must include changes to MRTK core code, consider splitting out MRTK changes into a separate pull request that includes tests and documentation.
 
@@ -60,7 +60,7 @@ Provide an example under MRTK.Examples/Experimental/YOUR_FEATURE
 ### Minimize user visible flaws in experimental features
 Others will not use the experimental feature if it does not work, it will not graduate to a feature.
 
-Test your example scene on your target platform, make sure it works as expected. Make sure your feature also works in editor, so people can rapidly iteragate and see your feature even if they don’t have the target platform.
+Test your example scene on your target platform, make sure it works as expected. Make sure your feature also works in editor, so people can rapidly iterate and see your feature even if they don’t have the target platform.
 
 
 # Graduating experimental code into MRTK code  

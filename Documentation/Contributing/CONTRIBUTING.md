@@ -5,7 +5,7 @@ The Mixed Reality Toolkit (MRTK) welcomes contributions from the community. All 
 If you have any questions, please reach out on the [mixed-reality-toolkit channel on Slack](https://holodevelopers.slack.com/messages/C2H4HT858).
  You can join the Slack community via the [automatic invitation sender](https://holodevelopersslack.azurewebsites.net/).
 
-# Submission process
+## Submission process
 We provide several paths to enable developers to contribute to the Mixed Reality Toolkit, all starting with [creating a new Issue](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues/new/choose).
 
 ![Select Issue Type](../Images/Contributing/SelectIssueType.png)
@@ -16,7 +16,7 @@ From here you file:
 - **Documentation issue** - Issue with the Mixed Reality Toolkit [documentation](https://microsoft.github.io/MixedRealityToolkit-Unity)
 - **Feature request** - Proposal for a new Mixed Reality Toolkit feature
 
-# Proposing Feature Requests
+## Proposing Feature Requests
 When requesting a new Mixed Reality Toolkit feature, it is important to document the customer benefit / problem to be solved. Once submitted, a feature request will be reviewed and discussed on GitHub. We encourage open and constructive discussion of each feature proposal to ensure that the work is beneficial to a large segment of customers.
 
 To avoid needing to rework the feature, it is generally recommended that development of the feature does not begin during the review phase. Many times, the community review process uncovers one or more issues that may require significant changes in the proposed implementation.
@@ -24,7 +24,7 @@ To avoid needing to rework the feature, it is generally recommended that develop
 > [!NOTE]
 > If you wish to work on something that already exists on our backlog, you can use that work item as your proposal. Be sure to also comment on the task notifying maintainers that you're working towards completing it.
 
-# Contribution process
+## Contribution process
 
 To get started, simply follow these steps:
 
@@ -41,5 +41,5 @@ When adding a bug fix or feature, follow these steps:
 1. Add tests to verify the bug fix / feature. Instructions for writing and running tests are at [UnitTests](UnitTests.md).
 1. Ensure the code and feature(s) are documented as described in the [Documentation Guidelines](DocumentationGuide.md).
 1. Ensure the code works as intended on all platforms. Please see [Release notes](../ReleaseNotes.md) for the list of supported platforms. For Windows UWP projects, code must be [WACK compliant](https://developer.microsoft.com/en-us/windows/develop/app-certification-kit). To do this, generate a Visual Studio solution, right click on project; **Store** > **Create App Packages**. Follow the prompts and run WACK tests. Make sure they all succeed.
-1. Follow the instructions at [Pull Requests](PullRequests.md) when making a pull reqeust.
+1. Follow the instructions at [Pull Requests](PullRequests.md) when making a pull request.
 
