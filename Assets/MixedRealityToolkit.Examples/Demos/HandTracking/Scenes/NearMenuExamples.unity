@@ -594,11 +594,6 @@ PrefabInstance:
       propertyPath: autoFollowAtDistance
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4669628316120752027, guid: d82e2f09994ad2f4fb43359bfb977f64,
-        type: 3}
-      propertyPath: startDimensionIndex
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d82e2f09994ad2f4fb43359bfb977f64, type: 3}
 --- !u!4 &431060260 stripped
@@ -1392,11 +1387,6 @@ PrefabInstance:
       propertyPath: autoFollowAtDistance
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4669628316120752027, guid: d82e2f09994ad2f4fb43359bfb977f64,
-        type: 3}
-      propertyPath: startDimensionIndex
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d82e2f09994ad2f4fb43359bfb977f64, type: 3}
 --- !u!4 &643418347 stripped
@@ -1860,11 +1850,6 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7838592248907204043, guid: 6dfc5f0a5fe04f94ab15177720f4bf05,
-        type: 3}
-      propertyPath: startDimensionIndex
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6dfc5f0a5fe04f94ab15177720f4bf05, type: 3}
 --- !u!4 &1163245285 stripped
@@ -2205,11 +2190,6 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 5656867131449373698, guid: 40b588bd40632eb41a0af374d91c4fc9,
-        type: 3}
-      propertyPath: startDimensionIndex
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2903483535519064383, guid: 40b588bd40632eb41a0af374d91c4fc9,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -2411,11 +2391,6 @@ PrefabInstance:
     - target: {fileID: 4305907101023272046, guid: c0931c4da6d91ea429abedb10290dd16,
         type: 3}
       propertyPath: m_isInputParsingRequired
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6111504088444772018, guid: c0931c4da6d91ea429abedb10290dd16,
-        type: 3}
-      propertyPath: startDimensionIndex
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -2836,11 +2811,6 @@ PrefabInstance:
       propertyPath: m_textInfo.pageCount
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 352026746113623712, guid: e969038e4d67d9b498de2ef538969506,
-        type: 3}
-      propertyPath: startDimensionIndex
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e969038e4d67d9b498de2ef538969506, type: 3}
 --- !u!1001 &7522892761215568235
@@ -2969,11 +2939,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.0912
-      objectReference: {fileID: 0}
-    - target: {fileID: 1657035362819914207, guid: 9a7c24f281a2c3d45a9b8befe608bf77,
-        type: 3}
-      propertyPath: startDimensionIndex
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a7c24f281a2c3d45a9b8befe608bf77, type: 3}
