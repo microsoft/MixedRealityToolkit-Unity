@@ -343,7 +343,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     }
                     else
                     {   // Otherwise, show individual fields
-                        EditorGUILayout.LabelField("Matching Fields:");
+                        EditorGUILayout.LabelField("Results:");
                         foreach (ProfileSearchResult search in fieldSearchResults)
                         {
                             if (search.Fields.Count == 0)
