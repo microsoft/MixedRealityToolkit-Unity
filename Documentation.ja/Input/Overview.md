@@ -7,7 +7,7 @@ MRTK の Input System (入力システム)では、次のことが可能です�
 - フォーカス イベントとポインター イベントを介して UI コンポーネントを駆動するためにコントローラーにアタッチされたポインターを設定します。
 
 <img src="../../Documentation/Images/Input/MRTK_InputSystem.png" style="display:block;margin-left:auto;margin-right:auto;">
-<sup>MRTK Input System (入力システム)</sup>
+<sup>MRTK Input System (入力システム) の概要</sup>
 
 入力は [**Input Data Providers(Device Manager) (入力データ プロバイダー(デバイス マネージャー))**](InputProviders.md) によって生成されます。各プロバイダーは、Open VR、Windows Mixed Reality (WMR)、Unity Joystick、Windows Speech など、入力の特定のソースに対応しています。プロバイダーは、*Mixed Reality Toolkit* コンポーネントの **Registered Service Providers Profile** を介してプロジェクトに追加され、対応する入力ソースが利用可能な場合(例えば WMR のコントローラーが検出されたり、ゲームパッドが接続された場合)、自動的に [**Input Events (入力イベント)**](InputEvents.md) を生成します。
 
