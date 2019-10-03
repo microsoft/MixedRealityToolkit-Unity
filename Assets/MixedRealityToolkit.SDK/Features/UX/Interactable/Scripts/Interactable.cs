@@ -298,7 +298,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// The list of active themes inspects this list to determine which themes to use based on current dimension.
         /// </summary>
         /// <returns></returns>
-        private List<System.Tuple<int, InteractableThemeBase>> allThemes = new List<System.Tuple<int, InteractableThemeBase>>();
+        private List<System.Tuple<int, InteractableThemeBase>> allThemeDimensionPairs = new List<System.Tuple<int, InteractableThemeBase>>();
 
         /// <summary>
         /// How many times this interactable was clicked
@@ -725,11 +725,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             activeThemes.Clear();
 
-            for (int i = 0; i < allThemes.Count; i++)
+            for (int i = 0; i < allThemeDimensionPairs.Count; i++)
             {
-                if (allThemes[i].Item1 == CurrentDimension)
+                if (allThemeDimensionPairs[i].Item1 == CurrentDimension)
                 {
-                    activeThemes.Add(allThemes[i].Item2);
+                    activeThemes.Add(allThemeDimensionPairs[i].Item2);
                 }
             }
         }
@@ -742,7 +742,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         private void SetupThemes()
         {
-            allThemes.Clear();   
+            allThemeDimensionPairs.Clear();   
             // Profiles are one per GameObject/ThemeContainer
             // ThemeContainers are one per dimension
             // ThemeDefinitions are one per desired effect (i.e theme)
@@ -757,7 +757,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         {
                             foreach (var themeDefinition in themeContainer.Definitions)
                             {
-                                allThemes.Add(new System.Tuple<int, InteractableThemeBase>(
+                                allThemeDimensionPairs.Add(new System.Tuple<int, InteractableThemeBase>(
                                     i,
                                     InteractableThemeBase.CreateAndInitTheme(themeDefinition, profile.Target)));
                             }
