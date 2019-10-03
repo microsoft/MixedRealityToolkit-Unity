@@ -606,6 +606,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 frontPlateStartPosition = frontPlateTransform.localPosition;
 
             yield return rightHand.Show(p2);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            Assert.IsTrue(interactable.HasFocus, "Interactable does not have focus when hand is pointing at it.");
 
             int numClicks = 3;
             for (int i = 0; i < numClicks; i++)
@@ -616,6 +618,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield return new WaitForSeconds(0.33f);
 
                 Assert.True(wasClicked, "Toggle button was not clicked");
+                Assert.AreEqual((i + 1) % 2, interactable.CurrentDimension, $"Toggle button is in incorrect toggle state on click {i}");
                 
                 // Make sure the button depth is back at the starting position
                 Assert.True(frontPlateTransform.localPosition == frontPlateStartPosition, "Toggle button front plate did not return to starting position.");                
