@@ -10,6 +10,11 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Rendering;
 
+#if WINDOWS_UWP
+using Windows.Storage;
+using Windows.Storage.Streams;
+#endif // WINDOWS_UWP
+
 namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 {
     public static class ConstructGltf
@@ -137,14 +142,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                         {
                             try
                             {
-                                var storageFile = await Windows.Storage.StorageFile.GetFileFromPathAsync(path);
+                                var storageFile = await StorageFile.GetFileFromPathAsync(path);
 
                                 if (storageFile != null)
                                 {
 
-                                    var buffer = await Windows.Storage.FileIO.ReadBufferAsync(storageFile);
+                                    var buffer = await FileIO.ReadBufferAsync(storageFile);
 
-                                    using (Windows.Storage.Streams.DataReader dataReader = Windows.Storage.Streams.DataReader.FromBuffer(buffer))
+                                    using (DataReader dataReader = DataReader.FromBuffer(buffer))
                                     {
                                         imageData = new byte[buffer.Length];
                                         dataReader.ReadBytes(imageData);

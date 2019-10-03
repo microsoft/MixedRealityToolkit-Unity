@@ -139,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             foreach (var assembly in assemblies)
             {
-                var types = assembly.GetTypes();
+                var types = assembly.GetLoadableTypes();
                 result.AddRange(types.Where(type => type.IsSubclassOf(aType)));
             }
 

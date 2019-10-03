@@ -50,7 +50,7 @@ MRTK-Unity is a Microsoft driven project that provides a set of components and f
 | Slider UI for adjusting values supporting direct hand tracking interaction | MRTK's Standard shader supports various Fluent design elements with performance | Hand-locked UI for quick access, using Hand Constraint Solver |
 |  [![App Bar](Documentation/Images/AppBar/MRTK_AppBar_Main.png)](Documentation/README_AppBar.md) [App Bar](Documentation/README_AppBar.md) | [![Pointers](Documentation/Images/Pointers/MRTK_Pointer_Main.png)](Documentation/Input/Pointers.md) [Pointers](Documentation/Input/Pointers.md) | [![Fingertip Visualization](Documentation/Images/Fingertip/MRTK_FingertipVisualization_Main.png)](Documentation/README_FingertipVisualization.md) [Fingertip Visualization](Documentation/README_FingertipVisualization.md) |
 | UI for Bounding Box's manual activation | Learn about various types of pointers | Visual affordance on the fingertip which improves the confidence for the direct interaction |
-|  [![Hand Joint Chaser](Documentation/Images/HandJointChaser/MRTK_HandJointChaser_Main.jpg)](Documentation/README_HandJointChaser.md) [Hand Joint Chaser](Documentation/README_HandJointChaser.md) | [![Spatial Awareness](Documentation/Images/SpatialAwareness/MRTK_SpatialAwareness_Main.png)](Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.md) [Spatial Awareness](Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.md) | [![Voice Command](Documentation/Images/Input/MRTK_Input_Speech.png)](Documentation/Input/Speech.md) [Voice Command](Documentation/Input/Speech.md) |
+|  [![Near Menu](Documentation/Images/NearMenu/MRTK_UX_NearMenu.png)](Documentation/README_NearMenu.md) [Near Menu](Documentation/README_NearMenu.md) | [![Spatial Awareness](Documentation/Images/SpatialAwareness/MRTK_SpatialAwareness_Main.png)](Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.md) [Spatial Awareness](Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.md) | [![Voice Command](Documentation/Images/Input/MRTK_Input_Speech.png)](Documentation/Input/Speech.md) [Voice Command](Documentation/Input/Speech.md) |
 | Demonstrates how to use Solver to attach objects to the hand joints | Make your holographic objects interact with the physical environments | Scripts and examples for integrating speech input |
 |  [![Eye Tracking: Target Selection](Documentation/Images/EyeTracking/mrtk_et_targetselect.png)](Documentation/EyeTracking/EyeTracking_TargetSelection.md) [Eye Tracking: Target Selection](Documentation/EyeTracking/EyeTracking_TargetSelection.md) | [![Eye Tracking: Navigation](Documentation/Images/EyeTracking/mrtk_et_navigation.png)](Documentation/EyeTracking/EyeTracking_Navigation.md) [Eye Tracking: Navigation](Documentation/EyeTracking/EyeTracking_Navigation.md) | [![Eye Tracking: Heat Map](Documentation/Images/EyeTracking/mrtk_et_heatmaps.png)](Documentation/EyeTracking/EyeTracking_ExamplesOverview.md#visualization-of-visual-attention) [Eye Tracking: Heat Map](Documentation/EyeTracking/EyeTracking_ExamplesOverview.md#visualization-of-visual-attention) |
 | Combine eyes, voice and hand input to quickly and effortlessly select holograms across your scene | Learn how to auto scroll text or fluently zoom into focused content based on what you are looking at| Examples for logging, loading and visualizing what users have been looking at in your app |
@@ -87,17 +87,13 @@ See [Examples Hub README page](Documentation/README_ExampleHub.md) to learn abou
 
 # Engage with the Community
 
-- Join the conversation around MRTK on [Slack](https://holodevelopers.slack.com/).
+- Join the conversation around MRTK on [Slack](https://holodevelopers.slack.com/). You can join the Slack community via the [automatic invitation sender](https://holodevelopersslack.azurewebsites.net/).
 
 - Ask questions about using MRTK on [Stack Overflow](https://stackoverflow.com/questions/tagged/mrtk) using the **MRTK** tag.
 
 - Search for [known issues](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues) or file a [new issue](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues) if you find something broken in MRTK code.
 
-- Join our weekly community shiproom to hear directly from the feature team. (link coming soon)
-
-- Deep dive into project plan and learn how you can contribute to MRTK in our [wiki](https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki).
-
-- For issues related to Windows Mixed Reality that aren't directly related to the MRTK, check out the [Windows Mixed Reality Developer Forum](https://forums.hololens.com/).
+- For questions about contributing to mrtk, go to the [mixed-reality-toolkit](https://holodevelopers.slack.com/messages/C2H4HT858) channel on slack.
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
@@ -119,7 +115,6 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 You can find our planning material on [our wiki](https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki) under Project Management Section. You can always see the items the team is actively working on in the Iteration Plan issue.
 
 # How to Contribute
-
-View the [**How To Contribute**](https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki/How-to-Contribute) wiki page for the most up to date instructions on contributing to the Mixed Reality Toolkit!
+Learn how you can contribute to MRTK at [Contributing](Documentation/Contributing/CONTRIBUTING.md).
 
 **For details on the different branches used in the Mixed Reality Toolkit repositories, check this [Branch Guide here](https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki/Branch-Guide).**

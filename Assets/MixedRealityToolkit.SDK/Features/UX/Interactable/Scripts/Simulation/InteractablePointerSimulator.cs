@@ -31,19 +31,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (hasFocus != Focus)
             {
-                Button.SetFocus(Focus);
+                Button.HasFocus = Focus;
                 hasFocus = Focus;
             }
 
             if (hasDown != Down)
             {
-                Button.SetPress(Down);
+                Button.HasPress = Down;
                 hasDown = Down;
             }
 
             if (isDisabled != Disabled)
             {
-                Button.SetDisabled(Disabled);
+                Button.IsEnabled = !Disabled;
                 isDisabled = Disabled;
             }
 

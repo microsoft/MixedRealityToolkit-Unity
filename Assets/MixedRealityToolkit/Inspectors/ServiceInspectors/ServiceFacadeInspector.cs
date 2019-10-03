@@ -276,7 +276,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
 
             var typesWithMyAttribute =
                  from assembly in AppDomain.CurrentDomain.GetAssemblies().AsParallel()
-                 from classType in assembly.GetTypes()
+                 from classType in assembly.GetLoadableTypes()
                  let attribute = classType.GetCustomAttribute<MixedRealityServiceInspectorAttribute>(true)
                  where attribute != null
                  select new { ClassType = classType, Attribute = attribute };
