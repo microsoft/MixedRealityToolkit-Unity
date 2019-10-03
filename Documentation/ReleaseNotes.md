@@ -1,7 +1,72 @@
 # Microsoft Mixed Reality Toolkit Release Notes
 
+- [Version 2.1.0](#version-210)
 - [Version 2.0.1](#version-201)
 - [Version 2.0.0](#version-200)
+
+## Version 2.1.0
+
+- [Upgrading projects](#upgrading-projects-to-210)
+- [What's new](#whats-new-in-210)
+- [Known issues](#known-issues-in-210)
+
+This release of the Microsoft Mixed Reality Toolkit supports the following devices and platforms.
+
+- Microsoft HoloLens 2
+- Microsoft HoloLens (1st gen)
+- Windows Mixed Reality Immersive headsets
+- OpenVR
+
+The following software is required.
+
+- Microsoft Visual Studio (2017 or 2019) Community Edition or higher
+- Windows 10 SDK 18362 or later (installed by the Visual Studio Installer)
+- Unity 2018.4, 2019.1 or 2019.2
+
+### Upgrading projects to 2.1.0
+
+The 2.1.0 release has some changes that may impact application projects, including some files moving to new folder locations.
+Breaking change details, including mitigation guidance, can be found in the [**Updating 2.0.0 to 2.1.0**](Updating.md#updating-200-t0210) article.
+
+For the smoothest upgrade path, please use the following steps.
+
+1. Close Unity
+1. Delete **MixedRealityToolkit** (the project may not have all listed folders)
+    - MixedRealityToolkit
+    - MixedRealityToolkit.Examples
+    - MixedRealityToolkit.Extensions
+    > [!Note]
+    > If additional extensions have been installed, please make a backup prior to deleting this folder.
+    - MixedRealityToolkit.Providers
+    - MixedRealityToolkit.SDK
+    - MixedRealityToolkit.Services
+    - MixedRealityToolkit.Tools
+    > [!Important]
+    > Do NOT delete the **MixedRealityToolkit.Generated** folder.
+1. Delete the **Library** folder
+1. Re-open the project in Unity
+1. Import the new unity packages
+    - Foundation - _Import this package first_
+    - (Optional) Tools
+    - (Optional) Extensions
+    > [!Note]
+    > If additional extensions had been installed, they may need to be re-imported.
+    - (Optional) Examples
+1. Close Unity and Delete the **Library** folder. This step is necessary to force Unity to refresh its
+   asset database and reconcile existing custom profiles.
+1. Launch Unity, and for each scene in the project
+    - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy
+    - Select **MixedRealityToolkit -> Add to Scene and Configure**
+
+### What's new in 2.1.0
+
+<< todo >>
+
+### Known issues in 2.1.0
+
+The sections below highlight some of the known issues in the Microsoft Mixed Reality Toolkit.
+
+<< todo >>
 
 ## Version 2.0.1
 
@@ -54,7 +119,7 @@ The following software is required.
 ### Upgrading projects to 2.0.0
 
 Since the RC2 release, there have been several changes that may impact application projects,
-including some files moving to new folder locations. Breaking change details, including mitigation guidance, can be found in the [**Updating from RC2**](Updating.md) article.
+including some files moving to new folder locations. Breaking change details, including mitigation guidance, can be found in the [**Updating RC2 to 2.0.0**](Updating.md#updating-rc2-to-200) article.
 
 For the smoothest upgrade path, please use the following steps.
 
