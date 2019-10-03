@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 {
@@ -59,10 +60,18 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             new MixedRealityInteractionMapping(11, "Thumbstick Press", AxisType.Digital, DeviceInputType.ButtonPress,  KeyCode.JoystickButton19),
         };
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Setup the default interactions, then update the spatial pointer rotation with the preconfigured offset angle.
+        /// </summary>
         public override void SetupDefaultInteractions(Handedness controllerHandedness)
         {
-            AssignControllerMappings(controllerHandedness == Handedness.Left ? DefaultLeftHandedInteractions : DefaultRightHandedInteractions);
+            base.SetupDefaultInteractions(controllerHandedness);
+
+            Assert.AreEqual(Interactions[0].Description, "Spatial Pointer", "The first interaction mapping is no longer the Spatial Pointer. Please update.");
+
+            MixedRealityPose startingRotation = MixedRealityPose.ZeroIdentity;
+            startingRotation.Rotation *= Quaternion.AngleAxis(PointerOffsetAngle, Vector3.left);
+            Interactions[0].PoseData = startingRotation;
         }
     }
 }
