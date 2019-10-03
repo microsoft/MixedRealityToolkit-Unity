@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using UnityEngine;
+using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -211,7 +212,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     break;
             }
 
-            if (profile.IsCameraControlEnabled)
+            if (profile.IsCameraControlEnabled && !XRDevice.isPresent)
             {
                 EnableCameraControl();
             }
