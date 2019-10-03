@@ -1,32 +1,28 @@
-# Framework and runtime
+# フレームワークとランタイム
 
-## Changes to the scene
+## シーンへの変更
 
-To use the toolkit an instance of the MixedRealityToolkit script must be in your scene.
-To add one use the menu option: Mixed Reality Toolkit -> Add to Scene and Configure. This
-instance is responsible for registering, updating and tearing down services. It's also
-where your configuration profile is chosen.
+ツールキットを使うためには、MixedRealityToolkit スクリプトのインスタンスがシーンに存在しなければなりません。
+追加するには、メニューの [Mixed Reality Toolkit] -> [Add to Scene and Configure] オプションをお使いください。
+このインスタンスは、サービスの登録、更新、破棄を担当しています。
+設定プロファイルを選択する場所でもあります。
 
-Apart form adding the MRTK GameObject to the scene the menu option will also:
+このメニュー オプションは、シーンに MRTK ゲームオブジェクトを追加するだけでなく、以下のことも行います。
 
-- Add the MixedRealityPlayspace, which is used by many other MRTK components to reason over
-  world and local space transformations.
-- Move the main Camera as a child of the MixedRealityPlayspace (and also adding some input and gaze
-  related scripts to the main Camera, which help power UnityUI and gaze related input
-  functionality).
+- MixedRealityPlayspace を追加する。
+これは、多くのほかの MRTK コンポーネントが、ワールド空間とローカル空間の変換を処理するために利用されます。
+- メイン カメラを MixedRealityPlayspace の子になるよう移動させます。
+（そして、いくつかのインプットやゲイズに関するスクリプトをメイン カメラに追加します。
+このスクリプトは、UnityUI やゲイズ関連のインプット機能を手助けします。）
 
-## MixedRealityToolkit object and runtime
+## MixedRealityToolkit オブジェクトとランタイム
 
-The MRTK has several core services. Some coordinate with one another; others are independent.
-All share the same life cycle - startup, registration, update and teardown - and this life
-cycle stands apart from Unity's MonoBehavior life cycle. This
-[medium post](https://medium.com/@stephen_hodgson/the-mixed-reality-framework-6fdb5c11feb2) explains
-some of the background and motivation behind this approach. MRTK has a single
-object that manages life and runtime of its services.
+MRTK には、いくつかのコア サービスがあります。お互いに関連しているものもあれば、独立しているものもあります。
+すべてのサービスは同じライフ サイクル（スタートアップ、登録、アップデート、破棄）を共有しており、このライフ サイクルは Unity の MonoBehavior のライフ サイクルからは独立しています。
+この [Medium の記事](https://medium.com/@stephen_hodgson/the-mixed-reality-framework-6fdb5c11feb2) で、このアプローチの裏にある背景や動機のいくつかが説明されています。
+MRTK は、そのサービスの存続とランタイムを管理する、単一のオブジェクトを持っています。
 
-This entity ensures that:
-- when the game starts, discovery and initialization of services happens in a pre-defined order.
-- it provides a mechanism for services to register themselves (i.e. “I support this service!”) and for other
-  callers to get a hold of those services.
-- it provides the Update()/LateUpdate() calls and forwards them onto the various services
-  (i.e. via UpdateAllServices/LateUpdateAllServices).
+このオブジェクトは、以下のことを保証しています。
+- ゲームが開始したときに、事前に定義された順番でサービスの検出と初期化が行われること。
+- サービスが自身を登録し（「自分はこのサービスをサポートしています！」）、他の呼び出し元がそれらのサービスを見つけるメカニズムを提供していること。
+- Update() や LateUpdate() の呼び出しを提供し、それらを様々なサービスにフォワードすること　(UpdateAllServices や LateUpdateAllServices を通じて）。
