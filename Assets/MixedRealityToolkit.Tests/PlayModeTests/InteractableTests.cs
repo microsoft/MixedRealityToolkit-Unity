@@ -32,12 +32,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private const float EaseDelay = 0.25f;
         private const string DefaultInteractablePrefabAssetPath = "Assets/MixedRealityToolkit.Examples/Demos/UX/Interactables/Prefabs/Model_PushButton.prefab";
         private const string RadialSetPrefabAssetPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/RadialSet.prefab";
+        private const string PressableHoloLens2TogglePrefabPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2Toggle.prefab";
 
         private readonly Color DefaultColor = Color.blue;
         private readonly Color FocusColor = Color.yellow;
         private readonly Color DisabledColor = Color.gray;
 
         private static readonly Quaternion DefaultRotation = Quaternion.LookRotation(Vector3.up);
+        private static readonly Quaternion DefaultRotationToggle = Quaternion.LookRotation(Vector3.forward);
 
         [SetUp]
         public override void Setup()
@@ -576,6 +578,58 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             GameObject.Destroy(interactable.gameObject);
         }
 
+        [UnityTest]
+        /// <summary>
+        /// Tests button depth and focus state after enabling, disabling and re-enabling Interactable 
+        /// internally via IsEnabled. The focus state after re-enabling should be false and button
+        /// depth should be in its default position.  This test is specifically addressing behavior described 
+        /// in issue 4967.
+        /// </summary>
+        public IEnumerator TestPressableToggleHoloLens2()
+        {
+            var rightHand = new TestHand(Handedness.Right);
+            Vector3 p2 = new Vector3(0.015f, 0f, 0.3f);
+
+            // Load the Model_PushButton interactable prefab
+            Interactable interactable;
+            Transform frontPlateTransform;
+
+            InstantiatePressableButtonHoloLens2Toggle(
+                new Vector3(0.0f, 0.1f, 0.4f),
+                DefaultRotationToggle,
+                out interactable,
+                out frontPlateTransform);
+
+            Assert.True(interactable.IsEnabled);
+
+            bool wasClicked = false;
+            // OnClick, disable Interactable 
+            interactable.OnClick.AddListener(() => { wasClicked = true; });
+
+            // Get start position of the front plate before button is pressed
+            Vector3 frontPlateStartPosition = frontPlateTransform.localPosition;
+
+            yield return rightHand.Show(p2);
+
+            int numClicks = 3;
+            for (int i = 0; i < numClicks; i++)
+            {
+                wasClicked = false;
+                // Show hand and click
+                yield return rightHand.Click();
+                // Wait for button animation to complete
+                yield return new WaitForSeconds(0.33f);
+
+                // Make sure the button was clicked
+                Assert.True(wasClicked);
+                
+                // Make sure the button depth is back at the starting position when re-enable the gameObject
+                Assert.True(frontPlateTransform.localPosition == frontPlateStartPosition);                
+            }
+
+            GameObject.Destroy(interactable.gameObject);
+        }
+
         #region Test Helpers
 
         /// <summary>
@@ -658,6 +712,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             result.transform.position = position;
             result.transform.rotation = rotation;
             return result;
+        }
+
+        /// <summary>
+        /// Instantiates HoloLens2PressableToggle
+        /// </summary>
+        private void InstantiatePressableButtonHoloLens2Toggle(Vector3 position, Quaternion rotation, out Interactable interactable, out Transform frontPlateTransform)
+        {
+            // Load interactable prefab
+            var interactableObject = InstantiateInteractableFromPath(position, rotation, PressableHoloLens2TogglePrefabPath);
+            interactable = interactableObject.GetComponent<Interactable>();
+            Assert.IsNotNull(interactable);
+
+            // Find the target object for the interactable transformation
+            frontPlateTransform = interactableObject.transform.Find("CompressableButtonVisuals/FrontPlate");
+
+            Assert.IsNotNull(frontPlateTransform, "Object 'FrontPlate' could not be found under example object Model_PushButton.");
         }
 
         /// <summary>
