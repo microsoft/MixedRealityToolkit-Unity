@@ -1,38 +1,38 @@
-# Detecting platform capabilities
+# プラットフォームの Capabilities（機能）を検出する
 
-A common question asked of the MRTK involves knowing which specific device (ex: Microsoft HoloLens 2) is being
-used to run an application. Identifying the exact hardware can be challenging on different platforms. The MRTK
-instead provides a way identify specific capabilities of the system (for example, if the system has the articulated
-hands capability).
+MRTK についてよくある質問は、アプリケーションを実行するのにどのデバイス
+（例えば Microsoft HoloLens 2) が使われているのかを知る方法に関するものです。
+正確なハードウェアを特定することは、プラットフォームによっては困難です。
+代わりに、MRTK はシステムの特定の機能（例えば、システムが Articulated hand（多関節ハンド）の機能を持っているかどうか）を特定する方法を提供しています。
 
-## Capabilities
+## Capabilities（機能）
 
-The Mixed Reality Toolkit provides the [MixedRealityCapability](xref:Microsoft.MixedReality.Toolkit.MixedRealityCapability)
-enumeration which defines a set of capabilities for which an application can query at runtime. This enum contains the 
-complete set of capabilities for which the Mixed Reality Toolkit supports checking.
+Mixed Reality Toolkit は [MixedRealityCapability](xref:Microsoft.MixedReality.Toolkit.MixedRealityCapability)
+という列挙型を提供しており、これはアプリケーションがランタイムで問い合わせを行うための機能のセットを定義しています。
+この列挙型は Mixed Reality Toolkit がチェック可能な機能の完全なセットを含んでいます。
 
-### Input System capabilities
+### Input System capabilities（インプットシステムの機能）
 
-The input system supports querying the following capabilities.
+インプットシステムは、以下の機能の問い合わせをサポートしています。
 
-| Capability | Description |
+| 機能 | 説明 |
 |---|---|
-| ArticulatedHand | Articulated hand input |
-| EyeTracking | Eye gaze targeting |
-| GGVHand | Gaze-Gesture-Voice hand input |
-| MotionController | Motion controller input |
-| VoiceCommand | Voice commands using app defined keywords |
-| VoiceDictation | Voice to text dictation |
+| ArticulatedHand | Articulated hand（多関節ハンド）のインプット |
+| EyeTracking | Eye gaze（アイ ゲイズ）のターゲティング |
+| GGVHand | Gaze-Gesture-Voice（ゲイズ、ジェスチャー、ボイス）のハンド インプット |
+| MotionController | モーション コントローラーのインプット |
+| VoiceCommand | アプリで定義したキーワードを使ったボイス コマンド |
+| VoiceDictation | 音声によるテキスト ディクテーション |
 
-This example checks to see if the input system has loaded a data provider with support for articulated hands.
+以下の例は、多関節ハンドをサポートしたデータ プロバイダーをインプット システムがロードしたかどうかをチェックしています。
 
 ``` C#
-// Get the input system.
+// input system を取得する
 IMixedRealityInputSystem inputSystem = null;
 MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
 if (inputSystem == null)
 {
-    // Failed to get the input system.
+    // input system の取得に失敗
 }
 
 bool supportsArticulatedHands = false;
@@ -44,25 +44,25 @@ if (capabilityCheck != null)
 }
 ```
 
-### Spatial Awareness capabilities
+### Spatial Awareness capabilities（空間認識の機能）
 
-The spatial awareness system supports querying the following capabilities.
+空間認識システムは、以下の機能の問い合わせをサポートしています。
 
-| Capability | Description |
+| 機能 | 説明 |
 |---|---|
-| SpatialAwarenessMesh | Spatial meshes |
-| SpatialAwarenessPlane | Spatial planes |
-| SpatialAwarenessPoint | Spatial points |
+| SpatialAwarenessMesh | Spatial meshes（空間メッシュ） |
+| SpatialAwarenessPlane | Spatial planes（空間プレーン） |
+| SpatialAwarenessPoint | Spatial points（空間ポイント） |
 
-This example checks to see if the spatial awareness system has loaded a data provider with support for spatial meshes.
+以下の例は、空間メッシュをサポートしたデータ プロバイダーを空間認識システムがロードしたかどうかをチェックしています。
 
 ``` C#
-// Get the spatial awareness system.
+// spatial awareness system を取得する
 IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
 MixedRealityServiceRegistry.TryGetService<IMixedRealitySpatialAwarenessSystem>(out spatialAwarenessSystem);
 if (spatialAwarenessSystem == null)
 {
-    // Failed to get the spatial awareness system.
+    // spatial awareness system の取得に失敗
 }
 
 bool supportsSpatialMesh = false;
@@ -74,7 +74,7 @@ if (capabilityCheck != null)
 }
 ```
 
-## See Also
+## 関連項目
 
 - [IMixedRealityCapabilityCheck API documentation](xref:Microsoft.MixedReality.Toolkit.IMixedRealityCapabilityCheck)
 - [MixedRealityCapability enum documentation](xref:Microsoft.MixedReality.Toolkit.MixedRealityCapability)
