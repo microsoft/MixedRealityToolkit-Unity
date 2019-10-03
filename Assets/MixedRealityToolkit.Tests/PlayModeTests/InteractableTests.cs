@@ -721,7 +721,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Find the target object for the interactable transformation
             frontPlateTransform = interactableObject.transform.Find("CompressableButtonVisuals/FrontPlate");
 
-            Assert.IsNotNull(frontPlateTransform, "Object 'FrontPlate' could not be found under example object Model_PushButton.");
+            Assert.IsNotNull(frontPlateTransform, "Object 'FrontPlate' could not be found under PressableButtonHoloLens2Toggle.");
         }
 
         /// <summary>
