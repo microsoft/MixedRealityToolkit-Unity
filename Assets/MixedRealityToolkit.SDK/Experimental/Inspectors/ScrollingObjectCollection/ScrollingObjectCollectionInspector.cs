@@ -9,7 +9,6 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 {
-    [ExperimentalDrawer]
     [CustomEditor(typeof(ScrollingObjectCollection))]
     public class ScrollingObjectCollectionInspector : UnityEditor.Editor
     {
