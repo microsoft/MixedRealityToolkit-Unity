@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         public void TearDown()
         {
             TestUtilities.ShutdownMixedRealityToolkit();
+            TestUtilities.EditorTearDownScenes();
         }
 
         [Test]
@@ -132,12 +133,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.IsNotNull(dataProvider);
             Assert.IsTrue(dataProvider.IsInitialized);
             Assert.IsTrue(dataProvider.IsEnabled);
-        }
-
-        [TearDown]
-        public void CleanupMixedRealityToolkitTests()
-        {
-            TestUtilities.EditorCreateScenes();
         }
 
         /// <summary>
