@@ -269,7 +269,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         [DrawGizmo(GizmoType.Selected)]
         private void OnSceneGUI()
         {
-            Experimental.
             ScrollingObjectCollection scrollContainer = (ScrollingObjectCollection)target;
             MRTKtmp = Shader.Find("Mixed Reality Toolkit/TextMeshPro");
 
