@@ -19,32 +19,33 @@ on github / CI (see below), and print results. Here are some examples of how to 
 
 Run the tests on the project located at H:\mrtk.dev, with Unity 2018.4.1f1
 
-```
-    .\run_playmode_tests.ps1 H:\mrtk.dev -unityExePath = "C:\Program Files\Unity\Hub\Editor\2018.4.1f1\Editor\Unity.exe"
+```ps
+.\run_playmode_tests.ps1 H:\mrtk.dev -unityExePath = "C:\Program Files\Unity\Hub\Editor\2018.4.1f1\Editor\Unity.exe"
 ```
 
 Run the tests on the project located at H:\mrtk.dev, with Unity 2018.4.1f1, output results to C:\playmode_test_out
 
+```ps
+.\run_playmode_tests.ps1 H:\mrtk.dev -unityExePath = "C:\Program Files\Unity\Hub\Editor\2018.4.1f1\Editor\Unity.exe" -outFolder "C:\playmode_test_out\"
 ```
-    .\run_playmode_tests.ps1 H:\mrtk.dev -unityExePath = "C:\Program Files\Unity\Hub\Editor\2018.4.1f1\Editor\Unity.exe" -outFolder "C:\playmode_test_out\"
-```
-
 
 ## Executing tests on github / CI
+
 MRTK's CI will build MRTK in all configurations and run all edit and play mode tests. CI can be triggered by posting a
 comment on the github PR `/azp run mrtk_pr` if the user has sufficient rights. CI runs can be seen in the 'checks' tab of the PR.
 Only after all of the tests passed successfully the PR can be merged into mrtk_development.
+
 > [!NOTE]
 > Some tests will only fail when run from the command line. You can run the tests locally from command line using similar
 setup to what it done in MRTK's CI by running `scripts\test\run_playmode_tests.ps1`
 
 ## Writing Tests for your code
+
 To ensure MRTK being a stable and reliable toolkit, every feature should come with unit tests and sample usage in one of the example scenes.
 
 Preferably when fixing a bug there should also be a test added to avoid running into the same issue again in the future.
 
 Having good test coverage in a big codebase like MRTK is crucial for stability and having confidence when doing changes in code.
-
 
 MRTK uses the [Unity Test Runner](https://docs.unity3d.com/Manual/testing-editortestsrunner.html) which uses a Unity
 integration of [NUnit](https://nunit.org/).
@@ -58,7 +59,6 @@ There's two types of tests that can be added for new code
 * Play mode tests
 * Edit mode tests
 
-
 ## Play mode tests
 
  MRTK play mode tests have the ability to test how your new feature responds to different input sources such as hands or eyes.
@@ -66,7 +66,9 @@ There's two types of tests that can be added for new code
  New play mode tests can inherit [BasePlayModeTests](xref:Microsoft.MixedReality.Toolkit.Tests.BasePlayModeTests) or the skeleton below can be used.
 
 ## Creating a new play mode test
+
 To create a new play mode test:
+
 - Navigate to Assets > MixedRealityToolkit.Tests > PlayModeTests
 - Right click, Create > Testing > C# Test Script
 - Replace the default template with the skeleton below
@@ -100,12 +102,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             PlayModeTestUtilities.Setup();
 
-            // Change the position of the main camera to (0, 0, 0), in PlayModeTestUtilites.Setup() 
+            // Change the position of the main camera to (0, 0, 0), in PlayModeTestUtilities.Setup()
             // the camera is set to position (1, 1.5, -2)
             TestUtilities.PlayspaceToOriginLookingForward();
         }
 
-        // Destroy the scene - this method is called after each test listed below has completed 
+        // Destroy the scene - this method is called after each test listed below has completed
         [TearDown]
         public void TearDown()
         {
@@ -147,7 +149,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     }
 }
 #endif
-
 ```
 
 ## Edit mode tests
@@ -173,7 +174,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
     }
 }
-
 ```
 
 ## Test naming conventions
@@ -182,7 +182,6 @@ Tests should generally be named based on the class they are testing, or the scen
 For example, given a to-be-tested class:
 
 ```csharp
-
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     class InterestingInputClass
@@ -194,7 +193,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 Consider naming the test
 
 ```csharp
-
 namespace Microsoft.MixedReality.Toolkit.Tests.Input
 {
     class InterestingInputClassTest
