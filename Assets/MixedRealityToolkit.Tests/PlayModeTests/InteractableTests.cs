@@ -580,10 +580,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         [UnityTest]
         /// <summary>
-        /// Tests button depth and focus state after enabling, disabling and re-enabling Interactable 
-        /// internally via IsEnabled. The focus state after re-enabling should be false and button
-        /// depth should be in its default position.  This test is specifically addressing behavior described 
-        /// in issue 4967.
+        /// Tests that the toggle button states consistently return to original state
+        /// after subsequent clicks (front plate does not move back after every click).
         /// </summary>
         public IEnumerator TestPressableToggleHoloLens2()
         {
