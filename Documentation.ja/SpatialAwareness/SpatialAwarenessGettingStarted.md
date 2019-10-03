@@ -66,7 +66,7 @@
 > [!WARNING]
 > Microsoft HoloLens を含む一部のプラットフォームでは、Unity 内からリモート実行をサポートしています。この機能により、ビルドとデプロイの手順を必要とせずに、迅速な開発とテストが可能になります。ターゲット ハードウェアとプラットフォームで実行される、ビルドおよびデプロイされたバージョンのアプリケーションを使用して、最終的な受け入れテストを行うようにしてください。
 
-## 以下参照
+## 関連項目
 
 - [Spatial Awareness API documentation](xref:Microsoft.MixedReality.Toolkit.SpatialAwareness)
 - [Configuring the Spatial Awareness Mesh Observer](ConfiguringSpatialAwarenessMeshObserver.md)

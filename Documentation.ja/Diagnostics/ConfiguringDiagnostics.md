@@ -55,7 +55,7 @@ if (MixedRealityServiceRegistry.TryGetService<IMixedRealityDiagnosticsSystem>(ou
 
 ビュー ポート (view port) 内の可視性を維持するためにプロファイラー ウィンドウを移動する速度。
 
-## 参考に
+## 関連項目
 
 - [診断システム (Diagnostic System)](DiagnosticsSystemGettingStarted.md)
 - [ビジュアル プロファイラー (Visual Profiler) を使用する](UsingVisualProfiler.md)

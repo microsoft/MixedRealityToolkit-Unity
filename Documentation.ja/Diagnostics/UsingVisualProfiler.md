@@ -61,7 +61,7 @@ GPU 時間は、これからのリリースで追加される予定です。
 
 ビジュアル プロファイラーの見た目と動きは、診断システム プロファイルを通じてカスタマイズできます。詳細については、[診断システム (Diagnostic System) の構成](ConfiguringDiagnostics.md) を参照してください。
 
-## 参考
+## 関連項目
 
 - [診断システム (Diagnostic System)](DiagnosticsSystemGettingStarted.md)
 - [診断システム (Diagnostic System) の構成](ConfiguringDiagnostics.md)
