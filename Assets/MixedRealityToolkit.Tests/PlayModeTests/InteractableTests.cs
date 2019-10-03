@@ -32,12 +32,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private const float EaseDelay = 0.25f;
         private const string DefaultInteractablePrefabAssetPath = "Assets/MixedRealityToolkit.Examples/Demos/UX/Interactables/Prefabs/Model_PushButton.prefab";
         private const string RadialSetPrefabAssetPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/RadialSet.prefab";
+        private const string PressableHoloLens2TogglePrefabPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2Toggle.prefab";
 
         private readonly Color DefaultColor = Color.blue;
         private readonly Color FocusColor = Color.yellow;
         private readonly Color DisabledColor = Color.gray;
 
         private static readonly Quaternion DefaultRotation = Quaternion.LookRotation(Vector3.up);
+        private static readonly Quaternion DefaultRotationToggle = Quaternion.LookRotation(Vector3.forward);
 
         [SetUp]
         public override void Setup()
@@ -325,14 +327,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 out translateTargetObject);
 
             // Test Button type
-            interactable.Dimensions = 1;
+            interactable.NumOfDimensions = 1;
             Assert.AreEqual(SelectionModes.Button, interactable.ButtonMode, "Interactable should be in button selection mode");
 
             interactable.IsToggled = true;
             Assert.IsFalse(interactable.IsToggled, "Interactable should not be in toggle state because not in Toggle selection mode");
 
             // Test Multi-Dimension type
-            interactable.Dimensions = 4;
+            interactable.NumOfDimensions = 4;
             interactable.CurrentDimension = 1;
             Assert.AreEqual(SelectionModes.MultiDimension, interactable.ButtonMode, "Interactable should be in MultiDimension selection mode");
 
@@ -340,7 +342,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsFalse(interactable.IsToggled, "Interactable should not be in toggle state because not in Toggle selection mode");
 
             // Test Toggle type
-            interactable.Dimensions = 2;
+            interactable.NumOfDimensions = 2;
             interactable.CurrentDimension = 0;
             Assert.AreEqual(SelectionModes.Toggle, interactable.ButtonMode, "Interactable should not be in button selection mode");
             Assert.IsFalse(interactable.IsToggled, "Switching dimensions and setting CurrentDimension to 0 should make IsToggled off");
@@ -349,8 +351,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(interactable.IsToggled, "Interactable should be in toggle state because in Toggle selection mode");
 
             // Test Invalid type
-            interactable.Dimensions = -1;
-            Assert.AreEqual(2, interactable.Dimensions, "Interactable should be in Toggle selection mode");
+            interactable.NumOfDimensions = -1;
+            Assert.AreEqual(2, interactable.NumOfDimensions, "Interactable should be in Toggle selection mode");
             Assert.AreEqual(1, interactable.CurrentDimension, "Interactable should be Toggled");
             Assert.AreEqual(SelectionModes.Toggle, interactable.ButtonMode, "Interactable should be in Toggle selection mode");
             Assert.IsTrue(interactable.IsToggled, "Invalid Dimension should not change state");
@@ -576,6 +578,55 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             GameObject.Destroy(interactable.gameObject);
         }
 
+        [UnityTest]
+        /// <summary>
+        /// Tests that the toggle button states consistently return to original state
+        /// after subsequent clicks (front plate does not move back after every click).
+        /// </summary>
+        public IEnumerator TestPressableToggleHoloLens2()
+        {
+            var rightHand = new TestHand(Handedness.Right);
+            Vector3 p2 = new Vector3(0.015f, 0f, 0.3f);
+
+            Interactable interactable;
+            Transform frontPlateTransform;
+
+            InstantiatePressableButtonHoloLens2Toggle(
+                new Vector3(0.0f, 0.1f, 0.4f),
+                DefaultRotationToggle,
+                out interactable,
+                out frontPlateTransform);
+
+            Assert.True(interactable.IsEnabled);
+
+            bool wasClicked = false;
+            interactable.OnClick.AddListener(() => { wasClicked = true; });
+
+            // Get start position of the front plate before button is pressed
+            Vector3 frontPlateStartPosition = frontPlateTransform.localPosition;
+
+            yield return rightHand.Show(p2);
+            yield return PlayModeTestUtilities.WaitForInputSystemUpdate();
+            Assert.IsTrue(interactable.HasFocus, "Interactable does not have focus when hand is pointing at it.");
+
+            int numClicks = 3;
+            for (int i = 0; i < numClicks; i++)
+            {
+                wasClicked = false;
+                yield return rightHand.Click();
+                // Wait for button animation to complete
+                yield return new WaitForSeconds(0.33f);
+
+                Assert.True(wasClicked, "Toggle button was not clicked");
+                Assert.AreEqual((i + 1) % 2, interactable.CurrentDimension, $"Toggle button is in incorrect toggle state on click {i}");
+                
+                // Make sure the button depth is back at the starting position
+                Assert.True(frontPlateTransform.localPosition == frontPlateStartPosition, "Toggle button front plate did not return to starting position.");                
+            }
+
+            GameObject.Destroy(interactable.gameObject);
+        }
+
         #region Test Helpers
 
         /// <summary>
@@ -658,6 +709,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             result.transform.position = position;
             result.transform.rotation = rotation;
             return result;
+        }
+
+        /// <summary>
+        /// Instantiates HoloLens2PressableToggle
+        /// </summary>
+        private void InstantiatePressableButtonHoloLens2Toggle(Vector3 position, Quaternion rotation, out Interactable interactable, out Transform frontPlateTransform)
+        {
+            // Load interactable prefab
+            var interactableObject = InstantiateInteractableFromPath(position, rotation, PressableHoloLens2TogglePrefabPath);
+            interactable = interactableObject.GetComponent<Interactable>();
+            Assert.IsNotNull(interactable);
+
+            // Find the target object for the interactable transformation
+            frontPlateTransform = interactableObject.transform.Find("CompressableButtonVisuals/FrontPlate");
+
+            Assert.IsNotNull(frontPlateTransform, "Object 'FrontPlate' could not be found under PressableButtonHoloLens2Toggle.");
         }
 
         /// <summary>

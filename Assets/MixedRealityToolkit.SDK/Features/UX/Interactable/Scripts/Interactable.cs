@@ -101,18 +101,24 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        [FormerlySerializedAs("Dimensions")]
+        /// <summary>
+        /// A way of adding more layers of states for controls like toggles.
+        /// This is capitalized and doesn't match conventions for backwards compatability
+        /// (to not break people using Interactable). We tried using FormerlySerializedAs("Dimensions)
+        /// and renaming to "dimensions", however Unity did not properly pick up the former serialization,
+        /// so we maintained the old value. See https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6169
+        /// </summary>
         [SerializeField]
-        protected int dimensions = 1;
+        protected int Dimensions = 1;
         /// <summary>
         /// A way of adding more layers of states for controls like toggles
         /// </summary>
-        public int Dimensions
+        public int NumOfDimensions
         {
-            get { return dimensions; }
+            get { return Dimensions; }
             set
             {
-                if (dimensions != value)
+                if (Dimensions != value)
                 {
                     // Value cannot be negative or zero
                     if (value > 0)
@@ -124,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                             IsToggled = false;
                         }
 
-                        dimensions = value;
+                        Dimensions = value;
 
                         CurrentDimension = Mathf.Clamp(CurrentDimension, 0, Dimensions - 1);
                     }
@@ -150,7 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 if (dimensionIndex != value)
                 {
                     // If valid value and not our current value, then update
-                    if (value >= 0 && value < Dimensions)
+                    if (value >= 0 && value < NumOfDimensions)
                     {
                         dimensionIndex = value;
 
@@ -161,12 +167,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                             IsToggled = dimensionIndex > 0;
                         }
 
-                        SetupThemes();
+                        UpdateActiveThemes();
                         forceUpdate = true;
                     }
                     else
                     {
-                        Debug.LogWarning($"Value {value} for property setter CurrentDimension cannot be less than 0 and cannot be greater than or equal to Dimensions={Dimensions}");
+                        Debug.LogWarning($"Value {value} for property setter CurrentDimension cannot be less than 0 and cannot be greater than or equal to Dimensions={NumOfDimensions}");
                     }
                 }
             }
@@ -186,7 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             get
             {
-                return ConvertToSelectionMode(Dimensions);
+                return ConvertToSelectionMode(NumOfDimensions);
             }
         }
 
@@ -281,9 +287,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         /// <summary>
         /// The list of running theme instances to receive state changes
-        /// When the dimension index changes, the list of themes that are updated changes to those assigned to that dimension.
+        /// When the dimension index changes, activeThemes updates to those assigned to that dimension.
         /// </summary>
         public IReadOnlyList<InteractableThemeBase> ActiveThemes => activeThemes.AsReadOnly();
+
+        /// <summary>
+        /// List of (dimension index, InteractableThemeBase) pairs that describe all possible themes the
+        /// interactable can have. First element in the tuple represents dimension index for the theme.
+        /// This list gets initialized on startup, or whenever the profiles for the interactable changes.
+        /// The list of active themes inspects this list to determine which themes to use based on current dimension.
+        /// </summary>
+        private List<System.Tuple<int, InteractableThemeBase>> allThemeDimensionPairs = new List<System.Tuple<int, InteractableThemeBase>>();
 
         /// <summary>
         /// How many times this interactable was clicked
@@ -704,13 +718,30 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Creates the list of theme instances based on all the theme settings
-        /// Themes will be created for the current dimension index
+        /// Updates the list of active themes based the current dimensions index
         /// </summary>
-        protected virtual void SetupThemes()
+        protected virtual void UpdateActiveThemes()
         {
             activeThemes.Clear();
 
+            for (int i = 0; i < allThemeDimensionPairs.Count; i++)
+            {
+                if (allThemeDimensionPairs[i].Item1 == CurrentDimension)
+                {
+                    activeThemes.Add(allThemeDimensionPairs[i].Item2);
+                }
+            }
+        }
+
+        /// <summary>
+        /// At startup or whenever a profile changes, creates all
+        /// possible themes that interactable can be in. We then update
+        /// the set of active themes by inspecting this list, looking for
+        /// only themes whose index matched CurrentDimensionIndex.
+        /// </summary>
+        private void SetupThemes()
+        {
+            allThemeDimensionPairs.Clear();   
             // Profiles are one per GameObject/ThemeContainer
             // ThemeContainers are one per dimension
             // ThemeDefinitions are one per desired effect (i.e theme)
@@ -718,14 +749,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 if (profile.Target != null && profile.Themes != null)
                 {
-                    if (CurrentDimension >= 0 && CurrentDimension < profile.Themes.Count)
+                    for (int i = 0; i < profile.Themes.Count; i++)
                     {
-                        var themeContainer = profile.Themes[CurrentDimension];
+                        var themeContainer = profile.Themes[i];
                         if (themeContainer.States.Equals(States))
                         {
                             foreach (var themeDefinition in themeContainer.Definitions)
                             {
-                                activeThemes.Add(InteractableThemeBase.CreateAndInitTheme(themeDefinition, profile.Target));
+                                allThemeDimensionPairs.Add(new System.Tuple<int, InteractableThemeBase>(
+                                    i,
+                                    InteractableThemeBase.CreateAndInitTheme(themeDefinition, profile.Target)));
                             }
                         }
                         else
@@ -735,8 +768,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     }
                 }
             }
+            UpdateActiveThemes();
         }
-
         #endregion Interactable Initiation
 
         #region State Utilities
@@ -827,7 +860,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public void IncreaseDimension()
         {
-            if (CurrentDimension == Dimensions - 1)
+            if (CurrentDimension == NumOfDimensions - 1)
             {
                 CurrentDimension = 0;
             }
@@ -844,7 +877,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (CurrentDimension == 0)
             {
-                CurrentDimension = Dimensions - 1;
+                CurrentDimension = NumOfDimensions - 1;
             }
             else
             {
@@ -1532,7 +1565,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// True if Selection is "Toggle" (Dimensions == 2)
         /// </summary>
         [System.Obsolete("Use ButtonMode to test if equal to SelectionModes.Toggle instead")]
-        public bool IsToggleButton { get { return Dimensions == 2; } }
+        public bool IsToggleButton { get { return NumOfDimensions == 2; } }
 
         /// <summary>
         /// Is the interactable enabled?

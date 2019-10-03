@@ -300,7 +300,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (InputSystem?.InputSystemProfile?.ControllerMappingProfile != null)
             {
-                return InputSystem.InputSystemProfile.ControllerMappingProfile.MixedRealityControllerMappingProfiles;
+                return InputSystem.InputSystemProfile.ControllerMappingProfile.MixedRealityControllerMappings;
             }
 
             return null;
