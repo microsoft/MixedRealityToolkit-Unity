@@ -590,7 +590,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var rightHand = new TestHand(Handedness.Right);
             Vector3 p2 = new Vector3(0.015f, 0f, 0.3f);
 
-            // Load the Model_PushButton interactable prefab
             Interactable interactable;
             Transform frontPlateTransform;
 
@@ -603,7 +602,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.True(interactable.IsEnabled);
 
             bool wasClicked = false;
-            // OnClick, disable Interactable 
             interactable.OnClick.AddListener(() => { wasClicked = true; });
 
             // Get start position of the front plate before button is pressed
@@ -615,16 +613,15 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             for (int i = 0; i < numClicks; i++)
             {
                 wasClicked = false;
-                // Show hand and click
                 yield return rightHand.Click();
                 // Wait for button animation to complete
                 yield return new WaitForSeconds(0.33f);
 
                 // Make sure the button was clicked
-                Assert.True(wasClicked);
+                Assert.True(wasClicked, "Toggle button was not clicked");
                 
                 // Make sure the button depth is back at the starting position when re-enable the gameObject
-                Assert.True(frontPlateTransform.localPosition == frontPlateStartPosition);                
+                Assert.True(frontPlateTransform.localPosition == frontPlateStartPosition, "Toggle button front plate did not return to starting position.");                
             }
 
             GameObject.Destroy(interactable.gameObject);
