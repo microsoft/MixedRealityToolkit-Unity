@@ -130,9 +130,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                             IsToggled = false;
                         }
 
-                        NumOfDimensions = value;
+                        Dimensions = value;
 
-                        CurrentDimension = Mathf.Clamp(CurrentDimension, 0, NumOfDimensions - 1);
+                        CurrentDimension = Mathf.Clamp(CurrentDimension, 0, Dimensions - 1);
                     }
                     else
                     {
