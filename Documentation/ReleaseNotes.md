@@ -26,7 +26,7 @@ The following software is required.
 ### Upgrading projects to 2.1.0
 
 The 2.1.0 release has some changes that may impact application projects, including some files moving to new folder locations.
-Breaking change details, including mitigation guidance, can be found in the [**Updating 2.0.0 to 2.1.0**](Updating.md#updating-200-t0210) article.
+Breaking change details, including mitigation guidance, can be found in the [**Updating 2.0.0 to 2.1.0**](Updating.md#updating-200-to-210) article.
 
 For the smoothest upgrade path, please use the following steps.
 
@@ -310,7 +310,7 @@ Solvers can now be controlled by the first available hand/controller instead of 
 
 ![Solver](../Documentation/Images/Solver/TrackedObjectType-Example.gif)
 
-Please review the **solvers** section of [Updating from RC2 to 2.0.0](Updating.md#solvers) for additional changes and mitigation details.
+Please review the **solvers** section of [Updating from RC2 to 2.0.0](Updating.md) for additional changes and mitigation details.
 
 **Input animation recording**
  

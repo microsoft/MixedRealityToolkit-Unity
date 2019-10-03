@@ -74,7 +74,7 @@ The `NearInteractionTouchableSurface` class has been added and now serves as the
 
 The hand mesh and joint visualizations now have a separate editor and player settings. The hand tracking profile has been updated to allow for setting these visualizations to; Nothing, Everything, Editor or Player.
 
-![Hand visualization modes](Images/ReleaseNotes/HandVisualizationModes.png)
+![Hand visualization modes](Images/ReleaseNotes/HandTrackingVisualizationModes.png)
 
 Custom hand tracking profiles may need to be updated to work correctly with version 2.1.0.
 
