@@ -96,6 +96,10 @@ per pixel based clipping.</p>
     <div class="level1"><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html">ClippingPrimitive</a></div>
     <div class="level2"><span class="xref">ClippingPlane</span></div>
   </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">IMaterialInstanceOwner</span></div>
+  </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
@@ -114,13 +118,13 @@ per pixel based clipping.</p>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html#Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_materialPropertyBlock">ClippingPrimitive.materialPropertyBlock</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html#Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_materialClones">ClippingPrimitive.materialClones</a>
-    </div>
-    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html#Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_AddRenderer_Renderer_">ClippingPrimitive.AddRenderer(Renderer)</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html#Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_RemoveRenderer_Renderer_">ClippingPrimitive.RemoveRenderer(Renderer)</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html#Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_ClearRenderers">ClippingPrimitive.ClearRenderers()</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html#Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_GetRenderersCopy">ClippingPrimitive.GetRenderersCopy()</a>
@@ -141,23 +145,26 @@ per pixel based clipping.</p>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html#Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_OnDestroy">ClippingPrimitive.OnDestroy()</a>
     </div>
     <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html#Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_OnMaterialChanged_MaterialInstance_">ClippingPrimitive.OnMaterialChanged(MaterialInstance)</a>
+    </div>
+    <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html#Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_UpdateRenderers">ClippingPrimitive.UpdateRenderers()</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html#Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_ToggleClippingFeature_System_Boolean_">ClippingPrimitive.ToggleClippingFeature(Boolean)</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html#Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_ToggleClippingFeature_Material_System_Boolean_">ClippingPrimitive.ToggleClippingFeature(Material, Boolean)</a>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html#Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_ToggleClippingFeature_Material___System_Boolean_">ClippingPrimitive.ToggleClippingFeature(Material[], Boolean)</a>
     </div>
     <div>
-      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html#Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_GetMaterial_Renderer_">ClippingPrimitive.GetMaterial(Renderer)</a>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html#Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_ToggleClippingFeature_Material_System_Boolean_">ClippingPrimitive.ToggleClippingFeature(Material, Boolean)</a>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.html">Microsoft.MixedReality.Toolkit.Utilities</a></h6>
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Utilities_ClippingPlane_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ClippingPlane : ClippingPrimitive</code></pre>
+    <pre><code class="lang-csharp hljs">public class ClippingPlane : ClippingPrimitive, IMaterialInstanceOwner</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -258,6 +265,10 @@ per pixel based clipping.</p>
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.ClippingPrimitive.html#Microsoft_MixedReality_Toolkit_Utilities_ClippingPrimitive_UpdateShaderProperties_MaterialPropertyBlock_">ClippingPrimitive.UpdateShaderProperties(MaterialPropertyBlock)</a></div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">IMaterialInstanceOwner</span>
+  </div>
 </article>
           </div>
           
