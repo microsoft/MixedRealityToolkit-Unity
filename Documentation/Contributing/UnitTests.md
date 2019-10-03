@@ -216,6 +216,14 @@ Placement of scenario based tests is less defined - if the test exercises the ov
 for example, consider putting it into an "InputSystem" folder in the corresponding edit mode
 or play mode test folder.
 
+## Test script icons
+
+When adding a new test, please modify the script to have the correct MRTK icon. There's an easy MRTK tool to do so:
+
+1. Go go the Mixed Reality Toolkit menu item
+1. Click on Utilities, then Update, then Icons
+1. Click on Tests, and the updater will run automatically, updating any test scripts missing their icons
+
 ## MRTK Utility methods
 
 This section shows some of the commonly used code snippets / methods when writing tests for MRTK.
