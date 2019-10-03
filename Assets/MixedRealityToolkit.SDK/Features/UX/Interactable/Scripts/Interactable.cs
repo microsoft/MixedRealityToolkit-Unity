@@ -297,7 +297,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// This list gets initialized on startup, or whenever the profiles for the interactable changes.
         /// The list of active themes inspects this list to determine which themes to use based on current dimension.
         /// </summary>
-        /// <returns></returns>
         private List<System.Tuple<int, InteractableThemeBase>> allThemeDimensionPairs = new List<System.Tuple<int, InteractableThemeBase>>();
 
         /// <summary>
