@@ -9,6 +9,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
 {
     public class ControllerMappingTests
     {
+        [OneTimeSetUp]
+        public void SetUp()
+        {
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
+        }
+
+        [OneTimeTearDown]
+        public void TearDown()
+        {
+            TestUtilities.ShutdownMixedRealityToolkit();
+            TestUtilities.EditorTearDownScenes();
+        }
+
         [Test]
         public void MouseControllerUpdateTest()
         {
