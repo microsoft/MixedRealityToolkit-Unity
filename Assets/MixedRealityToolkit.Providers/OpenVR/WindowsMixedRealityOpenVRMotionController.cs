@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 {
@@ -65,6 +66,8 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         public override void SetupDefaultInteractions(Handedness controllerHandedness)
         {
             base.SetupDefaultInteractions(controllerHandedness);
+
+            Assert.AreEqual(Interactions[0].Description, "Spatial Pointer", "The first interaction mapping is no longer the Spatial Pointer. Please update.");
 
             MixedRealityPose startingRotation = MixedRealityPose.ZeroIdentity;
             startingRotation.Rotation *= Quaternion.AngleAxis(PointerOffsetAngle, Vector3.left);
