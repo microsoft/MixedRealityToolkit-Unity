@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private readonly Vector3 LightDirection = new Vector3(-0.5f, -0.5f, 0.0f);
 
         /// <summary>
-        /// Tests if <see cref="MaterialInstance"/> can be instantiated and manipulated at runtime.
+        /// Tests if <see cref="Microsoft.MixedReality.Toolkit.Rendering.MaterialInstance"/> can be instantiated and manipulated at runtime.
         /// </summary>
         /// <returns>Enumerator for Unity</returns>
         [UnityTest]
