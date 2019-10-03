@@ -1,8 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -212,5 +214,56 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var angle = Quaternion.Angle(val1, val2);
             Debug.Assert(angle >= tolerance, $"{message}, val1 {val1.ToString("0.000")} almost equals val2 {val2.ToString("0.000")}");
         }
+
+        [MenuItem("Mixed Reality Toolkit/Utilities/Update/Icons/Tests")]
+        private static void UpdateTestScriptIcons()
+        {
+            var testDirectories = MixedRealityToolkitFiles.GetDirectories(MixedRealityToolkitModuleType.Tests);
+            var directories = MixedRealityToolkitFiles.GetDirectories(MixedRealityToolkitModuleType.Tests);
+
+            Texture2D icon = null;
+
+            foreach (string iconPath in MixedRealityToolkitFiles.GetFiles("StandardAssets/Icons"))
+            {
+                if (iconPath.EndsWith("test_icon.png"))
+                {
+                    icon = AssetDatabase.LoadAssetAtPath<Texture2D>(iconPath);
+                    break;
+                }
+            }
+
+            if (icon == null)
+            {
+                Debug.Log("Couldn't find test icon.");
+                return;
+            }
+
+            foreach (string directory in testDirectories)
+            {
+                string[] scriptGuids = AssetDatabase.FindAssets("t:MonoScript", new string[] { MixedRealityToolkitFiles.GetAssetDatabasePath(directory) });
+
+                for (int i = 0; i < scriptGuids.Length; i++)
+                {
+                    string scriptPath = AssetDatabase.GUIDToAssetPath(scriptGuids[i]);
+
+                    EditorUtility.DisplayProgressBar("Updating Icons...", $"{i} of {scriptGuids.Length} {scriptPath}", i / (float)scriptGuids.Length);
+
+                    MonoScript script = AssetDatabase.LoadAssetAtPath<MonoScript>(scriptPath);
+
+                    Texture2D currentIcon = getIconForObject?.Invoke(null, new object[] { script }) as Texture2D;
+                    if (currentIcon == null || !currentIcon.Equals(icon))
+                    {
+                        setIconForObject?.Invoke(null, new object[] { script, icon });
+                        copyMonoScriptIconToImporters?.Invoke(null, new object[] { script });
+                    }
+                }
+            }
+
+            EditorUtility.ClearProgressBar();
+        }
+
+        private static readonly MethodInfo getIconForObject = typeof(EditorGUIUtility).GetMethod("GetIconForObject", BindingFlags.Static | BindingFlags.NonPublic);
+        private static readonly MethodInfo setIconForObject = typeof(EditorGUIUtility).GetMethod("SetIconForObject", BindingFlags.Static | BindingFlags.NonPublic);
+        private static readonly MethodInfo copyMonoScriptIconToImporters = typeof(MonoImporter).GetMethod("CopyMonoScriptIconToImporters", BindingFlags.Static | BindingFlags.NonPublic);
     }
 }
