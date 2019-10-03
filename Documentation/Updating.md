@@ -22,7 +22,7 @@ The `ColliderNearInteractionTouchable` class has been deprecated. Please update 
 
 **_Added_**
 
-`IMixedRealityMouseDeviceManager` has been added `CursorSpeed` and `WheelSpeed` properties. Thes properties allow applications to specify a multiplier value by which the speed of the cursor and wheel, respectively will be scaled.
+`IMixedRealityMouseDeviceManager` has been added `CursorSpeed` and `WheelSpeed` properties. These properties allow applications to specify a multiplier value by which the speed of the cursor and wheel, respectively will be scaled.
 
 This is a breaking change and requires existing mouse device manager implementations to be modified .
 
@@ -31,7 +31,38 @@ This is a breaking change and requires existing mouse device manager implementat
 
 **_Deprecated_**
 
-The `MouseInputProfile` property has been marked as obsolete and will be removed from a future version of the MRTK.
+The `MouseInputProfile` property has been marked as obsolete and will be removed from a future version of the Microsoft Mixed Reality Toolkit. It is recommended that application code no longer use this property.
+
+**Interactable**
+
+The following methods and properties have been deprecated and will be removed from a future version of the Microsoft Mixed Reality Toolkit. The recommendation is to update application code per the guidance contained in the Obsolete attribute and displayed in the console.
+
+- `public bool Enabled`
+- `public bool FocusEnabled`
+- `public void ForceUpdateThemes()`
+- `public bool IsDisabled`
+- `public bool IsToggleButton`
+- `public int GetDimensionIndex()`
+- `public State[] GetStates()`
+- `public bool RequiresFocus`
+- `public void ResetBaseStates()`
+- `public virtual void SetCollision(bool collision)`
+- `public virtual void SetCustom(bool custom)`
+- `public void SetDimensionIndex(int index)`
+- `public virtual void SetDisabled(bool disabled)`
+- `public virtual void SetFocus(bool focus)`
+- `public virtual void SetGesture(bool gesture)`
+- `public virtual void SetGestureMax(bool gesture)`
+- `public virtual void SetGrab(bool grab)`
+- `public virtual void SetInteractive(bool interactive)`
+- `public virtual void SetObservation(bool observation)`
+- `public virtual void SetObservationTargeted(bool targeted)`
+- `public virtual void SetPhysicalTouch(bool touch)`
+- `public virtual void SetPress(bool press)`
+- `public virtual void SetTargeted(bool targeted)`
+- `public virtual void SetToggled(bool toggled)`
+- `public virtual void SetVisited(bool visited)`
+- `public virtual void SetVoiceCommand(bool voice)`
 
 **NearInteractionTouchableSurface**
 
