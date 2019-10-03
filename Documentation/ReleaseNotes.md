@@ -60,13 +60,72 @@ For the smoothest upgrade path, please use the following steps.
 
 ### What's new in 2.1.0
 
-<< todo >>
+**Dwell intaraction (Experimental)**
+
+MRTK has added experimental support for dwell interactions. Dwell interactions enable applications to respond to a user focusing their gaze or motion controller on an interactable object for a predefined period of time.
+
+Please refer to [change 5594](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/5594) for details.
+
+**Hand menu example updates**
+
+The hand menu example has received visual updates (no code changes).
+
+**MRTK Examples Hub**
+
+The MRTK Examples Hub is now part of the MixedRealityToolkit.Examples package. The examples hub provides an excellent example of how to use the [Scene System](SceneSystem/SceneSystemGettingStarted.md).
+
+**Near menu control**
+
+Near Menu is a UX control which provides a collection of buttons or other UI components. It is floating around the user's body and easily accessible anytime. Since it is loosely coupled with the user, it does not disturb the user's interaction with the target content. The user can use the 'Pin' button to world-lock/unlock the menu. The menu can be grabbed and placed at a specific position.
+
+Please see [Near Menu](README_NearMenu.md) for more information.
+
+**Pressable button for Unity UI**
+
+Support for pressable buttons on Unity UI canvases has been added. The HandInteractionExamples demo scene, in the MixedRealityToolkit.Examples package, demonstrates this feature.
+
+**Speech command confirmation label**
+
+A new speech command confirmation label (SpeechConfirmationTooltip.prefab) has been added to provide functionality that matches the Microsoft HoloLens 2 shell.  Please see the [speech input](Input/Speech.md) article for more information.
 
 ### Known issues in 2.1.0
 
 The sections below highlight some of the known issues in the Microsoft Mixed Reality Toolkit.
 
-<< todo >>
+**Long paths**
+
+When building on Windows, there is a MAX_PATH limit of 255 characters. Unity is affected by these limits and may fail to build a binary if its resolved output path is longer than 255 characters.
+
+This can manifest as CS0006 errors in Visual Studio that look like:
+
+> CS0006: Metadata file 'C:\path\to\longer\file\that\is\longer\than\255\characters\mrtk.long.binary.name.dll' could not be found.
+
+This can be worked around by moving the Unity project folder closer to the root of the drive, for example:
+
+> C:\src\project
+
+Please see [this issue](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5469) for more background information. 
+
+**Runtime profile swapping**
+
+MRTK does not fully support profile swapping at runtime. This feature is being investigated for a future release. Please see issues [4289](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4289),
+[5465](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5465) and
+[5466](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5466) for more information.
+
+**Unity 2019: Could not copy the file HolographicAppRemoting.dll**
+
+There is a known issue with version 3.0.0 of the Windows Mixed Reality package for Unity 2019. If
+the project has this version installed, the following error will be encountered when compiling in Microsoft
+Visual Studio.
+
+To work around the issues, please update to a newer version using Window > Package Manager in the Unity editor.
+
+**VR/Immersive devices: Content in some demo scenes is placed below the user**
+
+Some demo scenes contained in the Examples package are optimized for HoloLens device's (headset's y position is 0). These scenes
+may place objects below the user when run on VR/Immersive device's (headset's Y position is the distance from the floor). To work around this issue, select the **Scene Content** object, in the Hierarchy, and set the Transform's Position Y value to **1.5** (1.5 meters, or the preferred headset height).
+
+![Adjusting Scene Content Height](Images/ReleaseNotes/AdjustContentHeight.png)
 
 ## Version 2.0.1
 
@@ -381,7 +440,7 @@ Please see [this issue](https://github.com/microsoft/MixedRealityToolkit-Unity/i
 
 **Runtime profile swapping**
 
-MRTK fully support profile swapping at runtime. This feature is being investigated for a future release. Please see issues [4289](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4289),
+MRTK does not fully support profile swapping at runtime. This feature is being investigated for a future release. Please see issues [4289](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4289),
 [5465](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5465) and
 [5466](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5466) for more information.
 
