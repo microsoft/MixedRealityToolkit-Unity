@@ -18,7 +18,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
     /// </summary>
     public class ScrollingObjectCollection : BaseObjectCollection, IMixedRealityPointerHandler, IMixedRealityTouchHandler, IMixedRealitySourceStateHandler, IMixedRealityInputHandler
     {
-
         /// <summary>
         /// How velocity is applied to a <see cref="ScrollingObjectCollection"/> when a scroll is released.
         /// </summary>
@@ -39,6 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             LeftAndRight,
         }
 
+        [Experimental]
         [SerializeField]
         [Tooltip("Enables/disables scrolling with near/far interaction.")]
         private bool canScroll = true;

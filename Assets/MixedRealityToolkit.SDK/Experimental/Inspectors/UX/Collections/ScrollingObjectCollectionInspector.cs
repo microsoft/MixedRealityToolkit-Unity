@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 
             momentumEvent = serializedObject.FindProperty("ListMomentumEnded");
 
-            //serialized properties for vizualisation
+            //serialized properties for visualization
             nodeList = serializedObject.FindProperty("nodeList");
             pressPlane = serializedObject.FindProperty("thresholdPoint");
         }
@@ -99,6 +99,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 
             ScrollingObjectCollection scrollContainer = (ScrollingObjectCollection)target;
 
+            EditorGUILayout.LabelField("General Properties", EditorStyles.boldLabel);
+            using (new EditorGUI.IndentLevelScope())
+            {
+                EditorGUILayout.PropertyField(canScroll);
+                EditorGUILayout.PropertyField(scrollDirection);
+                EditorGUILayout.PropertyField(setUpAtRuntime);
+                EditorGUILayout.PropertyField(useCameraPreRender);
+                EditorGUILayout.Space();
+            }
+
             EditorGUILayout.LabelField("Collection Properties", EditorStyles.boldLabel);
 
             using (new EditorGUI.IndentLevelScope())
@@ -108,12 +118,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                 EditorGUILayout.PropertyField(cellHeight);
                 EditorGUILayout.PropertyField(tiers);
                 EditorGUILayout.PropertyField(viewableArea);
-                EditorGUILayout.Space();
-                EditorGUILayout.PropertyField(scrollDirection);
-                EditorGUILayout.Space();
-                EditorGUILayout.PropertyField(canScroll);
-                EditorGUILayout.PropertyField(setUpAtRuntime);
-                EditorGUILayout.PropertyField(useCameraPreRender);
                 EditorGUILayout.Space();
             }
 
