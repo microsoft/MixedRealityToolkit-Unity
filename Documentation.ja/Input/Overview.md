@@ -1,22 +1,23 @@
-# Input Overview
+# 入力の概要
 
-The Input System in MRTK allows you to:
-- Consume inputs from a variety of input sources, like 6 DOF controllers, articulated hands or speech, via input events.
-- Define abstract actions, like *Select* or *Menu*, and associate them to different inputs.
-- Setup pointers attached to controllers to drive UI components via focus and pointer events.
+MRTK の入力システム (Input System) では、次のことが可能です。
+
+- 入力イベントを介して、6 DOF コントローラー、多関節ハンドまたは音声など、さまざまな入力ソースからの入力を消費します。
+- *Select* や *Menu* などの抽象アクションを定義し、それらを異なる入力に関連付けます。
+- フォーカス イベントとポインター イベントを介して UI コンポーネントを駆動するためにコントローラーにアタッチされたポインターを設定します。
 
 <img src="../../Documentation/Images/Input/MRTK_InputSystem.png" style="display:block;margin-left:auto;margin-right:auto;">
-<sup>Overview of MRTK Input System</sup>
+<sup>MRTK 入力システムの概要</sup>
 
-Inputs are produced by [**Input Data Providers(Device Manager)**](InputProviders.md). Each provider corresponds to a particular source of input: Open VR, Windows Mixed Reality (WMR), Unity Joystick, Windows Speech, etc. Providers are added to your project via the **Registered Service Providers Profile** in the *Mixed Reality Toolkit* component and will produce [**Input Events**](InputEvents.md) automatically when the corresponding input sources are available, e.g. when a WMR controller is detected or a gamepad connected.
+入力は [**入力データ プロバイダー(デバイス マネージャー) (Input Data Providers(Device Manager))**](InputProviders.md) によって生成されます。各プロバイダーは、Open VR、Windows Mixed Reality (WMR)、Unity Joystick、Windows Speech など、入力の特定のソースに対応しています。プロバイダーは、*Mixed Reality Toolkit* コンポーネントの **Registered Service Providers Profile** を介してプロジェクトに追加され、対応する入力ソースが利用可能な場合(例えば WMR のコントローラーが検出されたり、ゲームパッドが接続された場合)、自動的に [**入力イベント (Input Events)**](InputEvents.md) を生成します。
 
-[**Input Actions**](InputActions.md) are abstractions over raw inputs meant to help isolating application logic from the specific input sources producing an input. It can be useful, for example, to define a *Select* action and map it to the left mouse button, a button in a gamepad and a trigger in a 6 DOF controller. You can then have your application logic listen for *Select* input action events instead of having to be aware of all the different inputs that can produce it. Input Actions are defined in the **Input Actions Profile**, found within the *Input System Profile* in the *Mixed Reality Toolkit* component.
+[**入力アクション (Input Actions)**](InputActions.md) は、入力を生成する特定の入力ソースからアプリケーション ロジックを分離するのに役立つ生の入力に対する抽象化です。たとえば、*Select* アクションを定義し、マウスの左ボタン、ゲームパッドのボタン、6 DOF コントローラーのトリガーにマップすると便利です。これにより、アプリケーション ロジックは、それを生成できるさまざまな入力をすべて意識する代わりに、*Select* 入力アクション イベントをリッスンすることができます。入力アクションは **Input Actions Profile** で定義され、*Mixed Reality Toolkit* コンポーネントの *Input System Profile* 内にあります。
 
-[**Controllers**](Controllers.md) are created by *input providers* when input devices are detected and destroyed when they're lost or disconnected. The WMR input provider, for example, will create *WMR controllers* for 6 DOF devices and *WMR articulated hand controllers* for articulated hands. Controller inputs can be mapped to input actions via the **Controller Mapping Profile**, inside the *Input System Profile*. Inputs events raised by controllers will include the associated input action, if any.
+[**コントローラー (Controllers)**](Controllers.md) は、入力デバイスが検出されたときに *入力プロバイダー (input providers)* によって作成され、入力デバイスが失われたり切断されたりすると破棄されます。たとえば、WMR 入力プロバイダーは、6 DOF デバイス用の *WMR コントローラー*と、多関節ハンド用の *WMR 多関節ハンド コントローラー*を作成します。コントローラー入力は、*Input System Profile* 内の **Controller Mapping Profile** を介して入力アクションにマッピングすることができます。コントローラーによって発生した入力イベントには、もし存在する場合、関連する入力アクションが含まれます。
 
-Controllers can have [**Pointers**](Pointers.md) attached to them that query the scene to determine the game object with focus and raise [**Pointer Events**](Pointers.md#pointer-event-interfaces) on it. As an example, our *line pointer* performs a raycast against the scene using the controller pose to compute the origin and direction of the ray. The pointers created for each controller are set up in the **Pointer Profile**, under the *Input System Profile*.
+コントローラーには、[**ポインター (Pointers)**](Pointers.md) をアタッチして、シーンを照会してフォーカスのあるゲーム オブジェクトを決定し、[**ポインター イベント (Pointer Events)**](Pointers.md#pointer-event-interfaces)を発生させることができます。例として、*ライン ポインター (line pointer)* はコントローラーのポーズを使用してシーンに対してレイキャストを実行し、レイの原点と方向を計算します。各コントローラーに対して作成されたポインターは、*Input System Profile* の下の **Pointer Profile** で設定されます。
 
 <img src="../../Documentation/Images/Input/MRTK_Input_EventFlow.png" width="200px" style="display:block;margin-left:auto;margin-right:auto;">
-<sup>Event flow.</sup>
+<sup>イベント フロー</sup>
 
-While you can handle input events directly in UI components it is recommended to use pointer events to keep the implementation device-independent.
+入力イベントは UI コンポーネントで直接処理できますが、ポインター イベントを使用して実装をデバイスに依存しないようにすることをお勧めします。
