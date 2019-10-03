@@ -215,6 +215,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Debug.Assert(angle >= tolerance, $"{message}, val1 {val1.ToString("0.000")} almost equals val2 {val2.ToString("0.000")}");
         }
 
+#if UNITY_EDITOR
         [MenuItem("Mixed Reality Toolkit/Utilities/Update/Icons/Tests")]
         private static void UpdateTestScriptIcons()
         {
@@ -265,5 +266,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private static readonly MethodInfo getIconForObject = typeof(EditorGUIUtility).GetMethod("GetIconForObject", BindingFlags.Static | BindingFlags.NonPublic);
         private static readonly MethodInfo setIconForObject = typeof(EditorGUIUtility).GetMethod("SetIconForObject", BindingFlags.Static | BindingFlags.NonPublic);
         private static readonly MethodInfo copyMonoScriptIconToImporters = typeof(MonoImporter).GetMethod("CopyMonoScriptIconToImporters", BindingFlags.Static | BindingFlags.NonPublic);
+#endif
     }
 }
