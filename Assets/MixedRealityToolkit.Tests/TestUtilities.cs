@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         /// <summary>
         /// Creates a number of scenes and loads them additively for testing. Must create a minimum of 1.
-        /// Used only in editor stests.
+        /// Used only in editor tests.
         /// </summary>
         public static void EditorCreateScenes(int numScenesToCreate = 1)
         {
@@ -145,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 
             // Todo: this condition shouldn't be here.
-            // It's here due to some edit mode tests initializing Mrtk instance in Edit mode, causing some of 
+            // It's here due to some edit mode tests initializing MRTK instance in Edit mode, causing some of 
             // event handler registration to live over tests and cause next tests to fail.
             // Exact reason requires investigation.
             if (Application.isPlaying)
