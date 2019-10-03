@@ -615,10 +615,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 // Wait for button animation to complete
                 yield return new WaitForSeconds(0.33f);
 
-                // Make sure the button was clicked
                 Assert.True(wasClicked, "Toggle button was not clicked");
                 
-                // Make sure the button depth is back at the starting position when re-enable the gameObject
+                // Make sure the button depth is back at the starting position
                 Assert.True(frontPlateTransform.localPosition == frontPlateStartPosition, "Toggle button front plate did not return to starting position.");                
             }
 
