@@ -12864,7 +12864,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.UnityInput.MouseController.html",
-          "hash": "80wnNMeuF2uH9LQ2bzT+mw=="
+          "hash": "8abhe2epCv/7nlxeyUyUMA=="
         }
       },
       "is_incremental": false,
@@ -13560,7 +13560,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Input.WindowsMixedRealityOpenVRMotionController.html",
-          "hash": "SKhnvaD/FppscTywcFenbQ=="
+          "hash": "AM3ME4+pyKLyV0efUvj0sQ=="
         }
       },
       "is_incremental": false,
@@ -14948,6 +14948,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.InputSystem.ControllerMappingTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.InputSystem.ControllerMappingTests.html",
+          "hash": "hHp4S10dO3LCSVG6zuHTMw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Tests.InputSystem.DefaultPrimaryPointerSelectorTests.yml",
       "output": {
         ".html": {
@@ -14964,7 +14976,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.InputSystem.InputSystemTests.html",
-          "hash": "aava0kYKeJEJkbyt66zU9Q=="
+          "hash": "HRmyjdyKhZMZ+BnEklM0gA=="
         }
       },
       "is_incremental": false,
@@ -15012,7 +15024,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.InputSystem.html",
-          "hash": "SDScWUGhLEOqtzxiSEqh3A=="
+          "hash": "F8d0UIAne5+oszEziRdILw=="
         }
       },
       "is_incremental": false,
@@ -20316,7 +20328,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "LBGw72+LktUfh5Lp4G7F7A=="
+          "hash": "1YVmTXHT54SRk4x0Utrv5w=="
         }
       },
       "is_incremental": false,
@@ -20384,7 +20396,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1156,
+          "total_file_count": 1157,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
