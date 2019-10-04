@@ -190,6 +190,12 @@ PrefabInstance:
       value: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
       objectReference: {fileID: 0}
+    - target: {fileID: 6549419268572740206, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: profiles.Array.data[3].Themes.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: dae413b1fffbbf841ae1176deb55d3c0,
+        type: 2}
     - target: {fileID: 6125606074263152001, guid: e35ccb692ee2a154fb472995266a2450,
         type: 3}
       propertyPath: m_AnchoredPosition.x
