@@ -508,13 +508,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         // Hand position previous frame
         private Vector3 lastPointerPos;
 
-        private float releaseDistance;
-
+        [SerializeField]
+        [HideInInspector]
         /// <summary>
-        /// The distance in front of the scroller, in local space, for a touch release
+        /// The distance in front of the scroller, in local space, for a touch release.
+        /// We serialize and then hide this because we want to use the value
+        /// when drawing the touch plane, but not actually expose the value publicly.
         /// </summary>
-        /// <value></value>
-        public float ReleaseDistance{ get => releaseDistance; }
+        private float releaseDistance;
 
         // Current time at initial press
         private float initialPressTime;
@@ -893,6 +894,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             if (isEngaged && TryGetPointerPositionOnPlane(out Vector3 currentPointerPos))
             {
                 Vector3 handDelta = initialPointerPos - currentPointerPos;
+                handDelta = transform.InverseTransformDirection(handDelta);
 
                 //Lets see if this is gonna be a click or a drag
                 //Check the scroller's length state to prevent resetting calculation
@@ -1059,7 +1061,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
             result = Vector3.zero;
 
-            if (currentPointer == null)
+            if (currentPointer == null || currentPointer?.Position == null)
             {
                 return false;
             }
