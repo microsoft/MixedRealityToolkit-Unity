@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <inheritdoc />
         public override void SetupDefaultInteractions(Handedness controllerHandedness)
         {
-            // Generic unity controller's will not have default interactions
+            // Generic Unity controllers will not have default interactions
         }
 
         /// <summary>
