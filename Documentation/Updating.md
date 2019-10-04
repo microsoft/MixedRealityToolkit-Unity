@@ -79,7 +79,7 @@ The hand mesh and joint visualizations now have a separate editor and player set
 Custom hand tracking profiles may need to be updated to work correctly with version 2.1.0.
 
 >[!Note]
->This change is not backwards compatibile with version 2.0.0.
+>This change is not backwards compatible with version 2.0.0.
 
 **Input simulation profile**
 

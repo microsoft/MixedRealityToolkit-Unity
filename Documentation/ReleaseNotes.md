@@ -60,7 +60,7 @@ For the smoothest upgrade path, please use the following steps.
 
 ### What's new in 2.1.0
 
-**Dwell intaraction (Experimental)**
+**Dwell interaction (Experimental)**
 
 MRTK has added experimental support for dwell interactions. Dwell interactions enable applications to respond to a user focusing their gaze or motion controller on an interactable object for a predefined period of time.
 
@@ -301,7 +301,7 @@ This release updates the MRTK to better mirror the features. behaviors and visua
 
 The input system was updated to allow for raycast customization, via custom implementations of [`IMixedRealityRaycastProvider`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityRaycastProvider).
 
-Specify the desired raycast provider in the Input System's configuration profile. 
+Specify the desired raycast provider in the Input System's configuration profile.
 
 ![Selecting the Raycast provider](Images/ReleaseNotes/SelectRaycastProvider.png)
 
@@ -314,7 +314,7 @@ Solvers can now be controlled by the first available hand/controller instead of 
 Please review the **solvers** section of [Updating from RC2 to 2.0.0](Updating.md) for additional changes and mitigation details.
 
 **Input animation recording**
- 
+
 MRTK features a [recording system](InputSimulation/InputAnimationRecording.md) by which head movement and hand tracking
 data can be stored in animation files. The recorded data can then be played back using the [input simulation system](InputSimulation/InputSimulationService.md).
 
@@ -367,7 +367,7 @@ Service manager prefabs are provided for the following services.
 - SpatialAwarenessSystem
 - TeleportSystem (requires the Input System)
 
-To use, drag and drop the desired prefab into the heirarchy and select the configuration
+To use, drag and drop the desired prefab into the hierarchy and select the configuration
 profile.
 
 > [!Note]
@@ -417,7 +417,7 @@ The sections below highlight some of the known issues in the Microsoft Mixed Rea
 
 **Extension service wizard**
 
-When using the extension service wizard,  *Generate Inspector* and/or *Generate Profile* are not actually optional. Trying to create an extension service with either of these deselected will result in an error on the following page. Furthermore, the extension service created for the user will create a property for the ScriptableObject profile that was not actually created. This results in a compiler error until the property line is removed. 
+When using the extension service wizard,  *Generate Inspector* and/or *Generate Profile* are not actually optional. Trying to create an extension service with either of these deselected will result in an error on the following page. Furthermore, the extension service created for the user will create a property for the ScriptableObject profile that was not actually created. This results in a compiler error until the property line is removed.
 
 Current workaround steps:
 
