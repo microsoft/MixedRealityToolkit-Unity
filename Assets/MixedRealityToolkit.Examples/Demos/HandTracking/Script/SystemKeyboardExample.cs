@@ -28,6 +28,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         [SerializeField]
         private TextMeshPro debugMessage = null;
 
+#pragma warning disable 0414
+        [SerializeField]
+        private MixedRealityKeyboardPreview mixedRealityKeyboardPreview = null;
+#pragma warning restore 0414
+
         private void Start()
         {
 #if WINDOWS_UWP
@@ -60,6 +65,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 {
                     debugMessage.text = "typing... " + KeyboardText;
                 }
+
+                if (mixedRealityKeyboardPreview != null)
+                {
+                    mixedRealityKeyboardPreview.Text = wmrKeyboard.PreviewText;
+                    mixedRealityKeyboardPreview.CaretIndex = wmrKeyboard.PreviewCaretIndex;
+                }
             }
             else
             {
@@ -76,6 +87,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                     {
                         debugMessage.text = "typed " + KeyboardText;
                     }
+                }
+
+                if (mixedRealityKeyboardPreview != null)
+                {
+                    mixedRealityKeyboardPreview.Text = string.Empty;
+                    mixedRealityKeyboardPreview.CaretIndex = 0;
                 }
             }
 #elif UNITY_IOS || UNITY_ANDROID

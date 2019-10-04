@@ -194,6 +194,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     {
                         MovePreviewCaretToEnd();
                     }
+                    else
+                    {
+                        PreviewCaretIndex += newCharacters.Length;
+                    }
                 }
                 else if (characterDelta < 0)
                 {
