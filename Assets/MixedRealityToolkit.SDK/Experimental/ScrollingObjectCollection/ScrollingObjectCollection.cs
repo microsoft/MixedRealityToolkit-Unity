@@ -248,6 +248,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             set { tiers = value; }
         }
 
+        [Tooltip("Whether items that are partially clipped are disabled for input hit testing")]
+        [SerializeField]
+        private bool disableClippedItems = true;
+        public bool DisableClippedItems {
+            get => disableClippedItems;
+            set => disableClippedItems = value;
+        }
+
         [SerializeField]
         [Tooltip("Manual offset adjust the scale calculation of the ClippingBox.")]
         private Vector3 occlusionScalePadding = new Vector3(0.0f, 0.0f, 0.001f);
@@ -1584,13 +1592,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             int postItems = numItemsPostView;
 
             int listLength = NodeList.Count;
-            int col = Tiers;
 
             for (int i = 0; i < listLength; i++)
             {
                 ObjectCollectionNode node = NodeList[i];
                 //hide the items that have no chance of being seen
-                if (i < prevItems - col || i > postItems + col)
+                if (i < prevItems - Tiers || i > postItems + Tiers)
                 {
                     //quick check to cut down on the redundant calls
                     if (node.GameObject.activeSelf)
@@ -1607,8 +1614,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 }
                 else
                 {
+                    bool disableNode = disableClippedItems ?
+                        i < prevItems || i > postItems :
+                        i < prevItems - Tiers || i > postItems + Tiers;
+
                     //Disable colliders on items that will be scrolling in and out of view
-                    if (i < prevItems || i > postItems)
+                    if (disableNode)
                     {
                         foreach (Collider c in node.Colliders)
                         {

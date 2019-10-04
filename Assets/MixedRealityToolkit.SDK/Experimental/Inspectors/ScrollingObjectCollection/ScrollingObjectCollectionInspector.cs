@@ -46,6 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         private SerializedProperty touchEvent;
         private SerializedProperty untouchEvent;
         private SerializedProperty momentumEvent;
+        private SerializedProperty disableClippedItems;
 
         private bool showOverrideButtons = true;
         private bool showUnityEvents = false;
@@ -89,6 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             untouchEvent = serializedObject.FindProperty("TouchEnded");
             momentumEvent = serializedObject.FindProperty("ListMomentumEnded");
 
+            disableClippedItems = serializedObject.FindProperty("disableClippedItems");
             //serialized properties for visualization
             nodeList = serializedObject.FindProperty("nodeList");
             releaseDistance = serializedObject.FindProperty("releaseDistance");
@@ -166,6 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 
                 EditorGUILayout.PropertyField(animationCurve);
                 EditorGUILayout.PropertyField(animationLength);
+                EditorGUILayout.PropertyField(disableClippedItems);
             }
 
             EditorGUILayout.Space();
