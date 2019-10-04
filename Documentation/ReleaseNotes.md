@@ -104,7 +104,7 @@ This can be worked around by moving the Unity project folder closer to the root 
 
 > C:\src\project
 
-Please see [this issue](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5469) for more background information. 
+Please see [this issue](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5469) for more background information.
 
 **Runtime profile swapping**
 
@@ -137,6 +137,7 @@ This hotfix release of Mixed Reality Toolkit fixes a couple of small bugs when c
 ### Upgrading projects to 2.0.1
 
 For non-NuGet package cases, the upgrade from 2.0.0 should not have an effect when consuming Mixed Reality Toolkit as .unitypackages or source. To upgrade your Unity project to 2.0.1 from before 2.0.0, follow the same instructions as:
+
 - [Upgrading projects](#upgrading-projects-to-200)
 
 Currently, the upgrade path from non-NuGet package to NuGet package version of Mixed Reality Toolkit is not officially supported. Look out for that in the coming releases.
@@ -154,7 +155,7 @@ To add Mixed Reality Toolkit to your project in the form of a NuGet package, do 
 
 ### What's new in 2.0.1
 
-Consuming Mixed Reality Toolkit as a NuGet package will reduce compilation time, the ammount of .csproj files when editing code, and allow for a simple update mechanism for future versions.
+Consuming Mixed Reality Toolkit as a NuGet package will reduce compilation time, the amount of .csproj files when editing code, and allow for a simple update mechanism for future versions.
 
 ## Version 2.0.0
 
@@ -219,17 +220,17 @@ profiles, please open them to verify that all of the updated properties are corr
 **BoundingBox**
 
 - Improvements
-    - Normalized the handle asset size and scaling logic
-    - The handle asset is now sized to 1-meter
-    - Default values and examples are updated
+  - Normalized the handle asset size and scaling logic
+  - The handle asset is now sized to 1-meter
+  - Default values and examples are updated
 - New features
-    - Animated handle by proximity
-    - Match the HoloLens 2 shell behavior
-    - Handles can be configured to appear only when a hand is close to them
+  - Animated handle by proximity
+  - Match the HoloLens 2 shell behavior
+  - Handles can be configured to appear only when a hand is close to them
 - New example scene
-    - The BoundingBoxExample scene, in the Examples package (Demos\UX\BoundingBox\Scenes\BoundingBoxExamples.unity), shows various types of configurations
+  - The BoundingBoxExample scene, in the Examples package (Demos\UX\BoundingBox\Scenes\BoundingBoxExamples.unity), shows various types of configurations
 
-> [!Important] 
+> [!Important]
 > Normalized asset handle size and scaling logic require updated handle scale values. With this change, the existing bounding box
 handle will be displayed in a very large size. Please refer to the **Bounding box handle styles** section in the [Bounding Box](README_BoundingBox.md)
 documentation for updated recommended values for the handle size. Handle configuration examples can be found in the **BoundingBoxExamples** scene.
@@ -286,15 +287,15 @@ The HandConstraintPalmUp solver now has a toggle to enforce the hand’s fingers
 **HoloLens 2 Button**
 
 - Improved many visual details to match the HoloLens 2 shell including
-    - Compressing visuals
-    - Far interaction support
-    - Focus highlight
-    - Shader effects
+  - Compressing visuals
+  - Far interaction support
+  - Focus highlight
+  - Shader effects
 - HoloLens 2 style Round Button has been added
 
 **HoloLens 2 Shell Parity**
 
-This release updates the MRTK to better mirror the featires. behaviors and visuals of the HoloLens 2 shell experience. This [GitHub](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4200) issue describes the changes.
+This release updates the MRTK to better mirror the features. behaviors and visuals of the HoloLens 2 shell experience. This [GitHub](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4200) issue describes the changes.
 
 **IMixedRealityRaycastProvider**
 
@@ -321,7 +322,8 @@ data can be stored in animation files. The recorded data can then be played back
 
 The [MRTK Standard Shader](README_MRTKStandardShader.md) now supports Unity's Lightweight Scriptable render pipeline.
 
-Additional improvments
+Additional improvements
+
 - A warning and "Fix Now" button is now displayed on materials which are in a project that has depth buffer
 sharing enabled and do not write depth
 - Proximity lights now have per material color overrides and a "Subtractive Light" option to mimic proximity
@@ -350,7 +352,7 @@ applications that contain more than once scene.
 
 **Service managers (experimental)**
 
-This release adds service managers to enable the light-weight addition of specific Microsoft 
+This release adds service managers to enable the light-weight addition of specific Microsoft
 Mixed Reality Toolkit features, such as the Spatial Awareness system, individually.
 
 These service managers are imported as part of the Foundation package and are located in the
@@ -366,7 +368,7 @@ Service manager prefabs are provided for the following services.
 - TeleportSystem (requires the Input System)
 
 To use, drag and drop the desired prefab into the heirarchy and select the configuration
-profile. 
+profile.
 
 > [!Note]
 > These service managers are currently experimental, may have issues and
@@ -375,10 +377,10 @@ are subject to change. Please file any and all issues that are encountered on Gi
 **Slate**
 
 - Improved
-    - Usability of slates by adding the shadow based on the finger proximity
-    - ‘Follow Me’ behavior to match the HoloLens 2 shell behavior, using Radial Solver.
+  - Usability of slates by adding the shadow based on the finger proximity
+  - ‘Follow Me’ behavior to match the HoloLens 2 shell behavior, using Radial Solver.
 - Fixed
-    - Border thickness issue fixed on flattend Bounding Box
+  - Border thickness issue fixed on flattened Bounding Box
 
 **SpatialObjectMeshObserver**
 
@@ -388,7 +390,7 @@ and uses them to simulate environmental data from devices such as Microsoft Holo
 
 SpatialObjectMeshObserver is not enabled in the default profiles, please see the
 [Spatial Awareness Getting Started](SpatialAwareness/SpatialAwarenessGettingStarted.md) article
-for more information on how to use this feature. 
+for more information on how to use this feature.
 
 **Take Screenshot**
 
@@ -407,7 +409,7 @@ The following UX controls in the following list can now be instantiated and conf
 
 **Updated architecture documentation**
 
-The [archtecture documentation](Architecture/Overview.md) is all new for this version.
+The [architecture documentation](Architecture/Overview.md) is all new for this version.
 
 ### Known issues in 2.0.0
 
@@ -436,7 +438,7 @@ This can be worked around by moving the Unity project folder closer to the root 
 
 > C:\src\project
 
-Please see [this issue](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5469) for more background information. 
+Please see [this issue](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5469) for more background information.
 
 **Runtime profile swapping**
 
