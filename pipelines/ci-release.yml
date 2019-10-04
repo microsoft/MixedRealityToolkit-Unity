@@ -40,7 +40,7 @@ jobs:
     displayName: "Clone release scripts"
 
   - powershell: |
-      $(Build.ArtifactStagingDirectory)/scripts/generateSignConfigs.ps1 -Directory $(Build.SourcesDirectory) -OutputDirectory $(Build.ArtifactStagingDirectory)/configs
+      $(Build.ArtifactStagingDirectory)/scripts/generateSignConfigs.ps1 -Directory $(Build.SourcesDirectory)/NuGet -OutputDirectory $(Build.ArtifactStagingDirectory)/configs
     displayName: "Generate signing configs"
 
   # required for code signing
