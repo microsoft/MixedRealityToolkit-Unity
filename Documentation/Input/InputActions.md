@@ -27,17 +27,17 @@ The way you map an input to and action depends on the type of the input source:
 
 Go to the **Controller Input Mapping Profile**, under the *Input System Profile*. There you will find a list of all supported controllers:
 
-<img src="../../Documentation/Images/Input/ControllerInputMappingProfile.png" style="max-width:100%;">
+<img src="../../Documentation/Images/Input/ControllerInputMappingProfile.PNG" style="max-width:100%;">
 
 Select the one you want to configure and a dialog window will appear with all the controller inputs, allowing you to set an action for each of them:
 
-<img src="../../Documentation/Images/Input/InputActionAssignment.png" style="max-width:100%;">
+<img src="../../Documentation/Images/Input/InputActionAssignment.PNG" style="max-width:100%;">
 
 ### Speech Inputs
 
 In the **Speech Command Profile**, under the *Input System Profile*, you'll find the list of currently defined speech commands. To map one of them to an action, just select it in the *Action* drop down.
 
-<img src="../../Documentation/Images/Input/SpeechCommands.png" style="max-width:100%;">
+<img src="../../Documentation/Images/Input/SpeechCommandsProfile.png" style="max-width:100%;">
 
 ### Gesture Inputs
 
@@ -52,7 +52,7 @@ The **Gestures Profile**, under the *Input System Profile*, contains all defined
 
 The easiest way to handle input actions is to make use of the [`InputActionHandler`](xref:Microsoft.MixedReality.Toolkit.Input.InputActionHandler) script. This allows you to define the action you want to listen to and react to action started and ended events using Unity Events.
 
-<img src="../../Documentation/Images/Input/InputActionHandler.png" style="max-width:100%;">
+<img src="../../Documentation/Images/Input/InputActionHandler.PNG" style="max-width:100%;">
 
 If you want more control, you can implement the [`IMixedRealityInputActionHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputActionHandler) interface directly in your script. See the [**Input Events**](InputEvents.md) section for more details on event handling via handler interfaces.
 
@@ -60,4 +60,4 @@ If you want more control, you can implement the [`IMixedRealityInputActionHandle
 
 See `MixedRealityToolkit.Examples\Demos\Input\Scenes\InputActions` for an example scene showing how to create an action, map it to controller, speech and gesture inputs and use it to rotate an object on command.
 
-<img src="../../Documentation/Images/Input/InputActionsExample.png" style="max-width:100%;">
+<img src="../../Documentation/Images/Input/InputActionsExample.PNG" style="max-width:100%;">

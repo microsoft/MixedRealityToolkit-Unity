@@ -15,6 +15,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         CameraFaderState State { get; }
 
         /// <summary>
+        /// Initializes the camera fader class with a transition profile.
+        /// </summary>
+        /// <param name="profile">The scene transition service profile.</param>
+        void Initialize(SceneTransitionServiceProfile profile);
+
+        /// <summary>
         /// Applies a fade-out effect over time.
         /// </summary>
         /// <param name="fadeOutTime">The duration of the fade</param>

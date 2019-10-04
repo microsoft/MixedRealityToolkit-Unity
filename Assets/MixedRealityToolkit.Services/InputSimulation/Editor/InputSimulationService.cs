@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using UnityEngine;
+using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -212,7 +213,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     break;
             }
 
-            if (profile.IsCameraControlEnabled)
+            // If an XRDevice is present, the user will not be able to control the camera
+            // as it is controlled by the device. We therefore disable camera controls in
+            // this case.
+            // This was causing issues while simulating in editor for VR, as the UpDown
+            // camera movement is mapped to controller AXIS_3, which happens to be the 
+            // select trigger for WMR controllers.
+            if (profile.IsCameraControlEnabled && !XRDevice.isPresent)
             {
                 EnableCameraControl();
             }

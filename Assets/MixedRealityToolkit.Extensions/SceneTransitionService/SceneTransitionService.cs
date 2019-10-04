@@ -405,6 +405,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             }
 
             cameraFader = (ICameraFader)Activator.CreateInstance(sceneTransitionServiceProfile.CameraFaderType.Type);
+            cameraFader.Initialize(sceneTransitionServiceProfile);
 
             if (cameraFader == null)
             {
