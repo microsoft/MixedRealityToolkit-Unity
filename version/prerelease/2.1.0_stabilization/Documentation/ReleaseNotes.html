@@ -83,9 +83,124 @@
 <h1 id="microsoft-mixed-reality-toolkit-release-notes">Microsoft Mixed Reality Toolkit Release Notes</h1>
 
 <ul>
+<li><a href="#version-210">Version 2.1.0</a></li>
 <li><a href="#version-201">Version 2.0.1</a></li>
 <li><a href="#version-200">Version 2.0.0</a></li>
 </ul>
+<h2 id="version-210">Version 2.1.0</h2>
+<ul>
+<li><a href="#upgrading-projects-to-210">Upgrading projects</a></li>
+<li><a href="#whats-new-in-210">What's new</a></li>
+<li><a href="#known-issues-in-210">Known issues</a></li>
+</ul>
+<p>This release of the Microsoft Mixed Reality Toolkit supports the following devices and platforms.</p>
+<ul>
+<li>Microsoft HoloLens 2</li>
+<li>Microsoft HoloLens (1st gen)</li>
+<li>Windows Mixed Reality Immersive headsets</li>
+<li>OpenVR</li>
+</ul>
+<p>The following software is required.</p>
+<ul>
+<li>Microsoft Visual Studio (2017 or 2019) Community Edition or higher</li>
+<li>Windows 10 SDK 18362 or later (installed by the Visual Studio Installer)</li>
+<li>Unity 2018.4, 2019.1 or 2019.2</li>
+</ul>
+<h3 id="upgrading-projects-to-210">Upgrading projects to 2.1.0</h3>
+<p>The 2.1.0 release has some changes that may impact application projects, including some files moving to new folder locations.
+Breaking change details, including mitigation guidance, can be found in the <a href="Updating.html#updating-200-to-210"><strong>Updating 2.0.0 to 2.1.0</strong></a> article.</p>
+<p>For the smoothest upgrade path, please use the following steps.</p>
+<ol>
+<li>Close Unity</li>
+<li>Delete <strong>MixedRealityToolkit</strong> (the project may not have all listed folders)
+<ul>
+<li>MixedRealityToolkit</li>
+<li>MixedRealityToolkit.Examples</li>
+<li>MixedRealityToolkit.Extensions</li>
+</ul>
+<div class="NOTE">
+<h5>Note</h5>
+<p>If additional extensions have been installed, please make a backup prior to deleting this folder.</p>
+</div>
+<ul>
+<li>MixedRealityToolkit.Providers</li>
+<li>MixedRealityToolkit.SDK</li>
+<li>MixedRealityToolkit.Services</li>
+<li>MixedRealityToolkit.Tools</li>
+</ul>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>Do NOT delete the <strong>MixedRealityToolkit.Generated</strong> folder.</p>
+</div>
+</li>
+<li>Delete the <strong>Library</strong> folder</li>
+<li>Re-open the project in Unity</li>
+<li>Import the new unity packages
+<ul>
+<li>Foundation - <em>Import this package first</em></li>
+<li>(Optional) Tools</li>
+<li>(Optional) Extensions</li>
+</ul>
+<div class="NOTE">
+<h5>Note</h5>
+<p>If additional extensions had been installed, they may need to be re-imported.</p>
+</div>
+<ul>
+<li>(Optional) Examples</li>
+</ul>
+</li>
+<li>Close Unity and Delete the <strong>Library</strong> folder. This step is necessary to force Unity to refresh its
+asset database and reconcile existing custom profiles.</li>
+<li>Launch Unity, and for each scene in the project
+<ul>
+<li>Delete <strong>MixedRealityToolkit</strong> and <strong>MixedRealityPlayspace</strong>, if present, from the hierarchy</li>
+<li>Select <strong>MixedRealityToolkit -&gt; Add to Scene and Configure</strong></li>
+<li>Select <strong>MixedRealityToolkit -&gt; Utilities -&gt; Update -&gt; Controller Mapping Profiles</strong> (only needs to be done once)
+- This will update any custom Controller Mapping Profiles with updated axes and data, while leaving your custom-assigned input actions intact</li>
+</ul>
+</li>
+</ol>
+<h3 id="whats-new-in-210">What's new in 2.1.0</h3>
+<p><strong>Dwell interaction (Experimental)</strong></p>
+<p>MRTK has added experimental support for dwell interactions. Dwell interactions enable applications to respond to a user focusing their gaze or motion controller on an interactable object for a predefined period of time.</p>
+<p>Please refer to <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/5594">change 5594</a> for details.</p>
+<p><strong>Hand menu example updates</strong></p>
+<p>The hand menu example has received visual updates (no code changes).</p>
+<p><strong>MRTK Examples Hub</strong></p>
+<p>The MRTK Examples Hub is now part of the MixedRealityToolkit.Examples package. The examples hub provides an excellent example of how to use the <a href="SceneSystem/SceneSystemGettingStarted.html">Scene System</a>.</p>
+<p><strong>Near menu control</strong></p>
+<p>Near Menu is a UX control which provides a collection of buttons or other UI components. It is floating around the user's body and easily accessible anytime. Since it is loosely coupled with the user, it does not disturb the user's interaction with the target content. The user can use the 'Pin' button to world-lock/unlock the menu. The menu can be grabbed and placed at a specific position.</p>
+<p>Please see <a href="README_NearMenu.html">Near Menu</a> for more information.</p>
+<p><strong>Pressable button for Unity UI</strong></p>
+<p>Support for pressable buttons on Unity UI canvases has been added. The HandInteractionExamples demo scene, in the MixedRealityToolkit.Examples package, demonstrates this feature.</p>
+<p><strong>Speech command confirmation label</strong></p>
+<p>A new speech command confirmation label (SpeechConfirmationTooltip.prefab) has been added to provide functionality that matches the Microsoft HoloLens 2 shell.  Please see the <a href="Input/Speech.html">speech input</a> article for more information.</p>
+<h3 id="known-issues-in-210">Known issues in 2.1.0</h3>
+<p>The sections below highlight some of the known issues in the Microsoft Mixed Reality Toolkit.</p>
+<p><strong>Long paths</strong></p>
+<p>When building on Windows, there is a MAX_PATH limit of 255 characters. Unity is affected by these limits and may fail to build a binary if its resolved output path is longer than 255 characters.</p>
+<p>This can manifest as CS0006 errors in Visual Studio that look like:</p>
+<blockquote>
+<p>CS0006: Metadata file 'C:\path\to\longer\file\that\is\longer\than\255\characters\mrtk.long.binary.name.dll' could not be found.</p>
+</blockquote>
+<p>This can be worked around by moving the Unity project folder closer to the root of the drive, for example:</p>
+<blockquote>
+<p>C:\src\project</p>
+</blockquote>
+<p>Please see <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5469">this issue</a> for more background information.</p>
+<p><strong>Runtime profile swapping</strong></p>
+<p>MRTK does not fully support profile swapping at runtime. This feature is being investigated for a future release. Please see issues <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4289">4289</a>,
+<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5465">5465</a> and
+<a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5466">5466</a> for more information.</p>
+<p><strong>Unity 2019: Could not copy the file HolographicAppRemoting.dll</strong></p>
+<p>There is a known issue with version 3.0.0 of the Windows Mixed Reality package for Unity 2019. If
+the project has this version installed, the following error will be encountered when compiling in Microsoft
+Visual Studio.</p>
+<p>To work around the issues, please update to a newer version using Window &gt; Package Manager in the Unity editor.</p>
+<p><strong>VR/Immersive devices: Content in some demo scenes is placed below the user</strong></p>
+<p>Some demo scenes contained in the Examples package are optimized for HoloLens device's (headset's y position is 0). These scenes
+may place objects below the user when run on VR/Immersive device's (headset's Y position is the distance from the floor). To work around this issue, select the <strong>Scene Content</strong> object, in the Hierarchy, and set the Transform's Position Y value to <strong>1.5</strong> (1.5 meters, or the preferred headset height).</p>
+<p><img src="Images/ReleaseNotes/AdjustContentHeight.png" alt="Adjusting Scene Content Height"></p>
 <h2 id="version-201">Version 2.0.1</h2>
 <ul>
 <li><a href="#upgrading-projects-to-201">Upgrading projects</a></li>
@@ -113,7 +228,7 @@
 </li>
 </ol>
 <h3 id="whats-new-in-201">What's new in 2.0.1</h3>
-<p>Consuming Mixed Reality Toolkit as a NuGet package will reduce compilation time, the ammount of .csproj files when editing code, and allow for a simple update mechanism for future versions.</p>
+<p>Consuming Mixed Reality Toolkit as a NuGet package will reduce compilation time, the amount of .csproj files when editing code, and allow for a simple update mechanism for future versions.</p>
 <h2 id="version-200">Version 2.0.0</h2>
 <ul>
 <li><a href="#upgrading-projects-to-200">Upgrading projects</a></li>
@@ -135,7 +250,7 @@
 </ul>
 <h3 id="upgrading-projects-to-200">Upgrading projects to 2.0.0</h3>
 <p>Since the RC2 release, there have been several changes that may impact application projects,
-including some files moving to new folder locations. Breaking change details, including mitigation guidance, can be found in the <a href="Updating.html"><strong>Updating from RC2</strong></a> article.</p>
+including some files moving to new folder locations. Breaking change details, including mitigation guidance, can be found in the <a href="Updating.html#updating-rc2-to-200"><strong>Updating RC2 to 2.0.0</strong></a> article.</p>
 <p>For the smoothest upgrade path, please use the following steps.</p>
 <ol>
 <li>Close Unity</li>
@@ -261,7 +376,7 @@ solvers are now an official feature (no longer experimental) and have improved d
 <li>HoloLens 2 style Round Button has been added</li>
 </ul>
 <p><strong>HoloLens 2 Shell Parity</strong></p>
-<p>This release updates the MRTK to better mirror the featires. behaviors and visuals of the HoloLens 2 shell experience. This <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4200">GitHub</a> issue describes the changes.</p>
+<p>This release updates the MRTK to better mirror the features. behaviors and visuals of the HoloLens 2 shell experience. This <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4200">GitHub</a> issue describes the changes.</p>
 <p><strong>IMixedRealityRaycastProvider</strong></p>
 <p>The input system was updated to allow for raycast customization, via custom implementations of <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.IMixedRealityRaycastProvider.html"><code>IMixedRealityRaycastProvider</code></a>.</p>
 <p>Specify the desired raycast provider in the Input System's configuration profile.</p>
@@ -269,13 +384,13 @@ solvers are now an official feature (no longer experimental) and have improved d
 <p><strong>Improved solvers</strong></p>
 <p>Solvers can now be controlled by the first available hand/controller instead of being locked to left or right handedness. Old value types of <em>Tracked Target Type</em> need to be updated to the new non-obsolete values.</p>
 <p><img src="Images/Solver/TrackedObjectType-Example.gif" alt="Solver"></p>
-<p>Please review the <strong>solvers</strong> section of <a href="Updating.html#solvers">Updating from RC2 to 2.0.0</a> for additional changes and mitigation details.</p>
+<p>Please review the <strong>solvers</strong> section of <a href="Updating.html">Updating from RC2 to 2.0.0</a> for additional changes and mitigation details.</p>
 <p><strong>Input animation recording</strong></p>
 <p>MRTK features a <a href="InputSimulation/InputAnimationRecording.html">recording system</a> by which head movement and hand tracking
 data can be stored in animation files. The recorded data can then be played back using the <a href="InputSimulation/InputSimulationService.html">input simulation system</a>.</p>
 <p><strong>MRTK Standard Shader</strong></p>
 <p>The <a href="README_MRTKStandardShader.html">MRTK Standard Shader</a> now supports Unity's Lightweight Scriptable render pipeline.</p>
-<p>Additional improvments</p>
+<p>Additional improvements</p>
 <ul>
 <li>A warning and &quot;Fix Now&quot; button is now displayed on materials which are in a project that has depth buffer
 sharing enabled and do not write depth</li>
@@ -311,7 +426,7 @@ MixedRealityToolkit.SDK\Experimental\Features folder and are a work in progress.
 <li>SpatialAwarenessSystem</li>
 <li>TeleportSystem (requires the Input System)</li>
 </ul>
-<p>To use, drag and drop the desired prefab into the heirarchy and select the configuration
+<p>To use, drag and drop the desired prefab into the hierarchy and select the configuration
 profile.</p>
 <div class="NOTE">
 <h5>Note</h5>
@@ -328,7 +443,7 @@ are subject to change. Please file any and all issues that are encountered on Gi
 </li>
 <li>Fixed
 <ul>
-<li>Border thickness issue fixed on flattend Bounding Box</li>
+<li>Border thickness issue fixed on flattened Bounding Box</li>
 </ul>
 </li>
 </ul>
@@ -352,7 +467,7 @@ clear color for use in easy post compositing of images for documentation or medi
 <li>Interactable (basic features)</li>
 </ul>
 <p><strong>Updated architecture documentation</strong></p>
-<p>The <a href="Architecture/Overview.html">archtecture documentation</a> is all new for this version.</p>
+<p>The <a href="Architecture/Overview.html">architecture documentation</a> is all new for this version.</p>
 <h3 id="known-issues-in-200">Known issues in 2.0.0</h3>
 <p>The sections below highlight some of the known issues in the Microsoft Mixed Reality Toolkit.</p>
 <p><strong>Extension service wizard</strong></p>
@@ -375,7 +490,7 @@ clear color for use in easy post compositing of images for documentation or medi
 </blockquote>
 <p>Please see <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5469">this issue</a> for more background information.</p>
 <p><strong>Runtime profile swapping</strong></p>
-<p>MRTK fully support profile swapping at runtime. This feature is being investigated for a future release. Please see issues <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4289">4289</a>,
+<p>MRTK does not fully support profile swapping at runtime. This feature is being investigated for a future release. Please see issues <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4289">4289</a>,
 <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5465">5465</a> and
 <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5466">5466</a> for more information.</p>
 <p><strong>Text overflow in the some of the scroll view example when deployed with 16-bit depth buffer</strong></p>

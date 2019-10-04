@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Updating from RC2 to 2.0.0 | Mixed Reality Toolkit Documentation </title>
+    <title>Updating the Microsoft Mixed Reality Toolkit | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Updating from RC2 to 2.0.0 | Mixed Reality Toolkit Documentation ">
+    <meta name="title" content="Updating the Microsoft Mixed Reality Toolkit | Mixed Reality Toolkit Documentation ">
     <meta name="generator" content="docfx 2.45.1.0">
     
     <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
@@ -80,32 +80,108 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="updating-from-rc2-to-200">Updating from RC2 to 2.0.0</h1>
+<h1 id="updating-the-microsoft-mixed-reality-toolkit">Updating the Microsoft Mixed Reality Toolkit</h1>
 
+<ul>
+<li><a href="#updating-200-to-210">2.0.0 to 2.1.0</a></li>
+<li><a href="#updating-rc2-to-200">RC2 to 2.0.0</a></li>
+</ul>
+<h2 id="updating-200-to-210">Updating 2.0.0 to 2.1.0</h2>
+<ul>
+<li><a href="#api-changes-in-210">API changes</a></li>
+<li><a href="#profile-changes-in-210">Profile changes</a></li>
+</ul>
+<h3 id="api-changes-in-210">API changes in 2.1.0</h3>
+<p><strong>BaseNearInteractionTouchable</strong></p>
+<p>The <code>BaseNearInteractionTouchable</code> has been modified to mark the <code>OnValidate</code> method as virtual. Classes that extend <code>BaseNearInteractionTouchable</code> (ex: <code>NearInteractionTouchableUnityUI</code>) have been updated to reflect this change.</p>
+<p><strong>ColliderNearInteractionTouchable</strong></p>
+<p>The <code>ColliderNearInteractionTouchable</code> class has been deprecated. Please update code references to use <code>BaseNearInteractionTouchable</code>.</p>
+<p><strong>IMixedRealityMouseDeviceManager</strong></p>
+<p><strong><em>Added</em></strong></p>
+<p><code>IMixedRealityMouseDeviceManager</code> has been added <code>CursorSpeed</code> and <code>WheelSpeed</code> properties. These properties allow applications to specify a multiplier value by which the speed of the cursor and wheel, respectively will be scaled.</p>
+<p>This is a breaking change and requires existing mouse device manager implementations to be modified .</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>This change is not backwards compatible with version 2.0.0.</p>
+</div>
+<p><strong><em>Deprecated</em></strong></p>
+<p>The <code>MouseInputProfile</code> property has been marked as obsolete and will be removed from a future version of the Microsoft Mixed Reality Toolkit. It is recommended that application code no longer use this property.</p>
+<p><strong>Interactable</strong></p>
+<p>The following methods and properties have been deprecated and will be removed from a future version of the Microsoft Mixed Reality Toolkit. The recommendation is to update application code per the guidance contained in the Obsolete attribute and displayed in the console.</p>
+<ul>
+<li><code>public bool Enabled</code></li>
+<li><code>public bool FocusEnabled</code></li>
+<li><code>public void ForceUpdateThemes()</code></li>
+<li><code>public bool IsDisabled</code></li>
+<li><code>public bool IsToggleButton</code></li>
+<li><code>public int GetDimensionIndex()</code></li>
+<li><code>public State[] GetStates()</code></li>
+<li><code>public bool RequiresFocus</code></li>
+<li><code>public void ResetBaseStates()</code></li>
+<li><code>public virtual void SetCollision(bool collision)</code></li>
+<li><code>public virtual void SetCustom(bool custom)</code></li>
+<li><code>public void SetDimensionIndex(int index)</code></li>
+<li><code>public virtual void SetDisabled(bool disabled)</code></li>
+<li><code>public virtual void SetFocus(bool focus)</code></li>
+<li><code>public virtual void SetGesture(bool gesture)</code></li>
+<li><code>public virtual void SetGestureMax(bool gesture)</code></li>
+<li><code>public virtual void SetGrab(bool grab)</code></li>
+<li><code>public virtual void SetInteractive(bool interactive)</code></li>
+<li><code>public virtual void SetObservation(bool observation)</code></li>
+<li><code>public virtual void SetObservationTargeted(bool targeted)</code></li>
+<li><code>public virtual void SetPhysicalTouch(bool touch)</code></li>
+<li><code>public virtual void SetPress(bool press)</code></li>
+<li><code>public virtual void SetTargeted(bool targeted)</code></li>
+<li><code>public virtual void SetToggled(bool toggled)</code></li>
+<li><code>public virtual void SetVisited(bool visited)</code></li>
+<li><code>public virtual void SetVoiceCommand(bool voice)</code></li>
+</ul>
+<p><strong>NearInteractionTouchableSurface</strong></p>
+<p>The <code>NearInteractionTouchableSurface</code> class has been added and now serves as the base class for <code>NearInteractionTouchable</code> and <code>NearInteractionTouchableUnityUI</code>.</p>
+<h3 id="profile-changes-in-210">Profile changes in 2.1.0</h3>
+<p><strong>Hand tracking profile</strong></p>
+<p>The hand mesh and joint visualizations now have a separate editor and player settings. The hand tracking profile has been updated to allow for setting these visualizations to; Nothing, Everything, Editor or Player.</p>
+<p><img src="Images/ReleaseNotes/HandTrackingVisualizationModes.png" alt="Hand visualization modes"></p>
+<p>Custom hand tracking profiles may need to be updated to work correctly with version 2.1.0.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>This change is not backwards compatible with version 2.0.0.</p>
+</div>
+<p><strong>Input simulation profile</strong></p>
+<p>The input simulation system has been upgraded, which changes a few settings in the input simulation profile. Some changes can not be migrated automatically and users may find that profiles are using default values.</p>
+<ol>
+<li><p>All KeyCode and mouse button bindings in the profile have been replaced with a generic <code>KeyBinding</code> struct, which stores the type of binding (key or mouse) as well as the actual binding code (KeyCode or mouse button number respectively). The struct has its own inspector, which allows unified display and offers an &quot;auto-bind&quot; tool to quickly set key bindings by pressing the respective key instead of selecting from a huge dropdown list.</p>
+<ul>
+<li>FastControlKey</li>
+<li>ToggleLeftHandKey</li>
+<li>ToggleRightHandKey</li>
+<li>LeftHandManipulationKey</li>
+<li>RightHandManipulationKey</li>
+</ul>
+</li>
+<li><p><code>MouseLookToggle</code> was previously included in the <code>MouseLookButton</code> enum as <code>InputSimulationMouseButton.Focused</code>, it is now a separate option. When enabled, the camera will keep rotating with the mouse after releasing the button, until the escape key is pressed.</p>
+</li>
+<li><p><code>HandDepthMultiplier</code> default value has been lowered from 0.1 to 0.03 to accommodate some changes to the input simulation. If the camera moves too fast when scrolling, try lowering this value.</p>
+</li>
+<li><p>Keys for rotating hands have been removed, hand rotation is now controlled by the mouse as well. Holding <code>HandRotateButton</code> (Ctrl) together with the left/right hand manipulation key (LShift/Space) will enable hand rotation.</p>
+</li>
+<li><p>A new axis &quot;UpDown&quot; has been introduced to the input axis list. This controls camera movement in the vertical and defaults to Q/E keys as well as the controller trigger buttons.</p>
+</li>
+</ol>
+<p>For more information on these changes, please see the <a href="InputSimulation/InputSimulationService.html">input simulation service</a> article.</p>
+<p><strong>Mouse data provider profile</strong></p>
+<p>The mouse data provider profile has been updated to expose the new <code>CursorSpeed</code> and <code>WheelSpeed</code> properties. Existing custom profiles will automatically have default values provided. When the profile is saved, these new values will be persisted.</p>
+<p><strong>Controller mapping profile</strong></p>
+<p>Some axes and input types have been updated in 2.1.0, especially around the OpenVR platform. Please be sure to select <strong>MixedRealityToolkit -&gt; Utilities -&gt; Update -&gt; Controller Mapping Profiles</strong> when upgrading. This will update any custom Controller Mapping Profiles with the updated axes and data, while leaving your custom-assigned input actions intact.</p>
+<h2 id="updating-rc2-to-200">Updating RC2 to 2.0.0</h2>
 <p>Between the RC2 and 2.0.0 releases of the Microsoft Mixed Reality Toolkit, changes were made that may impact existing projects. This document describes those changes and how to update projects to the 2.0.0 release.</p>
 <ul>
-<li><a href="#api-changes">API changes</a></li>
-<li><a href="#assembly-name-changes">Assembly name changes</a></li>
+<li><a href="#api-changes-in-200">API changes</a></li>
+<li><a href="#assembly-name-changes-in-200">Assembly name changes</a></li>
 </ul>
-<h2 id="api-changes">API changes</h2>
+<h3 id="api-changes-in-200">API changes in 2.0.0</h3>
 <p>Since the release of RC2, there have been a number of API changes including some that may break existing projects. The following sections describe the changes that have occurred between the RC2 and 2.0.0 releases.</p>
-<ul>
-<li><a href="#mixedrealitytoolkit">MixedRealityToolkit</a></li>
-<li><a href="#coreservices">CoreServices</a></li>
-<li><a href="#imixedrealityraycastprovider">IMixedRealityRaycastProvider</a></li>
-<li><a href="#event-system">Event System</a></li>
-<li><a href="#spatial-awareness">Spatial Awareness</a></li>
-<li><a href="#solvers">Solvers</a></li>
-<li><a href="#buttons">Buttons</a></li>
-<li><a href="#clipping-sphere">Clipping Sphere</a></li>
-<li><a href="#nearinteractiontouchable-and-pokepointer">NearInteractionTouchable and PokePointer</a></li>
-<li><a href="#readonlyattribute">ReadOnlyAttribute</a></li>
-<li><a href="#pointerclickhandler">PointerClickHandler</a></li>
-<li><a href="#hololens-clicker-support">HoloLens Clicker Support</a></li>
-<li><a href="#interactablehighlight">InteractableHighlight</a></li>
-<li><a href="#handinteractionpanzoom">HandInteractionPanZoom</a></li>
-</ul>
-<h3 id="mixedrealitytoolkit">MixedRealityToolkit</h3>
+<p><strong>MixedRealityToolkit</strong></p>
 <p>The following public properties on the MixedRealityToolkit object have been deprecated.</p>
 <ul>
 <li><code>RegisteredMixedRealityServices</code> no longer contains the collection of registered extensions services and data providers.</li>
@@ -122,7 +198,7 @@
 <li><code>DiagnosticsSystem</code></li>
 <li><code>SceneSystem</code></li>
 </ul>
-<h3 id="coreservices">CoreServices</h3>
+<p><strong>CoreServices</strong></p>
 <p>The <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.CoreServices.html"><code>CoreServices</code></a> class is the replacement for the static system accessors (ex: BoundarySystem) found in the <code>MixedRealityToolkit</code> object.</p>
 <div class="IMPORTANT">
 <h5>Important</h5>
@@ -136,19 +212,18 @@ GameObject playAreaVisualization = MixedRealityToolkit.BoundarySystem?.GetPlayAr
 GameObject playAreaVisualization = CoreServices.BoundarySystem?.GetPlayAreaVisualization();
 </code></pre>
 <p>Using the new CoreSystem class will ensure that your application code will not need updating if you change the application to use a different service registrar (ex: one of the experimental service managers).</p>
-<h3 id="imixedrealityraycastprovider">IMixedRealityRaycastProvider</h3>
+<p><strong>IMixedRealityRaycastProvider</strong></p>
 <p>With the addition of the IMixedRealityRaycastProvider, the input system configuration profile was changed. If you have a custom profile, you may receive the errors in the following image when you run your application.</p>
 <p><img src="Images/ReleaseNotes/UnableToRegisterRaycastProvider.png" alt="Selecting the Raycast provider"></p>
 <p>To fix these, please add an IMixedRealityRaycastProvider instance to your input system profile.</p>
 <p><img src="Images/ReleaseNotes/SelectRaycastProvider.png" alt="Selecting the Raycast provider"></p>
-<h3 id="event-system">Event System</h3>
-<p><strong>Changes</strong></p>
+<p><strong>Event System</strong></p>
 <ul>
 <li>The <code>IMixedRealityEventSystem</code> old API methods <code>Register</code> and <code>Unregister</code> have been marked as obsolete. They are preserved for backwards compatibility.</li>
 <li><code>InputSystemGlobalListener</code> has been marked as obsolete. Its functionality has not changed.</li>
 <li><code>BaseInputHandler</code> base class has been changed from <code>InputSystemGlobalListener</code> to <code>InputSystemGlobalHandlerListener</code>. This is a breaking change for any descendants of <code>BaseInputHandler</code>.</li>
 </ul>
-<p><strong>Motivation behind the change</strong></p>
+<p><strong><em>Motivation behind the change</em></strong></p>
 <p>The old event system API <code>Register</code> and <code>Unregister</code> could potentially cause multiple issues in runtime, main being:</p>
 <ul>
 <li>If a component registers for global events, it would receive global input events of <em>all</em> types.</li>
@@ -160,13 +235,13 @@ GameObject playAreaVisualization = CoreServices.BoundarySystem?.GetPlayAreaVisua
 <li>Provides an explicit and granular control over which input events should be listened to globally and which should be focused-based.</li>
 <li>Allows multiple components on the same object to listen to global events independently on each other.</li>
 </ul>
-<p><strong>How to migrate</strong></p>
+<p><strong><em>How to migrate</em></strong></p>
 <ul>
 <li>If you have been calling <code>Register</code>/<code>Unregister</code> API directly before, replace these calls with calls to <code>RegisterHandler</code>/<code>UnregisterHandler</code>. Use handler interfaces you implement as generic parameters. If you implement multiple interfaces, and several of them listen to global input events, call <code>RegisterHandler</code> multiple times.</li>
 <li>If you have been inheriting from <code>InputSystemGlobalListener</code>, change inheritance to <code>InputSystemGlobalHandlerListener</code>. Implement <code>RegisterHandlers</code> and <code>UnregisterHandlers</code> abstract methods. In the implementation call <code>inputSystem.RegisterHandler</code> (<code>inputSystem.UnregisterHandler</code>) to register on all handler interfaces you want to listen global events for.</li>
 <li>If you have been inheriting from <code>BaseInputHandler</code>, implement <code>RegisterHandlers</code> and <code>UnregisterHandlers</code> abstract methods (same as for <code>InputSystemGlobalListener</code>).</li>
 </ul>
-<p><strong>Examples of migration</strong></p>
+<p><strong><em>Examples of migration</em></strong></p>
 <pre><code class="lang-csharp">// Old
 class SampleHandler : MonoBehaviour, IMixedRealitySourceStateHandler, IMixedRealityHandJointHandler
 {
@@ -238,34 +313,34 @@ class SampleHandler2 : MonoBehaviour, IMixedRealitySpeechHandler
     }
 }
 </code></pre>
-<h3 id="spatial-awareness">Spatial Awareness</h3>
+<p><strong>Spatial Awareness</strong></p>
 <p>The IMixedRealitySpatialAwarenessSystem and IMixedRealitySpatialAwarenessObserver interfaces have taken multiple breaking changes as described below.</p>
-<h4 id="changes">Changes</h4>
+<p><strong><em>Changes</em></strong></p>
 <p>The following method(s) have been renamed to better describe their usage.</p>
 <ul>
 <li><code>IMixedRealitySpatialAwarenessSystem.CreateSpatialObjectParent</code> has been renamed to <code>IMixedRealitySpatialAwarenessSystem.CreateSpatialAwarenessObservationParent</code> to clarify its usage.</li>
 </ul>
-<h4 id="additions">Additions</h4>
+<p><strong><em>Additions</em></strong></p>
 <p>Based on customer feedback, support for easy removal of previously observed spatial awareness data has been added.</p>
 <ul>
 <li><code>IMixedRealitySpatialAwarenessSystem.ClearObservations()</code></li>
 <li><code>IMixedRealitySpatialAwarenessSystem.ClearObservations&lt;T&gt;(string name)</code></li>
 <li><code>IMixedRealitySpatialAwarenessObserver.ClearObservations()</code></li>
 </ul>
-<h3 id="solvers">Solvers</h3>
+<p><strong>Solvers</strong></p>
 <p>Some solver components and the SolverHandler manager class has changed to fix various bugs and for more intuitive usage.</p>
-<h4 id="solverhandler">SolverHandler</h4>
+<p><strong><em>SolverHandler</em></strong></p>
 <ul>
 <li>Class no longer extends from <code>ControllerFinder</code></li>
 <li><code>TrackedObjectToReference</code> public property deprecated and has been renamed to <code>TrackedTargetType</code></li>
 <li><code>TrackedObjectType</code> deprecates left &amp; right controller values. Instead use <code>MotionController</code> or <code>HandJoint</code> values and update new <code>TrackedHandedness</code> property to limit tracking to left or right controller</li>
 </ul>
-<h4 id="inbetween">InBetween</h4>
+<p><strong><em>InBetween</em></strong></p>
 <ul>
 <li><code>TrackedObjectForSecondTransform</code> public property deprecated and has been renamed to <code>SecondTrackedObjectType</code></li>
 <li><code>AttachSecondTransformToNewTrackedObject()</code> has been removed. To update the solver, modify the public properties (i.e <code>SecondTrackedObjectType</code>)</li>
 </ul>
-<h5 id="surfacemagnetism">SurfaceMagnetism</h5>
+<p><strong><em>SurfaceMagnetism</em></strong></p>
 <ul>
 <li><code>MaxDistance</code> public property deprecated and has been renamed to <code>MaxRaycastDistance</code></li>
 <li><code>CloseDistance</code> public property deprecated and has been renamed to <code>ClosestDistance</code></li>
@@ -273,15 +348,14 @@ class SampleHandler2 : MonoBehaviour, IMixedRealitySpeechHandler
 <li><code>OrientationMode</code> enum values, <code>Vertical</code> and <code>Full</code>, have been renamed to <code>TrackedTarget</code> and <code>SurfaceNormal</code> respectively</li>
 <li><code>KeepOrientationVertical</code> public property has been added to control whether orientation of associated GameObject remains vertical</li>
 </ul>
-<h3 id="buttons">Buttons</h3>
+<p><strong>Buttons</strong></p>
 <ul>
 <li><a class="xref" href="../api/Microsoft.MixedReality.Toolkit.UI.PressableButton.html"><code>PressableButton</code></a> now has <code>DistanceSpaceMode</code> property set to <code>Local</code> as default. This allows buttons to be scaled while still be pressable</li>
 </ul>
-<h3 id="clipping-sphere">Clipping Sphere</h3>
+<p><strong>Clipping Sphere</strong></p>
 <p>The ClippingSphere interface has changed to mirror the APIs found in the ClippingBox and ClippingPlane.</p>
-<h4 id="changes-1">Changes</h4>
 <p>The ClippingSphere's Radius property is now implicitly calculated based on the transform scale. Before developers would have to specify the radius of the ClippingSphere in the inspector. If you want to change the radius, just update the transform scale of the transform as you normally would.</p>
-<h3 id="nearinteractiontouchable-and-pokepointer">NearInteractionTouchable and PokePointer</h3>
+<p><strong>NearInteractionTouchable and PokePointer</strong></p>
 <ul>
 <li>NearInteractionTouchable does not handle Unity UI canvas touching any longer. The NearInteractionTouchableUnityUI class must be used for Unity UI touchables now.</li>
 <li>ColliderNearInteractionTouchable is the new base class for touchables based on colliders, i.e. every touchable except NearInteractionTouchableUnityUI.</li>
@@ -290,23 +364,23 @@ This is the distance and which the PokePointer can interact with touchables. Pre
 <li>BaseNearInteractionTouchable.DistBack has been renamed to PokeThreshold
 This makes it clear that PokeThreshold is the counterpart to DebounceThreshold. A touchable is activated when the PokeThreshold is crossed, and released when DebounceThreshold is crossed.</li>
 </ul>
-<h3 id="readonlyattribute">ReadOnlyAttribute</h3>
+<p><strong>ReadOnlyAttribute</strong></p>
 <p>The <code>Microsoft.MixedReality.Toolkit</code> namespace has been added to <code>ReadOnlyAttribute</code>, <code>BeginReadOnlyGroupAttribute</code>, and <code>EndReadOnlyGroupAttribute</code>.</p>
-<h3 id="pointerclickhandler">PointerClickHandler</h3>
+<p><strong>PointerClickHandler</strong></p>
 <p>The <code>PointerClickHandler</code> class has been deprecated. The <code>PointerHandler</code> should be used instead, it provides the same functionality.</p>
-<h3 id="hololens-clicker-support">HoloLens clicker support</h3>
+<p><strong>HoloLens clicker support</strong></p>
 <p>The HoloLens clicker's controller mappings have changed from being an unhanded <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityController.html"><code>WindowsMixedRealityController</code></a> to being an unhanded <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input.WindowsMixedRealityGGVHand.html"><code>WindowsMixedRealityGGVHand</code></a>. To account for this, an automatic updater will run the first time you open your ControllerMapping profile. Please open any custom profiles at least once after upgrading to 2.0.0 in order to trigger this one-time migration step.</p>
-<h3 id="interactablehighlight">InteractableHighlight</h3>
+<p><strong>InteractableHighlight</strong></p>
 <p>The <code>InteractableHighlight</code> class has been deprecated. The <code>InteractableOnFocus</code> class and <code>FocusInteractableStates</code> asset should be used instead. To create a new <code>Theme</code> asset for the <code>InteractableOnFocus</code>, right click in the project window and select <em>Create</em> &gt; <em>Mixed Reality Toolkit</em> &gt; <em>Interactable</em> &gt; <em>Theme</em>.</p>
-<h3 id="handinteractionpanzoom">HandInteractionPanZoom</h3>
+<p><strong>HandInteractionPanZoom</strong></p>
 <p><code>HandInteractionPanZoom</code> has been moved to the UI namespace as it was not an input component. <code>HandPanEventData</code> has also been moved into this namespace, and simplified to correspond with other UI event data.</p>
-<h2 id="assembly-name-changes">Assembly name changes</h2>
+<h3 id="assembly-name-changes-in-200">Assembly name changes in 2.0.0</h3>
 <p>In The 2.0.0 release, all of the official Mixed Reality Toolkit assembly names and their associated assembly definition (.asmdef) files have been updated to fit the following pattern.</p>
 <pre><code class="lang-c#">Microsoft.MixedReality.Toolkit[.&lt;name&gt;]
 </code></pre>
 <p>In some instances, multiple assemblies have been merged to create better unity of their contents. If your project uses custom .asmdef files, they may require updating.</p>
 <p>The following tables describe how the RC2 .asmdef file names map to the 2.0.0 release. All assembly names match the .asmdef file name.</p>
-<h3 id="mixedrealitytoolkit-1">MixedRealityToolkit</h3>
+<p><strong>MixedRealityToolkit</strong></p>
 <table>
 <thead>
 <tr>
@@ -357,7 +431,7 @@ This makes it clear that PokeThreshold is the counterpart to DebounceThreshold. 
 </tr>
 </tbody>
 </table>
-<h3 id="mixedrealitytoolkitproviders">MixedRealityToolkit.Providers</h3>
+<p><strong>MixedRealityToolkit.Providers</strong></p>
 <table>
 <thead>
 <tr>
@@ -380,7 +454,7 @@ This makes it clear that PokeThreshold is the counterpart to DebounceThreshold. 
 </tr>
 </tbody>
 </table>
-<h3 id="mixedrealitytoolkitservices">MixedRealityToolkit.Services</h3>
+<p><strong>MixedRealityToolkit.Services</strong></p>
 <table>
 <thead>
 <tr>
@@ -431,7 +505,7 @@ This makes it clear that PokeThreshold is the counterpart to DebounceThreshold. 
 </tr>
 </tbody>
 </table>
-<h3 id="mixedrealitytoolkitsdk">MixedRealityToolkit.SDK</h3>
+<p><strong>MixedRealityToolkit.SDK</strong></p>
 <table>
 <thead>
 <tr>
@@ -450,7 +524,7 @@ This makes it clear that PokeThreshold is the counterpart to DebounceThreshold. 
 </tr>
 </tbody>
 </table>
-<h3 id="mixedrealitytoolkitexamples">MixedRealityToolkit.Examples</h3>
+<p><strong>MixedRealityToolkit.Examples</strong></p>
 <table>
 <thead>
 <tr>
@@ -485,23 +559,6 @@ This makes it clear that PokeThreshold is the counterpart to DebounceThreshold. 
 </tr>
 </tbody>
 </table>
-<h2 id="input-simulation-profile-changes">Input simulation profile changes</h2>
-<p>The input simulation system has been upgraded, which changes a few settings in the input simulation profile. Some changes can not be migrated automatically and users may find that profiles are using default values.</p>
-<ol>
-<li>All KeyCode and mouse button bindings in the profile have been replaced with a generic <code>KeyBinding</code> struct, which stores the type of binding (key or mouse) as well as the actual binding code (KeyCode or mouse button number respectively). The struct has its own inspector, which allows unified display and offers an &quot;auto-bind&quot; tool to quickly set key bindings by pressing the respective key instead of selecting from a huge dropdown list.
-<ul>
-<li>FastControlKey</li>
-<li>ToggleLeftHandKey</li>
-<li>ToggleRightHandKey</li>
-<li>LeftHandManipulationKey</li>
-<li>RightHandManipulationKey</li>
-</ul>
-</li>
-<li><code>MouseLookToggle</code> was previously included in the <code>MouseLookButton</code> enum as <code>InputSimulationMouseButton.Focused</code>, it is now a separate option. When enabled, the camera will keep rotating with the mouse after releasing the button, until the escape key is pressed.</li>
-<li><code>HandDepthMultiplier</code> default value has been lowered from 0.1 to 0.03 to accomodate some changes to the input simulation. If the camera moves too fast when scrolling, try lowering this value.</li>
-<li>Keys for rotating hands have been removed, hand rotation is now controlled by the mouse as well. Holding <code>HandRotateButton</code> (Ctrl) together with the left/right hand manipulation key (LShift/Space) will enable hand rotation.</li>
-<li>A new axis &quot;UpDown&quot; has been introduced to the input axis list. This controls camera movement in the vertical and defaults to Q/E keys as well as the controller trigger buttons.</li>
-</ol>
 </article>
           </div>
           
