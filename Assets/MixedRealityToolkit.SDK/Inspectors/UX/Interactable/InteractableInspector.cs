@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             canDeselect = serializedObject.FindProperty("CanDeselect");
             startDimensionIndex = serializedObject.FindProperty("startDimensionIndex");
             dimensionIndex = serializedObject.FindProperty("dimensionIndex");
-            dimensions = serializedObject.FindProperty("dimensions");
+            dimensions = serializedObject.FindProperty("Dimensions");
 
             enabled = true;
         }
