@@ -95,10 +95,10 @@ Window &gt; General &gt; Test Runner and will show all available MRTK play and e
 script located at <code>Scripts\test\run_playmode_tests.ps1</code>. This will run the playmode tests exactly as they are executed
 on github / CI (see below), and print results. Here are some examples of how to run the script</p>
 <p>Run the tests on the project located at H:\mrtk.dev, with Unity 2018.4.1f1</p>
-<pre><code>    .\run_playmode_tests.ps1 H:\mrtk.dev -unityExePath = &quot;C:\Program Files\Unity\Hub\Editor\2018.4.1f1\Editor\Unity.exe&quot;
+<pre><code class="lang-ps">.\run_playmode_tests.ps1 H:\mrtk.dev -unityExePath = &quot;C:\Program Files\Unity\Hub\Editor\2018.4.1f1\Editor\Unity.exe&quot;
 </code></pre>
 <p>Run the tests on the project located at H:\mrtk.dev, with Unity 2018.4.1f1, output results to C:\playmode_test_out</p>
-<pre><code>    .\run_playmode_tests.ps1 H:\mrtk.dev -unityExePath = &quot;C:\Program Files\Unity\Hub\Editor\2018.4.1f1\Editor\Unity.exe&quot; -outFolder &quot;C:\playmode_test_out\&quot;
+<pre><code class="lang-ps">.\run_playmode_tests.ps1 H:\mrtk.dev -unityExePath = &quot;C:\Program Files\Unity\Hub\Editor\2018.4.1f1\Editor\Unity.exe&quot; -outFolder &quot;C:\playmode_test_out\&quot;
 </code></pre>
 <h2 id="executing-tests-on-github--ci">Executing tests on github / CI</h2>
 <p>MRTK's CI will build MRTK in all configurations and run all edit and play mode tests. CI can be triggered by posting a
@@ -161,12 +161,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             PlayModeTestUtilities.Setup();
 
-            // Change the position of the main camera to (0, 0, 0), in PlayModeTestUtilites.Setup() 
+            // Change the position of the main camera to (0, 0, 0), in PlayModeTestUtilities.Setup()
             // the camera is set to position (1, 1.5, -2)
             TestUtilities.PlayspaceToOriginLookingForward();
         }
 
-        // Destroy the scene - this method is called after each test listed below has completed 
+        // Destroy the scene - this method is called after each test listed below has completed
         [TearDown]
         public void TearDown()
         {
@@ -208,7 +208,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     }
 }
 #endif
-
 </code></pre>
 <h2 id="edit-mode-tests">Edit mode tests</h2>
 <p>Edit mode tests are executed in Unity's edit mode and can be added in MixedRealityToolkit.Tests &gt; EditModeTests.
@@ -230,13 +229,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
     }
 }
-
 </code></pre>
 <h2 id="test-naming-conventions">Test naming conventions</h2>
 <p>Tests should generally be named based on the class they are testing, or the scenario that they are testing.
 For example, given a to-be-tested class:</p>
-<pre><code class="lang-csharp">
-namespace Microsoft.MixedReality.Toolkit.Input
+<pre><code class="lang-csharp">namespace Microsoft.MixedReality.Toolkit.Input
 {
     class InterestingInputClass
     {
@@ -244,8 +241,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 }
 </code></pre>
 <p>Consider naming the test</p>
-<pre><code class="lang-csharp">
-namespace Microsoft.MixedReality.Toolkit.Tests.Input
+<pre><code class="lang-csharp">namespace Microsoft.MixedReality.Toolkit.Tests.Input
 {
     class InterestingInputClassTest
     {
@@ -262,6 +258,13 @@ if such a test class exists.</p>
 <p>Placement of scenario based tests is less defined - if the test exercises the overall input system,
 for example, consider putting it into an &quot;InputSystem&quot; folder in the corresponding edit mode
 or play mode test folder.</p>
+<h2 id="test-script-icons">Test script icons</h2>
+<p>When adding a new test, please modify the script to have the correct MRTK icon. There's an easy MRTK tool to do so:</p>
+<ol>
+<li>Go go the Mixed Reality Toolkit menu item</li>
+<li>Click on Utilities, then Update, then Icons</li>
+<li>Click on Tests, and the updater will run automatically, updating any test scripts missing their icons</li>
+</ol>
 <h2 id="mrtk-utility-methods">MRTK Utility methods</h2>
 <p>This section shows some of the commonly used code snippets / methods when writing tests for MRTK.</p>
 <p>There are two Utility classes that help with setting up MRTK and testing interactions with components in MRTK</p>
