@@ -1976,13 +1976,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData)
         {
             //Quick check for the global listener to bail if the object is not in the list
-            if (eventData.Pointer.Result.CurrentPointerTarget == null || !ContainsNode(eventData.Pointer.Result.CurrentPointerTarget.transform))
+            if (currentPointer == null || eventData.Pointer.PointerId != currentPointer.PointerId)
             {
                 return;
             }
 
             if (!isTouched && isEngaged && animateScroller == null)
-            {
+            {   
                 if(isDragging)
                 {
                     eventData.Use();
@@ -1995,7 +1995,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 //Release the pointer
                 currentPointer.IsTargetPositionLockedOnFocusLock = true;
  
-                ResetState();
+                 ResetState();
             }
         }
 
@@ -2011,7 +2011,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     return;
                 }
 
-                currentPointer = eventData.Pointer;
+                   currentPointer = eventData.Pointer;
 
                 currentPointer.IsTargetPositionLockedOnFocusLock = false;
 
