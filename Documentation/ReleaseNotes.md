@@ -57,6 +57,8 @@ For the smoothest upgrade path, please use the following steps.
 1. Launch Unity, and for each scene in the project
     - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy
     - Select **MixedRealityToolkit -> Add to Scene and Configure**
+    - Select **MixedRealityToolkit -> Utilities -> Update -> Controller Mapping Profiles** (only needs to be done once)
+            - This will update any custom Controller Mapping Profiles with updated axes and data, while leaving your custom-assigned input actions intact
 
 ### What's new in 2.1.0
 

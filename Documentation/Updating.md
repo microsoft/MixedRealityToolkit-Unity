@@ -104,6 +104,10 @@ For more information on these changes, please see the [input simulation service]
 
 The mouse data provider profile has been updated to expose the new `CursorSpeed` and `WheelSpeed` properties. Existing custom profiles will automatically have default values provided. When the profile is saved, these new values will be persisted.
 
+**Controller mapping profile**
+
+Some axes and input types have been updated in 2.1.0, especially around the OpenVR platform. Please be sure to select **MixedRealityToolkit -> Utilities -> Update -> Controller Mapping Profiles** when upgrading. This will update any custom Controller Mapping Profiles with the updated axes and data, while leaving your custom-assigned input actions intact.
+
 ## Updating RC2 to 2.0.0
 
 Between the RC2 and 2.0.0 releases of the Microsoft Mixed Reality Toolkit, changes were made that may impact existing projects. This document describes those changes and how to update projects to the 2.0.0 release.
