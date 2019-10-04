@@ -72,9 +72,9 @@ Please refer to [change 5594](https://github.com/microsoft/MixedRealityToolkit-U
 
 The hand menu example has received visual updates (no code changes).
 
-**MRTK Examples Hub**
+**MRTK Examples Hub (Experimental)**
 
-The MRTK Examples Hub is now part of the MixedRealityToolkit.Examples package. The examples hub provides an excellent example of how to use the [Scene System](SceneSystem/SceneSystemGettingStarted.md).
+The MRTK Examples Hub is now part of the MixedRealityToolkit.Examples package, in the Experimental folder. For information on how to build and use the sample, please see the [examples hub](README_ExampleHub.md) article. 
 
 **Near menu control**
 
