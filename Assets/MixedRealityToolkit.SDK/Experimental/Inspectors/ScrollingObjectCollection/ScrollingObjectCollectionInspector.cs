@@ -51,7 +51,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         private bool showUnityEvents = false;
 
         //Serialized properties purely for inspector visualization
-        private SerializedProperty pressPlane;
         private SerializedProperty nodeList;
 
         private Shader MRTKtmp;
@@ -88,7 +87,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 
             //serialized properties for visualization
             nodeList = serializedObject.FindProperty("nodeList");
-            pressPlane = serializedObject.FindProperty("thresholdPoint");
         }
 
         public override void OnInspectorGUI()
@@ -310,8 +308,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 
             if (Application.isPlaying)
             {
-                //now that its running lets show the press plane so users have feedback about touch
-                center = pressPlane.vector3Value;
+                var scrollContainer = (ScrollingObjectCollection)target;
+                // now that its running lets show the press plane so users have feedback about touch
+                center = scrollContainer.transform.TransformPoint(Vector3.forward * -1.0f) * scrollContainer.ReleaseDistance;
 
                 UnityEditor.Handles.color = arrowColor;
 

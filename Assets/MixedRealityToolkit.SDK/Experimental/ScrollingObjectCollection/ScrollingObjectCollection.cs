@@ -318,6 +318,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         /// <summary>
         /// The UnityEvent type the ScrollingObjectCollection sends.
+        /// GameObject is the object the fired the scroll.
         /// </summary>
         [System.Serializable]
         public class ScrollEvent : UnityEvent<GameObject> { }
@@ -470,7 +471,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         //The inital contact object for the list. this may not always be currentPointer.Result.CurrentPointerTarget
         private GameObject FocusedObject;
 
-        // The point where the original PointerDown occured
+        // The point where the original PointerDown occurred
         private Vector3 pointerHitPoint;
 
         // The ray length of original pointer down
@@ -489,15 +490,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         // Hand position previous frame
         private Vector3 lastPointerPos;
 
-        //The depth in front of the scroller local space for thresholdPoint to calculate.
-        [SerializeField]
-        [HideInInspector]
-        private float thresholdOffset;
+        private float releaseDistance;
 
-        // A point in front of the scroller to use for dot product comparison
-        [SerializeField]
-        [HideInInspector]
-        private Vector3 thresholdPoint = new Vector3();
+        /// <summary>
+        /// The distance in front of the scroller, in local space, for a touch release
+        /// </summary>
+        /// <value></value>
+        public float ReleaseDistance{ get => releaseDistance; }
 
         // Current time at initial press
         private float initialPressTime;
@@ -737,13 +736,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 NodeList[FirstItemInView].Transform.gameObject.SetActive(true);
             }
 
-            // create the offset for our thesholdCalculation -- grab the first item in the list
+            // create the offset for our thresholdCalculation -- grab the first item in the list
 
             TryGetObjectAlignedBoundsSize(NodeList[FirstItemInView].Transform, out Vector3 offsetSize);
-            thresholdOffset = offsetSize.z * 0.5f;
-
-            // get a point in front of the scrollContainer to use for touch plane test
-            thresholdPoint = transform.TransformPoint((Vector3.forward * -1.0f) * thresholdOffset);
+            releaseDistance = offsetSize.z * 0.5f;
 
             // Use the first element for collection bounds for occluder positioning
             // temporarily zero out the rotation so we can get an accurate bounds
@@ -875,9 +871,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 ApplyPosition(workingScrollerPos);
             }
 
-            //recalcualte every frame to prevent any weirdness from moving the scrolling list.
-            thresholdPoint = transform.TransformPoint((Vector3.forward * -1.0f) * thresholdOffset);
-
             //The scroller has detected input and has a valid pointer
 
             if (isEngaged && TryGetPointerPositionOnPlane(out Vector3 currentPointerPos))
@@ -915,6 +908,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     }
                 }
 
+                var thresholdPoint = transform.TransformPoint((Vector3.forward * -1.0f) * releaseDistance);
                 //Make sure we're actually (near) touched and not a pointer event, do a dot product check            
                 bool scrollRelease = UseNearScrollBoundary ? DetectScrollRelease(transform.forward * -1.0f, thresholdPoint, currentPointerPos, clippingObject.transform, transform.worldToLocalMatrix, scrollDirection)
                                                            : DetectScrollRelease(transform.forward * -1.0f, thresholdPoint, currentPointerPos, null, null, null);
@@ -1163,8 +1157,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
                     if (scrollDirection == ScrollDirectionType.UpAndDown)
                     {
-                        if (scrollContainer.transform.localPosition.y > maxY + (thresholdOffset * bounceMultiplier)
-                            || scrollContainer.transform.localPosition.y < minY - (thresholdOffset * bounceMultiplier))
+                        if (scrollContainer.transform.localPosition.y > maxY + (releaseDistance * bounceMultiplier)
+                            || scrollContainer.transform.localPosition.y < minY - (releaseDistance * bounceMultiplier))
                         {
                             velocityState = VelocityState.Bouncing;
                             velocitySnapshot = 0.0f;
@@ -1179,8 +1173,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     }
                     else
                     {
-                        if (scrollContainer.transform.localPosition.x > maxX + (thresholdOffset * bounceMultiplier)
-                            || scrollContainer.transform.localPosition.x < minX - (thresholdOffset * bounceMultiplier))
+                        if (scrollContainer.transform.localPosition.x > maxX + (releaseDistance * bounceMultiplier)
+                            || scrollContainer.transform.localPosition.x < minX - (releaseDistance * bounceMultiplier))
                         {
                             velocityState = VelocityState.Bouncing;
                             velocitySnapshot = 0.0f;
@@ -1236,8 +1230,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
                     if (scrollDirection == ScrollDirectionType.UpAndDown)
                     {
-                        if (scrollContainer.transform.localPosition.y > maxY + (thresholdOffset * bounceMultiplier)
-                            || scrollContainer.transform.localPosition.y < minY - (thresholdOffset * bounceMultiplier))
+                        if (scrollContainer.transform.localPosition.y > maxY + (releaseDistance * bounceMultiplier)
+                            || scrollContainer.transform.localPosition.y < minY - (releaseDistance * bounceMultiplier))
                         {
                             velocityState = VelocityState.Bouncing;
                             avgVelocity = 0.0f;
@@ -1254,8 +1248,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     }
                     else
                     {
-                        if (scrollContainer.transform.localPosition.x > maxX + (thresholdOffset * bounceMultiplier)
-                            || scrollContainer.transform.localPosition.x < minX - (thresholdOffset * bounceMultiplier))
+                        if (scrollContainer.transform.localPosition.x > maxX + (releaseDistance * bounceMultiplier)
+                            || scrollContainer.transform.localPosition.x < minX - (releaseDistance * bounceMultiplier))
                         {
                             velocityState = VelocityState.Bouncing;
                             avgVelocity = 0.0f;
@@ -1652,21 +1646,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     break;
             }
             scrollContainer.transform.localPosition = newScrollPos;
-        }
-
-        /// <summary>
-        /// Helper get near hand joint in world space
-        /// </summary>
-        /// <param name="joint">Joint to get</param>
-        /// <param name="handedness">Desired hand of <see cref="TrackedHandJoint"/></param>
-        /// <returns></returns>
-        private Vector3 UpdateFingerPosition(TrackedHandJoint joint, Handedness handedness)
-        {
-            if (HandJointUtils.TryGetJointPose(joint, handedness, out MixedRealityPose handJoint))
-            {
-                return handJoint.Position;
-            }
-            return Vector3.zero;
         }
 
         /// <summary>
