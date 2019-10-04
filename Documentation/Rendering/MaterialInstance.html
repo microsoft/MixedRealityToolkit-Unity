@@ -88,6 +88,36 @@
 <h5>Note</h5>
 <p><a href="https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.html">MaterialPropertyBlocks</a> are preferred over material instancing but are not always available  in all scenarios.</p>
 </div>
+<p>Why can using <a href="%22https://docs.unity3d.com/ScriptReference/Renderer-material.html%22">Renderer.material</a> be an issue? If you add the below code to a Unity scene and hit play memory usage will continue to climb and climb:</p>
+<pre><code class="lang-csharp">public class Leak : MonoBehaviour
+{
+    private void Update()
+    {
+        var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        // Memory leak, the material allocated is not tracked &amp; destroyed.
+        cube.GetComponent&lt;Renderer&gt;().material.color = Color.red;
+        ...
+        Destroy(cube);
+    }
+}
+</code></pre>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The above Leak behavior <strong>will crash Unity</strong> if ran for too long!</p>
+</div>
+<p>As an alternative try using the <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Rendering.MaterialInstance.html"><code>MaterialInstance</code></a> behavior:</p>
+<pre><code class="lang-csharp">public class NoLeak : MonoBehaviour
+{
+    private void Update()
+    {
+        var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        // No memory leak, the material allocated is tracked &amp; destroyed by MaterialInstance.
+        cube.EnsureComponent&lt;MaterialInstance&gt;().Material.color = Color.red;
+        ...
+        Destroy(cube);
+    }
+}
+</code></pre>
 <h2 id="usage">Usage</h2>
 <p>When invoking Unity's <a href="%22https://docs.unity3d.com/ScriptReference/Renderer-material.html%22">Renderer.material</a>(s), Unity automatically instantiates new materials. It is the caller's responsibility to destroy the materials when a material is no longer needed or the game object is destroyed. The <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Rendering.MaterialInstance.html"><code>MaterialInstance</code></a> behavior helps avoid material leaks and keeps material allocation paths consistent during edit and run time.</p>
 <p>When a <a href="https://docs.unity3d.com/ScriptReference/MaterialPropertyBlock.html">MaterialPropertyBlock</a> can not be used and a material must be instanced, <a class="xref" href="../../api/Microsoft.MixedReality.Toolkit.Rendering.MaterialInstance.html"><code>MaterialInstance</code></a> can be used as follows:</p>
