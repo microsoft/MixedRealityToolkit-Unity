@@ -83,6 +83,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             animationCurve = serializedObject.FindProperty("paginationCurve");
             animationLength = serializedObject.FindProperty("animationLength");
 
+            clickEvent = serializedObject.FindProperty("ClickEvent");
+            touchEvent = serializedObject.FindProperty("TouchStarted");
+            untouchEvent = serializedObject.FindProperty("TouchEnded");
             momentumEvent = serializedObject.FindProperty("ListMomentumEnded");
 
             //serialized properties for visualization
@@ -186,6 +189,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             {
                 using (new EditorGUI.IndentLevelScope())
                 {
+                    EditorGUILayout.PropertyField(clickEvent);
+                    EditorGUILayout.PropertyField(touchEvent);
+                    EditorGUILayout.PropertyField(untouchEvent);
                     EditorGUILayout.PropertyField(momentumEvent);
                 }
             }
