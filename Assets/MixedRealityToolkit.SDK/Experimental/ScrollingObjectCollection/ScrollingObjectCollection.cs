@@ -848,6 +848,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 CoreServices.InputSystem.RegisterHandler<IMixedRealityInputHandler>(this);
                 CoreServices.InputSystem.RegisterHandler<IMixedRealityTouchHandler>(this);
                 CoreServices.InputSystem.RegisterHandler<IMixedRealityPointerHandler>(this);
+                CoreServices.InputSystem.RegisterHandler<IMixedRealitySourceStateHandler>(this);
             }
 
             if (useOnPreRender)
@@ -1013,6 +1014,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 CoreServices.InputSystem.UnregisterHandler<IMixedRealityInputHandler>(this);
                 CoreServices.InputSystem.UnregisterHandler<IMixedRealityTouchHandler>(this);
                 CoreServices.InputSystem.UnregisterHandler<IMixedRealityPointerHandler>(this);
+                CoreServices.InputSystem.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
             }
 
             if (useOnPreRender && cameraMethods != null)
@@ -1061,11 +1063,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
             result = Vector3.zero;
 
-            if (currentPointer == null || currentPointer?.Position == null)
+            if (((MonoBehaviour)currentPointer) == null)
             {
                 return false;
             }
-            if (currentPointer?.GetType() == typeof(PokePointer))
+            if (currentPointer.GetType() == typeof(PokePointer))
             {
                 result = currentPointer.Position;
                 return true;
@@ -2180,7 +2182,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         void IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData eventData)
         {
             //We'll consider this a drag release
-            if (isEngaged && animateScroller == null)
+            if (isEngaged && animateScroller == null && currentPointer != null && currentPointer.InputSourceParent.SourceId == eventData.SourceId)
             {
                 if (isTouched || isDragging)
                 {
