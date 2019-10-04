@@ -41,7 +41,7 @@ Aim to have zero changes in folders other than experimental folders. Here is a l
 
 - MixedRealityToolkit.SDK\Experimental
 - MixedRealityToolkit.SDK\Inspectors\Experimental
-- MixedRealityToolkit.Examples\Examples\Experimental
+- MixedRealityToolkit.Examples\Experimental
 
 Changes outside of these folders should be treated very carefully. If your experimental feature must include changes to MRTK core code, consider splitting out MRTK changes into a separate pull request that includes tests and documentation.
 

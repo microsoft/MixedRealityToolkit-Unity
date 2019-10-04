@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Rendering;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// used to drive per pixel based clipping.
     /// </summary>
     [ExecuteAlways]
-    public abstract class ClippingPrimitive : MonoBehaviour
+    public abstract class ClippingPrimitive : MonoBehaviour, IMaterialInstanceOwner
     {
         [Tooltip("The renderer(s) that should be affected by the primitive.")]
         [SerializeField]
@@ -71,7 +72,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         protected abstract string ClippingSideProperty { get; }
 
         protected MaterialPropertyBlock materialPropertyBlock;
-        protected static Dictionary<Material, Material> materialClones = new Dictionary<Material, Material>();
 
         private int clippingSideID;
         private CameraEventRouter cameraMethods;
@@ -82,16 +82,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <param name="_renderer"></param>
         public void AddRenderer(Renderer _renderer)
         {
-            if (!renderers.Contains(_renderer))
+            if (_renderer != null)
             {
-                renderers.Add(_renderer);
-            }
+                if (!renderers.Contains(_renderer))
+                {
+                    renderers.Add(_renderer);
+                }
 
-            var material = GetMaterial(_renderer);
-
-            if (material != null)
-            {
-                ToggleClippingFeature(material, true);
+                ToggleClippingFeature(_renderer.EnsureComponent<MaterialInstance>().AcquireMaterials(this), gameObject.activeInHierarchy);
             }
         }
 
@@ -102,21 +100,30 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             renderers.Remove(_renderer);
 
-            // Restore the original material.
-            var material = GetMaterial(_renderer);
-
-            if (material != null)
+            if (_renderer != null)
             {
-                _renderer.sharedMaterial = materialClones[material];
-                materialClones.Remove(material);
+                var materialInstance = _renderer.GetComponent<MaterialInstance>();
 
-                if (Application.isPlaying)
+                if (materialInstance != null)
                 {
-                    Destroy(material);
+                    // There is no need to acquire new instances if ones do not already exist since we are 
+                    // in the process of removing.
+                    ToggleClippingFeature(materialInstance.AcquireMaterials(this, false), false);
+                    materialInstance.ReleaseMaterial(this);
                 }
-                else
+            }
+        }
+
+        /// <summary>
+        /// Removes all renderers in the list of objects this clipping primitive clips.
+        /// </summary>
+        public void ClearRenderers()
+        {
+            if (renderers != null)
+            {
+                while (renderers.Count != 0)
                 {
-                    DestroyImmediate(material);
+                    RemoveRenderer(renderers[0]);
                 }
             }
         }
@@ -189,18 +196,25 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         protected void OnDestroy()
         {
-            if (renderers == null)
-            {
-                return;
-            }
-
-            while (renderers.Count != 0)
-            {
-                RemoveRenderer(renderers[0]);
-            }
+            ClearRenderers();
         }
 
         #endregion MonoBehaviour Implementation
+
+        #region IMaterialInstanceOwner Implementation
+
+        /// <inheritdoc />
+        public void OnMaterialChanged(MaterialInstance materialInstance)
+        {
+            if (materialInstance != null)
+            {
+                ToggleClippingFeature(materialInstance.AcquireMaterials(this), gameObject.activeInHierarchy);
+            }
+
+            UpdateRenderers();
+        }
+
+        #endregion IMaterialInstanceOwner Implementation
 
         protected virtual void Initialize()
         {
@@ -235,16 +249,25 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         protected void ToggleClippingFeature(bool keywordOn)
         {
-            if (renderers == null)
+            if (renderers != null)
             {
-                return;
+                for (var i = 0; i < renderers.Count; ++i)
+                {
+                    var _renderer = renderers[i];
+
+                    if (_renderer != null)
+                    {
+                        ToggleClippingFeature(_renderer.EnsureComponent<MaterialInstance>().AcquireMaterials(this), keywordOn);
+                    }
+                }
             }
+        }
 
-            for (var i = 0; i < renderers.Count; ++i)
+        protected void ToggleClippingFeature(Material[] materials, bool keywordOn)
+        {
+            if (materials != null)
             {
-                var material = GetMaterial(renderers[i]);
-
-                if (material != null)
+                foreach (var material in materials)
                 {
                     ToggleClippingFeature(material, keywordOn);
                 }
@@ -253,40 +276,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         protected void ToggleClippingFeature(Material material, bool keywordOn)
         {
-            if (keywordOn)
+            if (material != null)
             {
-                material.EnableKeyword(Keyword);
-            }
-            else
-            {
-                material.DisableKeyword(Keyword);
-            }
-        }
-
-        protected Material GetMaterial(Renderer _renderer)
-        {
-            Material output = null;
-
-            if (_renderer != null)
-            {
-                var material = _renderer.sharedMaterial;
-
-                if (material != null && !materialClones.TryGetValue(material, out output))
+                if (keywordOn)
                 {
-                    // Create a material clone. This keeps the code path the same at edit time and 
-                    // run time since renderer.material cannot be invoked when editing.
-                    output = new Material(material);
-                    output.name += " (Clone)";
-                    materialClones.Add(output, material);
-                    _renderer.sharedMaterial = output;
+                    material.EnableKeyword(Keyword);
                 }
                 else
                 {
-                    output = material;
+                    material.DisableKeyword(Keyword);
                 }
             }
-
-            return output;
         }
     }
 }
