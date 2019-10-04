@@ -1,0 +1,1 @@
+Please see MixedRealityToolkit.SDK\Experimental\ScrollingObjectCollection\README.md for information about the scrolling object collection
