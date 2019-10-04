@@ -166,7 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         currentMapping.InvertXAxis != currentDefaultMapping.InvertXAxis ||
                         currentMapping.InvertYAxis != currentDefaultMapping.InvertYAxis)
                     {
-                        interactions[i] = new MixedRealityInteractionMapping(newDefaultInteractions[i])
+                        interactions[i] = new MixedRealityInteractionMapping(currentDefaultMapping)
                         {
                             MixedRealityInputAction = currentMapping.MixedRealityInputAction
                         };

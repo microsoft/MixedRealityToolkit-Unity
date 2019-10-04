@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 using UInput = UnityEngine.Input;
-using Microsoft.MixedReality.Toolkit.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 {
@@ -19,12 +18,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// </summary>
         /// <param name="trackingState">The controller's tracking state.</param>
         /// <param name="controllerHandedness">The handedness (ex: right) of the controller.</param>
-        /// <param name="inputSource">The controller's input souce.</param>
+        /// <param name="inputSource">The controller's input source.</param>
         /// <param name="interactions">The set of interactions supported by this controller.</param>
         public MouseController(
-            TrackingState trackingState, 
-            Handedness controllerHandedness, 
-            IMixedRealityInputSource inputSource = null, 
+            TrackingState trackingState,
+            Handedness controllerHandedness,
+            IMixedRealityInputSource inputSource = null,
             MixedRealityInteractionMapping[] interactions = null) : base(trackingState, controllerHandedness, inputSource, interactions)
         { }
 

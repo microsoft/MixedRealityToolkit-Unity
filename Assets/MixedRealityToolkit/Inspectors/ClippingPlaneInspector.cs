@@ -14,6 +14,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     public class ClippingPlaneEditor : ClippingPrimitiveEditor
     {
         /// <inheritdoc/>
+        protected override bool HasFrameBounds()
+        {
+            return true;
+        }
+
+        /// <inheritdoc/>
         protected override Bounds OnGetFrameBounds()
         {
             var primitive = target as ClippingPlane;
