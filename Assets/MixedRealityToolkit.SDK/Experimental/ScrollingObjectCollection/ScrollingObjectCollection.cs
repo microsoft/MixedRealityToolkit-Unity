@@ -324,6 +324,24 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         public class ScrollEvent : UnityEvent<GameObject> { }
 
         /// <summary>
+        /// Event that is fired on the target object when the ScrollingObjectCollection deems event as a Click.
+        /// </summary>
+        [Tooltip("Event that is fired on the target object when the ScrollingObjectCollection deems event as a Click.")]
+        public ScrollEvent ClickEvent = new ScrollEvent();
+
+        /// <summary>
+        /// Event that is fired on the target object when the ScrollingObjectCollection is touched.
+        /// </summary>
+        [Tooltip("Event that is fired on the target object when the ScrollingObjectCollection is touched.")]
+        public ScrollEvent TouchStarted = new ScrollEvent();
+
+        /// <summary>
+        /// Event that is fired on the target object when the ScrollingObjectCollection is no longer touched.
+        /// </summary>
+        [Tooltip("Event that is fired on the target object when the ScrollingObjectCollection is no longer touched.")]
+        public ScrollEvent TouchEnded = new ScrollEvent();
+
+        /// <summary>
         /// Event that is fired on the target object when the ScrollingObjectCollection is no longer in motion from velocity
         /// </summary>
         [Tooltip("Event that is fired on the target object when the ScrollingObjectCollection is no longer in motion from velocity.")]
@@ -469,7 +487,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         private IMixedRealityPointer currentPointer;
 
         //The inital contact object for the list. this may not always be currentPointer.Result.CurrentPointerTarget
-        private GameObject FocusedObject;
+        private GameObject initialFocusedObject;
 
         // The point where the original PointerDown occurred
         private Vector3 pointerHitPoint;
@@ -752,7 +770,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
             List<Vector3> boundsPoints = new List<Vector3>();
             BoundsExtensions.GetColliderBoundsPoints(NodeList[FirstItemInView].GameObject, boundsPoints, 0);
-
             clippingBounds.center = boundsPoints[0];
 
             foreach (Vector3 point in boundsPoints)
@@ -894,7 +911,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                         velocityState = VelocityState.None;
 
                         //now that we're dragging, reset the interacted with interactable if it exists
-                        Interactable ixable = FocusedObject.GetComponent<Interactable>();
+                        Interactable ixable = initialFocusedObject.GetComponent<Interactable>();
                         if(ixable != null)
                         {
                            ixable.ResetAllStates();
@@ -921,6 +938,25 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                         //Its a drag release
                         initialScrollerPos = workingScrollerPos;
                         velocityState = VelocityState.Calculating;
+                    }
+                    else
+                    {
+                        //Its a click release
+                        Collider[] c = NodeList.Find(x => x.GameObject == initialFocusedObject).Colliders;
+                        bool isColliderActive = false;
+                        foreach (Collider col in c)
+                        {
+                            if (col.enabled)
+                            {
+                                isColliderActive = true;
+                                break;
+                            }
+                        }
+                        if (isColliderActive)
+                        {
+                            //Fire the UnityEvent
+                            ClickEvent?.Invoke(initialFocusedObject);
+                        }
                     }
 
                     ResetState();
@@ -1032,7 +1068,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 result = currentPointer.Position;
                 return true;
             }
-            if (currentPointer?.Result?.Details != null)
+            if (currentPointer.Result?.Details != null)
             {
                 var endPoint = RayStep.GetPointByDistance(currentPointer.Rays, pointerHitDistance);
                 var scrollVector = (scrollDirection == ScrollDirectionType.UpAndDown) ? transform.up : transform.right;
@@ -1653,9 +1689,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         private void ResetState()
         {
+            TouchEnded?.Invoke(initialFocusedObject);
+
             //Release the pointer
             currentPointer = null;
-            FocusedObject = null;
+            initialFocusedObject = null;
 
             //Clear our states
             isTouched = false;
@@ -2006,19 +2044,19 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 //Quick check for the global listener to bail if the object is not in the list
                 if (eventData.Pointer?.Result?.CurrentPointerTarget == null 
-                    || !ContainsNode(eventData.Pointer.Result.CurrentPointerTarget.transform) || FocusedObject != null)
+                    || !ContainsNode(eventData.Pointer.Result.CurrentPointerTarget.transform) || initialFocusedObject != null)
                 {
                     return;
                 }
 
-                   currentPointer = eventData.Pointer;
+                currentPointer = eventData.Pointer;
 
                 currentPointer.IsTargetPositionLockedOnFocusLock = false;
 
                 pointerHitPoint = currentPointer.Result.Details.Point;
                 pointerHitDistance = currentPointer.Result.Details.RayDistance;
 
-                FocusedObject = currentPointer.Result?.CurrentPointerTarget;
+                initialFocusedObject = currentPointer.Result?.CurrentPointerTarget;
 
                 //Reset the scroll state
                 scrollVelocity = 0.0f;
@@ -2032,6 +2070,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     isTouched = false;
                     isEngaged = true;
                     isDragging = false;
+
+                    TouchStarted?.Invoke(initialFocusedObject);
                 }
             }
             else
@@ -2054,7 +2094,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         ///</inheritdoc>
         void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
         {
-            if(isDragging || FocusedObject)
+            if(isDragging || initialFocusedObject)
             {
                 eventData.Use();
                 return;
@@ -2077,13 +2117,16 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 {
                     initialPointerPos = currentPointer.Position;
                     initialPressTime = Time.time;
-                    FocusedObject = currentPointer.Result?.CurrentPointerTarget;
+                    initialFocusedObject = currentPointer.Result?.CurrentPointerTarget;
                     initialScrollerPos = scrollContainer.transform.localPosition;
                     shouldSwallowEvents = true;
 
                     isTouched = true;
                     isEngaged = true;
                     isDragging = false;
+
+                    TouchStarted?.Invoke(initialFocusedObject);
+
                 }
             }
 
@@ -2114,7 +2157,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 //Quick check for the global listener to bail if the object is not in the list
                 if (currentPointer == null || 
                     currentPointer.Result?.CurrentPointerTarget == null ||
-                    !ContainsNode(p.Result.CurrentPointerTarget.transform) || FocusedObject != p.Result.CurrentPointerTarget)
+                    !ContainsNode(p.Result.CurrentPointerTarget.transform) || initialFocusedObject != p.Result.CurrentPointerTarget)
                 {
                     return;
                 }
