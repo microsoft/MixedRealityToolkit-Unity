@@ -25,7 +25,7 @@ public class Leak : MonoBehaviour
 > [!Note]
 > The above Leak behavior **will crash Unity** if ran for too long!
 
-As an alternitve try using the [`MaterialInstance`](xref:Microsoft.MixedReality.Toolkit.Rendering.MaterialInstance) behavior:
+As an alternative try using the [`MaterialInstance`](xref:Microsoft.MixedReality.Toolkit.Rendering.MaterialInstance) behavior:
 
 ```csharp
 public class NoLeak : MonoBehaviour
