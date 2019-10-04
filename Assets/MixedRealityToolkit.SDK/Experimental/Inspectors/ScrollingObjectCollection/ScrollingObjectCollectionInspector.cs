@@ -52,6 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 
         //Serialized properties purely for inspector visualization
         private SerializedProperty nodeList;
+        private SerializedProperty releaseDistance;
 
         private Shader MRTKtmp;
 
@@ -87,6 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
 
             //serialized properties for visualization
             nodeList = serializedObject.FindProperty("nodeList");
+            releaseDistance = serializedObject.FindProperty("releaseDistance");
         }
 
         public override void OnInspectorGUI()
@@ -306,35 +308,32 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                 return;
             }
 
-            if (Application.isPlaying)
-            {
-                var scrollContainer = (ScrollingObjectCollection)target;
-                // now that its running lets show the press plane so users have feedback about touch
-                center = scrollContainer.transform.TransformPoint(Vector3.forward * -1.0f * scrollContainer.ReleaseDistance);
+            var scrollContainer = (ScrollingObjectCollection)target;
+            // now that its running lets show the press plane so users have feedback about touch
+            center = scrollContainer.transform.TransformPoint(Vector3.forward * -1.0f * releaseDistance.floatValue);
 
-                UnityEditor.Handles.color = arrowColor;
+            UnityEditor.Handles.color = arrowColor;
 
-                float arrowSize = UnityEditor.HandleUtility.GetHandleSize(center) * 0.75f;
+            float arrowSize = UnityEditor.HandleUtility.GetHandleSize(center) * 0.75f;
 
-                container.transform.rotation.ToAngleAxis(out float ang, out Vector3 currRotAxis);
+            container.transform.rotation.ToAngleAxis(out float ang, out Vector3 currRotAxis);
 
-                Vector3 rightDelta = container.transform.right * container.ClippingObject.transform.localScale.x;
-                Vector3 upDelta = container.transform.up * container.ClippingObject.transform.localScale.y;
+            Vector3 rightDelta = container.transform.right * container.ClippingObject.transform.localScale.x;
+            Vector3 upDelta = container.transform.up * container.ClippingObject.transform.localScale.y;
 
-                Quaternion rot = Quaternion.LookRotation(container.transform.forward * -1.0f, container.transform.up);
-                UnityEditor.Handles.ArrowHandleCap(0, center + (rightDelta * 0.5f) - (upDelta * 0.5f), rot, arrowSize, EventType.Repaint);
+            Quaternion rot = Quaternion.LookRotation(container.transform.forward * -1.0f, container.transform.up);
+            UnityEditor.Handles.ArrowHandleCap(0, center + (rightDelta * 0.5f) - (upDelta * 0.5f), rot, arrowSize, EventType.Repaint);
 
-                Vector3[] points = new Vector3[4];
-                points[0] = center;
-                points[1] = center + rightDelta;
-                points[2] = center + rightDelta - upDelta;
-                points[3] = center - upDelta;
+            Vector3[] points = new Vector3[4];
+            points[0] = center;
+            points[1] = center + rightDelta;
+            points[2] = center + rightDelta - upDelta;
+            points[3] = center - upDelta;
 
-                UnityEditor.Handles.DrawSolidRectangleWithOutline(points, new Color(0.85f, 1.0f, 1.0f, 0.1f), arrowColor);
-                GUIStyle labelStyle = new GUIStyle();
-                labelStyle.normal.textColor = Color.white;
-                UnityEditor.Handles.Label(center + (rightDelta * 0.5f) - (upDelta * 0.5f), new GUIContent("touch plane", "The plane which the finger will need to cross in order for the touch to be calculated as a scroll or release."), labelStyle);
-            }
+            UnityEditor.Handles.DrawSolidRectangleWithOutline(points, new Color(0.85f, 1.0f, 1.0f, 0.1f), arrowColor);
+            GUIStyle labelStyle = new GUIStyle();
+            labelStyle.normal.textColor = Color.white;
+            UnityEditor.Handles.Label(center + (rightDelta * 0.5f) - (upDelta * 0.5f), new GUIContent("touch plane", "The plane which the finger will need to cross in order for the touch to be calculated as a scroll or release."), labelStyle);
         }
 
         /// <summary>
