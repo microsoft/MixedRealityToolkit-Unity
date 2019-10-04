@@ -161,7 +161,7 @@ Here are some suggested next steps:
 * Learn how to work with the MRTK Configuration profile in the [mixed reality configuration guide](MixedRealityConfigurationGuide.md).
 * Learn about the [MRTK's Architecture](../Documentation/Architecture/Overview.md)
 * Learn about the [MRTK's Input System](../Documentation/Input/Overview.md)
-* Learn about the [MRTK's Tools](../README.md#Tools) that will empower your mixed reality design and development.
+* Learn about the [MRTK's Tools](../README.md#tools) that will empower your mixed reality design and development.
 * Read through [input simulation guide](InputSimulation/InputSimulationService.md) to learn how to simulate hand input in editor.
 
 ## Upgrading from the HoloToolkit (HTK/MRTK v1)
