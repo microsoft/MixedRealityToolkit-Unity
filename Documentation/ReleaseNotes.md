@@ -35,13 +35,13 @@ For the smoothest upgrade path, please use the following steps.
     - MixedRealityToolkit
     - MixedRealityToolkit.Examples
     - MixedRealityToolkit.Extensions
-    > [!Note]
+    > [!NOTE]
     > If additional extensions have been installed, please make a backup prior to deleting this folder.
     - MixedRealityToolkit.Providers
     - MixedRealityToolkit.SDK
     - MixedRealityToolkit.Services
     - MixedRealityToolkit.Tools
-    > [!Important]
+    > [!IMPORTANT]
     > Do NOT delete the **MixedRealityToolkit.Generated** folder.
 1. Delete the **Library** folder
 1. Re-open the project in Unity
@@ -49,7 +49,7 @@ For the smoothest upgrade path, please use the following steps.
     - Foundation - _Import this package first_
     - (Optional) Tools
     - (Optional) Extensions
-    > [!Note]
+    > [!NOTE]
     > If additional extensions had been installed, they may need to be re-imported.
     - (Optional) Examples
 1. Close Unity and Delete the **Library** folder. This step is necessary to force Unity to refresh its
@@ -188,13 +188,13 @@ For the smoothest upgrade path, please use the following steps.
     - MixedRealityToolkit
     - MixedRealityToolkit.Examples
     - MixedRealityToolkit.Extensions
-    > [!Note]
+    > [!NOTE]
     > If additional extensions have been installed, please make a backup prior to deleting this folder.
     - MixedRealityToolkit.Providers
     - MixedRealityToolkit.SDK
     - MixedRealityToolkit.Services
     - MixedRealityToolkit.Tools
-    > [!Important]
+    > [!IMPORTANT]
     > Do NOT delete the **MixedRealityToolkit.Generated** folder.
 1. Delete the **Library** folder
 1. Re-open the project in Unity
@@ -202,7 +202,7 @@ For the smoothest upgrade path, please use the following steps.
     - Foundation - _Import this package first_
     - (Optional) Tools
     - (Optional) Extensions
-    > [!Note]
+    > [!NOTE]
     > If additional extensions had been installed, they may need to be re-imported.
     - (Optional) Examples
 1. Close Unity and Delete the **Library** folder. This step is necessary to force Unity to refresh its
@@ -211,7 +211,7 @@ For the smoothest upgrade path, please use the following steps.
     - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy
     - Select **MixedRealityToolkit -> Add to Scene and Configure**
 
-> [!Important]
+> [!IMPORTANT]
 > Some profiles have been changed (properties have been added) in this release. If the project has custom
 profiles, please open them to verify that all of the updated properties are correctly configured.
 
@@ -230,7 +230,7 @@ profiles, please open them to verify that all of the updated properties are corr
 - New example scene
   - The BoundingBoxExample scene, in the Examples package (Demos\UX\BoundingBox\Scenes\BoundingBoxExamples.unity), shows various types of configurations
 
-> [!Important]
+> [!IMPORTANT]
 > Normalized asset handle size and scaling logic require updated handle scale values. With this change, the existing bounding box
 handle will be displayed in a very large size. Please refer to the **Bounding box handle styles** section in the [Bounding Box](README_BoundingBox.md)
 documentation for updated recommended values for the handle size. Handle configuration examples can be found in the **BoundingBoxExamples** scene.
@@ -370,7 +370,7 @@ Service manager prefabs are provided for the following services.
 To use, drag and drop the desired prefab into the hierarchy and select the configuration
 profile.
 
-> [!Note]
+> [!NOTE]
 > These service managers are currently experimental, may have issues and
 are subject to change. Please file any and all issues that are encountered on GitHub
 

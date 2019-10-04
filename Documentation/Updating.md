@@ -26,7 +26,7 @@ The `ColliderNearInteractionTouchable` class has been deprecated. Please update 
 
 This is a breaking change and requires existing mouse device manager implementations to be modified .
 
->[!Note]
+>[!NOTE]
 >This change is not backwards compatible with version 2.0.0.
 
 **_Deprecated_**
@@ -78,7 +78,7 @@ The hand mesh and joint visualizations now have a separate editor and player set
 
 Custom hand tracking profiles may need to be updated to work correctly with version 2.1.0.
 
->[!Note]
+>[!NOTE]
 >This change is not backwards compatible with version 2.0.0.
 
 **Input simulation profile**
@@ -138,7 +138,7 @@ Use [`MixedRealityServiceRegistry`](xref:Microsoft.MixedReality.Toolkit.MixedRea
 
 The [`CoreServices`](xref:Microsoft.MixedReality.Toolkit.CoreServices) class is the replacement for the static system accessors (ex: BoundarySystem) found in the `MixedRealityToolkit` object.
 
->[!Important]
+>[!IMPORTANT]
 >The `MixedRealityToolkit` system accessors have been deprecated in version 2.0.0 and will be removed in a future release of the MRTK.
 
 The following code example illustrates the old and the new pattern.
