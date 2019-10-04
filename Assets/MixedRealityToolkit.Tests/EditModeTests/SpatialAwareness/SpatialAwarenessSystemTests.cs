@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.SpatialAwarenessSystem
         public void TearDown()
         {
             TestUtilities.ShutdownMixedRealityToolkit();
+            TestUtilities.EditorTearDownScenes();
         }
 
         [Test]
@@ -109,12 +110,5 @@ namespace Microsoft.MixedReality.Toolkit.Tests.SpatialAwarenessSystem
             Assert.IsNotNull(dataProvider);
             Assert.IsTrue(dataProvider.IsInitialized);
         }
-
-        [TearDown]
-        public void CleanupMixedRealityToolkitTests()
-        {
-            TestUtilities.EditorCreateScenes();
-        }
-
     }
 }
