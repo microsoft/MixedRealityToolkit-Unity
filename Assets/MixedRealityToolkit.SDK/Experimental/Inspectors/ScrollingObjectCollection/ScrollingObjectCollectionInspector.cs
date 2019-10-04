@@ -310,7 +310,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
             {
                 var scrollContainer = (ScrollingObjectCollection)target;
                 // now that its running lets show the press plane so users have feedback about touch
-                center = scrollContainer.transform.TransformPoint(Vector3.forward * -1.0f) * scrollContainer.ReleaseDistance;
+                center = scrollContainer.transform.TransformPoint(Vector3.forward * -1.0f * scrollContainer.ReleaseDistance);
 
                 UnityEditor.Handles.color = arrowColor;
 
