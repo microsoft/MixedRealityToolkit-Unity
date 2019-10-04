@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private static void FilterTypes(Assembly assembly, SystemTypeAttribute filter, ICollection<Type> excludedTypes, List<Type> output)
         {
-            foreach (var type in assembly.GetTypes())
+            foreach (var type in assembly.GetLoadableTypes())
             {
                 bool isValid = type.IsValueType && !type.IsEnum || type.IsClass;
                 if (!type.IsVisible || !isValid)

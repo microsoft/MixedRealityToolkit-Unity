@@ -3,7 +3,7 @@
   items:
   - name: Upgrading from HTK
     href: HTKToMRTKPortingGuide.md
-  - name: Updating from RC2
+  - name: Updating from earlier versions
     href: Updating.md
   - name: Release Notes
     href: ReleaseNotes.md
@@ -103,15 +103,15 @@
     href: README_MRTKStandardShader.md
   - name: Spatial Awareness
     items:
-    - name: Spatial Awareness Overview
+    - name: Getting Started
       href: SpatialAwareness/SpatialAwarenessGettingStarted.md
-    - name: Configuring the Spatial Awareness Mesh Observer
+    - name: Configuring Observers for Device
       href: SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.md
-    - name: Spatial Object Mesh Observer
+    - name: Configuring Observers for Editor
       href: SpatialAwareness/SpatialObjectMeshObserver.md
-    - name: Usage Guide
+    - name: Controlling Observers via Code
       href: SpatialAwareness/UsageGuide.md
-    - name: Creating a spatial awareness data provider
+    - name: Creating a custom Observer
       href: SpatialAwareness/CreateDataProvider.md
   - name: Multi Scene System
     items:
@@ -168,6 +168,10 @@
         href: InputSimulation/InputAnimationFileFormat.md
     - name: Extension Service Creation Wizard
       href: Tools/ExtensionServiceCreationWizard.md
+    - name: Runtime tools
+      items:
+      - name: Controller Mapping tool
+        href: Tools/ControllerMappingTool.md 
   - name: Scene Transition Service
     href: Extensions/SceneTransitionService/SceneTransitionServiceOverview.md
   - name: Experimental Features

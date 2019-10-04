@@ -318,6 +318,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             private PointerEventData graphicData;
 
+            /// <summary>
+            /// Returns true if the current pointer target has been disabled or destroyed
+            /// </summary>
+            public bool IsCurrentPointerTargetInvalid => ((CurrentPointerTarget != null && !CurrentPointerTarget.activeInHierarchy)) ||
+                (CurrentPointerTarget == null && !ReferenceEquals(CurrentPointerTarget, null));
+
             private FocusDetails focusDetails = new FocusDetails();
 
             public PointerData(IMixedRealityPointer pointer)
@@ -925,6 +931,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             else
             {
                 LayerMask[] prioritizedLayerMasks = (pointerData.Pointer.PrioritizedLayerMasksOverride ?? FocusLayerMasks);
+
+                if (pointerData.IsCurrentPointerTargetInvalid)
+                {
+                    pointerData.Pointer.IsFocusLocked = false;
+                }
 
                 // If the pointer is locked, keep the focused object the same.
                 // This will ensure that we execute events on those objects
