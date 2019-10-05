@@ -60,6 +60,8 @@ For the smoothest upgrade path, please use the following steps.
     - Select **MixedRealityToolkit -> Utilities -> Update -> Controller Mapping Profiles** (only needs to be done once)
             - This will update any custom Controller Mapping Profiles with updated axes and data, while leaving your custom-assigned input actions intact
 
+Related to [issue #6144](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6144): after upgrading, if you have a custom input simulation profile, the input playback service data provider may have a missing class. Click the "Try Repair" button in the profile window to fix the missing reference.
+
 ### What's new in 2.1.0
 
 **Dwell interaction (Experimental)**
@@ -89,6 +91,134 @@ Support for pressable buttons on Unity UI canvases has been added. The HandInter
 **Speech command confirmation label**
 
 A new speech command confirmation label (SpeechConfirmationTooltip.prefab) has been added to provide functionality that matches the Microsoft HoloLens 2 shell.  Please see the [speech input](Input/Speech.md) article for more information.
+
+**Ability to turn off hand rays and other pointers (gaze, grab, poke) from code**
+
+We have had many requests for how to disable the far interaction (line pointer, hand rays, etc) at runtime. We now provide a one-line command to turn pointers on and off.
+
+```
+// Turn off all hand rays
+PointerUtils.SetHandRayPointerBehavior(PointerBehavior.AlwaysOff);
+
+// Turn hand rays back on
+PointerUtils.SetHandRayPointerBehavior(PointerBehavior.Default);
+
+// Turn off hand rays for the right hand only
+PointerUtils.SetHandRayPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Right);
+
+// Turn off the gaze pointer
+PointerUtils.SetGazePointerBehavior(PointerBehavior.AlwaysOff);
+```
+
+Please see [change 5920](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/5920) for more details.
+
+**Easily access hand, head, eye position, rotation from code**
+
+We had feedback that it's difficult to find out where the hand is pointing, or where eyes / head is looking. This change adds methods to make it easy for application code to acquire the position and rotation of head, hands, eyes, and motion controllers.
+
+Please see [change 5944](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/5944) for details.
+
+```csharp
+// Get the head ray
+var headRay = InputRayUtils.GetHeadGazeRay();
+
+// Get the right hand ray
+Ray rightHandRay;
+if(InputRayUtils.TryGetHandRay(Handedness.right, rightHandRay))
+{
+    // Right hand ray is available
+}
+```
+
+**Interactable can be instantiated, configured from code**
+
+This release we focused a lot of energy on making `Interactable` configurable from code.
+
+It's now possible to instantiate and configure interactable from code. See [change 5967](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/5967) and [Interactable](README_Interactable.md) for more information
+
+It's now easier to add event listeners from code. Here's an example of how to add focus enter/exit events:
+
+```csharp
+public static void AddFocusEvents(Interactable interactable)
+{
+    var onFocusReceiver = interactable.AddReceiver<InteractableOnFocusReceiver>();
+    onFocusReceiver.OnFocusOn.AddListener(() => Debug.Log("Focus on"));
+    onFocusReceiver.OnFocusOff.AddListener(() => Debug.Log("Focus off"));
+}
+```
+
+**Input simulation: Instead of Q/E, hold ctrl to rotate hands**
+
+Keys for rotating hands have been removed, hand rotation is now controlled by the mouse as well. Holding `HandRotateButton` (Ctrl) together with the left/right hand manipulation key (LShift/Space) will enable hand rotation.
+
+**Layer Masks for Grabbable objects**
+We received feedback that hand rays would turn off / stick to objects when near surface reconstruction or any any other non-grabbable collider. As part of this fix, we added the ability to specify layer masks for near grabbable objects, similar to touchable objects. 
+
+An object must both be on a Grabbable Layer as well as have a NearInteractionGrabbable component in order for hand rays to turn off. The Grabbable Layer is by default set to everything except Ignore Raycast and Spatial Awareness.
+
+See [change 5823](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/5823) for more details.
+
+### Breaking changes in 2.1.0
+
+**Input simulation profile**
+
+The input simulation system has been upgraded, which changes a few settings in the input simulation profile. Some changes can not be migrated automatically and users may find that profiles are using default values.
+
+1. All KeyCode and mouse button bindings in the profile have been replaced with a generic KeyBinding struct, which stores the type of binding (key or mouse) as well as the actual binding code (KeyCode or mouse button number respectively). The struct has its own inspector, which allows unified display and offers an "auto-bind" tool to quickly set key bindings by pressing the respective key instead of selecting from a huge dropdown list.
+
+- FastControlKey
+- ToggleLeftHandKey
+- ToggleRightHandKey
+- LeftHandManipulationKey
+- RightHandManipulationKey
+
+2. `MouseLookToggle` was previously included in the 1MouseLookButton1 enum as `InputSimulationMouseButton.Focused`, it is now a separate option. When enabled, the camera will keep rotating with the mouse after releasing the button, until the escape key is pressed.
+
+3. `HandDepthMultiplier` default value has been lowered from 0.1 to 0.03 to accommodate some changes to the input simulation. If the camera moves too fast when scrolling, try lowering this value.
+
+4. Keys for rotating hands have been removed, hand rotation is now controlled by the mouse as well. Holding `HandRotateButton` (Ctrl) together with the left/right hand manipulation key (LShift/Space) will enable hand rotation.
+
+A new axis "UpDown" has been introduced to the input axis list. This controls camera movement in the vertical and defaults to Q/E keys as well as the controller trigger buttons.
+
+For more information on these changes, please see the [input simulation service](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/InputSimulation/InputSimulationService.md) article.
+
+Related to [issue #6144](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6144): after upgrading, if you have a custom input simulation profile, the input playback service data provider may have a missing class. Click the "Try Repair" button in the profile window to fix the missing reference.
+
+### Replace ColliderNearInteractionTouchable with BaseNearInteractionTouchable
+The `CollierNearInteractionTouchable` class is now obsolete. Replace all usages of `ColliderNearInteractionTouchable` with `BaseNearInteractionTouchable`.
+
+### Interactable: deprecated methods
+
+Interactable has been upgraded to be configurable from code. The following methods in `Interactable` are now marked Obsolete:
+
+public void ResetBaseStates()
+public int GetDimensionIndex()
+public void SetDimensionIndex(int index)
+public void ForceUpdateThemes()
+public bool FocusEnabled
+public bool IsToggleButton
+public bool Enabled
+public bool RequiresFocus
+public bool IsDisabled
+public State[] GetStates()
+public virtual void SetFocus(bool focus)
+public virtual void SetPress(bool press)
+public virtual void SetDisabled(bool disabled)
+public virtual void SetTargeted(bool targeted)
+public virtual void SetInteractive(bool interactive)
+public virtual void SetObservationTargeted(bool targeted)
+public virtual void SetObservation(bool observation)
+public virtual void SetVisited(bool visited)
+public virtual void SetToggled(bool toggled)
+public virtual void SetGesture(bool gesture)
+public virtual void SetGestureMax(bool gesture)
+public virtual void SetCollision(bool collision)
+public virtual void SetCustom(bool custom)
+public virtual void SetVoiceCommand(bool voice)
+public virtual void SetPhysicalTouch(bool touch)
+public virtual void SetGrab(bool grab)
+
+Please see [change 6104](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6104) for more details.
 
 ### Known issues in 2.1.0
 
