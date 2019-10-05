@@ -15,7 +15,7 @@ MRTK の Input System (入力システム)では、次のことが可能です�
 
 [**Controllers (コントローラー)**](Controllers.md) は、入力デバイスが検出されたときに *input providers (入力プロバイダー)* によって作成され、入力デバイスが失われたり切断されたりすると破棄されます。たとえば、WMR 入力プロバイダーは、6 DOF デバイス用の *WMR controllers*と、 articulated hand (多関節ハンド) 用の *WMR articulated hand controllers* を作成します。コントローラー入力は、*Input System Profile* 内の **Controller Mapping Profile** を介して入力アクションにマッピングすることができます。コントローラーによって発生した入力イベントには、もし存在する場合、関連する入力アクションが含まれます。
 
-コントローラーには、[**Pointers (ポインター)**](Pointers.md) をアタッチして、シーンを照会してフォーカスのあるゲーム オブジェクトを決定し、[**Pointer Events (ポインター イベント)**](Pointers.md#pointer-event-interfaces) を発生させることができます。例として、Iline pointer (ライン ポインター)* はレイの原点と方向を計算するためにコントローラーの姿勢を利用し、シーンに対してレイキャストを行います。各コントローラーに対して作成されたポインターは、*Input System Profile* の下の **Pointer Profile** で設定されます。
+コントローラーには、[**Pointers (ポインター)**](Pointers.md) をアタッチして、シーンを照会してフォーカスのあるゲーム オブジェクトを決定し、[**Pointer Events (ポインター イベント)**](Pointers.md#pointer-event-interfaces) を発生させることができます。例として、*line pointer (ライン ポインター)* はレイの原点と方向を計算するためにコントローラーの姿勢を利用し、シーンに対してレイキャストを行います。各コントローラーに対して作成されたポインターは、*Input System Profile* の下の **Pointer Profile** で設定されます。
 
 <img src="../../Documentation/Images/Input/MRTK_Input_EventFlow.png" width="200px" style="display:block;margin-left:auto;margin-right:auto;">
 <sup>イベント フロー</sup>
