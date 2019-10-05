@@ -138,9 +138,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         private bool useOnPreRender;
 
         /// <summary>
-        /// Toggles whether the <see cref="ScrollingObjectCollection"/> will use the Camera <see cref="Camera.onPreRender"/> event to hide items in the list. The fallback is <see cref"MonoBehaviour.LateUpdate()"/>.
+        /// Toggles whether the ScrollingObjectCollection" will use the Camera OnPreRender
+        /// event to hide items in the list. The fallback is MonoBehaviour.LateUpdate().
         /// </summary>
-        /// <remarks>This is especially helpful if you're trying to scroll dynamically created objects that may be added to the list after <see cref="MonoBehaviour.LateUpdate()"/>, such as <see cref"MonoBehaviour.OnWillRender()"/>.
+        /// <remarks>
+        /// This is especially helpful if you're trying to scroll dynamically created objects that may be added to the list after LateUpdate,
+        /// </remarks>
         public bool UseOnPreRender
         {
             get { return useOnPreRender; }
@@ -261,9 +264,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         private Vector3 occlusionScalePadding = new Vector3(0.0f, 0.0f, 0.001f);
 
         /// <summary>
-        /// Manual offset adjust the scale calculation of the <see cref="ClippingBox"/>.
+        /// Manual offset adjust the scale calculation of the <see cref="Microsoft.MixedReality.Toolkit.Utilities.ClippingBox"/>.
         /// </summary>
-        /// <remarks>Setting to zero may result in z fighting."/></remarks>
+        /// <remarks>Setting to zero may result in z fighting."</remarks>
         public Vector3 OcclusionScalePadding
         {
             get { return occlusionScalePadding; }
@@ -275,7 +278,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         private Vector3 occlusionPositionPadding = Vector3.zero;
 
         /// <summary>
-        /// Manual offset adjust the position calculation of the <see cref="ClippingBox"/>.
+        /// Manual offset adjust the position calculation of the <see cref="Microsoft.MixedReality.Toolkit.Utilities.ClippingBox"/>.
         /// </summary>
         public Vector3 OcclusionPositionPadding
         {
@@ -449,20 +452,20 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         private GameObject clippingObject;
 
         /// <summary>
-        /// The empty <see cref="GameObject"/> containing the <see cref="ScrollingObjectCollection"/>'s <see cref="ClippingBox"/>.
+        /// The empty <see cref="GameObject"/> containing the <see cref="ScrollingObjectCollection"/>'s <see cref="Microsoft.MixedReality.Toolkit.Utilities.ClippingBox"/>.
         /// </summary>
         public GameObject ClippingObject
         {
             get { return clippingObject; }
         }
 
-        // A reference to the ClippingBox on the clippingObject
         [SerializeField]
         [HideInInspector]
         private ClippingBox clipBox;
 
         /// <summary>
-        /// The <see cref="ScrollingObjectCollection"/>'s <see cref="ClippingBox"/> that is used for clipping items in and out of the list.
+        /// The ScrollingObjectCollection's <see cref="Microsoft.MixedReality.Toolkit.Utilities.ClippingBox"/> 
+        /// that is used for clipping items in and out of the list.
         /// </summary>
         public ClippingBox ClipBox
         {
@@ -1555,7 +1558,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <summary>
         /// Helper to get the remainder from an itemindex in the list in relation to rows/columns
         /// </summary>
-        /// <param name="itemIndex">Index of node item in <see cref="BaseObjectCollection.NodeList"/> to be compared</param>
+        /// <param name="itemIndex">Index of node item in 
+        /// <see cref="Microsoft.MixedReality.Toolkit.Utilities.BaseObjectCollection.NodeList"/> 
+        /// to be compared</param>
         /// <param name="divisor">Rows / Columns</param>
         /// <returns>The remainder from the divisor</returns>
         public static int ModuloCheck(int itemIndex, int divisor)
@@ -1567,7 +1572,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <summary>
         /// Helper to get the number of rows / columns deep the item is
         /// </summary>
-        /// <param name="itemIndex">Index of node item in <see cref="BaseObjectCollection.NodeList"/> to be compared</param>
+        /// <param name="itemIndex">Index of node item in <see cref="Microsoft.MixedReality.Toolkit.Utilities.BaseObjectCollection.NodeList"/> to be compared</param>
         /// <param name="divisor">Rows / Columns</param>
         /// <returns>The multiplier to get the row / column index the item is in</returns>
         public static int StepMultiplier(int itemIndex, int divisor)
@@ -1724,7 +1729,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// Checks whether the given item is visible in the list
         /// </summary>
         /// <param name="indexOfItem">the index of the item in the list</param>
-        /// <returns><see cref="true"/> when item is visible</returns>
+        /// <returns>true when item is visible</returns>
         public bool IsItemVisible(int indexOfItem)
         {
             bool itemLoc = true;
@@ -1746,7 +1751,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// Moves scroller by a multiplier of <see cref="ViewableArea"/>
         /// </summary>
         /// <param name="numOfPages">number of <see cref="ViewableArea"/> to move scroller by</param>
-        /// <param name="animateToPage">if <see cref="true"/>, scroller will animate to new position</param>
+        /// <param name="animateToPage">if true, scroller will animate to new position</param>
         /// <param name="callback"> An optional action to pass in to get notified that the <see cref="ScrollingObjectCollection"/> is finished moving</param>
         public void PageBy(int numOfPages, bool animateToPage = true, System.Action callback = null)
         {
@@ -1830,7 +1835,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// Moves scroller a relative number of <see cref="Tiers"/> of items.
         /// </summary>
         /// <param name="numberOfLinesToMove">number of lines to move by</param>
-        /// <param name="animateToPosition">if <see cref="true"/>, scroller will animate to new position</param>
+        /// <param name="animateToPosition">if true, scroller will animate to new position</param>
         /// <param name="callback"> An optional action to pass in to get notified that the <see cref="ScrollingObjectCollection"/> is finished moving</param>
         public void MoveByLines(int numberOfLinesToMove, bool animateToPosition = true, System.Action callback = null)
         {
@@ -1874,11 +1879,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
 
         /// <summary>
-        /// Moves scroller to an absolute position where <param name"indexOfItem"/> is in the first column of the viewable area
+        /// Moves scroller to an absolute position where <param name"indexOfItem"/> 
+        /// is in the first column of the viewable area
         /// </summary>
-        /// <param name="indexOfItem">item to move to, will be first (or closest to in respect to scroll maxiumum) in viewable area</param>
-        /// <param name="animateToPosition">if <see cref="true"/>, scroller will animate to new position</param>
-        /// <param name="callback"> An optional action to pass in to get notified that the <see cref="ScrollingObjectCollection"/> is finished moving</param>
+        /// <param name="indexOfItem">Item to move to, will be first (or closest to in respect to scroll maximum) in viewable area</param>
+        /// <param name="animateToPosition">if true, scroller will animate to new position</param>
+        /// <param name="callback"> An optional action to pass in to get notified that the ScrollingObjectCollection is finished moving</param>
         public void MoveTo(int indexOfItem, bool animateToPosition = true, System.Action callback = null)
         {
             StopAllCoroutines();
