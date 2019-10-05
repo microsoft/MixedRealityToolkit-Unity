@@ -92,6 +92,12 @@ Support for pressable buttons on Unity UI canvases has been added. The HandInter
 
 A new speech command confirmation label (SpeechConfirmationTooltip.prefab) has been added to provide functionality that matches the Microsoft HoloLens 2 shell.  Please see the [speech input](Input/Speech.md) article for more information.
 
+**Mesh Outlining**
+
+A component `MeshOutline` and `MeshOutlineHierarchy` to outline meshes without utilizing post processing effects, which can be costly on mobile mixed reality devices. 
+
+See [change 5562](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/5562) for more details
+
 **Ability to turn off hand rays and other pointers (gaze, grab, poke) from code**
 
 We have had many requests for how to disable the far interaction (line pointer, hand rays, etc) at runtime. We now provide a one-line command to turn pointers on and off.
