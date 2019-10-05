@@ -160,6 +160,7 @@ asset database and reconcile existing custom profiles.</li>
 </ul>
 </li>
 </ol>
+<p>Related to <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6144">issue #6144</a>: after upgrading, if you have a custom input simulation profile, the input playback service data provider may have a missing class. Click the &quot;Try Repair&quot; button in the profile window to fix the missing reference.</p>
 <h3 id="whats-new-in-210">What's new in 2.1.0</h3>
 <p><strong>Dwell interaction (Experimental)</strong></p>
 <p>MRTK has added experimental support for dwell interactions. Dwell interactions enable applications to respond to a user focusing their gaze or motion controller on an interactable object for a predefined period of time.</p>
@@ -175,6 +176,109 @@ asset database and reconcile existing custom profiles.</li>
 <p>Support for pressable buttons on Unity UI canvases has been added. The HandInteractionExamples demo scene, in the MixedRealityToolkit.Examples package, demonstrates this feature.</p>
 <p><strong>Speech command confirmation label</strong></p>
 <p>A new speech command confirmation label (SpeechConfirmationTooltip.prefab) has been added to provide functionality that matches the Microsoft HoloLens 2 shell.  Please see the <a href="Input/Speech.html">speech input</a> article for more information.</p>
+<p><strong>Mesh Outlining</strong></p>
+<p>A component <code>MeshOutline</code> and <code>MeshOutlineHierarchy</code> to outline meshes without utilizing post processing effects, which can be costly on mobile mixed reality devices.</p>
+<p>See <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/5562">change 5562</a> for more details</p>
+<p><strong>Ability to turn off hand rays and other pointers (gaze, grab, poke) from code</strong></p>
+<p>We have had many requests for how to disable the far interaction (line pointer, hand rays, etc) at runtime. We now provide a one-line command to turn pointers on and off.</p>
+<pre><code>// Turn off all hand rays
+PointerUtils.SetHandRayPointerBehavior(PointerBehavior.AlwaysOff);
+
+// Turn hand rays back on
+PointerUtils.SetHandRayPointerBehavior(PointerBehavior.Default);
+
+// Turn off hand rays for the right hand only
+PointerUtils.SetHandRayPointerBehavior(PointerBehavior.AlwaysOff, Handedness.Right);
+
+// Turn off the gaze pointer
+PointerUtils.SetGazePointerBehavior(PointerBehavior.AlwaysOff);
+</code></pre>
+<p>Please see <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/5920">change 5920</a> for more details.</p>
+<p><strong>Easily access hand, head, eye position, rotation from code</strong></p>
+<p>We had feedback that it's difficult to find out where the hand is pointing, or where eyes / head is looking. This change adds methods to make it easy for application code to acquire the position and rotation of head, hands, eyes, and motion controllers.</p>
+<p>Please see <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/5944">change 5944</a> for details.</p>
+<pre><code class="lang-csharp">// Get the head ray
+var headRay = InputRayUtils.GetHeadGazeRay();
+
+// Get the right hand ray
+Ray rightHandRay;
+if(InputRayUtils.TryGetHandRay(Handedness.right, rightHandRay))
+{
+    // Right hand ray is available
+}
+</code></pre>
+<p><strong>Interactable can be instantiated, configured from code</strong></p>
+<p>This release we focused a lot of energy on making <code>Interactable</code> configurable from code.</p>
+<p>It's now possible to instantiate and configure interactable from code. See <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/5967">change 5967</a> and <a href="README_Interactable.html">Interactable</a> for more information</p>
+<p>It's now easier to add event listeners from code. Here's an example of how to add focus enter/exit events:</p>
+<pre><code class="lang-csharp">public static void AddFocusEvents(Interactable interactable)
+{
+    var onFocusReceiver = interactable.AddReceiver&lt;InteractableOnFocusReceiver&gt;();
+    onFocusReceiver.OnFocusOn.AddListener(() =&gt; Debug.Log(&quot;Focus on&quot;));
+    onFocusReceiver.OnFocusOff.AddListener(() =&gt; Debug.Log(&quot;Focus off&quot;));
+}
+</code></pre>
+<p><strong>Input simulation: Instead of Q/E, hold ctrl to rotate hands</strong></p>
+<p>Keys for rotating hands have been removed, hand rotation is now controlled by the mouse as well. Holding <code>HandRotateButton</code> (Ctrl) together with the left/right hand manipulation key (LShift/Space) will enable hand rotation.</p>
+<p><strong>Layer Masks for Grabbable objects</strong></p>
+<p>We received feedback that hand rays would turn off / stick to objects when near surface reconstruction or any any other non-grabbable collider. As part of this fix, we added the ability to specify layer masks for near grabbable objects, similar to touchable objects.</p>
+<p>An object must both be on a Grabbable Layer as well as have a NearInteractionGrabbable component in order for hand rays to turn off. The Grabbable Layer is by default set to everything except Ignore Raycast and Spatial Awareness.</p>
+<p>See <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/5823">change 5823</a> for more details.</p>
+<h3 id="breaking-changes-in-210">Breaking changes in 2.1.0</h3>
+<p><strong>Input simulation profile</strong></p>
+<p>The input simulation system has been upgraded, which changes a few settings in the input simulation profile. Some changes can not be migrated automatically and users may find that profiles are using default values.</p>
+<ol>
+<li>All KeyCode and mouse button bindings in the profile have been replaced with a generic KeyBinding struct, which stores the type of binding (key or mouse) as well as the actual binding code (KeyCode or mouse button number respectively). The struct has its own inspector, which allows unified display and offers an &quot;auto-bind&quot; tool to quickly set key bindings by pressing the respective key instead of selecting from a huge dropdown list.</li>
+</ol>
+<ul>
+<li>FastControlKey</li>
+<li>ToggleLeftHandKey</li>
+<li>ToggleRightHandKey</li>
+<li>LeftHandManipulationKey</li>
+<li>RightHandManipulationKey</li>
+</ul>
+<ol start="2">
+<li><p><code>MouseLookToggle</code> was previously included in the 1MouseLookButton1 enum as <code>InputSimulationMouseButton.Focused</code>, it is now a separate option. When enabled, the camera will keep rotating with the mouse after releasing the button, until the escape key is pressed.</p>
+</li>
+<li><p><code>HandDepthMultiplier</code> default value has been lowered from 0.1 to 0.03 to accommodate some changes to the input simulation. If the camera moves too fast when scrolling, try lowering this value.</p>
+</li>
+<li><p>Keys for rotating hands have been removed, hand rotation is now controlled by the mouse as well. Holding <code>HandRotateButton</code> (Ctrl) together with the left/right hand manipulation key (LShift/Space) will enable hand rotation.</p>
+</li>
+</ol>
+<p>A new axis &quot;UpDown&quot; has been introduced to the input axis list. This controls camera movement in the vertical and defaults to Q/E keys as well as the controller trigger buttons.</p>
+<p>For more information on these changes, please see the <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Documentation/InputSimulation/InputSimulationService.md">input simulation service</a> article.</p>
+<p>Related to <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6144">issue #6144</a>: after upgrading, if you have a custom input simulation profile, the input playback service data provider may have a missing class. Click the &quot;Try Repair&quot; button in the profile window to fix the missing reference.</p>
+<h3 id="replace-collidernearinteractiontouchable-with-basenearinteractiontouchable">Replace ColliderNearInteractionTouchable with BaseNearInteractionTouchable</h3>
+<p>The <code>CollierNearInteractionTouchable</code> class is now obsolete. Replace all usages of <code>ColliderNearInteractionTouchable</code> with <code>BaseNearInteractionTouchable</code>.</p>
+<h3 id="interactable-deprecated-methods">Interactable: deprecated methods</h3>
+<p>Interactable has been upgraded to be configurable from code. The following methods in <code>Interactable</code> are now marked Obsolete:</p>
+<p>public void ResetBaseStates()
+public int GetDimensionIndex()
+public void SetDimensionIndex(int index)
+public void ForceUpdateThemes()
+public bool FocusEnabled
+public bool IsToggleButton
+public bool Enabled
+public bool RequiresFocus
+public bool IsDisabled
+public State[] GetStates()
+public virtual void SetFocus(bool focus)
+public virtual void SetPress(bool press)
+public virtual void SetDisabled(bool disabled)
+public virtual void SetTargeted(bool targeted)
+public virtual void SetInteractive(bool interactive)
+public virtual void SetObservationTargeted(bool targeted)
+public virtual void SetObservation(bool observation)
+public virtual void SetVisited(bool visited)
+public virtual void SetToggled(bool toggled)
+public virtual void SetGesture(bool gesture)
+public virtual void SetGestureMax(bool gesture)
+public virtual void SetCollision(bool collision)
+public virtual void SetCustom(bool custom)
+public virtual void SetVoiceCommand(bool voice)
+public virtual void SetPhysicalTouch(bool touch)
+public virtual void SetGrab(bool grab)</p>
+<p>Please see <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/6104">change 6104</a> for more details.</p>
 <h3 id="known-issues-in-210">Known issues in 2.1.0</h3>
 <p>The sections below highlight some of the known issues in the Microsoft Mixed Reality Toolkit.</p>
 <p><strong>Long paths</strong></p>
