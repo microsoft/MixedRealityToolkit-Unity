@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using TMPro;
 using UnityEngine;
 
@@ -78,6 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     if (PreviewText != null)
                     {
                         PreviewText.text = text;
+                        PreviewText.ForceMeshUpdate();
                     }
 
                     UpdateCaret();
@@ -101,6 +103,19 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
                     UpdateCaret();
                 }
+            }
+        }
+
+        /// <summary>
+        /// Utility method which can be used to toggle if solvers update.
+        /// </summary>
+        public void ToggleSolvers()
+        {
+            var solverHandler = GetComponent<SolverHandler>();
+
+            if (solverHandler != null)
+            {
+                solverHandler.UpdateSolvers = !solverHandler.UpdateSolvers;
             }
         }
 

@@ -203,12 +203,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 {
                     Debug.LogWarning("MixedRealityKeyboard expected a longer or equal string but received a shorter one.");
 
+                    // Take what is currently in the keyboard and move the caret to the end.
                     PreviewText = keyboard.text;
-
-                    if (caretWasAtEnd)
-                    {
-                        MovePreviewCaretToEnd();
-                    }
+                    MovePreviewCaretToEnd();
                 }
 
                 // Handle the arrow keys.
