@@ -16,12 +16,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         private Transform follower;
 
         [SerializeField]
-        [Tooltip("The transform rotation will be include from the line.")]
-        private bool includeRotation;
+        [Tooltip("The transform rotation will be included from the line.")]
+        private bool includeRotation = false;
 
         [SerializeField]
-        [Tooltip("The transform scale will be include based of the Scale Over Length.")]
-        private bool includeScale;
+        [Tooltip("The transform scale will be included based of the Scale Over Length.")]
+        private bool includeScale = false;
 
         [SerializeField]
         [Tooltip("Animation curve used for scale over the normalized length.")]
