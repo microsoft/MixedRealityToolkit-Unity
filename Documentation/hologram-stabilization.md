@@ -36,6 +36,9 @@ If it is not possible to create an accurate depth buffer to share with the platf
 
 If targeting HoloLens for development, it is highly recommended to utilize the 16-bit depth buffer format compared to 24-bit. This can save tremendously on performance although depth values will have less precision. To compensate for the lower precision and avoid [z-fighting](https://en.wikipedia.org/wiki/Z-fighting), it is recommended to reduce the [far clip plane](https://docs.unity3d.com/Manual/class-Camera.html) from the 1000m default value set by Unity.
 
+> [!NOTE]
+> If using *16-bit depth format*, stencil buffer required effects will not work because [Unity does not create a stencil buffer](https://docs.unity3d.com/ScriptReference/RenderTexture-depth.html) in this setting. Selecting *24-bit depth format* conversely will generally create an [8-bit stencil buffer](https://docs.unity3d.com/Manual/SL-Stencil.html), if applicable on the endpoint graphics platform.
+
 #### Depth Buffer Sharing in Unity
 
 In order to utilize depth-based LSR, there are two important steps developers need to take.
