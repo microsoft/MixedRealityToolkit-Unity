@@ -1,7 +1,133 @@
 # Microsoft Mixed Reality Toolkit Release Notes
 
+- [Version 2.1.0](#version-210)
 - [Version 2.0.1](#version-201)
 - [Version 2.0.0](#version-200)
+
+## Version 2.1.0
+
+- [Upgrading projects](#upgrading-projects-to-210)
+- [What's new](#whats-new-in-210)
+- [Known issues](#known-issues-in-210)
+
+This release of the Microsoft Mixed Reality Toolkit supports the following devices and platforms.
+
+- Microsoft HoloLens 2
+- Microsoft HoloLens (1st gen)
+- Windows Mixed Reality Immersive headsets
+- OpenVR
+
+The following software is required.
+
+- Microsoft Visual Studio (2017 or 2019) Community Edition or higher
+- Windows 10 SDK 18362 or later (installed by the Visual Studio Installer)
+- Unity 2018.4, 2019.1 or 2019.2
+
+### Upgrading projects to 2.1.0
+
+The 2.1.0 release has some changes that may impact application projects, including some files moving to new folder locations.
+Breaking change details, including mitigation guidance, can be found in the [**Updating 2.0.0 to 2.1.0**](Updating.md#updating-200-to-210) article.
+
+For the smoothest upgrade path, please use the following steps.
+
+1. Close Unity
+1. Delete **MixedRealityToolkit** (the project may not have all listed folders)
+    - MixedRealityToolkit
+    - MixedRealityToolkit.Examples
+    - MixedRealityToolkit.Extensions
+    > [!NOTE]
+    > If additional extensions have been installed, please make a backup prior to deleting this folder.
+    - MixedRealityToolkit.Providers
+    - MixedRealityToolkit.SDK
+    - MixedRealityToolkit.Services
+    - MixedRealityToolkit.Tools
+    > [!IMPORTANT]
+    > Do NOT delete the **MixedRealityToolkit.Generated** folder.
+1. Delete the **Library** folder
+1. Re-open the project in Unity
+1. Import the new unity packages
+    - Foundation - _Import this package first_
+    - (Optional) Tools
+    - (Optional) Extensions
+    > [!NOTE]
+    > If additional extensions had been installed, they may need to be re-imported.
+    - (Optional) Examples
+1. Close Unity and Delete the **Library** folder. This step is necessary to force Unity to refresh its
+   asset database and reconcile existing custom profiles.
+1. Launch Unity, and for each scene in the project
+    - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy
+    - Select **MixedRealityToolkit -> Add to Scene and Configure**
+    - Select **MixedRealityToolkit -> Utilities -> Update -> Controller Mapping Profiles** (only needs to be done once)
+            - This will update any custom Controller Mapping Profiles with updated axes and data, while leaving your custom-assigned input actions intact
+
+### What's new in 2.1.0
+
+**Dwell interaction (Experimental)**
+
+MRTK has added experimental support for dwell interactions. Dwell interactions enable applications to respond to a user focusing their gaze or motion controller on an interactable object for a predefined period of time.
+
+Please refer to [change 5594](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/5594) for details.
+
+**Hand menu example updates**
+
+The hand menu example has received visual updates (no code changes).
+
+**MRTK Examples Hub**
+
+The MRTK Examples Hub is now part of the MixedRealityToolkit.Examples package. The examples hub provides an excellent example of how to use the [Scene System](SceneSystem/SceneSystemGettingStarted.md).
+
+**Near menu control**
+
+Near Menu is a UX control which provides a collection of buttons or other UI components. It is floating around the user's body and easily accessible anytime. Since it is loosely coupled with the user, it does not disturb the user's interaction with the target content. The user can use the 'Pin' button to world-lock/unlock the menu. The menu can be grabbed and placed at a specific position.
+
+Please see [Near Menu](README_NearMenu.md) for more information.
+
+**Pressable button for Unity UI**
+
+Support for pressable buttons on Unity UI canvases has been added. The HandInteractionExamples demo scene, in the MixedRealityToolkit.Examples package, demonstrates this feature.
+
+**Speech command confirmation label**
+
+A new speech command confirmation label (SpeechConfirmationTooltip.prefab) has been added to provide functionality that matches the Microsoft HoloLens 2 shell.  Please see the [speech input](Input/Speech.md) article for more information.
+
+### Known issues in 2.1.0
+
+The sections below highlight some of the known issues in the Microsoft Mixed Reality Toolkit.
+
+**Long paths**
+
+When building on Windows, there is a MAX_PATH limit of 255 characters. Unity is affected by these limits and may fail to build a binary if its resolved output path is longer than 255 characters.
+
+This can manifest as CS0006 errors in Visual Studio that look like:
+
+> CS0006: Metadata file 'C:\path\to\longer\file\that\is\longer\than\255\characters\mrtk.long.binary.name.dll' could not be found.
+
+This can be worked around by moving the Unity project folder closer to the root of the drive, for example:
+
+> C:\src\project
+
+Please see [this issue](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5469) for more background information.
+
+**Runtime profile swapping**
+
+MRTK does not fully support profile swapping at runtime. This feature is being investigated for a future release. Please see issues [4289](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4289),
+[5465](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5465) and
+[5466](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5466) for more information.
+
+**Unity 2019: Could not copy the file HolographicAppRemoting.dll**
+
+There is a known issue with version 3.0.0 of the Windows Mixed Reality package for Unity 2019. If
+the project has this version installed, the following error will be encountered when compiling in Microsoft
+Visual Studio.
+
+To work around the issues, please update to a newer version using Window > Package Manager in the Unity editor.
+
+**VR/Immersive devices: Content in some demo scenes is placed below the user**
+
+Some demo scenes contained in the Examples package are optimized for HoloLens device's (headset's y position is 0). These scenes
+may place objects below the user when run on VR/Immersive device's (headset's Y position is the distance from the floor). To work around this issue, select the **Scene Content** object, in the Hierarchy, and set the Transform's Position Y value to **1.5** (1.5 meters, or the preferred headset height).
+
+![Adjusting Scene Content Height](Images/ReleaseNotes/AdjustContentHeight.png)
 
 ## Version 2.0.1
 
@@ -13,6 +139,7 @@ This hotfix release of Mixed Reality Toolkit fixes a couple of small bugs when c
 ### Upgrading projects to 2.0.1
 
 For non-NuGet package cases, the upgrade from 2.0.0 should not have an effect when consuming Mixed Reality Toolkit as .unitypackages or source. To upgrade your Unity project to 2.0.1 from before 2.0.0, follow the same instructions as:
+
 - [Upgrading projects](#upgrading-projects-to-200)
 
 Currently, the upgrade path from non-NuGet package to NuGet package version of Mixed Reality Toolkit is not officially supported. Look out for that in the coming releases.
@@ -30,7 +157,7 @@ To add Mixed Reality Toolkit to your project in the form of a NuGet package, do 
 
 ### What's new in 2.0.1
 
-Consuming Mixed Reality Toolkit as a NuGet package will reduce compilation time, the ammount of .csproj files when editing code, and allow for a simple update mechanism for future versions.
+Consuming Mixed Reality Toolkit as a NuGet package will reduce compilation time, the amount of .csproj files when editing code, and allow for a simple update mechanism for future versions.
 
 ## Version 2.0.0
 
@@ -54,7 +181,7 @@ The following software is required.
 ### Upgrading projects to 2.0.0
 
 Since the RC2 release, there have been several changes that may impact application projects,
-including some files moving to new folder locations. Breaking change details, including mitigation guidance, can be found in the [**Updating from RC2**](Updating.md) article.
+including some files moving to new folder locations. Breaking change details, including mitigation guidance, can be found in the [**Updating RC2 to 2.0.0**](Updating.md#updating-rc2-to-200) article.
 
 For the smoothest upgrade path, please use the following steps.
 
@@ -63,13 +190,13 @@ For the smoothest upgrade path, please use the following steps.
     - MixedRealityToolkit
     - MixedRealityToolkit.Examples
     - MixedRealityToolkit.Extensions
-    > [!Note]
+    > [!NOTE]
     > If additional extensions have been installed, please make a backup prior to deleting this folder.
     - MixedRealityToolkit.Providers
     - MixedRealityToolkit.SDK
     - MixedRealityToolkit.Services
     - MixedRealityToolkit.Tools
-    > [!Important]
+    > [!IMPORTANT]
     > Do NOT delete the **MixedRealityToolkit.Generated** folder.
 1. Delete the **Library** folder
 1. Re-open the project in Unity
@@ -77,7 +204,7 @@ For the smoothest upgrade path, please use the following steps.
     - Foundation - _Import this package first_
     - (Optional) Tools
     - (Optional) Extensions
-    > [!Note]
+    > [!NOTE]
     > If additional extensions had been installed, they may need to be re-imported.
     - (Optional) Examples
 1. Close Unity and Delete the **Library** folder. This step is necessary to force Unity to refresh its
@@ -86,7 +213,7 @@ For the smoothest upgrade path, please use the following steps.
     - Delete **MixedRealityToolkit** and **MixedRealityPlayspace**, if present, from the hierarchy
     - Select **MixedRealityToolkit -> Add to Scene and Configure**
 
-> [!Important]
+> [!IMPORTANT]
 > Some profiles have been changed (properties have been added) in this release. If the project has custom
 profiles, please open them to verify that all of the updated properties are correctly configured.
 
@@ -95,17 +222,17 @@ profiles, please open them to verify that all of the updated properties are corr
 **BoundingBox**
 
 - Improvements
-    - Normalized the handle asset size and scaling logic
-    - The handle asset is now sized to 1-meter
-    - Default values and examples are updated
+  - Normalized the handle asset size and scaling logic
+  - The handle asset is now sized to 1-meter
+  - Default values and examples are updated
 - New features
-    - Animated handle by proximity
-    - Match the HoloLens 2 shell behavior
-    - Handles can be configured to appear only when a hand is close to them
+  - Animated handle by proximity
+  - Match the HoloLens 2 shell behavior
+  - Handles can be configured to appear only when a hand is close to them
 - New example scene
-    - The BoundingBoxExample scene, in the Examples package (Demos\UX\BoundingBox\Scenes\BoundingBoxExamples.unity), shows various types of configurations
+  - The BoundingBoxExample scene, in the Examples package (Demos\UX\BoundingBox\Scenes\BoundingBoxExamples.unity), shows various types of configurations
 
-> [!Important] 
+> [!IMPORTANT]
 > Normalized asset handle size and scaling logic require updated handle scale values. With this change, the existing bounding box
 handle will be displayed in a very large size. Please refer to the **Bounding box handle styles** section in the [Bounding Box](README_BoundingBox.md)
 documentation for updated recommended values for the handle size. Handle configuration examples can be found in the **BoundingBoxExamples** scene.
@@ -162,21 +289,21 @@ The HandConstraintPalmUp solver now has a toggle to enforce the hand’s fingers
 **HoloLens 2 Button**
 
 - Improved many visual details to match the HoloLens 2 shell including
-    - Compressing visuals
-    - Far interaction support
-    - Focus highlight
-    - Shader effects
+  - Compressing visuals
+  - Far interaction support
+  - Focus highlight
+  - Shader effects
 - HoloLens 2 style Round Button has been added
 
 **HoloLens 2 Shell Parity**
 
-This release updates the MRTK to better mirror the featires. behaviors and visuals of the HoloLens 2 shell experience. This [GitHub](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4200) issue describes the changes.
+This release updates the MRTK to better mirror the features. behaviors and visuals of the HoloLens 2 shell experience. This [GitHub](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4200) issue describes the changes.
 
 **IMixedRealityRaycastProvider**
 
 The input system was updated to allow for raycast customization, via custom implementations of [`IMixedRealityRaycastProvider`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityRaycastProvider).
 
-Specify the desired raycast provider in the Input System's configuration profile. 
+Specify the desired raycast provider in the Input System's configuration profile.
 
 ![Selecting the Raycast provider](Images/ReleaseNotes/SelectRaycastProvider.png)
 
@@ -186,10 +313,10 @@ Solvers can now be controlled by the first available hand/controller instead of 
 
 ![Solver](../Documentation/Images/Solver/TrackedObjectType-Example.gif)
 
-Please review the **solvers** section of [Updating from RC2 to 2.0.0](Updating.md#solvers) for additional changes and mitigation details.
+Please review the **solvers** section of [Updating from RC2 to 2.0.0](Updating.md) for additional changes and mitigation details.
 
 **Input animation recording**
- 
+
 MRTK features a [recording system](InputSimulation/InputAnimationRecording.md) by which head movement and hand tracking
 data can be stored in animation files. The recorded data can then be played back using the [input simulation system](InputSimulation/InputSimulationService.md).
 
@@ -197,7 +324,8 @@ data can be stored in animation files. The recorded data can then be played back
 
 The [MRTK Standard Shader](README_MRTKStandardShader.md) now supports Unity's Lightweight Scriptable render pipeline.
 
-Additional improvments
+Additional improvements
+
 - A warning and "Fix Now" button is now displayed on materials which are in a project that has depth buffer
 sharing enabled and do not write depth
 - Proximity lights now have per material color overrides and a "Subtractive Light" option to mimic proximity
@@ -226,7 +354,7 @@ applications that contain more than once scene.
 
 **Service managers (experimental)**
 
-This release adds service managers to enable the light-weight addition of specific Microsoft 
+This release adds service managers to enable the light-weight addition of specific Microsoft
 Mixed Reality Toolkit features, such as the Spatial Awareness system, individually.
 
 These service managers are imported as part of the Foundation package and are located in the
@@ -241,20 +369,20 @@ Service manager prefabs are provided for the following services.
 - SpatialAwarenessSystem
 - TeleportSystem (requires the Input System)
 
-To use, drag and drop the desired prefab into the heirarchy and select the configuration
-profile. 
+To use, drag and drop the desired prefab into the hierarchy and select the configuration
+profile.
 
-> [!Note]
+> [!NOTE]
 > These service managers are currently experimental, may have issues and
 are subject to change. Please file any and all issues that are encountered on GitHub
 
 **Slate**
 
 - Improved
-    - Usability of slates by adding the shadow based on the finger proximity
-    - ‘Follow Me’ behavior to match the HoloLens 2 shell behavior, using Radial Solver.
+  - Usability of slates by adding the shadow based on the finger proximity
+  - ‘Follow Me’ behavior to match the HoloLens 2 shell behavior, using Radial Solver.
 - Fixed
-    - Border thickness issue fixed on flattend Bounding Box
+  - Border thickness issue fixed on flattened Bounding Box
 
 **SpatialObjectMeshObserver**
 
@@ -264,7 +392,7 @@ and uses them to simulate environmental data from devices such as Microsoft Holo
 
 SpatialObjectMeshObserver is not enabled in the default profiles, please see the
 [Spatial Awareness Getting Started](SpatialAwareness/SpatialAwarenessGettingStarted.md) article
-for more information on how to use this feature. 
+for more information on how to use this feature.
 
 **Take Screenshot**
 
@@ -283,7 +411,7 @@ The following UX controls in the following list can now be instantiated and conf
 
 **Updated architecture documentation**
 
-The [archtecture documentation](Architecture/Overview.md) is all new for this version.
+The [architecture documentation](Architecture/Overview.md) is all new for this version.
 
 ### Known issues in 2.0.0
 
@@ -291,7 +419,7 @@ The sections below highlight some of the known issues in the Microsoft Mixed Rea
 
 **Extension service wizard**
 
-When using the extension service wizard,  *Generate Inspector* and/or *Generate Profile* are not actually optional. Trying to create an extension service with either of these deselected will result in an error on the following page. Furthermore, the extension service created for the user will create a property for the ScriptableObject profile that was not actually created. This results in a compiler error until the property line is removed. 
+When using the extension service wizard,  *Generate Inspector* and/or *Generate Profile* are not actually optional. Trying to create an extension service with either of these deselected will result in an error on the following page. Furthermore, the extension service created for the user will create a property for the ScriptableObject profile that was not actually created. This results in a compiler error until the property line is removed.
 
 Current workaround steps:
 
@@ -312,11 +440,11 @@ This can be worked around by moving the Unity project folder closer to the root 
 
 > C:\src\project
 
-Please see [this issue](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5469) for more background information. 
+Please see [this issue](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5469) for more background information.
 
 **Runtime profile swapping**
 
-MRTK fully support profile swapping at runtime. This feature is being investigated for a future release. Please see issues [4289](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4289),
+MRTK does not fully support profile swapping at runtime. This feature is being investigated for a future release. Please see issues [4289](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/4289),
 [5465](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5465) and
 [5466](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/5466) for more information.
 

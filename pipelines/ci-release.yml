@@ -39,6 +39,10 @@ jobs:
       git clone -c http.extraheader="AUTHORIZATION: $Authorization" -b mrtk $(scriptsRepoURL) $(Build.ArtifactStagingDirectory)\scripts
     displayName: "Clone release scripts"
 
+  - powershell: |
+      $(Build.ArtifactStagingDirectory)/scripts/generateSignConfigs.ps1 -Directory $(Build.SourcesDirectory)/NuGet -OutputDirectory $(Build.ArtifactStagingDirectory)/configs
+    displayName: "Generate signing configs"
+
   # required for code signing
   - task: ComponentGovernanceComponentDetection@0
     inputs:
@@ -49,7 +53,7 @@ jobs:
   # sign all DLLs
   - template: templates/tasks/signing.yml
     parameters:
-      ConfigName: "$(Build.ArtifactStagingDirectory)/scripts/signconfig/MRTKSignConfig.xml"
+      ConfigName: "$(Build.ArtifactStagingDirectory)/configs/MRTKSignConfig.xml"
 
   # Create pre-release packages
   - ${{ if eq(variables['MRTKReleaseTag'], '') }}:
@@ -77,7 +81,7 @@ jobs:
 
   - template: templates/tasks/signing.yml
     parameters:
-      ConfigName: "$(Build.ArtifactStagingDirectory)/scripts/signconfig/MRTKNuGetSignConfig.xml"
+      ConfigName: "$(Build.ArtifactStagingDirectory)/configs/MRTKNuGetSignConfig.xml"
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Packages'
