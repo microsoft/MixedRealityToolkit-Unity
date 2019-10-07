@@ -40,8 +40,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Returns an array of profiles that match profile type.
         /// </summary>
-        /// <param name="profileType"></param>
-        /// <returns></returns>
         public static ScriptableObject[] GetProfilesOfType(Type profileType)
         {
             ScriptableObject[] profilesOfType = null;
@@ -57,8 +55,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// Returns an array of GUIContent for use in a dropdown for a type of profile.
         /// Includes a (None) option at the start. This means that the array length will always be 1 greater than the available profiles.
         /// </summary>
-        /// <param name="profileType"></param>
-        /// <returns></returns>
         public static GUIContent[] GetProfilePopupOptionsByType(Type profileType)
         {
             GUIContent[] profileContent = null;
@@ -94,8 +90,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Returns true if profile is NOT a BaseMixedRealityProfile class type.
         /// </summary>
-        /// <param name="profileType"></param>
-        /// <returns></returns>
         public static bool IsConcreteProfileType(Type profileType)
         {
             return profileType != typeof(BaseMixedRealityProfile);
