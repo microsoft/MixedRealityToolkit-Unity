@@ -814,7 +814,7 @@ MonoBehaviour:
   ignoreAngleClamp: 0
   ignoreDistanceClamp: 0
   useFixedVerticalPosition: 1
-  fixedVerticalPosition: 0
+  fixedVerticalPosition: -0.1
   orientToReferenceDirection: 0
 --- !u!1001 &1090913102773355362
 PrefabInstance:

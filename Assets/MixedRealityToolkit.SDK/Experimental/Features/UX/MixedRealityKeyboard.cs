@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
+using UnityEngine.Events;
 
 #if !UNITY_EDITOR && UNITY_WSA
 using Windows.UI.ViewManagement;
@@ -19,36 +20,63 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
     public class MixedRealityKeyboard : MonoBehaviour
     {
         /// <summary>
-        /// TODO
+        /// Returns true if the keyboard is currently open.
         /// </summary>
         public bool Visible { get { return state == KeyboardState.Showing; } }
 
         /// <summary>
-        /// TODO
-        /// </summary>
-        public string PreviewText
-        {
-            get;
-            private set;
-        } = string.Empty;
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        public int PreviewCaretIndex
-        {
-            get;
-            private set;
-        } = 0;
-
-        /// <summary>
-        /// TODO
+        /// Returns the committed text.
         /// </summary>
         public string Text
         {
             get;
             private set;
         } = string.Empty;
+
+        /// <summary>
+        /// Returns the index of the caret within the text.
+        /// </summary>
+        public int CaretIndex
+        {
+            get;
+            private set;
+        } = 0;
+
+        [SerializeField, Tooltip("Event which triggers when the keyboard is shown.")]
+        protected UnityAction onShowKeyboard = null;
+
+        /// <summary>
+        /// Event which triggers when the keyboard is shown.
+        /// </summary>
+        public UnityAction OnShowKeyboard
+        {
+            get { return onShowKeyboard; }
+            set { onShowKeyboard = value; }
+        }
+
+        [SerializeField, Tooltip("Event which triggers when commit action is invoked on the keyboard. (Usually the return key.)")]
+        protected UnityAction onCommitText = null;
+
+        /// <summary>
+        /// Event which triggers when commit action is invoked on the keyboard. (Usually the return key.)
+        /// </summary>
+        public UnityAction OnCommitText
+        {
+            get { return onCommitText; }
+            set { onCommitText = value; }
+        }
+
+        [SerializeField, Tooltip("Event which triggers when the keyboard is hidden.")]
+        protected UnityAction onHideKeyboard = null;
+
+        /// <summary>
+        /// Event which triggers when the keyboard is hidden.
+        /// </summary>
+        public UnityAction OnHideKeyboard
+        {
+            get { return onHideKeyboard; }
+            set { onHideKeyboard = value; }
+        }
 
         private enum KeyboardState
         {
@@ -74,7 +102,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
 
         private KeyboardState state = KeyboardState.Hidden;
-
         private TouchScreenKeyboard keyboard;
 #if !UNITY_EDITOR && UNITY_WSA
         private InputPane inputPane = null;
@@ -83,7 +110,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         #region MonoBehaviour Implementation
 
-        private void Start()
+        /// <summary>
+        /// Initializes the UWP input pane.
+        /// </summary>
+        protected virtual void Start()
         {
 #if !UNITY_EDITOR && UNITY_WSA
             UnityEngine.WSA.Application.InvokeOnUIThread(() =>
@@ -95,7 +125,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 #endif //!UNITY_EDITOR && UNITY_WSA
         }
 
-        private void Update()
+        /// <summary>
+        /// Updates the keyboard based on current keyboard state.
+        /// </summary>
+        protected virtual void Update()
         {
             switch (State)
             {
@@ -107,7 +140,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
                 case KeyboardState.Hiding:
                     {
-                        ClearText();
+                        if (onHideKeyboard != null)
+                        {
+                            onHideKeyboard.Invoke();
+                        }
+
                         State = KeyboardState.Hidden;
                     }
                     break;
@@ -121,11 +158,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         #endregion MonoBehaviour Implementation
 
         /// <summary>
-        /// TODO
+        /// Opens the keyboard for user interaction.
         /// </summary>
-        /// <param name="multiLine"></param>
-        public void ShowKeyboard(bool multiLine = false)
+        /// <param name="text">Initial text to populate the keyboard with.</param>
+        /// <param name="multiLine">True, if the return key should signal a newline rather than a commit.</param>
+        public virtual void ShowKeyboard(string text = "", bool multiLine = false)
         {
+            this.Text = text;
             this.multiLine = multiLine;
 
             // 2019/08/14: We show the keyboard even when the keyboard is already visible because on HoloLens 1
@@ -140,28 +179,49 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
             if (keyboard != null)
             {
-                keyboard.text = string.Empty;
+                keyboard.text = Text;
 #if !UNITY_EDITOR && UNITY_WSA
                 UnityEngine.WSA.Application.InvokeOnUIThread(() => inputPane?.TryShow(), false);
 #endif
             }
             else
             {
-                keyboard = TouchScreenKeyboard.Open(string.Empty, TouchScreenKeyboardType.Default, false, this.multiLine, false, false);
+                keyboard = TouchScreenKeyboard.Open(Text, TouchScreenKeyboardType.Default, false, this.multiLine, false, false);
+            }
+
+            if (onShowKeyboard != null)
+            {
+                onShowKeyboard.Invoke();
             }
         }
 
         /// <summary>
-        /// TODO
+        /// Closes the keyboard for user interaction.
         /// </summary>
-        public void HideKeyboard()
+        public virtual void HideKeyboard()
         {
-            ClearText();
-            State = KeyboardState.Hidden;
+            if (State != KeyboardState.Hidden)
+            {
+                State = KeyboardState.Hiding;
+            }
 
 #if !UNITY_EDITOR && UNITY_WSA
             UnityEngine.WSA.Application.InvokeOnUIThread(() => inputPane?.TryHide(), false);
 #endif //!UNITY_EDITOR && UNITY_WSA
+        }
+
+        /// <summary>
+        /// Removes the current text from the keyboard.
+        /// </summary>
+        public virtual void ClearKeyboardText()
+        {
+            Text = string.Empty;
+            CaretIndex = 0;
+
+            if (keyboard != null)
+            {
+                keyboard.text = Text;
+            }
         }
 
         private void UpdateText()
@@ -172,23 +232,23 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 if (UnityEngine.Input.GetKeyDown(KeyCode.Delete) || 
                     UnityEngine.Input.GetKeyDown(KeyCode.Backspace))
                 {
-                    if (PreviewCaretIndex > 0)
+                    if (CaretIndex > 0)
                     {
-                        PreviewText = PreviewText.Remove(PreviewCaretIndex - 1, 1);
-                        keyboard.text = PreviewText;
-                        --PreviewCaretIndex;
+                        Text = Text.Remove(CaretIndex - 1, 1);
+                        keyboard.text = Text;
+                        --CaretIndex;
                     }
                 }
 
                 // Add the new characters.
-                var characterDelta = keyboard.text.Length - PreviewText.Length;
+                var characterDelta = keyboard.text.Length - Text.Length;
                 var caretWasAtEnd = IsPreviewCaretAtEnd();
 
                 if (characterDelta > 0)
                 {
-                    var newCharacters = keyboard.text.Substring(PreviewText.Length, characterDelta);
-                    PreviewText = PreviewText.Insert(PreviewCaretIndex, newCharacters);
-                    keyboard.text = PreviewText;
+                    var newCharacters = keyboard.text.Substring(Text.Length, characterDelta);
+                    Text = Text.Insert(CaretIndex, newCharacters);
+                    keyboard.text = Text;
 
                     if (caretWasAtEnd)
                     {
@@ -196,27 +256,27 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     }
                     else
                     {
-                        PreviewCaretIndex += newCharacters.Length;
+                        CaretIndex += newCharacters.Length;
                     }
                 }
                 else if (characterDelta < 0)
                 {
-                    Debug.LogWarning("MixedRealityKeyboard expected a longer or equal string but received a shorter one.");
-
                     // Take what is currently in the keyboard and move the caret to the end.
-                    PreviewText = keyboard.text;
+                    Text = keyboard.text;
                     MovePreviewCaretToEnd();
                 }
 
                 // Handle the arrow keys.
-                if (UnityEngine.Input.GetKeyDown(KeyCode.LeftArrow))
+                if (UnityEngine.Input.GetKeyDown(KeyCode.LeftArrow) || 
+                    UnityEngine.Input.GetKey(KeyCode.LeftArrow))
                 {
-                    PreviewCaretIndex = Mathf.Clamp(PreviewCaretIndex - 1, 0, PreviewText.Length);
+                    CaretIndex = Mathf.Clamp(CaretIndex - 1, 0, Text.Length);
                 }
 
-                if (UnityEngine.Input.GetKeyDown(KeyCode.RightArrow))
+                if (UnityEngine.Input.GetKeyDown(KeyCode.RightArrow) || 
+                    UnityEngine.Input.GetKey(KeyCode.RightArrow))
                 {
-                    PreviewCaretIndex = Mathf.Clamp(PreviewCaretIndex + 1, 0, PreviewText.Length);
+                    CaretIndex = Mathf.Clamp(CaretIndex + 1, 0, Text.Length);
                 }
 
                 // Handle commit via the return key.
@@ -224,37 +284,25 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 {
                     if (UnityEngine.Input.GetKeyDown(KeyCode.Return))
                     {
-                        CommitText();
+                        if (onCommitText != null)
+                        {
+                            onCommitText.Invoke();
+                        }
+
                         HideKeyboard();
                     }
                 }
             }
         }
 
-        private void CommitText()
-        {
-            Text = PreviewText;
-        }
-
-        private void ClearText()
-        {
-            PreviewText = string.Empty;
-            PreviewCaretIndex = 0;
-
-            if (keyboard != null)
-            {
-                keyboard.text = PreviewText;
-            }
-        }
-
         private bool IsPreviewCaretAtEnd()
         {
-            return PreviewCaretIndex == PreviewText.Length;
+            return CaretIndex == Text.Length;
         }
 
         private void MovePreviewCaretToEnd()
         {
-            PreviewCaretIndex = PreviewText.Length;
+            CaretIndex = Text.Length;
         }
 
         private void OnKeyboardHiding()
