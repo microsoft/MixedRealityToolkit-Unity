@@ -56,21 +56,28 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 #if WINDOWS_UWP
             // Windows mixed reality keyboard initialization goes here
             wmrKeyboard = gameObject.AddComponent<MixedRealityKeyboard>();
-            wmrKeyboard.OnShowKeyboard += () => 
-            {
-                if (mixedRealityKeyboardPreview != null)
-                {
-                    mixedRealityKeyboardPreview.gameObject.SetActive(true);
-                }
-            };
 
-            wmrKeyboard.OnHideKeyboard += () =>
+            if (wmrKeyboard.OnShowKeyboard != null)
             {
-                if (mixedRealityKeyboardPreview != null)
+                wmrKeyboard.OnShowKeyboard.AddListener(() =>
                 {
-                    mixedRealityKeyboardPreview.gameObject.SetActive(false);
-                }
-            };
+                    if (mixedRealityKeyboardPreview != null)
+                    {
+                        mixedRealityKeyboardPreview.gameObject.SetActive(true);
+                    }
+                });
+            }
+
+            if (wmrKeyboard.OnHideKeyboard != null)
+            {
+                wmrKeyboard.OnHideKeyboard.AddListener(() =>
+                {
+                    if (mixedRealityKeyboardPreview != null)
+                    {
+                        mixedRealityKeyboardPreview.gameObject.SetActive(false);
+                    }
+                });
+            }
 #elif UNITY_IOS || UNITY_ANDROID
             // non-Windows mixed reality keyboard initialization goes here
 #else

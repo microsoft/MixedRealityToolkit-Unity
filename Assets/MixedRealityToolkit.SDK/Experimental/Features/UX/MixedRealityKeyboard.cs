@@ -42,37 +42,37 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             private set;
         } = 0;
 
-        [SerializeField, Tooltip("Event which triggers when the keyboard is shown.")]
-        protected UnityAction onShowKeyboard = null;
+        [Experimental, SerializeField, Tooltip("Event which triggers when the keyboard is shown.")]
+        private UnityEvent onShowKeyboard = new UnityEvent();
 
         /// <summary>
         /// Event which triggers when the keyboard is shown.
         /// </summary>
-        public UnityAction OnShowKeyboard
+        public UnityEvent OnShowKeyboard
         {
             get { return onShowKeyboard; }
             set { onShowKeyboard = value; }
         }
 
         [SerializeField, Tooltip("Event which triggers when commit action is invoked on the keyboard. (Usually the return key.)")]
-        protected UnityAction onCommitText = null;
+        private UnityEvent onCommitText = new UnityEvent();
 
         /// <summary>
         /// Event which triggers when commit action is invoked on the keyboard. (Usually the return key.)
         /// </summary>
-        public UnityAction OnCommitText
+        public UnityEvent OnCommitText
         {
             get { return onCommitText; }
             set { onCommitText = value; }
         }
 
         [SerializeField, Tooltip("Event which triggers when the keyboard is hidden.")]
-        protected UnityAction onHideKeyboard = null;
+        private UnityEvent onHideKeyboard = new UnityEvent();
 
         /// <summary>
         /// Event which triggers when the keyboard is hidden.
         /// </summary>
-        public UnityAction OnHideKeyboard
+        public UnityEvent OnHideKeyboard
         {
             get { return onHideKeyboard; }
             set { onHideKeyboard = value; }
