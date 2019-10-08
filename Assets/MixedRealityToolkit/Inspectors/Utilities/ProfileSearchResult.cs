@@ -16,6 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
         }
 
         public int ProfileMatchStrength;
+        public bool IsCustomProfile;
         public int MaxFieldMatchStrength;
         public UnityEngine.Object Profile;
         public List<FieldSearchResult> Fields;

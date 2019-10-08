@@ -105,6 +105,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
                     if (ProfileSearchResult.IsEmpty(result))
                     {
                         result.Profile = profile;
+                        BaseMixedRealityProfile baseProfile = (profile as BaseMixedRealityProfile);
+                        result.IsCustomProfile = (baseProfile != null) ? baseProfile.IsCustomProfile : false;
                         result.ProfileMatchStrength = fieldMatchStrength;
                         result.Fields = new List<FieldSearchResult>();
                     }

@@ -14,8 +14,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     {
         #region search
 
-        private static readonly string[] searchDisplayToolbarButtons = new string[] { "Configure Active Profile", "Search Active Profile" };
-        private static readonly string searchDisplayToolbarIndexKey = "MixedRealityToolkitInspector.SearchDisplayToolbarIndex";
         private static readonly string searchDisplaySearchFieldKey = "MixedRealityToolkitInspector.SearchField";
         private static readonly string searchDisplayRequireAllKeywordsKey = "MixedRealityToolkitInspector.RequireAllKeywords";
         private static readonly string searchDisplayOptionsFoldoutKey = "MixedRealityToolkitInspector.SearchOptionsFoldout";
@@ -26,6 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private const int maxDisplayedSearchResults = 30;
         private const int maxSubjectButtonsPerLine = 6;
 
+        private SearchConfig config;
         private SearchConfig prevConfig = new SearchConfig();
         private static List<ProfileSearchResult> fieldSearchResults = new List<ProfileSearchResult>();
 
@@ -139,23 +138,46 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (activeProfile.objectReferenceValue != null)
             {
-                int searchDisplayToolbarIndex = SessionState.GetInt(searchDisplayToolbarIndexKey, 0);
-                searchDisplayToolbarIndex = GUILayout.Toolbar(searchDisplayToolbarIndex, searchDisplayToolbarButtons);
-                SessionState.SetInt(searchDisplayToolbarIndexKey, searchDisplayToolbarIndex);
-                switch (searchDisplayToolbarIndex)
-                {
-                    case 0:
-                    default:
-                        // For configure, show the default inspector GUI
-                        UnityEditor.Editor activeProfileEditor = CreateEditor(activeProfile.objectReferenceValue);
-                        activeProfileEditor.OnInspectorGUI();
-                        break;
+                #region draw search field input
 
-                    case 1:
-                        // For search, draw our custom search GUI
-                        DrawSearchGUI(activeProfile.objectReferenceValue);
-                        break;
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.LabelField("Search Profile For: ", GUILayout.MaxWidth(120));
+                    config.SearchFieldString = EditorGUILayout.TextField(SessionState.GetString(searchDisplaySearchFieldKey, string.Empty), GUILayout.ExpandWidth(true));
+                    if (GUILayout.Button("Clear", EditorStyles.miniButton, GUILayout.MaxWidth(50)))
+                    {
+                        config.SearchFieldString = string.Empty;
+                    }
                 }
+
+                config.RequireAllKeywords = SessionState.GetBool(searchDisplayRequireAllKeywordsKey, true);
+                config.SearchTooltips = SessionState.GetBool(searchDisplaySearchTooltipsKey, true);
+                config.SearchFieldObjectNames = SessionState.GetBool(searchDisplaySearchFieldObjectNamesKey, false);
+                config.SearchChildProperties = SessionState.GetBool(searchDisplaySearchChildPropertiesKey, true);
+
+                #endregion
+
+                if (!string.IsNullOrEmpty(config.SearchFieldString))
+                {
+                    // For search, draw our custom search GUI
+                    DrawSearchGUI(activeProfile.objectReferenceValue);
+                }
+                else
+                {
+                    // For configure, show the default inspector GUI
+                    UnityEditor.Editor activeProfileEditor = CreateEditor(activeProfile.objectReferenceValue);
+                    activeProfileEditor.OnInspectorGUI();
+                }
+
+                #region store search settings
+
+                SessionState.SetString(searchDisplaySearchFieldKey, config.SearchFieldString);
+                SessionState.SetBool(searchDisplayRequireAllKeywordsKey, config.RequireAllKeywords);
+                SessionState.SetBool(searchDisplaySearchTooltipsKey, config.SearchTooltips);
+                SessionState.SetBool(searchDisplaySearchFieldObjectNamesKey, config.SearchFieldObjectNames);
+                SessionState.SetBool(searchDisplaySearchChildPropertiesKey, config.SearchChildProperties);
+
+                #endregion
             }
         }
 
@@ -163,31 +185,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private void DrawSearchGUI(UnityEngine.Object activeProfileObject)
         {
-            EditorGUILayout.Space();
-
-            SearchConfig config = new SearchConfig()
-            {
-                SearchFieldString = SessionState.GetString(searchDisplaySearchFieldKey, string.Empty),
-                RequireAllKeywords = SessionState.GetBool(searchDisplayRequireAllKeywordsKey, true),
-                SearchTooltips = SessionState.GetBool(searchDisplaySearchTooltipsKey, true),
-                SearchFieldObjectNames = SessionState.GetBool(searchDisplaySearchFieldObjectNamesKey, false),
-                SearchChildProperties = SessionState.GetBool(searchDisplaySearchChildPropertiesKey, true)
-            };
-
-            #region draw subjects and field input
-
-            EditorGUILayout.HelpBox("Search profiles for:", MessageType.Info);
-            config.SearchFieldString = EditorGUILayout.TextField(config.SearchFieldString);
-
-            EditorGUILayout.Space();
-            EditorGUILayout.Space();
-
-            #endregion
-
             #region options
 
             bool optionsFoldout = SessionState.GetBool(searchDisplayOptionsFoldoutKey, false);
-            optionsFoldout = EditorGUILayout.Foldout(optionsFoldout, "Saerch Preferences", true);
+            optionsFoldout = EditorGUILayout.Foldout(optionsFoldout, "Search Preferences", true);
+            SessionState.SetBool(searchDisplayOptionsFoldoutKey, optionsFoldout);
             if (optionsFoldout)
             {
                 config.RequireAllKeywords = EditorGUILayout.Toggle("Require All Keywords", config.RequireAllKeywords);
@@ -196,19 +198,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 config.SearchChildProperties = EditorGUILayout.Toggle("Search Child Properties", config.SearchChildProperties);
             }
 
-            EditorGUILayout.Space();
-            EditorGUILayout.Space();
-
             #endregion
-
-            SessionState.SetString(searchDisplaySearchFieldKey, config.SearchFieldString);
-            SessionState.SetBool(searchDisplayRequireAllKeywordsKey, config.RequireAllKeywords);
-            SessionState.SetBool(searchDisplayOptionsFoldoutKey, optionsFoldout);
-            SessionState.SetBool(searchDisplaySearchTooltipsKey, config.SearchTooltips);
-            SessionState.SetBool(searchDisplaySearchFieldObjectNamesKey, config.SearchFieldObjectNames);
-            SessionState.SetBool(searchDisplaySearchChildPropertiesKey, config.SearchChildProperties);
-
-            #region execute search
 
             if (!config.Equals(prevConfig))
             {
@@ -232,8 +222,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 prevConfig = config;
             }
 
-            #endregion
-
             #region display results
 
             using (new EditorGUILayout.VerticalScope())
@@ -246,69 +234,73 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 int numDisplayedSearchResults = 0;
                 if (fieldSearchResults.Count > 0)
                 {
-                    if (string.IsNullOrEmpty(config.SearchFieldString))
-                    {   // If no keywords are used, just show the profile editor
-                        EditorGUILayout.LabelField("Matching Profiles:");
-                        foreach (ProfileSearchResult search in fieldSearchResults)
-                        {
-                            EditorGUILayout.ObjectField(search.Profile, typeof(ScriptableObject), false);
+                    EditorGUILayout.Space();
+                    EditorGUILayout.LabelField("Results:");
+                    foreach (ProfileSearchResult search in fieldSearchResults)
+                    {
+                        if (search.Fields.Count == 0)
+                        {   // Don't display results with no fields
+                            continue;
                         }
-                    }
-                    else
-                    {   // Otherwise, show individual fields
-                        EditorGUILayout.LabelField("Results:");
-                        foreach (ProfileSearchResult search in fieldSearchResults)
+
+                        using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
                         {
-                            if (search.Fields.Count == 0)
-                            {   // Don't display results with no fields
-                                continue;
+                            using (new EditorGUILayout.HorizontalScope())
+                            {
+                                EditorGUILayout.LabelField("Fields found in: ", EditorStyles.boldLabel, GUILayout.MaxWidth(105));
+                                EditorGUILayout.ObjectField(search.Profile, typeof(UnityEngine.Object), false, GUILayout.ExpandWidth(true));
+                                if (GUILayout.Button("View Asset", GUILayout.MaxWidth(75)))
+                                {
+                                    Selection.activeObject = search.Profile;
+                                    EditorGUIUtility.PingObject(search.Profile);
+                                }
                             }
 
-                            using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
+                            if (MixedRealityPreferences.LockProfiles && !search.IsCustomProfile)
                             {
-                                using (new EditorGUILayout.HorizontalScope())
+                                EditorGUILayout.HelpBox("Clone this profile to edit default properties.", MessageType.Warning);
+                            }
+
+                            using (new EditorGUI.DisabledGroupScope(MixedRealityPreferences.LockProfiles && !search.IsCustomProfile))
+                            {
+                                using (new EditorGUI.IndentLevelScope(1))
                                 {
-                                    EditorGUILayout.LabelField("Fields found in: ", EditorStyles.boldLabel, GUILayout.MaxWidth(105));
-                                    EditorGUILayout.ObjectField(search.Profile, typeof(UnityEngine.Object), false, GUILayout.ExpandWidth(true));
-                                }
-
-                                EditorGUI.indentLevel++;
-                                EditorGUILayout.Space();
-
-                                foreach (FieldSearchResult r in search.Fields)
-                                {
-                                    numDisplayedSearchResults++;
-
-                                    if (!string.IsNullOrEmpty(r.Property.tooltip))
-                                    {
-                                        GUI.color = MixedRealityInspectorUtility.DisabledColor;
-                                        EditorGUILayout.LabelField(r.Property.tooltip + " (" + r.MatchStrength + ")", EditorStyles.wordWrappedMiniLabel);
-                                    }
-
-                                    GUI.color = Color.white;
-                                    EditorGUILayout.PropertyField(r.Property, true);
-                                    if (numDisplayedSearchResults >= maxDisplayedSearchResults)
-                                    {
-                                        break;
-                                    }
-
                                     EditorGUILayout.Space();
+
+                                    foreach (FieldSearchResult r in search.Fields)
+                                    {
+                                        numDisplayedSearchResults++;
+
+                                        if (!string.IsNullOrEmpty(r.Property.tooltip))
+                                        {
+                                            GUI.color = MixedRealityInspectorUtility.DisabledColor;
+                                            EditorGUILayout.LabelField(r.Property.tooltip + " (" + r.MatchStrength + ")", EditorStyles.wordWrappedMiniLabel);
+                                        }
+
+                                        GUI.color = Color.white;
+                                        EditorGUILayout.PropertyField(r.Property, true);
+                                        if (numDisplayedSearchResults >= maxDisplayedSearchResults)
+                                        {
+                                            break;
+                                        }
+
+                                        EditorGUILayout.Space();
+                                    }
                                 }
-                                EditorGUI.indentLevel--;
-                            }
-
-                            EditorGUILayout.Space();
-
-                            if (numDisplayedSearchResults >= maxDisplayedSearchResults)
-                            {
-                                break;
                             }
                         }
+
+                        EditorGUILayout.Space();
 
                         if (numDisplayedSearchResults >= maxDisplayedSearchResults)
                         {
-                            EditorGUILayout.HelpBox("Displaying the first " + maxDisplayedSearchResults + " results. Try narrowing your search criteria.", MessageType.Info);
+                            break;
                         }
+                    }
+
+                    if (numDisplayedSearchResults >= maxDisplayedSearchResults)
+                    {
+                        EditorGUILayout.HelpBox("Displaying the first " + maxDisplayedSearchResults + " results. Try narrowing your search criteria.", MessageType.Info);
                     }
                 }
             }
