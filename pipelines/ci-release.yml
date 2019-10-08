@@ -83,6 +83,13 @@ jobs:
     parameters:
       ConfigName: "$(Build.ArtifactStagingDirectory)/configs/MRTKNuGetSignConfig.xml"
 
+  - task: PowerShell@2
+    displayName: 'Validate release packages are signed'
+    inputs:
+      targetType: filePath
+      filePath: '$(Build.ArtifactStagingDirectory)\scripts\signCheck.ps1'
+      arguments: '$(Build.SourcesDirectory)\artifacts\release -tmpDir $(Build.ArtifactStagingDirectory)'
+
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Packages'
     inputs:
