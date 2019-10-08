@@ -18,9 +18,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected readonly Dictionary<TrackedHandJoint, Transform> joints = new Dictionary<TrackedHandJoint, Transform>();
         protected MeshFilter handMeshFilter;
 
-        // This member stores the last set of hand mesh vertices, to avoid using
-        // handMeshFilter.mesh.vertices, which does a copy of the vertices.
-        private Vector3[] lastHandMeshVertices;
+        //investigate
+        //// This member stores the last set of hand mesh vertices, to avoid using
+        //// handMeshFilter.mesh.vertices, which does a copy of the vertices.
+        //private Vector3[] lastHandMeshVertices;
 
         private IMixedRealityInputSystem inputSystem = null;
 
@@ -175,34 +176,35 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 InputSystem?.InputSystemProfile?.HandTrackingProfile?.HandMeshPrefab != null)
             {
                 handMeshFilter = Instantiate(InputSystem.InputSystemProfile.HandTrackingProfile.HandMeshPrefab).GetComponent<MeshFilter>();
-                lastHandMeshVertices = handMeshFilter.mesh.vertices;
+                //investigate lastHandMeshVertices = handMeshFilter.mesh.vertices;
             }
 
             if (handMeshFilter != null)
             {
                 Mesh mesh = handMeshFilter.mesh;
 
-                // On some platforms, mesh length counts may change as the hand mesh is updated.
-                // In order to update the vertices when the array sizes change, the mesh
-                // must be cleared per instructions here:
-                // https://docs.unity3d.com/ScriptReference/Mesh.html
-                if (lastHandMeshVertices.Length != 0 &&
-                    lastHandMeshVertices.Length != eventData.InputData.vertices?.Length)
-                {
-                    mesh.Clear();
-                }
+                //investigate
+                //// On some platforms, mesh length counts may change as the hand mesh is updated.
+                //// In order to update the vertices when the array sizes change, the mesh
+                //// must be cleared per instructions here:
+                //// https://docs.unity3d.com/ScriptReference/Mesh.html
+                //if (lastHandMeshVertices.Length != 0 &&
+                //    lastHandMeshVertices.Length != eventData.InputData.vertices?.Length)
+                //{
+                //    mesh.Clear();
+                //}
 
                 mesh.vertices = eventData.InputData.vertices;
                 mesh.normals = eventData.InputData.normals;
                 mesh.triangles = eventData.InputData.triangles;
-                lastHandMeshVertices = eventData.InputData.vertices;
+                //investigate lastHandMeshVertices = eventData.InputData.vertices;
 
                 if (eventData.InputData.uvs != null && eventData.InputData.uvs.Length > 0)
                 {
                     mesh.uv = eventData.InputData.uvs;
                 }
 
-                mesh.RecalculateBounds();
+                //investigate mesh.RecalculateBounds();
 
                 handMeshFilter.transform.position = eventData.InputData.position;
                 handMeshFilter.transform.rotation = eventData.InputData.rotation;
