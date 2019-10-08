@@ -170,13 +170,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 SearchFieldString = SessionState.GetString(searchDisplaySearchFieldKey, string.Empty),
                 RequireAllKeywords = SessionState.GetBool(searchDisplayRequireAllKeywordsKey, true),
                 SearchTooltips = SessionState.GetBool(searchDisplaySearchTooltipsKey, true),
-                SearchFieldObjectNames = SessionState.GetBool(searchDisplaySearchFieldObjectNamesKey, true),
+                SearchFieldObjectNames = SessionState.GetBool(searchDisplaySearchFieldObjectNamesKey, false),
                 SearchChildProperties = SessionState.GetBool(searchDisplaySearchChildPropertiesKey, true)
             };
 
             #region draw subjects and field input
 
-            EditorGUILayout.HelpBox("Enter keywords below to search for fields.\nIf any subjects are selected, those will be used to narrow your search. Select (None) to search all fields.", MessageType.Info);
+            EditorGUILayout.HelpBox("Search profiles for:", MessageType.Info);
             config.SearchFieldString = EditorGUILayout.TextField(config.SearchFieldString);
 
             EditorGUILayout.Space();
@@ -187,7 +187,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             #region options
 
             bool optionsFoldout = SessionState.GetBool(searchDisplayOptionsFoldoutKey, false);
-            optionsFoldout = EditorGUILayout.Foldout(optionsFoldout, "Options", true);
+            optionsFoldout = EditorGUILayout.Foldout(optionsFoldout, "Saerch Preferences", true);
             if (optionsFoldout)
             {
                 config.RequireAllKeywords = EditorGUILayout.Toggle("Require All Keywords", config.RequireAllKeywords);

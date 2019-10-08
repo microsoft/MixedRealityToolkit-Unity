@@ -100,6 +100,23 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
                 int fieldMatchStrength = 0;
 
                 CheckFieldKeywords(config, iterator, ref fieldMatchStrength, ref keywordReqsMet);
+                if (keywordReqsMet)
+                {
+                    if (ProfileSearchResult.IsEmpty(result))
+                    {
+                        result.Profile = profile;
+                        result.ProfileMatchStrength = fieldMatchStrength;
+                        result.Fields = new List<FieldSearchResult>();
+                    }
+
+                    result.MaxFieldMatchStrength = Mathf.Max(result.MaxFieldMatchStrength, fieldMatchStrength);
+                    result.Fields.Add(
+                        new FieldSearchResult()
+                        {
+                            Property = iterator.Copy(),
+                            MatchStrength = fieldMatchStrength,
+                        });
+                }
 
                 if (config.SearchChildProperties)
                 {
@@ -142,24 +159,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
                             }
                         }
                     }
-                }
-
-                if (keywordReqsMet)
-                {
-                    if (ProfileSearchResult.IsEmpty(result))
-                    {
-                        result.Profile = profile;
-                        result.ProfileMatchStrength = fieldMatchStrength;
-                        result.Fields = new List<FieldSearchResult>();
-                    }
-
-                    result.MaxFieldMatchStrength = Mathf.Max(result.MaxFieldMatchStrength, fieldMatchStrength);
-                    result.Fields.Add(
-                        new FieldSearchResult()
-                        {
-                            Property = iterator.Copy(),
-                            MatchStrength = fieldMatchStrength,
-                        });
                 }
 
                 hasNextProperty = iterator.Next(false);
