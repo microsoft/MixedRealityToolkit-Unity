@@ -28,7 +28,7 @@ To what portion of the view port should the profiler window be anchored. The def
 
 **Window Offset**
 
-The offset, from the center of the view port, to place the Visual Profiler. The offset will be in the direction of the [Window Anchor](#window-anchor).
+The offset, from the center of the view port, to place the Visual Profiler. The offset will be in the direction of the *Window Anchor* property.
 
 **Window Scale**
 
