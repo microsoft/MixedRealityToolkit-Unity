@@ -18,6 +18,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("Transform being constrained. Defaults to the object of the component.")]
         private Transform targetTransform = null;
 
+        /// <summary>
+        /// Transform that we intend to apply constraints to
+        /// </summary>
         public Transform TargetTransform
         {
             get => targetTransform;

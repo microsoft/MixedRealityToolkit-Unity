@@ -21,9 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #region Public Methods
 
-        /// <summary>
-        /// Intended to be called on manipulation started
-        /// </summary>
+        /// <inheritdoc />
         public override void Initialize(MixedRealityPose worldPose)
         {
             base.Initialize(worldPose);
@@ -33,10 +31,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Clamps the transform scale to the scale limits set by <see cref="SetScaleLimits"/> such that:
-        /// - No one component of the returned vector will be greater than the max scale.
-        /// - No one component of the returned vector will be less than the min scale.
-        /// - The returned vector's direction will be the same as the given vector
+        /// Constrains scale such that the object's apparent size at manipulation
+        /// start does not change when the object is moved towards and away from 
+        /// the head.
         /// </summary>
         public override void ApplyConstraint(ref MixedRealityPose pose, ref Vector3 scale)
         {

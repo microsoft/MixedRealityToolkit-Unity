@@ -16,9 +16,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         [SerializeField]
         [EnumFlags]
-        [Tooltip("Constrain rotation about an axis")]
+        [Tooltip("Constrain movement along an axis")]
         private AxisFlags constraintOnMovement = 0;
 
+        /// <summary>
+        /// Constrain movement along an axis
+        /// </summary>
         public AxisFlags ConstraintOnMovement
         {
             get => constraintOnMovement;
@@ -29,6 +32,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("Relative to rotation at manipulation start or world")]
         private bool relativeToRotationAtManipulationStart = false;
 
+        /// <summary>
+        /// Relative to rotation at manipulation start or world
+        /// </summary>
         public bool RelativeToRotationAtManipulationStart
         {
             get => RelativeToRotationAtManipulationStart;
@@ -40,7 +46,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #region Public Methods
 
         /// <summary>
-        /// 
+        /// Removes movement along a given axis if its flag is found
+        /// in ConstraintOnMovement
         /// </summary>
         public override void ApplyConstraint(ref MixedRealityPose pose, ref Vector3 scale)
         {

@@ -18,6 +18,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("Transform to fix distance to. Defaults to the head.")]
         private Transform constraintTransform = null;
 
+        /// <summary>
+        /// Transform to fix distance to. Defaults to the head.
+        /// </summary>
         public Transform ConstraintTransform
         {
             get => constraintTransform;
@@ -44,6 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #region Public Methods
 
+        /// <inheritdoc />
         public override void Initialize(MixedRealityPose worldPose)
         {
             base.Initialize(worldPose);
@@ -52,6 +56,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
+        /// Constrains position such that the distance between pose and
+        /// the ConstraintTransform does not change from manipulation start
         /// </summary>
         public override void ApplyConstraint(ref MixedRealityPose pose, ref Vector3 scale)
         {

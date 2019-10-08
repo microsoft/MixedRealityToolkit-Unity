@@ -19,6 +19,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("Constrain rotation about an axis")]
         private AxisFlags constraintOnRotation = 0;
 
+        /// <summary>
+        /// Constrain rotation about an axis
+        /// </summary>
         public AxisFlags ConstraintOnRotation
         {
             get => constraintOnRotation;
@@ -30,7 +33,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #region Public Methods
 
         /// <summary>
-        /// 
+        /// Removes rotation about given axis if its flag is found
+        /// in ConstraintOnRotation
         /// </summary>
         public override void ApplyConstraint(ref MixedRealityPose pose, ref Vector3 scale)
         {

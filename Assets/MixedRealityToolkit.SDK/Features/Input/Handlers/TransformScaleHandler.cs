@@ -22,6 +22,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private Vector3 minimumScale;
         
+        /// <summary>
+        /// Minimum scaling allowed
+        /// </summary>
         public float ScaleMinimum
         {
             get => minimumScale.x;
@@ -38,6 +41,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private Vector3 maximumScale;
         
+        /// <summary>
+        /// Maximum scaling allowed
+        /// </summary>
         public float ScaleMaximum
         {
             get => maximumScale.x;
@@ -52,6 +58,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("Min/max scaling relative to initial scale if true")]
         private bool relativeToInitialState = true;
         
+        /// <summary>
+        /// Min/max scaling relative to initial scale if true
+        /// </summary>
         public bool RelativeToInitialState
         {
             get => relativeToInitialState;
