@@ -452,7 +452,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         private GameObject clippingObject;
 
         /// <summary>
-        /// The empty <see cref="GameObject"/> containing the <see cref="ScrollingObjectCollection"/>'s <see cref="Microsoft.MixedReality.Toolkit.Utilities.ClippingBox"/>.
+        /// The empty GameObject containing the ScrollingObjectCollection's <see cref="Microsoft.MixedReality.Toolkit.Utilities.ClippingBox"/>.
         /// </summary>
         public GameObject ClippingObject
         {
@@ -1788,8 +1788,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// Moves scroller a relative number of items
         /// </summary>
         /// <param name="numberOfItemsToMove">number of items to move by</param>
-        /// <param name="animateToPosition">if <see cref="true"/>, scroller will animate to new position</param>
-        /// <param name="callback"> An optional action to pass in to get notified that the <see cref="ScrollingObjectCollection"/> is finished moving</param>
+        /// <param name="animateToPosition">if true, scroller will animate to new position</param>
+        /// <param name="callback"> An optional action to pass in to get notified that the ScrollingObjectCollection is finished moving</param>
         public void MoveByItems(int numberOfItemsToMove, bool animateToPosition = true, System.Action callback = null)
         {
             StopAllCoroutines();
@@ -1879,7 +1879,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
 
         /// <summary>
-        /// Moves scroller to an absolute position where <param name"indexOfItem"/> 
+        /// Moves scroller to an absolute position where indexOfItem 
         /// is in the first column of the viewable area
         /// </summary>
         /// <param name="indexOfItem">Item to move to, will be first (or closest to in respect to scroll maximum) in viewable area</param>
@@ -1935,7 +1935,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <param name="initTime">Initial time</param>
         /// <param name="currTime">Current time</param>
         /// <param name="pressMargin">Time threshold</param>
-        /// <returns><see cref="true"/> if amount of time surpasses <paramref name="pressMargin"/></returns>
+        /// <returns>true if amount of time surpasses <paramref name="pressMargin"/></returns>
         public static bool TimeTest(float initTime, float currTime, float pressMargin)
         {
             if (currTime - initTime > pressMargin)
@@ -1949,8 +1949,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// Finds the object-aligned size of a <see cref="UnityEngine.Transform"/> 
         /// </summary>
         /// <param name="obj"><see cref="UnityEngine.Transform"/> representing the object to get offset from</param>
-        /// <param name="alignedSize">the object-aligned size of  <param name="obj"></param></param>
-        /// <returns><see cref="true"/> if <param name="alignedSize"> is valid</returns>
+        /// <param name="alignedSize">the object-aligned size of  <param name="obj"></param>
+        /// <returns>true if <param name="alignedSize"> is valid</returns>
         public static bool TryGetObjectAlignedBoundsSize(Transform obj, out Vector3 alignedSize)
         {
             Collider c = obj.GetComponentInChildren<Collider>();
