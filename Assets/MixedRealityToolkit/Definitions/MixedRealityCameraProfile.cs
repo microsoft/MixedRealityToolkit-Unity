@@ -15,7 +15,6 @@ namespace Microsoft.MixedReality.Toolkit
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Camera Profile", fileName = "MixedRealityCameraProfile", order = (int)CreateProfileMenuItemIndices.Camera)]
     [MixedRealityServiceProfile(typeof(IMixedRealityCameraSystem))]
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#camera")]
-    [Subject(SubjectTag.Camera)]
     public class MixedRealityCameraProfile : BaseMixedRealityProfile
     {
         public float NearClipPlaneOpaqueDisplay => nearClipPlaneOpaqueDisplay;

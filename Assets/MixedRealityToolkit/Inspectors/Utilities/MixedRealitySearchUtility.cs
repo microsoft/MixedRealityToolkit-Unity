@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -51,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
         /// <param name="config">Configuration for search.</param>
         public static IEnumerable<ProfileSearchResult> SearchProfileFields(UnityEngine.Object profile, SearchConfig config)
         {
-            if (string.IsNullOrEmpty(config.SearchFieldString) && config.SelectedSubjects == 0)
+            if (string.IsNullOrEmpty(config.SearchFieldString))
             {   // If the config is empty, bail early
                 yield break;
             }
@@ -68,19 +67,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
 
             // Ignore these requirements if criteria is empty
             config.RequireAllKeywords &= config.Keywords.Count > 0;
-            config.RequireAllSubjects &= config.SelectedSubjects != 0;
-            // Subject requirements are met by the profile's subject tag
-            // If not all subjects are required, a profile with the wrong tags or no tags can still match
-            int profileMatchStrength = 0;
-            bool subjectReqsMet = CheckProfileSubjects(config, profile, out profileMatchStrength);            
-            if (subjectReqsMet)
-            { 
-                result.Profile = profile;
-                result.ProfileMatchStrength = profileMatchStrength;
-                result.Fields = new List<FieldSearchResult>();
-            }
 
-            // Otherwise go through the profile's serialized fields
+            // Go through the profile's serialized fields
             SerializedProperty iterator = new SerializedObject(profile).GetIterator();
             bool hasNextProperty = iterator.Next(true);
 
@@ -111,10 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
                 bool keywordReqsMet = !config.RequireAllKeywords;
                 int fieldMatchStrength = 0;
 
-                if (subjectReqsMet)
-                {   // Only check keywords if our subject requirements are met
-                    CheckFieldKeywords(config, iterator, ref fieldMatchStrength, ref keywordReqsMet);
-                }
+                CheckFieldKeywords(config, iterator, ref fieldMatchStrength, ref keywordReqsMet);
 
                 if (config.SearchChildProperties)
                 {
@@ -159,22 +144,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
                     }
                 }
 
-                if (subjectReqsMet && keywordReqsMet)
+                if (keywordReqsMet)
                 {
-                    int matchStrength = fieldMatchStrength + profileMatchStrength;
                     if (ProfileSearchResult.IsEmpty(result))
                     {
                         result.Profile = profile;
-                        result.ProfileMatchStrength = profileMatchStrength;
+                        result.ProfileMatchStrength = fieldMatchStrength;
                         result.Fields = new List<FieldSearchResult>();
                     }
 
-                    result.MaxFieldMatchStrength = Mathf.Max(result.MaxFieldMatchStrength, matchStrength);
+                    result.MaxFieldMatchStrength = Mathf.Max(result.MaxFieldMatchStrength, fieldMatchStrength);
                     result.Fields.Add(
                         new FieldSearchResult()
                         {
                             Property = iterator.Copy(),
-                            MatchStrength = matchStrength,
+                            MatchStrength = fieldMatchStrength,
                         });
                 }
 
@@ -197,73 +181,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
 
             yield break;
         }
-
-        /// <summary>
-        /// Converts a string flags value to a subject tag. Useful for storing in a session state string value.
-        /// </summary>
-        public static SubjectTag SubjectFlagsFromString(string subjectFlagValueString)
-        {
-            ulong ulongValue;
-            ulong.TryParse(subjectFlagValueString, out ulongValue);
-            return (SubjectTag)ulongValue;
-        }
-
-        /// <summary>
-        /// Converts a subject tag to string flags value. Useful for storing in a session state string value.
-        /// </summary>
-        public static string SubjectFlagsToString(SubjectTag subjectFlags)
-        {
-            ulong ulongValue = (ulong)subjectFlags;
-            return ulongValue.ToString();
-        }
-
-        private static bool CheckProfileSubjects(SearchConfig config, UnityEngine.Object profile, out int subjectMatchStrength)
-        {
-            subjectMatchStrength = 0;
-
-            if (config.SelectedSubjects == 0)
-            {
-                // If we haven't selected any subjects then we're done
-                return true;
-            }
-
-            bool subjectReqsMet = !config.RequireAllSubjects;
-
-            List<SubjectTag> subjectValues = new List<SubjectTag>();
-            foreach (SubjectTag value in Enum.GetValues(typeof(SubjectTag)))
-            {
-                if (value == SubjectTag.All)
-                {
-                    continue;
-                }
-
-                if ((value & config.SelectedSubjects) != 0)
-                {
-                    subjectValues.Add(value);
-                }
-            }
-
-            Type profileType = profile.GetType();
-            SubjectAttribute subject = profileType.GetCustomAttribute<SubjectAttribute>();
-            if (subject != null)
-            {
-                SubjectTag profileTags = subject.Tags;
-                foreach (SubjectTag value in subjectValues)
-                {
-                    subjectMatchStrength += (value & profileTags) != 0 ? 1 : 0;
-                }
-
-                if (subjectValues.Count > 1 && subjectMatchStrength >= subjectValues.Count)
-                {   // If we match eevery single subject in a multi-subject search, double the score
-                    subjectMatchStrength *= 2;
-                }
-
-                subjectReqsMet = config.RequireAllSubjects ? subjectMatchStrength >= subjectValues.Count : subjectMatchStrength > 0;
-            }
-
-            return subjectReqsMet;
-        }
-
 
         private static bool CheckFieldKeywords(SearchConfig config, SerializedProperty property, ref int fieldMatchStrength, ref bool keywordReqsMet)
         {

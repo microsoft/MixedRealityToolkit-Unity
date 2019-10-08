@@ -9,7 +9,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Eye Tracking Profile", fileName = "MixedRealityEyeTrackingProfile", order = (int)CreateProfileMenuItemIndices.EyeTracking)]
     [MixedRealityServiceProfile(typeof(IMixedRealityEyeGazeDataProvider))]
-    [Subject(SubjectTag.Input | SubjectTag.EyeTracking)]
     public class MixedRealityEyeTrackingProfile : BaseMixedRealityProfile
     {
         [SerializeField]

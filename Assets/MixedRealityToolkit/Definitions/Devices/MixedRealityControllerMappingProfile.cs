@@ -15,7 +15,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// the controller class.
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Controller Mapping Profile", fileName = "MixedRealityControllerMappingProfile", order = (int)CreateProfileMenuItemIndices.ControllerMapping)]
-    [Subject(SubjectTag.Controllers | SubjectTag.Input)]
     public class MixedRealityControllerMappingProfile : BaseMixedRealityProfile
     {
         [SerializeField]

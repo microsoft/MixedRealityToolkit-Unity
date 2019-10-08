@@ -11,7 +11,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Mixed Reality Speech Commands Profile", fileName = "MixedRealitySpeechCommandsProfile", order = (int)CreateProfileMenuItemIndices.Speech)]
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Speech.html")]
-    [Subject(SubjectTag.Input | SubjectTag.Speech)]
     public class MixedRealitySpeechCommandsProfile : BaseMixedRealityProfile
     {
         [SerializeField]

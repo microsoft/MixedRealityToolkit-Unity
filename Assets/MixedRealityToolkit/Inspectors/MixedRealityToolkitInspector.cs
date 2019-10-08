@@ -1,10 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor.Search;
-using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -19,8 +17,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly string[] searchDisplayToolbarButtons = new string[] { "Configure Active Profile", "Search Active Profile" };
         private static readonly string searchDisplayToolbarIndexKey = "MixedRealityToolkitInspector.SearchDisplayToolbarIndex";
         private static readonly string searchDisplaySearchFieldKey = "MixedRealityToolkitInspector.SearchField";
-        private static readonly string searchDisplaySelectedTagsKey = "MixedRealityToolkitInspector.SelectedTags";
-        private static readonly string searchDisplayRequireAllTagsKey = "MixedRealityToolkitInspector.RequireAllTags";
         private static readonly string searchDisplayRequireAllKeywordsKey = "MixedRealityToolkitInspector.RequireAllKeywords";
         private static readonly string searchDisplayOptionsFoldoutKey = "MixedRealityToolkitInspector.SearchOptionsFoldout";
         private static readonly string searchDisplaySearchTooltipsKey = "MixedRealityToolkitInspector.SearchTooltips";
@@ -171,94 +167,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             SearchConfig config = new SearchConfig()
             {
-                SelectedSubjects = MixedRealitySearchUtility.SubjectFlagsFromString(SessionState.GetString(searchDisplaySelectedTagsKey, "0")),
                 SearchFieldString = SessionState.GetString(searchDisplaySearchFieldKey, string.Empty),
-                RequireAllSubjects = SessionState.GetBool(searchDisplayRequireAllTagsKey, true),
                 RequireAllKeywords = SessionState.GetBool(searchDisplayRequireAllKeywordsKey, true),
                 SearchTooltips = SessionState.GetBool(searchDisplaySearchTooltipsKey, true),
                 SearchFieldObjectNames = SessionState.GetBool(searchDisplaySearchFieldObjectNamesKey, true),
                 SearchChildProperties = SessionState.GetBool(searchDisplaySearchChildPropertiesKey, true)
             };
 
-            // Draw our subject tags in a clump
-            EditorGUILayout.HelpBox("Select subjects below to search for profiles tagged with that subject.", MessageType.Info);
-
             #region draw subjects and field input
-
-            using (new EditorGUILayout.VerticalScope())
-            {
-                bool horizontalGroupOpen = false;
-                int numButtons = maxSubjectButtonsPerLine;
-
-                using (new EditorGUILayout.HorizontalScope())
-                {
-                    GUI.color = config.SelectedSubjects == 0 ? MixedRealityInspectorUtility.SuccessColor : MixedRealityInspectorUtility.DisabledColor;
-                    if (GUILayout.Button("(None)", EditorStyles.miniButton))
-                    {
-                        config.SelectedSubjects = 0;
-                    }
-
-                    GUI.color = config.SelectedSubjects == SubjectTag.All ? MixedRealityInspectorUtility.SuccessColor : MixedRealityInspectorUtility.DisabledColor;
-                    if (GUILayout.Button("(All)", EditorStyles.miniButton))
-                    {
-                        config.SelectedSubjects = SubjectTag.All;
-                    }
-                }
-
-                List<SubjectTag> sortedTags = new List<SubjectTag>();
-                foreach (SubjectTag tag in Enum.GetValues(typeof(SubjectTag)))
-                {
-                    if (tag == SubjectTag.All)
-                    {
-                        continue;
-                    }
-
-                    sortedTags.Add(tag);
-                }
-
-                sortedTags.Sort(delegate (SubjectTag t1, SubjectTag t2) { return t1.ToString().CompareTo(t2.ToString()); });
-
-                foreach (SubjectTag tag in sortedTags)
-                {
-                    if (numButtons >= maxSubjectButtonsPerLine)
-                    {
-                        numButtons = 0;
-                        EditorGUILayout.BeginHorizontal();
-                        horizontalGroupOpen = true;
-                    }
-
-
-                    bool selected = (config.SelectedSubjects & tag) != 0;
-                    GUI.color = selected ? MixedRealityInspectorUtility.SuccessColor : MixedRealityInspectorUtility.DisabledColor;
-                    if (GUILayout.Button(tag.ToString(), EditorStyles.miniButton))
-                    {
-                        if (selected)
-                        {
-                            config.SelectedSubjects &= ~tag;
-                        }
-                        else
-                        {
-                            config.SelectedSubjects |= tag;
-                        }
-                    }
-                    GUI.color = Color.white;
-
-                    numButtons++;
-                    if (numButtons >= maxSubjectButtonsPerLine)
-                    {
-                        EditorGUILayout.EndHorizontal();
-                        horizontalGroupOpen = false;
-                    }
-                }
-
-                if (horizontalGroupOpen)
-                {
-                    EditorGUILayout.EndHorizontal();
-                }
-            }
-
-            EditorGUILayout.Space();
-            EditorGUILayout.Space();
 
             EditorGUILayout.HelpBox("Enter keywords below to search for fields.\nIf any subjects are selected, those will be used to narrow your search. Select (None) to search all fields.", MessageType.Info);
             config.SearchFieldString = EditorGUILayout.TextField(config.SearchFieldString);
@@ -275,7 +191,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (optionsFoldout)
             {
                 config.RequireAllKeywords = EditorGUILayout.Toggle("Require All Keywords", config.RequireAllKeywords);
-                config.RequireAllSubjects = EditorGUILayout.Toggle("Require All Tags", config.RequireAllSubjects);
                 config.SearchTooltips = EditorGUILayout.Toggle("Search Tooltips", config.SearchTooltips);
                 config.SearchFieldObjectNames = EditorGUILayout.Toggle("Search GameObject Names", config.SearchFieldObjectNames);
                 config.SearchChildProperties = EditorGUILayout.Toggle("Search Child Properties", config.SearchChildProperties);
@@ -287,8 +202,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             #endregion
 
             SessionState.SetString(searchDisplaySearchFieldKey, config.SearchFieldString);
-            SessionState.SetString(searchDisplaySelectedTagsKey, MixedRealitySearchUtility.SubjectFlagsToString(config.SelectedSubjects));
-            SessionState.SetBool(searchDisplayRequireAllTagsKey, config.RequireAllSubjects);
             SessionState.SetBool(searchDisplayRequireAllKeywordsKey, config.RequireAllKeywords);
             SessionState.SetBool(searchDisplayOptionsFoldoutKey, optionsFoldout);
             SessionState.SetBool(searchDisplaySearchTooltipsKey, config.SearchTooltips);
