@@ -10,4 +10,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         YAxisOnly,
         ZAxisOnly
     }
+
+    public class RotationConstraintHelper
+    {
+        public static AxisFlags ConvertToAxisFlags(RotationConstraintType type)
+        {
+            switch (type)
+            {
+                case RotationConstraintType.XAxisOnly:
+                    return AxisFlags.YAxis | AxisFlags.ZAxis;
+                case RotationConstraintType.YAxisOnly:
+                    return AxisFlags.XAxis | AxisFlags.ZAxis;
+                case RotationConstraintType.ZAxisOnly:
+                    return AxisFlags.XAxis | AxisFlags.YAxis;
+                default:
+                    return 0;
+            }
+        }
+    }
 }

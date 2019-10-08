@@ -705,6 +705,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 wasKinematic = rigidBody.isKinematic;
                 rigidBody.isKinematic = true;
             }
+
+            foreach (var constraint in constraints)
+            {
+                constraint.Initialize(new MixedRealityPose(hostTransform.position, hostTransform.rotation));
+            }
         }
 
         private void HandleManipulationEnded(Vector3 pointerGrabPoint, Vector3 pointerVelocity, Vector3 pointerAnglularVelocity)

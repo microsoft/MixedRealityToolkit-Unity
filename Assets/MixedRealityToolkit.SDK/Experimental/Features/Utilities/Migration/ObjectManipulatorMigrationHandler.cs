@@ -75,25 +75,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
             mh2.ReleaseBehavior = (ObjectManipulator.ReleaseBehaviorType)mh1.ReleaseBehavior;
 
-            if (mh1.ConstraintOnRotation != Toolkit.Utilities.RotationConstraintType.None)
+            if (mh1.ConstraintOnRotation != RotationConstraintType.None)
             {
                 var rotateConstraint = mh2.gameObject.AddComponent<RotateConstraint>();
                 rotateConstraint.TargetTransform = mh1.HostTransform;
-                switch (mh1.ConstraintOnRotation)
-                {
-                    case Toolkit.Utilities.RotationConstraintType.XAxisOnly:
-                        rotateConstraint.ConstraintOnRotation = Toolkit.Utilities.AxisFlags.XAxis;
-                        break;
-                    case Toolkit.Utilities.RotationConstraintType.YAxisOnly:
-                        rotateConstraint.ConstraintOnRotation = Toolkit.Utilities.AxisFlags.YAxis;
-                        break;
-                    case Toolkit.Utilities.RotationConstraintType.ZAxisOnly:
-                        rotateConstraint.ConstraintOnRotation = Toolkit.Utilities.AxisFlags.ZAxis;
-                        break;
-                }
+                rotateConstraint.ConstraintOnRotation = RotationConstraintHelper.ConvertToAxisFlags(mh1.ConstraintOnRotation);
             }
 
-            if (mh1.ConstraintOnMovement == Toolkit.Utilities.MovementConstraintType.FixDistanceFromHead)
+            if (mh1.ConstraintOnMovement == MovementConstraintType.FixDistanceFromHead)
             {
                 var moveConstraint = mh2.gameObject.AddComponent<FixedDistanceConstraint>();
                 moveConstraint.TargetTransform = mh1.HostTransform;

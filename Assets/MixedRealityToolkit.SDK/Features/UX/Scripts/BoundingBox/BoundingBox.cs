@@ -1370,11 +1370,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                     Vector3 newScale = initialScaleOnGrabStart * scaleFactor;
 
-                    Target.transform.localScale = newScale;
+                    Vector3 clampedScale = newScale;
                     if (scaleConstraint != null)
                     {
                         MixedRealityPose unusedPose = MixedRealityPose.ZeroIdentity;
-                        Vector3 clampedScale = newScale;
                         scaleConstraint.ApplyConstraint(ref unusedPose, ref clampedScale);
                         if (clampedScale != newScale)
                         {
@@ -1382,6 +1381,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         }
                     }
 
+                    Target.transform.localScale = clampedScale;
                     Target.transform.position = initialPositionOnGrabStart * scaleFactor + (1 - scaleFactor) * oppositeCorner;
                 }
             }

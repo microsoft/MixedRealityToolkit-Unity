@@ -474,142 +474,143 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
 
-        ///// <summary>
-        ///// This tests the one hand near rotation and applying different rotation constraints to the object.
-        ///// NOTE: This tests both LOCAL and WORLD SPACE rotation.
-        ///// </summary>
-        //[UnityTest]
-        //public IEnumerator ObjectManipulatorOneHandRotateWithConstraint()
-        //{            
-        //    // set up cube with manipulation handler
-        //    GameObject parentObject = new GameObject("Test Object Parent");
-
-        //     // In case of error, this object won't be cleaned up, so clean up at the end of the test
-        //     cleanupAction.Add(() => { if (parentObject != null) UnityEngine.Object.Destroy(parentObject); });
-
-        //     GameObject testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        //     testObject.transform.parent = parentObject.transform;
-
-        //     // Rotate the parent object, as we differ when constraining on local vs world
-        //     Quaternion initialQuaternion = Quaternion.Euler(30f, 30f, 30f);
-        //     parentObject.transform.rotation = initialQuaternion;
-
-        //     testObject.transform.localScale = Vector3.one * 0.2f;
-        //     Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
-        //     parentObject.transform.position = initialObjectPosition;
-
-        //     var manipHandler = testObject.AddComponent<ObjectManipulator>();
-        //     manipHandler.HostTransform = testObject.transform;
-        //     manipHandler.SmoothingActive = false;
-        //     manipHandler.ManipulationType = ObjectManipulator.HandMovementType.OneHanded;
-        //     manipHandler.OneHandRotationModeFar = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
-        //     manipHandler.ReleaseBehavior = 0;
-        //     manipHandler.AllowFarManipulation = false;
-
-        //     // add near interaction grabbable to be able to grab the cube with the simulated articulated hand
-        //     testObject.AddComponent<NearInteractionGrabbable>();
-
-        //     yield return new WaitForFixedUpdate();
-        //     yield return null;
-
-        //     TestHand hand = new TestHand(Handedness.Right);
-
-        //     yield return hand.Show(initialObjectPosition);
-        //     yield return null;
-
-        //     // grab the object
-        //     yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
-        //     yield return new WaitForFixedUpdate();
-        //     yield return null;
-
-        //     float testRotation = 45;
-        //     const int numRotSteps = 10;
-        //     Quaternion testQuaternion = Quaternion.Euler(testRotation, testRotation, testRotation);
+        /// <summary>
+        /// This tests the one hand near rotation and applying different rotation constraints to the object.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ObjectManipulatorOneHandRotateWithConstraint()
+        {
+            // set up cube with manipulation handler
+            GameObject parentObject = new GameObject("Test Object Parent");
             
-        //     /*********************************/
-        //     /*** TEST WORLD SPACE ROTATION ***/
-        //     /*********************************/
-
-        //     // rotate without constraint
-        //     manipHandler.ConstraintOnRotation = RotationConstraintType.None;
-        //     yield return hand.SetRotation(testQuaternion, numRotSteps);
-        //     float diffAngle = Quaternion.Angle(testObject.transform.rotation, Quaternion.Euler(testRotation, testRotation, testRotation) * initialQuaternion);
-        //     Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "object didn't rotate with hand (world space)");
-
-        //     yield return hand.SetRotation(Quaternion.identity, numRotSteps);
-        //     diffAngle = Quaternion.Angle(testObject.transform.rotation, initialQuaternion);
-        //     Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "object didn't rotate with hand (world space)");
-
-        //     // rotate with x axis only
-        //     manipHandler.ConstraintOnRotation = RotationConstraintType.XAxisOnly;
-        //     yield return hand.SetRotation(testQuaternion, numRotSteps);
-        //     diffAngle = Quaternion.Angle(testObject.transform.rotation, Quaternion.Euler(testRotation, 0, 0) * initialQuaternion);
-        //     Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on x axis did not lock axis correctly (world space)");
-
-        //     yield return hand.SetRotation(Quaternion.identity, numRotSteps);
-        //     diffAngle = Quaternion.Angle(testObject.transform.rotation, initialQuaternion);
-        //     Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on x axis did not lock axis correctly (world space)");
-
-        //     // rotate with y axis only
-        //     manipHandler.ConstraintOnRotation = RotationConstraintType.YAxisOnly;
-        //     yield return hand.SetRotation(testQuaternion, numRotSteps);
-        //     diffAngle = Quaternion.Angle(testObject.transform.rotation, Quaternion.Euler(0, testRotation, 0) * initialQuaternion);
-        //     Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on Y axis did not lock axis correctly (world space)");
-
-        //     yield return hand.SetRotation(Quaternion.identity, numRotSteps);
-        //     diffAngle = Quaternion.Angle(testObject.transform.rotation, initialQuaternion);
-        //     Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on Y axis did not lock axis correctly (world space)");
-
-        //     // rotate with z axis only
-        //     manipHandler.ConstraintOnRotation = RotationConstraintType.ZAxisOnly;
-        //     yield return hand.SetRotation(testQuaternion, numRotSteps);
-        //     diffAngle = Quaternion.Angle(testObject.transform.rotation, Quaternion.Euler(0, 0, testRotation) * initialQuaternion);
-        //     Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on Z axis did not lock axis correctly (world space)");
-
-        //     yield return hand.SetRotation(Quaternion.identity, numRotSteps);
-        //     diffAngle = Quaternion.Angle(testObject.transform.rotation, initialQuaternion);
-        //     Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on Z axis did not lock axis correctly (world space)");
+            // In case of error, this object won't be cleaned up, so clean up at the end of the test
+            cleanupAction.Add(() => { if (parentObject != null) UnityEngine.Object.Destroy(parentObject); });
             
-        //     ///*********************************/
-        //     ///*** TEST LOCAL SPACE ROTATION ***/
-        //     ///*********************************/
+            GameObject testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.parent = parentObject.transform;
 
-        //     //manipHandler.UseLocalSpaceForConstraint = true;
-        //     //// rotate with x axis only
-        //     //manipHandler.ConstraintOnRotation = RotationConstraintType.XAxisOnly;
-        //     //yield return hand.SetRotation(testQuaternion, numRotSteps);
-        //     //diffAngle = Quaternion.Angle(testObject.transform.localRotation, Quaternion.Euler(testRotation, 0, 0));
-        //     //Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on x axis did not lock axis correctly (local space)");
+            // Rotate the parent object, as we differ when constraining on local vs world
+            Quaternion initialQuaternion = Quaternion.Euler(30f, 30f, 30f);
+            parentObject.transform.rotation = initialQuaternion;
+            
+            testObject.transform.localScale = Vector3.one * 0.2f;
+            Vector3 initialObjectPosition = new Vector3(0f, 0f, 1f);
+            testObject.transform.position = initialObjectPosition;
+            var manipHandler = testObject.AddComponent<ObjectManipulator>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+            manipHandler.ManipulationType = ObjectManipulator.HandMovementType.OneHanded;
+            manipHandler.OneHandRotationModeFar = ObjectManipulator.RotateInOneHandType.RotateAboutGrabPoint;
+            manipHandler.ReleaseBehavior = 0;
+            manipHandler.AllowFarManipulation = false;
 
-        //     //yield return hand.SetRotation(Quaternion.identity, numRotSteps);
-        //     //diffAngle = Quaternion.Angle(testObject.transform.localRotation, Quaternion.identity);
-        //     //Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on x axis did not lock axis correctly (local space)");
+            var rotateConstraint = manipHandler.EnsureComponent<RotateConstraint>();
+            rotateConstraint.TargetTransform = testObject.transform;
+            rotateConstraint.ConstraintOnRotation = 0; // No constraint
 
-        //     //// rotate with y axis only
-        //     //manipHandler.ConstraintOnRotation = RotationConstraintType.YAxisOnly;
-        //     //yield return hand.SetRotation(testQuaternion, numRotSteps);
-        //     //diffAngle = Quaternion.Angle(testObject.transform.localRotation, Quaternion.Euler(0, testRotation, 0));
-        //     //Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on Y axis did not lock axis correctly (local space)");
+            // add near interaction grabbable to be able to grab the cube with the simulated articulated hand
+            testObject.AddComponent<NearInteractionGrabbable>();
 
-        //     //yield return hand.SetRotation(Quaternion.identity, numRotSteps);
-        //     //diffAngle = Quaternion.Angle(testObject.transform.localRotation, Quaternion.identity);
-        //     //Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on Y axis did not lock axis correctly (local space)");
+            yield return new WaitForFixedUpdate();
+            yield return null;
 
-        //     //// rotate with z axis only
-        //     //manipHandler.ConstraintOnRotation = RotationConstraintType.ZAxisOnly;
-        //     //yield return hand.SetRotation(testQuaternion, numRotSteps);
-        //     //diffAngle = Quaternion.Angle(testObject.transform.localRotation, Quaternion.Euler(0, 0, testRotation));
-        //     //Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on Z axis did not lock axis correctly (local space)");
+            TestHand hand = new TestHand(Handedness.Right);
 
-        //     //yield return hand.SetRotation(Quaternion.identity, numRotSteps);
-        //     //diffAngle = Quaternion.Angle(testObject.transform.localRotation, Quaternion.identity);
-        //     //Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on Z axis did not lock axis correctly (local space)");
+            yield return hand.Show(initialObjectPosition);
+            yield return null;
 
-        //     yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
-        //     yield return hand.Hide();
+            // grab the object
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return new WaitForFixedUpdate();
+            yield return null;
 
-        //     UnityEngine.Object.Destroy(parentObject);
-        // }
+            float testRotation = 45;
+            const int numRotSteps = 10;
+            Quaternion testQuaternion = Quaternion.Euler(testRotation, testRotation, testRotation);
+
+            /*********************************/
+            /*** TEST WORLD SPACE ROTATION ***/
+            /*********************************/
+
+            // rotate without constraint
+            yield return hand.SetRotation(testQuaternion, numRotSteps);
+            float diffAngle = Quaternion.Angle(testObject.transform.rotation, Quaternion.Euler(testRotation, testRotation, testRotation) * initialQuaternion);
+            Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "object didn't rotate with hand (world space)");
+
+            yield return hand.SetRotation(Quaternion.identity, numRotSteps);
+            diffAngle = Quaternion.Angle(testObject.transform.rotation, initialQuaternion);
+            Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "object didn't rotate with hand (world space)");
+
+            // rotate with x axis only
+            rotateConstraint.ConstraintOnRotation = AxisFlags.YAxis | AxisFlags.ZAxis;
+            yield return hand.SetRotation(testQuaternion, numRotSteps);
+            diffAngle = Quaternion.Angle(testObject.transform.rotation, Quaternion.Euler(testRotation, 0, 0) * initialQuaternion);
+            Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on x axis did not lock axis correctly (world space)");
+
+            yield return hand.SetRotation(Quaternion.identity, numRotSteps);
+            diffAngle = Quaternion.Angle(testObject.transform.rotation, initialQuaternion);
+            Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on x axis did not lock axis correctly (world space)");
+
+            // rotate with y axis only
+            rotateConstraint.ConstraintOnRotation = AxisFlags.XAxis | AxisFlags.ZAxis;
+            yield return hand.SetRotation(testQuaternion, numRotSteps);
+            diffAngle = Quaternion.Angle(testObject.transform.rotation, Quaternion.Euler(0, testRotation, 0) * initialQuaternion);
+            Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on Y axis did not lock axis correctly (world space)");
+
+            yield return hand.SetRotation(Quaternion.identity, numRotSteps);
+            diffAngle = Quaternion.Angle(testObject.transform.rotation, initialQuaternion);
+            Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on Y axis did not lock axis correctly (world space)");
+
+            // rotate with z axis only
+            rotateConstraint.ConstraintOnRotation = AxisFlags.XAxis | AxisFlags.YAxis;
+            yield return hand.SetRotation(testQuaternion, numRotSteps);
+            diffAngle = Quaternion.Angle(testObject.transform.rotation, Quaternion.Euler(0, 0, testRotation) * initialQuaternion);
+            Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on Z axis did not lock axis correctly (world space)");
+
+            yield return hand.SetRotation(Quaternion.identity, numRotSteps);
+            diffAngle = Quaternion.Angle(testObject.transform.rotation, initialQuaternion);
+            Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on Z axis did not lock axis correctly (world space)");
+            
+            ///*********************************/
+            ///*** TEST LOCAL SPACE ROTATION ***/
+            ///*********************************/
+            
+            //manipHandler.UseLocalSpaceForConstraint = true;
+            //// rotate with x axis only
+            //manipHandler.ConstraintOnRotation = RotationConstraintType.XAxisOnly;
+            //yield return hand.SetRotation(testQuaternion, numRotSteps);
+            //diffAngle = Quaternion.Angle(testObject.transform.localRotation, Quaternion.Euler(testRotation, 0, 0));
+            //Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on x axis did not lock axis correctly (local space)");
+            
+            //yield return hand.SetRotation(Quaternion.identity, numRotSteps);
+            //diffAngle = Quaternion.Angle(testObject.transform.localRotation, Quaternion.identity);
+            //Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on x axis did not lock axis correctly (local space)");
+            
+            //// rotate with y axis only
+            //manipHandler.ConstraintOnRotation = RotationConstraintType.YAxisOnly;
+            //yield return hand.SetRotation(testQuaternion, numRotSteps);
+            //diffAngle = Quaternion.Angle(testObject.transform.localRotation, Quaternion.Euler(0, testRotation, 0));
+            //Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on Y axis did not lock axis correctly (local space)");
+            
+            //yield return hand.SetRotation(Quaternion.identity, numRotSteps);
+            //diffAngle = Quaternion.Angle(testObject.transform.localRotation, Quaternion.identity);
+            //Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on Y axis did not lock axis correctly (local space)");
+            
+            //// rotate with z axis only
+            //manipHandler.ConstraintOnRotation = RotationConstraintType.ZAxisOnly;
+            //yield return hand.SetRotation(testQuaternion, numRotSteps);
+            //diffAngle = Quaternion.Angle(testObject.transform.localRotation, Quaternion.Euler(0, 0, testRotation));
+            //Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on Z axis did not lock axis correctly (local space)");
+            
+            //yield return hand.SetRotation(Quaternion.identity, numRotSteps);
+            //diffAngle = Quaternion.Angle(testObject.transform.localRotation, Quaternion.identity);
+            //Assert.IsTrue(Mathf.Approximately(diffAngle, 0.0f), "constraint on Z axis did not lock axis correctly (local space)");
+
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Open);
+            yield return hand.Hide();
+            
+            UnityEngine.Object.Destroy(parentObject);
+        }
 
         private class OriginOffsetTest
         {
