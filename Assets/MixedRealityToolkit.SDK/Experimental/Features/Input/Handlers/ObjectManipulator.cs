@@ -570,21 +570,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 targetScale = scaleLogic.UpdateMap(handPositionArray);
             }
-
             if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Move))
             {
                 MixedRealityPose pose = GetPointersPose();
                 targetPose.Position = moveLogic.Update(pose, targetPose.Rotation, targetScale);
             }
-            
-            foreach (var constraint in constraints)
-            { 
-                constraint.ApplyConstraint(ref targetPose, ref targetScale);
-            }
 
-            hostTransform.position = SmoothTo(hostTransform.position, targetPose.Position, moveLerpTime);
-            hostTransform.rotation = SmoothTo(hostTransform.rotation, targetPose.Rotation, rotateLerpTime);
-            hostTransform.localScale = SmoothTo(hostTransform.localScale, targetScale, scaleLerpTime);
+            ApplyTargetTransform(targetPose, targetScale);
         }
 
         private void HandleOneHandMoveStarted()
@@ -669,16 +661,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             
             MixedRealityPose pointerPose = new MixedRealityPose(pointer.Position, pointer.Rotation);
             targetPose.Position = moveLogic.Update(pointerPose, targetPose.Rotation, hostTransform.localScale);
-
-            var targetScale = hostTransform.localScale;
-            foreach (var constraint in constraints)
-            {
-                constraint.ApplyConstraint(ref targetPose, ref targetScale);
-            }
-
-            hostTransform.position = SmoothTo(hostTransform.position, targetPose.Position, moveLerpTime);
-            hostTransform.rotation = SmoothTo(hostTransform.rotation, targetPose.Rotation, rotateLerpTime);
-            hostTransform.localScale = SmoothTo(hostTransform.localScale, targetScale, scaleLerpTime);
+            
+            ApplyTargetTransform(targetPose, hostTransform.localScale);
         }
 
         private void HandleManipulationStarted()
@@ -742,12 +726,24 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         #region Private methods
 
-        public Vector3 SmoothTo(Vector3 source, Vector3 goal, float lerpTime)
+        private void ApplyTargetTransform(MixedRealityPose targetPose, Vector3 targetScale)
+        {
+            foreach (var constraint in constraints)
+            {
+                constraint.ApplyConstraint(ref targetPose, ref targetScale);
+            }
+
+            hostTransform.position = SmoothTo(hostTransform.position, targetPose.Position, moveLerpTime);
+            hostTransform.rotation = SmoothTo(hostTransform.rotation, targetPose.Rotation, rotateLerpTime);
+            hostTransform.localScale = SmoothTo(hostTransform.localScale, targetScale, scaleLerpTime);
+        }
+
+        private Vector3 SmoothTo(Vector3 source, Vector3 goal, float lerpTime)
         {
             return Vector3.Lerp(source, goal, !smoothingActive || lerpTime == 0f ? 1f : 1f - Mathf.Pow(lerpTime, Time.deltaTime));
         }
 
-        public Quaternion SmoothTo(Quaternion source, Quaternion goal, float lerpTime)
+        private Quaternion SmoothTo(Quaternion source, Quaternion goal, float lerpTime)
         {
             return Quaternion.Slerp(source, goal, !smoothingActive || lerpTime == 0f ? 1f : 1f - Mathf.Pow(lerpTime, Time.deltaTime));
         }
