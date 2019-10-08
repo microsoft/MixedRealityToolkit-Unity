@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.IO;
 using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
@@ -52,7 +53,63 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <returns>True if the directory could be found, false otherwise.</returns>
         public static bool FindRelativeDirectory(string packageDirectory, out string path)
         {
-            return MixedRealityEditorSettings.FindRelativeDirectory(UnityEngine.Application.dataPath, packageDirectory, out path);
+            return FindRelativeDirectory(UnityEngine.Application.dataPath, packageDirectory, out path);
+        }
+
+        /// <summary>
+        /// Finds the path of a directory relative to the project folder.
+        /// </summary>
+        /// <param name="directoryPathToSearch">
+        /// The subtree's root path to search in.
+        /// </param>
+        /// <param name="directoryName">
+        /// The name of the directory to search for.
+        /// </param>
+        internal static bool FindRelativeDirectory(string directoryPathToSearch, string directoryName, out string path)
+        {
+            string absolutePath;
+            if (FindDirectory(directoryPathToSearch, directoryName, out absolutePath))
+            {
+                path = MixedRealityToolkitFiles.GetAssetDatabasePath(absolutePath);
+                return true;
+            }
+
+            path = string.Empty;
+            return false;
+        }
+
+        /// <summary>
+        /// Finds the absolute path of a directory.
+        /// </summary>
+        /// <param name="directoryPathToSearch">
+        /// The subtree's root path to search in.
+        /// </param>
+        /// <param name="directoryName">
+        /// The name of the directory to search for.
+        /// </param>
+        internal static bool FindDirectory(string directoryPathToSearch, string directoryName, out string path)
+        {
+            path = string.Empty;
+
+            var directories = Directory.GetDirectories(directoryPathToSearch);
+
+            for (int i = 0; i < directories.Length; i++)
+            {
+                var name = Path.GetFileName(directories[i]);
+
+                if (name != null && name.Equals(directoryName))
+                {
+                    path = directories[i];
+                    return true;
+                }
+
+                if (FindDirectory(directories[i], directoryName, out path))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

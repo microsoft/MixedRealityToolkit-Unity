@@ -523,7 +523,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private bool IsHololensTargeted()
         {
-            return PerfTarget == PerformanceTarget.AR_Headsets && EditorUserBuildSettings.activeBuildTarget == BuildTarget.WSAPlayer;
+            return PerfTarget == PerformanceTarget.AR_Headsets && MixedRealityOptimizeUtils.IsBuildTargetUWP();
         }
 
         private Texture GetTitleIcon(bool isValid)
