@@ -14,11 +14,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     public class ClippingBoxEditor : ClippingPrimitiveEditor
     {
         /// <inheritdoc/>
+        protected override bool HasFrameBounds()
+        {
+            return true;
+        }
+
+        /// <inheritdoc/>
         protected override Bounds OnGetFrameBounds()
         {
             var primitive = target as ClippingBox;
             Debug.Assert(primitive != null);
-            return new Bounds(primitive.transform.position, primitive.transform.lossyScale * 0.5f);
+            return new Bounds(primitive.transform.position, primitive.transform.lossyScale);
         }
     }
 }

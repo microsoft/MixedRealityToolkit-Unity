@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         private static MixedRealityControllerMappingProfile thisProfile;
 
-        private SerializedProperty mixedRealityControllerMappingProfiles;
+        private SerializedProperty mixedRealityControllerMappings;
 
         private static bool showControllerDefinitions = false;
 
@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         {
             base.OnEnable();
 
-            mixedRealityControllerMappingProfiles = serializedObject.FindProperty("mixedRealityControllerMappingProfiles");
+            mixedRealityControllerMappings = serializedObject.FindProperty("mixedRealityControllerMappings");
             thisProfile = target as MixedRealityControllerMappingProfile;
         }
 
@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             {
                 serializedObject.Update();
 
-                RenderControllerList(mixedRealityControllerMappingProfiles);
+                RenderControllerList(mixedRealityControllerMappings);
 
                 serializedObject.ApplyModifiedProperties();
             }
@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         private void RenderControllerList(SerializedProperty controllerList)
         {
-            if (thisProfile.MixedRealityControllerMappingProfiles.Length != controllerList.arraySize) { return; }
+            if (thisProfile.MixedRealityControllerMappings.Length != controllerList.arraySize) { return; }
 
             if (InspectorUIUtility.RenderIndentedButton(ControllerAddButtonContent, EditorStyles.miniButton))
             {
@@ -96,9 +96,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                 {
                     GUILayout.HorizontalScope horizontalScope = null;
 
-                    for (int i = 0; i < thisProfile.MixedRealityControllerMappingProfiles.Length; i++)
+                    for (int i = 0; i < thisProfile.MixedRealityControllerMappings.Length; i++)
                     {
-                        MixedRealityControllerMapping controllerMapping = thisProfile.MixedRealityControllerMappingProfiles[i];
+                        MixedRealityControllerMapping controllerMapping = thisProfile.MixedRealityControllerMappings[i];
                         Type controllerType = controllerMapping.ControllerType;
                         if (controllerType == null) { continue; }
 
@@ -115,10 +115,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                         // SupportedControllerType.WindowsMixedReality && Handedness.None to SupportedControllerType.GGVHand && Handedness.None
                         if (supportedControllerType == SupportedControllerType.WindowsMixedReality && handedness == Handedness.None)
                         {
-                            for (int j = 0; j < thisProfile.MixedRealityControllerMappingProfiles.Length; j++)
+                            for (int j = 0; j < thisProfile.MixedRealityControllerMappings.Length; j++)
                             {
-                                if (thisProfile.MixedRealityControllerMappingProfiles[j].SupportedControllerType == SupportedControllerType.GGVHand &&
-                                    thisProfile.MixedRealityControllerMappingProfiles[j].Handedness == Handedness.None)
+                                if (thisProfile.MixedRealityControllerMappings[j].SupportedControllerType == SupportedControllerType.GGVHand &&
+                                    thisProfile.MixedRealityControllerMappings[j].Handedness == Handedness.None)
                                 {
                                     if (horizontalScope != null) { horizontalScope.Dispose(); horizontalScope = null; }
 
@@ -130,11 +130,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
                                         if (currentMapping.InputType == DeviceInputType.Select)
                                         {
-                                            thisProfile.MixedRealityControllerMappingProfiles[j].Interactions[0].MixedRealityInputAction = currentMapping.MixedRealityInputAction;
+                                            thisProfile.MixedRealityControllerMappings[j].Interactions[0].MixedRealityInputAction = currentMapping.MixedRealityInputAction;
                                         }
                                         else if (currentMapping.InputType == DeviceInputType.SpatialGrip)
                                         {
-                                            thisProfile.MixedRealityControllerMappingProfiles[j].Interactions[1].MixedRealityInputAction = currentMapping.MixedRealityInputAction;
+                                            thisProfile.MixedRealityControllerMappings[j].Interactions[1].MixedRealityInputAction = currentMapping.MixedRealityInputAction;
                                         }
                                     }
 
@@ -160,11 +160,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                                 {
                                     try
                                     {
-                                        thisProfile.MixedRealityControllerMappingProfiles[i].SynchronizeInputActions(controllerRenderList[j].Interactions);
+                                        thisProfile.MixedRealityControllerMappings[i].SynchronizeInputActions(controllerRenderList[j].Interactions);
                                     }
                                     catch (ArgumentException e)
                                     {
-                                        Debug.LogError($"Controller mappings between {thisProfile.MixedRealityControllerMappingProfiles[i].Description} and {controllerMapping.Description} do not match. Error message: {e.Message}");
+                                        Debug.LogError($"Controller mappings between {thisProfile.MixedRealityControllerMappings[i].Description} and {controllerMapping.Description} do not match. Error message: {e.Message}");
                                     }
                                     serializedObject.ApplyModifiedProperties();
                                     skip = true;
@@ -174,9 +174,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                             if (skip) { continue; }
                         }
 
-                        controllerRenderList.Add(new ControllerRenderProfile(supportedControllerType, handedness, thisProfile.MixedRealityControllerMappingProfiles[i].Interactions));
+                        controllerRenderList.Add(new ControllerRenderProfile(supportedControllerType, handedness, thisProfile.MixedRealityControllerMappings[i].Interactions));
 
-                        string controllerTitle = thisProfile.MixedRealityControllerMappingProfiles[i].Description;
+                        string controllerTitle = thisProfile.MixedRealityControllerMappings[i].Description;
                         var interactionsProperty = controllerMappingProperty.FindPropertyRelative("interactions");
 
                         if (useCustomInteractionMappings)
@@ -263,8 +263,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                                 {
                                     interactionsProperty.ClearArray();
                                     serializedObject.ApplyModifiedProperties();
-                                    thisProfile.MixedRealityControllerMappingProfiles[i].ControllerType.Type = genericTypes[currentGenericType];
-                                    thisProfile.MixedRealityControllerMappingProfiles[i].SetDefaultInteractionMapping(true);
+                                    thisProfile.MixedRealityControllerMappings[i].ControllerType.Type = genericTypes[currentGenericType];
+                                    thisProfile.MixedRealityControllerMappings[i].SetDefaultInteractionMapping(true);
                                     serializedObject.ApplyModifiedProperties();
                                     return;
                                 }
@@ -278,7 +278,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                                 {
                                     interactionsProperty.ClearArray();
                                     serializedObject.ApplyModifiedProperties();
-                                    thisProfile.MixedRealityControllerMappingProfiles[i].SetDefaultInteractionMapping(true);
+                                    thisProfile.MixedRealityControllerMappings[i].SetDefaultInteractionMapping(true);
                                     serializedObject.ApplyModifiedProperties();
                                 }
                             }
@@ -321,8 +321,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             var interactionsProperty = mixedRealityControllerMapping.FindPropertyRelative("interactions");
             interactionsProperty.ClearArray();
             serializedObject.ApplyModifiedProperties();
-            thisProfile.MixedRealityControllerMappingProfiles[index].ControllerType.Type = controllerType;
-            thisProfile.MixedRealityControllerMappingProfiles[index].SetDefaultInteractionMapping(true);
+            thisProfile.MixedRealityControllerMappings[index].ControllerType.Type = controllerType;
+            thisProfile.MixedRealityControllerMappings[index].SetDefaultInteractionMapping(true);
         }
     }
 }

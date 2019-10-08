@@ -93,13 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public Vector3 Velocity { get; protected set; }
 
-        public virtual bool IsInPointingPose
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public virtual bool IsInPointingPose => true;
 
         #endregion IMixedRealityController Implementation
 
@@ -222,7 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         controllerModel = GetControllerVisualizationProfile().GlobalRightHandModel;
                     }
                 }
-            
+
                 else if (inputSourceType == InputSourceType.Hand)
                 {
                     if (ControllerHandedness == Handedness.Left &&
@@ -255,7 +249,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (controllerObject != null)
             {
                 controllerObject.name = $"{ControllerHandedness}_{controllerObject.name}";
-                
+
                 MixedRealityPlayspace.AddChild(controllerObject.transform);
 
                 Visualizer = controllerObject.GetComponent<IMixedRealityControllerVisualizer>();
@@ -300,7 +294,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (InputSystem?.InputSystemProfile?.ControllerMappingProfile != null)
             {
-                return InputSystem.InputSystemProfile.ControllerMappingProfile.MixedRealityControllerMappingProfiles;
+                return InputSystem.InputSystemProfile.ControllerMappingProfile.MixedRealityControllerMappings;
             }
 
             return null;

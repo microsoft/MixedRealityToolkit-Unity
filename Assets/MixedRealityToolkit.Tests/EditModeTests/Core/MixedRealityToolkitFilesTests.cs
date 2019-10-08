@@ -3,9 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using NUnit.Framework;
-using UnityEngine;
-using System;
-using System.IO;
 using System.Linq;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.Core

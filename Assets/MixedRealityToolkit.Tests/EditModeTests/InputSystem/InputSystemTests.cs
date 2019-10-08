@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         public void TearDown()
         {
             TestUtilities.ShutdownMixedRealityToolkit();
+            TestUtilities.EditorTearDownScenes();
         }
 
         [Test]
@@ -41,8 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
 
             // Retrieve Input System
-            IMixedRealityInputSystem inputSystem = null;
-            MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
+            MixedRealityServiceRegistry.TryGetService(out IMixedRealityInputSystem inputSystem);
 
             // Tests
             Assert.IsNotNull(inputSystem);
@@ -53,11 +53,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
-            // Check for Input System
-            var inputSystemExists = MixedRealityToolkit.Instance.IsServiceRegistered<IMixedRealityInputSystem>();
-
-            // Tests
-            Assert.IsFalse(inputSystemExists);
+            // Tests for Input System
+            Assert.IsFalse(MixedRealityToolkit.Instance.IsServiceRegistered<IMixedRealityInputSystem>());
         }
 
         [Test]
@@ -65,14 +62,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
 
-            // Check for Input System
-            var inputSystemExists = MixedRealityToolkit.Instance.IsServiceRegistered<IMixedRealityInputSystem>();
-
-            // Tests
-            Assert.IsTrue(inputSystemExists);
+            // Tests for Input System
+            Assert.IsTrue(MixedRealityToolkit.Instance.IsServiceRegistered<IMixedRealityInputSystem>());
         }
 
-        
+
         [Test]
         public void TestEmptyDataProvider()
         {
@@ -82,14 +76,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             var inputSystem = MixedRealityToolkit.Instance.GetService<IMixedRealityInputSystem>();
 
             var dataProviderAccess = (inputSystem as IMixedRealityDataProviderAccess);
-            Assert.IsNotNull(dataProviderAccess);
 
             // Tests
+            Assert.IsNotNull(dataProviderAccess);
             Assert.IsEmpty(dataProviderAccess.GetDataProviders());
         }
 
         [Test]
-        public void TestDataProviderRegisteration()
+        public void TestDataProviderRegistration()
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
             MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile = AssetDatabase.LoadAssetAtPath<MixedRealityInputSystemProfile>(TestInputSystemProfilePath);
@@ -115,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.IsFalse(dataProvider.IsEnabled);
 
             inputSystem.Enable();
-            // We still have reference to old dataprovider, check still disabled
+            // We still have reference to old dataProvider, check still disabled
             Assert.IsFalse(dataProvider.IsEnabled);
 
             // dataProvider has been unregistered in Disable and new one created by Enable.
@@ -134,16 +128,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.IsTrue(dataProvider.IsEnabled);
         }
 
-        [TearDown]
-        public void CleanupMixedRealityToolkitTests()
-        {
-            TestUtilities.EditorCreateScenes();
-        }
-
         /// <summary>
         /// Create default Input System Profile
         /// </summary>
-        /// <returns>MixedRealityInputSystemProfile scriptableobject with default settings </returns>
+        /// <returns>MixedRealityInputSystemProfile ScriptableObject with default settings</returns>
         private static MixedRealityInputSystemProfile CreateDefaultInputSystemProfile()
         {
             var inputSystemProfile = ScriptableObject.CreateInstance<MixedRealityInputSystemProfile>();
