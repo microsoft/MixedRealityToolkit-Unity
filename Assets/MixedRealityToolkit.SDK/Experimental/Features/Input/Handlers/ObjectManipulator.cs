@@ -670,16 +670,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             MixedRealityPose pointerPose = new MixedRealityPose(pointer.Position, pointer.Rotation);
             targetPose.Position = moveLogic.Update(pointerPose, targetPose.Rotation, hostTransform.localScale);
 
-            var ignoreScale = Vector3.one;
+            var targetScale = hostTransform.localScale;
             foreach (var constraint in constraints)
             {
-                constraint.ApplyConstraint(ref targetPose, ref ignoreScale);
+                constraint.ApplyConstraint(ref targetPose, ref targetScale);
             }
 
-            Quaternion smoothedRotation = SmoothTo(hostTransform.rotation, targetPose.Rotation, rotateLerpTime);
-            Vector3 smoothedPosition = SmoothTo(hostTransform.position, targetPose.Position, moveLerpTime);
-
-            hostTransform.SetPositionAndRotation(smoothedPosition, smoothedRotation);
+            hostTransform.position = SmoothTo(hostTransform.position, targetPose.Position, moveLerpTime);
+            hostTransform.rotation = SmoothTo(hostTransform.rotation, targetPose.Rotation, rotateLerpTime);
+            hostTransform.localScale = SmoothTo(hostTransform.localScale, targetScale, scaleLerpTime);
         }
 
         private void HandleManipulationStarted()
@@ -743,14 +742,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         #region Private methods
 
-        public static Vector3 SmoothTo(Vector3 source, Vector3 goal, float lerpTime)
+        public Vector3 SmoothTo(Vector3 source, Vector3 goal, float lerpTime)
         {
-            return Vector3.Lerp(source, goal, lerpTime.Equals(0.0f) ? 1f : Time.deltaTime / lerpTime);
+            return Vector3.Lerp(source, goal, !smoothingActive || lerpTime == 0f ? 1f : 1f - Mathf.Pow(lerpTime, Time.deltaTime));
         }
 
-        public static Quaternion SmoothTo(Quaternion source, Quaternion goal, float lerpTime)
+        public Quaternion SmoothTo(Quaternion source, Quaternion goal, float lerpTime)
         {
-            return Quaternion.Slerp(source, goal, lerpTime.Equals(0.0f) ? 1f : Time.deltaTime / lerpTime);
+            return Quaternion.Slerp(source, goal, !smoothingActive || lerpTime == 0f ? 1f : 1f - Mathf.Pow(lerpTime, Time.deltaTime));
         }
 
         private Vector3[] GetHandPositionArray()
