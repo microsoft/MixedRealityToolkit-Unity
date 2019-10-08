@@ -10,10 +10,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
     /// </summary>
     public struct SearchConfig
     {
-        //public SubjectTag SelectedSubjects;
         public string SearchFieldString;
         public bool RequireAllKeywords;
-        //public bool RequireAllSubjects;
         public bool SearchTooltips;
         public bool SearchFieldObjectNames;
         public bool SearchChildProperties;
