@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -209,7 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 {
                     string line = await reader.ReadLineAsync();
                     lineNum++;
-                    if (line.Contains("m_Script"))
+                    if (line.Contains("m_Script") || (filePath.EndsWith(".anim") && line.Contains("script")))
                     {
                         if (!line.Contains('}'))
                         {
@@ -225,7 +224,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
                         if (line.Contains(ScriptFileIdConstant))
                         {
-                            Match regexResults = Regex.Match(line, @"guid:\s*([0-9a-fA-F]*)");
+                            Match regexResults = Regex.Match(line, Utilities.MetaFileGuidRegex);
                             if (!regexResults.Success || regexResults.Groups.Count != 2 || !regexResults.Groups[1].Success || regexResults.Groups[1].Captures.Count != 1)
                             {
                                 throw new InvalidDataException($"Failed to find the guid in line: {line}.");
@@ -234,7 +233,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                             string guid = regexResults.Groups[1].Captures[0].Value;
                             if (remapDictionary.TryGetValue(guid, out Tuple<string, long> tuple))
                             {
-                                line = $"  m_Script: {{fileID: {tuple.Item2}, guid: {tuple.Item1}, type: 3}}";
+                                line = Regex.Replace(line, @"fileID: \d+, guid: \w+", $"fileID: {tuple.Item2}, guid: {tuple.Item1}");
                             }
                             else if (nonClassDictionary.ContainsKey(guid))
                             {
@@ -250,7 +249,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     }
                     else if (line.Contains(ScriptFileIdConstant))
                     {
-                        throw new InvalidDataException($"Line contains script type but not m_Script: {line}");
+                        throw new InvalidDataException($"Line in file {filePath} contains script type but not m_Script: {line.Trim()}");
                     }
                     //{ fileID: 11500000, guid: 83d9acc7968244a8886f3af591305bcb, type: 3}
 
@@ -528,7 +527,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
                     dllGuid = CycleGuidForward(dllGuid);
 
-                    if (file.Extension.Equals(".dll") && file.DirectoryName.EndsWith("Standalone"))
+                    if (file.Extension.Equals(".dll") && file.DirectoryName.EndsWith("StandalonePlayer"))
                     {
                         templateToUse = standaloneMetaFileTemplate;
                         goto WriteMeta;
@@ -536,12 +535,15 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
                     dllGuid = CycleGuidForward(dllGuid);
 
-                    if (file.Extension.Equals(".dll") && file.DirectoryName.EndsWith("UAP"))
+                    if (file.Extension.Equals(".dll") && file.DirectoryName.EndsWith("UAPPlayer"))
                     {
                         templateToUse = uapMetaFileTemplate;
                         goto WriteMeta;
                     }
 
+                    dllGuid = CycleGuidForward(dllGuid);
+
+                    // Switch to PDBs
                     if (file.DirectoryName.EndsWith("EditorPlayer"))
                     {
                         goto WriteMeta;
@@ -549,7 +551,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
                     dllGuid = CycleGuidForward(dllGuid);
 
-                    if (file.DirectoryName.EndsWith("Standalone"))
+                    if (file.DirectoryName.EndsWith("StandalonePlayer"))
                     {
                         templateToUse = standaloneMetaFileTemplate;
                         goto WriteMeta;
@@ -628,4 +630,3 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         }
     }
 }
-#endif

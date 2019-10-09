@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -53,8 +52,8 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         /// <summary>
         /// Creates a new instance of the <see cref="PluginAssemblyInfo"/>.
         /// </summary>
-        public PluginAssemblyInfo(IEnumerable<CompilationPlatformInfo> availablePlatforms, Guid guid, string fullPath, PluginType type)
-             : base(availablePlatforms, guid, new Uri(fullPath), Path.GetFileNameWithoutExtension(fullPath))
+        public PluginAssemblyInfo(UnityProjectInfo unityProjectInfo, Guid guid, string fullPath, PluginType type)
+             : base(unityProjectInfo, guid, new Uri(fullPath), Path.GetFileNameWithoutExtension(fullPath))
         {
             Type = type;
 
@@ -95,8 +94,8 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                                 DefineConstraints.Add(define);
                                 return true;
                             }
-                        // else
-                        return false;
+                            // else
+                            return false;
                         });
                     }
 
@@ -108,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     // If it's not defineConstraints, then it's one of the other 3
                     isExplicitlyReferenced = defineConstraints;
                 }
-               
+
                 if (isExplicitlyReferenced.Contains("isExplicitlyReferenced:"))
                 {
                     AutoReferenced = isExplicitlyReferenced.Split(':')[1].Trim().Equals("0");
@@ -131,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             Dictionary<BuildTarget, CompilationPlatformInfo> inEditorPlatforms = new Dictionary<BuildTarget, CompilationPlatformInfo>();
             if (enabledPlatforms.TryGetValue("Editor", out bool platformEnabled) && platformEnabled)
             {
-                foreach (CompilationPlatformInfo platform in availablePlatforms)
+                foreach (CompilationPlatformInfo platform in UnityProjectInfo.AvailablePlatforms)
                 {
                     inEditorPlatforms.Add(platform.BuildTarget, platform);
                 }
@@ -258,7 +257,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         {
             if (enabledPlatforms.TryGetValue(platformName, out bool platformEnabled) && platformEnabled)
             {
-                CompilationPlatformInfo platform = availablePlatforms.FirstOrDefault(t => t.BuildTarget == platformTarget);
+                CompilationPlatformInfo platform = UnityProjectInfo.AvailablePlatforms.FirstOrDefault(t => t.BuildTarget == platformTarget);
                 if (platform != null)
                 {
                     playerPlatforms.Add(platformTarget, platform);
@@ -271,4 +270,3 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         }
     }
 }
-#endif

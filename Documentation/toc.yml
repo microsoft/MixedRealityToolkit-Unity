@@ -3,7 +3,7 @@
   items:
   - name: Upgrading from HTK
     href: HTKToMRTKPortingGuide.md
-  - name: Updating from RC2
+  - name: Updating from earlier versions
     href: Updating.md
   - name: Release Notes
     href: ReleaseNotes.md
@@ -27,6 +27,8 @@
       href: Architecture/InputSystem/CoreSystem.md
     - name: Controllers, Pointers, and Focus
       href: Architecture/InputSystem/ControllersPointersAndFocus.md
+  - name: Systems, Extension Services and Data Providers
+    href: Architecture/SystemsExtensionsProviders.md
 - name: Feature Overviews
   items:
   - name: Profiles
@@ -47,6 +49,8 @@
       href: Input/Controllers.md
     - name: Pointers
       href: Input/Pointers.md
+    - name: How to Add Near Interaction
+      href: Input/HowToAddNearInteractivity.md
     - name: Gestures
       href: Input/Gestures.md
     - name: Speech(Voice command)
@@ -54,11 +58,13 @@
     - name: Dictation
       href: Input/Dictation.md
     - name: Hands
-      href: InputSystem/HandTracking.md
+      href: Input/HandTracking.md
     - name: Gaze
       href: Input/Gaze.md
     - name: Eyes
       href: EyeTracking/EyeTracking_Main.md
+    - name: Creating an input data provider
+      href: Input/CreateDataProvider.md
   - name: In-Editor Input Simulation
     href: InputSimulation/InputSimulationService.md
   - name: UX Building Blocks
@@ -97,14 +103,16 @@
     href: README_MRTKStandardShader.md
   - name: Spatial Awareness
     items:
-    - name: Spatial Awareness Overview
+    - name: Getting Started
       href: SpatialAwareness/SpatialAwarenessGettingStarted.md
-    - name: Configuring the Spatial Awareness Mesh Observer
+    - name: Configuring Observers for Device
       href: SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.md
-    - name: Spatial Object Mesh Observer
+    - name: Configuring Observers for Editor
       href: SpatialAwareness/SpatialObjectMeshObserver.md
-    - name: Usage Guide
+    - name: Controlling Observers via Code
       href: SpatialAwareness/UsageGuide.md
+    - name: Creating a custom Observer
+      href: SpatialAwareness/CreateDataProvider.md
   - name: Multi Scene System
     items:
     - name: Multi Scene System Overview
@@ -139,6 +147,8 @@
       href: MixedRealityServices.md
     - name: What are the MixedRealityServiceRegistry and IMixedRealityServiceRegistrar
       href: ServiceUtilities/MixedRealityServiceRegistryAndIMixedRealityServiceRegistrar.md
+    - name: Extension services
+      href: Extensions/ExtensionServices.md
   - name: Packages
     items:
     - name: MRTK Packages
@@ -158,6 +168,10 @@
         href: InputSimulation/InputAnimationFileFormat.md
     - name: Extension Service Creation Wizard
       href: Tools/ExtensionServiceCreationWizard.md
+    - name: Runtime tools
+      items:
+      - name: Controller Mapping tool
+        href: Tools/ControllerMappingTool.md 
   - name: Scene Transition Service
     href: Extensions/SceneTransitionService/SceneTransitionServiceOverview.md
   - name: Experimental Features

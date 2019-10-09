@@ -3,14 +3,21 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime;
 using UnityEngine;
+using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    /// <summary>
+    /// Utility struct that provides mouse delta in pixels (screen space), normalized viewport coordinates, and world units.
+    /// </summary>
+    public class MouseDelta
+    {
+        public Vector3 screenDelta = Vector3.zero;
+        public Vector3 viewportDelta = Vector3.zero;
+        public Vector3 worldDelta = Vector3.zero;
+    }
+
     [MixedRealityDataProvider(
         typeof(IMixedRealityInputSystem),
         SupportedPlatforms.WindowsEditor | SupportedPlatforms.MacEditor | SupportedPlatforms.LinuxEditor,
@@ -18,19 +25,93 @@ namespace Microsoft.MixedReality.Toolkit.Input
         "Profiles/DefaultMixedRealityInputSimulationProfile.asset",
         "MixedRealityToolkit.SDK")]
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/InputSimulation/InputSimulationService.html")]
-    public class InputSimulationService : BaseInputDeviceManager, IInputSimulationService, IMixedRealityEyeGazeDataProvider, IMixedRealityCapabilityCheck
+    public class InputSimulationService :
+        BaseInputSimulationService,
+        IInputSimulationService,
+        IMixedRealityEyeGazeDataProvider,
+        IMixedRealityCapabilityCheck
     {
         private ManualCameraControl cameraControl = null;
         private SimulatedHandDataProvider handDataProvider = null;
 
-        /// <summary>
-        /// Pose data for the left hand.
-        /// </summary>
+        private HandSimulationMode handSimulationMode;
+        /// <inheritdoc />
+        public HandSimulationMode HandSimulationMode
+        {
+            get => handSimulationMode;
+            set
+            {
+                handSimulationMode = value;
+            }
+        }
+
+        /// <inheritdoc />
         public SimulatedHandData HandDataLeft { get; } = new SimulatedHandData();
-        /// <summary>
-        /// Pose data for the right hand.
-        /// </summary>
+        /// <inheritdoc />
         public SimulatedHandData HandDataRight { get; } = new SimulatedHandData();
+
+        /// <inheritdoc />
+        public bool IsSimulatingHandLeft => (handDataProvider != null ? handDataProvider.IsSimulatingLeft : false);
+        /// <inheritdoc />
+        public bool IsSimulatingHandRight => (handDataProvider != null ? handDataProvider.IsSimulatingRight : false);
+
+        /// <inheritdoc />
+        public bool IsAlwaysVisibleHandLeft
+        {
+            get { return handDataProvider != null ? handDataProvider.IsAlwaysVisibleLeft : false; }
+            set { if (handDataProvider != null) { handDataProvider.IsAlwaysVisibleLeft = value; } }
+        }
+        /// <inheritdoc />
+        public bool IsAlwaysVisibleHandRight
+        {
+            get { return handDataProvider != null ? handDataProvider.IsAlwaysVisibleRight : false; }
+            set { if (handDataProvider != null) { handDataProvider.IsAlwaysVisibleRight = value; } }
+        }
+
+        /// <inheritdoc />
+        public Vector3 HandPositionLeft
+        {
+            get { return handDataProvider != null ? handDataProvider.HandStateLeft.ViewportPosition : Vector3.zero; }
+            set { if (handDataProvider != null) { handDataProvider.HandStateLeft.ViewportPosition = value; } }
+        }
+
+        /// <inheritdoc />
+        public Vector3 HandPositionRight
+        {
+            get { return handDataProvider != null ? handDataProvider.HandStateRight.ViewportPosition : Vector3.zero; }
+            set { if (handDataProvider != null) { handDataProvider.HandStateRight.ViewportPosition = value; } }
+        }
+
+        /// <inheritdoc />
+        public Vector3 HandRotationLeft
+        {
+            get { return handDataProvider != null ? handDataProvider.HandStateLeft.ViewportRotation : Vector3.zero; }
+            set { if (handDataProvider != null) { handDataProvider.HandStateLeft.ViewportRotation = value; } }
+        }
+
+        /// <inheritdoc />
+        public Vector3 HandRotationRight
+        {
+            get { return handDataProvider != null ? handDataProvider.HandStateRight.ViewportRotation : Vector3.zero; }
+            set { if (handDataProvider != null) { handDataProvider.HandStateRight.ViewportRotation = value; } }
+        }
+
+        /// <inheritdoc />
+        public void ResetHandLeft()
+        {
+            if (handDataProvider != null)
+            {
+                handDataProvider.ResetHand(Handedness.Left);
+            }
+        }
+        /// <inheritdoc />
+        public void ResetHandRight()
+        {
+            if (handDataProvider != null)
+            {
+                handDataProvider.ResetHand(Handedness.Right);
+            }
+        }
 
         /// <summary>
         /// If true then keyboard and mouse input are used to simulate hands.
@@ -38,19 +119,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public bool UserInputEnabled { get; set; } = true;
 
         /// <summary>
-        /// Dictionary to capture all active hands detected
-        /// </summary>
-        private readonly Dictionary<Handedness, SimulatedHand> trackedHands = new Dictionary<Handedness, SimulatedHand>();
-
-        /// <summary>
-        /// Active controllers
-        /// </summary>
-        private IMixedRealityController[] activeControllers = new IMixedRealityController[0];
-
-        /// <summary>
         /// Timestamp of the last hand device update
         /// </summary>
         private long lastHandUpdateTimestamp = 0;
+
+        /// <summary>
+        /// Indicators to show input simulation state in the viewport.
+        /// </summary>
+        private GameObject indicators;
 
         #region BaseInputDeviceManager Implementation
 
@@ -67,11 +143,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             switch (capability)
             {
                 case MixedRealityCapability.ArticulatedHand:
-                    return (InputSimulationProfile.HandSimulationMode == HandSimulationMode.Articulated);
+                    return (HandSimulationMode == HandSimulationMode.Articulated);
 
                 case MixedRealityCapability.GGVHand:
                     // If any hand simulation is enabled, GGV interactions are supported.
-                    return (InputSimulationProfile.HandSimulationMode != HandSimulationMode.Disabled);
+                    return (HandSimulationMode != HandSimulationMode.Disabled);
 
                 case MixedRealityCapability.EyeTracking:
                     return InputSimulationProfile.SimulateEyePosition;
@@ -81,17 +157,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
-        public override IMixedRealityController[] GetActiveControllers()
-        {
-            return activeControllers;
-        }
-
-        /// <inheritdoc />
         public override void Initialize()
         {
             ArticulatedHandPose.LoadGesturePoses();
+
+            HandSimulationMode = InputSimulationProfile.DefaultHandSimulationMode;
         }
 
+        /// <inheritdoc />
         public override void Destroy()
         {
             ArticulatedHandPose.ResetGesturePoses();
@@ -100,11 +173,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void Enable()
         {
+            var profile = InputSimulationProfile;
+
+            if (indicators == null && profile.IndicatorsPrefab)
+            {
+                indicators = GameObject.Instantiate(profile.IndicatorsPrefab);
+            }
+
+            ResetMouseDelta();
         }
 
         /// <inheritdoc />
         public override void Disable()
         {
+            if (indicators)
+            {
+                GameObject.Destroy(indicators);
+            }
+
             DisableCameraControl();
             DisableHandSimulation();
         }
@@ -114,17 +200,45 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             var profile = InputSimulationProfile;
 
-            if (profile.IsCameraControlEnabled)
+            switch (HandSimulationMode)
+            {
+                case HandSimulationMode.Disabled:
+                    DisableHandSimulation();
+                    break;
+
+                case HandSimulationMode.Articulated:
+                case HandSimulationMode.Gestures:
+                    EnableHandSimulation();
+                    break;
+            }
+
+            // If an XRDevice is present, the user will not be able to control the camera
+            // as it is controlled by the device. We therefore disable camera controls in
+            // this case.
+            // This was causing issues while simulating in editor for VR, as the UpDown
+            // camera movement is mapped to controller AXIS_3, which happens to be the 
+            // select trigger for WMR controllers.
+            if (profile.IsCameraControlEnabled && !XRDevice.isPresent)
             {
                 EnableCameraControl();
-                if (CameraCache.Main)
-                {
-                    cameraControl.UpdateTransform(CameraCache.Main.transform);
-                }
             }
             else
             {
                 DisableCameraControl();
+            }
+
+            MouseDelta mouseDelta = UpdateMouseDelta();
+            if (UserInputEnabled)
+            {
+                if (handDataProvider != null)
+                {
+                    handDataProvider.UpdateHandData(HandDataLeft, HandDataRight, mouseDelta);
+                }
+
+                if (cameraControl != null && CameraCache.Main)
+                {
+                    cameraControl.UpdateTransform(CameraCache.Main.transform, mouseDelta);
+                }
             }
 
             if (profile.SimulateEyePosition)
@@ -135,23 +249,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // Update the simulated eye gaze with the current camera position and forward vector
                 InputSystem?.EyeGazeProvider?.UpdateEyeGaze(this, new Ray(CameraCache.Main.transform.position, CameraCache.Main.transform.forward), DateTime.UtcNow);
             }
-
-            switch (profile.HandSimulationMode)
-            {
-                case HandSimulationMode.Disabled:
-                    DisableHandSimulation();
-                    break;
-
-                case HandSimulationMode.Articulated:
-                case HandSimulationMode.Gestures:
-                    EnableHandSimulation();
-
-                    if (UserInputEnabled)
-                    {
-                        handDataProvider.UpdateHandData(HandDataLeft, HandDataRight);
-                    }
-                    break;
-            }
         }
 
         /// <inheritdoc />
@@ -161,21 +258,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // Apply hand data in LateUpdate to ensure external changes are applied.
             // HandDataLeft/Right can be modified after the services Update() call.
-            if (profile.HandSimulationMode != HandSimulationMode.Disabled)
+            if (HandSimulationMode == HandSimulationMode.Disabled)
+            {
+                RemoveAllHandDevices();
+            }
+            else
             {
                 DateTime currentTime = DateTime.UtcNow;
                 double msSinceLastHandUpdate = currentTime.Subtract(new DateTime(lastHandUpdateTimestamp)).TotalMilliseconds;
                 // TODO implement custom hand device update frequency here, use 1000/fps instead of 0
                 if (msSinceLastHandUpdate > 0)
                 {
-                    if (HandDataLeft.Timestamp > lastHandUpdateTimestamp)
-                    {
-                        UpdateHandInputSource(Handedness.Left, HandDataLeft);
-                    }
-                    if (HandDataRight.Timestamp > lastHandUpdateTimestamp)
-                    {
-                        UpdateHandInputSource(Handedness.Right, HandDataRight);
-                    }
+                    UpdateHandDevice(HandSimulationMode, Handedness.Left, HandDataLeft);
+                    UpdateHandDevice(HandSimulationMode, Handedness.Right, HandDataRight);
 
                     lastHandUpdateTimestamp = currentTime.Ticks;
                 }
@@ -243,124 +338,113 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        // Register input sources for hands based on changes of the data provider
-        private void UpdateHandInputSource(Handedness handedness, SimulatedHandData handData)
+        private Vector3 lastMousePosition;
+        private bool wasFocused;
+        private bool wasCursorLocked;
+
+        private void ResetMouseDelta()
+        {
+            lastMousePosition = UnityEngine.Input.mousePosition;
+        }
+
+        private MouseDelta UpdateMouseDelta()
         {
             var profile = InputSimulationProfile;
 
-            if (profile.HandSimulationMode == HandSimulationMode.Disabled)
+            bool isFocused = Application.isFocused;
+            bool gainedFocus = (!wasFocused && isFocused);
+            wasFocused = isFocused;
+
+            bool isCursorLocked = UnityEngine.Cursor.lockState != CursorLockMode.None;
+            bool cursorLockChanged = (wasCursorLocked != isCursorLocked);
+            wasCursorLocked = isCursorLocked;
+
+            // Reset in cases where mouse position is jumping
+            if (gainedFocus || cursorLockChanged)
             {
-                RemoveAllHandDevices();
+                ResetMouseDelta();
+                return new MouseDelta();
             }
             else
             {
-                if (handData != null && handData.IsTracked)
+                Vector3 screenDelta;
+                Vector3 worldDelta;
+                if (UnityEngine.Cursor.lockState == CursorLockMode.Locked)
                 {
-                    SimulatedHand controller = GetOrAddHandDevice(handedness, profile.HandSimulationMode);
-                    controller.UpdateState(handData);
+                    screenDelta.x = UnityEngine.Input.GetAxis(profile.MouseX);
+                    screenDelta.y = UnityEngine.Input.GetAxis(profile.MouseY);
+
+                    worldDelta.z = UnityEngine.Input.GetAxis(profile.MouseScroll);
                 }
                 else
                 {
-                    RemoveHandDevice(handedness);
+                    // Use frame-to-frame mouse delta in pixels to determine mouse rotation.
+                    // The traditional GetAxis("Mouse X") method doesn't work under Remote Desktop.
+                    screenDelta.x = (UnityEngine.Input.mousePosition.x - lastMousePosition.x);
+                    screenDelta.y = (UnityEngine.Input.mousePosition.y - lastMousePosition.y);
+
+                    worldDelta.z = UnityEngine.Input.mouseScrollDelta.y;
                 }
-            }
-        }
 
-        public SimulatedHand GetHandDevice(Handedness handedness)
-        {
-            if (trackedHands.TryGetValue(handedness, out SimulatedHand controller))
-            {
-                return controller;
-            }
-            return null;
-        }
+                // Interpret scroll values as world space delta
+                worldDelta.z *= profile.HandDepthMultiplier;
 
-        private SimulatedHand GetOrAddHandDevice(Handedness handedness, HandSimulationMode simulationMode)
-        {
-            var controller = GetHandDevice(handedness);
-            if (controller != null)
-            {
-                if (controller.SimulationMode == simulationMode)
+                // Convert world space scroll delta into screen space pixels
+                screenDelta.z = WorldToScreen(new Vector2(worldDelta.z, 0)).x;
+
+                // Convert screen space x/y delta into world space
+                Vector2 worldDelta2D = ScreenToWorld(new Vector2(screenDelta.x, screenDelta.y));
+                worldDelta.x = worldDelta2D.x;
+                worldDelta.y = worldDelta2D.y;
+
+                // Viewport delta x and y can be computed from screen x/y.
+                // Note that the conversion functions do not change Z, it is expected to always be in world space units.
+                Vector3 viewportDelta = CameraCache.Main.ScreenToViewportPoint(screenDelta);
+                // Compute viewport-scale z delta
+                viewportDelta.z = WorldToViewport(new Vector2(worldDelta.z, 0)).x;
+
+                lastMousePosition = UnityEngine.Input.mousePosition;
+
+                return new MouseDelta()
                 {
-                    return controller;
-                }
-                else
-                {
-                    // Remove and recreate hand device if simulation mode doesn't match
-                    RemoveHandDevice(handedness);
-                }
-            }
-
-            SupportedControllerType st = simulationMode == HandSimulationMode.Gestures ? SupportedControllerType.GGVHand : SupportedControllerType.ArticulatedHand;
-            IMixedRealityPointer[] pointers = RequestPointers(st, handedness);
-
-            var inputSource = InputSystem?.RequestNewGenericInputSource($"{handedness} Hand", pointers, InputSourceType.Hand);
-            switch (simulationMode)
-            {
-                case HandSimulationMode.Articulated:
-                    controller = new SimulatedArticulatedHand(TrackingState.Tracked, handedness, inputSource);
-                    break;
-                case HandSimulationMode.Gestures:
-                    controller = new SimulatedGestureHand(TrackingState.Tracked, handedness, inputSource);
-                    break;
-                default:
-                    controller = null;
-                    break;
-            }
-
-            System.Type controllerType = simulationMode == HandSimulationMode.Gestures ? typeof(SimulatedGestureHand) : typeof(SimulatedArticulatedHand);
-            if (controller == null)
-            {
-                Debug.LogError($"Failed to create {controllerType} controller");
-                return null;
-            }
-
-            if (!controller.SetupConfiguration(controllerType, InputSourceType.Hand))
-            {
-                // Controller failed to be setup correctly.
-                Debug.LogError($"Failed to Setup {controllerType} controller");
-                // Return null so we don't raise the source detected.
-                return null;
-            }
-
-            for (int i = 0; i < controller.InputSource?.Pointers?.Length; i++)
-            {
-                controller.InputSource.Pointers[i].Controller = controller;
-            }
-
-            InputSystem?.RaiseSourceDetected(controller.InputSource, controller);
-
-            trackedHands.Add(handedness, controller);
-            UpdateActiveControllers();
-
-            return controller;
-        }
-
-        private void RemoveHandDevice(Handedness handedness)
-        {
-            var controller = GetHandDevice(handedness);
-            if (controller != null)
-            {
-                InputSystem?.RaiseSourceLost(controller.InputSource, controller);
-
-                trackedHands.Remove(handedness);
-                UpdateActiveControllers();
+                    screenDelta = screenDelta,
+                    worldDelta = worldDelta,
+                    viewportDelta = viewportDelta,
+                };
             }
         }
 
-        private void RemoveAllHandDevices()
+        // Default world-space distance for converting screen/viewport scroll offsets into world space depth offset.
+        // The pixel-to-world-unit ratio changes with depth, so have to chose a fixed distance for conversion.
+        private const float mouseWorldDepth = 0.5f;
+        // Center of the viewport is at (0.5, 0.5)
+        private readonly Vector2 viewportCenter = new Vector2(0.5f, 0.5f);
+
+        private Vector2 ScreenToWorld(Vector2 screenDelta)
         {
-            foreach (var controller in trackedHands.Values)
-            {
-                InputSystem?.RaiseSourceLost(controller.InputSource, controller);
-            }
-            trackedHands.Clear();
-            UpdateActiveControllers();
+            Vector3 deltaViewport3D = new Vector3(
+                screenDelta.x / CameraCache.Main.pixelWidth + viewportCenter.x,
+                screenDelta.y / CameraCache.Main.pixelHeight + viewportCenter.y,
+                mouseWorldDepth);
+            Vector3 deltaWorld3D = CameraCache.Main.ViewportToWorldPoint(deltaViewport3D);
+            Vector3 deltaLocal3D = CameraCache.Main.transform.InverseTransformPoint(deltaWorld3D);
+            return new Vector2(deltaLocal3D.x, deltaLocal3D.y);
         }
 
-        private void UpdateActiveControllers()
+        private Vector2 WorldToScreen(Vector2 deltaWorld)
         {
-            activeControllers = trackedHands.Values.ToArray<IMixedRealityController>();
+            Vector3 deltaWorld3D = CameraCache.Main.transform.TransformPoint(new Vector3(deltaWorld.x, deltaWorld.y, mouseWorldDepth));
+            Vector3 deltaViewport3D = CameraCache.Main.WorldToViewportPoint(deltaWorld3D);
+            return new Vector2(
+                (deltaViewport3D.x - viewportCenter.x) * CameraCache.Main.pixelWidth,
+                (deltaViewport3D.y - viewportCenter.y) * CameraCache.Main.pixelHeight);
+        }
+
+        private Vector2 WorldToViewport(Vector2 deltaWorld)
+        {
+            Vector3 deltaWorld3D = CameraCache.Main.transform.TransformPoint(new Vector3(deltaWorld.x, deltaWorld.y, mouseWorldDepth));
+            Vector3 deltaViewport3D = CameraCache.Main.WorldToViewportPoint(deltaWorld3D);
+            return new Vector2(deltaViewport3D.x - viewportCenter.x, deltaViewport3D.y - viewportCenter.y);
         }
     }
 }

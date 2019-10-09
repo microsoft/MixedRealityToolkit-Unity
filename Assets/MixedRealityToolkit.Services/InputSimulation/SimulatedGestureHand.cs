@@ -11,12 +11,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         new[] { Handedness.Left, Handedness.Right })]
     public class SimulatedGestureHand : SimulatedHand
     {
+        /// <inheritdoc />
         public override HandSimulationMode SimulationMode => HandSimulationMode.Gestures;
 
         private bool initializedFromProfile = false;
         private MixedRealityInputAction holdAction = MixedRealityInputAction.None;
         private MixedRealityInputAction navigationAction = MixedRealityInputAction.None;
         private MixedRealityInputAction manipulationAction = MixedRealityInputAction.None;
+        private MixedRealityInputAction selectAction = MixedRealityInputAction.None;
         private bool useRailsNavigation = false;
         float holdStartDuration = 0.0f;
         float navigationStartThreshold = 0.0f;
@@ -38,10 +40,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="trackingState"></param>
-        /// <param name="controllerHandedness"></param>
-        /// <param name="inputSource"></param>
-        /// <param name="interactions"></param>
         public SimulatedGestureHand(
             TrackingState trackingState, 
             Handedness controllerHandedness, 
@@ -78,6 +76,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         case GestureInputType.Navigation:
                             navigationAction = gesture.Action;
                             break;
+                        case GestureInputType.Select:
+                            selectAction = gesture.Action;
+                            break;
                     }
                 }
 
@@ -107,11 +108,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             new MixedRealityInteractionMapping(1, "Grip Pose", AxisType.SixDof, DeviceInputType.SpatialGrip, MixedRealityInputAction.None),
         };
 
+        /// <inheritdoc />
         public override void SetupDefaultInteractions(Handedness controllerHandedness)
         {
             AssignControllerMappings(DefaultInteractions);
         }
 
+        /// <inheritdoc />
         protected override void UpdateInteractions(SimulatedHandData handData)
         {
             EnsureProfileSettings();
@@ -149,14 +152,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                                 SelectDownStartTime = Time.time;
                                 cumulativeDelta = Vector3.zero;
-
-                                TryStartManipulation();
                             }
                             else
                             {
                                 InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
 
                                 // Stop active gestures
+                                TryCompleteSelect();
                                 TryCompleteHold();
                                 TryCompleteManipulation();
                                 TryCompleteNavigation();
@@ -177,6 +179,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             {
                                 TryCancelHold();
                                 TryStartNavigation();
+                                TryStartManipulation();
                             }
                             else if (Time.time >= SelectDownStartTime + holdStartDuration)
                             {
@@ -257,6 +260,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 InputSystem?.RaiseGestureCanceled(this, manipulationAction);
                 manipulationInProgress = false;
+                return true;
+            }
+            return false;
+        }
+
+        private bool TryCompleteSelect()
+        {
+            if (!manipulationInProgress && !holdInProgress)
+            {
+                InputSystem?.RaiseGestureCompleted(this, selectAction);
                 return true;
             }
             return false;

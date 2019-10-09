@@ -68,13 +68,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static List<Type> GetFilteredTypes(SystemTypeAttribute filter)
         {
             var types = new List<Type>();
-            var assemblies = CompilationPipeline.GetAssemblies();
             var excludedTypes = ExcludedTypeCollectionGetter?.Invoke();
 
+            // We prefer using this over CompilationPipeline.GetAssemblies() because
+            // some types may come from plugins and other sources that have already
+            // been compiled.
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             foreach (var assembly in assemblies)
             {
-                Assembly compiledAssembly = Assembly.Load(assembly.name);
-                FilterTypes(compiledAssembly, filter, excludedTypes, types);
+                FilterTypes(assembly, filter, excludedTypes, types);
             }
 
             types.Sort((a, b) => string.Compare(a.FullName, b.FullName, StringComparison.Ordinal));
@@ -83,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private static void FilterTypes(Assembly assembly, SystemTypeAttribute filter, ICollection<Type> excludedTypes, List<Type> output)
         {
-            foreach (var type in assembly.GetTypes())
+            foreach (var type in assembly.GetLoadableTypes())
             {
                 bool isValid = type.IsValueType && !type.IsEnum || type.IsClass;
                 if (!type.IsVisible || !isValid)

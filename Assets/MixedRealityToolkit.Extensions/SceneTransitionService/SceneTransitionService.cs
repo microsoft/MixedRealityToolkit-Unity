@@ -393,14 +393,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         {
             if (progressIndicatorObject != null)
             {
-                if (Application.isPlaying)
-                {
-                    GameObject.Destroy(progressIndicatorObject);
-                }
-                else
-                {
-                    GameObject.DestroyImmediate(progressIndicatorObject);
-                }
+                GameObjectExtensions.DestroyGameObject(progressIndicatorObject);
             }
         }
 

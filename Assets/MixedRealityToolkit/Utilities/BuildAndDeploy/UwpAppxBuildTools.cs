@@ -26,8 +26,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// Build the UWP appx bundle for this project.  Requires that <see cref="UwpPlayerBuildTools.BuildPlayer(string,bool,CancellationToken)"/> has already be run or a user has
         /// previously built the Unity Player with the WSA Player as the Build Target.
         /// </summary>
-        /// <param name="buildInfo"></param>
-        /// <param name="cancellationToken"></param>
         /// <returns>True, if the appx build was successful.</returns>
         public static async Task<bool> BuildAppxAsync(UwpBuildInfo buildInfo, CancellationToken cancellationToken = default)
         {
@@ -101,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             // Now that NuGet packages have been restored, we can run the actual build process.
             exitCode = await Run(msBuildPath, 
-                $"\"{solutionProjectPath}\" /t:{(buildInfo.RebuildAppx ? "Rebuild" : "Build")} /p:Configuration={buildInfo.Configuration} /p:Platform={buildInfo.BuildPlatform} {GetMSBuildLoggingCommand(buildInfo.LogDirectory, "buildAppx.log")}",
+                $"\"{solutionProjectPath}\" {(buildInfo.Multicore ? "/m /nr:false" : "")} /t:{(buildInfo.RebuildAppx ? "Rebuild" : "Build")} /p:Configuration={buildInfo.Configuration} /p:Platform={buildInfo.BuildPlatform} {(string.IsNullOrEmpty(buildInfo.PlatformToolset) ? string.Empty : $"/p:PlatformToolset={buildInfo.PlatformToolset}")} {GetMSBuildLoggingCommand(buildInfo.LogDirectory, "buildAppx.log")}",
                 !Application.isBatchMode,
                 cancellationToken);
             AssetDatabase.SaveAssets();
@@ -233,14 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
 
             UpdateDependenciesElement(dependencies, rootNode.GetDefaultNamespace());
-
-            // The gaze input capability might already exist - this is okay, it will
-            // only add it if required and it's not already present.
-            var uwpBuildInfo = buildInfo as UwpBuildInfo;
-            if (uwpBuildInfo != null && uwpBuildInfo.GazeInputCapabilityEnabled)
-            {
-                AddGazeInputCapability(rootNode);
-            }
+            AddCapabilities(buildInfo, rootNode);
 
             // We use XName.Get instead of string -> XName implicit conversion because
             // when we pass in the string "Version", the program doesn't find the attribute.
@@ -291,6 +282,59 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             return manifests[0];
         }
 
+        /// <summary>
+        /// Updates 'Assembly-CSharp.csproj' file according to the values set in buildInfo.
+        /// </summary>
+        /// <param name="buildInfo">An IBuildInfo containing a valid OutputDirectory</param>
+        public static void UpdateAssemblyCSharpProject(IBuildInfo buildInfo)
+        {
+            string projectFilePath = GetAssemblyCSharpProjectFilePath(buildInfo);
+            if (projectFilePath == null)
+            {
+                throw new FileNotFoundException("Unable to find 'Assembly-CSharp.csproj' file.");
+            }
+
+            var rootElement = XElement.Load(projectFilePath);
+            var uwpBuildInfo = buildInfo as UwpBuildInfo;
+            Debug.Assert(uwpBuildInfo != null);
+
+            if (
+#if !UNITY_2019_1_OR_NEWER
+            EditorUserBuildSettings.wsaGenerateReferenceProjects &&
+#endif
+            uwpBuildInfo.AllowUnsafeCode)
+            {
+                AllowUnsafeCode(rootElement);
+            }
+
+            rootElement.Save(projectFilePath);
+        }
+
+        /// <summary>
+        /// Gets the 'Assembly-CSharp.csproj' files path in the project output directory.
+        /// </summary>
+        private static string GetAssemblyCSharpProjectFilePath(IBuildInfo buildInfo)
+        {
+            var fullPathOutputDirectory = Path.GetFullPath(buildInfo.OutputDirectory);
+            Debug.Log($"Searching for 'Assembly-CSharp.csproj' in {fullPathOutputDirectory}...");
+
+            // Find the manifest, assume the one we want is the first one
+            string[] manifests = Directory.GetFiles(fullPathOutputDirectory, "Assembly-CSharp.csproj", SearchOption.AllDirectories);
+
+            if (manifests.Length == 0)
+            {
+                Debug.LogError($"Unable to find 'Assembly-CSharp.csproj' file for build (in path - {fullPathOutputDirectory})");
+                return null;
+            }
+
+            if (manifests.Length > 1)
+            {
+                Debug.LogWarning("Found more than one 'Assembly-CSharp.csproj' in the target build folder!");
+            }
+
+            return manifests[0];
+        }
+
         private static void UpdateDependenciesElement(XElement dependencies, XNamespace defaultNamespace)
         {
             var values = (PlayerSettings.WSATargetFamily[])Enum.GetValues(typeof(PlayerSettings.WSATargetFamily));
@@ -311,7 +355,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             if (string.IsNullOrWhiteSpace(EditorUserBuildSettings.wsaMinUWPSDK))
             {
-                EditorUserBuildSettings.wsaMinUWPSDK = UwpBuildDeployPreferences.MIN_SDK_VERSION.ToString();
+                EditorUserBuildSettings.wsaMinUWPSDK = UwpBuildDeployPreferences.MIN_PLATFORM_VERSION.ToString();
             }
 
             string minVersion = EditorUserBuildSettings.wsaMinUWPSDK;
@@ -359,15 +403,43 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         }
 
         /// <summary>
-        /// Adds the 'Gaze Input' capability to the manifest.
+        /// Adds capabilities according to the values in the buildInfo to the manifest file.
         /// </summary>
-        /// <remarks>
-        /// This is a workaround for versions of Unity which don't have native support
-        /// for the 'Gaze Input' capability in its Player Settings preference location.
-        /// Note that this function is only public to poke a hole for testing - do not
-        /// take a dependency on this function.
-        /// </remarks>
-        public static void AddGazeInputCapability(XElement rootNode)
+        /// <param name="buildInfo">An IBuildInfo containing a valid OutputDirectory and all capabilities</param>
+        public static void AddCapabilities(IBuildInfo buildInfo, XElement rootElement = null)
+        {
+            var manifestFilePath = GetManifestFilePath(buildInfo);
+            if (manifestFilePath == null)
+            {
+                throw new FileNotFoundException("Unable to find manifest file");
+            }
+
+            rootElement = rootElement ?? XElement.Load(manifestFilePath);
+            var uwpBuildInfo = buildInfo as UwpBuildInfo;
+
+            Debug.Assert(uwpBuildInfo != null);
+            if (uwpBuildInfo.GazeInputCapabilityEnabled)
+            {
+                AddGazeInputCapability(rootElement);
+            }
+
+            if (uwpBuildInfo.ResearchModeCapabilityEnabled && EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens)
+            {
+                AddResearchModeCapability(rootElement);
+            }
+
+            rootElement.Save(manifestFilePath);
+        }
+
+        /// <summary>
+        /// Adds a capability to the given rootNode, which must be the read AppX manifest from
+        /// the build output.
+        /// </summary>
+        /// <param name="rootNode">An XElement containing the AppX manifest from 
+        /// the build output</param>
+        /// <param name="capability">The added capabilites tag as XName</param>
+        /// <param name="value">Value of the Name-XAttribute of the added capability</param>
+        public static void AddCapability(XElement rootNode, XName capability, string value)
         {
             // If the capabilities container tag is missing, make sure it gets added.
             var capabilitiesTag = rootNode.GetDefaultNamespace() + "Capabilities";
@@ -378,34 +450,93 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 rootNode.Add(capabilitiesNode);
             }
 
-            var gazeInputCapability = rootNode.GetDefaultNamespace() + "DeviceCapability";
-            XElement existingGazeInputCapability = capabilitiesNode.Elements(gazeInputCapability)
-                .FirstOrDefault(element => element.Attribute("Name")?.Value == "gazeInput");
+            XElement existingCapability = capabilitiesNode.Elements(capability)
+                .FirstOrDefault(element => element.Attribute("Name")?.Value == value);
 
-            // Only add the capability if isn't there already.
-            if (existingGazeInputCapability == null)
+            // Only add the capability if it isn't there already.
+            if (existingCapability == null)
             {
                 capabilitiesNode.Add(
-                    new XElement(gazeInputCapability, new XAttribute("Name", "gazeInput")));
+                    new XElement(capability, new XAttribute("Name", value)));
             }
         }
 
         /// <summary>
-        /// An overload of AddGazeInputCapability that will read the AppX manifest from
-        /// the build output and update the manifest file with the gazeInput capability.
+        /// Adds the 'Gaze Input' capability to the manifest.
         /// </summary>
-        /// <param name="buildInfo">An IBuildInfo containing a valid OutputDirectory</param>
-        public static void AddGazeInputCapability(IBuildInfo buildInfo)
+        /// <remarks>
+        /// This is a workaround for versions of Unity which don't have native support
+        /// for the 'Gaze Input' capability in its Player Settings preference location.
+        /// Note that this function is only public to poke a hole for testing - do not
+        /// take a dependency on this function.
+        /// </remarks>
+        public static void AddGazeInputCapability(XElement rootNode)
         {
-            string manifestFilePath = GetManifestFilePath(buildInfo);
-            if (manifestFilePath == null)
+            AddCapability(rootNode, rootNode.GetDefaultNamespace() + "DeviceCapability", "gazeInput");
+        }
+
+        /// <summary>
+        /// Adds the 'Research Mode' capability to the manifest.
+        /// </summary>
+        /// <remarks>
+        /// This is only for research projects and should not be used in production.
+        /// For further information take a look at https://docs.microsoft.com/en-us/windows/mixed-reality/research-mode.
+        /// Note that this function is only public to poke a hole for testing - do not
+        /// take a dependency on this function.
+        /// </remarks>
+        public static void AddResearchModeCapability(XElement rootNode)
+        {
+            // Add rescap Namespace to package tag
+            XNamespace rescapNs = "http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities";
+            var rescapAttribute = rootNode.Attribute(XNamespace.Xmlns + "rescap");
+            if (rescapAttribute == null)
             {
-                throw new FileNotFoundException("Unable to find manifest file");
+                rescapAttribute = new XAttribute(XNamespace.Xmlns + "rescap", rescapNs);
+                rootNode.Add(rescapAttribute);
             }
 
-            var rootElement = XElement.Load(manifestFilePath);
-            AddGazeInputCapability(rootElement);
-            rootElement.Save(manifestFilePath);
+            // Add rescap to IgnorableNamespaces
+            var ignNsAttribute = rootNode.Attribute("IgnorableNamespaces");
+            if (ignNsAttribute == null)
+            {
+                ignNsAttribute = new XAttribute("IgnorableNamespaces", "rescap");
+                rootNode.Add(ignNsAttribute);
+            }
+
+            if (!ignNsAttribute.Value.Contains("rescap"))
+            {
+                ignNsAttribute.Value += " rescap";
+            }
+
+            AddCapability(rootNode, rescapNs + "Capability", "perceptionSensorsExperimental");
+        }
+
+        /// <summary>
+        /// Enables unsafe code in the generated Assembly-CSharp project.
+        /// </summary>
+        /// <remarks>
+        /// This is not required by the research mode, but not using unsafe code with
+        /// direct memory access results in poor performance. So its kinda recommended
+        /// to use unsafe code.
+        /// For further information take a look at https://docs.microsoft.com/en-us/windows/mixed-reality/research-mode.
+        /// Note that this function is only public to poke a hole for testing - do not
+        /// take a dependency on this function.
+        /// </remarks>
+        public static void AllowUnsafeCode(XElement rootNode)
+        {
+            foreach (XElement propertyGroupNode in rootNode.Descendants(rootNode.GetDefaultNamespace() + "PropertyGroup"))
+            {
+                if (propertyGroupNode.Attribute("Condition") != null)
+                {
+                    var allowUnsafeBlocks = propertyGroupNode.Element(propertyGroupNode.GetDefaultNamespace() + "AllowUnsafeBlocks");
+                    if (allowUnsafeBlocks == null)
+                    {
+                        allowUnsafeBlocks = new XElement(propertyGroupNode.GetDefaultNamespace() + "AllowUnsafeBlocks");
+                        propertyGroupNode.Add(allowUnsafeBlocks);
+                    }
+                    allowUnsafeBlocks.Value = "true";
+                }
+            }
         }
 
         /// <summary>

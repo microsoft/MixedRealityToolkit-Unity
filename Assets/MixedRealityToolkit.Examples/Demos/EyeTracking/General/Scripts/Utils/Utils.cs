@@ -33,8 +33,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <summary>
         /// Returns the full name of a given GameObject in the scene graph.
         /// </summary>
-        /// <param name="go"></param>
-        /// <returns></returns>
         public static string GetFullName(GameObject go)
         {
             bool valid;
@@ -44,8 +42,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <summary>
         /// Returns the full name of a given GameObject in the scene graph.
         /// </summary>
-        /// <param name="go"></param>
-        /// <returns></returns>
         public static string GetFullName(GameObject go, out bool valid)
         {
             valid = false;
@@ -67,10 +63,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <summary>
         /// Normalize the given value based on the provided min and max values.
         /// </summary>
-        /// <param name="value"></param>
-        /// <param name="min"></param>
-        /// <param name="max"></param>
-        /// <returns></returns>
         public static float Normalize(float value, float min, float max)
         {
             if (value > max)
@@ -85,8 +77,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// Shuffles the entries in a given array and returns the shuffled array.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="array"></param>
-        /// <returns></returns>
         public static T[] RandomizeListOrder<T>(T[] array)
         {
             T[] arr = (T[])array.Clone();
@@ -106,7 +96,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// </summary>
         /// <param name="visAngleInDegrees">In degrees.</param>
         /// <param name="distInMeters">In meters.</param>
-        /// <returns></returns>
         public static Vector3 VisAngleInDegreesToMeters(Vector3 visAngleInDegrees, float distInMeters)
         {
             return new Vector3(
@@ -120,7 +109,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// </summary>
         /// <param name="visAngleInDegrees">In degrees.</param>
         /// <param name="distInMeters">In meters.</param>
-        /// <returns></returns>
         public static float VisAngleInDegreesToMeters(float visAngleInDegrees, float distInMeters)
         {
             return (2 * Mathf.Tan(Mathf.Deg2Rad * visAngleInDegrees / 2) * distInMeters);
@@ -130,7 +118,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// Loads a Unity scene with the given name.
         /// </summary>
         /// <param name="sceneToBeLoaded">Name of the scene to be loaded.</param>
-        /// <returns></returns>
         public static IEnumerator LoadNewScene(string sceneToBeLoaded)
         {
             return LoadNewScene(sceneToBeLoaded, 0.5f);
@@ -141,7 +128,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// </summary>
         /// <param name="sceneToBeLoaded">Name of the scene to be loaded.</param>
         /// <param name="delayInSeconds">Delay in seconds to wait before loading the new scene.</param>
-        /// <returns></returns>
         public static IEnumerator LoadNewScene(string sceneToBeLoaded, float delayInSeconds)
         {
             yield return new WaitForSeconds(delayInSeconds);
@@ -151,8 +137,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <summary>
         /// Change the color of game object "gobj".
         /// </summary>
-        /// <param name="gobj"></param>
-        /// <param name="newColor"></param>
         /// <param name="originalColor">Enter "null" in case you're passing the original object and want to save the original color.</param>
         public static void GameObject_ChangeColor(GameObject gobj, Color newColor, ref Color? originalColor, bool onlyApplyToRootObj)
         {
@@ -195,8 +179,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <summary>
         /// Change the transparency of game object "gobj" with a transparency value between 0 and 1;
         /// </summary>
-        /// <param name="gobj"></param>
-        /// <param name="newTransparency"></param>
         public static void GameObject_ChangeTransparency(GameObject gobj, float newTransparency)
         {
             float origTransp = 0; // just a dummy variable to reuse the following function
@@ -207,7 +189,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// Change the transparency of game object "gobj" with a transparency value between 0 and 255 with the option to 
         /// receive the original transparency value back.
         /// </summary>
-        /// <param name="gobj"></param>
         /// <param name="transparency">Expected values range from 0 (fully transparent) to 1 (fully opaque).</param>
         /// <param name="originalTransparency">Input "-1" if you don't know the original transparency yet.</param>
         public static void GameObject_ChangeTransparency(GameObject gobj, float transparency, ref float originalTransparency)

@@ -45,9 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// <summary>
         /// Do a build configured for UWP Applications to the specified path, returns the error from <see cref="BuildPlayer(UwpBuildInfo, CancellationToken)"/>
         /// </summary>
-        /// <param name="buildDirectory"></param>
         /// <param name="showDialog">Should the user be prompted to build the appx as well?</param>
-        /// <param name="cancellationToken"></param>
         /// <returns>True, if build was successful.</returns>
         public static async Task<bool> BuildPlayer(string buildDirectory, bool showDialog = true, CancellationToken cancellationToken = default)
         {
@@ -61,8 +59,17 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 OutputDirectory = buildDirectory,
                 Scenes = EditorBuildSettings.scenes.Where(scene => scene.enabled && !string.IsNullOrEmpty(scene.path)).Select(scene => scene.path),
                 BuildAppx = !showDialog,
-                BuildPlatform = EditorUserBuildSettings.wsaArchitecture,
                 GazeInputCapabilityEnabled = UwpBuildDeployPreferences.GazeInputCapabilityEnabled,
+
+                // Configure Appx build preferences for post build action
+                RebuildAppx = UwpBuildDeployPreferences.ForceRebuild,
+                Configuration = UwpBuildDeployPreferences.BuildConfig,
+                BuildPlatform = EditorUserBuildSettings.wsaArchitecture,
+                PlatformToolset = UwpBuildDeployPreferences.PlatformToolset,
+                AutoIncrement = BuildDeployPreferences.IncrementBuildVersion,
+                Multicore = UwpBuildDeployPreferences.MulticoreAppxBuildEnabled,
+                ResearchModeCapabilityEnabled = UwpBuildDeployPreferences.ResearchModeCapabilityEnabled,
+                AllowUnsafeCode = UwpBuildDeployPreferences.AllowUnsafeCode,
 
                 // Configure a post build action that will compile the generated solution
                 PostBuildAction = PostBuildAction
@@ -78,10 +85,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 {
                     var uwpBuildInfo = innerBuildInfo as UwpBuildInfo;
                     Debug.Assert(uwpBuildInfo != null);
-                    if (uwpBuildInfo.GazeInputCapabilityEnabled)
-                    {
-                        UwpAppxBuildTools.AddGazeInputCapability(uwpBuildInfo);
-                    }
+                    UwpAppxBuildTools.AddCapabilities(uwpBuildInfo);
+                    UwpAppxBuildTools.UpdateAssemblyCSharpProject(uwpBuildInfo);
 
                     if (showDialog &&
                         !EditorUtility.DisplayDialog(PlayerSettings.productName, "Build Complete", "OK", "Build AppX"))
@@ -100,8 +105,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// <summary>
         /// Build the Uwp Player.
         /// </summary>
-        /// <param name="buildInfo"></param>
-        /// <param name="cancellationToken"></param>
         public static async Task<bool> BuildPlayer(UwpBuildInfo buildInfo, CancellationToken cancellationToken = default)
         {
             #region Gather Build Data

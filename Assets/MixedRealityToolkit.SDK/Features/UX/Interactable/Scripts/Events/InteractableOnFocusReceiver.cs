@@ -11,24 +11,35 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     public class InteractableOnFocusReceiver : ReceiverBase
     {
+        /// <summary>
+        /// Creates receiver that raises focus enter and exit unity events
+        /// </summary>
+        public InteractableOnFocusReceiver() : this(new UnityEvent()) { }
+
+        /// <summary>
+        /// Creates receiver that raises focus enter and exit unity events
+        /// </summary>
+        public InteractableOnFocusReceiver(UnityEvent ev) : base(ev, "OnFocusOn") { }
+
+        /// <summary>
+        /// Raised when focus has left the object
+        /// </summary>
         [InspectorField(Type = InspectorField.FieldTypes.Event, Label = "On Focus Off", Tooltip = "Focus has left the object")]
         public UnityEvent OnFocusOff = new UnityEvent();
 
+        /// <summary>
+        /// Raised when focus has entered the object
+        /// </summary>
+        public UnityEvent OnFocusOn => uEvent;
+
         private bool hadFocus;
-        private State lastState;
 
-        public InteractableOnFocusReceiver(UnityEvent ev) : base(ev)
-        {
-            Name = "OnFocus";
-        }
-
+        /// <inheritdoc />
         public override void OnUpdate(InteractableStates state, Interactable source)
         {
-            bool changed = state.CurrentState() != lastState;
-
             bool hasFocus = state.GetState(InteractableStates.InteractableStateEnum.Focus).Value > 0;
 
-            if (hadFocus != hasFocus && changed)
+            if (hadFocus != hasFocus)
             {
                 if (hasFocus)
                 {
@@ -41,7 +52,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             hadFocus = hasFocus;
-            lastState = state.CurrentState();
         }
     }
 }

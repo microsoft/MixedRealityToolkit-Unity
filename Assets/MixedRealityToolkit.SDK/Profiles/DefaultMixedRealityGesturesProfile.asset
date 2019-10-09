@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DefaultMixedRealityGesturesProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 0
-  manipulationGestures: 12
+  manipulationGestures: 13
   navigationGestures: 112
   useRailsNavigation: 0
   railsNavigationGestures: 896
@@ -37,3 +37,9 @@ MonoBehaviour:
       id: 9
       description: Manipulate Action
       axisConstraint: 0
+  - description: Tap
+    gestureType: 4
+    action:
+      id: 1
+      description: Select
+      axisConstraint: 2

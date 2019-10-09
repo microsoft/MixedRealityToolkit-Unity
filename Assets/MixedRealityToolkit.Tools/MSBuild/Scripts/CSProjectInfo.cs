@@ -1,14 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using UnityEditor;
-using UnityEditor.Compilation;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.MSBuild
@@ -48,11 +46,6 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         private readonly List<CSProjectDependency<PluginAssemblyInfo>> pluginAssemblyDependencies = new List<CSProjectDependency<PluginAssemblyInfo>>();
 
         /// <summary>
-        /// The assembly that backs this object.
-        /// </summary>
-        public Assembly Assembly { get; }
-
-        /// <summary>
         /// The associated Assembly-Definition info if available.
         /// </summary>
         public AssemblyDefinitionInfo AssemblyDefinitionInfo { get; }
@@ -70,22 +63,17 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         /// <summary>
         /// Creates a new instance of the CSProject info.
         /// </summary>
-        /// <param name="availablePlatforms">A list of platforms available to MSBuild.</param>
+        /// <param name="unityProjectInfo">Instance of parsed unity project info.</param>
         /// <param name="guid">The unique Guid of this reference item.</param>
         /// <param name="assemblyDefinitionInfo">The associated Assembly-Definition info.</param>
         /// <param name="assembly">The Unity assembly object associated with this csproj.</param>
         /// <param name="baseOutputPath">The output path where everything will be outputted.</param>
-        internal CSProjectInfo(IEnumerable<CompilationPlatformInfo> availablePlatforms, Guid guid, AssemblyDefinitionInfo assemblyDefinitionInfo, Assembly assembly, string baseOutputPath)
-            : base(availablePlatforms, guid, new Uri(Path.Combine(baseOutputPath, $"{assembly.name}.csproj")), assembly.name)
+        internal CSProjectInfo(UnityProjectInfo unityProjectInfo, AssemblyDefinitionInfo assemblyDefinitionInfo, string baseOutputPath)
+            : base(unityProjectInfo, assemblyDefinitionInfo.Guid, new Uri(Path.Combine(baseOutputPath, $"{assemblyDefinitionInfo.Name}.csproj")), assemblyDefinitionInfo.Name)
         {
-            if (Name.Contains("Timeline"))
-            {
-                Debug.Log("Here");
-            }
             AssemblyDefinitionInfo = assemblyDefinitionInfo;
-            Assembly = assembly;
 
-            ProjectType = GetProjectType(assemblyDefinitionInfo, assembly);
+            ProjectType = GetProjectType(assemblyDefinitionInfo);
 
             InEditorPlatforms = GetCompilationPlatforms(true);
             PlayerPlatforms = GetCompilationPlatforms(false);
@@ -98,23 +86,23 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             ProjectDependencies = new ReadOnlyCollection<CSProjectDependency<CSProjectInfo>>(csProjectDependencies);
         }
 
-        private ProjectType GetProjectType(AssemblyDefinitionInfo assemblyDefinitionInfo, Assembly assembly)
+        private ProjectType GetProjectType(AssemblyDefinitionInfo assemblyDefinitionInfo)
         {
-            if (assemblyDefinitionInfo != null)
+            if (!assemblyDefinitionInfo.IsDefaultAssembly)
             {
                 return assemblyDefinitionInfo.EditorPlatformSupported && !assemblyDefinitionInfo.NonEditorPlatformSupported ? ProjectType.EditorAsmDef : ProjectType.AsmDef;
             }
 
-            switch (assembly.name)
+            switch (assemblyDefinitionInfo.Name)
             {
                 case "Assembly-CSharp":
                 case "Assembly-CSharp-firstpass":
                     return ProjectType.PredefinedAssembly;
-                case "Assembly-CSharp-editor":
-                case "Assembly-CSharp-firstpass-editor":
+                case "Assembly-CSharp-Editor":
+                case "Assembly-CSharp-Editor-firstpass":
                     return ProjectType.PredefinedEditorAssembly;
                 default:
-                    throw new InvalidOperationException($"Predefined assembly '{assembly.name}' was not recognized, this generally means it should be added to the switch statement in CSProjectInfo:GetProjectType. Treating is as a PredefinedAssembly instead of PredefinedEditorAssembly.");
+                    throw new InvalidOperationException($"Predefined assembly '{assemblyDefinitionInfo.Name}' was not recognized, this generally means it should be added to the switch statement in CSProjectInfo:GetProjectType. Treating is as a PredefinedAssembly instead of PredefinedEditorAssembly.");
             }
         }
 
@@ -129,7 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
             if (returnAllPlatforms)
             {
-                return new ReadOnlyDictionary<BuildTarget, CompilationPlatformInfo>(availablePlatforms.ToDictionary(t => t.BuildTarget, t => t));
+                return new ReadOnlyDictionary<BuildTarget, CompilationPlatformInfo>(UnityProjectInfo.AvailablePlatforms.ToDictionary(t => t.BuildTarget, t => t));
             }
 
             // - EditorAsmDef and PredefinedEditorAssembly for not inEditor
@@ -148,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 : predicate = (t) => !AssemblyDefinitionInfo.excludePlatforms.Contains(t.Name);
 
             return new ReadOnlyDictionary<BuildTarget, CompilationPlatformInfo>(
-                availablePlatforms.Where(predicate)
+                UnityProjectInfo.AvailablePlatforms.Where(predicate)
                     .ToDictionary(t => t.BuildTarget, t => t));
         }
 
@@ -194,13 +182,13 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 && Utilities.TryGetXMLTemplate(projectFileTemplateText, "SUPPORTED_PLATFORM_BUILD_CONDITION", out string suportedPlatformBuildConditionTemplate))
             {
                 List<string> sourceIncludes = new List<string>();
-                Dictionary<string, string> sourceGuidToClassName = new Dictionary<string, string>();
-                foreach (string source in Assembly.sourceFiles)
+                Dictionary<Guid, string> sourceGuidToClassName = new Dictionary<Guid, string>();
+                foreach (SourceFileInfo source in AssemblyDefinitionInfo.GetSources())
                 {
                     ProcessSourceFile(source, sourceIncludeTemplate, sourceIncludes, sourceGuidToClassName);
                 }
 
-                File.WriteAllLines(Path.Combine(projectFilesPath, $"{Guid.ToString()}.csmap"), sourceGuidToClassName.Select(t => $"{t.Key}:{t.Value}"));
+                File.WriteAllLines(Path.Combine(projectFilesPath, $"{Guid.ToString()}.csmap"), sourceGuidToClassName.Select(t => $"{t.Key.ToString("N")}:{t.Value}"));
 
                 List<string> supportedPlatformBuildConditions = new List<string>();
                 PopulateSupportedPlatformBuildConditions(supportedPlatformBuildConditions, suportedPlatformBuildConditionTemplate, "InEditor", InEditorPlatforms);
@@ -211,7 +199,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                 Dictionary<string, string> tokens = new Dictionary<string, string>()
                 {
                     { "<!--PROJECT_GUID_TOKEN-->", Guid.ToString() },
-                    { "<!--ALLOW_UNSAFE_TOKEN-->", Assembly.compilerOptions.AllowUnsafeCode.ToString() },
+                    { "<!--ALLOW_UNSAFE_TOKEN-->", AssemblyDefinitionInfo.allowUnsafeCode.ToString() },
                     { "<!--LANGUAGE_VERSION_TOKEN-->", MSBuildTools.CSharpVersion },
 
                     { "<!--DEVELOPMENT_BUILD_TOKEN-->", "false" }, // Default to false
@@ -219,9 +207,9 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     { "<!--IS_EDITOR_ONLY_TARGET_TOKEN-->", (ProjectType ==  ProjectType.EditorAsmDef || ProjectType == ProjectType.PredefinedEditorAssembly).ToString() },
                     { "<!--UNITY_EDITOR_INSTALL_FOLDER-->", Path.GetDirectoryName(EditorApplication.applicationPath) + "\\"},
 
-                    { "<!--DEFAULT_PLATFORM_TOKEN-->", availablePlatforms.First(t=>t.BuildTarget == BuildTarget.StandaloneWindows).Name },
+                    { "<!--DEFAULT_PLATFORM_TOKEN-->", UnityProjectInfo.AvailablePlatforms.First(t=>t.BuildTarget == BuildTarget.StandaloneWindows).Name },
 
-                    { "<!--SUPPORTED_PLATFORMS_TOKEN-->", string.Join(";", availablePlatforms.Select(t=>t.Name)) },
+                    { "<!--SUPPORTED_PLATFORMS_TOKEN-->", string.Join(";", UnityProjectInfo.AvailablePlatforms.Select(t=>t.Name)) },
 
                     { "<!--INEDITOR_ASSEMBLY_SEARCH_PATHS_TOKEN-->", string.Join(";", inEditorSearchPaths) },
                     { "<!--PLAYER_ASSEMBLY_SEARCH_PATHS_TOKEN-->", string.Join(";", playerSearchPaths) },
@@ -243,35 +231,33 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             File.WriteAllText(ReferencePath.AbsolutePath, projectFileTemplateText);
         }
 
-        private void ProcessSourceFile(string sourceFile, string sourceIncludeTemplate, List<string> sourceIncludes, Dictionary<string, string> sourceGuidToClassName)
+        private void ProcessSourceFile(SourceFileInfo sourceFile, string sourceIncludeTemplate, List<string> sourceIncludes, Dictionary<Guid, string> sourceGuidToClassName)
         {
             // Get the entry for the map
-            string guid = AssetDatabase.AssetPathToGUID(sourceFile);
-            MonoScript asset = AssetDatabase.LoadAssetAtPath<MonoScript>(sourceFile);
-            string classNameToAdd = null;
-            if (asset != null)
-            {
-                classNameToAdd = asset.GetClass()?.FullName;
-            }
+            sourceGuidToClassName.Add(sourceFile.Guid, sourceFile.ClassType?.FullName);
 
-            sourceGuidToClassName.Add(guid, classNameToAdd);
+            string linkPath = Utilities.GetRelativePath(AssemblyDefinitionInfo.Directory.FullName, sourceFile.File.FullName);
 
-            string normalized = Utilities.GetNormalizedPath(sourceFile);
-            if (normalized.StartsWith("Packages"))
-            {
-                normalized = "PackagesCopy" + normalized.Substring("Packages".Length);
-            }
+            string relativeSourcePath;
 
-            string sourcePath = normalized;
-            if (sourcePath.StartsWith("Assets"))
+            switch (sourceFile.AssetLocation)
             {
-                sourcePath = "..\\" + sourcePath;
+                case AssetLocation.BuiltInPackage:
+                    relativeSourcePath = sourceFile.File.FullName;
+                    return;
+                case AssetLocation.Project:
+                    relativeSourcePath = $"..\\..\\{Utilities.GetAssetsRelativePathFrom(sourceFile.File.FullName)}";
+                    break;
+                case AssetLocation.Package:
+                    relativeSourcePath = $"..\\{Utilities.GetPackagesRelativePathFrom(sourceFile.File.FullName)}";
+                    break;
+                default: throw new InvalidDataException("Unknown asset location.");
             }
 
             sourceIncludes.Add(Utilities.ReplaceTokens(sourceIncludeTemplate, new Dictionary<string, string>()
             {
-                {"##RELATIVE_SOURCE_PATH##", $"..\\{sourcePath}" },
-                {"##PROJECT_LINK_PATH##", normalized.Replace("Assets\\", string.Empty) }
+                {"##RELATIVE_SOURCE_PATH##", relativeSourcePath },
+                {"##PROJECT_LINK_PATH##", linkPath }
             }));
         }
 
@@ -355,4 +341,3 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         }
     }
 }
-#endif

@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using UnityEditor;
@@ -13,7 +12,10 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
     /// </summary>
     public class ReferenceItemInfo
     {
-        protected readonly IEnumerable<CompilationPlatformInfo> availablePlatforms;
+        /// <summary>
+        /// Gets the instance of the parsed project information.
+        /// </summary>
+        protected UnityProjectInfo UnityProjectInfo { get; }
 
         /// <summary>
         /// Gets the Guid associated with the reference.
@@ -50,17 +52,24 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         /// <summary>
         /// Creates a new instance.
         /// </summary>
-        /// <param name="availablePlatforms">A list of platforms available to MSBuild.</param>
+        /// <param name="unityProjectInfo">Instance of parsed unity project info.</param>
         /// <param name="guid">The unique Guid of this reference item.</param>
         /// <param name="referencePath">The output path to the reference item.</param>
         /// <param name="name">The name of the reference.</param>
-        public ReferenceItemInfo(IEnumerable<CompilationPlatformInfo> availablePlatforms, Guid guid, Uri referencePath, string name)
+        protected ReferenceItemInfo(UnityProjectInfo unityProjectInfo, Guid guid, Uri referencePath, string name)
         {
-            this.availablePlatforms = availablePlatforms;
+            UnityProjectInfo = unityProjectInfo;
             Guid = guid;
             ReferencePath = referencePath;
             Name = name;
         }
+
+        /// <summary>
+        /// A much more readable string representation of this reference item info.
+        /// </summary>
+        public override string ToString()
+        {
+            return $"{GetType().Name}: {Name}";
+        }
     }
 }
-#endif

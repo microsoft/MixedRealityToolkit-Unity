@@ -19,10 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="trackingState"></param>
-        /// <param name="sourceHandedness"></param>
-        /// <param name="inputSource"></param>
-        /// <param name="interactions"></param>
         public BaseWindowsMixedRealitySource(TrackingState trackingState, Handedness sourceHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, sourceHandedness, inputSource, interactions)
         {
@@ -190,7 +186,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// Update the spatial pointer input from the device.
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
-        /// <param name="interactionMapping"></param>
         private void UpdatePointerData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
             if (interactionSourceState.source.supportsPointing)
@@ -219,7 +214,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// Update the spatial grip input from the device.
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
-        /// <param name="interactionMapping"></param>
         private void UpdateGripData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
             switch (interactionMapping.AxisType)
@@ -249,7 +243,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// Update the trigger and grasped input from the device.
         /// </summary>
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
-        /// <param name="interactionMapping"></param>
         private void UpdateTriggerData(InteractionSourceState interactionSourceState, MixedRealityInteractionMapping interactionMapping)
         {
             switch (interactionMapping.InputType)
@@ -344,6 +337,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         private bool GetSelectPressedWorkaround(InteractionSourceState interactionSourceState)
         {
             bool selectPressed = interactionSourceState.selectPressed;
+            // Only do this workaround inside the Unity editor (in holographic remoting scenarios).
+            // When this is invoked on device, this will display an error attempting to load the
+            // remoting binaries.
+#if UNITY_EDITOR
             if (interactionSourceState.source.kind == InteractionSourceKind.Hand &&
                 UnityEngine.XR.WSA.HolographicRemoting.ConnectionState == UnityEngine.XR.WSA.HolographicStreamerConnectionState.Connected)
             {
@@ -357,6 +354,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
                 selectPressed = interactionSourceState.anyPressed;
             }
+#endif // UNITY_EDITOR
             return selectPressed;
         }
 

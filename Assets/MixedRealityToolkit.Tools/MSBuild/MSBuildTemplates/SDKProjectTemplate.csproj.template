@@ -1,4 +1,4 @@
-<Project>
+<Project ToolsVersion="15.0">
   <PropertyGroup>
     <!--anborod: This is a weird thing, it is a required property (even if commented)-->
     <!--<TargetFrameworks>netstandard2.0;uap10.0;net46</TargetFrameworks> -->
@@ -17,6 +17,8 @@
     <RelativeBuildFolder>..\Output\</RelativeBuildFolder>
     <BuildFolder>$(MSBuildThisFileDirectory)$(RelativeBuildFolder)</BuildFolder>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <!--NOTE: Currently one of the Unity packages has a * in AssemblyVersion identifier in the AssemblyInfo file, so have to do this.-->
+    <Deterministic>false</Deterministic>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(PublishOutputPath)'==''">
@@ -43,9 +45,20 @@
     <Configurations>InEditor;Player</Configurations>
     <Platforms><!--SUPPORTED_PLATFORMS_TOKEN--></Platforms>
   </PropertyGroup>
+  
+  <!--Set proper Config/Platform now. We don't really need to rely on these above, but for VS it's a useful drop down-->
+  <PropertyGroup>
+    <Configuration>Release</Configuration>
+    <Platform>AnyCPU</Platform>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='InEditor'">
+    <Configuration>Debug</Configuration>
+  </PropertyGroup>
 
   <PropertyGroup>
     <BaseIntermediateOutputPath>$(BuildFolder)obj\$(ProjectGuid)\</BaseIntermediateOutputPath>
+    <BaseOutputPath>$(BuildFolder)bin\</BaseOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)$(UnityConfiguration)\$(UnityPlatform)\</IntermediateOutputPath>
   </PropertyGroup>
   
@@ -61,6 +74,9 @@
 
   <!--IMPORT SDK.props manually to be able to set the BaseIntermediateOutputPath above path-->
   <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <PropertyGroup>
+      <AssemblySearchPaths>{CandidateAssemblyFiles};{HintPathFromItem};{RawFileName};</AssemblySearchPaths>
+  </PropertyGroup>
   
   <Import Project="##PLATFORM_PROPS_FOLDER_PATH_TOKEN##\$(UnityPlatform).$(UnityConfiguration).props"/>
 
@@ -78,6 +94,7 @@
   
   <PropertyGroup>
     <DefaultItemExcludes>$(DefaultItemExcludes)obj;bin;*.asmdef;*.asmdef.meta;*.csmap;</DefaultItemExcludes>
+    <AddAdditionalExplicitAssemblyReferences>false</AddAdditionalExplicitAssemblyReferences>
   </PropertyGroup>
 
 <!--PROJECT_REFERENCE_SET_TEMPLATE_START-->

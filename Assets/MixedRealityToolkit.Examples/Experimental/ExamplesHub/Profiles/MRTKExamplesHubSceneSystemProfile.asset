@@ -1,0 +1,173 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b81dae1d46879b444aa9847f7961649f, type: 3}
+  m_Name: MRTKExamplesHubSceneSystemProfile
+  m_EditorClassIdentifier: 
+  isCustomProfile: 1
+  useManagerScene: 0
+  managerScene:
+    Name: DefaultManagerScene
+    Path: Assets/MixedRealityToolkit.SDK/StandardAssets/Scenes/DefaultManagerScene.unity
+    Included: 1
+    BuildIndex: 0
+    Tag: Untagged
+    Asset: {fileID: 102900000, guid: ae7bb08d297fb69408695d8de0962524, type: 3}
+  useLightingScene: 0
+  defaultLightingSceneIndex: 0
+  lightingScenes:
+  - Name: DefaultLightingScene
+    Path: Assets/MixedRealityToolkit.SDK/StandardAssets/Scenes/DefaultLightingScene.unity
+    Included: 1
+    BuildIndex: 1
+    Tag: Untagged
+    Asset: {fileID: 102900000, guid: 7e54e36c44f826c438c95da79f8de638, type: 3}
+  contentScenes:
+  - Name: MRTKExamplesHubMainMenu
+    Path: Assets/MixedRealityToolkit.Examples/Demos/ExamplesHub/Scenes/MRTKExamplesHubMainMenu.unity
+    Included: 1
+    BuildIndex: 3
+    Tag: Untagged
+    Asset: {fileID: 102900000, guid: 63a00118e809c754f9c7911bb85d635f, type: 3}
+  - Name: HandInteractionExamples
+    Path: Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/HandInteractionExamples.unity
+    Included: 1
+    BuildIndex: 1
+    Tag: Untagged
+    Asset: {fileID: 102900000, guid: 3dd4a396b5225f8469b9a1eb608bfa57, type: 3}
+  - Name: ClippingExamples
+    Path: Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/ClippingExamples.unity
+    Included: 1
+    BuildIndex: 4
+    Tag: Untagged
+    Asset: {fileID: 102900000, guid: e532091edada3e04aa706112e8d5f310, type: 3}
+  - Name: TooltipExamples
+    Path: Assets/MixedRealityToolkit.Examples/Demos/UX/Tooltips/Scenes/TooltipExamples.unity
+    Included: 1
+    BuildIndex: 5
+    Tag: Untagged
+    Asset: {fileID: 102900000, guid: de90a43947eced441b4c426e11f35f28, type: 3}
+  - Name: MaterialGallery
+    Path: Assets/MixedRealityToolkit.Examples/Demos/StandardShader/Scenes/MaterialGallery.unity
+    Included: 1
+    BuildIndex: 6
+    Tag: Untagged
+    Asset: {fileID: 102900000, guid: c6b1477d31864dff836e9738518eae60, type: 3}
+  - Name: BoundingBoxExamples
+    Path: Assets/MixedRealityToolkit.Examples/Demos/UX/BoundingBox/Scenes/BoundingBoxExamples.unity
+    Included: 1
+    BuildIndex: 7
+    Tag: Untagged
+    Asset: {fileID: 102900000, guid: 9da574c0affd04d42a6b1e5db09e82b4, type: 3}
+  - Name: PressableButtonExample
+    Path: Assets/MixedRealityToolkit.Examples/Demos/UX/PressableButton/Scenes/PressableButtonExample.unity
+    Included: 1
+    BuildIndex: 8
+    Tag: Untagged
+    Asset: {fileID: 102900000, guid: b2d06bb8d7f107d4783a56c796c5c120, type: 3}
+  - Name: HandMenuExamples
+    Path: Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/HandMenuExamples.unity
+    Included: 1
+    BuildIndex: 2
+    Tag: Untagged
+    Asset: {fileID: 102900000, guid: 2792ec9767804e644906ab978f2eed23, type: 3}
+  - Name: SlateExample
+    Path: Assets/MixedRealityToolkit.Examples/Demos/UX/Slate/SlateExample.unity
+    Included: 1
+    BuildIndex: 9
+    Tag: Untagged
+    Asset: {fileID: 102900000, guid: 86e8b0c6246dbb74aa04ecd40a57d89c, type: 3}
+  - Name: SliderExample
+    Path: Assets/MixedRealityToolkit.Examples/Demos/UX/Slider/Scenes/SliderExample.unity
+    Included: 1
+    BuildIndex: 10
+    Tag: Untagged
+    Asset: {fileID: 102900000, guid: 086aad2912678d04e968264b2398004b, type: 3}
+  - Name: EyeTrackingDemo-02-TargetSelection
+    Path: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-02-TargetSelection.unity
+    Included: 1
+    BuildIndex: 11
+    Tag: Untagged
+    Asset: {fileID: 102900000, guid: 55643f7e4eceb734784192b162f565e0, type: 3}
+  - Name: EyeTrackingDemo-03-Navigation
+    Path: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-03-Navigation.unity
+    Included: 1
+    BuildIndex: 12
+    Tag: Untagged
+    Asset: {fileID: 102900000, guid: 5df475f0bf57b1f488d59e0e16040d9a, type: 3}
+  - Name: EyeTrackingDemo-04-TargetPositioning
+    Path: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-04-TargetPositioning.unity
+    Included: 1
+    BuildIndex: 13
+    Tag: Untagged
+    Asset: {fileID: 102900000, guid: 91ded1f5ef2ae854ba4ac94eca7a2494, type: 3}
+  - Name: EyeTrackingDemo-05-Visualizer
+    Path: Assets/MixedRealityToolkit.Examples/Demos/EyeTracking/Scenes/EyeTrackingDemo-05-Visualizer.unity
+    Included: 1
+    BuildIndex: 14
+    Tag: Untagged
+    Asset: {fileID: 102900000, guid: 2d6c43a82f3a88c4dbdc3b5e99a68d8a, type: 3}
+  - Name: NearMenuExamples
+    Path: Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/NearMenuExamples.unity
+    Included: 1
+    BuildIndex: 15
+    Tag: Untagged
+    Asset: {fileID: 102900000, guid: bf3eb3415bffceb41810526380c2c71c, type: 3}
+  permittedLightingSceneComponentTypes:
+  - reference: UnityEngine.Transform, UnityEngine.CoreModule
+  - reference: UnityEngine.GameObject, UnityEngine.CoreModule
+  - reference: UnityEngine.Light, UnityEngine.CoreModule
+  - reference: UnityEngine.ReflectionProbe, UnityEngine.CoreModule
+  - reference: UnityEngine.LightProbeGroup, UnityEngine.CoreModule
+  - reference: UnityEngine.LightProbeProxyVolume, UnityEngine.CoreModule
+  contentTags: []
+  cachedLightingSettings:
+  - SceneName: DefaultLightingScene
+    RenderSettings:
+      Fog: 0
+      FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+      FogMode: 2
+      FogDensity: 0.01
+      LinearFogStart: 0
+      LinearFogEnd: 300
+      AmbientSkyColor: {r: 0.08962262, g: 0.3930819, b: 1, a: 1}
+      AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
+      AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
+      AmbientLight: {r: 0, g: 0, b: 0, a: 0}
+      AmbientIntensity: 1
+      AmbientMode: 1
+      SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
+      SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+      DefaultReflectionMode: 0
+      DefaultReflectionResolution: 128
+      ReflectionBounces: 1
+      ReflectionIntensity: 1
+      CustomReflection: {fileID: 0}
+      UseRadianceAmbientProbe: 0
+    LightingSettings:
+      BounceScale: 1
+      IndirectOutputScale: 1
+      AlbedoBoost: 1
+      EnvironmentLightingMode: 0
+      EnableBakedLightmaps: 0
+      EnabledRealtimeLightmaps: 0
+    SunlightSettings:
+      UseSunlight: 1
+      Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+      Intensity: 1
+      XRotation: 50
+      YRotation: 330
+      ZRotation: 0
+  editorManageBuildSettings: 1
+  editorEnforceSceneOrder: 1
+  editorManageLoadedScenes: 1
+  editorEnforceLightingSceneTypes: 1
+  editorLightingCacheOutOfDate: 1

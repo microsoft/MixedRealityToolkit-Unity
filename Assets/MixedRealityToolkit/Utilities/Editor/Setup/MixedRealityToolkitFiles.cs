@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
@@ -16,6 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     /// </summary>
     public enum MixedRealityToolkitModuleType
     {
+        None = 0,
         Core,
         Generated,
         Providers,
@@ -34,6 +36,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     /// <summary>
     /// API for working with MixedRealityToolkit folders contained in the project.
     /// </summary>
+    /// <remarks>
+    /// This class works by looking for sentinel files (following the pattern MRTK.*.sentinel,
+    /// for example, MRTK.Core.sentinel) in order to identify where the MRTK is located
+    /// within the project.
+    ///
+    /// If the MRTK is being consumed as code that sits within the Assets folder, the "root"
+    /// MRTK folder must be at most three directories deep - this search code will only reason
+    /// over MRTK folders that sit in a depth range [0, 3].
+    /// </remarks>
     [InitializeOnLoad]
     public static class MixedRealityToolkitFiles
     {
@@ -50,6 +61,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         /// <summary>
+        /// The MRTK uses "sentinel" files (for example, MRTK.Core.sentinel) which are used to uniquely
+        /// identify the presence of certain MRTK folders and modules. This is the file pattern used
+        /// to search within folders for those sentinel files and make the file search a little more
+        /// efficient than a full file enumeration.
+        /// </summary>
+        private const string SentinelFilePattern = "MRTK.*.sentinel";
+
+        /// <summary>
         /// In order to subscribe for a <see cref="OnPostprocessAllAssets(string[], string[], string[], string[])"/> callback, 
         /// the class declaring the method must derive from AssetPostprocessor. So this class is nested privately as to prevent instantiation of it.
         /// </summary>
@@ -61,13 +80,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
                 foreach (string asset in importedAssets.Concat(movedAssets))
                 {
-                    string folder = ResolveFullAssetsPath(asset);
-                    TryRegisterModuleFolder(folder);
+                    string fullAssetPath = ResolveFullAssetsPath(asset);
+                    TryRegisterModuleFile(fullAssetPath);
                 }
 
                 foreach (string asset in deletedAssets.Concat(movedFromAssetPaths))
                 {
-                    string folder = ResolveFullAssetsPath(asset);
+                    string fullAssetPath = ResolveFullAssetsPath(asset);
+                    string folder = Path.GetDirectoryName(fullAssetPath);
                     TryUnregisterModuleFolder(folder);
                 }
             }
@@ -124,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// Directory levels to search for MRTK folders below the root directory.
         /// </summary>
         /// <remarks>
-        /// E.g. with level 3 and folders ROOT/A/B/C/D would seach A and B and C, but not D.
+        /// E.g. with level 3 and folders ROOT/A/B/C/D would search A and B and C, but not D.
         /// </remarks>
         public const int DirectorySearchDepth = 3;
 
@@ -159,26 +179,38 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
         }
 
-        private static bool TryRegisterModuleFolder(string folder)
-        {
-            return TryRegisterModuleFolder(folder, out MixedRealityToolkitModuleType module);
-        }
-
-        private static bool TryRegisterModuleFolder(string folder, out MixedRealityToolkitModuleType module)
+        private static void TryRegisterModuleFolder(string folder)
         {
             string normalizedFolder = NormalizeSeparators(folder);
-            if (FindMatchingModule(normalizedFolder, out module))
+            List<MixedRealityToolkitModuleType> modules;
+            if (FindMatchingModule(normalizedFolder, out modules))
             {
-                if (!mrtkFolders.TryGetValue(module, out HashSet<string> modFolders))
+                foreach (var module in modules)
+                {
+                    if (!mrtkFolders.TryGetValue(module, out HashSet<string> modFolders))
+                    {
+                        modFolders = new HashSet<string>();
+                        mrtkFolders.Add(module, modFolders);
+                    }
+                    modFolders.Add(normalizedFolder);
+                }
+            }
+        }
+
+        private static void TryRegisterModuleFile(string fullAssetPath)
+        {
+            MixedRealityToolkitModuleType moduleType = MatchModuleType(fullAssetPath);
+            if (moduleType != MixedRealityToolkitModuleType.None)
+            {
+                if (!mrtkFolders.TryGetValue(moduleType, out HashSet<string> modFolders))
                 {
                     modFolders = new HashSet<string>();
-                    mrtkFolders.Add(module, modFolders);
+                    mrtkFolders.Add(moduleType, modFolders);
                 }
-                modFolders.Add(normalizedFolder);
-                return true;
-            }
 
-            return false;
+                string folder = Path.GetDirectoryName(fullAssetPath);
+                modFolders.Add(NormalizeSeparators(folder));
+            }
         }
 
         private static bool TryUnregisterModuleFolder(string folder)
@@ -207,7 +239,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Maps an absolute path to be relative to the Project Root path (the Unity folder that contains Assets)
         /// </summary>
-        /// <param name="absolutePath">The absolute path to the project/</param>
+        /// <param name="absolutePath">The absolute path to the project.</param>
         /// <returns>The project relative path.</returns>
         /// <remarks>This doesn't produce paths that contain step out '..' relative paths.</remarks>
         public static string GetAssetDatabasePath(string absolutePath) => FormatSeparatorsForUnity(absolutePath).Replace(Application.dataPath, "Assets");
@@ -331,9 +363,32 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return null;
         }
 
+        /// <summary>
+        /// Finds the module type, if found, from the specified package folder name.
+        /// </summary>
+        /// <param name="packageFolder">The asset folder name (ex: MixedRealityToolkit.Providers)</param>
+        /// <returns>
+        /// <see cref="MixedRealityToolkitModuleType"/> associated with the package folder name. Returns
+        /// MixedRealityToolkitModuleType.None if an appropriate module type could not be found.
+        /// </returns>
+        public static MixedRealityToolkitModuleType GetModuleFromPackageFolder(string packageFolder)
+        {
+            if (!packageFolder.StartsWith("MixedRealityToolkit"))
+            {
+                // There are no mappings for folders that do not start with "MixedRealityToolkit"
+                return MixedRealityToolkitModuleType.None;
+            }
+
+            int separatorIndex = packageFolder.IndexOf('.');
+            packageFolder = (separatorIndex != -1) ? packageFolder.Substring(separatorIndex+1) : "Core";
+
+            MixedRealityToolkitModuleType moduleType;
+            return moduleNameMap.TryGetValue(packageFolder, out moduleType) ? moduleType: MixedRealityToolkitModuleType.None;
+        }
+
         private static readonly Dictionary<string, MixedRealityToolkitModuleType> moduleNameMap = new Dictionary<string, MixedRealityToolkitModuleType>()
         {
-            { "", MixedRealityToolkitModuleType.Core },
+            { "Core", MixedRealityToolkitModuleType.Core },
             { "Generated", MixedRealityToolkitModuleType.Generated },
             { "Providers", MixedRealityToolkitModuleType.Providers },
             { "Services", MixedRealityToolkitModuleType.Services },
@@ -349,61 +404,66 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { "AdhocTesting", MixedRealityToolkitModuleType.AdhocTesting },
         };
 
-        public static bool FindMatchingModule(string path, out MixedRealityToolkitModuleType result)
+        /// <summary>
+        /// Try to find the matching modules associated with path by looking for the presence of
+        /// MRTK sentinel files.
+        /// </summary>
+        /// <remarks>
+        /// In certain consumption situations, the content can be placed within the same folder,
+        /// meaning it's possible for multiple sentinel values to exist within the same folder.
+        /// </remarks>
+        public static bool FindMatchingModule(string path, out List<MixedRealityToolkitModuleType> result)
         {
-            // Matches an optional module suffix, e.g. ".Services"
-            const string modulePattern = @"(\.(?<module>[a-zA-Z]+))?";
-            // Matches a version string, e.g. "2.0.0-20190611.2"
-            const string versionPattern = @"(?<version>[.\-0-9]+)";
-            // Matches the naming pattern in the MRTK repository
-            // e.g. "MixedRealityToolkit.Services"
-            const string mrtkPattern = @"^MixedRealityToolkit" + modulePattern + @"$";
-            // Matches "Microsoft.MixedReality.Toolkit", followed by optional module name, followed by version number
-            // e.g.: "Microsoft.MixedReality.Toolkit.Services.2.0.0-20190611.2"
-            // This alternate path is used if above isn't found. This is to work around long paths issue with NuGetForUnity
-            // https://github.com/GlitchEnzo/NuGetForUnity/issues/246
-            const string nugetParentPattern = @"^Microsoft\.MixedReality\.Toolkit" + modulePattern + @"\." + versionPattern + @"$";
-
+            result = null;
+            
             if (path.Length > 0)
             {
-                var dirInfo = new DirectoryInfo(path);
-                if (TryMatchFolderPattern(dirInfo.Name, mrtkPattern, out result))
+                // Note that path can be a file or a directory
+                DirectoryInfo directoryInfo = new DirectoryInfo(path);
+                var sentinelFiles = Directory.EnumerateFiles(directoryInfo.FullName, SentinelFilePattern);
+                foreach (var sentinelFile in sentinelFiles)
                 {
-                    return true;
-                }
-                else if (dirInfo.Name == "MRTK"
-                    && dirInfo.Parent != null
-                    && TryMatchFolderPattern(dirInfo.Parent.Name, nugetParentPattern, out result))
-                {
-                    return true;
+                    if (result == null)
+                    {
+                        result = new List<MixedRealityToolkitModuleType>();
+                    }
+                    MixedRealityToolkitModuleType moduleType = MatchModuleType(sentinelFile);
+                    if (moduleType != MixedRealityToolkitModuleType.None)
+                    {
+                        result.Add(moduleType);
+                    }
                 }
             }
 
-            result = MixedRealityToolkitModuleType.Core;
-            return false;
+            return result != null;
         }
 
-        private static bool TryMatchFolderPattern(string name, string pattern, out MixedRealityToolkitModuleType result)
+        /// <summary>
+        /// Given the full file path, returns the module it's associated with (if it is an MRTK
+        /// sentinel file).
+        /// </summary>
+        private static MixedRealityToolkitModuleType MatchModuleType(string filePath)
         {
-            var folderMatches = System.Text.RegularExpressions.Regex.Matches(name, pattern);
-            if (folderMatches.Count == 1)
+            const string sentinelRegexPattern = @"^MRTK\.(?<module>[a-zA-Z]+)\.sentinel";
+            string fileName = Path.GetFileName(filePath);
+            var matches = Regex.Matches(fileName, sentinelRegexPattern);
+            if (matches.Count == 1)
             {
-                var moduleName = folderMatches[0].Groups["module"].Value;
-                if (moduleNameMap.TryGetValue(moduleName, out result))
+                var moduleName = matches[0].Groups["module"].Value;
+                MixedRealityToolkitModuleType moduleType;
+                if (moduleNameMap.TryGetValue(moduleName, out moduleType))
                 {
-                    return true;
+                    return moduleType;
                 }
             }
-
-            result = MixedRealityToolkitModuleType.Core;
-            return false;
+            return MixedRealityToolkitModuleType.None;
         }
 
         /// <summary>
         /// This function is only exposed for testing purposes, and can change/be removed at any time.
         /// </summary>
         /// <remarks>
-        /// Syncronously refreshes the MRTK folder database.
+        /// Synchronously refreshes the MRTK folder database.
         /// </remarks>
         public static void RefreshFolders()
         {

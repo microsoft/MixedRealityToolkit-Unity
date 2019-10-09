@@ -39,7 +39,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// Initialize all applicable settings on this pointer from <paramref name="testProxy"/> and then set this pointer active,
         /// so that it will update its <see cref="Toolkit.Input.IMixedRealityPointer.Result"/> in the next <see cref="Toolkit.Input.FocusProvider.Update"/>.
         /// </summary>
-        /// <param name="testProxy"></param>
         public void SetFromTestProxy(FocusRaycastTestProxy testProxy)
         {
             if (Rays == null || Rays.Length != testProxy.LineCastResolution)
@@ -59,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 
             PrioritizedLayerMasksOverride = testProxy.PrioritizedLayerMasks;
-            
+
             IsActive = true;
         }
     }

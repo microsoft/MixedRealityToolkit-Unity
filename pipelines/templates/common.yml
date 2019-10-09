@@ -5,6 +5,7 @@ parameters:
   buildUWPDotNet: true
   buildUWPX86: true
   runTests: true
+  validateCode: true
 
 steps:
 # Build Standalone x86.
@@ -21,6 +22,10 @@ steps:
 # notifications earlier in the CI process.
 - ${{ if eq(parameters.runTests, true) }}:
   - template: tests.yml
+
+# Validate that the code doesn't contain common issues
+- ${{ if eq(parameters.validateCode, true) }}:
+  - template: tasks/validatecode.yml
 
 # Build UWP x86
 - ${{ if eq(parameters.buildUWPX86, true) }}:

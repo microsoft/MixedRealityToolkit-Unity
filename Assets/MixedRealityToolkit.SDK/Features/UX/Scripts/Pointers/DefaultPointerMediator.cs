@@ -1,10 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    /// <summary>
+    /// The default implementation for pointer mediation in MRTK which is responsible for
+    /// determining which pointers are active based on the state of all pointers.
+    /// For example, one of the key things this class does is disable far pointers when a near pointer is close to an object.
+    /// </summary>
     public class DefaultPointerMediator : IMixedRealityPointerMediator
     {
         protected readonly HashSet<IMixedRealityPointer> allPointers = new HashSet<IMixedRealityPointer>();
@@ -13,6 +19,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected readonly HashSet<IMixedRealityTeleportPointer> teleportPointers = new HashSet<IMixedRealityTeleportPointer>();
         protected readonly HashSet<IMixedRealityPointer> unassignedPointers = new HashSet<IMixedRealityPointer>();
         protected readonly Dictionary<IMixedRealityInputSource, HashSet<IMixedRealityPointer>> pointerByInputSourceParent = new Dictionary<IMixedRealityInputSource, HashSet<IMixedRealityPointer>>();
+
+        private IPointerPreferences pointerPreferences;
+
+        public DefaultPointerMediator()
+            : this(null)
+        {
+        }
+
+        public DefaultPointerMediator(IPointerPreferences pointerPrefs)
+        {
+            pointerPreferences = pointerPrefs;
+        }
 
         public virtual void RegisterPointers(IMixedRealityPointer[] pointers)
         {
@@ -98,6 +116,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 unassignedPointers.Add(unassignedPointer);
             }
 
+            ApplyCustomPointerBehaviors();
+
             // If any pointers are locked, they have priority. 
             // Deactivate all other pointers that are on that input source
             foreach (IMixedRealityPointer pointer in allPointers)
@@ -166,6 +186,34 @@ namespace Microsoft.MixedReality.Toolkit.Input
             foreach (IMixedRealityPointer unassignedPointer in unassignedPointers)
             {
                 unassignedPointer.IsActive = true;
+            }
+        }
+
+        private void ApplyCustomPointerBehaviors()
+        {
+            if (pointerPreferences != null)
+            {
+                Action<IMixedRealityPointer, PointerBehavior> setPointerState =
+                    (ptr, behavior) =>
+                    {
+                        if (behavior == PointerBehavior.Default)
+                        {
+                            return;
+                        }
+
+                        bool isPointerOn = behavior == PointerBehavior.AlwaysOn;
+                        ptr.IsActive = isPointerOn;
+                        if (ptr is GenericPointer genericPtr)
+                        {
+                            genericPtr.IsInteractionEnabled = isPointerOn;
+                        }
+                        unassignedPointers.Remove(ptr);
+                    };
+
+                foreach (IMixedRealityPointer pointer in allPointers)
+                {
+                    setPointerState(pointer, pointerPreferences.GetPointerBehavior(pointer));
+                }
             }
         }
     }

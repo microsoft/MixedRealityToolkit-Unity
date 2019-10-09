@@ -98,6 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
+        /// <inheritdoc />
         protected override void UpdateLine()
         {
             if (stripMeshRenderer == null)

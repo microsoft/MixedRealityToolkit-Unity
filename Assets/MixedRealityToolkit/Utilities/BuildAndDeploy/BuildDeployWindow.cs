@@ -41,6 +41,13 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             ARM = 2,
         }
 
+        private enum PlatformToolset
+        {
+            Solution,
+            v141,
+            v142,
+        }
+
         #endregion Internal Types
 
         #region Constants and Readonly Values
@@ -96,6 +103,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private readonly GUIContent doAllLabel = new GUIContent(" Do actions on all devices", "Should the build options perform actions on all the connected devices?");
 
         private readonly GUIContent uninstallLabel = new GUIContent("Uninstall First", "Uninstall application before installing");
+
+        private readonly GUIContent researchModeCapabilityLabel = new GUIContent("Enable Research Mode", "Enables research mode of HoloLens. This allows access to raw sensor data.");
+
+        private readonly GUIContent allowUnsafeCode = new GUIContent("Allow Unsafe Code", "Modify 'Assembly-CSharp.csproj' to allow use of unsafe code. Be careful using this in production.");
 
         #endregion Labels
 
@@ -217,80 +228,81 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.WSAPlayer)
             {
-                EditorGUILayout.BeginVertical();
-                EditorGUILayout.Space();
-                EditorGUILayout.BeginHorizontal();
-
-                // Build directory (and save setting, if it's changed)
-                string curBuildDirectory = BuildDeployPreferences.BuildDirectory;
-                EditorGUILayout.LabelField(buildDirectoryLabel, GUILayout.Width(96));
-                string newBuildDirectory = EditorGUILayout.TextField(curBuildDirectory, GUILayout.Width(64), GUILayout.ExpandWidth(true));
-
-                if (newBuildDirectory != curBuildDirectory)
+                using (new EditorGUILayout.VerticalScope())
                 {
-                    BuildDeployPreferences.BuildDirectory = newBuildDirectory;
+                    EditorGUILayout.Space();
+                    using (new EditorGUILayout.HorizontalScope())
+                    {
+                        // Build directory (and save setting, if it's changed)
+                        string curBuildDirectory = BuildDeployPreferences.BuildDirectory;
+                        EditorGUILayout.LabelField(buildDirectoryLabel, GUILayout.Width(96));
+                        string newBuildDirectory = EditorGUILayout.TextField(curBuildDirectory, GUILayout.Width(64), GUILayout.ExpandWidth(true));
+
+                        if (newBuildDirectory != curBuildDirectory)
+                        {
+                            BuildDeployPreferences.BuildDirectory = newBuildDirectory;
+                        }
+
+                        GUI.enabled = Directory.Exists(BuildDeployPreferences.AbsoluteBuildDirectory);
+
+                        if (GUILayout.Button("Open Build Directory"))
+                        {
+                            EditorApplication.delayCall += () => Process.Start(BuildDeployPreferences.AbsoluteBuildDirectory);
+                        }
+
+                        GUI.enabled = true;
+
+                        OpenPlayerSettingsGUI();
+                    }
+
+                    EditorGUILayout.Space();
+
+                    using (new EditorGUILayout.HorizontalScope())
+                    {
+                        if (GUILayout.Button("Build Unity Project", GUILayout.Width(192), GUILayout.ExpandWidth(true)))
+                        {
+                            EditorApplication.delayCall += () => UnityPlayerBuildTools.BuildUnityPlayer(new BuildInfo());
+                        }
+
+                        if (GUILayout.Button("Open Unity Build Window", GUILayout.Width(192), GUILayout.ExpandWidth(true)))
+                        {
+                            GetWindow(Type.GetType("UnityEditor.BuildPlayerWindow,UnityEditor"));
+                        }
+                    }
                 }
-
-                GUI.enabled = Directory.Exists(BuildDeployPreferences.AbsoluteBuildDirectory);
-
-                if (GUILayout.Button("Open Build Directory"))
-                {
-                    EditorApplication.delayCall += () => Process.Start(BuildDeployPreferences.AbsoluteBuildDirectory);
-                }
-
-                GUI.enabled = true;
-
-                OpenPlayerSettingsGUI();
-
-                EditorGUILayout.EndHorizontal();
-
-                EditorGUILayout.Space();
-
-                EditorGUILayout.BeginHorizontal();
-
-                if (GUILayout.Button("Build Unity Project", GUILayout.Width(192), GUILayout.ExpandWidth(true)))
-                {
-                    EditorApplication.delayCall += () => UnityPlayerBuildTools.BuildUnityPlayer(new BuildInfo());
-                }
-
-                if (GUILayout.Button("Open Unity Build Window", GUILayout.Width(192), GUILayout.ExpandWidth(true)))
-                {
-                    GetWindow(Type.GetType("UnityEditor.BuildPlayerWindow,UnityEditor"));
-                }
-
-                EditorGUILayout.EndHorizontal();
-                EditorGUILayout.EndVertical();
                 return;
             }
 
-            EditorGUILayout.BeginVertical();
-            EditorGUILayout.Space();
-            GUILayout.Label("Quick Options");
-            EditorGUILayout.BeginHorizontal();
-
-            EditorUserBuildSettings.wsaSubtarget = (WSASubtarget)EditorGUILayout.Popup((int)EditorUserBuildSettings.wsaSubtarget, deviceNames);
-
-            bool canInstall = CanInstall;
-
-            if (EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens && !IsHoloLensConnectedUsb)
+            using (new EditorGUILayout.VerticalScope())
             {
-                canInstall = IsHoloLensConnectedUsb;
+                EditorGUILayout.Space();
+                GUILayout.Label("Quick Options");
+                using (new EditorGUILayout.HorizontalScope())
+                {
+
+                    EditorUserBuildSettings.wsaSubtarget = (WSASubtarget)EditorGUILayout.Popup((int)EditorUserBuildSettings.wsaSubtarget, deviceNames);
+
+                    bool canInstall = CanInstall;
+
+                    if (EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens && !IsHoloLensConnectedUsb)
+                    {
+                        canInstall = IsHoloLensConnectedUsb;
+                    }
+
+                    GUI.enabled = ShouldBuildSLNBeEnabled;
+
+                    // Build & Run button...
+                    if (GUILayout.Button(CanInstall ? buildAllThenInstallLabel : buildAllLabel, GUILayout.Width(HALF_WIDTH), GUILayout.ExpandWidth(true)))
+                    {
+                        EditorApplication.delayCall += () => BuildAll(canInstall);
+                    }
+
+                    GUI.enabled = true;
+
+                    OpenPlayerSettingsGUI();
+
+                }
             }
-
-            GUI.enabled = ShouldBuildSLNBeEnabled;
-
-            // Build & Run button...
-            if (GUILayout.Button(CanInstall ? buildAllThenInstallLabel : buildAllLabel, GUILayout.Width(HALF_WIDTH), GUILayout.ExpandWidth(true)))
-            {
-                EditorApplication.delayCall += () => BuildAll(canInstall);
-            }
-
-            GUI.enabled = true;
-
-            OpenPlayerSettingsGUI();
-
-            EditorGUILayout.EndHorizontal();
-            EditorGUILayout.EndVertical();
             GUILayout.Space(10);
 
             #endregion Quick Options
@@ -332,67 +344,87 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private void UnityBuildGUI()
         {
-            GUILayout.BeginVertical();
-            EditorGUILayout.BeginHorizontal();
-
-            // Build directory (and save setting, if it's changed)
-            string curBuildDirectory = BuildDeployPreferences.BuildDirectory;
-            EditorGUILayout.LabelField(buildDirectoryLabel, GUILayout.Width(96));
-            string newBuildDirectory = EditorGUILayout.TextField(curBuildDirectory, GUILayout.Width(64), GUILayout.ExpandWidth(true));
-
-            if (newBuildDirectory != curBuildDirectory)
+            using (new EditorGUILayout.VerticalScope())
             {
-                BuildDeployPreferences.BuildDirectory = newBuildDirectory;
-            }
-
-            GUI.enabled = Directory.Exists(BuildDeployPreferences.AbsoluteBuildDirectory);
-
-            if (GUILayout.Button("Open Build Directory", GUILayout.Width(HALF_WIDTH)))
-            {
-                EditorApplication.delayCall += () => Process.Start(BuildDeployPreferences.AbsoluteBuildDirectory);
-            }
-
-            GUI.enabled = true;
-
-            EditorGUILayout.EndHorizontal();
-            EditorGUILayout.BeginHorizontal();
-
-            GUILayout.FlexibleSpace();
-
-            GUI.enabled = ShouldOpenSLNBeEnabled;
-
-            if (GUILayout.Button("Open in Visual Studio", GUILayout.Width(HALF_WIDTH)))
-            {
-                // Open SLN
-                string slnFilename = Path.Combine(BuildDeployPreferences.BuildDirectory, $"{PlayerSettings.productName}.sln");
-
-                if (File.Exists(slnFilename))
+                using (new EditorGUILayout.HorizontalScope())
                 {
-                    EditorApplication.delayCall += () => Process.Start(new FileInfo(slnFilename).FullName);
+                    // Build directory (and save setting, if it's changed)
+                    string curBuildDirectory = BuildDeployPreferences.BuildDirectory;
+                    EditorGUILayout.LabelField(buildDirectoryLabel, GUILayout.Width(96));
+                    string newBuildDirectory = EditorGUILayout.TextField(curBuildDirectory, GUILayout.Width(64), GUILayout.ExpandWidth(true));
+
+                    if (newBuildDirectory != curBuildDirectory)
+                    {
+                        BuildDeployPreferences.BuildDirectory = newBuildDirectory;
+                    }
+
+                    GUI.enabled = Directory.Exists(BuildDeployPreferences.AbsoluteBuildDirectory);
+
+                    if (GUILayout.Button("Open Build Directory", GUILayout.Width(HALF_WIDTH)))
+                    {
+                        EditorApplication.delayCall += () => Process.Start(BuildDeployPreferences.AbsoluteBuildDirectory);
+                    }
+
+                    GUI.enabled = true;
                 }
-                else if (EditorUtility.DisplayDialog(
-                    "Solution Not Found",
-                    "We couldn't find the Project's Solution. Would you like to Build the project now?",
-                    "Yes, Build", "No"))
+
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    // If the WSA target device is HoloLens, show the checkboxes for research mode
+                    if (EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens)
+                    {
+                        // Enable Research Mode Capability
+                        bool curResearchModeCapabilityEnabled = UwpBuildDeployPreferences.ResearchModeCapabilityEnabled;
+                        bool newResearchModeCapabilityEnabled = EditorGUILayout.ToggleLeft(researchModeCapabilityLabel, curResearchModeCapabilityEnabled);
+
+                        if (newResearchModeCapabilityEnabled != curResearchModeCapabilityEnabled)
+                        {
+                            UwpBuildDeployPreferences.ResearchModeCapabilityEnabled = newResearchModeCapabilityEnabled;
+                        }
+
+                        // Allow unsafe code
+                        bool curAllowUnsafeCode = UwpBuildDeployPreferences.AllowUnsafeCode;
+                        bool newAllowUnsafeCode = EditorGUILayout.ToggleLeft(allowUnsafeCode, curAllowUnsafeCode);
+
+                        if (newAllowUnsafeCode != curAllowUnsafeCode)
+                        {
+                            UwpBuildDeployPreferences.AllowUnsafeCode = newAllowUnsafeCode;
+                        }
+                    }
+
+                    GUILayout.FlexibleSpace();
+                    GUI.enabled = ShouldOpenSLNBeEnabled;
+
+                    if (GUILayout.Button("Open in Visual Studio", GUILayout.Width(HALF_WIDTH)))
+                    {
+                        // Open SLN
+                        string slnFilename = Path.Combine(BuildDeployPreferences.BuildDirectory, $"{PlayerSettings.productName}.sln");
+
+                        if (File.Exists(slnFilename))
+                        {
+                            EditorApplication.delayCall += () => Process.Start(new FileInfo(slnFilename).FullName);
+                        }
+                        else if (EditorUtility.DisplayDialog(
+                            "Solution Not Found",
+                            "We couldn't find the Project's Solution. Would you like to Build the project now?",
+                            "Yes, Build", "No"))
+                        {
+                            EditorApplication.delayCall += BuildUnityProject;
+                        }
+                    }
+                }
+                EditorGUILayout.Space();
+
+                // Build Unity Player
+                GUI.enabled = ShouldBuildSLNBeEnabled;
+
+                if (GUILayout.Button("Build Unity Project"))
                 {
                     EditorApplication.delayCall += BuildUnityProject;
                 }
+
+                GUI.enabled = true;
             }
-
-            EditorGUILayout.EndHorizontal();
-            EditorGUILayout.Space();
-
-            // Build Unity Player
-            GUI.enabled = ShouldBuildSLNBeEnabled;
-
-            if (GUILayout.Button("Build Unity Project"))
-            {
-                EditorApplication.delayCall += BuildUnityProject;
-            }
-
-            GUI.enabled = true;
-
-            EditorGUILayout.EndVertical();
         }
 
         private void AppxBuildGUI()
@@ -400,8 +432,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             GUILayout.BeginVertical();
 
             // SDK and MS Build Version (and save setting, if it's changed)
-            string currentSDKVersion = EditorUserBuildSettings.wsaMinUWPSDK;
-
+            // Note that this is the 'Target SDK Version' which is required to physically build the
+            // code on a build machine, not the minimum platform version.
+            string currentSDKVersion = EditorUserBuildSettings.wsaUWPSDK;
+            
             Version chosenSDKVersion = null;
             for (var i = 0; i < windowsSdkVersions.Count; i++)
             {
@@ -434,7 +468,26 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             string newSDKVersion = chosenSDKVersion.ToString();
             if (!newSDKVersion.Equals(currentSDKVersion))
             {
-                EditorUserBuildSettings.wsaMinUWPSDK = newSDKVersion;
+                EditorUserBuildSettings.wsaUWPSDK = newSDKVersion;
+            }
+
+            string currentMinPlatformVersion = EditorUserBuildSettings.wsaMinUWPSDK;
+            if (string.IsNullOrWhiteSpace(currentMinPlatformVersion))
+            {
+                // If the min platform version hasn't been specified, set it to the recommended value.
+                EditorUserBuildSettings.wsaMinUWPSDK = UwpBuildDeployPreferences.MIN_PLATFORM_VERSION.ToString();
+            }
+            else if (UwpBuildDeployPreferences.MIN_PLATFORM_VERSION != new Version(currentMinPlatformVersion))
+            {
+                // If the user has manually changed the minimum platform version in the 'Build Settings' window
+                // provide a warning that the generated application may not be deployable to older generation
+                // devices. We generally recommend setting to the lowest value and letting the app model's
+                // capability and versioning checks kick in for applications at runtime.
+                EditorGUILayout.HelpBox(
+                    "Minimum platform version is set to a different value from the recommended value: " +
+                        $"{UwpBuildDeployPreferences.MIN_PLATFORM_VERSION}, the generated app may not be deployable to older generation devices. " +
+                        $"Consider updating the 'Minimum Platform Version' in the Build Settings window to match {UwpBuildDeployPreferences.MIN_PLATFORM_VERSION}" ,
+                    MessageType.Warning);
             }
 
             var curScriptingBackend = PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA);
@@ -515,6 +568,31 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             if (newBuildArchitectureString != currentArchitectureString)
             {
                 EditorUserBuildSettings.wsaArchitecture = newBuildArchitectureString;
+            }
+
+            // Platform Toolset (and save setting, if it's changed)
+            string currentPlatformToolsetString = UwpBuildDeployPreferences.PlatformToolset;
+
+            PlatformToolset platformToolset = PlatformToolset.Solution;
+            if (string.IsNullOrEmpty(currentPlatformToolsetString))
+            {
+                platformToolset = PlatformToolset.Solution;
+            }
+            else if(currentPlatformToolsetString.ToLower().Equals(PlatformToolset.v141.ToString().ToLower()))
+            {
+                platformToolset = PlatformToolset.v141;
+            }
+            else if (currentPlatformToolsetString.ToLower().Equals(PlatformToolset.v142.ToString().ToLower()))
+            {
+                platformToolset = PlatformToolset.v142;
+            }
+
+            platformToolset = (PlatformToolset)EditorGUILayout.EnumPopup("Platform Toolset", platformToolset, GUILayout.Width(HALF_WIDTH));
+
+            string platformToolsetString = platformToolset == PlatformToolset.Solution ? string.Empty : platformToolset.ToString();
+            if (platformToolsetString != currentPlatformToolsetString)
+            {
+                UwpBuildDeployPreferences.PlatformToolset = platformToolsetString;
             }
 
             // The 'Gaze Input' capability support was added for HL2 in the Windows SDK 18362, but 
@@ -600,6 +678,16 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             if (newForceRebuildAppx != curForceRebuildAppx)
             {
                 UwpBuildDeployPreferences.ForceRebuild = newForceRebuildAppx;
+            }
+
+            // Multicore Appx Build
+            EditorGUIUtility.labelWidth = 90;
+            bool curMulticoreAppxBuildEnabled = UwpBuildDeployPreferences.MulticoreAppxBuildEnabled;
+            bool newMulticoreAppxBuildEnabled = EditorGUILayout.Toggle("Multicore Build", curMulticoreAppxBuildEnabled);
+
+            if (newMulticoreAppxBuildEnabled != curMulticoreAppxBuildEnabled)
+            {
+                UwpBuildDeployPreferences.MulticoreAppxBuildEnabled = newMulticoreAppxBuildEnabled;
             }
 
             // Restore previous label width
@@ -813,111 +901,112 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     string packageName = fullBuildLocation.Substring(lastBackslashIndex + 1);
 
                     GUILayout.Space(2);
-                    EditorGUILayout.BeginHorizontal();
-
-                    GUI.enabled = CanInstall;
-                    if (GUILayout.Button("Install", GUILayout.Width(96)))
+                    using (new EditorGUILayout.HorizontalScope())
                     {
-                        EditorApplication.delayCall += () =>
+
+                        GUI.enabled = CanInstall;
+                        if (GUILayout.Button("Install", GUILayout.Width(96)))
                         {
-                            if (processAll)
-                            {
-                                InstallAppOnDevicesList(fullBuildLocation, portalConnections);
-                            }
-                            else
-                            {
-                                InstallOnTargetDevice(fullBuildLocation, currentConnection);
-                            }
-                        };
-                    }
-
-                    GUI.enabled = true;
-
-                    // Uninstall...
-                    GUI.enabled = CanInstall;
-
-                    if (GUILayout.Button("Uninstall", GUILayout.Width(96)))
-                    {
-                        EditorApplication.delayCall += () =>
-                        {
-                            if (processAll)
-                            {
-                                UninstallAppOnDevicesList(portalConnections);
-                            }
-                            else
-                            {
-                                UninstallAppOnTargetDevice(currentConnection);
-                            }
-                        };
-                    }
-
-                    GUI.enabled = true;
-
-                    bool canLaunchLocal = currentConnectionInfoIndex == 0 && IsHoloLensConnectedUsb;
-                    bool canLaunchRemote = DevicePortalConnectionEnabled && CanInstall && currentConnectionInfoIndex != 0;
-
-                    // Launch app...
-                    GUI.enabled = canLaunchLocal || canLaunchRemote;
-
-                    if (GUILayout.Button(new GUIContent(isAppRunning ? "Kill App" : "Launch App", "These are remote commands only"), GUILayout.Width(96)))
-                    {
-                        EditorApplication.delayCall += () =>
-                        {
-                            if (isAppRunning)
+                            EditorApplication.delayCall += () =>
                             {
                                 if (processAll)
                                 {
-                                    KillAppOnDeviceList(portalConnections);
-                                    isAppRunning = false;
+                                    InstallAppOnDevicesList(fullBuildLocation, portalConnections);
                                 }
                                 else
                                 {
-                                    KillAppOnTargetDevice(currentConnection);
+                                    InstallOnTargetDevice(fullBuildLocation, currentConnection);
                                 }
-                            }
-                            else
+                            };
+                        }
+
+                        GUI.enabled = true;
+
+                        // Uninstall...
+                        GUI.enabled = CanInstall;
+
+                        if (GUILayout.Button("Uninstall", GUILayout.Width(96)))
+                        {
+                            EditorApplication.delayCall += () =>
                             {
                                 if (processAll)
                                 {
-                                    LaunchAppOnDeviceList(portalConnections);
-                                    isAppRunning = true;
+                                    UninstallAppOnDevicesList(portalConnections);
                                 }
                                 else
                                 {
-                                    LaunchAppOnTargetDevice(currentConnection);
+                                    UninstallAppOnTargetDevice(currentConnection);
                                 }
-                            }
-                        };
-                    }
+                            };
+                        }
 
-                    GUI.enabled = true;
+                        GUI.enabled = true;
 
-                    // Log file
-                    string localLogPath = $"%USERPROFILE%\\AppData\\Local\\Packages\\{PlayerSettings.productName}\\TempState\\UnityPlayer.log";
-                    bool localLogExists = File.Exists(localLogPath);
+                        bool canLaunchLocal = currentConnectionInfoIndex == 0 && IsHoloLensConnectedUsb;
+                        bool canLaunchRemote = DevicePortalConnectionEnabled && CanInstall && currentConnectionInfoIndex != 0;
 
-                    GUI.enabled = localLogExists || canLaunchRemote || canLaunchLocal;
+                        // Launch app...
+                        GUI.enabled = canLaunchLocal || canLaunchRemote;
 
-                    if (GUILayout.Button("View Log", GUILayout.Width(96)))
-                    {
-                        EditorApplication.delayCall += () =>
+                        if (GUILayout.Button(new GUIContent(isAppRunning ? "Kill App" : "Launch App", "These are remote commands only"), GUILayout.Width(96)))
                         {
-                            if (processAll)
+                            EditorApplication.delayCall += () =>
                             {
-                                OpenLogFilesOnDeviceList(portalConnections, localLogPath);
-                            }
-                            else
+                                if (isAppRunning)
+                                {
+                                    if (processAll)
+                                    {
+                                        KillAppOnDeviceList(portalConnections);
+                                        isAppRunning = false;
+                                    }
+                                    else
+                                    {
+                                        KillAppOnTargetDevice(currentConnection);
+                                    }
+                                }
+                                else
+                                {
+                                    if (processAll)
+                                    {
+                                        LaunchAppOnDeviceList(portalConnections);
+                                        isAppRunning = true;
+                                    }
+                                    else
+                                    {
+                                        LaunchAppOnTargetDevice(currentConnection);
+                                    }
+                                }
+                            };
+                        }
+
+                        GUI.enabled = true;
+
+                        // Log file
+                        string localLogPath = $"%USERPROFILE%\\AppData\\Local\\Packages\\{PlayerSettings.productName}\\TempState\\UnityPlayer.log";
+                        bool localLogExists = File.Exists(localLogPath);
+
+                        GUI.enabled = localLogExists || canLaunchRemote || canLaunchLocal;
+
+                        if (GUILayout.Button("View Log", GUILayout.Width(96)))
+                        {
+                            EditorApplication.delayCall += () =>
                             {
-                                OpenLogFileForTargetDevice(currentConnection, localLogPath);
-                            }
-                        };
+                                if (processAll)
+                                {
+                                    OpenLogFilesOnDeviceList(portalConnections, localLogPath);
+                                }
+                                else
+                                {
+                                    OpenLogFileForTargetDevice(currentConnection, localLogPath);
+                                }
+                            };
+                        }
+
+                        GUI.enabled = true;
+
+                        GUILayout.Space(8);
+                        GUILayout.Label(new GUIContent($"{packageName} ({directoryDate})"));
                     }
-
-                    GUI.enabled = true;
-
-                    GUILayout.Space(8);
-                    GUILayout.Label(new GUIContent($"{packageName} ({directoryDate})"));
-                    EditorGUILayout.EndHorizontal();
                 }
 
                 GUILayout.EndScrollView();
@@ -1036,8 +1125,10 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 RebuildAppx = UwpBuildDeployPreferences.ForceRebuild,
                 Configuration = UwpBuildDeployPreferences.BuildConfig,
                 BuildPlatform = EditorUserBuildSettings.wsaArchitecture,
+                PlatformToolset = UwpBuildDeployPreferences.PlatformToolset,
                 OutputDirectory = BuildDeployPreferences.BuildDirectory,
                 AutoIncrement = BuildDeployPreferences.IncrementBuildVersion,
+                Multicore = UwpBuildDeployPreferences.MulticoreAppxBuildEnabled,
             };
 
             EditorAssemblyReloadManager.LockReloadAssemblies = true;

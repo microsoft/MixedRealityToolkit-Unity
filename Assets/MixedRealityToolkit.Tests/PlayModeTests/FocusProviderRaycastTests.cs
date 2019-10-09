@@ -30,7 +30,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// then wait for the <see cref="Toolkit.Input.FocusProvider.Update"/> and Assert that the <see cref="FocusRaycastTestProxy.ExpectedHitObject"/> matches
         /// the <see cref="TestPointer"/>'s <see cref="Toolkit.Input.IPointerResult.CurrentPointerTarget"/>.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestRaycastProxies()
         {

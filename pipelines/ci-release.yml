@@ -1,8 +1,11 @@
 # CI build for release packages.
 
+# Change the BuildNumber to be SemVer 1.0.0 compatible
+name: $(Date:yyyyMMdd)v$(Rev:r)
+
 variables:
   UnityVersion: Unity2018.3.7f1
-  MRTKVersion: 2.0.0  # Major.Minor.Patch
+  MRTKVersion: 2.1.0  # Major.Minor.Patch
   MRTKReleaseTag: ''  # final version component, e.g. 'RC2.1' or empty string
 
 jobs:
@@ -20,7 +23,6 @@ jobs:
     inputs:
       PathtoPublish: '$(Build.SourcesDirectory)\NuGet'
       ArtifactName: 'NuGet'
-  - template: templates/releasesigning.yml
   - template: templates/end.yml
 
 - job: ReleaseSigning
@@ -40,21 +42,32 @@ jobs:
       git clone -c http.extraheader="AUTHORIZATION: $Authorization" -b mrtk $(scriptsRepoURL) $(Build.ArtifactStagingDirectory)\scripts
     displayName: "Clone release scripts"
 
+  - powershell: |
+      $(Build.ArtifactStagingDirectory)/scripts/generateSignConfigs.ps1 -Directory $(Build.SourcesDirectory)/NuGet -OutputDirectory $(Build.ArtifactStagingDirectory)/configs
+    displayName: "Generate signing configs"
+
+  # required for code signing
+  - task: ComponentGovernanceComponentDetection@0
+    inputs:
+      scanType: 'Register'
+      verbosity: 'Verbose'
+      alertWarningLevel: 'High'
+
   # sign all DLLs
   - template: templates/tasks/signing.yml
     parameters:
-      ConfigName: "$(Build.ArtifactStagingDirectory)/scripts/signconfig/MRTKSignConfig.xml"
+      ConfigName: "$(Build.ArtifactStagingDirectory)/configs/MRTKSignConfig.xml"
 
   # Create pre-release packages
   - ${{ if eq(variables['MRTKReleaseTag'], '') }}:
     - template: templates/package.yml
       parameters:
-        version: '$(MRTKVersion)-$(Build.BuildNumber).prerelease'
+        version: '$(MRTKVersion)-$(Build.BuildNumber)'
         packDestination: '$(Build.SourcesDirectory)\artifacts\prerelease'
   - ${{ if ne(variables['MRTKReleaseTag'], '') }}:
     - template: templates/package.yml
       parameters:
-        version: '$(MRTKVersion)-$(Build.BuildNumber).prerelease.$(MRTKReleaseTag)'
+        version: '$(MRTKVersion)-$(Build.BuildNumber).$(MRTKReleaseTag)'
         packDestination: '$(Build.SourcesDirectory)\artifacts\prerelease'
 
   # Create release packages
@@ -71,7 +84,11 @@ jobs:
 
   - template: templates/tasks/signing.yml
     parameters:
-      ConfigName: "$(Build.ArtifactStagingDirectory)/scripts/signconfig/MRTKNuGetSignConfig.xml"
+      ConfigName: "$(Build.ArtifactStagingDirectory)/configs/MRTKNuGetSignConfig.xml"
+
+  - powershell: |
+      Remove-Item "$(Build.SourcesDirectory)/artifacts/release/Microsoft.MixedReality.Toolkit.Tests.*"
+    displayName: "Delete MixedReality.Toolkit.Tests package from the release artifacts"
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Packages'

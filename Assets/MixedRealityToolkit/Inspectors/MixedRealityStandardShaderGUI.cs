@@ -65,7 +65,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             public static GUIContent rimPower = new GUIContent("Power", "Rim Highlight Saturation");
             public static GUIContent vertexColors = new GUIContent("Vertex Colors", "Enable Vertex Color Tinting");
             public static GUIContent vertexExtrusion = new GUIContent("Vertex Extrusion", "Enable Vertex Extrusion Along the Vertex Normal");
-            public static GUIContent vertexExtrusionValue = new GUIContent("Vertex Extrusion Value", "How Far to Extrude the Vertex Along the Vertex Normal");
+            public static GUIContent vertexExtrusionValue = new GUIContent("Extrusion Value", "How Far to Extrude the Vertex Along the Vertex Normal");
+            public static GUIContent vertexExtrusionSmoothNormals = new GUIContent("Use Smooth Normals", "Should Vertex Extrusion use the Smooth Normals in UV3, or Default Normals");
             public static GUIContent blendedClippingWidth = new GUIContent("Blended Clipping Width", "The Width of the Clipping Primitive Clip Fade Region on Non-Cutout Materials");
             public static GUIContent clippingBorder = new GUIContent("Clipping Border", "Enable a Border Along the Clipping Primitive's Edge");
             public static GUIContent clippingBorderWidth = new GUIContent("Width", "Width of the Clipping Border");
@@ -148,6 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         protected MaterialProperty vertexColors;
         protected MaterialProperty vertexExtrusion;
         protected MaterialProperty vertexExtrusionValue;
+        protected MaterialProperty vertexExtrusionSmoothNormals;
         protected MaterialProperty blendedClippingWidth;
         protected MaterialProperty clippingBorder;
         protected MaterialProperty clippingBorderWidth;
@@ -233,6 +235,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             vertexColors = FindProperty("_VertexColors", props);
             vertexExtrusion = FindProperty("_VertexExtrusion", props);
             vertexExtrusionValue = FindProperty("_VertexExtrusionValue", props);
+            vertexExtrusionSmoothNormals = FindProperty("_VertexExtrusionSmoothNormals", props);
             blendedClippingWidth = FindProperty("_BlendedClippingWidth", props);
             clippingBorder = FindProperty("_ClippingBorder", props);
             clippingBorderWidth = FindProperty("_ClippingBorderWidth", props);
@@ -363,11 +366,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                 if (oldShader.name.Contains(TransparentCutoutShadersPath))
                 {
-                    mode = RenderingMode.TransparentCutout;
+                    mode = RenderingMode.Cutout;
                 }
                 else if (oldShader.name.Contains(TransparentShadersPath))
                 {
-                    mode = RenderingMode.Transparent;
+                    mode = RenderingMode.Fade;
                 }
 
                 material.SetFloat(BaseStyles.renderingModeName, (float)mode);
@@ -408,9 +411,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 EditorGUI.indentLevel += 2;
 
-                albedoAlphaMode.floatValue = EditorGUILayout.Popup(albedoAlphaMode.displayName, (int)albedoAlphaMode.floatValue, Styles.albedoAlphaModeNames);
+                materialEditor.ShaderProperty(albedoAlphaMode, albedoAlphaMode.displayName);
 
-                if ((RenderingMode)renderingMode.floatValue == RenderingMode.TransparentCutout || 
+                if ((RenderingMode)renderingMode.floatValue == RenderingMode.Cutout || 
                     (RenderingMode)renderingMode.floatValue == RenderingMode.Custom)
                 {
                     materialEditor.ShaderProperty(alphaCutoff, Styles.alphaCutoff.text);
@@ -506,10 +509,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (PropertyEnabled(vertexExtrusion))
             {
                 materialEditor.ShaderProperty(vertexExtrusionValue, Styles.vertexExtrusionValue, 2);
+                materialEditor.ShaderProperty(vertexExtrusionSmoothNormals, Styles.vertexExtrusionSmoothNormals, 2);
             }
 
             if ((RenderingMode)renderingMode.floatValue != RenderingMode.Opaque &&
-                (RenderingMode)renderingMode.floatValue != RenderingMode.TransparentCutout)
+                (RenderingMode)renderingMode.floatValue != RenderingMode.Cutout)
             {
                 materialEditor.ShaderProperty(blendedClippingWidth, Styles.blendedClippingWidth);
                 GUILayout.Box(string.Format(Styles.propertiesComponentHelp, nameof(ClippingPrimitive), "other clipping"), EditorStyles.helpBox, new GUILayoutOption[0]);
@@ -589,9 +593,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     materialEditor.ShaderProperty(borderLightUsesHoverColor, Styles.borderLightUsesHoverColor, 2);
                 }
 
-                if (mode == RenderingMode.TransparentCutout || mode == RenderingMode.Transparent ||
-                    (mode == RenderingMode.Custom && customMode == CustomRenderingMode.TransparentCutout) ||
-                    (mode == RenderingMode.Custom && customMode == CustomRenderingMode.Transparent))
+                if (mode == RenderingMode.Cutout || mode == RenderingMode.Fade || mode == RenderingMode.Transparent ||
+                    (mode == RenderingMode.Custom && customMode == CustomRenderingMode.Cutout) ||
+                    (mode == RenderingMode.Custom && customMode == CustomRenderingMode.Fade))
                 {
                     materialEditor.ShaderProperty(borderLightOpaque, Styles.borderLightOpaque, 2);
 
@@ -716,7 +720,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         protected bool ScaleRequired()
         {
-            return PropertyEnabled(roundCorners) || 
+            return PropertyEnabled(vertexExtrusion) || 
+                   PropertyEnabled(roundCorners) || 
                    PropertyEnabled(borderLight) ||
                    (PropertyEnabled(enableTriplanarMapping) && PropertyEnabled(enableLocalSpaceTriplanarMapping));
         }
@@ -765,8 +770,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                             "Ok", 
                                             "Cancel"))
             {
-                string shaderName = "Mixed Reality Toolkit/Standard";
-                string path = AssetDatabase.GetAssetPath(Shader.Find(shaderName));
+                string path = AssetDatabase.GetAssetPath(StandardShaderUtility.MrtkStandardShader);
 
                 if (!string.IsNullOrEmpty(path))
                 {
@@ -789,7 +793,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
                 else
                 {
-                    Debug.LogErrorFormat("Failed to get asset path to: {0}", shaderName);
+                    Debug.LogErrorFormat("Failed to get asset path to: {0}", StandardShaderUtility.MrtkStandardShaderName);
                 }
             }
         }

@@ -16,9 +16,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         [Tooltip("Display the game object along the eye gaze ray at a default distance (in meters).")]
         [SerializeField]
         private float defaultDistanceInMeters = 2f;
-        
+
         private IMixedRealityInputSystem inputSystem = null;
-  
+
         /// <summary>
         /// The active instance of the input system.
         /// </summary>
@@ -26,42 +26,42 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         {
             get
             {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
+                MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
                 return inputSystem;
             }
         }
 
         private void Update()
         {
-            gameObject.transform.position = InputSystem.EyeGazeProvider.GazeOrigin + InputSystem.EyeGazeProvider.GazeDirection.normalized * defaultDistanceInMeters;
-
-            EyeTrackingTarget lookedAtEyeTarget = EyeTrackingTarget.LookedAtEyeTarget;
-
-            // Update GameObject to the current eye gaze position at a given distance
-            if (lookedAtEyeTarget != null)
+            if (InputSystem?.EyeGazeProvider != null)
             {
-                // Show the object at the center of the currently looked at target.
-                if (lookedAtEyeTarget.EyeCursorSnapToTargetCenter)
+                gameObject.transform.position = InputSystem.EyeGazeProvider.GazeOrigin + InputSystem.EyeGazeProvider.GazeDirection.normalized * defaultDistanceInMeters;
+
+                EyeTrackingTarget lookedAtEyeTarget = EyeTrackingTarget.LookedAtEyeTarget;
+
+                // Update GameObject to the current eye gaze position at a given distance
+                if (lookedAtEyeTarget != null)
                 {
-                    Ray rayToCenter = new Ray(CameraCache.Main.transform.position, lookedAtEyeTarget.transform.position - CameraCache.Main.transform.position);
-                    RaycastHit hitInfo;
-                    UnityEngine.Physics.Raycast(rayToCenter, out hitInfo);
-                    gameObject.transform.position = hitInfo.point;
+                    // Show the object at the center of the currently looked at target.
+                    if (lookedAtEyeTarget.EyeCursorSnapToTargetCenter)
+                    {
+                        Ray rayToCenter = new Ray(CameraCache.Main.transform.position, lookedAtEyeTarget.transform.position - CameraCache.Main.transform.position);
+                        RaycastHit hitInfo;
+                        UnityEngine.Physics.Raycast(rayToCenter, out hitInfo);
+                        gameObject.transform.position = hitInfo.point;
+                    }
+                    else
+                    {
+                        // Show the object at the hit position of the user's eye gaze ray with the target.
+                        //gameObject.transform.position = EyeTrackingTarget.LookedAtPoint;
+                        gameObject.transform.position = InputSystem.EyeGazeProvider.GazeOrigin + InputSystem.EyeGazeProvider.GazeDirection.normalized * defaultDistanceInMeters;
+                    }
                 }
                 else
                 {
-                    // Show the object at the hit position of the user's eye gaze ray with the target.
-                    //gameObject.transform.position = EyeTrackingTarget.LookedAtPoint;
+                    // If no target is hit, show the object at a default distance along the gaze ray.
                     gameObject.transform.position = InputSystem.EyeGazeProvider.GazeOrigin + InputSystem.EyeGazeProvider.GazeDirection.normalized * defaultDistanceInMeters;
                 }
-            }
-            else
-            {
-                // If no target is hit, show the object at a default distance along the gaze ray.
-                gameObject.transform.position = InputSystem.EyeGazeProvider.GazeOrigin + InputSystem.EyeGazeProvider.GazeDirection.normalized * defaultDistanceInMeters;
             }
         }
     }
