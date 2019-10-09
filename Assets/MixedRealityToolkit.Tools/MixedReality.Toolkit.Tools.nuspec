@@ -26,6 +26,7 @@
     <file src="..\MixedRealityToolkit\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Tools.targets" />
 
     <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Tools.*" target="Plugins\" />
-    <file src="..\..\..\Assets\MixedRealityToolkit.Tools\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Tools" />
+    <!--Source commented as part of 2.1 release due to lack of support for long paths in N4U, and there is support for using source publicly yet.-->
+    <!--<file src="..\..\..\Assets\MixedRealityToolkit.Tools\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Tools" />-->
   </files>
 </package>
