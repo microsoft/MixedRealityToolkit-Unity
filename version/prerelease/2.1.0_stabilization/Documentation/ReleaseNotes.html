@@ -106,7 +106,13 @@
 <li>Windows 10 SDK 18362 or later (installed by the Visual Studio Installer)</li>
 <li>Unity 2018.4, 2019.1 or 2019.2</li>
 </ul>
+<p>NuGet requirements</p>
+<p>If importing the Mixed Reality Toolkit's NuGet packages, the following software is recommended.</p>
+<ul>
+<li><a href="https://github.com/GlitchEnzo/NuGetForUnity">NuGet for Unity</a></li>
+</ul>
 <h3 id="upgrading-projects-to-210">Upgrading projects to 2.1.0</h3>
+<p><strong>Updating using .unitypackage files</strong></p>
 <p>The 2.1.0 release has some changes that may impact application projects, including some files moving to new folder locations.
 Breaking change details, including mitigation guidance, can be found in the <a href="Updating.html#updating-200-to-210"><strong>Updating 2.0.0 to 2.1.0</strong></a> article.</p>
 <p>For the smoothest upgrade path, please use the following steps.</p>
@@ -161,7 +167,43 @@ asset database and reconcile existing custom profiles.</li>
 </li>
 </ol>
 <p>Related to <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6144">issue #6144</a>: after upgrading, if you have a custom input simulation profile, the input playback service data provider may have a missing class. Click the &quot;Try Repair&quot; button in the profile window to fix the missing reference.</p>
+<p><strong>Updating from NuGet</strong></p>
+<p>If your project was created using the Mixed Reality Toolkit NuGet packages, please use the following steps.</p>
+<ol>
+<li>Select <strong>NuGet &gt; Manage NuGet Packages</strong></li>
+<li>Select the <strong>Online</strong> tab and click <strong>Refresh</strong></li>
+<li>Select the <strong>Installed</strong> tab</li>
+<li>Click the <strong>Update</strong> button for each installed package
+<ul>
+<li>Microsoft.MixedReality.Toolkit.Foundation</li>
+<li>Microsoft.MixedReality.Toolkit.Tools</li>
+<li>Microsoft.MixedReality.Toolkit.Extensions</li>
+<li>Microsoft.MixedReality.Toolkit.Examples</li>
+</ul>
+</li>
+<li>Re-open the project in Unity</li>
+</ol>
+<p>After updating the packages, you may see messages similar to the following:</p>
+<pre><code>Failed to unload 'Assets/Packages/Microsoft.MixedReality.Toolkit.Examples.2.1.0/MRTK/StandardAssets/Models/Materials/Material_56.mat' 
+</code></pre>
+<p>The step to re-open the project in Unity resolves the issue.</p>
 <h3 id="whats-new-in-210">What's new in 2.1.0</h3>
+<p><strong>NuGet package distribution</strong></p>
+<p>MRTK 2.1.0 now ships packages on nuget.org. The following steps can be used to import the desired packages.</p>
+<ol>
+<li>Install <a href="https://github.com/GlitchEnzo/NuGetForUnity/releases">NuGet for Unity</a></li>
+<li>Select <strong>NuGet &gt; Manage NuGet Packages</strong></li>
+<li>In the search field, enter &quot;MixedReality.Toolkit&quot;</li>
+<li>Click <strong>Search</strong></li>
+<li>Click <strong>Install</strong> for each desired package
+<ul>
+<li>Microsoft.MixedReality.Toolkit.Foundation</li>
+<li>(Optional) Microsoft.MixedReality.Toolkit.Tools</li>
+<li>(Optional) Microsoft.MixedReality.Toolkit.Extensions</li>
+<li>(Optional) Microsoft.MixedReality.Toolkit.Examples</li>
+</ul>
+</li>
+</ol>
 <p><strong>Dwell interaction (Experimental)</strong></p>
 <p>MRTK has added experimental support for dwell interactions. Dwell interactions enable applications to respond to a user focusing their gaze or motion controller on an interactable object for a predefined period of time.</p>
 <p>Please refer to <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/5594">change 5594</a> for details.</p>
