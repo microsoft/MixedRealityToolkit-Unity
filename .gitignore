@@ -75,7 +75,7 @@ Assets/StreamingAssets.meta
 # =============== #
 doc/
 
-# This is only needed because docfx chooses the first alphebetically occuring
+# This is only needed because docfx chooses the first alphabetically occurring
 # .cs file's folder to create an obj/xdoc cache folder inside.
 # When https://github.com/dotnet/docfx/issues/1156 is addressed, it should be
 # possible to remove the rule on the following line and update our docfx
