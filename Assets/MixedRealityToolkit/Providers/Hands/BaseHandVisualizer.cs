@@ -182,13 +182,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 Mesh mesh = handMeshFilter.mesh;
 
+                bool meshChanged = false;
                 // On some platforms, mesh length counts may change as the hand mesh is updated.
                 // In order to update the vertices when the array sizes change, the mesh
                 // must be cleared per instructions here:
                 // https://docs.unity3d.com/ScriptReference/Mesh.html
-                if (lastHandMeshVertices.Length != 0 &&
+                if (lastHandMeshVertices != null &&
+                    lastHandMeshVertices.Length != 0 &&
                     lastHandMeshVertices.Length != eventData.InputData.vertices?.Length)
                 {
+                    meshChanged = true;
                     mesh.Clear();
                 }
 
@@ -202,7 +205,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     mesh.uv = eventData.InputData.uvs;
                 }
 
-                mesh.RecalculateBounds();
+                if (meshChanged)
+                {
+                    mesh.RecalculateBounds();
+                }
 
                 handMeshFilter.transform.position = eventData.InputData.position;
                 handMeshFilter.transform.rotation = eventData.InputData.rotation;

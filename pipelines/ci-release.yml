@@ -6,7 +6,7 @@ name: $(Date:yyyyMMdd)v$(Rev:r)
 variables:
   UnityVersion: Unity2018.3.7f1
   MRTKVersion: 2.1.0  # Major.Minor.Patch
-  MRTKReleaseTag: 'alpha'  # final version component, e.g. 'RC2.1' or empty string
+  MRTKReleaseTag: ''  # final version component, e.g. 'RC2.1' or empty string
 
 jobs:
 - job: CIReleaseValidation
