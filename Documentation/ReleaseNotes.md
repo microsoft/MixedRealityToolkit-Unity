@@ -84,7 +84,7 @@ If your project was created using the Mixed Reality Toolkit NuGet packages, plea
     - Microsoft.MixedReality.Toolkit.Examples
 1. Re-open the project in Unity
 
-After updating the packages, messages similar to the following.
+After updating the packages, you may see messages similar to the following:
 
 ```
 Failed to unload 'Assets/Packages/Microsoft.MixedReality.Toolkit.Examples.2.1.0/MRTK/StandardAssets/Models/Materials/Material_56.mat' 
