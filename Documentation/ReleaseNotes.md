@@ -23,7 +23,15 @@ The following software is required.
 - Windows 10 SDK 18362 or later (installed by the Visual Studio Installer)
 - Unity 2018.4, 2019.1 or 2019.2
 
+NuGet requirements
+
+If importing the Mixed Reality Toolkit's NuGet packages, the following software is recommended.
+
+- [NuGet for Unity](https://github.com/GlitchEnzo/NuGetForUnity)
+ 
 ### Upgrading projects to 2.1.0
+
+**Updating using .unitypackage files**
 
 The 2.1.0 release has some changes that may impact application projects, including some files moving to new folder locations.
 Breaking change details, including mitigation guidance, can be found in the [**Updating 2.0.0 to 2.1.0**](Updating.md#updating-200-to-210) article.
@@ -62,7 +70,43 @@ For the smoothest upgrade path, please use the following steps.
 
 Related to [issue #6144](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6144): after upgrading, if you have a custom input simulation profile, the input playback service data provider may have a missing class. Click the "Try Repair" button in the profile window to fix the missing reference.
 
+**Updating from NuGet**
+
+If your project was created using the Mixed Reality Toolkit NuGet packages, please use the following steps.
+
+1. Select **NuGet > Manage NuGet Packages**
+1. Select the **Online** tab and click **Refresh**
+1. Select the **Installed** tab
+1. Click the **Update** button for each installed package
+    - Microsoft.MixedReality.Toolkit.Foundation
+    - Microsoft.MixedReality.Toolkit.Tools
+    - Microsoft.MixedReality.Toolkit.Extensions
+    - Microsoft.MixedReality.Toolkit.Examples
+1. Re-open the project in Unity
+
+After updating the packages, you may see messages similar to the following:
+
+```
+Failed to unload 'Assets/Packages/Microsoft.MixedReality.Toolkit.Examples.2.1.0/MRTK/StandardAssets/Models/Materials/Material_56.mat' 
+```
+
+The step to re-open the project in Unity resolves the issue.
+
 ### What's new in 2.1.0
+
+**NuGet package distribution**
+
+MRTK 2.1.0 now ships packages on nuget.org. The following steps can be used to import the desired packages.
+
+1. Install [NuGet for Unity](https://github.com/GlitchEnzo/NuGetForUnity/releases)
+1. Select **NuGet > Manage NuGet Packages**
+1. In the search field, enter "MixedReality.Toolkit"
+1. Click **Search**
+1. Click **Install** for each desired package
+    - Microsoft.MixedReality.Toolkit.Foundation
+    - (Optional) Microsoft.MixedReality.Toolkit.Tools
+    - (Optional) Microsoft.MixedReality.Toolkit.Extensions
+    - (Optional) Microsoft.MixedReality.Toolkit.Examples
 
 **Dwell interaction (Experimental)**
 
