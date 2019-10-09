@@ -17,10 +17,10 @@
     </contentFiles>
   </metadata>
   <files>
-    <file src="MixedRealityToolkit\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta" target="MRTK\" />
-    <file src="MixedRealityToolkit.Providers\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta" target="MRTK\" />
-    <file src="MixedRealityToolkit.SDK\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta" target="MRTK\" />
-    <file src="MixedRealityToolkit.Services\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta" target="MRTK\" />
+    <file src="MixedRealityToolkit\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;MixedRealityToolkit\toc.yml*" target="MRTK\" />
+    <file src="MixedRealityToolkit.Providers\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;MixedRealityToolkit.Providers\License.txt*;MixedRealityToolkit.Providers\Version.txt*" target="MRTK\" />
+    <file src="MixedRealityToolkit.SDK\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;MixedRealityToolkit.SDK\License.txt*;MixedRealityToolkit.SDK\Version.txt*;MixedRealityToolkit.SDK\toc.yml*;MixedRealityToolkit.SDK\StandardAssets.meta;MixedRealityToolkit.SDK\StandardAssets\Fonts.meta;MixedRealityToolkit.SDK\StandardAssets\Materials.meta;MixedRealityToolkit.SDK\StandardAssets\Shaders.meta;MixedRealityToolkit.SDK\StandardAssets\Textures.meta" target="MRTK\" />
+    <file src="MixedRealityToolkit.Services\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;MixedRealityToolkit.Services\License.txt*;MixedRealityToolkit.Services\Version.txt*" target="MRTK\" />
 
     <file src="MixedRealityToolkit\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Foundation.targets" />
 
@@ -30,20 +30,21 @@
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.dll*" target="Plugins\" />
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.pdb*" target="Plugins\" />
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.Gltf.*" target="Plugins\" />
-    <file src="..\..\Assets\MixedRealityToolkit\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit" />
+    <!--Source commented as part of 2.1 release due to lack of support for long paths in N4U, and there is support for using source publicly yet.-->
+    <!--<file src="..\..\Assets\MixedRealityToolkit\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit" />-->
 
     <!-- Assemblies and Sources that are built from the MixedRealityToolkit.Providers folder -->
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.Providers.*" target="Plugins\" />
-    <file src="..\..\Assets\MixedRealityToolkit.Providers\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Providers" />
+    <!--<file src="..\..\Assets\MixedRealityToolkit.Providers\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Providers" />-->
 
     <!-- Assemblies and Sources that are built from the MixedRealityToolkit.SDK folder -->
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.SDK.*" target="Plugins\" />
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.SDK.Inspectors.*" target="Plugins\" />
-    <file src="..\..\Assets\MixedRealityToolkit.SDK\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.SDK" />
+    <!--<file src="..\..\Assets\MixedRealityToolkit.SDK\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.SDK" />-->
 
     <!-- Assemblies and Sources that are built from the MixedRealityToolkit.Services folder -->
     <file src="..\Plugins\**\Microsoft.MixedReality.Toolkit.Services.*" target="Plugins\" />
-    <file src="..\..\Assets\MixedRealityToolkit.Services\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Services" />
+    <!--<file src="..\..\Assets\MixedRealityToolkit.Services\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Services" />-->
 
     <!-- 
       link.xml is copied to the root location, so that it can catch IL2CPP
