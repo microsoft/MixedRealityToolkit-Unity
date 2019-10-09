@@ -14,6 +14,7 @@
     <tags>Unity MixedReality</tags>
     <dependencies>
       <dependency id="Microsoft.MixedReality.Toolkit.Foundation" version="$version$" />
+      <dependency id="Microsoft.MixedReality.Toolkit.Extensions" version="$version$" />
     </dependencies>
     <contentFiles>
       <files include="any\any\.PkgSrc\**" buildAction="None" copyToOutput="false" />
