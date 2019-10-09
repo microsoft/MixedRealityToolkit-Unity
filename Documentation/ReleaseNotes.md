@@ -75,6 +75,8 @@ Related to [issue #6144](https://github.com/microsoft/MixedRealityToolkit-Unity/
 If your project was created using the Mixed Reality Toolkit NuGet packages, please use the following steps.
 
 1. Select **NuGet > Manage NuGet Packages**
+1. Select the **Online** tab and click **Refresh**
+1. Select the **Installed** tab
 1. Click the **Update** button for each installed package
     - Microsoft.MixedReality.Toolkit.Foundation
     - Microsoft.MixedReality.Toolkit.Tools
