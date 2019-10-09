@@ -70,7 +70,7 @@ For the smoothest upgrade path, please use the following steps.
 
 Related to [issue #6144](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6144): after upgrading, if you have a custom input simulation profile, the input playback service data provider may have a missing class. Click the "Try Repair" button in the profile window to fix the missing reference.
 
-**Updating fron NuGet**
+**Updating from NuGet**
 
 If your project was created using the Mixed Reality Toolkit NuGet packages, please use the following steps.
 
