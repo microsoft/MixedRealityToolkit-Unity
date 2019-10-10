@@ -129,14 +129,15 @@ Once the notification is dismissed, it will slowly decrease its size and fade ou
 </ul>
 </li>
 </ol>
-<pre><code class="lang-csharp">   ...
-        
-        void Update()
-        {
-      // Get the latest calibration state from the EyeGazeProvider
-      bool? calibrationStatus = InputSystem?.EyeGazeProvider?.IsEyeCalibrationValid;
+<pre><code class="lang-csharp">    private bool? prevCalibrationStatus = null;
+    ...
 
-      ... 
+   void Update()
+   {
+      // Get the latest calibration state from the EyeGazeProvider
+      bool? calibrationStatus = CoreServices.InputSystem?.EyeGazeProvider?.IsEyeCalibrationValid;
+
+      ...
 
       if (calibrationStatus != null)
       {
@@ -150,29 +151,10 @@ Once the notification is dismissed, it will slowly decrease its size and fade ou
          {
             OnEyeCalibrationDetected.Invoke();
          }
-         
+
          prevCalibrationStatus = calibrationStatus;
       }
    }
-
-   private bool? prevCalibrationStatus = null;        
-        
-   private IMixedRealityInputSystem inputSystem = null;
-
-        /// &lt;summary&gt;
-        /// The active instance of the input system.
-        /// &lt;/summary&gt;
-        private IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService&lt;IMixedRealityInputSystem&gt;(out inputSystem);
-                }
-                return inputSystem;
-            }
-        }
 </code></pre>
 <hr>
 <p><a href="EyeTracking_Main.html">Back to &quot;Eye tracking in the MixedRealityToolkit&quot;</a></p>

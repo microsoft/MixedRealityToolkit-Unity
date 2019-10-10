@@ -82,40 +82,31 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="configuring-the-diagnostics-system">Configuring the Diagnostics System</h1>
 
-<p>The diagnostics system profile provides options for configuring:</p>
-<ul>
-<li><a href="#general-settings">General Settings</a></li>
-<li><a href="#profiler-settings">Profiler Settings</a></li>
-</ul>
 <h2 id="general-settings">General Settings</h2>
 <p><img src="../Images/Diagnostics/DiagnosticsGeneralSettings.png" alt="Diagnostics General Settings"></p>
-<h3 id="show-diagnostics">Show Diagnostics</h3>
+<p><strong>Show Diagnostics</strong></p>
 <p>Indicates whether or not the diagnostics system is to display the configured diagnostic options.</p>
 <p>When disabled, all configured diagnostic options will be hidden.</p>
-<h4 id="programmatically-controlling-the-diagnostics-system">Programmatically controlling the Diagnostics System</h4>
-<p>It's also possible to toggle the visibility of the diagnostics system and the profiler at runtime.
-For example, the code below will hide the diagnostics system and profiler.</p>
-<pre><code class="lang-C#">if (MixedRealityServiceRegistry.TryGetService&lt;IMixedRealityDiagnosticsSystem&gt;(out var service))
-{
-    service.ShowDiagnostics = false;
-    service.ShowProfiler = false;
-}
-</code></pre>
 <h2 id="profiler-settings">Profiler Settings</h2>
 <p><img src="../Images/Diagnostics/DiagnosticsProfilerSettings.png" alt="Diagnostics Profiler Settings"></p>
-<h3 id="show-profiler">Show Profiler</h3>
+<p><strong>Show Profiler</strong></p>
 <p>Indicates whether or not the Visual Profiler is to be displayed.</p>
-<h3 id="frame-sample-rate">Frame Sample Rate</h3>
+<p><strong>Frame Sample Rate</strong></p>
 <p>The amount of time, in seconds to collect frames for frame rate calculation. The range is 0 to 5 seconds.</p>
-<h3 id="window-anchor">Window Anchor</h3>
+<p><strong>Window Anchor</strong></p>
 <p>To what portion of the view port should the profiler window be anchored. The default value is Lower Center.</p>
-<h3 id="window-offset">Window Offset</h3>
-<p>The offset, from the center of the view port, to place the Visual Profiler. The offset will be in the direction
-of the <a href="#window-anchor">Window Anchor</a>.</p>
-<h3 id="window-scale">Window Scale</h3>
+<p><strong>Window Offset</strong></p>
+<p>The offset, from the center of the view port, to place the Visual Profiler. The offset will be in the direction of the <em>Window Anchor</em> property.</p>
+<p><strong>Window Scale</strong></p>
 <p>Size multiplier applied to the profiler window. For example, setting the value to 2 will double the window size.</p>
-<h3 id="window-follow-speed">Window Follow Speed</h3>
+<p><strong>Window Follow Speed</strong></p>
 <p>The speed at which to move the profiler window to maintain visibility within the view port.</p>
+<h2 id="programmatically-controlling-the-diagnostics-system">Programmatically controlling the Diagnostics System</h2>
+<p>It's also possible to toggle the visibility of the diagnostics system and the profiler at runtime. For example, the code below will hide the diagnostics system and profiler.</p>
+<pre><code class="lang-C#">CoreServices.DiagnosticsSystem.ShowDiagnostics = false;
+
+CoreServices.DiagnosticsSystem.ShowProfiler = false;
+</code></pre>
 <h2 id="see-also">See Also</h2>
 <ul>
 <li><a href="DiagnosticsSystemGettingStarted.html">Diagnostics System</a></li>
