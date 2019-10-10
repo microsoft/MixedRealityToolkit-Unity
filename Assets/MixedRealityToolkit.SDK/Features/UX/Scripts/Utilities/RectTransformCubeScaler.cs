@@ -17,6 +17,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         private RectTransform rectTransform;
         private Vector2 prevRectSize = Vector2.zero;
 
+        [SerializeField]
+        [Tooltip("Object which will be scaled to fit in the bounds of RectTransform.  It will typically be the direct child of this game object.  It is assumed to have contents which fit into a unit cube prior to scaling applied by this component.  The object passed in here does not need to have a RectTransform; a standard Transform is sufficient.")]
+        private Transform objectToScale = null;
+        private Transform prevObjectToScale = null;
+
         private void Start()
         {
             rectTransform = GetComponent<RectTransform>();
@@ -26,11 +31,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             var size = rectTransform.rect.size;
 
-            if (prevRectSize != size)
+            if (prevRectSize != size
+                || prevObjectToScale != objectToScale)
             {
                 prevRectSize = size;
+                prevObjectToScale = objectToScale;
 
-                this.transform.localScale = new Vector3(size.x, size.y, Mathf.Min(size.x, size.y));
+                if (objectToScale != null)
+                {
+                    objectToScale.localScale = new Vector3(size.x, size.y, Mathf.Min(size.x, size.y));
+                }
             }
         }
     }

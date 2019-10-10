@@ -10,6 +10,7 @@ Examples of the button prefabs under ``MixedRealityToolkit.SDK/Features/UX/Inter
 
 ### Unity UI Image/Graphic based buttons
 
+* [`UnityUIInteractableButton.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/UnityUIInteractableButton.prefab)
 * [`PressableButtonUnityUI.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonUnityUI.prefab)
 * [`PressableButtonUnityUICircular.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonUnityUICircular.prefab)
 * [`PressableButtonHoloLens2UnityUI.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2UnityUI.prefab)
@@ -35,6 +36,7 @@ The [`Button.prefab`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blo
 ### Unity UI based buttons
 
 Create a Canvas with
+
 * Render Mode set to World Space
 * A scale of 0.001
 * CanvasUtility component

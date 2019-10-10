@@ -2,7 +2,7 @@
 
 variables:
   UnityVersion: Unity2018.3.7f1
-  MRTKVersion: 2.1.0
+  MRTKVersion: 2.2.0
 
 jobs:
 - job: PRValidation

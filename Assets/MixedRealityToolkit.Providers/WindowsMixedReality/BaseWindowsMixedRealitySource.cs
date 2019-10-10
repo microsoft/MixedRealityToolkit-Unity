@@ -342,7 +342,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             // remoting binaries.
 #if UNITY_EDITOR
             if (interactionSourceState.source.kind == InteractionSourceKind.Hand &&
-                UnityEngine.XR.WSA.HolographicRemoting.ConnectionState == UnityEngine.XR.WSA.HolographicStreamerConnectionState.Connected)
+                UnityEngine.XR.WSA.HolographicRemoting.ConnectionState == UnityEngine.XR.WSA.HolographicStreamerConnectionState.Connected &&
+                !interactionSourceState.source.supportsGrasp) // Check that we're not remoting to a HoloLens 2
             {
                 // This workaround is safe as long as all these assumptions hold:
                 Debug.Assert(!interactionSourceState.selectPressed, "Unity issue #1033526 seems to have been resolved. Please remove this workaround!");

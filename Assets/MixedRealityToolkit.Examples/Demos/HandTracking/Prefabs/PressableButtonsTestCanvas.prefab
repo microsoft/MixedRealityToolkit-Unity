@@ -38,7 +38,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 250, y: 247.55774}
+  m_SizeDelta: {x: 200, y: 247.55774}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &188267907179550441
 Canvas:
@@ -57,7 +57,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 25
+  m_AdditionalShaderChannelsFlag: 31
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -307,7 +307,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 203.1, y: 0}
+  m_SizeDelta: {x: 150, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &188267907644877812
 CanvasRenderer:
@@ -532,7 +532,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 48}
+  m_SizeDelta: {x: 0, y: 32}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &188267907996791160
 MonoBehaviour:
@@ -553,7 +553,7 @@ MonoBehaviour:
     m_Bottom: 0
   m_ChildAlignment: 0
   m_Spacing: 0
-  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
   m_ChildControlHeight: 1
@@ -1094,21 +1094,6 @@ PrefabInstance:
       propertyPath: m_textInfo.pageCount
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1914098639805987745, guid: 2f626628bde0879488068de0e9f25f8d,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 32
-      objectReference: {fileID: 0}
-    - target: {fileID: 1914098639805987745, guid: 2f626628bde0879488068de0e9f25f8d,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 32
-      objectReference: {fileID: 0}
-    - target: {fileID: 2887137240106937465, guid: 2f626628bde0879488068de0e9f25f8d,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f626628bde0879488068de0e9f25f8d, type: 3}
 --- !u!224 &3323923909821196653 stripped
@@ -1142,7 +1127,7 @@ PrefabInstance:
     - target: {fileID: 3223503683246946309, guid: 2f626628bde0879488068de0e9f25f8d,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.000029802322
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3223503683246946309, guid: 2f626628bde0879488068de0e9f25f8d,
         type: 3}
@@ -1284,21 +1269,6 @@ PrefabInstance:
       propertyPath: m_textInfo.pageCount
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1914098639805987745, guid: 2f626628bde0879488068de0e9f25f8d,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 32
-      objectReference: {fileID: 0}
-    - target: {fileID: 1914098639805987745, guid: 2f626628bde0879488068de0e9f25f8d,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 32
-      objectReference: {fileID: 0}
-    - target: {fileID: 2887137240106937465, guid: 2f626628bde0879488068de0e9f25f8d,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f626628bde0879488068de0e9f25f8d, type: 3}
 --- !u!224 &3323923909280942313 stripped
@@ -1314,6 +1284,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 188267907996791161}
     m_Modifications:
+    - target: {fileID: 5234426576715676748, guid: df89e360642c6fc46abbc1c2656856f6,
+        type: 3}
+      propertyPath: m_Name
+      value: PressableButtonUnityUI (1)
+      objectReference: {fileID: 0}
     - target: {fileID: 5234426576715676739, guid: df89e360642c6fc46abbc1c2656856f6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1382,7 +1357,7 @@ PrefabInstance:
     - target: {fileID: 5234426576715676739, guid: df89e360642c6fc46abbc1c2656856f6,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 48
+      value: 32
       objectReference: {fileID: 0}
     - target: {fileID: 5234426576715676739, guid: df89e360642c6fc46abbc1c2656856f6,
         type: 3}
@@ -1418,11 +1393,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5234426576715676748, guid: df89e360642c6fc46abbc1c2656856f6,
-        type: 3}
-      propertyPath: m_Name
-      value: PressableButtonUnityUI (1)
       objectReference: {fileID: 0}
     - target: {fileID: 5234426576715676736, guid: df89e360642c6fc46abbc1c2656856f6,
         type: 3}
@@ -1629,21 +1599,6 @@ PrefabInstance:
       propertyPath: m_textInfo.pageCount
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1914098639805987745, guid: 2f626628bde0879488068de0e9f25f8d,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 32
-      objectReference: {fileID: 0}
-    - target: {fileID: 1914098639805987745, guid: 2f626628bde0879488068de0e9f25f8d,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 32
-      objectReference: {fileID: 0}
-    - target: {fileID: 2887137240106937465, guid: 2f626628bde0879488068de0e9f25f8d,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f626628bde0879488068de0e9f25f8d, type: 3}
 --- !u!224 &3323923908841833839 stripped
@@ -1819,21 +1774,6 @@ PrefabInstance:
       propertyPath: m_textInfo.pageCount
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1914098639805987745, guid: 2f626628bde0879488068de0e9f25f8d,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 32
-      objectReference: {fileID: 0}
-    - target: {fileID: 1914098639805987745, guid: 2f626628bde0879488068de0e9f25f8d,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 32
-      objectReference: {fileID: 0}
-    - target: {fileID: 2887137240106937465, guid: 2f626628bde0879488068de0e9f25f8d,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f626628bde0879488068de0e9f25f8d, type: 3}
 --- !u!224 &3323923908293376502 stripped
@@ -1922,7 +1862,7 @@ PrefabInstance:
     - target: {fileID: 7648415161697908067, guid: c31734863d3bf254191878828a9e17e6,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 48
+      value: 32
       objectReference: {fileID: 0}
     - target: {fileID: 7648415161697908067, guid: c31734863d3bf254191878828a9e17e6,
         type: 3}
@@ -2077,7 +2017,7 @@ PrefabInstance:
     - target: {fileID: 7648415161697908067, guid: c31734863d3bf254191878828a9e17e6,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 48
+      value: 32
       objectReference: {fileID: 0}
     - target: {fileID: 7648415161697908067, guid: c31734863d3bf254191878828a9e17e6,
         type: 3}
@@ -2159,6 +2099,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 188267907996791161}
     m_Modifications:
+    - target: {fileID: 5234426576715676748, guid: df89e360642c6fc46abbc1c2656856f6,
+        type: 3}
+      propertyPath: m_Name
+      value: PressableButtonUnityUI
+      objectReference: {fileID: 0}
     - target: {fileID: 5234426576715676739, guid: df89e360642c6fc46abbc1c2656856f6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2227,7 +2172,7 @@ PrefabInstance:
     - target: {fileID: 5234426576715676739, guid: df89e360642c6fc46abbc1c2656856f6,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 48
+      value: 32
       objectReference: {fileID: 0}
     - target: {fileID: 5234426576715676739, guid: df89e360642c6fc46abbc1c2656856f6,
         type: 3}
@@ -2263,11 +2208,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5234426576715676748, guid: df89e360642c6fc46abbc1c2656856f6,
-        type: 3}
-      propertyPath: m_Name
-      value: PressableButtonUnityUI
       objectReference: {fileID: 0}
     - target: {fileID: 5234426576715676736, guid: df89e360642c6fc46abbc1c2656856f6,
         type: 3}
