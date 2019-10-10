@@ -27,7 +27,6 @@
 
     <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Examples.*" target="Plugins\" />
     <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Demos.*" target="Plugins\" />
-    <!--Source commented as part of 2.1 release due to lack of support for long paths in N4U, and there is support for using source publicly yet.-->
-    <!--<file src="..\..\..\Assets\MixedRealityToolkit.Examples\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Examples" />-->
+    <file src="..\..\..\Assets\MixedRealityToolkit.Examples\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Examples" />
   </files>
 </package>
