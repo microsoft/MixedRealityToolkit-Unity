@@ -105,17 +105,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             {
                 GameObject newScroll = new GameObject("Scrolling Object Collection");
                 newScroll.transform.parent = transform;
-                newScroll.transform.localPosition = Vector3.zero;
+                newScroll.transform.localPosition = new Vector3(-0.0178f, 0.0165f, -0.0047f);
                 newScroll.transform.localRotation = Quaternion.identity;
                 newScroll.SetActive(false);
                 scrollCollection = newScroll.AddComponent<ScrollingObjectCollection>();
 
                 //prevent the scrolling collection from running until we're done dynamically populating it.
                 scrollCollection.SetUpAtRuntime = false;
-                scrollCollection.CellHeight = 0.06f;
-                scrollCollection.CellWidth = 0.06f;
+                scrollCollection.CellHeight = 0.032f;
+                scrollCollection.CellWidth = 0.032f;
                 scrollCollection.Tiers = 3;
-                scrollCollection.ViewableArea = 4;
+                scrollCollection.ViewableArea = 5;
                 scrollCollection.DragTimeThreshold = 0.75f;
                 scrollCollection.HandDeltaMagThreshold = 0.8f;
                 scrollCollection.TypeOfVelocity = ScrollingObjectCollection.VelocityType.FalloffPerItem;
@@ -157,9 +157,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
                 yield return null;
             }
 
+            //Now that the list is populated, hide the loader and show the list
             loaderViz.SetActive(false);
-
             scrollCollection.gameObject.SetActive(true);
+
+            //Finally, manually call UpdateCollection to set up the collection
             scrollCollection.UpdateCollection();
         }
 
@@ -171,8 +173,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
 
             g.transform.localPosition = Vector3.zero;
             g.transform.localRotation = Quaternion.identity;
-            g.SetActive(true);
-
         }
 
     }
