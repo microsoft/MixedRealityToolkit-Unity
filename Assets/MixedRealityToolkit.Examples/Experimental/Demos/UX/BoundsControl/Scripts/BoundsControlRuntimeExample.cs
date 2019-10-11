@@ -10,13 +10,13 @@ using System.Text;
 using TMPro;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos
+namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos
 {
     /// <summary>
-    /// TODO: This test still needs to be adjusted
-    /// Currently it's just a copy of whatever was tested in Bounding Box
+    /// TODO: This demo probably needs to be adjusted
+    /// Currently it's just a copy of BoundingBoxExampleTest
     /// </summary>
-    public class BoundsControlExampleTest : MonoBehaviour, IMixedRealitySpeechHandler
+    public class BoundsControlRuntimeExample : MonoBehaviour, IMixedRealitySpeechHandler
     {
         public TextMeshPro statusText;
 
@@ -30,31 +30,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         private Vector3 cubePosition = new Vector3(0, 0, 2);
         private BoundsControl bbox;
 
-        private IMixedRealityInputSystem inputSystem = null;
-
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        protected IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
-                return inputSystem;
-            }
-        }
-
         protected virtual void OnEnable()
         {
-            InputSystem?.RegisterHandler<IMixedRealitySpeechHandler>(this);
+            CoreServices.InputSystem?.RegisterHandler<IMixedRealitySpeechHandler>(this);
         }
 
         protected virtual void OnDisable()
         {
-            InputSystem.UnregisterHandler<IMixedRealitySpeechHandler>(this);
+            CoreServices.InputSystem?.UnregisterHandler<IMixedRealitySpeechHandler>(this);
         }
 
         // Start is called before the first frame update
@@ -65,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         private void SetStatus(string status)
         {
-            Debug.Assert(statusText != null, "statusText on BoundsControlTest should not be null");
+            Debug.Assert(statusText != null, "statusText on BoundsControlRuntimeExample should not be null");
             StringBuilder b = new StringBuilder();
             b.AppendLine($"{status}");
             b.AppendLine($"Press '1' or say 'select' to continue");

@@ -21,7 +21,7 @@ using System.Linq;
 using Assert = UnityEngine.Assertions.Assert;
 using Microsoft.MixedReality.Toolkit.UI.Experimental;
 
-namespace Microsoft.MixedReality.Toolkit.Tests
+namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 {
     /// <summary>
     /// TODO: This test still needs to be adjusted 
@@ -42,15 +42,17 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             PlayModeTestUtilities.TearDown();
         }
 
+        private readonly Vector3 boundsControlStartCenter = Vector3.forward * 1.5f;
+        private readonly Vector3 boundsControlStartScale = Vector3.one * 0.5f;
         /// <summary>
-        /// Instantiates a bounds control at 0, 0, -1.5f
-        /// box is at scale .5, .5, .5
+        /// Instantiates a bounds control at boundsControlStartCenter
+        /// box is at scale boundsControlStartScale
         /// </summary>
         /// <returns></returns>
         private BoundsControl InstantiateSceneAndDefaultBbox()
         {
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.position = Vector3.forward * 1.5f;
+            cube.transform.position = boundsControlStartCenter;
             BoundsControl bbox = cube.AddComponent<BoundsControl>();
 
             MixedRealityPlayspace.PerformTransformation(
@@ -60,8 +62,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 p.LookAt(cube.transform.position);
             });
 
-            bbox.transform.localScale *= 0.5f;
+            bbox.transform.localScale = boundsControlStartScale;
             bbox.Active = true;
+
+            BoxCollider boxCollider = bbox.GetComponent<BoxCollider>();
+            var bounds = boxCollider.bounds;
+            Debug.Assert(bounds.center == boundsControlStartCenter, "bounds control incorrect center at start");
+            Debug.Assert(bounds.size == boundsControlStartScale, "bounds control incorrect size at start");
 
             return bbox;
         }
@@ -123,9 +130,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             var bbox = InstantiateSceneAndDefaultBbox();
             yield return null;
-            var bounds = bbox.GetComponent<BoxCollider>().bounds;
-            Debug.Assert(bounds.center == new Vector3(0, 0, 1.5f));
-            Debug.Assert(bounds.size == new Vector3(.5f, .5f, .5f));
 
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
 
@@ -140,8 +144,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return PlayModeTestUtilities.MoveHandFromTo(frontRightCornerPos, frontRightCornerPos + delta, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService);
 
             var endBounds = bbox.GetComponent<BoxCollider>().bounds;
-            TestUtilities.AssertAboutEqual(endBounds.center, new Vector3(0.033f, 0.033f, 1.467f), "endBounds incorrect center");
-            TestUtilities.AssertAboutEqual(endBounds.size, Vector3.one * .567f, "endBounds incorrect size");
+            Vector3 expectedCenter = new Vector3(0.033f, 0.033f, 1.467f);
+            Vector3 expectedSize = Vector3.one * .567f;
+            TestUtilities.AssertAboutEqual(endBounds.center, expectedCenter, "endBounds incorrect center");
+            TestUtilities.AssertAboutEqual(endBounds.size, expectedSize, "endBounds incorrect size");
 
             GameObject.Destroy(bbox.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object
@@ -208,12 +214,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             var bbox = InstantiateSceneAndDefaultBbox();
             yield return null;
-            var bounds = bbox.GetComponent<BoxCollider>().bounds;
-            var startCenter = new Vector3(0, 0, 1.5f);
-            var startSize = new Vector3(.5f, .5f, .5f);
-            TestUtilities.AssertAboutEqual(bounds.center, startCenter, "bbox incorrect center at start");
-            TestUtilities.AssertAboutEqual(bounds.size, startSize, "bbox incorrect size at start");
-
+            BoxCollider boxCollider = bbox.GetComponent<BoxCollider>();
+            var bounds = boxCollider.bounds;
+            var startCenter = bounds.center;
+            var startSize = bounds.size;
+           
             PlayModeTestUtilities.PushHandSimulationProfile();
             PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
 
@@ -224,16 +229,18 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return rightHand.Show(startHandPos);
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
             // After pinching, center should remain the same
-            var afterPinchbounds = bbox.GetComponent<BoxCollider>().bounds;
+            var afterPinchbounds = boxCollider.bounds;
             TestUtilities.AssertAboutEqual(afterPinchbounds.center, startCenter, "bbox incorrect center after pinch");
             TestUtilities.AssertAboutEqual(afterPinchbounds.size, startSize, "bbox incorrect size after pinch");
 
             var delta = new Vector3(0.1f, 0.1f, 0f);
             yield return rightHand.Move(delta);
 
-            var endBounds = bbox.GetComponent<BoxCollider>().bounds;
-            TestUtilities.AssertAboutEqual(endBounds.center, new Vector3(0.033f, 0.033f, 1.467f), "endBounds incorrect center");
-            TestUtilities.AssertAboutEqual(endBounds.size, Vector3.one * .567f, "endBounds incorrect size");
+            var endBounds = boxCollider.bounds;
+            Vector3 expectedCenter = new Vector3(0.033f, 0.033f, 1.467f);
+            Vector3 expectedSize = Vector3.one * .567f;
+            TestUtilities.AssertAboutEqual(endBounds.center, expectedCenter, "endBounds incorrect center");
+            TestUtilities.AssertAboutEqual(endBounds.size, expectedSize, "endBounds incorrect size");
 
             GameObject.Destroy(bbox.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object
@@ -258,23 +265,21 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
 
             var startBounds = GetBoundsControlRigBounds(bbox);
-            var startCenter = new Vector3(0, 0, 1.5f);
-            var startSize = new Vector3(.5f, .5f, .5f);
-            TestUtilities.AssertAboutEqual(startBounds.center, startCenter, "bbox incorrect center at start");
-            TestUtilities.AssertAboutEqual(startBounds.size, startSize, "bbox incorrect size at start");
+            TestUtilities.AssertAboutEqual(startBounds.center, boundsControlStartCenter, "bbox incorrect center at start");
+            TestUtilities.AssertAboutEqual(startBounds.size, boundsControlStartScale, "bbox incorrect size at start");
 
             bbox.gameObject.transform.localScale *= 2;
             yield return null;
 
             var afterScaleBounds = GetBoundsControlRigBounds(bbox);
-            var scaledSize = startSize * 2;
-            TestUtilities.AssertAboutEqual(afterScaleBounds.center, startCenter, "bbox incorrect center after scale");
+            var scaledSize = boundsControlStartScale * 2;
+            TestUtilities.AssertAboutEqual(afterScaleBounds.center, boundsControlStartCenter, "bbox incorrect center after scale");
             TestUtilities.AssertAboutEqual(afterScaleBounds.size, scaledSize, "bbox incorrect size after scale");
 
             bbox.gameObject.transform.position += Vector3.one;
             yield return null;
             var afterTranslateBounds = GetBoundsControlRigBounds(bbox);
-            var afterTranslateCenter = Vector3.one + startCenter;
+            var afterTranslateCenter = Vector3.one + boundsControlStartCenter;
 
             TestUtilities.AssertAboutEqual(afterTranslateBounds.center, afterTranslateCenter, "bbox incorrect center after translate");
             TestUtilities.AssertAboutEqual(afterTranslateBounds.size, scaledSize, "bbox incorrect size after translate");

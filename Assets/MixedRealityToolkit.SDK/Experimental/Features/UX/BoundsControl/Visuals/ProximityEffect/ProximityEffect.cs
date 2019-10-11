@@ -24,7 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         /// </summary>
         public bool ProximityEffectActive => proximityEffectActive;
 
-
         [SerializeField]
         [Tooltip("How far away should the hand be from an object before it starts scaling the object?")]
         [Range(0.005f, 0.2f)]
@@ -242,9 +241,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                             closestObject = item.ScaledObject;
                             closestDistanceSqr = sqrDistance;
                         }
-
                     }
-
                 }
             }
 
