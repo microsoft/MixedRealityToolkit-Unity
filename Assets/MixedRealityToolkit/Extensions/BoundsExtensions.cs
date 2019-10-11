@@ -337,7 +337,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Calculates how much scale is required for for bounds to match otherbounds.
+        /// Calculates how much scale is required for this Bounds to match another Bounds.
         /// </summary>
         /// <param name="otherBounds">Object representation to be scaled to</param>
         /// <param name="padding">padding multiplied into otherbounds</param>

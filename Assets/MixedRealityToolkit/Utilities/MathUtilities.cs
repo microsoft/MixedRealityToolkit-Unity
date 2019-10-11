@@ -440,8 +440,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// Clamps via a lerp for a "soft" clamp effect
         /// </summary>
         /// <param name="pos">number to clamp</param>
-        /// <param name="min">if pos is less, clamps to this value</param>
-        /// <param name="max">if pos is more, clamps to this value</param>
+        /// <param name="min">if pos is less than min, then lerp clamps to this value</param>
+        /// <param name="max">if pos is more than max, lerp clamps to this value</param>
         /// <param name="clampFactor"> Range from 0.0f to 1.0f of how close to snap to min and max </param>
         /// <returns>A soft clamped value</returns>
         public static float SoftClamp(float pos, float min, float max, float clampFactor)
