@@ -422,16 +422,6 @@ Always use private fields and public properties if access to the field is needed
  }
  ```
 
-### Use `for` instead of `foreach` when possible
-
-In some cases a foreach is required, e.g. when looping over an IEnumerable.  But for performance benefit, avoid foreach when you can.
-
-#### Don't
-
-```c#
-foreach(var item in items)
-```
-
 #### Do
 
  ```c#
