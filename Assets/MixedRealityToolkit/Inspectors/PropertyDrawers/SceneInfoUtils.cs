@@ -232,7 +232,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     foreach (FieldInfo f in t.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(f => f.FieldType == typeof(SceneInfo)))
                     {
                         cachedComponentTypes.Add(new Tuple<Type, FieldInfo>(t, f));
-                        Debug.Log("Found component type " + t.Name + " with field " + f.Name);
                     }
                 }
             }
