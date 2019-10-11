@@ -15,6 +15,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
     /// </summary>
     public static class MixedRealitySearchUtility
     {
+        /// <summary>
+        /// True if a search is being executed. This must be false before calling StartProfileSearch.
+        /// </summary>
         public static bool Searching { get { return activeTask != null && !activeTask.IsCompleted; } }
 
         private const int maxChildSearchDepth = 5;
@@ -143,7 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
             }
            
             if (result.Fields.Count > 0)
-            {   // Sort results by match, then by name
+            {
                 result.Fields.Sort(delegate (FieldSearchResult r1, FieldSearchResult r2)
                 {
                     if (r1.MatchStrength != r2.MatchStrength)
@@ -159,7 +162,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
         {
             bool isProfileField = false;
             if (property.propertyType == SerializedPropertyType.ObjectReference && property.objectReferenceValue != null)
-            {   // If the property is itself a profile, perform a recursive search
+            {
                 Type referenceType = property.objectReferenceValue.GetType();
                 isProfileField = (typeof(BaseMixedRealityProfile).IsAssignableFrom(referenceType));
             }

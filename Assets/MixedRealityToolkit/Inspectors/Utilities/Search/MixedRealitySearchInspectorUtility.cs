@@ -27,10 +27,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
         private static List<ProfileSearchResult> searchResults = new List<ProfileSearchResult>();
 
         /// <summary>
-        /// Draws a search field
+        /// Draws a search field and (if results have been returned) search results.
         /// </summary>
         /// <param name="target"></param>
-        /// <returns></returns>
+        /// <returns>True if search results are being displayed.</returns>
         public static bool DrawSearchInterface(UnityEngine.Object target)
         {
             if (target == null)
