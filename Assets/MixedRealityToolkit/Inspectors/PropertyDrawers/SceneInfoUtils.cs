@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
+using UnityEditor.Build;
+using UnityEditor.Build.Reporting;
 using UnityEditor.Callbacks;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -18,12 +20,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     /// Class responsible for updating scene info structs to reflect changes made to scene assets.
     /// Extends AssetPostprocessor so it can respond to asset changes.
     /// </summary>
-    public class SceneInfoUtils : AssetPostprocessor
+    public class SceneInfoUtils : AssetPostprocessor, IProcessSceneWithReport
     {
         /// <summary>
         /// Cached scenes used by SceneInfoDrawer to keep property drawer performant.
         /// </summary>
         public static EditorBuildSettingsScene[] CachedScenes => cachedScenes;
+
+        public int callbackOrder => 0;
 
         private static EditorBuildSettingsScene[] cachedScenes = new EditorBuildSettingsScene[0];
 
@@ -99,6 +103,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Implements IProcessSceneWithReport.OnProcessScene
+        /// </summary>
+        public void OnProcessScene(Scene scene, BuildReport report)
+        {
+            RefreshSceneInfoFieldsInScene(scene);
         }
 
         /// <summary>
@@ -202,7 +214,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         [PostProcessSceneAttribute]
         public static void OnPostProcessScene()
         {
-            RefreshSceneInfoFieldsInScenes();
+            RefreshSceneInfoFieldsInOpenScenes();
         }
 
         [InitializeOnLoadMethod]
@@ -217,7 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             RefreshCachedTypes();
             RefreshCachedScenes();
             RefreshSceneInfoFieldsInScriptableObjects();
-            RefreshSceneInfoFieldsInScenes();
+            RefreshSceneInfoFieldsInOpenScenes();
         }
 
         /// <summary>
@@ -239,7 +251,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private static void SceneOpened(Scene scene, OpenSceneMode mode)
         {
-            RefreshSceneInfoFieldsInScenes();
+            RefreshSceneInfoFieldsInOpenScenes();
         }
 
         /// <summary>
@@ -249,7 +261,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             RefreshCachedScenes();
             RefreshSceneInfoFieldsInScriptableObjects();
-            RefreshSceneInfoFieldsInScenes();
+            RefreshSceneInfoFieldsInOpenScenes();
         }
 
         /// <summary>
@@ -258,7 +270,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
         {
             RefreshSceneInfoFieldsInScriptableObjects();
-            RefreshSceneInfoFieldsInScenes();
+            RefreshSceneInfoFieldsInOpenScenes();
         }
 
         /// <summary>
@@ -283,7 +295,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             SerializedProperty property = serializedObject.FindProperty(fieldInfo.Name);
                             SerializedProperty assetProperty, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty;
                             GetSceneInfoRelativeProperties(property, out assetProperty, out nameProperty, out pathProperty, out buildIndexProperty, out includedProperty, out tagProperty);
-                            RefreshSceneInfo(source, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty);
+                            if (RefreshSceneInfo(source, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty))
+                            {
+                                serializedObject.ApplyModifiedProperties();
+                            }
+
                         }
                     }
                 }
@@ -296,7 +312,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
-        private static void RefreshSceneInfoFieldsInScenes()
+        private static void RefreshSceneInfoFieldsInOpenScenes()
         {
             if (Time.frameCount == frameScenesLastUpdated)
             {   // Don't udpate more than once per frame
@@ -314,11 +330,43 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         SerializedProperty property = serializedObject.FindProperty(fieldInfo.Name);
                         SerializedProperty assetProperty, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty;
                         GetSceneInfoRelativeProperties(property, out assetProperty, out nameProperty, out pathProperty, out buildIndexProperty, out includedProperty, out tagProperty);
-                        RefreshSceneInfo(source, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty);
+                        if (RefreshSceneInfo(source, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty))
+                        {
+                            serializedObject.ApplyModifiedProperties();
+                        }
                     }
                 }
 
                 frameScenesLastUpdated = Time.frameCount;
+            }
+            catch (Exception)
+            {
+                Debug.LogWarning("Error when attempting to update scene info fields. Scene info data may be stale.");
+            }
+        }
+
+        private void RefreshSceneInfoFieldsInScene(Scene scene)
+        {
+            try
+            {
+                foreach (Tuple<Type, FieldInfo> typeFieldInfoPair in cachedComponentTypes)
+                {
+                    FieldInfo fieldInfo = typeFieldInfoPair.Item2;
+                    foreach (GameObject rootGameObject in scene.GetRootGameObjects())
+                    {
+                        foreach (Component source in rootGameObject.GetComponentsInChildren(typeFieldInfoPair.Item1))
+                        {
+                            SerializedObject serializedObject = new SerializedObject(source);
+                            SerializedProperty property = serializedObject.FindProperty(fieldInfo.Name);
+                            SerializedProperty assetProperty, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty;
+                            GetSceneInfoRelativeProperties(property, out assetProperty, out nameProperty, out pathProperty, out buildIndexProperty, out includedProperty, out tagProperty);
+                            if (RefreshSceneInfo(source, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty))
+                            {
+                                serializedObject.ApplyModifiedProperties();
+                            }
+                        }
+                    }
+                }
             }
             catch (Exception)
             {
