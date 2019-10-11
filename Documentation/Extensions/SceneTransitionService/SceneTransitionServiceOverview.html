@@ -94,13 +94,33 @@
 <h3 id="fade-color">Fade Color</h3>
 <p>Controls the color of the fade effect. Alpha is ingored. This setting can be changed at runtime prior to a transition via the service's <code>FadeColor</code> property.</p>
 <h3 id="fade-targets">Fade Targets</h3>
-<p>Controls which cameras will have a fade effect applied to them. This setting can be changed at runtime via the service's <code>FadeTargets</code> property.
-Setting | Targeted Cameras
---- | --- | ---
-Main | Applies fade effect to the main camera.
-UI | Applies fade effect to cameras on the UI layer. (Does not affect overlay UI)
-All | Applies to both main and UI cameras.
-Custom | Applies to a custom set of cameras provided via <code>SetCustomFadeTargetCameras</code></p>
+<p>Controls which cameras will have a fade effect applied to them. This setting can be changed at runtime via the service's <code>FadeTargets</code> property.</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Targeted Cameras</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Main</td>
+<td>Applies fade effect to the main camera.</td>
+</tr>
+<tr>
+<td>UI</td>
+<td>Applies fade effect to cameras on the UI layer. (Does not affect overlay UI)</td>
+</tr>
+<tr>
+<td>All</td>
+<td>Applies to both main and UI cameras.</td>
+</tr>
+<tr>
+<td>Custom</td>
+<td>Applies to a custom set of cameras provided via <code>SetCustomFadeTargetCameras</code></td>
+</tr>
+</tbody>
+</table>
 <h3 id="fade-out-time--fade-in-time">Fade Out Time / Fade In Time</h3>
 <p>Default settings for the duration of a fade on entering / exiting a transition. These settings can be changed at runtime via the service's <code>FadeOutTime</code> and <code>FadeInTime</code> properties.</p>
 <h3 id="camera-fader-type">Camera Fader Type</h3>
