@@ -1946,9 +1946,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
 
         /// <summary>
-        /// Finds the object-aligned size of a <see cref="UnityEngine.Transform"/> 
+        /// Finds the object-aligned size of a Transform.
         /// </summary>
-        /// <param name="obj"><see cref="UnityEngine.Transform"/> representing the object to get offset from</param>
+        /// <param name="obj">Transform representing the object to get offset from</param>
         /// <param name="alignedSize">the object-aligned size of obj</param>
         /// <returns>true if alignedSize is valid</returns>
         public static bool TryGetObjectAlignedBoundsSize(Transform obj, out Vector3 alignedSize)
