@@ -100,6 +100,10 @@
 <p>If it is not possible to create an accurate depth buffer to share with the platform, another form of LSR utilizes a stabilization plane. All holograms in a scene will receive some stabilization, but holograms lying in the desired plane will receive the maximum hardware stabilization. The point and normal for the plane can be supplied to the platform via the <em>HolographicSettings.SetFocusPointForFrame</em> <a href="https://docs.microsoft.com/en-us/windows/mixed-reality/focus-point-in-unity">API provided by Unity</a>.</p>
 <h4 id="depth-buffer-format">Depth buffer format</h4>
 <p>If targeting HoloLens for development, it is highly recommended to utilize the 16-bit depth buffer format compared to 24-bit. This can save tremendously on performance although depth values will have less precision. To compensate for the lower precision and avoid <a href="https://en.wikipedia.org/wiki/Z-fighting">z-fighting</a>, it is recommended to reduce the <a href="https://docs.unity3d.com/Manual/class-Camera.html">far clip plane</a> from the 1000m default value set by Unity.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>If using <em>16-bit depth format</em>, stencil buffer required effects will not work because <a href="https://docs.unity3d.com/ScriptReference/RenderTexture-depth.html">Unity does not create a stencil buffer</a> in this setting. Selecting <em>24-bit depth format</em> conversely will generally create an <a href="https://docs.unity3d.com/Manual/SL-Stencil.html">8-bit stencil buffer</a>, if applicable on the endpoint graphics platform.</p>
+</div>
 <h4 id="depth-buffer-sharing-in-unity">Depth Buffer Sharing in Unity</h4>
 <p>In order to utilize depth-based LSR, there are two important steps developers need to take.</p>
 <ol>

@@ -101,6 +101,11 @@
 <p>To improve <a href="../hologram-stabilization.html">hologram stabilization</a>, developers can share the application's depth buffer which gives the platform information of where and what holograms to stabilize in the rendered scene.</p>
 <h3 id="depth-buffer-format">Depth buffer format</h3>
 <p>Furthermore, for <em>AR Headsets</em>, it is recommended to utilize a 16-bit depth format when enabling depth buffer sharing compared to 24-bit. This means lower precision but saves on performance. If <a href="https://en.wikipedia.org/wiki/Z-fighting">z-fighting</a> occurs because there is less precision in calculating depth for pixels, then it is recommended to move the <a href="https://docs.unity3d.com/Manual/class-Camera.html">far clip plane</a> closer to the camera (ex: 50m instead of 1000m).</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>If using <em>16-bit depth format</em>, stencil buffer required effects will not work because <a href="https://docs.unity3d.com/ScriptReference/RenderTexture-depth.html">Unity does not create a stencil buffer</a> in this setting. Selecting <em>24-bit depth format</em> conversely will generally create an <a href="https://docs.unity3d.com/Manual/SL-Stencil.html">8-bit stencil buffer</a>, if applicable on the endpoint graphics platform.</p>
+<p>If using a <a href="https://docs.unity3d.com/Manual/script-Mask.html">Mask component</a> which requires the stencil buffer, consider using <a href="https://docs.unity3d.com/Manual/script-RectMask2D.html">RectMask2D</a> instead which does not require the stencil buffer and thus can be used in conjunction with a <em>16-bit depth format</em>.</p>
+</div>
 <h3 id="real-time-global-illumination">Real-time Global Illumination</h3>
 <p><a href="https://docs.unity3d.com/Manual/GIIntro.html">Real-time Global illumination</a> in Unity can provide fantastic aesthetic results but at a very high cost. Global illumination lighting is very expensive in mixed reality and thus it is recommended to disable this feature in development.</p>
 <div class="NOTE">
