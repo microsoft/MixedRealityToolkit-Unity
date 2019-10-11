@@ -6,12 +6,24 @@ Speech input providers, like *Windows Speech Input*, don't create any controller
 - Specify a **key code** that will produce the same speech event when pressed.
 - Add a **localization key** that will be used in UWP apps to obtain the localized keyword from the app resources.
 
-<img src="../../Documentation/Images/Input/SpeechCommands.PNG" width="550px">
+<img src="../../Documentation/Images/Input/SpeechCommandsProfile.png" width="450px">
 
-The [**`Speech Input Handler`**](xref:Microsoft.MixedReality.Toolkit.Input.SpeechInputHandler) script can be added to a GameObject to handle speech commands using [**UnityEvents**](https://docs.unity3d.com/Manual/UnityEvents.html).
+## Handling Speech Input
+
+The [**`Speech Input Handler`**](xref:Microsoft.MixedReality.Toolkit.Input.SpeechInputHandler) script can be added to a GameObject to handle speech commands using [**UnityEvents**](https://docs.unity3d.com/Manual/UnityEvents.html). It automatically shows the list of the defined keywords from the **Speech Commands Profile**.
+
+<img src="../../Documentation/Images/Input/SpeechCommands_SpeechInputHandler1.png" width="450px">
+
+Assign optional **SpeechConfirmationTooltip.prefab** to display animated confirmation tooltip label on recognition.
+
+<img src="../../Documentation/Images/Input/SpeechCommands_SpeechInputHandler2.png">
 
 Alternatively, developers can implement the [`IMixedRealitySpeechHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler) interface in a custom script component to [handle speech input events](InputEvents.md#input-event-interface-example).
 
+
 ## Example Scene
 
-The **Speech** scene, in `MixedRealityToolkit.Examples\Demos\Input\Scenes\Speech`, shows how to use speech. You can also listen to speech command events directly in your own script by implementing [`IMixedRealitySpeechHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler) (see table of [event handlers](InputEvents.md)).
+The **SpeechInputExample** scene, in `MixedRealityToolkit.Examples\Demos\Input\Scenes\Speech`, shows how to use speech. You can also listen to speech command events directly in your own script by implementing [`IMixedRealitySpeechHandler`](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealitySpeechHandler) (see table of [event handlers](InputEvents.md)).
+
+
+<img src="../../Documentation/Images/Input/SpeechExampleScene.png" width="750px">

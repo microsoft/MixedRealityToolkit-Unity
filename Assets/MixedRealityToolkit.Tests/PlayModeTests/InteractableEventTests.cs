@@ -136,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             var toggleReceiver = interactable.AddReceiver<InteractableOnToggleReceiver>();
             interactable.transform.position = Vector3.forward * 2f;
-            interactable.Dimensions = 2;
+            interactable.NumOfDimensions = 2;
             interactable.CanSelect = true;
             interactable.CanDeselect = true;
             bool didSelect = false;

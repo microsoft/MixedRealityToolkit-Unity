@@ -15,11 +15,23 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     public static class InspectorUIUtility
     {
         //Colors
-        public static readonly Color ColorTint100 = new Color(1f, 1f, 1f);
-        public static readonly Color ColorTint75 = new Color(0.75f, 0.75f, 0.75f);
-        public static readonly Color ColorTint50 = new Color(0.5f, 0.5f, 0.5f);
-        public static readonly Color ColorTint25 = new Color(0.25f, 0.25f, 0.25f);
-        public static readonly Color ColorTint10 = new Color(0.10f, 0.10f, 0.10f);
+        private static readonly Color PersonalThemeColorTint100 = new Color(1f, 1f, 1f);
+        private static readonly Color PersonalThemeColorTint75 = new Color(0.75f, 0.75f, 0.75f);
+        private static readonly Color PersonalThemeColorTint50 = new Color(0.5f, 0.5f, 0.5f);
+        private static readonly Color PersonalThemeColorTint25 = new Color(0.25f, 0.25f, 0.25f);
+        private static readonly Color PersonalThemeColorTint10 = new Color(0.10f, 0.10f, 0.10f);
+
+        private static readonly Color ProfessionalThemeColorTint100 = new Color(0f, 0f, 0f);
+        private static readonly Color ProfessionalThemeColorTint75 = new Color(0.25f, 0.25f, 0.25f);
+        private static readonly Color ProfessionalThemeColorTint50 = new Color(0.5f, 0.5f, 0.5f);
+        private static readonly Color ProfessionalThemeColorTint25 = new Color(0.75f, 0.75f, 0.75f);
+        private static readonly Color ProfessionalThemeColorTint10 = new Color(0.9f, 0.9f, 0.9f);
+
+        public static Color ColorTint100 => EditorGUIUtility.isProSkin ? ProfessionalThemeColorTint100 : PersonalThemeColorTint100;
+        public static Color ColorTint75 => EditorGUIUtility.isProSkin ? ProfessionalThemeColorTint75 : PersonalThemeColorTint75;
+        public static Color ColorTint50 => EditorGUIUtility.isProSkin ? ProfessionalThemeColorTint50 : PersonalThemeColorTint50;
+        public static Color ColorTint25 => EditorGUIUtility.isProSkin ? ProfessionalThemeColorTint25 : PersonalThemeColorTint25;
+        public static Color ColorTint10 => EditorGUIUtility.isProSkin ? ProfessionalThemeColorTint10 : PersonalThemeColorTint10;
 
         // default UI sizes
         public const int TitleFontSize = 14;

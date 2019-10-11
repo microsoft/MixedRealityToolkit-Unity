@@ -144,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// Directory levels to search for MRTK folders below the root directory.
         /// </summary>
         /// <remarks>
-        /// E.g. with level 3 and folders ROOT/A/B/C/D would seach A and B and C, but not D.
+        /// E.g. with level 3 and folders ROOT/A/B/C/D would search A and B and C, but not D.
         /// </remarks>
         public const int DirectorySearchDepth = 3;
 
@@ -239,7 +239,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Maps an absolute path to be relative to the Project Root path (the Unity folder that contains Assets)
         /// </summary>
-        /// <param name="absolutePath">The absolute path to the project/</param>
+        /// <param name="absolutePath">The absolute path to the project.</param>
         /// <returns>The project relative path.</returns>
         /// <remarks>This doesn't produce paths that contain step out '..' relative paths.</remarks>
         public static string GetAssetDatabasePath(string absolutePath) => FormatSeparatorsForUnity(absolutePath).Replace(Application.dataPath, "Assets");
@@ -463,7 +463,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// This function is only exposed for testing purposes, and can change/be removed at any time.
         /// </summary>
         /// <remarks>
-        /// Syncronously refreshes the MRTK folder database.
+        /// Synchronously refreshes the MRTK folder database.
         /// </remarks>
         public static void RefreshFolders()
         {

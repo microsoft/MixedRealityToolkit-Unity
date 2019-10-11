@@ -35,14 +35,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 if (MixedRealityToolkitFiles.AreFoldersAvailable)
                 {
-#if UNITY_EDITOR
-                    if (MixedRealityToolkitFiles.MRTKDirectories.Count() > 1)
+                    if (Application.isEditor && MixedRealityToolkitFiles.MRTKDirectories.Count() > 1)
                     {
                         Debug.LogError($"A deprecated API '{nameof(MixedRealityEditorSettings)}.{nameof(MixedRealityToolkit_AbsoluteFolderPath)}' " +
                             "is being used, and there are more than one MRTK directory in the project; most likely due to ingestion as NuGet. " +
                             $"Update to use the '{nameof(MixedRealityToolkitFiles)}' APIs.");
                     }
-#endif
 
                     return MixedRealityToolkitFiles.MRTKDirectories.First();
                 }
