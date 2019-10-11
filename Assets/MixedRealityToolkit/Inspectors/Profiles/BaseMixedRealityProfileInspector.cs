@@ -182,7 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
 
                 var subProfile = property.objectReferenceValue as BaseMixedRealityProfile;
-                if (subProfile != null && !subProfile.IsCustomProfile)
+                if (subProfile != null && !subProfile.IsCustomProfile && MixedRealityPreferences.LockProfiles)
                 {
                     EditorGUILayout.HelpBox("Clone this default profile to edit properties below", MessageType.Warning); 
                 }

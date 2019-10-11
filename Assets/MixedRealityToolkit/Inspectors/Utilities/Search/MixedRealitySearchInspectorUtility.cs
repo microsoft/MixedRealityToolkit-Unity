@@ -154,14 +154,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
                                     {
                                         numDisplayedSearchResults++;
 
-                                        if (!string.IsNullOrEmpty(r.Property.tooltip))
-                                        {
-                                            GUI.color = MixedRealityInspectorUtility.DisabledColor;
-                                            EditorGUILayout.LabelField(r.Property.tooltip + " (" + r.MatchStrength + ")", EditorStyles.wordWrappedMiniLabel);
-                                        }
-
                                         GUI.color = Color.white;
+                                        EditorGUI.BeginChangeCheck();
                                         EditorGUILayout.PropertyField(r.Property, true);
+
+                                        if (EditorGUI.EndChangeCheck())
+                                        {
+                                            r.Property.serializedObject.ApplyModifiedProperties();
+                                        }
 
                                         EditorGUILayout.Space();
                                     }
