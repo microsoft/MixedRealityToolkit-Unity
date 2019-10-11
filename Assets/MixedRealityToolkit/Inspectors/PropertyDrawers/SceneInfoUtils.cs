@@ -116,12 +116,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <summary>
         /// Updates all the serialized properties for a SceneInfo struct.
         /// </summary>
-        /// <param name="asset"></param>
-        /// <param name="nameProperty"></param>
-        /// <param name="pathProperty"></param>
-        /// <param name="buildIndexProperty"></param>
-        /// <param name="includedProperty"></param>
-        /// <param name="tagProperty"></param>
         /// <returns>True if a property has changed.</returns>
         public static bool RefreshSceneInfo(
             UnityEngine.Object asset,
