@@ -265,13 +265,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                 {
                     var node = nodeList.GetArrayElementAtIndex(i);
                     Transform nodeTransform = node.FindPropertyRelative("Transform").objectReferenceValue as Transform;
-                    GameObject nodeGameObject = nodeTransform.gameObject;
-
                     if (nodeTransform == null) { continue; }
 
-                    if (!CheckForStandardShader(nodeGameObject.GetComponentsInChildren<Renderer>()))
+                    if (!CheckForStandardShader(nodeTransform.GetComponentsInChildren<Renderer>()))
                     {
-                        Debug.LogWarning(nodeGameObject.name + " has a renderer that is not using " +  StandardShaderUtility.MrtkStandardShaderName + ". This will result in unexpected results with ScrollingObjectCollection");
+                        Debug.LogWarning(nodeTransform.name + " has a renderer that is not using " +  StandardShaderUtility.MrtkStandardShaderName + ". This will result in unexpected results with ScrollingObjectCollection");
                     }
                 }
             }
