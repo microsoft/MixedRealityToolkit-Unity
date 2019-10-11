@@ -340,9 +340,9 @@ namespace Microsoft.MixedReality.Toolkit
         /// Calculates how much scale is required for this Bounds to match another Bounds.
         /// </summary>
         /// <param name="otherBounds">Object representation to be scaled to</param>
-        /// <param name="padding">padding multiplied into otherbounds</param>
+        /// <param name="padding">padding multiplied into another bounds</param>
         /// <returns>Scale represented as a Vector3 </returns>
-        public static Vector3 ScaleFromBounds(this Bounds bounds, Bounds otherBounds, Vector3 padding = default)
+        public static Vector3 GetScaleToMatchBounds(this Bounds bounds, Bounds otherBounds, Vector3 padding = default)
         {
             Vector3 szA = otherBounds.size + new Vector3(otherBounds.size.x * padding.x, otherBounds.size.y * padding.y, otherBounds.size.z * padding.z);
             Vector3 szB = bounds.size;

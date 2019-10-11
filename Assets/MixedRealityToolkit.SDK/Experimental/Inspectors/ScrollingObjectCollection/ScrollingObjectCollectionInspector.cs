@@ -265,7 +265,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
                 {
                     var node = nodeList.GetArrayElementAtIndex(i);
                     Transform nodeTransform = node.FindPropertyRelative("Transform").objectReferenceValue as Transform;
-                    GameObject nodeGameObject = node.FindPropertyRelative("GameObject").objectReferenceValue as GameObject;
+                    GameObject nodeGameObject = nodeTransform.gameObject;
 
                     if (nodeTransform == null) { continue; }
 

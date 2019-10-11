@@ -16,9 +16,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public Vector2 Offset;
         public float Radius;
         public Transform Transform;
-        public GameObject GameObject;
-        public Collider Collider;
         public Collider[] Colliders;
-        public bool isClipped;
     }
 }

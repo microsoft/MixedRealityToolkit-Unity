@@ -135,6 +135,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Check if a node exists in the NodeList.
         /// </summary>
+        /// <param name="node">The Transfom belonging to the <see cref="ObjectCollectionNode"/></param>
+        /// <returns><see cref="true"/> when <paramref name="node"/> belongs to an element of the list.</returns>
         protected bool ContainsNode(Transform node)
         {
             if (node == null)
@@ -145,6 +147,31 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             {
                 if (NodeList[i].Transform == node)
                 {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Check if a node exists in the NodeList.
+        /// </summary>
+        /// <param name="node">The Transfom belonging to <see cref="ObjectCollectionNode"/></param>
+        /// <param name="nodeIndex">The index of the element in <see cref="NodeList"/></param>
+        /// <returns><see cref="true"/> when <paramref name="node"/> belongs to an element of the list.</returns>
+        protected bool ContainsNode(Transform node, out int nodeIndex)
+        {
+            nodeIndex = 0;
+            if (node == null)
+            {
+                return false;
+            }
+            for (int i = 0; i < NodeList.Count; i++)
+            {
+                if (NodeList[i].Transform == node)
+                {
+                    nodeIndex = i;
                     return true;
                 }
             }
