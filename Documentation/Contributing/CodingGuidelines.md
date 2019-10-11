@@ -532,4 +532,4 @@ Prefer using DateTime.UtcNow unless you actually need the localized times (a leg
 
 
 ## See also
- [C# coding conventions from MSDN](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/coding-conventions).
+ [C# coding conventions from MSDN](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/coding-conventions)
