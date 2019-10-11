@@ -71,6 +71,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        public override TransformFlags ConstraintType => TransformFlags.Scale;
+
         #endregion Properties
 
         #region MonoBehaviour Methods

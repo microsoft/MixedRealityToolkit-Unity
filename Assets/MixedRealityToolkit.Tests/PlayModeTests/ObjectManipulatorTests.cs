@@ -504,7 +504,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             manipHandler.ReleaseBehavior = 0;
             manipHandler.AllowFarManipulation = false;
 
-            var rotateConstraint = manipHandler.EnsureComponent<RotateConstraint>();
+            var rotateConstraint = manipHandler.EnsureComponent<RotationAxisConstraint>();
             rotateConstraint.TargetTransform = testObject.transform;
             rotateConstraint.ConstraintOnRotation = 0; // No constraint
 

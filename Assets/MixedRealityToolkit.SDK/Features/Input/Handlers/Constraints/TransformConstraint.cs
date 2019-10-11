@@ -7,8 +7,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
-    /// Component for setting the min/max scale values for ManipulationHandler
-    /// or BoundingBox
+    /// Base class for all constraints
     /// </summary>
     public abstract class TransformConstraint : MonoBehaviour
     {
@@ -28,6 +27,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         protected MixedRealityPose worldPoseOnManipulationStart;
+
+        public abstract TransformFlags ConstraintType { get; }
 
         #endregion Properties
 

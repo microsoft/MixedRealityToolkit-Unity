@@ -29,13 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             OneHanded = 1 << 0,
             TwoHanded = 1 << 1,
         }
-        [System.Flags]
-        public enum TwoHandedManipulation
-        {
-            Move = 1 << 0,
-            Rotate = 1 << 1,
-            Scale = 1 << 2
-        };
         public enum RotateInOneHandType
         {
             MaintainRotationToUser,
@@ -86,12 +79,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         [SerializeField]
         [EnumFlags]
         [Tooltip("What manipulation will two hands perform?")]
-        private TwoHandedManipulation twoHandedManipulationType = TwoHandedManipulation.Move | TwoHandedManipulation.Rotate | TwoHandedManipulation.Scale;
+        private TransformFlags twoHandedManipulationType = TransformFlags.Move | TransformFlags.Rotate | TransformFlags.Scale;
 
         /// <summary>
         /// What manipulation will two hands perform?
         /// </summary>
-        public TwoHandedManipulation TwoHandedManipulationType
+        public TransformFlags TwoHandedManipulationType
         {
             get => twoHandedManipulationType;
             set => twoHandedManipulationType = value;
@@ -302,7 +295,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         private Quaternion startObjectRotationFlatCameraSpace;
         private Quaternion hostWorldRotationOnManipulationStart;
 
-        private List<TransformConstraint> constraints;
+        private ConstraintManager constraints;
 
         private bool IsOneHandedManipulationEnabled => manipulationType.HasFlag(HandMovementType.OneHanded) && pointerIdToPointerMap.Count == 1;
         private bool IsTwoHandedManipulationEnabled => manipulationType.HasFlag(HandMovementType.TwoHanded) && pointerIdToPointerMap.Count > 1;
@@ -325,7 +318,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             }
 
             rigidBody = GetComponent<Rigidbody>();
-            constraints = GetComponents<TransformConstraint>().ToList();
+            constraints = new ConstraintManager(gameObject);
         }
         #endregion MonoBehaviour Functions
 
@@ -539,17 +532,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
             var handPositionArray = GetHandPositionArray();
 
-            if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Rotate))
+            if (twoHandedManipulationType.HasFlag(TransformFlags.Rotate))
             {
                 rotateLogic.Setup(handPositionArray, hostTransform);
             }
-            if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Move))
+            if (twoHandedManipulationType.HasFlag(TransformFlags.Move))
             {
                 MixedRealityPose pointerPose = GetPointersPose();
                 MixedRealityPose hostPose = new MixedRealityPose(hostTransform.position, hostTransform.rotation);
                 moveLogic.Setup(pointerPose, GetPointersGrabPoint(), hostPose, hostTransform.localScale);
             }
-            if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Scale))
+            if (twoHandedManipulationType.HasFlag(TransformFlags.Scale))
             {
                 scaleLogic.Setup(handPositionArray, hostTransform);
             }
@@ -562,18 +555,21 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
             var handPositionArray = GetHandPositionArray();
 
-            if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Rotate))
-            {
-                targetPose.Rotation = rotateLogic.Update(handPositionArray, targetPose.Rotation);
-            }
-            if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Scale))
+            if (twoHandedManipulationType.HasFlag(TransformFlags.Scale))
             {
                 targetScale = scaleLogic.UpdateMap(handPositionArray);
+                constraints.ApplyScaleConstraints(ref targetPose, ref targetScale);
             }
-            if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Move))
+            if (twoHandedManipulationType.HasFlag(TransformFlags.Rotate))
+            {
+                targetPose.Rotation = rotateLogic.Update(handPositionArray, targetPose.Rotation);
+                constraints.ApplyRotationConstraints(ref targetPose, ref targetScale);
+            }
+            if (twoHandedManipulationType.HasFlag(TransformFlags.Move))
             {
                 MixedRealityPose pose = GetPointersPose();
                 targetPose.Position = moveLogic.Update(pose, targetPose.Rotation, targetScale);
+                constraints.ApplyTranslationConstraints(ref targetPose, ref targetScale);
             }
 
             ApplyTargetTransform(targetPose, targetScale);
@@ -620,6 +616,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             IMixedRealityPointer pointer = pointerData.pointer;
 
             var targetPose = new MixedRealityPose(hostTransform.position, hostTransform.rotation);
+            var targetScale = hostTransform.localScale;
+
+            constraints.ApplyScaleConstraints(ref targetPose, ref targetScale);
+
             RotateInOneHandType rotateInOneHandType = isNearManipulation ? oneHandRotationModeNear : oneHandRotationModeFar;
             switch (rotateInOneHandType)
             {
@@ -658,10 +658,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     targetPose.Rotation = pointer.Rotation * objectToHandRotation;
                     break;
             }
-            
+            constraints.ApplyRotationConstraints(ref targetPose, ref targetScale);
+
             MixedRealityPose pointerPose = new MixedRealityPose(pointer.Position, pointer.Rotation);
-            targetPose.Position = moveLogic.Update(pointerPose, targetPose.Rotation, hostTransform.localScale);
-            
+            targetPose.Position = moveLogic.Update(pointerPose, targetPose.Rotation, targetScale);
+            constraints.ApplyTranslationConstraints(ref targetPose, ref targetScale);
+
             ApplyTargetTransform(targetPose, hostTransform.localScale);
         }
 
@@ -688,11 +690,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 wasKinematic = rigidBody.isKinematic;
                 rigidBody.isKinematic = true;
             }
-
-            foreach (var constraint in constraints)
-            {
-                constraint.Initialize(new MixedRealityPose(hostTransform.position, hostTransform.rotation));
-            }
+            
+            constraints.Initialize(new MixedRealityPose(hostTransform.position, hostTransform.rotation));
         }
 
         private void HandleManipulationEnded(Vector3 pointerGrabPoint, Vector3 pointerVelocity, Vector3 pointerAnglularVelocity)
@@ -728,11 +727,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         private void ApplyTargetTransform(MixedRealityPose targetPose, Vector3 targetScale)
         {
-            foreach (var constraint in constraints)
-            {
-                constraint.ApplyConstraint(ref targetPose, ref targetScale);
-            }
-
             hostTransform.position = SmoothTo(hostTransform.position, targetPose.Position, moveLerpTime);
             hostTransform.rotation = SmoothTo(hostTransform.rotation, targetPose.Rotation, rotateLerpTime);
             hostTransform.localScale = SmoothTo(hostTransform.localScale, targetScale, scaleLerpTime);

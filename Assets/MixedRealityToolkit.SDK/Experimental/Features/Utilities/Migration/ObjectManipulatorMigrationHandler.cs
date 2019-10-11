@@ -49,27 +49,27 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             switch (mh1.TwoHandedManipulationType)
             {
                 case ManipulationHandler.TwoHandedManipulation.Scale:
-                    mh2.TwoHandedManipulationType = ObjectManipulator.TwoHandedManipulation.Scale;
+                    mh2.TwoHandedManipulationType = TransformFlags.Scale;
                     break;
                 case ManipulationHandler.TwoHandedManipulation.Rotate:
-                    mh2.TwoHandedManipulationType = ObjectManipulator.TwoHandedManipulation.Rotate;
+                    mh2.TwoHandedManipulationType = TransformFlags.Rotate;
                     break;
                 case ManipulationHandler.TwoHandedManipulation.MoveScale:
-                    mh2.TwoHandedManipulationType = ObjectManipulator.TwoHandedManipulation.Move |
-                        ObjectManipulator.TwoHandedManipulation.Scale;
+                    mh2.TwoHandedManipulationType = TransformFlags.Move |
+                        TransformFlags.Scale;
                     break;
                 case ManipulationHandler.TwoHandedManipulation.MoveRotate:
-                    mh2.TwoHandedManipulationType = ObjectManipulator.TwoHandedManipulation.Move |
-                        ObjectManipulator.TwoHandedManipulation.Rotate;
+                    mh2.TwoHandedManipulationType = TransformFlags.Move |
+                        TransformFlags.Rotate;
                     break;
                 case ManipulationHandler.TwoHandedManipulation.RotateScale:
-                    mh2.TwoHandedManipulationType = ObjectManipulator.TwoHandedManipulation.Rotate |
-                        ObjectManipulator.TwoHandedManipulation.Scale;
+                    mh2.TwoHandedManipulationType = TransformFlags.Rotate |
+                        TransformFlags.Scale;
                     break;
                 case ManipulationHandler.TwoHandedManipulation.MoveRotateScale:
-                    mh2.TwoHandedManipulationType = ObjectManipulator.TwoHandedManipulation.Move |
-                        ObjectManipulator.TwoHandedManipulation.Rotate |
-                        ObjectManipulator.TwoHandedManipulation.Scale;
+                    mh2.TwoHandedManipulationType = TransformFlags.Move |
+                        TransformFlags.Rotate |
+                        TransformFlags.Scale;
                     break;
             }
 
@@ -77,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 
             if (mh1.ConstraintOnRotation != RotationConstraintType.None)
             {
-                var rotateConstraint = mh2.gameObject.AddComponent<RotateConstraint>();
+                var rotateConstraint = mh2.gameObject.AddComponent<RotationAxisConstraint>();
                 rotateConstraint.TargetTransform = mh1.HostTransform;
                 rotateConstraint.ConstraintOnRotation = RotationConstraintHelper.ConvertToAxisFlags(mh1.ConstraintOnRotation);
             }

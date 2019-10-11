@@ -27,6 +27,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set => constraintTransform = value;
         }
 
+        public override TransformFlags ConstraintType => TransformFlags.Move;
+
         private float distanceAtManipulationStart;
 
         #endregion Properties

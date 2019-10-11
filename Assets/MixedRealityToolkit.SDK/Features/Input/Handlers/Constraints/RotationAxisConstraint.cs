@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Component for limiting the rotation axes for ManipulationHandler
     /// or BoundingBox
     /// </summary>
-    public class RotateConstraint : TransformConstraint
+    public class RotationAxisConstraint : TransformConstraint
     {
         #region Properties
 
@@ -27,6 +27,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get => constraintOnRotation;
             set => constraintOnRotation = value;
         }
+
+        public override TransformFlags ConstraintType => TransformFlags.Rotate;
 
         #endregion Properties
 
@@ -56,9 +58,5 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         #endregion Public Methods
-
-        #region Private Methods
-
-        #endregion Private Methods
     }
 }

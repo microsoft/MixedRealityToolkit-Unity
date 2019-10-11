@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Component for limiting the translation axes for ManipulationHandler
     /// or BoundingBox
     /// </summary>
-    public class MoveConstraint : TransformConstraint
+    public class MoveAxisConstraint : TransformConstraint
     {
         #region Properties
 
@@ -41,6 +41,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set => RelativeToRotationAtManipulationStart = value;
         }
 
+        public override TransformFlags ConstraintType => TransformFlags.Move;
+
         #endregion Properties
 
         #region Public Methods
@@ -51,8 +53,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public override void ApplyConstraint(ref MixedRealityPose pose, ref Vector3 scale)
         {
-            Vector3 position = pose.Position;
             Quaternion inverseRotation = Quaternion.Inverse(worldPoseOnManipulationStart.Rotation);
+            Vector3 position = pose.Position;
             if (constraintOnMovement.HasFlag(AxisFlags.XAxis))
             {
                 if (relativeToRotationAtManipulationStart)
@@ -92,14 +94,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     position.z = worldPoseOnManipulationStart.Position.z;
                 }
             }
-
             pose.Position = position;
         }
 
         #endregion Public Methods
-
-        #region Private Methods
-
-        #endregion Private Methods
     }
 }

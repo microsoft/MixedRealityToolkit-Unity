@@ -17,6 +17,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private float initialDist;
         private Vector3 initialScale;
 
+        public override TransformFlags ConstraintType => TransformFlags.Scale;
+
         #endregion Properties
 
         #region Public Methods
