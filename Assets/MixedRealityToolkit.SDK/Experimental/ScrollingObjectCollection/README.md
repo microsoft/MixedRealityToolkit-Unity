@@ -1,6 +1,6 @@
 # Scrolling Object Collection
 
-The ScrollingObjectCollection an Object Collection that natively scrolls 3d objects. It supports scrolling pressable buttons and interactables as well as non-interactive objects. This collection supports both near and far input. In order to use ScrollingObjectCollection, your objects must use the MRTK Standard Shader in order for the clipping effect to work properly.
+The ScrollingObjectCollection is an Object Collection that natively scrolls 3D objects. It supports scrolling pressable buttons and Interactables as well as non-interactive objects. This collection supports both near and far input. In order to use ScrollingObjectCollection, objects must use the MRTK Standard Shader in order for the clipping effect to work properly.
 
 # Getting started with Scrolling Object Collection
 For convenience, there are two ScrollingObjectCollection Prefabs available to use. One is configured to work with 32x92mm PressableButton prefabs, and the other is for any object in a 32x32x32mm container.
