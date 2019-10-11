@@ -102,7 +102,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         private List<Transform> links = new List<Transform>();
         private List<Renderer> linkRenderers = new List<Renderer>();
 
-
         internal void Clear()
         {
             if (links != null)

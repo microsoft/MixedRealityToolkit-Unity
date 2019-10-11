@@ -28,7 +28,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         [SerializeField]
         [Tooltip("The object that the bounds control rig will be modifying.")]
         private GameObject targetObject;
-
+        /// <summary>
+        /// The object that the bounds control rig will be modifying.
+        /// </summary>
         public GameObject Target
         {
             get
@@ -118,17 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         /// <summary>
         /// Check to draw a tether point from the handles to the hand when manipulating.
         /// </summary>
-        public bool DrawTetherWhenManipulating
-        {
-            get
-            {
-                return drawTetherWhenManipulating;
-            }
-            set
-            {
-                drawTetherWhenManipulating = value;
-            }
-        }
+        public bool DrawTetherWhenManipulating => drawTetherWhenManipulating;
 
         [SerializeField]
         [Tooltip("Add a Collider here if you do not want the handle colliders to interact with another object's collider.")]
@@ -137,17 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         /// <summary>
         /// Add a Collider here if you do not want the handle colliders to interact with another object's collider.
         /// </summary>
-        public Collider HandlesIgnoreCollider
-        {
-            get
-            {
-                return handlesIgnoreCollider;
-            }
-            set
-            {
-                handlesIgnoreCollider = value;
-            }
-        }
+        public Collider HandlesIgnoreCollider => handlesIgnoreCollider;
 
         [SerializeField]
         [Tooltip("Flatten bounds in the specified axis or flatten the smallest one if 'auto' is selected")]
@@ -292,6 +274,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         // Pointer that is being used to manipulate the bounds control
         private IMixedRealityPointer currentPointer;
 
+        // parent/root game object for all bounding box visuals (like handles, edges, boxdisplay,..)
         private Transform rigRoot;
 
         // Half the size of the current bounds
@@ -373,9 +356,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                     ResetVisuals();
 
                     if (active)
+                    {
                         proximityEffect.ResetProximityScale();
-
-                   
+                    }
                 }
             }
         }
@@ -539,7 +522,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
 
             CalculateBoxPadding();
-
             TargetBounds.EnsureComponent<NearInteractionGrabbable>();
         }
 
@@ -751,8 +733,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
         }
 
-        
-
         private bool DoesActivationMatchFocus(FocusEventData eventData)
         {
             switch (activation)
@@ -908,7 +888,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         }
 
         #endregion Private Methods
-
 
         #region Used Event Handlers
 
