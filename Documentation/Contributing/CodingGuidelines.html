@@ -389,18 +389,13 @@ public float MyValue
     set{ myValue = value }
 }
 </code></pre>
-<h3 id="use-for-instead-of-foreach-when-possible">Use <code>for</code> instead of <code>foreach</code> when possible</h3>
-<p>In some cases a foreach is required, e.g. when looping over an IEnumerable.  But for performance benefit, avoid foreach when you can.</p>
-<h4 id="dont-10">Don't</h4>
-<pre><code class="lang-c#">foreach(var item in items)
-</code></pre>
 <h4 id="do-10">Do</h4>
 <pre><code class="lang-c#">int length = items.length; // cache reference to list/array length
 for(int i=0; i &lt; length; i++)
 </code></pre>
 <h3 id="cache-values-and-serialize-them-in-the-sceneprefab-whenever-possible">Cache values and serialize them in the scene/prefab whenever possible.</h3>
 <p>With the HoloLens in mind, it's best to optimize for performance and cache references in the scene or prefab to limit runtime memory allocations.</p>
-<h4 id="dont-11">Don't</h4>
+<h4 id="dont-10">Don't</h4>
 <pre><code class="lang-c#">void Update()
 {
     gameObject.GetComponent&lt;Renderer&gt;().Foo(Bar);
@@ -426,7 +421,7 @@ private void Update()
 </code></pre>
 <h3 id="cache-references-to-materials-do-not-call-the-material-each-time">Cache references to materials, do not call the &quot;.material&quot; each time.</h3>
 <p>Unity will create a new material each time you use &quot;.material&quot;, which will cause a memory leak if not cleaned up properly.</p>
-<h4 id="dont-12">Don't</h4>
+<h4 id="dont-11">Don't</h4>
 <pre><code class="lang-c#">public class MyClass
 {
     void Update()
@@ -521,8 +516,8 @@ public class MyClass
 <h3 id="prefer-datetimeutcnow-over-datetimenow">Prefer DateTime.UtcNow over DateTime.Now</h3>
 <p>DateTime.UtcNow is faster than DateTime.Now. In previous performance investigations we've found that using DateTime.Now adds significant overhead especially when used in the Update() loop. <a href="https://stackoverflow.com/questions/1561791/optimizing-alternatives-to-datetime-now">Others have hit the same issue</a>.</p>
 <p>Prefer using DateTime.UtcNow unless you actually need the localized times (a legitmate reason may be you wanting to show the current time in the user's time zone). If you are dealing with relative times (i.e. the delta between some last update and now), it's best to use DateTime.UtcNow to avoid the overhead of doing timezone conversions.</p>
-<h2 id="set-also">Set also</h2>
-<p><a href="https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/coding-conventions">C# coding conventions from MSDN</a>.</p>
+<h2 id="see-also">See also</h2>
+<p><a href="https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/coding-conventions">C# coding conventions from MSDN</a></p>
 </article>
           </div>
           
