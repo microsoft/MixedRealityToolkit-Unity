@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -85,6 +86,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         [DrawGizmo(GizmoType.Selected)]
         private void OnSceneGUI()
         {
+            if (touchable == null)
+            {
+                // The inspector code will prompt a developer to add a touchable.
+                return;
+            }
+
             if (!VisiblePlanes)
             {
                 return;
@@ -136,8 +143,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUI.BeginChangeCheck();
             }
 
+            var targetBehaviour = (MonoBehaviour)target;
+            bool isOpaque = targetBehaviour.isActiveAndEnabled;
+            float alpha = (isOpaque) ? 1.0f : 0.5f;
+
             // START PUSH
-            Handles.color = Color.cyan;
+            Handles.color = ApplyAlpha(Color.cyan, alpha);
             float newStartPushDistance = DrawPlaneAndHandle(startPlaneVertices, info.PlaneExtents * 0.5f, info.StartPushDistance, info, "Start Push Distance", editingEnabled);
             if (editingEnabled && newStartPushDistance != info.StartPushDistance)
             {
@@ -146,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             // RELEASE DISTANCE
-            Handles.color = Color.red;
+            Handles.color = ApplyAlpha(Color.red, alpha);
             float newReleaseDistance = DrawPlaneAndHandle(releasePlaneVertices, info.PlaneExtents * 0.3f, info.ReleaseDistance, info, "Release Distance", editingEnabled);
             if (editingEnabled && newReleaseDistance != info.ReleaseDistance)
             {
@@ -155,7 +166,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             // PRESS DISTANCE
-            Handles.color = Color.yellow;
+            Handles.color = ApplyAlpha(Color.yellow, alpha);
             float newPressDistance = DrawPlaneAndHandle(pressPlaneVertices, info.PlaneExtents * 0.35f, info.PressDistance, info, "Press Distance", editingEnabled);
             if (editingEnabled && newPressDistance != info.PressDistance)
             {
@@ -164,7 +175,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             // MAX PUSH
-            Handles.color = new Color(0.28f, 0.0f, 0.69f); //Purple
+            var purple = new Color(0.28f, 0.0f, 0.69f);
+            Handles.color = ApplyAlpha(purple, alpha);
             float newMaxPushDistance = DrawPlaneAndHandle(endPlaneVertices, info.PlaneExtents * 0.5f, info.MaxPushDistance, info, "Max Push Distance", editingEnabled);
             if (editingEnabled && newMaxPushDistance != info.MaxPushDistance)
             {
@@ -248,8 +260,69 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             serializedObject.Update();
 
+            if (target != null)
+            {
+                var helpURL = target.GetType().GetCustomAttribute<HelpURLAttribute>();
+                if (helpURL != null)
+                {
+                    InspectorUIUtility.RenderDocumentationButton(helpURL.URL);
+                }
+            }
+
+            // Ensure there is a touchable.
+            if (touchable == null)
+            {
+                EditorGUILayout.HelpBox($"{target.GetType().Name} requires a {nameof(NearInteractionTouchableSurface)}-derived component on this game object to function.", MessageType.Warning);
+
+                bool isUnityUI = (button.GetComponent<RectTransform>() != null);
+                var typeToAdd = isUnityUI ? typeof(NearInteractionTouchableUnityUI) : typeof(NearInteractionTouchable);
+
+                if (GUILayout.Button($"Add {typeToAdd.Name} component"))
+                {
+                    Undo.RecordObject(target, string.Concat($"Add {typeToAdd.Name}"));
+                    var addedComponent = button.gameObject.AddComponent(typeToAdd);
+                    touchable = (NearInteractionTouchableSurface)addedComponent;
+                }
+                else
+                {
+                    // It won't work without it, return to avoid nullrefs.
+                    return;
+                }
+            }
+
+            // Ensure that the touchable has EventsToReceive set to Touch
+            if (touchable.EventsToReceive != TouchableEventType.Touch)
+            {
+                EditorGUILayout.HelpBox($"The {nameof(NearInteractionTouchableSurface)}-derived component on this game object currently has its EventsToReceive set to '{touchable.EventsToReceive}'.  It must be set to 'Touch' in order for PressableButton to function propertly.", MessageType.Warning);
+
+                if (GUILayout.Button("Set EventsToReceive to 'Touch'"))
+                {
+                    Undo.RecordObject(touchable, string.Concat("Set EventsToReceive to Touch on ", touchable.name));
+                    touchable.EventsToReceive = TouchableEventType.Touch;
+                }
+            }
+
             EditorGUILayout.Space();
             EditorGUILayout.PropertyField(movingButtonVisuals);
+
+            // Ensure that there is a moving button visuals in the UnityUI case.  Even if it is not visible, it must be present to receive GraphicsRaycasts.
+            if (touchable is NearInteractionTouchableUnityUI)
+            {
+                if (movingButtonVisuals.objectReferenceValue == null)
+                {
+                    EditorGUILayout.HelpBox($"When used with a NearInteractionTouchableUnityUI, a MovingButtonVisuals is required, as it receives the GraphicsRaycast that allows pressing the button with near/hand interactions.  It does not need to be visible, but it must be able to receive GraphicsRaycasts.", MessageType.Warning);
+                }
+                else
+                {
+                    var movingVisualGameObject = (GameObject)movingButtonVisuals.objectReferenceValue;
+                    var movingGraphic = movingVisualGameObject.GetComponentInChildren<UnityEngine.UI.Graphic>();
+                    if (movingGraphic == null)
+                    {
+                        EditorGUILayout.HelpBox($"When used with a NearInteractionTouchableUnityUI, the MovingButtonVisuals must contain an Image, RawImage, or other Graphic element so that it can receive a GraphicsRaycast.", MessageType.Warning);
+                    }
+                }
+            }
+
             EditorGUILayout.LabelField("Press Settings", EditorStyles.boldLabel);
 
             EditorGUI.BeginChangeCheck();
@@ -286,21 +359,22 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 EditorGUI.BeginDisabledGroup(Application.isPlaying == true);
                 EditorGUILayout.Space();
                 EditorGUILayout.LabelField("Editor Settings", EditorStyles.boldLabel);
-                VisiblePlanes = SessionState.GetBool(VisiblePlanesKey, true);
-                bool newValue = EditorGUILayout.Toggle("Show Button Event Planes", VisiblePlanes);
-                if (newValue != VisiblePlanes)
+                var prevVisiblePlanes = SessionState.GetBool(VisiblePlanesKey, true);
+                VisiblePlanes = EditorGUILayout.Toggle("Show Button Event Planes", prevVisiblePlanes);
+                if (VisiblePlanes != prevVisiblePlanes)
                 {
-                    SessionState.SetBool(VisiblePlanesKey, newValue);
+                    SessionState.SetBool(VisiblePlanesKey, VisiblePlanes);
+                    EditorUtility.SetDirty(target);
                 }
 
                 // enable plane editing
                 {
                     EditorGUI.BeginDisabledGroup(VisiblePlanes == false);
-                    EditingEnabled = SessionState.GetBool(EditingEnabledKey, false);
-                    newValue = EditorGUILayout.Toggle("Make Planes Editable", EditingEnabled);
-                    if (newValue != EditingEnabled)
+                    var prevEditingEnabled = SessionState.GetBool(EditingEnabledKey, false);
+                    EditingEnabled = EditorGUILayout.Toggle("Make Planes Editable", EditingEnabled);
+                    if (EditingEnabled != prevEditingEnabled)
                     {
-                        SessionState.SetBool(EditingEnabledKey, newValue);
+                        SessionState.SetBool(EditingEnabledKey, EditingEnabled);
                         EditorUtility.SetDirty(target);
                     }
                     EditorGUI.EndDisabledGroup();
@@ -373,6 +447,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 return startDistance;
             }
+        }
+
+        private static Color ApplyAlpha(Color color, float alpha)
+        {
+            return new Color(color.r, color.g, color.b, color.a * alpha);
         }
     }
 }

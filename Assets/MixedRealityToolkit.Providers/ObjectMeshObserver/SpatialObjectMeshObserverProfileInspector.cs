@@ -78,7 +78,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
                 serializedObject.Update();
 
                 EditorGUILayout.PropertyField(spatialMeshObject);
-                MeshFilter[] filters = (spatialMeshObject.objectReferenceValue as GameObject)?.GetComponentsInChildren<MeshFilter>();
+                GameObject parent = spatialMeshObject.objectReferenceValue as GameObject;
+                MeshFilter[] filters = (parent != null) ? parent.GetComponentsInChildren<MeshFilter>() : null;
                 if ((filters == null) ||
                     (filters.Length == 0))
                 {

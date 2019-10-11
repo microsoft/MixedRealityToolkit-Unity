@@ -42,6 +42,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // will roughly wait for frame to also pass.
             Application.targetFrameRate = 50;
 
+            // Add a second cube in the background, sometimes physics checks fail with just one collider
+            // in scene
+            GameObject backgroundCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            backgroundCube.transform.position = Vector3.forward * 30;
+
             cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.transform.localPosition = new Vector3(0, 0, 2);
             cube.transform.localScale = new Vector3(.2f, .2f, .2f);
@@ -128,10 +133,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var inputSystem = PlayModeTestUtilities.GetInputSystem();
 
             var iss = PlayModeTestUtilities.GetInputSimulationService();
-            var oldIsp = iss.InputSimulationProfile;
-            var isp = ScriptableObject.CreateInstance<MixedRealityInputSimulationProfile>();
-            isp.HandSimulationMode = HandSimulationMode.Gestures;
-            iss.InputSimulationProfile = isp;
+            var oldHandSimMode = iss.HandSimulationMode;
+            iss.HandSimulationMode = HandSimulationMode.Gestures;
 
             Vector3 underPointerPos = new Vector3(0, 0, 2);
             Vector3 abovePointerPos = new Vector3(0, -2, 2);
@@ -204,7 +207,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             VerifyCursorState(inputSystem.GazeProvider.GazeCursor, CursorStateEnum.Select);
 
             // Restore the input simulation profile
-            iss.InputSimulationProfile = oldIsp;
+            iss.HandSimulationMode = oldHandSimMode;
             yield return null;
         }
 

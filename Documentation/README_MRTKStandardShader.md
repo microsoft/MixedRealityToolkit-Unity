@@ -19,9 +19,30 @@ You can find a comparison scene to compare and test the MRTK/Standard shader aga
 
 The MRTK/Standard shading system is an "uber shader" that uses [Unity's shader program variant feature](https://docs.unity3d.com/Manual/SL-MultipleProgramVariants.html) to auto-generate optimal shader code based on material properties. When a user selects material properties in the material inspector they only incur performance cost for features they have enabled.
 
-A custom material inspector exists for the MRTK/Standard shader called **MixedRealityStandardShaderGUI.cs**. The inspector automatically enables/disables shader features based on user selection and aides in setting up render state. For more information about each feature please hover over each property in the Unity Editor for a tooltip.
+## Material Inspector
+
+A custom material inspector exists for the MRTK/Standard shader called [`MixedRealityStandardShaderGUI.cs`](xref:Microsoft.MixedReality.Toolkit.Editor.MixedRealityStandardShaderGUI). The inspector automatically enables/disables shader features based on user selection and aides in setting up render state. For more information about each feature **please hover over each property in the Unity Editor for a tooltip.**
 
 ![Material Inspector](../Documentation/Images/MRTKStandardShader/MRTK_MaterialInspector.jpg)
+
+The first portion of the inspector controls the material's render state. *Rendering Mode* determines when and how a material will be rendered. The aim of the MRTK/Standard shader is to mirror the [rendering modes found in the Unity/Standard shader](https://docs.unity3d.com/Manual/StandardShaderMaterialParameterRenderingMode.html). The MRTK/Standard shader also includes an *Additive* rendering mode and *Custom* rendering mode for complete user control.
+
+| Rendering Mode |                                                                                                                                                                                                                                                                                                                                                                    |
+|----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Opaque         | (Default) Suitable for normal solid objects with no transparent areas.                                                                                                                                                                                                                                                                                             |
+| Cutout         | Allows creation of transparent effects that have hard edges between the opaque and transparent areas. In this mode, there are no semi-transparent areas, the texture is either 100% opaque, or invisible. This is useful when using transparency to create the shape of materials such as vegetation.                                                              |
+| Fade           | Allows the transparency values to entirely fade an object out, including any specular highlights or reflections it may have. This mode is useful if you want to animate an object fading in or out. It is not suitable for rendering realistic transparent materials such as clear plastic or glass because the reflections and highlights will also be faded out. |
+| Transparent    | Suitable for rendering realistic transparent materials such as clear plastic or glass. In this mode, the material itself will take on transparency values (based on the texture’s alpha channel and the alpha of the tint colour), however reflections and lighting highlights will remain visible at full clarity as is the case with real transparent materials. |
+| Additive       | Enables an additive blending mode which sums the previous pixel color with the current pixel color. This is the preferred transparency mode to avoid transparency sorting issues.                                                                                                                                                                                  |
+| Custom         | Allows for every aspect of the rendering mode to be controlled manually. For advanced usage only.                                                                                                                                                                                                                                                                  |                                                                                                                                            |
+
+![Rendering Modes](../Documentation/Images/MRTKStandardShader/MRTK_RenderingModes.jpg)
+
+| Cull Mode |                                                                                                                                                                                    |
+|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Off       | Disables face culling. Culling should only be set to Off when a two sided mesh is required.                                                                                        |
+| Front     | Enables front face culling.                                                                                                                                                        |
+| Back      | (Default) Enables [back face culling](https://en.wikipedia.org/wiki/Back-face_culling). Back face culling should be enabled as often as possible to improve rendering performance. |
 
 ## Performance
 
@@ -72,13 +93,23 @@ To perform the MRTK upgrade select: **Mixed Reality Toolkit -> Utilities -> Upgr
 
 After the upgrade occurs the MRTK/Standard shader will be altered and any magenta (shader error) materials should be fixed. To verify the upgrade successfully occurred please check the console for: **Upgraded Assets/MixedRealityToolkit/StandardAssets/Shaders/MixedRealityStandard.shader for use with the Lightweight Render Pipeline.**
 
+## UGUI Support
+
+The MRTK Standard shading system works with Unity's built in [UI system](https://docs.unity3d.com/Manual/UISystem.html). On Unity UI components the unity_ObjectToWorld matrix is not the transformation matrix of the local transform the Graphic component lives on but that of it's parent Canvas. Many MRTK/Standard shader effects require object scale to be known. To solve this issue the [`ScaleMeshEffect.cs`](xref:Microsoft.MixedReality.Toolkit.Input.Utilities.ScaleMeshEffect) will store scaling information into UV channel attributes during UI mesh construction.
+
+Note, when using a Unity Image component it is recommended to specify "None (Sprite)" for the Source Image to prevent Unity UI from generating extra vertices.
+
+A Canvas within the MRTK will prompt for the addition of a [`ScaleMeshEffect.cs`](xref:Microsoft.MixedReality.Toolkit.Input.Utilities.ScaleMeshEffect) when one is required:
+
+![scale mesh effect](../Documentation/Images/MRTKStandardShader/MRTK_ScaleMeshEffect.jpg)
+
 ## Texture Combiner
 
 To improve parity with the Unity Standard shader per pixel metallic, smoothness, emissive, and occlusion values can all be controlled via [channel packing](http://wiki.polycount.com/wiki/ChannelPacking). For example:
 
 ![channel map example](../Documentation/Images/MRTKStandardShader/MRTK_ChannelMap.gif)
 
-When you use channel packing, you only have to sample and load one texture into memory instead of four separate ones. When you write your texture maps in a program like Substance or Photoshop, you can pack hand pack them like so:
+When you use channel packing, you only have to sample and load one texture into memory instead of four separate ones. When you write your texture maps in a program like Substance or Photoshop, you can hand pack them like so:
 
 | Channel | Property             |
 |---------|----------------------|

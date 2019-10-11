@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Light light = lightObj.AddComponent<Light>();
             light.type = LightType.Directional;
 
-            var shader = Shader.Find("Mixed Reality Toolkit/Standard");
+            var shader = StandardShaderUtility.MrtkStandardShader;
 
             idleMaterial = new Material(shader);
             idleMaterial.color = Color.yellow;
@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return null;
         }
 
-        private const int numSteps = 30;
+        private const int numSteps = 10;
         // Scale larger than bounds vector to test bounds checks
         private float objectScale = 0.4f;
         private Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
@@ -111,11 +111,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private InputSimulationService inputSim;
         private IMixedRealityInputSystem inputSystem;
 
-        private T CreateTouchable<T>(float scale) where T : BaseNearInteractionTouchable
+        private T CreateTouchable<T>(float cubeScale) where T : BaseNearInteractionTouchable
+        {
+            return CreateTouchable<T>(new Vector3(1.0f, 1.0f, 0.1f) * cubeScale);
+        }
+
+        private T CreateTouchable<T>(Vector3 cubeDimensions) where T : BaseNearInteractionTouchable
         {
             // Set up cube with touchable
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            testObject.transform.localScale = new Vector3(1.0f, 1.0f, 0.1f) * scale;
+            testObject.transform.localScale = cubeDimensions;
             testObject.transform.position = objectPosition;
 
             testObject.GetComponent<Renderer>().material = idleMaterial;
@@ -124,6 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             return touchable;
         }
+
 
         private TouchEventCatcher CreateEventCatcher(BaseNearInteractionTouchable touchable)
         {
@@ -197,7 +203,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator NearInteractionTouchableVolumeVariant()
         {
-            var touchable = CreateTouchable<NearInteractionTouchableVolume>(objectScale);
+            var touchable = CreateTouchable<NearInteractionTouchableVolume>(Vector3.one);
 
             yield return new WaitForFixedUpdate();
             yield return null;
@@ -206,11 +212,25 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             using (var catcher = CreateEventCatcher(touchable))
             {
-                // Touch started and completed when entering and exiting the collider
+                // Touch started when entering collider
                 yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, objectPosition, numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
                 Assert.AreEqual(1, catcher.EventsStarted);
                 Assert.AreEqual(0, catcher.EventsCompleted);
-                yield return PlayModeTestUtilities.MoveHandFromTo(objectPosition, rightPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
+
+                // Ensure no touch up event fires while moving hand/pokepointer through collider to each corner of volume
+                Vector3[] cornerPositions = new Vector3[8];
+                touchable.GetComponent<BoxCollider>().bounds.GetCornerPositions(ref cornerPositions);
+                var currentPos = objectPosition;
+                for (int i = 0; i < cornerPositions.Length; i++)
+                {
+                    yield return PlayModeTestUtilities.MoveHandFromTo(currentPos, cornerPositions[i], numSteps, ArticulatedHandPose.GestureId.Open, Handedness.Right, inputSim);
+                    currentPos = cornerPositions[i];
+                    Assert.AreEqual(1, catcher.EventsStarted, "Received extra touch down when moving through volume to position " + currentPos);
+                    Assert.AreEqual(0, catcher.EventsCompleted, "Received extra touch up when moving through volume to position " + currentPos);
+                }
+
+                // Touch up when exit collider
+                yield return PlayModeTestUtilities.MoveHandFromTo(currentPos, rightPosition, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSim);
                 Assert.AreEqual(1, catcher.EventsStarted);
                 Assert.AreEqual(1, catcher.EventsCompleted);
 
@@ -588,6 +608,64 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsNull(pokePointer.CurrentTouchableObjectDown);
 
             yield return PlayModeTestUtilities.HideHand(handedness, inputSim);
+        }
+
+
+        /// <summary>
+        /// Test the SetTouchableCollider(BoxCollider collider) method by checking if the touch
+        /// event is raised when NearInteractionTouchable is added to a gameObject and if the 
+        /// bounds and box collider size is changed.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator NearInteractionTouchableSetTouchableCollider()
+        {
+            GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.position = new Vector3(0, 0, 2f);
+            cube.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+            BoxCollider boxCollider = cube.GetComponent<BoxCollider>();
+
+            var rightHand = new TestHand(Handedness.Right);
+            yield return rightHand.Show(new Vector3(0, 0, 1.5f));
+
+            // Add NearInteractionTouchable
+            var nearIT = cube.AddComponent<NearInteractionTouchable>();
+
+            // Create new gameObject for testing a new BoxCollider
+            GameObject cube2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube2.transform.position = new Vector3(-1f, 0, 2f);
+            cube2.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+
+            // Change touchableCollider to a new BoxCollider with a different size from another object
+            BoxCollider newBoxCollider = cube2.GetComponent<BoxCollider>();
+            newBoxCollider.size = new Vector3(4, 2, 1.2f);
+
+            using (var catcher = CreateEventCatcher(nearIT))
+            {
+                // Touch started and completed when entering and exiting the collider
+                yield return rightHand.Move(new Vector3(0, 0, 0.4f));
+                Assert.AreEqual(1, catcher.EventsStarted);
+                Assert.AreEqual(0, catcher.EventsCompleted);
+
+                yield return rightHand.Move(new Vector3(0, 0, -0.4f));
+                Assert.AreEqual(1, catcher.EventsStarted);
+                Assert.AreEqual(1, catcher.EventsCompleted);
+
+                // Set new touchableCollider bounds
+                nearIT.SetTouchableCollider(newBoxCollider);
+
+                // Move hand to the side 
+                yield return rightHand.Move(new Vector3(0.5f, 0, 0));
+                Assert.AreEqual(1, catcher.EventsStarted);
+                Assert.AreEqual(1, catcher.EventsCompleted);
+
+                // Move hand forward, on touch
+                yield return rightHand.Move(new Vector3(0, 0, 0.5f));
+                Assert.AreEqual(2, catcher.EventsStarted);
+
+                // Move the hand back, on touch exit
+                yield return rightHand.Move(new Vector3(0, 0, -0.5f));
+                Assert.AreEqual(2, catcher.EventsCompleted);
+            }
         }
     }
 }

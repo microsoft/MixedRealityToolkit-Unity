@@ -112,23 +112,25 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator ScaleViaNearInteration()
         {
+            const int numSteps = 2;
             var bbox = InstantiateSceneAndDefaultBbox();
+            bbox.ScaleHandleSize = 0.1f;
             yield return null;
             var bounds = bbox.GetComponent<BoxCollider>().bounds;
-            Debug.Assert(bounds.center == new Vector3(0, 0, 1.5f));
-            Debug.Assert(bounds.size == new Vector3(.5f, .5f, .5f));
+            Assert.AreEqual(new Vector3(0, 0, 1.5f), bounds.center);
+            Assert.AreEqual(new Vector3(.5f, .5f, .5f), bounds.size);
 
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
 
             // front right corner is corner 3
             var frontRightCornerPos = bbox.ScaleCorners[3].transform.position;
 
-            Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
-            int numSteps = 30;
+            TestHand rightHand = new TestHand(Handedness.Right);
+            yield return rightHand.Show(new Vector3(0, 0, 0.5f));
             var delta = new Vector3(0.1f, 0.1f, 0f);
-            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService, ArticulatedHandPose.GestureId.OpenSteadyGrabPoint, initialHandPosition);
-            yield return PlayModeTestUtilities.MoveHandFromTo(initialHandPosition, frontRightCornerPos, numSteps, ArticulatedHandPose.GestureId.OpenSteadyGrabPoint, Handedness.Right, inputSimulationService);
-            yield return PlayModeTestUtilities.MoveHandFromTo(frontRightCornerPos, frontRightCornerPos + delta, numSteps, ArticulatedHandPose.GestureId.Pinch, Handedness.Right, inputSimulationService);
+            yield return rightHand.MoveTo(frontRightCornerPos, numSteps);
+            yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return rightHand.Move(delta, numSteps);
 
             var endBounds = bbox.GetComponent<BoxCollider>().bounds;
             TestUtilities.AssertAboutEqual(endBounds.center, new Vector3(0.033f, 0.033f, 1.467f), "endBounds incorrect center");
@@ -278,6 +280,49 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreApproximatelyEqual(Vector3.Angle(cc0, cc0_rotated), 30, $"rotated angle is not correct. expected {rotateAmount} but got {Vector3.Angle(cc0, cc0_rotated)}");
 
             GameObject.Destroy(bbox.gameObject);
+        }
+
+        /// <summary>
+        /// Ensure that while using BoundingBox, if that object gets
+        /// deactivated, that BoundingBox no longer transforms that object.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator DisableObject()
+        {
+            float minScale = 0.5f;
+            float maxScale = 2f;
+
+            var bbox = InstantiateSceneAndDefaultBbox();
+            var scaleHandler = bbox.EnsureComponent<TransformScaleHandler>();
+            scaleHandler.ScaleMinimum = minScale;
+            scaleHandler.ScaleMaximum = maxScale;
+            yield return null;
+
+            Vector3 initialScale = bbox.transform.localScale;
+
+            const int numHandSteps = 1;
+
+            Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
+            var frontRightCornerPos = bbox.ScaleCorners[3].transform.position; // front right corner is corner 3
+            TestHand hand = new TestHand(Handedness.Right);
+
+            // Hands grab object at initial position
+            yield return hand.Show(initialHandPosition);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
+            yield return hand.MoveTo(frontRightCornerPos, numHandSteps);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            // Verify that scale works before deactivating
+            yield return hand.Move(Vector3.right * 0.2f, numHandSteps);
+            Vector3 afterTransformScale = bbox.transform.localScale;
+            Assert.AreNotEqual(initialScale, afterTransformScale);
+
+            // Deactivate object and ensure that we don't scale
+            bbox.gameObject.SetActive(false);
+            yield return null;
+            bbox.gameObject.SetActive(true);
+            yield return hand.Move(Vector3.right * 0.2f, numHandSteps);
+            Assert.AreEqual(afterTransformScale, bbox.transform.localScale);
         }
 
         /// <summary>

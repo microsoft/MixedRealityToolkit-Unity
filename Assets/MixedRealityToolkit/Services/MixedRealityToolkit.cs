@@ -957,18 +957,13 @@ namespace Microsoft.MixedReality.Toolkit
 
         private bool ExecuteOnAllServicesInOrder(Action<IMixedRealityService> execute)
         {
-            var orderedSystems = MixedRealityServiceRegistry.GetAllServices().OrderBy(m => m.Priority);
+            var orderedSystems = MixedRealityServiceRegistry.GetAllServices();
             return ExecuteOnAllServices(orderedSystems, execute);
-        }
-
-        private bool ExecuteOnAllServices(Action<IMixedRealityService> execute)
-        {
-            return ExecuteOnAllServices(MixedRealityServiceRegistry.GetAllServices(), execute);
         }
 
         private bool ExecuteOnAllServicesReverseOrder(Action<IMixedRealityService> execute)
         {
-            var orderedSystems = MixedRealityServiceRegistry.GetAllServices().OrderByDescending(m => m.Priority);
+            var orderedSystems = MixedRealityServiceRegistry.GetAllServices().Reverse();
             return ExecuteOnAllServices(orderedSystems, execute);
         }
 
