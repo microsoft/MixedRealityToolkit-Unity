@@ -1139,25 +1139,25 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
 
             public void ApplySettings()
             {
-                RenderSettings.ambientEquatorColor = currentRenderSettings.AmbientEquatorColor;
-                RenderSettings.ambientGroundColor = currentRenderSettings.AmbientGroundColor;
-                RenderSettings.ambientIntensity = currentRenderSettings.AmbientIntensity;
-                RenderSettings.ambientLight = currentRenderSettings.AmbientLight;
-                RenderSettings.ambientMode = (AmbientMode)currentRenderSettings.AmbientMode;
-                RenderSettings.ambientSkyColor = currentRenderSettings.AmbientSkyColor;
-                RenderSettings.customReflection = currentRenderSettings.CustomReflection;
-                RenderSettings.defaultReflectionMode = (DefaultReflectionMode)currentRenderSettings.DefaultReflectionMode;
-                RenderSettings.defaultReflectionResolution = currentRenderSettings.DefaultReflectionResolution;
-                RenderSettings.fog = currentRenderSettings.Fog;
-                RenderSettings.fogColor = currentRenderSettings.FogColor;
-                RenderSettings.fogDensity = currentRenderSettings.FogDensity;
-                RenderSettings.fogEndDistance = currentRenderSettings.LinearFogEnd;
-                RenderSettings.fogMode = currentRenderSettings.FogMode;
-                RenderSettings.fogStartDistance = currentRenderSettings.LinearFogStart;
-                RenderSettings.reflectionBounces = currentRenderSettings.ReflectionBounces;
-                RenderSettings.reflectionIntensity = currentRenderSettings.ReflectionIntensity;
-                RenderSettings.skybox = currentRenderSettings.SkyboxMaterial;
-                RenderSettings.subtractiveShadowColor = currentRenderSettings.SubtractiveShadowColor;
+                RenderSettings.ambientEquatorColor                  = currentRenderSettings.AmbientEquatorColor;
+                RenderSettings.ambientGroundColor                   = currentRenderSettings.AmbientGroundColor;
+                RenderSettings.ambientIntensity                     = currentRenderSettings.AmbientIntensity;
+                RenderSettings.ambientLight                         = currentRenderSettings.AmbientLight;
+                RenderSettings.ambientMode                          = (AmbientMode)currentRenderSettings.AmbientMode;
+                RenderSettings.ambientSkyColor                      = currentRenderSettings.AmbientSkyColor;
+                RenderSettings.customReflection                     = currentRenderSettings.CustomReflection;
+                RenderSettings.defaultReflectionMode                = (DefaultReflectionMode)currentRenderSettings.DefaultReflectionMode;
+                RenderSettings.defaultReflectionResolution          = currentRenderSettings.DefaultReflectionResolution;
+                RenderSettings.fog                                  = currentRenderSettings.Fog;
+                RenderSettings.fogColor                             = currentRenderSettings.FogColor;
+                RenderSettings.fogDensity                           = currentRenderSettings.FogDensity;
+                RenderSettings.fogEndDistance                       = currentRenderSettings.LinearFogEnd;
+                RenderSettings.fogMode                              = currentRenderSettings.FogMode;
+                RenderSettings.fogStartDistance                     = currentRenderSettings.LinearFogStart;
+                RenderSettings.reflectionBounces                    = currentRenderSettings.ReflectionBounces;
+                RenderSettings.reflectionIntensity                  = currentRenderSettings.ReflectionIntensity;
+                RenderSettings.skybox                               = currentRenderSettings.SkyboxMaterial;
+                RenderSettings.subtractiveShadowColor               = currentRenderSettings.SubtractiveShadowColor;
 
                 if (currentSunlightSettings.UseSunlight)
                 {
