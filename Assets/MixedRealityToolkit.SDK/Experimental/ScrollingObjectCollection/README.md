@@ -21,6 +21,6 @@ There are additional requirements when using buttons:
 
 # How it works
 
-ScrollingObjectCollection subscribes itself as a global listener for Touch and Pointer events, filtering for events that correspond to the items in the list. Initially, the Collection doesn't do anything and lets events pass through to the child objects, this allows child objects to be poked and selected as expected. Once the ScrollingObjectCollection has deemed an interaction a "drag", the collection begins marking all subsequent eventData as used and begins scrolling the list on the set axis.
+ScrollingObjectCollection subscribes itself as a global listener for Touch and Pointer events, filtering for events that correspond to the items in the list. Initially, the Collection doesn't do anything and lets events pass through to the child objects, this allows child objects to be poked and selected as expected. Once the ScrollingObjectCollection has deemed an interaction as a "drag", the collection begins marking all subsequent eventData as used and begins scrolling the list on the set axis.
 
 When using touch, the list will continue to scroll, until the PokePointer has crossed the touch plane in front of the list.
