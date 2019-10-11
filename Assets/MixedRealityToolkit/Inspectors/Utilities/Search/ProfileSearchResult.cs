@@ -8,17 +8,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
     /// <summary>
     /// Struct for pairing profiles with a set of search results
     /// </summary>
-    public struct ProfileSearchResult
+    public class ProfileSearchResult
     {
-        public static bool IsEmpty(ProfileSearchResult result)
-        {
-            return result.Profile == null || result.Fields == null;
-        }
-
         public int ProfileMatchStrength;
         public bool IsCustomProfile;
-        public int MaxFieldMatchStrength;
         public UnityEngine.Object Profile;
-        public List<FieldSearchResult> Fields;
+        public List<FieldSearchResult> Fields = new List<FieldSearchResult>();
     }
 }

@@ -13,8 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
         public string SearchFieldString;
         public bool RequireAllKeywords;
         public bool SearchTooltips;
-        public bool SearchFieldObjectNames;
-        public bool SearchChildProperties;
+        public bool SearchFieldContent;
         public HashSet<string> Keywords;
     }
 }
