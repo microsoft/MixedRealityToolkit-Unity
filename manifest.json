@@ -7891,6 +7891,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Editor.SceneInfoUtils.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.SceneInfoUtils.html",
+          "hash": "iDTUYuDIhC/nn49gU7xB2Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Editor.ScenePickPropertyDrawer.yml",
       "output": {
         ".html": {
@@ -8075,7 +8087,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Editor.html",
-          "hash": "eOTaW6p6R2e7aaGbEqwYYA=="
+          "hash": "2rBY7073/rZBrnbzUAxTEw=="
         }
       },
       "is_incremental": false,
@@ -20471,7 +20483,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "/8nb91C9rXm4MyB2xIvpCw=="
+          "hash": "yqrEzzxlWYglUICWWOH57w=="
         }
       },
       "is_incremental": false,
@@ -20539,7 +20551,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1166,
+          "total_file_count": 1167,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
