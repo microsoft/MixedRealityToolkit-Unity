@@ -2,182 +2,214 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Editor;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class MixedRealityProjectConfigurator
+namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
-    private const int SpatialAwarenessDefaultLayer = 31;
-
-    public enum Configurations
+    /// <summary>
+    /// Utility class that provides methods to both check and configure Unity project for desired settings
+    /// </summary>
+    public class MixedRealityProjectConfigurator
     {
-        LatestScriptingRuntime = 1,
-        ForceTextSerialization,
-        VisibleMetaFiles,
-        VirtualRealitySupported,
-        SinglePassInstancing,
-        SpatialAwarenessLayer,
+        private const int SpatialAwarenessDefaultLayer = 31;
 
-        // WSA Capabilities
-        SpatialPerceptionCapability,
-        MicrophoneCapability,
-        InternetClientCapability,
-        EyeTrackingCapability,
-    };
-
-    private static Dictionary<Configurations, Func<bool>> ConfigurationGetters = new Dictionary<Configurations, Func<bool>>()
-    {
-        { Configurations.LatestScriptingRuntime,  () => { return IsLatestScriptingRuntime(); } },
-        { Configurations.ForceTextSerialization,  () => { return IsForceTextSerialization(); } },
-        { Configurations.VisibleMetaFiles,  () => { return IsVisibleMetaFiles(); } },
-        { Configurations.VirtualRealitySupported,  () => { return PlayerSettings.virtualRealitySupported; } },
-        { Configurations.SinglePassInstancing,  () => { return MixedRealityOptimizeUtils.IsSinglePassInstanced(); } },
-        { Configurations.SpatialAwarenessLayer,  () => { return HasSpatialAwarenessLayer(); } },
-
-        { Configurations.SpatialPerceptionCapability,  () => { return PlayerSettings.WSA.GetCapability(PlayerSettings.WSACapability.SpatialPerception); } },
-        { Configurations.MicrophoneCapability,  () => { return PlayerSettings.WSA.GetCapability(PlayerSettings.WSACapability.Microphone); } },
-        { Configurations.InternetClientCapability,  () => { return PlayerSettings.WSA.GetCapability(PlayerSettings.WSACapability.InternetClient); } },
-    };
-
-    private static Dictionary<Configurations, Action> ConfigurationSetters = new Dictionary<Configurations, Action>()
-    {
-        { Configurations.LatestScriptingRuntime,  () => { SetLatestScriptingRuntime(); } },
-        { Configurations.ForceTextSerialization,  () => { SetForceTextSerialization(); } },
-        { Configurations.VisibleMetaFiles,  () => { SetVisibleMetaFiles(); } },
-        { Configurations.VirtualRealitySupported,  () => { PlayerSettings.virtualRealitySupported = true; } },
-        { Configurations.SinglePassInstancing,  () => { MixedRealityOptimizeUtils.SetSinglePassInstanced(); } },
-        { Configurations.SpatialAwarenessLayer,  () => { SetSpatialAwarenessLayer(); } },
-
-        { Configurations.SpatialPerceptionCapability,  () => { PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.SpatialPerception, true); } },
-        { Configurations.MicrophoneCapability,  () => { PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.Microphone, true); } },
-        { Configurations.InternetClientCapability,  () => { PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClient, true); } },
-    };
-
-    public static bool IsConfigured(Configurations config)
-    {
-        if (ConfigurationGetters.ContainsKey(config))
+        /// <summary>
+        /// List of available configurations to check and configure with this utility
+        /// </summary>
+        public enum Configurations
         {
-            return ConfigurationGetters[config].Invoke();
-        }
+            LatestScriptingRuntime = 1,
+            ForceTextSerialization,
+            VisibleMetaFiles,
+            VirtualRealitySupported,
+            SinglePassInstancing,
+            SpatialAwarenessLayer,
 
-        return false;
-    }
+            // WSA Capabilities
+            SpatialPerceptionCapability,
+            MicrophoneCapability,
+            InternetClientCapability,
+            EyeTrackingCapability,
+        };
 
-    public static void Configure(Configurations config)
-    {
-        if (ConfigurationSetters.ContainsKey(config))
+        // The check functions for each type of setting
+        private static Dictionary<Configurations, Func<bool>> ConfigurationGetters = new Dictionary<Configurations, Func<bool>>()
         {
-            ConfigurationSetters[config].Invoke();
-        }
-    }
+            { Configurations.LatestScriptingRuntime,  () => { return IsLatestScriptingRuntime(); } },
+            { Configurations.ForceTextSerialization,  () => { return IsForceTextSerialization(); } },
+            { Configurations.VisibleMetaFiles,  () => { return IsVisibleMetaFiles(); } },
+            { Configurations.VirtualRealitySupported,  () => { return PlayerSettings.virtualRealitySupported; } },
+            { Configurations.SinglePassInstancing,  () => { return MixedRealityOptimizeUtils.IsSinglePassInstanced(); } },
+            { Configurations.SpatialAwarenessLayer,  () => { return HasSpatialAwarenessLayer(); } },
 
-    public static bool IsProjectConfigured()
-    {
-        foreach (var getter in ConfigurationGetters)
+            { Configurations.SpatialPerceptionCapability,  () => { return PlayerSettings.WSA.GetCapability(PlayerSettings.WSACapability.SpatialPerception); } },
+            { Configurations.MicrophoneCapability,  () => { return PlayerSettings.WSA.GetCapability(PlayerSettings.WSACapability.Microphone); } },
+            { Configurations.InternetClientCapability,  () => { return PlayerSettings.WSA.GetCapability(PlayerSettings.WSACapability.InternetClient); } },
+        };
+
+        // The configure functions for each type of setting
+        private static Dictionary<Configurations, Action> ConfigurationSetters = new Dictionary<Configurations, Action>()
         {
-            if (!getter.Value.Invoke())
+            { Configurations.LatestScriptingRuntime,  () => { SetLatestScriptingRuntime(); } },
+            { Configurations.ForceTextSerialization,  () => { SetForceTextSerialization(); } },
+            { Configurations.VisibleMetaFiles,  () => { SetVisibleMetaFiles(); } },
+            { Configurations.VirtualRealitySupported,  () => { PlayerSettings.virtualRealitySupported = true; } },
+            { Configurations.SinglePassInstancing,  () => { MixedRealityOptimizeUtils.SetSinglePassInstanced(); } },
+            { Configurations.SpatialAwarenessLayer,  () => { SetSpatialAwarenessLayer(); } },
+
+            { Configurations.SpatialPerceptionCapability,  () => { PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.SpatialPerception, true); } },
+            { Configurations.MicrophoneCapability,  () => { PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.Microphone, true); } },
+            { Configurations.InternetClientCapability,  () => { PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClient, true); } },
+        };
+
+        /// <summary>
+        /// Checks whether the supplied setting type has been properly configured
+        /// </summary>
+        /// <param name="config">The setting configuration that needs to be checked</param>
+        /// <returns>true if properly configured, false otherwise</returns>
+        public static bool IsConfigured(Configurations config)
+        {
+            if (ConfigurationGetters.ContainsKey(config))
             {
-                return false;
+                return ConfigurationGetters[config].Invoke();
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Configures the supplied setting type to the desired values for MRTK
+        /// </summary>
+        /// <param name="config">The setting configuration that needs to be checked</param>
+        public static void Configure(Configurations config)
+        {
+            if (ConfigurationSetters.ContainsKey(config))
+            {
+                ConfigurationSetters[config].Invoke();
             }
         }
 
-        return true;
-    }
-
-    public static void ConfigureProject(HashSet<Configurations> filter = null)
-    {
-        if (filter == null)
+        /// <summary>
+        /// Is this Unity project configured for all setting types properly
+        /// </summary>
+        /// <returns>true if entire project is configured as recommended, false otherwise</returns>
+        public static bool IsProjectConfigured()
         {
-            foreach (var setter in ConfigurationSetters)
+            foreach (var getter in ConfigurationGetters)
             {
-                setter.Value.Invoke();
-            }
-        }
-        else
-        {
-            foreach (var key in filter)
-            {
-                if (ConfigurationSetters.ContainsKey(key))
+                if (!getter.Value.Invoke())
                 {
-                    ConfigurationSetters[key].Invoke();
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Configures the Unity project properly for the list of setting types provided. If null, configures all possibles setting types
+        /// </summary>
+        /// <param name="filter">List of setting types to target with configure action</param>
+        public static void ConfigureProject(HashSet<Configurations> filter = null)
+        {
+            if (filter == null)
+            {
+                foreach (var setter in ConfigurationSetters)
+                {
+                    setter.Value.Invoke();
+                }
+            }
+            else
+            {
+                foreach (var key in filter)
+                {
+                    if (ConfigurationSetters.ContainsKey(key))
+                    {
+                        ConfigurationSetters[key].Invoke();
+                    }
+                }
+            }
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
+        }
+
+        public static bool IsLatestScriptingRuntime()
+        {
+#if !UNITY_2019_3_OR_NEWER
+            return PlayerSettings.scriptingRuntimeVersion == ScriptingRuntimeVersion.Latest;
+#else
+        return true;
+#endif
+        }
+
+        public static void SetLatestScriptingRuntime()
+        {
+#if !UNITY_2019_3_OR_NEWER
+            PlayerSettings.scriptingRuntimeVersion = ScriptingRuntimeVersion.Latest;
+#endif
+        }
+
+        public static bool IsForceTextSerialization()
+        {
+            return EditorSettings.serializationMode == SerializationMode.ForceText;
+        }
+
+        public static void SetForceTextSerialization()
+        {
+            EditorSettings.serializationMode = SerializationMode.ForceText;
+        }
+
+        public static bool IsVisibleMetaFiles()
+        {
+            return EditorSettings.externalVersionControl.Equals("Visible Meta Files");
+        }
+
+        public static void SetVisibleMetaFiles()
+        {
+            EditorSettings.externalVersionControl = "Visible Meta Files";
+        }
+
+        public static bool HasSpatialAwarenessLayer()
+        {
+            return !string.IsNullOrEmpty(LayerMask.LayerToName(SpatialAwarenessDefaultLayer));
+        }
+
+        public static void SetSpatialAwarenessLayer()
+        {
+            if (!HasSpatialAwarenessLayer())
+            {
+                if (EditorLayerExtensions.SetupLayer(SpatialAwarenessDefaultLayer, "Spatial Awareness"))
+                {
+                    Debug.LogWarning(string.Format($"Can't modify project layers. It's possible the format of the layers and tags data has changed in this version of Unity. Set layer {SpatialAwarenessDefaultLayer} to \"Spatial Awareness\" manually via Project Settings > Tags and Layers window."));
                 }
             }
         }
 
-        AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
-    }
-
-    public static bool IsLatestScriptingRuntime()
-    {
-        return PlayerSettings.scriptingRuntimeVersion == ScriptingRuntimeVersion.Latest;
-    }
-
-    public static void SetLatestScriptingRuntime()
-    {
-        PlayerSettings.scriptingRuntimeVersion = ScriptingRuntimeVersion.Latest;
-    }
-
-    public static bool IsForceTextSerialization()
-    {
-        return EditorSettings.serializationMode == SerializationMode.ForceText;
-    }
-
-    public static void SetForceTextSerialization()
-    {
-        EditorSettings.serializationMode = SerializationMode.ForceText;
-    }
-
-    public static bool IsVisibleMetaFiles()
-    {
-        return EditorSettings.externalVersionControl.Equals("Visible Meta Files");
-    }
-
-    public static void SetVisibleMetaFiles()
-    {
-        EditorSettings.externalVersionControl = "Visible Meta Files";
-    }
-
-    public static bool HasSpatialAwarenessLayer()
-    {
-        return !string.IsNullOrEmpty(LayerMask.LayerToName(SpatialAwarenessDefaultLayer));
-    }
-
-    public static void SetSpatialAwarenessLayer()
-    {
-        if (!HasSpatialAwarenessLayer())
+        /// <summary>
+        /// Discover and set the appropriate XR Settings for the current build target.
+        /// </summary>
+        public static void ApplyXRSettings()
         {
-            if (EditorLayerExtensions.SetupLayer(SpatialAwarenessDefaultLayer, "Spatial Awareness"))
+            BuildTargetGroup targetGroup = EditorUserBuildSettings.selectedBuildTargetGroup;
+
+            List<string> targetSDKs = new List<string>();
+            foreach (string sdk in PlayerSettings.GetAvailableVirtualRealitySDKs(targetGroup))
             {
-                Debug.LogWarning(string.Format($"Can't modify project layers. It's possible the format of the layers and tags data has changed in this version of Unity. Set layer {SpatialAwarenessDefaultLayer} to \"Spatial Awareness\" manually via Project Settings > Tags and Layers window."));
+                if (sdk.Contains("OpenVR") || sdk.Contains("Windows"))
+                {
+                    targetSDKs.Add(sdk);
+                }
+            }
+
+            if (targetSDKs.Count != 0)
+            {
+                PlayerSettings.SetVirtualRealitySDKs(targetGroup, targetSDKs.ToArray());
+                PlayerSettings.SetVirtualRealitySupported(targetGroup, true);
             }
         }
     }
-
-    /// <summary>
-    /// Discover and set the appropriate XR Settings for the current build target.
-    /// </summary>
-    public static void ApplyXRSettings()
-    {
-        BuildTargetGroup targetGroup = EditorUserBuildSettings.selectedBuildTargetGroup;
-
-        List<string> targetSDKs = new List<string>();
-        foreach (string sdk in PlayerSettings.GetAvailableVirtualRealitySDKs(targetGroup))
-        {
-            if (sdk.Contains("OpenVR") || sdk.Contains("Windows"))
-            {
-                targetSDKs.Add(sdk);
-            }
-        }
-
-        if (targetSDKs.Count != 0)
-        {
-            PlayerSettings.SetVirtualRealitySDKs(targetGroup, targetSDKs.ToArray());
-            PlayerSettings.SetVirtualRealitySupported(targetGroup, true);
-        }
-    }
-
 }

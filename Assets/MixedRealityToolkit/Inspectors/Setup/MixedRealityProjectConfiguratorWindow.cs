@@ -7,7 +7,7 @@ using UnityEditor;
 using UnityEditor.Compilation;
 using UnityEngine;
 
-using MRConfig = MixedRealityProjectConfigurator.Configurations;
+using MRConfig = Microsoft.MixedReality.Toolkit.Utilities.Editor.MixedRealityProjectConfigurator.Configurations;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
@@ -23,15 +23,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {MRConfig.MicrophoneCapability, true },
             {MRConfig.InternetClientCapability, true },
             {MRConfig.SpatialPerceptionCapability, true },
-            //{MRConfig.EyeTrackingCapability, true },
         };
 
-        private bool showConfigurations = false;
         private const string WindowKey = "_MixedRealityToolkit_Editor_MixedRealityProjectConfiguratorWindow";
+        private const float Default_Window_Height = 600.0f;
+        private const float Default_Window_Width = 400.0f;
 
         private readonly GUIContent ApplyButtonContent = new GUIContent("Apply", "Apply configurations to this Unity Project");
         private readonly GUIContent LaterButtonContent = new GUIContent("Later", "Do not show this popup notification until next session");
         private readonly GUIContent IgnoreButtonContent = new GUIContent("Ignore", "Modify this preference under Edit > Project Settings > MRTK");
+
+        private bool showConfigurations = false;
 
         [MenuItem("Mixed Reality Toolkit/Utilities/Configure Unity Project", false, 0)]
         public static void ShowWindow()
@@ -44,6 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 var window = ScriptableObject.CreateInstance<MixedRealityProjectConfiguratorWindow>();
                 window.titleContent = new GUIContent("MRTK Project Configurator", EditorGUIUtility.IconContent("_Popup").image);
+                window.position = new Rect(Screen.width / 2.0f, Screen.height / 2.0f, Default_Window_Height, Default_Window_Width);
                 window.ShowUtility();
             }
         }
@@ -134,7 +137,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
                 RenderToggle(MRConfig.MicrophoneCapability, "Enable Microphone Capability");
                 RenderToggle(MRConfig.InternetClientCapability, "Enable Internet Client Capability");
-                //RenderToggle(MRConfig.EyeTrackingCapabilityKey, "Enable Eye Tracking Capability");
                 RenderToggle(MRConfig.SpatialPerceptionCapability, "Enable Spatial Perception Capability");
             }
             else
