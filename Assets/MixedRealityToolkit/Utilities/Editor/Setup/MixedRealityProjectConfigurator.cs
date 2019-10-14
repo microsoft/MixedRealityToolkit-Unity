@@ -14,7 +14,8 @@ public class MixedRealityProjectConfigurator
 
     public enum Configurations
     {
-        ForceTextSerialization = 1,
+        LatestScriptingRuntime = 1,
+        ForceTextSerialization,
         VisibleMetaFiles,
         VirtualRealitySupported,
         SinglePassInstancing,
@@ -29,6 +30,7 @@ public class MixedRealityProjectConfigurator
 
     private static Dictionary<Configurations, Func<bool>> ConfigurationGetters = new Dictionary<Configurations, Func<bool>>()
     {
+        { Configurations.LatestScriptingRuntime,  () => { return IsLatestScriptingRuntime(); } },
         { Configurations.ForceTextSerialization,  () => { return IsForceTextSerialization(); } },
         { Configurations.VisibleMetaFiles,  () => { return IsVisibleMetaFiles(); } },
         { Configurations.VirtualRealitySupported,  () => { return PlayerSettings.virtualRealitySupported; } },
@@ -42,6 +44,7 @@ public class MixedRealityProjectConfigurator
 
     private static Dictionary<Configurations, Action> ConfigurationSetters = new Dictionary<Configurations, Action>()
     {
+        { Configurations.LatestScriptingRuntime,  () => { SetLatestScriptingRuntime(); } },
         { Configurations.ForceTextSerialization,  () => { SetForceTextSerialization(); } },
         { Configurations.VisibleMetaFiles,  () => { SetVisibleMetaFiles(); } },
         { Configurations.VirtualRealitySupported,  () => { PlayerSettings.virtualRealitySupported = true; } },
@@ -106,6 +109,16 @@ public class MixedRealityProjectConfigurator
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
+    }
+
+    public static bool IsLatestScriptingRuntime()
+    {
+        return PlayerSettings.scriptingRuntimeVersion == ScriptingRuntimeVersion.Latest;
+    }
+
+    public static void SetLatestScriptingRuntime()
+    {
+        PlayerSettings.scriptingRuntimeVersion = ScriptingRuntimeVersion.Latest;
     }
 
     public static bool IsForceTextSerialization()

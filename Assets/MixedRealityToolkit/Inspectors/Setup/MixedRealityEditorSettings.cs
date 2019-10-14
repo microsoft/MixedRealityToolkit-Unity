@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             // Detect when we enter player mode so we can try checking for optimal configuration
             EditorApplication.playModeStateChanged += OnPlayStateModeChanged;
 
-            if (IgnoreSession || Application.isPlaying)
+            if (Application.isPlaying)
             {
                 return;
             }
@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <inheritdoc />
         public void OnActiveBuildTargetChanged(BuildTarget previousTarget, BuildTarget newTarget)
         {
-            SessionState.SetBool(SessionKey, false);
+            IgnoreSession = false;
         }
 
         private static void OnPlayStateModeChanged(PlayModeStateChange state)
@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
         }
 
-        private static bool IgnoreSession
+        public static bool IgnoreSession
         {
             get
             {
@@ -67,84 +67,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private static void ShowProjectConfigurationDialog()
         {
-            if (!MixedRealityPreferences.IgnoreSettingsPrompt
-                && !MixedRealityProjectConfiguratorWindow.IsOpen
+            if (!IgnoreSession
+                && !MixedRealityPreferences.IgnoreSettingsPrompt
                 && !MixedRealityProjectConfigurator.IsProjectConfigured())
             {
-                const string dialogTitle = "Apply Mixed Reality Toolkit Default Settings?";
-                const string dialogContent = "The Mixed Reality Toolkit would like to auto-apply useful project settings to your project";
-                var choice = EditorUtility.DisplayDialogComplex(dialogTitle, dialogContent, "Configure", "Later", "Ignore");
-
-                switch (choice)
-                {
-                    case 0:
-                        MixedRealityProjectConfiguratorWindow.OpenWindow();
-                        break;
-                    case 1:
-                        IgnoreSession = true;
-                        break;
-                    case 2:
-                        MixedRealityPreferences.IgnoreSettingsPrompt = true;
-                        break;
-                }
+                MixedRealityProjectConfiguratorWindow.ShowWindow();
             }
-        }
 
-        /*
-        /// <summary>
-        /// Show dialog to confirm MRTK can apply useful settings 
-        /// </summary>
-        private static void ShowSettingsDialog()
-        {
-            if (!MixedRealityPreferences.IgnoreSettingsPrompt && !MixedRealityProjectConfigurator.IsProjectConfigured())
-            {
-                
-                StringBuilder builder = new StringBuilder();
-                builder.Append("The Mixed Reality Toolkit needs to apply the following settings to your project:\n\n");
-
-                if (!MixedRealityProjectConfigurator.IsForceTextSerialization())
-                {
-                    builder.AppendLine("- Force Text Serialization");
-                }
-
-                if (!MixedRealityProjectConfigurator.IsVisibleMetaFiles())
-                {
-                    builder.AppendLine("- Visible meta files");
-                }
-
-                if (!PlayerSettings.virtualRealitySupported)
-                {
-                    builder.AppendLine("- Enable XR Settings for your current platform");
-                }
-
-                if (!MixedRealityOptimizeUtils.IsSinglePassInstanced())
-                {
-                    builder.AppendLine("- Set Single Pass Instanced rendering path");
-                }
-
-                if (!MixedRealityProjectConfigurator.HasSpatialAwarenessLayer())
-                {
-                    builder.AppendLine("- Set Default Spatial Awareness Layer");
-                }
-
-                builder.Append("\nWould you like to make these changes?");
-                
-
-                var choice = EditorUtility.DisplayDialogComplex("Apply Mixed Reality Toolkit Default Settings?", builder.ToString(), "Apply", "Ignore", "Later");
-
-                switch (choice)
-                {
-                    case 0:
-                        MixedRealityProjectConfigurator.ConfigureProject();
-                        break;
-                    case 1:
-                        MixedRealityPreferences.IgnoreSettingsPrompt = true;
-                        break;
-                    case 2:
-                        break;
-                }
-
-                // TODO: Where to put this???
+            /*
+             // TODO: Where to put this???
 #if !UNITY_2019_3_OR_NEWER
                 if (PlayerSettings.scriptingRuntimeVersion != ScriptingRuntimeVersion.Latest)
                 {
@@ -156,8 +87,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     EditorApplication.OpenProject(Directory.GetParent(Application.dataPath).ToString());
                 }
 #endif
-            }
-        }*/
+*/
+        }
 
         /// <summary>
         /// Checks critical project settings and suggests changes to optimize performance via logged warnings
