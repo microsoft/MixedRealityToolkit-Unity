@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             // Detect when we enter player mode so we can try checking for optimal configuration
             EditorApplication.playModeStateChanged += OnPlayStateModeChanged;
 
-            if (Application.isPlaying)
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
             {
                 return;
             }
@@ -73,21 +73,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 MixedRealityProjectConfiguratorWindow.ShowWindow();
             }
-
-            /*
-             // TODO: Where to put this???
-#if !UNITY_2019_3_OR_NEWER
-                if (PlayerSettings.scriptingRuntimeVersion != ScriptingRuntimeVersion.Latest)
-                {
-                    PlayerSettings.scriptingRuntimeVersion = ScriptingRuntimeVersion.Latest;
-
-                    AssetDatabase.SaveAssets();
-                    AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
-
-                    EditorApplication.OpenProject(Directory.GetParent(Application.dataPath).ToString());
-                }
-#endif
-*/
         }
 
         /// <summary>
