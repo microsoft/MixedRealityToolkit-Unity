@@ -671,7 +671,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     break;
             }
 
-            return diffRotation * hostWorldRotationOnManipulationStart;
+            return useLocalSpaceForConstraint
+                ? hostWorldRotationOnManipulationStart * diffRotation
+                : diffRotation * hostWorldRotationOnManipulationStart;
         }
 
         private void HandleOneHandMoveUpdated()
