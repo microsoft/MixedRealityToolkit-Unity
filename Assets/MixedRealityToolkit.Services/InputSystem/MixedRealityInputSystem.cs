@@ -25,6 +25,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc/>
+        public override string Name { get; protected set; } = "Mixed Reality Input System";
+
         /// <inheritdoc />
         public event Action InputEnabled;
 
@@ -179,18 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (profile.PointerProfile != null)
             {
-                if (profile.PointerProfile.GazeProviderType?.Type != null)
-                {
-                    GazeProvider = CameraCache.Main.gameObject.EnsureComponent(profile.PointerProfile.GazeProviderType.Type) as IMixedRealityGazeProvider;
-                    GazeProvider.GazeCursorPrefab = profile.PointerProfile.GazeCursorPrefab;
-                    // Current implementation implements both provider types in one concrete class.
-                    EyeGazeProvider = GazeProvider as IMixedRealityEyeGazeProvider;
-                }
-                else
-                {
-                    Debug.LogError("The Input system is missing the required GazeProviderType!");
-                    return;
-                }
+                InstantiateGazeProvider(profile.PointerProfile);
             }
             else
             {
@@ -225,10 +217,33 @@ namespace Microsoft.MixedReality.Toolkit.Input
             handTrackingInputEventData = new HandTrackingInputEventData(EventSystem.current);
         }
 
+        private void InstantiateGazeProvider(MixedRealityPointerProfile pointerProfile)
+        {
+            if (pointerProfile?.GazeProviderType?.Type != null)
+            {
+                GazeProvider = CameraCache.Main.gameObject.EnsureComponent(pointerProfile.GazeProviderType.Type) as IMixedRealityGazeProvider;
+                GazeProvider.GazeCursorPrefab = pointerProfile.GazeCursorPrefab;
+                // Current implementation implements both provider types in one concrete class.
+                EyeGazeProvider = GazeProvider as IMixedRealityEyeGazeProvider;
+            }
+            else
+            {
+                Debug.LogError("The Input system is missing the required GazeProviderType!");
+                return;
+            }
+        }
+
         /// <inheritdoc />
         public override void Enable()
         {
             MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
+
+            // If the system gets disabled, the gaze provider is destroyed.
+            // Ensure that it gets recreated on when reenabled.
+            if (GazeProvider == null)
+            {
+                InstantiateGazeProvider(profile?.PointerProfile);
+            }
 
             if ((GetDataProviders().Count == 0) && (profile != null))
             {
@@ -565,7 +580,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Unregister a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> from listening to input events.
         /// </summary>
-        /// <param name="listener"></param>
         public override void Unregister(GameObject listener)
         {
             base.Unregister(listener);
@@ -956,7 +970,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaisePointerDown(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
         {
-            pointer.IsFocusLocked = (pointer.Result?.Details.Object != null);
+            // Only lock the object if there is a grabbable above in the hierarchy
+            Transform currentObject = pointer.Result?.Details.Object?.transform;
+            IMixedRealityPointerHandler ancestorPointerHandler = null;
+            while(currentObject != null && ancestorPointerHandler == null)
+            {
+                foreach(var component in currentObject.GetComponents<Component>())
+                {
+                    if (component is IMixedRealityPointerHandler)
+                    {
+                        ancestorPointerHandler = (IMixedRealityPointerHandler) component;
+                        break;
+                    }
+                }
+                currentObject = currentObject.transform.parent;
+            }
+            pointer.IsFocusLocked = ancestorPointerHandler != null;
 
             pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
 

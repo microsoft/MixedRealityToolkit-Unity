@@ -31,9 +31,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Creates a new scene with sceneName and saves to path.
         /// </summary>
-        /// <param name="sceneName"></param>
-        /// <param name="path"></param>
-        /// <returns></returns>
         public static SceneInfo CreateAndSaveScene(string sceneName, string path = null)
         {
             SceneInfo sceneInfo = default(SceneInfo);
@@ -146,9 +143,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// Gets the build index for a scene GUID.
         /// There are many ways to do this in Unity but this is the only 100% reliable method I know of.
         /// </summary>
-        /// <param name="sceneGUID"></param>
-        /// <param name="scenes"></param>
-        /// <returns></returns>
         public static int GetSceneBuildIndex(GUID sceneGUID, List<EditorBuildSettingsScene> scenes)
         {
             int buildIndex = -1;
@@ -226,8 +220,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Finds the scene if loaded.
         /// </summary>
-        /// <param name="sceneInfo"></param>
-        /// <param name="editorScene"></param>
         /// <returns>True if scene is loaded</returns>
         public static bool GetSceneIfLoaded(SceneInfo sceneInfo, out Scene editorScene)
         {
@@ -239,7 +231,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Returns all root GameObjects in all open scenes.
         /// </summary>
-        /// <returns></returns>
         public static IEnumerable<GameObject> GetRootGameObjectsInLoadedScenes()
         {
             for (int i = 0; i < EditorSceneManager.sceneCount; i++)
@@ -259,8 +250,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Unloads a scene in the editor and catches any errors that can happen along the way.
         /// </summary>
-        /// <param name="sceneInfo"></param>
-        /// <returns></returns>
         public static bool UnloadScene(SceneInfo sceneInfo, bool removeFromHeirarchy)
         {
             Scene editorScene = default(Scene);
@@ -301,8 +290,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// Attempts to set the active scene and catches all the various ways it can go wrong.
         /// Returns true if successful.
         /// </summary>
-        /// <param name="scene"></param>
-        /// <returns></returns>
         public static bool SetActiveScene(Scene scene)
         {
             try
@@ -336,7 +323,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Copies the lighting settings from the lighting scene to the active scene
         /// </summary>
-        /// <param name="lightingScene"></param>
         public static void CopyLightingSettingsToActiveScene(Scene lightingScene)
         {
             // Store the active scene on entry
@@ -385,9 +371,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// Goes through a scene's objects and checks for components that aren't found in permittedComponentTypes
         /// If any are found, they're added to the violations list.
         /// </summary>
-        /// <param name="scene"></param>
-        /// <param name="permittedComponentTypes"></param>
-        /// <param name="destroyIfFound"></param>
         public static bool EnforceSceneComponents(Scene scene, IEnumerable<Type> permittedComponentTypes, List<Component> violations)
         {
             if (!scene.IsValid() || !scene.isLoaded)
@@ -439,9 +422,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Gets serialized objects for lightmap and render settings from active scene.
         /// </summary>
-        /// <param name="lightmapSettings"></param>
-        /// <param name="renderSettings"></param>
-        /// <returns></returns>
         public static bool GetLightingAndRenderSettings(out SerializedObject lightmapSettings, out SerializedObject renderSettings)
         {
             lightmapSettings = null;
@@ -486,9 +466,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Checks build settings for possible errors and displays warnings.
         /// </summary>
-        /// <param name="allScenes"></param>
-        /// <param name="duplicates"></param>
-        /// <returns></returns>
         public static bool CheckBuildSettingsForDuplicates(List<SceneInfo> allScenes, Dictionary<string, List<int>> duplicates)
         {
             duplicates.Clear();

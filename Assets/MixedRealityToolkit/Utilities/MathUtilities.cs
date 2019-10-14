@@ -16,9 +16,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// Takes a point in the coordinate space specified by the "from" transform and transforms it to be the correct
         /// point in the coordinate space specified by the "to" transform applies rotation, scale and translation.
         /// </summary>
-        /// <param name="from"></param>
-        /// <param name="to"></param>
-        /// <param name="fromPoint"></param>
         /// <returns>Point to.</returns>
         public static Vector3 TransformPointFromTo(Transform from, Transform to, Vector3 fromPoint)
         {
@@ -30,9 +27,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// Takes a direction in the coordinate space specified by the "from" transform and transforms it to be the correct direction in the coordinate space specified by the "to" transform
         /// applies rotation only, no translation or scale
         /// </summary>
-        /// <param name="from"></param>
-        /// <param name="to"></param>
-        /// <param name="fromDirection"></param>
         /// <returns>Direction to.</returns>
         public static Vector3 TransformDirectionFromTo(Transform from, Transform to, Vector3 fromDirection)
         {
@@ -44,10 +38,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// Takes a vector in the coordinate space specified by the "from" transform and transforms it to be the correct direction in the coordinate space specified by the "to" transform
         /// applies rotation and scale, no translation
         /// </summary>
-        /// <param name="from"></param>
-        /// <param name="to"></param>
-        /// <param name="vecInFrom"></param>
-        /// <returns></returns>
         public static Vector3 TransformVectorFromTo(Transform from, Transform to, Vector3 vecInFrom)
         {
             Vector3 vecInWorld = (from == null) ? vecInFrom : from.TransformVector(vecInFrom);
@@ -73,7 +63,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// Creates a quaternion containing the rotation from the input matrix.
         /// </summary>
         /// <param name="m">Input matrix to convert to quaternion</param>
-        /// <returns></returns>
         public static Quaternion QuaternionFromMatrix(Matrix4x4 m)
         {
             // TODO: test and replace with this simpler, more unity-friendly code
@@ -106,7 +95,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Project vector onto XZ plane
         /// </summary>
-        /// <param name="v"></param>
         /// <returns>result of projecting v onto XZ plane</returns>
         public static Vector3 XZProject(Vector3 v)
         {
@@ -116,7 +104,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Project vector onto YZ plane
         /// </summary>
-        /// <param name="v"></param>
         /// <returns>result of projecting v onto YZ plane</returns>
         public static Vector3 YZProject(Vector3 v)
         {
@@ -126,7 +113,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Project vector onto XY plane
         /// </summary>
-        /// <param name="v"></param>
         /// <returns>result of projecting v onto XY plane</returns>
         public static Vector3 XYProject(Vector3 v)
         {
@@ -136,10 +122,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Returns the distance between a point and an infinite line defined by two points; linePointA and linePointB
         /// </summary>
-        /// <param name="point"></param>
-        /// <param name="linePointA"></param>
-        /// <param name="linePointB"></param>
-        /// <returns></returns>
         public static float DistanceOfPointToLine(Vector3 point, Vector3 linePointA, Vector3 linePointB)
         {
             Vector3 closestPoint = ClosestPointOnLineToPoint(point, linePointA, linePointB);
@@ -453,5 +435,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             Vector2 diff = pointA - pointB;
             return MathUtilities.RadiansToDegrees(Mathf.Atan2(diff.y, diff.x));
         }
+
+        /// <summary>
+        /// Calculates the direction vector from a rotation.
+        /// </summary>
+        /// <param name="rotation">Quaternion representing the rotation of the object.</param>
+        /// <returns>
+        /// Normalized Vector3 representing the direction vector.
+        /// </returns>
+        public static Vector3 GetDirection(Quaternion rotation)
+        {
+            return (rotation * Vector3.forward).normalized;
+        }
+
     }
 }

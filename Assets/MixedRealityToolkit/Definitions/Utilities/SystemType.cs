@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// Initializes a new instance of the <see cref="SystemType"/> class.
         /// </summary>
         /// <param name="type">Class type.</param>
-        /// <exception cref="ArgumentException">
+        /// <exception cref="System.ArgumentException">
         /// If <paramref name="type"/> is not a class type.
         /// </exception>
         public SystemType(Type type)
@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Gets or sets type of class reference.
         /// </summary>
-        /// <exception cref="ArgumentException">
+        /// <exception cref="System.ArgumentException">
         /// If <paramref name="value"/> is not a class type.
         /// </exception>
         public Type Type

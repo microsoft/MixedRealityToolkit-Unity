@@ -12,12 +12,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
 {
     ///<summary>
     /// A button that can be pushed via direct touch.
-    /// You can use <see cref="Microsoft.MixedReality.Toolkit.Examples.Demos.PhysicalPressEventRouter"/> to route these events to <see cref="Interactable"/>.
+    /// You can use <see cref="Microsoft.MixedReality.Toolkit.PhysicalPressEventRouter"/> to route these events to <see cref="Microsoft.MixedReality.Toolkit.UI.Interactable"/>.
     ///</summary>
-    [RequireComponent(typeof(BoxCollider))]
+    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Button.html")]
     public class PressableButton : MonoBehaviour, IMixedRealityTouchHandler
     {
         const string InitialMarkerTransformName = "Initial Marker";
+
+        bool hasStarted = false;
 
         /// <summary>
         /// The object that is being pushed.
@@ -61,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [SerializeField]
-        [Tooltip("The offset at which pushing starts. Offset is relative to the pivot of either the moving visuals if there's any or the button itself.")]
+        [Tooltip("The offset at which pushing starts. Offset is relative to the pivot of either the moving visuals if there's any or the button itself.  For UnityUI based PressableButtons, this cannot be a negative value.")]
         protected float startPushDistance = 0.0f;
 
         /// <summary>
@@ -146,7 +148,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public float CurrentPushDistance { get => currentPushDistance; protected set => currentPushDistance = value; }
 
-
         private bool isTouching = false;
 
         ///<summary>
@@ -188,16 +189,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public bool IsPressing { get; private set; }
 
         /// <summary>
-        /// The press direction of the button as defined by a NearInteractionTouchable.
+        /// The press direction of the button as defined by a NearInteractionTouchableSurface.
         /// </summary>
         private Vector3 WorldSpacePressDirection
         {
             get
             {
-                var nearInteractionTouchable = GetComponent<NearInteractionTouchable>();
+                var nearInteractionTouchable = GetComponent<NearInteractionTouchableSurface>();
                 if (nearInteractionTouchable != null)
                 {
-                    return -1.0f * nearInteractionTouchable.Forward;
+                    return nearInteractionTouchable.transform.TransformDirection(nearInteractionTouchable.LocalPressDirection);
                 }
                 
                 return transform.forward;
@@ -209,6 +210,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get { return movingButtonVisuals != null ? movingButtonVisuals.transform : transform; }
         }
 
+        /// <summary>
+        /// Transform for world to local space in the world direction of press
+        /// Multiply world scale positions by this value to convert to local space
+        /// </summary>
         private float WorldToLocalScale
         {
             get
@@ -217,6 +222,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        /// <summary>
+        /// Transform for local to world space in the world direction of a press
+        /// Multiply local scale positions by this value to convert to world space
+        /// </summary>
         private float LocalToWorldScale
         {
             get
@@ -228,10 +237,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Initial offset from moving visuals to button
         /// </summary>
-        private Vector3 initialOffsetMovingVisuals = Vector3.zero;
+        private Vector3 movingVisualsInitialLocalPosition = Vector3.zero;
 
         /// <summary>
-        /// The position from where the button starts to move. 
+        /// The position from where the button starts to move.  Projected into world space based on the button's current world space position.
         /// </summary>
         private Vector3 InitialPosition
         {
@@ -239,13 +248,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 if (Application.isPlaying && movingButtonVisuals) // we're using a cached position in play mode as the moving visuals will be moved during button interaction
                 {
-                    return PushSpaceSourceParentPosition + initialOffsetMovingVisuals;
+                    return PushSpaceSourceParentPosition + movingButtonVisuals.transform.TransformVector(movingVisualsInitialLocalPosition);
                 }
                 else
                 {
                     return PushSpaceSourceTransform.position;
                 }
-
             }
         }
 
@@ -260,12 +268,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         protected virtual void Start()
         {
+            hasStarted = true;
+
             if (gameObject.layer == 2)
             {
                 Debug.LogWarning("PressableButton will not work if game object layer is set to 'Ignore Raycast'.");
             }
 
-            initialOffsetMovingVisuals = PushSpaceSourceTransform.position - PushSpaceSourceParentPosition;
+            movingVisualsInitialLocalPosition = movingButtonVisuals.transform.localPosition;
+
+            // Ensure everything is set to initial positions correctly.
+            UpdateMovingVisualsPosition();
         }
 
         void OnDisable()
@@ -274,9 +287,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             touchPoints.Clear();
             currentInputSources.Clear();
 
-            // make sure button doesn't stay in a pressed state in case we disable the button while pressing it
-            currentPushDistance = startPushDistance;
-            UpdateMovingVisualsPosition();
+            if (hasStarted)
+            {
+                // make sure button doesn't stay in a pressed state in case we disable the button while pressing it
+                currentPushDistance = startPushDistance;
+                UpdateMovingVisualsPosition();
+            }
         }
 
         private void Update()
@@ -408,8 +424,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Returns world space position along the push direction for the given local distance
         /// </summary>
-        /// <param name="localDistance"></param>
-        /// <returns></returns>
         /// 
         public Vector3 GetWorldPositionAlongPushDirection(float localDistance)
         {
@@ -421,8 +435,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Returns the local distance along the push direction for the passed in world position
         /// </summary>
-        /// <param name="positionWorldSpace"></param>
-        /// <returns></returns>
         public float GetDistanceAlongPushDirection(Vector3 positionWorldSpace)
         {
             Vector3 localPosition = positionWorldSpace - InitialPosition;
@@ -457,7 +469,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             return Mathf.Clamp(farthestDistance, startPushDistance, maxPushDistance);
         }
-
 
         private void UpdatePressedState(float pushDistance)
         {

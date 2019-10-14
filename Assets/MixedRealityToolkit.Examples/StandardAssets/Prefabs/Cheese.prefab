@@ -206,7 +206,7 @@ MonoBehaviour:
   oneHandRotationModeNear: 5
   oneHandRotationModeFar: 5
   releaseBehavior: 3
-  constraintOnRotation: 0
+  constraintOnRotation: 2
   constraintOnMovement: 0
   smoothingActive: 1
   smoothingAmountOneHandManip: 0.001

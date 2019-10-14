@@ -67,6 +67,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private int focusQueryBufferSize = 128;
 
         [SerializeField]
+        [Tooltip("In case of a compound collider, does the individual collider receive focus")]
+        private bool focusIndividualCompoundCollider = false;
+
+        /// <summary>
+        /// In case of a compound collider, does the individual collider receive focus
+        /// </summary>
+        public bool FocusIndividualCompoundCollider
+        {
+            get { return focusIndividualCompoundCollider; }
+            set { focusIndividualCompoundCollider = value; }
+        }
+
+        [SerializeField]
         [Tooltip("Input System Action Mapping profile for wiring up Controller input to Actions.")]
         private MixedRealityInputActionsProfile inputActionsProfile;
 

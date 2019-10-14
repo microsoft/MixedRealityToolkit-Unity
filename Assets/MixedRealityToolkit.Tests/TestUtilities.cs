@@ -1,8 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -21,9 +23,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     public static class TestUtilities
     {
-        const float vector3DistanceEpsilon = 0.01f;
-        const float quaternionAngleEpsilon = 0.01f;
-
         const string primaryTestSceneTemporarySavePath = "Assets/__temp_primary_test_scene.unity";
         const string additiveTestSceneTemporarySavePath = "Assets/__temp_additive_test_scene_#.unity";
         public static Scene primaryTestScene;
@@ -61,9 +60,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         /// <summary>
         /// Creates a number of scenes and loads them additively for testing. Must create a minimum of 1.
-        /// Used only in editor stests.
+        /// Used only in editor tests.
         /// </summary>
-        /// <param name="numScenesToCreate"></param>
         public static void EditorCreateScenes(int numScenesToCreate = 1)
         {
             // Create default test scenes.
@@ -130,8 +128,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Creates the requested number of scenes, then creates one instance of the MixedRealityToolkit in the active scene.
         /// </summary>
-        /// <param name="useDefaultProfile"></param>
-        /// <param name="numScenesToCreate"></param>
         public static void InitializeMixedRealityToolkitAndCreateScenes(bool useDefaultProfile = false, int numScenesToCreate = 1)
         {
             // Setup
@@ -139,7 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeMixedRealityToolkit(useDefaultProfile);
         }
 
-        public static void InitializeMixedRealityToolkit(bool useDefaultProfile = false)
+        public static void InitializeMixedRealityToolkit(MixedRealityToolkitConfigurationProfile configuration)
         {
             if (!MixedRealityToolkit.IsInitialized)
             {
@@ -149,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 
             // Todo: this condition shouldn't be here.
-            // It's here due to some edit mode tests initializing Mrtk instance in Edit mode, causing some of 
+            // It's here due to some edit mode tests initializing MRTK instance in Edit mode, causing some of 
             // event handler registration to live over tests and cause next tests to fail.
             // Exact reason requires investigation.
             if (Application.isPlaying)
@@ -157,19 +153,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 BaseEventSystem.enableDanglingHandlerDiagnostics = true;
             }
 
-            // Tests
             Assert.IsTrue(MixedRealityToolkit.IsInitialized);
             Assert.IsNotNull(MixedRealityToolkit.Instance);
-            if (!MixedRealityToolkit.Instance.HasActiveProfile)
-            {
-                var configuration = useDefaultProfile
-                    ? GetDefaultMixedRealityProfile<MixedRealityToolkitConfigurationProfile>()
-                    : ScriptableObject.CreateInstance<MixedRealityToolkitConfigurationProfile>();
 
-                Assert.IsTrue(configuration != null, "Failed to find the Default Mixed Reality Configuration Profile");
-                MixedRealityToolkit.Instance.ActiveProfile = configuration;
-                Assert.IsTrue(MixedRealityToolkit.Instance.ActiveProfile != null);
-            }
+
+            MixedRealityToolkit.Instance.ActiveProfile = configuration;
+            Assert.IsTrue(MixedRealityToolkit.Instance.ActiveProfile != null);
+        }
+
+        public static void InitializeMixedRealityToolkit(bool useDefaultProfile = false)
+        {
+            var configuration = useDefaultProfile
+                ? GetDefaultMixedRealityProfile<MixedRealityToolkitConfigurationProfile>()
+                : ScriptableObject.CreateInstance<MixedRealityToolkitConfigurationProfile>();
+
+            Assert.IsTrue(configuration != null, "Failed to find the Default Mixed Reality Configuration Profile");
+            InitializeMixedRealityToolkit(configuration);
         }
 
         public static void ShutdownMixedRealityToolkit()
@@ -192,28 +191,81 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 #endif
         }
 
-        public static void AssertAboutEqual(Vector3 actual, Vector3 expected, string message)
+        public static void AssertAboutEqual(Vector3 actual, Vector3 expected, string message, float tolerance = 0.01f)
         {
             var dist = (actual - expected).magnitude;
-            Debug.Assert(dist < vector3DistanceEpsilon, $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}");
+            Debug.Assert(dist < tolerance, $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}");
         }
 
-        public static void AssertAboutEqual(Quaternion actual, Quaternion expected, string message)
+        public static void AssertAboutEqual(Quaternion actual, Quaternion expected, string message, float tolerance = 0.01f)
         {
             var angle = Quaternion.Angle(actual, expected);
-            Debug.Assert(angle < quaternionAngleEpsilon, $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}");
+            Debug.Assert(angle < tolerance, $"{message}, expected {expected.ToString("0.000")}, was {actual.ToString("0.000")}");
         }
 
-        public static void AssertNotAboutEqual(Vector3 val1, Vector3 val2, string message)
+        public static void AssertNotAboutEqual(Vector3 val1, Vector3 val2, string message, float tolerance = 0.01f)
         {
             var dist = (val1 - val2).magnitude;
-            Debug.Assert(dist >= vector3DistanceEpsilon, $"{message}, val1 {val1.ToString("0.000")} almost equals val2 {val2.ToString("0.000")}");
+            Debug.Assert(dist >= tolerance, $"{message}, val1 {val1.ToString("0.000")} almost equals val2 {val2.ToString("0.000")}");
         }
 
-        public static void AssertNotAboutEqual(Quaternion val1, Quaternion val2, string message)
+        public static void AssertNotAboutEqual(Quaternion val1, Quaternion val2, string message, float tolerance = 0.01f)
         {
             var angle = Quaternion.Angle(val1, val2);
-            Debug.Assert(angle >= quaternionAngleEpsilon, $"{message}, val1 {val1.ToString("0.000")} almost equals val2 {val2.ToString("0.000")}");
+            Debug.Assert(angle >= tolerance, $"{message}, val1 {val1.ToString("0.000")} almost equals val2 {val2.ToString("0.000")}");
         }
+
+#if UNITY_EDITOR
+        [MenuItem("Mixed Reality Toolkit/Utilities/Update/Icons/Tests")]
+        private static void UpdateTestScriptIcons()
+        {
+            var testDirectories = MixedRealityToolkitFiles.GetDirectories(MixedRealityToolkitModuleType.Tests);
+            var directories = MixedRealityToolkitFiles.GetDirectories(MixedRealityToolkitModuleType.Tests);
+
+            Texture2D icon = null;
+
+            foreach (string iconPath in MixedRealityToolkitFiles.GetFiles("StandardAssets/Icons"))
+            {
+                if (iconPath.EndsWith("test_icon.png"))
+                {
+                    icon = AssetDatabase.LoadAssetAtPath<Texture2D>(iconPath);
+                    break;
+                }
+            }
+
+            if (icon == null)
+            {
+                Debug.Log("Couldn't find test icon.");
+                return;
+            }
+
+            foreach (string directory in testDirectories)
+            {
+                string[] scriptGuids = AssetDatabase.FindAssets("t:MonoScript", new string[] { MixedRealityToolkitFiles.GetAssetDatabasePath(directory) });
+
+                for (int i = 0; i < scriptGuids.Length; i++)
+                {
+                    string scriptPath = AssetDatabase.GUIDToAssetPath(scriptGuids[i]);
+
+                    EditorUtility.DisplayProgressBar("Updating Icons...", $"{i} of {scriptGuids.Length} {scriptPath}", i / (float)scriptGuids.Length);
+
+                    MonoScript script = AssetDatabase.LoadAssetAtPath<MonoScript>(scriptPath);
+
+                    Texture2D currentIcon = getIconForObject?.Invoke(null, new object[] { script }) as Texture2D;
+                    if (currentIcon == null || !currentIcon.Equals(icon))
+                    {
+                        setIconForObject?.Invoke(null, new object[] { script, icon });
+                        copyMonoScriptIconToImporters?.Invoke(null, new object[] { script });
+                    }
+                }
+            }
+
+            EditorUtility.ClearProgressBar();
+        }
+
+        private static readonly MethodInfo getIconForObject = typeof(EditorGUIUtility).GetMethod("GetIconForObject", BindingFlags.Static | BindingFlags.NonPublic);
+        private static readonly MethodInfo setIconForObject = typeof(EditorGUIUtility).GetMethod("SetIconForObject", BindingFlags.Static | BindingFlags.NonPublic);
+        private static readonly MethodInfo copyMonoScriptIconToImporters = typeof(MonoImporter).GetMethod("CopyMonoScriptIconToImporters", BindingFlags.Static | BindingFlags.NonPublic);
+#endif
     }
 }

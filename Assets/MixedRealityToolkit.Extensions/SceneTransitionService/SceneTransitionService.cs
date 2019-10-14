@@ -393,14 +393,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         {
             if (progressIndicatorObject != null)
             {
-                if (Application.isPlaying)
-                {
-                    GameObject.Destroy(progressIndicatorObject);
-                }
-                else
-                {
-                    GameObject.DestroyImmediate(progressIndicatorObject);
-                }
+                GameObjectExtensions.DestroyGameObject(progressIndicatorObject);
             }
         }
 
@@ -412,6 +405,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             }
 
             cameraFader = (ICameraFader)Activator.CreateInstance(sceneTransitionServiceProfile.CameraFaderType.Type);
+            cameraFader.Initialize(sceneTransitionServiceProfile);
 
             if (cameraFader == null)
             {

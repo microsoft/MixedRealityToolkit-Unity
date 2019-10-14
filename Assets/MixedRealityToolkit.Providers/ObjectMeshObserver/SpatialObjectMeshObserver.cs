@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections.Generic;
-using Boo.Lang;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
@@ -133,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
             // Remember if we are currently running when Disable is called.
             autoResume = IsRunning;
 
-            // If we are disbled while running...
+            // If we are disabled while running...
             if (IsRunning)
             {
                 // Suspend the observer
@@ -240,7 +239,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         /// <summary>
         /// Removes an observation.
         /// </summary>
-        /// <param name="meshId"></param>
         private void RemoveMeshObject(int meshId)
         {
             SpatialAwarenessMeshObject meshObject = null;

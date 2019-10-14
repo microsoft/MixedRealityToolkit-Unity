@@ -138,7 +138,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <summary>
         /// Returns a random template.
         /// </summary>
-        /// <returns></returns>
         private GameObject GetRandomTemplate()
         {
             int num = Random.Range(0, templates.Length);

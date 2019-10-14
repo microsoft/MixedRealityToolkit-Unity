@@ -213,7 +213,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// <summary>
             /// Only for use when initializing Gaze Pointer on startup.
             /// </summary>
-            /// <param name="gazeInputSource"></param>
             internal void SetGazeInputSourceParent(IMixedRealityInputSource gazeInputSource)
             {
                 InputSourceParent = gazeInputSource;
@@ -260,6 +259,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
+            /// <inheritdoc />
             public override void OnPreCurrentPointerTargetChange() { }
 
             /// <inheritdoc />
@@ -275,7 +275,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// </summary>
             /// <param name="mixedRealityInputAction">The input action that corresponds to the pressed button or axis.</param>
             /// <param name="handedness">Optional handedness of the source that pressed the pointer.</param>
-            /// <param name="inputSource"></param>
             public void RaisePointerDown(MixedRealityInputAction mixedRealityInputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
             {
                 isDown = true;
@@ -289,7 +288,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             /// </summary>
             /// <param name="mixedRealityInputAction">The input action that corresponds to the released button or axis.</param>
             /// <param name="handedness">Optional handedness of the source that released the pointer.</param>
-            /// <param name="inputSource"></param>
             public void RaisePointerUp(MixedRealityInputAction mixedRealityInputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
             {
                 isDown = false;
@@ -313,6 +311,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -324,6 +323,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
         protected override async void Start()
         {
             base.Start();
@@ -399,6 +399,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc />
         protected override void OnDisable()
         {
             base.OnDisable();
@@ -415,11 +416,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region InputSystemGlobalHandlerListener Implementation
 
+        /// <inheritdoc />
         protected override void RegisterHandlers()
         {
             InputSystem?.RegisterHandler<IMixedRealityInputHandler>(this);
         }
 
+        /// <inheritdoc />
         protected override void UnregisterHandlers()
         {
             InputSystem?.UnregisterHandler<IMixedRealityInputHandler>(this);

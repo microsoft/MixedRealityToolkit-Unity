@@ -139,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             foreach (var assembly in assemblies)
             {
-                var types = assembly.GetTypes();
+                var types = assembly.GetLoadableTypes();
                 result.AddRange(types.Where(type => type.IsSubclassOf(aType)));
             }
 
@@ -149,7 +149,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Centers an editor window on the main display.
         /// </summary>
-        /// <param name="window"></param>
         public static void CenterOnMainWin(this EditorWindow window)
         {
             var main = GetEditorMainWindowPos();
@@ -206,7 +205,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Returns the default config profile, if it exists.
         /// </summary>
-        /// <returns></returns>
         public static MixedRealityToolkitConfigurationProfile GetDefaultConfigProfile()
         {
             var allConfigProfiles = ScriptableObjectExtensions.GetAllInstances<MixedRealityToolkitConfigurationProfile>();
@@ -340,8 +338,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// Draw a vector handle.
         /// </summary>
         /// <param name="target"><see href="https://docs.unity3d.com/ScriptReference/Object.html">Object</see> that is undergoing the transformation. Also used for recording undo.</param>
-        /// <param name="origin"></param>
-        /// <param name="vector"></param>
         /// <param name="normalize">Optional, Normalize the new vector value.</param>
         /// <param name="clamp">Optional, Clamp new vector's value based on the distance to the origin.</param>
         /// <param name="handleLength">Optional, handle length.</param>

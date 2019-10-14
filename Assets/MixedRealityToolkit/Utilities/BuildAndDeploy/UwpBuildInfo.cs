@@ -34,5 +34,22 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// manifest after the Unity build.
         /// </summary>
         public bool GazeInputCapabilityEnabled { get; set; } = false;
+
+        /// <summary>
+        /// Use multiple cores for building the appx bundle?
+        /// </summary>
+        public bool Multicore { get; set; } = false;
+
+        /// <summary>
+        /// If true, the 'Research Mode' capability will be added to the AppX
+        /// manifest after the Unity build.
+        /// </summary>
+        public bool ResearchModeCapabilityEnabled { get; set; } = false;
+
+        /// <summary>
+        /// If true, unsafe code will be allowed in the generated
+        /// Assembly-CSharp project.
+        /// </summary>
+        public bool AllowUnsafeCode { get; set; } = false;
     }
 }

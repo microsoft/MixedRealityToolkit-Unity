@@ -14,13 +14,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
     ///
     /// If a poke pointer has no [CurrentTouchableObjectDown](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer.CurrentTouchableObjectDown), then it will try to select one from the Reachable Objects based on:
     /// 1. Layer mask priority: Lower-priority layer masks will only be considered if higher-priority layers don't contain any Reachable Objects.
-    /// 1. Distance: the closest object in the highest priority layers is selected based on [DistanceToTouchable](xref:Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.DistanceToTouchable*).
-    /// 1. Poke Threshold: The object becomes the [CurrentTouchableObjectDown](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer.CurrentTouchableObjectDown) once it crosses the [PokeThreshold](xref:Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.PokeThreshold) distance (behind the surface). At this point the [OnTouchStarted](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler.OnTouchStarted*) or [OnPointerDown](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler.OnPointerDown*) event is raised.
+    /// 1. Touchable Distance: the closest object in the highest priority layers is selected based on [DistanceToTouchable](xref:Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.DistanceToTouchable*).
+    /// 1. Ray Distance: The object becomes the [CurrentTouchableObjectDown](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer.CurrentTouchableObjectDown) once the ray cast distance becomes negative (behind the surface). At this point the [OnTouchStarted](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler.OnTouchStarted*) or [OnPointerDown](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler.OnPointerDown*) event is raised.
     ///
     /// If a poke pointer _does_  have a [CurrentTouchableObjectDown](xref:Microsoft.MixedReality.Toolkit.Input.PokePointer.CurrentTouchableObjectDown) it will not consider any other object, until the [DistanceToTouchable](xref:Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.DistanceToTouchable*) exceeds the [DebounceThreshold](xref:Microsoft.MixedReality.Toolkit.Input.BaseNearInteractionTouchable.DebounceThreshold) (in front of the surface). At this point the active object is cleared and the [OnTouchCompleted](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityTouchHandler.OnTouchCompleted*) or [OnPointerUp](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityPointerHandler.OnPointerUp*) event is raised.
     /// </remarks>
     public class PokePointer : BaseControllerPointer, IMixedRealityNearPointer
     {
+        /// <summary>
+        /// If touchable volumes are larger than this size (meters), pointer will raise
+        /// touch up even when pointer is inside the volume
+        /// </summary>
+        private const int maximumTouchableVolumeSize = 1000;
+
         [SerializeField]
         protected LineRenderer line;
 
@@ -90,10 +96,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// the same current closest touchable component's changes (e.g. Unity UI control elements).
         public GameObject CurrentTouchableObjectDown => currentTouchableObjectDown;
 
-        protected override void Start()
+        private void Awake()
         {
-            base.Start();
-
             queryBuffer = new Collider[sceneQueryBufferSize];
         }
 
@@ -105,10 +109,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             sceneQueryBufferSize = Mathf.Max(sceneQueryBufferSize, 1);
         }
 
+        /// <inheritdoc />
         public bool IsNearObject
         {
             get { return (closestProximityTouchable != null); }
         }
+
+        /// <inheritdoc />
+        public override bool IsInteractionEnabled => base.IsInteractionEnabled && IsNearObject;
 
         public override void OnPreSceneQuery()
         {
@@ -134,8 +142,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (newClosestTouchable != null)
             {
                 // Build ray (poke from in front to the back of the pointer position)
-                Vector3 start = Position - newClosestTouchable.PokeThreshold * -closestNormal;
-                Vector3 end = Position + touchableDistance * -closestNormal;
+                // We make a very long ray if we are touching a touchable volume to ensure that we actually 
+                // hit the volume when we are inside of the volume, which could be very large.
+                var lengthOfPointerRay = newClosestTouchable is NearInteractionTouchableVolume ?
+                    maximumTouchableVolumeSize : touchableDistance;
+                Vector3 start = Position + lengthOfPointerRay * closestNormal;
+                Vector3 end = Position - lengthOfPointerRay * closestNormal;
                 Rays[0].UpdateRayStep(ref start, ref end);
 
                 line.SetPosition(0, Position);
@@ -147,7 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (!IsObjectPartOfTouchable(currentTouchableObjectDown, newClosestTouchable))
                 {
-                    TryRaisePokeUp(Result.CurrentPointerTarget, Position);
+                    TryRaisePokeUp();
                 }
             }
 
@@ -167,12 +179,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             int numColliders = UnityEngine.Physics.OverlapSphereNonAlloc(Position, touchableDistance, queryBuffer, layerMask, triggerInteraction);
             if (numColliders == queryBuffer.Length)
             {
-                Debug.LogWarning($"Maximum number of {numColliders} colliders found in PokePointer overlap query. Consider increasing the query buffer size in the pointer profile.");
+                Debug.LogWarning($"Maximum number of {numColliders} colliders found in PokePointer overlap query. Consider increasing the query buffer size in the input system settings.");
             }
 
             for (int i = 0; i < numColliders; ++i)
             {
-                var touchable = queryBuffer[i].GetComponent<ColliderNearInteractionTouchable>();
+                var touchable = queryBuffer[i].GetComponent<BaseNearInteractionTouchable>();
                 if (touchable)
                 {
                     float distance = touchable.DistanceToTouchable(Position, out Vector3 normal);
@@ -202,6 +214,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return closest != null;
         }
 
+        /// <inheritdoc />
         public override void OnPostSceneQuery()
         {
             base.OnPostSceneQuery();
@@ -213,23 +226,35 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (Result?.CurrentPointerTarget != null && closestProximityTouchable != null)
             {
-                float distToFront = Vector3.Distance(Result.StartPoint, Result.Details.Point) - closestProximityTouchable.PokeThreshold;
-                bool newIsDown = (distToFront < 0);
-                bool newIsUp = (distToFront > closestProximityTouchable.DebounceThreshold);
+                float distToTouchable;
+                if (closestProximityTouchable is NearInteractionTouchableVolume)
+                {
+                    // Volumes can be arbitrary size, so don't rely on the length of the raycast ray
+                    // instead just have the volume itself give us the distance.
+                    distToTouchable = closestProximityTouchable.DistanceToTouchable(Position, out _);
+                }
+                else
+                {
+                    // Start position of the ray is offset by TouchableDistance, subtract to get distance between surface and pointer position.
+                    distToTouchable = Vector3.Distance(Result.StartPoint, Result.Details.Point) - touchableDistance;
+                }
+
+                bool newIsDown = (distToTouchable < 0.0f);
+                bool newIsUp = (distToTouchable > closestProximityTouchable.DebounceThreshold);
 
                 if (newIsDown)
                 {
-                    TryRaisePokeDown(Result.CurrentPointerTarget, Position);
+                    TryRaisePokeDown();
                 }
                 else if (currentTouchableObjectDown != null)
                 {
                     if (newIsUp)
                     {
-                        TryRaisePokeUp(Result.CurrentPointerTarget, Position);
+                        TryRaisePokeUp();
                     }
                     else
                     {
-                        TryRaisePokeDown(Result.CurrentPointerTarget, Position);
+                        TryRaisePokeDown();
                     }
                 }
             }
@@ -250,6 +275,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             PreviousPosition = Position;
         }
 
+        /// <inheritdoc />
         public override void OnPreCurrentPointerTargetChange()
         {
             // We need to raise the event now, since the pointer's focused object or touchable will change
@@ -258,8 +284,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             TryRaisePokeUp();
         }
 
-        private void TryRaisePokeDown(GameObject targetObject, Vector3 touchPosition)
+        private void TryRaisePokeDown()
         {
+            GameObject targetObject = Result.CurrentPointerTarget;
+
             if (currentTouchableObjectDown == null)
             {
                 // In order to get reliable up/down event behavior, only allow the closest touchable to be touched.
@@ -273,17 +301,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
                     else if (closestProximityTouchable.EventsToReceive == TouchableEventType.Touch)
                     {
-                        InputSystem?.RaiseOnTouchStarted(InputSourceParent, Controller, Handedness, touchPosition);
+                        InputSystem?.RaiseOnTouchStarted(InputSourceParent, Controller, Handedness, Position);
                     }
                 }
             }
             else
             {
-                RaiseTouchUpdated(targetObject, touchPosition);
+                RaiseTouchUpdated(targetObject, Position);
             }
         }
 
-        private void TryRaisePokeUp(GameObject targetObject, Vector3 touchPosition)
+        private void TryRaisePokeUp()
         {
             if (currentTouchableObjectDown != null)
             {
@@ -296,18 +324,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
                 else if (closestProximityTouchable.EventsToReceive == TouchableEventType.Touch)
                 {
-                    InputSystem?.RaiseOnTouchCompleted(InputSourceParent, Controller, Handedness, touchPosition);
+                    InputSystem?.RaiseOnTouchCompleted(InputSourceParent, Controller, Handedness, Position);
                 }
 
                 currentTouchableObjectDown = null;
-            }
-        }
-
-        private void TryRaisePokeUp()
-        {
-            if (currentTouchableObjectDown != null)
-            {
-                TryRaisePokeUp(Result.CurrentPointerTarget, Position);
             }
         }
 
@@ -363,18 +383,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
             base.OnSourceLost(eventData);
         }
 
+        /// <inheritdoc />
         public override void OnSourceDetected(SourceStateEventData eventData)
         {
             base.OnSourceDetected(eventData);
             PreviousPosition = Position;
         }
 
+        /// <inheritdoc />
         public override void OnInputDown(InputEventData eventData)
         {
             // Poke pointer should not respond when a button is pressed or hand is pinched
             // It should only dispatch events based on collision with touchables.
         }
 
+        /// <inheritdoc />
         public override void OnInputUp(InputEventData eventData)
         {
             // Poke pointer should not respond when a button is released or hand is un-pinched
@@ -384,6 +407,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected override void OnEnable()
         {
             base.OnEnable();
+
+            IsTargetPositionLockedOnFocusLock = false;
 
             Debug.Assert(line != null, "No line renderer found in PokePointer.");
             Debug.Assert(visuals != null, "No visuals object found in PokePointer.");
