@@ -256,7 +256,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 for (int i = 0; i < numColliders; i++)
                 {
-                    if (grabbable = queryBuffer[i].GetComponent<NearInteractionGrabbable>())
+                    grabbable = queryBuffer[i].GetComponent<NearInteractionGrabbable>();
+                    if (grabbable != null)
                     {
                         return true;
                     }
