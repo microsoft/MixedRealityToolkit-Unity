@@ -49,7 +49,7 @@ The following classes are the out-of-box MRTK pointers available and defined in 
 
 ##### [`LinePointer`](xref:Microsoft.MixedReality.Toolkit.Input.LinePointer)
 
- *LinePointer*, a base pointer class, draws lines from the source of the input (i.e. the controller) in the pointer direction. Generally, children classes such  the [`ShellHandRayPointer`](xref:Microsoft.MixedReality.Toolkit.Input.ShellHandRayPointer) and the teleport pointers are instantiated and utilized (which also draw lines to indicate where teleportation will end up at) instead of this class which primarily provides common functionality.
+ *LinePointer*, a base pointer class, draws lines from the source of the input (i.e. the controller) in the pointer direction. Generally, children classes such as the [`ShellHandRayPointer`](xref:Microsoft.MixedReality.Toolkit.Input.ShellHandRayPointer) and the teleport pointers are instantiated and utilized (which also draw lines to indicate where teleportation will end up at) instead of this class which primarily provides common functionality.
 
 For motion controllers like in Oculus, Vive, and Windows Mixed Reality, the rotation will match the rotation of the controller. For other controllers like HoloLens 2 articulated hands, the rotation matches the system-provided pointing pose of the hand.
 
