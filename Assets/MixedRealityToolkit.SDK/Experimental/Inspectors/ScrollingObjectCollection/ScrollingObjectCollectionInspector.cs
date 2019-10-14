@@ -347,7 +347,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Inspectors
         /// Simple check for the use of the standard shader.
         /// </summary>
         /// <param name="rends"><see cref="Renderer[]"/> to check for the MRTK standard shader.</param>
-        /// <returns></returns>
+        /// <returns>true when render is using the MRTK standard shader.</returns>
         private bool CheckForStandardShader(Renderer[] rends)
         {
             foreach (Renderer rend in rends)

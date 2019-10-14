@@ -1427,7 +1427,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 		/// <param name="curve"><see cref="AnimationCurve"/> representing the easing desired</param>
 		/// <param name="time">Time for animation, in seconds</param>
 		/// <param name="callback">Optional callback action to be invoked after animation coroutine has finished</param>
-		/// <returns></returns>
 		private IEnumerator AnimateTo(Vector3 initialPos, Vector3 finalPos, AnimationCurve curve = null, float? time = null, System.Action callback = null)
 		{
 			velocityState = VelocityState.None;
