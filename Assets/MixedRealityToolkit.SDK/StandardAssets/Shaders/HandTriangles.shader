@@ -807,4 +807,6 @@ SubShader {
     ENDCG
   }
  }
+
+    FallBack "Mixed Reality Toolkit/Standard"
 }
