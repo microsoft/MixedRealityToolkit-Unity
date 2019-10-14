@@ -151,8 +151,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public bool UseLocalSpaceForConstraint
         {
-            get => useLocalSpaceForConstraint;
-            set => useLocalSpaceForConstraint = value;
+            get => rotateConstraint != null && rotateConstraint.UseLocalSpaceForConstraint;
+            set
+            {
+                if (rotateConstraint != null)
+                {
+                    rotateConstraint.UseLocalSpaceForConstraint = value;
+                }
+            }
         }
 
         [SerializeField]
@@ -314,6 +320,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             rotateConstraint = this.EnsureComponent<RotationAxisConstraint>();
             rotateConstraint.TargetTransform = hostTransform;
             rotateConstraint.ConstraintOnRotation = RotationConstraintHelper.ConvertToAxisFlags(constraintOnRotation);
+            rotateConstraint.UseLocalSpaceForConstraint = useLocalSpaceForConstraint;
 
             scaleHandler = this.GetComponent<TransformScaleHandler>();
         }

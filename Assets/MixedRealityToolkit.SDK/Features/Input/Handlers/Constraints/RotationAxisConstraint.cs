@@ -28,6 +28,19 @@ namespace Microsoft.MixedReality.Toolkit.UI
             set => constraintOnRotation = value;
         }
 
+        [SerializeField]
+        [Tooltip("Check if object rotation should be in local space of object being manipulated instead of world space.")]
+        private bool useLocalSpaceForConstraint = false;
+
+        /// <summary>
+        /// Gets or sets whether the constraints should be applied in local space of the object being manipulated or world space.
+        /// </summary>
+        public bool UseLocalSpaceForConstraint
+        {
+            get => useLocalSpaceForConstraint;
+            set => useLocalSpaceForConstraint = value;
+        }
+
         public override TransformFlags ConstraintType => TransformFlags.Rotate;
 
         #endregion Properties
@@ -54,7 +67,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 eulers.z = 0;
             }
-            pose.Rotation = Quaternion.Euler(eulers) * worldPoseOnManipulationStart.Rotation;
+
+            pose.Rotation = useLocalSpaceForConstraint 
+                ? worldPoseOnManipulationStart.Rotation * Quaternion.Euler(eulers)
+                : Quaternion.Euler(eulers) * worldPoseOnManipulationStart.Rotation;
         }
 
         #endregion Public Methods
