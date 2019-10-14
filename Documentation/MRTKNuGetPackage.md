@@ -47,7 +47,7 @@ NuGet package consists of compiled binaries as opposed to loose script files, an
 Since the NuGet package contains the compiled binaries instead of scripts, this has two major advantages:
 
 - Reduced compilation time
-- Considerably less C# project files in Visual Studio
+- Considerably fewer C# project files in Visual Studio
 
 ### Debugging Mixed Reality Toolkit
 
