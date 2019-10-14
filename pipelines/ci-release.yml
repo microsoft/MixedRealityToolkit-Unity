@@ -1,5 +1,8 @@
 # CI build for release packages.
 
+# Change the BuildNumber to be SemVer 1.0.0 compatible
+name: $(Date:yyyyMMdd)v$(Rev:r)
+
 variables:
   UnityVersion: Unity2018.3.7f1
   MRTKVersion: 2.2.0  # Major.Minor.Patch
@@ -59,12 +62,12 @@ jobs:
   - ${{ if eq(variables['MRTKReleaseTag'], '') }}:
     - template: templates/package.yml
       parameters:
-        version: '$(MRTKVersion)-$(Build.BuildNumber).prerelease'
+        version: '$(MRTKVersion)-$(Build.BuildNumber)'
         packDestination: '$(Build.SourcesDirectory)\artifacts\prerelease'
   - ${{ if ne(variables['MRTKReleaseTag'], '') }}:
     - template: templates/package.yml
       parameters:
-        version: '$(MRTKVersion)-$(Build.BuildNumber).prerelease.$(MRTKReleaseTag)'
+        version: '$(MRTKVersion)-$(Build.BuildNumber).$(MRTKReleaseTag)'
         packDestination: '$(Build.SourcesDirectory)\artifacts\prerelease'
 
   # Create release packages
@@ -89,6 +92,10 @@ jobs:
       targetType: filePath
       filePath: '$(Build.ArtifactStagingDirectory)\scripts\signCheck.ps1'
       arguments: '$(Build.SourcesDirectory)\artifacts\release -tmpDir $(Build.ArtifactStagingDirectory)'
+  
+  - powershell: |
+      Remove-Item "$(Build.SourcesDirectory)/artifacts/release/Microsoft.MixedReality.Toolkit.Tests.*"
+    displayName: "Delete MixedReality.Toolkit.Tests package from the release artifacts"
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Packages'

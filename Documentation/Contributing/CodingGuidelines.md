@@ -422,16 +422,6 @@ Always use private fields and public properties if access to the field is needed
  }
  ```
 
-### Use `for` instead of `foreach` when possible
-
-In some cases a foreach is required, e.g. when looping over an IEnumerable.  But for performance benefit, avoid foreach when you can.
-
-#### Don't
-
-```c#
-foreach(var item in items)
-```
-
 #### Do
 
  ```c#
@@ -541,5 +531,5 @@ DateTime.UtcNow is faster than DateTime.Now. In previous performance investigati
 Prefer using DateTime.UtcNow unless you actually need the localized times (a legitmate reason may be you wanting to show the current time in the user's time zone). If you are dealing with relative times (i.e. the delta between some last update and now), it's best to use DateTime.UtcNow to avoid the overhead of doing timezone conversions.
 
 
-## Set also
- [C# coding conventions from MSDN](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/coding-conventions).
+## See also
+ [C# coding conventions from MSDN](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/coding-conventions)

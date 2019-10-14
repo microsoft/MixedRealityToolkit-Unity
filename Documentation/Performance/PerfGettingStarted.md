@@ -80,9 +80,14 @@ Unity provides [presets to control quality](https://docs.unity3d.com/Manual/clas
 
 ### Depth buffer sharing (HoloLens)
 
-If developing for the Windows Mixed Reality platform and in particular HoloLens, enabling *Depth Buffer Sharing* under *XR Settings* can help with [hologram stabilization](../Hologram-Stabilization.md). However, processing of the depth buffer can incur a performance cost, particularly if using [24-bit depth format](https://docs.unity3d.com/ScriptReference/PlayerSettings.VRWindowsMixedReality-depthBufferFormat.html).
+If developing for the Windows Mixed Reality platform and in particular HoloLens, enabling *Depth Buffer Sharing* under *XR Settings* can help with [hologram stabilization](../Hologram-Stabilization.md). However, processing of the depth buffer can incur a performance cost, particularly if using [24-bit depth format](https://docs.unity3d.com/ScriptReference/PlayerSettings.VRWindowsMixedReality-depthBufferFormat.html). Thus, it is *highly recommended* to configure the depth buffer to 16-bit precision.
 
-Thus, it is *highly recommended* to configure the depth buffer to 16-bit precision. If [z-fighting](https://en.wikipedia.org/wiki/Z-fighting) occurs due to the lower bit format, confirm the [far clip plane](https://docs.unity3d.com/Manual/class-Camera.html) of all cameras is set to the lowest possible value for the application. Unity by default sets a far clip plane of 1000m. On HoloLens, a far clip plane of 50m is generally more than enough for most application scenarios.
+If [z-fighting](https://en.wikipedia.org/wiki/Z-fighting) occurs due to the lower bit format, confirm the [far clip plane](https://docs.unity3d.com/Manual/class-Camera.html) of all cameras is set to the lowest possible value for the application. Unity by default sets a far clip plane of 1000m. On HoloLens, a far clip plane of 50m is generally more than enough for most application scenarios.
+
+> [!NOTE]
+> If using *16-bit depth format*, stencil buffer required effects will not work because [Unity does not create a stencil buffer](https://docs.unity3d.com/ScriptReference/RenderTexture-depth.html) in this setting. Selecting *24-bit depth format* conversely will generally create an 8-bit stencil buffer, if applicable on the endpoint graphics platform.
+>
+> If using a [Mask component](https://docs.unity3d.com/Manual/script-Mask.html) which requires the stencil buffer, consider using [RectMask2D](https://docs.unity3d.com/Manual/script-RectMask2D.html) instead which does not require the stencil buffer and thus can be used in conjunction with a *16-bit depth format*.
 
 ## General Recommendations
 
