@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Editor;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -137,6 +138,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
         }
 
+        /// <summary>
+        /// Checks if current Unity project has latest scripting runtime
+        /// </summary>
         public static bool IsLatestScriptingRuntime()
         {
 #if !UNITY_2019_3_OR_NEWER
@@ -146,38 +150,60 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #endif
         }
 
+        /// <summary>
+        /// Configures current Unity project to use latest scripting runtime and reloads project
+        /// </summary>
         public static void SetLatestScriptingRuntime()
         {
 #if !UNITY_2019_3_OR_NEWER
             PlayerSettings.scriptingRuntimeVersion = ScriptingRuntimeVersion.Latest;
+            EditorApplication.OpenProject(Directory.GetParent(Application.dataPath).ToString());
 #endif
         }
 
+        /// <summary>
+        /// Checks if current Unity projects uses force text serialziation
+        /// </summary>
         public static bool IsForceTextSerialization()
         {
             return EditorSettings.serializationMode == SerializationMode.ForceText;
         }
 
+        /// <summary>
+        /// Configures current Unity project to force text serialization
+        /// </summary>
         public static void SetForceTextSerialization()
         {
             EditorSettings.serializationMode = SerializationMode.ForceText;
         }
 
+        /// <summary>
+        /// Checks if current Unity project uses visible meta files
+        /// </summary>
         public static bool IsVisibleMetaFiles()
         {
             return EditorSettings.externalVersionControl.Equals("Visible Meta Files");
         }
 
+        /// <summary>
+        /// Configures current Unity project to enabled visible meta files
+        /// </summary>
         public static void SetVisibleMetaFiles()
         {
             EditorSettings.externalVersionControl = "Visible Meta Files";
         }
 
+        /// <summary>
+        /// Checks if current Unity project has the default Spatial Awareness layer set in the Layers settings
+        /// </summary>
         public static bool HasSpatialAwarenessLayer()
         {
             return !string.IsNullOrEmpty(LayerMask.LayerToName(SpatialAwarenessDefaultLayer));
         }
 
+        /// <summary>
+        /// Configures current Unity project to contain the default Spatial Awareness layer set in the Layers settings
+        /// </summary>
         public static void SetSpatialAwarenessLayer()
         {
             if (!HasSpatialAwarenessLayer())
@@ -190,7 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         /// <summary>
-        /// Discover and set the appropriate XR Settings for the current build target.
+        /// Discover and set the appropriate XR Settings for virtual reality supported for the current build target.
         /// </summary>
         public static void ApplyXRSettings()
         {
