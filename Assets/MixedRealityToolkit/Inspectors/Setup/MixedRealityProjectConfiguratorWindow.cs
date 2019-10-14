@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Show the MRTK Project Configurator utility window or focus if already opened
         /// </summary>
-        [MenuItem("Mixed Reality Toolkit/Utilities/Configure Unity Project", false, 0)]
+        [MenuItem("Mixed Reality Toolkit/Utilities/Configure Unity Project", false, 499)]
         public static void ShowWindow()
         {
             // There should be only one configurator window open as a "popup". If already open, then just force focus on our instance
