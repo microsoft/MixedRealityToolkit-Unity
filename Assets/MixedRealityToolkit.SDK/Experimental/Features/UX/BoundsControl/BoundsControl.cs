@@ -299,7 +299,18 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         // Current position of the grab point
         private Vector3 currentGrabPoint;
 
-        private TransformScaleHandler scaleHandler;
+        private TransformScaleHandler scaleHandler = null;
+        private TransformScaleHandler ScaleHandler
+        {
+            get
+            {
+                if (scaleHandler == null)
+                {
+                    scaleHandler = GetComponent<TransformScaleHandler>();
+                }
+                return scaleHandler;
+            }
+        }
 
         // Grab point position in pointer space. Used to calculate the current grab point from the current pointer pose.
         private Vector3 grabPointInPointer;
@@ -666,14 +677,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             if (Target != null)
             {
                 isChildOfTarget = transform.IsChildOf(Target.transform);
-
-                scaleHandler = GetComponent<TransformScaleHandler>();
-                if (scaleHandler == null)
-                {
-                    scaleHandler = gameObject.AddComponent<TransformScaleHandler>();
-
-                    scaleHandler.TargetTransform = Target.transform;
-                }
             }
         }
        
@@ -872,9 +875,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
                     Vector3 newScale = initialScaleOnGrabStart * scaleFactor;
                     Vector3 clampedScale = newScale;
-                    if (scaleHandler != null)
+                    if (ScaleHandler != null)
                     {
-                        clampedScale = scaleHandler.ClampScale(newScale);
+                        clampedScale = ScaleHandler.ClampScale(newScale);
                         if (clampedScale != newScale)
                         {
                             scaleFactor = clampedScale[0] / initialScaleOnGrabStart[0];

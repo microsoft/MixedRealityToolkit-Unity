@@ -1,4 +1,5 @@
 ﻿using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -200,27 +201,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         {
             if (handleMaterial == null)
             {
-                float[] color = { 1.0f, 1.0f, 1.0f, 0.75f };
-
-                Shader shader = Shader.Find("Mixed Reality Toolkit/Standard");
-
-                handleMaterial = new Material(shader);
-                handleMaterial.EnableKeyword("_InnerGlow");
-                handleMaterial.SetColor("_Color", new Color(0.0f, 0.63f, 1.0f));
-                handleMaterial.SetFloat("_InnerGlow", 1.0f);
-                handleMaterial.SetFloatArray("_InnerGlowColor", color);
+                handleMaterial = BoundsControlVisualUtils.CreateDefaultMaterial();
             }
             if (handleGrabbedMaterial == null && handleGrabbedMaterial != handleMaterial)
             {
-                float[] color = { 1.0f, 1.0f, 1.0f, 0.75f };
-
-                Shader shader = Shader.Find("Mixed Reality Toolkit/Standard");
-
-                handleGrabbedMaterial = new Material(shader);
-                handleGrabbedMaterial.EnableKeyword("_InnerGlow");
-                handleGrabbedMaterial.SetColor("_Color", new Color(0.0f, 0.63f, 1.0f));
-                handleGrabbedMaterial.SetFloat("_InnerGlow", 1.0f);
-                handleGrabbedMaterial.SetFloatArray("_InnerGlowColor", color);
+                handleGrabbedMaterial = BoundsControlVisualUtils.CreateDefaultMaterial();
             }
         }
 

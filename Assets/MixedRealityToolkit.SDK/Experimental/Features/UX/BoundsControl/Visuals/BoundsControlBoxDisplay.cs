@@ -140,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             if (boxDisplay != null)
             {
                 Vector3 rootScale = parent.lossyScale;
-                Vector3 invRootScale = new Vector3(1.0f / rootScale[0], 1.0f / rootScale[1], 1.0f / rootScale[2]);
+                Vector3 invRootScale = new Vector3(1.0f / rootScale.x, 1.0f / rootScale.y, 1.0f / rootScale.z);
                 // Compute the local scale that produces the desired world space size
                 boxDisplay.transform.localScale = Vector3.Scale(GetBoxDisplayScale(boundsExtents, flattenAxis), invRootScale);
             }

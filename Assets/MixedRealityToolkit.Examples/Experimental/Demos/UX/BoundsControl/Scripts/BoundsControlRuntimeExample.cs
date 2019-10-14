@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos
 
         public GameObject scaleWidget;
 
-        private bool speechTriggeredFalg;
+        private bool speechTriggeredFlag;
         private Vector3 cubePosition = new Vector3(0, 0, 2);
         private BoundsControl bbox;
 
@@ -235,18 +235,18 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos
 
         private IEnumerator WaitForSpeechCommand()
         {
-            while (!speechTriggeredFalg)
+            while (!speechTriggeredFlag)
             {
                 yield return null;
             }
-            speechTriggeredFalg = false;
+            speechTriggeredFlag = false;
         }
 
         public void OnSpeechKeywordRecognized(SpeechEventData eventData)
         {
             if (eventData.Command.Keyword.Equals("Select", System.StringComparison.CurrentCultureIgnoreCase))
             {
-                speechTriggeredFalg = true;
+                speechTriggeredFlag = true;
             }
         }
     }

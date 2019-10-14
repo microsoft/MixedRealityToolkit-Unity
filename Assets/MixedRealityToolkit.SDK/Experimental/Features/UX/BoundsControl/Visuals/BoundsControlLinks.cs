@@ -119,15 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             //ensure materials
             if (wireframeMaterial == null)
             {
-                float[] color = { 1.0f, 1.0f, 1.0f, 0.75f };
-
-                Shader shader = Shader.Find("Mixed Reality Toolkit/Standard");
-
-                wireframeMaterial = new Material(shader);
-                wireframeMaterial.EnableKeyword("_InnerGlow");
-                wireframeMaterial.SetColor("_Color", new Color(0.0f, 0.63f, 1.0f));
-                wireframeMaterial.SetFloat("_InnerGlow", 1.0f);
-                wireframeMaterial.SetFloatArray("_InnerGlowColor", color);
+                wireframeMaterial = BoundsControlVisualUtils.CreateDefaultMaterial();
             }
         }
 

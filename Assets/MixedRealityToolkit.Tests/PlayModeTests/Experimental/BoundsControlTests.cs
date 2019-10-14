@@ -65,12 +65,23 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             bbox.transform.localScale = boundsControlStartScale;
             bbox.Active = true;
 
-            BoxCollider boxCollider = bbox.GetComponent<BoxCollider>();
-            var bounds = boxCollider.bounds;
-            Debug.Assert(bounds.center == boundsControlStartCenter, "bounds control incorrect center at start");
-            Debug.Assert(bounds.size == boundsControlStartScale, "bounds control incorrect size at start");
-
             return bbox;
+        }
+
+        /// <summary>
+        /// Tests if the initial transform setup of bounds control has been propagated to it's collider
+        /// </summary>
+        /// <param name="boundsControl">Bounds control that controls the collider size</param>
+        /// <returns></returns>
+        private IEnumerator VerifyInitialBoundsCorrect(BoundsControl boundsControl)
+        {
+            yield return null;
+            yield return new WaitForFixedUpdate();
+            BoxCollider boxCollider = boundsControl.GetComponent<BoxCollider>();
+            var bounds = boxCollider.bounds;
+            TestUtilities.AssertAboutEqual(bounds.center, boundsControlStartCenter, "bounds control incorrect center at start");
+            TestUtilities.AssertAboutEqual(bounds.size, boundsControlStartScale, "bounds control incorrect size at start");
+            yield return null;
         }
         #endregion
 
@@ -81,8 +92,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         [UnityTest]
         public IEnumerator BBoxInstantiate()
         {
-            var bbox = InstantiateSceneAndDefaultBbox();
-            yield return null;
+            BoundsControl bbox = InstantiateSceneAndDefaultBbox();
+            yield return VerifyInitialBoundsCorrect(bbox);
             Assert.IsNotNull(bbox);
 
             GameObject.Destroy(bbox.gameObject);
@@ -97,8 +108,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         [UnityTest]
         public IEnumerator BBoxOverride()
         {
-            var bbox = InstantiateSceneAndDefaultBbox();
-            yield return null;
+            BoundsControl bbox = InstantiateSceneAndDefaultBbox();
+            yield return VerifyInitialBoundsCorrect(bbox);
             bbox.BoundsControlActivation = UI.Experimental.BoundsControlTypes.BoundsControlActivationType.ActivateOnStart;
             bbox.HideElementsInInspector = false;
             yield return null;
@@ -128,9 +139,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         [UnityTest]
         public IEnumerator ScaleViaNearInteration()
         {
-            var bbox = InstantiateSceneAndDefaultBbox();
-            yield return null;
-
+            BoundsControl bbox = InstantiateSceneAndDefaultBbox();
+            yield return VerifyInitialBoundsCorrect(bbox);
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
 
             // front right corner is corner 3
@@ -164,7 +174,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             float minScale = 0.5f;
             float maxScale = 2f;
 
-            var bbox = InstantiateSceneAndDefaultBbox();
+            BoundsControl bbox = InstantiateSceneAndDefaultBbox();
+            yield return VerifyInitialBoundsCorrect(bbox);
             var scaleHandler = bbox.EnsureComponent<TransformScaleHandler>();
             scaleHandler.ScaleMinimum = minScale;
             scaleHandler.ScaleMaximum = maxScale;
@@ -212,13 +223,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         [UnityTest]
         public IEnumerator ScaleViaHoloLens1Interaction()
         {
-            var bbox = InstantiateSceneAndDefaultBbox();
-            yield return null;
-            BoxCollider boxCollider = bbox.GetComponent<BoxCollider>();
-            var bounds = boxCollider.bounds;
-            var startCenter = bounds.center;
-            var startSize = bounds.size;
-           
+            BoundsControl bbox = InstantiateSceneAndDefaultBbox();
+            yield return VerifyInitialBoundsCorrect(bbox);
+            BoxCollider boxCollider = bbox.GetComponent<BoxCollider>();           
             PlayModeTestUtilities.PushHandSimulationProfile();
             PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
 
@@ -230,8 +237,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
             // After pinching, center should remain the same
             var afterPinchbounds = boxCollider.bounds;
-            TestUtilities.AssertAboutEqual(afterPinchbounds.center, startCenter, "bbox incorrect center after pinch");
-            TestUtilities.AssertAboutEqual(afterPinchbounds.size, startSize, "bbox incorrect size after pinch");
+            TestUtilities.AssertAboutEqual(afterPinchbounds.center, boundsControlStartCenter, "bbox incorrect center after pinch");
+            TestUtilities.AssertAboutEqual(afterPinchbounds.size, boundsControlStartScale, "bbox incorrect size after pinch");
 
             var delta = new Vector3(0.1f, 0.1f, 0f);
             yield return rightHand.Move(delta);
@@ -240,7 +247,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             Vector3 expectedCenter = new Vector3(0.033f, 0.033f, 1.467f);
             Vector3 expectedSize = Vector3.one * .567f;
             TestUtilities.AssertAboutEqual(endBounds.center, expectedCenter, "endBounds incorrect center");
-            TestUtilities.AssertAboutEqual(endBounds.size, expectedSize, "endBounds incorrect size");
+            TestUtilities.AssertAboutEqual(endBounds.size, expectedSize, "endBounds incorrect size", 0.02f);
 
             GameObject.Destroy(bbox.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object
@@ -260,7 +267,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         [UnityTest]
         public IEnumerator UpdateTransformUpdatesBounds()
         {
-            var bbox = InstantiateSceneAndDefaultBbox();
+            BoundsControl bbox = InstantiateSceneAndDefaultBbox();
+            yield return VerifyInitialBoundsCorrect(bbox);
             bbox.HideElementsInInspector = false;
             yield return null;
 
