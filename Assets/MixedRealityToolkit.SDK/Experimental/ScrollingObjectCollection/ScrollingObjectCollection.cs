@@ -1970,10 +1970,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 				return true;
 			}
 			return false;
-		}
+        }
 
 		/// <summary>
-		/// Finds the object-aligned size of a Transform.
+		/// Finds the object-aligned size of a <see href="https://docs.unity3d.com/ScriptReference/Transform.html">Transform</see>.
 		/// </summary>
 		/// <param name="obj">Transform representing the object to get offset from</param>
 		/// <param name="alignedSize">the object-aligned size of obj</param>

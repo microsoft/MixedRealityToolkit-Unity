@@ -7,7 +7,7 @@ using System;
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
     /// <summary>
-    /// A <see cref="ObjectCollectionNode"/> specific for <see cref="ScrollingObjectCollection"/>.
+    /// A <see cref=" Microsoft.MixedReality.Toolkit.Utilities.ObjectCollectionNode"/> specific for <see cref="ScrollingObjectCollection"/>.
     /// </summary>
     [Serializable]
     public class ScrollingObjectCollectionNode : ObjectCollectionNode
