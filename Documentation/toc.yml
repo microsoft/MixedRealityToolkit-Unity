@@ -3,7 +3,7 @@
   items:
   - name: Upgrading from HTK
     href: HTKToMRTKPortingGuide.md
-  - name: Updating from RC2
+  - name: Updating from earlier versions
     href: Updating.md
   - name: Release Notes
     href: ReleaseNotes.md

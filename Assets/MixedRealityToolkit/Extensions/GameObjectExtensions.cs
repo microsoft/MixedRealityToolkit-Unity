@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit
         {
             for (int i = 0; i < root.transform.childCount; i++)
             {
-                root.transform.GetChild(i).gameObject.SetActive(false);
+                root.transform.GetChild(i).gameObject.SetActive(isActive);
             }
         }
 
