@@ -12,6 +12,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: UnityUICheckboxButton
       objectReference: {fileID: 0}
+    - target: {fileID: 9060071670294517501, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3802676811585589510, guid: e35ccb692ee2a154fb472995266a2450,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -80,12 +85,12 @@ PrefabInstance:
     - target: {fileID: 3802676811585589510, guid: e35ccb692ee2a154fb472995266a2450,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 90
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 3802676811585589510, guid: e35ccb692ee2a154fb472995266a2450,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 90
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 3802676811585589510, guid: e35ccb692ee2a154fb472995266a2450,
         type: 3}
@@ -126,6 +131,23 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.characterCount
       value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 3573642777006372954, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 6a84f857bec7e7345843ae29404c57ce,
+        type: 2}
+    - target: {fileID: 3573642777006372954, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce,
+        type: 2}
+    - target: {fileID: 3573642777006372954, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: m_textAlignment
+      value: 513
       objectReference: {fileID: 0}
     - target: {fileID: 6549419268572740206, guid: e35ccb692ee2a154fb472995266a2450,
         type: 3}
@@ -199,12 +221,17 @@ PrefabInstance:
     - target: {fileID: 6125606074263152001, guid: e35ccb692ee2a154fb472995266a2450,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 152.7
+      value: 137.9
       objectReference: {fileID: 0}
     - target: {fileID: 6125606074263152001, guid: e35ccb692ee2a154fb472995266a2450,
         type: 3}
       propertyPath: m_SizeDelta.x
       value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 6125606074263152001, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.1
       objectReference: {fileID: 0}
     - target: {fileID: 8386217965422895077, guid: e35ccb692ee2a154fb472995266a2450,
         type: 3}
@@ -214,6 +241,11 @@ PrefabInstance:
     - target: {fileID: 8386217965422895077, guid: e35ccb692ee2a154fb472995266a2450,
         type: 3}
       propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8386217965422895077, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: m_FillCenter
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2095207503967632265, guid: e35ccb692ee2a154fb472995266a2450,
@@ -231,5 +263,35 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 3840639677224109995, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.54764
+      objectReference: {fileID: 0}
+    - target: {fileID: 3840639677224109995, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.54764
+      objectReference: {fileID: 0}
+    - target: {fileID: 3840639677224109995, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.54764
+      objectReference: {fileID: 0}
+    - target: {fileID: 8994008513695797655, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2800397327216220481, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 773360473827421914, guid: e35ccb692ee2a154fb472995266a2450,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e35ccb692ee2a154fb472995266a2450, type: 3}
