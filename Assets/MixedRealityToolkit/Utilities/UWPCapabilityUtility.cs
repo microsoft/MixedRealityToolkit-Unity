@@ -1,17 +1,18 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+#if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Editor;
 using System;
-using UnityEditor;
 using UnityEngine;
+using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     /// <summary>
     /// Utility to check and configure UWP capability request from MRTK systems
     /// </summary>
-    public class UWPCapabilityEditorUtils
+    public class UWPCapabilityUtility
     {
         /// <summary>
         /// Given capability is required by the given component. Check if capability is enabled, if not auto-enable if possible and log to console
@@ -20,11 +21,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <param name="dependentComponent">Component type that requires the associated capability to perform operations</param>
         public static void RequireCapability(PlayerSettings.WSACapability capability, Type dependentComponent)
         {
-            if (!PlayerSettings.WSA.GetCapability(capability))
+            // Any changes made in editor while playing will not save
+            if (!EditorApplication.isPlaying && !PlayerSettings.WSA.GetCapability(capability))
             {
                 if (MixedRealityPreferences.AutoEnableUWPCapabilities)
                 {
-                    Debug.Log($"{dependentComponent.Name} requires the UWP {capability.ToString()} capability. Auto-enabling the capability in Player Settings.\nDisable this auto-checker via MRTK Preferences under Project Settings.");
+                    Debug.Log($"{dependentComponent.Name} requires the UWP {capability.ToString()} capability. Auto-enabling this capability in Player Settings.\nDisable this auto-checker via MRTK Preferences under Project Settings.");
                     PlayerSettings.WSA.SetCapability(capability, true);
                 }
                 else
@@ -35,3 +37,4 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
     }
 }
+#endif

@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <inheritdoc />
         public bool CheckCapability(MixedRealityCapability capability)
         {
-            return (capability == MixedRealityCapability.VoiceCommand);
+            return capability == MixedRealityCapability.VoiceCommand;
         }
 
         #endregion IMixedRealityCapabilityCheck Implementation
@@ -91,6 +91,16 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
 
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
         private KeywordRecognizer keywordRecognizer;
+
+#if UNITY_EDITOR && UNITY_WSA
+        /// <inheritdoc />
+        public override void Initialize()
+        {
+            Toolkit.Utilities.Editor.UWPCapabilityUtility.RequireCapability(
+                    UnityEditor.PlayerSettings.WSACapability.Microphone,
+                    this.GetType());
+        }
+#endif
 
         /// <inheritdoc />
         public override void Enable()

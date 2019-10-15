@@ -203,8 +203,12 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <inheritdoc />
         public override void Initialize()
         {
-            Toolkit.Utilities.Editor.UWPCapabilityEditorUtils.RequireCapability(
+            Toolkit.Utilities.Editor.UWPCapabilityUtility.RequireCapability(
                 UnityEditor.PlayerSettings.WSACapability.InternetClient,
+                this.GetType());
+
+            Toolkit.Utilities.Editor.UWPCapabilityUtility.RequireCapability(
+                UnityEditor.PlayerSettings.WSACapability.Microphone,
                 this.GetType());
         }
 #endif

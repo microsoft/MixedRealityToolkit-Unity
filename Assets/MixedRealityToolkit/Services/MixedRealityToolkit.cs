@@ -35,19 +35,6 @@ namespace Microsoft.MixedReality.Toolkit
         private static bool isApplicationQuitting = false;
         private static bool internalShutdown = false;
 
-#if UNITY_EDITOR
-        private static readonly (MixedRealityCapability, PlayerSettings.WSACapability)[] CapabilityCheckList 
-            = new (MixedRealityCapability, PlayerSettings.WSACapability)[]
-        {
-                (MixedRealityCapability.VoiceCommand, PlayerSettings.WSACapability.Microphone),
-                (MixedRealityCapability.VoiceDictation, PlayerSettings.WSACapability.Microphone),
-                (MixedRealityCapability.SpatialAwarenessMesh, PlayerSettings.WSACapability.SpatialPerception),
-#if UNITY_2019_3_OR_NEWER
-                (MixedRealityCapability.EyeTracking, PlayerSettings.WSACapability.GazeInput),
-#endif
-        };
-#endif
-
 #region Mixed Reality Toolkit Profile configuration
 
         /// <summary>
@@ -440,16 +427,6 @@ namespace Microsoft.MixedReality.Toolkit
             InitializeAllServices();
 
             isInitializing = false;
-
-#if UNITY_EDITOR && UNITY_WSA
-            if (!EditorApplication.isPlaying)
-            {
-                foreach (var svc in MixedRealityServiceRegistry.GetAllServices())
-                {
-                    CheckServiceCapabilities(svc);
-                }
-            }
-#endif
         }
 
         private void EnsureMixedRealityRequirements()
@@ -827,23 +804,6 @@ namespace Microsoft.MixedReality.Toolkit
 
             return false;
         }
-
-#if UNITY_EDITOR && UNITY_WSA
-        private static void CheckServiceCapabilities(IMixedRealityService serviceInstance)
-        {
-            var capabilityChecker = serviceInstance as IMixedRealityCapabilityCheck;
-            if (capabilityChecker != null)
-            {
-                foreach (var c in CapabilityCheckList)
-                {
-                    if (capabilityChecker.CheckCapability(c.Item1))
-                    {
-                        UWPCapabilityEditorUtils.RequireCapability(c.Item2, serviceInstance.GetType());
-                    }
-                }
-            }
-        }
-#endif
 
 #endregion Registration
 

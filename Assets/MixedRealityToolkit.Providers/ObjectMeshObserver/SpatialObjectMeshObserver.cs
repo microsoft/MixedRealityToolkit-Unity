@@ -78,9 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         /// <inheritdoc />
         bool IMixedRealityCapabilityCheck.CheckCapability(MixedRealityCapability capability)
         {
-            if (capability == MixedRealityCapability.SpatialAwarenessMesh) { return true; }
-
-            return false;
+            return capability == MixedRealityCapability.SpatialAwarenessMesh;
         }
 
         #endregion IMixedRealityCapabilityCheck Implementation

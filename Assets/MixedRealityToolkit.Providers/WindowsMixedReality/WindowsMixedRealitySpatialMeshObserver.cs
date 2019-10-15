@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             if (WindowsApiChecker.UniversalApiContractV8_IsAvailable)
             {
 #if WINDOWS_UWP
-                return ((capability == MixedRealityCapability.SpatialAwarenessMesh) && WindowsSpatialSurfaces.SpatialSurfaceObserver.IsSupported());
+                return capability == MixedRealityCapability.SpatialAwarenessMesh && WindowsSpatialSurfaces.SpatialSurfaceObserver.IsSupported();
 #endif // WINDOWS_UWP
             }
 
@@ -110,6 +110,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
 
             // Apply the initial observer volume settings.
             ConfigureObserverVolume();
+
+#if UNITY_EDITOR && UNITY_WSA
+            Toolkit.Utilities.Editor.UWPCapabilityUtility.RequireCapability(
+                    UnityEditor.PlayerSettings.WSACapability.SpatialPerception,
+                    this.GetType());
+#endif
         }
 
         /// <inheritdoc />
@@ -122,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// <inheritdoc />
         public override void Enable()
         {
-            // todo
+            Resume();
         }
 
         /// <inheritdoc />
@@ -134,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// <inheritdoc />
         public override void Disable()
         {
-            // todo
+            Suspend();
         }
 
         /// <inheritdoc />

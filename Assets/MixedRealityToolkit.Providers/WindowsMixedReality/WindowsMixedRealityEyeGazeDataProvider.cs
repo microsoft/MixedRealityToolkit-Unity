@@ -82,6 +82,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         public override void Initialize()
         {
+#if UNITY_EDITOR && UNITY_WSA && UNITY_2019_3_OR_NEWER
+            Toolkit.Utilities.Editor.UWPCapabilityEditorUtils.RequireCapability(
+                    UnityEditor.PlayerSettings.WSACapability.GazeInput,
+                    this.GetType());
+#endif
+
             if (Application.isPlaying && WindowsApiChecker.UniversalApiContractV8_IsAvailable)
             {
 #if WINDOWS_UWP
