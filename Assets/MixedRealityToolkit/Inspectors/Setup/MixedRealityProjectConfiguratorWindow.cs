@@ -112,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
                 if (GUILayout.Button(LaterButtonContent))
                 {
-                    MixedRealityEditorSettings.IgnoreSession = true;
+                    MixedRealityEditorSettings.IgnoreProjectConfigForSession = true;
                     Close();
                 }
 

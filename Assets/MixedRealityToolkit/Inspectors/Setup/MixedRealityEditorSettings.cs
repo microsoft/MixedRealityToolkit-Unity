@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     /// <summary>
-    /// Sets Force Text Serialization and visible meta files in all projects that use the Mixed Reality Toolkit.
+    /// Editor runtime controller for showing Project Configuration window and performance checks logging in current Unity project
     /// </summary>
     [InitializeOnLoad]
     public class MixedRealityEditorSettings : IActiveBuildTargetChanged
@@ -27,11 +27,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             // Detect when we enter player mode so we can try checking for optimal configuration
             EditorApplication.playModeStateChanged += OnPlayStateModeChanged;
 
-            if (EditorApplication.isPlayingOrWillChangePlaymode)
-            {
-                return;
-            }
-
             ShowProjectConfigurationDialog();
         }
 
@@ -41,18 +36,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <inheritdoc />
         public void OnActiveBuildTargetChanged(BuildTarget previousTarget, BuildTarget newTarget)
         {
-            IgnoreSession = false;
+            IgnoreProjectConfigForSession = false;
         }
 
-        private static void OnPlayStateModeChanged(PlayModeStateChange state)
-        {
-            if (state == PlayModeStateChange.EnteredPlayMode && MixedRealityPreferences.RunOptimalConfiguration)
-            {
-                LogConfigurationWarnings();
-            }
-        }
-
-        public static bool IgnoreSession
+        /// <summary>
+        /// Session state wrapper that tracks whether to ignore checking Project Configuration for the current Unity session
+        /// </summary>
+        public static bool IgnoreProjectConfigForSession
         {
             get
             {
@@ -65,9 +55,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
         }
 
+        private static void OnPlayStateModeChanged(PlayModeStateChange state)
+        {
+            if (state == PlayModeStateChange.EnteredPlayMode && MixedRealityPreferences.RunOptimalConfiguration)
+            {
+                LogConfigurationWarnings();
+            }
+        }
+
         private static void ShowProjectConfigurationDialog()
         {
-            if (!IgnoreSession
+            if (!EditorApplication.isPlayingOrWillChangePlaymode
+                && !IgnoreProjectConfigForSession
                 && !MixedRealityPreferences.IgnoreSettingsPrompt
                 && !MixedRealityProjectConfigurator.IsProjectConfigured())
             {
