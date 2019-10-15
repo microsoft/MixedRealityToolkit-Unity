@@ -405,7 +405,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         /// Register a transform scale handler to bounding box to limit the scaling range
         /// This is useful for adding/switching your scale handler during runtime
         /// </summary>
-        /// <param name="transformScaleHandler">scale handler you want to switch to - can be null if scaling shouldn't be constraint</param>
+        /// <param name="transformScaleHandler">scale handler you want to switch to - can be null if scaling shouldn't be constrained</param>
         public void RegisterTransformScaleHandler(TransformScaleHandler transformScaleHandler)
         {
             scaleHandler = transformScaleHandler;
