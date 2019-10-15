@@ -26,12 +26,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 if (MixedRealityPreferences.AutoEnableUWPCapabilities)
                 {
-                    Debug.Log($"{dependentComponent.Name} requires the UWP {capability.ToString()} capability. Auto-enabling this capability in Player Settings.\nDisable this auto-checker via MRTK Preferences under Project Settings.");
+                    Debug.Log($"<b>{dependentComponent.Name}</b> requires the UWP <b>{capability.ToString()}</b> capability. Auto-enabling this capability in Player Settings.\nDisable this automation tool via MRTK Preferences under <i>Project Settings</i>.");
                     PlayerSettings.WSA.SetCapability(capability, true);
                 }
                 else
                 {
-                    Debug.LogWarning($"{dependentComponent.Name} requires the UWP {capability.ToString()} capability which is currently not enabled. To utilize this component on device, enable the capability in Player Settings > Publishing Settings.");
+                    Debug.LogWarning($"<b>{dependentComponent.Name}</b> requires the UWP <b>{capability.ToString()}</b> capability which is currently not enabled. To utilize this component on device, enable the capability in <i>Player Settings</i> > <i>Publishing Settings</i>.");
                 }
             }
         }
