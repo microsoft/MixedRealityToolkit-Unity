@@ -1957,10 +1957,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     scaleHandler = gameObject.AddComponent<TransformScaleHandler>();
 
                     scaleHandler.TargetTransform = Target.transform;
-                #pragma warning disable 0618
+#pragma warning disable 0618
                     scaleHandler.ScaleMinimum = scaleMinimum;
                     scaleHandler.ScaleMaximum = scaleMaximum;
-                #pragma warning restore 0618
+#pragma warning restore 0618
                 }
             }
         }
