@@ -23,10 +23,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {MRConfig.MicrophoneCapability, true },
             {MRConfig.InternetClientCapability, true },
             {MRConfig.SpatialPerceptionCapability, true },
+#if UNITY_2019_3_OR_NEWER
+            {MRConfig.EyeTrackingCapability, true },
+#endif
         };
 
         private const string WindowKey = "_MixedRealityToolkit_Editor_MixedRealityProjectConfiguratorWindow";
-        private const float Default_Window_Height = 600.0f;
+        private const float Default_Window_Height = 640.0f;
         private const float Default_Window_Width = 400.0f;
 
         private readonly GUIContent ApplyButtonContent = new GUIContent("Apply", "Apply configurations to this Unity Project");
@@ -142,12 +145,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 RenderToggle(MRConfig.MicrophoneCapability, "Enable Microphone Capability");
                 RenderToggle(MRConfig.InternetClientCapability, "Enable Internet Client Capability");
                 RenderToggle(MRConfig.SpatialPerceptionCapability, "Enable Spatial Perception Capability");
+#if UNITY_2019_3_OR_NEWER
+                RenderToggle(MRConfig.EyeTrackingCapability, "Enable Eye Gaze Input Capability");
+#endif
             }
             else
             {
                 trackToggles[MRConfig.MicrophoneCapability] = false;
                 trackToggles[MRConfig.InternetClientCapability] = false;
                 trackToggles[MRConfig.SpatialPerceptionCapability] = false;
+#if UNITY_2019_3_OR_NEWER
+                trackToggles[MRConfig.EyeTrackingCapability] = false;
+#endif
             }
         }
 

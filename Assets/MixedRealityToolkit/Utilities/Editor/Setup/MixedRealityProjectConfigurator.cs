@@ -33,7 +33,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             SpatialPerceptionCapability,
             MicrophoneCapability,
             InternetClientCapability,
+#if UNITY_2019_3_OR_NEWER
             EyeTrackingCapability,
+#endif
         };
 
         // The check functions for each type of setting
@@ -49,6 +51,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.SpatialPerceptionCapability,  () => { return PlayerSettings.WSA.GetCapability(PlayerSettings.WSACapability.SpatialPerception); } },
             { Configurations.MicrophoneCapability,  () => { return PlayerSettings.WSA.GetCapability(PlayerSettings.WSACapability.Microphone); } },
             { Configurations.InternetClientCapability,  () => { return PlayerSettings.WSA.GetCapability(PlayerSettings.WSACapability.InternetClient); } },
+#if UNITY_2019_3_OR_NEWER
+            { Configurations.EyeTrackingCapability,  () => { return PlayerSettings.WSA.GetCapability(PlayerSettings.WSACapability.GazeInput); } },
+#endif
         };
 
         // The configure functions for each type of setting
@@ -64,6 +69,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.SpatialPerceptionCapability,  () => { PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.SpatialPerception, true); } },
             { Configurations.MicrophoneCapability,  () => { PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.Microphone, true); } },
             { Configurations.InternetClientCapability,  () => { PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClient, true); } },
+#if UNITY_2019_3_OR_NEWER
+            { Configurations.EyeTrackingCapability,  () => { PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.GazeInput, true); } },
+#endif
         };
 
         /// <summary>
