@@ -208,6 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             InitEdgeAxis();
             CreateHandles(parent, drawManipulationTether);
         }
+        
         private void CreateHandles(Transform parent, bool drawManipulationTether)
         {
             for (int i = 0; i < edgeCenters.Length; ++i)
