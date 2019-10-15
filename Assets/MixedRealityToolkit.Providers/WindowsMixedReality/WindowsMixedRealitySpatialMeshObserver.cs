@@ -128,7 +128,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// <inheritdoc />
         public override void Enable()
         {
-            Resume();
+            if (!IsRunning)
+            {
+                Resume();
+            }
         }
 
         /// <inheritdoc />
@@ -140,7 +143,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// <inheritdoc />
         public override void Disable()
         {
-            Suspend();
+            if (IsRunning)
+            {
+                Suspend();
+            }
         }
 
         /// <inheritdoc />
