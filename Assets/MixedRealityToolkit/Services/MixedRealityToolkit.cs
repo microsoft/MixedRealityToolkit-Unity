@@ -17,7 +17,6 @@ using Microsoft.MixedReality.Toolkit.CameraSystem;
 
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Input.Editor;
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 #endif
 
