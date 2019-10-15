@@ -1,6 +1,5 @@
 ﻿using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -97,12 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         /// <returns></returns>
         internal static Material CreateDefaultMaterial()
         {
-            Material defaultMaterial = new Material(StandardShaderUtility.MrtkStandardShader);
-            defaultMaterial.EnableKeyword("_InnerGlow");
-            defaultMaterial.SetColor("_Color", new Color(0.0f, 0.63f, 1.0f));
-            defaultMaterial.SetFloat("_InnerGlow", 1.0f);
-            defaultMaterial.SetColor("_InnerGlowColor", new Color(1.0f, 1.0f, 1.0f, 0.75f));
-            return defaultMaterial;
+            return Resources.Load<Material>("BoundsControlHandleDefault");
         }
 
     }

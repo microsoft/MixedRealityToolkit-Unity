@@ -299,18 +299,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         // Current position of the grab point
         private Vector3 currentGrabPoint;
 
-        private TransformScaleHandler scaleHandler = null;
-        private TransformScaleHandler ScaleHandler
-        {
-            get
-            {
-                if (scaleHandler == null)
-                {
-                    scaleHandler = GetComponent<TransformScaleHandler>();
-                }
-                return scaleHandler;
-            }
-        }
+        private TransformScaleHandler scaleHandler;
 
         // Grab point position in pointer space. Used to calculate the current grab point from the current pointer pose.
         private Vector3 grabPointInPointer;
@@ -409,6 +398,17 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             ResetVisuals();
             rigRoot.gameObject.SetActive(active);
             UpdateRigVisibilityInInspector();
+        }
+
+
+        /// <summary>
+        /// Register a transform scale handler to bounding box to limit the scaling range
+        /// This is useful for adding/switching your scale handler during runtime
+        /// </summary>
+        /// <param name="transformScaleHandler">scale handler you want to switch to - can be null if scaling shouldn't be constraint</param>
+        public void RegisterTransformScaleHandler(TransformScaleHandler transformScaleHandler)
+        {
+            scaleHandler = transformScaleHandler;
         }
 
         #endregion
@@ -677,6 +677,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             if (Target != null)
             {
                 isChildOfTarget = transform.IsChildOf(Target.transform);
+
+                RegisterTransformScaleHandler(GetComponent<TransformScaleHandler>());
             }
         }
        
@@ -875,9 +877,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
                     Vector3 newScale = initialScaleOnGrabStart * scaleFactor;
                     Vector3 clampedScale = newScale;
-                    if (ScaleHandler != null)
+                    if (scaleHandler != null)
                     {
-                        clampedScale = ScaleHandler.ClampScale(newScale);
+                        clampedScale = scaleHandler.ClampScale(newScale);
                         if (clampedScale != newScale)
                         {
                             scaleFactor = clampedScale[0] / initialScaleOnGrabStart[0];

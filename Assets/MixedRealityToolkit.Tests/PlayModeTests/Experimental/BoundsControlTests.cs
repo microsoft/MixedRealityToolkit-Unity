@@ -179,7 +179,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             var scaleHandler = bbox.EnsureComponent<TransformScaleHandler>();
             scaleHandler.ScaleMinimum = minScale;
             scaleHandler.ScaleMaximum = maxScale;
-            yield return null;
+            bbox.RegisterTransformScaleHandler(scaleHandler);
 
             Vector3 initialScale = bbox.transform.localScale;
 
