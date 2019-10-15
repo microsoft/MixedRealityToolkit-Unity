@@ -92,17 +92,6 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
         private KeywordRecognizer keywordRecognizer;
 
-#if UNITY_EDITOR
-        /// <inheritdoc />
-        public override void Initialize()
-        {
-            if (!UnityEditor.PlayerSettings.WSA.GetCapability(UnityEditor.PlayerSettings.WSACapability.Microphone))
-            {
-                UnityEditor.PlayerSettings.WSA.SetCapability(UnityEditor.PlayerSettings.WSACapability.Microphone, true);
-            }
-        }
-#endif // UNITY_EDITOR
-
         /// <inheritdoc />
         public override void Enable()
         {
@@ -175,17 +164,6 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
 
             keywordRecognizer = null;
         }
-
-#if UNITY_EDITOR
-        /// <inheritdoc />
-        public override void Destroy()
-        {
-            if (UnityEditor.PlayerSettings.WSA.GetCapability(UnityEditor.PlayerSettings.WSACapability.Microphone))
-            {
-                UnityEditor.PlayerSettings.WSA.SetCapability(UnityEditor.PlayerSettings.WSACapability.Microphone, false);
-            }
-        }
-#endif // UNITY_EDITOR
 
         /// <inheritdoc />
         protected override void Dispose(bool disposing)

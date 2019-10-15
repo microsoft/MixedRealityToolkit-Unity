@@ -17,6 +17,7 @@ using Microsoft.MixedReality.Toolkit.CameraSystem;
 
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Input.Editor;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using UnityEditor;
 #endif
 
@@ -30,11 +31,22 @@ namespace Microsoft.MixedReality.Toolkit
     [DisallowMultipleComponent]
     public class MixedRealityToolkit : MonoBehaviour, IMixedRealityServiceRegistrar
     {
-#region Mixed Reality Toolkit Profile configuration
-
         private static bool isInitializing = false;
         private static bool isApplicationQuitting = false;
         private static bool internalShutdown = false;
+
+        private static readonly (MixedRealityCapability, PlayerSettings.WSACapability)[] CapabilityCheckList 
+            = new (MixedRealityCapability, PlayerSettings.WSACapability)[]
+        {
+                (MixedRealityCapability.VoiceCommand, PlayerSettings.WSACapability.Microphone),
+                (MixedRealityCapability.VoiceDictation, PlayerSettings.WSACapability.Microphone),
+                (MixedRealityCapability.SpatialAwarenessMesh, PlayerSettings.WSACapability.SpatialPerception),
+#if UNITY_2019_3_OR_NEWER
+                (MixedRealityCapability.EyeTracking, PlayerSettings.WSACapability.SpatialPerception),
+#endif
+        };
+
+#region Mixed Reality Toolkit Profile configuration
 
         /// <summary>
         /// Checks if there is a valid instance of the MixedRealityToolkit, then checks if there is there a valid Active Profile.
@@ -784,6 +796,9 @@ namespace Microsoft.MixedReality.Toolkit
                 serviceInstance.Initialize();
             }
 
+#if UNITY_EDITOR && UNITY_WSA
+            CheckServiceCapabilities(serviceInstance);
+#endif
             return true;
         }
 
@@ -804,6 +819,23 @@ namespace Microsoft.MixedReality.Toolkit
 
             return false;
         }
+
+#if UNITY_EDITOR && UNITY_WSA
+        private static void CheckServiceCapabilities(IMixedRealityService serviceInstance)
+        {
+            var capabilityChecker = serviceInstance as IMixedRealityCapabilityCheck;
+            if (capabilityChecker != null)
+            {
+                foreach (var c in CapabilityCheckList)
+                {
+                    if (capabilityChecker.CheckCapability(c.Item1))
+                    {
+                        UWPCapabilityEditorUtils.RequireCapability(c.Item2, serviceInstance.GetType());
+                    }
+                }
+            }
+        }
+#endif
 
 #endregion Registration
 
@@ -977,9 +1009,9 @@ namespace Microsoft.MixedReality.Toolkit
             return true;
         }
 
-        #endregion Multiple Service Management
+#endregion Multiple Service Management
 
-        #region Service Utilities
+#region Service Utilities
 
         /// <summary>
         /// Generic function used to interrogate the Mixed Reality Toolkit active system registry for the existence of a core system.
@@ -1275,7 +1307,7 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
-        #endregion Core System Accessors
+#endregion Core System Accessors
 
 #region Application Event Listeners
         /// <summary>
@@ -1390,6 +1422,6 @@ namespace Microsoft.MixedReality.Toolkit
         }
 #endif // UNITY_EDITOR
 
-        #endregion
+#endregion
     }
 }
