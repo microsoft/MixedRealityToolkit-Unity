@@ -35,6 +35,7 @@ namespace Microsoft.MixedReality.Toolkit
         private static bool isApplicationQuitting = false;
         private static bool internalShutdown = false;
 
+#if UNITY_EDITOR
         private static readonly (MixedRealityCapability, PlayerSettings.WSACapability)[] CapabilityCheckList 
             = new (MixedRealityCapability, PlayerSettings.WSACapability)[]
         {
@@ -42,9 +43,10 @@ namespace Microsoft.MixedReality.Toolkit
                 (MixedRealityCapability.VoiceDictation, PlayerSettings.WSACapability.Microphone),
                 (MixedRealityCapability.SpatialAwarenessMesh, PlayerSettings.WSACapability.SpatialPerception),
 #if UNITY_2019_3_OR_NEWER
-                (MixedRealityCapability.EyeTracking, PlayerSettings.WSACapability.SpatialPerception),
+                (MixedRealityCapability.EyeTracking, PlayerSettings.WSACapability.GazeInput),
 #endif
         };
+#endif
 
 #region Mixed Reality Toolkit Profile configuration
 
@@ -438,6 +440,16 @@ namespace Microsoft.MixedReality.Toolkit
             InitializeAllServices();
 
             isInitializing = false;
+
+#if UNITY_EDITOR && UNITY_WSA
+            if (!EditorApplication.isPlaying)
+            {
+                foreach (var svc in MixedRealityServiceRegistry.GetAllServices())
+                {
+                    CheckServiceCapabilities(svc);
+                }
+            }
+#endif
         }
 
         private void EnsureMixedRealityRequirements()
@@ -795,10 +807,6 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 serviceInstance.Initialize();
             }
-
-#if UNITY_EDITOR && UNITY_WSA
-            CheckServiceCapabilities(serviceInstance);
-#endif
             return true;
         }
 

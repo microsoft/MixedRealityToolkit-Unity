@@ -60,6 +60,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         public override void Initialize()
         {
             base.Initialize();
+
+            meshEventData = new MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>(EventSystem.current);
+
             InitializeInternal();
         }
 
@@ -68,7 +71,22 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// </summary>
         private void InitializeInternal()
         {
-            meshEventData = new MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>(EventSystem.current);
+            MixedRealitySpatialAwarenessSystemProfile profile = ConfigurationProfile as MixedRealitySpatialAwarenessSystemProfile;
+
+            if (profile != null && GetDataProviders<IMixedRealitySpatialAwarenessObserver>().Count == 0)
+            {
+                // Register the spatial observers.
+                for (int i = 0; i < profile.ObserverConfigurations.Length; i++)
+                {
+                    MixedRealitySpatialObserverConfiguration configuration = profile.ObserverConfigurations[i];
+                    object[] args = { Registrar, this, configuration.ComponentName, configuration.Priority, configuration.ObserverProfile };
+
+                    RegisterDataProvider<IMixedRealitySpatialAwarenessObserver>(
+                        configuration.ComponentType.Type,
+                        configuration.RuntimePlatform,
+                        args);
+                }
+            }
         }
 
         /// <inheritdoc/>
@@ -85,22 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <inheritdoc/>
         public override void Enable()
         {
-            MixedRealitySpatialAwarenessSystemProfile profile = ConfigurationProfile as MixedRealitySpatialAwarenessSystemProfile;
-
-            if ((GetDataProviders<IMixedRealitySpatialAwarenessObserver>().Count == 0) && (profile != null))
-            {
-                // Register the spatial observers.
-                for (int i = 0; i < profile.ObserverConfigurations.Length; i++)
-                {
-                    MixedRealitySpatialObserverConfiguration configuration = profile.ObserverConfigurations[i];
-                    object[] args = { Registrar, this, configuration.ComponentName, configuration.Priority, configuration.ObserverProfile };
-
-                    RegisterDataProvider<IMixedRealitySpatialAwarenessObserver>(
-                        configuration.ComponentType.Type,
-                        configuration.RuntimePlatform,
-                        args);
-                }
-            }
+            InitializeInternal();
 
             // Ensure data providers are enabled (performed by the base class)
             base.Enable();
