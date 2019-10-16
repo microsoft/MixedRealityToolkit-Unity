@@ -250,7 +250,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             if (!autoTransitionBetweenHands)
             {
                 return (SolverHandler.TrackedTargetType == TrackedObjectType.HandJoint || 
-                        SolverHandler.TrackedTargetType == TrackedObjectType.MotionController)  &&
+                        SolverHandler.TrackedTargetType == TrackedObjectType.ControllerRay)  &&
                        (SolverHandler.TrackedHandness == Handedness.Both || 
                         hand.ControllerHandedness == SolverHandler.TrackedHandness);
             }
@@ -402,7 +402,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             if (hand != null)
             {
                 if (SolverHandler.TrackedTargetType == TrackedObjectType.HandJoint || 
-                    SolverHandler.TrackedTargetType == TrackedObjectType.MotionController)
+                    SolverHandler.TrackedTargetType == TrackedObjectType.ControllerRay)
                 {
                     if (SolverHandler.TrackedHandness != hand.ControllerHandedness)
                     {
