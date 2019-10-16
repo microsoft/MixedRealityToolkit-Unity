@@ -71,6 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// Renders a <see cref="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile"/>.
         /// </summary>
         /// <param name="property">the <see cref="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile"/> property.</param>
+        /// <param name="profileType">Profile type to filter available values to set on the provided property. If null, defaults to type <see cref="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile"/></param>
         /// <param name="showAddButton">If true, draw the clone button, if false, don't</param>
         /// <param name="renderProfileInBox">if true, render box around profile content, if false, don't</param>
         /// <param name="serviceType">Optional service type to limit available profile types.</param>
