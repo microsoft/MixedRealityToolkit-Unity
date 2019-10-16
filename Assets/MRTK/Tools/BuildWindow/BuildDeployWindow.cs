@@ -143,6 +143,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private readonly GUIContent ViewPlayerLogLabel = new GUIContent("View Player Log", "Launch notepad with more recent player log for listed AppX on either currently selected device or from all devices.");
 
+        private readonly GUIContent liveCubeModelLabel = new GUIContent("Live Cube Model", "Location of .glb model to use as 3D Launcher");
+
         #endregion Labels
 
         #region Properties
@@ -557,6 +559,20 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
                 // Enable Research Mode Capability
                 bool researchModeEnabled = EditorGUILayout.ToggleLeft(ResearchModeCapabilityLabel, UwpBuildDeployPreferences.ResearchModeCapabilityEnabled);
+
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    // 3D Launcher Model
+                    string curLiveCubeModelLocation = BuildDeployPreferences.LiveCubeModelLocation;
+                    var curGlbModel = AssetDatabase.LoadAssetAtPath(curLiveCubeModelLocation, typeof(GameObject));
+                    EditorGUILayout.LabelField(LiveCubeModelLabel, GUILayout.Width(96));
+                    GameObject newGlbModel = (GameObject)EditorGUILayout.ObjectField(curGlbModel, typeof(GameObject), false);
+                    string newLiveCubeModelLocation = AssetDatabase.GetAssetPath(newGlbModel);
+                    if (newLiveCubeModelLocation != curLiveCubeModelLocation)
+                    {
+                        BuildDeployPreferences.LiveCubeModelLocation = newLiveCubeModelLocation;
+                    }
+                }
 
                 if (c.changed)
                 {

@@ -3,9 +3,11 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
 using UnityEditor;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
@@ -40,6 +42,91 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                         break;
                 }
             }
+        }
+
+        private static void AddLiveCubeModelToProject(string filePath)
+        {
+            var text = File.ReadAllText(filePath);
+            var doc = new XmlDocument();
+            doc.LoadXml(text);
+            var root = doc.DocumentElement;
+
+            // Check to see if model has already been added
+            XmlNodeList nodes = root.SelectNodes("//None[@Include = \"Assets\\LiveCubeModel.glb\"]");
+            if (nodes.Count > 0)
+            {
+                Debug.Log("Model Already Exists in Project File");
+                return;
+            }
+
+            var newNodeDoc = new XmlDocument();
+            newNodeDoc.LoadXml("<None Include=\"Assets\\LiveCubeModel.glb\">" +
+                            "<DeploymentContent>true</DeploymentContent>" +
+                            "</None>");
+            var newNode = doc.ImportNode(newNodeDoc.DocumentElement, true);
+            var list = doc.GetElementsByTagName("ItemGroup");
+            var items = list.Item(1);
+            items.AppendChild(newNode);
+            doc.Save(filePath);
+        }
+
+        private static void AddLiveCubeModelToFilter(string filePath)
+        {
+            var text = File.ReadAllText(filePath);
+            var doc = new XmlDocument();
+            doc.LoadXml(text);
+            var root = doc.DocumentElement;
+
+            // Check to see if model has already been added
+            XmlNodeList nodes = root.SelectNodes("//None[@Include = \"Assets\\LiveCubeModel.glb\"]");
+            if (nodes.Count > 0)
+            {
+                Debug.Log("Model Already Exists in Filter File");
+                return;
+            }
+
+            var newNodeDoc = new XmlDocument();
+            newNodeDoc.LoadXml("<None Include=\"Assets\\LiveCubeModel.glb\">" +
+                            "<Filter>Assets</Filter>" +
+                            "</None>");
+            var newNode = doc.ImportNode(newNodeDoc.DocumentElement, true);
+            var list = doc.GetElementsByTagName("ItemGroup");
+            var items = list.Item(0);
+            items.AppendChild(newNode);
+            doc.Save(filePath);
+        }
+
+        private static void UpdateManifest(string filePath)
+        {
+            var text = File.ReadAllText(filePath);
+            var doc = new XmlDocument();
+            doc.LoadXml(text);
+            var root = doc.DocumentElement;
+
+            // Check to see if the element exists already
+            XmlNamespaceManager nsmgr = new XmlNamespaceManager(doc.NameTable);
+            nsmgr.AddNamespace("uap5", "http://schemas.microsoft.com/appx/manifest/uap/windows10/5");
+            XmlNodeList nodes = root.SelectNodes("//uap5:MixedRealityModel", nsmgr);
+            foreach (XmlNode node in nodes)
+            {
+                if (node.Attributes != null && node.Attributes["Path"].Value == "Assets\\LiveCubeModel.glb")
+                {
+                    Debug.Log("Model Already Exists in Manifest File");
+                    return;
+                }
+            }
+            root.SetAttribute("xmlns:uap5", "http://schemas.microsoft.com/appx/manifest/uap/windows10/5");
+
+            var ignoredValue = root.GetAttribute("IgnorableNamespaces");
+            root.SetAttribute("IgnorableNamespaces", ignoredValue + " uap5");
+
+            var newElement = doc.CreateElement("uap5", "MixedRealityModel", "http://schemas.microsoft.com/appx/manifest/uap/windows10/5");
+            newElement.SetAttribute("Path", "Assets\\LiveCubeModel.glb");
+            var list = doc.GetElementsByTagName("uap:DefaultTile");
+            var items = list.Item(0);
+            items.AppendChild(newElement);
+
+            doc.Save(filePath);
         }
 
         /// <summary>
@@ -87,6 +174,15 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     Debug.Assert(uwpBuildInfo != null);
                     UwpAppxBuildTools.AddCapabilities(uwpBuildInfo);
                     UwpAppxBuildTools.UpdateAssemblyCSharpProject(uwpBuildInfo);
+
+                    Debug.Log($"LiveCubeModelLocation: {BuildDeployPreferences.LiveCubeModelLocation}, Destination: {buildDirectory}");
+                    if (!String.IsNullOrEmpty(BuildDeployPreferences.LiveCubeModelLocation))
+                    {
+                        FileUtil.ReplaceFile(BuildDeployPreferences.LiveCubeModelLocation, $"{buildDirectory}/{PlayerSettings.productName}/Assets/LiveCubeModel.glb");
+                        AddLiveCubeModelToProject($"{buildDirectory}/{PlayerSettings.productName}/{PlayerSettings.productName}.vcxproj");
+                        AddLiveCubeModelToFilter($"{buildDirectory}/{PlayerSettings.productName}/{PlayerSettings.productName}.vcxproj.filters");
+                        UpdateManifest($"{buildDirectory}/{PlayerSettings.productName}/Package.appxmanifest");
+                    }
 
                     if (showDialog &&
                         !EditorUtility.DisplayDialog(PlayerSettings.productName, "Build Complete", "OK", "Build AppX"))
