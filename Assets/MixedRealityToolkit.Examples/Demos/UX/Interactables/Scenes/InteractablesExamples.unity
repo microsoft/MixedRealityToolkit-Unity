@@ -8503,17 +8503,17 @@ PrefabInstance:
     - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
         type: 3}
       propertyPath: profiles.Array.data[0].Themes.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
         type: 3}
       propertyPath: profiles.Array.data[1].Themes.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
         type: 3}
       propertyPath: profiles.Array.data[2].Themes.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
         type: 3}
@@ -8632,6 +8632,23 @@ PrefabInstance:
       propertyPath: Events.Array.data[1].Settings.Array.data[3].EventValue.m_TypeName
       value: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
         Culture=neutral, PublicKeyToken=null
+      objectReference: {fileID: 0}
+    - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
+        type: 3}
+      propertyPath: profiles.Array.data[0].Themes.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: d37afabc007bf774d9431b9a7cbe6fba,
+        type: 2}
+    - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
+        type: 3}
+      propertyPath: profiles.Array.data[1].Themes.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: cbde7890146c3024d928b7afc2e16065,
+        type: 2}
+    - target: {fileID: 114856665817931228, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
+        type: 3}
+      propertyPath: profiles.Array.data[2].Themes.Array.data[1]
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5519682016867449653, guid: 4b1ffbebacd36694ebea9fb6d437c68f,
         type: 3}
