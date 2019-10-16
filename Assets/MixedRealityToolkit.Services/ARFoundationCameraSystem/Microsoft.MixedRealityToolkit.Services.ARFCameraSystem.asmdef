@@ -1,0 +1,15 @@
+{
+    "name": "Microsoft.MixedRealityToolkit.Services.ARFoundationCameraSystem",
+    "references": [
+        "Microsoft.MixedReality.Toolkit",
+        "Unity.XR.ARFoundation"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}

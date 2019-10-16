@@ -28,9 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// <inheritdoc/>
         public override string Name { get; protected set; } = "Mixed Reality Camera System";
 
-        /// <summary>
-        /// Is the current camera displaying on an Opaque (AR) device or a VR / immersive device
-        /// </summary>
+        /// <inheritdoc/>
         public bool IsOpaque
         {
             get
@@ -132,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             CameraCache.Main.backgroundColor = CameraProfile.BackgroundColorTransparentDisplay;
             CameraCache.Main.nearClipPlane = CameraProfile.NearClipPlaneTransparentDisplay;
             CameraCache.Main.farClipPlane = CameraProfile.FarClipPlaneTransparentDisplay;
-            QualitySettings.SetQualityLevel(CameraProfile.HoloLensQualityLevel, false);
+            QualitySettings.SetQualityLevel(CameraProfile.TransparentQualityLevel, false);
         }
 
         /// <inheritdoc />
