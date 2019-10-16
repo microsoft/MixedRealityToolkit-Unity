@@ -645,6 +645,41 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 7773482927912863747, guid: 96122ce0e0e9cf24c83e542358490906,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7773482927912863747, guid: 96122ce0e0e9cf24c83e542358490906,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7773482927912863747, guid: 96122ce0e0e9cf24c83e542358490906,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7773482927912863747, guid: 96122ce0e0e9cf24c83e542358490906,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 294062904}
+    - target: {fileID: 7773482927912863747, guid: 96122ce0e0e9cf24c83e542358490906,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: set_text
+      objectReference: {fileID: 0}
+    - target: {fileID: 7773482927912863747, guid: 96122ce0e0e9cf24c83e542358490906,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7773482927912863747, guid: 96122ce0e0e9cf24c83e542358490906,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: Checkbox 1 Clicked
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 96122ce0e0e9cf24c83e542358490906, type: 3}
 --- !u!224 &103816750 stripped
@@ -1624,7 +1659,6 @@ GameObject:
   - component: {fileID: 294062903}
   - component: {fileID: 294062905}
   - component: {fileID: 294062904}
-  - component: {fileID: 294062906}
   - component: {fileID: 294062907}
   m_Layer: 0
   m_Name: ClickResponse
@@ -1773,19 +1807,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 294062902}
   m_CullTransparentMesh: 0
---- !u!114 &294062906
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 294062902}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62a6c6619bd653640b1414796647587c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timeToHideLabel: 1.5
 --- !u!114 &294062907
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2206,7 +2227,37 @@ PrefabInstance:
     - target: {fileID: 5168285722132125210, guid: f15ddb9bd0bf19d478c51ea991c6a7ce,
         type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5168285722132125210, guid: f15ddb9bd0bf19d478c51ea991c6a7ce,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: set_text
+      objectReference: {fileID: 0}
+    - target: {fileID: 5168285722132125210, guid: f15ddb9bd0bf19d478c51ea991c6a7ce,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5168285722132125210, guid: f15ddb9bd0bf19d478c51ea991c6a7ce,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5168285722132125210, guid: f15ddb9bd0bf19d478c51ea991c6a7ce,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5168285722132125210, guid: f15ddb9bd0bf19d478c51ea991c6a7ce,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 294062904}
+    - target: {fileID: 5168285722132125210, guid: f15ddb9bd0bf19d478c51ea991c6a7ce,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: Button Clicked
       objectReference: {fileID: 0}
     - target: {fileID: 5168285722132125211, guid: f15ddb9bd0bf19d478c51ea991c6a7ce,
         type: 3}
@@ -2756,6 +2807,41 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.wordCount
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7773482927912863747, guid: 96122ce0e0e9cf24c83e542358490906,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7773482927912863747, guid: 96122ce0e0e9cf24c83e542358490906,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7773482927912863747, guid: 96122ce0e0e9cf24c83e542358490906,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7773482927912863747, guid: 96122ce0e0e9cf24c83e542358490906,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 294062904}
+    - target: {fileID: 7773482927912863747, guid: 96122ce0e0e9cf24c83e542358490906,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: set_text
+      objectReference: {fileID: 0}
+    - target: {fileID: 7773482927912863747, guid: 96122ce0e0e9cf24c83e542358490906,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7773482927912863747, guid: 96122ce0e0e9cf24c83e542358490906,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: Checkbox 2 Clicked
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 96122ce0e0e9cf24c83e542358490906, type: 3}
@@ -5662,18 +5748,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Radial Button Selected
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 294062902}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Radial Button Clicked
           m_BoolArgument: 1
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
@@ -10025,6 +10100,41 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.wordCount
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7773482927912863747, guid: 96122ce0e0e9cf24c83e542358490906,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7773482927912863747, guid: 96122ce0e0e9cf24c83e542358490906,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7773482927912863747, guid: 96122ce0e0e9cf24c83e542358490906,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7773482927912863747, guid: 96122ce0e0e9cf24c83e542358490906,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 294062904}
+    - target: {fileID: 7773482927912863747, guid: 96122ce0e0e9cf24c83e542358490906,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: set_text
+      objectReference: {fileID: 0}
+    - target: {fileID: 7773482927912863747, guid: 96122ce0e0e9cf24c83e542358490906,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7773482927912863747, guid: 96122ce0e0e9cf24c83e542358490906,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: Checkbox 3 Clicked
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 96122ce0e0e9cf24c83e542358490906, type: 3}
