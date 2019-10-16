@@ -305,6 +305,43 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         }
 
         /// <summary>
+        /// Ensure that while using BoundingBox, if that object gets
+        /// deactivated, that BoundingBox no longer transforms that object.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator DisableObject()
+        {
+            var bbox = InstantiateSceneAndDefaultBbox();
+            yield return VerifyInitialBoundsCorrect(bbox);
+
+            Vector3 initialScale = bbox.transform.localScale;
+
+            const int numHandSteps = 1;
+
+            Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
+            var frontRightCornerPos = bbox.ScaleHandles.Handles[3].transform.position; // front right corner is corner 3
+            TestHand hand = new TestHand(Handedness.Right);
+
+            // Hands grab object at initial position
+            yield return hand.Show(initialHandPosition);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.OpenSteadyGrabPoint);
+            yield return hand.MoveTo(frontRightCornerPos, numHandSteps);
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            // Verify that scale works before deactivating
+            yield return hand.Move(Vector3.right * 0.2f, numHandSteps);
+            Vector3 afterTransformScale = bbox.transform.localScale;
+            Assert.AreNotEqual(initialScale, afterTransformScale);
+
+            // Deactivate object and ensure that we don't scale
+            bbox.gameObject.SetActive(false);
+            yield return null;
+            bbox.gameObject.SetActive(true);
+            yield return hand.Move(Vector3.right * 0.2f, numHandSteps);
+            Assert.AreEqual(afterTransformScale, bbox.transform.localScale);
+        }
+
+        /// <summary>
         /// Returns the AABB of the bounds control rig (corners, edges)
         /// that make up the bounds control by using the positions of the corners
         /// </summary>
