@@ -36,7 +36,7 @@ In order to use the Solver system, simply add one of the components listed above
 The *Tracked Target Type* property of the [`SolverHandler`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler) component defines the point of reference all solvers will use to calculate their algorithms. For example, a value type of [`Head`](xref:Microsoft.MixedReality.Toolkit.Utilities.TrackedObjectType.Head) with a simple [`SurfaceMagnetism`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism) component will result in a raycast from the head and in the direction of the user's gaze for solving what surface is hit. Potential values for the `TrackedTargetType` property are:
 
 * *Head* : Point of reference is the transform of the main camera
-* *ControllerRay*: Point of reference is the line pointer on a controller (i.e motion controller or hands)
+* *ControllerRay*: Point of reference is the [`LinePointer`](xref:Microsoft.MixedReality.Toolkit.Input.LinePointer) transform on a controller (i.e pointer origin on a motion controller or hand controller) pointing in the direction of the line ray
     * Use the `TrackedHandedness` property to select the handedness preference (i.e Left, Right, Both)
 * *HandJoint*: Point of reference is the transform of a specific hand joint
     * Use the `TrackedHandedness` property to select the handedness preference (i.e Left, Right, Both)
