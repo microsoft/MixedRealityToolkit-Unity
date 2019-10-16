@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Physics;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -113,6 +114,33 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("Blend value for surface normal to user facing lerp")]
         private float lookRotationBlend = 0.5f;
 
+        /// <summary>
+        /// Dictates whether the cursor should resize with distance or stay a constant size.
+        /// </summary>
+        public bool ResizeCursorWithDistance
+        {
+            get { return ResizeCursorWithDistance; }
+            set { resizeCursorWithDistance = value; }
+        }
+
+        [Header("Scaling")]
+        [SerializeField]
+        [Tooltip("Dictates whether the cursor should resize with distance (to always appear the same size) or stay a constant scale.")]
+        private bool resizeCursorWithDistance = true;
+
+        /// <summary>
+        /// Dictates whether the cursor should resize with distance or stay a constant size.
+        /// </summary>
+        public float CursorSizeAsPercentageOfViewport
+        {
+            get { return cursorSizeAsPercentageOfViewport; }
+            set { cursorSizeAsPercentageOfViewport = value; }
+        }
+
+        [SerializeField, Range(0f, 1f)]
+        [Tooltip("If resizeCursorWithDistance is enabled, this sets how large the cursor will become (as a percentage of the viewport).")]
+        private float cursorSizeAsPercentageOfViewport = 0.0125f;
+
         [Header("Transform References")]
         [SerializeField]
         [Tooltip("Visual that is displayed when cursor is active normally")]
@@ -135,6 +163,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected Vector3 targetPosition;
         protected Vector3 targetScale;
         protected Quaternion targetRotation;
+
+        private Bounds cursorBounds = new Bounds();
 
         #region IMixedRealityCursor Implementation
 
@@ -333,6 +363,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected virtual void Start()
         {
             RegisterManagers();
+            CalculateBounds();
         }
 
         private void Update()
@@ -413,9 +444,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             GameObject newTargetedObject = InputSystem.FocusProvider.GetFocusedObject(Pointer);
             Vector3 lookForward;
 
-            // Normalize scale on before update
-            targetScale = Vector3.one;
-
             // If no game object is hit, put the cursor at the default distance
             if (newTargetedObject == null)
             {
@@ -423,6 +451,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 targetPosition = RayStep.GetPointByDistance(Pointer.Rays, defaultCursorDistance);
                 lookForward = -RayStep.GetDirectionByDistance(Pointer.Rays, defaultCursorDistance);
                 targetRotation = lookForward.magnitude > 0 ? Quaternion.LookRotation(lookForward, Vector3.up) : transform.rotation;
+
+                // If constant cursor scale is desired, skip resizing functionality
+                targetScale = resizeCursorWithDistance ? CalculateViewSizeOfCursor(targetPosition) : Vector3.one;
             }
             else
             {
@@ -443,6 +474,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     targetPosition = focusDetails.Point + (lookForward * surfaceCursorDistance);
                     Vector3 lookRotation = Vector3.Slerp(focusDetails.Normal, lookForward, lookRotationBlend);
                     targetRotation = Quaternion.LookRotation(lookRotation == Vector3.zero ? lookForward : lookRotation, Vector3.up);
+
+                    // If constant cursor scale is desired, skip resizing functionality
+                    targetScale = resizeCursorWithDistance ? CalculateViewSizeOfCursor(targetPosition) : Vector3.one;
                 }
             }
 
@@ -466,6 +500,39 @@ namespace Microsoft.MixedReality.Toolkit.Input
             transform.position = targetPosition;
             transform.localScale = targetScale;
             transform.rotation = targetRotation;
+        }
+
+        /// <summary>
+        /// Calculates constant visual size of cursor based on cursorSizeAsPercentageOfViewport
+        /// </summary>
+        private Vector3 CalculateViewSizeOfCursor(Vector3 targetPosition)
+        {
+            float cursorDistance = Vector3.Distance(CameraCache.Main.transform.position, targetPosition);
+            float totalHeight = cursorDistance * Mathf.Tan(CameraCache.Main.fieldOfView * 0.5f * Mathf.Deg2Rad);
+
+            float scale = totalHeight / cursorBounds.extents.y * cursorSizeAsPercentageOfViewport;
+            return Vector3.one * scale;
+        }
+
+        /// <summary>
+        /// On start, calculates world space mesh bounds of cursor in order to correctly size it when using resizeCursorWithDistance 
+        /// </summary>
+        private void CalculateBounds()
+        {
+            Vector3 cachedScale = transform.localScale;
+            transform.localScale = Vector3.one;
+
+            var combinedBounds = new Bounds(transform.position, Vector3.zero);
+            var renderers = GetComponentsInChildren<Renderer>();
+
+            for (var i = 0; i < renderers.Length; i++)
+            {
+                combinedBounds.Encapsulate(renderers[i].bounds);
+            }
+
+            cursorBounds = combinedBounds;
+
+            transform.localScale = cachedScale;
         }
 
         /// <summary>
@@ -588,7 +655,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 float dotUp = Vector3.Dot(normal, objUp);
                 float dotForward = Vector3.Dot(normal, objForward);
 
-                if (Math.Abs(dotRight) > Math.Abs(dotUp) && 
+                if (Math.Abs(dotRight) > Math.Abs(dotUp) &&
                     Math.Abs(dotRight) > Math.Abs(dotForward))
                 {
                     forward = (dotRight > 0 ? objRight : -objRight).normalized;
@@ -668,7 +735,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         Vector3 adjustedCursorPos = Position - contextCenter.position;
 
-                        if (Math.Abs(Vector3.Dot(adjustedCursorPos, right)) > 
+                        if (Math.Abs(Vector3.Dot(adjustedCursorPos, right)) >
                             Math.Abs(Vector3.Dot(adjustedCursorPos, up)))
                         {
                             return CursorContextEnum.RotateEastWest;
