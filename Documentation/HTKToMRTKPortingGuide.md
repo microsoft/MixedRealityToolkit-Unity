@@ -29,9 +29,9 @@ Some events no longer have unique events and now contain a [MixedRealityInputAct
 
 Related input systems:
 
-* [Input Overview](/Input/Overview.md)
-* [Input Events](/Input/InputEvents.md)
-* [Input Pointers](/Input/Pointers.md)
+* [Input Overview](Input/Overview.md)
+* [Input Events](Input/InputEvents.md)
+* [Input Pointers](Input/Pointers.md)
 
 | HTK 2017 |  MRTK v2  | Action Mapping |
 |----------|-----------|----------------|
