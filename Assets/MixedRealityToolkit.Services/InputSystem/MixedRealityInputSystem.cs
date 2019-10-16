@@ -125,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            // Check GazeProvider direclty since not populated in data provider list but life-cycle is managed by InputSystem
+            // Check GazeProvider directly since not populated in data provider list but life-cycle is managed by InputSystem
             var gazeProvider_CapabilityCheck = GazeProvider as IMixedRealityCapabilityCheck;
             if (gazeProvider_CapabilityCheck?.CheckCapability(capability) == true)
             {
