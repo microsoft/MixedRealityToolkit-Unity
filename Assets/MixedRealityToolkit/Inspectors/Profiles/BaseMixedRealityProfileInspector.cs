@@ -96,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             var oldObject = property.objectReferenceValue;
 
             if (profileType != null && !profileType.IsSubclassOf(typeof(BaseMixedRealityProfile)) && profileType != typeof(BaseMixedRealityProfile))
-            {  
+            {
                 // If they've drag-and-dropped a non-profile scriptable object, set it to null.
                 profileType = null;
             }
@@ -111,23 +111,30 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
             }
 
-            // Find the profile type so we can limit the available object field options
-            if (serviceType != null)
-            {
-                // If GetProfileTypesForService has a count greater than one, then it won't be possible to use
-                // EditorGUILayout.ObjectField to restrict the set of profiles to a single type - in this
-                // case all profiles of BaseMixedRealityProfile will be visible in the picker.
-                // 
-                // However in the case where there is just a single profile type for the service, we can improve
-                // upon the user experience by limiting the set of things that show in the picker by restricting
-                // the set of profiles listed to only that type.
-                profileType = MixedRealityProfileUtility.GetProfileTypesForService(serviceType).FirstOrDefault();
-            }
-
-            // If the profile type is still null, just set it to base profile type
             if (profileType == null)
             {
-                profileType = typeof(BaseMixedRealityProfile);
+                // Find the profile type so we can limit the available object field options
+                if (serviceType != null)
+                {
+                    // If GetProfileTypesForService has a count greater than one, then it won't be possible to use
+                    // EditorGUILayout.ObjectField to restrict the set of profiles to a single type - in this
+                    // case all profiles of BaseMixedRealityProfile will be visible in the picker.
+                    // 
+                    // However in the case where there is just a single profile type for the service, we can improve
+                    // upon the user experience by limiting the set of things that show in the picker by restricting
+                    // the set of profiles listed to only that type.
+                    var availableTypes = MixedRealityProfileUtility.GetProfileTypesForService(serviceType);
+                    if (availableTypes.Count == 1)
+                    {
+                        profileType = availableTypes.First();
+                    }
+                }
+
+                // If the profile type is still null, just set it to base profile type
+                if (profileType == null)
+                {
+                    profileType = typeof(BaseMixedRealityProfile);
+                }
             }
 
             // Draw the profile dropdown
