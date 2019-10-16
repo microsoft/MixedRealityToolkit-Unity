@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Mixed Reality Toolkit NuGet Package | Mixed Reality Toolkit Documentation </title>
+    <title>Mixed Reality Toolkit NuGet package | Mixed Reality Toolkit Documentation </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Mixed Reality Toolkit NuGet Package | Mixed Reality Toolkit Documentation ">
-    <meta name="generator" content="docfx 2.45.1.0">
+    <meta name="title" content="Mixed Reality Toolkit NuGet package | Mixed Reality Toolkit Documentation ">
+    <meta name="generator" content="docfx 2.46.0.0">
     
     <link rel="shortcut icon" href="../Documentation/Images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -80,10 +80,10 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="mixed-reality-toolkit-nuget-package">Mixed Reality Toolkit NuGet Package</h1>
+<h1 id="mixed-reality-toolkit-nuget-package">Mixed Reality Toolkit NuGet package</h1>
 
 <p>Mixed Reality Toolkit (MRTK) is now available as a NuGet package on NuGet.org. There are some differences when it comes to consuming NuGet version of MRTK as opposed to a .unitypackage, read <strong>NuGet Package Considerations</strong> below. If any issues are encountered, file an issue using this <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/issues/new?assignees=&amp;labels=Bug,Package%20Management%20-%20NuGet&amp;template=bug-report.md&amp;title=">template</a>.</p>
-<h2 id="installing-the-nuget-package">Installing the NuGet Package</h2>
+<h2 id="installing-the-nuget-package">Installing the NuGet package</h2>
 <p>Follow these instructions to add the Mixed Reality Toolkit as a NuGet package to your project.</p>
 <ol>
 <li><p>Download the latest <a href="https://github.com/GlitchEnzo/NuGetForUnity/releases/latest">NuGetForUnity</a> .unitypackage</p>
@@ -109,7 +109,7 @@
 </ul>
 </li>
 </ol>
-<h3 id="updating-mrtk-nuget-packages">Updating MRTK NuGet Packages</h3>
+<h3 id="updating-mrtk-nuget-packages">Updating MRTK NuGet packages</h3>
 <p>Steps 1-2 above will only need to be done once for your project, and the update is a much simpler step. Once newer packages available on NuGet.org (including prerelease), follow these steps:</p>
 <ol>
 <li>In the Unity menu bar, click on NuGet &gt; Manage NuGet Packages.</li>
@@ -120,20 +120,20 @@
 </li>
 <li>Update the packages desired.</li>
 </ol>
-<h2 id="nuget-package-considerations">NuGet Package Considerations</h2>
+<h2 id="nuget-package-considerations">NuGet package considerations</h2>
 <p>The release of MRTK as NuGet package is a new delivery mechanism being explored and there are a couple of key benefits and considerations one must make when choosing whether to consume the NuGet version of MRTK.</p>
-<h3 id="migrating-to-nuget-from-unitypackage-or-source-not-yet-supported">Migrating to NuGet from .unitypackage or Source (Not Yet Supported)</h3>
+<h3 id="migrating-to-nuget-from-unitypackage-or-source-not-yet-supported">Migrating to NuGet from .unitypackage or source (not yet supported)</h3>
 <p>NuGet package consists of compiled binaries as opposed to loose script files, and the C# script asset identifiers are different. As such, the assets like prefabs in the MRTK package have been updated to reference the appropriate compiled script. A project using the .unitypackage or source version of MRTK will have to re-target it's assets as well, and although there is code for it this is not a supported scenario, yet.</p>
 <p><em>Thereby, there is no currently supported way of migrating to NuGet from .unitypackage or source. This will change as we continue development on this delivery mechanism.</em></p>
-<h3 id="compiled-binaries-nuget-vs-source-files-unitypackage">Compiled Binaries (NuGet) vs Source Files (.unitypackage)</h3>
+<h3 id="compiled-binaries-nuget-vs-source-files-unitypackage">Compiled binaries (NuGet) vs source files (.unitypackage)</h3>
 <p>Since the NuGet package contains the compiled binaries instead of scripts, this has two major advantages:</p>
 <ul>
 <li>Reduced compilation time</li>
-<li>Considerably C# Project files in Visual Studio</li>
+<li>Considerably fewer C# project files in Visual Studio</li>
 </ul>
 <h3 id="debugging-mixed-reality-toolkit">Debugging Mixed Reality Toolkit</h3>
 <p>There are known issues with Unity &amp; Visual Studio Tools for Unity that prevent a PDB from being easily debugged in Visual Studio Debugger. So although the package comes with PDBs and source embedded, debugging the DLLs is possible only if it was locally built (read further). There is a workaround being built as part of <a href="https://github.com/microsoft/MSBuildForUnity/">MSBuildForUnity</a>, more updates on that later.</p>
-<h2 id="locally-building-the-nuget-package">Locally Building the NuGet Package</h2>
+<h2 id="locally-building-the-nuget-package">Locally building the NuGet package</h2>
 <p>With the latest source from MRTK, you can build the NuGet package locally and configure NuGetForUnity to pick it up.</p>
 <ol>
 <li>Download the latest MRTK source.</li>
