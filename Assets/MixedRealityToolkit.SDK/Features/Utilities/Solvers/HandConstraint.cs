@@ -366,6 +366,23 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         /// <summary>
+        /// Tells the SolverHandler to refresh its tracked object (hand)
+        /// </summary>
+        /// <remarks>
+        /// delayed 2 frames due to IMixedRealityHandJointService updating during "LateUpdate"
+        /// </remarks>
+        protected IEnumerator DelayedRefreshSolverHandlerTrackedObject()
+        {
+            // frame delay 
+            for(int i=0; i<2; ++i)
+			{
+				yield return null;
+			}
+
+            SolverHandler.RefreshTrackedObject();
+        }
+
+        /// <summary>
         /// Performs an intersection test to see if the left hand is near the right hand or vice versa.
         /// </summary>
         /// <param name="hand">The hand to check against.</param>
@@ -436,7 +453,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             {
                 if (trackedHand != null)
                 {
-					SolverHandler.RefreshTrackedObject();
+					StartCoroutine(DelayedRefreshSolverHandlerTrackedObject());
                     StartCoroutine(ToggleCursor(true));
                     trackedHand = null;
                     onHandDeactivate?.Invoke();
