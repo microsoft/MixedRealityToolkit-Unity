@@ -50,20 +50,8 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// <inheritdoc />
         public string SourceName { get; } = "Mixed Reality Camera System";
 
-        private MixedRealityCameraProfile cameraProfile = null;
-
         /// <inheritdoc/>
-        public MixedRealityCameraProfile CameraProfile
-        {
-            get
-            {
-                if (cameraProfile == null)
-                {
-                    cameraProfile = ConfigurationProfile as MixedRealityCameraProfile;
-                }
-                return cameraProfile;
-            }
-        }
+        public MixedRealityCameraProfile CameraProfile =>  ConfigurationProfile as MixedRealityCameraProfile;
 
         private DisplayType currentDisplayType;
         private bool cameraOpaqueLastFrame = false;
@@ -87,7 +75,11 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             MixedRealityPlayspace.Rotation = Quaternion.identity;
             if (CameraCache.Main.transform.position != Vector3.zero)
             {
-                Debug.LogWarning($"The main camera is not positioned at the origin ({Vector3.zero}), immersive experiences may not behave as expected.");
+                Debug.LogWarning($"The main camera is not positioned at the origin ({Vector3.zero}), experiences may not behave as expected.");
+            }
+            if (CameraCache.Main.transform.rotation != Quaternion.identity)
+            {
+                Debug.LogWarning($"The main camera is configured with a non-zero rotation, experiences may not behave as expected.");
             }
         }
 
