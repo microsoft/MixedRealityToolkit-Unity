@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             if (WindowsApiChecker.UniversalApiContractV8_IsAvailable)
             {
 #if WINDOWS_UWP
-                return capability == MixedRealityCapability.SpatialAwarenessMesh && WindowsSpatialSurfaces.SpatialSurfaceObserver.IsSupported();
+                return (capability == MixedRealityCapability.SpatialAwarenessMesh) && WindowsSpatialSurfaces.SpatialSurfaceObserver.IsSupported();
 #endif // WINDOWS_UWP
             }
 
