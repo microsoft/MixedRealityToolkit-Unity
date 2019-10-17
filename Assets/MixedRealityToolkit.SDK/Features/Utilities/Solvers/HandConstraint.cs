@@ -404,9 +404,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 if (SolverHandler.TrackedTargetType == TrackedObjectType.HandJoint || 
                     SolverHandler.TrackedTargetType == TrackedObjectType.MotionController)
                 {
-                    if (SolverHandler.TrackedHandness != hand.ControllerHandedness)
+                    if (!SolverHandler.TrackedHandness.HasFlag(hand.ControllerHandedness))
                     {
-                        SolverHandler.TrackedHandness = hand.ControllerHandedness;
+                        SolverHandler.RefreshTrackedObject();
 
                         // Move the currently tracked hand to the top of the stack.
                         handStack.Remove(hand);
@@ -436,6 +436,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             {
                 if (trackedHand != null)
                 {
+					SolverHandler.RefreshTrackedObject();
                     StartCoroutine(ToggleCursor(true));
                     trackedHand = null;
                     onHandDeactivate?.Invoke();
