@@ -379,21 +379,25 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private static void TryToCreateGeneratedFolder(string folderPath)
         {
-            string parentFolderPath = Directory.GetParent(folderPath).FullName;
-            string generatedFolderPath = parentFolderPath + "\\" + "MixedRealityToolkit.Generated";
-            if (!Directory.Exists(generatedFolderPath))
+            var generatedDirs = GetDirectories(MixedRealityToolkitModuleType.Generated);
+            if (generatedDirs == null || !generatedDirs.Any())
             {
-                Directory.CreateDirectory(generatedFolderPath);
-            }
+                string parentFolderPath = Directory.GetParent(folderPath).FullName;
+                string generatedFolderPath = parentFolderPath + "\\" + "MixedRealityToolkit.Generated";
+                if (!Directory.Exists(generatedFolderPath))
+                {
+                    Directory.CreateDirectory(generatedFolderPath);
+                }
 
-            string generatedSentinelFilePath = generatedFolderPath + "\\" + "MRTK.Generated.sentinel";
-            if (!File.Exists(generatedSentinelFilePath))
-            {
-                // Make sure we create and dispose/close the filestream just created
-                using (var f = File.Create(generatedSentinelFilePath)) { }
-            }
+                string generatedSentinelFilePath = generatedFolderPath + "\\" + "MRTK.Generated.sentinel";
+                if (!File.Exists(generatedSentinelFilePath))
+                {
+                    // Make sure we create and dispose/close the filestream just created
+                    using (var f = File.Create(generatedSentinelFilePath)) { }
+                }
 
-            TryRegisterModuleViaFile(generatedSentinelFilePath);
+                TryRegisterModuleViaFile(generatedSentinelFilePath);
+            }
         }
 
         private static bool TryUnregisterModuleFolder(string folderPath)
