@@ -80,7 +80,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 {
                     if (IsSentinelFile(asset))
                     {
-                        // TODO: need to resolve for IsSentinelFile?
                         string fullAssetPath = ResolveFullAssetsPath(asset);
                         TryRegisterModuleViaFile(fullAssetPath);
                     }
@@ -104,9 +103,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private static Task searchForFoldersTask;
 
-        private static string NormalizeSeparators(string path) => path.Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar);
+        private static string NormalizeSeparators(string path) => 
+            string.IsNullOrEmpty(path) ? null : path.Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar);
 
-        private static string FormatSeparatorsForUnity(string path) => path.Replace('\\', '/');
+        private static string FormatSeparatorsForUnity(string path) =>
+            string.IsNullOrEmpty(path) ? null : path.Replace('\\', '/');
 
         private static readonly Dictionary<string, MixedRealityToolkitModuleType> moduleNameMap = new Dictionary<string, MixedRealityToolkitModuleType>()
         {
@@ -169,7 +170,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             get
             {
-                if (searchForFoldersTask != null)
+                if (searchForFoldersTask != null 
+                    && searchForFoldersTask.Status == TaskStatus.Running)
                 {
                     searchForFoldersTask.Wait(1);
                 }

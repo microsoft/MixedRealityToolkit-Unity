@@ -9,7 +9,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     /// <summary>
     /// Utility to save preferences that should be saved per project (i.e to source control) across MRTK. Supports primitive preferences bool, int, and float
     /// </summary>
-    [CreateAssetMenu(fileName = "ProjectPreferences", menuName = "Mixed Reality Toolkit/TestProjectPrefs", order = 1)]
     public class ProjectPreferences : ScriptableObject
     {
         // Dictionary is not Serializable by default and furthermore System.object is not Serializable
@@ -39,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private StringPreferences stringPreferences = new StringPreferences();
 
         private const string FILE_NAME = "ProjectPreferences.asset";
-        private const string RELATIVE_FOLDER_PATH = "System/";
+
         private const MixedRealityToolkitModuleType MODULE = MixedRealityToolkitModuleType.Generated;
 
         private static ProjectPreferences _instance;
@@ -70,35 +69,47 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         /// <summary>
-        /// Save bool to preferences and save to ScriptableObject with key given. Calls AssetDatabase.SaveAssets which saves all assets after execution
+        /// Save bool to preferences and save to ScriptableObject with key given.
         /// </summary>
-        public static void Set(string key, bool value)
+        /// <remarks>
+        /// If forceSave is true (default), then will call AssetDatabase.SaveAssets which saves all assets after execution
+        /// </remarks>
+        public static void Set(string key, bool value, bool forceSave = true)
         {
-            Set<bool>(key, value, Instance.boolPreferences);
+            Set<bool>(key, value, Instance.boolPreferences, forceSave);
         }
 
         /// <summary>
-        /// Save float to preferences and save to ScriptableObject with key given. Calls AssetDatabase.SaveAssets which saves all assets after execution
+        /// Save float to preferences and save to ScriptableObject with key given.
         /// </summary>
-        public static void Set(string key, float value)
+        /// <remarks>
+        /// If forceSave is true (default), then will call AssetDatabase.SaveAssets which saves all assets after execution
+        /// </remarks>
+        public static void Set(string key, float value, bool forceSave = true)
         {
-            Set<float>(key, value, Instance.floatPreferences);
+            Set<float>(key, value, Instance.floatPreferences, forceSave);
         }
 
         /// <summary>
-        /// Save int to preferences and save to ScriptableObject with key given. Calls AssetDatabase.SaveAssets which saves all assets after execution
+        /// Save int to preferences and save to ScriptableObject with key given.
         /// </summary>
-        public static void Set(string key, int value)
+        /// <remarks>
+        /// If forceSave is true (default), then will call AssetDatabase.SaveAssets which saves all assets after execution
+        /// </remarks>
+        public static void Set(string key, int value, bool forceSave = true)
         {
-            Set<int>(key, value, Instance.intPreferences);
+            Set<int>(key, value, Instance.intPreferences, forceSave);
         }
 
         /// <summary>
-        /// Save string to preferences and save to ScriptableObject with key given. Calls AssetDatabase.SaveAssets which saves all assets after execution
+        /// Save string to preferences and save to ScriptableObject with key given.
         /// </summary>
-        public static void Set(string key, string value)
+        /// <remarks>
+        /// If forceSave is true (default), then will call AssetDatabase.SaveAssets which saves all assets after execution
+        /// </remarks>
+        public static void Set(string key, string value, bool forceSave = true)
         {
-            Set<string>(key, value, Instance.stringPreferences);
+            Set<string>(key, value, Instance.stringPreferences, forceSave);
         }
 
         /// <summary>
@@ -133,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return Get<string>(key, defaultValue, Instance.stringPreferences);
         }
 
-        private static void Set<T>(string key, T item, SerializableDictionary<string, T> target)
+        private static void Set<T>(string key, T item, SerializableDictionary<string, T> target, bool forceSave = true)
         {
             if (target.ContainsKey(key))
             {
@@ -144,8 +155,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 target.Add(key, item);
             }
 
-            EditorUtility.SetDirty(Instance);
-            AssetDatabase.SaveAssets();
+            if (forceSave)
+            {
+                EditorUtility.SetDirty(Instance);
+                AssetDatabase.SaveAssets();
+            }
         }
 
         private static T Get<T>(string key, T defaultVal, SerializableDictionary<string, T> target)
