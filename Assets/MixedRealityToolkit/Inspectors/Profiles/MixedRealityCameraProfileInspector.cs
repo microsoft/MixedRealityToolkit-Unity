@@ -1,9 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information. 
 
+using Microsoft.MixedReality.Toolkit.Editor;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
-using UnityEditor;
 using UnityEngine;
+using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
@@ -20,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty transparentFarClip;
         private SerializedProperty transparentClearFlags;
         private SerializedProperty transparentBackgroundColor;
-        private SerializedProperty holoLensQualityLevel;
+        private SerializedProperty transparentQualityLevel;
 
         private readonly GUIContent nearClipTitle = new GUIContent("Near Clip");
         private readonly GUIContent farClipTitle = new GUIContent("Far Clip");
@@ -43,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             transparentFarClip = serializedObject.FindProperty("farClipPlaneTransparentDisplay");
             transparentClearFlags = serializedObject.FindProperty("cameraClearFlagsTransparentDisplay");
             transparentBackgroundColor = serializedObject.FindProperty("backgroundColorTransparentDisplay");
-            holoLensQualityLevel = serializedObject.FindProperty("holoLensQualityLevel");
+            transparentQualityLevel = serializedObject.FindProperty("transparentQualityLevel");
         }
 
         public override void OnInspectorGUI()
@@ -84,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         transparentBackgroundColor.colorValue = EditorGUILayout.ColorField("Background Color", transparentBackgroundColor.colorValue);
                     }
 
-                    holoLensQualityLevel.intValue = EditorGUILayout.Popup("Quality Setting", holoLensQualityLevel.intValue, QualitySettings.names);
+                    transparentQualityLevel.intValue = EditorGUILayout.Popup("Quality Setting", transparentQualityLevel.intValue, QualitySettings.names);
                 }
 
                 serializedObject.ApplyModifiedProperties();
