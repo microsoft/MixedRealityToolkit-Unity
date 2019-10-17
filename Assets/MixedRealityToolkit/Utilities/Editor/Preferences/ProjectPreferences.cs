@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,9 +9,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     /// <summary>
     /// Utility to save preferences that should be saved per project (i.e to source control) across MRTK. Effectively wraps a dictionary bag of objects to support all type access
     /// </summary>
+    [CreateAssetMenu(fileName = "ProjectPreferences", menuName = "Mixed Reality Toolkit/TestProjectPrefs", order = 1)]
     public class ProjectPreferences : ScriptableObject
     {
-        private Dictionary<string, System.Object> DataBag = new Dictionary<string, System.Object>();
+        [SerializeField]
+        //private SerializableDictionary<string, System.Object> DataBag = new SerializableDictionary<string, System.Object>();
+        private SerializableDictionary<string, float> DataBag = new SerializableDictionary<string, float>();
+
+        [SerializeField]
+        private int TestSerializeFIeld = 4;
 
         private const string FILE_NAME = "ProjectPreferences.asset";
         private const string RELATIVE_FOLDER_PATH = "System/";
@@ -36,7 +41,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     }
                     else
                     {
-                        Debug.Log(filePath);
                         _instance = (ProjectPreferences)AssetDatabase.LoadAssetAtPath(filePath, typeof(ProjectPreferences));
                     }
                 }
@@ -53,13 +57,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <param name="item">Item object value to store</param>
         public static void Set<T>(string key, T item)
         {
+            Instance.TestSerializeFIeld++;
             if (Instance.DataBag.ContainsKey(key))
             {
-                Instance.DataBag[key] = item;
+                //Instance.DataBag[key] = item;
             }
             else
             {
-                Instance.DataBag.Add(key, item);
+                //Instance.DataBag.Add(key, item);
             }
 
             EditorUtility.SetDirty(Instance);
@@ -77,7 +82,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             if (Instance.DataBag.ContainsKey(key))
             {
-                return (T)Instance.DataBag[key];
+                //return (T)Instance.DataBag[key];
+                return default(T);
             }
             else
             {
