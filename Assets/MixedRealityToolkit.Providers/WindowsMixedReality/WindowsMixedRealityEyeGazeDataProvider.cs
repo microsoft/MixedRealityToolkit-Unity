@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             if (WindowsApiChecker.UniversalApiContractV8_IsAvailable)
             {
 #if WINDOWS_UWP
-                return capability == MixedRealityCapability.EyeTracking && EyesPose.IsSupported();
+                return (capability == MixedRealityCapability.EyeTracking) && EyesPose.IsSupported();
 #endif // WINDOWS_UWP
             }
 
