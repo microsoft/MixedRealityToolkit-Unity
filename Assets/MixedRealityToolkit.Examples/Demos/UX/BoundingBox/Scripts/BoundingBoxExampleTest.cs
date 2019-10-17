@@ -25,31 +25,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         private Vector3 cubePosition = new Vector3(0, 0, 2);
         private BoundingBox bbox;
 
-        private IMixedRealityInputSystem inputSystem = null;
-
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        protected IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
-                return inputSystem;
-            }
-        }
-
         protected virtual void OnEnable()
         {
-            InputSystem?.RegisterHandler<IMixedRealitySpeechHandler>(this);
+            CoreServices.InputSystem?.RegisterHandler<IMixedRealitySpeechHandler>(this);
         }
 
         protected virtual void OnDisable()
         {
-            InputSystem.UnregisterHandler<IMixedRealitySpeechHandler>(this);
+            CoreServices.InputSystem.UnregisterHandler<IMixedRealitySpeechHandler>(this);
         }
 
         // Start is called before the first frame update

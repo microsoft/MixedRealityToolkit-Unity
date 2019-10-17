@@ -26,12 +26,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.SpatialAwarenessSystem
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
 
-            // Retrieve Spatial Awareness System
-            IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
-            MixedRealityServiceRegistry.TryGetService(out spatialAwarenessSystem);
-
             // Tests
-            Assert.IsNotNull(spatialAwarenessSystem);
+            Assert.IsNotNull(CoreServices.SpatialAwarenessSystem);
         }
 
         [Test]
