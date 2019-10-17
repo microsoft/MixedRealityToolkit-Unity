@@ -29,13 +29,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 if (!lockPrefLoaded)
                 {
-                    lockProfiles = ProjectPreferences.Get<bool>(LOCK_KEY, true);
+                    lockProfiles = ProjectPreferences.Get(LOCK_KEY, true);
                     lockPrefLoaded = true;
                 }
 
                 return lockProfiles;
             }
-            set => ProjectPreferences.Set<bool>(LOCK_KEY, lockProfiles = value);
+            set => ProjectPreferences.Set(LOCK_KEY, lockProfiles = value);
         }
 
         #endregion Lock Profile Preferences
@@ -56,13 +56,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 if (!ignorePrefLoaded)
                 {
-                    ignoreSettingsPrompt = ProjectPreferences.Get<bool>(IGNORE_KEY, false);
+                    ignoreSettingsPrompt = ProjectPreferences.Get(IGNORE_KEY, false);
                     ignorePrefLoaded = true;
                 }
 
                 return ignoreSettingsPrompt;
             }
-            set => ProjectPreferences.Set<bool>(IGNORE_KEY, ignoreSettingsPrompt = value);
+            set => ProjectPreferences.Set(IGNORE_KEY, ignoreSettingsPrompt = value);
         }
 
         #endregion Ignore startup settings prompt
@@ -83,13 +83,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 if (!runOptimalConfigPrefLoaded)
                 {
-                    runOptimalConfig = ProjectPreferences.Get<bool>(RUN_OPTIMAL_CONFIG_KEY, true);
+                    runOptimalConfig = ProjectPreferences.Get(RUN_OPTIMAL_CONFIG_KEY, true);
                     runOptimalConfigPrefLoaded = true;
                 }
 
                 return runOptimalConfig;
             }
-            set => ProjectPreferences.Set<bool>(RUN_OPTIMAL_CONFIG_KEY, runOptimalConfig = value);
+            set => ProjectPreferences.Set(RUN_OPTIMAL_CONFIG_KEY, runOptimalConfig = value);
         }
 
         #endregion Run optimal configuration analysis on Play

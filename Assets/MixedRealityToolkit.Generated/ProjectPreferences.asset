@@ -12,4 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9033865767959b749a2efd333e3edc9c, type: 3}
   m_Name: ProjectPreferences
   m_EditorClassIdentifier: 
-  TestSerializeFIeld: 7
+  boolPreferences:
+    keys:
+    - _MixedRealityToolkit_Editor_LockProfiles
+    - _MixedRealityToolkit_Editor_IgnoreSettingsPrompts
+    - MixedRealityToolkit_Editor_RunOptimalConfig
+    values: 000001
+  intPreferences:
+    keys: []
+    values: 
+  floatPreferences:
+    keys: []
+    values: []

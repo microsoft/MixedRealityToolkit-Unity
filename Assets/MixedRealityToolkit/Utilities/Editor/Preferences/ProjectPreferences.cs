@@ -7,21 +7,35 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     /// <summary>
-    /// Utility to save preferences that should be saved per project (i.e to source control) across MRTK. Effectively wraps a dictionary bag of objects to support all type access
+    /// Utility to save preferences that should be saved per project (i.e to source control) across MRTK. Supports primitive preferences bool, int, and float
     /// </summary>
     [CreateAssetMenu(fileName = "ProjectPreferences", menuName = "Mixed Reality Toolkit/TestProjectPrefs", order = 1)]
     public class ProjectPreferences : ScriptableObject
     {
-        [SerializeField]
-        //private SerializableDictionary<string, System.Object> DataBag = new SerializableDictionary<string, System.Object>();
-        private SerializableDictionary<string, float> DataBag = new SerializableDictionary<string, float>();
+        // Dictionary is not Serializable by default and furthermore System.object is not Serializable
+        // Thus, it is difficult to create a generic data bag. Instead we will create instances for each key preference types
+        [System.Serializable]
+        private class BoolPreferences : SerializableDictionary<string, bool> { }
+
+        [System.Serializable]
+        private class IntPreferences : SerializableDictionary<string, int> { }
+
+        [System.Serializable]
+        private class FloatPreferences : SerializableDictionary<string, float> { }
 
         [SerializeField]
-        private int TestSerializeFIeld = 4;
+        private BoolPreferences boolPreferences = new BoolPreferences();
+
+        [SerializeField]
+        private IntPreferences intPreferences = new IntPreferences();
+
+        [SerializeField]
+        private FloatPreferences floatPreferences = new FloatPreferences();
 
         private const string FILE_NAME = "ProjectPreferences.asset";
         private const string RELATIVE_FOLDER_PATH = "System/";
-        private const MixedRealityToolkitModuleType MODULE_PATH = MixedRealityToolkitModuleType.Generated;
+        private const MixedRealityToolkitModuleType MODULE = MixedRealityToolkitModuleType.Generated;
+
         private static ProjectPreferences _instance;
         private static ProjectPreferences Instance
         {
@@ -29,11 +43,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 if (_instance == null)
                 {
-                    string filePath = MixedRealityToolkitFiles.MapRelativeFilePath(MODULE_PATH, FILE_NAME);
+                    string filePath = MixedRealityToolkitFiles.MapRelativeFilePath(MODULE, FILE_NAME);
                     if (string.IsNullOrEmpty(filePath))
                     {
-                        // MapRelativeFilePath returned null, need to build ourselves
-                        filePath = MixedRealityToolkitFiles.MapModulePath(MODULE_PATH) + "/" + FILE_NAME;
+                        // MapRelativeFilePath returned null, need to build path ourselves
+                        filePath = MixedRealityToolkitFiles.MapModulePath(MODULE) + "/" + FILE_NAME;
 
                         _instance = ScriptableObject.CreateInstance<ProjectPreferences>();
                         AssetDatabase.CreateAsset(_instance, filePath);
@@ -50,44 +64,77 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         /// <summary>
-        /// Save item of type T to preferences ScriptableObject with key given. Save all assets after execution
+        /// Save bool to preferences and save to ScriptableObject with key given. Calls AssetDatabase.SaveAssets which saves all assets after execution
         /// </summary>
-        /// <typeparam name="T">Type of object being saved</typeparam>
-        /// <param name="key">Key to save object under in dictionary bag of preferences</param>
-        /// <param name="item">Item object value to store</param>
-        public static void Set<T>(string key, T item)
+        public static void Set(string key, bool value)
         {
-            Instance.TestSerializeFIeld++;
-            if (Instance.DataBag.ContainsKey(key))
+            Set<bool>(key, value, Instance.boolPreferences);
+        }
+
+        /// <summary>
+        /// Save float to preferences and save to ScriptableObject with key given. Calls AssetDatabase.SaveAssets which saves all assets after execution
+        /// </summary>
+        public static void Set(string key, float value)
+        {
+            Set<float>(key, value, Instance.floatPreferences);
+        }
+
+        /// <summary>
+        /// Save int to preferences and save to ScriptableObject with key given. Calls AssetDatabase.SaveAssets which saves all assets after execution
+        /// </summary>
+        public static void Set(string key, int value)
+        {
+            Set<int>(key, value, Instance.intPreferences);
+        }
+
+        /// <summary>
+        /// Get bool from Project Preferences. If no entry found, then create new entry with provided defaultValue
+        /// </summary>
+        public static bool Get(string key, bool defaultValue)
+        {
+            return Get<bool>(key, defaultValue, Instance.boolPreferences);
+        }
+
+        /// <summary>
+        /// Get float from Project Preferences. If no entry found, then create new entry with provided defaultValue
+        /// </summary>
+        public static float Get(string key, float defaultValue)
+        {
+            return Get<float>(key, defaultValue, Instance.floatPreferences);
+        }
+
+        /// <summary>
+        /// Get int from Project Preferences. If no entry found, then create new entry with provided defaultValue
+        /// </summary>
+        public static int Get(string key, int defaultValue)
+        {
+            return Get<int>(key, defaultValue, Instance.intPreferences);
+        }
+
+        private static void Set<T>(string key, T item, SerializableDictionary<string, T> target)
+        {
+            if (target.ContainsKey(key))
             {
-                //Instance.DataBag[key] = item;
+                target[key] = item;
             }
             else
             {
-                //Instance.DataBag.Add(key, item);
+                target.Add(key, item);
             }
 
             EditorUtility.SetDirty(Instance);
             AssetDatabase.SaveAssets();
         }
 
-        /// <summary>
-        /// Gets the object stored with given key. If no item with key is found, create new entry with default value parameter
-        /// </summary>
-        /// <typeparam name="T">Type of object to get from preference store</typeparam>
-        /// <param name="key">Key to use in search of dictionary bag of preferences</param>
-        /// <param name="defaultVal">If no entry found, create new entry with this value</param>
-        /// <returns>Returns object stored in dictionary bag of preferences at entry with given key</returns>
-        public static T Get<T>(string key, T defaultVal)
+        public static T Get<T>(string key, T defaultVal, SerializableDictionary<string, T> target)
         {
-            if (Instance.DataBag.ContainsKey(key))
+            if (target.ContainsKey(key))
             {
-                //return (T)Instance.DataBag[key];
-                return default(T);
+                return target[key];
             }
             else
             {
-                Set<T>(key, defaultVal);
+                Set<T>(key, defaultVal, target);
                 return defaultVal;
             }
         }

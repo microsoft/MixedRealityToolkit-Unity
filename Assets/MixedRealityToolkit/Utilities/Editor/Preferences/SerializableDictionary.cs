@@ -7,102 +7,46 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
 {
-
-    public class SerializationCallbackScript<K> : MonoBehaviour, ISerializationCallbackReceiver
+    /// <summary>
+    /// Generic Dictionary helper class that handles serialization of keys and values into lists before/after serialization time since Dictionary by itself is not Serializable.
+    /// Extends C# Dictionary class to support typical API access methods
+    /// </summary>
+    /// <typeparam name="TKey">Key type for Dictionary</typeparam>
+    /// <typeparam name="TValue">Value type for Dictionary</typeparam>
+    [Serializable]
+    public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver
     {
-        public List<int> _keys = new List<int>();
-        public List<string> _values = new List<string>();
+        [SerializeField]
+        private List<TKey> keys = new List<TKey>();
 
-        //Unity doesn't know how to serialize a Dictionary
-        public Dictionary<int, string> _myDictionary = new Dictionary<int, string>()
+        [SerializeField]
+        private List<TValue> values = new List<TValue>();
 
         public void OnBeforeSerialize()
         {
-            _keys.Clear();
-            _values.Clear();
+            keys.Clear();
+            values.Clear();
 
-            foreach (var kvp in _myDictionary)
+            foreach (KeyValuePair<TKey, TValue> pair in this)
             {
-                _keys.Add(kvp.Key);
-                _values.Add(kvp.Value);
+                keys.Add(pair.Key);
+                values.Add(pair.Value);
             }
         }
 
         public void OnAfterDeserialize()
         {
-            _myDictionary = new Dictionary<int, string>();
+            this.Clear();
 
-            for (var i = 0; i != Math.Min(_keys.Count, _values.Count); i++)
-                _myDictionary.Add(_keys[i], _values[i]);
+            if (keys.Count != values.Count)
+            {
+                throw new System.Exception(string.Format($"Error after deserialization in SerializableDictionary class. There are {keys.Count} keys and {values.Count} values after deserialization. Could not load SerializableDictionary"));
+            }
+
+            for (int i = 0; i < keys.Count; i++)
+            {
+                this.Add(keys[i], values[i]);
+            }
         }
     }
-    /*
-    [System.Serializable]
-    public class SerializableDictionary<K, V> : ISerializationCallbackReceiver
-    {
-        [SerializeField]
-        private K[] keys;
-        [SerializeField]
-        private V[] values;
-
-        public Dictionary<K, V> Data = new Dictionary<K, V>();
-
-        public V this[K flag]
-        {
-            get
-            {
-                return Data[flag];
-            }
-            set
-            {
-                Data[flag] = value;
-            }
-        }
-
-        public void Add(K key, V item)
-        {
-            Data.Add(key, item);
-        }
-
-        public bool ContainsKey(K key)
-        {
-            return Data.ContainsKey(key);
-        }
-
-        static public T New<T>() where T : SerializableDictionary<K, V>, new()
-        {
-            var result = new T();
-            result.Data = new Dictionary<K, V>();
-            return result;
-        }
-
-        public void OnAfterDeserialize()
-        {
-            var c = keys.Length;
-            Data = new Dictionary<K, V>(c);
-            for (int i = 0; i < c; i++)
-            {
-                Data[keys[i]] = values[i];
-            }
-            keys = null;
-            values = null;
-        }
-
-        public void OnBeforeSerialize()
-        {
-            var c = Data.Count;
-            keys = new K[c];
-            values = new V[c];
-            int i = 0;
-            using (var e = Data.GetEnumerator())
-                while (e.MoveNext())
-                {
-                    var kvp = e.Current;
-                    keys[i] = kvp.Key;
-                    values[i] = kvp.Value;
-                    i++;
-                }
-        }
-    }
-    */
 }
