@@ -115,7 +115,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private float lookRotationBlend = 0.5f;
 
         /// <summary>
-        /// Dictates whether the cursor should resize with distance or stay a constant size.
+        /// Dictates whether the cursor should resize based on distance.
+        /// If true, cursor will appear to be the same size no matter what distance it is from Main Camera.
         /// </summary>
         public bool ResizeCursorWithDistance
         {
@@ -125,21 +126,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [Header("Scaling")]
         [SerializeField]
-        [Tooltip("Dictates whether the cursor should resize with distance (to always appear the same size) or stay a constant scale.")]
-        private bool resizeCursorWithDistance = true;
+        [Tooltip("Dictates whether the cursor should resize based on distance. If true, cursor will appear to be the same size no matter what distance it is from Main Camera.")]
+        private bool resizeCursorWithDistance = false;
 
         /// <summary>
-        /// Dictates whether the cursor should resize with distance or stay a constant size.
+        /// The value, in angle, of expected cursor size in relation to Main Camera
         /// </summary>
-        public float CursorSizeAsPercentageOfViewport
+        public float CursorAngularScale
         {
-            get { return cursorSizeAsPercentageOfViewport; }
-            set { cursorSizeAsPercentageOfViewport = value; }
+            get { return cursorAngularScale; }
+            set { cursorAngularScale = value; }
         }
 
-        [SerializeField, Range(0f, 1f)]
-        [Tooltip("If resizeCursorWithDistance is enabled, this sets how large the cursor will become (as a percentage of the viewport).")]
-        private float cursorSizeAsPercentageOfViewport = 0.0125f;
+        [SerializeField]
+        [Tooltip("The value, in angle, of expected cursor size in relation to Main Camera")]
+        private float cursorAngularScale = 0.65f;
 
         [Header("Transform References")]
         [SerializeField]
@@ -453,7 +454,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 targetRotation = lookForward.magnitude > 0 ? Quaternion.LookRotation(lookForward, Vector3.up) : transform.rotation;
 
                 // If constant cursor scale is desired, skip resizing functionality
-                targetScale = resizeCursorWithDistance ? CalculateViewSizeOfCursor(targetPosition) : Vector3.one;
+                targetScale = resizeCursorWithDistance ? ComputeScaleWithAngularScale(targetPosition) : Vector3.one;
             }
             else
             {
@@ -476,7 +477,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     targetRotation = Quaternion.LookRotation(lookRotation == Vector3.zero ? lookForward : lookRotation, Vector3.up);
 
                     // If constant cursor scale is desired, skip resizing functionality
-                    targetScale = resizeCursorWithDistance ? CalculateViewSizeOfCursor(targetPosition) : Vector3.one;
+                    targetScale = resizeCursorWithDistance ? ComputeScaleWithAngularScale(targetPosition) : Vector3.one;
                 }
             }
 
@@ -503,15 +504,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Calculates constant visual size of cursor based on cursorSizeAsPercentageOfViewport
+        /// Calculates constant visual size of cursor based on cursorAngularScale
         /// </summary>
-        private Vector3 CalculateViewSizeOfCursor(Vector3 targetPosition)
+        private Vector3 ComputeScaleWithAngularScale(Vector3 targetPosition)
         {
             float cursorDistance = Vector3.Distance(CameraCache.Main.transform.position, targetPosition);
-            float totalHeight = cursorDistance * Mathf.Tan(CameraCache.Main.fieldOfView * 0.5f * Mathf.Deg2Rad);
+            float cursorStartSize = (cursorBounds.extents - cursorBounds.center).magnitude * 2;
+            float desiredScale = (2.0f * cursorDistance * Mathf.Tan(cursorAngularScale * Mathf.Deg2Rad * 0.5f)) / cursorStartSize;
 
-            float scale = totalHeight / cursorBounds.extents.y * cursorSizeAsPercentageOfViewport;
-            return Vector3.one * scale;
+            return Vector3.one * desiredScale;
         }
 
         /// <summary>
