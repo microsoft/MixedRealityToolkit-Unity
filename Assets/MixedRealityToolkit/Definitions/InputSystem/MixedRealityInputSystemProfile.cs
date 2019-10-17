@@ -22,6 +22,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         private MixedRealityInputDataProviderConfiguration[] dataProviderConfigurations = new MixedRealityInputDataProviderConfiguration[0];
 
+        /// <summary>
+        /// List of input data provider configurations to intialize and manage by the Input System registar
+        /// </summary>
         public MixedRealityInputDataProviderConfiguration[] DataProviderConfigurations
         {
             get { return dataProviderConfigurations; }
