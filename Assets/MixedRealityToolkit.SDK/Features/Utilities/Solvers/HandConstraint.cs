@@ -375,9 +375,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         {
             // frame delay 
             for(int i=0; i<2; ++i)
-			{
-				yield return null;
-			}
+            {
+                yield return null;
+            }
 
             SolverHandler.RefreshTrackedObject();
         }
@@ -453,7 +453,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             {
                 if (trackedHand != null)
                 {
-					StartCoroutine(DelayedRefreshSolverHandlerTrackedObject());
+                    StartCoroutine(DelayedRefreshSolverHandlerTrackedObject());
                     StartCoroutine(ToggleCursor(true));
                     trackedHand = null;
                     onHandDeactivate?.Invoke();
