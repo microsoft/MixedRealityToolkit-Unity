@@ -258,10 +258,21 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         }
 
         [Header("Events")]
-        /// todo: these should be somehow unified with manipulation handler and documented
+        /// <summary>
+        /// Event that gets fired when interaction with a rotation handle starts.
+        /// </summary>
         public UnityEvent RotateStarted = new UnityEvent();
+        /// <summary>
+        /// Event that gets fired when interaction with a rotation handle stops.
+        /// </summary>
         public UnityEvent RotateStopped = new UnityEvent();
+        /// <summary>
+        /// Event that gets fired when interaction with a scale handle starts.
+        /// </summary>
         public UnityEvent ScaleStarted = new UnityEvent();
+        /// <summary>
+        /// Event that gets fired when interaction with a scale handle stops.
+        /// </summary>
         public UnityEvent ScaleStopped = new UnityEvent();
 
         #endregion Serialized Fields
@@ -459,6 +470,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         private void OnDisable()
         {
             DestroyRig();
+
+            if (currentPointer != null)
+            {
+                DropController();
+            }
         }
 
         private void Update()
@@ -471,7 +487,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                     UpdateBounds();
                     UpdateVisuals();
                 }
-                else if (!isChildOfTarget && Target.transform.hasChanged)
+                else if ((!isChildOfTarget && Target.transform.hasChanged)
+                    || (boundsOverride != null && HasBoundsOverrideChanged()))
                 {
                     UpdateBounds();
                     UpdateVisuals();
@@ -486,11 +503,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                 {
                     proximityEffect.Update(transform.position, currentBoundsExtents);
                 }
-            }
-            else if (boundsOverride != null && HasBoundsOverrideChanged())
-            {
-                UpdateBounds();
-                UpdateVisuals();
             }
         }
 
@@ -560,7 +572,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
             // Collect all Transforms except for the rigRoot(s) transform structure(s)
             // Its possible we have two rigRoots here, the one about to be deleted and the new one
-            // Since those have the gizmo structure childed, be need to ommit them completely in the calculation of the bounds
+            // Since those have the gizmo structure childed, be need to omit them completely in the calculation of the bounds
             // This can only happen by name unless there is a better idea of tracking the rigRoot that needs destruction
 
             List<Transform> childTransforms = new List<Transform>();
@@ -1110,7 +1122,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
         private void UpdateVisuals()
         {
-            if (rigRoot != null && Target != null)
+            if (rigRoot != null && Target != null && TargetBounds != null)
             {
                 // We move the rigRoot to the scene root to ensure that non-uniform scaling performed
                 // anywhere above the rigRoot does not impact the position of rig corners / edges
@@ -1126,7 +1138,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
                 boxDisplay.Update(rigRoot, currentBoundsExtents, flattenAxis);
 
-                //move rig into position and rotation
+                // move rig into position and rotation
                 rigRoot.position = TargetBounds.bounds.center;
                 rigRoot.rotation = Target.transform.rotation;
                 rigRoot.parent = transform;
