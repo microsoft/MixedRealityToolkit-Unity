@@ -60,6 +60,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     }
                     else
                     {
+                        // Sometimes Unity has weird bug where asset file exists but Unity will not load it resulting in _instance = null. 
+                        // Force refresh of asset database before we try to access our preferences file
+                        AssetDatabase.Refresh();
                         _instance = (ProjectPreferences)AssetDatabase.LoadAssetAtPath(filePath, typeof(ProjectPreferences));
                     }
                 }
@@ -76,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </remarks>
         public static void Set(string key, bool value, bool forceSave = true)
         {
-            Set<bool>(key, value, Instance.boolPreferences, forceSave);
+            Set<bool>(key, value, Instance?.boolPreferences, forceSave);
         }
 
         /// <summary>
@@ -87,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </remarks>
         public static void Set(string key, float value, bool forceSave = true)
         {
-            Set<float>(key, value, Instance.floatPreferences, forceSave);
+            Set<float>(key, value, Instance?.floatPreferences, forceSave);
         }
 
         /// <summary>
@@ -98,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </remarks>
         public static void Set(string key, int value, bool forceSave = true)
         {
-            Set<int>(key, value, Instance.intPreferences, forceSave);
+            Set<int>(key, value, Instance?.intPreferences, forceSave);
         }
 
         /// <summary>
@@ -109,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </remarks>
         public static void Set(string key, string value, bool forceSave = true)
         {
-            Set<string>(key, value, Instance.stringPreferences, forceSave);
+            Set<string>(key, value, Instance?.stringPreferences, forceSave);
         }
 
         /// <summary>
@@ -117,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         public static bool Get(string key, bool defaultValue)
         {
-            return Get<bool>(key, defaultValue, Instance.boolPreferences);
+            return Get<bool>(key, defaultValue, Instance?.boolPreferences);
         }
 
         /// <summary>
@@ -125,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         public static float Get(string key, float defaultValue)
         {
-            return Get<float>(key, defaultValue, Instance.floatPreferences);
+            return Get<float>(key, defaultValue, Instance?.floatPreferences);
         }
 
         /// <summary>
@@ -133,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         public static int Get(string key, int defaultValue)
         {
-            return Get<int>(key, defaultValue, Instance.intPreferences);
+            return Get<int>(key, defaultValue, Instance?.intPreferences);
         }
 
         /// <summary>
@@ -141,11 +144,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         public static string Get(string key, string defaultValue)
         {
-            return Get<string>(key, defaultValue, Instance.stringPreferences);
+            return Get<string>(key, defaultValue, Instance?.stringPreferences);
         }
 
         private static void Set<T>(string key, T item, SerializableDictionary<string, T> target, bool forceSave = true)
         {
+            if (target == null)
+            {
+                return;
+            }
+
             if (target.ContainsKey(key))
             {
                 target[key] = item;
@@ -164,6 +172,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private static T Get<T>(string key, T defaultVal, SerializableDictionary<string, T> target)
         {
+            if (target == null)
+            {
+                return default(T);
+            }
+
             if (target.ContainsKey(key))
             {
                 return target[key];
