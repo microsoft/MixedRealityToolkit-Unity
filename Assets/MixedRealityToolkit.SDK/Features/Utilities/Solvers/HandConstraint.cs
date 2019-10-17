@@ -430,17 +430,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                         handStack.Insert(0, hand);
                     }
 
-                    if (trackedHand == null)
+                    if (trackedHand != null)
                     {
-                        trackedHand = hand;
-                        onHandActivate?.Invoke();
-                    }
-                    else
-                    {
+                        onHandDeactivate?.Invoke();
                         StartCoroutine(ToggleCursor(true));
-                        trackedHand = hand;
                     }
 
+                    trackedHand = hand;
+                    onHandActivate?.Invoke();
+                    
                     // Wait one frame to disable the cursor in case one hasn't been instantiated yet.
                     StartCoroutine(ToggleCursor(false, true));
                 }
