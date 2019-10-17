@@ -29,7 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Search
         /// <summary>
         /// Draws a search field and (if results have been returned) search results.
         /// </summary>
-        /// <param name="target"></param>
         /// <returns>True if search results are being displayed.</returns>
         public static bool DrawSearchInterface(UnityEngine.Object target)
         {
