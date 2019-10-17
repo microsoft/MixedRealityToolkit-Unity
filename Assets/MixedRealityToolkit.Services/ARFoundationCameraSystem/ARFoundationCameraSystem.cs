@@ -10,26 +10,15 @@ using UnityEngine.XR.ARFoundation;
 
 namespace Microsoft.MixedReality.Toolkit.CameraSystem
 {
+    /// <summary>
+    /// Camera system implementation that uses Unity's AR Foundation components.
+    /// </summary>
     public class ARFoundationCameraSystem : BaseCoreSystem, IMixedRealityCameraSystem
     {
         public ARFoundationCameraSystem(
             IMixedRealityServiceRegistrar registrar,
             BaseMixedRealityProfile profile = null) : base(registrar, profile)
-        {
-            // todo: find objects in scene... this will keep us from double adding components....
-        }
-
-        private bool arFoundationSupported = false;
-        public bool ARFoundationSupported
-        {
-            get => arFoundationSupported;
-            private set
-            {
-                arFoundationSupported = value;
-            }
-        }
-
-//#region IMixedRealityService
+        { }
 
         /// <inheritdoc/>
         public override string Name { get; protected set; } = "Mixed Reality Camera System for AR Foundation";
@@ -43,6 +32,9 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         public override /*async*/ void Initialize()
         {
             base.Initialize();
+
+            ApplyCameraSettings();
+
             //ARSessionState arState = (ARSessionState)(await ARSession.CheckAvailability());
             //ARFoundationSupported = (ARSessionState.Ready <= arState);
             //if (ARFoundationSupported)
@@ -60,83 +52,161 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             base.Destroy();
         }
 
+        // todo private bool arFoundationSupported = false;
         bool isInitialized = false;
 
         private GameObject arSessionObject = null;
-        private ARCameraBackground arCameraBackground = null;
-        private ARCameraManager arCameraManager = null;
+        private bool preExistingArSessionObject = false;
         private ARSession arSession = null;
+
+        private GameObject arSessionOriginObject = null;
+        private bool preExistingArSessionOriginObject = false;
         private ARSessionOrigin arSessionOrigin = null;
+
+        private ARCameraManager arCameraManager = null;
+        private ARCameraBackground arCameraBackground = null;
+        private ARInputManager arInputManager = null;
         private TrackedPoseDriver trackedPoseDriver = null;
 
+        /// <summary>
+        /// Examines the scene to determine if AR Foundation components are present.
+        /// </summary>
+        private void FindARFoundationComponents()
+        {
+            arSessionObject = GameObject.Find("AR Session");
+            preExistingArSessionObject = (arSessionObject != null);
+            arSessionOriginObject = GameObject.Find("AR Session Origin");
+            preExistingArSessionOriginObject = (arSessionOriginObject != null);
+        }
+
+        /// <summary>
+        /// Apply the camera settings from the configuration profile.
+        /// </summary>
+        /// <remarks>
+        /// This camera system uses the device camera as a passthrough, therefore it uses the transparent camera settings.
+        /// </remarks>
+        private void ApplyCameraSettings()
+        {
+            CameraCache.Main.clearFlags = CameraProfile.CameraClearFlagsTransparentDisplay;
+            CameraCache.Main.backgroundColor = CameraProfile.BackgroundColorTransparentDisplay;
+            CameraCache.Main.nearClipPlane = CameraProfile.NearClipPlaneTransparentDisplay;
+            CameraCache.Main.farClipPlane = CameraProfile.FarClipPlaneTransparentDisplay;
+            QualitySettings.SetQualityLevel(CameraProfile.TransparentQualityLevel, false);
+        }
+
+        /// <summary>
+        /// Initialize AR Foundation components.
+        /// </summary>
         private void InitializeARFoundation()
         {
             if (isInitialized) { return; }
+                
+            FindARFoundationComponents();
 
-            // todo: look for object(s) and scripts
-            GameObject arSessionObject = new GameObject("AR Session");
-            arSessionObject.transform.parent = null;
-            arSession = arSessionObject.AddComponent<ARSession>();
+            if (arSessionObject == null)
+            {
+                arSessionObject = new GameObject("AR Session");
+                arSessionObject.transform.parent = null;
+            }
+
+            arSession = arSessionObject.EnsureComponent<ARSession>();
             arSession.attemptUpdate = true;
             arSession.matchFrameRate = true;
-            arSessionObject.AddComponent<ARInputManager>();
 
-            Camera arCamera = CameraCache.Main;
-            trackedPoseDriver = arCamera.gameObject.AddComponent<TrackedPoseDriver>();
+            arInputManager = arSessionObject.EnsureComponent<ARInputManager>();
+
+            if (arSessionOriginObject == null)
+            {
+                arSessionOriginObject = new GameObject("AR Session Origin");
+                arSessionOriginObject.transform.parent = null;
+            }
+            else
+            {
+                arSessionOriginObject = MixedRealityPlayspace.Transform.gameObject;
+                CameraCache.Main.transform.parent = arSessionOriginObject.transform;
+            }
+
+            arSessionOrigin = arSessionOriginObject.EnsureComponent<ARSessionOrigin>();
+            arSessionOrigin.camera = CameraCache.Main;
+
+            GameObject cameraObject = arSessionOrigin.camera.gameObject;
+            
+            arCameraManager = cameraObject.EnsureComponent<ARCameraManager>();
+            arCameraBackground = cameraObject.EnsureComponent<ARCameraBackground>();
+            trackedPoseDriver = cameraObject.EnsureComponent<TrackedPoseDriver>();
+
             trackedPoseDriver.SetPoseSource(
                 TrackedPoseDriver.DeviceType.GenericXRDevice,
                 TrackedPoseDriver.TrackedPose.ColorCamera);
-
-            arCameraManager = arCamera.gameObject.AddComponent<ARCameraManager>();
-            arCameraBackground = arCamera.gameObject.AddComponent<ARCameraBackground>();
-
-            GameObject playspaceObject = MixedRealityPlayspace.Transform.gameObject;
-            arSessionOrigin = playspaceObject.AddComponent<ARSessionOrigin>();
-            arSessionOrigin.camera = arCamera;
+            trackedPoseDriver.trackingType = TrackedPoseDriver.TrackingType.RotationAndPosition;
+            trackedPoseDriver.updateType = TrackedPoseDriver.UpdateType.UpdateAndBeforeRender;
+            trackedPoseDriver.UseRelativeTransform = false;
 
             isInitialized = true;
         }
 
+        /// <summary>
+        /// Uninitialize and clean up AR Foundation components.
+        /// </summary>
         private void UninitializeARFoundation()
         {
             if (!isInitialized) { return; }
 
-            if (!Application.isEditor)
+            if (!preExistingArSessionOriginObject)
             {
-                Object.Destroy(trackedPoseDriver);
-                Object.Destroy(arCameraBackground);
-                Object.Destroy(arCameraManager);
-                Object.Destroy(arSessionOrigin);
-                Object.Destroy(arSession);
-                Object.Destroy(arSessionObject);
-            }
-            else
-            {
-                Object.DestroyImmediate(trackedPoseDriver);
-                Object.DestroyImmediate(arCameraBackground);
-                Object.DestroyImmediate(arCameraManager);
-                Object.DestroyImmediate(arSessionOrigin);
-                Object.DestroyImmediate(arSession);
-                Object.DestroyImmediate(arSessionObject);
+                if (Application.isEditor && !Application.isPlaying)
+                {
+                    Object.DestroyImmediate(trackedPoseDriver);
+                    Object.DestroyImmediate(arCameraBackground);
+                    Object.DestroyImmediate(arCameraManager);
+                    Object.DestroyImmediate(arSessionOrigin);
+                    Object.DestroyImmediate(arSessionOriginObject);
+                }
+                else
+                {
+                    Object.Destroy(trackedPoseDriver);
+                    Object.Destroy(arCameraBackground);
+                    Object.Destroy(arCameraManager);
+                    Object.Destroy(arSessionOrigin);
+                    Object.Destroy(arSessionOriginObject);
+                }
+
+                trackedPoseDriver = null;
+                arCameraBackground = null;
+                arCameraManager = null;
+                arSessionOrigin = null;
+                arSessionOriginObject = null;
             }
 
-            trackedPoseDriver = null;
-            arCameraBackground = null;
-            arCameraManager = null;
-            arSessionOrigin = null;
-            arSession = null;
-            arSessionObject = null;
+            if (!preExistingArSessionObject)
+            {
+                if (Application.isEditor && !Application.isPlaying)
+                {
+                    Object.DestroyImmediate(arInputManager);
+                    Object.DestroyImmediate(arSession);
+                    Object.DestroyImmediate(arSessionObject);
+                }
+                else
+                {
+                    Object.Destroy(arInputManager);
+                    Object.Destroy(arSession);
+                    Object.Destroy(arSessionObject);
+                }
+
+                arInputManager = null;
+                arSession = null;
+                arSessionObject = null;
+            }
 
             isInitialized = false;
         }
 
-//#endregion IMixedRealityService
-
-//#region IMixedRealityCameraSystem
-
         /// <inheritdoc/>
         public bool IsOpaque => true;
 
+        /// <summary>
+        /// The profile used to configure the camera.
+        /// </summary>
         public MixedRealityCameraProfile CameraProfile
         {
             get
@@ -144,10 +214,6 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
                 return ConfigurationProfile as MixedRealityCameraProfile;
             }
         }
-
-//#endregion IMixedRealityCameraSystem
-
-//#region IEqualityComparer
 
         /// <inheritdoc />
         bool IEqualityComparer.Equals(object x, object y)
@@ -161,7 +227,5 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         {
             return Mathf.Abs(SourceName.GetHashCode());
         }
-
-//#endregion IEqualityComparer
     }
 }
