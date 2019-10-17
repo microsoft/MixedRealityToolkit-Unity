@@ -16,10 +16,11 @@
   <assembly fullname="Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput" preserve="all"/>
   <assembly fullname="Microsoft.MixedReality.Toolkit.Providers.OpenVR" preserve="all"/>
   <assembly fullname="Microsoft.MixedReality.Toolkit.SDK" preserve="all"/>
-  <assembly fullname="Microsoft.MixedReality.Toolkit.Services.InputSystem" preserve="all"/>
+  <assembly fullname="Microsoft.MixedReality.Toolkit.Services.ARFoundationCameraSystem" preserve="all"/>
   <assembly fullname="Microsoft.MixedReality.Toolkit.Services.BoundarySystem" preserve="all"/>
   <assembly fullname="Microsoft.MixedReality.Toolkit.Services.CameraSystem" preserve="all"/>
   <assembly fullname="Microsoft.MixedReality.Toolkit.Services.DiagnosticsSystem" preserve="all"/>
+  <assembly fullname="Microsoft.MixedReality.Toolkit.Services.InputSystem" preserve="all"/>
   <assembly fullname="Microsoft.MixedReality.Toolkit.Services.SceneSystem" preserve="all"/>
   <assembly fullname="Microsoft.MixedReality.Toolkit.Services.SpatialAwarenessSystem" preserve="all"/>
   <assembly fullname="Microsoft.MixedReality.Toolkit.Services.TeleportSystem" preserve="all"/>
