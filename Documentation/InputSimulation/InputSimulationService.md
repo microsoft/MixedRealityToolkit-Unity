@@ -132,9 +132,9 @@ For manipulating objects with two hands at the same time the persistent hand mod
 
 1. Toggle on both hands by pressing the toggle keys (T/Y).
 1. Manipulate one hand at a time:
-  1. Hold _Space_ to control the right hand
-  1. Move the hand to where you want to grab the object
-  1. Press mouse button to activate the _Pinch_ gesture. In persistent mode the gesture will remain active when you release the mouse button.
+    1. Hold _Space_ to control the right hand
+    1. Move the hand to where you want to grab the object
+    1. Press mouse button to activate the _Pinch_ gesture. In persistent mode the gesture will remain active when you release the mouse button.
 1. Repeat the process with the other hand, grabbing the same object in a second spot.
 1. Now that both hands are grabbing the same object, you can move either of them to perform two-handed manipulation.
 
