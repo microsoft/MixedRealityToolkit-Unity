@@ -23,6 +23,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         [System.Serializable]
         private class FloatPreferences : SerializableDictionary<string, float> { }
 
+        [System.Serializable]
+        private class StringPreferences : SerializableDictionary<string, string> { }
+
         [SerializeField]
         private BoolPreferences boolPreferences = new BoolPreferences();
 
@@ -31,6 +34,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         [SerializeField]
         private FloatPreferences floatPreferences = new FloatPreferences();
+
+        [SerializeField]
+        private StringPreferences stringPreferences = new StringPreferences();
 
         private const string FILE_NAME = "ProjectPreferences.asset";
         private const string RELATIVE_FOLDER_PATH = "System/";
@@ -88,6 +94,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         /// <summary>
+        /// Save string to preferences and save to ScriptableObject with key given. Calls AssetDatabase.SaveAssets which saves all assets after execution
+        /// </summary>
+        public static void Set(string key, string value)
+        {
+            Set<string>(key, value, Instance.stringPreferences);
+        }
+
+        /// <summary>
         /// Get bool from Project Preferences. If no entry found, then create new entry with provided defaultValue
         /// </summary>
         public static bool Get(string key, bool defaultValue)
@@ -111,6 +125,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return Get<int>(key, defaultValue, Instance.intPreferences);
         }
 
+        /// <summary>
+        /// Get string from Project Preferences. If no entry found, then create new entry with provided defaultValue
+        /// </summary>
+        public static string Get(string key, string defaultValue)
+        {
+            return Get<string>(key, defaultValue, Instance.stringPreferences);
+        }
+
         private static void Set<T>(string key, T item, SerializableDictionary<string, T> target)
         {
             if (target.ContainsKey(key))
@@ -126,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             AssetDatabase.SaveAssets();
         }
 
-        public static T Get<T>(string key, T defaultVal, SerializableDictionary<string, T> target)
+        private static T Get<T>(string key, T defaultVal, SerializableDictionary<string, T> target)
         {
             if (target.ContainsKey(key))
             {

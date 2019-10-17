@@ -76,8 +76,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             public static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
             {
-                searchForFoldersTask.Wait();
-
                 foreach (string asset in importedAssets.Concat(movedAssets))
                 {
                     if (IsSentinelFile(asset))
@@ -165,13 +163,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// Are any of the MRTK directories available?
         /// </summary>
         /// <remarks>
-        /// If a search is currently in progress, then property will wait synchronously for the task to finish
+        /// If a search is currently in progress, then property will wait synchronously for the task to finish with timeout of 1 second
         /// </remarks>
         public static bool AreFoldersAvailable
         {
             get
             {
-                searchForFoldersTask.Wait();
+                if (searchForFoldersTask != null)
+                {
+                    searchForFoldersTask.Wait(1);
+                }
+
                 return mrtkFolders.Count > 0;
             }
         }
