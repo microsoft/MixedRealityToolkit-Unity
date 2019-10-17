@@ -8,12 +8,15 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
-    public static class MixedRealityPreferences
+    /// <summary>
+    /// MRTK project preferences access and inspector rendering logic
+    /// </summary>
+    public static class MixedRealityProjectPreferences
     {
         #region Lock Profile Preferences
 
         private static readonly GUIContent LockContent = new GUIContent("Lock SDK profiles", "Locks the SDK profiles from being edited.\n\nThis setting only applies to the currently running project.");
-        private const string LOCK_KEY = "LockProfiles";
+        private const string LOCK_KEY = "_MixedRealityToolkit_Editor_LockProfiles";
         private static bool lockPrefLoaded;
         private static bool lockProfiles;
 
@@ -26,13 +29,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 if (!lockPrefLoaded)
                 {
-                    lockProfiles = EditorPreferences.Get(LOCK_KEY, true);
+                    lockProfiles = ProjectPreferences.Get<bool>(LOCK_KEY, true);
                     lockPrefLoaded = true;
                 }
 
                 return lockProfiles;
             }
-            set => EditorPreferences.Set(LOCK_KEY, lockProfiles = value);
+            set => ProjectPreferences.Set<bool>(LOCK_KEY, lockProfiles = value);
         }
 
         #endregion Lock Profile Preferences
@@ -53,13 +56,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 if (!ignorePrefLoaded)
                 {
-                    ignoreSettingsPrompt = EditorPrefs.GetBool(IGNORE_KEY, false);
+                    ignoreSettingsPrompt = ProjectPreferences.Get<bool>(IGNORE_KEY, false);
                     ignorePrefLoaded = true;
                 }
 
                 return ignoreSettingsPrompt;
             }
-            set => EditorPrefs.SetBool(IGNORE_KEY, ignoreSettingsPrompt = value);
+            set => ProjectPreferences.Set<bool>(IGNORE_KEY, ignoreSettingsPrompt = value);
         }
 
         #endregion Ignore startup settings prompt
@@ -80,13 +83,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 if (!runOptimalConfigPrefLoaded)
                 {
-                    runOptimalConfig = EditorPrefs.GetBool(RUN_OPTIMAL_CONFIG_KEY, true);
+                    runOptimalConfig = ProjectPreferences.Get<bool>(RUN_OPTIMAL_CONFIG_KEY, true);
                     runOptimalConfigPrefLoaded = true;
                 }
 
                 return runOptimalConfig;
             }
-            set => EditorPrefs.SetBool(RUN_OPTIMAL_CONFIG_KEY, runOptimalConfig = value);
+            set => ProjectPreferences.Set<bool>(RUN_OPTIMAL_CONFIG_KEY, runOptimalConfig = value);
         }
 
         #endregion Run optimal configuration analysis on Play

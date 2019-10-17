@@ -71,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private static void OnPlayStateModeChanged(PlayModeStateChange state)
         {
-            if (state == PlayModeStateChange.EnteredPlayMode && MixedRealityPreferences.RunOptimalConfiguration)
+            if (state == PlayModeStateChange.EnteredPlayMode && MixedRealityProjectPreferences.RunOptimalConfiguration)
             {
                 CheckOptimalConfiguration();
             }
@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             bool refresh = false;
             bool restart = false;
 
-            if (!MixedRealityPreferences.IgnoreSettingsPrompt)
+            if (!MixedRealityProjectPreferences.IgnoreSettingsPrompt)
             {
                 StringBuilder builder = new StringBuilder();
                 builder.Append("The Mixed Reality Toolkit needs to apply the following settings to your project:\n\n");
@@ -145,7 +145,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                             refresh = true;
                             break;
                         case 1:
-                            MixedRealityPreferences.IgnoreSettingsPrompt = true;
+                            MixedRealityProjectPreferences.IgnoreSettingsPrompt = true;
                             break;
                         case 2:
                             break;
