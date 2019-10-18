@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     }
                 }, showProvidersPreferenceKey);
 
-                RenderFoldout(ref showDisplaySettings, "Default Display Settings", () =>
+                RenderFoldout(ref showDisplaySettings, "Display Settings", () =>
                 {
                     using (new EditorGUI.IndentLevelScope())
                     {
