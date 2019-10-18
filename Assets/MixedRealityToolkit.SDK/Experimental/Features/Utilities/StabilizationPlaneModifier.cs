@@ -138,23 +138,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             }
         }
 
-        private IMixedRealityInputSystem inputSystem = null;
-
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        private IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
-                return inputSystem;
-            }
-        }
-
         /// <summary>
         /// Position of the plane in world space.
         /// </summary>
@@ -237,10 +220,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         {
             get
             {
-                if (InputSystem != null && InputSystem.GazeProvider.Enabled)
+                if (CoreServices.InputSystem != null && CoreServices.InputSystem.GazeProvider.Enabled)
                 {
-                    return InputSystem.GazeProvider.GazeOrigin;
+                    return CoreServices.InputSystem.GazeProvider.GazeOrigin;
                 }
+
                 return CameraCache.Main.transform.position;
             }
         }
@@ -252,9 +236,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         {
             get
             {
-                if (InputSystem != null && InputSystem.GazeProvider.Enabled)
+                if (CoreServices.InputSystem != null && CoreServices.InputSystem.GazeProvider.Enabled)
                 {
-                    return InputSystem.GazeProvider.GazeDirection;
+                    return CoreServices.InputSystem.GazeProvider.GazeDirection;
                 }
 
                 return CameraCache.Main.transform.forward;
@@ -268,11 +252,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// <returns>True if gaze is supported and an object was hit by gaze, otherwise false.</returns>
         private bool TryGetGazeHitPosition(out Vector3 hitPosition)
         {
-            if (InputSystem.GazeProvider.Enabled)
+            if (CoreServices.InputSystem.GazeProvider.Enabled)
             {
-                hitPosition = InputSystem.GazeProvider.HitPosition;
+                hitPosition = CoreServices.InputSystem.GazeProvider.HitPosition;
                 return true;
             }
+
             hitPosition = Vector3.zero;
             return false;
         }

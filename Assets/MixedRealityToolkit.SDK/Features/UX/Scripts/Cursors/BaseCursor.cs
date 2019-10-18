@@ -13,23 +13,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public class BaseCursor : MonoBehaviour, IMixedRealityCursor
     {
-        private IMixedRealityInputSystem inputSystem = null;
-
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        protected IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
-                return inputSystem;
-            }
-        }
-
         public CursorStateEnum CursorState { get; private set; } = CursorStateEnum.None;
 
         public CursorContextEnum CursorContext { get; private set; } = CursorContextEnum.None;
@@ -337,9 +320,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void Update()
         {
-            if (!InputSystem.FocusProvider.TryGetFocusDetails(Pointer, out focusDetails))
+            if (!CoreServices.InputSystem.FocusProvider.TryGetFocusDetails(Pointer, out focusDetails))
             {
-                if (InputSystem.FocusProvider.IsPointerRegistered(Pointer))
+                if (CoreServices.InputSystem.FocusProvider.IsPointerRegistered(Pointer))
                 {
                     Debug.LogError($"{name}: Unable to get focus details for {pointer.GetType().Name}!");
                 }
@@ -369,11 +352,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         protected virtual void RegisterManagers()
         {
+            var inputSystem = CoreServices.InputSystem;
             // Register the cursor as a listener, so that it can always get input events it cares about
-            InputSystem.RegisterHandler<IMixedRealityCursor>(this);
+            inputSystem.RegisterHandler<IMixedRealityCursor>(this);
 
             // Setup the cursor to be able to respond to input being globally enabled / disabled
-            if (InputSystem.IsInputEnabled)
+            if (inputSystem.IsInputEnabled)
             {
                 OnInputEnabled();
             }
@@ -382,8 +366,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 OnInputDisabled();
             }
 
-            InputSystem.InputEnabled += OnInputEnabled;
-            InputSystem.InputDisabled += OnInputDisabled;
+            inputSystem.InputEnabled += OnInputEnabled;
+            inputSystem.InputDisabled += OnInputDisabled;
         }
 
         /// <summary>
@@ -391,11 +375,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         protected virtual void UnregisterManagers()
         {
-            if (InputSystem != null)
+            var inputSystem = CoreServices.InputSystem;
+            if (inputSystem != null)
             {
-                InputSystem.InputEnabled -= OnInputEnabled;
-                InputSystem.InputDisabled -= OnInputDisabled;
-                InputSystem.UnregisterHandler<IMixedRealityCursor>(this);
+                inputSystem.InputEnabled -= OnInputEnabled;
+                inputSystem.InputDisabled -= OnInputDisabled;
+                inputSystem.UnregisterHandler<IMixedRealityCursor>(this);
             }
         }
 
@@ -410,7 +395,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return;
             }
 
-            GameObject newTargetedObject = InputSystem.FocusProvider.GetFocusedObject(Pointer);
+            GameObject newTargetedObject = CoreServices.InputSystem.FocusProvider.GetFocusedObject(Pointer);
             Vector3 lookForward;
 
             // Normalize scale on before update
@@ -504,7 +489,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (IsPointerValid)
             {
                 uint cursorPointerId = Pointer.PointerId;
-                foreach (IMixedRealityInputSource inputSource in InputSystem.DetectedInputSources)
+                foreach (IMixedRealityInputSource inputSource in CoreServices.InputSystem.DetectedInputSources)
                 {
                     if (inputSource.SourceType != InputSourceType.Head && inputSource.SourceType != InputSourceType.Eyes)
                     {
