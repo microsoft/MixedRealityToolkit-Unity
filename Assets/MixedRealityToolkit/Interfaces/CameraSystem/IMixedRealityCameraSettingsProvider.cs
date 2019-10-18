@@ -3,8 +3,19 @@
 
 namespace Microsoft.MixedReality.Toolkit.CameraSystem
 {
+    /// <summary>
+    /// todo
+    /// </summary>
     public interface IMixedRealityCameraSettingsProvider : IMixedRealityDataProvider
     {
-        // todo
+        /// <summary>
+        /// todo
+        /// </summary>
+        DisplayType DisplayType { get; }
+
+        /// <summary>
+        /// Returns whether or not the current display rendering mode is opaque.
+        /// </summary>
+        bool IsOpaque { get; }
     }
 }
