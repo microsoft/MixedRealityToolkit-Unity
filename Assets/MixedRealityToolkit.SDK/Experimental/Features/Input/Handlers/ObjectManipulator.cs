@@ -317,7 +317,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 hostTransform = transform;
             }
 
-            rigidBody = GetComponent<Rigidbody>();
+            rigidBody = hostTransform.GetComponent<Rigidbody>();
             constraints = new ConstraintManager(gameObject);
         }
         #endregion MonoBehaviour Functions
@@ -686,7 +686,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             if (rigidBody != null)
             {
                 wasKinematic = rigidBody.isKinematic;
-                rigidBody.isKinematic = true;
+                rigidBody.isKinematic = false;
             }
             
             constraints.Initialize(new MixedRealityPose(hostTransform.position, hostTransform.rotation));
@@ -725,9 +725,27 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         private void ApplyTargetTransform(MixedRealityTransform targetTransform)
         {
-            hostTransform.position = SmoothTo(hostTransform.position, targetTransform.Position, moveLerpTime);
-            hostTransform.rotation = SmoothTo(hostTransform.rotation, targetTransform.Rotation, rotateLerpTime);
-            hostTransform.localScale = SmoothTo(hostTransform.localScale, targetTransform.Scale, scaleLerpTime);
+            if (rigidBody == null)
+            {
+                hostTransform.position = SmoothTo(hostTransform.position, targetTransform.Position, moveLerpTime);
+                hostTransform.rotation = SmoothTo(hostTransform.rotation, targetTransform.Rotation, rotateLerpTime);
+                hostTransform.localScale = SmoothTo(hostTransform.localScale, targetTransform.Scale, scaleLerpTime);
+            }
+            else
+            {
+                rigidBody.velocity = ((1f - Mathf.Pow(moveLerpTime, Time.deltaTime)) / Time.deltaTime) * (targetTransform.Position - hostTransform.position);
+
+                var relativeRotation = targetTransform.Rotation * Quaternion.Inverse(hostTransform.rotation);
+                relativeRotation.ToAngleAxis(out float angle, out Vector3 axis);
+                if (angle > 180f)
+                    angle -= 360f;
+                if (axis.IsValidVector())
+                {
+                    rigidBody.angularVelocity = ((1f - Mathf.Pow(rotateLerpTime, Time.deltaTime)) / Time.deltaTime) * (axis.normalized * angle * Mathf.Deg2Rad);
+                }
+
+                hostTransform.localScale = SmoothTo(hostTransform.localScale, targetTransform.Scale, scaleLerpTime);
+            }
         }
 
         private Vector3 SmoothTo(Vector3 source, Vector3 goal, float lerpTime)
