@@ -56,6 +56,19 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         private DisplayType currentDisplayType;
         private bool cameraOpaqueLastFrame = false;
 
+        private GameObject mrtkPlayspaceObject = null;
+        private bool preExistingMrtkPlayspaceObject = false;
+
+        /// <summary>
+        /// Examines the scene to determine if MRTK components are present.
+        /// </summary>
+
+        private void FindMRTKComponents()
+        {
+            mrtkPlayspaceObject = GameObject.Find("MixedRealityPlayspace");
+            preExistingMrtkPlayspaceObject = (mrtkPlayspaceObject != null);
+        }
+
         /// <inheritdoc />
         public override void Initialize()
         {
@@ -69,6 +82,8 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             {
                 ApplySettingsForTransparentDisplay();
             }
+
+            FindMRTKComponents();
 
             // Ensure the camera is parented to the playspace which starts, unrotated, at the origin.
             MixedRealityPlayspace.Position = Vector3.zero;

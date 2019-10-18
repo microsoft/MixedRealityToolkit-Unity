@@ -13,7 +13,6 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
     /// <summary>
     /// Camera system implementation that uses Unity's AR Foundation components.
     /// </summary>
-    [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#camera")]
     public class ARFoundationCameraSystem : BaseCoreSystem, IMixedRealityCameraSystem
     {
         public ARFoundationCameraSystem(
@@ -138,16 +137,8 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
 
             arInputManager = arSessionObject.EnsureComponent<ARInputManager>();
 
-            if (arSessionOriginObject == null)
-            {
-                arSessionOriginObject = new GameObject("AR Session Origin");
-                arSessionOriginObject.transform.parent = null;
-            }
-            else
-            {
-                arSessionOriginObject = MixedRealityPlayspace.Transform.gameObject;
-                CameraCache.Main.transform.parent = arSessionOriginObject.transform;
-            }
+            arSessionOriginObject = MixedRealityPlayspace.Transform.gameObject;
+            CameraCache.Main.transform.parent = arSessionOriginObject.transform;
 
             arSessionOrigin = arSessionOriginObject.EnsureComponent<ARSessionOrigin>();
             arSessionOrigin.camera = CameraCache.Main;
@@ -175,15 +166,17 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         {
             if (!isInitialized) { return; }
 
-            if (!preExistingArSessionOriginObject)
+            if (!preExistingArSessionOriginObject &&
+                (arSessionOriginObject != null))
             {
+                arSessionOriginObject.transform.DetachChildren();
+
                 if (Application.isEditor && !Application.isPlaying)
                 {
                     Object.DestroyImmediate(trackedPoseDriver);
                     Object.DestroyImmediate(arCameraBackground);
                     Object.DestroyImmediate(arCameraManager);
                     Object.DestroyImmediate(arSessionOrigin);
-                    Object.DestroyImmediate(arSessionOriginObject);
                 }
                 else
                 {
@@ -191,17 +184,16 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
                     Object.Destroy(arCameraBackground);
                     Object.Destroy(arCameraManager);
                     Object.Destroy(arSessionOrigin);
-                    Object.Destroy(arSessionOriginObject);
                 }
 
                 trackedPoseDriver = null;
                 arCameraBackground = null;
                 arCameraManager = null;
                 arSessionOrigin = null;
-                arSessionOriginObject = null;
             }
 
-            if (!preExistingArSessionObject)
+            if (!preExistingArSessionObject &&
+                (arSessionObject != null))
             {
                 if (Application.isEditor && !Application.isPlaying)
                 {
