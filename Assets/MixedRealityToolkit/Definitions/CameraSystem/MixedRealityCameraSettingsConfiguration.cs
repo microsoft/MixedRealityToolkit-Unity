@@ -8,10 +8,10 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.CameraSystem
 {
     [Serializable]
-    public struct MixedRealityCameraProviderConfiguration : IMixedRealityServiceConfiguration
+    public struct MixedRealityCameraSettingsConfiguration : IMixedRealityServiceConfiguration
     {
         [SerializeField]
-        [Implements(typeof(IMixedRealityCameraProvider), TypeGrouping.ByNamespaceFlat)]
+        [Implements(typeof(IMixedRealityCameraSettingsProvider), TypeGrouping.ByNamespaceFlat)]
         private SystemType componentType;
 
         /// <inheritdoc />
@@ -36,14 +36,13 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// <inheritdoc />
         public SupportedPlatforms RuntimePlatform => runtimePlatform;
 
-        // todo
-        //[SerializeField]
-        //private BaseCameraProviderProfile providerProfile;
+        [SerializeField]
+        private BaseCameraSettingsProfile settingsProfile;
 
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //public BaseCameraProviderProfile ProviderProfile => providerProfile;
+        /// <summary>
+        /// Camera settings specific configuration profile.
+        /// </summary>
+        public BaseCameraSettingsProfile SettingsProfile => settingsProfile;
 
         /// <summary>
         /// Constructor.
@@ -52,21 +51,19 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// <param name="componentName">The friendly name of the provider.</param>
         /// <param name="priority">The load priority of the provider.</param>
         /// <param name="runtimePlatform">The runtime platform(s) supported by the provider.</param>
-        
-        //    /// <param name="configurationProfile">The configuration profile for the observer.</param>
-        public MixedRealityCameraProviderConfiguration(
+        /// <param name="settingsProfile">The configuration profile for the provider.</param>
+        public MixedRealityCameraSettingsConfiguration(
             SystemType componentType,
             string componentName,
             uint priority,
-            SupportedPlatforms runtimePlatform) //,
-            //BaseSpatialAwarenessObserverProfile configurationProfile)
+            SupportedPlatforms runtimePlatform,
+            BaseCameraSettingsProfile configurationProfile)
         {
             this.componentType = componentType;
             this.componentName = componentName;
             this.priority = priority;
             this.runtimePlatform = runtimePlatform;
-            // todo
-            //this.observerProfile = configurationProfile;
+            this.settingsProfile = configurationProfile;
         }
     }
 }

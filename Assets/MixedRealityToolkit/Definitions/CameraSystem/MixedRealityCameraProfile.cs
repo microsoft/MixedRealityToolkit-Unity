@@ -20,6 +20,15 @@ namespace Microsoft.MixedReality.Toolkit
     public class MixedRealityCameraProfile : BaseMixedRealityProfile
     {
         [SerializeField]
+        private MixedRealityCameraSettingsConfiguration[] settingsConfigurations = new MixedRealityCameraSettingsConfiguration[0];
+
+        public MixedRealityCameraSettingsConfiguration[] SettingsConfigurations
+        {
+            get { return settingsConfigurations; }
+            internal set { settingsConfigurations = value; }
+        }
+
+        [SerializeField]
         [Tooltip("Near clipping plane distance for an opaque display.")]
         private float nearClipPlaneOpaqueDisplay = 0.1f;
 

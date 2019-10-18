@@ -3,7 +3,7 @@
 
 namespace Microsoft.MixedReality.Toolkit.CameraSystem
 {
-    public interface IMixedRealityCameraProvider : IMixedRealityDataProvider
+    public interface IMixedRealityCameraSettingsProvider : IMixedRealityDataProvider
     {
         // todo
     }

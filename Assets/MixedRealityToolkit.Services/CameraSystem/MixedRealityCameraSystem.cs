@@ -11,14 +11,8 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
     /// The Camera system controls the settings of the main camera.
     /// </summary>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/MixedRealityConfigurationGuide.html#camera")]
-    public class MixedRealityCameraSystem : BaseCoreSystem, IMixedRealityCameraSystem
+    public class MixedRealityCameraSystem : BaseDataProviderAccessCoreSystem, IMixedRealityCameraSystem
     {
-        private enum DisplayType
-        {
-            Opaque = 0,
-            Transparent
-        }
-
         public MixedRealityCameraSystem(
             IMixedRealityServiceRegistrar registrar,
             BaseMixedRealityProfile profile = null) : base(registrar, profile)
@@ -56,22 +50,16 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         private DisplayType currentDisplayType;
         private bool cameraOpaqueLastFrame = false;
 
-        private GameObject mrtkPlayspaceObject = null;
-        private bool preExistingMrtkPlayspaceObject = false;
-
-        /// <summary>
-        /// Examines the scene to determine if MRTK components are present.
-        /// </summary>
-
-        private void FindMRTKComponents()
-        {
-            mrtkPlayspaceObject = GameObject.Find("MixedRealityPlayspace");
-            preExistingMrtkPlayspaceObject = (mrtkPlayspaceObject != null);
-        }
-
         /// <inheritdoc />
         public override void Initialize()
         {
+            MixedRealityCameraProfile profile = ConfigurationProfile as MixedRealityCameraProfile;
+
+            if ((GetDataProviders<IMixedRealityCameraSettingsProvider>().Count == 0) && (profile != null))
+            {
+                // Register the settings providers.
+            }
+
             cameraOpaqueLastFrame = IsOpaque;
 
             if (IsOpaque)
@@ -82,8 +70,6 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             {
                 ApplySettingsForTransparentDisplay();
             }
-
-            FindMRTKComponents();
 
             // Ensure the camera is parented to the playspace which starts, unrotated, at the origin.
             MixedRealityPlayspace.Position = Vector3.zero;
@@ -96,6 +82,17 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             {
                 Debug.LogWarning($"The main camera is configured with a non-zero rotation, experiences may not behave as expected.");
             }
+        }
+
+        /// <inheritdoc />
+        public override void Destroy()
+        {
+            foreach (var provider in GetDataProviders<IMixedRealityCameraSettingsProvider>())
+            {
+                UnregisterDataProvider(provider);
+            }
+
+            base.Destroy();
         }
 
         /// <inheritdoc />
