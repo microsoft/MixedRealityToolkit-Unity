@@ -2,7 +2,7 @@
 
 One of the main ways that the MRTK is configured is through the many profiles available
 in the foundation package. The main MixedRealityToolkit object has a profile, which is
-essentially a ScriptableObject which may contain references to other ScriptableObjects,
+essentially a ScriptableObject. This may contain references to other ScriptableObjects;
 each of which are designed to configure the behavior of their corresponding sub-systems.
 
 For example, the Input system's behavior is governed by its input profile. An example
@@ -18,10 +18,10 @@ to use the in-editor inspector:
 ## Default Profile
 
 The MRTK provides a set of default profiles which cover most platforms and scenarios that
-the MRTK supports - for example, when you select the [DefaultMixedRealityToolkitConfigurationProfile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/DefaultMixedRealityToolkitConfigurationProfile.asset)
+the MRTK supports. For example, when you select the [DefaultMixedRealityToolkitConfigurationProfile](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.SDK/Profiles/DefaultMixedRealityToolkitConfigurationProfile.asset)
 you will be able to try our scenarios on VR (OpenVR, WMR) and HoloLens (1 and 2). Note that because
-this is a general use profile, it's not optimized for any particular use case - if you want to have
-more performant/specific settings that are better on other platforms, please check out the other
+this is a general use profile, it's not optimized for any particular use case. If you want to have
+more performant/specific settings that are better on other platforms, see the other
 profiles below, which are slightly tweaked to be better on their respective platforms.
 
 ## HoloLens 2 Profile
@@ -43,8 +43,8 @@ The key differences between the HoloLens2 profile and the Default Profile are:
 - The eye tracking provider and settings have been enabled
 - Eye simulation has been enabled by default
 - Hand mesh visualization is disabled (there is a performance overhead associated with using hand meshes)
-- Camera profile settings are set to match such that the editor quality and player quality are the same.
-  (This is different from the default camera profile where Opaque displays are set to higher quality -
-  this change makes it so that in-editor quality will be lower, which will more closely match what will
-  be rendered on the device)
+- Camera profile settings are set to match so that the editor quality and player quality are the same.
+  This is different from the default camera profile where Opaque displays are set to a higher quality.
+  This change means that in-editor quality will be lower, which will more closely match what will
+  be rendered on the device.
   
