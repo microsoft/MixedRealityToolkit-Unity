@@ -30,15 +30,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         [SerializeField]
         [Tooltip("Relative to rotation at manipulation start or world")]
-        private bool relativeToRotationAtManipulationStart = false;
+        private bool useLocalSpaceForConstraint = false;
 
         /// <summary>
         /// Relative to rotation at manipulation start or world
         /// </summary>
-        public bool RelativeToRotationAtManipulationStart
+        public bool UseLocalSpaceForConstraint
         {
-            get => RelativeToRotationAtManipulationStart;
-            set => RelativeToRotationAtManipulationStart = value;
+            get => useLocalSpaceForConstraint;
+            set => useLocalSpaceForConstraint = value;
         }
 
         public override TransformFlags ConstraintType => TransformFlags.Move;
@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             Vector3 position = pose.Position;
             if (constraintOnMovement.HasFlag(AxisFlags.XAxis))
             {
-                if (relativeToRotationAtManipulationStart)
+                if (useLocalSpaceForConstraint)
                 {
                     position = inverseRotation * position;
                     position.x = (inverseRotation * worldPoseOnManipulationStart.Position).x;
@@ -70,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             if (constraintOnMovement.HasFlag(AxisFlags.YAxis))
             {
-                if (relativeToRotationAtManipulationStart)
+                if (useLocalSpaceForConstraint)
                 {
                     position = inverseRotation * position;
                     position.y = (inverseRotation * worldPoseOnManipulationStart.Position).y;
@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             if (constraintOnMovement.HasFlag(AxisFlags.ZAxis))
             {
-                if (relativeToRotationAtManipulationStart)
+                if (useLocalSpaceForConstraint)
                 {
                     position = inverseRotation * position;
                     position.z = (inverseRotation * worldPoseOnManipulationStart.Position).z;

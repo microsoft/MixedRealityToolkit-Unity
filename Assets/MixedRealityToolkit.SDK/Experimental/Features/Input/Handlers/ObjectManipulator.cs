@@ -664,7 +664,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             targetPose.Position = moveLogic.Update(pointerPose, targetPose.Rotation, targetScale);
             constraints.ApplyTranslationConstraints(ref targetPose, ref targetScale);
 
-            ApplyTargetTransform(targetPose, hostTransform.localScale);
+            ApplyTargetTransform(targetPose, targetScale);
         }
 
         private void HandleManipulationStarted()
