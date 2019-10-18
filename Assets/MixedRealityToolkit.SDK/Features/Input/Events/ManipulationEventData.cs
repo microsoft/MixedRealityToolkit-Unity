@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Source of ManipulationEvent.
         /// </summary>
-        public ManipulationHandler ManipulationSource { get; set; }
+        public GameObject ManipulationSource { get; set; }
 
         /// <summary>
         /// Whether the Manipulation is a NearInteration or not.

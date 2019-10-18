@@ -3,29 +3,39 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
 
-using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Experimental.UI;
 using UnityEditor;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Experimental.Utilities;
 
-namespace Microsoft.MixedReality.Toolkit.Editor
+namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
 {
-    [CustomEditor(typeof(ManipulationHandler))]
+    /// <summary>
+    /// A custom inspector for ObjectManipulator used to separate
+    /// ObjectManipulator options into distinct foldout panels.
+    /// </summary>
+    [CustomEditor(typeof(ObjectManipulator))]
     [CanEditMultipleObjects]
-    public class ManipulationHandlerInspector : UnityEditor.Editor
+    public class ObjectManipulatorInspector : UnityEditor.Editor
     {
         private SerializedProperty hostTransform;
         private SerializedProperty manipulationType;
         private SerializedProperty allowFarManipulation;
+
         private SerializedProperty oneHandRotationModeNear;
         private SerializedProperty oneHandRotationModeFar;
+
         private SerializedProperty twoHandedManipulationType;
+
         private SerializedProperty releaseBehavior;
+
         private SerializedProperty constraintOnRotation;
         private SerializedProperty constraintOnMovement;
+
         private SerializedProperty smoothingActive;
-        private SerializedProperty smoothingAmountOneHandManip;
+        private SerializedProperty moveLerpTime;
+        private SerializedProperty rotateLerpTime;
+        private SerializedProperty scaleLerpTime;
+
         private SerializedProperty onManipulationStarted;
         private SerializedProperty onManipulationEnded;
         private SerializedProperty onHoverEntered;
@@ -61,7 +71,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             // Smoothing
             smoothingActive = serializedObject.FindProperty("smoothingActive");
-            smoothingAmountOneHandManip = serializedObject.FindProperty("smoothingAmountOneHandManip");
+            moveLerpTime = serializedObject.FindProperty("moveLerpTime");
+            rotateLerpTime = serializedObject.FindProperty("rotateLerpTime");
+            scaleLerpTime = serializedObject.FindProperty("scaleLerpTime");
 
             // Manipulation Events
             onManipulationStarted = serializedObject.FindProperty("onManipulationStarted");
@@ -72,20 +84,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public override void OnInspectorGUI()
         {
-            EditorGUILayout.HelpBox("Manipulation Handler will soon be removed, please upgrade to Object Manipulator", MessageType.Warning);
-            if (GUILayout.Button("Upgrade to Object Manipulator"))
-            {
-                var migrationHandler = new ObjectManipulatorMigrationHandler();
-                var manipulationHandler = target as ManipulationHandler;
-                migrationHandler.Migrate(manipulationHandler.gameObject);
-                return;
-            }
-
             EditorGUILayout.PropertyField(hostTransform);
             EditorGUILayout.PropertyField(manipulationType);
             EditorGUILayout.PropertyField(allowFarManipulation);
 
-            var handedness = (ManipulationHandler.HandMovementType)manipulationType.intValue;
+            var handedness = (ObjectManipulator.HandMovementType)manipulationType.intValue;
 
             EditorGUILayout.Space();
             GUIStyle style = EditorStyles.foldout;
@@ -95,8 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (oneHandedFoldout)
             {
-                if (handedness == ManipulationHandler.HandMovementType.OneHandedOnly ||
-                    handedness == ManipulationHandler.HandMovementType.OneAndTwoHanded)
+                if (handedness.HasFlag(ObjectManipulator.HandMovementType.OneHanded))
                 {
                     EditorGUILayout.PropertyField(oneHandRotationModeNear);
                     EditorGUILayout.PropertyField(oneHandRotationModeFar);
@@ -112,8 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (twoHandedFoldout)
             {
-                if (handedness == ManipulationHandler.HandMovementType.TwoHandedOnly ||
-                    handedness == ManipulationHandler.HandMovementType.OneAndTwoHanded)
+                if (handedness.HasFlag(ObjectManipulator.HandMovementType.TwoHanded))
                 {
                     EditorGUILayout.PropertyField(twoHandedManipulationType);
                 }
@@ -123,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
             }
 
-            var mh = (ManipulationHandler)target;
+            var mh = (ObjectManipulator)target;
             var rb = mh.GetComponent<Rigidbody>();
 
             EditorGUILayout.Space();
@@ -156,7 +157,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             if (smoothingFoldout)
             {
                 EditorGUILayout.PropertyField(smoothingActive);
-                EditorGUILayout.PropertyField(smoothingAmountOneHandManip);
+                EditorGUILayout.PropertyField(moveLerpTime);
+                EditorGUILayout.PropertyField(rotateLerpTime);
+                EditorGUILayout.PropertyField(scaleLerpTime);
             }
 
             EditorGUILayout.Space();
