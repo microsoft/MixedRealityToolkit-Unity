@@ -796,10 +796,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Switch to Gestures
             var iss = PlayModeTestUtilities.GetInputSimulationService();
-            var oldIsp = iss.InputSimulationProfile;
-            var isp = ScriptableObject.CreateInstance<MixedRealityInputSimulationProfile>();
-            isp.HandSimulationMode = HandSimulationMode.Gestures;
-            iss.InputSimulationProfile = isp;
+            var oldHandSimMode = iss.HandSimulationMode;
+            iss.HandSimulationMode = HandSimulationMode.Gestures;
 
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -835,7 +833,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 
             // Restore the input simulation profile
-            iss.InputSimulationProfile = oldIsp;
+            iss.HandSimulationMode = oldHandSimMode;
             yield return null;
         }
 
@@ -853,10 +851,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             // Switch to Gestures
             var iss = PlayModeTestUtilities.GetInputSimulationService();
-            var oldIsp = iss.InputSimulationProfile;
-            var isp = ScriptableObject.CreateInstance<MixedRealityInputSimulationProfile>();
-            isp.HandSimulationMode = HandSimulationMode.Gestures;
-            iss.InputSimulationProfile = isp;
+            var oldHandSimMode = iss.HandSimulationMode;
+            iss.HandSimulationMode = HandSimulationMode.Gestures;
 
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -902,7 +898,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(expectedDist, Vector3.Distance(testObject.transform.position, cameraPosition), 0.01f);
 
             // Restore the input simulation profile
-            iss.InputSimulationProfile = oldIsp;
+            iss.HandSimulationMode = oldHandSimMode;
             yield return null;
         }
 		

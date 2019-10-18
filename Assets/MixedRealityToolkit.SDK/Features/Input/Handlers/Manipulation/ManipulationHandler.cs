@@ -629,7 +629,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if ((currentState & State.Rotating) > 0)
             {
-                targetRotation = rotateLogic.Update(handPositionArray, targetRotationTwoHands, constraintOnRotation, useLocalSpaceForConstraint);
+                targetRotationTwoHands = rotateLogic.Update(handPositionArray, targetRotationTwoHands, constraintOnRotation, useLocalSpaceForConstraint);
             }
             if ((currentState & State.Scaling) > 0)
             {

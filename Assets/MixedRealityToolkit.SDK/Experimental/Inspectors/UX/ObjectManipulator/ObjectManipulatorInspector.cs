@@ -9,6 +9,10 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
 {
+    /// <summary>
+    /// A custom inspector for ObjectManipulator used to separate
+    /// ObjectManipulator options into distinct foldout panels.
+    /// </summary>
     [CustomEditor(typeof(ObjectManipulator))]
     [CanEditMultipleObjects]
     public class ObjectManipulatorInspector : UnityEditor.Editor

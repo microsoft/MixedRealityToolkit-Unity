@@ -591,7 +591,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
             if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Rotate))
             {
-                targetRotation = rotateLogic.Update(handPositionArray, targetRotation, constraintOnRotation);
+                targetRotation = rotateLogic.Update(handPositionArray, targetRotation, constraintOnRotation, false);
             }
             if (twoHandedManipulationType.HasFlag(TwoHandedManipulation.Scale))
             {
