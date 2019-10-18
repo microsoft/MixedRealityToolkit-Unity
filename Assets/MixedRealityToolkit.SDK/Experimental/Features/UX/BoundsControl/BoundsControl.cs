@@ -8,6 +8,7 @@ using UnityEngine.Events;
 using UnityEngine.Serialization;
 using UnityPhysics = UnityEngine.Physics;
 using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 {
@@ -310,7 +311,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         // Current position of the grab point
         private Vector3 currentGrabPoint;
 
-        private TransformScaleHandler scaleHandler;
+        private TransformScaleHandler scaleConstraint;
 
         // Grab point position in pointer space. Used to calculate the current grab point from the current pointer pose.
         private Vector3 grabPointInPointer;
@@ -419,7 +420,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         /// <param name="transformScaleHandler">scale handler you want to switch to - can be null if scaling shouldn't be constrained</param>
         public void RegisterTransformScaleHandler(TransformScaleHandler transformScaleHandler)
         {
-            scaleHandler = transformScaleHandler;
+            scaleConstraint = transformScaleHandler;
         }
 
         #endregion
@@ -889,9 +890,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
                     Vector3 newScale = initialScaleOnGrabStart * scaleFactor;
                     Vector3 clampedScale = newScale;
-                    if (scaleHandler != null)
+                    if (scaleConstraint != null)
                     {
-                        clampedScale = scaleHandler.ClampScale(newScale);
+                        MixedRealityPose unusedPose = MixedRealityPose.ZeroIdentity;
+                        scaleConstraint.ApplyConstraint(ref unusedPose, ref clampedScale);
                         if (clampedScale != newScale)
                         {
                             scaleFactor = clampedScale[0] / initialScaleOnGrabStart[0];
