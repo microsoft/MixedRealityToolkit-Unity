@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            InputSystem?.RaiseHandJointsUpdated(InputSource, ControllerHandedness, jointPoses);
+            CoreServices.InputSystem?.RaiseHandJointsUpdated(InputSource, ControllerHandedness, jointPoses);
 
             UpdateVelocity();
 
