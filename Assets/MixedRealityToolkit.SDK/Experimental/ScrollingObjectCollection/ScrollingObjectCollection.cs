@@ -2057,7 +2057,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
 		#region IMixedRealityPointerHandler implementation
 
-		///</inheritdoc>
+		///<inheritdoc/>
 		void IMixedRealityPointerHandler.OnPointerUp(MixedRealityPointerEventData eventData)
 		{
 			//Quick check for the global listener to bail if the object is not in the list
@@ -2084,7 +2084,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 			}
 		}
 
-		///</inheritdoc>
+		///<inheritdoc/>
 		void IMixedRealityPointerHandler.OnPointerDown(MixedRealityPointerEventData eventData)
 		{
 			if (eventData.Pointer.Controller.IsPositionAvailable)
@@ -2128,7 +2128,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 			}
 		}
 
-		///</inheritdoc>
+		///<inheritdoc/>
 		void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData)
 		{
 			//we ignore this event and calculate click in the Update() loop;
@@ -2138,7 +2138,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
 		#region IMixedRealityTouchHandler implementation
 
-		///</inheritdoc>
+		///<inheritdoc/>
 		void IMixedRealityTouchHandler.OnTouchStarted(HandTrackingInputEventData eventData)
 		{
 			if (isDragging || initialFocusedObject)
@@ -2179,7 +2179,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
 		}
 
-		///</inheritdoc>
+		///<inheritdoc/>
 		void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData)
 		{
 			//Quick check for the global listener to bail if the object is not in the list
@@ -2194,7 +2194,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 			}
 		}
 
-		///</inheritdoc>
+		///<inheritdoc/>
 		void IMixedRealityTouchHandler.OnTouchUpdated(HandTrackingInputEventData eventData)
 		{
 			IMixedRealityPointer p = PointerUtils.GetPointer<PokePointer>(eventData.Handedness);
