@@ -35,26 +35,17 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
 
             ApplyCameraSettings();
 
-            //ARSessionState arState = (ARSessionState)(await ARSession.CheckAvailability());
-            //ARFoundationSupported = (ARSessionState.Ready <= arState);
-            //if (ARFoundationSupported)
-            {
-                InitializeARFoundation();
-            }
+            InitializeARFoundation();
 
             ResetCamera();
         }
 
         public override void Destroy()
         {
-            //if (ARFoundationSupported)
-            {
-                UninitializeARFoundation();
-            }
+            UninitializeARFoundation();
             base.Destroy();
         }
 
-        // todo private bool arFoundationSupported = false;
         bool isInitialized = false;
 
         private GameObject arSessionObject = null;
@@ -86,19 +77,19 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// </summary>
         private void ResetCamera()
         {
-            //// The playspace must start at the origin with no rotation.
-            //MixedRealityPlayspace.Position = Vector3.zero;
-            //MixedRealityPlayspace.Rotation = Quaternion.identity;
+            // The playspace must start at the origin with no rotation.
+            MixedRealityPlayspace.Position = Vector3.zero;
+            MixedRealityPlayspace.Rotation = Quaternion.identity;
 
-            //// Alert the developer if the camera, itself has unexpected position and rotation values.
-            //if (CameraCache.Main.transform.position != Vector3.zero)
-            //{
-            //    Debug.LogWarning($"The main camera is not positioned at the origin ({Vector3.zero}), experiences may not behave as expected.");
-            //}
-            //if (CameraCache.Main.transform.rotation != Quaternion.identity)
-            //{
-            //    Debug.LogWarning($"The main camera is configured with a non-zero rotation, experiences may not behave as expected.");
-            //}
+            // Alert the developer if the camera, itself has unexpected position and rotation values.
+            if (CameraCache.Main.transform.position != Vector3.zero)
+            {
+                Debug.LogWarning($"The main camera is not positioned at the origin ({Vector3.zero}), experiences may not behave as expected.");
+            }
+            if (CameraCache.Main.transform.rotation != Quaternion.identity)
+            {
+                Debug.LogWarning($"The main camera is configured with a non-zero rotation, experiences may not behave as expected.");
+            }
         }
 
         /// <summary>
