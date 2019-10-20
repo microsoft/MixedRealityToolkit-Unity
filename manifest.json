@@ -10307,7 +10307,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.BaseController.html",
-          "hash": "d98hHiSWw6zBY/szGkhnkQ=="
+          "hash": "dLGKQZTWrjUR+W02gMdDaw=="
         }
       },
       "is_incremental": false,
@@ -10379,7 +10379,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.BaseHand.html",
-          "hash": "PqH19HS0OytSfBzcJWSsag=="
+          "hash": "296N8o91gjx016jEz2ssxQ=="
         }
       },
       "is_incremental": false,
@@ -12779,7 +12779,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SimulatedArticulatedHand.html",
-          "hash": "sp5cTtyUNSokVsqT5io2Aw=="
+          "hash": "VVg+3hHx4ZzDAgjACvlXcQ=="
         }
       },
       "is_incremental": false,
@@ -12791,7 +12791,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.SimulatedGestureHand.html",
-          "hash": "YLNOV7miElL+k8PoOhNIzw=="
+          "hash": "vv7epwiaOBOD9wYbeqAhPw=="
         }
       },
       "is_incremental": false,
@@ -13043,7 +13043,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.UnityInput.GenericJoystickController.html",
-          "hash": "7RGzM/Nu8INFiiFUNDMeFg=="
+          "hash": "ATaKqXXxRbLVzaLnpqvP3A=="
         }
       },
       "is_incremental": false,
@@ -13055,7 +13055,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.UnityInput.MouseController.html",
-          "hash": "KeCUcNT05g70IVkdTBZfuA=="
+          "hash": "H4yh0USRADRMGBWsswA8Sg=="
         }
       },
       "is_incremental": false,
@@ -13091,7 +13091,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.UnityInput.UnityTouchController.html",
-          "hash": "mJgx9jtJf9cawbmJtbVfKg=="
+          "hash": "gDABGJXpK30wj7CN9Qk+sA=="
         }
       },
       "is_incremental": false,
@@ -13115,7 +13115,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.UnityInput.XboxController.html",
-          "hash": "PRuj3NnyEPEi7v54pAZB7A=="
+          "hash": "yjINFVITUVYV0xMsGIUMIg=="
         }
       },
       "is_incremental": false,
@@ -13703,7 +13703,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Input.OculusTouchController.html",
-          "hash": "D6t+0k4Wegz6uPgBAw+A1Q=="
+          "hash": "lzRSg+RmJCyvRr3ehx3z7Q=="
         }
       },
       "is_incremental": false,
@@ -13727,7 +13727,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Input.ViveKnucklesController.html",
-          "hash": "QC0Y2ofHlBVHwYpBVhmLXg=="
+          "hash": "xlArSIUfOst90N9BXTUICw=="
         }
       },
       "is_incremental": false,
@@ -13739,7 +13739,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Input.ViveWandController.html",
-          "hash": "uiVIqSetv9mVVeEvDclyzw=="
+          "hash": "y+jIom/rW/ZBcajPqwLKZQ=="
         }
       },
       "is_incremental": false,
@@ -20656,17 +20656,17 @@
           "total_file_count": 133,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1175,
+          "skipped_file_count": 0
+        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1175,
           "skipped_file_count": 0
         }
       }
