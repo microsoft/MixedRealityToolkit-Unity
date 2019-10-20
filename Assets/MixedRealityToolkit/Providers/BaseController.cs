@@ -150,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Assign the default interactions based on controller handedness if necessary. 
+        /// Assign the default interactions based on controller handedness, if necessary. 
         /// </summary>
         public abstract void SetupDefaultInteractions(Handedness controllerHandedness);
 

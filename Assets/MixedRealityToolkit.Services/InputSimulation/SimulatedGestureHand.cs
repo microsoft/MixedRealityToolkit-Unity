@@ -109,12 +109,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         };
 
         /// <inheritdoc />
-        public override void SetupDefaultInteractions(Handedness controllerHandedness)
-        {
-            AssignControllerMappings(DefaultInteractions);
-        }
-
-        /// <inheritdoc />
         protected override void UpdateInteractions(SimulatedHandData handData)
         {
             EnsureProfileSettings();
