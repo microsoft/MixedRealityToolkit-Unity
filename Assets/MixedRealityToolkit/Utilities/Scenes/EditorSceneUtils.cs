@@ -248,6 +248,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         /// <summary>
+        /// Returns true if user is currently editing a prefab.
+        /// </summary>
+        /// <returns></returns>
+        public static bool IsEditingPrefab()
+        {
+            var prefabStage = UnityEditor.Experimental.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage();
+            return prefabStage != null;
+        }
+
+        /// <summary>
         /// Unloads a scene in the editor and catches any errors that can happen along the way.
         /// </summary>
         public static bool UnloadScene(SceneInfo sceneInfo, bool removeFromHeirarchy)
