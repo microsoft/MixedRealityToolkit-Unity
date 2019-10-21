@@ -88,6 +88,7 @@ GameObject:
   - component: {fileID: 5168285722132125208}
   - component: {fileID: 5168285722132125210}
   - component: {fileID: 5168285722132125214}
+  - component: {fileID: 3212897515420932544}
   m_Layer: 0
   m_Name: UnityUIInteractableButton
   m_TagString: Untagged
@@ -167,20 +168,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 1
   states: {fileID: 11400000, guid: 5eac1712038236e4b8ffdb3893804fe1, type: 2}
-  InputAction:
-    id: 0
-    description: 
-    axisConstraint: 0
   InputActionId: 0
-  IsGlobal: 0
-  Dimensions: 1
-  StartDimensionIndex: 0
+  isGlobal: 0
+  dimensions: 1
+  dimensionIndex: 0
+  startDimensionIndex: 0
   CanSelect: 1
   CanDeselect: 1
   VoiceCommand: Select
-  RequiresFocus: 1
+  voiceRequiresFocus: 1
   profiles:
   - Target: {fileID: 5168285722812020593}
     Themes:
@@ -248,7 +245,7 @@ MonoBehaviour:
         m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       Options: []
-  dimensionIndex: 0
+  enabledOnStart: 1
 --- !u!114 &5168285722132125214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -298,6 +295,20 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: Microsoft.MixedReality.Toolkit.UI.TouchEvent, Microsoft.MixedReality.Toolkit.SDK,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &3212897515420932544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5168285722132125204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fcaf896491074042b7ed7684454a412, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventsToReceive: 0
+  debounceThreshold: 0.01
 --- !u!1 &5168285722310376129
 GameObject:
   m_ObjectHideFlags: 0

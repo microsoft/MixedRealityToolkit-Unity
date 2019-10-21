@@ -30,11 +30,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (simulationService == null)
                 {
-                    if (MixedRealityServiceRegistry.TryGetService(out IMixedRealityInputSystem inputSystem))
-                    {
-                        simulationService = (inputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IInputSimulationService>();
-                    }
+                    simulationService = (CoreServices.InputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IInputSimulationService>();
                 }
+
                 return simulationService;
             }
         }
@@ -46,11 +44,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (recordingService == null)
                 {
-                    if (MixedRealityServiceRegistry.TryGetService(out IMixedRealityInputSystem inputSystem))
-                    {
-                        recordingService = (inputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IMixedRealityInputRecordingService>();
-                    }
+                    recordingService = (CoreServices.InputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IMixedRealityInputRecordingService>();
                 }
+
                 return recordingService;
             }
         }
@@ -62,11 +58,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (playbackService == null)
                 {
-                    if (MixedRealityServiceRegistry.TryGetService(out IMixedRealityInputSystem inputSystem))
-                    {
-                        playbackService = (inputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IMixedRealityInputPlaybackService>();
-                    }
+                    playbackService = (CoreServices.InputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IMixedRealityInputPlaybackService>();
                 }
+
                 return playbackService;
             }
         }

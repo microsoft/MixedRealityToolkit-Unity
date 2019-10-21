@@ -30,36 +30,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
             set { drawBoundsGizmo = value; }
         }
 
-        private IMixedRealityInputSystem inputSystem = null;
-        
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        protected IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService(out inputSystem);
-                }
-
-                return inputSystem;
-            }
-        }
-
         #region MonoBehaviour Implementation
 
         private void OnEnable()
         {
-            InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
-            InputSystem?.RegisterHandler<IMixedRealityHandJointHandler>(this);
+            CoreServices.InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
+            CoreServices.InputSystem?.RegisterHandler<IMixedRealityHandJointHandler>(this);
         }
 
         private void OnDisable()
         {
-            InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
-            InputSystem?.UnregisterHandler<IMixedRealityHandJointHandler>(this);
+            CoreServices.InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
+            CoreServices.InputSystem?.UnregisterHandler<IMixedRealityHandJointHandler>(this);
         }
 
         private void OnDrawGizmos()
