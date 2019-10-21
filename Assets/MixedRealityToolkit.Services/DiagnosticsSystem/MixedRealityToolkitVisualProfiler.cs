@@ -192,7 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             if (defaultMaterial == null)
             {
                 defaultMaterial = new Material(Shader.Find("Hidden/Internal-Colored"));
-                defaultMaterial.SetFloat("_ZWrite", 0.0f);
+                defaultMaterial.SetFloat("_ZWrite", 1.0f);
                 defaultMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.Disabled);
                 defaultMaterial.renderQueue = 5000;
             }
@@ -205,7 +205,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                 {
                     defaultInstancedMaterial = new Material(defaultInstancedShader);
                     defaultInstancedMaterial.enableInstancing = true;
-                    defaultInstancedMaterial.SetFloat("_ZWrite", 0.0f);
+                    defaultInstancedMaterial.SetFloat("_ZWrite", 1.0f);
                     defaultInstancedMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.Disabled);
                     defaultInstancedMaterial.renderQueue = 5000;
                 }

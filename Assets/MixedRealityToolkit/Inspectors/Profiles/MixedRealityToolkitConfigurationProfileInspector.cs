@@ -121,10 +121,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             mrtkConfigProfile.CameraSystemType,
                             mrtkConfigProfile.CameraProfile != null);
 
+                        bool changed = false;
+                        EditorGUI.BeginChangeCheck();
                         EditorGUILayout.PropertyField(enableCameraSystem);
                         EditorGUILayout.PropertyField(cameraSystemType);
 
-                        return RenderProfile(cameraProfile, typeof(MixedRealityCameraProfile), true, false);
+                        changed = EditorGUI.EndChangeCheck();
+                        changed |= RenderProfile(cameraProfile, typeof(MixedRealityCameraProfile), true, false);
+
+                        return changed;
                     },
                     () => {
                         // Note: cannot use mrtkConfigProfile.Is*SystemEnabled because property checks multiple parameters
@@ -132,9 +137,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             mrtkConfigProfile.InputSystemType,
                             mrtkConfigProfile.InputSystemProfile != null);
 
+                        bool changed = false;
+                        EditorGUI.BeginChangeCheck();
+
                         EditorGUILayout.PropertyField(enableInputSystem);
                         EditorGUILayout.PropertyField(inputSystemType);
-                        return RenderProfile(inputSystemProfile, null, true, false, typeof(IMixedRealityInputSystem));
+
+                        changed = EditorGUI.EndChangeCheck();
+                        changed |= RenderProfile(inputSystemProfile, null, true, false, typeof(IMixedRealityInputSystem));
+
+                        return changed;
                     },
                     () => {
                         // Note: cannot use mrtkConfigProfile.Is*SystemEnabled because property checks multiple parameters
@@ -150,9 +162,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             EditorGUILayout.HelpBox("Boundaries are only supported in Room scale experiences.", MessageType.Warning);
                             GUILayout.Space(6f);
                         }
+
+                        bool changed = false;
+                        EditorGUI.BeginChangeCheck();
+
                         EditorGUILayout.PropertyField(enableBoundarySystem);
                         EditorGUILayout.PropertyField(boundarySystemType);
-                        return RenderProfile(boundaryVisualizationProfile, null, true, false, typeof(IMixedRealityBoundarySystem));
+
+                        changed = EditorGUI.EndChangeCheck();
+                        changed |= RenderProfile(boundaryVisualizationProfile, null, true, false, typeof(IMixedRealityBoundarySystem));
+
+                        return changed;
                     },
                     () => {
                         // Note: cannot use mrtkConfigProfile.Is*SystemEnabled because property checks multiple parameters
@@ -161,9 +181,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             mrtkConfigProfile.TeleportSystemSystemType, 
                             true);
 
+                        EditorGUI.BeginChangeCheck();
+
                         EditorGUILayout.PropertyField(enableTeleportSystem);
                         EditorGUILayout.PropertyField(teleportSystemType);
-                        return false;
+
+                        return EditorGUI.EndChangeCheck();
                     },
                     () => {
                         // Note: cannot use mrtkConfigProfile.Is*SystemEnabled because property checks multiple parameters
@@ -171,10 +194,18 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             mrtkConfigProfile.SpatialAwarenessSystemSystemType,
                             mrtkConfigProfile.SpatialAwarenessSystemProfile != null);
 
+                        bool changed = false;
+                        EditorGUI.BeginChangeCheck();
+
                         EditorGUILayout.PropertyField(enableSpatialAwarenessSystem);
                         EditorGUILayout.PropertyField(spatialAwarenessSystemType);
+
+                        changed = EditorGUI.EndChangeCheck();
+
                         EditorGUILayout.HelpBox("Spatial Awareness settings are configured per observer.", MessageType.Info);
-                        return RenderProfile(spatialAwarenessSystemProfile, null, true, false, typeof(IMixedRealitySpatialAwarenessSystem));
+
+                        changed |= RenderProfile(spatialAwarenessSystemProfile, null, true, false, typeof(IMixedRealitySpatialAwarenessSystem));
+                        return changed;
                     },
                     () => {
                         // Note: cannot use mrtkConfigProfile.Is*SystemEnabled because property checks multiple parameters
@@ -183,9 +214,17 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             mrtkConfigProfile.DiagnosticsSystemProfile != null);
 
                         EditorGUILayout.HelpBox("It is recommended to enable the Diagnostics system during development. Be sure to disable prior to building your shipping product.", MessageType.Warning);
+
+                        bool changed = false;
+                        EditorGUI.BeginChangeCheck();
+
                         EditorGUILayout.PropertyField(enableDiagnosticsSystem);
                         EditorGUILayout.PropertyField(diagnosticsSystemType);
-                        return RenderProfile(diagnosticsSystemProfile, typeof(MixedRealityDiagnosticsProfile));
+
+                        changed = EditorGUI.EndChangeCheck();
+                        changed |= RenderProfile(diagnosticsSystemProfile, typeof(MixedRealityDiagnosticsProfile));
+
+                        return changed;
                     },
                     () => {
                         // Note: cannot use mrtkConfigProfile.Is*SystemEnabled because property checks multiple parameters
@@ -193,9 +232,16 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             mrtkConfigProfile.SceneSystemSystemType,
                             mrtkConfigProfile.SceneSystemProfile != null);
 
+                        bool changed = false;
+                        EditorGUI.BeginChangeCheck();
+
                         EditorGUILayout.PropertyField(enableSceneSystem);
                         EditorGUILayout.PropertyField(sceneSystemType);
-                        return RenderProfile(sceneSystemProfile, typeof(MixedRealitySceneSystemProfile), true, true, typeof(IMixedRealitySceneSystem));
+
+                        changed = EditorGUI.EndChangeCheck();
+                        changed |= RenderProfile(sceneSystemProfile, typeof(MixedRealitySceneSystemProfile), true, true, typeof(IMixedRealitySceneSystem));
+
+                        return changed;
                     },
                     () => {
                         return RenderProfile(registeredServiceProvidersProfile, typeof(MixedRealityRegisteredServiceProvidersProfile), true, false);

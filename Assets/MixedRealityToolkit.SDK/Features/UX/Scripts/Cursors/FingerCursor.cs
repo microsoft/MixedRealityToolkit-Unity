@@ -148,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="dist">Out parameter gets the distance to the grabbable.</param>
         protected virtual bool IsNearGrabbableObject(out float dist)
         {
-            var focusProvider = InputSystem?.FocusProvider;
+            var focusProvider = CoreServices.InputSystem?.FocusProvider;
             if (focusProvider != null)
             {
                 var spherePointers = focusProvider.GetPointers<SpherePointer>();

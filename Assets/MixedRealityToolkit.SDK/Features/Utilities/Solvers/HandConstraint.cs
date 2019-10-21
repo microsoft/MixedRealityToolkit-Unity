@@ -184,24 +184,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         protected HandBounds handBounds = null;
         protected bool autoTransitionBetweenHands = false;
 
-        private IMixedRealityInputSystem inputSystem = null;
         private readonly Quaternion handToWorldRotation = Quaternion.Euler(-90.0f, 0.0f, 180.0f);
-
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        protected IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService(out inputSystem);
-                }
-
-                return inputSystem;
-            }
-        }
 
         /// <inheritdoc />
         public override void SolverUpdate()
@@ -528,7 +511,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         protected override void OnEnable()
         {
             base.OnEnable();
-            InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
+            CoreServices.InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
 
             handBounds = GetComponent<HandBounds>();
 
@@ -540,7 +523,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         protected virtual void OnDisable()
         {
-            InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
+            CoreServices.InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
         }
 
         #endregion MonoBehaviour Implementation

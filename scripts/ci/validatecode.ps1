@@ -123,6 +123,22 @@ function CheckAsset(
     return $containsIssue
 }
 
+function CheckUnityScene(
+    [string]$FileName
+) {
+    # Checks if there is more than one MixedRealityPlayspace objects in each example unity scene
+    $containsIssue = $false
+
+    $MatchesPlayspaces = Select-String MixedRealityPlayspace $FileName -AllMatches
+    $NumPlayspaces = $MatchesPlayspaces.Matches.Count
+
+    if ($NumPlayspaces -gt 1){
+        Write-Host "There are multiple MixedRealityPlayspace objects in $FileName, delete the extra playspaces from the unity scene."
+        $containsIssue = $true
+    }
+    return $containsIssue
+}
+
 Write-Output "Checking $Directory for common code issues"
 
 $codeFiles = Get-ChildItem $Directory *.cs -Recurse | Select-Object FullName
@@ -136,6 +152,14 @@ foreach ($codeFile in $codeFiles) {
 $codeFiles = Get-ChildItem $Directory *.asset -Recurse | Select-Object FullName
 foreach ($codeFile in $codeFiles) {
     if (CheckAsset $codeFile.FullName) {
+        $containsIssue = $true
+    }
+}
+
+# Check all Unity scenes for extra MixedRealityPlayspace objects 
+$codeFiles = Get-ChildItem $Directory *.unity -Recurse | Select-Object FullName
+foreach ($codeFile in $codeFiles) {
+    if (CheckUnityScene $codeFile.FullName) {
         $containsIssue = $true
     }
 }

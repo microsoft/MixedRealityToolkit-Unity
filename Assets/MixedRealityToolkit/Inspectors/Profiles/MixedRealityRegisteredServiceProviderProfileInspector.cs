@@ -142,11 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                                 changed |= EditorGUI.EndChangeCheck();
 
-                                Type serviceType = null;
-                                if (configurationProfile.objectReferenceValue != null)
-                                {
-                                    serviceType = (target as MixedRealityRegisteredServiceProvidersProfile).Configurations[i].ComponentType;
-                                }
+                                Type serviceType = (target as MixedRealityRegisteredServiceProvidersProfile).Configurations[i].ComponentType;
 
                                 changed |= RenderProfile(configurationProfile, null, true, true, serviceType);
                             }

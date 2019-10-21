@@ -219,7 +219,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 {
                     HandPose handPose = sourceState.TryGetHandPose();
 
-                    if (InputSystem.InputSystemProfile.HandTrackingProfile.EnableHandMeshVisualization)
+                    if (CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile.EnableHandMeshVisualization)
                     {
                         // Accessing the hand mesh data involves copying quite a bit of data, so only do it if application requests it.
                         if (handMeshObserver == null && !hasRequestedHandMeshObserver)
@@ -285,7 +285,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                                     rotation = WindowsMixedRealityUtilities.SystemQuaternionToUnity(rotation)
                                 };
 
-                                InputSystem?.RaiseHandMeshUpdated(InputSource, ControllerHandedness, handMeshInfo);
+                                CoreServices.InputSystem?.RaiseHandMeshUpdated(InputSource, ControllerHandedness, handMeshInfo);
                             }
                         }
                     }
@@ -296,7 +296,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                         {
                             // notify that hand mesh has been updated (cleared)
                             HandMeshInfo handMeshInfo = new HandMeshInfo();
-                            InputSystem?.RaiseHandMeshUpdated(InputSource, ControllerHandedness, handMeshInfo);
+                            CoreServices.InputSystem?.RaiseHandMeshUpdated(InputSource, ControllerHandedness, handMeshInfo);
                             hasRequestedHandMeshObserver = false;
                             handMeshObserver = null;
                         }
@@ -330,7 +330,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                                 unityJointPoses[handJoint] = new MixedRealityPose(unityJointPositions[i], unityJointOrientations[i]);
                             }
                         }
-                        InputSystem?.RaiseHandJointsUpdated(InputSource, ControllerHandedness, unityJointPoses);
+                        CoreServices.InputSystem?.RaiseHandJointsUpdated(InputSource, ControllerHandedness, unityJointPoses);
                     }
                 }
             }
@@ -349,7 +349,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             if (interactionMapping.Changed)
             {
                 // Raise input system Event if it enabled
-                InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentIndexPose);
+                CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentIndexPose);
             }
 #endif // WINDOWS_UWP
         }

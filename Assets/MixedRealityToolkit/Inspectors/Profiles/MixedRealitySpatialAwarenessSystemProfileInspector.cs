@@ -139,13 +139,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
                             EditorGUILayout.PropertyField(runtimePlatform, RuntimePlatformContent);
                             changed |= EditorGUI.EndChangeCheck();
 
-                            System.Type serviceType = null;
-                            if (observerProfile.objectReferenceValue != null)
-                            {
-                                serviceType = (target as MixedRealitySpatialAwarenessSystemProfile).ObserverConfigurations[i].ComponentType;
-                            }
+                            var serviceType = (target as MixedRealitySpatialAwarenessSystemProfile).ObserverConfigurations[i].ComponentType;
 
-                            changed |= RenderProfile(observerProfile, null, true, false, serviceType);
+                            changed |= RenderProfile(observerProfile, typeof(BaseSpatialAwarenessObserverProfile), true, false, serviceType);
 
                             serializedObject.ApplyModifiedProperties();
                         }

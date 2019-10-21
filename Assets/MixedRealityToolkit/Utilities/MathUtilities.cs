@@ -352,7 +352,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
 
             // now find and count actual inliers and do least-squares to find best fit
-            var inlierList = rays.Where(r => DistanceOfPointToLine(r, nearestPoint) < ransac_threshold);
+            IEnumerable<Ray> inlierList = rays.Where(r => DistanceOfPointToLine(r, nearestPoint) < ransac_threshold);
             numActualInliers = inlierList.Count();
             if (numActualInliers >= 2)
             {
@@ -436,6 +436,29 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             return MathUtilities.RadiansToDegrees(Mathf.Atan2(diff.y, diff.x));
         }
 
+        /// <summary>
+        /// Clamps via a lerp for a "soft" clamp effect
+        /// </summary>
+        /// <param name="pos">number to clamp</param>
+        /// <param name="min">if pos is less than min, then lerp clamps to this value</param>
+        /// <param name="max">if pos is more than max, lerp clamps to this value</param>
+        /// <param name="clampFactor"> Range from 0.0f to 1.0f of how close to snap to min and max </param>
+        /// <returns>A soft clamped value</returns>
+        public static float CLampLerp(float pos, float min, float max, float clampFactor)
+        {
+            clampFactor = Mathf.Clamp(clampFactor, 0.0f, 1.0f);
+            if (pos < min)
+            {
+                return Mathf.Lerp(pos, min, clampFactor);
+            }
+            else if (pos > max)
+            {
+                return Mathf.Lerp(pos, max, clampFactor);
+            }
+
+            return pos;
+        }
+        
         /// <summary>
         /// Calculates the direction vector from a rotation.
         /// </summary>

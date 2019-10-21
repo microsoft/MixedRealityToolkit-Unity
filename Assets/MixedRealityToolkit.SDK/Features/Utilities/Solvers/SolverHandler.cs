@@ -255,25 +255,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         private float lastUpdateTime;
 
-        private IMixedRealityHandJointService HandJointService => handJointService ?? (handJointService = (InputSystem as IMixedRealityDataProviderAccess)?.GetDataProvider<IMixedRealityHandJointService>());
+        private IMixedRealityHandJointService HandJointService => handJointService ?? (handJointService = (CoreServices.InputSystem as IMixedRealityDataProviderAccess)?.GetDataProvider<IMixedRealityHandJointService>());
         private IMixedRealityHandJointService handJointService = null;
-
-        private IMixedRealityInputSystem inputSystem = null;
-
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        protected IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
-                return inputSystem;
-            }
-        }
 
         #region MonoBehaviour Implementation
 
@@ -460,9 +443,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         private Transform GetMotionController(Handedness handedness)
         {
-            if (InputSystem == null) return null;
+            if (CoreServices.InputSystem == null)
+            {
+                return null;
+            }
 
-            foreach (IMixedRealityController controller in InputSystem.DetectedControllers)
+            foreach (IMixedRealityController controller in CoreServices.InputSystem.DetectedControllers)
             {
                 var hand = controller as IMixedRealityHand;
                 if (hand == null && controller.ControllerHandedness == handedness)
