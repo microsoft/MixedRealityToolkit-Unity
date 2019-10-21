@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <inheritdoc />
         public bool CheckCapability(MixedRealityCapability capability)
         {
-            return (capability == MixedRealityCapability.VoiceCommand);
+            return capability == MixedRealityCapability.VoiceCommand;
         }
 
         #endregion IMixedRealityCapabilityCheck Implementation
@@ -92,16 +92,15 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
         private KeywordRecognizer keywordRecognizer;
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR && UNITY_WSA
         /// <inheritdoc />
         public override void Initialize()
         {
-            if (!UnityEditor.PlayerSettings.WSA.GetCapability(UnityEditor.PlayerSettings.WSACapability.Microphone))
-            {
-                UnityEditor.PlayerSettings.WSA.SetCapability(UnityEditor.PlayerSettings.WSACapability.Microphone, true);
-            }
+            Toolkit.Utilities.Editor.UWPCapabilityUtility.RequireCapability(
+                    UnityEditor.PlayerSettings.WSACapability.Microphone,
+                    this.GetType());
         }
-#endif // UNITY_EDITOR
+#endif
 
         /// <inheritdoc />
         public override void Enable()
@@ -175,17 +174,6 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
 
             keywordRecognizer = null;
         }
-
-#if UNITY_EDITOR
-        /// <inheritdoc />
-        public override void Destroy()
-        {
-            if (UnityEditor.PlayerSettings.WSA.GetCapability(UnityEditor.PlayerSettings.WSACapability.Microphone))
-            {
-                UnityEditor.PlayerSettings.WSA.SetCapability(UnityEditor.PlayerSettings.WSACapability.Microphone, false);
-            }
-        }
-#endif // UNITY_EDITOR
 
         /// <inheritdoc />
         protected override void Dispose(bool disposing)
