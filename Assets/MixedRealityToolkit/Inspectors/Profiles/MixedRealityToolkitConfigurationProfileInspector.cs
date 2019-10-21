@@ -259,7 +259,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             var configurationProfile = (MixedRealityToolkitConfigurationProfile)target;
             serializedObject.Update();
 
-            RenderMRTKLogo();
+            if (!RenderMRTKLogoAndSearch())
+            {
+                CheckEditorPlayMode();
+                return;
+            }
 
             CheckEditorPlayMode();
 

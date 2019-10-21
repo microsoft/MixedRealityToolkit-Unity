@@ -120,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     // If GetProfileTypesForService has a count greater than one, then it won't be possible to use
                     // EditorGUILayout.ObjectField to restrict the set of profiles to a single type - in this
                     // case all profiles of BaseMixedRealityProfile will be visible in the picker.
-                    // 
+                    //
                     // However in the case where there is just a single profile type for the service, we can improve
                     // upon the user experience by limiting the set of things that show in the picker by restricting
                     // the set of profiles listed to only that type.
