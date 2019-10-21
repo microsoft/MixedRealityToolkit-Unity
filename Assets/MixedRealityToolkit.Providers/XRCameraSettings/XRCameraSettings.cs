@@ -48,6 +48,12 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// <inheritdoc/>
         public bool IsOpaque => true; // todo: fix
 
+        /// <inheritdoc/>
+        public void ApplyDisplaySettings()
+        {
+            // todo
+        }
+
 #endregion IMixedRealityCameraSettings
 
         // todo: profile

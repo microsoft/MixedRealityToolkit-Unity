@@ -17,5 +17,11 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// Returns whether or not the current display rendering mode is opaque.
         /// </summary>
         bool IsOpaque { get; }
+
+        /// <summary>
+        /// Applies the display settings (background color, clipping plane distances, etc) based on the
+        /// appropriate <see cref="DisplayType"/>.
+        /// </summary>
+        void ApplyDisplaySettings();
     }
 }
