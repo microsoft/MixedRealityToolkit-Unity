@@ -19,10 +19,9 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         SupportedPlatorms.Standalone | SupportedPlatforms.UniversalWindows |
 #endif
         SupportedPlatforms.WindowsEditor | SupportedPlatforms.MacEditor | SupportedPlatforms.LinuxEditor,
-        "Unity AR Foundation Camera Settings")]
-        // profile pending
-        //"XRCameraSettings/Profiles/DefaultXRCameraSettingsProfile.asset",
-        //"MixedRealityToolkit.Providers")]
+        "Unity AR Foundation Camera Settings",
+        "XRCameraSettings/Profiles/DefaultXRCameraSettingsProfile.asset",
+        "MixedRealityToolkit.Providers")]
     public class XRCameraSettings : BaseDataProvider, IMixedRealityCameraSettingsProvider
     {
         /// <summary>
@@ -43,20 +42,52 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
 
 #region IMixedRealityCameraSettings
 
-        public DisplayType DisplayType => DisplayType.PassThrough; // todo: fix
+        // todo:
+        // android && iOs are always passthrough, others may not be
+        //private DisplayType displayType = DisplayType.Opaque;
 
         /// <inheritdoc/>
-        public bool IsOpaque => true; // todo: fix
+        public DisplayType DisplayType => DisplayType.PassThrough;
+        //{
+        //    get 
+        //    { 
+
+        //    }
+
+        //    private set 
+        //    {
+        //        displayType = value;
+        //    }
+        //}
+
+        /// <inheritdoc/>
+        public bool IsOpaque => (DisplayType == DisplayType.Opaque);
 
         /// <inheritdoc/>
         public void ApplyDisplaySettings()
         {
-            // todo
+            MixedRealityCameraProfile cameraProfile = (Service as IMixedRealityCameraSystem)?.CameraProfile;
+            if (cameraProfile == null) { return; } 
+
+            if (IsOpaque)
+            {
+                CameraCache.Main.clearFlags = CameraProfile.CameraClearFlagsOpaqueDisplay;
+                CameraCache.Main.nearClipPlane = CameraProfile.NearClipPlaneOpaqueDisplay;
+                CameraCache.Main.farClipPlane = CameraProfile.FarClipPlaneOpaqueDisplay;
+                CameraCache.Main.backgroundColor = CameraProfile.BackgroundColorOpaqueDisplay;
+                QualitySettings.SetQualityLevel(CameraProfile.OpaqueQualityLevel, false);
+            }
+            else
+            {
+                CameraCache.Main.clearFlags = CameraProfile.CameraClearFlagsTransparentDisplay;
+                CameraCache.Main.backgroundColor = CameraProfile.BackgroundColorTransparentDisplay;
+                CameraCache.Main.nearClipPlane = CameraProfile.NearClipPlaneTransparentDisplay;
+                CameraCache.Main.farClipPlane = CameraProfile.FarClipPlaneTransparentDisplay;
+                QualitySettings.SetQualityLevel(CameraProfile.TransparentQualityLevel, false);
+            }
         }
 
-#endregion IMixedRealityCameraSettings
-
-        // todo: profile
+        #endregion IMixedRealityCameraSettings
 
         bool isInitialized = false;
 
@@ -97,14 +128,13 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
                 arSessionObject = new GameObject("AR Session");
                 arSessionObject.transform.parent = null;
             }
-
             arSession = arSessionObject.EnsureComponent<ARSession>();
-            arSession.attemptUpdate = true;
-            arSession.matchFrameRate = true;
-
             arInputManager = arSessionObject.EnsureComponent<ARInputManager>();
 
-            arSessionOriginObject = MixedRealityPlayspace.Transform.gameObject;
+            if (arSessionOriginObject == null)
+            {
+                arSessionOriginObject = MixedRealityPlayspace.Transform.gameObject;
+            }
             CameraCache.Main.transform.parent = arSessionOriginObject.transform;
 
             arSessionOrigin = arSessionOriginObject.EnsureComponent<ARSessionOrigin>();
@@ -114,14 +144,35 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
 
             arCameraManager = cameraObject.EnsureComponent<ARCameraManager>();
             arCameraBackground = cameraObject.EnsureComponent<ARCameraBackground>();
+
             trackedPoseDriver = cameraObject.EnsureComponent<TrackedPoseDriver>();
 
-            // todo: read from profile
+            XRCameraSettingsProfile settingsProfile = (ConfigurationProfile as XRCameraSettingsProfile);
+            TrackedPoseDriver.TrackedPose poseSource;
+            TrackedPoseDriver.TrackingType trackingType;
+            TrackedPoseDriver.UpdateType updateType;
+
+            if (settingsProfile != null)
+            {
+                // Read settings to be applied to the camera.
+                poseSource = settingsProfile.PoseSource;
+                trackingType = settingsProfile.TrackingType;
+                updateType = settingsProfile.UpdateType;
+            }
+            else
+            {
+                Debug.LogWarning("A profile was not specified for the XR Camera Settings provider.\nApplying Microsoft Mixed Reality Toolkit default options.");
+                // Use default settings.
+                poseSource = TrackedPoseDriver.TrackedPose.ColorCamera;
+                trackingType = TrackedPoseDriver.TrackingType.RotationAndPosition;
+                updateType = TrackedPoseDriver.UpdateType.UpdateAndBeforeRender;
+            }
+
             trackedPoseDriver.SetPoseSource(
                 TrackedPoseDriver.DeviceType.GenericXRDevice,
-                TrackedPoseDriver.TrackedPose.ColorCamera);
-            trackedPoseDriver.trackingType = TrackedPoseDriver.TrackingType.RotationAndPosition;
-            trackedPoseDriver.updateType = TrackedPoseDriver.UpdateType.UpdateAndBeforeRender;
+                poseSource);
+            trackedPoseDriver.trackingType = trackingType;
+            trackedPoseDriver.updateType = updateType;
             trackedPoseDriver.UseRelativeTransform = false;
 
             isInitialized = true;

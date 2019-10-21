@@ -1,5 +1,5 @@
 {
-    "name": "Microsoft.MixedReality.Toolkit.Providers.XRCameraSettings",
+    "name": "Microsoft.MixedReality.Toolkit.Providers.XRCamera",
     "references": [
         "Microsoft.MixedReality.Toolkit",
         "Unity.XR.ARFoundation"

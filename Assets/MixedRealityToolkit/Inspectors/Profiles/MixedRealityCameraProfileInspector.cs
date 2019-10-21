@@ -194,6 +194,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                 serializedObject.ApplyModifiedProperties();
                                 System.Type type = ((MixedRealityCameraProfile)serializedObject.targetObject).SettingsConfigurations[i].ComponentType.Type;
                                 ApplyProviderConfiguration(type, providerName, providerProfile, runtimePlatform);
+                                changed = true;
                                 break;
                             }
 

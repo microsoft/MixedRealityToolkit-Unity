@@ -78,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             }
 
             // Check to see if any providers were loaded.
-            useFallbackBehavior = (GetDataProviders<IMixedRealityCameraSettingsProvider>().Count == 0);          // todo: if there are no providers (or no supported providers), fall back to built-in default behavior
+            useFallbackBehavior = (GetDataProviders<IMixedRealityCameraSettingsProvider>().Count == 0);
 
             if (!useFallbackBehavior)
             {
@@ -148,17 +148,20 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// <inheritdoc />
         public override void Update()
         {
-            if (IsOpaque != cameraOpaqueLastFrame)
+            if (useFallbackBehavior)
             {
-                cameraOpaqueLastFrame = IsOpaque;
+                if (IsOpaque != cameraOpaqueLastFrame)
+                {
+                    cameraOpaqueLastFrame = IsOpaque;
 
-                if (IsOpaque)
-                {
-                    ApplySettingsForOpaqueDisplay();
-                }
-                else
-                {
-                    ApplySettingsForTransparentDisplay();
+                    if (IsOpaque)
+                    {
+                        ApplySettingsForOpaqueDisplay();
+                    }
+                    else
+                    {
+                        ApplySettingsForTransparentDisplay();
+                    }
                 }
             }
         }
