@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using UnityEngine;
@@ -220,9 +219,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         {
             get
             {
-                if (CoreServices.InputSystem != null && CoreServices.InputSystem.GazeProvider.Enabled)
+                var gazeProvider = CoreServices.InputSystem?.GazeProvider;
+                if (gazeProvider?.Enabled == true)
                 {
-                    return CoreServices.InputSystem.GazeProvider.GazeOrigin;
+                    return gazeProvider.GazeOrigin;
                 }
 
                 return CameraCache.Main.transform.position;
@@ -236,9 +236,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         {
             get
             {
-                if (CoreServices.InputSystem != null && CoreServices.InputSystem.GazeProvider.Enabled)
+                var gazeProvider = CoreServices.InputSystem?.GazeProvider;
+                if (gazeProvider?.Enabled == true)
                 {
-                    return CoreServices.InputSystem.GazeProvider.GazeDirection;
+                    return gazeProvider.GazeDirection;
                 }
 
                 return CameraCache.Main.transform.forward;
@@ -252,9 +253,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// <returns>True if gaze is supported and an object was hit by gaze, otherwise false.</returns>
         private bool TryGetGazeHitPosition(out Vector3 hitPosition)
         {
-            if (CoreServices.InputSystem.GazeProvider.Enabled)
+            var gazeProvider = CoreServices.InputSystem?.GazeProvider;
+            if (gazeProvider?.Enabled == true &&
+                gazeProvider.HitInfo.raycastValid)
             {
-                hitPosition = CoreServices.InputSystem.GazeProvider.HitPosition;
+                hitPosition = gazeProvider.HitPosition;
                 return true;
             }
 
