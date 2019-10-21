@@ -378,15 +378,31 @@ because it may produce an inaccurate combination of settings.</p>
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityToolkitConfigurationProfileInspector_RenderMRTKLogo_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityToolkitConfigurationProfileInspector.RenderMRTKLogo*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityToolkitConfigurationProfileInspector_RenderMRTKLogo" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityToolkitConfigurationProfileInspector.RenderMRTKLogo">RenderMRTKLogo()</h4>
-  <div class="markdown level1 summary"><p>Render the Mixed Reality Toolkit Logo.</p>
+  <a id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityToolkitConfigurationProfileInspector_RenderMRTKLogoAndSearch_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityToolkitConfigurationProfileInspector.RenderMRTKLogoAndSearch*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityToolkitConfigurationProfileInspector_RenderMRTKLogoAndSearch" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityToolkitConfigurationProfileInspector.RenderMRTKLogoAndSearch">RenderMRTKLogoAndSearch()</h4>
+  <div class="markdown level1 summary"><p>Render the Mixed Reality Toolkit Logo and search field.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void RenderMRTKLogo()</code></pre>
+    <pre><code class="lang-csharp hljs">protected bool RenderMRTKLogoAndSearch()</code></pre>
   </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True if the rest of the inspector should be drawn.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Editor_BaseMixedRealityToolkitConfigurationProfileInspector_RenderProfileHeader_" data-uid="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityToolkitConfigurationProfileInspector.RenderProfileHeader*"></a>
@@ -396,7 +412,7 @@ because it may produce an inaccurate combination of settings.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected void RenderProfileHeader(string title, string description, object selectionObject, bool isProfileInitialized = true, BaseMixedRealityToolkitConfigurationProfileInspector.BackProfileType returnProfileTarget = BaseMixedRealityToolkitConfigurationProfileInspector.BackProfileType.Configuration)</code></pre>
+    <pre><code class="lang-csharp hljs">protected bool RenderProfileHeader(string title, string description, object selectionObject, bool isProfileInitialized = true, BaseMixedRealityToolkitConfigurationProfileInspector.BackProfileType returnProfileTarget = BaseMixedRealityToolkitConfigurationProfileInspector.BackProfileType.Configuration)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -436,6 +452,22 @@ because it may produce an inaccurate combination of settings.</p>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Editor.BaseMixedRealityToolkitConfigurationProfileInspector.BackProfileType.html">BaseMixedRealityToolkitConfigurationProfileInspector.BackProfileType</a></td>
         <td><span class="parametername">returnProfileTarget</span></td>
         <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True if the rest of the profile should be rendered.</p>
+</td>
       </tr>
     </tbody>
   </table>
