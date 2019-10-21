@@ -17,8 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         public MixedRealityCameraSystem(
             IMixedRealityServiceRegistrar registrar,
             BaseMixedRealityProfile profile = null) : base(registrar, profile)
-        {
-        }
+        { }
 
         /// <inheritdoc/>
         public override string Name { get; protected set; } = "Mixed Reality Camera System";
@@ -51,7 +50,12 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         private DisplayType currentDisplayType;
         private bool cameraOpaqueLastFrame = false;
 
-        private bool useFallbackBehavior = false;
+        /// <summary>
+        /// Specifies whether or not the camera system was able to register a camera settings provider.
+        /// If so, camera management is not to be performed by the camera system itself. If not, the camera
+        /// system is to behave as it did in MRTK versions 2.0.0 and 2.1.0.
+        /// </summary>
+        private bool useFallbackBehavior = true;
 
         /// <inheritdoc />
         public override void Initialize()
@@ -76,29 +80,31 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             // Check to see if any providers were loaded.
             useFallbackBehavior = (GetDataProviders<IMixedRealityCameraSettingsProvider>().Count == 0);          // todo: if there are no providers (or no supported providers), fall back to built-in default behavior
 
-            // todo
+            if (!useFallbackBehavior)
+            {
 
-            cameraOpaqueLastFrame = IsOpaque;
+                cameraOpaqueLastFrame = IsOpaque;
 
-            if (IsOpaque)
-            {
-                ApplySettingsForOpaqueDisplay();
-            }
-            else
-            {
-                ApplySettingsForTransparentDisplay();
-            }
+                if (IsOpaque)
+                {
+                    ApplySettingsForOpaqueDisplay();
+                }
+                else
+                {
+                    ApplySettingsForTransparentDisplay();
+                }
 
-            // Ensure the camera is parented to the playspace which starts, unrotated, at the origin.
-            MixedRealityPlayspace.Position = Vector3.zero;
-            MixedRealityPlayspace.Rotation = Quaternion.identity;
-            if (CameraCache.Main.transform.position != Vector3.zero)
-            {
-                Debug.LogWarning($"The main camera is not positioned at the origin ({Vector3.zero}), experiences may not behave as expected.");
-            }
-            if (CameraCache.Main.transform.rotation != Quaternion.identity)
-            {
-                Debug.LogWarning($"The main camera is configured with a non-zero rotation, experiences may not behave as expected.");
+                // Ensure the camera is parented to the playspace which starts, unrotated, at the origin.
+                MixedRealityPlayspace.Position = Vector3.zero;
+                MixedRealityPlayspace.Rotation = Quaternion.identity;
+                if (CameraCache.Main.transform.position != Vector3.zero)
+                {
+                    Debug.LogWarning($"The main camera is not positioned at the origin ({Vector3.zero}), experiences may not behave as expected.");
+                }
+                if (CameraCache.Main.transform.rotation != Quaternion.identity)
+                {
+                    Debug.LogWarning($"The main camera is configured with a non-zero rotation, experiences may not behave as expected.");
+                }
             }
         }
 
@@ -133,6 +139,8 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             {
                 UnregisterDataProvider(provider);
             }
+
+            useFallbackBehavior = true;
 
             base.Destroy();
         }
