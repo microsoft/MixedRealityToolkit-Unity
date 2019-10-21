@@ -254,7 +254,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         private bool TryGetGazeHitPosition(out Vector3 hitPosition)
         {
             var gazeProvider = CoreServices.InputSystem?.GazeProvider;
-            if (gazeProvider?.Enabled == true &&
+            if (gazeProvider != null && gazeProvider.Enabled &&
                 gazeProvider.HitInfo.raycastValid)
             {
                 hitPosition = gazeProvider.HitPosition;
