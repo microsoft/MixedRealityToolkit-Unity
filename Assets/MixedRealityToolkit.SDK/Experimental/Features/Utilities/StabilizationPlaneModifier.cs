@@ -220,7 +220,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             get
             {
                 var gazeProvider = CoreServices.InputSystem?.GazeProvider;
-                if (gazeProvider?.Enabled == true)
+                if (gazeProvider != null && gazeProvider.Enabled)
                 {
                     return gazeProvider.GazeOrigin;
                 }
