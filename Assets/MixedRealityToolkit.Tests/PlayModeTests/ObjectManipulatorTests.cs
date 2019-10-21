@@ -1162,6 +1162,110 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(1, manipulationStartedCount);
             Assert.AreEqual(1, manipulationEndedCount);
         }
+
+        class TestCollisionListener : MonoBehaviour
+        {
+            public int CollisionCount { get; private set; }
+
+            private void OnCollisionEnter(Collision collision)
+            {
+                CollisionCount++;
+            }
+        }
+
+        /// <summary>
+        /// Test that objects with both ObjectManipulator and Rigidbody respond
+        /// correctly to static colliders.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ObjectManipulatorStaticCollision()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.5f;
+            testObject.transform.position = new Vector3(0f, 0f, 1f);
+
+            var rigidbody = testObject.AddComponent<Rigidbody>();
+            rigidbody.useGravity = false;
+
+            var manipHandler = testObject.AddComponent<ObjectManipulator>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+
+            var collisionListener = testObject.AddComponent<TestCollisionListener>();
+
+            // set up static cube to collide with
+            var backgroundObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            backgroundObject.transform.localScale = Vector3.one;
+            backgroundObject.transform.position = new Vector3(0f, 0f, 2f);
+            var backgroundmaterial = new Material(StandardShaderUtility.MrtkStandardShader);
+            backgroundmaterial.color = Color.green;
+            backgroundObject.GetComponent<MeshRenderer>().material = backgroundmaterial;
+            
+            const int numHandSteps = 10;
+            TestHand hand = new TestHand(Handedness.Right);
+            yield return hand.Show(new Vector3(0.1f, -0.1f, 0.5f));
+            yield return null;
+
+            // Grab the cube and move towards the collider
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return null;
+
+            yield return hand.Move(Vector3.forward * 3f, numHandSteps);
+
+            Assert.Less(testObject.transform.position.z, backgroundObject.transform.position.z);
+            Assert.AreEqual(1, collisionListener.CollisionCount);
+        }
+
+        /// <summary>
+        /// Test that objects with both ObjectManipulator and Rigidbody respond
+        /// correctly to rigidbody colliders.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ObjectManipulatorRigidbodyCollision()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.5f;
+            testObject.transform.position = new Vector3(0f, 0f, 1f);
+
+            var rigidbody = testObject.AddComponent<Rigidbody>();
+            rigidbody.useGravity = false;
+
+            var manipHandler = testObject.AddComponent<ObjectManipulator>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+
+            var collisionListener = testObject.AddComponent<TestCollisionListener>();
+
+            // set up static cube to collide with
+            var backgroundObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            backgroundObject.transform.localScale = Vector3.one;
+            backgroundObject.transform.position = new Vector3(0f, 0f, 2f);
+            var backgroundmaterial = new Material(StandardShaderUtility.MrtkStandardShader);
+            backgroundmaterial.color = Color.green;
+            backgroundObject.GetComponent<MeshRenderer>().material = backgroundmaterial;
+            var backgroundRigidbody = backgroundObject.AddComponent<Rigidbody>();
+            backgroundRigidbody.useGravity = false;
+
+            const int numHandSteps = 10;
+            TestHand hand = new TestHand(Handedness.Right);
+            yield return hand.Show(new Vector3(0.1f, -0.1f, 0.5f));
+            yield return null;
+
+            // Grab the cube and move towards the collider
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return null;
+
+            yield return hand.Move(Vector3.forward * 3f, numHandSteps);
+
+            Assert.AreNotEqual(Vector3.zero, backgroundRigidbody.velocity);
+            Assert.AreEqual(1, collisionListener.CollisionCount);
+        }
     }
 }
 #endif
