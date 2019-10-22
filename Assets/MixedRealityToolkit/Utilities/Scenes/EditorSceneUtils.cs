@@ -250,7 +250,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Returns true if user is currently editing a prefab.
         /// </summary>
-        /// <returns></returns>
         public static bool IsEditingPrefab()
         {
             var prefabStage = UnityEditor.Experimental.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage();
