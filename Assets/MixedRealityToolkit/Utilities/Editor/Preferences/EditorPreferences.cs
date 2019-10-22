@@ -98,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Get the saved <see cref="int"/> from the <see href="https://docs.unity3d.com/ScriptReference/EditorPrefs.html">EditorPrefs</see>.
         /// </summary>
-        private static int Get(string key, int defaultValue)
+        public static int Get(string key, int defaultValue)
         {
             Debug.Assert(!string.IsNullOrWhiteSpace(key));
 
