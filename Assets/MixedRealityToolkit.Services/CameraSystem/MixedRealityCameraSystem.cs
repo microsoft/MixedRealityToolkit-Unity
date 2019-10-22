@@ -121,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             }
         }
 
-        /// <inhe< ritdoc />
+        /// <inheritdoc />
         public override void Enable()
         {
             base.Enable();
