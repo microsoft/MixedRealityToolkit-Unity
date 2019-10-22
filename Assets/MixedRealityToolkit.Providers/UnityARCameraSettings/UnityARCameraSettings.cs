@@ -10,7 +10,7 @@ using UnityEngine.XR.ARFoundation;
 namespace Microsoft.MixedReality.Toolkit.CameraSystem
 {
     /// <summary>
-    /// todo
+    /// Camera settings provider for use with the Unity AR Foundation system.
     /// </summary>
     [MixedRealityDataProvider(
         typeof(IMixedRealityCameraSystem),
