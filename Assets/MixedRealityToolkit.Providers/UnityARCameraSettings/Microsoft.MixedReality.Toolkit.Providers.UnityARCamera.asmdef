@@ -2,6 +2,7 @@
     "name": "Microsoft.MixedReality.Toolkit.Providers.UnityARCamera",
     "references": [
         "Microsoft.MixedReality.Toolkit",
+        "Microsoft.MixedReality.Toolkit.Async",
         "Unity.XR.ARFoundation"
     ],
     "optionalUnityReferences": [],

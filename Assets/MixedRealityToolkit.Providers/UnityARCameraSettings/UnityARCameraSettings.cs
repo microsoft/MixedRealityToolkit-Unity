@@ -96,10 +96,40 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             preExistingArSessionOriginObject = (arSessionOriginObject != null);
         }
 
-        public override void Initialize()
+        public override async void Initialize()
         {
             base.Initialize();
 
+            ARSessionState sessionState = (ARSessionState)(await ARSession.CheckAvailability());
+            if (ARSessionState.Ready > sessionState)
+            {
+                Debug.LogError("Unable to initialize the Unity AR Camera Settings provider. Device support for AR Foundation was not detected.");
+                isInitialized = true;
+            }
+        }
+
+        public override void Enable()
+        {
+            base.Enable();
+            
+            if (!isInitialized)
+            {
+                InitializeARFoundation();
+            }
+        }
+
+        public override void Destroy()
+        {
+            UninitializeARFoundation();
+
+            base.Destroy();
+        }
+
+        /// <summary>
+        /// Initialize AR Foundation components.
+        /// </summary>
+        private void InitializeARFoundation()
+        {
             if (isInitialized) { return; }
 
             FindARFoundationComponents();
@@ -128,17 +158,16 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
 
             trackedPoseDriver = cameraObject.EnsureComponent<TrackedPoseDriver>();
 
-            UnityARCameraSettingsProfile settingsProfile = (ConfigurationProfile as UnityARCameraSettingsProfile);
             TrackedPoseDriver.TrackedPose poseSource;
             TrackedPoseDriver.TrackingType trackingType;
             TrackedPoseDriver.UpdateType updateType;
 
-            if (settingsProfile != null)
+            if (SettingsProfile != null)
             {
                 // Read settings to be applied to the camera.
-                poseSource = settingsProfile.PoseSource;
-                trackingType = settingsProfile.TrackingType;
-                updateType = settingsProfile.UpdateType;
+                poseSource = SettingsProfile.PoseSource;
+                trackingType = SettingsProfile.TrackingType;
+                updateType = SettingsProfile.UpdateType;
             }
             else
             {
@@ -159,7 +188,10 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             isInitialized = true;
         }
 
-        public override void Destroy()
+        /// <summary>
+        /// Uninitialize and clean up AR Foundation components.
+        /// </summary>
+        private void UninitializeARFoundation()
         {
             if (!isInitialized) { return; }
 
@@ -209,18 +241,16 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             }
 
             isInitialized = false;
-
-            base.Destroy();
         }
 
         /// <summary>
         /// The profile used to configure the camera.
         /// </summary>
-        public MixedRealityCameraProfile CameraProfile
+        public UnityARCameraSettingsProfile SettingsProfile
         {
             get
             {
-                return ConfigurationProfile as MixedRealityCameraProfile;
+                return ConfigurationProfile as UnityARCameraSettingsProfile;
             }
         }
     }

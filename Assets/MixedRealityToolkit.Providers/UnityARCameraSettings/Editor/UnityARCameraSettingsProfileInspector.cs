@@ -40,9 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
                 EditorGUILayout.Space();
                 EditorGUILayout.LabelField("Tracking Settings", EditorStyles.boldLabel);
                 EditorGUILayout.PropertyField(poseSource);
-                EditorGUILayout.Space();
                 EditorGUILayout.PropertyField(trackingType);
-                EditorGUILayout.Space();
                 EditorGUILayout.PropertyField(updateType);
 
                 serializedObject.ApplyModifiedProperties();
