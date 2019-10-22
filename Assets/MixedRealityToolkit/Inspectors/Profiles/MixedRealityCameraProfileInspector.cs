@@ -71,14 +71,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public override void OnInspectorGUI()
         {
-<<<<<<< HEAD
-            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, target))
+            if (!RenderProfileHeader(profileTitle, profileDescription, target))
             {
                 return;
             }
-=======
-            RenderProfileHeader(profileTitle, profileDescription, target);
->>>>>>> add settings providers to the camera profile, start on XR Camera Settings module
 
             using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
             {
