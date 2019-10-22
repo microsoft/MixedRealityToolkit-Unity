@@ -510,8 +510,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             float cursorDistance = Vector3.Distance(CameraCache.Main.transform.position, targetPosition);
             float cursorStartSize = (cursorBounds.extents - cursorBounds.center).magnitude * 2;
-            float desiredScale = (2.0f * cursorDistance * Mathf.Tan(cursorAngularScale * Mathf.Deg2Rad * 0.5f)) / cursorStartSize;
-
+            float desiredScale = MathUtilities.AngularScaleFromDistance(cursorAngularScale, cursorDistance) / cursorStartSize;
             return Vector3.one * desiredScale;
         }
 
