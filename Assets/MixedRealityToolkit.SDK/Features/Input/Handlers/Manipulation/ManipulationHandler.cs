@@ -294,7 +294,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private FixedDistanceConstraint moveConstraint;
         private RotationAxisConstraint rotateConstraint;
-        private TransformScaleHandler scaleHandler;
+        private MinMaxScaleConstraint scaleHandler;
 
         #endregion
 
@@ -322,7 +322,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             rotateConstraint.ConstraintOnRotation = RotationConstraintHelper.ConvertToAxisFlags(constraintOnRotation);
             rotateConstraint.UseLocalSpaceForConstraint = useLocalSpaceForConstraint;
 
-            scaleHandler = this.GetComponent<TransformScaleHandler>();
+            scaleHandler = this.GetComponent<MinMaxScaleConstraint>();
         }
         #endregion MonoBehaviour Functions
 

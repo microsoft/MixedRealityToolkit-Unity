@@ -401,7 +401,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             manipHandler.HostTransform = testObject.transform;
             manipHandler.SmoothingActive = false;
             manipHandler.ManipulationType = ObjectManipulator.HandMovementType.TwoHanded;
-            var scaleHandler = testObject.EnsureComponent<TransformScaleHandler>();
+            var scaleHandler = testObject.EnsureComponent<MinMaxScaleConstraint>();
             scaleHandler.ScaleMinimum = minScale;
             scaleHandler.ScaleMaximum = maxScale;
 

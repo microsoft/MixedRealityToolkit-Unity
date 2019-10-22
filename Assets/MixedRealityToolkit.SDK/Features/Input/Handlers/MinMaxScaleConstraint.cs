@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// Component for setting the min/max scale values for ManipulationHandler
     /// or BoundingBox
     /// </summary>
-    public class TransformScaleHandler : TransformConstraint
+    public class MinMaxScaleConstraint : TransformConstraint
     {
         #region Properties
 

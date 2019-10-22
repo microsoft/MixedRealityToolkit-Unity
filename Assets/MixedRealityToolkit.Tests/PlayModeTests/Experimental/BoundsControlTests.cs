@@ -176,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             BoundsControl bbox = InstantiateSceneAndDefaultBbox();
             yield return VerifyInitialBoundsCorrect(bbox);
-            var scaleHandler = bbox.EnsureComponent<TransformScaleHandler>();
+            var scaleHandler = bbox.EnsureComponent<MinMaxScaleConstraint>();
             scaleHandler.ScaleMinimum = minScale;
             scaleHandler.ScaleMaximum = maxScale;
             bbox.RegisterTransformScaleHandler(scaleHandler);

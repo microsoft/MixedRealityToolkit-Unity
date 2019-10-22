@@ -1044,7 +1044,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // Current position of the grab point
         private Vector3 currentGrabPoint;
 
-        private TransformScaleHandler scaleConstraint;
+        private MinMaxScaleConstraint scaleConstraint;
 
         // Grab point position in pointer space. Used to calculate the current grab point from the current pointer pose.
         private Vector3 grabPointInPointer;
@@ -1953,10 +1953,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 isChildOfTarget = transform.IsChildOf(target.transform);
 
-                scaleConstraint = GetComponent<TransformScaleHandler>();
+                scaleConstraint = GetComponent<MinMaxScaleConstraint>();
                 if (scaleConstraint == null)
                 {
-                    scaleConstraint = gameObject.AddComponent<TransformScaleHandler>();
+                    scaleConstraint = gameObject.AddComponent<MinMaxScaleConstraint>();
 
                     scaleConstraint.TargetTransform = Target.transform;
 #pragma warning disable 0618
