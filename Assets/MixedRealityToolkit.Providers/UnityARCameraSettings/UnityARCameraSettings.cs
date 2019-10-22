@@ -67,6 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
 
         #endregion IMixedRealityCameraSettings
 
+        /// <summary>
         /// The profile used to configure the camera.
         /// </summary>
         public UnityARCameraSettingsProfile SettingsProfile
