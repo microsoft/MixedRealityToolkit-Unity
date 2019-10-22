@@ -83,103 +83,56 @@
 <h1 id="mixed-reality-toolkit-packages">Mixed Reality Toolkit Packages</h1>
 
 <p>The Mixed Reality Toolkit (MRTK) is a collection of packages that enable cross platform Mixed Reality application development by providing support for Mixed Reality hardware and platforms.</p>
-<p>The MRTK ships via the following packages:</p>
+<p>The MRTK ships via the following Unity packages:</p>
 <ul>
 <li><a href="#foundation-package">Foundation</a></li>
 <li><a href="#extensions-package">Extensions</a></li>
 <li><a href="#examples-package">Examples</a></li>
 <li><a href="#tools-package">Tools</a></li>
 </ul>
+<p>These packages are released and supported by Microsoft from source code in the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release">mrtk_release</a> branch on GitHub.</p>
 <h2 id="foundation-package">Foundation Package</h2>
-<p>The Mixed Reality Toolkit Foundation is the set of packages that enable your application to leverage common functionality across Mixed Reality Platforms. These packages are released and supported by Microsoft from source code in the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/tree/mrtk_release">mrtk_release</a> branch on GitHub.</p>
+<p>The Mixed Reality Toolkit Foundation is the set of code that enable your application to leverage common functionality across Mixed Reality Platforms.</p>
 <p><img src="../Images/Input/MRTK_Package_Foundation.png" width="350px" style="display:block;"><br>
 <sup>MRTK Foundation Package</sup></p>
 <p>The MRTK Foundation is comprised of:</p>
 <ul>
-<li><a href="#core-package">Core Package</a></li>
-<li><a href="#platform-providers">Platform Providers</a></li>
-<li><a href="#system-services">System Services</a></li>
-<li><a href="#feature-assets">Feature Assets</a></li>
+<li><strong>Core Package</strong></li>
 </ul>
-<p>The following sections describe the types of packages in each category.</p>
-<h3 id="core-package">Core Package</h3>
-<p>The core package is a <em>required</em> component and is taken as a dependency by all MRTK foundation packages.</p>
-<p>The MRTK Core package includes:</p>
+<p>The Core Package contains the definitions for all of the common interfaces, classes and data types that are used by all other components. It is highly recommended that applications access MRTK components exclusively through the defined interfaces to enable the highest level of compatibility across platforms.</p>
 <ul>
-<li><a href="#common-types">Common interfaces, classes and data types</a></li>
-<li><a href="#mixedrealitytoolkit-scene-component">MixedRealityToolkit scene component</a></li>
-<li><a href="#mrtk-standard-shader">MRTK Standard Shader</a></li>
-<li><a href="#unity-input-provider">Unity Input Provider</a></li>
-<li><a href="#package-management">Package Management</a></li>
+<li><strong>Platform Providers</strong></li>
 </ul>
-<h4 id="common-types">Common types</h4>
-<p>The Mixed Reality Toolkit Core package contains the definitions for all of the common interfaces, classes and data types that are used by all other components. It is highly recommended that applications access MRTK components exclusively through the defined interfaces to enable the highest level of compatibility across platforms.</p>
-<h4 id="mixedrealitytoolkit-scene-component">MixedRealityToolkit scene component</h4>
-<p>The MixedRealityToolkit scene component is the single, centralized resource manager for the Mixed Reality Toolkit. This component loads and manages the lifespan of the platform and service modules and provides resources for the systems to access their configuration settings.</p>
-<h4 id="mrtk-standard-shader">MRTK Standard Shader</h4>
-<p>The MRTK Standard Shader provides the basis for virtually all of the materials provided by the MRTK. This shader is extremely flexible and optimized for the variety of platforms on which MRTK is supported. It is <em>highly</em> recommended that your application's materials use the MRTK standard shader for optimal performance.</p>
-<h4 id="unity-input-provider">Unity Input Provider</h4>
-<p>The Unity Input Provider provides access to common input devices such as game controllers, touch screens and a 3D spatial mouse.</p>
-<h4 id="package-management">Package Management</h4>
-<p><em>Coming soon</em></p>
-<p>The Mixed Reality Toolkit Core package provides support for discovering and managing the optional foundation, extension and experimental MRTK packages.</p>
-<h3 id="platform-providers">Platform Providers</h3>
 <p>The MRTK Platform Provider packages are the components that enable the Mixed Reality Toolkit to target Mixed Reality hardware and platform functionality.</p>
 <p>Supported platforms include:</p>
 <ul>
-<li><a href="#windows-mixed-reality">Windows Mixed Reality</a></li>
-<li><a href="#openvr">OpenVR</a></li>
-<li><a href="#windows-voice">Windows Voice</a></li>
+<li>Windows Mixed Reality</li>
+<li>OpenVR</li>
+<li>Windows Voice</li>
 </ul>
-<h4 id="windows-mixed-reality">Windows Mixed Reality</h4>
-<p>The Windows Mixed Reality package provides support for Microsoft HoloLens, HoloLens 2 and Windows Mixed Reality Immersive devices. The package contains full platform support, including:</p>
 <ul>
-<li>Articulated Hands</li>
-<li>Eye Tracking</li>
-<li>Gaze targeting</li>
-<li>Gestures</li>
-<li>Spatial Mapping</li>
-<li>Windows Mixed Reality Motion controllers</li>
+<li><strong>System Services</strong></li>
 </ul>
-<h4 id="openvr">OpenVR</h4>
-<p>The OpenVR package provides hardware and platform support for devices using the OpenVR platform.</p>
-<h4 id="windows-voice">Windows Voice</h4>
-<p>The Windows Voice package provides support for keyword recognition and dictation functionality on Microsoft Windows 10 devices.</p>
-<h3 id="system-services">System Services</h3>
-<p>Core platform services are provided in system service packages. These packages contain the Mixed Reality Toolkit's default implementations of the system service interfaces, defined in the <a href="#core-package">core</a> package.</p>
+<p>Core services provide the default implementations for the system service interfaces, defined in the core package.</p>
 <p>The MRTK foundation includes the following system services:</p>
 <ul>
-<li><a href="#boundary-system">Boundary System</a></li>
-<li><a href="#diagnostic-system">Diagnostic System</a></li>
-<li><a href="#input-system">Input System</a></li>
-<li><a href="#spatial-awareness-system">Spatial Awareness System</a></li>
-<li><a href="#teleport-system">Teleport System</a></li>
+<li><a href="../Boundary/BoundarySystemGettingStarted.html">Boundary System</a></li>
+<li><a href="../Diagnostics/DiagnosticsSystemGettingStarted.html">Diagnostic System</a></li>
+<li><a href="../Input/Overview.html">Input System</a></li>
+<li><a href="../SpatialAwareness/SpatialAwarenessGettingStarted.html">Spatial Awareness System</a></li>
+<li><a href="../TeleportSystem/Overview.html">Teleport System</a></li>
 </ul>
-<h4 id="boundary-system">Boundary System</h4>
-<p>The MRTK Boundary System provides data about the to virtual reality playspace. On systems for which the user has configured the boundary, the system can provide a floor plane, rectangular playspace, tracked area, and more.</p>
-<h4 id="diagnostic-system">Diagnostic System</h4>
-<p>The MRTK Diagnostic System provides real-time performance data within your application experience. At a glace, you will be able to view frame rate, processor time and other key performance metrics as you use your application.</p>
-<h4 id="input-system">Input System</h4>
-<p>The MRTK Input Systems enables applications to access input in a cross platform manner by specifying user actions and assigning those actions to the most appropriate buttons and axes on target controllers.</p>
-<h4 id="spatial-awareness-system">Spatial Awareness System</h4>
-<p>The MRTK Spatial Awareness System enables access to real-world environmental data from devices such as the Microsoft HoloLens.</p>
-<h4 id="teleport-system">Teleport System</h4>
-<p>The MRTK Teleport System provides virtual reality locomotion support.</p>
-<h3 id="feature-assets">Feature Assets</h3>
-<p>Feature Assets are collections of related functionality delivered as Unity assets and scripts. Some of these features include:</p>
 <ul>
-<li>User Interface Controls</li>
-<li>Standard Assets</li>
-<li>more</li>
+<li><strong>Feature Assets</strong></li>
 </ul>
+<p>Feature Assets are collections of related functionality delivered as Unity assets and scripts including user interface controls, Standard assets, and more.</p>
 <h2 id="extensions-package">Extensions Package</h2>
 <p>The extensions package contains additional services and components that extend the functionality of the foundation package.</p>
 <ul>
 <li><a href="../Extensions/SceneTransitionService/SceneTransitionServiceOverview.html">Scene Transition Service</a></li>
 </ul>
 <h2 id="examples-package">Examples Package</h2>
-<p>The examples package contains demos, sample scripts, and sample scenes that exercise functionality in the foundation package.</p>
-<p>For example, this package contains the HandInteractionExample scene (pictured below) which contains sample objects
+<p>The examples package contains demos, sample scripts, and sample scenes that exercise functionality in the foundation package. This package contains the <a href="../README_HandInteractionExamples.html">HandInteractionExample scene</a> (pictured below) which contains sample objects
 that respond to various types of hand input (articulated and non-articulated).</p>
 <p><img src="../Images/MRTK_Examples.png" alt="HandInteractionExample scene"></p>
 <p>This package also contains eye tracking demos, which are <a href="../EyeTracking/EyeTracking_ExamplesOverview.html">documented here</a></p>
@@ -193,6 +146,11 @@ ship as part of an application.</p>
 <li><a href="../Tools/ExtensionServiceCreationWizard.html">Extension Service Creation Wizard</a></li>
 <li><a href="../Tools/OptimizeWindow.html">Optimize Window</a></li>
 <li><a href="../Tools/ScreenshotUtility.html">Screenshot Utility</a></li>
+</ul>
+<h2 id="see-also">See Also</h2>
+<ul>
+<li><a href="../Architecture/Overview.html">Architecture Overview</a></li>
+<li><a href="../Architecture/SystemsExtensionsProviders.html">Systems, Extension Services and Data Providers</a></li>
 </ul>
 </article>
           </div>
