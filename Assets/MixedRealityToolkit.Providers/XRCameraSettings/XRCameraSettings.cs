@@ -14,11 +14,13 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
     /// </summary>
     [MixedRealityDataProvider(
         typeof(IMixedRealityCameraSystem),
-        SupportedPlatforms.Android | SupportedPlatforms.IOS |
+          SupportedPlatforms.Android 
+        | SupportedPlatforms.IOS
 #if UNITY_2019_OR_LATER
-        SupportedPlatorms.Standalone | SupportedPlatforms.UniversalWindows |
+        | SupportedPlatorms.Standalone 
+        | SupportedPlatforms.UniversalWindows
 #endif
-        SupportedPlatforms.WindowsEditor | SupportedPlatforms.MacEditor | SupportedPlatforms.LinuxEditor,
+        ,
         "Unity AR Foundation Camera Settings",
         "XRCameraSettings/Profiles/DefaultXRCameraSettingsProfile.asset",
         "MixedRealityToolkit.Providers")]
@@ -71,19 +73,19 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
 
             if (IsOpaque)
             {
-                CameraCache.Main.clearFlags = CameraProfile.CameraClearFlagsOpaqueDisplay;
-                CameraCache.Main.nearClipPlane = CameraProfile.NearClipPlaneOpaqueDisplay;
-                CameraCache.Main.farClipPlane = CameraProfile.FarClipPlaneOpaqueDisplay;
-                CameraCache.Main.backgroundColor = CameraProfile.BackgroundColorOpaqueDisplay;
-                QualitySettings.SetQualityLevel(CameraProfile.OpaqueQualityLevel, false);
+                CameraCache.Main.clearFlags = cameraProfile.CameraClearFlagsOpaqueDisplay;
+                CameraCache.Main.nearClipPlane = cameraProfile.NearClipPlaneOpaqueDisplay;
+                CameraCache.Main.farClipPlane = cameraProfile.FarClipPlaneOpaqueDisplay;
+                CameraCache.Main.backgroundColor = cameraProfile.BackgroundColorOpaqueDisplay;
+                QualitySettings.SetQualityLevel(cameraProfile.OpaqueQualityLevel, false);
             }
             else
             {
-                CameraCache.Main.clearFlags = CameraProfile.CameraClearFlagsTransparentDisplay;
-                CameraCache.Main.backgroundColor = CameraProfile.BackgroundColorTransparentDisplay;
-                CameraCache.Main.nearClipPlane = CameraProfile.NearClipPlaneTransparentDisplay;
-                CameraCache.Main.farClipPlane = CameraProfile.FarClipPlaneTransparentDisplay;
-                QualitySettings.SetQualityLevel(CameraProfile.TransparentQualityLevel, false);
+                CameraCache.Main.clearFlags = cameraProfile.CameraClearFlagsTransparentDisplay;
+                CameraCache.Main.backgroundColor = cameraProfile.BackgroundColorTransparentDisplay;
+                CameraCache.Main.nearClipPlane = cameraProfile.NearClipPlaneTransparentDisplay;
+                CameraCache.Main.farClipPlane = cameraProfile.FarClipPlaneTransparentDisplay;
+                QualitySettings.SetQualityLevel(cameraProfile.TransparentQualityLevel, false);
             }
         }
 
@@ -185,8 +187,6 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             if (!preExistingArSessionOriginObject &&
                 (arSessionOriginObject != null))
             {
-                arSessionOriginObject.transform.DetachChildren();
-
                 if (Application.isEditor && !Application.isPlaying)
                 {
                     Object.DestroyImmediate(trackedPoseDriver);

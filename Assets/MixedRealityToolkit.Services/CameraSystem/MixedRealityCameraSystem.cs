@@ -68,20 +68,33 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
                 for (int i = 0; i < profile.SettingsConfigurations.Length; i++)
                 {
                     MixedRealityCameraSettingsConfiguration configuration = profile.SettingsConfigurations[i];
+
+                    if (configuration.ComponentType?.Type == null) 
+                    { 
+                        // Incomplete configuration, do not try to register until a type is set in the profile.
+                        continue; 
+                    }
+
                     object[] args = { Registrar, this, configuration.ComponentName, configuration.Priority, configuration.SettingsProfile };
 
-                    RegisterDataProvider<IMixedRealityCameraSettingsProvider>(
+                    if (RegisterDataProvider<IMixedRealityCameraSettingsProvider>(
                         configuration.ComponentType.Type,
                         configuration.RuntimePlatform,
-                        args);
+                        args))
+                    {
+                        // Apply the display settings
+                        IMixedRealityCameraSettingsProvider provider = GetDataProvider<IMixedRealityCameraSettingsProvider>(configuration.ComponentName);
+                        provider?.ApplyDisplaySettings();
+                    }
                 }
             }
 
             // Check to see if any providers were loaded.
             useFallbackBehavior = (GetDataProviders<IMixedRealityCameraSettingsProvider>().Count == 0);
 
-            if (!useFallbackBehavior)
+            if (useFallbackBehavior)
             {
+                Debug.Log("No settings providers were loaded for this platform. Using default camera system behavior.");
 
                 cameraOpaqueLastFrame = IsOpaque;
 
