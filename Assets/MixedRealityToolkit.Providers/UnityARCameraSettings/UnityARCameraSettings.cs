@@ -14,17 +14,11 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
     /// </summary>
     [MixedRealityDataProvider(
         typeof(IMixedRealityCameraSystem),
-          SupportedPlatforms.Android 
-        | SupportedPlatforms.IOS
-#if UNITY_2019_OR_LATER
-        | SupportedPlatorms.Standalone 
-        | SupportedPlatforms.UniversalWindows
-#endif
-        ,
+        SupportedPlatforms.Android | SupportedPlatforms.IOS,
         "Unity AR Foundation Camera Settings",
-        "XRCameraSettings/Profiles/DefaultXRCameraSettingsProfile.asset",
+        "UnityARCameraSettings/Profiles/DefaultUnityARCameraSettingsProfile.asset",
         "MixedRealityToolkit.Providers")]
-    public class XRCameraSettings : BaseDataProvider, IMixedRealityCameraSettingsProvider
+    public class UnityARCameraSettings : BaseDataProvider, IMixedRealityCameraSettingsProvider
     {
         /// <summary>
         /// Constructor.
@@ -34,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// <param name="name">Friendly name of the provider.</param>
         /// <param name="priority">Provider priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The provider's configuration profile.</param>
-        public XRCameraSettings(
+        public UnityARCameraSettings(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityCameraSystem cameraSystem,
             string name = null,
@@ -42,28 +36,13 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             BaseCameraSettingsProfile profile = null) : base(registrar, cameraSystem, name, priority, profile)
         { }
 
-#region IMixedRealityCameraSettings
-
-        // todo:
-        // android && iOs are always passthrough, others may not be
-        //private DisplayType displayType = DisplayType.Opaque;
+        #region IMixedRealityCameraSettings
 
         /// <inheritdoc/>
-        public DisplayType DisplayType => DisplayType.PassThrough;
-        //{
-        //    get 
-        //    { 
-
-        //    }
-
-        //    private set 
-        //    {
-        //        displayType = value;
-        //    }
-        //}
+        public DisplayType DisplayType => DisplayType.Transparent;
 
         /// <inheritdoc/>
-        public bool IsOpaque => (DisplayType == DisplayType.Opaque);
+        public bool IsOpaque => false;
 
         /// <inheritdoc/>
         public void ApplyDisplaySettings()
@@ -149,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
 
             trackedPoseDriver = cameraObject.EnsureComponent<TrackedPoseDriver>();
 
-            XRCameraSettingsProfile settingsProfile = (ConfigurationProfile as XRCameraSettingsProfile);
+            UnityARCameraSettingsProfile settingsProfile = (ConfigurationProfile as UnityARCameraSettingsProfile);
             TrackedPoseDriver.TrackedPose poseSource;
             TrackedPoseDriver.TrackingType trackingType;
             TrackedPoseDriver.UpdateType updateType;

@@ -19,12 +19,6 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// The display is transparent. Devices on the physical reality (ex: Microsoft HoloLens) side 
         /// of the Mixed Reality spectrum generally have transparent displays.
         /// </summary>
-        Transparent,
-
-        /// <summary>
-        /// The display is opaque and uses a camera to provide transparency. Devices, such as phones, which
-        /// have rear-facing cameras may support pass-through displays.
-        /// </summary>
-        PassThrough,
+        Transparent
     }
 }

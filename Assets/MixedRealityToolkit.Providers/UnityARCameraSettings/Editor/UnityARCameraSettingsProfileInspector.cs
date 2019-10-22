@@ -8,18 +8,16 @@ using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.CameraSystem
 {
-    [CustomEditor(typeof(XRCameraSettingsProfile))]
-    public class XRSettingsProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
+    [CustomEditor(typeof(UnityARCameraSettingsProfile))]
+    public class UnityARCameraSettingsProfileInspector : BaseMixedRealityToolkitConfigurationProfileInspector
     {
-        private const string ProfileTitle = "XR Camera Settings";
+        private const string ProfileTitle = "Unity AR Foundation Camera Settings";
         private const string ProfileDescription = "";
 
         // Tracking settings
         private SerializedProperty poseSource;
         private SerializedProperty trackingType;
         private SerializedProperty updateType;
-
-        // todo
 
         protected override void OnEnable()
         {
