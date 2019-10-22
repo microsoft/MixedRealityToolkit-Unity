@@ -13,6 +13,13 @@ MonoBehaviour:
   m_Name: DefaultMixedRealityCameraProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 0
+  settingsConfigurations:
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.CameraSystem.XRCameraSettings, Microsoft.MixedReality.Toolkit.Providers.XRCamera
+    componentName: Unity AR Foundation Camera Settings
+    priority: 0
+    runtimePlatform: 288
+    settingsProfile: {fileID: 11400000, guid: 7cebd7cac3d36c841813d22b6c0f47a3, type: 2}
   nearClipPlaneOpaqueDisplay: 0.1
   farClipPlaneOpaqueDisplay: 1000
   cameraClearFlagsOpaqueDisplay: 1
@@ -22,4 +29,4 @@ MonoBehaviour:
   farClipPlaneTransparentDisplay: 50
   cameraClearFlagsTransparentDisplay: 2
   backgroundColorTransparentDisplay: {r: 0, g: 0, b: 0, a: 0}
-  holoLensQualityLevel: 0
+  transparentQualityLevel: 0
