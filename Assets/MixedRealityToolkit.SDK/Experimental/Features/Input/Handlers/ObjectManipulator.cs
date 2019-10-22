@@ -734,12 +734,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         private Vector3 SmoothTo(Vector3 source, Vector3 goal, float lerpTime)
         {
-            return Vector3.Lerp(source, goal, !smoothingActive || lerpTime == 0f ? 1f : 1f - Mathf.Pow(lerpTime, Time.deltaTime));
+            return Vector3.Lerp(source, goal, (!smoothingActive || lerpTime == 0f) ? 1f : 1f - Mathf.Pow(lerpTime, Time.deltaTime));
         }
 
-        private Quaternion SmoothTo(Quaternion source, Quaternion goal, float lerpTime)
+        private Quaternion SmoothTo(Quaternion source, Quaternion goal, float slerpTime)
         {
-            return Quaternion.Slerp(source, goal, !smoothingActive || lerpTime == 0f ? 1f : 1f - Mathf.Pow(lerpTime, Time.deltaTime));
+            return Quaternion.Slerp(source, goal, (!smoothingActive || slerpTime == 0f) ? 1f : 1f - Mathf.Pow(slerpTime, Time.deltaTime));
         }
 
         private Vector3[] GetHandPositionArray()
