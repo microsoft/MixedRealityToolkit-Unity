@@ -39,9 +39,6 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         #region IMixedRealityCameraSettings
 
         /// <inheritdoc/>
-        public DisplayType DisplayType => DisplayType.Transparent;
-
-        /// <inheritdoc/>
         public bool IsOpaque => false;
 
         /// <inheritdoc/>
@@ -70,6 +67,16 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
 
         #endregion IMixedRealityCameraSettings
 
+        /// The profile used to configure the camera.
+        /// </summary>
+        public UnityARCameraSettingsProfile SettingsProfile
+        {
+            get
+            {
+                return ConfigurationProfile as UnityARCameraSettingsProfile;
+            }
+        }
+
         bool isInitialized = false;
 
         private GameObject arSessionObject = null;
@@ -85,6 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         private ARInputManager arInputManager = null;
         private TrackedPoseDriver trackedPoseDriver = null;
 
+        /// <summary>
         /// <summary>
         /// Examines the scene to determine if AR Foundation components are present.
         /// </summary>
@@ -241,17 +249,6 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             }
 
             isInitialized = false;
-        }
-
-        /// <summary>
-        /// The profile used to configure the camera.
-        /// </summary>
-        public UnityARCameraSettingsProfile SettingsProfile
-        {
-            get
-            {
-                return ConfigurationProfile as UnityARCameraSettingsProfile;
-            }
         }
     }
 }

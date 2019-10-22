@@ -35,8 +35,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
                 if (mainCamera == null)
                 {
-                    // todo: ask the camera service if it has a main camera to give us
-
                     // If no main camera was found, alert the developer.
                     Debug.LogError("No main camera found. The Mixed Reality Toolkit requires one camera in the scene to be tagged as \"MainCamera\".");
                 }

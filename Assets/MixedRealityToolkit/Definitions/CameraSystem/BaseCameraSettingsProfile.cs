@@ -8,8 +8,11 @@ using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.CameraSystem
 {
+    /// <summary>
+    /// Base class used to derive custom camera settings profiles.
+    /// </summary>
     public class BaseCameraSettingsProfile : BaseMixedRealityProfile
     {
-        // todo
+        // This class is intentionally blank. It exists for future expansion of common functionality.
     }
 }
