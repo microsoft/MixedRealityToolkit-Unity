@@ -111,13 +111,13 @@
 <h2 id="how-to-change-tracking-reference">How to change tracking reference</h2>
 <p>The <em>Tracked Target Type</em> property of the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.html"><code>SolverHandler</code></a> component defines the point of reference all solvers will use to calculate their algorithms. For example, a value type of <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.TrackedObjectType.html#Microsoft_MixedReality_Toolkit_Utilities_TrackedObjectType_Head"><code>Head</code></a> with a simple <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.html"><code>SurfaceMagnetism</code></a> component will result in a raycast from the head and in the direction of the user's gaze for solving what surface is hit. Potential values for the <code>TrackedTargetType</code> property are:</p>
 <ul>
-<li><em>Head</em> : Point of reference from the camera</li>
-<li><em>MotionController</em>: Point of reference from a motion controller
+<li><em>Head</em> : Point of reference is the transform of the main camera</li>
+<li><em>ControllerRay</em>: Point of reference is the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Input.LinePointer.html"><code>LinePointer</code></a> transform on a controller (i.e pointer origin on a motion controller or hand controller) pointing in the direction of the line ray
 <ul>
 <li>Use the <code>TrackedHandedness</code> property to select the handedness preference (i.e Left, Right, Both)</li>
 </ul>
 </li>
-<li><em>HandJoint</em>: Point of reference from a hand
+<li><em>HandJoint</em>: Point of reference is the transform of a specific hand joint
 <ul>
 <li>Use the <code>TrackedHandedness</code> property to select the handedness preference (i.e Left, Right, Both)</li>
 <li>Use the  <code>TrackedHandJoint</code> property to determine the joint transform to utilize</li>
@@ -127,7 +127,7 @@
 </ul>
 <div class="NOTE">
 <h5>Note</h5>
-<p>For both <em>MotionController</em> and <em>HandJoint</em> types, the solver handler will attempt to provide the left controller/hand transform first and then the right if the former is not available or unless the <code>TrackedHandedness</code> property specifies otherwise.</p>
+<p>For both <em>ControllerRay</em> and <em>HandJoint</em> types, the solver handler will attempt to provide the left controller/hand transform first and then the right if the former is not available or unless the <code>TrackedHandedness</code> property specifies otherwise.</p>
 </div>
 <p><img src="Images/Solver/TrackedObjectType-Example.gif" alt="Solver">
 <br>
@@ -205,8 +205,12 @@ public class InFront : Solver
 <p>Use the <em>Orientation Blend</em> property to control the balance between rotation factors when <em>Orientation Mode</em> is set to <em>Blended</em>. A value of 0.0 will have orientation entirely driven by <em>TrackedTarget</em> mode and a value of 1.0 will have orientation driven entirely by <em>SurfaceNormal</em>.</p>
 </div>
 <p><img src="Images/Solver/SurfaceMagExample.png" alt="SurfaceMagnetism Example"></p>
+<h4 id="determining-what-surfaces-can-be-hit">Determining what surfaces can be hit</h4>
+<p>When adding a <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.html"><code>SurfaceMagnetism</code></a> component to a GameObject, it is important to consider the layer of the GameObject and it's children, if any have colliders. The component works by performing various types of raycasts to determine what surface to &quot;magnet&quot; itself against. If the solver GameObject has a collider on one of the layers listed in the <code>MagneticSurfaces</code> property of <code>SurfaceMagnetism</code>, then the raycast will likely hit itself resulting in the GameObject attaching to it's own collider point. This odd behavior can be avoided by setting the main GameObject and all children to the <em>Ignore Raycast</em> layer or modifying the <code>MagneticSurfaces</code> LayerMask array appropriately.</p>
+<p>Conversely, a <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.html"><code>SurfaceMagnetism</code></a> GameObject will not collide with surfaces on a layer not listed in the <code>MagneticSurfaces</code> property. It is generally recommended to place all desired surfaces on a dedicated layer (i.e <em>Surfaces</em>) and setting the <code>MagneticSurfaces</code> property to just this layer.  Using <em>default</em> or <em>everything</em> may result in UI components or cursors contributing to the solver.</p>
+<p>Finally, surfaces farther than the <code>MaxRaycastDistance</code> property setting will be ignored by the <code>SurfaceMagnetism</code> raycasts.</p>
 <h3 id="hand-menu-with-handconstraint-and-handconstraintpalmup">Hand Menu with HandConstraint and HandConstraintPalmUp</h3>
-<p><img src="Images/Solver/MRTK_UX_HandMenu.png" alt=""></p>
+<p><img src="Images/Solver/MRTK_UX_HandMenu.png" alt="Hand Menu UX Example"></p>
 <p>The <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> behavior provides a solver that constrains the tracked object to a region safe for hand constrained content (such as hand UI, menus, etc). Safe regions are considered areas that don't intersect with the hand. A derived class of <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> called <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.html"><code>HandConstraintPalmUp</code></a> is also included to demonstrate a common behavior of activating the solver tracked object when the palm is facing the user. For example use of this behavior please see the HandBasedMenuExample scene under: <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes">MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/</a></p>
 <p>Please see the tool tips available for each <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> property for additional documentation. A few properties are defined in more detail below.</p>
 <img src="Images/Solver/MRTK_Solver_HandConstraintPalmUp.png" width="450">
@@ -217,17 +221,18 @@ public class InFront : Solver
 <ul>
 <li><p><strong>Activation Events</strong>: Currently the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> triggers four activation events. These events can be used in many different combinations to create unique <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html"><code>HandConstraint</code></a> behaviors, please see the HandBasedMenuExample scene under: <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes">MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/</a> for examples of these behaviors.</p>
 <ul>
-<li>OnHandActivate: triggers when a hand satisfies the IsHandActive method</li>
-<li>OnHandDeactivate: triggers when the IsHandActive method is no longer satisfied.</li>
-<li>OnFirstHandDetected: occurs when the hand tracking state changes from no hands in view, to the first hand in view.</li>
-<li>OnLastHandLost: occurs when the hand tracking state changes from at least one hand in view, to no hands in view.</li>
+<li><em>OnHandActivate</em>: triggers when a hand satisfies the IsHandActive method</li>
+<li><em>OnHandDeactivate</em>: triggers when the IsHandActive method is no longer satisfied.</li>
+<li><em>OnFirstHandDetected</em>: occurs when the hand tracking state changes from no hands in view, to the first hand in view.</li>
+<li><em>OnLastHandLost</em>: occurs when the hand tracking state changes from at least one hand in view, to no hands in view.</li>
 </ul>
 </li>
 </ul>
-<h4 id="determining-what-surfaces-can-be-hit">Determining what surfaces can be hit</h4>
-<p>When adding a <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.html"><code>SurfaceMagnetism</code></a> component to a GameObject, it is important to consider the layer of the GameObject and it's children, if any have colliders. The component works by performing various types of raycasts to determine what surface to &quot;magnet&quot; itself against. If the Solver GameObject has a collider on one of the layers listed in the <code>MagneticSurfaces</code> property of <code>SurfaceMagnetism</code>, then the raycast will likely hit itself resulting in the GameObject attaching to it's own collider point. This odd behavior can be avoided by setting the main GameObject and all children to the <em>Ignore Raycast</em> layer or modifying the <code>MagneticSurfaces</code> LayerMask array appropriately.</p>
-<p>Conversely, a <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism.html"><code>SurfaceMagnetism</code></a> GameObject will not collide with surfaces on a layer not listed in the <code>MagneticSurfaces</code> property. It is generally recommended to place all desired surfaces on a dedicated layer (i.e <em>Surfaces</em>) and setting the <code>MagneticSurfaces</code> property to just this layer.  Using <em>default</em> or <em>everything</em> may result in UI components or cursors contributing to the solver.</p>
-<p>Finally, surfaces farther than the <code>MaxRaycastDistance</code> property setting will be ignored by the Surface Magnetism raycasts.</p>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="Input/HandTracking.html">Hand Tracking</a></li>
+<li><a href="Input/Gaze.html">Gaze</a></li>
+</ul>
 </article>
           </div>
           
