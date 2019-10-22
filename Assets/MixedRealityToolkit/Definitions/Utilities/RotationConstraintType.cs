@@ -11,8 +11,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         ZAxisOnly
     }
 
+    /// <summary>
+    /// Helper class used to convert from RotationConstraintType to AxisFlags
+    /// </summary>
     public class RotationConstraintHelper
     {
+        /// <summary>
+        /// Returns corresponding AxisFlags for given RotationConstraintType
+        /// </summary>
         public static AxisFlags ConvertToAxisFlags(RotationConstraintType type)
         {
             switch (type)

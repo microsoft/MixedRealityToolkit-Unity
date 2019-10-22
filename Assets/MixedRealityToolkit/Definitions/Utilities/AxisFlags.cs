@@ -3,6 +3,9 @@
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
 {
+    /// <summary>
+    /// Flags used to represent a set of 3D axes
+    /// </summary>
     [System.Flags]
     public enum AxisFlags
     {

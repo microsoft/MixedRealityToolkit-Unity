@@ -8,6 +8,10 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
+    /// <summary>
+    /// Manages constraints for a given object and ensures that Scale/Rotation/Translation 
+    /// constraints are executed separately.
+    /// </summary>
     internal class ConstraintManager
     {
         private List<TransformConstraint> constraints;
