@@ -78,7 +78,7 @@ MRTK は、以下を実行することで Mixed Reality ソリューションを
 
 [Hand Interaction のサンプル シーン](README_HandInteractionExamples.md) は、MRTK の様々な UX コントロールとインタラクションを紹介しているため、MRTK を始めるには最適な場所です。
 
-1. Open the **HandInteractionExamples** scene under `Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes\HandInteractionExamples`
+1. `Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes\HandInteractionExamples` の中の  **HandInteractionExamples** シーンを開きます。
 
 1. 「TMP Essentials」をインポートするかを尋ねるプロンプトが表示されます。
   
@@ -106,8 +106,8 @@ Editor 内の入力シミュレーション を使って、[手](InputSimulation
 * Space キーを押しながら、マウスを動かして手を動かします。
 * **マウスのスクロールホイール**を使用して、手の奥行を調整します。
 * **マウスの左ボタン**をクリックして、ジェスチャを切り替えます。
-* **T/Y** キー to make the hand persistent in the view.
-* Hold **CTRL** key and move the mouse to rotate the hand.
+* **T/Y** キーで、ハンドをビューに固定します。
+* **CTRL** キーを押しながら、マウスを動かして手を回転させます。
 
 シーンの探索を楽しんでください！ UI コントロールの詳細については、[ハンド インタラクションのサンプル ガイド](README_HandInteractionExamples.md) で学ぶことができます。また、[入力シミュレーションのドキュメント](InputSimulation/InputSimulationService.md)を読んで、MRTK の Editor 内の手の入力シミュレーションの詳細を確認してください。
 
