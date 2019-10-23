@@ -1,8 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit
@@ -12,6 +15,28 @@ namespace Microsoft.MixedReality.Toolkit
     /// </summary>
     public static class GameObjectExtensions
     {
+        /// <summary>
+        /// Export mesh data of current GameObject, and children if enabled, to file provided in OBJ format
+        /// </summary>
+        /// <remarks>
+        /// Traversal of GameObject mesh data is done synchronously on main Unity thread due to limitations by Unity
+        /// </remarks>
+        public static async Task ExportOBJAsync(this GameObject root, string filePath, bool includeChildren = true)
+        {
+            if (!File.Exists(filePath))
+            {
+                File.Create(filePath);
+            }
+
+            // Await coroutine that must execute on Unity's main thread
+            string getObjData = await OBJWriterUtility.CreateOBJFile(root, includeChildren);
+
+            using (StreamWriter sw = new StreamWriter(filePath))
+            {
+                await sw.WriteAsync(getObjData);
+            }
+        }
+
         public static void SetChildrenActive(this GameObject root, bool isActive)
         {
             for (int i = 0; i < root.transform.childCount; i++)
