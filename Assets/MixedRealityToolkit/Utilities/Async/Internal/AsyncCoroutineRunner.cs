@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     instance = new GameObject("AsyncCoroutineRunner").AddComponent<AsyncCoroutineRunner>();
                 }
 
-                //instance.gameObject.hideFlags = HideFlags.None;
+                instance.gameObject.hideFlags = HideFlags.None;
 
                 // AsyncCoroutineRunner must be at the root so that we can call DontDestroyOnLoad on it.
                 // This is ultimately to ensure that it persists across scene loads/unloads.

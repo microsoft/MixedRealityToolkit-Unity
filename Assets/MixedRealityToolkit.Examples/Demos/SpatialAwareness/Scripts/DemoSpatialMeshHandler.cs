@@ -2,9 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
-using Microsoft.MixedReality.Toolkit.SpatialAwareness.Utilities;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
@@ -45,19 +43,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         private void OnDestroy()
         {
             UnregisterEventHandlers();
-        }
-
-        public void TestSave()
-        {
-#if UNITY_UWP
-            string folderPath = Windows.Storage.KnownFolders.Objects3D.Path;
-            Debug.Log("Writing file(s) to path: " + folderPath);
-            SpatialMeshExporter.Save(folderPath);
-#else
-            string folderPath = UnityEngine.Windows.Directory.temporaryFolder;
-            Debug.Log("Writing file(s) to path: " + folderPath);
-            Task.Run(() => SpatialMeshExporter.Save(folderPath));
-#endif
         }
 
         /// <summary>
