@@ -95,9 +95,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// - No one component of the returned vector will be less than the min scale.
         /// - The returned vector's direction will be the same as the given vector
         /// </summary>
-        public override void ApplyConstraint(ref MixedRealityPose pose, ref Vector3 scale)
+        public override void ApplyConstraint(ref MixedRealityTransform transform)
         {
-            if (Vector3.Min(maximumScale, scale) != scale)
+            if (Vector3.Min(maximumScale, transform.Scale) != transform.Scale)
             {
                 float maxRatio = 0.0f;
                 int maxIdx = -1;
@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     if (maximumScale[i] > 0)
                     {
-                        float ratio = scale[i] / maximumScale[i];
+                        float ratio = transform.Scale[i] / maximumScale[i];
                         if (ratio > maxRatio)
                         {
                             maxRatio = ratio;
@@ -118,11 +118,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 if (maxIdx != -1)
                 {
-                    scale /= maxRatio;
+                    transform.Scale /= maxRatio;
                 }
             }
 
-            if (Vector3.Max(minimumScale, scale) != scale)
+            if (Vector3.Max(minimumScale, transform.Scale) != transform.Scale)
             {
                 float minRatio = 1.0f;
                 int minIdx = -1;
@@ -132,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     if (minimumScale[i] > 0)
                     {
-                        float ratio = scale[i] / minimumScale[i];
+                        float ratio = transform.Scale[i] / minimumScale[i];
                         if (ratio < minRatio)
                         {
                             minRatio = ratio;
@@ -143,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 if (minIdx != -1)
                 {
-                    scale /= minRatio;
+                    transform.Scale /= minRatio;
                 }
             }
         }

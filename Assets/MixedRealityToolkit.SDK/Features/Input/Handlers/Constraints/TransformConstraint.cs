@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Abstract method for applying constraints to transforms during manipulation
         /// </summary>
-        public abstract void ApplyConstraint(ref MixedRealityPose pose, ref Vector3 scale);
+        public abstract void ApplyConstraint(ref MixedRealityTransform transform);
 
         #endregion Public Methods
     }

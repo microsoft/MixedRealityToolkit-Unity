@@ -37,10 +37,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// start does not change when the object is moved towards and away from 
         /// the head.
         /// </summary>
-        public override void ApplyConstraint(ref MixedRealityPose pose, ref Vector3 scale)
+        public override void ApplyConstraint(ref MixedRealityTransform transform)
         {
-            float dist = (pose.Position - CameraCache.Main.transform.position).magnitude;
-            scale = (dist / initialDist) * initialScale;
+            float dist = (transform.Position - CameraCache.Main.transform.position).magnitude;
+            transform.Scale = (dist / initialDist) * initialScale;
         }
 
         #endregion Public Methods

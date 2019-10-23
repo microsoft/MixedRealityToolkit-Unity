@@ -484,12 +484,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             yield return hand.Move(Vector3.one * 0.5f, numHandSteps);
             yield return null;
 
-            Assert.AreEqual(originalDist, (CameraCache.Main.transform.position - testObject.transform.position).magnitude);
+            Assert.AreEqual(originalDist, (CameraCache.Main.transform.position - testObject.transform.position).magnitude, 0.001f);
 
             yield return hand.Move(Vector3.one * -1f, numHandSteps);
             yield return null;
 
-            Assert.AreEqual(originalDist, (CameraCache.Main.transform.position - testObject.transform.position).magnitude);
+            Assert.AreEqual(originalDist, (CameraCache.Main.transform.position - testObject.transform.position).magnitude, 0.001f);
         }
 
         /// <summary>

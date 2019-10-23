@@ -21,35 +21,35 @@ namespace Microsoft.MixedReality.Toolkit.UI
             constraints = gameObject.GetComponents<TransformConstraint>().ToList();
         }
 
-        public void ApplyScaleConstraints(ref MixedRealityPose pose, ref Vector3 scale)
+        public void ApplyScaleConstraints(ref MixedRealityTransform transform)
         {
             foreach (var constraint in constraints)
             {
                 if (constraint.ConstraintType == Utilities.TransformFlags.Scale)
                 {
-                    constraint.ApplyConstraint(ref pose, ref scale);
+                    constraint.ApplyConstraint(ref transform);
                 }
             }
         }
 
-        public void ApplyRotationConstraints(ref MixedRealityPose pose, ref Vector3 scale)
+        public void ApplyRotationConstraints(ref MixedRealityTransform transform)
         {
             foreach (var constraint in constraints)
             {
                 if (constraint.ConstraintType == Utilities.TransformFlags.Rotate)
                 {
-                    constraint.ApplyConstraint(ref pose, ref scale);
+                    constraint.ApplyConstraint(ref transform);
                 }
             }
         }
 
-        public void ApplyTranslationConstraints(ref MixedRealityPose pose, ref Vector3 scale)
+        public void ApplyTranslationConstraints(ref MixedRealityTransform transform)
         {
             foreach (var constraint in constraints)
             {
                 if (constraint.ConstraintType == Utilities.TransformFlags.Move)
                 {
-                    constraint.ApplyConstraint(ref pose, ref scale);
+                    constraint.ApplyConstraint(ref transform);
                 }
             }
         }

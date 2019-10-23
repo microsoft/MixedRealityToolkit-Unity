@@ -51,10 +51,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Removes movement along a given axis if its flag is found
         /// in ConstraintOnMovement
         /// </summary>
-        public override void ApplyConstraint(ref MixedRealityPose pose, ref Vector3 scale)
+        public override void ApplyConstraint(ref MixedRealityTransform transform)
         {
             Quaternion inverseRotation = Quaternion.Inverse(worldPoseOnManipulationStart.Rotation);
-            Vector3 position = pose.Position;
+            Vector3 position = transform.Position;
             if (constraintOnMovement.HasFlag(AxisFlags.XAxis))
             {
                 if (useLocalSpaceForConstraint)
@@ -94,7 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     position.z = worldPoseOnManipulationStart.Position.z;
                 }
             }
-            pose.Position = position;
+            transform.Position = position;
         }
 
         #endregion Public Methods

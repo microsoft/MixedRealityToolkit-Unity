@@ -51,9 +51,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Removes rotation about given axis if its flag is found
         /// in ConstraintOnRotation
         /// </summary>
-        public override void ApplyConstraint(ref MixedRealityPose pose, ref Vector3 scale)
+        public override void ApplyConstraint(ref MixedRealityTransform transform)
         {
-            Quaternion rotation = pose.Rotation * Quaternion.Inverse(worldPoseOnManipulationStart.Rotation);
+            Quaternion rotation = transform.Rotation * Quaternion.Inverse(worldPoseOnManipulationStart.Rotation);
             Vector3 eulers = rotation.eulerAngles;
             if (constraintOnRotation.HasFlag(AxisFlags.XAxis))
             {
@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 eulers.z = 0;
             }
 
-            pose.Rotation = useLocalSpaceForConstraint 
+            transform.Rotation = useLocalSpaceForConstraint 
                 ? worldPoseOnManipulationStart.Rotation * Quaternion.Euler(eulers)
                 : Quaternion.Euler(eulers) * worldPoseOnManipulationStart.Rotation;
         }

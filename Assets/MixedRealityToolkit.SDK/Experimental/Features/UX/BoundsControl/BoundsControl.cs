@@ -889,18 +889,18 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                     float scaleFactor = 1 + (currentDist - initialDist) / initialDist;
 
                     Vector3 newScale = initialScaleOnGrabStart * scaleFactor;
-                    Vector3 clampedScale = newScale;
+
+                    MixedRealityTransform clampedTransform = MixedRealityTransform.NewScale(newScale);
                     if (scaleConstraint != null)
                     {
-                        MixedRealityPose unusedPose = MixedRealityPose.ZeroIdentity;
-                        scaleConstraint.ApplyConstraint(ref unusedPose, ref clampedScale);
-                        if (clampedScale != newScale)
+                        scaleConstraint.ApplyConstraint(ref clampedTransform);
+                        if (clampedTransform.Scale != newScale)
                         {
-                            scaleFactor = clampedScale[0] / initialScaleOnGrabStart[0];
+                            scaleFactor = clampedTransform.Scale[0] / initialScaleOnGrabStart[0];
                         }
                     }
 
-                    Target.transform.localScale = clampedScale;
+                    Target.transform.localScale = clampedTransform.Scale;
                     Target.transform.position = initialPositionOnGrabStart * scaleFactor + (1 - scaleFactor) * oppositeCorner;
                 }
             }

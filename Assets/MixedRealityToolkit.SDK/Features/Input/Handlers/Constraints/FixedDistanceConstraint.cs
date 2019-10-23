@@ -61,11 +61,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Constrains position such that the distance between pose and
         /// the ConstraintTransform does not change from manipulation start
         /// </summary>
-        public override void ApplyConstraint(ref MixedRealityPose pose, ref Vector3 scale)
+        public override void ApplyConstraint(ref MixedRealityTransform transform)
         {
-            Vector3 constraintToPose = pose.Position - constraintTransform.position;
+            Vector3 constraintToPose = transform.Position - constraintTransform.position;
             constraintToPose = constraintToPose.normalized * distanceAtManipulationStart;
-            pose.Position = constraintTransform.position + constraintToPose;
+            transform.Position = constraintTransform.position + constraintToPose;
         }
 
         #endregion Public Methods
