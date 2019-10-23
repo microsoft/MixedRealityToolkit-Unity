@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e01fc6a1b35d11479ff7f4b632b33d2, type: 3}
   m_Name: DefaultUnityARCameraSettingsProfile
   m_EditorClassIdentifier: 
-  isCustomProfile: 1
+  isCustomProfile: 0
   poseSource: 6
   trackingType: 0
   updateType: 0
