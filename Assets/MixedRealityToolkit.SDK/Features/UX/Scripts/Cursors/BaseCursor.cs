@@ -123,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("The angular scale of cursor in relation to Main Camera, assuming a mesh with bounds of Vector3(1,1,1)")]
-        private float cursorAngularScale = 60.0f;
+        private float cursorAngularScale = 50.0f;
 
         [Header("Transform References")]
         [SerializeField]
