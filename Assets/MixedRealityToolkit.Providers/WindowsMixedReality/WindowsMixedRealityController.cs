@@ -13,9 +13,6 @@ using UnityEngine.XR.WSA.Input;
 #endif
 
 #if WINDOWS_UWP
-using Windows.Foundation;
-using Windows.Perception;
-using Windows.UI.Input.Spatial;
 using Windows.Storage.Streams;
 using Microsoft.MixedReality.Toolkit.Windows.Input;
 #endif
@@ -252,7 +249,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
 
             controllerModelInitialized = true;
-            CreateControllerModelFromPlatformSDK(interactionSourceState.source.id);
+            CreateControllerModelFromPlatformSDK(interactionSourceState.source);
         }
 
         protected override bool TryRenderControllerModel(Type controllerType, InputSourceType inputSourceType)
@@ -272,13 +269,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             return false;
         }
 
-        private async void CreateControllerModelFromPlatformSDK(uint interactionSourceId)
+        private async void CreateControllerModelFromPlatformSDK(InteractionSource interactionSource)
         {
             Debug.Log("Creating controller model from platform SDK");
             byte[] fileBytes = null;
 
 #if WINDOWS_UWP
-            var controllerModelStream = await TryGetRenderableModelAsync(interactionSourceId);
+            var controllerModelStream = await interactionSource.TryGetRenderableModelAsync();
             if (controllerModelStream == null ||
                 controllerModelStream.Size == 0)
             {
@@ -333,29 +330,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 TryRenderControllerModel(GetType(), InputSourceType.Controller);
             }
         }
-
-#if WINDOWS_UWP
-        private IAsyncOperation<IRandomAccessStreamWithContentType> TryGetRenderableModelAsync(uint interactionSourceId)
-        {
-            IAsyncOperation<IRandomAccessStreamWithContentType> returnValue = null;
-            UnityEngine.WSA.Application.InvokeOnUIThread(() =>
-            {
-                var sources = SpatialInteractionManager.GetForCurrentView()?.GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
-                if (sources != null)
-                {
-                    foreach (SpatialInteractionSourceState sourceState in sources)
-                    {
-                        if (sourceState.Source.Id.Equals(interactionSourceId))
-                        {
-                            returnValue = sourceState.Source.Controller.TryGetRenderableModelAsync();
-                        }
-                    }
-                }
-            }, true);
-
-            return returnValue;
-        }
-#endif
 
         private string GenerateKey(InteractionSource source)
         {
