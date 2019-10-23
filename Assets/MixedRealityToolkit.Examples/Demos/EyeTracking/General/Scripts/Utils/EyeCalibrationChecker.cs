@@ -20,25 +20,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         public UnityEvent OnNoEyeCalibrationDetected;
 
         private bool? prevCalibrationStatus = null;
-        private IMixedRealityInputSystem inputSystem = null;
 
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        private IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
-                return inputSystem;
-            }
-        }
-
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
             bool? calibrationStatus;
 
@@ -48,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             }
             else
             {
-                calibrationStatus = InputSystem?.EyeGazeProvider?.IsEyeCalibrationValid;
+                calibrationStatus = CoreServices.InputSystem?.EyeGazeProvider?.IsEyeCalibrationValid;
             }
 
             if (calibrationStatus != null)

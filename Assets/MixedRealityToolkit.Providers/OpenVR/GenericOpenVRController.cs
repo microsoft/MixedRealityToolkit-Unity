@@ -201,22 +201,22 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             // Raise input system events if it is enabled.
             if (lastState != TrackingState)
             {
-                InputSystem?.RaiseSourceTrackingStateChanged(InputSource, this, TrackingState);
+                CoreServices.InputSystem?.RaiseSourceTrackingStateChanged(InputSource, this, TrackingState);
             }
 
             if (TrackingState == TrackingState.Tracked && LastControllerPose != CurrentControllerPose)
             {
                 if (IsPositionAvailable && IsRotationAvailable)
                 {
-                    InputSystem?.RaiseSourcePoseChanged(InputSource, this, CurrentControllerPose);
+                    CoreServices.InputSystem?.RaiseSourcePoseChanged(InputSource, this, CurrentControllerPose);
                 }
                 else if (IsPositionAvailable && !IsRotationAvailable)
                 {
-                    InputSystem?.RaiseSourcePositionChanged(InputSource, this, CurrentControllerPosition);
+                    CoreServices.InputSystem?.RaiseSourcePositionChanged(InputSource, this, CurrentControllerPosition);
                 }
                 else if (!IsPositionAvailable && IsRotationAvailable)
                 {
-                    InputSystem?.RaiseSourceRotationChanged(InputSource, this, CurrentControllerRotation);
+                    CoreServices.InputSystem?.RaiseSourceRotationChanged(InputSource, this, CurrentControllerRotation);
                 }
             }
         }

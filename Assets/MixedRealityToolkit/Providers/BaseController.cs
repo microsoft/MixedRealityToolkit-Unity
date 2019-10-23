@@ -29,23 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Enabled = true;
         }
 
-        private IMixedRealityInputSystem inputSystem = null;
-
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        protected IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
-                return inputSystem;
-            }
-        }
-
         /// <summary>
         /// The default interactions for this controller.
         /// </summary>
@@ -167,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Assign the default interactions based on controller handedness if necessary. 
+        /// Assign the default interactions based on controller handedness, if necessary. 
         /// </summary>
         public abstract void SetupDefaultInteractions(Handedness controllerHandedness);
 
@@ -272,19 +255,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         #region MRTK instance helpers
         protected MixedRealityControllerVisualizationProfile GetControllerVisualizationProfile()
         {
-            if (InputSystem?.InputSystemProfile != null)
-            {
-                return InputSystem.InputSystemProfile.ControllerVisualizationProfile;
-            }
-
-            return null;
+            return CoreServices.InputSystem?.InputSystemProfile?.ControllerVisualizationProfile;
         }
 
         protected bool IsControllerMappingEnabled()
         {
-            if (InputSystem?.InputSystemProfile != null)
+            if (CoreServices.InputSystem?.InputSystemProfile != null)
             {
-                return InputSystem.InputSystemProfile.IsControllerMappingEnabled;
+                return CoreServices.InputSystem.InputSystemProfile.IsControllerMappingEnabled;
             }
 
             return false;
@@ -292,12 +270,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected MixedRealityControllerMapping[] GetControllerMappings()
         {
-            if (InputSystem?.InputSystemProfile?.ControllerMappingProfile != null)
-            {
-                return InputSystem.InputSystemProfile.ControllerMappingProfile.MixedRealityControllerMappings;
-            }
-
-            return null;
+            return CoreServices.InputSystem?.InputSystemProfile?.ControllerMappingProfile?.MixedRealityControllerMappings;
         }
 
         #endregion MRTK instance helpers
