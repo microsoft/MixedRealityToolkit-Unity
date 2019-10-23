@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
     public struct MixedRealityCameraSettingsConfiguration : IMixedRealityServiceConfiguration
     {
         [SerializeField]
+        [Tooltip("The concrete type of the camera settings provider.")]
         [Implements(typeof(IMixedRealityCameraSettingsProvider), TypeGrouping.ByNamespaceFlat)]
         private SystemType componentType;
 
@@ -18,18 +19,21 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         public SystemType ComponentType => componentType;
 
         [SerializeField]
+        [Tooltip("The name of the camera settings provider.")]
         private string componentName;
 
         /// <inheritdoc />
         public string ComponentName => componentName;
 
         [SerializeField]
+        [Tooltip("The camera settings provider priority.")]
         private uint priority;
 
         /// <inheritdoc />
         public uint Priority => priority;
 
         [SerializeField]
+        [Tooltip("The platform(s) on which the camera settings provider is supported.")]
         [EnumFlags]
         private SupportedPlatforms runtimePlatform;
 
