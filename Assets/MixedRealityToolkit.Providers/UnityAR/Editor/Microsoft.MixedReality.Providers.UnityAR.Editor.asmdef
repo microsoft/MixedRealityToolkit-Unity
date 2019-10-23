@@ -1,10 +1,10 @@
 {
-    "name": "Microsoft.MixedReality.Providers.UnityARCamera.Editor",
+    "name": "Microsoft.MixedReality.Providers.UnityAR.Editor",
     "references": [
         "Microsoft.MixedReality.Toolkit",
         "Microsoft.MixedReality.Toolkit.Editor.Inspectors",
         "Microsoft.MixedReality.Toolkit.Editor.Utilities",
-        "Microsoft.MixedReality.Toolkit.Providers.UnityARCamera"
+        "Microsoft.MixedReality.Toolkit.Providers.UnityAR"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [

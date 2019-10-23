@@ -14,7 +14,7 @@
   <assembly fullname="Microsoft.MixedReality.Toolkit" preserve="all"/>
   <assembly fullname="Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality" preserve="all"/>
   <assembly fullname="Microsoft.MixedReality.Toolkit.Providers.WindowsVoiceInput" preserve="all"/>
-  <assembly fullname="Microsoft.MixedReality.Toolkit.Providers.UnityARCameraSettings" preserve="all"/>
+  <assembly fullname="Microsoft.MixedReality.Toolkit.Providers.UnityAR" preserve="all"/>
   <assembly fullname="Microsoft.MixedReality.Toolkit.Providers.OpenVR" preserve="all"/>
   <assembly fullname="Microsoft.MixedReality.Toolkit.SDK" preserve="all"/>
   <assembly fullname="Microsoft.MixedReality.Toolkit.Services.BoundarySystem" preserve="all"/>
