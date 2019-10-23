@@ -1,17 +1,16 @@
 ﻿
 using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 {
-    [Serializable]
     /// <summary>
-    /// Links that are rendered inbetween the corners of <see cref="BoundsControl"/>
+    /// Links that are rendered in between the corners of <see cref="BoundsControl"/>
     /// </summary>
-    public class BoundsControlLinks
+    [CreateAssetMenu(fileName = "BoundsControlLinks", menuName = "Mixed Reality Toolkit/Bounds Control/Links")]
+    public class BoundsControlLinks : ScriptableObject
     {
         #region Serialized Properties
         [SerializeField]
@@ -99,16 +98,31 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
         internal protected UnityEvent configurationChanged = new UnityEvent();
 
-        private List<Transform> links = new List<Transform>();
+        /// <summary>
+        /// defines a bounds control link
+        /// </summary>
+        private class Link
+        {
+            public Transform transform;
+            public CardinalAxisType axisType;
+            public Link(Transform linkTransform, CardinalAxisType linkAxis)
+            {
+                transform = linkTransform;
+                axisType = linkAxis;
+            }
+
+        }
+
+        private List<Link> links = new List<Link>();
         private List<Renderer> linkRenderers = new List<Renderer>();
 
         internal void Clear()
         {
             if (links != null)
             {
-                foreach (Transform transform in links)
+                foreach (Link link in links)
                 {
-                    GameObject.Destroy(transform.gameObject);
+                    Object.Destroy(link.transform.gameObject);
                 }
                 links.Clear();
             }
@@ -130,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             {
                 foreach (var link in links)
                 {
-                    link.hideFlags = flags;
+                    link.transform.hideFlags = flags;
                 }
             }
         }
@@ -155,31 +169,50 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             return (currentBoundsExtents * linkLengthAdjustor) + new Vector3(wireframeEdgeRadius, wireframeEdgeRadius, wireframeEdgeRadius);
         }
 
-        internal void Update(BoundsControlRotationHandles rotationHandles, Transform parent, Vector3 currentBoundsExtents)
+        internal void UpdateLinkPositions(ref Vector3[] boundsCorners)
         {
-            for (int i = 0; i < BoundsControlRotationHandles.NumEdges; ++i)
+            if (boundsCorners != null && links != null && links.Count == 12)
             {
+                links[0].transform.position = (boundsCorners[0] + boundsCorners[1]) * 0.5f;
+                links[1].transform.position = (boundsCorners[0] + boundsCorners[2]) * 0.5f;
+                links[2].transform.position = (boundsCorners[3] + boundsCorners[2]) * 0.5f;
+                links[3].transform.position = (boundsCorners[3] + boundsCorners[1]) * 0.5f;
 
-                if (links != null)
+                links[4].transform.position = (boundsCorners[4] + boundsCorners[5]) * 0.5f;
+                links[5].transform.position = (boundsCorners[4] + boundsCorners[6]) * 0.5f;
+                links[6].transform.position = (boundsCorners[7] + boundsCorners[6]) * 0.5f;
+                links[7].transform.position = (boundsCorners[7] + boundsCorners[5]) * 0.5f;
+
+                links[8].transform.position = (boundsCorners[0] + boundsCorners[4]) * 0.5f;
+                links[9].transform.position = (boundsCorners[1] + boundsCorners[5]) * 0.5f;
+                links[10].transform.position = (boundsCorners[2] + boundsCorners[6]) * 0.5f;
+                links[11].transform.position = (boundsCorners[3] + boundsCorners[7]) * 0.5f;
+            }
+        }
+
+        internal void UpdateLinkScales(Vector3 currentBoundsExtents)
+        {
+            if (links != null)
+            {
+                for (int i = 0; i < links.Count; ++i)
                 {
-                    links[i].position = rotationHandles.GetEdgeCenter(i);
-
+                    Transform parent = links[i].transform.parent;
                     Vector3 rootScale = parent.lossyScale;
                     Vector3 invRootScale = new Vector3(1.0f / rootScale[0], 1.0f / rootScale[1], 1.0f / rootScale[2]);
                     // Compute the local scale that produces the desired world space dimensions
                     Vector3 linkDimensions = Vector3.Scale(GetLinkDimensions(currentBoundsExtents), invRootScale);
 
-                    if (rotationHandles.GetAxisType(i) == CardinalAxisType.X)
+                    if (links[i].axisType == CardinalAxisType.X)
                     {
-                        links[i].localScale = new Vector3(wireframeEdgeRadius, linkDimensions.x, wireframeEdgeRadius);
+                        links[i].transform.localScale = new Vector3(wireframeEdgeRadius, linkDimensions.x, wireframeEdgeRadius);
                     }
-                    else if (rotationHandles.GetAxisType(i) == CardinalAxisType.Y)
+                    else if (links[i].axisType == CardinalAxisType.Y)
                     {
-                        links[i].localScale = new Vector3(wireframeEdgeRadius, linkDimensions.y, wireframeEdgeRadius);
+                        links[i].transform.localScale = new Vector3(wireframeEdgeRadius, linkDimensions.y, wireframeEdgeRadius);
                     }
                     else//Z
                     {
-                        links[i].localScale = new Vector3(wireframeEdgeRadius, linkDimensions.z, wireframeEdgeRadius);
+                        links[i].transform.localScale = new Vector3(wireframeEdgeRadius, linkDimensions.z, wireframeEdgeRadius);
                     }
                 }
             }
@@ -220,13 +253,13 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                     }
                     link.name = "link_" + i.ToString();
 
-                    
-                    if (rotationHandles.GetAxisType(i) == CardinalAxisType.Y)
+                    CardinalAxisType axisType = rotationHandles.GetAxisType(i);
+                    if (axisType == CardinalAxisType.Y)
                     {
                         link.transform.localScale = new Vector3(wireframeEdgeRadius, linkDimensions.y, wireframeEdgeRadius);
                         link.transform.Rotate(new Vector3(0.0f, 90.0f, 0.0f));
                     }
-                    else if (rotationHandles.GetAxisType(i) == CardinalAxisType.Z)
+                    else if (axisType == CardinalAxisType.Z)
                     {
                         link.transform.localScale = new Vector3(wireframeEdgeRadius, linkDimensions.z, wireframeEdgeRadius);
                         link.transform.Rotate(new Vector3(90.0f, 0.0f, 0.0f));
@@ -247,7 +280,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                         linkRenderer.material = wireframeMaterial;
                     }
 
-                    links.Add(link.transform);
+                    links.Add(new Link(link.transform, axisType));
                 }
             }
         }

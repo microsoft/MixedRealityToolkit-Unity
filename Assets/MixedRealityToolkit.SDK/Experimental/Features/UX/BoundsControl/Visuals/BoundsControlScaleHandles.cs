@@ -6,11 +6,11 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 {
-    [Serializable]
     /// <summary>
     /// Scale handles for <see cref="BoundsControl"/> that are used for scaling the
     /// gameobject BoundsControl is attached to with near or far interaction
     /// </summary>
+    [CreateAssetMenu(fileName = "BoundsControlScaleHandles", menuName = "Mixed Reality Toolkit/Bounds Control/Scale Handles")]
     public class BoundsControlScaleHandles : BoundsControlHandlesBase
     {
         #region serialized fields

@@ -98,5 +98,57 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             return Resources.Load<Material>("BoundsControlHandleDefault");
         }
 
+        /// <summary>
+        /// Calculates an array of corner points out of the given bounds
+        /// </summary>
+        /// <param name="bounds"></param>
+        /// <param name="positions"></param>
+        static internal void GetCornerPositionsFromBounds(Bounds bounds, ref Vector3[] positions)
+        {
+            int numCorners = 1 << 3;
+            if (positions == null || positions.Length != numCorners)
+            {
+                positions = new Vector3[numCorners];
+            }
+
+            // Permutate all axes using minCorner and maxCorner.
+            Vector3 minCorner = bounds.center - bounds.extents;
+            Vector3 maxCorner = bounds.center + bounds.extents;
+            for (int c = 0; c < numCorners; c++)
+            {
+                positions[c] = new Vector3(
+                    (c & (1 << 0)) == 0 ? minCorner[0] : maxCorner[0],
+                    (c & (1 << 1)) == 0 ? minCorner[1] : maxCorner[1],
+                    (c & (1 << 2)) == 0 ? minCorner[2] : maxCorner[2]);
+            }
+        }
+
+        /// <summary>
+        /// Flattens the given extents according to the passed flattenAxis. The flattenAxis value will be replaced by flattenValue
+        /// </summary>
+        /// <param name="extents">The original extents (unflattened)</param>
+        /// <param name="flattenAxis">The axis to flatten</param>
+        /// <param name="flattenValue">The value to flatten the flattenAxis to</param>
+        /// <returns></returns>
+        static internal Vector3 FlattenBounds(Vector3 extents, FlattenModeType flattenAxis, float flattenValue = 0.0f)
+        {
+            Vector3 boundsExtents = extents;
+            if (boundsExtents != Vector3.zero)
+            {
+                if (flattenAxis == FlattenModeType.FlattenAuto)
+                {
+                    float min = Mathf.Min(boundsExtents.x, Mathf.Min(boundsExtents.y, boundsExtents.z));
+                    flattenAxis = (min == boundsExtents.x) ? FlattenModeType.FlattenX :
+                        ((min == boundsExtents.y) ? FlattenModeType.FlattenY : FlattenModeType.FlattenZ);
+                }
+
+                boundsExtents.x = (flattenAxis == FlattenModeType.FlattenX) ? flattenValue : boundsExtents.x;
+                boundsExtents.y = (flattenAxis == FlattenModeType.FlattenY) ? flattenValue : boundsExtents.y;
+                boundsExtents.z = (flattenAxis == FlattenModeType.FlattenZ) ? flattenValue : boundsExtents.z;
+            }
+
+            return boundsExtents;
+        }
+
     }
 }

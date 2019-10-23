@@ -7,12 +7,11 @@ using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 {
-    [Serializable]
     /// <summary>
     /// Base class for any type of <see cref="BoundsControl"/> handle.
     /// Handles are used for manipulating the BoundsControl by near or far user interaction.
     /// </summary>
-    public abstract class BoundsControlHandlesBase : IProximityEffectObjectProvider
+    public abstract class BoundsControlHandlesBase : ScriptableObject, IProximityEffectObjectProvider
     {
         [SerializeField]
         [Tooltip("Material applied to handles when they are not in a grabbed state")]

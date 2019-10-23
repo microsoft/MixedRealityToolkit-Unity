@@ -6,11 +6,12 @@ using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 {
-    [Serializable]
     /// <summary> 
-    /// Used to display the bounding box attached to the rig root of a <see cref="BoundsControl"/>
+    /// BoxDisplay can be used to attach a solid box visualization to a <see cref="BoundsControl"/>
+    /// The box will only be rendered if a material is assigned
     /// </summary>
-    public class BoundsControlBoxDisplay
+    [CreateAssetMenu(fileName = "BoundsControlBoxDisplay", menuName = "Mixed Reality Toolkit/Bounds Control/Box Display")]
+    public class BoundsControlBoxDisplay : ScriptableObject
     {
         [Header("Box Display")]
 
@@ -85,12 +86,13 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             {
                 bool isFlattened = flattenAxis != FlattenModeType.DoNotFlatten;
 
-                boxDisplay = GameObject.CreatePrimitive(isFlattened ? PrimitiveType.Quad : PrimitiveType.Cube);
+                boxDisplay = GameObject.CreatePrimitive(isFlattened ? PrimitiveType.Quad : PrimitiveType.Cube);// todo this is not correct - if we clamp the flatten axis to a configurable value then this must always be a cube
                 GameObject.Destroy(boxDisplay.GetComponent<Collider>());
                 boxDisplay.name = "bounding box";
 
                 BoundsControlVisualUtils.ApplyMaterialToAllRenderers(boxDisplay, boxMaterial);
 
+                
                 boxDisplay.transform.localScale = GetBoxDisplayScale(currentBoundsExtents, flattenAxis);
                 boxDisplay.transform.parent = parent;
             }
@@ -100,11 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         {
             // When a box is flattened one axis is normally scaled to zero, this doesn't always work well with visuals so we take 
             // that flattened axis and re-scale it to the flattenAxisDisplayScale.
-            Vector3 displayScale = currentBoundsExtents;
-            displayScale.x = (flattenAxis == FlattenModeType.FlattenX) ? flattenAxisDisplayScale : displayScale.x;
-            displayScale.y = (flattenAxis == FlattenModeType.FlattenY) ? flattenAxisDisplayScale : displayScale.y;
-            displayScale.z = (flattenAxis == FlattenModeType.FlattenZ) ? flattenAxisDisplayScale : displayScale.z;
-
+            Vector3 displayScale = BoundsControlVisualUtils.FlattenBounds(currentBoundsExtents, flattenAxis, flattenAxisDisplayScale);
             return 2.0f * displayScale;
         }
 
@@ -135,14 +133,14 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
         }
 
-        internal void Update(Transform parent, Vector3 boundsExtents, FlattenModeType flattenAxis)
+        internal void UpdateDisplay(Vector3 boundsExtents, FlattenModeType flattenAxis)
         {
             if (boxDisplay != null)
             {
-                Vector3 rootScale = parent.lossyScale;
-                Vector3 invRootScale = new Vector3(1.0f / rootScale.x, 1.0f / rootScale.y, 1.0f / rootScale.z);
-                // Compute the local scale that produces the desired world space size
-                boxDisplay.transform.localScale = Vector3.Scale(GetBoxDisplayScale(boundsExtents, flattenAxis), invRootScale);
+                Transform parent = boxDisplay.transform.parent;
+                boxDisplay.transform.parent = null;
+                boxDisplay.transform.localScale = GetBoxDisplayScale(boundsExtents, flattenAxis);
+                boxDisplay.transform.parent = parent;
             }
         }
     }

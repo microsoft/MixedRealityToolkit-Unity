@@ -2,14 +2,15 @@
 using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes;
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 {
-    [Serializable]
     /// <summary>
     /// Rotation handles for <see cref="BoundsControl"/> that are used for rotating the
     /// gameobject BoundsControl is attached to with near or far interaction
     /// </summary>
+    [CreateAssetMenu(fileName = "BoundsControlRotationHandles", menuName = "Mixed Reality Toolkit/Bounds Control/RotationHandles")]
     public class BoundsControlRotationHandles : BoundsControlHandlesBase
     {
 
@@ -142,9 +143,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             return GetAxisType(index);
         }
 
-        internal void UpdateHandles()
+        private void UpdateHandles()
         {
-            for (int i = 0; i < NumEdges; ++i)
+            for (int i = 0; i < handles.Count; ++i)
             {
                 handles[i].position = GetEdgeCenter(i);
             }
@@ -169,6 +170,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                 edgeCenters[10] = (boundsCorners[2] + boundsCorners[6]) * 0.5f;
                 edgeCenters[11] = (boundsCorners[3] + boundsCorners[7]) * 0.5f;
             }
+
+            UpdateHandles();
         }
 
 
