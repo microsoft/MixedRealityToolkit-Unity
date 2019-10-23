@@ -18,25 +18,19 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Export mesh data of current GameObject, and children if enabled, to file provided in OBJ format
         /// </summary>
-        /// <remarks>
-        /// Traversal of GameObject mesh data is done synchronously on main Unity thread due to limitations by Unity
-        /// </remarks>
         public static async Task ExportOBJAsync(this GameObject root, string filePath, bool includeChildren = true)
         {
-            if (!File.Exists(filePath))
-            {
-                File.Create(filePath);
-            }
-
-            // Await coroutine that must execute on Unity's main thread
-            string getObjData = await OBJWriterUtility.CreateOBJFile(root, includeChildren);
-
-            using (StreamWriter sw = new StreamWriter(filePath))
-            {
-                await sw.WriteAsync(getObjData);
-            }
+            await OBJWriterUtility.ExportOBJAsync(root, filePath, includeChildren);
         }
 
+        /// <summary>
+        /// Set all GameObject children active or inactive based on argument
+        /// </summary>
+        /// <param name="root">GameObject parent to traverse from</param>
+        /// <param name="isActive">Indicates whether children GameObjects should be active or not</param>
+        /// <remarks>
+        /// Does not call SetActive on the top level GameObject, only it's children
+        /// </remarks>
         public static void SetChildrenActive(this GameObject root, bool isActive)
         {
             for (int i = 0; i < root.transform.childCount; i++)

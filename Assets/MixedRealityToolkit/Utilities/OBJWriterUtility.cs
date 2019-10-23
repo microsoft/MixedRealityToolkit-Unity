@@ -3,57 +3,95 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities
 {
+    /// <summary>
+    /// Utility for generating and saving OBJ files from GameObjects and their Meshes
+    /// </summary>
     public static class OBJWriterUtility
     {
-        public static IEnumerator<string> CreateOBJFile(GameObject target, bool includeChildren)
+        /// <summary>
+        /// Export mesh data of provided GameObject, and children if enabled, to file provided in OBJ format
+        /// </summary>
+        /// <remarks>
+        /// Traversal of GameObject mesh data is done via Coroutine on main Unity thread due to limitations by Unity.
+        /// If a file does not exist at given file path, a new one is automatically created
+        /// If applicable, children Mesh data will be bundled into same OBJ file.
+        /// </remarks>
+        public static async Task ExportOBJAsync(GameObject root, string filePath, bool includeChildren = true)
         {
-            StringBuilder objData = new StringBuilder();
+            if (string.IsNullOrEmpty(filePath))
+            {
+                throw new Exception("Invalid file path");
+            }
 
-            objData.Append($"# {target.name}").NewLine();
+            Debug.Log($"Exporting GameObject {root.name} to {filePath} OBJ file");
+
+            if (!File.Exists(filePath))
+            {
+                File.Create(filePath);
+            }
+
+            // Await coroutine that must execute on Unity's main thread
+            string getObjData = await CreateOBJFileContentAsync(root, includeChildren);
+
+            using (StreamWriter sw = new StreamWriter(filePath))
+            {
+                await sw.WriteAsync(getObjData);
+            }
+        }
+
+        /// <summary>
+        /// Coroutine async method that generates string in OBJ file format of provided GameObject's Mesh, and possibly children.
+        /// </summary>
+        /// <param name="target">GameObject to target for pulling MeshFilter data</param>
+        /// <param name="includeChildren">Include Mesh data of children GameObjects as sub-meshes in output</param>
+        /// <returns>string of all mesh data (no materials) in OBJ file format</returns>
+        public static IEnumerator<string> CreateOBJFileContentAsync(GameObject target, bool includeChildren)
+        {
+            StringBuilder objBuffer = new StringBuilder();
+
+            objBuffer.Append($"# {target.name}").NewLine();
             var dt = DateTime.Now;
-            objData.Append($"# {dt.ToLongDateString()} - {dt.ToLongTimeString()}").NewLine().NewLine();
+            objBuffer.Append($"# {dt.ToLongDateString()} - {dt.ToLongTimeString()}").NewLine().NewLine();
 
             Stack<Transform> processStack = new Stack<Transform>();
             processStack.Push(target.transform);
 
-            try
+            // If including sub-meshes, need to track vertex indices in relation to entire file
+            int startVertexIndex = 0;
+
+            // DFS processing routine to add Mesh data to OBJ 
+            while (processStack.Count != 0)
             {
-                int startVertexIndex = 0;
-                while (processStack.Count != 0)
+                var current = processStack.Pop();
+
+                MeshFilter meshFilter = current.GetComponent<MeshFilter>();
+                if (meshFilter != null)
                 {
-                    var current = processStack.Pop();
+                    CreateOBJDataForMesh(meshFilter, objBuffer, ref startVertexIndex);
+                }
 
-                    MeshFilter meshFilter = current.GetComponent<MeshFilter>();
-                    if (meshFilter != null)
+                if (includeChildren)
+                {
+                    for (int i = 0; i < current.childCount; i++)
                     {
-                        WriteMesh(meshFilter, objData, ref startVertexIndex);
-                    }
-
-                    if (includeChildren)
-                    {
-                        for (int i = 0; i < current.childCount; i++)
-                        {
-                            processStack.Push(current.GetChild(i));
-                        }
+                        processStack.Push(current.GetChild(i));
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                Debug.Log("Test" + ex.Message);
+
+                yield return null;
             }
 
-            yield return objData.ToString();
+            yield return objBuffer.ToString();
         }
 
-        private static void WriteMesh(MeshFilter meshFilter, 
-            StringBuilder output,
-            ref int currentVertexIndex)
+        private static void CreateOBJDataForMesh(MeshFilter meshFilter, StringBuilder buffer, ref int startVertexIndex)
         {
             Mesh mesh = meshFilter.sharedMesh;
             if (!mesh)
@@ -62,46 +100,41 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
 
             var transform = meshFilter.transform;
-            int numVertices = 0;
-            //Material[] mats = meshFilter.renderer.sharedMaterials;
 
-            output.Append("g ").Append(transform.name).NewLine();
+            buffer.Append("g ").Append(transform.name).NewLine();
 
             foreach (Vector3 vertex in mesh.vertices)
             {
                 Vector3 v = transform.TransformPoint(vertex);
-                numVertices++;
-                output.Append($"v {v.x} {v.y} {-v.z}\n");
+                buffer.Append($"v {v.x} {v.y} {v.z}\n");
             }
-            output.NewLine();
+            buffer.NewLine();
 
             foreach (Vector3 normal in mesh.normals)
             {
-                Vector3 vn = transform.localRotation * normal;
-                output.Append($"vn {-vn.x} {-vn.y} {vn.z}\n");
+                Vector3 vn = transform.TransformDirection(normal);
+                buffer.Append($"vn {vn.x} {vn.y} {vn.z}\n");
             }
 
-            output.NewLine();
+            buffer.NewLine();
             foreach (Vector3 uv in mesh.uv)
             {
-                output.Append($"vt {uv.x} {uv.y}\n");
+                buffer.Append($"vt {uv.x} {uv.y}\n");
             }
 
             for (int idx = 0; idx < mesh.subMeshCount; idx++)
             {
-                output.NewLine();
-                //sb.Append("usemtl ").Append(mats[material].name).Append("\n");
-                //sb.Append("usemap ").Append(mats[material].name).Append("\n");
+                buffer.NewLine();
 
                 int[] triangles = mesh.GetTriangles(idx);
                 for (int i = 0; i < triangles.Length; i += 3)
                 {
-                    output.Append(string.Format("f {0}/{0}/{0} {1}/{1}/{1} {2}/{2}/{2}\n",
-                        triangles[i] + 1 + currentVertexIndex, triangles[i + 1] + 1 + currentVertexIndex, triangles[i + 2] + 1 + currentVertexIndex));
+                    buffer.Append(string.Format("f {0}/{0}/{0} {1}/{1}/{1} {2}/{2}/{2}\n",
+                        triangles[i] + 1 + startVertexIndex, triangles[i + 1] + 1 + startVertexIndex, triangles[i + 2] + 1 + startVertexIndex));
                 }
             }
 
-            currentVertexIndex += numVertices;
+            startVertexIndex += mesh.vertexCount;
         }
     }
 }
