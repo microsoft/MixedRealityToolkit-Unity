@@ -15,8 +15,8 @@ MonoBehaviour:
   isCustomProfile: 0
   settingsConfigurations:
   - componentType:
-      reference: Microsoft.MixedReality.Toolkit.CameraSystem.UnityARCameraSettigns,
-        Microsoft.MixedReality.Toolkit.Providers.UnityARCamera
+      reference: Microsoft.MixedReality.Toolkit.CameraSystem.UnityARCameraSettings,
+        Microsoft.MixedReality.Toolkit.Providers.UnityAR
     componentName: Unity AR Foundation Camera Settings
     priority: 0
     runtimePlatform: 288
