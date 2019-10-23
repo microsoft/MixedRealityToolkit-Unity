@@ -427,27 +427,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         {
             if (targetObject == null)
                 targetObject = gameObject;
-            if (scaleHandles == null)
-            {
-                scaleHandles = ScriptableObject.CreateInstance<BoundsControlScaleHandles>();
-            }
-            if (rotationHandles == null)
-            {
-                rotationHandles = ScriptableObject.CreateInstance<BoundsControlRotationHandles>();
-            }
 
-            if (boxDisplay == null)
-            {
-                boxDisplay = ScriptableObject.CreateInstance<BoundsControlBoxDisplay>();
-            }
-            if (links == null)
-            {
-                links = ScriptableObject.CreateInstance<BoundsControlLinks>();
-            }
-            if (proximityEffect == null)
-            {
-                proximityEffect = ScriptableObject.CreateInstance<ProximityEffect>();
-            }
+            scaleHandles = InstantiateScriptable(scaleHandles);
+            rotationHandles = InstantiateScriptable(rotationHandles);
+            boxDisplay = InstantiateScriptable(boxDisplay);
+            links = InstantiateScriptable(links);
+            proximityEffect = InstantiateScriptable(proximityEffect);
 
             // subscribe to visual changes
             scaleHandles.configurationChanged.AddListener(CreateRig);
@@ -455,6 +440,20 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             rotationHandles.configurationChanged.AddListener(CreateRig);
             boxDisplay.configurationChanged.AddListener(CreateRig);
             links.configurationChanged.AddListener(CreateRig);          
+        }
+
+        private static T InstantiateScriptable<T>(T instance) where T : ScriptableObject
+        {
+            if (instance == null)
+            {
+                instance = ScriptableObject.CreateInstance<T>();
+            }
+            else
+            {
+                instance = Object.Instantiate(instance);
+            }
+
+            return instance;
         }
 
         private void OnEnable()
