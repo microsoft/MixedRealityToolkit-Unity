@@ -26,18 +26,20 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
 
             if (WindowsApiChecker.UniversalApiContractV5_IsAvailable)
             {
+                IReadOnlyList<SpatialInteractionSourceState> sources = null;
+
                 UnityEngine.WSA.Application.InvokeOnUIThread(() =>
                 {
-                    IReadOnlyList<SpatialInteractionSourceState> sources = SpatialInteractionManager.GetForCurrentView()?.GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
-
-                    for (var i = 0; i < sources.Count; i++)
-                    {
-                        if (sources[i].Source.Id.Equals(interactionSource.id))
-                        {
-                            returnValue = sources[i].Source.Controller.TryGetRenderableModelAsync();
-                        }
-                    }
+                    sources = SpatialInteractionManager.GetForCurrentView()?.GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
                 }, true);
+
+                for (var i = 0; i < sources?.Count; i++)
+                {
+                    if (sources[i].Source.Id.Equals(interactionSource.id))
+                    {
+                        returnValue = sources[i].Source.Controller.TryGetRenderableModelAsync();
+                    }
+                }
             }
 
             return returnValue;
