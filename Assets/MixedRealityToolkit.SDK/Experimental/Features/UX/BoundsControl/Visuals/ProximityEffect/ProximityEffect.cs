@@ -175,7 +175,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         /// </summary>
         /// <param name="boundsCenter">gameobject position the proximity effect is attached to</param>
         /// <param name="boundsExtents">extents of the gameobject the proximity effect is attached to</param>
-        public void UpdateTodo(Vector3 boundsCenter, Vector3 boundsExtents)
+        public void UpdateScaling(Vector3 boundsCenter, Vector3 boundsExtents)
         {
             
             //Vector3 objectCenter = position;

@@ -171,7 +171,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
         internal void UpdateLinkPositions(ref Vector3[] boundsCorners)
         {
-            if (boundsCorners != null && links != null && links.Count == 12)
+            if (boundsCorners != null)
             {
                 for (int i = 0; i < links.Count; ++i)
                 {

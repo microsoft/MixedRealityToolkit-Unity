@@ -77,16 +77,15 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
         internal protected UnityEvent configurationChanged = new UnityEvent();
 
-        // Game object used to display the bounding box. Parented to the rig root
+        // Game object used to display the box. Parented to the rig root
         private GameObject boxDisplay;
 
         internal void AddBoxDisplay(Transform parent, Vector3 currentBoundsExtents, FlattenModeType flattenAxis)
         {
             if (boxMaterial != null)
             {
-                bool isFlattened = flattenAxis != FlattenModeType.DoNotFlatten;
-
-                boxDisplay = GameObject.CreatePrimitive(isFlattened ? PrimitiveType.Quad : PrimitiveType.Cube);// todo this is not correct - if we clamp the flatten axis to a configurable value then this must always be a cube
+                // this has to be cube even in flattened mode as flattened box display can still have a thickness of flattenAxisDisplayScale
+                boxDisplay = GameObject.CreatePrimitive(PrimitiveType.Cube); 
                 GameObject.Destroy(boxDisplay.GetComponent<Collider>());
                 boxDisplay.name = "bounding box";
 
