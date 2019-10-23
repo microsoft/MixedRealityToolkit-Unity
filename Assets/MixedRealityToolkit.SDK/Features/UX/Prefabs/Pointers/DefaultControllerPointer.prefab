@@ -193,8 +193,8 @@ LineRenderer:
       key3: {r: 0, g: 0, b: 0, a: 0.49803922}
       key4: {r: 0, g: 0, b: 0, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
-      key6: {r: 0, g: 0, b: 0, a: 1}
-      key7: {r: 0, g: 0, b: 0, a: 1}
+      key6: {r: 0, g: 0, b: 0, a: 0.78431374}
+      key7: {r: 0, g: 0, b: 0, a: 0}
       ctime0: 32768
       ctime1: 65535
       ctime2: 0
@@ -204,11 +204,11 @@ LineRenderer:
       ctime6: 0
       ctime7: 0
       atime0: 0
-      atime1: 6554
-      atime2: 9830
+      atime1: 7864
+      atime2: 10486
       atime3: 13107
-      atime4: 29491
-      atime5: 36044
+      atime4: 19661
+      atime5: 49151
       atime6: 58982
       atime7: 65535
       m_Mode: 0
@@ -346,8 +346,8 @@ MonoBehaviour:
     key3: {r: 0, g: 0, b: 0, a: 0.49803922}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 1}
-    key7: {r: 0, g: 0, b: 0, a: 1}
+    key6: {r: 0, g: 0, b: 0, a: 0.78431374}
+    key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 32768
     ctime1: 65535
     ctime2: 0
@@ -357,11 +357,11 @@ MonoBehaviour:
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 6554
-    atime2: 9830
+    atime1: 7864
+    atime2: 10486
     atime3: 13107
-    atime4: 29491
-    atime5: 36044
+    atime4: 19661
+    atime5: 49151
     atime6: 58982
     atime7: 65535
     m_Mode: 0
