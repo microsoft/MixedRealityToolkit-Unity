@@ -240,11 +240,20 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         private void EnsureControllerModel(InteractionSourceState interactionSourceState)
         {
+            GameObject controllerModel;
+
             if (controllerModelInitialized ||
                 GetControllerVisualizationProfile() == null ||
                 !GetControllerVisualizationProfile().GetUseDefaultModelsOverride(GetType(), ControllerHandedness))
             {
                 controllerModelInitialized = true;
+                return;
+            }
+            else if (controllerDictionary.TryGetValue(GenerateKey(interactionSourceState.source), out controllerModel))
+            {
+                controllerModelInitialized = true;
+                TryAddControllerModelToSceneHierarchy(controllerModel);
+                controllerModel.SetActive(true);
                 return;
             }
 
@@ -307,6 +316,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                         {
                             gltfGameObject.AddComponent(visualizationType.Type);
                             TryAddControllerModelToSceneHierarchy(gltfGameObject);
+                            controllerDictionary.Add(GenerateKey(interactionSource), gltfGameObject);
                         }
                         else
                         {
