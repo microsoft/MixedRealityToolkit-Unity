@@ -157,7 +157,7 @@ MonoBehaviour:
   rotationLerpTime: 0.01
   lookRotationBlend: 0
   resizeCursorWithDistance: 1
-  cursorAngularScale: 0.65
+  cursorAngularScale: 60
   PrimaryCursorVisual: {fileID: 4000014090385390}
   SourceDownIds: 
   defaultCursorDistance: 2
