@@ -150,5 +150,45 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             return boundsExtents;
         }
 
+        /// <summary>
+        /// Util function for retrieving a position for the given edge index of a box
+        /// This method makes sure all visual components are having the same definition of edges / corners
+        /// </summary>
+        /// <param name="linkIndex">Index of the edge the position is queried for</param>
+        /// <param name="cornerPoints">Corner points array of the box</param>
+        /// <returns></returns>
+        static internal Vector3 GetLinkPosition(int linkIndex, ref Vector3[8] cornerPoints)
+        {
+            switch (linkIndex)
+            {
+                case 0:
+                    return (cornerPoints[0] + cornerPoints[1]) * 0.5f;
+                case 1:
+                    return (cornerPoints[0] + cornerPoints[2]) * 0.5f;
+                case 2:
+                    return (cornerPoints[3] + cornerPoints[2]) * 0.5f;
+                case 3:
+                    return (cornerPoints[3] + cornerPoints[1]) * 0.5f;
+                case 4:
+                    return (cornerPoints[4] + cornerPoints[5]) * 0.5f;
+                case 5:
+                    return (cornerPoints[4] + cornerPoints[6]) * 0.5f;
+                case 6:
+                    return (cornerPoints[7] + cornerPoints[6]) * 0.5f;
+                case 7:
+                    return (cornerPoints[7] + cornerPoints[5]) * 0.5f;
+                case 8:
+                    return (cornerPoints[0] + cornerPoints[4]) * 0.5f;
+                case 9:
+                    return (cornerPoints[1] + cornerPoints[5]) * 0.5f;
+                case 10:
+                    return (cornerPoints[2] + cornerPoints[6]) * 0.5f;
+                case 11:
+                    return (cornerPoints[3] + cornerPoints[7]) * 0.5f;
+            }
+
+            return Vector3.zero;
+        }
+
     }
 }

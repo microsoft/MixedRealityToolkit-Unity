@@ -155,20 +155,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         {
             if (boundsCorners != null && edgeCenters != null)
             {
-                edgeCenters[0] = (boundsCorners[0] + boundsCorners[1]) * 0.5f;
-                edgeCenters[1] = (boundsCorners[0] + boundsCorners[2]) * 0.5f;
-                edgeCenters[2] = (boundsCorners[3] + boundsCorners[2]) * 0.5f;
-                edgeCenters[3] = (boundsCorners[3] + boundsCorners[1]) * 0.5f;
-
-                edgeCenters[4] = (boundsCorners[4] + boundsCorners[5]) * 0.5f;
-                edgeCenters[5] = (boundsCorners[4] + boundsCorners[6]) * 0.5f;
-                edgeCenters[6] = (boundsCorners[7] + boundsCorners[6]) * 0.5f;
-                edgeCenters[7] = (boundsCorners[7] + boundsCorners[5]) * 0.5f;
-
-                edgeCenters[8] = (boundsCorners[0] + boundsCorners[4]) * 0.5f;
-                edgeCenters[9] = (boundsCorners[1] + boundsCorners[5]) * 0.5f;
-                edgeCenters[10] = (boundsCorners[2] + boundsCorners[6]) * 0.5f;
-                edgeCenters[11] = (boundsCorners[3] + boundsCorners[7]) * 0.5f;
+                for (int i = 0; i < edgeCenters.Length; ++i)
+                {
+                    edgeCenters[i]= BoundsControlVisualUtils.GetLinkPosition(i, ref boundsCorners);
+                }
             }
 
             UpdateHandles();

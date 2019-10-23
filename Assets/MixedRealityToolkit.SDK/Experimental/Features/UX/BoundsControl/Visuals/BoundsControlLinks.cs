@@ -173,20 +173,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         {
             if (boundsCorners != null && links != null && links.Count == 12)
             {
-                links[0].transform.position = (boundsCorners[0] + boundsCorners[1]) * 0.5f;
-                links[1].transform.position = (boundsCorners[0] + boundsCorners[2]) * 0.5f;
-                links[2].transform.position = (boundsCorners[3] + boundsCorners[2]) * 0.5f;
-                links[3].transform.position = (boundsCorners[3] + boundsCorners[1]) * 0.5f;
-
-                links[4].transform.position = (boundsCorners[4] + boundsCorners[5]) * 0.5f;
-                links[5].transform.position = (boundsCorners[4] + boundsCorners[6]) * 0.5f;
-                links[6].transform.position = (boundsCorners[7] + boundsCorners[6]) * 0.5f;
-                links[7].transform.position = (boundsCorners[7] + boundsCorners[5]) * 0.5f;
-
-                links[8].transform.position = (boundsCorners[0] + boundsCorners[4]) * 0.5f;
-                links[9].transform.position = (boundsCorners[1] + boundsCorners[5]) * 0.5f;
-                links[10].transform.position = (boundsCorners[2] + boundsCorners[6]) * 0.5f;
-                links[11].transform.position = (boundsCorners[3] + boundsCorners[7]) * 0.5f;
+                for (int i = 0; i < links.Count; ++i)
+                {
+                    links[i].transform.position = BoundsControlVisualUtils.GetLinkPosition(i, ref boundsCorners);
+                }
             }
         }
 
