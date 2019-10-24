@@ -157,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             {
                 for (int i = 0; i < edgeCenters.Length; ++i)
                 {
-                    edgeCenters[i]= BoundsControlVisualUtils.GetLinkPosition(i, ref boundsCorners);
+                    edgeCenters[i] = BoundsControlVisualUtils.GetLinkPosition(i, ref boundsCorners);
                 }
             }
 
