@@ -232,9 +232,11 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         /// <inheritdoc />
         protected override bool TryRenderControllerModel(Type controllerType, InputSourceType inputSourceType)
         {
+            MixedRealityControllerVisualizationProfile visualizationProfile = GetControllerVisualizationProfile();
+
             // Intercept this call if we are using the default driver provided models.
-            if (GetControllerVisualizationProfile() == null ||
-                !GetControllerVisualizationProfile().GetUseDefaultModelsOverride(GetType(), ControllerHandedness))
+            if (visualizationProfile == null ||
+                !visualizationProfile.GetUseDefaultModelsOverride(GetType(), ControllerHandedness))
             {
                 return base.TryRenderControllerModel(controllerType, inputSourceType);
             }
@@ -248,41 +250,32 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             Debug.Log("Trying to load controller model from platform SDK");
 
             GameObject controllerModelGameObject = new GameObject($"{ControllerHandedness} OpenVR Controller");
-            var visualizationProfile = GetControllerVisualizationProfile();
 
             bool failedToObtainControllerModel;
-            if (visualizationProfile != null)
+
+            var visualizationType = visualizationProfile.GetControllerVisualizationTypeOverride(GetType(), ControllerHandedness);
+            if (visualizationType != null)
             {
-                var visualizationType = visualizationProfile.GetControllerVisualizationTypeOverride(GetType(), ControllerHandedness);
-                if (visualizationType != null)
+                // Set the platform controller model to not be destroyed when the source is lost. It'll be disabled instead,
+                // and re-enabled when the same controller is re-detected.
+                if (controllerModelGameObject.AddComponent(visualizationType.Type) is IMixedRealityControllerPoseSynchronizer visualizer)
                 {
-                    // Set the platform controller model to not be destroyed when the source is lost. It'll be disabled instead,
-                    // and re-enabled when the same controller is re-detected.
-                    if (controllerModelGameObject.AddComponent(visualizationType.Type) is IMixedRealityControllerPoseSynchronizer visualizer)
-                    {
-                        visualizer.DestroyOnSourceLost = false;
-                    }
-
-                    OpenVRRenderModel openVRRenderModel = controllerModelGameObject.AddComponent<OpenVRRenderModel>();
-                    openVRRenderModel.shader = visualizationProfile.GetDefaultControllerModelMaterialOverride(GetType(), ControllerHandedness).shader;
-                    failedToObtainControllerModel = !openVRRenderModel.UpdateModel(ControllerHandedness);
-
-                    if (!failedToObtainControllerModel)
-                    {
-                        TryAddControllerModelToSceneHierarchy(controllerModelGameObject);
-                        controllerDictionary.Add(ControllerHandedness, controllerModelGameObject);
-                    }
+                    visualizer.DestroyOnSourceLost = false;
                 }
-                else
+
+                OpenVRRenderModel openVRRenderModel = controllerModelGameObject.AddComponent<OpenVRRenderModel>();
+                openVRRenderModel.shader = visualizationProfile.GetDefaultControllerModelMaterialOverride(GetType(), ControllerHandedness).shader;
+                failedToObtainControllerModel = !openVRRenderModel.UpdateModel(ControllerHandedness);
+
+                if (!failedToObtainControllerModel)
                 {
-                    Debug.LogError("Controller visualization type not defined for controller visualization profile");
-                    UnityEngine.Object.Destroy(controllerModelGameObject);
-                    failedToObtainControllerModel = true;
+                    TryAddControllerModelToSceneHierarchy(controllerModelGameObject);
+                    controllerDictionary.Add(ControllerHandedness, controllerModelGameObject);
                 }
             }
             else
             {
-                Debug.LogError("Failed to obtain a controller visualization profile");
+                Debug.LogError("Controller visualization type not defined for controller visualization profile");
                 failedToObtainControllerModel = true;
             }
 
