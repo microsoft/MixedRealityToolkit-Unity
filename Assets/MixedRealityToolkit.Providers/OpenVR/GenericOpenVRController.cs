@@ -229,6 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 
         #region Controller model functions
 
+        /// <inheritdoc />
         protected override bool TryRenderControllerModel(Type controllerType, InputSourceType inputSourceType)
         {
             // Intercept this call if we are using the default driver provided models.
