@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
     /// Scaling is done on three different stages: far / medium and close proximity whereas material switching 
     /// will only be done on close proximity.
     /// </summary>
-    [CreateAssetMenu(fileName = "Proximity Effect", menuName = "Mixed Reality Toolkit/Bounds Control/ProximityEffect")]
+    [CreateAssetMenu(fileName = "ProximityEffect", menuName = "Mixed Reality Toolkit/Bounds Control/Proximity Effect")]
     public class ProximityEffect : ScriptableObject
     {
         [SerializeField]
