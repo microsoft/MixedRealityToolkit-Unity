@@ -47,7 +47,9 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         {
             var system = Headers.OpenVR.System;
             if (system == null)
+            {
                 return false;
+            }
 
             var error = ETrackedPropertyError.TrackedProp_Success;
             uint index = system.GetTrackedDeviceIndexForControllerRole(handedness == Handedness.Left ? ETrackedControllerRole.LeftHand : ETrackedControllerRole.RightHand);
@@ -73,12 +75,16 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         private IEnumerator SetModelAsync(string newRenderModelName)
         {
             if (string.IsNullOrEmpty(newRenderModelName))
+            {
                 yield break;
+            }
 
             // Pre-load all render models before asking for the data to create meshes.
             CVRRenderModels renderModels = Headers.OpenVR.RenderModels;
             if (renderModels == null)
+            {
                 yield break;
+            }
 
             // Gather names of render models to pre-load.
             string[] renderModelNames;
@@ -92,21 +98,29 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
                 {
                     uint capacity = renderModels.GetComponentName(newRenderModelName, (uint)componentIndex, null, 0);
                     if (capacity == 0)
+                    {
                         continue;
+                    }
 
                     var componentNameStringBuilder = new System.Text.StringBuilder((int)capacity);
                     if (renderModels.GetComponentName(newRenderModelName, (uint)componentIndex, componentNameStringBuilder, capacity) == 0)
+                    {
                         continue;
+                    }
 
                     string componentName = componentNameStringBuilder.ToString();
 
                     capacity = renderModels.GetComponentRenderModelName(newRenderModelName, componentName, null, 0);
                     if (capacity == 0)
+                    {
                         continue;
+                    }
 
                     var nameStringBuilder = new System.Text.StringBuilder((int)capacity);
                     if (renderModels.GetComponentRenderModelName(newRenderModelName, componentName, nameStringBuilder, capacity) == 0)
+                    {
                         continue;
+                    }
 
                     var s = nameStringBuilder.ToString();
 
@@ -137,7 +151,9 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
                 for (int renderModelNameIndex = 0; renderModelNameIndex < renderModelNames.Length; renderModelNameIndex++)
                 {
                     if (string.IsNullOrEmpty(renderModelNames[renderModelNameIndex]))
+                    {
                         continue;
+                    }
 
                     var pRenderModel = System.IntPtr.Zero;
 
@@ -193,11 +209,15 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
                 {
                     var renderModels = Headers.OpenVR.RenderModels;
                     if (renderModels == null)
+                    {
                         return false;
+                    }
 
                     model = LoadRenderModel(renderModels, renderModelName, renderModelName);
                     if (model == null)
+                    {
                         return false;
+                    }
 
                     models[renderModelName] = model;
                 }
@@ -278,7 +298,9 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
                 {
                     error = renderModels.LoadTexture_Async(renderModel.diffuseTextureId, ref pDiffuseTexture);
                     if (error != EVRRenderModelError.Loading)
+                    {
                         break;
+                    }
 
                     Sleep();
                 }
@@ -295,7 +317,9 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
                         {
                             error = renderModels.LoadIntoTextureD3D11_Async(renderModel.diffuseTextureId, texturePointer);
                             if (error != EVRRenderModelError.Loading)
+                            {
                                 break;
+                            }
 
                             Sleep();
                         }
@@ -342,10 +366,14 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             // after another (e.g. two controllers or two base stations).
 #if UNITY_EDITOR
             if (!Application.isPlaying)
+            {
                 renderModels.FreeRenderModel(pRenderModel);
+            }
             else
 #endif
+            {
                 StartCoroutine(FreeRenderModel(pRenderModel));
+            }
 
             return new RenderModel(mesh, material);
         }
