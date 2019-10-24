@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                             inputSystem?.RaiseSourceLost(controller.InputSource, controller);
                         }
 
-                        ActiveControllers.Remove(lastDeviceList[i]);
+                        RemoveController(lastDeviceList[i]);
                     }
                 }
             }
@@ -177,6 +177,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
 
             ActiveControllers.Add(joystickName, detectedController);
             return detectedController;
+        }
+
+        protected virtual void RemoveController(string joystickName)
+        {
+            ActiveControllers.Remove(joystickName);
         }
 
         /// <summary>

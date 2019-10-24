@@ -31,9 +31,14 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         public XRNodeState LastXrNodeStateReading { get; protected set; }
 
         /// <summary>
-        /// Tracking states returned from the InputTracking state tracking manager
+        /// Tracking states returned from the InputTracking state tracking manager.
         /// </summary>
         private readonly List<XRNodeState> nodeStates = new List<XRNodeState>();
+
+        /// <summary>
+        /// A private static list of previously loaded controller models.
+        /// </summary>
+        private static readonly Dictionary<Handedness, GameObject> controllerDictionary = new Dictionary<Handedness, GameObject>(0);
 
         public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => new[]
         {
@@ -232,6 +237,12 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             {
                 return base.TryRenderControllerModel(controllerType, inputSourceType);
             }
+            else if (controllerDictionary.TryGetValue(ControllerHandedness, out GameObject controllerModel))
+            {
+                TryAddControllerModelToSceneHierarchy(controllerModel);
+                controllerModel.SetActive(true);
+                return true;
+            }
 
             Debug.Log("Trying to load controller model from platform SDK");
 
@@ -258,6 +269,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
                     if (!failedToObtainControllerModel)
                     {
                         TryAddControllerModelToSceneHierarchy(controllerModelGameObject);
+                        controllerDictionary.Add(ControllerHandedness, controllerModelGameObject);
                     }
                 }
                 else
