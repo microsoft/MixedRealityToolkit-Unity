@@ -1,0 +1,17 @@
+# [Template] Common build tasks shared between CI builds and PR validation.
+
+steps:
+# Build UWP ARM64.
+- template: tasks/unitybuild.yml
+  parameters:
+    Arch: 'arm64'
+    Platform: 'UWP'
+    PackagingDir: 'ARM64'
+    UnityVer: ${Env:$(Unity2019Version)}
+    PublishArtifacts: true
+
+- template: tests.yml
+  parameters:
+    UnityVer: ${Env:$(Unity2019Version)}
+
+- template: end.yml
