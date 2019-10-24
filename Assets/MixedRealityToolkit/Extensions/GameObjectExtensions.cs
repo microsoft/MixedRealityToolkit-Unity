@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="root">GameObject parent to traverse from</param>
         /// <param name="isActive">Indicates whether children GameObjects should be active or not</param>
         /// <remarks>
-        /// Does not call SetActive on the top level GameObject, only it's children
+        /// Does not call SetActive on the top level GameObject, only its children
         /// </remarks>
         public static void SetChildrenActive(this GameObject root, bool isActive)
         {
