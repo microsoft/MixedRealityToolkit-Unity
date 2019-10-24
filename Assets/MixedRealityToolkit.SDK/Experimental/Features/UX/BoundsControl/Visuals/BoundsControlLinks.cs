@@ -99,7 +99,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         internal protected UnityEvent configurationChanged = new UnityEvent();
 
         /// <summary>
-        /// defines a bounds control link
+        /// defines a bounds control link - the line between 2 corners of a box
+        /// it keeps track of the transform and the axis the link is representing
         /// </summary>
         private class Link
         {
@@ -110,7 +111,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                 transform = linkTransform;
                 axisType = linkAxis;
             }
-
         }
 
         private List<Link> links = new List<Link>();

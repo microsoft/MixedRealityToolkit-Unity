@@ -709,7 +709,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         }
        
 
-        Vector3 CalculateBoundsExtents()
+        private Vector3 CalculateBoundsExtents()
         {
             // Store current rotation then zero out the rotation so that the bounds
             // are computed when the object is in its 'axis aligned orientation'.

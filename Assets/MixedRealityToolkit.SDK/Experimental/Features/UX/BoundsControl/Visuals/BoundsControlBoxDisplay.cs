@@ -90,8 +90,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                 boxDisplay.name = "bounding box";
 
                 BoundsControlVisualUtils.ApplyMaterialToAllRenderers(boxDisplay, boxMaterial);
-
-                
                 boxDisplay.transform.localScale = GetBoxDisplayScale(currentBoundsExtents, flattenAxis);
                 boxDisplay.transform.parent = parent;
             }

@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         /// <param name="positions"></param>
         static internal void GetCornerPositionsFromBounds(Bounds bounds, ref Vector3[] positions)
         {
-            int numCorners = 1 << 3;
+            const int numCorners = 1 << 3;
             if (positions == null || positions.Length != numCorners)
             {
                 positions = new Vector3[numCorners];
@@ -137,9 +137,18 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             {
                 if (flattenAxis == FlattenModeType.FlattenAuto)
                 {
-                    float min = Mathf.Min(boundsExtents.x, Mathf.Min(boundsExtents.y, boundsExtents.z));
-                    flattenAxis = (min == boundsExtents.x) ? FlattenModeType.FlattenX :
-                        ((min == boundsExtents.y) ? FlattenModeType.FlattenY : FlattenModeType.FlattenZ);
+                    if (boundsExtents.x < boundsExtents.y && boundsExtents.x < boundsExtents.z)
+                    {
+                        flattenAxis = FlattenModeType.FlattenX;
+                    }
+                    else if (boundsExtents.y < boundsExtents.z)
+                    {
+                        flattenAxis = FlattenModeType.FlattenY;
+                    }
+                    else
+                    {
+                        flattenAxis = FlattenModeType.FlattenZ;
+                    }
                 }
 
                 boundsExtents.x = (flattenAxis == FlattenModeType.FlattenX) ? flattenValue : boundsExtents.x;
