@@ -280,7 +280,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         private async void CreateControllerModelFromPlatformSDK(InteractionSource interactionSource)
         {
-            Debug.Log("Creating controller model from platform SDK");
+            Debug.Log("Trying to load controller model from platform SDK");
             byte[] fileBytes = null;
 
 #if WINDOWS_UWP

@@ -42,7 +42,8 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
                 return false;
 
             var error = ETrackedPropertyError.TrackedProp_Success;
-            var capacity = system.GetStringTrackedDeviceProperty((uint)index, ETrackedDeviceProperty.Prop_RenderModelName_String, null, 0, ref error);
+            uint index = system.GetTrackedDeviceIndexForControllerRole(handedness == Handedness.Left ? ETrackedControllerRole.LeftHand : ETrackedControllerRole.RightHand);
+            var capacity = system.GetStringTrackedDeviceProperty(index, ETrackedDeviceProperty.Prop_RenderModelName_String, null, 0, ref error);
             if (capacity <= 1)
             {
                 Debug.LogError("Failed to get render model name for tracked object " + index);
@@ -50,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             }
 
             var buffer = new System.Text.StringBuilder((int)capacity);
-            system.GetStringTrackedDeviceProperty((uint)index, ETrackedDeviceProperty.Prop_RenderModelName_String, buffer, capacity, ref error);
+            system.GetStringTrackedDeviceProperty(index, ETrackedDeviceProperty.Prop_RenderModelName_String, buffer, capacity, ref error);
 
             var s = buffer.ToString();
             if (renderModelName != s)
