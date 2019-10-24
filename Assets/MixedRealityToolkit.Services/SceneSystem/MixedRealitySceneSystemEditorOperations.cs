@@ -251,6 +251,11 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 return;
             }
 
+            if (EditorSceneUtils.IsEditingPrefab())
+            {   // Never change scene settings while editing a prefab - it will boot you out of the prefab scene stage.
+                return;
+            }
+
             if (updatingSettingsOnEditorChanged || EditorApplication.isPlayingOrWillChangePlaymode || EditorApplication.isCompiling)
             {   // Make sure we don't double up on our updates via events we trigger during updates
                 return;
