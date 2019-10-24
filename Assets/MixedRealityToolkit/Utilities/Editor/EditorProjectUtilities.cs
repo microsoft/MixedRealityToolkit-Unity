@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -64,46 +66,92 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// build target.
         /// </summary>
         /// <remarks>
-        /// This method only executes when the Unity version is 2018.x and IL2CPP is not the selected backend.
+        /// This method only executes on Unity 2018.x
         /// </remarks>
         private static void ApplyARFoundationUWPCompileFix()
         {
-#if UNITY_2018 && !ENABLE_IL2CPP //&& UNITY_WSA
-            // WSA
-
+#if UNITY_2018
             DirectoryInfo packageCache = GetPackageCache();
 
             if (packageCache.Exists)
             {
-                // Get the AR Foundation assembly definition.            
+                string uwpPlatformName = "WSA";
+
                 FileInfo arFoundation = GetPackageCacheAssemblyDefinitionFile(
                     packageCache,
                     "com.unity.xr.arfoundation@*",
                     "Unity.XR.ARFoundation.asmdef");
                 if (arFoundation != null)
                 {
-                    Debug.Log($"Updating {arFoundation.FullName} to enable Universal Windows Platform .NET backend builds");
-                    // todo
+                    bool changed = false;
+
+                    AssemblyDefinition asmDef = AssemblyDefinition.Load(arFoundation.FullName);
+
+                    if (asmDef.IncludePlatforms.Contains(uwpPlatformName))
+                    {
+                        Debug.Log($"Removing Universal Windows Platform from the {arFoundation.FullName} included platforms list.");
+                        List<string> list = new List<string>(asmDef.IncludePlatforms);
+                        list.Remove(uwpPlatformName);
+                        asmDef.IncludePlatforms = list.ToArray();
+                        changed = true;
+                    }
+                    else if (!asmDef.ExcludePlatforms.Contains(uwpPlatformName))
+                    {
+                        Debug.Log($"Adding Universal Windows Platform to the {arFoundation.FullName} excluded platforms list.");
+                        List<string> list = new List<string>(asmDef.ExcludePlatforms);
+                        list.Add(uwpPlatformName);
+                        asmDef.ExcludePlatforms = list.ToArray();
+                        changed = true;
+                    }
+
+                    if (changed)
+                    {
+                        asmDef.Save(arFoundation.FullName);
+                    }
                 }
 
-                // Get the AR Foundation assembly definition.            
                 FileInfo arSubsystems = GetPackageCacheAssemblyDefinitionFile(
                     packageCache,
                     "com.unity.xr.arsubsystems@*",
                     "Unity.XR.ARSubsystems.asmdef");
                 if (arSubsystems != null)
                 {
-                    Debug.Log($"Updating {arSubsystems.FullName} to enable Universal Windows Platform .NET backend builds");
-                    // todo
+                    bool changed = false;
+
+                    AssemblyDefinition asmDef = AssemblyDefinition.Load(arSubsystems.FullName);
+
+                    if (asmDef.IncludePlatforms.Contains(uwpPlatformName))
+                    {
+                        Debug.Log($"Removing Universal Windows Platform from the {arSubsystems.FullName} included platforms list.");
+                        List<string> list = new List<string>(asmDef.IncludePlatforms);
+                        list.Remove(uwpPlatformName);
+                        asmDef.IncludePlatforms = list.ToArray();
+                        changed = true;
+                    }
+                    else if (!asmDef.ExcludePlatforms.Contains(uwpPlatformName))
+                    {
+                        Debug.Log($"Adding Universal Windows Platform to the {arSubsystems.FullName} excluded platforms list.");
+                        List<string> list = new List<string>(asmDef.ExcludePlatforms);
+                        list.Add(uwpPlatformName);
+                        asmDef.ExcludePlatforms = list.ToArray();
+                        changed = true;
+                    }
+
+                    if (changed)
+                    {
+                        asmDef.Save(arSubsystems.FullName);
+                    }
                 }
             }
-#endif
+#endif // UNITY_2018
         }
 
         /// <summary>
-        /// todo
+        /// Gets the package cache folder of this project.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        /// A <see href="https://docs.microsoft.com/en-us/dotnet/api/system.io.directoryinfo"/>DirectoryInfo</see> object that describes the package cache folder.
+        /// </returns>
         private static DirectoryInfo GetPackageCache()
         {
             string packageCacheFolderName = @"Library\PackageCache";
@@ -113,22 +161,28 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         /// <summary>
-        /// todo
+        /// Gets the assembly definition file that best matches the folder name pattern and the file names.
         /// </summary>
-        /// <param name="root"></param>
-        /// <param name="folderName"></param>
-        /// <param name="fileName"></param>
-        /// <returns></returns>
+        /// <param name="root"><see href="https://docs.microsoft.com/en-us/dotnet/api/system.io.directoryinfo"/>DirectoryInfo</see> that describes the package cache root folder.</param>
+        /// <param name="folderName">The name of the folder in which to find the requested file. A wildcard ('*') can be specifid to match a partial name.</param>
+        /// <param name="fileName">The name of the assembly definition file.</param>
+        /// <returns>
+        /// A <see href="https://docs.microsoft.com/en-us/dotnet/api/system.io.fileinfo"/>FileInfo</see> object that describes the assembly definition file or null.
+        /// </returns>
         private static FileInfo GetPackageCacheAssemblyDefinitionFile(
             DirectoryInfo root,
             string folderName,
             string fileName)
         {
             DirectoryInfo[] folders = root.GetDirectories(folderName);
-            if (folders.Length == 0) { return null; }
+            if (folders.Length == 0) 
+            {
+                Debug.Log($"Failed to locate a folder fitting the {folderName} pattern.");
+                return null; 
+            }
             if (folders.Length > 1) 
             {
-                Debug.LogWarning("Too many instances of the requested folder name, using the first one found.");
+                Debug.LogWarning($"Too many instances of the {folderName} pattern, using the first one found.");
             }
 
             folders = folders[0].GetDirectories("Runtime");
