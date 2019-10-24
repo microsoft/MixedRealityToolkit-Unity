@@ -56,9 +56,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             StringBuilder objBuffer = new StringBuilder();
 
-            objBuffer.Append($"# {target.name}").NewLine();
+            objBuffer.Append($"# {target.name}").AppendNewLine();
             var dt = DateTime.Now;
-            objBuffer.Append($"# {dt.ToLongDateString()} - {dt.ToLongTimeString()}").NewLine().NewLine();
+            objBuffer.Append($"# {dt.ToLongDateString()} - {dt.ToLongTimeString()}").AppendNewLine().AppendNewLine();
 
             Stack<Transform> processStack = new Stack<Transform>();
             processStack.Push(target.transform);
@@ -101,14 +101,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             var transform = meshFilter.transform;
 
-            buffer.Append("g ").Append(transform.name).NewLine();
+            buffer.Append("g ").Append(transform.name).AppendNewLine();
 
             foreach (Vector3 vertex in mesh.vertices)
             {
                 Vector3 v = transform.TransformPoint(vertex);
                 buffer.Append($"v {v.x} {v.y} {v.z}\n");
             }
-            buffer.NewLine();
+            buffer.AppendNewLine();
 
             foreach (Vector3 normal in mesh.normals)
             {
@@ -116,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 buffer.Append($"vn {vn.x} {vn.y} {vn.z}\n");
             }
 
-            buffer.NewLine();
+            buffer.AppendNewLine();
             foreach (Vector3 uv in mesh.uv)
             {
                 buffer.Append($"vt {uv.x} {uv.y}\n");
@@ -124,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             for (int idx = 0; idx < mesh.subMeshCount; idx++)
             {
-                buffer.NewLine();
+                buffer.AppendNewLine();
 
                 int[] triangles = mesh.GetTriangles(idx);
                 for (int i = 0; i < triangles.Length; i += 3)
