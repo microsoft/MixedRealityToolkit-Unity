@@ -13,8 +13,8 @@ using UnityEngine.XR.WSA.Input;
 #endif
 
 #if WINDOWS_UWP
-using Windows.Storage.Streams;
 using Microsoft.MixedReality.Toolkit.Windows.Input;
+using Windows.Storage.Streams;
 #endif
 
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
@@ -314,7 +314,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                         var visualizationType = visualizationProfile.GetControllerVisualizationTypeOverride(GetType(), ControllerHandedness);
                         if (visualizationType != null)
                         {
-                            gltfGameObject.AddComponent(visualizationType.Type);
+                            // Set the platform controller model to not be destroyed when the source is lost. It'll be disabled instead,
+                            // and re-enabled when the same controller is re-detected.
+                            if (gltfGameObject.AddComponent(visualizationType.Type) is IMixedRealityControllerPoseSynchronizer visualizer)
+                            {
+                                visualizer.DestroyOnSourceLost = false;
+                            }
+
                             TryAddControllerModelToSceneHierarchy(gltfGameObject);
                             controllerDictionary.Add(GenerateKey(interactionSource), gltfGameObject);
                         }

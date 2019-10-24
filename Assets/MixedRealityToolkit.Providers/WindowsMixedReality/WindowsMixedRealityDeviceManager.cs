@@ -652,12 +652,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             {
                 IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
 
-                if (controller.Visualizer != null &&
-                    controller.Visualizer.GameObjectProxy != null)
-                {
-                    controller.Visualizer.GameObjectProxy.SetActive(false);
-                }
-
                 inputSystem?.RaiseSourceLost(controller.InputSource, controller);
 
                 foreach (IMixedRealityPointer pointer in controller.InputSource.Pointers)
@@ -666,6 +660,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     {
                         pointer.Controller = null;
                     }
+                }
+
+                if (controller.Visualizer != null &&
+                    controller.Visualizer.GameObjectProxy != null)
+                {
+                    controller.Visualizer.GameObjectProxy.SetActive(false);
                 }
             }
 
