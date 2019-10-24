@@ -124,6 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             return detectedController;
         }
 
+        /// <inheritdoc />
         protected override void RemoveController(string joystickName)
         {
             var controller = GetOrAddController(joystickName);
