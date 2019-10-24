@@ -15,6 +15,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 {
+    /// <summary>
+    /// Represents and loads models from the OpenVR APIs. This class is based on the SteamVR_RenderModel class.
+    /// </summary>
     public class OpenVRRenderModel : MonoBehaviour
     {
         private class RenderModel
@@ -35,6 +38,11 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 
         internal Shader shader = null;
 
+        /// <summary>
+        /// Attempts to load or reload a controller model based on the passed in handedness.
+        /// </summary>
+        /// <param name="handedness">The handedness of the controller model to load.</param>
+        /// <returns>True if the controller model was found and loaded. False otherwise.</returns>
         public bool UpdateModel(Handedness handedness)
         {
             var system = Headers.OpenVR.System;
@@ -186,8 +194,6 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
                     var renderModels = Headers.OpenVR.RenderModels;
                     if (renderModels == null)
                         return false;
-
-                    Debug.Log("Loading render model " + renderModelName);
 
                     model = LoadRenderModel(renderModels, renderModelName, renderModelName);
                     if (model == null)
@@ -365,11 +371,13 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             }
         }
 
-        /// <summary>
-        /// Helper function to handle the fact that the packing for RenderModel_t is 
-        /// different on Linux/OSX (4) than it is on Windows (8)
-        /// </summary>
-        /// <param name="pRenderModel">native pointer to the RenderModel_t</param>
+        private static void Sleep()
+        {
+#if !UNITY_WSA
+            System.Threading.Thread.Sleep(1);
+#endif
+        }
+
         private RenderModel_t MarshalRenderModel(System.IntPtr pRenderModel)
         {
             if ((System.Environment.OSVersion.Platform == System.PlatformID.MacOSX) ||
@@ -386,18 +394,6 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             }
         }
 
-        private static void Sleep()
-        {
-#if !UNITY_WSA
-            System.Threading.Thread.Sleep(1);
-#endif
-        }
-
-        /// <summary>
-        /// Helper function to handle the fact that the packing for RenderModel_TextureMap_t is 
-        /// different on Linux/OSX (4) than it is on Windows (8)
-        /// </summary>
-        /// <param name="pRenderModel">native pointer to the RenderModel_TextureMap_t</param>
         private RenderModel_TextureMap_t MarshalRenderModel_TextureMap(System.IntPtr pRenderModel)
         {
             if ((System.Environment.OSVersion.Platform == System.PlatformID.MacOSX) ||
