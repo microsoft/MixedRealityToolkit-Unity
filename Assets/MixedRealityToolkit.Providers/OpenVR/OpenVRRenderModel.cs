@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         /// </summary>
         /// <param name="handedness">The handedness of the controller model to load.</param>
         /// <returns>True if the controller model was found and loaded. False otherwise.</returns>
-        public bool UpdateModel(Handedness handedness)
+        public bool LoadModel(Handedness handedness)
         {
             var system = Headers.OpenVR.System;
             if (system == null)

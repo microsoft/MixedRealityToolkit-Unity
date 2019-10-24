@@ -265,7 +265,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 
                 OpenVRRenderModel openVRRenderModel = controllerModelGameObject.AddComponent<OpenVRRenderModel>();
                 openVRRenderModel.shader = visualizationProfile.GetDefaultControllerModelMaterialOverride(GetType(), ControllerHandedness).shader;
-                failedToObtainControllerModel = !openVRRenderModel.UpdateModel(ControllerHandedness);
+                failedToObtainControllerModel = !openVRRenderModel.LoadModel(ControllerHandedness);
 
                 if (!failedToObtainControllerModel)
                 {
