@@ -105,6 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             preExistingArSessionOriginObject = (arSessionOriginObject != null);
         }
 
+        /// <inheritdoc />
         public override async void Initialize()
         {
             base.Initialize();
@@ -117,6 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             }
         }
 
+        /// <inheritdoc />
         public override void Enable()
         {
             base.Enable();
@@ -127,6 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             }
         }
 
+        /// <inheritdoc />
         public override void Destroy()
         {
             UninitializeARFoundation();
@@ -137,6 +140,11 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// <summary>
         /// Initialize AR Foundation components.
         /// </summary>
+        /// <remarks>
+        /// This method ensures AR Foundation required components (ex: AR Session, Tracked Pose Driver, etc) are
+        /// exist or are added to the appropriate scene objects. These components are used by AR Foundation to
+        /// communicate with the underlying AR platform (ex: AR Core), track the device and perform other necessary tasks .
+        /// </remarks>
         private void InitializeARFoundation()
         {
             if (isInitialized) { return; }

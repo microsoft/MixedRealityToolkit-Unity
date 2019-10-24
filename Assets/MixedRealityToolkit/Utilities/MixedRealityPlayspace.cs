@@ -24,8 +24,6 @@ namespace Microsoft.MixedReality.Toolkit
 
         public static void Destroy()
         {
-            // todo: if the playspace object was not dynamically created, do not destroy it
-
             // Playspace makes main camera dependent on it (see Transform initialization),
             // so here it needs to restore camera's initial position. 
             // Without second parameter camera will not move to its original position.
