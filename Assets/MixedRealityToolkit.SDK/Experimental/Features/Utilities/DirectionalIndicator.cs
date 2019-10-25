@@ -18,19 +18,21 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
         /// The GameObject transform to point the indicator towards when this object is not in view. 
         /// The frame of reference for viewing is defined by the Solver Handler Tracked Target Type
         /// </summary>
+        [Tooltip("The GameObject transform to point the indicator towards when this object is not in view.\nThe frame of reference for viewing is defined by the Solver Handler Tracked Target Type")]
         public Transform DirectionalTarget;
 
         /// <summary>
         /// Multiplier factor to increase or decrease FOV range for testing if object is visible and thus turn off indicator
         /// </summary>
+        [Tooltip("Multiplier factor to increase or decrease FOV range for testing if object is visible and thus turn off indicator")]
         [Min(0.1f)]
         public float VisibilityScaleFactor = 1.25f;
 
-        [Tooltip("The offset from center to place the indicator. If frame of reference is the camera, then the object will be this distance from center of screen")]
-        [Min(0.0f)]
         /// <summary>
         /// The offset from center to place the indicator. If frame of reference is the camera, then the object will be this distance from center of screen
         /// </summary>
+        [Tooltip("The offset from center to place the indicator. If frame of reference is the camera, then the object will be this distance from center of screen")]
+        [Min(0.0f)]
         public float ViewOffset = 0.3f;
 
         private bool wasVisible = true;
