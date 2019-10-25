@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,17 +33,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             Debug.Log($"Exporting GameObject {root.name} to {filePath} OBJ file");
 
-            if (!File.Exists(filePath))
-            {
-                File.Create(filePath);
-            }
-
             // Await coroutine that must execute on Unity's main thread
             string getObjData = await CreateOBJFileContentAsync(root, includeChildren);
 
-            using (StreamWriter sw = new StreamWriter(filePath))
+            using (FileStream fs = new FileStream(filePath, FileMode.Create))
             {
-                await sw.WriteAsync(getObjData);
+                using (StreamWriter sw = new StreamWriter(fs))
+                {
+                    await sw.WriteAsync(getObjData);
+                }
             }
         }
 
@@ -58,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
             objBuffer.Append($"# {target.name}").AppendNewLine();
             var dt = DateTime.Now;
-            objBuffer.Append($"# {dt.ToLongDateString()} - {dt.ToLongTimeString()}").AppendNewLine().AppendNewLine();
+            objBuffer.Append($"# {dt.ToString(CultureInfo.InvariantCulture)}").AppendNewLine().AppendNewLine();
 
             Stack<Transform> processStack = new Stack<Transform>();
             processStack.Push(target.transform);

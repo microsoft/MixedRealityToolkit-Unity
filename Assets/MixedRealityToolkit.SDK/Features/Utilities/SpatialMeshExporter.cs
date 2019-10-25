@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Utilities
         /// </remarks>
         public static async Task Save(string folderPath, bool consolidate = true)
         {
-            ThrowIfDoesNotExist(folderPath);
+            CreateFoldersIfDoesNotExist(folderPath);
 
             var meshObservers = (CoreServices.SpatialAwarenessSystem as IMixedRealityDataProviderAccess).GetDataProviders<IMixedRealitySpatialAwarenessMeshObserver>();
 
@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Utilities
         /// </remarks>
         public static async Task Save(IMixedRealitySpatialAwarenessMeshObserver meshObserver, string folderPath, bool consolidate = true)
         {
-            ThrowIfDoesNotExist(folderPath);
+            CreateFoldersIfDoesNotExist(folderPath);
 
             await SaveInternal(meshObserver, folderPath, consolidate);
         }
@@ -71,11 +71,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Utilities
             }
         }
 
-        private static void ThrowIfDoesNotExist(string folderPath)
+        private static void CreateFoldersIfDoesNotExist(string folderPath)
         {
             if (!Directory.Exists(folderPath))
             {
-                throw new Exception($"Directory does not exist at: {folderPath}");
+                Directory.CreateDirectory(folderPath);
             }
         }
     }
