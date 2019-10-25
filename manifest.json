@@ -5864,18 +5864,6 @@
     },
     {
       "type": "Conceptual",
-      "source_relative_path": "Documentation/Legal/NOTICE.md",
-      "output": {
-        ".html": {
-          "relative_path": "Documentation/Legal/NOTICE.html",
-          "hash": "wFw3d7PYvMTdVKnRx6ogMQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Conceptual",
       "source_relative_path": "Documentation/MRTKNuGetPackage.md",
       "output": {
         ".html": {
@@ -6456,7 +6444,19 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "MYerVvGcmq+jT1o3bxfTeg=="
+          "hash": "GS+T6+P4CDybCszKOrNYdg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "NOTICE.md",
+      "output": {
+        ".html": {
+          "relative_path": "NOTICE.html",
+          "hash": "hSQKP8PVcMo4mi181+JrPg=="
         }
       },
       "is_incremental": false,
@@ -10307,7 +10307,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.BaseController.html",
-          "hash": "ACKCkTBDQONr/B+m178iFw=="
+          "hash": "atrRWUcH0zyJL9atPlTy0g=="
         }
       },
       "is_incremental": false,
@@ -12203,7 +12203,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.MixedRealityControllerVisualizationProfile.html",
-          "hash": "t9CrYSOW24PI2aKXwV8LPQ=="
+          "hash": "Slefkwm8Y3r/cXPhAwc0sA=="
         }
       },
       "is_incremental": false,
@@ -12215,7 +12215,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.MixedRealityControllerVisualizationSetting.html",
-          "hash": "ZVB8OUqU2IWqyFhjS6zwYw=="
+          "hash": "IS90yA1q0MwMA42M/JGwyw=="
         }
       },
       "is_incremental": false,
@@ -13079,7 +13079,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.UnityInput.UnityJoystickManager.html",
-          "hash": "KpdNLhc5Hlvez3XubqzCPA=="
+          "hash": "zzgg7jhNUzBeGst9NH+S/A=="
         }
       },
       "is_incremental": false,
@@ -13675,11 +13675,2351 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.AppOverrideKeys_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.AppOverrideKeys_t.html",
+          "hash": "WuynF9jpFyc3ygvp1PmcEA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.COpenVRContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.COpenVRContext.html",
+          "hash": "BJuP8qRD7qEteFAiHMo4wg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRApplications.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRApplications.html",
+          "hash": "hjj5+XIszEUzf+HC9axLCg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRChaperone.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRChaperone.html",
+          "hash": "p+SMP41PR6GvfzysuYtPnw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRChaperoneSetup.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRChaperoneSetup.html",
+          "hash": "W3eaigPbbJOIUjvBDindhQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRCompositor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRCompositor.html",
+          "hash": "Ux4SxBzjGZi7k2i4RZ+g2w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRDriverManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRDriverManager.html",
+          "hash": "yDM0ZosJSMFkK1ucB7P0lg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRExtendedDisplay.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRExtendedDisplay.html",
+          "hash": "/RrFR8iCwg6pcAK57bAMLw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRIOBuffer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRIOBuffer.html",
+          "hash": "JTGbHFMlhoS67YHx2gIJUg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRInput.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRInput.html",
+          "hash": "eLFkFVbbhxsqkFCbLQDsvQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRNotifications.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRNotifications.html",
+          "hash": "0w/n0tkCE1saxmeI1IwsMQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVROverlay.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVROverlay.html",
+          "hash": "5Ji3wjJ8j9CGYYV2lHXXJw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRRenderModels.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRRenderModels.html",
+          "hash": "vAkVovbhy7mvYAA2N5t+xQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRResources.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRResources.html",
+          "hash": "nHeRj32tHkuHblEcrH3ztw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRScreenshots.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRScreenshots.html",
+          "hash": "en8/GCzRFqXPXqlJsvIPSQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRSettingHelper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRSettingHelper.html",
+          "hash": "XVvS7XfnO87L6M61ORJqEQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRSettings.html",
+          "hash": "PDUBcGRctBz98Bf9HzPN3w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRSpatialAnchors.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRSpatialAnchors.html",
+          "hash": "xmlcNqRftIcuZY3vHtXNWw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRSystem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRSystem.html",
+          "hash": "WdQ4HDd9HHNfOFjcIUIYAQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRTrackedCamera.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CVRTrackedCamera.html",
+          "hash": "6BZyIGwOprYAh8KMWQwdyQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CameraVideoStreamFrameHeader_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.CameraVideoStreamFrameHeader_t.html",
+          "hash": "LUjvm3GfdL6teYIu1VxFSA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.ChaperoneCalibrationState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.ChaperoneCalibrationState.html",
+          "hash": "d/uBtuZLKB9bpE4AyFF/Aw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.Compositor_CumulativeStats.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.Compositor_CumulativeStats.html",
+          "hash": "JzYFM4JkCqOMcc9R4lEINg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.Compositor_FrameTiming.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.Compositor_FrameTiming.html",
+          "hash": "aUbixPWypVMMd4Z6lnZmFg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.Compositor_OverlaySettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.Compositor_OverlaySettings.html",
+          "hash": "ymdw47n+s1uOtGDGgeEQiw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.D3D12TextureData_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.D3D12TextureData_t.html",
+          "hash": "ihWJQ46x9vvQVy4ZS6PSLg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.DistortionCoordinates_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.DistortionCoordinates_t.html",
+          "hash": "KB1/Zv3x4sFRUrQEsetw2Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.DriverDirectMode_FrameTiming.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.DriverDirectMode_FrameTiming.html",
+          "hash": "4x8GsqqZUEY5RuKnngNbCA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EChaperoneConfigFile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EChaperoneConfigFile.html",
+          "hash": "iD50FVz/yt4DBvWIPO0ZVg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EChaperoneImportFlags.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EChaperoneImportFlags.html",
+          "hash": "Tfp/KkTJNSDn4mInrwbttA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.ECollisionBoundsStyle.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.ECollisionBoundsStyle.html",
+          "hash": "SwsUlloI7ArO/iqasKwCcQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EColorSpace.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EColorSpace.html",
+          "hash": "6SnB9HfDaiNobPEVVozQxg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EDeviceActivityLevel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EDeviceActivityLevel.html",
+          "hash": "mkCM6La7I0z9qKUgtG0Jbg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EDualAnalogWhich.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EDualAnalogWhich.html",
+          "hash": "A4+6AMNolMIYNXa6vsryrg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EGamepadTextInputLineMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EGamepadTextInputLineMode.html",
+          "hash": "Ka76mO8cXwdfRsr4/KdwLQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EGamepadTextInputMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EGamepadTextInputMode.html",
+          "hash": "Kv6+vBhdC4nCg0onIhgz2g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EHiddenAreaMeshType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EHiddenAreaMeshType.html",
+          "hash": "+l9tnnX+N/JcBxue3zmgDA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EIOBufferError.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EIOBufferError.html",
+          "hash": "FLWiIhqJN8RoACSnKeTqFg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EIOBufferMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EIOBufferMode.html",
+          "hash": "XBy2Bd0BbR82biQEta8DtQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EOverlayDirection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EOverlayDirection.html",
+          "hash": "iEIp+eTjhhB271OItb8UUw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EShowUIType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EShowUIType.html",
+          "hash": "1IMM5N+YfQVgO93mrfpziQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.ETextureType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.ETextureType.html",
+          "hash": "BegAzjmjk0kTAF28GG2uUA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.ETrackedControllerRole.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.ETrackedControllerRole.html",
+          "hash": "NXZvLbXdso69i7Lsw5Ma2A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.ETrackedDeviceClass.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.ETrackedDeviceClass.html",
+          "hash": "aCOLeb/BUboKcxEIXRo+DQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.ETrackedDeviceProperty.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.ETrackedDeviceProperty.html",
+          "hash": "pXoESHfdLTgp9sofU992Wg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.ETrackedPropertyError.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.ETrackedPropertyError.html",
+          "hash": "LcM9GI0HP3M6FmqrJhAm/A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.ETrackingResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.ETrackingResult.html",
+          "hash": "oCQA8nMTGNcOTmhlwLdUUQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.ETrackingUniverseOrigin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.ETrackingUniverseOrigin.html",
+          "hash": "3lI/xeBkciGJh2f6sMV0uQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRApplicationError.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRApplicationError.html",
+          "hash": "gwlY0Cf9x1QiPmy2BZTysA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRApplicationProperty.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRApplicationProperty.html",
+          "hash": "7MDyJBFPz2hrFaHoRNhzDQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRApplicationTransitionState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRApplicationTransitionState.html",
+          "hash": "GmsnhSRX0Sqo/XlsoHH/Vw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRApplicationType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRApplicationType.html",
+          "hash": "Yh32OGfTpcNH0QlR4CRErA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRButtonId.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRButtonId.html",
+          "hash": "fM90c6ura8a09K/SG7SnTQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRComponentProperty.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRComponentProperty.html",
+          "hash": "v8xUjfLtLrWiG0eYwqypcQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRCompositorError.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRCompositorError.html",
+          "hash": "rJNQQcNt/GWEQ39goD8EZw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRCompositorTimingMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRCompositorTimingMode.html",
+          "hash": "SxcOwtSiIUQDlkgASLoL5g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRControllerAxisType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRControllerAxisType.html",
+          "hash": "f48BwCFvq6DztWtKKnQhAA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRControllerEventOutputType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRControllerEventOutputType.html",
+          "hash": "KslO+2vf7Vcfqet3z2a1DA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRDistortionFunctionType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRDistortionFunctionType.html",
+          "hash": "2cPkorM55bRoaWo7+l6A1w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVREventType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVREventType.html",
+          "hash": "hS6ldEt79YPkDMCFFiU6QQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVREye.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVREye.html",
+          "hash": "sdoSvA3K29YSjbYeIFdfYQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRFinger.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRFinger.html",
+          "hash": "6I4qLAX62qcnsUBWZX40VA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRFingerSplay.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRFingerSplay.html",
+          "hash": "bw0fdUf7s5vFXEGN2lokAA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRFirmwareError.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRFirmwareError.html",
+          "hash": "3FCCzpjQgeFZr5K3xXDV1g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRInitError.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRInitError.html",
+          "hash": "hICMPy5y/vCwCsLg4u/vOg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRInputError.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRInputError.html",
+          "hash": "XydxtDpd98uwiYl/qfs7+g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRInputFilterCancelType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRInputFilterCancelType.html",
+          "hash": "NvPTg7KR3HrIWle+xvGbdw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRInputStringBits.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRInputStringBits.html",
+          "hash": "b4u2bdGeJ5jrvqzrTwiSyQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRMouseButton.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRMouseButton.html",
+          "hash": "3D7beRp0gUl+ISIY288SFQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRMuraCorrectionMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRMuraCorrectionMode.html",
+          "hash": "iCjgpYdCD+hWdAgVDb4X9g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRNotificationError.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRNotificationError.html",
+          "hash": "s6WuX6VJ0c6UQU9ba0CbOQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRNotificationStyle.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRNotificationStyle.html",
+          "hash": "ANrlZphDfgiAp5QG3z+P0g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRNotificationType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRNotificationType.html",
+          "hash": "02RYtJqW0PW5YCu2qx5LHA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVROverlayError.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVROverlayError.html",
+          "hash": "EtlZ7Kc43Rg0bFJvysvwqg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVROverlayIntersectionMaskPrimitiveType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVROverlayIntersectionMaskPrimitiveType.html",
+          "hash": "SbyxH9s9XyCBTUOq8ZQH1A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRRenderModelError.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRRenderModelError.html",
+          "hash": "iHjtULFKz/Mb8xYnQGWJAA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRScreenshotError.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRScreenshotError.html",
+          "hash": "BQ152cxRaK9XcceH/nJkcQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRScreenshotPropertyFilenames.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRScreenshotPropertyFilenames.html",
+          "hash": "0IeYLeWvkeBXogEj2NvMkw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRScreenshotType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRScreenshotType.html",
+          "hash": "XxATR9PuaduUomXhaR0L7Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRSettingsError.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRSettingsError.html",
+          "hash": "Qbqb81AoV3UEtSIX4sFM5w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRSkeletalMotionRange.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRSkeletalMotionRange.html",
+          "hash": "BuD/dBv3G2xEugFGPRGUnw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRSkeletalReferencePose.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRSkeletalReferencePose.html",
+          "hash": "fe5lKBUFvwittTCN6OWJPg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRSkeletalTrackingLevel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRSkeletalTrackingLevel.html",
+          "hash": "rEaFGIWdhoLN//1XWUJ3xA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRSkeletalTransformSpace.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRSkeletalTransformSpace.html",
+          "hash": "RlzkD8hc7j2X87jTaZGCAA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRSpatialAnchorError.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRSpatialAnchorError.html",
+          "hash": "kW4ldahjR1g0IsnY+7hAPQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRState.html",
+          "hash": "88uQpcolseUbvi7Au0f5/g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRSubmitFlags.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRSubmitFlags.html",
+          "hash": "tUme4RkzBSjQlKTkObqxoA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRTrackedCameraError.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRTrackedCameraError.html",
+          "hash": "wx/viDsxKcY9YLge2L1jRA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRTrackedCameraFrameLayout.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRTrackedCameraFrameLayout.html",
+          "hash": "0AJspMDrN3EUSB1byI9tRQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRTrackedCameraFrameType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVRTrackedCameraFrameType.html",
+          "hash": "VTgzau8SleZxoBRtYcNlkw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVSync.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.EVSync.html",
+          "hash": "/XgAMg4te+ZP3taL0S2/hQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.HiddenAreaMesh_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.HiddenAreaMesh_t.html",
+          "hash": "JfUvPPt6IUuBuLVJ7ip3tA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.HmdColor_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.HmdColor_t.html",
+          "hash": "sulNrvTqMpnx5nB+aqhkKA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.HmdMatrix33_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.HmdMatrix33_t.html",
+          "hash": "+TYN2Bz2mCs0hU9cMvgmwQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.HmdMatrix34_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.HmdMatrix34_t.html",
+          "hash": "pMc1PYCnU5puHi0FPWWojw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.HmdMatrix44_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.HmdMatrix44_t.html",
+          "hash": "jZwrBSw7WdU+GfIQf97SbQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.HmdQuad_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.HmdQuad_t.html",
+          "hash": "JX8QC8zfNvEKs3Kj6gyLMQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.HmdQuaternion_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.HmdQuaternion_t.html",
+          "hash": "xw/dkyO4z6qZRAyASOeaHw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.HmdQuaternionf_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.HmdQuaternionf_t.html",
+          "hash": "t59u5+9EiwkIQ4fLFsY2sA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.HmdRect2_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.HmdRect2_t.html",
+          "hash": "WQZ+PhnjGCmKqgNQ8bok4Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.HmdVector2_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.HmdVector2_t.html",
+          "hash": "gwsJlFYBH+KJUGcsoNvStQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.HmdVector3_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.HmdVector3_t.html",
+          "hash": "OzQxfVfCpDBWrUFMSccNXg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.HmdVector3d_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.HmdVector3d_t.html",
+          "hash": "z9nTLbHqeF4xh48XRvQRFQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.HmdVector4_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.HmdVector4_t.html",
+          "hash": "ggnHW8UCDFoxwFghuhzV+g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVRApplications.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVRApplications.html",
+          "hash": "E62RuRD5tBG3cTvU+Ru6fg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVRChaperone.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVRChaperone.html",
+          "hash": "uWYBRB/EY7FmkG6VfpxPOw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVRChaperoneSetup.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVRChaperoneSetup.html",
+          "hash": "61HPo0C8H5rYQ6NIIizGKA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVRCompositor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVRCompositor.html",
+          "hash": "9JJZVLBCty10jgTVX/Xfmw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVRDriverManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVRDriverManager.html",
+          "hash": "SaDFQIv0YV22wXWhcncjlQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVRExtendedDisplay.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVRExtendedDisplay.html",
+          "hash": "ZBjgHUDNVYbhL4VFbnGrRQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVRIOBuffer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVRIOBuffer.html",
+          "hash": "t3nTAsWGweYf5Ffn6I3azw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVRInput.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVRInput.html",
+          "hash": "1VKadPaDX5BaLlKSv+q4vg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVRNotifications.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVRNotifications.html",
+          "hash": "+WbdWt8fpIs16eqVz/iQEw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVROverlay.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVROverlay.html",
+          "hash": "v0ZMTEZWtO6ERzNJxf7hcA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVRRenderModels.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVRRenderModels.html",
+          "hash": "1cVOQ+dgNQGIM8FEczsWIg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVRResources.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVRResources.html",
+          "hash": "7RJPuihdhy3rjCVegWXAEw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVRScreenshots.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVRScreenshots.html",
+          "hash": "nzbw67OgGyRyscLk/eE4MA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVRSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVRSettings.html",
+          "hash": "4V1Wpa4pe8AqlBWIdrwVYA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVRSpatialAnchors.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVRSpatialAnchors.html",
+          "hash": "Lzol9Lf8IuIBM+QvQGkP6Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVRSystem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVRSystem.html",
+          "hash": "zS8nlbvg0atL0yXSwoKDVg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVRTrackedCamera.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IVRTrackedCamera.html",
+          "hash": "CGe9D47PrpwnqXCoHuHIXQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.ImuSample_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.ImuSample_t.html",
+          "hash": "W+wKkDZmvfLnugFMB9WmJg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.Imu_OffScaleFlags.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.Imu_OffScaleFlags.html",
+          "hash": "Mur/CcmEOTHOOKXK2nC5+w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.InputAnalogActionData_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.InputAnalogActionData_t.html",
+          "hash": "w8T06wQG0me/euE3fzhJhQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.InputDigitalActionData_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.InputDigitalActionData_t.html",
+          "hash": "4n5D6WpnrT4OqjzdiYskfQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.InputOriginInfo_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.InputOriginInfo_t.html",
+          "hash": "ShOC5ITBnc4bTKYcRkMNWg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.InputPoseActionData_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.InputPoseActionData_t.html",
+          "hash": "ebyBStkOrhkp5tha+L240A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.InputSkeletalActionData_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.InputSkeletalActionData_t.html",
+          "hash": "izUCaJmEKXiRhvaAOBTkNQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IntersectionMaskCircle_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IntersectionMaskCircle_t.html",
+          "hash": "l0JVOzryhtDMq6M8liBmKA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IntersectionMaskRectangle_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.IntersectionMaskRectangle_t.html",
+          "hash": "Fv55N6W1HD91oCpwr/plmg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.NotificationBitmap_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.NotificationBitmap_t.html",
+          "hash": "5Fyw4gg4Vszmh1vfEDkDMA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.OpenVR.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.OpenVR.html",
+          "hash": "c26wCOYwQPLinaFkxoA8xA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.OpenVRInterop.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.OpenVRInterop.html",
+          "hash": "OQgBF1uyyC26kdYhVdZlCQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.RenderModel_ComponentState_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.RenderModel_ComponentState_t.html",
+          "hash": "ash0ckAg2/9m6Ex6WVjKjQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.RenderModel_ControllerMode_State_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.RenderModel_ControllerMode_State_t.html",
+          "hash": "Y/w0m79HMmIL0DTZJb1dnQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.RenderModel_TextureMap_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.RenderModel_TextureMap_t.html",
+          "hash": "bJ7i4l7pDxqGqFIm/xfm6A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.RenderModel_TextureMap_t_Packed.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.RenderModel_TextureMap_t_Packed.html",
+          "hash": "eH/VrH2TGdBJcyCt3dMybw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.RenderModel_Vertex_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.RenderModel_Vertex_t.html",
+          "hash": "FQd/ECM71wKVAHrWkpWUnA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.RenderModel_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.RenderModel_t.html",
+          "hash": "IWNqiQJVsFh5GpdmLSn18Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.RenderModel_t_Packed.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.RenderModel_t_Packed.html",
+          "hash": "BSCioi+TMtmltoDGTZxOXw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.SpatialAnchorPose_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.SpatialAnchorPose_t.html",
+          "hash": "17DgGgFeWQb+rkm4Yeb19w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.Texture_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.Texture_t.html",
+          "hash": "waVWg3QUIlM1mt/grBQ6Kg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.TrackedDevicePose_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.TrackedDevicePose_t.html",
+          "hash": "9aWZt9aR6DtKT3r5jTn0EQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VRActiveActionSet_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VRActiveActionSet_t.html",
+          "hash": "nmzKdXGWVohLpiQpLtLw+A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VRBoneTransform_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VRBoneTransform_t.html",
+          "hash": "roULzsoUrTOEfe4w20fYwQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VRControllerAxis_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VRControllerAxis_t.html",
+          "hash": "dGyoNI4umYMOEtFqKa5z0Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VRControllerState_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VRControllerState_t.html",
+          "hash": "rP9QpkKIkurqQz18sCjwIw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VRControllerState_t_Packed.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VRControllerState_t_Packed.html",
+          "hash": "tK1Hj716tGkZ/NqU//4Jrg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_ApplicationLaunch_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_ApplicationLaunch_t.html",
+          "hash": "usoOEdT6RDXvDlFwezSX4g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_Chaperone_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_Chaperone_t.html",
+          "hash": "AvKc5tKPEPe2mn14eA5Giw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_Controller_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_Controller_t.html",
+          "hash": "dyczB63VLfDcyt1t4JUdVA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_Data_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_Data_t.html",
+          "hash": "6DiaJ+8hKkuf+17vs75TCA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_DualAnalog_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_DualAnalog_t.html",
+          "hash": "WaiDbPfTZtQcFFIXzbc4Bw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_EditingCameraSurface_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_EditingCameraSurface_t.html",
+          "hash": "SsXnJvdWf9olDFSG1zFGog=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_HapticVibration_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_HapticVibration_t.html",
+          "hash": "Tjk2rljwzhWfZTjVsL2SgQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_InputActionManifestLoad_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_InputActionManifestLoad_t.html",
+          "hash": "3lzNxahCaFtLL34UK+7uzg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_InputBindingLoad_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_InputBindingLoad_t.html",
+          "hash": "O8Zr+D2N4OIeIe56aT9FZQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_Ipd_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_Ipd_t.html",
+          "hash": "hA0iNu+gI5yY6N4VNZZJNQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_Keyboard_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_Keyboard_t.html",
+          "hash": "HVFO6z8i9nEoe+Av/2iHEw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_MessageOverlay_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_MessageOverlay_t.html",
+          "hash": "fNZCFY4QzOFZqQel0/b/Tg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_Mouse_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_Mouse_t.html",
+          "hash": "4r35hjhKM1hlH/l8N89cyw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_Notification_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_Notification_t.html",
+          "hash": "3zpW0Ox/aDV24y+Nnp6rqg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_Overlay_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_Overlay_t.html",
+          "hash": "4nmuImEPBWW2ev+vlwmcbQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_PerformanceTest_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_PerformanceTest_t.html",
+          "hash": "8fkJwsaz88pmk22plOHUnw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_Process_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_Process_t.html",
+          "hash": "Qcjk4WidU4FIEO/AUOaCyQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_ProgressUpdate_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_ProgressUpdate_t.html",
+          "hash": "JAQTBgQYS9pCq4KhTK0JJw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_Property_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_Property_t.html",
+          "hash": "8edg6AwHKwGZuf5n6VnLkA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_Reserved_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_Reserved_t.html",
+          "hash": "l4OhQC/zgS0N1YUJpY9cCA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_ScreenshotProgress_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_ScreenshotProgress_t.html",
+          "hash": "TNdPaVS75cKikTzYZN6wKQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_Screenshot_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_Screenshot_t.html",
+          "hash": "+orY70LxVFgRf3v9w0YOgA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_Scroll_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_Scroll_t.html",
+          "hash": "Fn5wjlFVoiAq2yynNEsq3g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_SeatedZeroPoseReset_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_SeatedZeroPoseReset_t.html",
+          "hash": "upWvfdpCqHw+kLBe5zd2ZQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_ShowUI_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_ShowUI_t.html",
+          "hash": "UySDmPCyPlkCjAx3ZnUyPw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_SpatialAnchor_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_SpatialAnchor_t.html",
+          "hash": "a0hujYWecuExfSJL3aE3Bw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_Status_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_Status_t.html",
+          "hash": "obf06gmlx81p4KpbHEG8LA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_TouchPadMove_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_TouchPadMove_t.html",
+          "hash": "Sz1usZnzOhYGFvme6mj34g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_WebConsole_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_WebConsole_t.html",
+          "hash": "KLC/P+N/b/1bDFkXzi/uTQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_t.html",
+          "hash": "6RqdZHFhv+YppWToaEEXyg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_t_Packed.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VREvent_t_Packed.html",
+          "hash": "RjBMqKWKG2DsLSS+7Fxq6g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VRMessageOverlayResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VRMessageOverlayResponse.html",
+          "hash": "EF/sHAXCFU9CU5NbEjQ/Dw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VROverlayFlags.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VROverlayFlags.html",
+          "hash": "zm9AmWfreNBkyvVHuHFcVg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VROverlayInputMethod.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VROverlayInputMethod.html",
+          "hash": "NK//WPXA+k0tAlWsrtD76Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VROverlayIntersectionMaskPrimitive_Data_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VROverlayIntersectionMaskPrimitive_Data_t.html",
+          "hash": "OE58tf5GQMPqhjXtTFfcKA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VROverlayIntersectionMaskPrimitive_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VROverlayIntersectionMaskPrimitive_t.html",
+          "hash": "UORQCwKwUx1265953gNR1g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VROverlayIntersectionParams_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VROverlayIntersectionParams_t.html",
+          "hash": "FtqQAA9+jX426sC0X5Cz7w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VROverlayIntersectionResults_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VROverlayIntersectionResults_t.html",
+          "hash": "45oRyuSpNmGEXy75zD9J5g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VROverlayTransformType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VROverlayTransformType.html",
+          "hash": "5TN9RpyZsjTO6i6Ny7xIVw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VRSkeletalSummaryData_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VRSkeletalSummaryData_t.html",
+          "hash": "xAVHiB3rr/y0jynJiwrH/g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VRTextureBounds_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VRTextureBounds_t.html",
+          "hash": "LWFMUNyP2I725yAgntULIA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VRTextureDepthInfo_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VRTextureDepthInfo_t.html",
+          "hash": "ek05rMjiAQrmX54nesqQjg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VRTextureWithDepth_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VRTextureWithDepth_t.html",
+          "hash": "61tUMuvmQP3VMDiL7eA6XA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VRTextureWithPoseAndDepth_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VRTextureWithPoseAndDepth_t.html",
+          "hash": "j3aH3Rq3i9xMYIfR7eqf4w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VRTextureWithPose_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VRTextureWithPose_t.html",
+          "hash": "EsMtMXvQdEljQ7rLk3l2Qw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VRVulkanTextureData_t.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.VRVulkanTextureData_t.html",
+          "hash": "rPRvtMuHj2WX+8DCeYb7Iw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Headers.html",
+          "hash": "d0lzNmMNJ9ZhTrMsYD7+7w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Input.GenericOpenVRController.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Input.GenericOpenVRController.html",
-          "hash": "iYZQFdEivSEvdzhpD0Rruw=="
+          "hash": "Cu0kizwSZdhyjm+MCk9fwg=="
         }
       },
       "is_incremental": false,
@@ -13691,7 +16031,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Input.OculusRemoteController.html",
-          "hash": "h+N+lO6Ro7wmPGdzfo5mTg=="
+          "hash": "7/MK3E5WS/8S/483pvWRJg=="
         }
       },
       "is_incremental": false,
@@ -13703,7 +16043,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Input.OculusTouchController.html",
-          "hash": "lzRSg+RmJCyvRr3ehx3z7Q=="
+          "hash": "ZffMh21e39jfgqvjANOAGw=="
         }
       },
       "is_incremental": false,
@@ -13715,7 +16055,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Input.OpenVRDeviceManager.html",
-          "hash": "wRXPB8wvKjr8MLXFpnx0Ag=="
+          "hash": "k1eycSV1S8zzvR3YXT3VIQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.OpenVR.Input.OpenVRRenderModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Input.OpenVRRenderModel.html",
+          "hash": "3w+nWB29TRILVcHx5EUF1w=="
         }
       },
       "is_incremental": false,
@@ -13727,7 +16079,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Input.ViveKnucklesController.html",
-          "hash": "xlArSIUfOst90N9BXTUICw=="
+          "hash": "mtxypzppAdnxnd3u9f87Cg=="
         }
       },
       "is_incremental": false,
@@ -13739,7 +16091,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Input.ViveWandController.html",
-          "hash": "y+jIom/rW/ZBcajPqwLKZQ=="
+          "hash": "RQe2lN9qrYgzT+AJUF6BzQ=="
         }
       },
       "is_incremental": false,
@@ -13751,7 +16103,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Input.WindowsMixedRealityOpenVRMotionController.html",
-          "hash": "1dFutuJ/oWdYsLBpdeMrjQ=="
+          "hash": "uPsXjSRFdodbKzquKMEHVQ=="
         }
       },
       "is_incremental": false,
@@ -13763,7 +16115,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.OpenVR.Input.html",
-          "hash": "5uWfGw2uvxl9UEGO3wdvUA=="
+          "hash": "6qOAbuPuXErV39ojr98gVg=="
         }
       },
       "is_incremental": false,
@@ -20711,7 +23063,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "a8tNFzwRrLoIeKOrSPH6LA=="
+          "hash": "My1e6UfGupJGM09VulzWmA=="
         }
       },
       "is_incremental": false,
@@ -20772,7 +23124,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1185,
+          "total_file_count": 1381,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

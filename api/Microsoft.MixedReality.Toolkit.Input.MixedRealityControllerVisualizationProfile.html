@@ -131,6 +131,32 @@ public class MixedRealityControllerVisualizationProfile : BaseMixedRealityProfil
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Input_MixedRealityControllerVisualizationProfile_DefaultControllerModelMaterial_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityControllerVisualizationProfile.DefaultControllerModelMaterial*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_MixedRealityControllerVisualizationProfile_DefaultControllerModelMaterial" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityControllerVisualizationProfile.DefaultControllerModelMaterial">DefaultControllerModelMaterial</h4>
+  <div class="markdown level1 summary"><p>The default controller model material when loading platform SDK controller models. This value is used as a fallback if no controller definition exists with a custom material type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Material DefaultControllerModelMaterial { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Material</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Input_MixedRealityControllerVisualizationProfile_DefaultControllerVisualizationType_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityControllerVisualizationProfile.DefaultControllerVisualizationType*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_MixedRealityControllerVisualizationProfile_DefaultControllerVisualizationType" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityControllerVisualizationProfile.DefaultControllerVisualizationType">DefaultControllerVisualizationType</h4>
   <div class="markdown level1 summary"><p>The default controller visualization type. This value is used as a fallback if no controller definition exists with a custom visualization type.</p>
@@ -301,7 +327,7 @@ public class MixedRealityControllerVisualizationProfile : BaseMixedRealityProfil
   
   <a id="Microsoft_MixedReality_Toolkit_Input_MixedRealityControllerVisualizationProfile_UseDefaultModels_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityControllerVisualizationProfile.UseDefaultModels*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_MixedRealityControllerVisualizationProfile_UseDefaultModels" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityControllerVisualizationProfile.UseDefaultModels">UseDefaultModels</h4>
-  <div class="markdown level1 summary"><p>Check to obtain controller models from the platform sdk. If left unchecked, the global models will be used. Note: this value is overridden by controller definitions.</p>
+  <div class="markdown level1 summary"><p>Check to obtain controller models from the platform SDK. If left unchecked, the global models will be used. Note: this value is overridden by controller definitions.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -422,6 +448,57 @@ If the requested controller type is not defined, DefaultControllerVisualizationT
     <tbody>
       <tr>
         <td><span class="xref">SystemType</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_MixedRealityControllerVisualizationProfile_GetDefaultControllerModelMaterialOverride_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityControllerVisualizationProfile.GetDefaultControllerModelMaterialOverride*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_MixedRealityControllerVisualizationProfile_GetDefaultControllerModelMaterialOverride_System_Type_Handedness_" data-uid="Microsoft.MixedReality.Toolkit.Input.MixedRealityControllerVisualizationProfile.GetDefaultControllerModelMaterialOverride(System.Type,Handedness)">GetDefaultControllerModelMaterialOverride(Type, Handedness)</h4>
+  <div class="markdown level1 summary"><p>Gets the DefaultModelMaterial value defined for the specified controller definition.
+If the requested controller type is not defined, the global DefaultControllerModelMaterial is returned.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Material GetDefaultControllerModelMaterialOverride(Type controllerType, Handedness hand)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.type">Type</a></td>
+        <td><span class="parametername">controllerType</span></td>
+        <td><p>The type of controller to query for</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Handedness</span></td>
+        <td><span class="parametername">hand</span></td>
+        <td><p>The specific hand assigned to the controller</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Material</span></td>
         <td></td>
       </tr>
     </tbody>
