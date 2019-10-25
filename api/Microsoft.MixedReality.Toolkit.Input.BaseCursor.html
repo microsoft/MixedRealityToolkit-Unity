@@ -266,12 +266,39 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_CursorAngularScale_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.CursorAngularScale*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_CursorAngularScale" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.CursorAngularScale">CursorAngularScale</h4>
-  <div class="markdown level1 summary"><p>The value, in angle, of expected cursor size in relation to Main Camera</p>
+  <div class="markdown level1 summary"><p>The angular scale of cursor in relation to Main Camera, assuming a mesh with bounds of Vector3(1,1,1)</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float CursorAngularScale { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Property obsolete. Use CursorAngularSize instead&quot;)]
+public float CursorAngularScale { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_CursorAngularSize_" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.CursorAngularSize*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Input_BaseCursor_CursorAngularSize" data-uid="Microsoft.MixedReality.Toolkit.Input.BaseCursor.CursorAngularSize">CursorAngularSize</h4>
+  <div class="markdown level1 summary"><p>The angular size of cursor in relation to Main Camera, assuming a mesh with bounds of Vector3(1,1,1)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float CursorAngularSize { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
