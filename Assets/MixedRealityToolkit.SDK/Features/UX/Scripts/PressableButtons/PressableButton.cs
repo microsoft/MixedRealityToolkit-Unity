@@ -248,7 +248,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 if (Application.isPlaying && movingButtonVisuals) // we're using a cached position in play mode as the moving visuals will be moved during button interaction
                 {
-                    return PushSpaceSourceParentPosition + movingButtonVisuals.transform.TransformVector(movingVisualsInitialLocalPosition);
+                    var parentTransform = PushSpaceSourceTransform.parent;
+
+                    var localPosition = (parentTransform == null) ? movingVisualsInitialLocalPosition : parentTransform.TransformVector(movingVisualsInitialLocalPosition);
+
+                    return PushSpaceSourceParentPosition + localPosition;
+                    //return PushSpaceSourceParentPosition + PushSpaceSourceTransform.TransformVector(movingVisualsInitialLocalPosition);
+
+                    //return PushSpaceSourceParentPosition + movingButtonVisuals.transform.TransformVector(movingVisualsInitialLocalPosition);
+                    //return PushSpaceSourceParentPosition + movingButtonVisuals.transform.TransformVector(movingVisualsInitialLocalPosition);
                 }
                 else
                 {
@@ -275,7 +283,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 Debug.LogWarning("PressableButton will not work if game object layer is set to 'Ignore Raycast'.");
             }
 
-            movingVisualsInitialLocalPosition = movingButtonVisuals.transform.localPosition;
+            //movingVisualsInitialLocalPosition = movingButtonVisuals.transform.localPosition;
+            movingVisualsInitialLocalPosition = PushSpaceSourceTransform.localPosition;
+            //movingVisualsInitialLocalPosition = PushSpaceSourceTransform.position - PushSpaceSourceParentPosition;
 
             // Ensure everything is set to initial positions correctly.
             UpdateMovingVisualsPosition();
