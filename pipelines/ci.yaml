@@ -8,7 +8,7 @@ variables:
 
 jobs:
 - job: CIDeveloperValidation
-  timeoutInMinutes: 90
+  timeoutInMinutes: 120
   pool:
     name: On-Prem Unity
     demands:
