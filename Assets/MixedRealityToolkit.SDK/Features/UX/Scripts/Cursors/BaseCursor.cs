@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -115,13 +116,23 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The angular scale of cursor in relation to Main Camera, assuming a mesh with bounds of Vector3(1,1,1)
         /// </summary>
+        [Obsolete("Property obsolete. Use CursorAngularSize instead")]
+        public float CursorAngularScale
+        {
+            get { return CursorAngularSize; }
+            set { CursorAngularSize = value; }
+        }
+
+        /// <summary>
+        /// The angular size of cursor in relation to Main Camera, assuming a mesh with bounds of Vector3(1,1,1)
+        /// </summary>
         public float CursorAngularSize
         {
             get { return cursorAngularSize; }
             set { cursorAngularSize = value; }
         }
-
-        [SerializeField]
+        
+        [SerializeField, FormerlySerializedAs("cursorAngularScale")]
         [Tooltip("The angular scale of cursor in relation to Main Camera, assuming a mesh with bounds of Vector3(1,1,1)")]
         private float cursorAngularSize = 50.0f;
 

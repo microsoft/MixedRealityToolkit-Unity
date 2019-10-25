@@ -55,6 +55,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             return scale;
         }
 
+        [System.Obsolete("Method obsolete. Use ScaleFromAngularSizeAndDistance instead")]
+        public static float AngularScaleFromDistance(float angle, float distance)
+        {
+            return ScaleFromAngularSizeAndDistance(angle, distance);
+        }
+
         /// <summary>
         /// Takes a ray in the coordinate space specified by the "from" transform and transforms it to be the correct ray in the coordinate space specified by the "to" transform
         /// </summary>
