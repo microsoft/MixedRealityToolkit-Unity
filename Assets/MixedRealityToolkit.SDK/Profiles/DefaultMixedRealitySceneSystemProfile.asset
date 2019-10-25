@@ -15,10 +15,10 @@ MonoBehaviour:
   isCustomProfile: 0
   useManagerScene: 1
   managerScene:
-    Name: DefaultManagerScene
-    Path: Assets/MixedRealityToolkit.SDK/StandardAssets/Scenes/DefaultManagerScene.unity
-    Included: 1
-    BuildIndex: 0
+    Name: DefaultMixedRealitySceneSystemProfile
+    Path: Assets/MixedRealityToolkit.SDK/Profiles/DefaultMixedRealitySceneSystemProfile.asset
+    Included: 0
+    BuildIndex: -1
     Tag: Untagged
     Asset: {fileID: 102900000, guid: ae7bb08d297fb69408695d8de0962524, type: 3}
   useLightingScene: 1
