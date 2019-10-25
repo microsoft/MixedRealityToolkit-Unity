@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <remarks>
         /// This method only executes on Unity 2018.x
         /// </remarks>
-        private static void ApplyARFoundationUWPCompileFix()
+        public static void ApplyARFoundationUWPCompileFix()
         {
 #if UNITY_2018
             DirectoryInfo packageCache = GetPackageCache();
