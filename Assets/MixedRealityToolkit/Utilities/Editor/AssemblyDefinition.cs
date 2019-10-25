@@ -170,8 +170,20 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 return;
             }
 
+            FileInfo file = new FileInfo(fileName);
+            bool readOnly = file.IsReadOnly;
+            if (readOnly)
+            {
+                file.IsReadOnly = false;
+            }
+
             Debug.Log($"Saving {fileName}");
             File.WriteAllText(fileName, JsonUtility.ToJson(this, true));
+
+            if (readOnly)
+            {
+                file.IsReadOnly = true;
+            }
         }
     }
 }
