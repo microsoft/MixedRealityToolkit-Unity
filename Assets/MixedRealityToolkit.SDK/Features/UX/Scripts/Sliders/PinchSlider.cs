@@ -47,17 +47,44 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
-        [Header("Slider Track")]
-
-        [Tooltip("The axis the slider moves along")]
-        [SerializeField]
-        private SliderAxis sliderAxis = SliderAxis.XAxis;
-        [Serializable]
-        private enum SliderAxis
+        /// <summary>
+        /// Enumeration representing a local axis a slider can slide against.
+        /// </summary>
+        public enum SliderAxis
         {
             XAxis = 0,
             YAxis,
             ZAxis
+        }
+
+        [Header("Slider Track")]
+        [Tooltip("The axis the slider moves along")]
+        [SerializeField]
+        private SliderAxis sliderAxis = SliderAxis.XAxis;
+        public SliderAxis SliderAxisType
+        {
+            get { return sliderAxis; }
+            set { sliderAxis = value; }
+        }
+
+        /// <summary>
+        /// Returns a vector in the direction of the positive slider axis.
+        /// </summary>
+        /// <param name="sliderAxis">The axis in question.</param>
+        /// <returns>A vector representing the positive axis direction.</returns>
+        public static Vector3 GetSliderAxis(SliderAxis sliderAxis)
+        {
+            switch (sliderAxis)
+            {
+                case SliderAxis.XAxis:
+                    return Vector3.right;
+                case SliderAxis.YAxis:
+                    return Vector3.up;
+                case SliderAxis.ZAxis:
+                    return Vector3.forward;
+                default:
+                    throw new ArgumentOutOfRangeException("Invalid slider axis");
+            }
         }
 
         [SerializeField]
@@ -166,17 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private Vector3 GetSliderAxis()
         {
-            switch (sliderAxis)
-            {
-                case SliderAxis.XAxis:
-                    return Vector3.right;
-                case SliderAxis.YAxis:
-                    return Vector3.up;
-                case SliderAxis.ZAxis:
-                    return Vector3.forward;
-                default:
-                    throw new ArgumentOutOfRangeException("Invalid slider axis");
-            }
+            return GetSliderAxis(sliderAxis);
         }
 
         private void UpdateUI()
