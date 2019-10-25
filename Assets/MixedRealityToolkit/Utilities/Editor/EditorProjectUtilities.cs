@@ -72,12 +72,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
 #if UNITY_2018
 
-            bool reloadLocked = EditorAssemblyReloadManager.LockReloadAssemblies;
-            if (reloadLocked)
-            {
-                EditorAssemblyReloadManager.LockReloadAssemblies = false;
-            }
-
             DirectoryInfo packageCache = GetPackageCache();
 
             if (packageCache.Exists)
@@ -150,11 +144,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     }
                 }
 
-            }
-
-            if (reloadLocked)
-            {
-                EditorAssemblyReloadManager.LockReloadAssemblies = true;
             }
 
 #endif // UNITY_2018
