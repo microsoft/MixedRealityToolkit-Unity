@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private string name = null;
 
         /// <summary>
-        /// Please see <see href="https://docs.unity3d.com/Manual/class-AssemblyDefinitionImporter.html"/>Assembly Definition properties</see> on the Unity documentation site.
+        /// Please see <see href="https://docs.unity3d.com/Manual/class-AssemblyDefinitionImporter.html">Assembly Definition properties</see> on the Unity documentation site.
         /// </summary>
         public string Name
         {
@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private bool allowUnsafeCode = false;
 
         /// <summary>
-        /// Please see <see href="https://docs.unity3d.com/Manual/class-AssemblyDefinitionImporter.html"/>Assembly Definition properties</see> on the Unity documentation site.
+        /// Please see <see href="https://docs.unity3d.com/Manual/class-AssemblyDefinitionImporter.html">Assembly Definition properties</see> on the Unity documentation site.
         /// </summary>
         public bool AllowUnsafeCode
         {
@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private bool autoReferenced = true;
 
         /// <summary>
-        /// Please see <see href="https://docs.unity3d.com/Manual/class-AssemblyDefinitionImporter.html"/>Assembly Definition properties</see> on the Unity documentation site.
+        /// Please see <see href="https://docs.unity3d.com/Manual/class-AssemblyDefinitionImporter.html">Assembly Definition properties</see> on the Unity documentation site.
         /// </summary>
         public bool AutoReferenced
         {
@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private bool overrideReferences = false;
 
         /// <summary>
-        /// Please see <see href="https://docs.unity3d.com/Manual/class-AssemblyDefinitionImporter.html"/>Assembly Definition properties</see> on the Unity documentation site.
+        /// Please see <see href="https://docs.unity3d.com/Manual/class-AssemblyDefinitionImporter.html">Assembly Definition properties</see> on the Unity documentation site.
         /// </summary>
         public bool OverrideReferences
         {
@@ -73,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private string[] defineConstraints = null;
 
         /// <summary>
-        /// Please see <see href="https://docs.unity3d.com/Manual/class-AssemblyDefinitionImporter.html"/>Assembly Definition properties</see> on the Unity documentation site.
+        /// Please see <see href="https://docs.unity3d.com/Manual/class-AssemblyDefinitionImporter.html">Assembly Definition properties</see> on the Unity documentation site.
         /// </summary>
         public string[] DefineConstraints
         {
@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private string[] references = null;
 
         /// <summary>
-        /// Please see <see href="https://docs.unity3d.com/Manual/class-AssemblyDefinitionImporter.html"/>Assembly Definition properties</see> on the Unity documentation site.
+        /// Please see <see href="https://docs.unity3d.com/Manual/class-AssemblyDefinitionImporter.html">Assembly Definition properties</see> on the Unity documentation site.
         /// </summary>
         public string[] References
         {
@@ -99,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private string[] optionalUnityReferences = null;
 
         /// <summary>
-        /// Please see <see href="https://docs.unity3d.com/Manual/class-AssemblyDefinitionImporter.html"/>Assembly Definition properties</see> on the Unity documentation site.
+        /// Please see <see href="https://docs.unity3d.com/Manual/class-AssemblyDefinitionImporter.html">Assembly Definition properties</see> on the Unity documentation site.
         /// </summary>
         public string[] OptionalUnityReferences
         {
@@ -112,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private string[] includePlatforms = null;
 
         /// <summary>
-        /// Please see <see href="https://docs.unity3d.com/Manual/class-AssemblyDefinitionImporter.html"/>Assembly Definition properties</see> on the Unity documentation site.
+        /// Please see <see href="https://docs.unity3d.com/Manual/class-AssemblyDefinitionImporter.html">Assembly Definition properties</see> on the Unity documentation site.
         /// </summary>
         public string[] IncludePlatforms
         {
@@ -124,7 +124,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private string[] excludePlatforms = null;
 
         /// <summary>
-        /// Please see <see href="https://docs.unity3d.com/Manual/class-AssemblyDefinitionImporter.html"/>Assembly Definition properties</see> on the Unity documentation site.
+        /// Please see <see href="https://docs.unity3d.com/Manual/class-AssemblyDefinitionImporter.html">Assembly Definition properties</see> on the Unity documentation site.
         /// </summary>
         public string[] ExcludePlatforms
         {
