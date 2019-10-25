@@ -22,6 +22,9 @@ namespace Microsoft.MixedReality.Toolkit
         [SerializeField]
         private MixedRealityCameraSettingsConfiguration[] settingsConfigurations = new MixedRealityCameraSettingsConfiguration[0];
 
+        /// <summary>
+        /// Configuration objectrs describing the registered settings providers.
+        /// </summary>
         public MixedRealityCameraSettingsConfiguration[] SettingsConfigurations
         {
             get { return settingsConfigurations; }
