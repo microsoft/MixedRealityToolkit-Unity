@@ -85,8 +85,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             GUILayout.Label(Styles.advancedOptionsTitle, EditorStyles.boldLabel);
 
-            EditorGUILayout.Space();
-
             EditorGUI.BeginChangeCheck();
 
             materialEditor.ShaderProperty(renderQueueOverride, BaseStyles.renderQueueOverride);

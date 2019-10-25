@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <inheritdoc />
         public override void SetupDefaultInteractions(Handedness controllerHandedness)
         {
-            // Generic unity controller's will not have default interactions
+            // Generic Unity controllers will not have default interactions
         }
 
         /// <summary>
@@ -110,11 +110,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 // Raise input system Event if it enabled
                 if (interactionMapping.BoolData)
                 {
-                    InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                    CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                 }
                 else
                 {
-                    InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                    CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                 }
             }
         }
@@ -141,11 +141,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                     // Raise input system Event if it enabled
                     if (interactionMapping.BoolData)
                     {
-                        InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                     }
                     else
                     {
-                        InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                        CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                     }
                 }
             }
@@ -158,7 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
                 if (interactionMapping.Changed)
                 {
                     // Raise input system Event if it enabled
-                    InputSystem?.RaiseFloatInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.FloatData);
+                    CoreServices.InputSystem?.RaiseFloatInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.FloatData);
                 }
             }
         }
@@ -180,7 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             if (interactionMapping.Changed)
             {
                 // Raise input system Event if it enabled
-                InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.Vector2Data);
+                CoreServices.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.Vector2Data);
             }
         }
 
@@ -214,7 +214,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
             if (interactionMapping.Changed)
             {
                 // Raise input system Event if it enabled
-                InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.PoseData);
+                CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionMapping.PoseData);
             }
         }
     }

@@ -30,7 +30,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderProfileHeader(ProfileTitle, ProfileDescription, target);
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, target))
+            {
+                return;
+            }
 
             using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
             {
@@ -139,11 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
                                 changed |= EditorGUI.EndChangeCheck();
 
-                                Type serviceType = null;
-                                if (configurationProfile.objectReferenceValue != null)
-                                {
-                                    serviceType = (target as MixedRealityRegisteredServiceProvidersProfile).Configurations[i].ComponentType;
-                                }
+                                Type serviceType = (target as MixedRealityRegisteredServiceProvidersProfile).Configurations[i].ComponentType;
 
                                 changed |= RenderProfile(configurationProfile, null, true, true, serviceType);
                             }

@@ -442,6 +442,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 return;
             }
 
+            if (DebugEnabled)
+            {
+                Debug.DrawLine(currentRayStep.Origin, currentRayStep.Terminus, Color.magenta);
+            }
+
             switch (RaycastMode)
             {
                 case SceneQueryType.SimpleRaycast:

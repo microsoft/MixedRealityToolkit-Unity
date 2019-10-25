@@ -27,9 +27,9 @@ Enable the input simulation tools window from the  _Mixed Reality Toolkit > Util
 
 A prefab for in-editor buttons to control basic hand placement can be specified in the input simulation profile under __Indicators Prefab__. This is an optional utility, the same features can be accessed in the [input simulation tools window](#input-simulation-tools-window).
 
-
 > [!NOTE]
-> The viewport indicators are disabled by default, as they currently sometimes interfere with Unity UI interactions, see issue [#6107](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6106). To enable, add the InputSimulationIndicators prefab to __Indicators Prefab__.
+> The viewport indicators are disabled by default, as they currently sometimes interfere with Unity UI interactions, see issue [#6106](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6106). To enable, add the InputSimulationIndicators prefab to __Indicators Prefab__.
+
 
 Hand icons show the state of the simulated hands:
 * ![Untracked hand icon](../../Documentation/Images/InputSimulation/MRTK_InputSimulation_HandIndicator_Untracked.png "Untracked hand icon") The hand is not tracking. Click to enable the hand.
@@ -132,9 +132,9 @@ For manipulating objects with two hands at the same time the persistent hand mod
 
 1. Toggle on both hands by pressing the toggle keys (T/Y).
 1. Manipulate one hand at a time:
-  1. Hold _Space_ to control the right hand
-  1. Move the hand to where you want to grab the object
-  1. Press mouse button to activate the _Pinch_ gesture. In persistent mode the gesture will remain active when you release the mouse button.
+    1. Hold _Space_ to control the right hand
+    1. Move the hand to where you want to grab the object
+    1. Press mouse button to activate the _Pinch_ gesture. In persistent mode the gesture will remain active when you release the mouse button.
 1. Repeat the process with the other hand, grabbing the same object in a second spot.
 1. Now that both hands are grabbing the same object, you can move either of them to perform two-handed manipulation.
 

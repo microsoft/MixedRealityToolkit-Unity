@@ -37,35 +37,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         protected Transform ControllerTransform;
 
-        private IMixedRealityInputSystem inputSystem = null;
-
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        protected IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
-                return inputSystem;
-            }
-        }
-
         #region MonoBehaviour Implementation
 
         protected virtual void OnEnable()
         {
             // Look if the controller has loaded.
-            InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
+            CoreServices.InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
             RefreshControllerTransform();
         }
 
         protected virtual void OnDisable()
         {
-            InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
+            CoreServices.InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
         }
 
         #endregion MonoBehaviour Implementation
@@ -104,13 +87,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         {
             // Look if the controller was already loaded. This could happen if the
             // GameObject was instantiated at runtime and the model loaded event has already fired.
-            if (InputSystem == null)
+            if (CoreServices.InputSystem == null)
             {
                 // The InputSystem could not be found.
                 return;
             }
 
-            foreach (IMixedRealityController controller in InputSystem.DetectedControllers)
+            foreach (IMixedRealityController controller in CoreServices.InputSystem.DetectedControllers)
             {
                 if (controller.ControllerHandedness == handedness)
                 {

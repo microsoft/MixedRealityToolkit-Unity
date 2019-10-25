@@ -174,7 +174,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public bool TryGetDistanceToNearestSurface(out float distance)
         {
-            var focusProvider = InputSystem?.FocusProvider;
+            var focusProvider = CoreServices.InputSystem?.FocusProvider;
             if (focusProvider != null)
             {
                 FocusDetails focusDetails;
@@ -192,7 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public bool TryGetNormalToNearestSurface(out Vector3 normal)
         {
-            var focusProvider = InputSystem?.FocusProvider;
+            var focusProvider = CoreServices.InputSystem?.FocusProvider;
             if (focusProvider != null)
             {
                 FocusDetails focusDetails;
@@ -256,7 +256,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 for (int i = 0; i < numColliders; i++)
                 {
-                    if (grabbable = queryBuffer[i].GetComponent<NearInteractionGrabbable>())
+                    grabbable = queryBuffer[i].GetComponent<NearInteractionGrabbable>();
+                    if (grabbable != null)
                     {
                         return true;
                     }

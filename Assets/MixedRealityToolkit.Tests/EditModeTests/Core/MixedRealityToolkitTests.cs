@@ -16,6 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         public void TearDown()
         {
             TestUtilities.ShutdownMixedRealityToolkit();
+            TestUtilities.EditorTearDownScenes();
         }
 
         #region Service Locator Tests
@@ -492,11 +493,5 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         }
 
         #endregion
-
-        [TearDown]
-        public void CleanupMixedRealityToolkitTests()
-        {
-            TestUtilities.EditorTearDownScenes();
-        }
     }
 }

@@ -1,72 +1,117 @@
+# Writing and Running Tests in MRTK
 
-# MRTK Tests
+To ensure MRTK is reliable, MRTK has a set of tests to ensure that changes to the code does not regress existing behavior. Having good test coverage in a big codebase like MRTK is crucial for stability and having confidence when making changes.
 
-MRTK has a set of tests to ensure that changes to our code do not regress existing behavior. When you add a new feature, please:
+MRTK uses the [Unity Test Runner](https://docs.unity3d.com/Manual/testing-editortestsrunner.html) which uses a Unity
+integration of [NUnit](https://nunit.org/). This guide will provide a starting point on how to add tests to MRTK. It will not explain the
+[Unity Test Runner](https://docs.unity3d.com/Manual/testing-editortestsrunner.html) and
+[NUnit](https://nunit.org/) which can be looked up in the links provided.
 
-1. Run the tests locally to make sure your changes don't regress existing behavior (you will not be able to check in if any tests fail)
-2. Write new tests to ensure that other people don't break your feature in the future.
+Before submitting a pull request, make sure to:
 
-If you fix a bug, please consider writing a test to ensure that this bug doesn't regress in the future as well.
+1. Run the tests locally so your changes don't regress existing behavior (completing PRs won't be allowed if any tests fail).
 
-## Executing tests locally
+1. If fixing a bug, write a test to test the fix and ensure that future code modifications won't break it again.
 
-The [Unity Test Runner](https://docs.unity3d.com/Manual/testing-editortestsrunner.html) can be found under
- Window > General > Test Runner and will show all available MRTK play and edit mode tests.
+1. If writing a feature, write new tests to prevent upcoming code changes breaking this feature.
 
-You can also run the [powershell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-6)
-script located at `Scripts\test\run_playmode_tests.ps1`. This will run the playmode tests exactly as they are executed
-on github / CI (see below), and print results. Here are some examples of how to run the script
+## Running tests
+
+### Unity editor
+
+The [Unity Test Runner](https://docs.unity3d.com/Manual/testing-editortestsrunner.html) can be found under **Window** > **General** > **Test Runner** and will show all available MRTK play and edit mode tests.
+
+### Command line
+
+Tests can also be run by a [powershell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-6) script located at `Scripts\test\run_playmode_tests.ps1`. This will run the playmode tests exactly as they are executed on github / CI (see below), and print results. Here are some examples of how to run the script
 
 Run the tests on the project located at H:\mrtk.dev, with Unity 2018.4.1f1
 
-```
-    .\run_playmode_tests.ps1 H:\mrtk.dev -unityExePath = "C:\Program Files\Unity\Hub\Editor\2018.4.1f1\Editor\Unity.exe"
+```ps
+.\run_playmode_tests.ps1 H:\mrtk.dev -unityExePath = "C:\Program Files\Unity\Hub\Editor\2018.4.1f1\Editor\Unity.exe"
 ```
 
 Run the tests on the project located at H:\mrtk.dev, with Unity 2018.4.1f1, output results to C:\playmode_test_out
 
+```ps
+.\run_playmode_tests.ps1 H:\mrtk.dev -unityExePath = "C:\Program Files\Unity\Hub\Editor\2018.4.1f1\Editor\Unity.exe" -outFolder "C:\playmode_test_out\"
 ```
-    .\run_playmode_tests.ps1 H:\mrtk.dev -unityExePath = "C:\Program Files\Unity\Hub\Editor\2018.4.1f1\Editor\Unity.exe" -outFolder "C:\playmode_test_out\"
+
+It's also possible to run the playmode tests multiple times via the `run_repeat_tests.ps1` script. All parameters used in `run_playmode_tests.ps1` may be used.
+
+```ps
+.\run_repeat_tests.ps1 -Times 5
 ```
 
+### Pull Request Validation
 
-## Executing tests on github / CI
-MRTK's CI will build MRTK in all configurations and run all edit and play mode tests. CI can be triggered by posting a
-comment on the github PR `/azp run mrtk_pr` if the user has sufficient rights. CI runs can be seen in the 'checks' tab of the PR.
-Only after all of the tests passed successfully the PR can be merged into mrtk_development.
-> [!NOTE]
-> Some tests will only fail when run from the command line. You can run the tests locally from command line using similar
-setup to what it done in MRTK's CI by running `scripts\test\run_playmode_tests.ps1`
+MRTK's CI will build MRTK in all configurations and run all edit and play mode tests. CI can be triggered by posting a comment on the github PR `/azp run mrtk_pr` if the user has sufficient rights. CI runs can be seen in the 'checks' tab of the PR.
 
-## Writing Tests for your code
-To ensure MRTK being a stable and reliable toolkit, every feature should come with unit tests and sample usage in one of the example scenes.
+Only after all of the tests have passed successfully can the PR be merged into mrtk_development.
 
-Preferably when fixing a bug there should also be a test added to avoid running into the same issue again in the future.
+### Stress tests / bulk tests
 
-Having good test coverage in a big codebase like MRTK is crucial for stability and having confidence when doing changes in code.
+Sometimes tests will only fail occasionally which can be frustrating to debug.
 
+To have multiple test runs locally, modify the according test scripts. The following python script should make this scenario more convenient.
 
-MRTK uses the [Unity Test Runner](https://docs.unity3d.com/Manual/testing-editortestsrunner.html) which uses a Unity
-integration of [NUnit](https://nunit.org/).
+Prerequisite for running the python script is having [Python 3.X installed](https://www.python.org/downloads/).
 
-This guide will give a starting point on how to add tests to MRTK. It will not explain the
-[Unity Test Runner](https://docs.unity3d.com/Manual/testing-editortestsrunner.html) and
-[NUnit](https://nunit.org/) which can be looked up in the links provided.
+For a single test that needs to be executed multiple times:
 
-There's two types of tests that can be added for new code
+```c#
+[UnityTest]
+public IEnumerator MyTest() {...}
+```
+
+Run the following from a command line ([PowerShell](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-6#powershell-core) is recommended)
+
+```ps
+cd scripts\tests
+# Repeat the test 5 times. Default is 100
+python .\generate_repeat_tests.py -n 5 -t MyTest
+```
+
+Copy and paste the output into your test file. The following script is for running multiple tests in sequence:
+
+```ps
+cd scripts\tests
+# Repeat the test 5 times. Default is 100
+python .\generate_repeat_tests.py -n 5 -t MyTest MySecondTest
+```
+
+The new test file should now contain
+
+```c#
+[UnityTest]
+public IEnumerator A1MyTest0(){ yield return MyTest();}
+[UnityTest]
+public IEnumerator A2MyTest0(){ yield return MyTest();}
+[UnityTest]
+public IEnumerator A3MyTest0(){ yield return MyTest();}
+[UnityTest]
+public IEnumerator A4MyTest0(){ yield return MyTest();}
+[UnityTest]
+public IEnumerator MyTest() {...}
+```
+
+Open the test runner and observe the new tests that can now be called repeatedly.
+
+## Writing tests
+
+There are two types of tests that can be added for new code
 
 * Play mode tests
 * Edit mode tests
 
+### Play mode tests
 
-## Play mode tests
+MRTK play mode tests have the ability to test how your new feature responds to different input sources such as hands or eyes.
 
- MRTK play mode tests have the ability to test how your new feature responds to different input sources such as hands or eyes.
+New play mode tests can inherit [BasePlayModeTests](xref:Microsoft.MixedReality.Toolkit.Tests.BasePlayModeTests) or the skeleton below can be used.
 
- New play mode tests can inherit [BasePlayModeTests](xref:Microsoft.MixedReality.Toolkit.Tests.BasePlayModeTests) or the skeleton below can be used.
-
-## Creating a new play mode test
 To create a new play mode test:
+
 - Navigate to Assets > MixedRealityToolkit.Tests > PlayModeTests
 - Right click, Create > Testing > C# Test Script
 - Replace the default template with the skeleton below
@@ -94,18 +139,25 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 {
     class ExamplePlayModeTests
     {
-        // Setup a scene, initialize MRTK and the playspace - this method is called before the start of each test listed below
-        [SetUp]
+
+        // This method is called once before we enter play mode and execute any of the tests
+        // do any kind of setup here that can't be done in playmode
         public void Setup()
         {
-            PlayModeTestUtilities.Setup();
-
-            // Change the position of the main camera to (0, 0, 0), in PlayModeTestUtilites.Setup() 
-            // the camera is set to position (1, 1.5, -2)
-            TestUtilities.PlayspaceToOriginLookingForward();
+            // eg installing unity packages is only possible in edit mode
+            // so if a test requires TextMeshPro we will need to check for the package before entering play mode
+            PlayModeTestUtilities.InstallTextMeshProEssentials();
         }
 
-        // Destroy the scene - this method is called after each test listed below has completed 
+        // Do common setup for each of your tests here - this will be called for each individual test after entering playmode
+        [Setup]
+        public void Init()
+        {
+            // in most play mode test cases you would want to at least create an MRTK GameObject using the default profile
+            TestUtilities.InitializeMixedRealityToolkit(true);
+        }
+
+        // Destroy the scene - this method is called after each test listed below has completed
         [TearDown]
         public void TearDown()
         {
@@ -147,12 +199,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     }
 }
 #endif
-
 ```
 
-## Edit mode tests
+### Edit mode tests
 
-Edit mode tests are executed in Unity's edit mode and can be added in MixedRealityToolkit.Tests > EditModeTests.
+Edit mode tests are executed in Unity's edit mode and can be added under the **MixedRealityToolkit.Tests** > **EditModeTests** folder in the Mixed Reality Toolkit repo.
 To create a new test the following template can be used:
 
 ``` csharp
@@ -173,16 +224,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
     }
 }
-
 ```
 
-## Test naming conventions
+### Test naming conventions
 
 Tests should generally be named based on the class they are testing, or the scenario that they are testing.
 For example, given a to-be-tested class:
 
 ```csharp
-
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     class InterestingInputClass
@@ -194,7 +243,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 Consider naming the test
 
 ```csharp
-
 namespace Microsoft.MixedReality.Toolkit.Tests.Input
 {
     class InterestingInputClassTest
@@ -218,7 +266,15 @@ Placement of scenario based tests is less defined - if the test exercises the ov
 for example, consider putting it into an "InputSystem" folder in the corresponding edit mode
 or play mode test folder.
 
-## MRTK Utility methods
+### Test script icons
+
+When adding a new test, please modify the script to have the correct MRTK icon. There's an easy MRTK tool to do so:
+
+1. Go go the Mixed Reality Toolkit menu item
+1. Click on Utilities, then Update, then Icons
+1. Click on Tests, and the updater will run automatically, updating any test scripts missing their icons
+
+### MRTK Utility methods
 
 This section shows some of the commonly used code snippets / methods when writing tests for MRTK.
 

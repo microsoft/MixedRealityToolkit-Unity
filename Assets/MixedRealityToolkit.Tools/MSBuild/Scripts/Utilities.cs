@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -97,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         /// </summary>
         /// <param name="assetPath">The path to the asset (not the .meta file).</param>
         /// <param name="guid">The guid extracted.</param>
-        /// <returns>True if the operation was succesful.</returns>
+        /// <returns>True if the operation was successful.</returns>
         public static bool TryGetGuidForAsset(FileInfo assetPath, out Guid guid)
         {
             string metaFile = $"{assetPath.FullName}.meta";
@@ -238,7 +237,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         /// <summary>
         /// Reads until some contents is encountered, or the end of the stream is reached.
         /// </summary>
-        /// <param name="reader">The <see cref="StreamReader"/> to use for reading.</param>
+        /// <param name="reader">The <see cref="System.IO.StreamReader"/> to use for reading.</param>
         /// <param name="contents">The contents to search for in the lines being read.</param>
         /// <returns>The line on which some of the contents was found.</returns>
         public static string ReadUntil(this StreamReader reader, params string[] contents)
@@ -317,9 +316,9 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         }
 
         /// <summary>
-        /// Reads while the predicate is satisifed, returns the line on which it failed.
+        /// Reads while the predicate is satisfied, returns the line on which it failed.
         /// </summary>
-        /// <param name="reader">The <see cref="StreamReader"/> to use for reading.</param>
+        /// <param name="reader">The <see cref="System.IO.StreamReader"/> to use for reading.</param>
         /// <param name="predicate">The predicate that should return false when reading should stop.</param>
         /// <returns>The line on which the predicate returned false.</returns>
         public static string ReadWhile(this StreamReader reader, System.Func<string, bool> predicate)
@@ -385,7 +384,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         /// <summary>
         /// Helper to perform an IO operation with retries.
         /// </summary>
-        public static bool TryIOWithRetries(Action operation, int numRetries, TimeSpan sleepBetweenRetrie, bool throwOnLastRetry = false)
+        public static bool TryIOWithRetries(Action operation, int numRetries, TimeSpan sleepBetweenRetries, bool throwOnLastRetry = false)
         {
             do
             {
@@ -409,7 +408,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     }
                 }
 
-                Thread.Sleep(sleepBetweenRetrie);
+                Thread.Sleep(sleepBetweenRetries);
                 numRetries--;
             } while (numRetries >= 0);
 
@@ -417,7 +416,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         }
 
         /// <summary>
-        /// Delete directory helper that also waits for delete to completely propogate through the system.
+        /// Delete directory helper that also waits for delete to completely propagate through the system.
         /// </summary>
         public static void DeleteDirectory(string targetDir, bool waitForDirectoryDelete = false)
         {
@@ -439,15 +438,14 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
 
             TryIOWithRetries(() => Directory.Delete(targetDir, false), 2, TimeSpan.FromMilliseconds(100), true);
 
-            if (waitForDirectoryDelete)
+            if (waitForDirectoryDelete && Application.isEditor)
             {
-#if UNITY_EDITOR // Just in case make sure this is forced to be Editor only
+                // Just in case make sure this is forced to be Editor only
                 // Sometimes the delete isn't committed fast enough, lets spin and wait for this to happen
                 for (int i = 0; i < 10 && Directory.Exists(targetDir); i++)
                 {
                     Thread.Sleep(100);
                 }
-#endif
             }
         }
 
@@ -557,7 +555,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         }
 
         /// <summary>
-        /// Gets a <see cref="BuildTargetGroup"/> for a specified <see cref="BuildTarget"/>.
+        /// Gets a <see href="https://docs.unity3d.com/ScriptReference/BuildTargetGroup.html">BuildTargetGroup</see> for a specified <see href="https://docs.unity3d.com/ScriptReference/BuildTarget.html">BuildTarget</see>.
         /// </summary>
         public static BuildTargetGroup GetBuildTargetGroup(BuildTarget buildTarget)
         {
@@ -595,4 +593,3 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         }
     }
 }
-#endif

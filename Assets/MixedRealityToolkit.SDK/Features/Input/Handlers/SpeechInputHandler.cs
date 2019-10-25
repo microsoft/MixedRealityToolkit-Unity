@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.UI;
 using System;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -83,12 +82,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected override void RegisterHandlers()
         {
-            InputSystem?.RegisterHandler<IMixedRealitySpeechHandler>(this);
+            CoreServices.InputSystem?.RegisterHandler<IMixedRealitySpeechHandler>(this);
         }
 
         protected override void UnregisterHandlers()
         {
-            InputSystem?.UnregisterHandler<IMixedRealitySpeechHandler>(this);
+            CoreServices.InputSystem?.UnregisterHandler<IMixedRealitySpeechHandler>(this);
         }
 
         #endregion InputSystemGlobalHandlerListener Implementation

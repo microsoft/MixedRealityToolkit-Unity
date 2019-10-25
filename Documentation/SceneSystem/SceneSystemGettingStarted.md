@@ -1,7 +1,7 @@
 # Scene system overview
 
 ## When to use the scene system
-If your project consists of a single scene, the Scene System probably isn't necessary. The scene system is most useful when one or more of the following are true:
+If your project consists of a single scene, the Scene System probably isn't necessary. It is most useful when one or more of the following are true:
 
 - Your project has multiple scenes.
 - You're used to single scene loading, but you don't like the way it destroys the MixedRealityToolkit instance.
@@ -17,7 +17,7 @@ If your project consists of a single scene, the Scene System probably isn't nece
 - [Lighting Scene Loading](SceneSystemLightingScenes.md)
 
 # Editor settings
-By default the Scene System enforces several behaviors in the Unity editor. If you find any of these behaviors heavy-handed they can be disabled in the **Editor Settings** section of your Scene System profile.
+By default, the Scene System enforces several behaviors in the Unity editor. If you find any of these behaviors heavy-handed, they can be disabled in the **Editor Settings** section of your Scene System profile.
 
 - `Editor Manage Build Settings:` If true, the service will update your build settings automatically, ensuring that all manager, lighting and content scenes are added. Disable this if you want total control over build settings.
 

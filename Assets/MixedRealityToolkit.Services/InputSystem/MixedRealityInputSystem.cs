@@ -119,11 +119,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 // If one of the running data providers supports the requested capability, 
                 // the application has the needed support to leverage the desired functionality.
-                if ((capabilityChecker != null) &&
-                    capabilityChecker.CheckCapability(capability))
+                if (capabilityChecker?.CheckCapability(capability) == true)
                 {
                     return true;
                 }
+            }
+
+            // Check GazeProvider directly since not populated in data provider list but life-cycle is managed by InputSystem
+            var gazeProvider_CapabilityCheck = GazeProvider as IMixedRealityCapabilityCheck;
+            if (gazeProvider_CapabilityCheck?.CheckCapability(capability) == true)
+            {
+                return true;
             }
 
             return false;
@@ -182,18 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (profile.PointerProfile != null)
             {
-                if (profile.PointerProfile.GazeProviderType?.Type != null)
-                {
-                    GazeProvider = CameraCache.Main.gameObject.EnsureComponent(profile.PointerProfile.GazeProviderType.Type) as IMixedRealityGazeProvider;
-                    GazeProvider.GazeCursorPrefab = profile.PointerProfile.GazeCursorPrefab;
-                    // Current implementation implements both provider types in one concrete class.
-                    EyeGazeProvider = GazeProvider as IMixedRealityEyeGazeProvider;
-                }
-                else
-                {
-                    Debug.LogError("The Input system is missing the required GazeProviderType!");
-                    return;
-                }
+                InstantiateGazeProvider(profile.PointerProfile);
             }
             else
             {
@@ -226,12 +221,31 @@ namespace Microsoft.MixedReality.Toolkit.Input
             dictationEventData = new DictationEventData(EventSystem.current);
 
             handTrackingInputEventData = new HandTrackingInputEventData(EventSystem.current);
+
+            CreateDataProviders();
         }
 
         /// <inheritdoc />
         public override void Enable()
         {
+            CreateDataProviders();
+
+            // Ensure data providers are enabled (performed by the base class)
+            base.Enable();
+
+            InputEnabled?.Invoke();
+        }
+
+        private void CreateDataProviders()
+        {
             MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
+
+            // If the system gets disabled, the gaze provider is destroyed.
+            // Ensure that it gets recreated on when reenabled.
+            if (GazeProvider == null)
+            {
+                InstantiateGazeProvider(profile?.PointerProfile);
+            }
 
             if ((GetDataProviders().Count == 0) && (profile != null))
             {
@@ -247,11 +261,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         args);
                 }
             }
+        }
 
-            // Ensure data providers are enabled (performed by the base class)
-            base.Enable();
-
-            InputEnabled?.Invoke();
+        private void InstantiateGazeProvider(MixedRealityPointerProfile pointerProfile)
+        {
+            if (pointerProfile?.GazeProviderType?.Type != null)
+            {
+                GazeProvider = CameraCache.Main.gameObject.EnsureComponent(pointerProfile.GazeProviderType.Type) as IMixedRealityGazeProvider;
+                GazeProvider.GazeCursorPrefab = pointerProfile.GazeCursorPrefab;
+                // Current implementation implements both provider types in one concrete class.
+                EyeGazeProvider = GazeProvider as IMixedRealityEyeGazeProvider;
+            }
+            else
+            {
+                Debug.LogError("The Input system is missing the required GazeProviderType!");
+                return;
+            }
         }
 
         /// <inheritdoc />

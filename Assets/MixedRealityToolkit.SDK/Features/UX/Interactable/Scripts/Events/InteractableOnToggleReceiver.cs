@@ -42,15 +42,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc />
         public override void OnClick(InteractableStates state, Interactable source, IMixedRealityPointer pointer = null)
         {
-            int currentIndex = source.GetDimensionIndex();
-            
-            if (currentIndex % 2 == 0)
+            if (source.ButtonMode == SelectionModes.Toggle)
             {
-                OnDeselect.Invoke();
-            }
-            else
-            {
-                uEvent.Invoke();
+                if (source.IsToggled)
+                {
+                    OnSelect.Invoke();
+                }
+                else
+                {
+                    OnDeselect.Invoke();
+                }
             }
         }
     }

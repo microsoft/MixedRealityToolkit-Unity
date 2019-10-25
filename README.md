@@ -6,7 +6,7 @@ MRTK-Unity is a Microsoft driven project that provides a set of components and f
 
 * Provides the **basic building blocks for Unity development on HoloLens, Windows Mixed Reality, and OpenVR**.
 * Enables **rapid prototyping** via in-editor simulation that allows you to see changes immediately.
-* Designed as an **extensible framework** that provides developers ability to swap out core components.
+* Designed as an **extensible framework** that provides developers the ability to swap out core components.
 * **Supports a wide range of platforms**, including
   * Microsoft HoloLens
   * Microsoft HoloLens 2
@@ -26,7 +26,7 @@ MRTK-Unity is a Microsoft driven project that provides a set of components and f
 
 # Required Software
 
- | [![Windows SDK 18362+](Documentation/Images/MRTK170802_Short_17.png)](https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk) [Windows SDK 18362+](https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk)| [![Unity](Documentation/Images/MRTK170802_Short_18.png)](https://unity3d.com/get-unity/download/archive) [Unity 2018.4.x](https://unity3d.com/get-unity/download/archive)| [![Visual Studio 2019](Documentation/Images/MRTK170802_Short_19.png)](http://dev.windows.com/downloads) [Visual Studio 2019](http://dev.windows.com/downloads)| [![Simulator (optional)](Documentation/Images/MRTK170802_Short_20.png)](https://go.microsoft.com/fwlink/?linkid=2098508) [Simulator (optional)](https://go.microsoft.com/fwlink/?linkid=2098508)|
+ | [![Windows SDK 18362+](Documentation/Images/MRTK170802_Short_17.png)](https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk) [Windows SDK 18362+](https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk)| [![Unity](Documentation/Images/MRTK170802_Short_18.png)](https://unity3d.com/get-unity/download/archive) [Unity 2018.4.x](https://unity3d.com/get-unity/download/archive)| [![Visual Studio 2019](Documentation/Images/MRTK170802_Short_19.png)](http://dev.windows.com/downloads) [Visual Studio 2019](http://dev.windows.com/downloads)| [![Emulators (optional)](Documentation/Images/MRTK170802_Short_20.png)](https://docs.microsoft.com/en-us/windows/mixed-reality/using-the-hololens-emulator) [Emulators (optional)](https://docs.microsoft.com/en-us/windows/mixed-reality/using-the-hololens-emulator)|
 | :--- | :--- | :--- | :--- |
 | To build apps with MRTK v2, you need the Windows 10 May 2019 Update SDK. <br> To run apps for immersive headsets, you need the Windows 10 Fall Creators Update. | The Unity 3D engine provides support for building mixed reality projects in Windows 10 | Visual Studio is used for code editing, deploying and building UWP app packages | The Emulators allow you test your app without the device in a simulated environment |
 
@@ -59,7 +59,7 @@ MRTK-Unity is a Microsoft driven project that provides a set of components and f
 
 |  [![Optimize Window](Documentation/Images/MRTK_Icon_OptimizeWindow.png)](Documentation/Tools/OptimizeWindow.md) [Optimize Window](Documentation/Tools/OptimizeWindow.md) | [![Dependency Window](Documentation/Images/MRTK_Icon_DependencyWindow.png)](Documentation/Tools/DependencyWindow.md) [Dependency Window](Documentation/Tools/DependencyWindow.md) | ![Build Window](Documentation/Images/MRTK_Icon_BuildWindow.png) Build Window | [![Input recording](Documentation/Images/MRTK_Icon_InputRecording.png)](Documentation/InputSimulation/InputAnimationRecording.md) [Input recording](Documentation/InputSimulation/InputAnimationRecording.md) |
 |:--- | :--- | :--- | :--- |
-| Automate configuration of Mixed Reality projects for performance optimizations | Analyze dependencies between assets and identify unused assets |  Configure and execute end-to-end build process for Mixed Reality applications | Record and playback head movement and hand tracking data ins editor |
+| Automate configuration of Mixed Reality projects for performance optimizations | Analyze dependencies between assets and identify unused assets |  Configure and execute end-to-end build process for Mixed Reality applications | Record and playback head movement and hand tracking data in editor |
 
 # Example Scenes
 
@@ -87,17 +87,13 @@ See [Examples Hub README page](Documentation/README_ExampleHub.md) to learn abou
 
 # Engage with the Community
 
-- Join the conversation around MRTK on [Slack](https://holodevelopers.slack.com/).
+- Join the conversation around MRTK on [Slack](https://holodevelopers.slack.com/). You can join the Slack community via the [automatic invitation sender](https://holodevelopersslack.azurewebsites.net/).
 
 - Ask questions about using MRTK on [Stack Overflow](https://stackoverflow.com/questions/tagged/mrtk) using the **MRTK** tag.
 
 - Search for [known issues](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues) or file a [new issue](https://github.com/Microsoft/MixedRealityToolkit-Unity/issues) if you find something broken in MRTK code.
 
-- Join our weekly community shiproom to hear directly from the feature team. (link coming soon)
-
-- Deep dive into project plan and learn how you can contribute to MRTK in our [wiki](https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki).
-
-- For issues related to Windows Mixed Reality that aren't directly related to the MRTK, check out the [Windows Mixed Reality Developer Forum](https://forums.hololens.com/).
+- For questions about contributing to mrtk, go to the [mixed-reality-toolkit](https://holodevelopers.slack.com/messages/C2H4HT858) channel on slack.
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
@@ -119,7 +115,6 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 You can find our planning material on [our wiki](https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki) under Project Management Section. You can always see the items the team is actively working on in the Iteration Plan issue.
 
 # How to Contribute
-
-View the [**How To Contribute**](https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki/How-to-Contribute) wiki page for the most up to date instructions on contributing to the Mixed Reality Toolkit!
+Learn how you can contribute to MRTK at [Contributing](Documentation/Contributing/CONTRIBUTING.md).
 
 **For details on the different branches used in the Mixed Reality Toolkit repositories, check this [Branch Guide here](https://github.com/Microsoft/MixedRealityToolkit-Unity/wiki/Branch-Guide).**

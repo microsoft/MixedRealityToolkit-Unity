@@ -8,9 +8,9 @@ The [`Interactable`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable) compon
 
 The component allows for three primary sections of configuration:
 
-1) [types of input](#general-input-settings)
-1) [visual themes](VisualThemes.md) targeted against multiple GameObjects
-1) [event handlers](#events)
+1) [General input configuration](#general-input-settings)
+1) [Visual Themes](VisualThemes.md) targeted against multiple GameObjects
+1) [Event handlers](#events)
 
 ### General input settings
 
@@ -44,29 +44,39 @@ A bit value (#) is assigned to the state depending on the order in the list.
 > * Visited: the Interactable has been clicked.
 > * Toggled: The button is in a toggled state or Dimension index is an odd number.
 > * Gesture: The hand or controller was pressed and has moved from the original position.
-> * VoiceCommand: A speech command was used to trigger an Interactable.
+> * VoiceCommand: A speech command was used to trigger the Interactable.
 > * PhysicalTouch: A touch input is currently detected, use [`NearInteractionTouchable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionTouchable) to enable.
 > * Grab: A hand is currently grabbing in the bounds of the object, use [`NearInteractionGrabbable`](xref:Microsoft.MixedReality.Toolkit.Input.NearInteractionGrabbable) to enable
 
 **Enabled**
 
-Toggles whether an Interactable is enabled or not. When disabled, some input handling will be disable and themes wil be updated to reflect the current disabled state. A typical example of this would be a submit button waiting for all the required input fields to be completed.
+Toggles whether an Interactable will start enabled or not. This corresponds to the [`Interactable.IsEnabled`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable.IsEnabled) in code.
+
+An *Interactable's* enabled property is different than the enabled property configured via GameObject/Component (i.e SetActive etc). Disabling the GameObject or *Interactable* MonoBehavior will disable everything in the class from running including input, visual themes, events, etc. Disabling via [`Interactable.IsEnabled`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable.IsEnabled) will disable most input handling, reseting related input states. However, the class will still run every frame and receive input events which will be ignored. This is useful for displaying the Interactable in a disabled state which can be done via Visual Themes. A typical example of this would be a submit button waiting for all the required input fields to be completed.
 
 **Input Actions**
 
 Select the [input action](./Input/InputActions.md), from the input configuration or controller mapping profile, that the *Interactable* component should react to.
 
+This property can be configured at runtime in code via [`Interactable.InputAction`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable.InputAction).
+
 **IsGlobal**
 
 If true, this will mark the component as a global input listener for the selected [input action](./Input/InputActions.md). Default behavior is false which will restrict input to only this *Interactable* collider/GameObject.
+
+This property can be configured at runtime in code via [`Interactable.IsGlobal`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable.IsGlobal).
 
 **Speech Command**
 
 [Speech command](./Input/Speech.md), from the MRTK Speech Commands Profile, to trigger an OnClick event for voice interaction.
 
+This property can be configured at runtime in code via [`Interactable.VoiceCommand`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable.VoiceCommand).
+
 **Requires Focus**
 
 If true, the voice command will only activate the *Interactable* if and only if it already has focus from a pointer. If false, then the *Interactable* will act as a global listener for the selected voice command. The default behavior is true, as multiple global speech listeners can be difficult to organize in a scene.
+
+This property can be configured at runtime in code via [`Interactable.VoiceRequiresFocus`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable.VoiceRequiresFocus).
 
 **Selection Mode**
 
@@ -79,6 +89,8 @@ The selection modes available are:
 * **Multi-dimension** - *Dimensions* >= 3, every click increases the current dimension level + 1. Useful for defining a button state to a list, etc.
 
 *Interactable* also allows for multiple Themes to be defined per *Dimension*. For example when *SelectionMode=Toggle*, one theme may be applied when the *Interactable* is *deselected* and another theme applied when the component is *selected*.
+
+The current Selection Mode can be queried at runtime via [`Interactable.ButtonMode`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable.ButtonMode). Updating the mode at runtime can be achieved by setting the  [`Interactable.Dimensions`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable.Dimensions) property to match the desired functionality. Furthermore, the current dimension, useful for *Toggle* and *Multi-Dimension* modes, can be accessed via [`Interactable.CurrentDimension`](xref:Microsoft.MixedReality.Toolkit.UI.Interactable.CurrentDimension).
 
 ### Interactable Profiles
 
@@ -209,10 +221,10 @@ Developers can utilize the [`SetToggled`](xref:Microsoft.MixedReality.Toolkit.UI
 // If using SelectionMode = Toggle (i.e Dimensions == 2)
 
 // Make the Interactable selected and toggled on
-myInteractable.SetToggled(true)
+myInteractable.IsToggled = true;
 
 // Get whether the Interactable is selected or not
-bool isSelected = myInteractable.IsToggled();
+bool isSelected = myInteractable.IsToggled;
 ```
 
 ##### Toggle button collection
@@ -247,10 +259,10 @@ Developers can assess the [`DimensionIndex`](xref:Microsoft.MixedReality.Toolkit
 // If using SelectionMode = Multi-dimension (i.e Dimensions >= 3)
 
 //Access the current DimensionIndex
-int currentDimension = myInteractable.GetDimensionIndex();
+int currentDimension = myInteractable.CurrentDimension;
 
 //Set the current DimensionIndex to 2
-myInteractable.SetDimensionIndex(2);
+myInteractable.CurrentDimension = 2;
 
 // Promote Dimension to next level
 myInteractable.IncreaseDimension();

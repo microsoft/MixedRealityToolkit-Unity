@@ -11,13 +11,11 @@
 // play mode tests in this check.
 
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Input.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.TestTools;
-using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
@@ -32,8 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             inputSim = PlayModeTestUtilities.GetInputSimulationService();
             Assert.NotNull(inputSim);
 
-            Assert.IsTrue(MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem));
-            Assert.NotNull(inputSystem);
+            Assert.NotNull(CoreServices.InputSystem);
 
             GameObject lightObj = new GameObject("Light");
             lightObj.transform.rotation = Quaternion.FromToRotation(Vector3.forward, new Vector3(1, -4, 2));

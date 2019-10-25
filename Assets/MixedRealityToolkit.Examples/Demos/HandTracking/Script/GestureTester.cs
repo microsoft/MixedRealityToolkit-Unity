@@ -24,20 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         public GameObject RailsAxisY = null;
         public GameObject RailsAxisZ = null;
 
-        private IMixedRealityInputSystem inputSystem = null;
-        private IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
-                return inputSystem;
-            }
-        }
-
-        void OnEnable()
+        private void OnEnable()
         {
             HideRails();
         }
@@ -170,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
         private void ShowRails(Vector3 position)
         {
-            var gestureProfile = InputSystem.InputSystemProfile.GesturesProfile;
+            var gestureProfile = CoreServices.InputSystem.InputSystemProfile.GesturesProfile;
             var useRails = gestureProfile.UseRailsNavigation;
 
             if (RailsAxisX)

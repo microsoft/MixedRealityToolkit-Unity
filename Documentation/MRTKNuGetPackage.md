@@ -1,8 +1,10 @@
-# Mixed Reality Toolkit NuGet Package
+# Mixed Reality Toolkit NuGet package
 
 Mixed Reality Toolkit (MRTK) is now available as a NuGet package on NuGet.org. There are some differences when it comes to consuming NuGet version of MRTK as opposed to a .unitypackage, read **NuGet Package Considerations** below. If any issues are encountered, file an issue using this [template](https://github.com/microsoft/MixedRealityToolkit-Unity/issues/new?assignees=&labels=Bug,Package%20Management%20-%20NuGet&template=bug-report.md&title=).
 
-## Installing the NuGet Package
+**Note:** Migration of existing projects to consume MRTK as a NuGet package is not yet supported, use MRTK via NuGet only for new projects.
+
+## Installing the NuGet package
 
 Follow these instructions to add the Mixed Reality Toolkit as a NuGet package to your project.
 
@@ -21,7 +23,7 @@ Follow these instructions to add the Mixed Reality Toolkit as a NuGet package to
     - **Microsoft.MixedReality.Toolkit.Extensions** – The package that contains extensions services and/or data providers.
     - **Microsoft.MixedReality.Toolkit.Tools** – Contains some of the tooling that comes with MRTK (Build Window, etc).
 
-### Updating MRTK NuGet Packages
+### Updating MRTK NuGet packages
 
 Steps 1-2 above will only need to be done once for your project, and the update is a much simpler step. Once newer packages available on NuGet.org (including prerelease), follow these steps:
 
@@ -30,28 +32,28 @@ Steps 1-2 above will only need to be done once for your project, and the update 
     - Check the **Show prerelease** box if you want to get latest prerelease version.
 1. Update the packages desired.
 
-## NuGet Package Considerations
+## NuGet package considerations
 
 The release of MRTK as NuGet package is a new delivery mechanism being explored and there are a couple of key benefits and considerations one must make when choosing whether to consume the NuGet version of MRTK.
 
-### Migrating to NuGet from .unitypackage or Source (Not Yet Supported)
+### Migrating to NuGet from .unitypackage or source (not yet supported)
 
 NuGet package consists of compiled binaries as opposed to loose script files, and the C# script asset identifiers are different. As such, the assets like prefabs in the MRTK package have been updated to reference the appropriate compiled script. A project using the .unitypackage or source version of MRTK will have to re-target it's assets as well, and although there is code for it this is not a supported scenario, yet.
 
 *Thereby, there is no currently supported way of migrating to NuGet from .unitypackage or source. This will change as we continue development on this delivery mechanism.*
 
-### Compiled Binaries (NuGet) vs Source Files (.unitypackage)
+### Compiled binaries (NuGet) vs source files (.unitypackage)
 
 Since the NuGet package contains the compiled binaries instead of scripts, this has two major advantages:
 
 - Reduced compilation time
-- Considerably C# Project files in Visual Studio
+- Considerably fewer C# project files in Visual Studio
 
 ### Debugging Mixed Reality Toolkit
 
 There are known issues with Unity & Visual Studio Tools for Unity that prevent a PDB from being easily debugged in Visual Studio Debugger. So although the package comes with PDBs and source embedded, debugging the DLLs is possible only if it was locally built (read further). There is a workaround being built as part of [MSBuildForUnity](https://github.com/microsoft/MSBuildForUnity/), more updates on that later.
 
-## Locally Building the NuGet Package
+## Locally building the NuGet package
 
 With the latest source from MRTK, you can build the NuGet package locally and configure NuGetForUnity to pick it up.
 

@@ -333,6 +333,34 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Object.Destroy(empty);
             Object.Destroy(info);
         }
+
+        [UnityTest]
+        public IEnumerator CursorScaling()
+        {
+            Camera cam = GameObject.FindObjectOfType<Camera>();
+
+            cube.transform.position = Vector3.forward;
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            BaseCursor baseCursor = GameObject.FindObjectOfType<BaseCursor>();
+            Assert.IsNotNull(baseCursor);
+
+            Renderer renderer = baseCursor.GetComponentInChildren<Renderer>();
+            Assert.IsNotNull(renderer);
+
+            float firstAngularScale = 2 * Mathf.Atan2(baseCursor.LocalScale.y * 0.5f, baseCursor.transform.position.z);
+
+            cube.gameObject.SetActive(false);
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            float secondAngularScale = 2 * Mathf.Atan2(baseCursor.LocalScale.y * 0.5f, baseCursor.transform.position.z);
+
+            Assert.IsTrue(Mathf.Approximately(firstAngularScale, secondAngularScale));
+        }
     }
 }
 

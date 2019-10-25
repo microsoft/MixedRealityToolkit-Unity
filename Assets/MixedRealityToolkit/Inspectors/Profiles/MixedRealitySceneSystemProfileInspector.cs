@@ -87,7 +87,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return;
             }
             
-            RenderProfileHeader(ProfileTitle, ProfileDescription, target);
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, target))
+            {
+                return;
+            }
 
             MixedRealityInspectorUtility.CheckMixedRealityConfigured(true);
 

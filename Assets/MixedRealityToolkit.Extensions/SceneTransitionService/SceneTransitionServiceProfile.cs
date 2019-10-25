@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
-using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
@@ -20,6 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         public float FadeOutTime => fadeOutTime;
         public float FadeInTime => fadeInTime;
         public CameraFaderTargets FadeTargets => fadeTargets;
+        public Material CameraFaderMaterial => cameraFaderMaterial;
 
         [Header("Progress Indicator Options")]
         [SerializeField]
@@ -59,5 +59,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         [Implements(typeof(ICameraFader), TypeGrouping.ByNamespaceFlat)]
         [Tooltip("Which `ICameraFader` class to use for applying a fade effect to cameras.")]
         private SystemType cameraFaderType = default(SystemType);
+
+        [Header("Optional Assets")]
+
+        [SerializeField]
+        [Tooltip("Optional material for your CameraFader class. If an implementation does not use a material, this will be ignored.")]
+        private Material cameraFaderMaterial = null;
     }
 }

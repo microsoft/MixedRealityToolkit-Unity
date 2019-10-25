@@ -32,8 +32,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateLinkedTransform: 0
-  moveLerpTime: 0.3
-  rotateLerpTime: 0.3
+  moveLerpTime: 0
+  rotateLerpTime: 0
   scaleLerpTime: 0
   maintainScale: 1
   smoothing: 1
@@ -80,6 +80,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0ba356208ebee842b61c465bde80a05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  delay: 2
 --- !u!114 &8046114618238072051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,6 +122,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SpeechConfirmationTooltip
+      objectReference: {fileID: 0}
+    - target: {fileID: 8217189920156946147, guid: 247dc8aebe30ca2408e8293a883c75df,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8329956899072727607, guid: 247dc8aebe30ca2408e8293a883c75df,
+        type: 3}
+      propertyPath: endPoint.position.y
+      value: 0.23951453
+      objectReference: {fileID: 0}
+    - target: {fileID: 8329956899072727607, guid: 247dc8aebe30ca2408e8293a883c75df,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8222481329602893483, guid: 247dc8aebe30ca2408e8293a883c75df,
         type: 3}
@@ -177,16 +193,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8329956899072727607, guid: 247dc8aebe30ca2408e8293a883c75df,
-        type: 3}
-      propertyPath: endPoint.position.y
-      value: 0.23951453
-      objectReference: {fileID: 0}
-    - target: {fileID: 8329956899072727607, guid: 247dc8aebe30ca2408e8293a883c75df,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8330271889260716089, guid: 247dc8aebe30ca2408e8293a883c75df,
         type: 3}
       propertyPath: m_Enabled
@@ -221,11 +227,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.y
       value: 0.034951583
-      objectReference: {fileID: 0}
-    - target: {fileID: 8217189920156946147, guid: 247dc8aebe30ca2408e8293a883c75df,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8102129296322141565, guid: 247dc8aebe30ca2408e8293a883c75df,
         type: 3}
