@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public bool ResizeCursorWithDistance
         {
-            get { return ResizeCursorWithDistance; }
+            get { return resizeCursorWithDistance; }
             set { resizeCursorWithDistance = value; }
         }
 
@@ -115,15 +115,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The angular scale of cursor in relation to Main Camera, assuming a mesh with bounds of Vector3(1,1,1)
         /// </summary>
-        public float CursorAngularScale
+        public float CursorAngularSize
         {
-            get { return cursorAngularScale; }
-            set { cursorAngularScale = value; }
+            get { return cursorAngularSize; }
+            set { cursorAngularSize = value; }
         }
 
         [SerializeField]
         [Tooltip("The angular scale of cursor in relation to Main Camera, assuming a mesh with bounds of Vector3(1,1,1)")]
-        private float cursorAngularScale = 50.0f;
+        private float cursorAngularSize = 50.0f;
 
         [Header("Transform References")]
         [SerializeField]
@@ -491,7 +491,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Vector3 ComputeScaleWithAngularScale(Vector3 targetPosition)
         {
             float cursorDistance = Vector3.Distance(CameraCache.Main.transform.position, targetPosition);
-            float desiredScale = MathUtilities.AngularScaleFromDistance(cursorAngularScale, cursorDistance);
+            float desiredScale = MathUtilities.ScaleFromAngularSizeAndDistance(cursorAngularSize, cursorDistance);
             return Vector3.one * desiredScale;
         }
 
