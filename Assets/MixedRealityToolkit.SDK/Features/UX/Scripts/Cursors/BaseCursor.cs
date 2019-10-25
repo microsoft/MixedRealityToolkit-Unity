@@ -6,6 +6,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -103,7 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public bool ResizeCursorWithDistance
         {
-            get { return ResizeCursorWithDistance; }
+            get { return resizeCursorWithDistance; }
             set { resizeCursorWithDistance = value; }
         }
 
@@ -113,17 +114,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private bool resizeCursorWithDistance = false;
 
         /// <summary>
-        /// The value, in angle, of expected cursor size in relation to Main Camera
+        /// The angular scale of cursor in relation to Main Camera, assuming a mesh with bounds of Vector3(1,1,1)
         /// </summary>
+        [Obsolete("Property obsolete. Use CursorAngularSize instead")]
         public float CursorAngularScale
         {
-            get { return cursorAngularScale; }
-            set { cursorAngularScale = value; }
+            get { return CursorAngularSize; }
+            set { CursorAngularSize = value; }
         }
 
-        [SerializeField]
-        [Tooltip("The value, in angle, of expected cursor size in relation to Main Camera")]
-        private float cursorAngularScale = 0.65f;
+        /// <summary>
+        /// The angular size of cursor in relation to Main Camera, assuming a mesh with bounds of Vector3(1,1,1)
+        /// </summary>
+        public float CursorAngularSize
+        {
+            get { return cursorAngularSize; }
+            set { cursorAngularSize = value; }
+        }
+        
+        [SerializeField, FormerlySerializedAs("cursorAngularScale")]
+        [Tooltip("The angular scale of cursor in relation to Main Camera, assuming a mesh with bounds of Vector3(1,1,1)")]
+        private float cursorAngularSize = 50.0f;
 
         [Header("Transform References")]
         [SerializeField]
@@ -147,8 +158,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected Vector3 targetPosition;
         protected Vector3 targetScale;
         protected Quaternion targetRotation;
-
-        private Bounds cursorBounds = new Bounds();
 
         #region IMixedRealityCursor Implementation
 
@@ -347,7 +356,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected virtual void Start()
         {
             RegisterManagers();
-            CalculateBounds();
         }
 
         private void Update()
@@ -494,30 +502,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Vector3 ComputeScaleWithAngularScale(Vector3 targetPosition)
         {
             float cursorDistance = Vector3.Distance(CameraCache.Main.transform.position, targetPosition);
-            float cursorStartSize = (cursorBounds.extents - cursorBounds.center).magnitude * 2;
-            float desiredScale = MathUtilities.AngularScaleFromDistance(cursorAngularScale, cursorDistance) / cursorStartSize;
+            float desiredScale = MathUtilities.ScaleFromAngularSizeAndDistance(cursorAngularSize, cursorDistance);
             return Vector3.one * desiredScale;
-        }
-
-        /// <summary>
-        /// On start, calculates world space mesh bounds of cursor in order to correctly size it when using resizeCursorWithDistance 
-        /// </summary>
-        private void CalculateBounds()
-        {
-            Vector3 cachedScale = transform.localScale;
-            transform.localScale = Vector3.one;
-
-            var combinedBounds = new Bounds(transform.position, Vector3.zero);
-            var renderers = GetComponentsInChildren<Renderer>();
-
-            for (var i = 0; i < renderers.Length; i++)
-            {
-                combinedBounds.Encapsulate(renderers[i].bounds);
-            }
-
-            cursorBounds = combinedBounds;
-
-            transform.localScale = cachedScale;
         }
 
         /// <summary>

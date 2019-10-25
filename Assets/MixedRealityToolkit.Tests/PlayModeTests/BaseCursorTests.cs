@@ -335,29 +335,61 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         [UnityTest]
+
         public IEnumerator CursorScaling()
         {
+            // Finding or initializing necessary objects
             Camera cam = GameObject.FindObjectOfType<Camera>();
-
-            cube.transform.position = Vector3.forward;
-
-            yield return new WaitForFixedUpdate();
-            yield return null;
 
             BaseCursor baseCursor = GameObject.FindObjectOfType<BaseCursor>();
             Assert.IsNotNull(baseCursor);
 
-            Renderer renderer = baseCursor.GetComponentInChildren<Renderer>();
-            Assert.IsNotNull(renderer);
+            // Make sure resizing is turned on
+            Assert.IsTrue(baseCursor.ResizeCursorWithDistance);
 
-            float firstAngularScale = 2 * Mathf.Atan2(baseCursor.LocalScale.y * 0.5f, baseCursor.transform.position.z);
+            // Set CursorAngularScale for hardcoded calculations
+            baseCursor.CursorAngularSize = 50.0f;
+
+            cube.transform.position = Vector3.forward * 2.0f;
+
+            // Wait for cursor to resize/move
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            // Part one tests cursor size against precalculated values at two different distances
+
+            // FIRST DISTANCE
+            float precalculatedScale = 2.0f * Vector3.Distance(cam.transform.position, baseCursor.transform.position) * Mathf.Tan(baseCursor.CursorAngularSize * Mathf.Deg2Rad * 0.5f);
+            Assert.IsTrue(Mathf.Approximately(precalculatedScale, baseCursor.transform.localScale.y));
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            cube.transform.position = Vector3.forward;
+
+            // Wait for cursor to resize/move
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            // SECOND DISTANCE
+            precalculatedScale = 2.0f * Vector3.Distance(cam.transform.position, baseCursor.transform.position) * Mathf.Tan(baseCursor.CursorAngularSize * Mathf.Deg2Rad * 0.5f);
+            Assert.IsTrue(Mathf.Approximately(precalculatedScale, baseCursor.transform.localScale.y));
+
+            yield return new WaitForFixedUpdate();
+            yield return null;
+
+            //Part two tests if precalculated angularSize matches what is returned in baseCursor.ComputeScaleWithAngularScale() at two different distances
+
+            // FIRST DISTANCE
+            float firstAngularScale = 2 * Mathf.Atan2(baseCursor.LocalScale.y * 0.5f, Vector3.Distance(cam.transform.position, baseCursor.transform.position));
 
             cube.gameObject.SetActive(false);
 
             yield return new WaitForFixedUpdate();
             yield return null;
 
-            float secondAngularScale = 2 * Mathf.Atan2(baseCursor.LocalScale.y * 0.5f, baseCursor.transform.position.z);
+            // SECOND DISTANCE
+            float secondAngularScale = 2 * Mathf.Atan2(baseCursor.LocalScale.y * 0.5f, Vector3.Distance(cam.transform.position, baseCursor.transform.position));
 
             Assert.IsTrue(Mathf.Approximately(firstAngularScale, secondAngularScale));
         }
