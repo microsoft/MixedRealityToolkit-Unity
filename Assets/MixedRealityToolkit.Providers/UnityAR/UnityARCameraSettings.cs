@@ -215,45 +215,24 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             if (!preExistingArSessionOriginObject &&
                 (arSessionOriginObject != null))
             {
-                if (Application.isEditor && !Application.isPlaying)
-                {
-                    Object.DestroyImmediate(trackedPoseDriver);
-                    Object.DestroyImmediate(arCameraBackground);
-                    Object.DestroyImmediate(arCameraManager);
-                    Object.DestroyImmediate(arSessionOrigin);
-                }
-                else
-                {
-                    Object.Destroy(trackedPoseDriver);
-                    Object.Destroy(arCameraBackground);
-                    Object.Destroy(arCameraManager);
-                    Object.Destroy(arSessionOrigin);
-                }
-
+                UnityObjectExtensions.DestroyObject(trackedPoseDriver);
                 trackedPoseDriver = null;
+                UnityObjectExtensions.DestroyObject(arCameraBackground);
                 arCameraBackground = null;
+                UnityObjectExtensions.DestroyObject(arCameraManager);
                 arCameraManager = null;
+                UnityObjectExtensions.DestroyObject(arSessionOrigin);
                 arSessionOrigin = null;
             }
 
             if (!preExistingArSessionObject &&
                 (arSessionObject != null))
             {
-                if (Application.isEditor && !Application.isPlaying)
-                {
-                    Object.DestroyImmediate(arInputManager);
-                    Object.DestroyImmediate(arSession);
-                    Object.DestroyImmediate(arSessionObject);
-                }
-                else
-                {
-                    Object.Destroy(arInputManager);
-                    Object.Destroy(arSession);
-                    Object.Destroy(arSessionObject);
-                }
-
+                UnityObjectExtensions.DestroyObject(arInputManager);
                 arInputManager = null;
+                UnityObjectExtensions.DestroyObject(arSession);
                 arSession = null;
+                UnityObjectExtensions.DestroyObject(arSessionObject);
                 arSessionObject = null;
             }
 
