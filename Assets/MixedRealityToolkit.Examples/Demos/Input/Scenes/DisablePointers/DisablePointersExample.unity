@@ -232,6 +232,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: VR
       objectReference: {fileID: 0}
+    - target: {fileID: 3126786010441234080, guid: 4f44c0d070528944c9bff425c6932763,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3126786010476584173, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -388,11 +393,6 @@ PrefabInstance:
       value: -0.016400006
       objectReference: {fileID: 0}
     - target: {fileID: 3456123869903824599, guid: 4f44c0d070528944c9bff425c6932763,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3126786010441234080, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -1154,6 +1154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf12ee76e7e00a44a9a84256760020e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nodeList: []
   ignoreInactiveTransforms: 1
   sortType: 0
   surfaceType: 1
@@ -1800,20 +1801,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 1
   states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
-  InputAction:
-    id: 0
-    description: 
-    axisConstraint: 0
   InputActionId: 0
-  IsGlobal: 0
+  isGlobal: 0
   Dimensions: 2
-  StartDimensionIndex: 1
+  dimensionIndex: 0
+  startDimensionIndex: 1
   CanSelect: 1
   CanDeselect: 1
   VoiceCommand: Select
-  RequiresFocus: 1
+  voiceRequiresFocus: 1
   profiles:
   - Target: {fileID: 1806166995}
     Themes:
@@ -2051,7 +2048,7 @@ MonoBehaviour:
         m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       Options: []
-  dimensionIndex: 0
+  enabledOnStart: 1
 --- !u!114 &275564933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2430,20 +2427,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 1
   states: {fileID: 11400000, guid: 5eac1712038236e4b8ffdb3893804fe1, type: 2}
-  InputAction:
-    id: 0
-    description: 
-    axisConstraint: 0
   InputActionId: 0
-  IsGlobal: 0
+  isGlobal: 0
   Dimensions: 1
-  StartDimensionIndex: 0
+  dimensionIndex: 0
+  startDimensionIndex: 0
   CanSelect: 1
   CanDeselect: 1
   VoiceCommand: 
-  RequiresFocus: 1
+  voiceRequiresFocus: 1
   profiles:
   - Target: {fileID: 245704822}
     Themes:
@@ -2457,7 +2450,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Events: []
-  dimensionIndex: 0
+  enabledOnStart: 1
 --- !u!1 &330714266
 GameObject:
   m_ObjectHideFlags: 0
@@ -2711,6 +2704,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf12ee76e7e00a44a9a84256760020e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nodeList: []
   ignoreInactiveTransforms: 1
   sortType: 1
   surfaceType: 1
@@ -2875,20 +2869,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 1
   states: {fileID: 11400000, guid: 5eac1712038236e4b8ffdb3893804fe1, type: 2}
-  InputAction:
-    id: 0
-    description: 
-    axisConstraint: 0
   InputActionId: 0
-  IsGlobal: 0
+  isGlobal: 0
   Dimensions: 1
-  StartDimensionIndex: 0
+  dimensionIndex: 0
+  startDimensionIndex: 0
   CanSelect: 1
   CanDeselect: 1
   VoiceCommand: 
-  RequiresFocus: 1
+  voiceRequiresFocus: 1
   profiles:
   - Target: {fileID: 1442748973}
     Themes:
@@ -2902,7 +2892,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Events: []
-  dimensionIndex: 0
+  enabledOnStart: 1
 --- !u!1 &381207974
 GameObject:
   m_ObjectHideFlags: 0
@@ -3386,6 +3376,7 @@ MonoBehaviour:
   oneHandRotationModeFar: 6
   releaseBehavior: -1
   constraintOnRotation: 0
+  useLocalSpaceForConstraint: 0
   constraintOnMovement: 0
   smoothingActive: 1
   smoothingAmountOneHandManip: 0.0001
@@ -4009,6 +4000,7 @@ MonoBehaviour:
   oneHandRotationModeFar: 5
   releaseBehavior: -1
   constraintOnRotation: 2
+  useLocalSpaceForConstraint: 0
   constraintOnMovement: 0
   smoothingActive: 1
   smoothingAmountOneHandManip: 0.0001
@@ -4528,6 +4520,7 @@ MonoBehaviour:
   oneHandRotationModeFar: 1
   releaseBehavior: 3
   constraintOnRotation: 0
+  useLocalSpaceForConstraint: 0
   constraintOnMovement: 0
   smoothingActive: 1
   smoothingAmountOneHandManip: 0.001
@@ -5054,20 +5047,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 1
   states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
-  InputAction:
-    id: 0
-    description: 
-    axisConstraint: 0
   InputActionId: 0
-  IsGlobal: 0
+  isGlobal: 0
   Dimensions: 2
-  StartDimensionIndex: 1
+  dimensionIndex: 0
+  startDimensionIndex: 1
   CanSelect: 1
   CanDeselect: 1
   VoiceCommand: Select
-  RequiresFocus: 1
+  voiceRequiresFocus: 1
   profiles:
   - Target: {fileID: 1611805876}
     Themes:
@@ -5305,7 +5294,7 @@ MonoBehaviour:
         m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       Options: []
-  dimensionIndex: 0
+  enabledOnStart: 1
 --- !u!82 &534220775
 AudioSource:
   m_ObjectHideFlags: 0
@@ -7670,6 +7659,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf12ee76e7e00a44a9a84256760020e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nodeList: []
   ignoreInactiveTransforms: 1
   sortType: 1
   surfaceType: 1
@@ -7863,20 +7853,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 1
   states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
-  InputAction:
-    id: 0
-    description: 
-    axisConstraint: 0
   InputActionId: 0
-  IsGlobal: 0
+  isGlobal: 0
   Dimensions: 2
-  StartDimensionIndex: 1
+  dimensionIndex: 0
+  startDimensionIndex: 1
   CanSelect: 1
   CanDeselect: 1
   VoiceCommand: Select
-  RequiresFocus: 1
+  voiceRequiresFocus: 1
   profiles:
   - Target: {fileID: 983114583}
     Themes:
@@ -8114,7 +8100,7 @@ MonoBehaviour:
         m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       Options: []
-  dimensionIndex: 0
+  enabledOnStart: 1
 --- !u!114 &908299792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8781,6 +8767,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: HoloLens2
       objectReference: {fileID: 0}
+    - target: {fileID: 3126786010441234080, guid: 4f44c0d070528944c9bff425c6932763,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3126786010476584173, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8941,11 +8932,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3126786010441234080, guid: 4f44c0d070528944c9bff425c6932763,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f44c0d070528944c9bff425c6932763, type: 3}
 --- !u!4 &1076581059 stripped
@@ -8994,12 +8980,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1158173228}
-  - component: {fileID: 1158173234}
-  - component: {fileID: 1158173233}
-  - component: {fileID: 1158173232}
-  - component: {fileID: 1158173231}
-  - component: {fileID: 1158173230}
-  - component: {fileID: 1158173229}
   m_Layer: 0
   m_Name: Common Modes
   m_TagString: Untagged
@@ -9023,144 +9003,6 @@ Transform:
   m_Father: {fileID: 1608343315}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1158173229
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1158173227}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05bf489b30ac3e7419b1924c4a055b29, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1158173230
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1158173227}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d1fea68463e4e84b86c395b654f950d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  visualizationObject: {fileID: 0}
-  interactableObject: {fileID: 0}
-  autoFollowAtDistance: 0
-  autoFollowDistance: 2
-  autoFollowTransformTarget: {fileID: 0}
---- !u!114 &1158173231
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1158173227}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4684083f6dff4a1d8a790bccc354fcf4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  updateLinkedTransform: 0
-  moveLerpTime: 0.3
-  rotateLerpTime: 0.3
-  scaleLerpTime: 0
-  maintainScale: 1
-  smoothing: 1
-  lifetime: 0
-  referenceDirection: 1
-  minDistance: 0.4
-  maxDistance: 0.8
-  minViewDegrees: 0
-  maxViewDegrees: 15
-  aspectV: 1
-  ignoreAngleClamp: 0
-  ignoreDistanceClamp: 0
-  useFixedVerticalPosition: 1
-  fixedVerticalPosition: -0.4
-  orientToReferenceDirection: 0
---- !u!114 &1158173232
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1158173227}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  trackedTargetType: 0
-  trackedHandness: 3
-  trackedHandJoint: 2
-  transformOverride: {fileID: 0}
-  additionalOffset: {x: 0, y: 0, z: 0}
-  additionalRotation: {x: 0, y: 0, z: 0}
-  updateSolvers: 1
---- !u!114 &1158173233
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1158173227}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 984a6c5221e64b247a4f2bab25cdfdcb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OnRecordingStarted:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: set_material
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 2100000, guid: 635a27f13b7b26b4483bc1283d04803e,
-            type: 2}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Material, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  OnRecordingStopped:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: set_material
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 2100000, guid: 38a587e9218b3284485088c9925af61f,
-            type: 2}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Material, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
---- !u!114 &1158173234
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1158173227}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 210487fc9a02cd049bdd702b7cb8b977, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isHandMeshVisible: 1
-  isHandJointVisible: 1
 --- !u!1 &1161179316
 GameObject:
   m_ObjectHideFlags: 0
@@ -9343,6 +9185,7 @@ MonoBehaviour:
   oneHandRotationModeFar: 6
   releaseBehavior: 3
   constraintOnRotation: 0
+  useLocalSpaceForConstraint: 0
   constraintOnMovement: 0
   smoothingActive: 1
   smoothingAmountOneHandManip: 0.001
@@ -10095,20 +9938,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 1
   states: {fileID: 11400000, guid: 5eac1712038236e4b8ffdb3893804fe1, type: 2}
-  InputAction:
-    id: 0
-    description: 
-    axisConstraint: 0
   InputActionId: 0
-  IsGlobal: 0
+  isGlobal: 0
   Dimensions: 1
-  StartDimensionIndex: 0
+  dimensionIndex: 0
+  startDimensionIndex: 0
   CanSelect: 1
   CanDeselect: 1
   VoiceCommand: 
-  RequiresFocus: 1
+  voiceRequiresFocus: 1
   profiles:
   - Target: {fileID: 723004242}
     Themes:
@@ -10122,7 +9961,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Events: []
-  dimensionIndex: 0
+  enabledOnStart: 1
 --- !u!1001 &1315017466
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10134,6 +9973,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: HoloLens1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3126786010441234080, guid: 4f44c0d070528944c9bff425c6932763,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3126786010476584173, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
@@ -10291,11 +10135,6 @@ PrefabInstance:
       value: -0.016400006
       objectReference: {fileID: 0}
     - target: {fileID: 3456123869903824599, guid: 4f44c0d070528944c9bff425c6932763,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3126786010441234080, guid: 4f44c0d070528944c9bff425c6932763,
         type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -11150,20 +10989,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 1
   states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
-  InputAction:
-    id: 0
-    description: 
-    axisConstraint: 0
   InputActionId: 0
-  IsGlobal: 0
+  isGlobal: 0
   Dimensions: 2
-  StartDimensionIndex: 1
+  dimensionIndex: 0
+  startDimensionIndex: 1
   CanSelect: 1
   CanDeselect: 1
   VoiceCommand: Select
-  RequiresFocus: 1
+  voiceRequiresFocus: 1
   profiles:
   - Target: {fileID: 1259235647}
     Themes:
@@ -11401,7 +11236,7 @@ MonoBehaviour:
         m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       Options: []
-  dimensionIndex: 0
+  enabledOnStart: 1
 --- !u!114 &1392441502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12389,6 +12224,7 @@ MonoBehaviour:
   oneHandRotationModeFar: 5
   releaseBehavior: 3
   constraintOnRotation: 2
+  useLocalSpaceForConstraint: 0
   constraintOnMovement: 0
   smoothingActive: 1
   smoothingAmountOneHandManip: 0.001
@@ -13432,10 +13268,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1054075472835142, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 114107642412081004, guid: a900c08743a94c328074df8bbe3eb63c,
         type: 3}
       propertyPath: m_Text
@@ -13467,29 +13299,33 @@ PrefabInstance:
         see how to call PointerUtils to enable / disable the various pointers in the
         input system. \r\n"
       objectReference: {fileID: 0}
-    - target: {fileID: 114121190672569774, guid: a900c08743a94c328074df8bbe3eb63c,
-        type: 3}
-      propertyPath: m_Text
-      value: Setup
-      objectReference: {fileID: 0}
     - target: {fileID: 114125765304321574, guid: a900c08743a94c328074df8bbe3eb63c,
         type: 3}
       propertyPath: m_Text
       value: Usage
       objectReference: {fileID: 0}
+    - target: {fileID: 114121190672569774, guid: a900c08743a94c328074df8bbe3eb63c,
+        type: 3}
+      propertyPath: m_Text
+      value: Setup
+      objectReference: {fileID: 0}
     - target: {fileID: 1149545904682892, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 224849082003076088, guid: a900c08743a94c328074df8bbe3eb63c,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0.215
+    - target: {fileID: 1054075472835142, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114713125240876806, guid: a900c08743a94c328074df8bbe3eb63c,
         type: 3}
       propertyPath: m_Text
       value: All Platforms
+      objectReference: {fileID: 0}
+    - target: {fileID: 224745427211728820, guid: a900c08743a94c328074df8bbe3eb63c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.0673
       objectReference: {fileID: 0}
     - target: {fileID: 4774059059315698, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
       propertyPath: m_LocalScale.y
@@ -13507,10 +13343,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.6498856
       objectReference: {fileID: 0}
-    - target: {fileID: 224745427211728820, guid: a900c08743a94c328074df8bbe3eb63c,
+    - target: {fileID: 224849082003076088, guid: a900c08743a94c328074df8bbe3eb63c,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0673
+      value: 0.215
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a900c08743a94c328074df8bbe3eb63c, type: 3}
@@ -14382,12 +14218,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1756802793}
-  - component: {fileID: 1756802799}
-  - component: {fileID: 1756802798}
-  - component: {fileID: 1756802797}
-  - component: {fileID: 1756802796}
-  - component: {fileID: 1756802795}
-  - component: {fileID: 1756802794}
   m_Layer: 0
   m_Name: Toggle Pointers
   m_TagString: Untagged
@@ -14411,144 +14241,6 @@ Transform:
   m_Father: {fileID: 1608343315}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1756802794
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1756802792}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05bf489b30ac3e7419b1924c4a055b29, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1756802795
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1756802792}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d1fea68463e4e84b86c395b654f950d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  visualizationObject: {fileID: 0}
-  interactableObject: {fileID: 0}
-  autoFollowAtDistance: 0
-  autoFollowDistance: 2
-  autoFollowTransformTarget: {fileID: 0}
---- !u!114 &1756802796
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1756802792}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4684083f6dff4a1d8a790bccc354fcf4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  updateLinkedTransform: 0
-  moveLerpTime: 0.3
-  rotateLerpTime: 0.3
-  scaleLerpTime: 0
-  maintainScale: 1
-  smoothing: 1
-  lifetime: 0
-  referenceDirection: 1
-  minDistance: 0.4
-  maxDistance: 0.8
-  minViewDegrees: 0
-  maxViewDegrees: 15
-  aspectV: 1
-  ignoreAngleClamp: 0
-  ignoreDistanceClamp: 0
-  useFixedVerticalPosition: 1
-  fixedVerticalPosition: -0.4
-  orientToReferenceDirection: 0
---- !u!114 &1756802797
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1756802792}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  trackedTargetType: 0
-  trackedHandness: 3
-  trackedHandJoint: 2
-  transformOverride: {fileID: 0}
-  additionalOffset: {x: 0, y: 0, z: 0}
-  additionalRotation: {x: 0, y: 0, z: 0}
-  updateSolvers: 1
---- !u!114 &1756802798
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1756802792}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 984a6c5221e64b247a4f2bab25cdfdcb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OnRecordingStarted:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: set_material
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 2100000, guid: 635a27f13b7b26b4483bc1283d04803e,
-            type: 2}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Material, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  OnRecordingStopped:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: set_material
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 2100000, guid: 38a587e9218b3284485088c9925af61f,
-            type: 2}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Material, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
---- !u!114 &1756802799
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1756802792}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 210487fc9a02cd049bdd702b7cb8b977, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isHandMeshVisible: 1
-  isHandJointVisible: 1
 --- !u!1 &1763174137
 GameObject:
   m_ObjectHideFlags: 0
@@ -14992,11 +14684,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1608343315}
     m_Modifications:
-    - target: {fileID: 538639403742340272, guid: 9215a7c858170d74fb2257375d5feaf1,
-        type: 3}
-      propertyPath: m_Name
-      value: Backplate
-      objectReference: {fileID: 0}
     - target: {fileID: 586303850521236049, guid: 9215a7c858170d74fb2257375d5feaf1,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -15066,6 +14753,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.8295002
+      objectReference: {fileID: 0}
+    - target: {fileID: 538639403742340272, guid: 9215a7c858170d74fb2257375d5feaf1,
+        type: 3}
+      propertyPath: m_Name
+      value: Backplate
       objectReference: {fileID: 0}
     - target: {fileID: 3958481853798167113, guid: 9215a7c858170d74fb2257375d5feaf1,
         type: 3}
@@ -15235,6 +14927,7 @@ MonoBehaviour:
   oneHandRotationModeFar: 5
   releaseBehavior: 3
   constraintOnRotation: 2
+  useLocalSpaceForConstraint: 0
   constraintOnMovement: 0
   smoothingActive: 1
   smoothingAmountOneHandManip: 0.001
@@ -16319,20 +16012,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enabled: 1
   states: {fileID: 11400000, guid: e51893c8eb7938e4ba43985af43c0f72, type: 2}
-  InputAction:
-    id: 0
-    description: 
-    axisConstraint: 0
   InputActionId: 0
-  IsGlobal: 0
+  isGlobal: 0
   Dimensions: 2
-  StartDimensionIndex: 1
+  dimensionIndex: 0
+  startDimensionIndex: 1
   CanSelect: 1
   CanDeselect: 1
   VoiceCommand: Select
-  RequiresFocus: 1
+  voiceRequiresFocus: 1
   profiles:
   - Target: {fileID: 1057394252}
     Themes:
@@ -16570,7 +16259,7 @@ MonoBehaviour:
         m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
       Options: []
-  dimensionIndex: 0
+  enabledOnStart: 1
 --- !u!114 &2065359343
 MonoBehaviour:
   m_ObjectHideFlags: 0
