@@ -1,59 +1,106 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
 {
-    [RequireComponent(typeof(Orbital))]
-    public class DirectionalIndicator : MonoBehaviour
+    /// <summary>
+    /// This solver determines the position and orientation of an object as a directional indicator. 
+    /// From the point of reference of the SolverHandler Tracked Target, this indicator will orient towards the DirectionalTarget supplied.
+    /// If the Directional Target is deemed within view of our frame of reference, then all renderers under this Solver will be disabled. They will be enabled otherwise
+    /// </summary>
+    public class DirectionalIndicator : Solver
     {
-        // reference orbital
+        /// <summary>
+        /// The GameObject transform to point the indicator towards when this object is not in view. 
+        /// The frame of reference for viewing is defined by the Solver Handler Tracked Target Type
+        /// </summary>
+        public Transform DirectionalTarget;
 
-        public GameObject TrackedTarget;
+        /// <summary>
+        /// Multiplier factor to increase or decrease FOV range for testing if object is visible and thus turn off indicator
+        /// </summary>
+        [Min(0.1f)]
+        public float VisibilityScaleFactor = 1.25f;
 
-        //directionIndicatorDefaultRotation
+        [Tooltip("The offset from center to place the indicator. If frame of reference is the camera, then the object will be this distance from center of screen")]
+        [Min(0.0f)]
+        /// <summary>
+        /// The offset from center to place the indicator. If frame of reference is the camera, then the object will be this distance from center of screen
+        /// </summary>
+        public float ViewOffset = 0.3f;
 
-        // directionalIndicator?
+        private bool wasVisible = true;
+
+        protected override void Start()
+        {
+            base.Start();
+
+            SetVisible(IsVisible());
+        }
 
         private void Update()
         {
-            // should be visible?
-            // Calculate orientation
-        }
-
-        private bool IsTargetVisible()
-        {
-            // This will return true if the target's mesh is within the Main Camera's view frustums.
-            Vector3 targetViewportPosition = mainCamera.WorldToViewportPoint(gameObject.transform.position);
-            return (targetViewportPosition.x > VisibilitySafeFactor && targetViewportPosition.x < 1 - VisibilitySafeFactor &&
-                    targetViewportPosition.y > VisibilitySafeFactor && targetViewportPosition.y < 1 - VisibilitySafeFactor &&
-                    targetViewportPosition.z > 0);
-        }
-
-        private void GetDirectionIndicatorPositionAndRotation(Vector3 camToObjectDirection, Transform cameraTransform, out Vector3 position, out Quaternion rotation)
-        {
-            // Find position:
-            // Save the cursor transform position in a variable.
-            Vector3 origin = Cursor.transform.position;
-            // Project the camera to target direction onto the screen plane.
-            Vector3 cursorIndicatorDirection = Vector3.ProjectOnPlane(camToObjectDirection, -1 * cameraTransform.forward);
-            cursorIndicatorDirection.Normalize();
-
-            // If the direction is 0, set the direction to the right.
-            // This will only happen if the camera is facing directly away from the target.
-            if (cursorIndicatorDirection == Vector3.zero)
+            bool isVisible = IsVisible();
+            if (isVisible != wasVisible)
             {
-                cursorIndicatorDirection = cameraTransform.right;
+                SetVisible(isVisible);
+            }
+        }
+
+        private bool IsVisible()
+        {
+            if (DirectionalTarget == null || SolverHandler.TransformTarget == null)
+            {
+                return false;
             }
 
-            // The final position is translated from the center of the screen along this direction vector.
-            position = origin + cursorIndicatorDirection * MetersFromCursor;
+            return MathUtilities.IsInFOV(DirectionalTarget.position, SolverHandler.TransformTarget,
+                VisibilityScaleFactor * CameraCache.Main.fieldOfView, VisibilityScaleFactor * CameraCache.Main.GetHorizontalFieldOfViewDegrees(),
+                CameraCache.Main.nearClipPlane, CameraCache.Main.farClipPlane);
+        }
+
+        private void SetVisible(bool isVisible)
+        {
+            SolverHandler.UpdateSolvers = !isVisible;
+
+            foreach (var renderer in GetComponentsInChildren<Renderer>())
+            {
+                renderer.enabled = !isVisible;
+            }
+
+            wasVisible = isVisible;
+        }
+
+        /// <inheritdoc />
+        public override void SolverUpdate()
+        {
+            // This is the frame of reference to use when solving for the position of this.gameobject
+            // The frame of reference will likely be the main camera
+            var solverReferenceFrame = SolverHandler.TransformTarget;
+
+            Vector3 origin = solverReferenceFrame.position + solverReferenceFrame.forward;
+
+            Vector3 trackerToTargetDirection = (DirectionalTarget.position - solverReferenceFrame.position).normalized;
+
+            // Project the vector (from the frame of reference (SolverHandler target) to the Directional Target) onto the "viewable" plane
+            Vector3 indicatorDirection = Vector3.ProjectOnPlane(trackerToTargetDirection, -solverReferenceFrame.forward).normalized;
+
+            // If the our indicator direction is 0, set the direction to the right.
+            // This will only happen if the frame of reference (SolverHandler target) is facing directly away from the directional target.
+            if (indicatorDirection == Vector3.zero)
+            {
+                indicatorDirection = solverReferenceFrame.right;
+            }
+
+            // The final position is translated from the center of the frame of reference plane along the indicator direction vector.
+            GoalPosition = origin + indicatorDirection * ViewOffset;
 
             // Find the rotation from the facing direction to the target object.
-            rotation = Quaternion.LookRotation(cameraTransform.forward, cursorIndicatorDirection) * directionIndicatorDefaultRotation;
+            GoalRotation = Quaternion.LookRotation(solverReferenceFrame.forward, indicatorDirection);
         }
     }
-}
 }

@@ -481,5 +481,33 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             return (rotation * Vector3.forward).normalized;
         }
 
+        /// <summary>
+        /// Returns if a point lies within a frame of reference view as defined by arguments
+        /// </summary>
+        /// <remarks>
+        /// Field of view parameters are in degrees and plane distances are in meters 
+        /// </remarks>
+        public static bool IsInFOV(Vector3 testPosition, Transform frameOfReference, 
+            float verticalFOV, float horizontalFOV, 
+            float minPlaneDistance, float maxPlaneDistance)
+        {
+            Vector3 deltaPos = testPosition - frameOfReference.position;
+            Vector3 referenceDeltaPos = TransformDirectionFromTo(null, frameOfReference, deltaPos);
+
+            if (referenceDeltaPos.z < minPlaneDistance || referenceDeltaPos.z > maxPlaneDistance)
+            {
+                return false;
+            }
+
+            float verticalFovHalf = verticalFOV * 0.5f;
+            float horizontalFovHalf = horizontalFOV * 0.5f;
+
+            referenceDeltaPos = referenceDeltaPos.normalized;
+            float yaw = Mathf.Asin(referenceDeltaPos.x) * Mathf.Rad2Deg;
+            float pitch = Mathf.Asin(referenceDeltaPos.y) * Mathf.Rad2Deg;
+
+            return Mathf.Abs(yaw) < horizontalFovHalf && Mathf.Abs(pitch) < verticalFovHalf;
+        }
+
     }
 }
