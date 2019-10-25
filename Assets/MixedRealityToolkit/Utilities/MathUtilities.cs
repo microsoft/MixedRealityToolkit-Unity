@@ -49,10 +49,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// Retrieve angular measurement describing how large a sphere or circle appears from a given point of view.
         /// Takes an angle (at given point of view) and a distance and returns the actual diameter of the object.
         /// </summary>
+        public static float ScaleFromAngularSizeAndDistance(float angle, float distance)
+        {
+            float scale = 2.0f * distance * Mathf.Tan(angle * Mathf.Deg2Rad * 0.5f);            
+            return scale;
+        }
+
+        [System.Obsolete("Method obsolete. Use ScaleFromAngularSizeAndDistance instead")]
         public static float AngularScaleFromDistance(float angle, float distance)
         {
-            float angularScale = 2.0f * distance * Mathf.Tan(angle * Mathf.Deg2Rad * 0.5f);            
-            return angularScale;
+            return ScaleFromAngularSizeAndDistance(angle, distance);
         }
 
         /// <summary>

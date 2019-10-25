@@ -261,6 +261,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             CreateControllerModelFromPlatformSDK(interactionSourceState.source);
         }
 
+        /// <inheritdoc />
         protected override bool TryRenderControllerModel(Type controllerType, InputSourceType inputSourceType)
         {
             // Intercept this call if we are using the default driver provided models.
@@ -280,7 +281,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         private async void CreateControllerModelFromPlatformSDK(InteractionSource interactionSource)
         {
-            Debug.Log("Creating controller model from platform SDK");
+            Debug.Log("Trying to load controller model from platform SDK");
             byte[] fileBytes = null;
 
 #if WINDOWS_UWP
