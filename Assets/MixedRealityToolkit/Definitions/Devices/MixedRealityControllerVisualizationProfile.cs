@@ -129,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         [SerializeField]
-        private MixedRealityControllerVisualizationSetting[] controllerVisualizationSettings = new MixedRealityControllerVisualizationSetting[0];
+        private MixedRealityControllerVisualizationSetting[] controllerVisualizationSettings = Array.Empty<MixedRealityControllerVisualizationSetting>();
 
         /// <summary>
         /// The current list of controller visualization settings.

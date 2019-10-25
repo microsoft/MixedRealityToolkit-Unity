@@ -630,7 +630,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             // Use reflection to invoke a non-public method.
             var method = typeof(PressableButton).GetMethod("UpdateMovingVisualsPosition", BindingFlags.NonPublic | BindingFlags.Instance);
-            method.Invoke(button, new object[0]);
+            method.Invoke(button, System.Array.Empty<object>());
         }
 
 

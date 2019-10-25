@@ -584,7 +584,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             MethodInfo getInstalledSDKS = uwpReferences.GetMethod("GetInstalledSDKs", BindingFlags.Static | BindingFlags.Public);
             MethodInfo sdkVersionToString = uwpReferences.GetMethod("SdkVersionToString", BindingFlags.Static | BindingFlags.NonPublic);
 
-            IEnumerable<object> uwpSDKS = (IEnumerable<object>)getInstalledSDKS.Invoke(null, new object[0]);
+            IEnumerable<object> uwpSDKS = (IEnumerable<object>)getInstalledSDKS.Invoke(null, Array.Empty<object>());
 
             return uwpSDKS.Select(t => (Version)t.GetType().GetField("Version", BindingFlags.Instance | BindingFlags.Public).GetValue(t));
 #else

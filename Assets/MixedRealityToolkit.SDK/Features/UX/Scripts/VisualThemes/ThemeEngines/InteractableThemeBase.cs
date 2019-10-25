@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Types of component this Theme Engine will target on the initialized GameObject or related GameObjects
         /// </summary>
-        public Type[] Types { get; protected set; } = new Type[0];
+        public Type[] Types { get; protected set; } = Array.Empty<Type>();
 
         /// <summary>
         /// Name of Theme Engine

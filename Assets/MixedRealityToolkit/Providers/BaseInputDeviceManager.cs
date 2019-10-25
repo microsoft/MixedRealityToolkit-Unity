@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected MixedRealityInputSystemProfile InputSystemProfile => InputSystem?.InputSystemProfile;
 
         /// <inheritdoc />
-        public virtual IMixedRealityController[] GetActiveControllers() => new IMixedRealityController[0];
+        public virtual IMixedRealityController[] GetActiveControllers() => System.Array.Empty<IMixedRealityController>();
 
         /// <summary>
         /// Request an array of pointers for the controller type.
