@@ -233,6 +233,59 @@
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_GameObjectExtensions_ExportOBJAsync_" data-uid="Microsoft.MixedReality.Toolkit.GameObjectExtensions.ExportOBJAsync*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_GameObjectExtensions_ExportOBJAsync_GameObject_System_String_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.GameObjectExtensions.ExportOBJAsync(GameObject,System.String,System.Boolean)">ExportOBJAsync(GameObject, String, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Export mesh data of current GameObject, and children if enabled, to file provided in OBJ format</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task ExportOBJAsync(this GameObject root, string filePath, bool includeChildren = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">GameObject</span></td>
+        <td><span class="parametername">root</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">filePath</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">includeChildren</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_GameObjectExtensions_FindAncestorComponent_" data-uid="Microsoft.MixedReality.Toolkit.GameObjectExtensions.FindAncestorComponent*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_GameObjectExtensions_FindAncestorComponent__1_GameObject_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.GameObjectExtensions.FindAncestorComponent``1(GameObject,System.Boolean)">FindAncestorComponent&lt;T&gt;(GameObject, Boolean)</h4>
   <div class="markdown level1 summary"><p>Find the first component of type <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> in the ancestors of the specified game object.</p>
@@ -405,7 +458,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_GameObjectExtensions_SetChildrenActive_" data-uid="Microsoft.MixedReality.Toolkit.GameObjectExtensions.SetChildrenActive*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_GameObjectExtensions_SetChildrenActive_GameObject_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.GameObjectExtensions.SetChildrenActive(GameObject,System.Boolean)">SetChildrenActive(GameObject, Boolean)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Set all GameObject children active or inactive based on argument</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -424,15 +478,20 @@
       <tr>
         <td><span class="xref">GameObject</span></td>
         <td><span class="parametername">root</span></td>
-        <td></td>
+        <td><p>GameObject parent to traverse from</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">isActive</span></td>
-        <td></td>
+        <td><p>Indicates whether children GameObjects should be active or not</p>
+</td>
       </tr>
     </tbody>
   </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_GameObjectExtensions_SetChildrenActive_GameObject_System_Boolean__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Does not call SetActive on the top level GameObject, only its children</p>
+</div>
   
   
   <a id="Microsoft_MixedReality_Toolkit_GameObjectExtensions_SetLayerRecursively_" data-uid="Microsoft.MixedReality.Toolkit.GameObjectExtensions.SetLayerRecursively*"></a>
