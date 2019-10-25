@@ -260,6 +260,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     case "-x86":
                     case "-x64":
                     case "-arm":
+                    case "-arm64":
                         buildInfo.BuildPlatform = arguments[i].Substring(1);
                         break;
                     case "-debug":
