@@ -71,6 +71,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private static void ApplyARFoundationUWPCompileFix()
         {
 #if UNITY_2018
+
+            bool reloadLocked = EditorAssemblyReloadManager.LockReloadAssemblies;
+            if (reloadLocked)
+            {
+                EditorAssemblyReloadManager.LockReloadAssemblies = false;
+            }
+
             DirectoryInfo packageCache = GetPackageCache();
 
             if (packageCache.Exists)
@@ -142,7 +149,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                         asmDef.Save(arSubsystems.FullName);
                     }
                 }
+
             }
+
+            if (reloadLocked)
+            {
+                EditorAssemblyReloadManager.LockReloadAssemblies = true;
+            }
+
 #endif // UNITY_2018
         }
 

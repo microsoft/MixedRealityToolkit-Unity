@@ -171,7 +171,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             // We don't need stack traces on all our logs. Makes things a lot easier to read.
             Application.SetStackTraceLogType(LogType.Log, StackTraceLogType.None);
             Debug.Log($"Starting command line build for {EditorUserBuildSettings.activeBuildTarget}...");
-            //testtest EditorAssemblyReloadManager.LockReloadAssemblies = true;
+            EditorAssemblyReloadManager.LockReloadAssemblies = true;
 
             bool success;
             try
