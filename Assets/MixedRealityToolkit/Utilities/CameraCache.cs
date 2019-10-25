@@ -35,27 +35,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
                 if (mainCamera == null)
                 {
-                    Debug.LogWarning("No main camera found. The Mixed Reality Toolkit requires one camera in the scene to be tagged as \"MainCamera\".");
-                    Debug.Log("Searching for cameras in the scene.");
+                    Debug.Log("No main camera found. Searching for cameras in the scene.");
 
                     // If no main camera was found, try to determine one.
                     Camera[] cameras = GameObject.FindObjectsOfType<Camera>();
-                    switch (cameras.Length)
+                    if (cameras.Length == 0)
                     {
-                        case 0:
-                            Debug.LogWarning("No cameras found. Creating a \"MainCamera\".");
-                            mainCamera = new GameObject("Main Camera", typeof(Camera), typeof(AudioListener)) { tag = "MainCamera" }.GetComponent<Camera>();
-                            break;
-
-                        case 1:
-                            Debug.LogWarning("Camera found. Tagging the camera as \"MainCamera\".");
-                            cameras[0].tag = "MainCamera";
-                            mainCamera = cameras[0];
-                            break;
-
-                        default:
-                            Debug.LogError("More than one camera found. Please tag one of the cameras as \"MainCamera\".");
-                            break;
+                        Debug.LogWarning("No cameras found. Creating a \"MainCamera\".");
+                        mainCamera = new GameObject("Main Camera", typeof(Camera), typeof(AudioListener)) { tag = "MainCamera" }.GetComponent<Camera>();
+                    }
+                    else
+                    {
+                        Debug.LogWarning("The Mixed Reality Toolkit requires one camera in the scene to be tagged as \"MainCamera\". Please ensure the application's main camera is tagged.");
                     }
                 }
 
