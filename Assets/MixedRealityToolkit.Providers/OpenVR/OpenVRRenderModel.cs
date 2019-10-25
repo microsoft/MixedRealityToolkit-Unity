@@ -408,6 +408,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 
         private RenderModel_t MarshalRenderModel(System.IntPtr pRenderModel)
         {
+#if !ENABLE_DOTNET
             if ((System.Environment.OSVersion.Platform == System.PlatformID.MacOSX) ||
                 (System.Environment.OSVersion.Platform == System.PlatformID.Unix))
             {
@@ -417,6 +418,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
                 return model;
             }
             else
+#endif
             {
                 return (RenderModel_t)Marshal.PtrToStructure(pRenderModel, typeof(RenderModel_t));
             }
@@ -424,6 +426,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
 
         private RenderModel_TextureMap_t MarshalRenderModel_TextureMap(System.IntPtr pRenderModel)
         {
+#if !ENABLE_DOTNET
             if ((System.Environment.OSVersion.Platform == System.PlatformID.MacOSX) ||
                 (System.Environment.OSVersion.Platform == System.PlatformID.Unix))
             {
@@ -433,6 +436,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
                 return model;
             }
             else
+#endif
             {
                 return (RenderModel_TextureMap_t)Marshal.PtrToStructure(pRenderModel, typeof(RenderModel_TextureMap_t));
             }

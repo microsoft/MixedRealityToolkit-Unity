@@ -6265,7 +6265,11 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Headers
             {
                 VRToken = InitInternal2(ref peError, eApplicationType, pchStartupInfo);
             }
+#if !ENABLE_DOTNET
             catch (EntryPointNotFoundException)
+#else
+            catch (Exception)
+#endif
             {
                 VRToken = InitInternal(ref peError, eApplicationType);
             }
