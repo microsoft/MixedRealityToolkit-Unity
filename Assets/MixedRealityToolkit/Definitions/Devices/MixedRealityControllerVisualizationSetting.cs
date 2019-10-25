@@ -27,6 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             this.handedness = handedness;
             this.overrideModel = overrideModel;
             useDefaultModel = false;
+            defaultModelMaterial = null;
         }
 
         [SerializeField]
@@ -57,13 +58,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public Handedness Handedness => handedness;
 
         [SerializeField]
-        [Tooltip("Check to obtain controller models from the platform sdk. If left unchecked, the global models will be used.")]
+        [Tooltip("Check to obtain controller models from the platform SDK. If left unchecked, the global models will be used.")]
         private bool useDefaultModel;
 
         /// <summary>
-        /// Check to obtain controller models from the platform sdk. If left unchecked, the global models will be used.
+        /// Check to obtain controller models from the platform SDK. If left unchecked, the global models will be used.
         /// </summary>
         public bool UseDefaultModel => useDefaultModel;
+
+        [SerializeField]
+        [Tooltip("The default controller model material when loading platform SDK controller models.")]
+        private Material defaultModelMaterial;
+
+        /// <summary>
+        /// The default controller model material when loading platform SDK controller models. This value is used as a fallback if no controller definition exists with a custom material type.
+        /// </summary>
+        public Material DefaultModelMaterial => defaultModelMaterial;
 
         [SerializeField]
         [Tooltip("An override model to display for this specific controller.")]
