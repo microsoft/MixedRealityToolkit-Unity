@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.CameraSystem
 {
+    /// <summary>
+    /// Defines the configuration for a camera settings provider.
+    /// </summary>
     [Serializable]
     public struct MixedRealityCameraSettingsConfiguration : IMixedRealityServiceConfiguration
     {
