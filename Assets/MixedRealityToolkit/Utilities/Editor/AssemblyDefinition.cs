@@ -179,11 +179,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
             Debug.Log($"Saving {fileName}");
             File.WriteAllText(fileName, JsonUtility.ToJson(this, true));
-
-            if (readOnly)
-            {
-                file.IsReadOnly = true;
-            }
         }
     }
 }

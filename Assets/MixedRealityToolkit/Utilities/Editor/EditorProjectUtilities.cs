@@ -143,7 +143,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                         asmDef.Save(arSubsystems.FullName);
                     }
                 }
-
             }
 
 #endif // UNITY_2018
