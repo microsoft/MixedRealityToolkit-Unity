@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         private bool useDefaultProgressIndicator = true;
 
         [SerializeField]
-        [Tooltip("The default prefab used to show progress. Must include a scipt implementing IProgressIndicator.")]
+        [Tooltip("The default prefab used to show progress. Must include a script implementing IProgressIndicator.")]
         private GameObject defaultProgressIndicatorPrefab = null;
 
         [Header("Fade Options")]

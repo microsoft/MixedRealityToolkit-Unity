@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private string[] baseActionLabels = new string[0];
 
         // These are marked as static because this inspector will reset itself every refresh
-        // because it can be rendered as a sub-profile and thus OnEnable() is called everytime
+        // because it can be rendered as a sub-profile and thus OnEnable() is called every time
         private static int[] ruleActionIds = new int[0];
         private static string[] ruleActionLabels = new string[0];
 

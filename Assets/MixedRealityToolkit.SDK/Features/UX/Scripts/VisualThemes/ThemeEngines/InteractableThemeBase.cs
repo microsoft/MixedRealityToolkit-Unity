@@ -76,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Generates the default theme definition configuration for the current theme implementation
         /// </summary>
-        /// <returns>Default ThemeDefinition to initialize with the current theme engine implemenetation</returns>
+        /// <returns>Default ThemeDefinition to initialize with the current theme engine implementation</returns>
         public abstract ThemeDefinition GetDefaultThemeDefinition();
 
         private bool hasFirstState = false;
@@ -115,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Initialize current Theme Engine with given configuration and target the provided GameObject
         /// </summary>
         /// <param name="host">GameObject to target changes against</param>
-        /// <param name="definition">Configuration information to intialize Theme Engine</param>
+        /// <param name="definition">Configuration information to initialize Theme Engine</param>
         public virtual void Init(GameObject host, ThemeDefinition definition)
         {
             Host = host;

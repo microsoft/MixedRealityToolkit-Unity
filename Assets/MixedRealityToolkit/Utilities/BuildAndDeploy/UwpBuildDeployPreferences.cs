@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
     public static class UwpBuildDeployPreferences
     {
         /// <summary>
-        /// The mininum Windows SDK that must be present on the build machine in order
+        /// The minimum Windows SDK that must be present on the build machine in order
         /// for a build to be successful.
         /// </summary>
         /// <remarks>

@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
     /// <summary>
-    /// Unity has a strange bug when it tries to import a DLL with a ScriptedImporter and an asset that importer is targetting.
+    /// Unity has a strange bug when it tries to import a DLL with a ScriptedImporter and an asset that importer is targeting.
     /// The first time, it will not invoke the ScriptedImporter as it's just being imported itself; the second time the ScriptedImporter will be constructed but Unity thinks it fails.
     /// The third time, the import will succeed. This class will invoke the third time import for .gltf, .glb and .room extensions.
     /// </summary>

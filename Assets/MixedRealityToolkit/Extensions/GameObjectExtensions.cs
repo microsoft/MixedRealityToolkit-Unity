@@ -150,9 +150,9 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Destroys gameobject appropriately depending if in edit or playmode
+        /// Destroys GameObject appropriately depending if in edit or playmode
         /// </summary>
-        /// <param name="gameObject">gameobject to destroy</param>
+        /// <param name="gameObject">GameObject to destroy</param>
         /// <param name="t">time in seconds at which to destroy GameObject if applicable</param>
         public static void DestroyGameObject(GameObject gameObject, float t = 0.0f)
         {

@@ -67,13 +67,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 		}
 
 		[SerializeField]
-		[Tooltip("Number of lines visible in scroller, orthagonal to tiers.")]
+		[Tooltip("Number of lines visible in scroller. Orthogonal to tiers.")]
 		private int viewableArea = 4;
 
-		/// <summary>
-		/// Number of lines visible in scroller. orthagonal to <see cref="tiers"/>.
-		/// </summary>
-		public int ViewableArea
+        /// <summary>
+        /// Number of lines visible in scroller. Orthogonal to <see cref="tiers"/>.
+        /// </summary>
+        public int ViewableArea
 		{
 			get { return (viewableArea > 0) ? viewableArea : 1; }
 			set { viewableArea = value; }
@@ -94,12 +94,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 		}
 
 		[SerializeField]
-		[Tooltip("Seconds the user's pointer can intersect a controller item before it is considerd a drag.")]
+		[Tooltip("Seconds the user's pointer can intersect a controller item before it is considered a drag.")]
 		[Range(0.0f, 2.0f)]
 		private float dragTimeThreshold = 0.75f;
 
 		/// <summary>
-		/// Seconds the user's pointer can intersect a controller item before it is considerd a drag.
+		/// Seconds the user's pointer can intersect a controller item before it is considered a drag.
 		/// </summary>
 		public float DragTimeThreshold
 		{
@@ -232,13 +232,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 		}
 
 		[SerializeField]
-		[Tooltip("The amount of time (in seconds) the PaginationCurve will take to evaulaute.")]
+		[Tooltip("The amount of time (in seconds) the PaginationCurve will take to evaluate.")]
 		private float animationLength = 0.25f;
 
-		/// <summary>
-		/// The amount of time (in seconds) the <see cref="PaginationCurve"/> will take to evaulaute.
-		/// </summary>
-		public float AnimationLength
+        /// <summary>
+        /// The amount of time (in seconds) the <see cref="PaginationCurve"/> will take to evaluate.
+        /// </summary>
+        public float AnimationLength
 		{
 			get { return (animationLength < 0) ? 0 : animationLength; }
 			set { animationLength = value; }
@@ -490,10 +490,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 		// we need to know if the pointer was a touch so we can do the threshold test (dot product test)
 		private bool isTouched = false;
 
-		// The postion of the scollContainer before we do any updating to it
+		// The position of the scollContainer before we do any updating to it
 		private Vector3 initialScrollerPos;
 
-		// The new of the scollContainer before we've set the postion / finished the updateloop
+		// The new of the scollContainer before we've set the position / finished the updateloop
 		private Vector3 workingScrollerPos;
 
 		// A list of new child nodes that have new child renderers that need to be added to the clippingBox
@@ -504,7 +504,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
 		private IMixedRealityPointer currentPointer;
 
-		//The inital contact object for the list. this may not always be currentPointer.Result.CurrentPointerTarget
+		//The initial contact object for the list. this may not always be currentPointer.Result.CurrentPointerTarget
 		private GameObject initialFocusedObject;
 
 		// The point where the original PointerDown occurred
@@ -513,7 +513,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 		// The ray length of original pointer down
 		private float pointerHitDistance;
 
-		// This flag is set by PointerUp to prevent InputUp from continuing to propigate. e.g. Interactables
+		// This flag is set by PointerUp to prevent InputUp from continuing to propagate. e.g. Interactables
 		private bool shouldSwallowEvents = false;
 
 		#endregion scroll state variables
@@ -868,11 +868,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 			AddAllItemsToClippingObject();
 		}
 
-		#endregion ObjectCollection methods
+        #endregion ObjectCollection methods
 
-		#region Monobehavior Implementation
+        #region MonoBehaviour Implementation
 
-		private void OnEnable()
+        private void OnEnable()
 		{
 			//Register for global input events
 			if (CoreServices.InputSystem != null)
@@ -1055,15 +1055,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 			}
 		}
 
-		#endregion Monobehavior Implementation
+        #endregion MonoBehaviour Implementation
 
-		#region private methods
+        #region private methods
 
-		/// <summary>
-		/// When <see cref="UseOnPreRender"/>, the <see cref="ScrollingObjectCollection"/> subscribes to the <see cref="CameraEventRouter"/> call back for OnCameraPreRender
-		/// </summary>
-		/// <param name="router">The active <see cref="CameraEventRouter"/> on the camera.</param>
-		private void OnCameraPreRender(CameraEventRouter router)
+        /// <summary>
+        /// When <see cref="UseOnPreRender"/>, the <see cref="ScrollingObjectCollection"/> subscribes to the <see cref="CameraEventRouter"/> call back for OnCameraPreRender
+        /// </summary>
+        /// <param name="router">The active <see cref="CameraEventRouter"/> on the camera.</param>
+        private void OnCameraPreRender(CameraEventRouter router)
 		{
 			//clip any new items that may have shown up
 			if (nodesToClip.Count > 0)
@@ -1767,7 +1767,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 			}
 			else if (indexOfItem > numItemsPostView)
 			{
-				//its below the visable area
+				//its below the visible area
 				itemLoc = false;
 			}
 			return itemLoc;
@@ -2245,7 +2245,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 		{
 			if (shouldSwallowEvents)
 			{
-				//Prevents the handled event from PointerUp to continue propigating
+				//Prevents the handled event from PointerUp to continue propagating
 				eventData.Use();
 				shouldSwallowEvents = false;
 			}

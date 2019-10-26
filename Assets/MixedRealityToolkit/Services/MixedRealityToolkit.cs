@@ -1343,7 +1343,7 @@ namespace Microsoft.MixedReality.Toolkit
                     // These checks are only necessary in edit mode
                     if (!Application.isPlaying)
                     {
-                        // Clean the toolkit instances heirarchy in case instances were deleted.
+                        // Clean the toolkit instances hierarchy in case instances were deleted.
                         for (int i = toolkitInstances.Count - 1; i >= 0; i--)
                         {
                             if (toolkitInstances[i] == null)

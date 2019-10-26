@@ -302,7 +302,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private static int AddBoolKey(AnimationCurve curve, float time, bool value)
         {
             float fvalue = value ? 1.0f : 0.0f;
-            // Set tangents and weights such than the the input value is cut off and out tangent is constant.
+            // Set tangents and weights such than the input value is cut off and out tangent is constant.
             var keyframe = new Keyframe(time, fvalue, 0.0f, 0.0f, 0.0f, boolOutWeight);
             keyframe.weightedMode = WeightedMode.Both;
 
@@ -315,7 +315,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private static int AddBoolKeyFiltered(AnimationCurve curve, float time, bool value)
         {
             float fvalue = value ? 1.0f : 0.0f;
-            // Set tangents and weights such than the the input value is cut off and out tangent is constant.
+            // Set tangents and weights such than the input value is cut off and out tangent is constant.
             var keyframe = new Keyframe(time, fvalue, 0.0f, 0.0f, 0.0f, boolOutWeight);
             keyframe.weightedMode = WeightedMode.Both;
 

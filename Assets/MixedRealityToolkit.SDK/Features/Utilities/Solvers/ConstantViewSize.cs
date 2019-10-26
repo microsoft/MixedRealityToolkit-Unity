@@ -188,7 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         /// <summary>
-        /// Attempts to calculate the size of the bounds which contains all child renderers for attached gameobject. This information is used in the core solver calculations
+        /// Attempts to calculate the size of the bounds which contains all child renderers for attached GameObject. This information is used in the core solver calculations
         /// </summary>
         public void RecalculateBounds()
         {

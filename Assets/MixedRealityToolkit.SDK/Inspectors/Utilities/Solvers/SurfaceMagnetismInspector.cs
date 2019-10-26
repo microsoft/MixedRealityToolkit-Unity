@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             EditorGUILayout.PropertyField(magneticSurfacesProperty, true);
 
             // When raycast from the center of the GameObject, Raycast may hit one of the collider on the GameObject (or children)
-            // This results in the GameObject "magnetizes" against itself. Warn user if this possiblity exists
+            // This results in the GameObject "magnetizes" against itself. Warn user if this possibility exists
             var colliders = surfaceMagnetism.GetComponentsInChildren<Collider>();
             foreach (var collider in colliders)
             {

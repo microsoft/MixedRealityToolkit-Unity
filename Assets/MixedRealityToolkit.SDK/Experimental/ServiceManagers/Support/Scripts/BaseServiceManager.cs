@@ -226,9 +226,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         /// <summary>
         /// Initialize a service.
         /// </summary>
-        /// <typeparam name="T">The interface type for the service to be intialized.</typeparam>
+        /// <typeparam name="T">The interface type for the service to be initialized.</typeparam>
         /// <param name="concreteType">The concrete type of the service to initialize.</param>
-        /// <param name="supportedPlatforms">The platoform(s) on which the service is supported.</param>
+        /// <param name="supportedPlatforms">The platform(s) on which the service is supported.</param>
         /// <param name="args">Arguments to provide to the service class constructor.</param>
         protected virtual void Initialize<T>(Type concreteType, SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1), params object[] args) where T : IMixedRealityService
         {

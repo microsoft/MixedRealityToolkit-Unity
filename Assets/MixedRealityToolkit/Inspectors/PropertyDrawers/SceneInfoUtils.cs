@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static List<Tuple<Type, FieldInfo>> cachedComponentTypes = new List<Tuple<Type, FieldInfo>>();
 
         /// <summary>
-        /// Call this when you make a change to the build settings and need those changes to be reflected immedately.
+        /// Call this when you make a change to the build settings and need those changes to be reflected immediately.
         /// </summary>
         public static void RefreshCachedScenes()
         {
@@ -273,7 +273,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static void RefreshSceneInfoFieldsInScriptableObjects()
         {
             if (Time.frameCount == frameScriptableObjectsLastUpdated)
-            {   // Don't udpate more than once per frame
+            {   // Don't update more than once per frame
                 return;
             }
 

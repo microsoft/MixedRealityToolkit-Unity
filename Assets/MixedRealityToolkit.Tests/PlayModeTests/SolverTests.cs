@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Test adding solver dynamically at runtime to gameobject
+        /// Test adding solver dynamically at runtime to GameObject
         /// </summary>
         [UnityTest]
         public IEnumerator TestRuntimeInstantiation()
@@ -112,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Set solver handler to track hands
             testObjects.handler.TrackedTargetType = TrackedObjectType.HandJoint;
 
-            // Set and save revelant positions
+            // Set and save relevant positions
             Vector3 rightHandPos = Vector3.right * 20.0f;
             Vector3 leftHandPos = Vector3.right * -20.0f;
 
@@ -158,7 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return WaitForFrames(2);
 
-            // Instantiate our test gameobject with solver. 
+            // Instantiate our test GameObject with solver. 
             // Set layer to ignore raycast so solver doesn't raycast itself (i.e BoxCollider)
             var testObjects = InstantiateTestSolver<SurfaceMagnetism>();
             testObjects.target.layer = LayerMask.NameToLayer("Ignore Raycast");
@@ -215,7 +215,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var rightPost = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             rightPost.transform.position = Vector3.forward * 10.0f + Vector3.right * 10.0f;
 
-            // Instantiate our test gameobject with solver. 
+            // Instantiate our test GameObject with solver. 
             var testObjects = InstantiateTestSolver<InBetween>();
 
             testObjects.handler.TrackedTargetType = TrackedObjectType.CustomOverride;
@@ -246,7 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestHandConstraint()
         {
-            // Instantiate our test gameobject with solver.
+            // Instantiate our test GameObject with solver.
             var testObjects = InstantiateTestSolver<HandConstraint>();
             testObjects.handler.TrackedTargetType = TrackedObjectType.HandJoint;
             testObjects.handler.TrackedHandness = Handedness.Both;
@@ -289,7 +289,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestOverlap()
         {
-            // Instantiate our test gameobject with solver.
+            // Instantiate our test GameObject with solver.
             var testObjects = InstantiateTestSolver<Overlap>();
             testObjects.handler.TrackedTargetType = TrackedObjectType.HandJoint;
             var targetTransform = testObjects.target.transform;
@@ -349,7 +349,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Disable the old solver
             radialViewSolver.enabled = false;
 
-            // Add a another solver during runtime, give him a specifc location to check whether the new solver updates the target object.
+            // Add a another solver during runtime, give him a specific location to check whether the new solver updates the target object.
             Orbital orbitalSolver = AddSolverComponent<Orbital>(testObjects.target);
             orbitalSolver.WorldOffset = Vector3.zero;
             orbitalSolver.LocalOffset = Vector3.down * 2.0f;

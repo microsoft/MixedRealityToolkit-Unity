@@ -173,7 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
                 case DwellStateType.DwellCompleted:
                     break;
                 case DwellStateType.DwellCanceled:
-                    // this is a conditional state transition and can be overriden by the deriving class as per profile settings.
+                    // this is a conditional state transition and can be overridden by the deriving class as per profile settings.
                     if ((DateTime.UtcNow - focusExitTime) > dwellProfile.TimeToAllowDwellResume)
                     {
                         FillTimer = 0;
@@ -238,7 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Dwell
         }
 
         /// <summary>
-        /// Method that can be invoked if external factors (eg. alternate input modality  pre-emptively invoked the target) force the dwell action to prematurely end
+        /// Method that can be invoked if external factors (e.g. alternate input modality  preemptively invoked the target) force the dwell action to prematurely end
         /// </summary>
         public virtual void CancelDwell()
         {

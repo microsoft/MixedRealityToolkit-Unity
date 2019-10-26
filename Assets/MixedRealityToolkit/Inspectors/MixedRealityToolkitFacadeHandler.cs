@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
         private static short editorUpdateTicks;
         private const short EditorUpdateTickInterval = 15;
 
-        // While a scene save is occuring, facade creation is disabled
+        // While a scene save is occurring, facade creation is disabled
         // and currently present facades get deleted.
         private static bool sceneSaving = false;
 
