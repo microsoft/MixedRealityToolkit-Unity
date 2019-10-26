@@ -2413,6 +2413,11 @@ PrefabInstance:
       propertyPath: Events.Array.data[1].Settings.Array.data[0].EventValue.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4238929520169732924, guid: 64790b91b91094d49942373c4e83c237,
+        type: 3}
+      propertyPath: startDimensionIndex
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8495876841678131188, guid: 64790b91b91094d49942373c4e83c237,
         type: 3}
       propertyPath: m_IsActive
