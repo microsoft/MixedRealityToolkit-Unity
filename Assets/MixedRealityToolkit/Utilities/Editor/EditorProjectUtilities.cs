@@ -66,11 +66,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// build target.
         /// </summary>
         /// <remarks>
-        /// This method only executes on Unity 2018.x
+        /// This method only executes on Unity 2018.x.
         /// </remarks>
         private static void ApplyARFoundationUWPCompileFix()
         {
-#if UNITY_2018
+#if UNITY_2018 && UNITY_WSA && !ENABLE_IL2CPP
 
             bool reloadLocked = EditorAssemblyReloadManager.LockReloadAssemblies;
             if (reloadLocked)
@@ -156,7 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 EditorAssemblyReloadManager.LockReloadAssemblies = true;
             }
 
-#endif // UNITY_2018
+#endif // UNITY_2018 && UNITY_WSA && !ENABLE_IL2CPP
         }
 
         /// <summary>
