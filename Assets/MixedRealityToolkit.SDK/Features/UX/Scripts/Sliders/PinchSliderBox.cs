@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
+using static Microsoft.MixedReality.Toolkit.UI.PinchSlider;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
@@ -89,42 +90,45 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private Material defaultHandleMaterial = null;
         private bool quitting = false;
 
+        private const int PositiveIndex = 0;
+        private const int NegativeIndex = 1;
+
         private class SliderPair
         {
-            public PinchSlider PositiveSlider = null;
-            public PinchSlider NegativeSlider = null;
+            public PinchSlider[] Sliders = new PinchSlider[2];
 
             public float Value
             {
                 get
                 {
-                    return (PositiveSlider.SliderValue + NegativeSlider.SliderValue) * 0.5f;
+                    return (Sliders[PositiveIndex].SliderValue + 
+                            Sliders[NegativeIndex].SliderValue) * 0.5f;
                 }
             }
         }
 
         private class SliderPlane
         {
-            public PinchSlider.SliderAxis Axis = PinchSlider.SliderAxis.XAxis;
-            public SliderPair PositiveSliderPair = null;
-            public SliderPair NegativeSliderPair = null;
+            public SliderAxis Axis = SliderAxis.XAxis;
+            public SliderPair[] SliderPairs = new SliderPair[2];
 
             public SliderPair GetSliderPair(PinchSlider slider)
             {
-                if (slider == PositiveSliderPair.PositiveSlider ||
-                    slider == PositiveSliderPair.NegativeSlider)
+                if (slider == SliderPairs[PositiveIndex].Sliders[PositiveIndex] ||
+                    slider == SliderPairs[PositiveIndex].Sliders[NegativeIndex])
                 {
-                    return PositiveSliderPair;
+                    return SliderPairs[PositiveIndex];
                 }
                 else
                 {
-                    return NegativeSliderPair;
+                    return SliderPairs[NegativeIndex];
                 }
             }
         }
 
-        private List<PinchSlider> pinchSliders = new List<PinchSlider>();
-        private Dictionary<PinchSlider, SliderPlane> sliderPlanes = new Dictionary<PinchSlider, SliderPlane>();
+        private const int SliderPlaneCount = 3;
+        private SliderPlane[] sliderPlanes = new SliderPlane[SliderPlaneCount];
+        private Dictionary<PinchSlider, SliderPlane> sliderToPlane = new Dictionary<PinchSlider, SliderPlane>();
 
         #endregion
 
@@ -173,24 +177,26 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             DestroyHandles();
 
+            // Create a pivot object to contain the sliders and aide in non-uniform scaling. 
             pivot = new GameObject("ClippingBoxControlPivot").transform;
             pivot.position = transformScaleHandler.TargetTransform.position;
+            pivot.rotation = transformScaleHandler.TargetTransform.rotation;
             pivot.parent = transformScaleHandler.TargetTransform.parent;
             transformScaleHandler.TargetTransform.parent = pivot;
 
             if (showXAxisHandles)
             {
-                AddSliderPlane(PinchSlider.SliderAxis.XAxis);
+                sliderPlanes[(int)SliderAxis.XAxis] = AddSliderPlane(SliderAxis.XAxis);
             }
 
             if (ShowYAxisHandles)
             {
-                AddSliderPlane(PinchSlider.SliderAxis.YAxis);
+                sliderPlanes[(int)SliderAxis.YAxis] = AddSliderPlane(SliderAxis.YAxis);
             }
 
             if (ShowZAxisHandles)
             {
-                AddSliderPlane(PinchSlider.SliderAxis.ZAxis);
+                sliderPlanes[(int)SliderAxis.ZAxis] = AddSliderPlane(SliderAxis.ZAxis);
             }
         }
 
@@ -208,22 +214,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
 
                 Destroy(pivot.gameObject);
+                pivot = null;
             }
 
-            foreach (var slider in pinchSliders)
+            for (var i = 0; i < SliderPlaneCount; ++i)
             {
-                Destroy(slider.gameObject);
+                sliderPlanes[i] = null;
             }
 
-            pinchSliders.Clear();
-            sliderPlanes.Clear();
+            sliderToPlane.Clear();
         }
 
         #endregion
 
         #region Private Methods
 
-        private void AddSliderPlane(PinchSlider.SliderAxis axis)
+        private SliderPlane AddSliderPlane(SliderAxis axis)
         {
             var sliders = new PinchSlider[4];
             var globalDirection = 1.0f;
@@ -235,50 +241,44 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 for (var j = 0; j < 2; ++j)
                 {
                     sliders[i * 2 + j] = AddSlider(axis, globalDirection, localDirection);
-                    localDirection *= -1.0f;
+                    localDirection = -localDirection;
                 }
 
-                globalDirection *= -1.0f;
+                globalDirection = -globalDirection;
             }
-
-            pinchSliders.AddRange(sliders);
 
             var sliderPlane = new SliderPlane()
             {
                 Axis = axis,
-                PositiveSliderPair = new SliderPair()
+                SliderPairs = new SliderPair[]
                 {
-                    PositiveSlider = sliders[0],
-                    NegativeSlider = sliders[1]
-                },
-                NegativeSliderPair = new SliderPair()
-                {
-                    PositiveSlider = sliders[2],
-                    NegativeSlider = sliders[3]
-                },
+                    new SliderPair() { Sliders = new PinchSlider[] { sliders[0], sliders[1] } },
+                    new SliderPair() { Sliders = new PinchSlider[] { sliders[2], sliders[3] } }
+                }
             };
 
             foreach (var slider in sliders)
             {
-                sliderPlanes.Add(slider, sliderPlane);
+                sliderToPlane.Add(slider, sliderPlane);
             }
+
+            return sliderPlane;
         }
 
-        private PinchSlider AddSlider(PinchSlider.SliderAxis axis, float globalDirection, float localDirection)
+        private PinchSlider AddSlider(SliderAxis axis, float globalDirection, float localDirection)
         {
-            var axisIndex = (int)axis;
-            var targetTransform = transformScaleHandler.TargetTransform;
-
-            var slider = new GameObject($"Slider{axis}({globalDirection})({localDirection})").AddComponent<PinchSlider>();
-            slider.transform.parent = transform;
+            var slider = new GameObject($"Slider {axis} {globalDirection} {localDirection}").AddComponent<PinchSlider>();
+            slider.transform.parent = pivot;
 
             // Calculates a normal to the pinch slider axis to place the slider at.
-            var axisNormal = PinchSlider.GetSliderAxis((PinchSlider.SliderAxis)((axisIndex + 1) % 3));
+            var targetTransform = transformScaleHandler.TargetTransform;
+            var axisNormal = GetSliderAxis(GetNormalAxis(axis));
             var axisNormalHalfScale = Vector3.Dot(axisNormal, targetTransform.localScale) * 0.5f;
-            slider.transform.position = targetTransform.position - ((axisNormal * axisNormalHalfScale) * globalDirection);
+            slider.transform.position = targetTransform.position + (((targetTransform.rotation * axisNormal) * axisNormalHalfScale) * globalDirection);
             slider.transform.rotation = targetTransform.rotation;
 
             slider.SliderAxisType = axis;
+            var axisIndex = (int)axis;
             slider.SliderStartDistance = transformScaleHandler.ScaleMinimumVector[axisIndex] * 0.5f * localDirection;
             slider.SliderEndDistance = transformScaleHandler.ScaleMaximumVector[axisIndex] * 0.5f * localDirection;
 
@@ -312,9 +312,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return slider;
         }
 
+        private SliderAxis GetNormalAxis(SliderAxis axis)
+        {
+            return (SliderAxis)(((int)axis + 1) % SliderPlaneCount);
+        }
+
         private GameObject CreateDefaultThumb()
         {
             var thumb = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            thumb.name = "Thumb";
             thumb.AddComponent<NearInteractionGrabbable>();
             thumb.GetComponent<Renderer>().material = defaultHandleMaterial;
             thumb.GetComponent<SphereCollider>().radius *= 3.0f;
@@ -325,7 +331,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void OnSlideValueUpdated(SliderEventData data)
         {
-            var sliderPlane = sliderPlanes[data.Slider];
+            var sliderPlane = sliderToPlane[data.Slider];
             var sliderPair = sliderPlane.GetSliderPair(data.Slider);
 
             var axisIndex = (int)sliderPlane.Axis;
@@ -336,27 +342,55 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             // Update scale.
             var scale = targetTransform.localScale;
-            var axisScale = (sliderPair.Value * scaleRange + scaleMin);
-            scale[axisIndex] = axisScale;
+            scale[axisIndex] = (sliderPair.Value * scaleRange + scaleMin);
             targetTransform.localScale = scale;
 
             // Update position.
             var position = targetTransform.localPosition;
-            position[axisIndex] = ((sliderPair.PositiveSlider.SliderValue * scaleRange + scaleMin) * 0.25f) -
-                                  ((sliderPair.NegativeSlider.SliderValue * scaleRange + scaleMin) * 0.25f);
+            position[axisIndex] = ((sliderPair.Sliders[PositiveIndex].SliderValue * scaleRange + scaleMin) * 0.25f) -
+                                  ((sliderPair.Sliders[NegativeIndex].SliderValue * scaleRange + scaleMin) * 0.25f);
             targetTransform.localPosition = position;
 
             // Update the opposite slider pair.
-            var oppositeSliderPair = (sliderPair == sliderPlane.PositiveSliderPair) ? sliderPlane.NegativeSliderPair : sliderPlane.PositiveSliderPair;
-
-            if (oppositeSliderPair.PositiveSlider.SliderValue != sliderPair.PositiveSlider.SliderValue)
+            var oppositeSliderPair = (sliderPair == sliderPlane.SliderPairs[PositiveIndex]) ? sliderPlane.SliderPairs[NegativeIndex] : 
+                                                                                              sliderPlane.SliderPairs[PositiveIndex];
+            for (var i = 0; i < 2; ++i)
             {
-                oppositeSliderPair.PositiveSlider.SliderValue = sliderPair.PositiveSlider.SliderValue;
+                if (oppositeSliderPair.Sliders[i].SliderValue != sliderPair.Sliders[i].SliderValue)
+                {
+                    oppositeSliderPair.Sliders[i].SliderValue = sliderPair.Sliders[i].SliderValue;
+                }
             }
 
-            if (oppositeSliderPair.NegativeSlider.SliderValue != sliderPair.NegativeSlider.SliderValue)
+            // Update the position of sliders on the modified plane.
+            var copanarSliderPlane = sliderPlanes[(axisIndex + 2) % SliderPlaneCount];
+
+            if (copanarSliderPlane != null)
             {
-                oppositeSliderPair.NegativeSlider.SliderValue = sliderPair.NegativeSlider.SliderValue;
+                var axisNormal = GetSliderAxis(GetNormalAxis(copanarSliderPlane.Axis));
+                var axisNormalInverse = axisNormal;
+
+                for (var i = 0; i < 3; ++i)
+                {
+                    axisNormalInverse[i] = axisNormalInverse[i] == 1.0f ? 0.0f : 1.0f;
+                }
+
+                var axisNormalHalfScale = Vector3.Dot(axisNormal, targetTransform.localScale) * 0.5f;
+                var globalDirection = 1.0f;
+
+                for (var i = 0; i < 2; ++i)
+                {
+                    for (var j = 0; j < 2; ++j)
+                    {
+                        var slider = copanarSliderPlane.SliderPairs[i].Sliders[j];
+                        slider.transform.position = targetTransform.position + (((targetTransform.rotation * axisNormal) * axisNormalHalfScale) * globalDirection);
+
+                        // Remove any translation due to scale.
+                        slider.transform.localPosition -= Vector3.Scale(slider.transform.localPosition, axisNormalInverse);
+                    }
+
+                    globalDirection = -globalDirection;
+                }
             }
         }
 
