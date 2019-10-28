@@ -190,12 +190,12 @@ LineRenderer:
       key0: {r: 1, g: 1, b: 1, a: 0}
       key1: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 1}
-      key3: {r: 0, g: 0, b: 0, a: 0}
+      key3: {r: 0, g: 0, b: 0, a: 0.49803922}
       key4: {r: 0, g: 0, b: 0, a: 0}
-      key5: {r: 0, g: 0, b: 0, a: 1}
-      key6: {r: 0, g: 0, b: 0, a: 1}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0.78431374}
       key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 42020
+      ctime0: 32768
       ctime1: 65535
       ctime2: 0
       ctime3: 0
@@ -204,16 +204,16 @@ LineRenderer:
       ctime6: 0
       ctime7: 0
       atime0: 0
-      atime1: 6361
-      atime2: 15806
-      atime3: 24479
-      atime4: 39514
-      atime5: 57632
-      atime6: 65535
-      atime7: 0
+      atime1: 7864
+      atime2: 10486
+      atime3: 13107
+      atime4: 19661
+      atime5: 42598
+      atime6: 55705
+      atime7: 65535
       m_Mode: 0
       m_NumColorKeys: 2
-      m_NumAlphaKeys: 7
+      m_NumAlphaKeys: 8
     numCornerVertices: 8
     numCapVertices: 8
     alignment: 0
@@ -343,12 +343,12 @@ MonoBehaviour:
     key0: {r: 1, g: 1, b: 1, a: 0}
     key1: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 1}
-    key3: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0.49803922}
     key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 1}
-    key6: {r: 0, g: 0, b: 0, a: 1}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0.78431374}
     key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 42020
+    ctime0: 32768
     ctime1: 65535
     ctime2: 0
     ctime3: 0
@@ -357,16 +357,16 @@ MonoBehaviour:
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 6361
-    atime2: 15806
-    atime3: 24479
-    atime4: 39514
-    atime5: 57632
-    atime6: 65535
-    atime7: 0
+    atime1: 7864
+    atime2: 10486
+    atime3: 13107
+    atime4: 19661
+    atime5: 42598
+    atime6: 55705
+    atime7: 65535
     m_Mode: 0
     m_NumColorKeys: 2
-    m_NumAlphaKeys: 7
+    m_NumAlphaKeys: 8
   lineWidth:
     serializedVersion: 2
     m_Curve:
@@ -395,7 +395,7 @@ MonoBehaviour:
   colorOffset: 0
   widthOffset: 0
   stepMode: 0
-  lineStepCount: 24
+  lineStepCount: 36
   pointDistributionMode: 1
   customPointDistributionLength: 0.1
   customPointDistributionCurve:

@@ -236,7 +236,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             {
                 case ProgressIndicatorState.Open:
                 case ProgressIndicatorState.Opening:
-                    // If it's already open / opening, don't botheer to open again
+                    // If it's already open / opening, don't bother to open again
                     break;
 
                 case ProgressIndicatorState.Closed:

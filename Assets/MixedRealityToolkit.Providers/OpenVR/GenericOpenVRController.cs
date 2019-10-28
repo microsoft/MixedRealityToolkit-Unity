@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Input.UnityInput;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
@@ -22,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             nodeType = controllerHandedness == Handedness.Left ? XRNode.LeftHand : XRNode.RightHand;
         }
 
-        private XRNode nodeType;
+        private readonly XRNode nodeType;
 
         /// <summary>
         /// The current source state reading for this OpenVR Controller.
@@ -30,9 +31,14 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         public XRNodeState LastXrNodeStateReading { get; protected set; }
 
         /// <summary>
-        /// Tracking states returned from the InputTracking state tracking manager
+        /// Tracking states returned from the InputTracking state tracking manager.
         /// </summary>
         private readonly List<XRNodeState> nodeStates = new List<XRNodeState>();
+
+        /// <summary>
+        /// A private static list of previously loaded controller models.
+        /// </summary>
+        private static readonly Dictionary<Handedness, GameObject> controllerDictionary = new Dictionary<Handedness, GameObject>(0);
 
         public override MixedRealityInteractionMapping[] DefaultLeftHandedInteractions => new[]
         {
@@ -201,24 +207,88 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
             // Raise input system events if it is enabled.
             if (lastState != TrackingState)
             {
-                InputSystem?.RaiseSourceTrackingStateChanged(InputSource, this, TrackingState);
+                CoreServices.InputSystem?.RaiseSourceTrackingStateChanged(InputSource, this, TrackingState);
             }
 
             if (TrackingState == TrackingState.Tracked && LastControllerPose != CurrentControllerPose)
             {
                 if (IsPositionAvailable && IsRotationAvailable)
                 {
-                    InputSystem?.RaiseSourcePoseChanged(InputSource, this, CurrentControllerPose);
+                    CoreServices.InputSystem?.RaiseSourcePoseChanged(InputSource, this, CurrentControllerPose);
                 }
                 else if (IsPositionAvailable && !IsRotationAvailable)
                 {
-                    InputSystem?.RaiseSourcePositionChanged(InputSource, this, CurrentControllerPosition);
+                    CoreServices.InputSystem?.RaiseSourcePositionChanged(InputSource, this, CurrentControllerPosition);
                 }
                 else if (!IsPositionAvailable && IsRotationAvailable)
                 {
-                    InputSystem?.RaiseSourceRotationChanged(InputSource, this, CurrentControllerRotation);
+                    CoreServices.InputSystem?.RaiseSourceRotationChanged(InputSource, this, CurrentControllerRotation);
                 }
             }
         }
+
+        #region Controller model functions
+
+        /// <inheritdoc />
+        protected override bool TryRenderControllerModel(Type controllerType, InputSourceType inputSourceType)
+        {
+            MixedRealityControllerVisualizationProfile visualizationProfile = GetControllerVisualizationProfile();
+
+            // Intercept this call if we are using the default driver provided models.
+            if (visualizationProfile == null ||
+                !visualizationProfile.GetUseDefaultModelsOverride(GetType(), ControllerHandedness))
+            {
+                return base.TryRenderControllerModel(controllerType, inputSourceType);
+            }
+            else if (controllerDictionary.TryGetValue(ControllerHandedness, out GameObject controllerModel))
+            {
+                TryAddControllerModelToSceneHierarchy(controllerModel);
+                controllerModel.SetActive(true);
+                return true;
+            }
+
+            Debug.Log("Trying to load controller model from platform SDK");
+
+            GameObject controllerModelGameObject = new GameObject($"{ControllerHandedness} OpenVR Controller");
+
+            bool failedToObtainControllerModel;
+
+            var visualizationType = visualizationProfile.GetControllerVisualizationTypeOverride(GetType(), ControllerHandedness);
+            if (visualizationType != null)
+            {
+                // Set the platform controller model to not be destroyed when the source is lost. It'll be disabled instead,
+                // and re-enabled when the same controller is re-detected.
+                if (controllerModelGameObject.AddComponent(visualizationType.Type) is IMixedRealityControllerPoseSynchronizer visualizer)
+                {
+                    visualizer.DestroyOnSourceLost = false;
+                }
+
+                OpenVRRenderModel openVRRenderModel = controllerModelGameObject.AddComponent<OpenVRRenderModel>();
+                openVRRenderModel.shader = visualizationProfile.GetDefaultControllerModelMaterialOverride(GetType(), ControllerHandedness).shader;
+                failedToObtainControllerModel = !openVRRenderModel.LoadModel(ControllerHandedness);
+
+                if (!failedToObtainControllerModel)
+                {
+                    TryAddControllerModelToSceneHierarchy(controllerModelGameObject);
+                    controllerDictionary.Add(ControllerHandedness, controllerModelGameObject);
+                }
+            }
+            else
+            {
+                Debug.LogError("Controller visualization type not defined for controller visualization profile");
+                failedToObtainControllerModel = true;
+            }
+
+            if (failedToObtainControllerModel)
+            {
+                Debug.LogWarning("Failed to create controller model from driver, defaulting to BaseController behavior");
+                UnityEngine.Object.Destroy(controllerModelGameObject);
+                return base.TryRenderControllerModel(GetType(), InputSourceType.Controller);
+            }
+
+            return true;
+        }
+
+        #endregion Controller model functions
     }
 }

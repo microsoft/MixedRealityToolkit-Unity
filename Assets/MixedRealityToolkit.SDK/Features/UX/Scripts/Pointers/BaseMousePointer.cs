@@ -169,7 +169,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 RayStabilizer = null;
             }
 
-            foreach (var inputSource in InputSystem.DetectedInputSources)
+            foreach (var inputSource in CoreServices.InputSystem.DetectedInputSources)
             {
                 if (inputSource.SourceId == Controller.InputSource.SourceId)
                 {

@@ -44,7 +44,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Toggles whether the primitive will use the Camera OnPreRender event.
         /// </summary>
-        /// <remarks>This is especially helpful if you're trying to clip dynamically created objects that may be added to the scene after LateUpdate such as OnWillRender</remarks>
+        /// <remarks>
+        /// This is especially helpful if you're trying to clip dynamically created objects that may be added to the scene after LateUpdate such as OnWillRender 
+        /// </remarks>
         public bool UseOnPreRender
         {
             get { return useOnPreRender; }

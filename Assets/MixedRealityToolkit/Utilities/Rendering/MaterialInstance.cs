@@ -264,7 +264,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
             {
                 if (source[i] != null)
                 {
-                    Debug.Assert(!IsInstanceMaterial(source[i]), "A material which is already instanced was instanced multiple times.");
+                    Debug.Assert(!IsInstanceMaterial(source[i]), "A material which is already instanced was instanced multiple times." + source[i].name);
 
                     output[i] = new Material(source[i]);
                     output[i].name += instancePostfix;

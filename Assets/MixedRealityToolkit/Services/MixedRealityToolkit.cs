@@ -30,11 +30,11 @@ namespace Microsoft.MixedReality.Toolkit
     [DisallowMultipleComponent]
     public class MixedRealityToolkit : MonoBehaviour, IMixedRealityServiceRegistrar
     {
-#region Mixed Reality Toolkit Profile configuration
-
         private static bool isInitializing = false;
         private static bool isApplicationQuitting = false;
         private static bool internalShutdown = false;
+
+#region Mixed Reality Toolkit Profile configuration
 
         /// <summary>
         /// Checks if there is a valid instance of the MixedRealityToolkit, then checks if there is there a valid Active Profile.
@@ -783,7 +783,6 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 serviceInstance.Initialize();
             }
-
             return true;
         }
 
@@ -977,9 +976,9 @@ namespace Microsoft.MixedReality.Toolkit
             return true;
         }
 
-        #endregion Multiple Service Management
+#endregion Multiple Service Management
 
-        #region Service Utilities
+#region Service Utilities
 
         /// <summary>
         /// Generic function used to interrogate the Mixed Reality Toolkit active system registry for the existence of a core system.
@@ -1275,7 +1274,7 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
-        #endregion Core System Accessors
+#endregion Core System Accessors
 
 #region Application Event Listeners
         /// <summary>
@@ -1344,7 +1343,7 @@ namespace Microsoft.MixedReality.Toolkit
                     // These checks are only necessary in edit mode
                     if (!Application.isPlaying)
                     {
-                        // Clean the toolkit instances heirarchy in case instances were deleted.
+                        // Clean the toolkit instances hierarchy in case instances were deleted.
                         for (int i = toolkitInstances.Count - 1; i >= 0; i--)
                         {
                             if (toolkitInstances[i] == null)
@@ -1390,6 +1389,6 @@ namespace Microsoft.MixedReality.Toolkit
         }
 #endif // UNITY_EDITOR
 
-        #endregion
+#endregion
     }
 }

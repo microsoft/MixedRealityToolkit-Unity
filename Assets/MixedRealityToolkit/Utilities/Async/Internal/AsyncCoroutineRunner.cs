@@ -93,7 +93,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     instance.transform.parent = null;
                 }
 
+#if !UNITY_EDITOR
                 DontDestroyOnLoad(instance);
+#endif
+
                 return instance;
             }
         }

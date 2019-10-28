@@ -337,6 +337,19 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
+        /// Calculates how much scale is required for this Bounds to match another Bounds.
+        /// </summary>
+        /// <param name="otherBounds">Object representation to be scaled to</param>
+        /// <param name="padding">padding multiplied into another bounds</param>
+        /// <returns>Scale represented as a Vector3 </returns>
+        public static Vector3 GetScaleToMatchBounds(this Bounds bounds, Bounds otherBounds, Vector3 padding = default(Vector3))
+        {
+            Vector3 szA = otherBounds.size + new Vector3(otherBounds.size.x * padding.x, otherBounds.size.y * padding.y, otherBounds.size.z * padding.z);
+            Vector3 szB = bounds.size;
+            return new Vector3(szA.x / szB.x, szA.y / szB.y, szA.z / szB.z);
+        }
+
+        /// <summary>
         /// Method to get bounding box points using Collider method.
         /// </summary>
         /// <param name="target">gameObject that boundingBox bounds.</param>

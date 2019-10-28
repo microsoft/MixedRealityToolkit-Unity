@@ -456,7 +456,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 int sceneIndex;
                 if (!RuntimeSceneUtils.FindScene(sceneName, out scene, out sceneIndex))
                 {
-                    Debug.LogError("Can't load invalid scene " + sceneName);
+                    Debug.LogError("Can't load invalid scene " + sceneName + " - make sure the scene name is spelled correctly and that you have added the scene to your MixedRealitySceneSystem profile's content scenes array.");
                 }
                 else
                 {
@@ -588,7 +588,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                 int sceneIndex;
                 if (!RuntimeSceneUtils.FindScene(sceneName, out scene, out sceneIndex))
                 {
-                    Debug.LogError("Can't unload invalid scene " + sceneName);
+                    Debug.LogError("Can't unload invalid scene " + sceneName + " - make sure the scene name is spelled correctly and that you have added the scene to your MixedRealitySceneSystem profile's content scenes array.");
                 }
                 else
                 {
@@ -740,7 +740,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                         break;
 
                     default:
-                        // Don't announce other types of scenes invidually
+                        // Don't announce other types of scenes individually
                         break;
                 }
             }
@@ -774,7 +774,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                         break;
 
                     default:
-                        // Don't announce other types of scenes invidually
+                        // Don't announce other types of scenes individually
                         break;
                 }
             }
@@ -808,7 +808,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                         break;
 
                     default:
-                        // Don't announce other types of scenes invidually
+                        // Don't announce other types of scenes individually
                         break;
                 }
             }
