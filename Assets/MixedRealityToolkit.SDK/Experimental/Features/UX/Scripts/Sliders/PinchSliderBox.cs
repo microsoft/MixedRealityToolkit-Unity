@@ -2,82 +2,97 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 using static Microsoft.MixedReality.Toolkit.UI.PinchSlider;
 
-namespace Microsoft.MixedReality.Toolkit.UI
+namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
     /// <summary>
-    /// TODO
+    /// Manages and creates sliders to allow for non-uniform scaling of a box along multiple axes.
+    /// The [TransformScaleHandler](xref:Microsoft.MixedReality.Toolkit.UI.TransformScaleHandler) is 
+    /// used to control the target of the scale and scale constraints.
     /// </summary>
     [RequireComponent(typeof(TransformScaleHandler))]
     public class PinchSliderBox : MonoBehaviour
     {
         #region Serialized Fields and Properties
 
-        [SerializeField, Tooltip("TODO")]
-        private bool showXAxisHandles = true;
+        [Experimental, SerializeField, Tooltip("Should sliders be auto-created when this component is enabled?")]
+        private bool createSlidersOnEnable = true;
 
         /// <summary>
-        /// TODO
+        /// Should sliders be auto-created when this component is enabled?
         /// </summary>
-        public bool ShowXAxisHandles
+        public bool CreateSlidersOnEnable
         {
-            get => showXAxisHandles;
+            get => createSlidersOnEnable;
+            set => createSlidersOnEnable = value;
+        }
+
+        [SerializeField, Tooltip("Should sliders be created for manipulating scale on the 'X' axis?")]
+        private bool showXAxisSliders = true;
+
+        /// <summary>
+        /// Should sliders be created for manipulating scale on the 'X' axis?
+        /// </summary>
+        public bool ShowXAxisSliders
+        {
+            get => showXAxisSliders;
             set
             {
-                showXAxisHandles = value;
-                CreateHandles();
+                showXAxisSliders = value;
+                CreateSliders();
             }
         }
 
-        [SerializeField, Tooltip("TODO")]
-        private bool showYAxisHandles = true;
+        [SerializeField, Tooltip("Should sliders be created for manipulating scale on the 'Y' axis?")]
+        private bool showYAxisSliders = true;
 
         /// <summary>
-        /// TODO
+        /// Should sliders be created for manipulating scale on the 'Y' axis?
         /// </summary>
-        public bool ShowYAxisHandles
+        public bool ShowYAxisSliders
         {
-            get => showYAxisHandles;
+            get => showYAxisSliders;
             set
             {
-                showYAxisHandles = value;
-                CreateHandles();
+                showYAxisSliders = value;
+                CreateSliders();
             }
         }
 
-        [SerializeField, Tooltip("TODO")]
-        private bool showZAxisHandles = true;
+        [SerializeField, Tooltip("Should sliders be created for manipulating scale on the 'Z' axis?")]
+        private bool showZAxisSliders = true;
 
         /// <summary>
-        /// TODO
+        /// Should sliders be created for manipulating scale on the 'Z' axis?
         /// </summary>
-        public bool ShowZAxisHandles
+        public bool ShowZAxisSliders
         {
-            get => showZAxisHandles;
+            get => showZAxisSliders;
             set
             {
-                showZAxisHandles = value;
-                CreateHandles();
+                showZAxisSliders = value;
+                CreateSliders();
             }
         }
 
-        [SerializeField, Tooltip("TODO")]
-        private GameObject handlePrefab = null;
+        [SerializeField, Tooltip("The prefab to spawn for slider thumb visualization.")]
+        private GameObject thumbPrefab = null;
 
         /// <summary>
-        /// TODO
+        /// The prefab to spawn for slider thumb visualization.
         /// </summary>
-        public GameObject HandlePrefab
+        public GameObject ThumbPrefab
         {
-            get => handlePrefab;
+            get => thumbPrefab;
             set
             {
-                handlePrefab = value;
-                CreateHandles();
+                thumbPrefab = value;
+                CreateSliders();
             }
         }
 
@@ -87,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private TransformScaleHandler transformScaleHandler = null;
         private Transform pivot = null;
-        private Material defaultHandleMaterial = null;
+        private Material defaultThumbMaterial = null;
         private bool quitting = false;
 
         private const int PositiveIndex = 0;
@@ -140,20 +155,23 @@ namespace Microsoft.MixedReality.Toolkit.UI
             transformScaleHandler = gameObject.EnsureComponent<TransformScaleHandler>();
             transformScaleHandler.Start();
 
-            if (handlePrefab == null)
+            if (thumbPrefab == null)
             {
-                defaultHandleMaterial = new Material(StandardShaderUtility.MrtkStandardShader);
+                defaultThumbMaterial = new Material(StandardShaderUtility.MrtkStandardShader);
             }
         }
 
         private void OnDestroy()
         {
-            Destroy(defaultHandleMaterial);
+            Destroy(defaultThumbMaterial);
         }
 
         private void OnEnable()
         {
-            CreateHandles();
+            if (createSlidersOnEnable)
+            {
+                CreateSliders();
+            }
         }
 
         private void OnDisable()
@@ -171,37 +189,39 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #region Public Methods
 
         /// <summary>
-        /// TODO
+        /// Creates sliders for each requested axis of the box. A pivot object is also created and 
+        /// made the parent of the TransformScaleHandler TargetTransform.
         /// </summary>
-        public void CreateHandles()
+        public void CreateSliders()
         {
             DestroyHandles();
 
             // Create a pivot object to contain the sliders and aide in non-uniform scaling. 
-            pivot = new GameObject("ClippingBoxControlPivot").transform;
+            pivot = new GameObject($"{nameof(PinchSliderBox)}Pivot").transform;
             pivot.position = transformScaleHandler.TargetTransform.position;
             pivot.rotation = transformScaleHandler.TargetTransform.rotation;
             pivot.parent = transformScaleHandler.TargetTransform.parent;
             transformScaleHandler.TargetTransform.parent = pivot;
 
-            if (showXAxisHandles)
+            if (showXAxisSliders)
             {
                 sliderPlanes[(int)SliderAxis.XAxis] = AddSliderPlane(SliderAxis.XAxis);
             }
 
-            if (ShowYAxisHandles)
+            if (showYAxisSliders)
             {
                 sliderPlanes[(int)SliderAxis.YAxis] = AddSliderPlane(SliderAxis.YAxis);
             }
 
-            if (ShowZAxisHandles)
+            if (showZAxisSliders)
             {
                 sliderPlanes[(int)SliderAxis.ZAxis] = AddSliderPlane(SliderAxis.ZAxis);
             }
         }
 
         /// <summary>
-        /// TODO
+        /// Destroys all sliders created with CreateSliders and restores the TransformScaleHandler's 
+        /// TargetTransform's parent.
         /// </summary>
         public void DestroyHandles()
         {
@@ -272,9 +292,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             // Calculates a normal to the pinch slider axis to place the slider at.
             var targetTransform = transformScaleHandler.TargetTransform;
-            var axisNormal = GetSliderAxis(GetNormalAxis(axis));
-            var axisNormalHalfScale = Vector3.Dot(axisNormal, targetTransform.localScale) * 0.5f;
-            slider.transform.position = targetTransform.position + (((targetTransform.rotation * axisNormal) * axisNormalHalfScale) * globalDirection);
+            var axisNormal = GetSliderAxis(CalculateAxisNormal(axis));
+            var axisNormalHalfScale = CalculateAxisNormalHalfScale(targetTransform, axisNormal);
+            slider.transform.position = CalculateSliderPosition(targetTransform, axisNormal, axisNormalHalfScale, globalDirection);
             slider.transform.rotation = targetTransform.rotation;
 
             slider.SliderAxisType = axis;
@@ -284,9 +304,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             GameObject thumb;
 
-            if (handlePrefab != null)
+            if (thumbPrefab != null)
             {
-                thumb = Instantiate(handlePrefab);
+                thumb = Instantiate(thumbPrefab);
                 thumb.EnsureComponent<NearInteractionGrabbable>();
 
                 if (thumb.GetComponentInChildren<Collider>() == null)
@@ -298,7 +318,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
             else
             {
-                thumb = CreateDefaultThumb();
+                thumb = CreateDefaultThumb(defaultThumbMaterial);
             }
 
             thumb.transform.parent = slider.transform;
@@ -312,17 +332,27 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return slider;
         }
 
-        private SliderAxis GetNormalAxis(SliderAxis axis)
+        private static SliderAxis CalculateAxisNormal(SliderAxis axis)
         {
             return (SliderAxis)(((int)axis + 1) % SliderPlaneCount);
         }
 
-        private GameObject CreateDefaultThumb()
+        private static float CalculateAxisNormalHalfScale(Transform targetTransform, Vector3 axisNormal)
+        {
+            return Vector3.Dot(axisNormal, targetTransform.localScale) * 0.5f;
+        }
+
+        private static Vector3 CalculateSliderPosition(Transform targetTransform, Vector3 axisNormal, float scale, float direction)
+        {
+            return targetTransform.position + (((targetTransform.rotation * axisNormal) * scale) * direction);
+        }
+
+        private static GameObject CreateDefaultThumb(Material thumbMaterial)
         {
             var thumb = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             thumb.name = "Thumb";
             thumb.AddComponent<NearInteractionGrabbable>();
-            thumb.GetComponent<Renderer>().material = defaultHandleMaterial;
+            thumb.GetComponent<Renderer>().material = thumbMaterial;
             thumb.GetComponent<SphereCollider>().radius *= 3.0f;
             thumb.transform.localScale = Vector3.one * 0.03f;
 
@@ -367,7 +397,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (copanarSliderPlane != null)
             {
-                var axisNormal = GetSliderAxis(GetNormalAxis(copanarSliderPlane.Axis));
+                var axisNormal = GetSliderAxis(CalculateAxisNormal(copanarSliderPlane.Axis));
                 var axisNormalInverse = axisNormal;
 
                 for (var i = 0; i < 3; ++i)
@@ -375,7 +405,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     axisNormalInverse[i] = axisNormalInverse[i] == 1.0f ? 0.0f : 1.0f;
                 }
 
-                var axisNormalHalfScale = Vector3.Dot(axisNormal, targetTransform.localScale) * 0.5f;
+                var axisNormalHalfScale = CalculateAxisNormalHalfScale(targetTransform, axisNormal);
                 var globalDirection = 1.0f;
 
                 for (var i = 0; i < 2; ++i)
@@ -383,7 +413,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     for (var j = 0; j < 2; ++j)
                     {
                         var slider = copanarSliderPlane.SliderPairs[i].Sliders[j];
-                        slider.transform.position = targetTransform.position + (((targetTransform.rotation * axisNormal) * axisNormalHalfScale) * globalDirection);
+                        slider.transform.position = CalculateSliderPosition(targetTransform, axisNormal, axisNormalHalfScale, globalDirection);
 
                         // Remove any translation due to scale.
                         slider.transform.localPosition -= Vector3.Scale(slider.transform.localPosition, axisNormalInverse);
