@@ -216,7 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             if (!HasSpatialAwarenessLayer())
             {
-                if (EditorLayerExtensions.SetupLayer(SpatialAwarenessDefaultLayer, "Spatial Awareness"))
+                if (!EditorLayerExtensions.SetupLayer(SpatialAwarenessDefaultLayer, "Spatial Awareness"))
                 {
                     Debug.LogWarning(string.Format($"Can't modify project layers. It's possible the format of the layers and tags data has changed in this version of Unity. Set layer {SpatialAwarenessDefaultLayer} to \"Spatial Awareness\" manually via Project Settings > Tags and Layers window."));
                 }
