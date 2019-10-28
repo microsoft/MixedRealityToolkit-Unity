@@ -228,6 +228,22 @@ public class InFront : Solver
 </ul>
 </li>
 </ul>
+<h2 id="experimental-solvers">Experimental Solvers</h2>
+<p>These solvers are available in MRTK but are currently experimental. Their APIs and functionality are subject to change. Furthermore, their robustness and quality may be lower than standard features.</p>
+<h3 id="directional-indicator">Directional Indicator</h3>
+<p>The <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.DirectionalIndicator.html"><code>DirectionalIndicator</code></a> class is a tag-along component that orients itself to the direction of a desired point in space.</p>
+<p>Most commonly used when the <em>Tracked Target Type</em> of the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.html"><code>SolverHandler</code></a> is set to <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.TrackedObjectType.html#Microsoft_MixedReality_Toolkit_Utilities_TrackedObjectType_Head"><code>Head</code></a>. In this fashion, a UX component with the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Experimental.Utilities.DirectionalIndicator.html"><code>DirectionalIndicator</code></a>  solver will direct a user to look at the desired point in space.</p>
+<p>The desired point in space is determined via the <em>Directional Target</em> property.</p>
+<p>If the directional target is viewable by the user, or whatever frame of reference is set in the <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.html"><code>SolverHandler</code></a>, then this solver will disable all <a href="https://docs.unity3d.com/ScriptReference/Renderer.html"><code>Renderer</code></a> components underneath it. If not viewable, then everything will be enabled on the indicator.</p>
+<ul>
+<li><em>Visibility Scale Factor</em> - Multiplier to increase or decrease the FOV that determines if the <em>Directional Target</em> point is viewable or not</li>
+<li><em>View Offset</em> - From the viewpoint of the frame of reference (i.e camera possibly), this property defines how far in the indicator direction should the object be from the center of the viewport.</li>
+</ul>
+<p><img src="Images/Solver/DirectionalIndicatorExample.png" alt="Directional Indicator properties">
+<br>
+<em>Directional Indicator properties</em></p>
+<p><img src="Images/Solver/DirectionalIndicatorExampleScene.gif" alt="Directional Indicator properties"></p>
+<p><em><a href="https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Examples/Experimental/Solvers/DirectionalIndicatorExample.unity">Directional Indicator Example Scene</a></em></p>
 <h2 id="see-also">See also</h2>
 <ul>
 <li><a href="Input/HandTracking.html">Hand Tracking</a></li>

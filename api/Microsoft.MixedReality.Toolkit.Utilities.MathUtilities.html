@@ -805,6 +805,77 @@ public static float AngularScaleFromDistance(float angle, float distance)</code>
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_MathUtilities_IsInFOV_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.MathUtilities.IsInFOV*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_MathUtilities_IsInFOV_Vector3_Transform_System_Single_System_Single_System_Single_System_Single_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.MathUtilities.IsInFOV(Vector3,Transform,System.Single,System.Single,System.Single,System.Single)">IsInFOV(Vector3, Transform, Single, Single, Single, Single)</h4>
+  <div class="markdown level1 summary"><p>Returns if a point lies within a frame of reference view as defined by arguments</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsInFOV(Vector3 testPosition, Transform frameOfReference, float verticalFOV, float horizontalFOV, float minPlaneDistance, float maxPlaneDistance)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Vector3</span></td>
+        <td><span class="parametername">testPosition</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Transform</span></td>
+        <td><span class="parametername">frameOfReference</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">verticalFOV</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">horizontalFOV</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">minPlaneDistance</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">maxPlaneDistance</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Microsoft_MixedReality_Toolkit_Utilities_MathUtilities_IsInFOV_Vector3_Transform_System_Single_System_Single_System_Single_System_Single__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Field of view parameters are in degrees and plane distances are in meters</p>
+</div>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Utilities_MathUtilities_NearestPointToLines_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.MathUtilities.NearestPointToLines*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_MathUtilities_NearestPointToLines_Ray_Ray_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.MathUtilities.NearestPointToLines(Ray,Ray)">NearestPointToLines(Ray, Ray)</h4>
   <div class="markdown level1 summary"><p>Find 3D point that minimizes distance to 2 lines, midpoint of the shortest perpendicular line segment between them</p>
