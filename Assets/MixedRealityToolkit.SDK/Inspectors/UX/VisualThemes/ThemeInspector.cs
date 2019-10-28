@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             themeStates = theme.States?.StateList.ToArray();
             if (themeStates == null)
             {
-                themeStates = new State[0];
+                themeStates = Array.Empty<State>();
             }
 
             // If no theme properties assigned, add a default one

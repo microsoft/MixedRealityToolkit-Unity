@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         public IEnumerable<string> ContentTags => profile.ContentTags;
 
         // Cache these so we're not looking them up constantly
-        private EditorBuildSettingsScene[] cachedBuildScenes = new EditorBuildSettingsScene[0];
+        private EditorBuildSettingsScene[] cachedBuildScenes = Array.Empty<EditorBuildSettingsScene>();
 
         // These get set to dirty based on what events have been received from the editor
         private bool activeSceneDirty = false;

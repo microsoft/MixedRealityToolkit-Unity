@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("The keywords to be recognized and optional keyboard shortcuts.")]
-        private KeywordAndResponse[] keywords = new KeywordAndResponse[0];
+        private KeywordAndResponse[] keywords = Array.Empty<KeywordAndResponse>();
 
         [SerializeField]
         [Tooltip("Keywords are persistent across all scenes.  This Speech Input Handler instance will not be destroyed when loading a new scene.")]
