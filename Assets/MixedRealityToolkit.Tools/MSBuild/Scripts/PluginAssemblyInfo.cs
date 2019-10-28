@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         Managed,
 
         /// <summary>
-        /// A native (C++) dll.
+        /// A native (C++) DLL.
         /// </summary>
         Native
     }
@@ -99,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                         });
                     }
 
-                    // Since succeded, read until isExplicitlyReferenced or platformData
+                    // Since succeeded, read until isExplicitlyReferenced or platformData
                     isExplicitlyReferenced = reader.ReadUntil("isExplicitlyReferenced:", "platformData:");
                 }
                 else
@@ -236,7 +236,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
                     }
                     else if (ContainsDefineHelper(define, inEditor, platformPair.Value))
                     {
-                        // This platform is supported, but still search for !defineconstraitns that may force exclusion
+                        // This platform is supported, but still search for !defineconstraints that may force exclusion
                         exclude = false;
                     }
                 }

@@ -136,7 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         {
             if (toggle == null)
             {
-                Debug.LogWarning($"Button {toggleName} is null on gameobject {gameObject.name}. Did you forget to set it?");
+                Debug.LogWarning($"Button {toggleName} is null on GameObject {gameObject.name}. Did you forget to set it?");
             }
             else
             {

@@ -96,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private void DrawSelectNameAndPlatform()
         {
             EditorGUILayout.Space();
-            EditorGUILayout.HelpBox("This wizard will help you set up and register a simple extension service. MRTK Services are similar to traditional Monobehaviour singletons but with more robust access and lifecycle control. Scripts can access services through the MRTK's service provider interface. For more information about services, click the link below.", MessageType.Info);
+            EditorGUILayout.HelpBox("This wizard will help you set up and register a simple extension service. MRTK Services are similar to traditional MonoBehaviour singletons but with more robust access and lifecycle control. Scripts can access services through the MRTK's service provider interface. For more information about services, click the link below.", MessageType.Info);
 
             GUIContent buttonContent = new GUIContent();
             buttonContent.image = EditorGUIUtility.IconContent("_Help").image;

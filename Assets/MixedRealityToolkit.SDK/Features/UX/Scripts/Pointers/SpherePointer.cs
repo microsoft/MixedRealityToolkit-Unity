@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public float NearObjectRadius => SphereCastRadius + NearObjectMargin;
 
         [SerializeField]
-        [Tooltip("The LayerMasks, in prioritized order, that are used to determine the grabble objects. Remember to also add NearInteractionGrabbable! Only collidables with NearInteractionGrabbable will raise events.")]
+        [Tooltip("The LayerMasks, in prioritized order, that are used to determine the grabbable objects. Remember to also add NearInteractionGrabbable! Only collidables with NearInteractionGrabbable will raise events.")]
         private LayerMask[] grabLayerMasks = { UnityEngine.Physics.DefaultRaycastLayers };
         /// <summary>
         /// The LayerMasks, in prioritized order, that are used to determine the touchable objects.
