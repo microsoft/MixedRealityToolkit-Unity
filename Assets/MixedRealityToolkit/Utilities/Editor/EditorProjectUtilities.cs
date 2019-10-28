@@ -70,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </remarks>
         private static void ApplyARFoundationUWPCompileFix()
         {
-#if !UNITY_2019_OR_NEWER
+#if !UNITY_2019_1_OR_NEWER
 
             bool reloadLocked = EditorAssemblyReloadManager.LockReloadAssemblies;
             if (reloadLocked)
