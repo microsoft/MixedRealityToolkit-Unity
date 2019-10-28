@@ -163,6 +163,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Interactions = mappings;
         }
 
+        /// <summary>
+        /// Try to render a controller model for this controller from the visualization profile.
+        /// </summary>
+        /// <param name="controllerType">The type of controller to load the model for.</param>
+        /// <param name="inputSourceType">Whether the model represents a hand or a controller.</param>
+        /// <returns>True if a model was successfully loaded or model rendering is disabled. False if a model tried to load but failed.</returns>
         protected virtual bool TryRenderControllerModel(Type controllerType, InputSourceType inputSourceType)
         {
             GameObject controllerModel = null;
@@ -253,12 +259,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         #region MRTK instance helpers
-        protected MixedRealityControllerVisualizationProfile GetControllerVisualizationProfile()
+
+        protected static MixedRealityControllerVisualizationProfile GetControllerVisualizationProfile()
         {
-            return CoreServices.InputSystem?.InputSystemProfile?.ControllerVisualizationProfile;
+            if (CoreServices.InputSystem?.InputSystemProfile != null)
+            {
+                return CoreServices.InputSystem.InputSystemProfile.ControllerVisualizationProfile;
+            }
+
+            return null;
         }
 
-        protected bool IsControllerMappingEnabled()
+        protected static bool IsControllerMappingEnabled()
         {
             if (CoreServices.InputSystem?.InputSystemProfile != null)
             {
@@ -268,9 +280,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return false;
         }
 
-        protected MixedRealityControllerMapping[] GetControllerMappings()
+        protected static MixedRealityControllerMapping[] GetControllerMappings()
         {
-            return CoreServices.InputSystem?.InputSystemProfile?.ControllerMappingProfile?.MixedRealityControllerMappings;
+            if (CoreServices.InputSystem?.InputSystemProfile != null &&
+                CoreServices.InputSystem.InputSystemProfile.ControllerMappingProfile != null)
+            {
+                // We can only enable controller profiles if mappings exist.
+                return CoreServices.InputSystem.InputSystemProfile.ControllerMappingProfile.MixedRealityControllerMappings;
+            }
+
+            return null;
         }
 
         #endregion MRTK instance helpers

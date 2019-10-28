@@ -125,6 +125,31 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         }
 
         /// <inheritdoc />
+        protected override void RemoveController(string joystickName)
+        {
+            var controller = GetOrAddController(joystickName);
+
+            if (controller != null)
+            {
+                foreach (IMixedRealityPointer pointer in controller.InputSource.Pointers)
+                {
+                    if (pointer != null)
+                    {
+                        pointer.Controller = null;
+                    }
+                }
+
+                if (controller.Visualizer != null &&
+                    controller.Visualizer.GameObjectProxy != null)
+                {
+                    controller.Visualizer.GameObjectProxy.SetActive(false);
+                }
+            }
+
+            base.RemoveController(joystickName);
+        }
+
+        /// <inheritdoc />
         protected override SupportedControllerType GetCurrentControllerType(string joystickName)
         {
             if (string.IsNullOrEmpty(joystickName) || !joystickName.Contains("OpenVR"))
