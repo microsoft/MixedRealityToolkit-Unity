@@ -444,7 +444,7 @@ MonoBehaviour:
   sphereSize: 1
   volumeCastSizeOverride: 0
   useLinkedAltScaleOverride: 0
-  currentRaycastDirectionMode: 3
+  currentRaycastDirectionMode: 0
   orientationMode: 2
   orientationBlend: 0.65
   keepOrientationVertical: 0
@@ -461,7 +461,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackedTargetType: 0
+  trackedTargetType: 5
   trackedHandness: 3
   trackedHandJoint: 2
   transformOverride: {fileID: 0}
@@ -515,7 +515,7 @@ Camera:
   m_GameObject: {fileID: 624307631}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
+  m_ClearFlags: 2
   m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
@@ -685,7 +685,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83d9acc7968244a8886f3af591305bcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activeProfile: {fileID: 11400000, guid: eb7c6f2d7632a734283c82cae24a3c63, type: 2}
+  activeProfile: {fileID: 11400000, guid: 35ea072dc832693498fe91d0517927b0, type: 2}
 --- !u!4 &1540929158
 Transform:
   m_ObjectHideFlags: 0
@@ -866,8 +866,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Surface Magnetism with Hand Ray
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
