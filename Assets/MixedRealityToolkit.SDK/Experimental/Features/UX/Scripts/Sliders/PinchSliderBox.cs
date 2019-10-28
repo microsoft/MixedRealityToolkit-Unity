@@ -33,49 +33,49 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
 
         [SerializeField, Tooltip("Should sliders be created for manipulating scale on the 'X' axis?")]
-        private bool showXAxisSliders = true;
+        private bool createXAxisSliders = true;
 
         /// <summary>
         /// Should sliders be created for manipulating scale on the 'X' axis?
         /// </summary>
-        public bool ShowXAxisSliders
+        public bool CreateXAxisSliders
         {
-            get => showXAxisSliders;
+            get => createXAxisSliders;
             set
             {
-                showXAxisSliders = value;
+                createXAxisSliders = value;
                 CreateSliders();
             }
         }
 
         [SerializeField, Tooltip("Should sliders be created for manipulating scale on the 'Y' axis?")]
-        private bool showYAxisSliders = true;
+        private bool createYAxisSliders = true;
 
         /// <summary>
         /// Should sliders be created for manipulating scale on the 'Y' axis?
         /// </summary>
-        public bool ShowYAxisSliders
+        public bool CreateYAxisSliders
         {
-            get => showYAxisSliders;
+            get => createYAxisSliders;
             set
             {
-                showYAxisSliders = value;
+                createYAxisSliders = value;
                 CreateSliders();
             }
         }
 
         [SerializeField, Tooltip("Should sliders be created for manipulating scale on the 'Z' axis?")]
-        private bool showZAxisSliders = true;
+        private bool createZAxisSliders = true;
 
         /// <summary>
         /// Should sliders be created for manipulating scale on the 'Z' axis?
         /// </summary>
-        public bool ShowZAxisSliders
+        public bool CreateZAxisSliders
         {
-            get => showZAxisSliders;
+            get => createZAxisSliders;
             set
             {
-                showZAxisSliders = value;
+                createZAxisSliders = value;
                 CreateSliders();
             }
         }
@@ -96,12 +96,38 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             }
         }
 
+        [SerializeField, Tooltip("The material to use to demonstrate which axis of the box is being manipulated.")]
+        private Material hightlightMaterial = null;
+
+        /// <summary>
+        /// The material to use to demonstrate which axis of the box is being manipulated.
+        /// </summary>
+        public Material HightlightMaterial
+        {
+            get => hightlightMaterial;
+            set
+            {
+                hightlightMaterial = value;
+
+                if (axisHighlight != null)
+                {
+                    var _renderer = axisHighlight.GetComponent<Renderer>();
+
+                    if (_renderer != null)
+                    {
+                        _renderer.material = hightlightMaterial;
+                    }
+                }
+            }
+        }
+
         #endregion
 
         #region Private Members
 
         private TransformScaleHandler transformScaleHandler = null;
         private Transform pivot = null;
+        private Transform axisHighlight = null;
         private Material defaultThumbMaterial = null;
         private bool quitting = false;
 
@@ -176,6 +202,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         private void OnDisable()
         {
+            OnHoverExited(null);
             DestroyHandles();
         }
 
@@ -203,17 +230,21 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             pivot.parent = transformScaleHandler.TargetTransform.parent;
             transformScaleHandler.TargetTransform.parent = pivot;
 
-            if (showXAxisSliders)
+            // Create an axis highlight game object to toggle when sliders are hovered upon.
+            axisHighlight = CreateAxisHighlight(hightlightMaterial, pivot).transform;
+            axisHighlight.gameObject.SetActive(false);
+
+            if (createXAxisSliders)
             {
                 sliderPlanes[(int)SliderAxis.XAxis] = AddSliderPlane(SliderAxis.XAxis);
             }
 
-            if (showYAxisSliders)
+            if (createYAxisSliders)
             {
                 sliderPlanes[(int)SliderAxis.YAxis] = AddSliderPlane(SliderAxis.YAxis);
             }
 
-            if (showZAxisSliders)
+            if (createZAxisSliders)
             {
                 sliderPlanes[(int)SliderAxis.ZAxis] = AddSliderPlane(SliderAxis.ZAxis);
             }
@@ -230,11 +261,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 // Restore the original parent. Unity will present a warning if parents are altered when quitting.
                 if (!quitting)
                 {
-                    transformScaleHandler.TargetTransform.parent = pivot.transform.parent;
+                    transformScaleHandler.TargetTransform.parent = pivot.parent;
                 }
 
                 Destroy(pivot.gameObject);
                 pivot = null;
+                axisHighlight = null;
             }
 
             for (var i = 0; i < SliderPlaneCount; ++i)
@@ -293,7 +325,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             // Calculates a normal to the pinch slider axis to place the slider at.
             var targetTransform = transformScaleHandler.TargetTransform;
             var axisNormal = GetSliderAxis(CalculateAxisNormal(axis));
-            var axisNormalHalfScale = CalculateAxisNormalHalfScale(targetTransform, axisNormal);
+            var axisNormalHalfScale = CalculateAxisHalfScale(targetTransform, axisNormal);
             slider.transform.position = CalculateSliderPosition(targetTransform, axisNormal, axisNormalHalfScale, globalDirection);
             slider.transform.rotation = targetTransform.rotation;
 
@@ -318,16 +350,17 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             }
             else
             {
-                thumb = CreateDefaultThumb(defaultThumbMaterial);
+                thumb = CreateDefaultThumb(defaultThumbMaterial, slider.transform);
             }
 
-            thumb.transform.parent = slider.transform;
-            thumb.transform.localPosition = Vector3.zero;
             slider.ThumbRoot = thumb;
 
             var scaleRange = transformScaleHandler.ScaleMaximumVector[axisIndex] - transformScaleHandler.ScaleMinimumVector[axisIndex];
             slider.SliderValue = (targetTransform.localScale[axisIndex] - transformScaleHandler.ScaleMinimumVector[axisIndex]) / scaleRange;
+            
             slider.OnValueUpdated.AddListener(OnSlideValueUpdated);
+            slider.OnHoverEntered.AddListener(OnHoverEntered);
+            slider.OnHoverExited.AddListener(OnHoverExited);
 
             return slider;
         }
@@ -337,9 +370,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             return (SliderAxis)(((int)axis + 1) % SliderPlaneCount);
         }
 
-        private static float CalculateAxisNormalHalfScale(Transform targetTransform, Vector3 axisNormal)
+        private static float CalculateAxisHalfScale(Transform targetTransform, Vector3 axis)
         {
-            return Vector3.Dot(axisNormal, targetTransform.localScale) * 0.5f;
+            return Vector3.Dot(axis, targetTransform.localScale) * 0.5f;
         }
 
         private static Vector3 CalculateSliderPosition(Transform targetTransform, Vector3 axisNormal, float scale, float direction)
@@ -347,16 +380,33 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             return targetTransform.position + (((targetTransform.rotation * axisNormal) * scale) * direction);
         }
 
-        private static GameObject CreateDefaultThumb(Material thumbMaterial)
+        private static GameObject CreateAxisHighlight(Material material, Transform parent)
         {
-            var thumb = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            thumb.name = "Thumb";
-            thumb.AddComponent<NearInteractionGrabbable>();
-            thumb.GetComponent<Renderer>().material = thumbMaterial;
-            thumb.GetComponent<SphereCollider>().radius *= 3.0f;
-            thumb.transform.localScale = Vector3.one * 0.03f;
+            var primitive = GameObject.CreatePrimitive(PrimitiveType.Quad);
+            primitive.name = "AxisHighlight";
+            primitive.AddComponent<MaintainBorderLightWidth>();
+            primitive.GetComponent<Renderer>().material = material;
+            Destroy(primitive.GetComponent<Collider>());
+            primitive.transform.parent = parent;
+            primitive.transform.localPosition = Vector3.zero;
+            primitive.transform.localRotation = Quaternion.identity;
 
-            return thumb;
+            return primitive;
+        }
+
+        private static GameObject CreateDefaultThumb(Material material, Transform parent)
+        {
+            var primitive = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            primitive.name = "Thumb";
+            primitive.AddComponent<NearInteractionGrabbable>();
+            primitive.GetComponent<Renderer>().material = material;
+            primitive.GetComponent<SphereCollider>().radius *= 3.0f;
+            primitive.transform.parent = parent;
+            primitive.transform.localPosition = Vector3.zero;
+            primitive.transform.localRotation = Quaternion.identity;
+            primitive.transform.localScale = Vector3.one * 0.03f;
+
+            return primitive;
         }
 
         private void OnSlideValueUpdated(SliderEventData data)
@@ -405,7 +455,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     axisNormalInverse[i] = axisNormalInverse[i] == 1.0f ? 0.0f : 1.0f;
                 }
 
-                var axisNormalHalfScale = CalculateAxisNormalHalfScale(targetTransform, axisNormal);
+                var axisNormalHalfScale = CalculateAxisHalfScale(targetTransform, axisNormal);
                 var globalDirection = 1.0f;
 
                 for (var i = 0; i < 2; ++i)
@@ -422,6 +472,27 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     globalDirection = -globalDirection;
                 }
             }
+        }
+
+        private void OnHoverEntered(SliderEventData data)
+        {
+            axisHighlight.gameObject.SetActive(true);
+
+            // Move the highlight to the hovered slider.
+            var axisType = data.Slider.SliderAxisType;
+            var axis = GetSliderAxis(axisType);
+            var sliderPair = sliderToPlane[data.Slider].GetSliderPair(data.Slider);
+            var direction = (sliderPair.Sliders[PositiveIndex] == data.Slider) ? 1.0f : -1.0f;
+
+            axisHighlight.parent = transformScaleHandler.TargetTransform;
+            axisHighlight.localPosition = axis * 0.5f * direction;
+            axisHighlight.localRotation = Quaternion.LookRotation(axis, axisType == SliderAxis.YAxis ? Vector3.right : Vector3.up);
+            axisHighlight.localScale = Vector3.one;
+        }
+
+        private void OnHoverExited(SliderEventData data)
+        {
+            axisHighlight.gameObject.SetActive(false);
         }
 
         #endregion

@@ -7,26 +7,26 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: LanderTwoSided
+  m_Name: PinchSliderBoxHighlight
   m_Shader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
-  m_ShaderKeywords: _CHANNEL_MAP _DIRECTIONAL_LIGHT _METALLICGLOSSMAP _NORMALMAP _REFLECTIONS
-    _SPECULAR_HIGHLIGHTS
+  m_ShaderKeywords: _ALPHABLEND_ON _BORDER_LIGHT_OPAQUE _DISABLE_ALBEDO_MAP _HOVER_LIGHT
+    _INNER_GLOW
   m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2000
+  m_CustomRenderQueue: 3000
   stringTagMap:
-    RenderType: Opaque
+    RenderType: Fade
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: 114a88419a74a534197624fb7bfe17da, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ChannelMap:
-        m_Texture: {fileID: 2800000, guid: bf08fbb83f27bc2408110dba26a36a7f, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -50,19 +50,19 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 11056bb52f91cdc43ba4fba9accfb226, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 2800000, guid: 4a01d78c1202af94a9bc3628d509929a, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 2800000, guid: 114a88419a74a534197624fb7bfe17da, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
-        m_Texture: {fileID: 2800000, guid: 992c2bd71f9f51744bcdc9f18a512924, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
@@ -75,24 +75,24 @@ Material:
     - _BlendOp: 0
     - _BlendedClippingWidth: 1
     - _BorderLight: 0
-    - _BorderLightOpaque: 0
+    - _BorderLightOpaque: 1
     - _BorderLightOpaqueAlpha: 1
     - _BorderLightReplacesAlbedo: 0
     - _BorderLightUsesHoverColor: 0
     - _BorderMinValue: 0.1
-    - _BorderWidth: 0.1
+    - _BorderWidth: 0.025
     - _BumpScale: 1
     - _ClippingBorder: 0
     - _ClippingBorderWidth: 0.025
     - _ColorWriteMask: 15
     - _CullMode: 0
-    - _CustomMode: 0
+    - _CustomMode: 2
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
-    - _DirectionalLight: 1
-    - _DstBlend: 0
+    - _DirectionalLight: 0
+    - _DstBlend: 1
     - _EdgeSmoothingValue: 0.002
-    - _EnableChannelMap: 1
+    - _EnableChannelMap: 0
     - _EnableEmission: 0
     - _EnableHoverColorOverride: 0
     - _EnableLocalSpaceTriplanarMapping: 0
@@ -107,28 +107,28 @@ Material:
     - _FadeMinValue: 0
     - _FluentLightIntensity: 1
     - _GlossMapScale: 1
-    - _Glossiness: 0
+    - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _HoverLight: 0
+    - _HoverLight: 1
     - _IgnoreZScale: 0
-    - _InnerGlow: 0
-    - _InnerGlowPower: 4
+    - _InnerGlow: 1
+    - _InnerGlowPower: 3
     - _InstancedColor: 0
     - _Iridescence: 0
     - _IridescenceAngle: -0.78
     - _IridescenceIntensity: 0.5
     - _IridescenceThreshold: 0.05
     - _Metallic: 0
-    - _Mode: 0
+    - _Mode: 5
     - _NearLightFade: 0
     - _NearPlaneFade: 0
-    - _NormalMapScale: 1.5
+    - _NormalMapScale: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _ProximityLight: 0
     - _ProximityLightSubtractive: 0
     - _ProximityLightTwoSided: 0
-    - _Reflections: 1
+    - _Reflections: 0
     - _Refraction: 0
     - _RefractiveIndex: 0
     - _RenderQueueOverride: -1
@@ -137,10 +137,9 @@ Material:
     - _RoundCornerMargin: 0.01
     - _RoundCornerRadius: 0.25
     - _RoundCorners: 0
-    - _SmoothNormals: 0
-    - _Smoothness: 0
+    - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
-    - _SpecularHighlights: 1
+    - _SpecularHighlights: 0
     - _SphericalHarmonics: 0
     - _SrcBlend: 1
     - _Stencil: 0
@@ -153,20 +152,20 @@ Material:
     - _VertexExtrusion: 0
     - _VertexExtrusionSmoothNormals: 0
     - _VertexExtrusionValue: 0
-    - _ZOffsetFactor: 0
-    - _ZOffsetUnits: 0
+    - _ZOffsetFactor: -1
+    - _ZOffsetUnits: -1
     - _ZTest: 4
-    - _ZWrite: 1
+    - _ZWrite: 0
     m_Colors:
     - _ClippingBorderColor: {r: 1, g: 0.2, b: 0, a: 1}
-    - _Color: {r: 0.588, g: 0.588, b: 0.588, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
-    - _EmissiveColor: {r: 0, g: 0, b: 0, a: 0}
+    - _Color: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EnvironmentColorX: {r: 1, g: 0, b: 0, a: 1}
     - _EnvironmentColorY: {r: 0, g: 1, b: 0, a: 1}
     - _EnvironmentColorZ: {r: 0, g: 0, b: 1, a: 1}
     - _HoverColorOverride: {r: 1, g: 1, b: 1, a: 1}
-    - _InnerGlowColor: {r: 1, g: 1, b: 1, a: 0.75}
+    - _InnerGlowColor: {r: 0, g: 0.56078434, b: 1, a: 0.75}
     - _ProximityLightCenterColorOverride: {r: 1, g: 0, b: 0, a: 0}
     - _ProximityLightMiddleColorOverride: {r: 0, g: 1, b: 0, a: 0.5}
     - _ProximityLightOuterColorOverride: {r: 0, g: 0, b: 1, a: 1}
