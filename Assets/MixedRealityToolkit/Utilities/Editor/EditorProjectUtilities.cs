@@ -70,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </remarks>
         private static void ApplyARFoundationUWPCompileFix()
         {
-#if UNITY_2018
+#if !UNITY_2019_OR_NEWER
 
             bool reloadLocked = EditorAssemblyReloadManager.LockReloadAssemblies;
             if (reloadLocked)
@@ -156,7 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 EditorAssemblyReloadManager.LockReloadAssemblies = true;
             }
 
-#endif // UNITY_2018
+#endif // !UNITY_2019_OR_NEWER
         }
 
         /// <summary>
