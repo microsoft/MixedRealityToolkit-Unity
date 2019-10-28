@@ -154,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         /// <summary>
-        /// Render documentation button routing to revelant URI
+        /// Render documentation button routing to relevant URI
         /// </summary>
         /// <param name="docURL">documentation URL to open on button click</param>
         /// <returns>true if button clicked, false otherwise</returns>

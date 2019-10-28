@@ -398,7 +398,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Returns readonly list of all services registered for given registrar
         /// </summary>
-        /// <param name="registrar">Registrar object to filter sevices by</param>
+        /// <param name="registrar">Registrar object to filter services by</param>
         /// <remarks>
         /// The list is sorted in ascending priority order.
         /// </remarks>

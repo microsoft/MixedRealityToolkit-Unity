@@ -740,7 +740,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                         break;
 
                     default:
-                        // Don't announce other types of scenes invidually
+                        // Don't announce other types of scenes individually
                         break;
                 }
             }
@@ -774,7 +774,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                         break;
 
                     default:
-                        // Don't announce other types of scenes invidually
+                        // Don't announce other types of scenes individually
                         break;
                 }
             }
@@ -808,7 +808,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
                         break;
 
                     default:
-                        // Don't announce other types of scenes invidually
+                        // Don't announce other types of scenes individually
                         break;
                 }
             }

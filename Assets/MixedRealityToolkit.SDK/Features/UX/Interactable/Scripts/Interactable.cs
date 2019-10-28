@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         /// <summary>
         /// A way of adding more layers of states for controls like toggles.
-        /// This is capitalized and doesn't match conventions for backwards compatability
+        /// This is capitalized and doesn't match conventions for backwards compatibility
         /// (to not break people using Interactable). We tried using FormerlySerializedAs("Dimensions)
         /// and renaming to "dimensions", however Unity did not properly pick up the former serialization,
         /// so we maintained the old value. See https://github.com/microsoft/MixedRealityToolkit-Unity/issues/6169
@@ -236,7 +236,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     voiceRequiresFocus = value;
 
-                    // If we are active, then change global speech registeration. 
+                    // If we are active, then change global speech registration. 
                     // Register handle if we do not require focus, unregister otherwise
                     if (gameObject.activeInHierarchy)
                     {
@@ -567,7 +567,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #endregion
 
-        #region MonoBehaviorImplementation
+        #region MonoBehaviour Implementation
 
         protected virtual void Awake()
         {
@@ -678,7 +678,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             lastState = StateManager.CurrentState();
         }
 
-        #endregion MonoBehavior Implimentation
+        #endregion MonoBehaviour Implementation
 
         #region Interactable Initiation
 
@@ -1578,7 +1578,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Do oice commands require focus?
+        /// Do voice commands require focus?
         /// </summary>
         [System.Obsolete("Use VoiceRequiresFocus instead")]
         public bool RequiresFocus

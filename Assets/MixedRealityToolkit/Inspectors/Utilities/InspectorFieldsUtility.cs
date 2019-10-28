@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     {
         public static bool AreFieldsSame(SerializedProperty settings, List<InspectorFieldData> fieldList)
         {
-            // If number of fields don't match, automaticaly not the same
+            // If number of fields don't match, automatically not the same
             if (settings.arraySize != fieldList.Count)
             {
                 return false;

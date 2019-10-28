@@ -168,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Returns the first poitner of given type that is associated with this hand.
+        /// Returns the first pointer of given type that is associated with this hand.
         /// </summary>
         /// <typeparam name="T">Type of pointer to look for.</typeparam>
         public T GetPointer<T>() where T : class, IMixedRealityPointer

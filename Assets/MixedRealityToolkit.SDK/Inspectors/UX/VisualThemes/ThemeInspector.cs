@@ -308,7 +308,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                     shader.objectReferenceValue = Shader.Find(shaderName.stringValue);
                     shaderPropertyname.stringValue = shaderOption.stringValue;
 
-                    // Wipe old data from trigering this again
+                    // Wipe old data from triggering this again
                     shaderOptions.ClearArray();
 
                     stateProperty.serializedObject.ApplyModifiedProperties();

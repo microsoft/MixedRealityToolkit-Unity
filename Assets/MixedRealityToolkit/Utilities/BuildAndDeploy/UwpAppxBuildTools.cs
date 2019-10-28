@@ -486,7 +486,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// </summary>
         /// <param name="rootNode">An XElement containing the AppX manifest from 
         /// the build output</param>
-        /// <param name="capability">The added capabilites tag as XName</param>
+        /// <param name="capability">The added capabilities tag as XName</param>
         /// <param name="value">Value of the Name-XAttribute of the added capability</param>
         public static void AddCapability(XElement rootNode, XName capability, string value)
         {

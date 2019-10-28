@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             try
             {
                 RunGenerateSDKProjects();
-                Debug.Log($"{nameof(GenerateSDKProjects)} Completed Succesfully.");
+                Debug.Log($"{nameof(GenerateSDKProjects)} Completed Successfully.");
             }
             catch
             {

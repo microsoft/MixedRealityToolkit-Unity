@@ -293,7 +293,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Ensure that the touchable has EventsToReceive set to Touch
             if (touchable.EventsToReceive != TouchableEventType.Touch)
             {
-                EditorGUILayout.HelpBox($"The {nameof(NearInteractionTouchableSurface)}-derived component on this game object currently has its EventsToReceive set to '{touchable.EventsToReceive}'.  It must be set to 'Touch' in order for PressableButton to function propertly.", MessageType.Warning);
+                EditorGUILayout.HelpBox($"The {nameof(NearInteractionTouchableSurface)}-derived component on this game object currently has its EventsToReceive set to '{touchable.EventsToReceive}'.  It must be set to 'Touch' in order for PressableButton to function properly.", MessageType.Warning);
 
                 if (GUILayout.Button("Set EventsToReceive to 'Touch'"))
                 {
