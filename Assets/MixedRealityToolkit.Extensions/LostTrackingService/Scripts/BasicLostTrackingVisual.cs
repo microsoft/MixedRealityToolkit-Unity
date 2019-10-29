@@ -29,12 +29,19 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
 
         public void ResetVisual()
         {
-            audioSource.clip = loopClip;
-            audioSource.loop = true;
-            audioSource.Play();
+            if (audioSource != null && loopClip != null)
+            {
+                audioSource.clip = loopClip;
+                audioSource.loop = true;
+                audioSource.Play();
+            }
 
             pulseTimer = 0.0f;
-            gridRenderer?.material.SetFloat("_Pulse_", 0.0f);
+
+            if (gridRenderer != null)
+            {
+                gridRenderer.material.SetFloat("_Pulse_", 0.0f);
+            }
         }
 
         public void SetLayer(int layer)
@@ -56,8 +63,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
                 pulseTimer = 0;
             }
 
-            gridRenderer.material.SetFloat("_Pulse_", normalizedPulseValue);
-            gridRenderer.material.SetVector("_Pulse_Origin_", gridRenderer.transform.position);
+            if (gridRenderer != null)
+            {
+                gridRenderer.material.SetFloat("_Pulse_", normalizedPulseValue);
+                gridRenderer.material.SetVector("_Pulse_Origin_", gridRenderer.transform.position);
+            }
         }
     }
 }
