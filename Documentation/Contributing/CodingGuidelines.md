@@ -38,14 +38,6 @@ MRTK is a community project, modified by a diverse range of contributors. These 
 When you fix a bug, write a test to ensure it does not regress in the future. If adding a feature, write tests that verify your feature works. This is required for all UX features except experimental features.
 
 ## Coding Conventions
-### Script license information headers
-
-All scripts posted to the MRTK should have the standard License header attached, exactly as shown below:
-
-```c#
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
-```
 
 ### Function / Method summary headers
 All public classes, structs, enums, functions, properties, fields posted to the MRTK should be described as to it's purpose and use, exactly as shown below:
