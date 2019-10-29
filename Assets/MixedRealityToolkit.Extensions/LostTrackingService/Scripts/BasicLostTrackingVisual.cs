@@ -11,22 +11,33 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
     public class BasicLostTrackingVisual : MonoBehaviour, ILostTrackingVisual
     {
         [SerializeField]
+        [Tooltip("The renderer for this lost tracking visual.")]
         private MeshRenderer gridRenderer = null;
+
         [SerializeField]
+        [Tooltip("The audio to play while the lost tracking visual is active.")]
         private AudioClip loopClip = null;
+
         [SerializeField]
+        [Tooltip("The AudioSource to play from while the lost tracking visual is active.")]
         private AudioSource audioSource = null;
+
         [SerializeField]
+        [Tooltip("How long the lost tracking visual's pulse has been running (up to Pulse Duration).")]
         private float pulseTimer = 0.0f;
+
         [SerializeField]
+        [Tooltip("How long the lost tracking visual's pulse runs.")]
         private float pulseDuration = 2.0f;
 
+        /// <inheritdoc />
         public bool Enabled
         {
             get { return gameObject.activeSelf; }
             set { gameObject.SetActive(value); }
         }
 
+        /// <inheritdoc />
         public void ResetVisual()
         {
             if (audioSource != null && loopClip != null)
@@ -44,6 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
             }
         }
 
+        /// <inheritdoc />
         public void SetLayer(int layer)
         {
             foreach (Transform child in transform.GetComponentsInChildren<Transform>())
@@ -54,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
 
         private void Update()
         {
-            //Using unscaled delta time is necessary to avoid the effect pausing when Timescale is set to 0.0f
+            // Using unscaled delta time is necessary to avoid the effect pausing when Timescale is set to 0.0f
             pulseTimer += Time.unscaledDeltaTime;
             float normalizedPulseValue = Mathf.Clamp01(pulseTimer / pulseDuration);
 

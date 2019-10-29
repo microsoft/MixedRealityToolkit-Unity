@@ -6,18 +6,37 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
 {
+    /// <summary>
+    /// The profile definition for an <see cref="ILostTrackingService"/>.
+    /// </summary>
     [MixedRealityServiceProfile(typeof(ILostTrackingService))]
     [CreateAssetMenu(fileName = "LostTrackingServiceProfile", menuName = "MixedRealityToolkit/LostTrackingService Configuration Profile")]
     public class LostTrackingServiceProfile : BaseMixedRealityProfile
     {
+        /// <summary>
+        /// Prefab for the lost tracking visual. Must include a component that implements ILostTrackingVisual.
+        /// A radial solver or tagalong script is recommended as well.
+        /// </summary>
         public GameObject TrackingLostVisualPrefab => trackingLostVisualPrefab;
 
+        /// <summary>
+        /// The layer used to display the lost tracking visual.
+        /// </summary>
         public int TrackingLostVisualLayer => trackingLostVisualLayer;
 
+        /// <summary>
+        /// The culling mask to use when tracking is lost. The tracking lost visual layer is automatically included.
+        /// </summary>
         public LayerMask TrackingLostCullingMask => trackingLostCullingMask;
 
+        /// <summary>
+        /// If true, the service will set timescale to 0 while tracking is lost.
+        /// </summary>
         public bool HaltTimeWhileTrackingLost => haltTimeWhileTrackingLost;
 
+        /// <summary>
+        /// If true, the service will pause audio while tracking is lost.
+        /// </summary>
         public bool HaltAudioOnTrackingLost => haltAudioWhileTrackingLost;
 
         [SerializeField]
