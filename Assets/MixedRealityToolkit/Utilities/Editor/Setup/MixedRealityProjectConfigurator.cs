@@ -16,6 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     public class MixedRealityProjectConfigurator
     {
         private const int SpatialAwarenessDefaultLayer = 31;
+        private const AndroidSdkVersions MinAndroidSdk = AndroidSdkVersions.AndroidApiLevel24;
 
         /// <summary>
         /// List of available configurations to check and configure with this utility
@@ -36,6 +37,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #if UNITY_2019_3_OR_NEWER
             EyeTrackingCapability,
 #endif
+
+            // Android Settings
+            AndroidMultiThreadedRendering,
+            AndroidMinSdkVersion,
         };
 
         // The check functions for each type of setting
@@ -54,6 +59,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #if UNITY_2019_3_OR_NEWER
             { Configurations.EyeTrackingCapability,  () => { return PlayerSettings.WSA.GetCapability(PlayerSettings.WSACapability.GazeInput); } },
 #endif
+
+            { Configurations.AndroidMultiThreadedRendering, () => { return PlayerSettings.GetMobileMTRendering(BuildTargetGroup.Android) == false; } },
+            { Configurations.AndroidMinSdkVersion, () => { return PlayerSettings.Android.minSdkVersion >= MinAndroidSdk; } },
         };
 
         // The configure functions for each type of setting
@@ -72,6 +80,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #if UNITY_2019_3_OR_NEWER
             { Configurations.EyeTrackingCapability,  () => { PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.GazeInput, true); } },
 #endif
+
+            { Configurations.AndroidMultiThreadedRendering, () => { PlayerSettings.SetMobileMTRendering(BuildTargetGroup.Android, false); } },
+            { Configurations.AndroidMinSdkVersion, () => { PlayerSettings.Android.minSdkVersion = MinAndroidSdk; } },
         };
 
         /// <summary>

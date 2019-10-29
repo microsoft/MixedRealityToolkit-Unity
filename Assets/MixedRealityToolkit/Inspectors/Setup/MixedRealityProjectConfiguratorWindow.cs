@@ -20,12 +20,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {MRConfig.VirtualRealitySupported, true },
             {MRConfig.SinglePassInstancing, true },
             {MRConfig.SpatialAwarenessLayer, true },
+            // UWP Capabilities
             {MRConfig.MicrophoneCapability, true },
             {MRConfig.InternetClientCapability, true },
             {MRConfig.SpatialPerceptionCapability, true },
 #if UNITY_2019_3_OR_NEWER
             {MRConfig.EyeTrackingCapability, true },
 #endif
+            // Android Settings
+            {MRConfig.AndroidMultiThreadedRendering, true },
+            {MRConfig.AndroidMinSdkVersion, true },
         };
 
         private const string WindowKey = "_MixedRealityToolkit_Editor_MixedRealityProjectConfiguratorWindow";
@@ -157,6 +161,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #if UNITY_2019_3_OR_NEWER
                 trackToggles[MRConfig.EyeTrackingCapability] = false;
 #endif
+            }
+
+            if (MixedRealityOptimizeUtils.IsBuildTargetAndroid())
+            {
+                EditorGUILayout.LabelField("Android Settings", EditorStyles.boldLabel);
+                RenderToggle(MRConfig.AndroidMultiThreadedRendering, "Disable Multi-Threaded Rendering");
+                RenderToggle(MRConfig.AndroidMinSdkVersion, "Set Minimum API Level");
             }
         }
 
