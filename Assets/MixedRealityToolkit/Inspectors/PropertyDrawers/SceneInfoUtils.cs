@@ -287,7 +287,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             SerializedProperty property = serializedObject.FindProperty(fieldInfo.Name);
                             SerializedProperty assetProperty, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty;
                             GetSceneInfoRelativeProperties(property, out assetProperty, out nameProperty, out pathProperty, out buildIndexProperty, out includedProperty, out tagProperty);
-                            if (RefreshSceneInfo(source, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty))
+                            if (RefreshSceneInfo(assetProperty.objectReferenceValue, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty))
                             {
                                 serializedObject.ApplyModifiedProperties();
                             }
@@ -322,7 +322,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         SerializedProperty property = serializedObject.FindProperty(fieldInfo.Name);
                         SerializedProperty assetProperty, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty;
                         GetSceneInfoRelativeProperties(property, out assetProperty, out nameProperty, out pathProperty, out buildIndexProperty, out includedProperty, out tagProperty);
-                        if (RefreshSceneInfo(source, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty))
+                        if (RefreshSceneInfo(assetProperty.objectReferenceValue, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty))
                         {
                             serializedObject.ApplyModifiedProperties();
                         }
@@ -352,7 +352,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             SerializedProperty property = serializedObject.FindProperty(fieldInfo.Name);
                             SerializedProperty assetProperty, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty;
                             GetSceneInfoRelativeProperties(property, out assetProperty, out nameProperty, out pathProperty, out buildIndexProperty, out includedProperty, out tagProperty);
-                            if (RefreshSceneInfo(source, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty))
+                            if (RefreshSceneInfo(assetProperty.objectReferenceValue, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty))
                             {
                                 serializedObject.ApplyModifiedProperties();
                             }
