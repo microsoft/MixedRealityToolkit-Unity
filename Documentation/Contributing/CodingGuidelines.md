@@ -495,8 +495,8 @@ public class MyClass
 
 #### Do
 
- ```c#
- // Private references for use inside the class only
+```c#
+// Private references for use inside the class only
 public class MyClass
 {
     private Material cachedMaterial;
@@ -516,7 +516,7 @@ public class MyClass
         Destroy(cachedMaterial);
     }
 }
- ```
+```
 
 > [!NOTE]
 > Alternatively, use Unity's "SharedMaterial" property which does not create a new material each time it is referenced.
