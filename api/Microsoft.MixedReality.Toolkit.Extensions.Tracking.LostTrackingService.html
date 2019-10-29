@@ -86,7 +86,10 @@
   
   <h1 id="Microsoft_MixedReality_Toolkit_Extensions_Tracking_LostTrackingService" data-uid="Microsoft.MixedReality.Toolkit.Extensions.Tracking.LostTrackingService" class="text-break">Class LostTrackingService
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>A service that detects when tracking is lost on WSA devices.
+When tracking is lost, the service displays a visual indicator and sets the main camera's culling mask to hide all other objects.
+When tracking is restored, the camera mask is restored and the visual indicator is hidden.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -224,7 +227,9 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Extensions_Tracking_LostTrackingService_OnTrackingLost_" data-uid="Microsoft.MixedReality.Toolkit.Extensions.Tracking.LostTrackingService.OnTrackingLost*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Extensions_Tracking_LostTrackingService_OnTrackingLost" data-uid="Microsoft.MixedReality.Toolkit.Extensions.Tracking.LostTrackingService.OnTrackingLost">OnTrackingLost</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Called when tracking is lost.
+(When UnityEngine.VR.WSA.PositionalLocatorState is Inhibited.)</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -249,7 +254,9 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Extensions_Tracking_LostTrackingService_OnTrackingRestored_" data-uid="Microsoft.MixedReality.Toolkit.Extensions.Tracking.LostTrackingService.OnTrackingRestored*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Extensions_Tracking_LostTrackingService_OnTrackingRestored" data-uid="Microsoft.MixedReality.Toolkit.Extensions.Tracking.LostTrackingService.OnTrackingRestored">OnTrackingRestored</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Called when tracking is stored
+(UnityEngine.VR.WSA.PositionalLocatorState is anything other than Inhibited.)</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -274,7 +281,8 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Extensions_Tracking_LostTrackingService_TrackingLost_" data-uid="Microsoft.MixedReality.Toolkit.Extensions.Tracking.LostTrackingService.TrackingLost*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Extensions_Tracking_LostTrackingService_TrackingLost" data-uid="Microsoft.MixedReality.Toolkit.Extensions.Tracking.LostTrackingService.TrackingLost">TrackingLost</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>True if tracking is lost, false if tracking is present.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -301,7 +309,9 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Extensions_Tracking_LostTrackingService_Initialize_" data-uid="Microsoft.MixedReality.Toolkit.Extensions.Tracking.LostTrackingService.Initialize*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Extensions_Tracking_LostTrackingService_Initialize" data-uid="Microsoft.MixedReality.Toolkit.Extensions.Tracking.LostTrackingService.Initialize">Initialize()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>The initialize function is used to setup the service once created.
+This method is called once all services have been registered in the Mixed Reality Toolkit.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
