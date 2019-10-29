@@ -3086,6 +3086,28 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/LostTracking/LostTrackingVisualization.jpg",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/LostTracking/LostTrackingVisualization.jpg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/LostTracking/LostTracking_Extensions.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/LostTracking/LostTracking_Extensions.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/MRDL_PeriodicTable.jpg",
       "output": {
         "resource": {
@@ -6066,6 +6088,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/README_LostTrackingService.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/README_LostTrackingService.html",
+          "hash": "+/I369sbnkkt4V/KfOqmIw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/README_MRTKStandardShader.md",
       "output": {
         ".html": {
@@ -6681,7 +6715,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.BaseExtensionService.html",
-          "hash": "mRp2P0U/l1aM/ibwUMhTTQ=="
+          "hash": "07zf7swQL4pxh0jUW2uqqw=="
         }
       },
       "is_incremental": false,
@@ -6693,7 +6727,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile.html",
-          "hash": "Q5p0P07exb5WfCSmpwes9w=="
+          "hash": "NH541DS4aNjEAGK/IaK9wA=="
         }
       },
       "is_incremental": false,
@@ -10102,6 +10136,78 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.html",
           "hash": "MfT/ped2Q0oEH2fXjo14dg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Extensions.Tracking.BasicLostTrackingVisual.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Extensions.Tracking.BasicLostTrackingVisual.html",
+          "hash": "OOI6N8DZwUOVF1MzJeKP3w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Extensions.Tracking.ILostTrackingService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Extensions.Tracking.ILostTrackingService.html",
+          "hash": "sB3yFzN9h6m0i7oo32YCDg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Extensions.Tracking.ILostTrackingVisual.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Extensions.Tracking.ILostTrackingVisual.html",
+          "hash": "jhvFRD2hBBRtLfFBo8SJWA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Extensions.Tracking.LostTrackingService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Extensions.Tracking.LostTrackingService.html",
+          "hash": "NE90uffWU24pbskOFcsuRw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Extensions.Tracking.LostTrackingServiceProfile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Extensions.Tracking.LostTrackingServiceProfile.html",
+          "hash": "Kyma1DjJWlRuMg4PGFgcGQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Extensions.Tracking.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Extensions.Tracking.html",
+          "hash": "kr8KPDXW9juPH4MtgUHDZg=="
         }
       },
       "is_incremental": false,
@@ -23133,7 +23239,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "b08oEK+r+94Dqseo+KXbtg=="
+          "hash": "wMM83rhTN1vpzVdVPeNHKA=="
         }
       },
       "is_incremental": false,
@@ -23185,16 +23291,17 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "ManagedReferenceDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 1385,
+          "total_file_count": 0,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 133,
+          "total_file_count": 134,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
@@ -23204,11 +23311,10 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "TocDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 1391,
           "skipped_file_count": 0
         }
       }
