@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d016382d6dbecc4fa2928ffe6a94cf0, type: 3}
   m_Name: DefaultLostTrackingServiceProfile
   m_EditorClassIdentifier: 
-  isCustomProfile: 1
+  isCustomProfile: 0
   trackingLostVisualPrefab: {fileID: 3020011822869161386, guid: ac9d662b5ab57dc489e1ea86933f2faa,
     type: 3}
   trackingLostVisualLayer: 31
