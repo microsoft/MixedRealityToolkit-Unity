@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using System;
 using System.Data;
+using UnityEngine.UIElements;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -14,11 +15,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         Quad,
         Sprite,
         Char,
+        None,
     }
 
+    [ExecuteAlways]
     public class ButtonConfigHelper : MonoBehaviour
     {
-        const string defaultIconChar = "\u0066";
+        const string defaultIconChar = "E700";
         const string defaultIconTextureNameID = "_MainTex";
 
         public string Label
@@ -51,24 +54,21 @@ namespace Microsoft.MixedReality.Toolkit.UI
         private GameObject seeItSayItLabel = null;
         [SerializeField]
         private TextMeshPro seeItSatItLabelText = null;
-
-        [Header("Icon Settings")]
         [SerializeField]
         private ButtonIconStyle iconStyle = ButtonIconStyle.Quad;
 
-        [Header("Icon Character")]
         [SerializeField]
         private TextMeshPro iconCharLabel = null;
         [SerializeField]
+        private TMP_FontAsset iconCharFont = null;
+        [SerializeField]
         private string iconChar = defaultIconChar;
 
-        [Header("Icon Sprite")]
         [SerializeField]
         private SpriteRenderer iconSpriteRenderer = null;
         [SerializeField]
         private Sprite iconSprite = null;
 
-        [Header("Icon Quad")]
         [SerializeField]
         private MeshRenderer iconQuadRenderer = null;
         [SerializeField]
@@ -78,11 +78,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private MaterialPropertyBlock iconTexturePropertyBlock;
 
-        public void SetCharIcon(string newIconChar)
+        public void SetCharIcon(string newIconChar, TMP_FontAsset newIconCharFont = null)
         {
             if (string.IsNullOrEmpty(newIconChar))
             {
                 return;
+            }
+
+            if (newIconCharFont != null && newIconCharFont != iconCharFont)
+            {
+                iconCharFont = newIconCharFont;
             }
 
             if (iconCharLabel == null)
@@ -91,11 +96,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return;
             }
 
-            if (iconCharLabel.text != newIconChar)
+            iconChar = newIconChar;
+            if (iconCharFont != null)
             {
-                iconChar = newIconChar;
+                iconCharLabel.font = iconCharFont;
+            }
+
+            if (iconCharLabel.text != iconChar || iconCharLabel.font != iconCharFont)
+            {
                 iconCharLabel.text = newIconChar;
             }
+
+            SetIconStyle(ButtonIconStyle.Char);
         }
 
         public void SetSpriteIcon(Sprite newIconSprite)
@@ -111,11 +123,14 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return;
             }
 
-            if (iconSpriteRenderer.sprite != newIconSprite)
+            iconSprite = newIconSprite;
+
+            if (iconSpriteRenderer.sprite != iconSprite)
             {
-                iconSprite = newIconSprite;
                 iconSpriteRenderer.sprite = newIconSprite;
             }
+
+            SetIconStyle(ButtonIconStyle.Sprite);
         }
 
         public void SetQuadIcon(Texture newIconTexture)
@@ -131,20 +146,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 return;
             }
 
-            Texture existingTexture = iconQuadRenderer.sharedMaterial.GetTexture(iconQuadTextureNameID);
-            if (existingTexture != newIconTexture)
+            iconQuadTexture = newIconTexture;
+
+            if (iconTexturePropertyBlock == null)
             {
-                iconQuadTexture = newIconTexture;
-
-                if (iconTexturePropertyBlock == null)
-                {
-                    iconTexturePropertyBlock = new MaterialPropertyBlock();
-                }
-
-                iconQuadRenderer.GetPropertyBlock(iconTexturePropertyBlock);
-                iconTexturePropertyBlock.SetTexture("_MainTex", newIconTexture);
-                iconQuadRenderer.SetPropertyBlock(iconTexturePropertyBlock);
+                iconTexturePropertyBlock = new MaterialPropertyBlock();
             }
+
+            iconQuadRenderer.GetPropertyBlock(iconTexturePropertyBlock);
+            iconTexturePropertyBlock.SetTexture("_MainTex", newIconTexture);
+            iconQuadRenderer.SetPropertyBlock(iconTexturePropertyBlock);
+
+            SetIconStyle(ButtonIconStyle.Quad);
         }
 
         private void SetIconStyle(ButtonIconStyle newStyle)
@@ -169,6 +182,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     iconSpriteRenderer?.gameObject.SetActive(false);
                     iconQuadRenderer?.gameObject.SetActive(true);
                     break;
+
+                case ButtonIconStyle.None:
+                    iconCharLabel?.gameObject.SetActive(false);
+                    iconSpriteRenderer?.gameObject.SetActive(false);
+                    iconQuadRenderer?.gameObject.SetActive(false);
+                    break;
             }
         }
 
@@ -183,7 +202,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     break;
 
                 case ButtonIconStyle.Char:
-                    SetCharIcon(iconChar);
+                    SetCharIcon(iconChar, iconCharFont);
                     break;
 
                 case ButtonIconStyle.Sprite:
@@ -198,12 +217,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
 #if UNITY_EDITOR
-
-        private void OnValidate()
-        {
-            SetIconStyle(iconStyle);
-        }
-
         [CustomEditor(typeof(ButtonConfigHelper))]
         public class ConfigureButtonInspector : UnityEditor.Editor
         {
@@ -226,6 +239,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             private SerializedProperty iconCharLabelProp;
             private SerializedProperty iconCharProp;
+            private SerializedProperty iconFontProp;
 
             private SerializedProperty iconSpriteRendererProp;
             private SerializedProperty iconSpriteProp;
@@ -249,6 +263,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 iconCharLabelProp = serializedObject.FindProperty("iconCharLabel");
                 iconCharProp = serializedObject.FindProperty("iconChar");
+                iconFontProp = serializedObject.FindProperty("iconCharFont");
 
                 iconSpriteRendererProp = serializedObject.FindProperty("iconSpriteRenderer");
                 iconSpriteProp = serializedObject.FindProperty("iconSprite");
@@ -271,6 +286,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                 showComponents = EditorGUILayout.Toggle("Show Component References", showComponents);
 
+                ButtonIconStyle oldStyle = (ButtonIconStyle)iconStyleProp.enumValueIndex;
+
                 using (new EditorGUI.IndentLevelScope(1))
                 {
                     using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
@@ -286,41 +303,51 @@ namespace Microsoft.MixedReality.Toolkit.UI
                                 EditorGUILayout.PropertyField(labelTextProp);
                             }
 
-                            SerializedObject labelTextObject = new SerializedObject(cb.labelText);
-                            SerializedProperty textProp = labelTextObject.FindProperty("m_text");
-                            EditorGUILayout.PropertyField(textProp, new GUIContent("Main Label"));
-                            EditorGUILayout.Space();
-
-                            if (EditorGUI.EndChangeCheck())
+                            if (cb.labelText != null)
                             {
-                                labelTextObject.ApplyModifiedProperties();
-                            }
-
-                            cb.seeItSayItLabel.SetActive(EditorGUILayout.Toggle("Enable", cb.seeItSayItLabel.activeSelf));
-                            if (cb.seeItSatItLabelText != null)
-                            {
-                                if (showComponents)
+                                cb.labelText.gameObject.SetActive(EditorGUILayout.Toggle("Enable Main Label", cb.labelText.gameObject.activeSelf));
+                                if (cb.labelText.gameObject.activeSelf)
                                 {
-                                    EditorGUILayout.PropertyField(seeItSayItLabelProp);
-                                }
-
-                                if (cb.seeItSayItLabel.activeSelf)
-                                {
-                                    if (showComponents)
-                                    {
-                                        EditorGUILayout.PropertyField(seeItSatItLabelTextProp);
-                                    }
-
-                                    EditorGUI.BeginChangeCheck();
-
-                                    SerializedObject sisiLabelTextObject = new SerializedObject(cb.seeItSatItLabelText);
-                                    SerializedProperty sisiTextProp = sisiLabelTextObject.FindProperty("m_text");
-                                    EditorGUILayout.PropertyField(sisiTextProp, new GUIContent("See it / Say it Label"));
+                                    SerializedObject labelTextObject = new SerializedObject(cb.labelText);
+                                    SerializedProperty textProp = labelTextObject.FindProperty("m_text");
+                                    EditorGUILayout.PropertyField(textProp, new GUIContent("Main Label Text"));
                                     EditorGUILayout.Space();
 
                                     if (EditorGUI.EndChangeCheck())
                                     {
                                         labelTextObject.ApplyModifiedProperties();
+                                    }
+                                }
+                            }
+
+                            if (cb.seeItSayItLabel != null)
+                            {
+                                cb.seeItSayItLabel.SetActive(EditorGUILayout.Toggle("Enable See it / Say it Label", cb.seeItSayItLabel.activeSelf));
+                                if (cb.seeItSayItLabel.activeSelf && cb.seeItSatItLabelText != null)
+                                {
+                                    if (showComponents)
+                                    {
+                                        EditorGUILayout.PropertyField(seeItSayItLabelProp);
+                                    }
+
+                                    if (cb.seeItSayItLabel.activeSelf)
+                                    {
+                                        if (showComponents)
+                                        {
+                                            EditorGUILayout.PropertyField(seeItSatItLabelTextProp);
+                                        }
+
+                                        EditorGUI.BeginChangeCheck();
+
+                                        SerializedObject sisiLabelTextObject = new SerializedObject(cb.seeItSatItLabelText);
+                                        SerializedProperty sisiTextProp = sisiLabelTextObject.FindProperty("m_text");
+                                        EditorGUILayout.PropertyField(sisiTextProp, new GUIContent("See it / Say it Label"));
+                                        EditorGUILayout.Space();
+
+                                        if (EditorGUI.EndChangeCheck())
+                                        {
+                                            sisiLabelTextObject.ApplyModifiedProperties();
+                                        }
                                     }
                                 }
                             }
@@ -391,6 +418,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 SessionState.SetBool(ShowComponentsKey, showComponents);
 
                 serializedObject.ApplyModifiedProperties();
+
+                if (oldStyle != (ButtonIconStyle)iconStyleProp.enumValueIndex)
+                {
+                    cb.ForceRefresh();
+                }
             }
 
             private void DrawIconSpriteEditor(bool showComponents)
@@ -515,7 +547,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     if (cb.iconSet.DrawCharIconSelector(currentIconChar, out newIconChar, 1))
                     {
                         iconCharProp.stringValue = newIconChar;
-                        cb.SetCharIcon(newIconChar);
+                        iconFontProp.objectReferenceValue = cb.iconSet.CharIconFont;
+                        cb.SetCharIcon(newIconChar, cb.iconSet.CharIconFont);
                     }
                 }
                 else

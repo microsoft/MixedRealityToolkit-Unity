@@ -487,6 +487,32 @@ MonoBehaviour:
   localCenter: {x: 0, y: 0, z: -0.008}
   bounds: {x: 0.032, y: 0.032}
   touchableCollider: {fileID: 316800722}
+--- !u!114 &7652376644636595447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 316800718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cf098d972aeb8b4daa70b00381af006, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  labelText: {fileID: 937783102}
+  interactable: {fileID: 7440800412470431853}
+  iconSet: {fileID: 11400000, guid: 8b386ef895f7c924f8c4b03d1d3ed683, type: 2}
+  seeItSayItLabel: {fileID: 329340111926477333}
+  seeItSatItLabelText: {fileID: 9181818329810857364}
+  iconStyle: 0
+  iconCharLabel: {fileID: 5182697764271180019}
+  iconCharFont: {fileID: 11400000, guid: 6351098d6b2daa043a72bb76849c79fb, type: 2}
+  iconChar: "\uEBD2"
+  iconSpriteRenderer: {fileID: 7050879399563888436}
+  iconSprite: {fileID: 0}
+  iconQuadRenderer: {fileID: 1911902820}
+  iconQuadTextureNameID: _MainTex
+  iconQuadTexture: {fileID: 0}
 --- !u!1 &937783100
 GameObject:
   m_ObjectHideFlags: 0
@@ -1385,7 +1411,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
+  - {fileID: 9140915577319219994, guid: 6351098d6b2daa043a72bb76849c79fb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1440,10 +1466,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: A
+  m_text: "\uEBD2"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 6a84f857bec7e7345843ae29404c57ce, type: 2}
-  m_sharedMaterial: {fileID: 21202819797275496, guid: 6a84f857bec7e7345843ae29404c57ce,
+  m_fontAsset: {fileID: 11400000, guid: 6351098d6b2daa043a72bb76849c79fb, type: 2}
+  m_sharedMaterial: {fileID: 9140915577319219994, guid: 6351098d6b2daa043a72bb76849c79fb,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1469,14 +1495,14 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 0.1
+  m_fontSize: 0.115
   m_fontSizeBase: 0.1
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_textAlignment: 514
+  m_textAlignment: 544
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0

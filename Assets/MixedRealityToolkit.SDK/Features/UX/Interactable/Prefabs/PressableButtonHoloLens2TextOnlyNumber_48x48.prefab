@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2709732797171164301}
   - component: {fileID: 4196636372085809879}
   m_Layer: 0
-  m_Name: TextMeshPro (1)
+  m_Name: NumberLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -323,11 +323,6 @@ PrefabInstance:
       propertyPath: m_margin.y
       value: 0.008965321
       objectReference: {fileID: 0}
-    - target: {fileID: 6886892591732020342, guid: daa0726e9f4321044bc455f2849304f1,
-        type: 3}
-      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 1853065891955223916, guid: daa0726e9f4321044bc455f2849304f1,
         type: 3}
       propertyPath: m_Mesh
@@ -346,11 +341,21 @@ PrefabInstance:
     - target: {fileID: 3791021349010917240, guid: daa0726e9f4321044bc455f2849304f1,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2380892921484742106, guid: daa0726e9f4321044bc455f2849304f1,
         type: 3}
       propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4093808206858475129, guid: daa0726e9f4321044bc455f2849304f1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5972499728906768620, guid: daa0726e9f4321044bc455f2849304f1,
+        type: 3}
+      propertyPath: iconStyle
       value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []

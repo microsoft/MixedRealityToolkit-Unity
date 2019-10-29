@@ -36,10 +36,40 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 44f8f68c87747f44084f7c32004a1332, type: 3}
   - {fileID: 21300000, guid: 33c59392a442e9149bf4110185668b0f, type: 3}
   - {fileID: 21300000, guid: d05e73e843a56614998232e00ce1c986, type: 3}
-  charIconFont: {fileID: 12800000, guid: 0fd94703e1ea496bb9999216ac3ece0d, type: 3}
+  charIconFont: {fileID: 0}
   charIcons:
-  - A
-  - B
-  - C
-  - D
-  - E
+  - "\uEBD2"
+  - "\uE70D"
+  - "\uE70E"
+  - "\uE710"
+  - "\uE711"
+  - "\uE71E"
+  - "\uE720"
+  - "\uE722"
+  - "\uE72A"
+  - "\uE72B"
+  - "\uE72C"
+  - "\uE72E"
+  - "\uE738"
+  - "\uE760"
+  - "\uE761"
+  - "\uE765"
+  - "\uE767"
+  - "\uE76B"
+  - "\uE76C"
+  - "\uE77B"
+  - "\uE783"
+  - "\uE7BA"
+  - "\uE894"
+  - "\uE8A7"
+  - "\uE8FB"
+  - "\uE930"
+  - "\uE9EA"
+  - "\uEA39"
+  - "\uEBD2"
+  - "\uEC90"
+  - "\uEC97"
+  - "\uEC98"
+  - "\uECA2"
+  - "\uED17"
+  - "\uED17"

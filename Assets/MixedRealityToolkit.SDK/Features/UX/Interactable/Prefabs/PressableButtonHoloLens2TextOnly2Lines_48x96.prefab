@@ -132,5 +132,15 @@ PrefabInstance:
       propertyPath: m_text
       value: Lorem ipsum dolor sit amet
       objectReference: {fileID: 0}
+    - target: {fileID: 4608343336092450455, guid: 8e9607bc5dcaf684db874e9b032d5d89,
+        type: 3}
+      propertyPath: iconStyle
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6180816494762276866, guid: 8e9607bc5dcaf684db874e9b032d5d89,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8e9607bc5dcaf684db874e9b032d5d89, type: 3}
