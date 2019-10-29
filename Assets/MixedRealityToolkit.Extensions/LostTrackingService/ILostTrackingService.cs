@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
         /// <summary>
         /// Editor-only method to test lost tracking visual.
         /// </summary>
-        /// <param name="trackingLost"></param>
+        /// <param name="trackingLost">If true, sets tracking to be lost. If false, sets tracking to be found.</param>
         void EditorSetTrackingLost(bool trackingLost);
 #endif
     }

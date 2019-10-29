@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
         /// <summary>
         /// Sets all visual components to the layer provided.
         /// </summary>
-        /// <param name="layer"></param>
+        /// <param name="layer">The layer to set for the visual components.</param>
         void SetLayer(int layer);
 
         /// <summary>
