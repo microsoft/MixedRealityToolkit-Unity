@@ -16,6 +16,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     public class MixedRealityProjectConfigurator
     {
         private const int SpatialAwarenessDefaultLayer = 31;
+        private const AndroidSdkVersions MinAndroidSdk = AndroidSdkVersions.AndroidApiLevel24; // Android 7.0
+        private const int RequirediOSArchitecture = 1; // Per https://docs.unity3d.com/ScriptReference/PlayerSettings.SetArchitecture.html, 1 == ARM64
+        private const float iOSMinOsVersion = 11.0f;
+        private const string iOSCameraUsageDescription = "Required for augmented reality support.";
 
         /// <summary>
         /// List of available configurations to check and configure with this utility
@@ -30,12 +34,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             SpatialAwarenessLayer,
 
             // WSA Capabilities
-            SpatialPerceptionCapability,
+            SpatialPerceptionCapability = 1000,
             MicrophoneCapability,
             InternetClientCapability,
 #if UNITY_2019_3_OR_NEWER
             EyeTrackingCapability,
 #endif
+
+            // Android Settings
+            AndroidMultiThreadedRendering = 2000,
+            AndroidMinSdkVersion,
+
+            // iOS Settings
+            IOSMinOSVersion = 3000,
+            IOSArchitecture,
+            IOSCameraUsageDescription,
         };
 
         // The check functions for each type of setting
@@ -48,12 +61,25 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.SinglePassInstancing,  () => { return MixedRealityOptimizeUtils.IsSinglePassInstanced(); } },
             { Configurations.SpatialAwarenessLayer,  () => { return HasSpatialAwarenessLayer(); } },
 
+            // UWP Capabilities
             { Configurations.SpatialPerceptionCapability,  () => { return PlayerSettings.WSA.GetCapability(PlayerSettings.WSACapability.SpatialPerception); } },
             { Configurations.MicrophoneCapability,  () => { return PlayerSettings.WSA.GetCapability(PlayerSettings.WSACapability.Microphone); } },
             { Configurations.InternetClientCapability,  () => { return PlayerSettings.WSA.GetCapability(PlayerSettings.WSACapability.InternetClient); } },
 #if UNITY_2019_3_OR_NEWER
             { Configurations.EyeTrackingCapability,  () => { return PlayerSettings.WSA.GetCapability(PlayerSettings.WSACapability.GazeInput); } },
 #endif
+
+            // Android Settings
+            { Configurations.AndroidMultiThreadedRendering, () => { return PlayerSettings.GetMobileMTRendering(BuildTargetGroup.Android) == false; } },
+            { Configurations.AndroidMinSdkVersion, () => { return PlayerSettings.Android.minSdkVersion >= MinAndroidSdk; } },
+
+            // iOS Settings
+            { Configurations.IOSMinOSVersion, () => {
+                    float version;
+                    if (!float.TryParse(PlayerSettings.iOS.targetOSVersionString, out version)) { return false; }
+                    return version >= iOSMinOsVersion; } },
+            { Configurations.IOSArchitecture, () => { return PlayerSettings.GetArchitecture(BuildTargetGroup.iOS) == RequirediOSArchitecture; } },
+            { Configurations.IOSCameraUsageDescription, () => { return !string.IsNullOrWhiteSpace(PlayerSettings.iOS.cameraUsageDescription); } },
         };
 
         // The configure functions for each type of setting
@@ -66,12 +92,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.SinglePassInstancing,  () => { MixedRealityOptimizeUtils.SetSinglePassInstanced(); } },
             { Configurations.SpatialAwarenessLayer,  () => { SetSpatialAwarenessLayer(); } },
 
+            // UWP Capabilities
             { Configurations.SpatialPerceptionCapability,  () => { PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.SpatialPerception, true); } },
             { Configurations.MicrophoneCapability,  () => { PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.Microphone, true); } },
             { Configurations.InternetClientCapability,  () => { PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClient, true); } },
 #if UNITY_2019_3_OR_NEWER
             { Configurations.EyeTrackingCapability,  () => { PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.GazeInput, true); } },
 #endif
+
+            // Android Settings
+            { Configurations.AndroidMultiThreadedRendering, () => { PlayerSettings.SetMobileMTRendering(BuildTargetGroup.Android, false); } },
+            { Configurations.AndroidMinSdkVersion, () => { PlayerSettings.Android.minSdkVersion = MinAndroidSdk; } },
+
+            // iOS Settings
+            { Configurations.IOSMinOSVersion, () => { PlayerSettings.iOS.targetOSVersionString = iOSMinOsVersion.ToString(); } },
+            { Configurations.IOSArchitecture, () => { PlayerSettings.SetArchitecture(BuildTargetGroup.iOS, RequirediOSArchitecture); } },
+            { Configurations.IOSCameraUsageDescription, () => { PlayerSettings.iOS.cameraUsageDescription = iOSCameraUsageDescription; } },
         };
 
         /// <summary>
