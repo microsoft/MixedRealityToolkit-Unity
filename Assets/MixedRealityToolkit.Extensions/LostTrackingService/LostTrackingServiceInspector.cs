@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking.Editor
 {
+    /// <summary>
+    /// The custom inspector for an <see cref="ILostTrackingService"/>.
+    /// </summary>
     [MixedRealityServiceInspector(typeof(ILostTrackingService))]
     public class LostTrackingServiceInspector : BaseMixedRealityServiceInspector
     {
@@ -37,5 +40,4 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking.Editor
         }
     }
 }
-
 #endif

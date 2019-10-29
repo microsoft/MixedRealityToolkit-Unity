@@ -3,19 +3,32 @@
 
 using System;
 using UnityEngine;
-using UnityEngine.XR.WSA;
 using Microsoft.MixedReality.Toolkit.Utilities;
+
+#if UNITY_WSA
+using UnityEngine.XR.WSA;
+#endif
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
 {
+    /// <summary>
+    /// A service that detects when tracking is lost on WSA devices. 
+    /// When tracking is lost, the service displays a visual indicator and sets the main camera's culling mask to hide all other objects.
+    /// When tracking is restored, the camera mask is restored and the visual indicator is hidden.
+    /// </summary>
     [MixedRealityExtensionService(SupportedPlatforms.WindowsUniversal)]
     public class LostTrackingService : BaseExtensionService, ILostTrackingService, IMixedRealityExtensionService
     {
+        /// <inheritdoc />
         public bool TrackingLost { get; private set; } = false;
+
+        /// <inheritdoc />
         public Action OnTrackingLost { get; set; }
+
+        /// <inheritdoc />
         public Action OnTrackingRestored { get; set; }
 
-        private LostTrackingServiceProfile profile;
+        private readonly LostTrackingServiceProfile profile;
         private ILostTrackingVisual visual;
         private int cullingMaskOnTrackingLost;
         private float timeScaleOnTrackingLost;
@@ -25,16 +38,18 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
             this.profile = (LostTrackingServiceProfile)profile;
         }
 
+        /// <inheritdoc />
         public override void Initialize()
         {
 #if UNITY_WSA
-            UnityEngine.XR.WSA.WorldManager.OnPositionalLocatorStateChanged += OnPositionalLocatorStateChanged;
+            WorldManager.OnPositionalLocatorStateChanged += OnPositionalLocatorStateChanged;
 #else
             Debug.LogWarning("This service is not supported on this platform.");
 #endif
         }
 
 #if UNITY_EDITOR
+        /// <inheritdoc />
         public void EditorSetTrackingLost(bool trackingLost)
         {
             SetTrackingLost(trackingLost);
@@ -65,8 +80,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
         {
             if (visual == null)
             {
-                GameObject visualObject = GameObject.Instantiate(profile.TrackingLostVisualPrefab);
-                visual = visualObject?.GetComponentInChildren<ILostTrackingVisual>();
+                GameObject visualObject = UnityEngine.Object.Instantiate(profile.TrackingLostVisualPrefab);
+
+                if (visualObject != null)
+                {
+                    visual = visualObject.GetComponentInChildren<ILostTrackingVisual>();
+                }
 
                 if (visual == null)
                 {
@@ -121,7 +140,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
 #if UNITY_WSA
         private void OnPositionalLocatorStateChanged(PositionalLocatorState oldState, PositionalLocatorState newState)
         {
-            bool trackingLost = TrackingLost;
             switch (newState)
             {
                 case PositionalLocatorState.Inhibited:
