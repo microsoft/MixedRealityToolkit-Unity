@@ -17,9 +17,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     {
         private const int SpatialAwarenessDefaultLayer = 31;
         private const AndroidSdkVersions MinAndroidSdk = AndroidSdkVersions.AndroidApiLevel24; // Android 7.0
-        private const int RequiredIosArchitecture = 1; // Per https://docs.unity3d.com/ScriptReference/PlayerSettings.SetArchitecture.html, 1 == ARM64
-        private const float IosMinOsVersion = 11.0f;
-        private const string IosCameraUsageDescription = "Required for augmented reality support.";
+        private const int RequirediOSArchitecture = 1; // Per https://docs.unity3d.com/ScriptReference/PlayerSettings.SetArchitecture.html, 1 == ARM64
+        private const float iOSMinOsVersion = 11.0f;
+        private const string iOSCameraUsageDescription = "Required for augmented reality support.";
 
         /// <summary>
         /// List of available configurations to check and configure with this utility
@@ -77,8 +77,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.IOSMinOSVersion, () => {
                     float version;
                     if (!float.TryParse(PlayerSettings.iOS.targetOSVersionString, out version)) { return false; }
-                    return version >= IosMinOsVersion; } },
-            { Configurations.IOSArchitecture, () => { return PlayerSettings.GetArchitecture(BuildTargetGroup.iOS) == RequiredIosArchitecture; } },
+                    return version >= iOSMinOsVersion; } },
+            { Configurations.IOSArchitecture, () => { return PlayerSettings.GetArchitecture(BuildTargetGroup.iOS) == RequirediOSArchitecture; } },
             { Configurations.IOSCameraUsageDescription, () => { return !string.IsNullOrWhiteSpace(PlayerSettings.iOS.cameraUsageDescription); } },
         };
 
@@ -105,9 +105,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.AndroidMinSdkVersion, () => { PlayerSettings.Android.minSdkVersion = MinAndroidSdk; } },
 
             // iOS Settings
-            { Configurations.IOSMinOSVersion, () => { PlayerSettings.iOS.targetOSVersionString = IosMinOsVersion.ToString(); } },
-            { Configurations.IOSArchitecture, () => { PlayerSettings.SetArchitecture(BuildTargetGroup.iOS, RequiredIosArchitecture); } },
-            { Configurations.IOSCameraUsageDescription, () => { PlayerSettings.iOS.cameraUsageDescription = IosCameraUsageDescription; } },
+            { Configurations.IOSMinOSVersion, () => { PlayerSettings.iOS.targetOSVersionString = iOSMinOsVersion.ToString(); } },
+            { Configurations.IOSArchitecture, () => { PlayerSettings.SetArchitecture(BuildTargetGroup.iOS, RequirediOSArchitecture); } },
+            { Configurations.IOSCameraUsageDescription, () => { PlayerSettings.iOS.cameraUsageDescription = iOSCameraUsageDescription; } },
         };
 
         /// <summary>
