@@ -193,43 +193,43 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
         [SerializeField]
         [Tooltip("Bounds control box display configuration section.")]
-        private BoundsControlBoxDisplay boxDisplay;
+        private BoundsControlBoxDisplayConfiguration boxDisplayConfiguration;
         /// <summary>
         /// Bounds control box display configuration section.
         /// </summary>
-        public BoundsControlBoxDisplay BoxDisplay => boxDisplay;
+        public BoundsControlBoxDisplayConfiguration BoxDisplayConfiguration => boxDisplayConfiguration;
 
         [SerializeField]
         [Tooltip("This section defines the links / lines that are drawn between the corners of the control.")]
-        private BoundsControlLinks links;
+        private BoundsControlLinksConfiguration linksConfiguration;
         /// <summary>
         /// This section defines the links / lines that are drawn between the corners of the control.
         /// </summary>
-        public BoundsControlLinks Links => links;
+        public BoundsControlLinksConfiguration LinksConfiguration => linksConfiguration;
 
         [SerializeField]
         [Tooltip("Configuration of the scale handles.")]
-        private BoundsControlScaleHandles scaleHandles;
+        private BoundsControlScaleHandlesConfiguration scaleHandlesConfiguration;
         /// <summary>
         /// Configuration of the scale handles.
         /// </summary>
-        public BoundsControlScaleHandles ScaleHandles => scaleHandles;
+        public BoundsControlScaleHandlesConfiguration ScaleHandlesConfiguration => scaleHandlesConfiguration;
 
         [SerializeField]
         [Tooltip("Configuration of the rotation handles.")]
-        private BoundsControlRotationHandles rotationHandles;
+        private BoundsControlRotationHandlesConfiguration rotationHandlesConfiguration;
         /// <summary>
         /// Configuration of the rotation handles.
         /// </summary>
-        public BoundsControlRotationHandles RotationHandles => rotationHandles;
+        public BoundsControlRotationHandlesConfiguration RotationHandles => rotationHandlesConfiguration;
 
         [SerializeField]
         [Tooltip("Configuration for Proximity Effect to scale handles or change materials on proximity.")]
-        private ProximityEffect proximityEffect;
+        private ProximityEffectConfiguration handleProximityEffectConfiguration;
         /// <summary>
         /// Configuration for Proximity Effect to scale handles or change materials on proximity.
         /// </summary>
-        public ProximityEffect ProximityEffect => proximityEffect;
+        public ProximityEffectConfiguration HandleProximityEffectConfiguration => handleProximityEffectConfiguration;
 
         [Header("Debug")]
         [Tooltip("Debug only. Component used to display debug messages.")]
@@ -259,26 +259,48 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         }
 
         [Header("Events")]
+        [SerializeField]
+        [Tooltip("Event that gets fired when interaction with a rotation handle starts.")]
+        private UnityEvent rotateStarted = new UnityEvent();
         /// <summary>
         /// Event that gets fired when interaction with a rotation handle starts.
         /// </summary>
-        public UnityEvent RotateStarted = new UnityEvent();
+        public UnityEvent RotateStarted => rotateStarted;
+
+        [SerializeField]
+        [Tooltip("Event that gets fired when interaction with a rotation handle stops.")]
+        private UnityEvent rotateStopped = new UnityEvent();
         /// <summary>
         /// Event that gets fired when interaction with a rotation handle stops.
         /// </summary>
-        public UnityEvent RotateStopped = new UnityEvent();
+        public UnityEvent RotateStopped => rotateStopped;
+
+        [SerializeField]
+        [Tooltip("Event that gets fired when interaction with a scale handle starts.")]
+        private UnityEvent scaleStarted = new UnityEvent();
         /// <summary>
         /// Event that gets fired when interaction with a scale handle starts.
         /// </summary>
-        public UnityEvent ScaleStarted = new UnityEvent();
+        public UnityEvent ScaleStarted => scaleStarted;
+
+        [SerializeField]
+        [Tooltip("Event that gets fired when interaction with a scale handle stops.")]
+        private UnityEvent scaleStopped = new UnityEvent();
         /// <summary>
         /// Event that gets fired when interaction with a scale handle stops.
         /// </summary>
-        public UnityEvent ScaleStopped = new UnityEvent();
+        public UnityEvent ScaleStopped => scaleStopped;
 
         #endregion Serialized Fields
 
         #region Private Fields
+
+        // runtime instantiated visuals of bounding box 
+        private BoundsControlLinks links;
+        private BoundsControlScaleHandles scaleHandles;
+        private BoundsControlRotationHandles rotationHandles;
+        private BoundsControlBoxDisplay boxDisplay;
+        private ProximityEffect proximityEffect;
 
         // Whether we should be displaying just the wireframe (if enabled) or the handles too
         private bool wireframeOnly = false;
@@ -428,29 +450,33 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             if (targetObject == null)
                 targetObject = gameObject;
 
-            scaleHandles = InstantiateScriptable(scaleHandles);
-            rotationHandles = InstantiateScriptable(rotationHandles);
-            boxDisplay = InstantiateScriptable(boxDisplay);
-            links = InstantiateScriptable(links);
-            proximityEffect = InstantiateScriptable(proximityEffect);
+            // ensure we have a default configuration in case there's none set by the user
+            scaleHandlesConfiguration = EnsureScriptable(scaleHandlesConfiguration);
+            rotationHandlesConfiguration = EnsureScriptable(rotationHandlesConfiguration);
+            boxDisplayConfiguration = EnsureScriptable(boxDisplayConfiguration);
+            linksConfiguration = EnsureScriptable(linksConfiguration);
+            handleProximityEffectConfiguration = EnsureScriptable(handleProximityEffectConfiguration);
+
+            // instantiate runtime classes for visuals
+            scaleHandles = new BoundsControlScaleHandles(scaleHandlesConfiguration);
+            rotationHandles = new BoundsControlRotationHandles(rotationHandlesConfiguration);
+            boxDisplay = new BoundsControlBoxDisplay(boxDisplayConfiguration);
+            links = new BoundsControlLinks(linksConfiguration);
+            proximityEffect = new ProximityEffect(handleProximityEffectConfiguration);
 
             // subscribe to visual changes
-            scaleHandles.configurationChanged.AddListener(CreateRig);
-            scaleHandles.visibilityChanged.AddListener(ResetVisuals);
-            rotationHandles.configurationChanged.AddListener(CreateRig);
-            boxDisplay.configurationChanged.AddListener(CreateRig);
-            links.configurationChanged.AddListener(CreateRig);          
+            scaleHandlesConfiguration.configurationChanged.AddListener(CreateRig);
+            scaleHandlesConfiguration.visibilityChanged.AddListener(ResetVisuals);
+            rotationHandlesConfiguration.configurationChanged.AddListener(CreateRig);
+            boxDisplayConfiguration.configurationChanged.AddListener(CreateRig);
+            linksConfiguration.configurationChanged.AddListener(CreateRig);          
         }
 
-        private static T InstantiateScriptable<T>(T instance) where T : ScriptableObject
+        private static T EnsureScriptable<T>(T instance) where T : ScriptableObject
         {
             if (instance == null)
             {
                 instance = ScriptableObject.CreateInstance<T>();
-            }
-            else
-            {
-                instance = Object.Instantiate(instance);
             }
 
             return instance;

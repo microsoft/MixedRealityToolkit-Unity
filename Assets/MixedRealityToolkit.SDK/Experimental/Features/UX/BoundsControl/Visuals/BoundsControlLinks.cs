@@ -2,102 +2,14 @@
 using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 {
     /// <summary>
     /// Links that are rendered in between the corners of <see cref="BoundsControl"/>
     /// </summary>
-    [CreateAssetMenu(fileName = "BoundsControlLinks", menuName = "Mixed Reality Toolkit/Bounds Control/Links")]
-    public class BoundsControlLinks : ScriptableObject
+    public class BoundsControlLinks
     {
-        #region Serialized Properties
-        [SerializeField]
-        [Tooltip("Material used for wireframe display")]
-        private Material wireframeMaterial;
-
-        /// <summary>
-        /// Material used for wireframe display
-        /// </summary>
-        public Material WireframeMaterial
-        {
-            get { return wireframeMaterial; }
-            set
-            {
-                if (wireframeMaterial != value)
-                {
-                    wireframeMaterial = value;
-                    SetMaterials();
-                    configurationChanged.Invoke();
-                }
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("Radius for wireframe edges")]
-        private float wireframeEdgeRadius = 0.001f;
-
-        /// <summary>
-        /// Radius for wireframe edges
-        /// </summary>
-        public float WireframeEdgeRadius
-        {
-            get { return wireframeEdgeRadius; }
-            set
-            {
-                if (wireframeEdgeRadius != value)
-                {
-                    wireframeEdgeRadius = value;
-                    configurationChanged.Invoke();
-                }
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("Shape used for wireframe display")]
-        private WireframeType wireframeShape = WireframeType.Cubic;
-
-        /// <summary>
-        /// Shape used for wireframe display
-        /// </summary>
-        public WireframeType WireframeShape
-        {
-            get { return wireframeShape; }
-            set
-            {
-                if (wireframeShape != value)
-                {
-                    wireframeShape = value;
-                    configurationChanged.Invoke();
-                }
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("Show a wireframe around the bounds control when checked. Wireframe parameters below have no effect unless this is checked")]
-        private bool showWireframe = true;
-
-        /// <summary>
-        /// Show a wireframe around the bounds control when checked. Wireframe parameters below have no effect unless this is checked
-        /// </summary>
-        public bool ShowWireFrame
-        {
-            get { return showWireframe; }
-            set
-            {
-                if (showWireframe != value)
-                {
-                    showWireframe = value;
-                    configurationChanged.Invoke();
-                }
-            }
-        }
-
-        #endregion Serialized Properties
-
-        internal protected UnityEvent configurationChanged = new UnityEvent();
-
         /// <summary>
         /// defines a bounds control link - the line between 2 corners of a box
         /// it keeps track of the transform and the axis the link is representing
@@ -116,6 +28,14 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         private List<Link> links = new List<Link>();
         private List<Renderer> linkRenderers = new List<Renderer>();
 
+        private BoundsControlLinksConfiguration config;
+
+        internal BoundsControlLinks(BoundsControlLinksConfiguration configuration)
+        {
+            Debug.Assert(configuration != null, "Can't create BoundsControlLinks without valid configuration");
+            config = configuration;
+        }
+
         internal void Clear()
         {
             if (links != null)
@@ -127,16 +47,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                 links.Clear();
             }
         }
-
-        private void SetMaterials()
-        {
-            //ensure materials
-            if (wireframeMaterial == null)
-            {
-                wireframeMaterial = BoundsControlVisualUtils.CreateDefaultMaterial();
-            }
-        }
-
 
         internal void UpdateVisibilityInInspector(HideFlags flags)
         {
@@ -165,7 +75,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
         private Vector3 GetLinkDimensions(Vector3 currentBoundsExtents)
         {
-            float linkLengthAdjustor = wireframeShape == WireframeType.Cubic ? 2.0f : 1.0f - (6.0f * wireframeEdgeRadius);
+            float wireframeEdgeRadius = config.WireframeEdgeRadius;
+            float linkLengthAdjustor = config.WireframeShape == WireframeType.Cubic ? 2.0f : 1.0f - (6.0f * wireframeEdgeRadius);
             return (currentBoundsExtents * linkLengthAdjustor) + new Vector3(wireframeEdgeRadius, wireframeEdgeRadius, wireframeEdgeRadius);
         }
 
@@ -192,6 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                     // Compute the local scale that produces the desired world space dimensions
                     Vector3 linkDimensions = Vector3.Scale(GetLinkDimensions(currentBoundsExtents), invRootScale);
 
+                    float wireframeEdgeRadius = config.WireframeEdgeRadius;
                     if (links[i].axisType == CardinalAxisType.X)
                     {
                         links[i].transform.localScale = new Vector3(wireframeEdgeRadius, linkDimensions.x, wireframeEdgeRadius);
@@ -221,9 +133,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
         internal void CreateLinks(BoundsControlRotationHandles rotationHandles, Transform parent, Vector3 currentBoundsExtents)
         {
-            // ensure materials exist 
-            SetMaterials();
-
             // create links
             if (links != null)
             {
@@ -231,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                 Vector3 linkDimensions = GetLinkDimensions(currentBoundsExtents);
                 for (int i = 0; i < BoundsControlRotationHandles.NumEdges; ++i)
                 {
-                    if (wireframeShape == WireframeType.Cubic)
+                    if (config.WireframeShape == WireframeType.Cubic)
                     {
                         link = GameObject.CreatePrimitive(PrimitiveType.Cube);
                         GameObject.Destroy(link.GetComponent<BoxCollider>());
@@ -244,6 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                     link.name = "link_" + i.ToString();
 
                     CardinalAxisType axisType = rotationHandles.GetAxisType(i);
+                    float wireframeEdgeRadius = config.WireframeEdgeRadius;
                     if (axisType == CardinalAxisType.Y)
                     {
                         link.transform.localScale = new Vector3(wireframeEdgeRadius, linkDimensions.y, wireframeEdgeRadius);
@@ -265,9 +175,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                     Renderer linkRenderer = link.GetComponent<Renderer>();
                     linkRenderers.Add(linkRenderer);
 
-                    if (wireframeMaterial != null)
+                    if (config.WireframeMaterial != null)
                     {
-                        linkRenderer.material = wireframeMaterial;
+                        linkRenderer.material = config.WireframeMaterial;
                     }
 
                     links.Add(new Link(link.transform, axisType));

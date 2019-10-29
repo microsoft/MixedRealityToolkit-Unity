@@ -11,112 +11,12 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
     /// Base class for any type of <see cref="BoundsControl"/> handle.
     /// Handles are used for manipulating the BoundsControl by near or far user interaction.
     /// </summary>
-    public abstract class BoundsControlHandlesBase : ScriptableObject, IProximityEffectObjectProvider
+    public abstract class BoundsControlHandlesBase : IProximityEffectObjectProvider
     {
-        [SerializeField]
-        [Tooltip("Material applied to handles when they are not in a grabbed state")]
-        private Material handleMaterial;
-
-        /// <summary>
-        /// Material applied to handles when they are not in a grabbed state
-        /// </summary>
-        public Material HandleMaterial
+        protected abstract BoundsControlHandlesBaseConfiguration BaseConfig
         {
-            get { return handleMaterial; }
-            set
-            {
-                if (handleMaterial != value)
-                {
-                    handleMaterial = value;
-                    SetMaterials();
-                    configurationChanged.Invoke();
-                }
-            }
+            get;
         }
-
-        [SerializeField]
-        [Tooltip("Material applied to handles while they are a grabbed")]
-        private Material handleGrabbedMaterial;
-
-        /// <summary>
-        /// Material applied to handles while they are a grabbed
-        /// </summary>
-        public Material HandleGrabbedMaterial
-        {
-            get { return handleGrabbedMaterial; }
-            set
-            {
-                if (handleGrabbedMaterial != value)
-                {
-                    handleGrabbedMaterial = value;
-                    SetMaterials();
-                    configurationChanged.Invoke();
-                }
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("Prefab used to display this type of bounds control handle. If not set, default shape will be used (scale default: boxes, rotation default: spheres)")]
-        GameObject handlePrefab = null;
-
-        /// <summary>
-        /// Prefab used to display this type of bounds control handle. If not set, default shape will be used (scale default: boxes, rotation default: spheres)
-        /// </summary>
-        public GameObject HandlePrefab
-        {
-            get { return handlePrefab; }
-            set
-            {
-                if (handlePrefab != value)
-                {
-                    handlePrefab = value;
-                    configurationChanged.Invoke();
-                }
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("Size of the handle collidable")]
-        private float handleSize = 0.016f; // 1.6cm default handle size
-
-        /// <summary>
-        /// Size of the handle collidable
-        /// </summary>
-        public float HandleSize
-        {
-            get { return handleSize; }
-            set
-            {
-                if (handleSize != value)
-                {
-                    handleSize = value;
-                    configurationChanged.Invoke();
-                }
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("Additional padding to apply to the handle collider to make handle easier to hit")]
-        private Vector3 colliderPadding = new Vector3(0.016f, 0.016f, 0.016f);
-
-        /// <summary>
-        /// Additional padding to apply to the handle collider to make handle easier to hit
-        /// </summary>
-        public Vector3 ColliderPadding
-        {
-            get { return colliderPadding; }
-            set
-            {
-                if (colliderPadding != value)
-                {
-                    colliderPadding = value;
-                    configurationChanged.Invoke();
-                }
-            }
-        }
-
-        internal protected UnityEvent configurationChanged = new UnityEvent();
-        internal protected UnityEvent visibilityChanged = new UnityEvent();
 
         internal void ResetHandleVisibility(bool isVisible)
         {
@@ -125,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                 for (int i = 0; i < handles.Count; ++i)
                 {
                     handles[i].gameObject.SetActive(isVisible && IsVisible(handles[i]));
-                    BoundsControlVisualUtils.ApplyMaterialToAllRenderers(handles[i].gameObject, handleMaterial);
+                    BoundsControlVisualUtils.ApplyMaterialToAllRenderers(handles[i].gameObject, BaseConfig.HandleMaterial);
                 }
             }
         }
@@ -153,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                     }
                     else
                     {
-                        BoundsControlVisualUtils.ApplyMaterialToAllRenderers(handles[i].gameObject, handleGrabbedMaterial);
+                        BoundsControlVisualUtils.ApplyMaterialToAllRenderers(handles[i].gameObject, BaseConfig.HandleGrabbedMaterial);
                     }
                 }
             }
@@ -196,38 +96,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             return HandleType.None;
         }
 
-        internal protected void SetMaterials()
-        {
-            if (handleMaterial == null)
-            {
-                handleMaterial = BoundsControlVisualUtils.CreateDefaultMaterial();
-            }
-            if (handleGrabbedMaterial == null && handleGrabbedMaterial != handleMaterial)
-            {
-                handleGrabbedMaterial = BoundsControlVisualUtils.CreateDefaultMaterial();
-            }
-        }
-
         protected abstract Transform GetVisual(Transform handle);
 
 
         #region IProximityScaleObjectProvider 
         public abstract bool IsActive();
-
-        public Material GetBaseMaterial()
-        {
-            return handleMaterial;
-        }
-
-        public Material GetHighlightedMaterial()
-        {
-            return HandleGrabbedMaterial;
-        }
-
-        public float GetObjectSize()
-        {
-            return HandleSize;
-        }
 
         public void ForEachProximityObject(Action<Transform> action)
         {
@@ -235,6 +108,21 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             {
                 action(GetVisual(handles[i]));
             }
+        }
+
+        public Material GetBaseMaterial()
+        {
+            return BaseConfig.HandleMaterial;
+        }
+
+        public Material GetHighlightedMaterial()
+        {
+            return BaseConfig.HandleGrabbedMaterial;
+        }
+
+        public float GetObjectSize()
+        {
+            return BaseConfig.HandleSize;
         }
 
         #endregion IProximityScaleObjectProvider

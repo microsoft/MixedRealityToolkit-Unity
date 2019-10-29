@@ -10,54 +10,15 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
     /// Scale handles for <see cref="BoundsControl"/> that are used for scaling the
     /// gameobject BoundsControl is attached to with near or far interaction
     /// </summary>
-    [CreateAssetMenu(fileName = "BoundsControlScaleHandles", menuName = "Mixed Reality Toolkit/Bounds Control/Scale Handles")]
     public class BoundsControlScaleHandles : BoundsControlHandlesBase
     {
-        #region serialized fields
-        [SerializeField]
-        [Tooltip("Prefab used to display handles for 2D slate. If not set, default box shape will be used")]
-        GameObject handleSlatePrefab = null;
-
-        /// <summary>
-        /// Prefab used to display handles for 2D slate. If not set, default box shape will be used
-        /// </summary>
-        public GameObject HandleSlatePrefab
+        protected override BoundsControlHandlesBaseConfiguration BaseConfig => config;
+        private BoundsControlScaleHandlesConfiguration config;
+        internal BoundsControlScaleHandles(BoundsControlScaleHandlesConfiguration configuration)
         {
-            get { return handleSlatePrefab; }
-            set
-            {
-                if (handleSlatePrefab != value)
-                {
-                    handleSlatePrefab = value;
-                    configurationChanged.Invoke();
-                }
-            }
+            Debug.Assert(configuration != null, "Can't create BoundsControlScaleHandles without valid configuration");
+            config = configuration;
         }
-
-        [SerializeField]
-        [Tooltip("Check to show scale handles")]
-        private bool showScaleHandles = true;
-
-        /// <summary>
-        /// Public property to Set the visibility of the corner cube Scaling handles.
-        /// </summary>
-        public bool ShowScaleHandles
-        {
-            get
-            {
-                return showScaleHandles;
-            }
-            set
-            {
-                if (showScaleHandles != value)
-                {
-                    showScaleHandles = value;
-                    visibilityChanged.Invoke();
-                }
-            }
-        }
-
-        #endregion serialized fields
 
         internal void UpdateVisibilityInInspector(HideFlags flags)
         {
@@ -80,9 +41,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
         internal void Create(ref Vector3[] boundsCorners, Transform parent, bool drawManipulationTether, bool isFlattened)
         {
-            // ensure materials are set
-            SetMaterials();
-
             // create corners
             for (int i = 0; i < boundsCorners.Length; ++i)
             {
@@ -106,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
                 // figure out which prefab to instantiate
                 GameObject cornerVisual = null;
-                GameObject prefabType = isFlattened ? HandleSlatePrefab : HandlePrefab;
+                GameObject prefabType = isFlattened ? config.HandleSlatePrefab : config.HandlePrefab;
                 if (prefabType == null)
                 {
                     // instantiate default prefab, a cube. Remove the box collider from it
@@ -134,13 +92,13 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                 cornerbounds.size = maxDim * Vector3.one;
 
                 // we need to multiply by this amount to get to desired scale handle size
-                var invScale = HandleSize / cornerbounds.size.x;
+                var invScale = config.HandleSize / cornerbounds.size.x;
                 cornerVisual.transform.localScale = new Vector3(invScale, invScale, invScale);
 
-                BoundsControlVisualUtils.ApplyMaterialToAllRenderers(cornerVisual, HandleMaterial);
+                BoundsControlVisualUtils.ApplyMaterialToAllRenderers(cornerVisual, config.HandleMaterial);
 
                 BoundsControlVisualUtils.AddComponentsToAffordance(corner, new Bounds(cornerbounds.center * invScale, cornerbounds.size * invScale), 
-                    RotationHandlePrefabCollider.Box, CursorContextInfo.CursorAction.Scale, ColliderPadding, parent, drawManipulationTether);
+                    RotationHandlePrefabCollider.Box, CursorContextInfo.CursorAction.Scale, config.ColliderPadding, parent, drawManipulationTether);
                 handles.Add(corner.transform);       
             }
         }
@@ -159,7 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
         internal override bool IsVisible(Transform handle)
         {
-            return ShowScaleHandles;
+            return config.ShowScaleHandles;
         }
 
         internal override HandleType GetHandleType()
@@ -171,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         #region IProximityScaleObjectProvider 
         public override bool IsActive()
         {
-            return ShowScaleHandles;
+            return config.ShowScaleHandles;
         }
         #endregion IProximityScaleObjectProvider
     }

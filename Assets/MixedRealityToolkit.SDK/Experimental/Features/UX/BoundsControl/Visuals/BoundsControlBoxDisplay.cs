@@ -10,86 +10,29 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
     /// BoxDisplay can be used to attach a solid box visualization to a <see cref="BoundsControl"/>
     /// The box will only be rendered if a material is assigned
     /// </summary>
-    [CreateAssetMenu(fileName = "BoundsControlBoxDisplay", menuName = "Mixed Reality Toolkit/Bounds Control/Box Display")]
-    public class BoundsControlBoxDisplay : ScriptableObject
+    public class BoundsControlBoxDisplay
     {
-        [Header("Box Display")]
-
-        [SerializeField]
-        [Tooltip("Material used to display the bounding box. If set to null no bounding box will be displayed")]
-        private Material boxMaterial = null;
-
-        /// <summary>
-        /// Material used to display the bounding box. If set to null no bounding box will be displayed
-        /// </summary>
-        public Material BoxMaterial
-        {
-            get { return boxMaterial; }
-            set
-            {
-                if (boxMaterial != value)
-                {
-                    boxMaterial = value;
-                    configurationChanged.Invoke();
-                }
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("Material used to display the bounding box when grabbed. If set to null no change will occur when grabbed.")]
-        private Material boxGrabbedMaterial = null;
-
-        /// <summary>
-        /// Material used to display the bounding box when grabbed. If set to null no change will occur when grabbed.
-        /// </summary>
-        public Material BoxGrabbedMaterial
-        {
-            get { return boxGrabbedMaterial; }
-            set
-            {
-                if (boxGrabbedMaterial != value)
-                {
-                    boxGrabbedMaterial = value;
-                    configurationChanged.Invoke();
-                }
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("When an axis is flattened what value to set that axis's scale to for display.")]
-        private float flattenAxisDisplayScale = 0.0f;
-
-        /// <summary>
-        /// When an axis is flattened what value to set that axis's scale to for display.
-        /// </summary>
-        public float FlattenAxisDisplayScale
-        {
-            get { return flattenAxisDisplayScale; }
-            set
-            {
-                if (flattenAxisDisplayScale != value)
-                {
-                    flattenAxisDisplayScale = value;
-                    configurationChanged.Invoke();
-                }
-            }
-        }
-
-        internal protected UnityEvent configurationChanged = new UnityEvent();
-
         // Game object used to display the box. Parented to the rig root
         private GameObject boxDisplay;
 
+        private BoundsControlBoxDisplayConfiguration config;
+
+        internal BoundsControlBoxDisplay(BoundsControlBoxDisplayConfiguration configuration)
+        {
+            Debug.Assert(configuration != null, "Can't create BoundsControlBoxDisplay without valid configuration");
+            config = configuration;
+        }
+
         internal void AddBoxDisplay(Transform parent, Vector3 currentBoundsExtents, FlattenModeType flattenAxis)
         {
-            if (boxMaterial != null)
+            if (config.BoxMaterial != null)
             {
                 // this has to be cube even in flattened mode as flattened box display can still have a thickness of flattenAxisDisplayScale
                 boxDisplay = GameObject.CreatePrimitive(PrimitiveType.Cube); 
                 GameObject.Destroy(boxDisplay.GetComponent<Collider>());
                 boxDisplay.name = "bounding box";
 
-                BoundsControlVisualUtils.ApplyMaterialToAllRenderers(boxDisplay, boxMaterial);
+                BoundsControlVisualUtils.ApplyMaterialToAllRenderers(boxDisplay, config.BoxMaterial);
                 boxDisplay.transform.localScale = GetBoxDisplayScale(currentBoundsExtents, flattenAxis);
                 boxDisplay.transform.parent = parent;
             }
@@ -99,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         {
             // When a box is flattened one axis is normally scaled to zero, this doesn't always work well with visuals so we take 
             // that flattened axis and re-scale it to the flattenAxisDisplayScale.
-            Vector3 displayScale = BoundsControlVisualUtils.FlattenBounds(currentBoundsExtents, flattenAxis, flattenAxisDisplayScale);
+            Vector3 displayScale = BoundsControlVisualUtils.FlattenBounds(currentBoundsExtents, flattenAxis, config.FlattenAxisDisplayScale);
             return 2.0f * displayScale;
         }
 
@@ -116,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             //update the box material to the grabbed material
             if (boxDisplay != null)
             {
-                BoundsControlVisualUtils.ApplyMaterialToAllRenderers(boxDisplay, boxGrabbedMaterial);
+                BoundsControlVisualUtils.ApplyMaterialToAllRenderers(boxDisplay, config.BoxGrabbedMaterial);
             }
         }
 
@@ -126,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             if (boxDisplay != null)
             {
                 boxDisplay.SetActive(activate);
-                BoundsControlVisualUtils.ApplyMaterialToAllRenderers(boxDisplay, boxMaterial);
+                BoundsControlVisualUtils.ApplyMaterialToAllRenderers(boxDisplay, config.BoxMaterial);
             }
         }
 

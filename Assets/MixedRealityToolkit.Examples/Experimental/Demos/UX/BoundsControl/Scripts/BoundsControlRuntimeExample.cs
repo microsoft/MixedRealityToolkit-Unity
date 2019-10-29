@@ -110,11 +110,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos
                 yield return WaitForSpeechCommand();
 
                 SetStatus("ShowWireframe false");
-                bbox.Links.ShowWireFrame = false;
+                bbox.LinksConfiguration.ShowWireFrame = false;
                 yield return WaitForSpeechCommand();
 
                 SetStatus("ShowWireframe true");
-                bbox.Links.ShowWireFrame = true;
+                bbox.LinksConfiguration.ShowWireFrame = true;
                 yield return WaitForSpeechCommand();
 
                 SetStatus("BoxPadding 0.2f");
@@ -126,32 +126,32 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos
                 yield return WaitForSpeechCommand();
 
                 SetStatus("Set scale handle size 0.3");
-                bbox.ScaleHandles.HandleSize = 0.3f;
+                bbox.ScaleHandlesConfiguration.HandleSize = 0.3f;
                 yield return WaitForSpeechCommand();
 
                 SetStatus("Set scale handle widget prefab");
                 Debug.Assert(scaleWidget != null);
-                bbox.ScaleHandles.HandlePrefab = scaleWidget;
+                bbox.ScaleHandlesConfiguration.HandlePrefab = scaleWidget;
                 yield return WaitForSpeechCommand();
 
                 SetStatus("Handles red");
-                bbox.ScaleHandles.HandleMaterial = redMaterial;
+                bbox.ScaleHandlesConfiguration.HandleMaterial = redMaterial;
                 bbox.RotationHandles.HandleMaterial = redMaterial;
                 yield return WaitForSpeechCommand();
 
                 SetStatus("BBox material cyan");
                 Debug.Assert(cyanMaterial != null);
-                bbox.BoxDisplay.BoxMaterial = cyanMaterial;
+                bbox.BoxDisplayConfiguration.BoxMaterial = cyanMaterial;
                 yield return WaitForSpeechCommand();
 
                 SetStatus("BBox grabbed material red");
-                bbox.BoxDisplay.BoxGrabbedMaterial = redMaterial;
+                bbox.BoxDisplayConfiguration.BoxGrabbedMaterial = redMaterial;
                 mh.OnManipulationStarted.AddListener((med) => bbox.HighlightWires());
                 mh.OnManipulationEnded.AddListener((med) => bbox.UnhighlightWires());
                 yield return WaitForSpeechCommand();
 
                 SetStatus("BBox material none");
-                bbox.BoxDisplay.BoxMaterial = null;
+                bbox.BoxDisplayConfiguration.BoxMaterial = null;
                 yield return WaitForSpeechCommand();
 
                 SetStatus("Scale X and update rig");
@@ -166,11 +166,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos
                 yield return WaitForSpeechCommand();
 
                 SetStatus("Wireframe radius 0.1");
-                bbox.Links.WireframeEdgeRadius = 0.1f;
+                bbox.LinksConfiguration.WireframeEdgeRadius = 0.1f;
                 yield return WaitForSpeechCommand();
 
                 SetStatus("Wireframe shape cylinder");
-                bbox.Links.WireframeShape = UI.Experimental.BoundsControlTypes.WireframeType.Cylindrical;
+                bbox.LinksConfiguration.WireframeShape = UI.Experimental.BoundsControlTypes.WireframeType.Cylindrical;
                 yield return WaitForSpeechCommand();
 
                 Destroy(cube);
@@ -201,7 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos
                 bbox = multiRoot.AddComponent<BoundsControl>();
                 bbox.BoundsControlActivation = UI.Experimental.BoundsControlTypes.BoundsControlActivationType.ActivateOnStart;
                 bbox.HideElementsInInspector = false;
-                bbox.Links.WireframeEdgeRadius = .05f;
+                bbox.LinksConfiguration.WireframeEdgeRadius = .05f;
                 multiRoot.AddComponent<ManipulationHandler>();
 
                 SetStatus("Randomize Child Scale for skewing");
@@ -217,7 +217,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos
                     childTransform.transform.localScale = new Vector3(baseScale * Random.Range(.5f, 2f), baseScale * Random.Range(.5f, 2f), baseScale * Random.Range(.5f, 2f));
                 }
 
-                bbox.Links.WireframeEdgeRadius = 1f;
+                bbox.LinksConfiguration.WireframeEdgeRadius = 1f;
                 bbox.CreateRig();
                 SetStatus("Delete GameObject");
                 yield return WaitForSpeechCommand();
