@@ -47,7 +47,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             // iOS Settings
             IOSMinOSVersion,
             IOSArchitecture,
-            IOSRequiresARKit,
             IOSCameraUsageDescription,
         };
 
@@ -78,7 +77,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     string versionString = PlayerSettings.iOS.targetOSVersionString;
                     return (versionString == "11" || versionString.StartsWith("11.")); } },
             { Configurations.IOSArchitecture, () => { return PlayerSettings.GetArchitecture(BuildTargetGroup.iOS) == RequiredIosArchitecture; } },
-            // todo { Configurations.IOSRequiresARKit, () => { ; } },
             { Configurations.IOSCameraUsageDescription, () => { return !string.IsNullOrWhiteSpace(PlayerSettings.iOS.cameraUsageDescription); } },
         };
 
@@ -107,7 +105,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             // iOS Settings
             { Configurations.IOSMinOSVersion, () => { PlayerSettings.iOS.targetOSVersionString = "11.0"; } },
             { Configurations.IOSArchitecture, () => { PlayerSettings.SetArchitecture(BuildTargetGroup.iOS, RequiredIosArchitecture); } },
-            // todo { Configurations.IOSRequiresARKit, () => { ; } },
             { Configurations.IOSCameraUsageDescription, () => { PlayerSettings.iOS.cameraUsageDescription = IosCameraUsageDescription; } },
         };
 

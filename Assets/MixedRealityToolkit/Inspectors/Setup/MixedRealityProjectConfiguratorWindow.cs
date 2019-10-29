@@ -34,7 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             // iOS Settings
             {MRConfig.IOSMinOSVersion, true },
             {MRConfig.IOSArchitecture, true },
-            {MRConfig.IOSRequiresARKit, true },
             {MRConfig.IOSCameraUsageDescription, true },
         };
 
@@ -184,7 +183,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 EditorGUILayout.LabelField("iOS Settings", EditorStyles.boldLabel);
                 RenderToggle(MRConfig.IOSMinOSVersion, "Set Required OS Version");
                 RenderToggle(MRConfig.IOSArchitecture, "Set Required Architecture");
-                // todo RenderToggle(MRConfig.IOSRequiresARKit, "Set Requires ARKit");
                 RenderToggle(MRConfig.IOSCameraUsageDescription, "Set Camera Usage Descriptionfs");
             }
         }
