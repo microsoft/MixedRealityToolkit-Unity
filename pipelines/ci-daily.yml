@@ -32,4 +32,3 @@ jobs:
   - template: templates/ci-common.yml
     parameters:
       packagingEnabled: false
-      
