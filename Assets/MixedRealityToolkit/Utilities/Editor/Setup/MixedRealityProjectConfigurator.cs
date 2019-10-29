@@ -16,7 +16,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
     public class MixedRealityProjectConfigurator
     {
         private const int SpatialAwarenessDefaultLayer = 31;
-        private const AndroidSdkVersions MinAndroidSdk = AndroidSdkVersions.AndroidApiLevel24;
+        private const AndroidSdkVersions MinAndroidSdk = AndroidSdkVersions.AndroidApiLevel24; // Android 7.0
+        private const int RequiredIosArchitecture = 1; // Per https://docs.unity3d.com/ScriptReference/PlayerSettings.SetArchitecture.html, 1 == ARM64
+        private const string IosCameraUsageDescription = "Required for augmented reality support.";
 
         /// <summary>
         /// List of available configurations to check and configure with this utility
@@ -41,6 +43,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             // Android Settings
             AndroidMultiThreadedRendering,
             AndroidMinSdkVersion,
+
+            // iOS Settings
+            IOSMinOSVersion,
+            IOSArchitecture,
+            IOSRequiresARKit,
+            IOSCameraUsageDescription,
         };
 
         // The check functions for each type of setting
@@ -53,6 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.SinglePassInstancing,  () => { return MixedRealityOptimizeUtils.IsSinglePassInstanced(); } },
             { Configurations.SpatialAwarenessLayer,  () => { return HasSpatialAwarenessLayer(); } },
 
+            // UWP Capabilities
             { Configurations.SpatialPerceptionCapability,  () => { return PlayerSettings.WSA.GetCapability(PlayerSettings.WSACapability.SpatialPerception); } },
             { Configurations.MicrophoneCapability,  () => { return PlayerSettings.WSA.GetCapability(PlayerSettings.WSACapability.Microphone); } },
             { Configurations.InternetClientCapability,  () => { return PlayerSettings.WSA.GetCapability(PlayerSettings.WSACapability.InternetClient); } },
@@ -60,8 +69,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.EyeTrackingCapability,  () => { return PlayerSettings.WSA.GetCapability(PlayerSettings.WSACapability.GazeInput); } },
 #endif
 
+            // Android Settings
             { Configurations.AndroidMultiThreadedRendering, () => { return PlayerSettings.GetMobileMTRendering(BuildTargetGroup.Android) == false; } },
             { Configurations.AndroidMinSdkVersion, () => { return PlayerSettings.Android.minSdkVersion >= MinAndroidSdk; } },
+
+            // iOS Settings
+            { Configurations.IOSMinOSVersion, () => {
+                    string versionString = PlayerSettings.iOS.targetOSVersionString;
+                    return (versionString == "11" || versionString.StartsWith("11.")); } },
+            { Configurations.IOSArchitecture, () => { return PlayerSettings.GetArchitecture(BuildTargetGroup.iOS) == RequiredIosArchitecture; } },
+            // todo { Configurations.IOSRequiresARKit, () => { ; } },
+            { Configurations.IOSCameraUsageDescription, () => { return !string.IsNullOrWhiteSpace(PlayerSettings.iOS.cameraUsageDescription); } },
         };
 
         // The configure functions for each type of setting
@@ -74,6 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.SinglePassInstancing,  () => { MixedRealityOptimizeUtils.SetSinglePassInstanced(); } },
             { Configurations.SpatialAwarenessLayer,  () => { SetSpatialAwarenessLayer(); } },
 
+            // UWP Capabilities
             { Configurations.SpatialPerceptionCapability,  () => { PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.SpatialPerception, true); } },
             { Configurations.MicrophoneCapability,  () => { PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.Microphone, true); } },
             { Configurations.InternetClientCapability,  () => { PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.InternetClient, true); } },
@@ -81,8 +100,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             { Configurations.EyeTrackingCapability,  () => { PlayerSettings.WSA.SetCapability(PlayerSettings.WSACapability.GazeInput, true); } },
 #endif
 
+            // Android Settings
             { Configurations.AndroidMultiThreadedRendering, () => { PlayerSettings.SetMobileMTRendering(BuildTargetGroup.Android, false); } },
             { Configurations.AndroidMinSdkVersion, () => { PlayerSettings.Android.minSdkVersion = MinAndroidSdk; } },
+
+            // iOS Settings
+            { Configurations.IOSMinOSVersion, () => { PlayerSettings.iOS.targetOSVersionString = "11.0"; } },
+            { Configurations.IOSArchitecture, () => { PlayerSettings.SetArchitecture(BuildTargetGroup.iOS, RequiredIosArchitecture); } },
+            // todo { Configurations.IOSRequiresARKit, () => { ; } },
+            { Configurations.IOSCameraUsageDescription, () => { PlayerSettings.iOS.cameraUsageDescription = IosCameraUsageDescription; } },
         };
 
         /// <summary>

@@ -30,6 +30,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             // Android Settings
             {MRConfig.AndroidMultiThreadedRendering, true },
             {MRConfig.AndroidMinSdkVersion, true },
+
+            // iOS Settings
+            {MRConfig.IOSMinOSVersion, true },
+            {MRConfig.IOSArchitecture, true },
+            {MRConfig.IOSRequiresARKit, true },
+            {MRConfig.IOSCameraUsageDescription, true },
         };
 
         private const string WindowKey = "_MixedRealityToolkit_Editor_MixedRealityProjectConfiguratorWindow";
@@ -40,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private readonly GUIContent LaterButtonContent = new GUIContent("Later", "Do not show this popup notification until next session");
         private readonly GUIContent IgnoreButtonContent = new GUIContent("Ignore", "Modify this preference under Edit > Project Settings > MRTK");
 
-        private bool showConfigurations = false;
+        private bool showConfigurations = true;
 
         /// <summary>
         /// Show the MRTK Project Configurator utility window or focus if already opened
@@ -136,7 +142,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             EditorGUILayout.LabelField("Project Settings", EditorStyles.boldLabel);
             RenderToggle(MRConfig.ForceTextSerialization, "Enable Force Text Serialization");
             RenderToggle(MRConfig.VisibleMetaFiles, "Enable Visible meta files");
-            RenderToggle(MRConfig.VirtualRealitySupported, "Enable VR Supported");
+            if (!MixedRealityOptimizeUtils.IsBuildTargetAndroid() && !MixedRealityOptimizeUtils.IsBuildTargetIOS())
+            {
+                RenderToggle(MRConfig.VirtualRealitySupported, "Enable VR Supported");
+            }
             RenderToggle(MRConfig.SinglePassInstancing, "Set Single Pass Instanced rendering path");
             RenderToggle(MRConfig.SpatialAwarenessLayer, "Set Default Spatial Awareness Layer");
 
@@ -168,6 +177,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 EditorGUILayout.LabelField("Android Settings", EditorStyles.boldLabel);
                 RenderToggle(MRConfig.AndroidMultiThreadedRendering, "Disable Multi-Threaded Rendering");
                 RenderToggle(MRConfig.AndroidMinSdkVersion, "Set Minimum API Level");
+            }
+
+            if (MixedRealityOptimizeUtils.IsBuildTargetIOS())
+            {
+                EditorGUILayout.LabelField("iOS Settings", EditorStyles.boldLabel);
+                RenderToggle(MRConfig.IOSMinOSVersion, "Set Required OS Version");
+                RenderToggle(MRConfig.IOSArchitecture, "Set Required Architecture");
+                // todo RenderToggle(MRConfig.IOSRequiresARKit, "Set Requires ARKit");
+                RenderToggle(MRConfig.IOSCameraUsageDescription, "Set Camera Usage Descriptionfs");
             }
         }
 
