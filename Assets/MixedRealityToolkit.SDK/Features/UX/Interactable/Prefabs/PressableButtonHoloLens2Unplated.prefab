@@ -499,12 +499,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cf098d972aeb8b4daa70b00381af006, type: 3}
   m_Name:
   m_EditorClassIdentifier:
-  labelText: {fileID: 937783102}
+  mainLabelText: {fileID: 937783102}
   interactable: {fileID: 7440800412470431853}
-  iconSet: {fileID: 11400000, guid: 8b386ef895f7c924f8c4b03d1d3ed683, type: 2}
   seeItSayItLabel: {fileID: 329340111926477333}
   seeItSatItLabelText: {fileID: 9181818329810857364}
   iconStyle: 0
+  iconSet: {fileID: 11400000, guid: 8b386ef895f7c924f8c4b03d1d3ed683, type: 2}
   iconCharLabel: {fileID: 5182697764271180019}
   iconCharFont: {fileID: 11400000, guid: 6351098d6b2daa043a72bb76849c79fb, type: 2}
   iconChar: "\uEBD2"
