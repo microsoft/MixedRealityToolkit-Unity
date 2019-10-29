@@ -143,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// <remarks>
         /// This method ensures AR Foundation required components (ex: AR Session, Tracked Pose Driver, etc) are
         /// exist or are added to the appropriate scene objects. These components are used by AR Foundation to
-        /// communicate with the underlying AR platform (ex: AR Core), track the device and perform other necessary tasks .
+        /// communicate with the underlying AR platform (ex: AR Core), track the device and perform other necessary tasks.
         /// </remarks>
         private void InitializeARFoundation()
         {
