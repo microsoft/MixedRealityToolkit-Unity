@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private readonly GUIContent LaterButtonContent = new GUIContent("Later", "Do not show this popup notification until next session");
         private readonly GUIContent IgnoreButtonContent = new GUIContent("Ignore", "Modify this preference under Edit > Project Settings > MRTK");
 
-        private bool showConfigurations = true;
+        private bool showConfigurations = false;
 
         /// <summary>
         /// Show the MRTK Project Configurator utility window or focus if already opened
