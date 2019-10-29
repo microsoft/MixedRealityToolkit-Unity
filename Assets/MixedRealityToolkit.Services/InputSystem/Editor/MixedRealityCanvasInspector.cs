@@ -182,7 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 EditorGUILayout.PropertyField(m_PixelPerfect);
                 EditorGUILayout.PropertyField(m_SortingOrder, Styles.sortingOrder);
-                GUIContent[] displayNames = (GUIContent[]) getDisplayNames.Invoke(null, new object[] { });
+                GUIContent[] displayNames = (GUIContent[]) getDisplayNames.Invoke(null, System.Array.Empty<object>());
                 EditorGUILayout.IntPopup(m_TargetDisplay, displayNames, (int[])getDisplayIndices.Invoke(null, new object[] { }), Styles.targetDisplay);
             }
             EditorGUILayout.EndFadeGroup();

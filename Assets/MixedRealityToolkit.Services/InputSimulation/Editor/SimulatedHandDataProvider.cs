@@ -362,7 +362,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Gets the currenctly active gesture, according to the mouse configuration and mouse button that is down.
+        /// Gets the currently active gesture, according to the mouse configuration and mouse button that is down.
         /// </summary>
         private ArticulatedHandPose.GestureId SelectGesture()
         {

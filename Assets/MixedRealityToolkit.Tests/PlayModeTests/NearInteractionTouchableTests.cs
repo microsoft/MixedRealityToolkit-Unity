@@ -288,7 +288,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         //   happened to be the pointer target when the hand started moving to the right. And so
         //   we would get touch down for touchables[3] even though the hand was not close to it.
         // - With the minor changes to the hand gestures, the precise series of events that led
-        //   to touchables[3] getting a touch down were no longer occuring, and so the test
+        //   to touchables[3] getting a touch down were no longer occurring, and so the test
         //   would fail.
         // - Because stacked touchables are broken, and because this test was only passing
         //   before because of strange behaviour, I have commented out this test, until we have

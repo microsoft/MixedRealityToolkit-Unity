@@ -95,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Test touch zomming instantiated from prefab
+        /// Test touch zooming instantiated from prefab
         /// </summary>
         [UnityTest]
         public IEnumerator Prefab_TouchZoom()

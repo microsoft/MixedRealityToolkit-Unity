@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        public BaseWindowsMixedRealitySource(TrackingState trackingState, Handedness sourceHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
+        protected BaseWindowsMixedRealitySource(TrackingState trackingState, Handedness sourceHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, sourceHandedness, inputSource, interactions)
         {
         }
@@ -52,8 +52,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         private Quaternion currentPointerRotation = Quaternion.identity;
         private MixedRealityPose currentPointerPose = MixedRealityPose.ZeroIdentity;
 
-        private Vector3 currentGripPosition = Vector3.zero;
-        private Quaternion currentGripRotation = Quaternion.identity;
         private MixedRealityPose currentGripPose = MixedRealityPose.ZeroIdentity;
 
         #region Update data functions

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     /// <summary>
-    /// Attach this component to a game object to sychronize the objects position
+    /// Attach this component to a game object to synchronize the objects position
     /// and rotation to the given input type. If the input data is not available,
     /// the component will hide the object by disabling all renderers.
     /// </summary>

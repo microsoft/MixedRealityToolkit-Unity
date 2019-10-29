@@ -485,7 +485,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         /// <summary>
         /// This tests the one hand near rotation and applying different rotation constraints to the object.
-        /// NOTE: This tests both LOCAL and WORLD SPACE roation.
+        /// NOTE: This tests both LOCAL and WORLD SPACE rotation.
         /// </summary>
         [UnityTest]
         public IEnumerator ManipulationHandlerOneHandRotateWithConstraint()

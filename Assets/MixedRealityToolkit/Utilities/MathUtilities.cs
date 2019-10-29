@@ -46,6 +46,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         /// <summary>
+        /// Retrieve angular measurement describing how large a sphere or circle appears from a given point of view.
+        /// Takes an angle (at given point of view) and a distance and returns the actual diameter of the object.
+        /// </summary>
+        public static float ScaleFromAngularSizeAndDistance(float angle, float distance)
+        {
+            float scale = 2.0f * distance * Mathf.Tan(angle * Mathf.Deg2Rad * 0.5f);            
+            return scale;
+        }
+
+        [System.Obsolete("Method obsolete. Use ScaleFromAngularSizeAndDistance instead")]
+        public static float AngularScaleFromDistance(float angle, float distance)
+        {
+            return ScaleFromAngularSizeAndDistance(angle, distance);
+        }
+
+        /// <summary>
         /// Takes a ray in the coordinate space specified by the "from" transform and transforms it to be the correct ray in the coordinate space specified by the "to" transform
         /// </summary>
         public static Ray TransformRayFromTo(Transform from, Transform to, Ray rayToConvert)
@@ -469,6 +485,34 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public static Vector3 GetDirection(Quaternion rotation)
         {
             return (rotation * Vector3.forward).normalized;
+        }
+
+        /// <summary>
+        /// Returns if a point lies within a frame of reference view as defined by arguments
+        /// </summary>
+        /// <remarks>
+        /// Field of view parameters are in degrees and plane distances are in meters 
+        /// </remarks>
+        public static bool IsInFOV(Vector3 testPosition, Transform frameOfReference, 
+            float verticalFOV, float horizontalFOV, 
+            float minPlaneDistance, float maxPlaneDistance)
+        {
+            Vector3 deltaPos = testPosition - frameOfReference.position;
+            Vector3 referenceDeltaPos = TransformDirectionFromTo(null, frameOfReference, deltaPos);
+
+            if (referenceDeltaPos.z < minPlaneDistance || referenceDeltaPos.z > maxPlaneDistance)
+            {
+                return false;
+            }
+
+            float verticalFovHalf = verticalFOV * 0.5f;
+            float horizontalFovHalf = horizontalFOV * 0.5f;
+
+            referenceDeltaPos = referenceDeltaPos.normalized;
+            float yaw = Mathf.Asin(referenceDeltaPos.x) * Mathf.Rad2Deg;
+            float pitch = Mathf.Asin(referenceDeltaPos.y) * Mathf.Rad2Deg;
+
+            return Mathf.Abs(yaw) < horizontalFovHalf && Mathf.Abs(pitch) < verticalFovHalf;
         }
 
     }

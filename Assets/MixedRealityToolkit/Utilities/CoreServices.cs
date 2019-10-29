@@ -116,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// Clears the cache of the reference with key of given type if present and applicable
         /// </summary>
         /// <param name="serviceType">interface of service to key against. Must be of type IMixedRealityService</param>
-        /// <returns>true if succesfully cleared, false otherwise</returns>
+        /// <returns>true if successfully cleared, false otherwise</returns>
         public static bool ResetCacheReference(Type serviceType)
         {
             if (typeof(IMixedRealityService).IsAssignableFrom(serviceType))
@@ -142,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit
         {
             Type serviceType = typeof(T);
 
-            // See if we already have a WeakReference entry for this serivce type
+            // See if we already have a WeakReference entry for this service type
             if (serviceCache.ContainsKey(serviceType))
             {
                 IMixedRealityService svc;
