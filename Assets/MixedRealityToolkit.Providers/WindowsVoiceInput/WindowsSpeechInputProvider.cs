@@ -71,6 +71,12 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         public void StartRecognition()
         {
 #if UNITY_STANDALONE_WIN || UNITY_WSA || UNITY_EDITOR_WIN
+            // try to initialize the keyword recognizer if it is null
+            if (keywordRecognizer == null && InputSystemProfile.SpeechCommandsProfile.SpeechRecognizerStartBehavior == AutoStartBehavior.ManualStart)
+            {
+                InitializeKeywordRecognizer();
+            }
+
             if (keywordRecognizer != null && !keywordRecognizer.IsRunning)
             {
                 keywordRecognizer.Start();
@@ -105,11 +111,24 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
         /// <inheritdoc />
         public override void Enable()
         {
-            if (!Application.isPlaying || 
-                (Commands == null) ||
-                (Commands.Length == 0)) { return; }
+            if (InputSystemProfile.SpeechCommandsProfile.SpeechRecognizerStartBehavior == AutoStartBehavior.AutoStart)
+            {
+                InitializeKeywordRecognizer();
+                StartRecognition();
+            }
+        }
 
-            if (InputSystemProfile == null) { return; }
+        private void InitializeKeywordRecognizer()
+        {
+            if (!Application.isPlaying ||
+                (Commands == null) ||
+                (Commands.Length == 0) ||
+                InputSystemProfile == null ||
+                keywordRecognizer != null
+                )
+            {
+                return;
+            }
 
             IMixedRealityInputSystem inputSystem = Service as IMixedRealityInputSystem;
 
@@ -124,26 +143,18 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Input
 
             RecognitionConfidenceLevel = InputSystemProfile.SpeechCommandsProfile.SpeechRecognitionConfidenceLevel;
 
-            if (keywordRecognizer == null)
+            try
             {
-                try
-                {
-                    keywordRecognizer = new KeywordRecognizer(newKeywords, (ConfidenceLevel)RecognitionConfidenceLevel);
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogWarning($"Failed to start keyword recognizer. Are microphone permissions granted? Exception: {ex}");
-                    keywordRecognizer = null;
-                    return;
-                }
-
-                keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
+                keywordRecognizer = new KeywordRecognizer(newKeywords, (ConfidenceLevel)RecognitionConfidenceLevel);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning($"Failed to start keyword recognizer. Are microphone permissions granted? Exception: {ex}");
+                keywordRecognizer = null;
+                return;
             }
 
-            if (InputSystemProfile.SpeechCommandsProfile.SpeechRecognizerStartBehavior == AutoStartBehavior.AutoStart)
-            {
-                StartRecognition();
-            }
+            keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
         }
 
         /// <inheritdoc />
