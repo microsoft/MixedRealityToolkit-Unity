@@ -10,13 +10,13 @@ using UnityEngine.Events;
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
-    /// Utility class to control <see cref="PointerBehavior"/> of pointers.
+    /// Utility class to control <see cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/> of pointers.
     /// Hook up buttons to the public functions to turn rays on and off.
     /// </summary>
     public class PointerBehaviorControls : MonoBehaviour
     {
         /// <summary>
-        /// Toggles a pointer's "enabled" behavior. If a pointer's <see cref="PointerBehavior"/> is Default or AlwaysOn,
+        /// Toggles a pointer's "enabled" behavior. If a pointer's <see cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/> is Default or AlwaysOn,
         /// set it to AlwaysOff. Otherwise, set the pointer's behavior to Default.
         /// Will set this state for all matching pointers.
         /// </summary>
@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// If hand ray <see cref="PointerBehavior"/> is AlwaysOn or Default, set it to off.
+        /// If hand ray <see cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/> is AlwaysOn or Default, set it to off.
         /// Otherwise, set behavior to default
         /// </summary>
         public void ToggleHandRayEnabled()
@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// If controller ray <see cref="PointerBehavior"/> is AlwaysOn or Default, set it to off.
+        /// If controller ray <see cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/> is AlwaysOn or Default, set it to off.
         /// Otherwise, set behavior to default
         /// </summary>
         public void ToggleControllerRayEnabled()
@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// If hand grab pointer <see cref="PointerBehavior"/> is AlwaysOn or Default, set it to off.
+        /// If hand grab pointer <see cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/> is AlwaysOn or Default, set it to off.
         /// Otherwise, set behavior to default
         /// </summary>
         public void ToggleHandGrabEnabled()
@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// If finger poke pointer <see cref="PointerBehavior"/> is AlwaysOn or Default, set it to off.
+        /// If finger poke pointer <see cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/> is AlwaysOn or Default, set it to off.
         /// Otherwise, set behavior to default
         /// </summary>
         public void ToggleHandPokeEnabled()
@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Sets the <see cref="PointerBehavior"/> for all hand rays.
+        /// Sets the <see cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/> for all hand rays.
         /// <param name="isEnabled">If true, behavior will be set to Default.
         /// Otherwise it will be set to AlwaysOff</param>
         /// </summary>
@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Sets the <see cref="PointerBehavior"/> for all controller rays to be AlwaysOff
+        /// Sets the <see cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/> for all controller rays to be AlwaysOff
         /// <param name="isEnabled">If true, behavior will be set to Default.
         /// Otherwise it will be set to AlwaysOff</param>
         /// </summary>
@@ -96,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Sets the <see cref="PointerBehavior"/> for the gaze pointer to be AlwaysOff
+        /// Sets the <see cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/> for the gaze pointer to be AlwaysOff
         /// <param name="isEnabled">If true, behavior will be set to Default.
         /// Otherwise it will be set to AlwaysOff</param>
         /// </summary>
@@ -106,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Sets the <see cref="PointerBehavior"/> for the grab pointer to be AlwaysOff
+        /// Sets the <see cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/> for the grab pointer to be AlwaysOff
         /// <param name="isEnabled">If true, behavior will be set to Default.
         /// Otherwise it will be set to AlwaysOff</param>
         /// </summary>
@@ -116,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         /// <summary>
-        /// Sets the <see cref="PointerBehavior"/> for the poke pointer to be AlwaysOff
+        /// Sets the <see cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/> for the poke pointer to be AlwaysOff
         /// <param name="isEnabled">If true, behavior will be set to Default.
         /// Otherwise it will be set to AlwaysOff</param>
         /// </summary>
