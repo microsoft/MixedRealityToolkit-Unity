@@ -4,20 +4,20 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.UI.Experimental
+namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControl
 {
     /// <summary> 
     /// BoxDisplay can be used to attach a solid box visualization to a <see cref="BoundsControl"/>
     /// The box will only be rendered if a material is assigned
     /// </summary>
-    public class BoundsControlBoxDisplay
+    public class BoxDisplay
     {
         // Game object used to display the box. Parented to the rig root
         private GameObject boxDisplay;
 
-        private BoundsControlBoxDisplayConfiguration config;
+        private BoxDisplayConfiguration config;
 
-        internal BoundsControlBoxDisplay(BoundsControlBoxDisplayConfiguration configuration)
+        internal BoxDisplay(BoxDisplayConfiguration configuration)
         {
             Debug.Assert(configuration != null, "Can't create BoundsControlBoxDisplay without valid configuration");
             config = configuration;
@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                 GameObject.Destroy(boxDisplay.GetComponent<Collider>());
                 boxDisplay.name = "bounding box";
 
-                BoundsControlVisualUtils.ApplyMaterialToAllRenderers(boxDisplay, config.BoxMaterial);
+                VisualUtils.ApplyMaterialToAllRenderers(boxDisplay, config.BoxMaterial);
                 boxDisplay.transform.localScale = GetBoxDisplayScale(currentBoundsExtents, flattenAxis);
                 boxDisplay.transform.parent = parent;
             }
@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         {
             // When a box is flattened one axis is normally scaled to zero, this doesn't always work well with visuals so we take 
             // that flattened axis and re-scale it to the flattenAxisDisplayScale.
-            Vector3 displayScale = BoundsControlVisualUtils.FlattenBounds(currentBoundsExtents, flattenAxis, config.FlattenAxisDisplayScale);
+            Vector3 displayScale = VisualUtils.FlattenBounds(currentBoundsExtents, flattenAxis, config.FlattenAxisDisplayScale);
             return 2.0f * displayScale;
         }
 
@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             //update the box material to the grabbed material
             if (boxDisplay != null)
             {
-                BoundsControlVisualUtils.ApplyMaterialToAllRenderers(boxDisplay, config.BoxGrabbedMaterial);
+                VisualUtils.ApplyMaterialToAllRenderers(boxDisplay, config.BoxGrabbedMaterial);
             }
         }
 
@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             if (boxDisplay != null)
             {
                 boxDisplay.SetActive(activate);
-                BoundsControlVisualUtils.ApplyMaterialToAllRenderers(boxDisplay, config.BoxMaterial);
+                VisualUtils.ApplyMaterialToAllRenderers(boxDisplay, config.BoxMaterial);
             }
         }
 

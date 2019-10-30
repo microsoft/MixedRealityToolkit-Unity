@@ -3,12 +3,12 @@ using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.UI.Experimental
+namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControl
 {
     /// <summary>
     /// Links that are rendered in between the corners of <see cref="BoundsControl"/>
     /// </summary>
-    public class BoundsControlLinks
+    public class Links
     {
         /// <summary>
         /// defines a bounds control link - the line between 2 corners of a box
@@ -28,9 +28,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         private List<Link> links = new List<Link>();
         private List<Renderer> linkRenderers = new List<Renderer>();
 
-        private BoundsControlLinksConfiguration config;
+        private LinksConfiguration config;
 
-        internal BoundsControlLinks(BoundsControlLinksConfiguration configuration)
+        internal Links(LinksConfiguration configuration)
         {
             Debug.Assert(configuration != null, "Can't create BoundsControlLinks without valid configuration");
             config = configuration;
@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             {
                 for (int i = 0; i < links.Count; ++i)
                 {
-                    links[i].transform.position = BoundsControlVisualUtils.GetLinkPosition(i, ref boundsCorners);
+                    links[i].transform.position = VisualUtils.GetLinkPosition(i, ref boundsCorners);
                 }
             }
         }
@@ -131,14 +131,14 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             }
         }
 
-        internal void CreateLinks(BoundsControlRotationHandles rotationHandles, Transform parent, Vector3 currentBoundsExtents)
+        internal void CreateLinks(RotationHandles rotationHandles, Transform parent, Vector3 currentBoundsExtents)
         {
             // create links
             if (links != null)
             {
                 GameObject link;
                 Vector3 linkDimensions = GetLinkDimensions(currentBoundsExtents);
-                for (int i = 0; i < BoundsControlRotationHandles.NumEdges; ++i)
+                for (int i = 0; i < RotationHandles.NumEdges; ++i)
                 {
                     if (config.WireframeShape == WireframeType.Cubic)
                     {

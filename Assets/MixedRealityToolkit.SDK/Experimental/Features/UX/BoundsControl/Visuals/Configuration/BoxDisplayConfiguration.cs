@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.UI.Experimental
+namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControl
 {
     /// <summary> 
-    /// Shareable configuration for the <see cref="BoundingBoxBoxDisplay" /> of <see cref="BoundsControl"/>
+    /// Shareable configuration for the <see cref="BoxDisplay" /> of <see cref="BoundsControl"/>
     /// This class provides all data members needed to create a solid box display for bounds control
     /// </summary>
-    [CreateAssetMenu(fileName = "BoundsControlBoxDisplayConfiguration", menuName = "Mixed Reality Toolkit/Bounds Control/Box Display Configuration")]
-    public class BoundsControlBoxDisplayConfiguration : ScriptableObject
+    [CreateAssetMenu(fileName = "BoxDisplayConfiguration", menuName = "Mixed Reality Toolkit/Bounds Control/Box Display Configuration")]
+    public class BoxDisplayConfiguration : ScriptableObject
     {
         [SerializeField]
         [Tooltip("Material used to display the bounding box. If set to null no bounding box will be displayed")]

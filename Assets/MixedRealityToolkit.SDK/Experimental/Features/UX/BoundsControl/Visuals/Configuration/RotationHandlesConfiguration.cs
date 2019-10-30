@@ -1,14 +1,14 @@
 ﻿using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.UI.Experimental
+namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControl
 {
     /// <summary>
-    /// Configuration for <see cref="BoundsControlRotationHandles"/> used in <see cref="BoundsControl"/>
+    /// Configuration for <see cref="RotationHandles"/> used in <see cref="BoundsControl"/>
     /// This class provides all data members needed to create rotation handles for <see cref="BoundsControl"/>
     /// </summary>
-    [CreateAssetMenu(fileName = "BoundsControlRotationHandlesConfiguration", menuName = "Mixed Reality Toolkit/Bounds Control/Rotation HandlesConfiguration")]
-    public class BoundsControlRotationHandlesConfiguration : BoundsControlHandlesBaseConfiguration
+    [CreateAssetMenu(fileName = "RotationHandlesConfiguration", menuName = "Mixed Reality Toolkit/Bounds Control/Rotation Handles Configuration")]
+    public class RotationHandlesConfiguration : HandlesBaseConfiguration
     {
 
         [SerializeField]

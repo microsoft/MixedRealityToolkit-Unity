@@ -17,9 +17,8 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System.Linq;
 using Assert = UnityEngine.Assertions.Assert;
-using Microsoft.MixedReality.Toolkit.UI.Experimental;
+using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControl;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 {

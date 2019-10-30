@@ -5,15 +5,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.UI.Experimental
+namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControl
 {
     /// <summary>
     /// Base class for any type of <see cref="BoundsControl"/> handle.
     /// Handles are used for manipulating the BoundsControl by near or far user interaction.
     /// </summary>
-    public abstract class BoundsControlHandlesBase : IProximityEffectObjectProvider
+    public abstract class HandlesBase : IProximityEffectObjectProvider
     {
-        protected abstract BoundsControlHandlesBaseConfiguration BaseConfig
+        protected abstract HandlesBaseConfiguration BaseConfig
         {
             get;
         }
@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                 for (int i = 0; i < handles.Count; ++i)
                 {
                     handles[i].gameObject.SetActive(isVisible && IsVisible(handles[i]));
-                    BoundsControlVisualUtils.ApplyMaterialToAllRenderers(handles[i].gameObject, BaseConfig.HandleMaterial);
+                    VisualUtils.ApplyMaterialToAllRenderers(handles[i].gameObject, BaseConfig.HandleMaterial);
                 }
             }
         }
@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                     }
                     else
                     {
-                        BoundsControlVisualUtils.ApplyMaterialToAllRenderers(handles[i].gameObject, BaseConfig.HandleGrabbedMaterial);
+                        VisualUtils.ApplyMaterialToAllRenderers(handles[i].gameObject, BaseConfig.HandleGrabbedMaterial);
                     }
                 }
             }
@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
         internal void HandleIgnoreCollider(Collider handlesIgnoreCollider)
         {
-            BoundsControlVisualUtils.HandleIgnoreCollider(handlesIgnoreCollider, handles);
+            VisualUtils.HandleIgnoreCollider(handlesIgnoreCollider, handles);
         }
 
         internal void DestroyHandles()

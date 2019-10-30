@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.UI.Experimental
+namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControl
 {
     /// <summary>
-    /// Configuration base class for any <see cref="BoundsControl"/> handle type deriving from <see cref="BoundsControlHandlesBase"/>
+    /// Configuration base class for any <see cref="BoundsControl"/> handle type deriving from <see cref="HandlesBase"/>
     /// </summary>
-    public abstract class BoundsControlHandlesBaseConfiguration : ScriptableObject
+    public abstract class HandlesBaseConfiguration : ScriptableObject
     { 
         [SerializeField]
         [Tooltip("Material applied to handles when they are not in a grabbed state")]
@@ -122,11 +122,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         {
             if (handleMaterial == null)
             {
-                handleMaterial = BoundsControlVisualUtils.CreateDefaultMaterial();
+                handleMaterial = VisualUtils.CreateDefaultMaterial();
             }
             if (handleGrabbedMaterial == null && handleGrabbedMaterial != handleMaterial)
             {
-                handleGrabbedMaterial = BoundsControlVisualUtils.CreateDefaultMaterial();
+                handleGrabbedMaterial = VisualUtils.CreateDefaultMaterial();
             }
         }
 

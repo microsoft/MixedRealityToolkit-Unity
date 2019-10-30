@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using System.Runtime.CompilerServices;
 
 
-namespace Microsoft.MixedReality.Toolkit.UI.Experimental
+namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControl
 {
     /// <summary>
     /// ProximityEffect scales and switches out materials for registered objects whenever a pointer is in proximity.

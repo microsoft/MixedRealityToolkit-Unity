@@ -4,17 +4,17 @@ using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes;
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.UI.Experimental
+namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControl
 {
     /// <summary>
     /// Scale handles for <see cref="BoundsControl"/> that are used for scaling the
     /// gameobject BoundsControl is attached to with near or far interaction
     /// </summary>
-    public class BoundsControlScaleHandles : BoundsControlHandlesBase
+    public class ScaleHandles : HandlesBase
     {
-        protected override BoundsControlHandlesBaseConfiguration BaseConfig => config;
-        private BoundsControlScaleHandlesConfiguration config;
-        internal BoundsControlScaleHandles(BoundsControlScaleHandlesConfiguration configuration)
+        protected override HandlesBaseConfiguration BaseConfig => config;
+        private ScaleHandlesConfiguration config;
+        internal ScaleHandles(ScaleHandlesConfiguration configuration)
         {
             Debug.Assert(configuration != null, "Can't create BoundsControlScaleHandles without valid configuration");
             config = configuration;
@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                 cornerVisual.name = "visuals";
 
                 // this is the size of the corner visuals
-                var cornerbounds = BoundsControlVisualUtils.GetMaxBounds(cornerVisual);
+                var cornerbounds = VisualUtils.GetMaxBounds(cornerVisual);
                 float maxDim = Mathf.Max(Mathf.Max(cornerbounds.size.x, cornerbounds.size.y), cornerbounds.size.z);
                 cornerbounds.size = maxDim * Vector3.one;
 
@@ -95,9 +95,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                 var invScale = config.HandleSize / cornerbounds.size.x;
                 cornerVisual.transform.localScale = new Vector3(invScale, invScale, invScale);
 
-                BoundsControlVisualUtils.ApplyMaterialToAllRenderers(cornerVisual, config.HandleMaterial);
+                VisualUtils.ApplyMaterialToAllRenderers(cornerVisual, config.HandleMaterial);
 
-                BoundsControlVisualUtils.AddComponentsToAffordance(corner, new Bounds(cornerbounds.center * invScale, cornerbounds.size * invScale), 
+                VisualUtils.AddComponentsToAffordance(corner, new Bounds(cornerbounds.center * invScale, cornerbounds.size * invScale), 
                     RotationHandlePrefabCollider.Box, CursorContextInfo.CursorAction.Scale, config.ColliderPadding, parent, drawManipulationTether);
                 handles.Add(corner.transform);       
             }

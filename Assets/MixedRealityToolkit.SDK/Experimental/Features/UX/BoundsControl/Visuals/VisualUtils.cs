@@ -3,12 +3,12 @@ using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.UI.Experimental
+namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControl
 {
     /// <summary>
     /// Helper class providing some static utility functions for <see cref="BoundsControl"/> <see cref="BoundsControlHandlesBase">handles</see>/>
     /// </summary>
-    internal class BoundsControlVisualUtils
+    internal class VisualUtils
     {
 
         internal static void HandleIgnoreCollider(Collider handlesIgnoreCollider, List<Transform> handles)

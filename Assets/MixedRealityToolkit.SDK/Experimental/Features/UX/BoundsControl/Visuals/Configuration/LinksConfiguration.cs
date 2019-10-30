@@ -3,14 +3,14 @@ using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.UI.Experimental
+namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControl
 {
     /// <summary>
-    /// Configuration for <see cref="BoundsControlLinks"/> used in <see cref="BoundsControl"/>
+    /// Configuration for <see cref="Links"/> used in <see cref="BoundsControl"/>
     /// This class provides all data members needed to create a link of a bounds control
     /// </summary>
-    [CreateAssetMenu(fileName = "BoundsControlLinksConfiguration", menuName = "Mixed Reality Toolkit/Bounds Control/Links Configuration")]
-    public class BoundsControlLinksConfiguration : ScriptableObject
+    [CreateAssetMenu(fileName = "LinksConfiguration", menuName = "Mixed Reality Toolkit/Bounds Control/Links Configuration")]
+    public class LinksConfiguration : ScriptableObject
     {
         #region Serialized Properties
         [SerializeField]
@@ -105,10 +105,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
         private void TrySetDefaultMaterial()
         {
-            //ensure materials
             if (wireframeMaterial == null)
             {
-                wireframeMaterial = BoundsControlVisualUtils.CreateDefaultMaterial();
+                wireframeMaterial = VisualUtils.CreateDefaultMaterial();
             }
         }
     }

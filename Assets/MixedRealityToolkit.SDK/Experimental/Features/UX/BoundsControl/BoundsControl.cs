@@ -10,7 +10,7 @@ using UnityPhysics = UnityEngine.Physics;
 using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes;
 using Microsoft.MixedReality.Toolkit.Utilities;
 
-namespace Microsoft.MixedReality.Toolkit.UI.Experimental
+namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControl
 {
     /// <summary>
     /// Bounds Control allows to transform objects (rotate and scale) and draws a cube around the object to visualize 
@@ -193,35 +193,35 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
         [SerializeField]
         [Tooltip("Bounds control box display configuration section.")]
-        private BoundsControlBoxDisplayConfiguration boxDisplayConfiguration;
+        private BoxDisplayConfiguration boxDisplayConfiguration;
         /// <summary>
         /// Bounds control box display configuration section.
         /// </summary>
-        public BoundsControlBoxDisplayConfiguration BoxDisplayConfiguration => boxDisplayConfiguration;
+        public BoxDisplayConfiguration BoxDisplayConfiguration => boxDisplayConfiguration;
 
         [SerializeField]
         [Tooltip("This section defines the links / lines that are drawn between the corners of the control.")]
-        private BoundsControlLinksConfiguration linksConfiguration;
+        private LinksConfiguration linksConfiguration;
         /// <summary>
         /// This section defines the links / lines that are drawn between the corners of the control.
         /// </summary>
-        public BoundsControlLinksConfiguration LinksConfiguration => linksConfiguration;
+        public LinksConfiguration LinksConfiguration => linksConfiguration;
 
         [SerializeField]
         [Tooltip("Configuration of the scale handles.")]
-        private BoundsControlScaleHandlesConfiguration scaleHandlesConfiguration;
+        private ScaleHandlesConfiguration scaleHandlesConfiguration;
         /// <summary>
         /// Configuration of the scale handles.
         /// </summary>
-        public BoundsControlScaleHandlesConfiguration ScaleHandlesConfiguration => scaleHandlesConfiguration;
+        public ScaleHandlesConfiguration ScaleHandlesConfiguration => scaleHandlesConfiguration;
 
         [SerializeField]
         [Tooltip("Configuration of the rotation handles.")]
-        private BoundsControlRotationHandlesConfiguration rotationHandlesConfiguration;
+        private RotationHandlesConfiguration rotationHandlesConfiguration;
         /// <summary>
         /// Configuration of the rotation handles.
         /// </summary>
-        public BoundsControlRotationHandlesConfiguration RotationHandles => rotationHandlesConfiguration;
+        public RotationHandlesConfiguration RotationHandles => rotationHandlesConfiguration;
 
         [SerializeField]
         [Tooltip("Configuration for Proximity Effect to scale handles or change materials on proximity.")]
@@ -296,10 +296,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         #region Private Fields
 
         // runtime instantiated visuals of bounding box 
-        private BoundsControlLinks links;
-        private BoundsControlScaleHandles scaleHandles;
-        private BoundsControlRotationHandles rotationHandles;
-        private BoundsControlBoxDisplay boxDisplay;
+        private Links links;
+        private ScaleHandles scaleHandles;
+        private RotationHandles rotationHandles;
+        private BoxDisplay boxDisplay;
         private ProximityEffect proximityEffect;
 
         // Whether we should be displaying just the wireframe (if enabled) or the handles too
@@ -458,10 +458,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             handleProximityEffectConfiguration = EnsureScriptable(handleProximityEffectConfiguration);
 
             // instantiate runtime classes for visuals
-            scaleHandles = new BoundsControlScaleHandles(scaleHandlesConfiguration);
-            rotationHandles = new BoundsControlRotationHandles(rotationHandlesConfiguration);
-            boxDisplay = new BoundsControlBoxDisplay(boxDisplayConfiguration);
-            links = new BoundsControlLinks(linksConfiguration);
+            scaleHandles = new ScaleHandles(scaleHandlesConfiguration);
+            rotationHandles = new RotationHandles(rotationHandlesConfiguration);
+            boxDisplay = new BoxDisplay(boxDisplayConfiguration);
+            links = new Links(linksConfiguration);
             proximityEffect = new ProximityEffect(handleProximityEffectConfiguration);
 
             // subscribe to visual changes
@@ -470,6 +470,15 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             rotationHandlesConfiguration.configurationChanged.AddListener(CreateRig);
             boxDisplayConfiguration.configurationChanged.AddListener(CreateRig);
             linksConfiguration.configurationChanged.AddListener(CreateRig);          
+        }
+
+        private void OnDestroy()
+        {
+            scaleHandlesConfiguration.configurationChanged.RemoveListener(CreateRig);
+            scaleHandlesConfiguration.visibilityChanged.RemoveListener(ResetVisuals);
+            rotationHandlesConfiguration.configurationChanged.RemoveListener(CreateRig);
+            boxDisplayConfiguration.configurationChanged.RemoveListener(CreateRig);
+            linksConfiguration.configurationChanged.RemoveListener(CreateRig);
         }
 
         private static T EnsureScriptable<T>(T instance) where T : ScriptableObject
@@ -750,7 +759,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             UnityPhysics.SyncTransforms();
 
             // apply flattening
-            return BoundsControlVisualUtils.FlattenBounds(boundsExtents, flattenAxis);
+            return VisualUtils.FlattenBounds(boundsExtents, flattenAxis);
         }
 
         private void UpdateBounds()
@@ -761,7 +770,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                 if (newExtents != Vector3.zero)
                 {
                     currentBoundsExtents = newExtents;
-                    BoundsControlVisualUtils.GetCornerPositionsFromBounds(new Bounds(Vector3.zero, currentBoundsExtents * 2.0f), ref boundsCorners);
+                    VisualUtils.GetCornerPositionsFromBounds(new Bounds(Vector3.zero, currentBoundsExtents * 2.0f), ref boundsCorners);
                 }
             }
         }

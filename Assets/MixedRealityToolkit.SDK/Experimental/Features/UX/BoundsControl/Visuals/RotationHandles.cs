@@ -4,18 +4,18 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.UI.Experimental
+namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControl
 {
     /// <summary>
     /// Rotation handles for <see cref="BoundsControl"/> that are used for rotating the
     /// Gameobject BoundsControl is attached to with near or far interaction
     /// </summary>
-    public class BoundsControlRotationHandles : BoundsControlHandlesBase
+    public class RotationHandles : HandlesBase
     {
-        protected override BoundsControlHandlesBaseConfiguration BaseConfig => config;
-        private BoundsControlRotationHandlesConfiguration config;
+        protected override HandlesBaseConfiguration BaseConfig => config;
+        private RotationHandlesConfiguration config;
 
-        internal BoundsControlRotationHandles(BoundsControlRotationHandlesConfiguration configuration)
+        internal RotationHandles(RotationHandlesConfiguration configuration)
         {
             Debug.Assert(configuration != null, "Can't create BoundsControlRotationHandles without valid configuration");
             config = configuration;
@@ -71,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             {
                 for (int i = 0; i < edgeCenters.Length; ++i)
                 {
-                    edgeCenters[i] = BoundsControlVisualUtils.GetLinkPosition(i, ref boundsCorners);
+                    edgeCenters[i] = VisualUtils.GetLinkPosition(i, ref boundsCorners);
                 }
             }
 
@@ -148,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                     midpointVisual.transform.localRotation = realignment * midpointVisual.transform.localRotation;
                 }
 
-                Bounds midpointBounds = BoundsControlVisualUtils.GetMaxBounds(midpointVisual);
+                Bounds midpointBounds = VisualUtils.GetMaxBounds(midpointVisual);
                 float maxDim = Mathf.Max(
                     Mathf.Max(midpointBounds.size.x, midpointBounds.size.y),
                     midpointBounds.size.z);
@@ -159,14 +159,14 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                 midpointVisual.transform.localScale = new Vector3(invScale, invScale, invScale);
                 midpointVisual.transform.localPosition = Vector3.zero;
 
-                BoundsControlVisualUtils.AddComponentsToAffordance(midpoint, new Bounds(midpointBounds.center * invScale, midpointBounds.size * invScale),
+                VisualUtils.AddComponentsToAffordance(midpoint, new Bounds(midpointBounds.center * invScale, midpointBounds.size * invScale),
                     config.RotationHandlePrefabColliderType, CursorContextInfo.CursorAction.Rotate, config.ColliderPadding, parent, drawManipulationTether);
 
                 handles.Add(midpoint.transform);
 
                 if (config.HandleMaterial != null)
                 {
-                    BoundsControlVisualUtils.ApplyMaterialToAllRenderers(midpointVisual, config.HandleMaterial);
+                    VisualUtils.ApplyMaterialToAllRenderers(midpointVisual, config.HandleMaterial);
                 }
             }
         }
