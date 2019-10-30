@@ -250,6 +250,31 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
         }
 
+        // Stores controller side to favor if TrackedHandedness is set to both
+        protected Handedness preferredTrackedHandedness = Handedness.Left;
+
+        /// <summary>
+        /// Controller side to favor and pick first if TrackedHandedness is set to both
+        /// </summary>
+        /// /// <remarks>
+        /// Only possible values, Left or Right
+        /// </remarks>
+        public Handedness PreferredTrackedHandedness
+        {
+            get => preferredTrackedHandedness;
+            set
+            {
+                if (TrackedHandness == Handedness.Both &&
+                    (value == Handedness.Left || value == Handedness.Right) 
+                    && preferredTrackedHandedness != value)
+                {
+                    preferredTrackedHandedness = value;
+                    RefreshTrackedObject();
+                }
+            }
+        }
+
+
         // Hidden GameObject managed by this component and attached as a child to the tracked target type (i.e head, hand etc)
         private GameObject trackingTarget;
 
@@ -378,22 +403,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             {
                 if (this.TrackedHandness == Handedness.Both)
                 {
-                    this.currentTrackedHandedness = Handedness.Left;
-                    target = GetControllerRay(Handedness.Left);
+                    currentTrackedHandedness = PreferredTrackedHandedness;
+                    target = GetControllerRay(currentTrackedHandedness);
                     if (target == null)
                     {
-                        this.currentTrackedHandedness = Handedness.Right;
-                        target = GetControllerRay(Handedness.Right);
+                        currentTrackedHandedness = currentTrackedHandedness == Handedness.Left ? Handedness.Right : Handedness.Left;
+                        target = GetControllerRay(currentTrackedHandedness);
                         if (target == null)
                         {
-                            this.currentTrackedHandedness = Handedness.None;
+                            currentTrackedHandedness = Handedness.None;
                         }
                     }
                 }
                 else
                 {
-                    this.currentTrackedHandedness = this.TrackedHandness;
-                    target = GetControllerRay(this.TrackedHandness);
+                    currentTrackedHandedness = TrackedHandness;
+                    target = GetControllerRay(TrackedHandness);
                 }
             }
             else if (TrackedTargetType == TrackedObjectType.HandJoint)
