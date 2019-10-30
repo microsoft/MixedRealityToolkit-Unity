@@ -8311,7 +8311,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.DisablePointersExample.html",
-          "hash": "Zf87NyTxvhrGCFcq8Jjbug=="
+          "hash": "/hoKYJvF8N7knD+OGfLOPA=="
         }
       },
       "is_incremental": false,
@@ -19359,6 +19359,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.PointerBehaviorControls.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.PointerBehaviorControls.html",
+          "hash": "4X9Ycpzs8RNDdg+1B65f5w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.UI.PressableButton.SpaceMode.yml",
       "output": {
         ".html": {
@@ -19879,7 +19891,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UI.html",
-          "hash": "3xI60Wn4B88phXLcwVC6zA=="
+          "hash": "Jh4wpnyrjDkirJkHBGcdJw=="
         }
       },
       "is_incremental": false,
@@ -23239,7 +23251,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "wMM83rhTN1vpzVdVPeNHKA=="
+          "hash": "XZyI0qGUEj3bgDsrLh97cA=="
         }
       },
       "is_incremental": false,
@@ -23304,17 +23316,17 @@
           "total_file_count": 134,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1391,
-          "skipped_file_count": 0
-        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1392,
           "skipped_file_count": 0
         }
       }
