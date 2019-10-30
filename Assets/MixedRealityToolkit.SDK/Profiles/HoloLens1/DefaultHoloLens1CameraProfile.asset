@@ -13,14 +13,6 @@ MonoBehaviour:
   m_Name: DefaultHoloLens1CameraProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 0
-  settingsConfigurations:
-  - componentType:
-      reference: Microsoft.MixedReality.Toolkit.CameraSystem.UnityARCameraSettings,
-        Microsoft.MixedReality.Toolkit.Providers.UnityAR
-    componentName: Unity AR Foundation Camera Settings
-    priority: 0
-    runtimePlatform: 288
-    settingsProfile: {fileID: 11400000, guid: a8af4c5deb4155b479e4e2d2b0bca103, type: 2}
   nearClipPlaneOpaqueDisplay: 0.3
   farClipPlaneOpaqueDisplay: 1000
   cameraClearFlagsOpaqueDisplay: 2
@@ -30,4 +22,4 @@ MonoBehaviour:
   farClipPlaneTransparentDisplay: 50
   cameraClearFlagsTransparentDisplay: 2
   backgroundColorTransparentDisplay: {r: 0, g: 0, b: 0, a: 0}
-  transparentQualityLevel: 0
+  holoLensQualityLevel: 0

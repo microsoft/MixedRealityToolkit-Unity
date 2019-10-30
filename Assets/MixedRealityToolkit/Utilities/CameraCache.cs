@@ -34,20 +34,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 var mainCamera = Camera.main;
 
                 if (mainCamera == null)
-                {
-                    Debug.Log("No main camera found. Searching for cameras in the scene.");
-
-                    // If no main camera was found, try to determine one.
-                    Camera[] cameras = GameObject.FindObjectsOfType<Camera>();
-                    if (cameras.Length == 0)
-                    {
-                        Debug.LogWarning("No cameras found. Creating a \"MainCamera\".");
-                        mainCamera = new GameObject("Main Camera", typeof(Camera), typeof(AudioListener)) { tag = "MainCamera" }.GetComponent<Camera>();
-                    }
-                    else
-                    {
-                        Debug.LogWarning("The Mixed Reality Toolkit requires one camera in the scene to be tagged as \"MainCamera\". Please ensure the application's main camera is tagged.");
-                    }
+                {   // If no main camera was found, create it now
+                    Debug.LogWarning("No main camera found. The Mixed Reality Toolkit requires at least one camera in the scene. One will be generated now.");
+                    mainCamera = new GameObject("Main Camera", typeof(Camera), typeof(AudioListener)) { tag = "MainCamera" }.GetComponent<Camera>();
                 }
 
                 // Cache the main camera
