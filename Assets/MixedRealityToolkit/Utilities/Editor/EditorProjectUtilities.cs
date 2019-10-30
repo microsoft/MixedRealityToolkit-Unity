@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     [InitializeOnLoad]
-    public class EditorProjectUtilities
+    public static class EditorProjectUtilities
     {
         /// <summary>
         /// Static constructor that allows for executing code on project load.
@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <returns>True if the directory could be found, false otherwise.</returns>
         public static bool FindRelativeDirectory(string packageDirectory, out string path)
         {
-            return FindRelativeDirectory(UnityEngine.Application.dataPath, packageDirectory, out path);
+            return FindRelativeDirectory(Application.dataPath, packageDirectory, out path);
         }
 
         /// <summary>
@@ -224,7 +224,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             string packageCacheFolderName = @"Library\PackageCache";
 
-            DirectoryInfo projectRoot = new DirectoryInfo(UnityEngine.Application.dataPath).Parent;
+            DirectoryInfo projectRoot = new DirectoryInfo(Application.dataPath).Parent;
             return new DirectoryInfo(Path.Combine(projectRoot.FullName, packageCacheFolderName));
         }
 

@@ -10,13 +10,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
     {
         // Hand ray
         protected HandRay HandRay { get; } = new HandRay();
-        public override bool IsInPointingPose
-        {
-            get
-            {
-                return HandRay.ShouldShowRay;
-            }
-        }
+
+        public override bool IsInPointingPose => HandRay.ShouldShowRay;
 
         // Velocity internal states
         private float deltaTimeStart;

@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// </summary>
     public abstract class BaseDataProviderAccessCoreSystem : BaseCoreSystem, IMixedRealityDataProviderAccess
     {
-        private List<IMixedRealityDataProvider> dataProviders = new List<IMixedRealityDataProvider>();
+        private readonly List<IMixedRealityDataProvider> dataProviders = new List<IMixedRealityDataProvider>();
 
         public override void Reset()
         {

@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     public class MixedRealityProjectConfiguratorWindow : EditorWindow
     {
-        private Dictionary<MRConfig, bool> trackToggles = new Dictionary<MRConfig, bool>()
+        private readonly Dictionary<MRConfig, bool> trackToggles = new Dictionary<MRConfig, bool>()
         {
             {MRConfig.ForceTextSerialization, true },
             {MRConfig.VisibleMetaFiles, true },
@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private const float Default_Window_Width = 400.0f;
 
         private readonly GUIContent ApplyButtonContent = new GUIContent("Apply", "Apply configurations to this Unity Project");
-        private readonly GUIContent LaterButtonContent = new GUIContent("Later", "Do not show this popup notification until next session");
+        private readonly GUIContent LaterButtonContent = new GUIContent("Later", "Do not show this pop-up notification until next session");
         private readonly GUIContent IgnoreButtonContent = new GUIContent("Ignore", "Modify this preference under Edit > Project Settings > MRTK");
 
         private bool showConfigurations = false;
@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         [MenuItem("Mixed Reality Toolkit/Utilities/Configure Unity Project", false, 499)]
         public static void ShowWindow()
         {
-            // There should be only one configurator window open as a "popup". If already open, then just force focus on our instance
+            // There should be only one configurator window open as a "pop-up". If already open, then just force focus on our instance
             if (IsOpen)
             {
                 Instance.Focus();
@@ -69,10 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         public static MixedRealityProjectConfiguratorWindow Instance { get; private set; }
 
-        public static bool IsOpen
-        {
-            get { return Instance != null; }
-        }
+        public static bool IsOpen => Instance != null;
 
         private void OnEnable()
         {
@@ -83,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private void CompilationPipeline_assemblyCompilationStarted(string obj)
         {
-            // There should be only one popup window which is generally tracked by IsOpen
+            // There should be only one pop-up window which is generally tracked by IsOpen
             // However, when recompiling, Unity will call OnDestroy for this window but not actually destroy the editor window
             // This ensure we have a clean close on recompiles when this EditorWindow was open beforehand
             Close();
@@ -183,7 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 EditorGUILayout.LabelField("iOS Settings", EditorStyles.boldLabel);
                 RenderToggle(MRConfig.IOSMinOSVersion, "Set Required OS Version");
                 RenderToggle(MRConfig.IOSArchitecture, "Set Required Architecture");
-                RenderToggle(MRConfig.IOSCameraUsageDescription, "Set Camera Usage Descriptionfs");
+                RenderToggle(MRConfig.IOSCameraUsageDescription, "Set Camera Usage Descriptions");
             }
         }
 
