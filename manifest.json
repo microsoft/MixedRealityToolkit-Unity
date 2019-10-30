@@ -6655,7 +6655,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.BaseCoreSystem.html",
-          "hash": "LDC72UMAYQGTq0x4QavBhw=="
+          "hash": "aRkWkfAnJzQVtzmZVSZqFA=="
         }
       },
       "is_incremental": false,
@@ -6667,7 +6667,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.BaseDataProvider.html",
-          "hash": "bJcHzc6WOzhgSvU6f4Cs5Q=="
+          "hash": "u3n9rlSakRU31RILCrkcXg=="
         }
       },
       "is_incremental": false,
@@ -6679,7 +6679,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.BaseDataProviderAccessCoreSystem.html",
-          "hash": "+rY88BBwUpow3fxLyij4fA=="
+          "hash": "40vSpcNkiyY3XKYmkc+WzQ=="
         }
       },
       "is_incremental": false,
@@ -6727,7 +6727,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile.html",
-          "hash": "NH541DS4aNjEAGK/IaK9wA=="
+          "hash": "AIwHhg/4nsYwC/4JeGudQA=="
         }
       },
       "is_incremental": false,
@@ -7047,11 +7047,59 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.CameraSystem.BaseCameraSettingsProfile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.CameraSystem.BaseCameraSettingsProfile.html",
+          "hash": "Tw44TOzM6ZqYuoNJExpm3g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.CameraSystem.DisplayType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.CameraSystem.DisplayType.html",
+          "hash": "UHsazwWkAA7yc6Zo+h7UaQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.CameraSystem.IMixedRealityCameraSettingsProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.CameraSystem.IMixedRealityCameraSettingsProvider.html",
+          "hash": "m4itSsK04zvOOHfhlCEejQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.CameraSystem.IMixedRealityCameraSystem.yml",
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.CameraSystem.IMixedRealityCameraSystem.html",
-          "hash": "Ou+Gq6DJ3SuYOmZBqW07GQ=="
+          "hash": "40sVeauNgccvRSfk/mV5Lg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.CameraSystem.MixedRealityCameraSettingsConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.CameraSystem.MixedRealityCameraSettingsConfiguration.html",
+          "hash": "qpORKv3jL4iB1Y9nilbK+Q=="
         }
       },
       "is_incremental": false,
@@ -7063,7 +7111,43 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.CameraSystem.MixedRealityCameraSystem.html",
-          "hash": "ujieIujjrK4jK9DlsHuwEw=="
+          "hash": "DG7O2/35hiUfWQ3GvY7Anw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.CameraSystem.UnityARCameraSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.CameraSystem.UnityARCameraSettings.html",
+          "hash": "oOdGTSj7j/t0pU83RdqzVw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.CameraSystem.UnityARCameraSettingsProfile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.CameraSystem.UnityARCameraSettingsProfile.html",
+          "hash": "7hb3gzpsu9/UfkwUhK+64Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.CameraSystem.UnityARCameraSettingsProfileInspector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.CameraSystem.UnityARCameraSettingsProfileInspector.html",
+          "hash": "dFZaS/62l0M2AvHx8sTc1Q=="
         }
       },
       "is_incremental": false,
@@ -7075,7 +7159,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.CameraSystem.html",
-          "hash": "C0tOjDhDRKuWQ6QnuN77Bw=="
+          "hash": "d+7s0NCW27XsGqo84VrT/A=="
         }
       },
       "is_incremental": false,
@@ -10363,7 +10447,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.IMixedRealityServiceConfiguration.html",
-          "hash": "v1p0gzEd8G7Xl+7BLTw/Tw=="
+          "hash": "2oOMEdM0MxBoVkbr5U/O4A=="
         }
       },
       "is_incremental": false,
@@ -12463,7 +12547,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Input.MixedRealityInputDataProviderConfiguration.html",
-          "hash": "c7KSOtMd5D6DY8mamwJ4GQ=="
+          "hash": "CCibEmiVRuZFNpWbERsQGA=="
         }
       },
       "is_incremental": false,
@@ -13675,7 +13759,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.MixedRealityCameraProfile.html",
-          "hash": "tOjmkaOkd1x1PmXab3JXlg=="
+          "hash": "dkiF7AiBrXUbxkoEFwG5bw=="
         }
       },
       "is_incremental": false,
@@ -13747,7 +13831,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.MixedRealityServiceConfiguration.html",
-          "hash": "fJtCuTcUI73WijagAiSVzA=="
+          "hash": "XFjdpqixu0ta639FIf/mGQ=="
         }
       },
       "is_incremental": false,
@@ -17083,7 +17167,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.SpatialAwareness.MixedRealitySpatialObserverConfiguration.html",
-          "hash": "7mgH/3+/KLo71ITfjaAydg=="
+          "hash": "NmPgA4IQgJE+EYizQWADfQ=="
         }
       },
       "is_incremental": false,
@@ -19903,7 +19987,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.UnityObjectExtensions.html",
-          "hash": "E7+gYLsmoJZL9uEkb1VjWg=="
+          "hash": "Mb53UNA4BeGesXXJ7j/rew=="
         }
       },
       "is_incremental": false,
@@ -20228,6 +20312,18 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.EdgeUtilities.html",
           "hash": "TaOBq4AchCYgRX3STcVhOA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.Editor.AssemblyDefinition.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Editor.AssemblyDefinition.html",
+          "hash": "EnXITxKxbRemRRlSvjjcGA=="
         }
       },
       "is_incremental": false,
@@ -20935,7 +21031,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Editor.html",
-          "hash": "A/fVM9/wV1UAdbzmrVNtBQ=="
+          "hash": "39BpxsTQix7cfF8bnDhCOg=="
         }
       },
       "is_incremental": false,
@@ -23251,7 +23347,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "XZyI0qGUEj3bgDsrLh97cA=="
+          "hash": "XIeIm6w6Lg9pRbINuMR+wA=="
         }
       },
       "is_incremental": false,
@@ -23326,7 +23422,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1392,
+          "total_file_count": 1400,
           "skipped_file_count": 0
         }
       }
