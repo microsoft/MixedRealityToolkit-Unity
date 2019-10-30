@@ -156,14 +156,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="t">time in seconds at which to destroy GameObject if applicable</param>
         public static void DestroyGameObject(GameObject gameObject, float t = 0.0f)
         {
-            if (Application.isPlaying)
-            {
-                GameObject.Destroy(gameObject, t);
-            }
-            else
-            {
-                GameObject.DestroyImmediate(gameObject);
-            }
+            UnityObjectExtensions.DestroyObject(gameObject, t);
         }
     }
 }
