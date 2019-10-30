@@ -54,7 +54,7 @@ LightmapSettings:
     m_EnableBakedLightmaps: 1
     m_EnableRealtimeLightmaps: 1
   m_LightmapEditorSettings:
-    serializedVersion: 10
+    serializedVersion: 12
     m_Resolution: 2
     m_BakeResolution: 40
     m_AtlasSize: 1024
@@ -62,6 +62,7 @@ LightmapSettings:
     m_AOMaxDistance: 1
     m_CompAOExponent: 1
     m_CompAOExponentDirect: 0
+    m_ExtractAmbientOcclusion: 0
     m_Padding: 2
     m_LightmapParameters: {fileID: 0}
     m_LightmapsBakeMode: 1
@@ -76,10 +77,16 @@ LightmapSettings:
     m_PVRDirectSampleCount: 32
     m_PVRSampleCount: 500
     m_PVRBounces: 2
+    m_PVREnvironmentSampleCount: 500
+    m_PVREnvironmentReferencePointCount: 2048
+    m_PVRFilteringMode: 2
+    m_PVRDenoiserTypeDirect: 0
+    m_PVRDenoiserTypeIndirect: 0
+    m_PVRDenoiserTypeAO: 0
     m_PVRFilterTypeDirect: 0
     m_PVRFilterTypeIndirect: 0
     m_PVRFilterTypeAO: 0
-    m_PVRFilteringMode: 1
+    m_PVREnvironmentMIS: 0
     m_PVRCulling: 1
     m_PVRFilteringGaussRadiusDirect: 1
     m_PVRFilteringGaussRadiusIndirect: 5
@@ -87,7 +94,8 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaDirect: 0.5
     m_PVRFilteringAtrousPositionSigmaIndirect: 2
     m_PVRFilteringAtrousPositionSigmaAO: 1
-    m_ShowResolutionOverlay: 1
+    m_ExportTrainingData: 0
+    m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -237,7 +245,7 @@ PrefabInstance:
     - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: contentScene.BuildIndex
-      value: 6
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 448945024179261765, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -315,8 +323,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Examples Hub
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d94d0d64ec3545b408d5621e7d27cf96, type: 2}
@@ -451,6 +457,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -557,7 +564,7 @@ PrefabInstance:
     - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: contentScene.BuildIndex
-      value: 1
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -748,7 +755,7 @@ PrefabInstance:
     - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: contentScene.BuildIndex
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -1259,8 +1266,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: MRTK
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f137eba12ee10834cb19632437cfdb2e, type: 2}
@@ -1395,6 +1400,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -1697,7 +1703,7 @@ PrefabInstance:
     - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: contentScene.BuildIndex
-      value: 10
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -1856,8 +1862,6 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: http://aka.ms/MRTK
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f137eba12ee10834cb19632437cfdb2e, type: 2}
@@ -1992,6 +1996,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -2098,7 +2103,7 @@ PrefabInstance:
     - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: contentScene.BuildIndex
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -2284,7 +2289,7 @@ PrefabInstance:
     - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: contentScene.BuildIndex
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -2465,7 +2470,7 @@ PrefabInstance:
     - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: contentScene.BuildIndex
-      value: 14
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -2615,6 +2620,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf12ee76e7e00a44a9a84256760020e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nodeList: []
   ignoreInactiveTransforms: 1
   sortType: 1
   surfaceType: 0
@@ -2729,7 +2735,7 @@ PrefabInstance:
     - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: contentScene.BuildIndex
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -3144,6 +3150,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -3242,7 +3249,7 @@ PrefabInstance:
     - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: contentScene.BuildIndex
-      value: -1
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -3268,7 +3275,7 @@ PrefabInstance:
     - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: contentScene.Included
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 448945024179261765, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
@@ -3438,7 +3445,7 @@ PrefabInstance:
     - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}
       propertyPath: contentScene.BuildIndex
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2701701781877227748, guid: 97e77b91a85a1c844aee31efd81859a2,
         type: 3}

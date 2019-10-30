@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         public string Name
         {
             get => name;
-            set { name = value; }
+            set => name = value;
         }
 
         // General
@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         public bool AllowUnsafeCode
         {
             get => allowUnsafeCode;
-            set { allowUnsafeCode = value; }
+            set => allowUnsafeCode = value;
         }
 
         [SerializeField]
@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         public bool AutoReferenced
         {
             get => autoReferenced;
-            set { autoReferenced = value; }
+            set => autoReferenced = value;
         }
 
         [SerializeField]
@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         public bool OverrideReferences
         {
             get => overrideReferences;
-            set { overrideReferences = value; }
+            set => overrideReferences = value;
         }
 
         // Define constraints
@@ -78,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         public string[] DefineConstraints
         {
             get => defineConstraints;
-            set { defineConstraints = value; }
+            set => defineConstraints = value;
         }
 
         // Assembly references
@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         public string[] References
         {
             get => references;
-            set { references = value; }
+            set => references = value;
         }
 
         // Unity references
@@ -104,7 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         public string[] OptionalUnityReferences
         {
             get => optionalUnityReferences;
-            set { optionalUnityReferences = value; }
+            set => optionalUnityReferences = value;
         }
 
         // Platforms
@@ -117,7 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         public string[] IncludePlatforms
         {
             get => includePlatforms;
-            set { includePlatforms = value; }
+            set => includePlatforms = value;
         }
 
         [SerializeField]
@@ -129,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         public string[] ExcludePlatforms
         {
             get => excludePlatforms;
-            set { excludePlatforms = value; }
+            set => excludePlatforms = value;
         }
 
         /// <summary>

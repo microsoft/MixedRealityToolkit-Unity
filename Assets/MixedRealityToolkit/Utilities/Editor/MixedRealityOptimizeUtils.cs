@@ -143,6 +143,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             return EditorUserBuildSettings.activeBuildTarget == BuildTarget.WSAPlayer;
         }
 
+        public static bool IsBuildTargetAndroid()
+        {
+            return EditorUserBuildSettings.activeBuildTarget == BuildTarget.Android;
+        }
+
+        public static bool IsBuildTargetIOS()
+        {
+            return EditorUserBuildSettings.activeBuildTarget == BuildTarget.iOS;
+        }
+
         public static void ChangeProperty(SerializedObject target, string name, Action<SerializedProperty> changer)
         {
             var prop = target.FindProperty(name);
