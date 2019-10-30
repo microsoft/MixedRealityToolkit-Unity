@@ -269,8 +269,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                     && preferredTrackedHandedness != value)
                 {
                     preferredTrackedHandedness = value;
-                    // TODO: Troy -> might want to refresh tracked object manually?
-                    //RefreshTrackedObject();
                 }
             }
         }
@@ -398,7 +396,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         protected virtual void AttachToNewTrackedObject()
         {
-            this.currentTrackedHandedness = Handedness.None;
+            currentTrackedHandedness = Handedness.None;
 
             Transform target = null;
             if (TrackedTargetType == TrackedObjectType.Head)
@@ -407,13 +405,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
             else if (TrackedTargetType == TrackedObjectType.ControllerRay)
             {
-                if (this.TrackedHandness == Handedness.Both)
+                if (TrackedHandness == Handedness.Both)
                 {
                     currentTrackedHandedness = PreferredTrackedHandedness;
                     target = GetControllerRay(currentTrackedHandedness);
                     if (target == null)
                     {
-                        currentTrackedHandedness = currentTrackedHandedness == Handedness.Left ? Handedness.Right : Handedness.Left;
+                        currentTrackedHandedness = currentTrackedHandedness.GetOppositeHandedness();
                         target = GetControllerRay(currentTrackedHandedness);
                         if (target == null)
                         {
@@ -497,8 +495,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 bool trackingLeft = HandJointService.IsHandTracked(Handedness.Left);
                 bool trackingRight = HandJointService.IsHandTracked(Handedness.Right);
 
-                return (currentTrackedHandedness == Handedness.Left && !trackingLeft) ||
-                       (currentTrackedHandedness == Handedness.Right && !trackingRight);
+                return (currentTrackedHandedness.IsLeft() && !trackingLeft) ||
+                       (currentTrackedHandedness.IsRight() && !trackingRight);
             }
 
             return false;

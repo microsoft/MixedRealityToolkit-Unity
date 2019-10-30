@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -181,24 +180,26 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         private Handedness previousHandedness = Handedness.None;
         protected IMixedRealityController trackedController = null;
-        //protected List<IMixedRealityController> handStack = new List<IMixedRealityController>();
         protected HandBounds handBounds = null;
-        //protected bool autoTransitionBetweenHands = false;
 
         private readonly Quaternion handToWorldRotation = Quaternion.Euler(-90.0f, 0.0f, 180.0f);
 
         /// <inheritdoc />
         public override void SolverUpdate()
         {
-            // TODO: Check if target type does not equal controller/hand
+            if (SolverHandler.TrackedTargetType != TrackedObjectType.HandJoint &&
+                SolverHandler.TrackedTargetType != TrackedObjectType.ControllerRay)
+            {
+                Debug.LogWarning("Solver HandConstraint requires TrackedObjectType of type HandJoint or ControllerRay");
+                return;
+            }
 
-           var prevTrackedController = trackedController;
+            var prevTrackedController = trackedController;
 
             if (SolverHandler.CurrentTrackedHandedness != Handedness.None)
             {
                 trackedController = GetController(SolverHandler.CurrentTrackedHandedness);
                 bool isValidController = IsValidController(trackedController);
-                // we should not be tracking this hand
                 if (!isValidController)
                 {
                     // Attempt to switch by hands by asking solver handler to prefer the other controller if available
@@ -229,7 +230,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
             // Calculate if events should be fired
             var newHandedness = trackedController == null ? Handedness.None : trackedController.ControllerHandedness;
-            if (previousHandedness == Handedness.None && newHandedness != Handedness.None)
+            if (previousHandedness.IsNone() && !newHandedness.IsNone())
             {
                 // Toggle cursor off for hand that is going to suppor the hand menu
                 StartCoroutine(ToggleCursors(trackedController, false, true));
@@ -237,7 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 OnFirstHandDetected.Invoke();
                 OnHandActivate.Invoke();
             }
-            else if (previousHandedness != Handedness.None && newHandedness == Handedness.None)
+            else if (!previousHandedness.IsNone() && newHandedness.IsNone())
             {
                 // Toggle cursors back on for the hand that is no longer supporting the solver
                 StartCoroutine(ToggleCursors(prevTrackedController, true));
@@ -258,36 +259,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
             previousHandedness = newHandedness;
 
-            /*
-            // Determine the new active hand.
-            IMixedRealityController newActivehand = null;
-
-            foreach (var hand in handStack)
-            {
-                if (IsHandActive(hand))
-                {
-                    newActivehand = hand;
-                    break;
-                }
-            }
-
-            // Track the new active hand.
-            if (trackedHand == null || trackedHand != newActivehand)
-            {
-                ChangeTrackedObjectType(newActivehand);
-            }
-
-            // Update the goal position and rotation if a tracked hand is present.
-            if (trackedHand != null && SolverHandler.TransformTarget != null)
-            {
-                if (updateWhenOppositeHandNear || !IsOppositeHandNear(trackedHand))
-                {
-                    GoalPosition = CalculateGoalPosition();
-                    GoalRotation = CalculateGoalRotation();
-                }
-            }
-            */
-
             UpdateWorkingPositionToGoal();
             UpdateWorkingRotationToGoal();
         }
@@ -303,17 +274,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             {
                 return false;
             }
-
-            /* TODO: Troy
-            // If transitioning between hands is not allowed, make sure the TrackedObjectType matches the hand.
-            if (!autoTransitionBetweenHands)
-            {
-                return (SolverHandler.TrackedTargetType == TrackedObjectType.HandJoint || 
-                        SolverHandler.TrackedTargetType == TrackedObjectType.ControllerRay)  &&
-                       (SolverHandler.TrackedHandness == Handedness.Both || 
-                        hand.ControllerHandedness == SolverHandler.TrackedHandness);
-            }
-            */
 
             // Check to make sure none of the hand's pointer's a locked. We don't want to track a hand which is currently
             // interacting with something else.
@@ -446,57 +406,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             return false;
         }
 
-        /*
-        /// <summary>
-        /// Swaps out the currently tracked hand while triggered appropriate events.
-        /// </summary>
-        /// <param name="hand">Which hand to track now.</param>
-        private void ChangeTrackedObjectType(IMixedRealityController hand)
-        {
-            if (hand != null)
-            {
-                if (SolverHandler.TrackedTargetType == TrackedObjectType.HandJoint || 
-                    SolverHandler.TrackedTargetType == TrackedObjectType.ControllerRay)
-                {
-                    if (SolverHandler.TrackedHandness != hand.ControllerHandedness)
-                    {
-                        SolverHandler.TrackedHandness = hand.ControllerHandedness;
-
-                        // Move the currently tracked hand to the top of the stack.
-                        handStack.Remove(hand);
-                        handStack.Insert(0, hand);
-                    }
-
-                    if (trackedHand == null)
-                    {
-                        trackedHand = hand;
-                        onHandActivate?.Invoke();
-                    }
-                    else
-                    {
-                        StartCoroutine(ToggleCursor(true));
-                        trackedHand = hand;
-                    }
-
-                    // Wait one frame to disable the cursor in case one hasn't been instantiated yet.
-                    StartCoroutine(ToggleCursor(false, true));
-                }
-                else
-                {
-                    Debug.LogWarning("ChangeTrackedObjectType failed because TrackedTargetType is not of type HandJoint or MotionController.");
-                }
-            }
-            else
-            {
-                if (trackedHand != null)
-                {
-                    StartCoroutine(ToggleCursor(true));
-                    trackedHand = null;
-                    onHandDeactivate?.Invoke();
-                }
-            }
-        }*/
-
         private static Ray CalculateProjectedSafeZoneRay(Vector3 origin, IMixedRealityController hand, SolverSafeZone handSafeZone)
         {
             Vector3 direction;
@@ -569,11 +478,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             return controller.ControllerHandedness != Handedness.None;
         }
 
-        private static IMixedRealityController GetController(Handedness hand)
+        private static IMixedRealityController GetController(Handedness handedness)
         {
             foreach (IMixedRealityController c in CoreServices.InputSystem.DetectedControllers)
             {
-                if ((c.ControllerHandedness & hand) != 0)
+                if (c.ControllerHandedness.IsMatch(handedness))
                 {
                     return c;
                 }
@@ -584,72 +493,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         #region MonoBehaviour Implementation
 
-        protected override void Awake()
-        {
-            base.Awake();
-
-            // TODO: Troy
-            // Auto transition between hands if the solver is set to track either hand.
-            //autoTransitionBetweenHands = SolverHandler.TrackedHandness == Handedness.Both;
-        }
-
         protected override void OnEnable()
         {
             base.OnEnable();
-            // TODO: Troy
-            //CoreServices.InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
 
             handBounds = GetComponent<HandBounds>();
 
             // Initially no hands are tacked or active.
             trackedController = null;
-            onLastHandLost?.Invoke();
-            onHandDeactivate?.Invoke();
+            OnLastHandLost.Invoke();
+            OnHandDeactivate.Invoke();
         }
-
-        /*
-        protected virtual void OnDisable()
-        {
-            CoreServices.InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
-        }*/
 
         #endregion MonoBehaviour Implementation
-
-        #region IMixedRealitySourceStateHandler Implementation
-
-        /*
-        /// <inheritdoc />
-        public void OnSourceDetected(SourceStateEventData eventData)
-        {
-            var hand = eventData.Controller;
-
-            if (hand != null && IsApplicableController(hand) && !handStack.Contains(hand))
-            {
-                if (handStack.Count == 0)
-                {
-                    onFirstHandDetected?.Invoke();
-                }
-
-                handStack.Add(hand);
-            }
-        }
-
-        /// <inheritdoc />
-        public void OnSourceLost(SourceStateEventData eventData)
-        {
-            var hand = eventData.Controller;
-
-            if (hand != null && IsApplicableController(hand))
-            {
-                handStack.Remove(hand);
-
-                if (handStack.Count == 0)
-                {
-                    onLastHandLost?.Invoke();
-                }
-            }
-        }*/
-
-        #endregion IMixedRealitySourceStateHandler Implementation
     }
 }

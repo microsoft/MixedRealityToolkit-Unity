@@ -55,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         /// <summary>
-        /// Determines if a hand meets the requirements for use with constraining the tracked object and determines if the 
+        /// Determines if a controller meets the requirements for use with constraining the tracked object and determines if the 
         /// palm is currently facing the user.
         /// </summary>
         /// <param name="controller">The hand to check against.</param>
