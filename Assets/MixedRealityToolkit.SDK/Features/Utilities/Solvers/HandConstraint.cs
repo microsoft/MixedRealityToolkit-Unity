@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     /// This solver is intended to work with <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand"/> but also works with <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityController"/>. 
     /// </summary>
     [RequireComponent(typeof(HandBounds))]
-    public class HandConstraint : Solver//, IMixedRealitySourceStateHandler
+    public class HandConstraint : Solver
     {
         /// <summary>
         /// Specifies a zone that is safe for the constraint to solve to without intersecting the hand.

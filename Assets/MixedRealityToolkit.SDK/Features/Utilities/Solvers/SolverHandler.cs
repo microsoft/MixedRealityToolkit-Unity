@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     /// This class handles the solver components that are attached to this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>
     /// </summary>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Solver.html")]
-    public class SolverHandler : MonoBehaviour
+    public class SolverHandler : MonoBehaviour, IMixedRealitySourceStateHandler
     {
         [SerializeField]
         [Tooltip("Tracked object to calculate position and orientation from. If you want to manually override and use a scene object, use the TransformTarget field.")]
@@ -305,12 +305,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
         }
 
-        private void Start()
+        protected virtual void Start()
         {
             RefreshTrackedObject();
         }
 
-        private void Update()
+        protected virtual void OnEnable()
+        {
+            CoreServices.InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
+        }
+
+        protected virtual void OnDisable()
+        {
+            CoreServices.InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
+        }
+
+        protected virtual void Update()
         {
             DeltaTime = Time.realtimeSinceStartup - lastUpdateTime;
             lastUpdateTime = Time.realtimeSinceStartup;
@@ -478,18 +488,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <returns>true if not tracking valid hands and/or target, false otherwise</returns>
         private bool IsInvalidTracking()
         {
-            if (this.trackingTarget == null) return true;
+            if (trackingTarget == null)
+            {
+                return true;
+            }
 
             // If we were tracking a particular hand, check that our transform is still valid
             // The HandJointService does not destroy it's own hand joint tracked GameObjects even when a hand is no longer tracked
             // Those HandJointService's GameObjects though are the parents of our tracked transform and thus will not be null/destroyed
-            if (this.TrackedTargetType == TrackedObjectType.HandJoint && this.currentTrackedHandedness != Handedness.None)
+            if (TrackedTargetType == TrackedObjectType.HandJoint && currentTrackedHandedness != Handedness.None)
             {
                 bool trackingLeft = HandJointService.IsHandTracked(Handedness.Left);
                 bool trackingRight = HandJointService.IsHandTracked(Handedness.Right);
 
-                return (this.currentTrackedHandedness == Handedness.Left && !trackingLeft) ||
-                    (this.currentTrackedHandedness == Handedness.Right && !trackingRight);
+                return (currentTrackedHandedness == Handedness.Left && !trackingLeft) ||
+                       (currentTrackedHandedness == Handedness.Right && !trackingRight);
             }
 
             return false;
@@ -505,5 +518,24 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             return type == TrackedObjectType.Head || type >= TrackedObjectType.ControllerRay;
         }
 
+        #region IMixedRealitySourceStateHandler Implementation
+
+        public void OnSourceDetected(SourceStateEventData eventData)
+        {
+            if (IsInvalidTracking())
+            {
+                RefreshTrackedObject();
+            }
+        }
+
+        public void OnSourceLost(SourceStateEventData eventData)
+        {
+            if (IsInvalidTracking())
+            {
+                RefreshTrackedObject();
+            }
+        }
+
+        #endregion IMixedRealitySourceStateHandler Implementation
     }
 }
