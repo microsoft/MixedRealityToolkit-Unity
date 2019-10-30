@@ -264,8 +264,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             get => preferredTrackedHandedness;
             set
             {
-                if (TrackedHandness == Handedness.Both &&
-                    (value.IsLeft() || value.IsRight()) 
+                if ((value.IsLeft() || value.IsRight()) 
                     && preferredTrackedHandedness != value)
                 {
                     preferredTrackedHandedness = value;
