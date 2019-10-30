@@ -24,11 +24,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         public enum SolverSafeZone
         {
             /// <summary>
-            /// On the left hand with palm up, the area right of the palm.
+            /// On the left controller with palm up, the area right of the palm.
             /// </summary>
             UlnarSide = 0,
             /// <summary>
-            /// On the left hand with palm up, the area left of the palm.
+            /// On the left controller with palm up, the area left of the palm.
             /// </summary>
             RadialSide = 1,
             /// <summary>
@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             /// </summary>
             AboveFingerTips = 2,
             /// <summary>
-            /// Below where the hand meets the arm.
+            /// Below where the controller meets the arm.
             /// </summary>
             BelowWrist = 3
         }
@@ -180,7 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         private Handedness previousHandedness = Handedness.None;
-        protected IMixedRealityController trackedHand = null;
+        protected IMixedRealityController trackedController = null;
         //protected List<IMixedRealityController> handStack = new List<IMixedRealityController>();
         protected HandBounds handBounds = null;
         //protected bool autoTransitionBetweenHands = false;
@@ -192,31 +192,30 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         {
             // TODO: Check if target type does not equal controller/hand
 
-           var previousTrackedHand = trackedHand;
+           var prevTrackedController = trackedController;
 
             if (SolverHandler.CurrentTrackedHandedness != Handedness.None)
             {
-                trackedHand = GetController(SolverHandler.CurrentTrackedHandedness);
-                bool isValidHand = IsValidController(trackedHand);
+                trackedController = GetController(SolverHandler.CurrentTrackedHandedness);
+                bool isValidController = IsValidController(trackedController);
                 // we should not be tracking this hand
-                if (!isValidHand)
+                if (!isValidController)
                 {
-                    var oppositeHandedness = SolverHandler.CurrentTrackedHandedness == Handedness.Left ? Handedness.Right : Handedness.Left;
-
                     // Attempt to switch by hands by asking solver handler to prefer the other controller if available
-                    SolverHandler.PreferredTrackedHandedness = oppositeHandedness;
+                    SolverHandler.PreferredTrackedHandedness = SolverHandler.CurrentTrackedHandedness.GetOppositeHandedness();
+                    SolverHandler.RefreshTrackedObject();
 
-                    trackedHand = GetController(SolverHandler.CurrentTrackedHandedness);
-                    isValidHand = IsValidController(trackedHand);
-                    if (!isValidHand)
+                    trackedController = GetController(SolverHandler.CurrentTrackedHandedness);
+                    isValidController = IsValidController(trackedController);
+                    if (!isValidController)
                     {
-                        trackedHand = null;
+                        trackedController = null;
                     }
                 }
 
-                if (isValidHand && SolverHandler.TransformTarget != null)
+                if (isValidController && SolverHandler.TransformTarget != null)
                 {
-                    if (updateWhenOppositeHandNear || !IsOppositeHandNear(trackedHand))
+                    if (updateWhenOppositeHandNear || !IsOppositeHandNear(trackedController))
                     {
                         GoalPosition = CalculateGoalPosition();
                         GoalRotation = CalculateGoalRotation();
@@ -225,27 +224,33 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
             else
             {
-                trackedHand = null;
+                trackedController = null;
             }
 
             // Calculate if events should be fired
-            var newHandedness = trackedHand == null ? Handedness.None : trackedHand.ControllerHandedness;
+            var newHandedness = trackedController == null ? Handedness.None : trackedController.ControllerHandedness;
             if (previousHandedness == Handedness.None && newHandedness != Handedness.None)
             {
-                // toggle cursor off for trackedHand
+                // Toggle cursor off for hand that is going to suppor the hand menu
+                StartCoroutine(ToggleCursors(trackedController, false, true));
+
                 OnFirstHandDetected.Invoke();
                 OnHandActivate.Invoke();
             }
             else if (previousHandedness != Handedness.None && newHandedness == Handedness.None)
             {
+                // Toggle cursors back on for the hand that is no longer supporting the solver
+                StartCoroutine(ToggleCursors(prevTrackedController, true));
+
                 // toggle cursor on for trackedHand
                 OnLastHandLost.Invoke();
                 OnHandDeactivate.Invoke();
             }
             else if (previousHandedness != newHandedness)
             {
-                // togglecursor on for previousTrackedHand
-                // toggle cursor off for trackedHand
+                // Switching controllers. Toggle cursors back on for the previous controller and toggle off for the new supported controller
+                StartCoroutine(ToggleCursors(prevTrackedController, true));
+                StartCoroutine(ToggleCursors(trackedController, false, true));
 
                 OnHandDeactivate.Invoke();
                 OnHandActivate.Invoke();
@@ -333,11 +338,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             var goalPosition = SolverHandler.TransformTarget.position;
             Bounds trackedHandBounds;
 
-            if (trackedHand != null &&
-                handBounds.Bounds.TryGetValue(trackedHand.ControllerHandedness, out trackedHandBounds))
+            if (trackedController != null &&
+                handBounds.Bounds.TryGetValue(trackedController.ControllerHandedness, out trackedHandBounds))
             {
                 float distance;
-                Ray ray = CalculateProjectedSafeZoneRay(goalPosition, trackedHand, safeZone);
+                Ray ray = CalculateProjectedSafeZoneRay(goalPosition, trackedController, safeZone);
                 trackedHandBounds.Expand(safeZoneBuffer);
 
                 if (trackedHandBounds.IntersectRay(ray, out distance))
@@ -377,21 +382,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 var additionalRotation = SolverHandler.AdditionalRotation;
 
                 // Invert the yaw based on handedness to allow the rotation to look similar on both hands.
-                switch (trackedHand.ControllerHandedness)
+                if (trackedController.ControllerHandedness.IsRight())
                 {
-                    default:
-                    case Handedness.Left:
-                        {
-                            goalRotation *= Quaternion.Euler(additionalRotation.x, additionalRotation.y, additionalRotation.z);
-                        }
-                        break;
-
-                    case Handedness.Right:
-                        {
-                            goalRotation *= Quaternion.Euler(additionalRotation.x, -additionalRotation.y, additionalRotation.z);
-                        }
-                        break;
+                    additionalRotation.y *= -1.0f;
                 }
+
+                goalRotation *= Quaternion.Euler(additionalRotation.x, additionalRotation.y, additionalRotation.z);
             }
 
             return goalRotation;
@@ -400,20 +396,24 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <summary>
         /// Enables/disables all cursors on the currently tracked hand.
         /// </summary>
+        /// <param name="controller">Controller target to search for pointers</param>
         /// <param name="visible">Is the cursor visible?</param>
         /// <param name="frameDelay">Delay one frame before performing the toggle to allow the pointers to instantiate their cursors.</param>
-        protected virtual IEnumerator ToggleCursor(bool visible, bool frameDelay = false)
+        protected virtual IEnumerator ToggleCursors(IMixedRealityController controller, bool visible, bool frameDelay = false)
         {
+            if (controller == null)
+            {
+                yield break;
+            }
+
             if (hideHandCursorsOnActivate)
             {
-                var cachedTrackedHand = trackedHand;
-
                 if (frameDelay)
                 {
                     yield return null;
                 }
 
-                foreach (var pointer in cachedTrackedHand?.InputSource.Pointers)
+                foreach (var pointer in controller?.InputSource.Pointers)
                 {
                     pointer?.BaseCursor?.SetVisibility(visible);
                 }
@@ -423,16 +423,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <summary>
         /// Performs an intersection test to see if the left hand is near the right hand or vice versa.
         /// </summary>
-        /// <param name="hand">The hand to check against.</param>
+        /// <param name="controller">The hand to check against.</param>
         /// <returns>True, when hands are near each other.</returns>
-        protected virtual bool IsOppositeHandNear(IMixedRealityController hand)
+        protected virtual bool IsOppositeHandNear(IMixedRealityController controller)
         {
-            if (hand != null)
+            if (controller != null)
             {
-                Bounds oppositeHandBounds, trackedHandBounds;
-
-                if (handBounds.Bounds.TryGetValue((hand.ControllerHandedness == Handedness.Left) ? Handedness.Right : Handedness.Left, out oppositeHandBounds) &&
-                    handBounds.Bounds.TryGetValue(hand.ControllerHandedness, out trackedHandBounds))
+                if (handBounds.Bounds.TryGetValue(controller.ControllerHandedness.GetOppositeHandedness(), out Bounds oppositeHandBounds) &&
+                    handBounds.Bounds.TryGetValue(controller.ControllerHandedness, out Bounds trackedHandBounds))
                 {
                     // Double the size of the hand bounds to allow for greater tolerance.
                     trackedHandBounds.Expand(trackedHandBounds.extents);
@@ -511,7 +509,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                         direction = Vector3.Cross(CameraCache.Main.transform.forward, Vector3.up);
                         direction = IsPalmFacingCamera(hand) ? direction : -direction;
 
-                        if (hand.ControllerHandedness == Handedness.Left)
+                        if (hand.ControllerHandedness.IsLeft())
                         {
                             direction = -direction;
                         }
@@ -604,7 +602,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             handBounds = GetComponent<HandBounds>();
 
             // Initially no hands are tacked or active.
-            trackedHand = null;
+            trackedController = null;
             onLastHandLost?.Invoke();
             onHandDeactivate?.Invoke();
         }

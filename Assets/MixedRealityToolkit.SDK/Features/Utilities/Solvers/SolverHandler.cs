@@ -265,11 +265,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             set
             {
                 if (TrackedHandness == Handedness.Both &&
-                    (value == Handedness.Left || value == Handedness.Right) 
+                    (value.IsLeft() || value.IsRight()) 
                     && preferredTrackedHandedness != value)
                 {
                     preferredTrackedHandedness = value;
-                    RefreshTrackedObject();
+                    // TODO: Troy -> might want to refresh tracked object manually?
+                    //RefreshTrackedObject();
                 }
             }
         }
