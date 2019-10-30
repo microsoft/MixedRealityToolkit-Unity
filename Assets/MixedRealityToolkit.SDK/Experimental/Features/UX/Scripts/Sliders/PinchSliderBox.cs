@@ -337,7 +337,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 thumb = Instantiate(thumbPrefab, slider.transform, false);
                 thumb.EnsureComponent<NearInteractionGrabbable>();
-                thumb.transform.localRotation = Quaternion.LookRotation(GetSliderAxis(axis) * localDirection);
+                thumb.transform.rotation = Quaternion.LookRotation((targetTransform.rotation * axisNormal) * globalDirection);
             }
             else
             {

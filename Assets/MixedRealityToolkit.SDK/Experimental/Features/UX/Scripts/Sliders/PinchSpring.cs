@@ -73,6 +73,22 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
 
         [SerializeField, Tooltip("TODO")]
+        private Vector3 restingDirection = new Vector3(0.0f, 0.0f, 1.0f);
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public Vector3 RestingDirection
+        {
+            get => restingDirection;
+            set
+            {
+                restingDirection = value;
+                restingDirection.Normalize();
+            }
+        }
+
+        [SerializeField, Tooltip("TODO")]
         private float pointMass = 0.05f;
 
         /// <summary>
@@ -96,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             set => springStiffness = value;
         }
 
-        [SerializeField, Tooltip("TODO")]
+        [SerializeField, Range(0.0f, 1.0f), Tooltip("TODO")]
         private float springDampening = 0.9f;
 
         /// <summary>
@@ -108,6 +124,30 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             set => springDampening = value;
         }
 
+        [SerializeField, Tooltip("TODO")]
+        private float snapDistance = 0.03f;
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public float SnapDistance
+        {
+            get => snapDistance;
+            set => snapDistance = value;
+        }
+
+        [SerializeField, Tooltip("TODO")]
+        private float handleTipInterpolateSpeed = 20.0f;
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public float HandleTipInterpolateSpeed
+        {
+            get => handleTipInterpolateSpeed;
+            set => handleTipInterpolateSpeed = value;
+        }
+
         #endregion
 
         #region Private Members
@@ -116,6 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         private IMixedRealityPointer manipulatePointer = null;
         private IMixedRealityNearPointer focusedPointer = null;
         private Vector3 velocity = Vector3.zero;
+        private bool snapped = false;
 
         #endregion
 
@@ -123,6 +164,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         private void Start()
         {
+            restingDirection.Normalize();
+
             if (handleTip != null)
             {
                 tipScaleHander = handleTip.GetComponent<TransformScaleHandler>();
@@ -131,17 +174,28 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         private void Update()
         {
+            float deltaTime = Time.deltaTime;
+
             // Move the handle tip towards the interacting pointer, else spring back to the resting location.
             var currentPosition = handleTip.position;
-            var restingPosition = handleRoot.position + handleRoot.forward * restingDistance;
+            var restingPosition = handleRoot.position + (transform.rotation * restingDirection) * restingDistance;
 
             Vector3 targetPosition;
-            Vector3 constraintPosition;
+            Vector3 graspPosition;
 
-            if (focusedPointer != null && focusedPointer.TryGetNearGraspPoint(out constraintPosition))
+            if (focusedPointer != null && focusedPointer.TryGetNearGraspPoint(out graspPosition))
             {
-                // Quickly interpolate to the constraint position.
-                targetPosition = Vector3.Lerp(currentPosition, constraintPosition, Time.deltaTime * 50.0f);
+                if (snapped || ((currentPosition - graspPosition).magnitude < snapDistance))
+                {
+                    // Snap to the grasp position.
+                    targetPosition = graspPosition;
+                    snapped = true;
+                }
+                else
+                {
+                    // Interpolate to the snap position.
+                    targetPosition = Vector3.Lerp(currentPosition, graspPosition, handleTipInterpolateSpeed * deltaTime);
+                }
             }
             else
             {
@@ -156,10 +210,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                     // Integrate the point mass.
                     var force = delta * (springStiffness * deltaMagnitude);
                     var acceleration = force / pointMass;
-                    var dt = Time.deltaTime;
 
-                    velocity += acceleration * dt;
-                    targetPosition = currentPosition + (velocity * dt);
+                    velocity += acceleration * deltaTime;
+                    targetPosition = currentPosition + (velocity * deltaTime);
 
                     velocity *= springDampening;
                 }
@@ -167,6 +220,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 {
                     targetPosition = restingPosition;
                 }
+
+                snapped = false;
             }
 
             handleTip.position = targetPosition;
@@ -175,7 +230,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             if (tipScaleHander != null)
             {
                 var tagetScale = (manipulatePointer != null) ? Vector3.one * tipScaleHander.ScaleMinimum : Vector3.one * tipScaleHander.ScaleMaximum;
-                handleTip.localScale = Vector3.Lerp(handleTip.localScale, tagetScale, Time.deltaTime * 20.0f);
+                handleTip.localScale = Vector3.Lerp(handleTip.localScale, tagetScale, handleTipInterpolateSpeed * deltaTime);
             }
 
             // Update the connector.
@@ -273,13 +328,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             handler.OnFocusEnter(casted);
         };
 
-        private static readonly ExecuteEvents.EventFunction<IMixedRealityFocusHandler> OnFocusExitEventHandler =
-        delegate (IMixedRealityFocusHandler handler, BaseEventData eventData)
-        {
-            var casted = ExecuteEvents.ValidateEventData<FocusEventData>(eventData);
-            handler.OnFocusExit(casted);
-        };
-
         public void OnFocusEnter(FocusEventData eventData)
         {
             focusedPointer = eventData.Pointer as IMixedRealityNearPointer;
@@ -290,6 +338,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 ExecuteEvents.ExecuteHierarchy(gameObject.transform.parent.gameObject, eventData, OnFocusEnterEventHandler);
             }
         }
+
+        private static readonly ExecuteEvents.EventFunction<IMixedRealityFocusHandler> OnFocusExitEventHandler =
+        delegate (IMixedRealityFocusHandler handler, BaseEventData eventData)
+        {
+            var casted = ExecuteEvents.ValidateEventData<FocusEventData>(eventData);
+            handler.OnFocusExit(casted);
+        };
 
         public void OnFocusExit(FocusEventData eventData)
         {
