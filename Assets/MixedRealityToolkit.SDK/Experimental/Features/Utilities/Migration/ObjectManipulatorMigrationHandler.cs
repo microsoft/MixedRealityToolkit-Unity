@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Experimental.UI;
 using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
@@ -48,33 +49,46 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             switch (mh1.TwoHandedManipulationType)
             {
                 case ManipulationHandler.TwoHandedManipulation.Scale:
-                    mh2.TwoHandedManipulationType = ObjectManipulator.TwoHandedManipulation.Scale;
+                    mh2.TwoHandedManipulationType = TransformFlags.Scale;
                     break;
                 case ManipulationHandler.TwoHandedManipulation.Rotate:
-                    mh2.TwoHandedManipulationType = ObjectManipulator.TwoHandedManipulation.Rotate;
+                    mh2.TwoHandedManipulationType = TransformFlags.Rotate;
                     break;
                 case ManipulationHandler.TwoHandedManipulation.MoveScale:
-                    mh2.TwoHandedManipulationType = ObjectManipulator.TwoHandedManipulation.Move |
-                        ObjectManipulator.TwoHandedManipulation.Scale;
+                    mh2.TwoHandedManipulationType = TransformFlags.Move |
+                        TransformFlags.Scale;
                     break;
                 case ManipulationHandler.TwoHandedManipulation.MoveRotate:
-                    mh2.TwoHandedManipulationType = ObjectManipulator.TwoHandedManipulation.Move |
-                        ObjectManipulator.TwoHandedManipulation.Rotate;
+                    mh2.TwoHandedManipulationType = TransformFlags.Move |
+                        TransformFlags.Rotate;
                     break;
                 case ManipulationHandler.TwoHandedManipulation.RotateScale:
-                    mh2.TwoHandedManipulationType = ObjectManipulator.TwoHandedManipulation.Rotate |
-                        ObjectManipulator.TwoHandedManipulation.Scale;
+                    mh2.TwoHandedManipulationType = TransformFlags.Rotate |
+                        TransformFlags.Scale;
                     break;
                 case ManipulationHandler.TwoHandedManipulation.MoveRotateScale:
-                    mh2.TwoHandedManipulationType = ObjectManipulator.TwoHandedManipulation.Move |
-                        ObjectManipulator.TwoHandedManipulation.Rotate |
-                        ObjectManipulator.TwoHandedManipulation.Scale;
+                    mh2.TwoHandedManipulationType = TransformFlags.Move |
+                        TransformFlags.Rotate |
+                        TransformFlags.Scale;
                     break;
             }
 
             mh2.ReleaseBehavior = (ObjectManipulator.ReleaseBehaviorType)mh1.ReleaseBehavior;
-            mh2.ConstraintOnRotation = mh1.ConstraintOnRotation;
-            mh2.ConstraintOnMovement = mh1.ConstraintOnMovement;
+
+            if (mh1.ConstraintOnRotation != RotationConstraintType.None)
+            {
+                var rotateConstraint = mh2.gameObject.AddComponent<RotationAxisConstraint>();
+                rotateConstraint.TargetTransform = mh1.HostTransform;
+                rotateConstraint.ConstraintOnRotation = RotationConstraintHelper.ConvertToAxisFlags(mh1.ConstraintOnRotation);
+            }
+
+            if (mh1.ConstraintOnMovement == MovementConstraintType.FixDistanceFromHead)
+            {
+                var moveConstraint = mh2.gameObject.AddComponent<FixedDistanceConstraint>();
+                moveConstraint.TargetTransform = mh1.HostTransform;
+                moveConstraint.ConstraintTransform = CameraCache.Main.transform;
+            }
+
             mh2.SmoothingActive = mh1.SmoothingActive;
             mh2.MoveLerpTime = mh1.SmoothingAmoutOneHandManip;
             mh2.RotateLerpTime = mh1.SmoothingAmoutOneHandManip;

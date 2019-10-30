@@ -48,7 +48,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         /// Instantiates a bounds control at boundsControlStartCenter
         /// box is at scale boundsControlStartScale
         /// </summary>
-        /// <returns></returns>
         private BoundsControl InstantiateSceneAndDefaultBbox()
         {
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -72,7 +71,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         /// Tests if the initial transform setup of bounds control has been propagated to it's collider
         /// </summary>
         /// <param name="boundsControl">Bounds control that controls the collider size</param>
-        /// <returns></returns>
         private IEnumerator VerifyInitialBoundsCorrect(BoundsControl boundsControl)
         {
             yield return null;
@@ -88,7 +86,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         /// <summary>
         /// Verify that we can instantiate bounds control at runtime
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator BBoxInstantiate()
         {
@@ -104,7 +101,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         /// <summary>
         /// Test that if we update the bounds of a box collider, that the corners will move correctly
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator BBoxOverride()
         {
@@ -135,7 +131,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         /// <summary>
         /// Uses near interaction to scale the bounds control by directly grabbing corner
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ScaleViaNearInteration()
         {
@@ -176,7 +171,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 
             BoundsControl bbox = InstantiateSceneAndDefaultBbox();
             yield return VerifyInitialBoundsCorrect(bbox);
-            var scaleHandler = bbox.EnsureComponent<TransformScaleHandler>();
+            var scaleHandler = bbox.EnsureComponent<MinMaxScaleConstraint>();
             scaleHandler.ScaleMinimum = minScale;
             scaleHandler.ScaleMaximum = maxScale;
             bbox.RegisterTransformScaleHandler(scaleHandler);
@@ -219,7 +214,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         /// <summary>
         /// Uses far interaction (HoloLens 1 style) to scale the bounds control
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator ScaleViaHoloLens1Interaction()
         {
@@ -263,7 +257,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         /// Test that changing the transform of the bounds control target (rotation, scale, translation)
         /// updates the rig bounds
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator UpdateTransformUpdatesBounds()
         {
@@ -345,8 +338,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         /// Returns the AABB of the bounds control rig (corners, edges)
         /// that make up the bounds control by using the positions of the corners
         /// </summary>
-        /// <param name="bbox"></param>
-        /// <returns></returns>
         private Bounds GetBoundsControlRigBounds(BoundsControl bbox)
         {
             var corners = bbox.ScaleHandles.Handles;

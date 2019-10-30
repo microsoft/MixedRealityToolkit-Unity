@@ -152,7 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             float maxScale = 2f;
 
             var bbox = InstantiateSceneAndDefaultBbox();
-            var scaleHandler = bbox.EnsureComponent<TransformScaleHandler>();
+            var scaleHandler = bbox.EnsureComponent<MinMaxScaleConstraint>();
             scaleHandler.ScaleMinimum = minScale;
             scaleHandler.ScaleMaximum = maxScale;
             yield return null;
@@ -293,7 +293,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             float maxScale = 2f;
 
             var bbox = InstantiateSceneAndDefaultBbox();
-            var scaleHandler = bbox.EnsureComponent<TransformScaleHandler>();
+            var scaleHandler = bbox.EnsureComponent<MinMaxScaleConstraint>();
             scaleHandler.ScaleMinimum = minScale;
             scaleHandler.ScaleMaximum = maxScale;
             yield return null;

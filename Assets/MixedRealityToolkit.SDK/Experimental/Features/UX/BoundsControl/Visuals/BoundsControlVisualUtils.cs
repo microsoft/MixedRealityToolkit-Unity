@@ -93,7 +93,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         /// <summary>
         /// Creates the default material for bounds control handles
         /// </summary>
-        /// <returns></returns>
         internal static Material CreateDefaultMaterial()
         {
             return Resources.Load<Material>("BoundsControlHandleDefault");
