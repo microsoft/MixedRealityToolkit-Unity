@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using UnityEngine;
+
 using Object = UnityEngine.Object;
 
 namespace Microsoft.MixedReality.Toolkit
@@ -19,6 +21,23 @@ namespace Microsoft.MixedReality.Toolkit
             if (UnityEditor.EditorApplication.isPlaying)
 #endif
                 Object.DontDestroyOnLoad(target);
+        }
+
+        /// <summary>
+        /// Destroys a Unity object appropriately depending if running in in edit or play mode.
+        /// </summary>
+        /// <param name="obj">Unity object to destroy</param>
+        /// <param name="t">Time in seconds at which to destroy the object, if applicable.</param>
+        public static void DestroyObject(Object obj, float t = 0.0f)
+        {
+            if (Application.isPlaying)
+            {
+                Object.Destroy(obj, t);
+            }
+            else
+            {
+                Object.DestroyImmediate(obj);
+            }
         }
     }
 }
