@@ -428,7 +428,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             {
                 if (HandJointService != null)
                 {
-                    this.currentTrackedHandedness = this.TrackedHandness;
+                    currentTrackedHandedness = PreferredTrackedHandedness;
                     if (currentTrackedHandedness == Handedness.Both)
                     {
                         if (HandJointService.IsHandTracked(Handedness.Left))
