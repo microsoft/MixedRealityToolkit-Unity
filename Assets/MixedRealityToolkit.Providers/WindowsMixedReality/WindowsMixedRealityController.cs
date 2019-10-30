@@ -7,14 +7,13 @@ using Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization;
 using System;
 
 #if UNITY_WSA
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.WSA.Input;
 #endif
 
 #if WINDOWS_UWP
-using Windows.Foundation;
-using Windows.Perception;
-using Windows.UI.Input.Spatial;
+using Microsoft.MixedReality.Toolkit.Windows.Input;
 using Windows.Storage.Streams;
 #endif
 
@@ -58,9 +57,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         };
 
 #if UNITY_WSA
-
         private bool controllerModelInitialized = false;
         private bool failedToObtainControllerModel = false;
+
+        private static readonly Dictionary<string, GameObject> controllerDictionary = new Dictionary<string, GameObject>(0);
 
         #region Update data functions
 
@@ -117,11 +117,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                         // Raise input system Event if it enabled
                         if (interactionSourceState.touchpadTouched)
                         {
-                            InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
                         else
                         {
-                            InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
                     }
                     break;
@@ -137,11 +137,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                         // Raise input system Event if it enabled
                         if (interactionSourceState.touchpadPressed)
                         {
-                            InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
                         else
                         {
-                            InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
                     }
                     break;
@@ -155,7 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     if (interactionMapping.Changed)
                     {
                         // Raise input system Event if it enabled
-                        InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.touchpadPosition);
+                        CoreServices.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.touchpadPosition);
                     }
                     break;
                 }
@@ -181,11 +181,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                         // Raise input system Event if it enabled
                         if (interactionSourceState.thumbstickPressed)
                         {
-                            InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
                         else
                         {
-                            InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                         }
                     }
                     break;
@@ -199,7 +199,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                     if (interactionMapping.Changed)
                     {
                         // Raise input system Event if it enabled
-                        InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.thumbstickPosition);
+                        CoreServices.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.thumbstickPosition);
                     }
                     break;
                 }
@@ -221,11 +221,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 // Raise input system Event if it enabled
                 if (interactionSourceState.menuPressed)
                 {
-                    InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                    CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                 }
                 else
                 {
-                    InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                    CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
                 }
             }
         }
@@ -240,6 +240,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="interactionSourceState">The InteractionSourceState retrieved from the platform.</param>
         private void EnsureControllerModel(InteractionSourceState interactionSourceState)
         {
+            GameObject controllerModel;
+
             if (controllerModelInitialized ||
                 GetControllerVisualizationProfile() == null ||
                 !GetControllerVisualizationProfile().GetUseDefaultModelsOverride(GetType(), ControllerHandedness))
@@ -247,11 +249,19 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                 controllerModelInitialized = true;
                 return;
             }
+            else if (controllerDictionary.TryGetValue(GenerateKey(interactionSourceState.source), out controllerModel))
+            {
+                controllerModelInitialized = true;
+                TryAddControllerModelToSceneHierarchy(controllerModel);
+                controllerModel.SetActive(true);
+                return;
+            }
 
             controllerModelInitialized = true;
-            CreateControllerModelFromPlatformSDK(interactionSourceState.source.id);
+            CreateControllerModelFromPlatformSDK(interactionSourceState.source);
         }
 
+        /// <inheritdoc />
         protected override bool TryRenderControllerModel(Type controllerType, InputSourceType inputSourceType)
         {
             // Intercept this call if we are using the default driver provided models.
@@ -269,13 +279,13 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             return false;
         }
 
-        private async void CreateControllerModelFromPlatformSDK(uint interactionSourceId)
+        private async void CreateControllerModelFromPlatformSDK(InteractionSource interactionSource)
         {
-            Debug.Log("Creating controller model from platform SDK");
+            Debug.Log("Trying to load controller model from platform SDK");
             byte[] fileBytes = null;
 
 #if WINDOWS_UWP
-            var controllerModelStream = await TryGetRenderableModelAsync(interactionSourceId);
+            var controllerModelStream = await interactionSource.TryGetRenderableModelAsync();
             if (controllerModelStream == null ||
                 controllerModelStream.Size == 0)
             {
@@ -305,13 +315,20 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                         var visualizationType = visualizationProfile.GetControllerVisualizationTypeOverride(GetType(), ControllerHandedness);
                         if (visualizationType != null)
                         {
-                            gltfGameObject.AddComponent(visualizationType.Type);
+                            // Set the platform controller model to not be destroyed when the source is lost. It'll be disabled instead,
+                            // and re-enabled when the same controller is re-detected.
+                            if (gltfGameObject.AddComponent(visualizationType.Type) is IMixedRealityControllerPoseSynchronizer visualizer)
+                            {
+                                visualizer.DestroyOnSourceLost = false;
+                            }
+
                             TryAddControllerModelToSceneHierarchy(gltfGameObject);
+                            controllerDictionary.Add(GenerateKey(interactionSource), gltfGameObject);
                         }
                         else
                         {
                             Debug.LogError("Controller visualization type not defined for controller visualization profile");
-                            GameObject.Destroy(gltfGameObject);
+                            UnityEngine.Object.Destroy(gltfGameObject);
                             gltfGameObject = null;
                         }
                     }
@@ -331,28 +348,10 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
         }
 
-#if WINDOWS_UWP
-        private IAsyncOperation<IRandomAccessStreamWithContentType> TryGetRenderableModelAsync(uint interactionSourceId)
+        private string GenerateKey(InteractionSource source)
         {
-            IAsyncOperation<IRandomAccessStreamWithContentType> returnValue = null;
-            UnityEngine.WSA.Application.InvokeOnUIThread(() =>
-            {
-                var sources = SpatialInteractionManager.GetForCurrentView()?.GetDetectedSourcesAtTimestamp(PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
-                if (sources != null)
-                {
-                    foreach (SpatialInteractionSourceState sourceState in sources)
-                    {
-                        if (sourceState.Source.Id.Equals(interactionSourceId))
-                        {
-                            returnValue = sourceState.Source.Controller.TryGetRenderableModelAsync();
-                        }
-                    }
-                }
-            }, true);
-
-            return returnValue;
+            return source.vendorId + "/" + source.productId + "/" + source.productVersion + "/" + source.handedness;
         }
-#endif
 
         #endregion Controller model functions
 

@@ -295,7 +295,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                     int currentIndex = validSpeechKeywords ? SpeechKeywordLookup(voiceCommands.stringValue, speechKeywordOptions) : 0;
                     position = EditorGUILayout.GetControlRect();
 
-                    //BeginProperty allows tracking of serialized properties for bolding prefab changes etc
+                    // BeginProperty allows tracking of serialized properties for bolding prefab changes etc
                     using (new EditorGUI.PropertyScope(position, SpeechComamndsLabel, voiceCommands))
                     {
                         currentIndex = EditorGUI.Popup(position, SpeechComamndsLabel.text, currentIndex, keywordOptions);

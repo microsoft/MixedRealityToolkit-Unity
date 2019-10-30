@@ -342,7 +342,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 {
                     EditorGUILayout.LabelField("This option shares the application's depth buffer with the running platform which allows the platform to more accurately stabilize holograms and content.", EditorStyles.wordWrappedLabel);
 
-                    EditorGUILayout.HelpBox("Depth buffer sharing requires that a valid depth buffer is submitted to the platform. Click the \"Documentation\" button for instructions to ensure that transparent & text gameobjects write to depth.", MessageType.Info);
+                    EditorGUILayout.HelpBox("Depth buffer sharing requires that a valid depth buffer is submitted to the platform. Click the \"Documentation\" button for instructions to ensure that transparent & text GameObjects write to depth.", MessageType.Info);
 
                     using (new GUIEnabledWrapper(!isDepthBufferSharingEnabled))
                     {
@@ -523,7 +523,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private bool IsHololensTargeted()
         {
-            return PerfTarget == PerformanceTarget.AR_Headsets && EditorUserBuildSettings.activeBuildTarget == BuildTarget.WSAPlayer;
+            return PerfTarget == PerformanceTarget.AR_Headsets && MixedRealityOptimizeUtils.IsBuildTargetUWP();
         }
 
         private Texture GetTitleIcon(bool isValid)

@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor.Solvers
             }
 
             if (trackedTargetProperty.enumValueIndex == (int)TrackedObjectType.HandJoint ||
-                trackedTargetProperty.enumValueIndex == (int)TrackedObjectType.MotionController)
+                trackedTargetProperty.enumValueIndex == (int)TrackedObjectType.ControllerRay)
             {
                 EditorGUILayout.PropertyField(trackedHandnessProperty);
                 if (trackedHandnessProperty.enumValueIndex > (int)Handedness.Both)

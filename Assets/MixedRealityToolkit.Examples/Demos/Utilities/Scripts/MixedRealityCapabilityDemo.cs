@@ -40,35 +40,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         [SerializeField]
         private Text spatialPointResult = null;
 
-        private IMixedRealityInputSystem inputSystem = null;
-        private IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
-                return inputSystem;
-            }
-        }
-
-        private IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem = null;
-        private IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem
-        {
-            get
-            {
-                if (spatialAwarenessSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealitySpatialAwarenessSystem>(out spatialAwarenessSystem);
-                }
-                return spatialAwarenessSystem;
-            }
-        }
-
         private void Start()
         {
-            IMixedRealityCapabilityCheck capabilityChecker = InputSystem as IMixedRealityCapabilityCheck;
+            IMixedRealityCapabilityCheck capabilityChecker = CoreServices.InputSystem as IMixedRealityCapabilityCheck;
             if (capabilityChecker != null)
             {
                 bool isSupported = capabilityChecker.CheckCapability(MixedRealityCapability.ArticulatedHand);
@@ -96,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 voiceDictationResult.color = isSupported ? Color.green : Color.white;
             }
 
-            capabilityChecker = SpatialAwarenessSystem as IMixedRealityCapabilityCheck;
+            capabilityChecker = CoreServices.SpatialAwarenessSystem as IMixedRealityCapabilityCheck;
             if (capabilityChecker != null)
             {
                 bool isSupported = capabilityChecker.CheckCapability(MixedRealityCapability.SpatialAwarenessMesh);

@@ -168,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// Attempts to load scene in editor using a scene object reference.
         /// </summary>
         /// <param name="sceneObject">Scene object reference.</param>
-        /// <param name="setAsFirst">Whether to set first in the heirarchy window.</param>
+        /// <param name="setAsFirst">Whether to set first in the hierarchy window.</param>
         /// <param name="editorScene">The loaded scene.</param>
         /// <returns>True if successful.</returns>
         public static bool LoadScene(SceneInfo sceneInfo, bool setAsFirst, out Scene editorScene)
@@ -188,7 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Additive);
 
                 if (setAsFirst && EditorSceneManager.loadedSceneCount >= 1)
-                {   // Move the scene to first in order in the heirarchy
+                {   // Move the scene to first in order in the hierarchy
                     Scene nextScene = EditorSceneManager.GetSceneAt(0);
                     EditorSceneManager.MoveSceneBefore(editorScene, nextScene);
                 }
@@ -245,6 +245,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     yield return rootGameObject;
             }
             yield break;
+        }
+
+        /// <summary>
+        /// Returns true if user is currently editing a prefab.
+        /// </summary>
+        public static bool IsEditingPrefab()
+        {
+            var prefabStage = UnityEditor.Experimental.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage();
+            return prefabStage != null;
         }
 
         /// <summary>

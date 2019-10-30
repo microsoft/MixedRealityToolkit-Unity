@@ -85,7 +85,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         public override void OnInspectorGUI()
         {
-            RenderProfileHeader(ProfileTitle, string.Empty, target);
+            if (!RenderProfileHeader(ProfileTitle, string.Empty, target))
+            {
+                return;
+            }
 
             bool changed = false;
             using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))

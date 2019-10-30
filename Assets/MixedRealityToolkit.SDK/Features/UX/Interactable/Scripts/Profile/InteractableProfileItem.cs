@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public GameObject Target;
 
         /// <summary>
-        /// List of Theme configuration data to intialize with an Interactable
+        /// List of Theme configuration data to initialize with an Interactable
         /// </summary>
         public List<Theme> Themes = new List<Theme>();
     }

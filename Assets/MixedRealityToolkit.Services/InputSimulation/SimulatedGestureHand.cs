@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             initializedFromProfile = true;
 
-            var gestureProfile = InputSystem?.InputSystemProfile?.GesturesProfile;
+            var gestureProfile = CoreServices.InputSystem?.InputSystemProfile?.GesturesProfile;
             if (gestureProfile != null)
             {
                 for (int i = 0; i < gestureProfile.Gestures.Length; i++)
@@ -86,9 +86,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             MixedRealityInputSimulationProfile inputSimProfile = null;
-            if (InputSystem != null)
+            if (CoreServices.InputSystem != null)
             {
-                inputSimProfile = (InputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IInputSimulationService>()?.InputSimulationProfile;
+                inputSimProfile = (CoreServices.InputSystem as IMixedRealityDataProviderAccess).GetDataProvider<IInputSimulationService>()?.InputSimulationProfile;
             }
 
             if (inputSimProfile != null)
@@ -109,12 +109,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         };
 
         /// <inheritdoc />
-        public override void SetupDefaultInteractions(Handedness controllerHandedness)
-        {
-            AssignControllerMappings(DefaultInteractions);
-        }
-
-        /// <inheritdoc />
         protected override void UpdateInteractions(SimulatedHandData handData)
         {
             EnsureProfileSettings();
@@ -126,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (lastPosition != currentPosition)
             {
-                InputSystem?.RaiseSourcePositionChanged(InputSource, this, currentPosition);
+                CoreServices.InputSystem?.RaiseSourcePositionChanged(InputSource, this, currentPosition);
             }
 
             for (int i = 0; i < Interactions?.Length; i++)
@@ -138,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         Interactions[i].PoseData = currentGripPose;
                         if (Interactions[i].Changed)
                         {
-                            InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, currentGripPose);
+                            CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction, currentGripPose);
                         }
                         break;
                     case DeviceInputType.Select:
@@ -148,14 +142,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         {
                             if (Interactions[i].BoolData)
                             {
-                                InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
+                                CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
 
                                 SelectDownStartTime = Time.time;
                                 cumulativeDelta = Vector3.zero;
                             }
                             else
                             {
-                                InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
+                                CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, Interactions[i].MixedRealityInputAction);
 
                                 // Stop active gestures
                                 TryCompleteSelect();
@@ -195,7 +189,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (!holdInProgress)
             {
-                InputSystem?.RaiseGestureStarted(this, holdAction);
+                CoreServices.InputSystem?.RaiseGestureStarted(this, holdAction);
                 holdInProgress = true;
                 return true;
             }
@@ -206,7 +200,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (holdInProgress)
             {
-                InputSystem?.RaiseGestureCompleted(this, holdAction);
+                CoreServices.InputSystem?.RaiseGestureCompleted(this, holdAction);
                 holdInProgress = false;
                 return true;
             }
@@ -217,7 +211,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (holdInProgress)
             {
-                InputSystem?.RaiseGestureCanceled(this, holdAction);
+                CoreServices.InputSystem?.RaiseGestureCanceled(this, holdAction);
                 holdInProgress = false;
                 return true;
             }
@@ -228,7 +222,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (!manipulationInProgress)
             {
-                InputSystem?.RaiseGestureStarted(this, manipulationAction);
+                CoreServices.InputSystem?.RaiseGestureStarted(this, manipulationAction);
                 manipulationInProgress = true;
                 return true;
             }
@@ -239,7 +233,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (manipulationInProgress)
             {
-                InputSystem?.RaiseGestureUpdated(this, manipulationAction, cumulativeDelta);
+                CoreServices.InputSystem?.RaiseGestureUpdated(this, manipulationAction, cumulativeDelta);
             }
         }
 
@@ -247,7 +241,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (manipulationInProgress)
             {
-                InputSystem?.RaiseGestureCompleted(this, manipulationAction, cumulativeDelta);
+                CoreServices.InputSystem?.RaiseGestureCompleted(this, manipulationAction, cumulativeDelta);
                 manipulationInProgress = false;
                 return true;
             }
@@ -258,7 +252,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (manipulationInProgress)
             {
-                InputSystem?.RaiseGestureCanceled(this, manipulationAction);
+                CoreServices.InputSystem?.RaiseGestureCanceled(this, manipulationAction);
                 manipulationInProgress = false;
                 return true;
             }
@@ -269,7 +263,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (!manipulationInProgress && !holdInProgress)
             {
-                InputSystem?.RaiseGestureCompleted(this, selectAction);
+                CoreServices.InputSystem?.RaiseGestureCompleted(this, selectAction);
                 return true;
             }
             return false;
@@ -279,7 +273,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (!navigationInProgress)
             {
-                InputSystem?.RaiseGestureStarted(this, navigationAction);
+                CoreServices.InputSystem?.RaiseGestureStarted(this, navigationAction);
                 navigationInProgress = true;
 
                 currentRailsUsed = Vector3.one;
@@ -294,7 +288,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (navigationInProgress)
             {
                 UpdateNavigationRails();
-                InputSystem?.RaiseGestureUpdated(this, navigationAction, navigationDelta);
+                CoreServices.InputSystem?.RaiseGestureUpdated(this, navigationAction, navigationDelta);
             }
         }
 
@@ -302,7 +296,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (navigationInProgress)
             {
-                InputSystem?.RaiseGestureCompleted(this, navigationAction, navigationDelta);
+                CoreServices.InputSystem?.RaiseGestureCompleted(this, navigationAction, navigationDelta);
                 navigationInProgress = false;
                 return true;
             }
@@ -313,7 +307,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (navigationInProgress)
             {
-                InputSystem?.RaiseGestureCanceled(this, navigationAction);
+                CoreServices.InputSystem?.RaiseGestureCanceled(this, navigationAction);
                 navigationInProgress = false;
                 return true;
             }

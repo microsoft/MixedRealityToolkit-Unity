@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Active controllers
         /// </summary>
-        private IMixedRealityController[] activeControllers = new IMixedRealityController[0];
+        private IMixedRealityController[] activeControllers = System.Array.Empty<IMixedRealityController>();
 
         /// <inheritdoc />
         public override IMixedRealityController[] GetActiveControllers()

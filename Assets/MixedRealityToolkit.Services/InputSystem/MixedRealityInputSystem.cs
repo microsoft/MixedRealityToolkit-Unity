@@ -119,11 +119,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 // If one of the running data providers supports the requested capability, 
                 // the application has the needed support to leverage the desired functionality.
-                if ((capabilityChecker != null) &&
-                    capabilityChecker.CheckCapability(capability))
+                if (capabilityChecker?.CheckCapability(capability) == true)
                 {
                     return true;
                 }
+            }
+
+            // Check GazeProvider directly since not populated in data provider list but life-cycle is managed by InputSystem
+            var gazeProvider_CapabilityCheck = GazeProvider as IMixedRealityCapabilityCheck;
+            if (gazeProvider_CapabilityCheck?.CheckCapability(capability) == true)
+            {
+                return true;
             }
 
             return false;
@@ -215,26 +221,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
             dictationEventData = new DictationEventData(EventSystem.current);
 
             handTrackingInputEventData = new HandTrackingInputEventData(EventSystem.current);
-        }
 
-        private void InstantiateGazeProvider(MixedRealityPointerProfile pointerProfile)
-        {
-            if (pointerProfile?.GazeProviderType?.Type != null)
-            {
-                GazeProvider = CameraCache.Main.gameObject.EnsureComponent(pointerProfile.GazeProviderType.Type) as IMixedRealityGazeProvider;
-                GazeProvider.GazeCursorPrefab = pointerProfile.GazeCursorPrefab;
-                // Current implementation implements both provider types in one concrete class.
-                EyeGazeProvider = GazeProvider as IMixedRealityEyeGazeProvider;
-            }
-            else
-            {
-                Debug.LogError("The Input system is missing the required GazeProviderType!");
-                return;
-            }
+            CreateDataProviders();
         }
 
         /// <inheritdoc />
         public override void Enable()
+        {
+            CreateDataProviders();
+
+            // Ensure data providers are enabled (performed by the base class)
+            base.Enable();
+
+            InputEnabled?.Invoke();
+        }
+
+        private void CreateDataProviders()
         {
             MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
 
@@ -259,11 +261,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         args);
                 }
             }
+        }
 
-            // Ensure data providers are enabled (performed by the base class)
-            base.Enable();
-
-            InputEnabled?.Invoke();
+        private void InstantiateGazeProvider(MixedRealityPointerProfile pointerProfile)
+        {
+            if (pointerProfile?.GazeProviderType?.Type != null)
+            {
+                GazeProvider = CameraCache.Main.gameObject.EnsureComponent(pointerProfile.GazeProviderType.Type) as IMixedRealityGazeProvider;
+                GazeProvider.GazeCursorPrefab = pointerProfile.GazeCursorPrefab;
+                // Current implementation implements both provider types in one concrete class.
+                EyeGazeProvider = GazeProvider as IMixedRealityEyeGazeProvider;
+            }
+            else
+            {
+                Debug.LogError("The Input system is missing the required GazeProviderType!");
+                return;
+            }
         }
 
         /// <inheritdoc />

@@ -39,6 +39,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             TrackedType = TrackedObjectType.Head;
         }
 
+        public void SetTrackedController()
+        {
+            TrackedType = TrackedObjectType.ControllerRay;
+        }
+
         public void SetTrackedHands()
         {
             TrackedType = TrackedObjectType.HandJoint;

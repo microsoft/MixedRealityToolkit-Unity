@@ -2,9 +2,11 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Physics;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -13,23 +15,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public class BaseCursor : MonoBehaviour, IMixedRealityCursor
     {
-        private IMixedRealityInputSystem inputSystem = null;
-
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        protected IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
-                return inputSystem;
-            }
-        }
-
         public CursorStateEnum CursorState { get; private set; } = CursorStateEnum.None;
 
         public CursorContextEnum CursorContext { get; private set; } = CursorContextEnum.None;
@@ -112,6 +97,44 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         [Tooltip("Blend value for surface normal to user facing lerp")]
         private float lookRotationBlend = 0.5f;
+
+        /// <summary>
+        /// Dictates whether the cursor should resize based on distance.
+        /// If true, cursor will appear to be the same size no matter what distance it is from Main Camera.
+        /// </summary>
+        public bool ResizeCursorWithDistance
+        {
+            get { return resizeCursorWithDistance; }
+            set { resizeCursorWithDistance = value; }
+        }
+
+        [Header("Scaling")]
+        [SerializeField]
+        [Tooltip("Dictates whether the cursor should resize based on distance. If true, cursor will appear to be the same size no matter what distance it is from Main Camera.")]
+        private bool resizeCursorWithDistance = false;
+
+        /// <summary>
+        /// The angular scale of cursor in relation to Main Camera, assuming a mesh with bounds of Vector3(1,1,1)
+        /// </summary>
+        [Obsolete("Property obsolete. Use CursorAngularSize instead")]
+        public float CursorAngularScale
+        {
+            get { return CursorAngularSize; }
+            set { CursorAngularSize = value; }
+        }
+
+        /// <summary>
+        /// The angular size of cursor in relation to Main Camera, assuming a mesh with bounds of Vector3(1,1,1)
+        /// </summary>
+        public float CursorAngularSize
+        {
+            get { return cursorAngularSize; }
+            set { cursorAngularSize = value; }
+        }
+        
+        [SerializeField, FormerlySerializedAs("cursorAngularScale")]
+        [Tooltip("The angular scale of cursor in relation to Main Camera, assuming a mesh with bounds of Vector3(1,1,1)")]
+        private float cursorAngularSize = 50.0f;
 
         [Header("Transform References")]
         [SerializeField]
@@ -337,9 +360,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void Update()
         {
-            if (!InputSystem.FocusProvider.TryGetFocusDetails(Pointer, out focusDetails))
+            if (!CoreServices.InputSystem.FocusProvider.TryGetFocusDetails(Pointer, out focusDetails))
             {
-                if (InputSystem.FocusProvider.IsPointerRegistered(Pointer))
+                if (CoreServices.InputSystem.FocusProvider.IsPointerRegistered(Pointer))
                 {
                     Debug.LogError($"{name}: Unable to get focus details for {pointer.GetType().Name}!");
                 }
@@ -369,11 +392,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         protected virtual void RegisterManagers()
         {
+            var inputSystem = CoreServices.InputSystem;
             // Register the cursor as a listener, so that it can always get input events it cares about
-            InputSystem.RegisterHandler<IMixedRealityCursor>(this);
+            inputSystem.RegisterHandler<IMixedRealityCursor>(this);
 
             // Setup the cursor to be able to respond to input being globally enabled / disabled
-            if (InputSystem.IsInputEnabled)
+            if (inputSystem.IsInputEnabled)
             {
                 OnInputEnabled();
             }
@@ -382,8 +406,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 OnInputDisabled();
             }
 
-            InputSystem.InputEnabled += OnInputEnabled;
-            InputSystem.InputDisabled += OnInputDisabled;
+            inputSystem.InputEnabled += OnInputEnabled;
+            inputSystem.InputDisabled += OnInputDisabled;
         }
 
         /// <summary>
@@ -391,11 +415,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         protected virtual void UnregisterManagers()
         {
-            if (InputSystem != null)
+            var inputSystem = CoreServices.InputSystem;
+            if (inputSystem != null)
             {
-                InputSystem.InputEnabled -= OnInputEnabled;
-                InputSystem.InputDisabled -= OnInputDisabled;
-                InputSystem.UnregisterHandler<IMixedRealityCursor>(this);
+                inputSystem.InputEnabled -= OnInputEnabled;
+                inputSystem.InputDisabled -= OnInputDisabled;
+                inputSystem.UnregisterHandler<IMixedRealityCursor>(this);
             }
         }
 
@@ -410,11 +435,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return;
             }
 
-            GameObject newTargetedObject = InputSystem.FocusProvider.GetFocusedObject(Pointer);
+            GameObject newTargetedObject = CoreServices.InputSystem.FocusProvider.GetFocusedObject(Pointer);
             Vector3 lookForward;
-
-            // Normalize scale on before update
-            targetScale = Vector3.one;
 
             // If no game object is hit, put the cursor at the default distance
             if (newTargetedObject == null)
@@ -423,6 +445,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 targetPosition = RayStep.GetPointByDistance(Pointer.Rays, defaultCursorDistance);
                 lookForward = -RayStep.GetDirectionByDistance(Pointer.Rays, defaultCursorDistance);
                 targetRotation = lookForward.magnitude > 0 ? Quaternion.LookRotation(lookForward, Vector3.up) : transform.rotation;
+
+                // If constant cursor scale is desired, skip resizing functionality
+                targetScale = resizeCursorWithDistance ? ComputeScaleWithAngularScale(targetPosition) : Vector3.one;
             }
             else
             {
@@ -443,6 +468,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     targetPosition = focusDetails.Point + (lookForward * surfaceCursorDistance);
                     Vector3 lookRotation = Vector3.Slerp(focusDetails.Normal, lookForward, lookRotationBlend);
                     targetRotation = Quaternion.LookRotation(lookRotation == Vector3.zero ? lookForward : lookRotation, Vector3.up);
+
+                    // If constant cursor scale is desired, skip resizing functionality
+                    targetScale = resizeCursorWithDistance ? ComputeScaleWithAngularScale(targetPosition) : Vector3.one;
                 }
             }
 
@@ -466,6 +494,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             transform.position = targetPosition;
             transform.localScale = targetScale;
             transform.rotation = targetRotation;
+        }
+
+        /// <summary>
+        /// Calculates constant visual size of cursor based on cursorAngularScale
+        /// </summary>
+        private Vector3 ComputeScaleWithAngularScale(Vector3 targetPosition)
+        {
+            float cursorDistance = Vector3.Distance(CameraCache.Main.transform.position, targetPosition);
+            float desiredScale = MathUtilities.ScaleFromAngularSizeAndDistance(cursorAngularSize, cursorDistance);
+            return Vector3.one * desiredScale;
         }
 
         /// <summary>
@@ -504,7 +542,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (IsPointerValid)
             {
                 uint cursorPointerId = Pointer.PointerId;
-                foreach (IMixedRealityInputSource inputSource in InputSystem.DetectedInputSources)
+                foreach (IMixedRealityInputSource inputSource in CoreServices.InputSystem.DetectedInputSources)
                 {
                     if (inputSource.SourceType != InputSourceType.Head && inputSource.SourceType != InputSourceType.Eyes)
                     {
@@ -588,7 +626,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 float dotUp = Vector3.Dot(normal, objUp);
                 float dotForward = Vector3.Dot(normal, objForward);
 
-                if (Math.Abs(dotRight) > Math.Abs(dotUp) && 
+                if (Math.Abs(dotRight) > Math.Abs(dotUp) &&
                     Math.Abs(dotRight) > Math.Abs(dotForward))
                 {
                     forward = (dotRight > 0 ? objRight : -objRight).normalized;
@@ -668,7 +706,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         Vector3 adjustedCursorPos = Position - contextCenter.position;
 
-                        if (Math.Abs(Vector3.Dot(adjustedCursorPos, right)) > 
+                        if (Math.Abs(Vector3.Dot(adjustedCursorPos, right)) >
                             Math.Abs(Vector3.Dot(adjustedCursorPos, up)))
                         {
                             return CursorContextEnum.RotateEastWest;

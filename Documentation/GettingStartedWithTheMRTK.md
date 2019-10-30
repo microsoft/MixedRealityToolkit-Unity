@@ -13,7 +13,7 @@ To get started with the Mixed Reality Toolkit you will need:
 
   MRTK supports both IL2CPP and .NET scripting backends on Unity 2018
 
-* [Latest MRTK release](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases)
+* [Get the latest MRTK release](#get-the-latest-mrtk-unity-packages)
 * [Windows SDK 18362+](https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk).
 
   This is necessary if you are building a UWP app for WMR, HoloLens 1, or HoloLens 2. This is not necessary
@@ -25,18 +25,16 @@ If you are new to MRTK, or MR development, we recommend you check out the [Getti
 
 ## Add MRTK to your Unity Project
 
-Mixed Reality Toolkit is now available for download on NuGet.org, for details see [MRTK NuGet Package](MRTKNuGetPackage.md).
-
 ### Get the latest MRTK Unity packages
 
-1. Go to the  [MRTK release page](https://github.com/Microsoft/MixedRealityToolkit-Unity/releases).
+1. Go to the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/releases" target="_blank">MRTK release page</a>.
 1. Under Assets, download
     - `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage`
     - `Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage`
     - `Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage`
     - `Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage`
 
-For additional delivery mechanisms, please see [Downloading the MRTK](DownloadingTheMRTK.md).
+The Mixed Reality Toolkit is now available for download on NuGet.org, for details see [MRTK NuGet Packages](MRTKNuGetPackage.md).
 
 ### Switch your Unity project to the target platform
 

@@ -25,11 +25,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <summary>
         /// Cached scenes used by SceneInfoDrawer to keep property drawer performant.
         /// </summary>
-        public static EditorBuildSettingsScene[] CachedScenes => cachedScenes;
+        public static EditorBuildSettingsScene[] CachedScenes { get; private set; } = Array.Empty<EditorBuildSettingsScene>();
 
         public int callbackOrder => 0;
-
-        private static EditorBuildSettingsScene[] cachedScenes = new EditorBuildSettingsScene[0];
 
         /// <summary>
         /// The frame of the last update. Used to ensure we don't spam the system with updates.
@@ -39,11 +37,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static List<Tuple<Type, FieldInfo>> cachedComponentTypes = new List<Tuple<Type, FieldInfo>>();
 
         /// <summary>
-        /// Call this when you make a change to the build settings and need those changes to be reflected immedately.
+        /// Call this when you make a change to the build settings and need those changes to be reflected immediately.
         /// </summary>
         public static void RefreshCachedScenes()
         {
-            cachedScenes = EditorBuildSettings.scenes;
+            CachedScenes = EditorBuildSettings.scenes;
         }
 
         /// <summary>
@@ -162,18 +160,18 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 int buildIndex = -1;
                 int sceneCount = 0;
                 bool included = false;
-                for (int i = 0; i < cachedScenes.Length; i++)
+                for (int i = 0; i < CachedScenes.Length; i++)
                 {
-                    if (cachedScenes[i].path == scenePath)
+                    if (CachedScenes[i].path == scenePath)
                     {   // If it's in here it's included, even if it's not enabled
                         included = true;
-                        if (cachedScenes[i].enabled)
+                        if (CachedScenes[i].enabled)
                         {   // Only store the build index if it's enabled
                             buildIndex = sceneCount;
                         }
                     }
 
-                    if (cachedScenes[i].enabled)
+                    if (CachedScenes[i].enabled)
                     {   // Disabled scenes don't count toward scene count
                         sceneCount++;
                     }
@@ -273,7 +271,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static void RefreshSceneInfoFieldsInScriptableObjects()
         {
             if (Time.frameCount == frameScriptableObjectsLastUpdated)
-            {   // Don't udpate more than once per frame
+            {   // Don't update more than once per frame
                 return;
             }
 
@@ -289,7 +287,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             SerializedProperty property = serializedObject.FindProperty(fieldInfo.Name);
                             SerializedProperty assetProperty, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty;
                             GetSceneInfoRelativeProperties(property, out assetProperty, out nameProperty, out pathProperty, out buildIndexProperty, out includedProperty, out tagProperty);
-                            if (RefreshSceneInfo(source, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty))
+                            if (RefreshSceneInfo(assetProperty.objectReferenceValue, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty))
                             {
                                 serializedObject.ApplyModifiedProperties();
                             }
@@ -324,7 +322,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                         SerializedProperty property = serializedObject.FindProperty(fieldInfo.Name);
                         SerializedProperty assetProperty, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty;
                         GetSceneInfoRelativeProperties(property, out assetProperty, out nameProperty, out pathProperty, out buildIndexProperty, out includedProperty, out tagProperty);
-                        if (RefreshSceneInfo(source, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty))
+                        if (RefreshSceneInfo(assetProperty.objectReferenceValue, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty))
                         {
                             serializedObject.ApplyModifiedProperties();
                         }
@@ -354,7 +352,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             SerializedProperty property = serializedObject.FindProperty(fieldInfo.Name);
                             SerializedProperty assetProperty, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty;
                             GetSceneInfoRelativeProperties(property, out assetProperty, out nameProperty, out pathProperty, out buildIndexProperty, out includedProperty, out tagProperty);
-                            if (RefreshSceneInfo(source, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty))
+                            if (RefreshSceneInfo(assetProperty.objectReferenceValue, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty))
                             {
                                 serializedObject.ApplyModifiedProperties();
                             }

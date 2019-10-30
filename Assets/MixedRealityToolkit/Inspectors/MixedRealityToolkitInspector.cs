@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
+using Microsoft.MixedReality.Toolkit.Utilities.Editor.Search;
 using UnityEditor;
 using UnityEngine;
 
@@ -63,6 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             if (activeProfile.objectReferenceValue != null)
             {
+                // For configure, show the default inspector GUI
                 UnityEditor.Editor activeProfileEditor = CreateEditor(activeProfile.objectReferenceValue);
                 activeProfileEditor.OnInspectorGUI();
             }

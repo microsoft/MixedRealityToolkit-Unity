@@ -1,7 +1,8 @@
 # Build for PR validation.
 
 variables:
-  UnityVersion: Unity2018.3.7f1
+  Unity2018Version: Unity2018.3.7f1
+  Unity2019Version: Unity2019.2.0f1
   MRTKVersion: 2.2.0
 
 jobs:
@@ -21,4 +22,5 @@ jobs:
       # the ongoing rolling CI build. This build in particular is highly correlated
       # the .NET x86 build and ARM IL2CPP build.
       buildUWPX86: false
+      buildUWPDotNet: false
   - template: templates/end.yml
