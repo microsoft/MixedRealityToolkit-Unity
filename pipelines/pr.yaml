@@ -22,5 +22,4 @@ jobs:
       # the ongoing rolling CI build. This build in particular is highly correlated
       # the .NET x86 build and ARM IL2CPP build.
       buildUWPX86: false
-      buildUWPDotNet: true
   - template: templates/end.yml
