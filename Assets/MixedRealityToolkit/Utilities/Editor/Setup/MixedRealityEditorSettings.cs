@@ -287,7 +287,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             // If targeting Windows Mixed Reality platform
-            if (MixedRealityOptimizeUtils.IsBuildTargetWMR())
+            if (MixedRealityOptimizeUtils.IsBuildTargetUWP())
             {
                 if (!MixedRealityOptimizeUtils.IsDepthBufferSharingEnabled())
                 {

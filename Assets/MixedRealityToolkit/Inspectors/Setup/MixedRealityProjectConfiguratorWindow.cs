@@ -121,13 +121,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
                 if (GUILayout.Button(LaterButtonContent))
                 {
-                    MixedRealityEditorSettings.IgnoreProjectConfigForSession = true;
+                    MixedRealityProjectPreferences.IgnoreProjectConfigForSession = true;
                     Close();
                 }
 
                 if (GUILayout.Button(IgnoreButtonContent))
                 {
-                    MixedRealityPreferences.IgnoreSettingsPrompt = true;
+                    MixedRealityProjectPreferences.IgnoreSettingsPrompt = true;
                     Close();
                 }
             }
