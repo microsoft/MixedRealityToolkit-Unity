@@ -16,7 +16,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
     /// When tracking is lost, the service displays a visual indicator and sets the main camera's culling mask to hide all other objects.
     /// When tracking is restored, the camera mask is restored and the visual indicator is hidden.
     /// </summary>
-    [MixedRealityExtensionService(SupportedPlatforms.WindowsUniversal)]
+    [MixedRealityExtensionService(
+        SupportedPlatforms.WindowsUniversal,
+        "Tracking Lost Service",
+        "LostTrackingService/DefaultLostTrackingServiceProfile.asset",
+        "MixedRealityToolkit.Extensions")]
     public class LostTrackingService : BaseExtensionService, ILostTrackingService, IMixedRealityExtensionService
     {
         /// <inheritdoc />
