@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         MixedRealityCameraProfile CameraProfile { get; }
 
         /// <summary>
-        /// Is the current camera displaying on an Opaque (AR) device or a VR / immersive device
+        /// Is the current camera displaying on an opaque (VR / immersive) or a transparent (AR) device
         /// </summary>
         bool IsOpaque { get; }
     }
