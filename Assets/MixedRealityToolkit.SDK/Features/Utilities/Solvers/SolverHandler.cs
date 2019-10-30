@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
     /// This class handles the solver components that are attached to this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>
     /// </summary>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_Solver.html")]
-    public class SolverHandler : MonoBehaviour, IMixedRealitySourceStateHandler
+    public class SolverHandler : MonoBehaviour
     {
         [SerializeField]
         [Tooltip("Tracked object to calculate position and orientation from. If you want to manually override and use a scene object, use the TransformTarget field.")]
@@ -310,18 +310,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             RefreshTrackedObject();
         }
 
-        protected virtual void OnEnable()
-        {
-            CoreServices.InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
-        }
-
-        protected virtual void OnDisable()
-        {
-            CoreServices.InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
-        }
-
         protected virtual void Update()
         {
+            if (IsInvalidTracking())
+            {
+                RefreshTrackedObject();
+            }
+
             DeltaTime = Time.realtimeSinceStartup - lastUpdateTime;
             lastUpdateTime = Time.realtimeSinceStartup;
         }
@@ -517,25 +512,5 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         {
             return type == TrackedObjectType.Head || type >= TrackedObjectType.ControllerRay;
         }
-
-        #region IMixedRealitySourceStateHandler Implementation
-
-        public void OnSourceDetected(SourceStateEventData eventData)
-        {
-            if (IsInvalidTracking())
-            {
-                RefreshTrackedObject();
-            }
-        }
-
-        public void OnSourceLost(SourceStateEventData eventData)
-        {
-            if (IsInvalidTracking())
-            {
-                RefreshTrackedObject();
-            }
-        }
-
-        #endregion IMixedRealitySourceStateHandler Implementation
     }
 }

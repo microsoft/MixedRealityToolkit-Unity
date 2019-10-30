@@ -251,6 +251,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 OnHandActivate.Invoke();
             }
 
+            previousHandedness = newHandedness;
+
             /*
             // Determine the new active hand.
             IMixedRealityController newActivehand = null;
@@ -292,6 +294,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <returns>True if this hand should be used from tracking.</returns>
         protected virtual bool IsValidController(IMixedRealityController controller)
         {
+            if (controller == null)
+            {
+                return false;
+            }
+
             /* TODO: Troy
             // If transitioning between hands is not allowed, make sure the TrackedObjectType matches the hand.
             if (!autoTransitionBetweenHands)
