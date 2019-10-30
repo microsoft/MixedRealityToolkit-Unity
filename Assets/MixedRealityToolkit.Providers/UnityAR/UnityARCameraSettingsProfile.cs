@@ -14,6 +14,8 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
     [MixedRealityServiceProfile(typeof(UnityARCameraSettings))]
     public class UnityARCameraSettingsProfile : BaseCameraSettingsProfile
     {
+#if !(WINDOWS_UWP && !ENABLE_IL2CPP)
+
 #region Tracked Pose Driver settings
 
         [SerializeField]
@@ -44,5 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         public TrackedPoseDriver.UpdateType UpdateType => updateType;
 
 #endregion Tracked Pose Driver settings
+
+#endif // !(WINDOWS_UWP && !ENABLE_IL2CPP)
     }
 }
