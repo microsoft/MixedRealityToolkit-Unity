@@ -111,6 +111,8 @@
 <p>Ensure that the experimental code lives in an experimental namespace that matches the non-experimental location. For example,
 if your component is part of solvers at <code>Microsoft.MixedReality.Toolkit.Utilities.Solvers</code>, its namespace should be <code>Microsoft.MixedReality.Toolkit.Experimental.Utilities.Solvers</code>.</p>
 <p>See <a href="https://github.com/microsoft/MixedRealityToolkit-Unity/pull/4532">this PR</a> for an example.</p>
+<h3 id="experimental-features-should-have-an-experimental-attribute">Experimental features should have an [Experimental] attribute</h3>
+<p>Add an <code>[Experimental]</code> attribute above one of your fields to have a small dialog appear in the component editor that mentions your feature is experimental and subject to significant changes.</p>
 <h3 id="minimize-impact-to-mrtk-code">Minimize impact to MRTK code</h3>
 <p>While your MRTK change might get your experiment to work, it could impact other people in ways you do not expect.
 Any regressions you make to the MRTK core code would result in your pull request getting reverted.</p>
