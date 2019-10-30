@@ -72,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly GUIContent AutoEnableCapabilitiesContent = new GUIContent("Auto-Enable UWP Capabilities", "When this setting is enabled, MRTK services requiring particular UWP capabilities will be auto-enabled in Publishing Settings.\n\nOnly valid for UWP Build Target projects.\n\nUWP Capabilities can be viewed under Player Settings > Publishing Settings.");
         private const string AUTO_ENABLE_CAPABILITIES_KEY = "_MixedRealityToolkit_Editor_AutoEnableUWPCapabilities";
         private static bool autoEnabledCapabilitiesPrefLoaded;
-        private static bool autoEnabledCapabiltiiesSettingsPrompt;
+        private static bool autoEnabledCapabilitiesSettingsPrompt;
 
         /// <summary>
         /// Should the settings prompt show on startup?
@@ -83,13 +83,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 if (!autoEnabledCapabilitiesPrefLoaded)
                 {
-                    autoEnabledCapabiltiiesSettingsPrompt = EditorPrefs.GetBool(IGNORE_KEY, true);
+                    autoEnabledCapabilitiesSettingsPrompt = ProjectPreferences.Get(AUTO_ENABLE_CAPABILITIES_KEY, true);
                     autoEnabledCapabilitiesPrefLoaded = true;
                 }
 
-                return autoEnabledCapabiltiiesSettingsPrompt;
+                return autoEnabledCapabilitiesSettingsPrompt;
             }
-            set => EditorPrefs.SetBool(IGNORE_KEY, autoEnabledCapabiltiiesSettingsPrompt = value);
+            set => ProjectPreferences.Set(AUTO_ENABLE_CAPABILITIES_KEY, autoEnabledCapabilitiesSettingsPrompt = value);
         }
 
         #endregion Auto-Enable UWP Capabilities
