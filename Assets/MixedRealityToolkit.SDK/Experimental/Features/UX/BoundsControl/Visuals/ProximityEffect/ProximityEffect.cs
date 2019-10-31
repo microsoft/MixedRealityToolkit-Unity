@@ -5,76 +5,22 @@ using Microsoft.MixedReality.Toolkit.Input;
 using System.Runtime.CompilerServices;
 
 
-namespace Microsoft.MixedReality.Toolkit.UI.Experimental
+namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControl
 {
     /// <summary>
     /// ProximityEffect scales and switches out materials for registered objects whenever a pointer is in proximity.
     /// Scaling is done on three different stages: far / medium and close proximity whereas material switching 
     /// will only be done on close proximity.
     /// </summary>
-    [Serializable]
-    public class ProximityEffect 
+
+    public class ProximityEffect
     {
-        [SerializeField]
-        [Tooltip("Determines whether proximity feature (scaling and material toggling) is activated")]
-        private bool proximityEffectActive = false;
-
-        /// <summary>
-        /// Determines whether proximity feature (scaling and material toggling) is activated
-        /// </summary>
-        public bool ProximityEffectActive => proximityEffectActive;
-
-        [SerializeField]
-        [Tooltip("How far away should the hand be from an object before it starts scaling the object?")]
-        [Range(0.005f, 0.2f)]
-        private float objectMediumProximity = 0.1f;
-
-        [SerializeField]
-        [Tooltip("How far away should the hand be from an object before it activates the close-proximity scaling effect?")]
-        [Range(0.001f, 0.1f)]
-        private float objectCloseProximity = 0.03f;
-
-        [SerializeField]
-        [Tooltip("A Proximity-enabled object scales by this amount when a hand moves out of range. Default is 0, invisible object.")]
-        private float farScale = 0.0f;
-
-        /// <summary>
-        /// A Proximity-enabled object scales by this amount when a hand moves out of range. Default is 0, invisible object.
-        /// </summary>
-        public float FarScale => farScale;
-
-        [SerializeField]
-        [Tooltip("A Proximity-enabled object scales by this amount when a hand moves into the Medium Proximity range. Default is 1.0, original object size.")]
-        private float mediumScale = 1.0f;
-
-        /// <summary>
-        /// A Proximity-enabled object scales by this amount when a hand moves into the Medium Proximity range. Default is 1.0, original object size.
-        /// </summary>
-        public float MediumScale => mediumScale;
-    
-        [SerializeField]
-        [Tooltip("A Proximity-enabled object scales by this amount when a hand moves into the Close Proximity range. Default is 1.5, larger object size.")]
-        private float closeScale = 1.5f;
-
-        /// <summary>
-        /// A Proximity-enabled object scales by this amount when a hand moves into the Close Proximity range. Default is 1.5, larger object size
-        /// </summary>
-        public float CloseScale => closeScale;
-      
-        [SerializeField]
-        [Tooltip("At what rate should a Proximity-scaled object scale when the Hand moves from Medium proximity to Far proximity?")]
-        [Range(0.0f, 1.0f)]
-        private float farGrowRate = 0.3f;
-
-        [SerializeField]
-        [Tooltip("At what rate should a Proximity-scaled Object scale when the Hand moves to a distance that activates Medium Scale ?")]
-        [Range(0.0f, 1.0f)]
-        private float mediumGrowRate = 0.2f;
-
-        [SerializeField]
-        [Tooltip("At what rate should a Proximity-scaled object scale when the Hand moves to a distance that activates Close Scale ?")]
-        [Range(0.0f, 1.0f)]
-        private float closeGrowRate = 0.3f;
+        private ProximityEffectConfiguration config;
+        internal ProximityEffect(ProximityEffectConfiguration configuration)
+        {
+            Debug.Assert(configuration != null, "Can't create ProximityEffect without valid configuration");
+            config = configuration;
+        }
 
         /// <summary>
         /// Internal state tracking for proximity of a object
@@ -145,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         /// </summary>
         public void ResetProximityScale()
         {
-            if (proximityEffectActive == false)
+            if (config.ProximityEffectActive == false)
             {
                 return;
             }
@@ -175,10 +121,10 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         /// </summary>
         /// <param name="boundsCenter">gameobject position the proximity effect is attached to</param>
         /// <param name="boundsExtents">extents of the gameobject the proximity effect is attached to</param>
-        public void Update(Vector3 boundsCenter, Vector3 boundsExtents)
+        public void UpdateScaling(Vector3 boundsCenter, Vector3 boundsExtents)
         {
             // early out if effect is disabled
-            if (proximityEffectActive == false || !IsAnyRegisteredObjectVisible())
+            if (config.ProximityEffectActive == false || !IsAnyRegisteredObjectVisible())
             {
                 return;
             }
@@ -201,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             // Get the max radius possible of our current bounds plus the proximity
             float maxRadius = Mathf.Max(Mathf.Max(boundsExtents.x, boundsExtents.y), boundsExtents.z);
             maxRadius *= maxRadius;
-            maxRadius += objectCloseProximity + objectMediumProximity;
+            maxRadius += config.ObjectCloseProximity + config.ObjectMediumProximity;
 
             // Grab points within sphere of influence from valid pointers
             foreach (var pointer in proximityPointers)
@@ -294,16 +240,16 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             switch (state)
             {
                 case ProximityState.FullsizeNoProximity:
-                    targetScale = farScale;
-                    weight = lerp ? farGrowRate : 1.0f;
+                    targetScale = config.FarScale;
+                    weight = lerp ? config.FarGrowRate : 1.0f;
                     break;
                 case ProximityState.MediumProximity:
-                    targetScale = mediumScale;
-                    weight = lerp ? mediumGrowRate : 1.0f;
+                    targetScale = config.MediumScale;
+                    weight = lerp ? config.MediumGrowRate : 1.0f;
                     break;
                 case ProximityState.CloseProximity:
-                    targetScale = closeScale;
-                    weight = lerp ? closeGrowRate : 1.0f;
+                    targetScale = config.CloseScale;
+                    weight = lerp ? config.CloseGrowRate : 1.0f;
                     break;
             }
 
@@ -332,11 +278,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         /// <returns>ProximityState for given distance</returns>
         private ProximityState GetProximityState(float sqrDistance)
         {
-            if (sqrDistance < objectCloseProximity * objectCloseProximity)
+            if (sqrDistance < config.ObjectCloseProximity * config.ObjectCloseProximity)
             {
                 return ProximityState.CloseProximity;
             }
-            else if (sqrDistance < objectMediumProximity * objectMediumProximity)
+            else if (sqrDistance < config.ObjectMediumProximity * config.ObjectMediumProximity)
             {
                 return ProximityState.MediumProximity;
             }

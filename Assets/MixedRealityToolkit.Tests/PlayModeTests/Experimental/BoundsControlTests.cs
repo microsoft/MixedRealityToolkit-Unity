@@ -17,9 +17,8 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System.Linq;
 using Assert = UnityEngine.Assertions.Assert;
-using Microsoft.MixedReality.Toolkit.UI.Experimental;
+using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControl;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
 {
@@ -139,7 +138,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
 
             // front right corner is corner 3
-            var frontRightCornerPos = bbox.ScaleHandles.Handles[3].transform.position;
+            var frontRightCornerPos = bbox.gameObject.transform.Find("rigRoot/corner_3").position;
 
             Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
             int numSteps = 30;
@@ -181,7 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             const int numHandSteps = 1;
 
             Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
-            var frontRightCornerPos = bbox.ScaleHandles.Handles[3].transform.position; // front right corner is corner 3
+            var frontRightCornerPos = bbox.gameObject.transform.Find("rigRoot/corner_3").position; // front right corner is corner 3
             TestHand hand = new TestHand(Handedness.Right);
 
             // Hands grab object at initial position
@@ -223,7 +222,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             PlayModeTestUtilities.PushHandSimulationProfile();
             PlayModeTestUtilities.SetHandSimulationMode(HandSimulationMode.Gestures);
 
-            CameraCache.Main.transform.LookAt(bbox.ScaleHandles.Handles[3].transform);
+            CameraCache.Main.transform.LookAt(bbox.gameObject.transform.Find("rigRoot/corner_3").transform);
 
             var startHandPos = CameraCache.Main.transform.TransformPoint(new Vector3( 0.1f, 0f, 1.5f));
             TestHand rightHand = new TestHand(Handedness.Right);
@@ -285,13 +284,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             TestUtilities.AssertAboutEqual(afterTranslateBounds.center, afterTranslateCenter, "bbox incorrect center after translate");
             TestUtilities.AssertAboutEqual(afterTranslateBounds.size, scaledSize, "bbox incorrect size after translate");
 
-            var c0 = bbox.ScaleHandles.Handles[0];
+            var c0 = bbox.gameObject.transform.Find("rigRoot/corner_0");
             var bboxBottomCenter = afterTranslateBounds.center - Vector3.up * afterTranslateBounds.extents.y;
-            Vector3 cc0 = c0.transform.position - bboxBottomCenter;
+            Vector3 cc0 = c0.position - bboxBottomCenter;
             float rotateAmount = 30;
             bbox.gameObject.transform.Rotate(new Vector3(0, rotateAmount, 0));
             yield return null;
-            Vector3 cc0_rotated = c0.transform.position - bboxBottomCenter;
+            Vector3 cc0_rotated = c0.position - bboxBottomCenter;
             Assert.AreApproximatelyEqual(Vector3.Angle(cc0, cc0_rotated), 30, $"rotated angle is not correct. expected {rotateAmount} but got {Vector3.Angle(cc0, cc0_rotated)}");
 
             GameObject.Destroy(bbox.gameObject);
@@ -312,7 +311,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
             const int numHandSteps = 1;
 
             Vector3 initialHandPosition = new Vector3(0, 0, 0.5f);
-            var frontRightCornerPos = bbox.ScaleHandles.Handles[3].transform.position; // front right corner is corner 3
+            var frontRightCornerPos = bbox.gameObject.transform.Find("rigRoot/corner_3").position; // front right corner is corner 3
             TestHand hand = new TestHand(Handedness.Right);
 
             // Hands grab object at initial position
@@ -340,13 +339,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Experimental
         /// </summary>
         private Bounds GetBoundsControlRigBounds(BoundsControl bbox)
         {
-            var corners = bbox.ScaleHandles.Handles;
-
             Bounds b = new Bounds();
-            b.center = corners[0].position;
-            foreach (var c in corners.Skip(1))
+            b.center = bbox.transform.Find("rigRoot/corner_0").position;
+            for (int i = 1; i < 8; ++i)
             {
-                b.Encapsulate(c.transform.position);
+                Transform corner = bbox.transform.Find("rigRoot/corner_" + i.ToString());
+                b.Encapsulate(corner.position);
             }
             return b;
         }

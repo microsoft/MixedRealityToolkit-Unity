@@ -2,109 +2,24 @@
 using Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControlTypes;
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.UI.Experimental
+namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControl
 {
-    [Serializable]
     /// <summary>
     /// Rotation handles for <see cref="BoundsControl"/> that are used for rotating the
-    /// gameobject BoundsControl is attached to with near or far interaction
+    /// Gameobject BoundsControl is attached to with near or far interaction
     /// </summary>
-    public class BoundsControlRotationHandles : BoundsControlHandlesBase
+    public class RotationHandles : HandlesBase
     {
+        protected override HandlesBaseConfiguration BaseConfig => config;
+        private RotationHandlesConfiguration config;
 
-        [SerializeField]
-        [Tooltip("Determines the type of collider that will surround the rotation handle prefab.")]
-        private RotationHandlePrefabCollider rotationHandlePrefabColliderType = RotationHandlePrefabCollider.Box;
-
-        /// <summary>
-        /// Determines the type of collider that will surround the rotation handle prefab.
-        /// </summary>
-        public RotationHandlePrefabCollider RotationHandlePrefabColliderType
+        internal RotationHandles(RotationHandlesConfiguration configuration)
         {
-            get
-            {
-                return rotationHandlePrefabColliderType;
-            }
-            set
-            {
-                if (rotationHandlePrefabColliderType != value)
-                {
-                    rotationHandlePrefabColliderType = value;
-                    configurationChanged.Invoke();
-                }
-            }
+            Debug.Assert(configuration != null, "Can't create BoundsControlRotationHandles without valid configuration");
+            config = configuration;
         }
-
-        [SerializeField]
-        [Tooltip("Check to show rotation handles for the X axis")]
-        private bool showRotationHandleForX = true;
-
-        /// <summary>
-        /// Check to show rotation handles for the X axis
-        /// </summary>
-        public bool ShowRotationHandleForX
-        {
-            get
-            {
-                return showRotationHandleForX;
-            }
-            set
-            {
-                if (showRotationHandleForX != value)
-                {
-                    showRotationHandleForX = value;
-                    visibilityChanged.Invoke();
-                }
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("Check to show rotation handles for the Y axis")]
-        private bool showRotationHandleForY = true;
-
-        /// <summary>
-        /// Check to show rotation handles for the Y axis
-        /// </summary>
-        public bool ShowRotationHandleForY
-        {
-            get
-            {
-                return showRotationHandleForY;
-            }
-            set
-            {
-                if (showRotationHandleForY != value)
-                {
-                    showRotationHandleForY = value;
-                    visibilityChanged.Invoke();
-                }
-            }
-        }
-
-        [SerializeField]
-        [Tooltip("Check to show rotation handles for the Z axis")]
-        private bool showRotationHandleForZ = true;
-
-        /// <summary>
-        /// Check to show rotation handles for the Z axis
-        /// </summary>
-        public bool ShowRotationHandleForZ
-        {
-            get
-            {
-                return showRotationHandleForZ;
-            }
-            set
-            {
-                if (showRotationHandleForZ != value)
-                {
-                    showRotationHandleForZ = value;
-                    visibilityChanged.Invoke();
-                }
-            }
-        }
-
 
         internal const int NumEdges = 12;
 
@@ -142,9 +57,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
             return GetAxisType(index);
         }
 
-        internal void UpdateHandles()
+        private void UpdateHandles()
         {
-            for (int i = 0; i < NumEdges; ++i)
+            for (int i = 0; i < handles.Count; ++i)
             {
                 handles[i].position = GetEdgeCenter(i);
             }
@@ -154,21 +69,13 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         {
             if (boundsCorners != null && edgeCenters != null)
             {
-                edgeCenters[0] = (boundsCorners[0] + boundsCorners[1]) * 0.5f;
-                edgeCenters[1] = (boundsCorners[0] + boundsCorners[2]) * 0.5f;
-                edgeCenters[2] = (boundsCorners[3] + boundsCorners[2]) * 0.5f;
-                edgeCenters[3] = (boundsCorners[3] + boundsCorners[1]) * 0.5f;
-
-                edgeCenters[4] = (boundsCorners[4] + boundsCorners[5]) * 0.5f;
-                edgeCenters[5] = (boundsCorners[4] + boundsCorners[6]) * 0.5f;
-                edgeCenters[6] = (boundsCorners[7] + boundsCorners[6]) * 0.5f;
-                edgeCenters[7] = (boundsCorners[7] + boundsCorners[5]) * 0.5f;
-
-                edgeCenters[8] = (boundsCorners[0] + boundsCorners[4]) * 0.5f;
-                edgeCenters[9] = (boundsCorners[1] + boundsCorners[5]) * 0.5f;
-                edgeCenters[10] = (boundsCorners[2] + boundsCorners[6]) * 0.5f;
-                edgeCenters[11] = (boundsCorners[3] + boundsCorners[7]) * 0.5f;
+                for (int i = 0; i < edgeCenters.Length; ++i)
+                {
+                    edgeCenters[i] = VisualUtils.GetLinkPosition(i, ref boundsCorners);
+                }
             }
+
+            UpdateHandles();
         }
 
 
@@ -202,7 +109,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
 
         internal void Create(ref Vector3[] boundsCorners, Transform parent, bool drawManipulationTether)
         {
-            SetMaterials();
             edgeCenters = new Vector3[12];
             CalculateEdgeCenters(ref boundsCorners);
             InitEdgeAxis();
@@ -219,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                 midpoint.transform.parent = parent;
 
                 GameObject midpointVisual;
-                GameObject prefabType = HandlePrefab;
+                GameObject prefabType = config.HandlePrefab;
                 if (prefabType != null)
                 {
                     midpointVisual = GameObject.Instantiate(prefabType);
@@ -242,25 +148,25 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
                     midpointVisual.transform.localRotation = realignment * midpointVisual.transform.localRotation;
                 }
 
-                Bounds midpointBounds = BoundsControlVisualUtils.GetMaxBounds(midpointVisual);
+                Bounds midpointBounds = VisualUtils.GetMaxBounds(midpointVisual);
                 float maxDim = Mathf.Max(
                     Mathf.Max(midpointBounds.size.x, midpointBounds.size.y),
                     midpointBounds.size.z);
-                float invScale = HandleSize / maxDim;
+                float invScale = config.HandleSize / maxDim;
 
                 midpointVisual.name = "visuals";
                 midpointVisual.transform.parent = midpoint.transform;
                 midpointVisual.transform.localScale = new Vector3(invScale, invScale, invScale);
                 midpointVisual.transform.localPosition = Vector3.zero;
 
-                BoundsControlVisualUtils.AddComponentsToAffordance(midpoint, new Bounds(midpointBounds.center * invScale, midpointBounds.size * invScale),
-                    rotationHandlePrefabColliderType, CursorContextInfo.CursorAction.Rotate, ColliderPadding, parent, drawManipulationTether);
+                VisualUtils.AddComponentsToAffordance(midpoint, new Bounds(midpointBounds.center * invScale, midpointBounds.size * invScale),
+                    config.RotationHandlePrefabColliderType, CursorContextInfo.CursorAction.Rotate, config.ColliderPadding, parent, drawManipulationTether);
 
                 handles.Add(midpoint.transform);
 
-                if (HandleMaterial != null)
+                if (config.HandleMaterial != null)
                 {
-                    BoundsControlVisualUtils.ApplyMaterialToAllRenderers(midpointVisual, HandleMaterial);
+                    VisualUtils.ApplyMaterialToAllRenderers(midpointVisual, config.HandleMaterial);
                 }
             }
         }
@@ -270,9 +176,9 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         {
             CardinalAxisType axisType = GetAxisType(handle);
             return
-                (axisType == CardinalAxisType.X && ShowRotationHandleForX) ||
-                (axisType == CardinalAxisType.Y && ShowRotationHandleForY) ||
-                (axisType == CardinalAxisType.Z && ShowRotationHandleForZ);
+                (axisType == CardinalAxisType.X && config.ShowRotationHandleForX) ||
+                (axisType == CardinalAxisType.Y && config.ShowRotationHandleForY) ||
+                (axisType == CardinalAxisType.Z && config.ShowRotationHandleForZ);
         }
 
         internal override HandleType GetHandleType()
@@ -296,7 +202,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental
         #region IProximityScaleObjectProvider 
         public override bool IsActive()
         {
-            return ShowRotationHandleForX || ShowRotationHandleForY || ShowRotationHandleForZ;
+            return config.ShowRotationHandleForX || config.ShowRotationHandleForY || config.ShowRotationHandleForZ;
         }
 
         #endregion IProximityScaleObjectProvider
