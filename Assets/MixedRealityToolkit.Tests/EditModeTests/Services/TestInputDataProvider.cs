@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using System.Runtime.InteropServices;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.Services
 {
@@ -15,12 +16,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Services
         "Test Input Data Provider")]
     public class TestInputDataProvider : TestBaseDataProvider, ITestInputDataProvider
     {
+        [System.Obsolete()]
         public TestInputDataProvider(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
             string name,
             uint priority,
-            BaseMixedRealityProfile profile) : base(registrar, inputSystem, name, priority, profile) { }
+            BaseMixedRealityProfile profile) : this(inputSystem, name, priority, profile) 
+        {
+            Registrar = registrar;
+        }
+
+        public TestInputDataProvider(
+            IMixedRealityInputSystem inputSystem,
+            string name,
+            uint priority,
+            BaseMixedRealityProfile profile) : base(inputSystem, name, priority, profile) { }
 
         public IMixedRealityController[] GetActiveControllers()
         {
