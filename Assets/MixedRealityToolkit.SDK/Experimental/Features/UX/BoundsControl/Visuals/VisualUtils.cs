@@ -101,8 +101,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControl
         /// <summary>
         /// Calculates an array of corner points out of the given bounds
         /// </summary>
-        /// <param name="bounds"></param>
-        /// <param name="positions"></param>
+        /// <param name="bounds">bounds of the box</param>
+        /// <param name="positions">calculated corner points</param>
         static internal void GetCornerPositionsFromBounds(Bounds bounds, ref Vector3[] positions)
         {
             const int numCorners = 1 << 3;
@@ -129,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControl
         /// <param name="extents">The original extents (unflattened)</param>
         /// <param name="flattenAxis">The axis to flatten</param>
         /// <param name="flattenValue">The value to flatten the flattenAxis to</param>
-        /// <returns></returns>
+        /// <returns>new extents with flattened axis</returns>
         static internal Vector3 FlattenBounds(Vector3 extents, FlattenModeType flattenAxis, float flattenValue = 0.0f)
         {
             Vector3 boundsExtents = extents;
@@ -165,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Experimental.BoundsControl
         /// </summary>
         /// <param name="linkIndex">Index of the edge the position is queried for</param>
         /// <param name="cornerPoints">Corner points array of the box</param>
-        /// <returns></returns>
+        /// <returns>center position of link</returns>
         static internal Vector3 GetLinkPosition(int linkIndex, ref Vector3[] cornerPoints)
         {
             Debug.Assert(cornerPoints != null && cornerPoints.Length == 8, "Invalid corner points array passed");
