@@ -2,37 +2,37 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Input.Utilities;
 using Microsoft.MixedReality.Toolkit.UI;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
     /// <summary>
-    /// TODO
+    /// Simulates a point mass on a spring that can be used as a grabbable handle.
     /// </summary>
     [RequireComponent(typeof(NearInteractionGrabbable))]
     public class PinchSpring : MonoBehaviour, IMixedRealityPointerHandler, IMixedRealityFocusHandler
     {
         #region Serialized Fields and Properties
 
-        [SerializeField, Tooltip("TODO")]
-        private Transform handleRoot = null;
+        [SerializeField, Tooltip("The static anchor point of the spring")]
+        private Transform handleAnchor = null;
 
         /// <summary>
-        /// TODO
+        /// The static anchor point of the spring.
         /// </summary>
-        public Transform HandleRoot
+        public Transform HandleAnchor
         {
-            get => handleRoot;
-            set => handleRoot = value;
+            get => handleAnchor;
+            set => handleAnchor = value;
         }
 
-        [SerializeField, Tooltip("TODO")]
+        [SerializeField, Tooltip("The visuals to connect the anchor to the tip. This object will be scaled along the local z-axis.")]
         private Transform handleConnector = null;
 
         /// <summary>
-        /// TODO
+        /// The visuals to connect the anchor to the tip. This object will be scaled along the local z-axis.
         /// </summary>
         public Transform HandleConnector
         {
@@ -40,11 +40,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             set => handleConnector = value;
         }
 
-        [SerializeField, Tooltip("TODO")]
+        [SerializeField, Tooltip("The object that acts as the point mass in the spring system.")]
         private Transform handleTip = null;
 
         /// <summary>
-        /// TODO
+        /// The object that acts as the point mass in the spring system.
         /// </summary>
         public Transform HandleTip
         {
@@ -60,11 +60,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             }
         }
 
-        [SerializeField, Tooltip("TODO")]
+        [SerializeField, Tooltip("How far the tip should be positioned from the anchor when the spring is at rest.")]
         private float restingDistance = 0.05f;
 
         /// <summary>
-        /// TODO
+        /// How far the tip should rest from the anchor when the spring is at rest.
         /// </summary>
         public float RestingDistance
         {
@@ -72,11 +72,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             set => restingDistance = value;
         }
 
-        [SerializeField, Tooltip("TODO")]
+        [SerializeField, Tooltip("The direction the tip should be positioned from the anchor when the spring is at rest.")]
         private Vector3 restingDirection = new Vector3(0.0f, 0.0f, 1.0f);
 
         /// <summary>
-        /// TODO
+        /// The direction the tip should be positioned from the anchor when the spring is at rest.
         /// </summary>
         public Vector3 RestingDirection
         {
@@ -88,23 +88,23 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             }
         }
 
-        [SerializeField, Tooltip("TODO")]
-        private float pointMass = 0.05f;
+        [SerializeField, Tooltip("The mass (in kilograms) of the tip.")]
+        private float tipMass = 0.05f;
 
         /// <summary>
-        /// TODO
+        /// The mass (in kilograms) of the tip.
         /// </summary>
-        public float PointMass
+        public float TipMass
         {
-            get => pointMass;
-            set => pointMass = value;
+            get => tipMass;
+            set => tipMass = value;
         }
 
-        [SerializeField, Tooltip("TODO")]
+        [SerializeField, Tooltip("The constant factor characteristic of the spring, or stiffness.")]
         private float springStiffness = 50.0f;
 
         /// <summary>
-        /// TODO
+        /// The constant factor characteristic of the spring, or stiffness.
         /// </summary>
         public float SpringStiffness
         {
@@ -112,11 +112,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             set => springStiffness = value;
         }
 
-        [SerializeField, Range(0.0f, 1.0f), Tooltip("TODO")]
+        [SerializeField, Range(0.0f, 1.0f), Tooltip("The percentage of velocity to remove from the point mass each frame.")]
         private float springDampening = 0.9f;
 
         /// <summary>
-        /// TODO
+        /// The percentage of velocity to remove from the point mass each frame.
         /// </summary>
         public float SpringDampening
         {
@@ -124,11 +124,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             set => springDampening = value;
         }
 
-        [SerializeField, Tooltip("TODO")]
+        [SerializeField, Tooltip("Distance (in meters) to switch from interpolation to snapping to the grasp point when being manipulated.")]
         private float snapDistance = 0.03f;
 
         /// <summary>
-        /// TODO
+        /// Distance (in meters) to switch from interpolation to snapping to the grasp point when being manipulated.
         /// </summary>
         public float SnapDistance
         {
@@ -136,11 +136,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             set => snapDistance = value;
         }
 
-        [SerializeField, Tooltip("TODO")]
+        [SerializeField, Tooltip("How quickly to move the tip when interpolation the position and scale.")]
         private float handleTipInterpolateSpeed = 20.0f;
 
         /// <summary>
-        /// TODO
+        /// How quickly to move the tip when interpolation the position and scale.
         /// </summary>
         public float HandleTipInterpolateSpeed
         {
@@ -152,10 +152,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         #region Private Members
 
-        private TransformScaleHandler tipScaleHander = null; 
+        private TransformScaleHandler tipScaleHander = null;
         private IMixedRealityPointer manipulatePointer = null;
-        private IMixedRealityNearPointer focusedPointer = null;
+        private IMixedRealityPointer focusedPointer = null;
         private Vector3 velocity = Vector3.zero;
+        private float currentRestingDistance = 0.0f;
         private bool snapped = false;
 
         #endregion
@@ -174,16 +175,87 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         private void Update()
         {
-            float deltaTime = Time.deltaTime;
+            UpdateTip();
+            UpdateConnector();
+        }
+
+        #endregion
+
+        #region IMixedRealityFocusHandler Implementation
+
+        /// <inheritdoc />
+        public void OnPointerDown(MixedRealityPointerEventData eventData)
+        {
+            manipulatePointer = eventData.Pointer;
+
+            // Continue to forward the events upward because this component is a passive observer.
+            EventSystemExtensions.ExecuteUpHierarchy(gameObject, eventData, MixedRealityEventHandlers.OnPointerDownEventHandler);
+        }
+
+        /// <inheritdoc />
+        public void OnPointerDragged(MixedRealityPointerEventData eventData)
+        {
+            // Continue to forward the events upward because this component is a passive observer.
+            EventSystemExtensions.ExecuteUpHierarchy(gameObject, eventData, MixedRealityEventHandlers.OnPointerDraggedEventHandler);
+        }
+
+        /// <inheritdoc />
+        public void OnPointerUp(MixedRealityPointerEventData eventData)
+        {
+            manipulatePointer = null;
+
+            // Continue to forward the events upward because this component is a passive observer.
+            EventSystemExtensions.ExecuteUpHierarchy(gameObject, eventData, MixedRealityEventHandlers.OnPointerUpEventHandler);
+        }
+
+        /// <inheritdoc />
+        public void OnPointerClicked(MixedRealityPointerEventData eventData)
+        {
+            // Continue to forward the events upward because this component is a passive observer.
+            EventSystemExtensions.ExecuteUpHierarchy(gameObject, eventData, MixedRealityEventHandlers.OnInputClickedEventHandler);
+        }
+
+        #endregion
+
+        #region IMixedRealityFocusHandler Implementation
+
+        /// <inheritdoc />
+        public void OnFocusEnter(FocusEventData eventData)
+        {
+            focusedPointer = eventData.Pointer;
+
+            // Continue to forward the events upward because this component is a passive observer.
+            EventSystemExtensions.ExecuteUpHierarchy(gameObject, eventData, MixedRealityEventHandlers.OnFocusEnterEventHandler);
+        }
+
+        /// <inheritdoc />
+        public void OnFocusExit(FocusEventData eventData)
+        {
+            focusedPointer = null;
+
+            // Continue to forward the events upward because this component is a passive observer.
+            EventSystemExtensions.ExecuteUpHierarchy(gameObject, eventData, MixedRealityEventHandlers.OnFocusExitEventHandler);
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void UpdateTip()
+        {
+            var deltaTime = Time.deltaTime;
 
             // Move the handle tip towards the interacting pointer, else spring back to the resting location.
             var currentPosition = handleTip.position;
-            var restingPosition = handleRoot.position + (transform.rotation * restingDirection) * restingDistance;
+            var isFocused = focusedPointer != null;
+            currentRestingDistance = Mathf.Lerp(currentRestingDistance, isFocused ? restingDistance : 0.0f, handleTipInterpolateSpeed * deltaTime);
+            var restingPosition = handleAnchor.position + (transform.rotation * restingDirection) * currentRestingDistance;
 
             Vector3 targetPosition;
             Vector3 graspPosition;
+            var nearPointer = focusedPointer as IMixedRealityNearPointer;
 
-            if (focusedPointer != null && focusedPointer.TryGetNearGraspPoint(out graspPosition))
+            if (nearPointer != null && nearPointer.TryGetNearGraspPoint(out graspPosition))
             {
                 if (snapped || ((currentPosition - graspPosition).magnitude < snapDistance))
                 {
@@ -201,15 +273,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 // Spring back to the resting position using Hooke's Law.
                 var delta = restingPosition - currentPosition;
-                var deltaMagnitude = delta.magnitude;
 
-                if (deltaMagnitude != 0.0f)
+                if (delta != Vector3.zero)
                 {
+                    var deltaMagnitude = delta.magnitude;
                     delta /= deltaMagnitude;
 
                     // Integrate the point mass.
                     var force = delta * (springStiffness * deltaMagnitude);
-                    var acceleration = force / pointMass;
+                    var acceleration = force / tipMass;
 
                     velocity += acceleration * deltaTime;
                     targetPosition = currentPosition + (velocity * deltaTime);
@@ -229,141 +301,28 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             // Update the tip scale.
             if (tipScaleHander != null)
             {
-                var tagetScale = (manipulatePointer != null) ? Vector3.one * tipScaleHander.ScaleMinimum : Vector3.one * tipScaleHander.ScaleMaximum;
+                var isManipulated = manipulatePointer != null;
+                var tagetScale = isManipulated ? Vector3.one * tipScaleHander.ScaleMinimum : Vector3.one * tipScaleHander.ScaleMaximum;
                 handleTip.localScale = Vector3.Lerp(handleTip.localScale, tagetScale, handleTipInterpolateSpeed * deltaTime);
             }
+        }
 
-            // Update the connector.
+        private void UpdateConnector()
+        {
             if (handleConnector != null)
             {
-                var delta = handleTip.position - handleRoot.position;
-                handleConnector.position = (handleRoot.position + handleTip.position) * 0.5f;
-                handleConnector.rotation = Quaternion.LookRotation(delta, handleTip.up);
+                var delta = handleTip.position - handleAnchor.position;
+                handleConnector.position = (handleAnchor.position + handleTip.position) * 0.5f;
+
+                if (delta != Vector3.zero)
+                {
+                    handleConnector.rotation = Quaternion.LookRotation(delta);
+                }
+
                 var scale = handleConnector.localScale;
                 handleConnector.localScale = new Vector3(scale.x, scale.y, delta.magnitude);
             }
         }
-
-        #endregion
-
-
-        #region IMixedRealityFocusHandler Implementation
-
-        private static readonly ExecuteEvents.EventFunction<IMixedRealityPointerHandler> OnPointerDownEventHandler =
-        delegate (IMixedRealityPointerHandler handler, BaseEventData eventData)
-        {
-            var casted = ExecuteEvents.ValidateEventData<MixedRealityPointerEventData>(eventData);
-            handler.OnPointerDown(casted);
-        };
-
-        public void OnPointerDown(MixedRealityPointerEventData eventData)
-        {
-            manipulatePointer = eventData.Pointer;
-
-            // Continue to forward the events upward because this component is a passive observer.
-            if (!eventData.used && gameObject.transform.parent)
-            {
-                ExecuteEvents.ExecuteHierarchy(gameObject.transform.parent.gameObject, eventData, OnPointerDownEventHandler);
-            }
-        }
-
-        private static readonly ExecuteEvents.EventFunction<IMixedRealityPointerHandler> OnPointerDraggedEventHandler =
-        delegate (IMixedRealityPointerHandler handler, BaseEventData eventData)
-        {
-            var casted = ExecuteEvents.ValidateEventData<MixedRealityPointerEventData>(eventData);
-            handler.OnPointerDragged(casted);
-        };
-
-        public void OnPointerDragged(MixedRealityPointerEventData eventData)
-        {
-            // Continue to forward the events upward because this component is a passive observer.
-            if (!eventData.used && gameObject.transform.parent)
-            {
-                ExecuteEvents.ExecuteHierarchy(gameObject.transform.parent.gameObject, eventData, OnPointerDraggedEventHandler);
-            }
-        }
-
-        private static readonly ExecuteEvents.EventFunction<IMixedRealityPointerHandler> OnPointerUpEventHandler =
-        delegate (IMixedRealityPointerHandler handler, BaseEventData eventData)
-        {
-            var casted = ExecuteEvents.ValidateEventData<MixedRealityPointerEventData>(eventData);
-            handler.OnPointerUp(casted);
-        };
-
-        public void OnPointerUp(MixedRealityPointerEventData eventData)
-        {
-            manipulatePointer = null;
-
-            // Continue to forward the events upward because this component is a passive observer.
-            if (!eventData.used && gameObject.transform.parent)
-            {
-                ExecuteEvents.ExecuteHierarchy(gameObject.transform.parent.gameObject, eventData, OnPointerUpEventHandler);
-            }
-        }
-
-        private static readonly ExecuteEvents.EventFunction<IMixedRealityPointerHandler> OnInputClickedEventHandler =
-        delegate (IMixedRealityPointerHandler handler, BaseEventData eventData)
-        {
-            var casted = ExecuteEvents.ValidateEventData<MixedRealityPointerEventData>(eventData);
-            handler.OnPointerClicked(casted);
-        };
-
-        public void OnPointerClicked(MixedRealityPointerEventData eventData)
-        {
-            // Continue to forward the events upward because this component is a passive observer.
-            if (!eventData.used && gameObject.transform.parent)
-            {
-                ExecuteEvents.ExecuteHierarchy(gameObject.transform.parent.gameObject, eventData, OnInputClickedEventHandler);
-            }
-        }
-
-        #endregion
-
-        #region IMixedRealityFocusHandler Implementation
-
-        private static readonly ExecuteEvents.EventFunction<IMixedRealityFocusHandler> OnFocusEnterEventHandler =
-        delegate (IMixedRealityFocusHandler handler, BaseEventData eventData)
-        {
-            var casted = ExecuteEvents.ValidateEventData<FocusEventData>(eventData);
-            handler.OnFocusEnter(casted);
-        };
-
-        public void OnFocusEnter(FocusEventData eventData)
-        {
-            focusedPointer = eventData.Pointer as IMixedRealityNearPointer;
-
-            // Continue to forward the events upward because this component is a passive observer.
-            if (!eventData.used && gameObject.transform.parent)
-            {
-                ExecuteEvents.ExecuteHierarchy(gameObject.transform.parent.gameObject, eventData, OnFocusEnterEventHandler);
-            }
-        }
-
-        private static readonly ExecuteEvents.EventFunction<IMixedRealityFocusHandler> OnFocusExitEventHandler =
-        delegate (IMixedRealityFocusHandler handler, BaseEventData eventData)
-        {
-            var casted = ExecuteEvents.ValidateEventData<FocusEventData>(eventData);
-            handler.OnFocusExit(casted);
-        };
-
-        public void OnFocusExit(FocusEventData eventData)
-        {
-            focusedPointer = null;
-
-            // Continue to forward the events upward because this component is a passive observer.
-            if (!eventData.used && gameObject.transform.parent)
-            {
-                ExecuteEvents.ExecuteHierarchy(gameObject.transform.parent.gameObject, eventData, OnFocusExitEventHandler);
-            }
-        }
-
-        #endregion
-
-        #region Public Methods
-
-        #endregion
-
-        #region Private Methods
 
         #endregion
     }

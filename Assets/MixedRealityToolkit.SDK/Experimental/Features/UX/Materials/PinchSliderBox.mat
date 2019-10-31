@@ -10,6 +10,7 @@ Material:
   m_Name: PinchSliderBox
   m_Shader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
   m_ShaderKeywords: _ALPHATEST_ON _BORDER_LIGHT _BORDER_LIGHT_OPAQUE _DISABLE_ALBEDO_MAP
+    _RIM_LIGHT
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
@@ -131,8 +132,8 @@ Material:
     - _Refraction: 0
     - _RefractiveIndex: 0
     - _RenderQueueOverride: -1
-    - _RimLight: 0
-    - _RimPower: 0.25
+    - _RimLight: 1
+    - _RimPower: 2
     - _RoundCornerMargin: 0.01
     - _RoundCornerRadius: 0.25
     - _RoundCorners: 0

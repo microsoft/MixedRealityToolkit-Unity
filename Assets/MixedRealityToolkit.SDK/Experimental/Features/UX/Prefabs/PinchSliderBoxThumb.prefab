@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3286718382045884839}
   - component: {fileID: 9192351645375013307}
   m_Layer: 0
-  m_Name: HandleRoot
+  m_Name: HandleAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -103,7 +103,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4727717190901430965}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.025}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.005, y: 0.005, z: 0.05}
   m_Children: []
   m_Father: {fileID: 7134137287027157379}
@@ -228,13 +228,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07db390f7c47044469aed21f791a1889, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handleRoot: {fileID: 8515898212768621624}
+  handleAnchor: {fileID: 8515898212768621624}
   handleConnector: {fileID: 2408310720385436493}
   handleTip: {fileID: 3654665362766092572}
   restingDistance: 0.05
+  restingDirection: {x: 0, y: 0, z: 1}
   pointMass: 0.05
   springStiffness: 30
   springDampening: 0.8
+  snapDistance: 0.03
+  handleTipInterpolateSpeed: 20
 --- !u!1 &5663819178050570560
 GameObject:
   m_ObjectHideFlags: 0
@@ -262,7 +265,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5663819178050570560}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.05}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.03, y: 0.03, z: 0.03}
   m_Children: []
   m_Father: {fileID: 7134137287027157379}
