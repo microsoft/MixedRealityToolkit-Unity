@@ -107,7 +107,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             // Additional registered components configuration
             registeredServiceProvidersProfile = serializedObject.FindProperty("registeredServiceProvidersProfile");
-            renderDepthBuffer = serializedObject.FindProperty("renderDepthBuffer");
 
             // Editor settings
             useServiceInspectors = serializedObject.FindProperty("useServiceInspectors");

@@ -24,25 +24,6 @@ Shader "Mixed Reality Toolkit/Depth Buffer Viewer"
 
             float4 frag(v2f_img i) : COLOR
             {
-                /*
-                float4 white = float4(1.0f, 1.0f, 1.0f, 1.0f);
-                float4 clear = float4(0.0f, 0.0f, 0.0f, 1.0f);
-                float4 black = float4(0.0f, 0.0f, 0.0f, 0.0f);
-
-                float d = Linear01Depth(SAMPLE_DEPTH_TEXTURE(_DepthTex, i.uv));
-                float4 c = tex2D(_MainTex, i.uv);
-
-                if (!all(c == clear))
-                {
-                    if (d == 0)
-                    {
-                        return float4(1, 0, 0, 1);
-                    }
-                }
-
-                return c;
-                */
-                // LKG
                 return Linear01Depth(SAMPLE_DEPTH_TEXTURE(_DepthTex, i.uv));
             }
         ENDCG
