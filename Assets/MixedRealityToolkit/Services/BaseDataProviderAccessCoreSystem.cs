@@ -129,11 +129,37 @@ namespace Microsoft.MixedReality.Toolkit
         /// Registers a data provider of the specified type.
         /// </summary>
         /// <typeparam name="T">The interface type of the data provider to be registered.</typeparam>
+        /// <param name="concreteType"></param> // todo
+        /// <param name="supportedPlatforms"></param>
+        /// <param name="args"></param>
         /// <returns>True if the data provider was successfully registered, false otherwise.</returns>
         protected bool RegisterDataProvider<T>(
             Type concreteType,
             SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1),
             params object[] args) where T : IMixedRealityDataProvider
+        {
+            return RegisterDataProviderInternal<T>(
+                true, // Retry with an added IMixedRealityService parameter
+                concreteType,
+                supportedPlatforms,
+                args);
+        }
+
+        /// <summary>
+        /// Internal method that creates an instance of the specified concrete type and registers the provider.
+        /// </summary>
+        /// <typeparam name="T">The interface type of the data provider to be registered.</typeparam>
+        /// <param name="retryWithRegistrar"></param>
+        /// <param name="concreteType"></param>
+        /// <param name="supportedPlatforms"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        private bool RegisterDataProviderInternal<T>(
+            bool retryWithRegistrar,
+            Type concreteType,
+            SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1),
+            params object[] args) where T : IMixedRealityDataProvider
+
         {
 #if !UNITY_EDITOR
             if (!Application.platform.IsPlatformSupported(supportedPlatforms))
@@ -164,6 +190,23 @@ namespace Microsoft.MixedReality.Toolkit
             }
             catch (Exception e)
             {
+                if (retryWithRegistrar && (e is MissingMethodException))
+                {
+                    // Missing method exceptions are intentionally re-thrown so that registrar's can handle
+                    // multiple constructor overloads.
+                    Debug.LogWarning($"Failed to find an appropriate constructor for the {concreteType.Name} data provider. Adding the Registrar instance and re-attempting registration.");
+#pragma warning disable 0618
+                    List<object> updatedArgs = new List<object>();
+                    updatedArgs.Add(Registrar);
+                    updatedArgs.AddRange(args);
+                    return RegisterDataProviderInternal<T>(
+                        false, // Do NOT retry, we have already added the configured IMIxedRealityServiceRegistrar
+                        concreteType,
+                        supportedPlatforms,
+                        updatedArgs.ToArray());
+#pragma warning restore 0618
+                }
+
                 Debug.LogError($"Failed to register the {concreteType.Name} data provider: {e.GetType()} - {e.Message}");
 
                 // Failures to create the concrete type generally surface as nested exceptions - just logging

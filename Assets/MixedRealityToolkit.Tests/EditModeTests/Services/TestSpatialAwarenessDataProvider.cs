@@ -24,12 +24,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Services
         "MixedRealityToolkit.SDK")]
     public class TestSpatialAwarenessDataProvider : TestBaseDataProvider, ITestSpatialAwarenessDataProvider
     {
+        [System.Obsolete()]
         public TestSpatialAwarenessDataProvider(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
             string name,
             uint priority,
-            BaseMixedRealityProfile profile) : base(registrar, spatialAwarenessSystem, name, priority, profile) { }
+            BaseMixedRealityProfile profile) : this(spatialAwarenessSystem, name, priority, profile)
+        {
+            Registrar = registrar;
+        }
+
+        public TestSpatialAwarenessDataProvider(
+            IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
+            string name,
+            uint priority,
+            BaseMixedRealityProfile profile) : base(spatialAwarenessSystem, name, priority, profile) { }
 
         public AutoStartBehavior StartupBehavior { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         public int DefaultPhysicsLayer => throw new System.NotImplementedException();

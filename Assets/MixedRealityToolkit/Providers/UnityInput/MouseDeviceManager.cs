@@ -23,12 +23,29 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
+        [System.Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
         public MouseDeviceManager(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
             string name = null,
             uint priority = DefaultPriority,
-            BaseMixedRealityProfile profile = null) : base(registrar, inputSystem, name, priority, profile)
+            BaseMixedRealityProfile profile = null) : this(inputSystem, name, priority, profile)
+        {
+            Registrar = registrar;
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="inputSystem">The <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
+        /// <param name="name">Friendly name of the service.</param>
+        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
+        /// <param name="profile">The service's configuration profile.</param>
+        public MouseDeviceManager(
+            IMixedRealityInputSystem inputSystem,
+            string name = null,
+            uint priority = DefaultPriority,
+            BaseMixedRealityProfile profile = null) : base(inputSystem, name, priority, profile)
         { }
 
         // Values defining the range of the cursor and wheel speed multipliers

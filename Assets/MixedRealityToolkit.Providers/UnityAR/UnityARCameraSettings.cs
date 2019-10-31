@@ -26,17 +26,15 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the provider.</param>
         /// <param name="cameraSystem">The instance of the camera system which is managing this provider.</param>
         /// <param name="name">Friendly name of the provider.</param>
         /// <param name="priority">Provider priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The provider's configuration profile.</param>
         public UnityARCameraSettings(
-            IMixedRealityServiceRegistrar registrar,
             IMixedRealityCameraSystem cameraSystem,
             string name = null,
             uint priority = DefaultPriority,
-            BaseCameraSettingsProfile profile = null) : base(registrar, cameraSystem, name, priority, profile)
+            BaseCameraSettingsProfile profile = null) : base(cameraSystem, name, priority, profile)
         { }
 
         #region IMixedRealityCameraSettings
