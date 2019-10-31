@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
     {
         #region Serialized Fields and Properties
 
-        [SerializeField, Tooltip("The static anchor point of the spring")]
+        [Experimental, SerializeField, Tooltip("The static anchor point of the spring")]
         private Transform handleAnchor = null;
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
 
         [SerializeField, Tooltip("How far the tip should be positioned from the anchor when the spring is at rest.")]
-        private float restingDistance = 0.05f;
+        private float restingDistance = 0.0f;
 
         /// <summary>
         /// How far the tip should rest from the anchor when the spring is at rest.
@@ -70,6 +70,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         {
             get => restingDistance;
             set => restingDistance = value;
+        }
+
+        [SerializeField, Tooltip("How far the tip should be positioned from the anchor when the spring is at rest and focused.")]
+        private float restingFocusedDistance = 0.05f;
+
+        /// <summary>
+        /// How far the tip should be positioned from the anchor when the spring is at rest and focused.
+        /// </summary>
+        public float RestingFocusedDistance
+        {
+            get => restingFocusedDistance;
+            set => restingFocusedDistance = value;
         }
 
         [SerializeField, Tooltip("The direction the tip should be positioned from the anchor when the spring is at rest.")]
@@ -189,14 +201,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             manipulatePointer = eventData.Pointer;
 
             // Continue to forward the events upward because this component is a passive observer.
-            EventSystemExtensions.ExecuteUpHierarchy(gameObject, eventData, MixedRealityEventHandlers.OnPointerDownEventHandler);
+            EventSystemExtensions.ExecuteHierarchyUpward(gameObject, eventData, MixedRealityEventHandlers.OnPointerDownEventHandler);
         }
 
         /// <inheritdoc />
         public void OnPointerDragged(MixedRealityPointerEventData eventData)
         {
             // Continue to forward the events upward because this component is a passive observer.
-            EventSystemExtensions.ExecuteUpHierarchy(gameObject, eventData, MixedRealityEventHandlers.OnPointerDraggedEventHandler);
+            EventSystemExtensions.ExecuteHierarchyUpward(gameObject, eventData, MixedRealityEventHandlers.OnPointerDraggedEventHandler);
         }
 
         /// <inheritdoc />
@@ -205,14 +217,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             manipulatePointer = null;
 
             // Continue to forward the events upward because this component is a passive observer.
-            EventSystemExtensions.ExecuteUpHierarchy(gameObject, eventData, MixedRealityEventHandlers.OnPointerUpEventHandler);
+            EventSystemExtensions.ExecuteHierarchyUpward(gameObject, eventData, MixedRealityEventHandlers.OnPointerUpEventHandler);
         }
 
         /// <inheritdoc />
         public void OnPointerClicked(MixedRealityPointerEventData eventData)
         {
             // Continue to forward the events upward because this component is a passive observer.
-            EventSystemExtensions.ExecuteUpHierarchy(gameObject, eventData, MixedRealityEventHandlers.OnInputClickedEventHandler);
+            EventSystemExtensions.ExecuteHierarchyUpward(gameObject, eventData, MixedRealityEventHandlers.OnInputClickedEventHandler);
         }
 
         #endregion
@@ -225,7 +237,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             focusedPointer = eventData.Pointer;
 
             // Continue to forward the events upward because this component is a passive observer.
-            EventSystemExtensions.ExecuteUpHierarchy(gameObject, eventData, MixedRealityEventHandlers.OnFocusEnterEventHandler);
+            EventSystemExtensions.ExecuteHierarchyUpward(gameObject, eventData, MixedRealityEventHandlers.OnFocusEnterEventHandler);
         }
 
         /// <inheritdoc />
@@ -234,7 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             focusedPointer = null;
 
             // Continue to forward the events upward because this component is a passive observer.
-            EventSystemExtensions.ExecuteUpHierarchy(gameObject, eventData, MixedRealityEventHandlers.OnFocusExitEventHandler);
+            EventSystemExtensions.ExecuteHierarchyUpward(gameObject, eventData, MixedRealityEventHandlers.OnFocusExitEventHandler);
         }
 
         #endregion
@@ -244,11 +256,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         private void UpdateTip()
         {
             var deltaTime = Time.deltaTime;
+            var t = handleTipInterpolateSpeed * deltaTime;
 
             // Move the handle tip towards the interacting pointer, else spring back to the resting location.
             var currentPosition = handleTip.position;
             var isFocused = focusedPointer != null;
-            currentRestingDistance = Mathf.Lerp(currentRestingDistance, isFocused ? restingDistance : 0.0f, handleTipInterpolateSpeed * deltaTime);
+            currentRestingDistance = Mathf.Lerp(currentRestingDistance, isFocused ? restingFocusedDistance : restingDistance, t);
             var restingPosition = handleAnchor.position + (transform.rotation * restingDirection) * currentRestingDistance;
 
             Vector3 targetPosition;
@@ -266,7 +279,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 else
                 {
                     // Interpolate to the snap position.
-                    targetPosition = Vector3.Lerp(currentPosition, graspPosition, handleTipInterpolateSpeed * deltaTime);
+                    targetPosition = Vector3.Lerp(currentPosition, graspPosition, t);
                 }
             }
             else
@@ -303,7 +316,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             {
                 var isManipulated = manipulatePointer != null;
                 var tagetScale = isManipulated ? Vector3.one * tipScaleHander.ScaleMinimum : Vector3.one * tipScaleHander.ScaleMaximum;
-                handleTip.localScale = Vector3.Lerp(handleTip.localScale, tagetScale, handleTipInterpolateSpeed * deltaTime);
+                handleTip.localScale = Vector3.Lerp(handleTip.localScale, tagetScale, t);
             }
         }
 

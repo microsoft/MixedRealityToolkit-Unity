@@ -201,7 +201,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.1
+  m_Radius: 0.05
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1955844749214016387
 MonoBehaviour:
@@ -231,9 +231,10 @@ MonoBehaviour:
   handleAnchor: {fileID: 8515898212768621624}
   handleConnector: {fileID: 2408310720385436493}
   handleTip: {fileID: 3654665362766092572}
-  restingDistance: 0.05
+  restingDistance: 0
+  restingFocusedDistance: 0.05
   restingDirection: {x: 0, y: 0, z: 1}
-  pointMass: 0.05
+  tipMass: 0.05
   springStiffness: 30
   springDampening: 0.8
   snapDistance: 0.03

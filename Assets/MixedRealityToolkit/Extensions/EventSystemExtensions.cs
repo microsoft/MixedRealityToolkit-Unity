@@ -72,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="eventData">Data associated with the Executing event.</param>
         /// <param name="callbackFunction">Function to execute on the gameObject components.</param>
         /// <returns>GameObject that handled the event</returns>
-        public static GameObject ExecuteUpHierarchy<T>(GameObject root, BaseEventData eventData, ExecuteEvents.EventFunction<T> callbackFunction) where T : IEventSystemHandler
+        public static GameObject ExecuteHierarchyUpward<T>(GameObject root, BaseEventData eventData, ExecuteEvents.EventFunction<T> callbackFunction) where T : IEventSystemHandler
         {
             if (!eventData.used && root != null)
             {
