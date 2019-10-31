@@ -1080,6 +1080,47 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             TestUtilities.AssertAboutEqual(originalObjectPos, testObject.transform.position, "Object moved after it was disabled");
         }
+
+        /// <summary>
+        /// Ensure that a manipulated object has the same rotation as the hand
+        /// when RotateAboutObjectCenter is used
+        /// </summary>
+        [UnityTest]
+        public IEnumerator ManipulationHandlerRotateAboutObjectCenter()
+        {
+            TestUtilities.PlayspaceToOriginLookingForward();
+
+            // set up cube with manipulation handler
+            var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            testObject.transform.localScale = Vector3.one * 0.2f;
+            testObject.transform.position = Vector3.forward;
+
+            var manipHandler = testObject.AddComponent<ManipulationHandler>();
+            manipHandler.HostTransform = testObject.transform;
+            manipHandler.SmoothingActive = false;
+            manipHandler.OneHandRotationModeFar = ManipulationHandler.RotateInOneHandType.RotateAboutObjectCenter;
+
+            Quaternion rotateTo = Quaternion.Euler(45, 45, 45);
+
+            TestHand hand = new TestHand(Handedness.Right);
+            const int numHandSteps = 1;
+
+            // Rotate the hand and test that the rotations are equal
+            yield return hand.Show(new Vector3(0.06f, -0.1f, 0.5f));
+            yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+            yield return null;
+
+            yield return hand.SetRotation(rotateTo, numHandSteps);
+            yield return null;
+
+            TestUtilities.AssertAboutEqual(rotateTo, testObject.transform.rotation, "Object moved after it was disabled");
+
+            // Rotate the hand back and test that the rotations still are equal
+            yield return hand.SetRotation(Quaternion.identity, numHandSteps);
+            yield return null;
+
+            TestUtilities.AssertAboutEqual(Quaternion.identity, testObject.transform.rotation, "Object moved after it was disabled");
+        }
     }
 }
 #endif
