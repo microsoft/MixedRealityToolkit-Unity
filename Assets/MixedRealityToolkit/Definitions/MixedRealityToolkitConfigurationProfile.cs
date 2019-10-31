@@ -325,6 +325,15 @@ namespace Microsoft.MixedReality.Toolkit
         [Tooltip("If true, MRTK will generate components that let you to view the state of running services. These objects will not be generated at runtime.")]
         private bool useServiceInspectors = false;
 
+        public bool RenderDepthBuffer
+        {
+            get { return renderDepthBuffer; }
+        }
+        [SerializeField]
+        [Tooltip("If true, MRTK will render the depth buffer as color. Only valid in editor.")]
+        private bool renderDepthBuffer = false;
+
+
         #endregion Mixed Reality Toolkit configurable properties
     }
 }

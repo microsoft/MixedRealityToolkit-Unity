@@ -54,6 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         // Editor settings
         private SerializedProperty useServiceInspectors;
+        private SerializedProperty renderDepthBuffer;
 
         private Func<bool>[] RenderProfileFuncs;
 
@@ -105,9 +106,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             // Additional registered components configuration
             registeredServiceProvidersProfile = serializedObject.FindProperty("registeredServiceProvidersProfile");
+            renderDepthBuffer = serializedObject.FindProperty("renderDepthBuffer");
 
             // Editor settings
             useServiceInspectors = serializedObject.FindProperty("useServiceInspectors");
+            renderDepthBuffer = serializedObject.FindProperty("renderDepthBuffer");
 
             SelectedProfileTab = SessionState.GetInt(SelectedTabPreferenceKey, SelectedProfileTab);
 
@@ -248,6 +251,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     },
                     () => {
                         EditorGUILayout.PropertyField(useServiceInspectors);
+
+                        using (var c = new EditorGUI.ChangeCheckScope())
+                        {
+                            EditorGUILayout.PropertyField(renderDepthBuffer);
+                            if (c.changed)
+                            {
+                                // TODO:
+                            }
+                        }
                         return false;
                     },
                 };

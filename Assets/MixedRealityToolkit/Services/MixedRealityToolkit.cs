@@ -14,6 +14,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Microsoft.MixedReality.Toolkit.SceneSystem;
 using Microsoft.MixedReality.Toolkit.CameraSystem;
+using Microsoft.MixedReality.Toolkit.Rendering;
 
 #if UNITY_EDITOR
 using Microsoft.MixedReality.Toolkit.Input.Editor;
@@ -304,6 +305,8 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 registeredMixedRealityServices.Clear();
             }
+
+            EnsureEditorSetup();
 #endif
 
             CoreServices.ResetCacheReferences();
@@ -423,6 +426,17 @@ namespace Microsoft.MixedReality.Toolkit
             InitializeAllServices();
 
             isInitializing = false;
+        }
+
+        private void EnsureEditorSetup()
+        {
+            if (Application.isPlaying)
+            {
+                if (ActiveProfile.RenderDepthBuffer)
+                {
+                    CameraCache.Main.gameObject.AddComponent<DepthBufferRenderer>();
+                }
+            }
         }
 
         private void EnsureMixedRealityRequirements()
