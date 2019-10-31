@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Boundary;
 using Microsoft.MixedReality.Toolkit.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Rendering;
 using Microsoft.MixedReality.Toolkit.SceneSystem;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -257,7 +258,24 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             EditorGUILayout.PropertyField(renderDepthBuffer);
                             if (c.changed)
                             {
-                                // TODO:
+                                if (renderDepthBuffer.boolValue)
+                                {
+                                    CameraCache.Main.gameObject.AddComponent<DepthBufferRenderer>();
+                                }
+                                else
+                                {
+                                    foreach (var dbr in FindObjectsOfType<DepthBufferRenderer>())
+                                    {
+                                        if (Application.isPlaying)
+                                        {
+                                            Destroy(dbr);
+                                        }
+                                        else
+                                        {
+                                            DestroyImmediate(dbr);
+                                        }
+                                    }
+                                }
                             }
                         }
                         return false;

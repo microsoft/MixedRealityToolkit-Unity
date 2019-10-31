@@ -430,12 +430,9 @@ namespace Microsoft.MixedReality.Toolkit
 
         private void EnsureEditorSetup()
         {
-            if (Application.isPlaying)
+            if (ActiveProfile.RenderDepthBuffer)
             {
-                if (ActiveProfile.RenderDepthBuffer)
-                {
-                    CameraCache.Main.gameObject.AddComponent<DepthBufferRenderer>();
-                }
+                CameraCache.Main.gameObject.EnsureComponent<DepthBufferRenderer>();
             }
         }
 
