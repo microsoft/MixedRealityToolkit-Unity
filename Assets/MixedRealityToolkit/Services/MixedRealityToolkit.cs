@@ -161,6 +161,28 @@ namespace Microsoft.MixedReality.Toolkit
             SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1),
             params object[] args) where T : IMixedRealityService
         {
+            return RegisterServiceInternal<T>(
+                true, // Retry with an added IMixedRealityService parameter
+                concreteType,
+                supportedPlatforms,
+                args);
+        }
+
+        /// <summary>
+        /// Internal method that creates an instance of the specified concrete type and registers the service.
+        /// </summary>
+        /// <typeparam name="T">The interface type of the service to be registered.</typeparam>
+        /// <param name="retryWithRegistrar"></param>
+        /// <param name="concreteType"></param>
+        /// <param name="supportedPlatforms"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        private bool RegisterServiceInternal<T>(
+            bool retryWithRegistrar,
+            Type concreteType,
+            SupportedPlatforms supportedPlatforms = (SupportedPlatforms)(-1),
+            params object[] args) where T : IMixedRealityService
+        {
             if (isApplicationQuitting)
             {
                 return false;
@@ -195,6 +217,23 @@ namespace Microsoft.MixedReality.Toolkit
             }
             catch (Exception e)
             {
+                if (retryWithRegistrar && (e is MissingMethodException))
+                {
+                    // Missing method exceptions are intentionally re-thrown so that registrar's can handle
+                    // multiple constructor overloads.
+                    Debug.LogWarning($"Failed to find an appropriate constructor for the {concreteType.Name} service. Adding the Registrar instance and re-attempting registration.");
+#pragma warning disable 0618
+                    List<object> updatedArgs = new List<object>();
+                    updatedArgs.Add(this);
+                    updatedArgs.AddRange(args);
+                    return RegisterServiceInternal<T>(
+                        false, // Do NOT retry, we have already added the configured IMIxedRealityServiceRegistrar
+                        concreteType,
+                        supportedPlatforms,
+                        updatedArgs.ToArray());
+#pragma warning restore 0618
+                }
+
                 Debug.LogError($"Failed to register the {concreteType.Name} service: {e.GetType()} - {e.Message}");
 
                 // Failures to create the concrete type generally surface as nested exceptions - just logging
@@ -412,7 +451,7 @@ namespace Microsoft.MixedReality.Toolkit
 
                     if (typeof(IMixedRealityExtensionService).IsAssignableFrom(configuration.ComponentType.Type))
                     {
-                        object[] args = { this, configuration.ComponentName, configuration.Priority, configuration.ConfigurationProfile };
+                        object[] args = { configuration.ComponentName, configuration.Priority, configuration.ConfigurationProfile };
                         RegisterService<IMixedRealityExtensionService>(configuration.ComponentType, configuration.RuntimePlatform, args);
                     }
                 }
