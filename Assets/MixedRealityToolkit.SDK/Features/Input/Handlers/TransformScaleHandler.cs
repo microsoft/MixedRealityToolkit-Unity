@@ -41,6 +41,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        /// <summary>
+        /// Accessor for the minimum scale along all three axes.
+        /// </summary>
         public Vector3 ScaleMinimumVector => minimumScale;
 
         [SerializeField]
@@ -59,6 +62,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        /// <summary>
+        /// Accessor for the maximum scale along all three axes.
+        /// </summary>
         public Vector3 ScaleMaximumVector => maximumScale;
 
         [SerializeField]
