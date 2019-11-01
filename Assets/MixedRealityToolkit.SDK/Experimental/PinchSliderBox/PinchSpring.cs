@@ -184,7 +184,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             }
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             UpdateTip();
             UpdateConnector();
