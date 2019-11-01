@@ -822,7 +822,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/GettingStartedWithTheMRTK.html",
-          "hash": "MgBQObMEUN12b+p+cF56SA=="
+          "hash": "yJW4YfY770bW0TiCFtnKug=="
         }
       },
       "is_incremental": false,
@@ -5532,6 +5532,17 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/getting_started/MRTK_GettingStarted_TMPro.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/getting_started/SwitchPlatform.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/getting_started/SwitchPlatform.png"
         }
       },
       "is_incremental": false,
@@ -23411,16 +23422,17 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 134,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1401,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
@@ -23430,11 +23442,10 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "TocDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
-          "total_file_count": 0,
+          "total_file_count": 1401,
           "skipped_file_count": 0
         }
       }

@@ -92,45 +92,45 @@
 <li><p><a href="https://unity3d.com/get-unity/download/archive">Unity 2018.4.x, 2019.1.x or 2019.2.x</a></p>
 <p>MRTK supports both IL2CPP and .NET scripting backends on Unity 2018</p>
 </li>
-<li><p><a href="#get-the-latest-mrtk-unity-packages">Get the latest MRTK release</a></p>
-</li>
 <li><p><a href="https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk">Windows SDK 18362+</a>.</p>
 <p>This is necessary if you are building a UWP app for WMR, HoloLens 1, or HoloLens 2. This is not necessary
 when building for OpenVR.</p>
 </li>
 </ul>
-<h2 id="getting-started-tutorials">Getting started tutorials</h2>
-<p>If you are new to MRTK, or MR development, we recommend you check out the <a href="https://docs.microsoft.com/en-us/windows/mixed-reality/mrlearning-base">Getting started tutorials</a> which uses MRTK v2. Check out <a href="https://docs.microsoft.com/en-us/windows/mixed-reality/mrtk-101">MRTK 101: How to use Mixed Reality Toolkit Unity for Basic Interactions (HoloLens 2, HoloLens, Windows Mixed Reality, Open VR)</a> to learn about core building blocks.</p>
 <h2 id="add-mrtk-to-your-unity-project">Add MRTK to your Unity Project</h2>
+<p><strong>Required</strong></p>
+<ol>
+<li><a href="#get-the-latest-mrtk-unity-packages">Get the latest MRTK Unity packages</a></li>
+<li><a href="#import-mrtk-packages-into-your-unity-project">Import MRTK packages into your Unity project</a></li>
+<li><a href="#switch-your-unity-project-to-the-target-platform">Switch your Unity project to the target platform</a></li>
+<li><a href="#add-mrtk-to-a-new-scene-or-new-project">Add MRTK to a new scene or new project</a></li>
+</ol>
+<p><strong>Optional</strong></p>
+<ul>
+<li><a href="#get-the-latest-mrtk-unity-packages">Getting started tutorials</a></li>
+<li><a href="#learn-about-the-core-building-blocks-of-mrtk">Learn about the core building blocks of MRTK</a></li>
+<li><a href="#run-the-handinteractionexamples-scene-in-the-unity-editor">Run the HandInteractionExamples scene in the Unity Editor</a></li>
+</ul>
 <h3 id="get-the-latest-mrtk-unity-packages">Get the latest MRTK Unity packages</h3>
 <ol>
 <li>Go to the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/releases" target="_blank">MRTK release page</a>.</li>
 <li>Under Assets, download
 <ul>
-<li><code>Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage</code></li>
-<li><code>Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage</code></li>
-<li><code>Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage</code></li>
-<li><code>Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage</code></li>
+<li><strong>Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage</strong></li>
+<li>(Optional) Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage</li>
+<li>(Optional) Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage</li>
+<li>(Optional) Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage</li>
 </ul>
 </li>
 </ol>
 <p>The Mixed Reality Toolkit is now available for download on NuGet.org, for details see <a href="MRTKNuGetPackage.html">MRTK NuGet Packages</a>.</p>
-<h3 id="switch-your-unity-project-to-the-target-platform">Switch your Unity project to the target platform</h3>
-<p>The next step <strong>Import MRTK packages into your Unity project</strong> will apply changes to your project specifically for the platform that is selected in the project at that moment you import them.</p>
-<p>You should make sure that you select the correct platform before following the next step.</p>
-<p>For instance, if you want to create a HoloLens application, switch to Universal Windows Platform:</p>
-<ul>
-<li>Open menu : File &gt; Build Settings</li>
-<li>Select <strong>Universal Windows Platform</strong> in the <strong>Platform</strong> list</li>
-<li>Click on the <strong>Switch Platform</strong> button</li>
-</ul>
 <h3 id="import-mrtk-packages-into-your-unity-project">Import MRTK packages into your Unity project</h3>
 <ol>
 <li>Create a new Unity project, or open an existing project. When creating a project, make sure to select &quot;3D&quot; as the template type.</li>
-<li>Import the <code>Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage</code> you downloaded by going into &quot;Asset -&gt; Import Package -&gt; Custom Package&quot;, selecting the .unitypackage file, ensure all items to import are checked, and then selecting &quot;Import&quot;.</li>
-<li>Import the <code>Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage</code> following the same steps as above. The examples package is optional and contains useful demonstration scenes for current MRTK features.</li>
-<li>Import the <code>Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage</code> following the same steps as for the foundation package. These tools package is optional and contains useful tools, such as the ExtensionServiceCreator, that enhance the MRTK developer experience.</li>
-<li>Import the <code>Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage</code> following the same steps as for the foundation package. The extensions package provides a set of useful optional components for the MRTK.</li>
+<li>Import the <strong>Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage</strong> you downloaded by going into &quot;Asset -&gt; Import Package -&gt; Custom Package&quot;, selecting the .unitypackage file, ensure all items to import are checked, and then selecting &quot;Import&quot;.</li>
+<li>(Optional) Import the <strong>Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage</strong> following the same steps as above. The examples package is optional and contains useful demonstration scenes for current MRTK features.</li>
+<li>(Optional) Import the <strong>Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage</strong> following the same steps as for the foundation package. These tools package is optional and contains useful tools, such as the ExtensionServiceCreator, that enhance the MRTK developer experience.</li>
+<li>(Optional) Import the <strong>Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage</strong> following the same steps as for the foundation package. The extensions package provides a set of useful optional components for the MRTK.</li>
 </ol>
 <p>After importing the Foundation package, you may see a setup prompt like the following:</p>
 <p><img src="Images/MRTK_UnitySetupPrompt.png" alt="UnitySetupPrompt"></p>
@@ -141,9 +141,68 @@ when building for OpenVR.</p>
 </ul>
 <p>Accepting these options is completely optional, but recommended.</p>
 <p>Some prefabs and assets require TextMesh Pro, meaning you have to have the TextMesh Pro package installed and the assets in your project (Window -&gt; TextMeshPro -&gt; Import TMP Essential Resources). <strong>After you import TMP Essentials Resources, you need to restart Unity to see changes</strong>.</p>
-<h3 id="open-and-run-the-handinteractionexamples-scene-in-editor">Open and run the HandInteractionExamples scene in editor</h3>
+<h3 id="switch-your-unity-project-to-the-target-platform">Switch your Unity project to the target platform</h3>
+<p>With the packages imported, the next step is to select the correct platform for the application.</p>
+<p>To create a <strong>HoloLens application</strong>, switch to Universal Windows Platform:</p>
+<ol>
+<li>Open menu : File &gt; Build Settings</li>
+<li>Select <strong>Universal Windows Platform</strong> in the <strong>Platform</strong> list</li>
+<li>Click on the <strong>Switch Platform</strong> button</li>
+</ol>
+<p><img src="Images/getting_started/SwitchPlatform.png" alt="Switch Platform"></p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The Mixed Reality Toolkit will prompt to apply recommended changes to the project when the platform is selected. Whenever the platform is switched, the appropriate settings will be checked and prompted, if necessary.</p>
+</div>
+<h3 id="add-mrtk-to-a-new-scene-or-new-project">Add MRTK to a new scene or new project</h3>
+<ol>
+<li><p>Create a new Unity project, or start a new scene in your current project.</p>
+</li>
+<li><p>Make sure you have imported the MRTK packages (we recommend both Foundation and Examples, though Examples is not required) following <a href="#import-mrtk-packages-into-your-unity-project">the steps above</a>.</p>
+</li>
+<li><p>From the menu bar, select Mixed Reality Toolkit -&gt; Add to Scene and Configure</p>
+</li>
+</ol>
+<p><img src="Images/MRTK_ConfigureScene.png" alt="Configure to scene"></p>
+<ol start="4">
+<li>You will see a prompt like this:</li>
+</ol>
+<p><img src="Images/MRTK_ConfigureDialog.png" alt="MRTK Configure Dialog"></p>
+<p>Click &quot;OK&quot;.</p>
+<ol start="5">
+<li>You will then be prompted to choose an MRTK Configuration profile. Double click &quot;DefaultMixedRealityToolkitConfigurationProfile&quot;.</li>
+</ol>
+<p><img src="Images/MRTK_SelectConfigurationDialog.png" alt="MRTK Select Configure Dialog"></p>
+<p>For more information on profiles, please see the <a href="Profiles/Profiles.html">profiles</a> article.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>If you are getting started on the HoloLens or HoloLens 2, you should choose the &quot;DefaultHoloLens1ConfigurationProfile&quot; or DefaultHoloLens2ConfigurationProfile&quot; instead.
+See the <a href="Profiles/Profiles.html#hololens-2-profile">profiles</a> for more information on the differences between DefaultMixedRealityToolkitConfigurationProfile and DefaultHoloLens2ConfigurationProfile.</p>
+</div>
+<p>You will then see the following in your Scene hierarchy:</p>
+<p><img src="Images/MRTK_SceneSetup.png" alt="MRTK Scene Setup"></p>
+<p>Which contains the following:</p>
+<ul>
+<li><strong>Mixed Reality Toolkit</strong> - The toolkit itself, providing the central configuration entry point for the entire framework.</li>
+<li><strong>MixedRealityPlayspace</strong> - The parent object for the headset, which ensures the headset / controllers and other required systems are managed correctly in the scene.</li>
+<li>The Main Camera is moved as a child to the Playspace - Which allows the playspace to manage the camera in conjunction with the SDKs</li>
+</ul>
+<div class="NOTE">
+<h5>Note</h5>
+<p>While working in your scene, <strong>DO NOT move the Main Camera</strong> (or the <strong>MixedRealityPlayspace</strong>) from the scene origin (0,0,0).  This is controlled by the MRTK and the active SDK. If you need to move the players start point, then <strong>move the scene content and NOT the camera</strong>!</p>
+</div>
+<ol start="6">
+<li>Hit play and test out hand simulation by pressing spacebar.</li>
+</ol>
+<p>You are now ready to build and deploy to device! Follow the steps instructions at <a href="BuildAndDeploy.html">Build and Deploy MRTK</a>.</p>
+<h3 id="getting-started-tutorials">Getting started tutorials</h3>
+<p>If you are new to MRTK, or MR development, we recommend you check out the <a href="https://docs.microsoft.com/en-us/windows/mixed-reality/mrlearning-base">Getting started tutorials</a> which uses MRTK v2.</p>
+<h3 id="learn-about-the-core-building-blocks-of-mrtk">Learn about the core building blocks of MRTK</h3>
+<p>Check out <a href="https://docs.microsoft.com/en-us/windows/mixed-reality/mrtk-101">MRTK 101: How to use Mixed Reality Toolkit Unity for Basic Interactions (HoloLens 2, HoloLens, Windows Mixed Reality, Open VR)</a> to learn about core building blocks.</p>
+<h3 id="run-the-handinteractionexamples-scene-in-the-unity-editor">Run the HandInteractionExamples scene in the Unity Editor</h3>
+<p>The <a href="README_HandInteractionExamples.html">hand interaction examples scene</a> article is a great place to learn more about the UX controls and interactions in MRTK.</p>
 <p><a href="README_HandInteractionExamples.html"><img src="Images/MRTK_Examples.png" alt="HandInteractionExample scene"></a></p>
-<p>The <a href="README_HandInteractionExamples.html">hand interaction examples scene</a> is a great place to get started because it shows a wide variety of UX controls and interactions in MRTK.</p>
+<p>To try the hand interaction scene, do the following steps.</p>
 <ol>
 <li><p>Open the <strong>HandInteractionExamples</strong> scene under <code>Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes\HandInteractionExamples</code></p>
 </li>
@@ -177,44 +236,6 @@ when building for OpenVR.</p>
 </ul>
 <p>Have fun exploring the scene! You can learn more about the UI controls <a href="README_HandInteractionExamples.html">in the hand interaction examples guide</a>. Also, read through <a href="InputSimulation/InputSimulationService.html">input simulation docs</a> to learn more about in-editor hand input simulation in MRTK.</p>
 <p>Congratulations, you just used your first MRTK scene. Now onto creating your own experiences...</p>
-<h3 id="add-mrtk-to-a-new-scene-or-new-project">Add MRTK to a new scene or new project</h3>
-<ol>
-<li><p>Create a new Unity project, or start a new scene in your current project.</p>
-</li>
-<li><p>Make sure you have imported the MRTK packages (we recommend both Foundation and Examples, though Examples is not required) following <a href="#import-mrtk-packages-into-your-unity-project">the steps above</a>.</p>
-</li>
-<li><p>From the menu bar, select Mixed Reality Toolkit -&gt; Add to Scene and Configure</p>
-</li>
-</ol>
-<p><img src="Images/MRTK_ConfigureScene.png" alt="Configure to scene"></p>
-<ol start="4">
-<li>You will see a prompt like this:</li>
-</ol>
-<p><img src="Images/MRTK_ConfigureDialog.png" alt="MRTK Configure Dialog"></p>
-<p>Click &quot;OK&quot;.</p>
-<ol start="5">
-<li>You will then be prompted to choose an MRTK Configuration profile. Double click &quot;DefaultMixedRealityToolkitConfigurationProfile&quot;.</li>
-</ol>
-<p><img src="Images/MRTK_SelectConfigurationDialog.png" alt="MRTK Select Configure Dialog"></p>
-<blockquote>
-<p><strong>NOTE</strong>: Note that if you are getting started on the HoloLens or HoloLens 2, you should choose the &quot;DefaultHoloLens1ConfigurationProfile&quot; or &quot;DefaultHoloLens2ConfigurationProfile&quot; instead.
-See the <a href="Profiles/Profiles.html#hololens-2-profile">profiles</a> for more information on the differences between
-DefaultMixedRealityToolkitConfigurationProfile and DefaultHoloLens2ConfigurationProfile.</p>
-</blockquote>
-<p>You will then see the following in your Scene hierarchy:</p>
-<p><img src="Images/MRTK_SceneSetup.png" alt="MRTK Scene Setup"></p>
-<p>Which contains the following:</p>
-<ul>
-<li><strong>Mixed Reality Toolkit</strong> - The toolkit itself, providing the central configuration entry point for the entire framework.</li>
-<li><strong>MixedRealityPlayspace</strong> - The parent object for the headset, which ensures the headset / controllers and other required systems are managed correctly in the scene.</li>
-<li>The Main Camera is moved as a child to the Playspace - Which allows the playspace to manage the camera in conjunction with the SDKs</li>
-</ul>
-<p><strong>Note</strong> While working in your scene, <strong>DO NOT move the Main Camera</strong> (or the playspace) from the scene origin (0,0,0).  This is controlled by the MRTK and the active SDK.
-If you need to move the players start point, then <strong>move the scene content and NOT the camera</strong>!</p>
-<ol start="6">
-<li>Hit play and test out hand simulation by pressing spacebar.</li>
-</ol>
-<p>You are now ready to build and deploy to device! Follow the steps instructions at <a href="BuildAndDeploy.html">Build and Deploy MRTK</a>.</p>
 <h2 id="next-steps">Next steps</h2>
 <p>Here are some suggested next steps:</p>
 <ul>
