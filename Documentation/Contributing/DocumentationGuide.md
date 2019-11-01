@@ -42,13 +42,19 @@ int SampleFunction(int i)
 
 When mentioning code within a sentence `use a single backtick`.
 
-### TODO comments
+### TODOs
 
-To mark areas in the documentation that need to be revisited later again, please use the following comment style, to make it easy to find those places again:
+Avoid using TODOS in docs, as over time these TODOs (like code TODOs) tend to accumulate
+and information about how they should be updated and why gets lost.
 
-\<\!-- TODO: add more details --\>
+If it is absolutely necessary to add a TODO, follow these steps:
 
-Also consider adding pages with TODOs to the [documentation TODO list](DocsToDo.md).
+1. File a new issue on Github describing the context behind the TODO, and provide enough
+   background that another contributor would be able to understand and then address the
+   TODO.
+2. Reference the issue URL in the todo in the docs.
+
+\<\!-- TODO(https://github.com/microsoft/MixedRealityToolkit-Unity/issues/ISSUE_NUMBER_HERE): A brief blurb on the issue --\>
 
 ### Highlighted sections
 
@@ -163,13 +169,10 @@ Also, don't forget to finish all sentences with a period.
 
 ## When you are finished with a page
 
-First off, it is ok for a 'finished' page to contain [TODO comments](#todo-comments). However, once you stop working on a page, please do the following:
-
 1. Make sure you followed the guidelines in this document.
 1. Browse the document structure and see if your new document could be mentioned under the [See also](#see-also) section of other pages.
 1. If available, have someone with knowledge of the topic proof-read the page for technical correctness.
 1. Have someone proof-read your page for style and formatting. This can be someone unfamiliar with the topic, which is also a good idea to get feedback about how understandable the documentation is.
-
 
 ## Source documentation
 API documentation will be generated automatically from the MRTK source files. To facilitate this, source files are required to contain the following: 
@@ -270,7 +273,6 @@ When a feature is added (or the usage is changed), overview documentation must b
 
 As part of this documentation, how-to sections, including illustrations, should be provided to assist customers new to a feature or concept in getting started.
 
-
 ## Design documentation
 
 Mixed Reality provides an opportunity to create entirely new worlds. Part of this is likely to involve the creation of custom assets for use with the MRTK. To make this as friction free as possible for customers, components should provide design documentation describing any formatting or other requirements for art assets.
@@ -294,7 +296,7 @@ For example:
 When using the spatial mapping component, the performance impact will increase with the level of detail requested. It is recommended to use the least detail possible for your experience.
 ```
 
-Performance notes are recommended for CPU and/or GPU heavy components and **may** be requested as part of a pull request review. Any applicable performance notes are to be included in API **and** overiew documentation. 
+Performance notes are recommended for CPU and/or GPU heavy components and **may** be requested as part of a pull request review. Any applicable performance notes are to be included in API **and** overview documentation. 
 
 
 ## Breaking changes
@@ -321,6 +323,15 @@ No known breaking changes
 The information contained within the feature level BreakingChanges.md files will be aggregated to the release notes for each new MRTK release.
 
 Any breaking changes that are part of a change **must** be documented as part of a Pull Request.
+
+## Tools for editing MarkDown
+[Visual Studio Code](https://code.visualstudio.com/) is a great tool for editing markdown files that are part of MRTK's documentation. 
+
+When writing documentation, installing the following two extensions is also highly recommended:
+
+- Docs Markdown Extension for Visual Studio Code - Use Alt+M to bring up a menu of docs authoring options.
+
+- Code Spell Checker - misspelled words will be underlined; right-click on a misspelled word to change it or save it to the dictionary.
 
 
 ## See also

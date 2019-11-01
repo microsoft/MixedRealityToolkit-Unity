@@ -23,8 +23,8 @@ The third category is the solver itself. The following solvers provide the build
 * [`SurfaceMagnetism`](#surfacemagnetism): casts rays to surfaces in the world, and align the object to that surface.
 * [`Momentum`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.Momentum): Applies acceleration/velocity/friction to simulate momentum and springiness for an object being moved by other solvers/components.
 * [`InBetween`](#inbetween): Keeps an object in between two tracked objects.
-* [`HandConstraint`](#handconstraint-and-handconstraintpalmup): Constrains object to follow hands in a region that doesn't intersect the GameObject with the hands. Useful for hand constrained interactive content such as menus, etc. This solver is intended to work with [IMixedRealityHand](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand) but also works with [IMixedRealityController](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityController).
-* [`HandConstraintPalmUp`](#handconstraint-and-handconstraintpalmup): Derives from HandConstraint but includes logic to test if the palm is facing the user before activation. This solver only works with [IMixedRealityHand](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand) controllers, with other controller types this solver will behave just like its base class.
+* [`HandConstraint`](#hand-menu-with-handconstraint-and-handconstraintpalmup): Constrains object to follow hands in a region that doesn't intersect the GameObject with the hands. Useful for hand constrained interactive content such as menus, etc. This solver is intended to work with [IMixedRealityHand](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand) but also works with [IMixedRealityController](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityController).
+* [`HandConstraintPalmUp`](#hand-menu-with-handconstraint-and-handconstraintpalmup): Derives from HandConstraint but includes logic to test if the palm is facing the user before activation. This solver only works with [IMixedRealityHand](xref:Microsoft.MixedReality.Toolkit.Input.IMixedRealityHand) controllers, with other controller types this solver will behave just like its base class.
 
 In order to use the Solver system, simply add one of the components listed above to a GameObject. Since all Solvers require a [`SolverHandler`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler), one will be created automatically by Unity.
 
@@ -35,16 +35,16 @@ In order to use the Solver system, simply add one of the components listed above
 
 The *Tracked Target Type* property of the [`SolverHandler`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler) component defines the point of reference all solvers will use to calculate their algorithms. For example, a value type of [`Head`](xref:Microsoft.MixedReality.Toolkit.Utilities.TrackedObjectType.Head) with a simple [`SurfaceMagnetism`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism) component will result in a raycast from the head and in the direction of the user's gaze for solving what surface is hit. Potential values for the `TrackedTargetType` property are:
 
-* *Head* : Point of reference from the camera
-* *MotionController*: Point of reference from a motion controller
+* *Head* : Point of reference is the transform of the main camera
+* *ControllerRay*: Point of reference is the [`LinePointer`](xref:Microsoft.MixedReality.Toolkit.Input.LinePointer) transform on a controller (i.e pointer origin on a motion controller or hand controller) pointing in the direction of the line ray
     * Use the `TrackedHandedness` property to select the handedness preference (i.e Left, Right, Both)
-* *HandJoint*: Point of reference from a hand
+* *HandJoint*: Point of reference is the transform of a specific hand joint
     * Use the `TrackedHandedness` property to select the handedness preference (i.e Left, Right, Both)
     * Use the  `TrackedHandJoint` property to determine the joint transform to utilize
 * *CustomOverride*: Point of reference from the assigned `TransformOverride`
 
 > [!NOTE]
-> For both *MotionController* and *HandJoint* types, the solver handler will attempt to provide the left controller/hand transform first and then the right if the former is not available or unless the `TrackedHandedness` property specifies otherwise.
+> For both *ControllerRay* and *HandJoint* types, the solver handler will attempt to provide the left controller/hand transform first and then the right if the former is not available or unless the `TrackedHandedness` property specifies otherwise.
 
 ![Solver](../Documentation/Images/Solver/TrackedObjectType-Example.gif)
 <br/>
@@ -156,7 +156,17 @@ To force the associated GameObject to stay vertical in any mode other than *None
 
 ![SurfaceMagnetism Example](../Documentation/Images/Solver/SurfaceMagExample.png)
 
-### HandConstraint and HandConstraintPalmUp
+#### Determining what surfaces can be hit
+
+When adding a [`SurfaceMagnetism`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism) component to a GameObject, it is important to consider the layer of the GameObject and it's children, if any have colliders. The component works by performing various types of raycasts to determine what surface to "magnet" itself against. If the solver GameObject has a collider on one of the layers listed in the `MagneticSurfaces` property of `SurfaceMagnetism`, then the raycast will likely hit itself resulting in the GameObject attaching to it's own collider point. This odd behavior can be avoided by setting the main GameObject and all children to the *Ignore Raycast* layer or modifying the `MagneticSurfaces` LayerMask array appropriately.
+
+Conversely, a [`SurfaceMagnetism`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism) GameObject will not collide with surfaces on a layer not listed in the `MagneticSurfaces` property. It is generally recommended to place all desired surfaces on a dedicated layer (i.e *Surfaces*) and setting the `MagneticSurfaces` property to just this layer.  Using *default* or *everything* may result in UI components or cursors contributing to the solver.
+
+Finally, surfaces farther than the `MaxRaycastDistance` property setting will be ignored by the `SurfaceMagnetism` raycasts.
+
+### Hand Menu with HandConstraint and HandConstraintPalmUp
+
+![Hand Menu UX Example](../Documentation/Images/Solver/MRTK_UX_HandMenu.png)
 
 The [`HandConstraint`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) behavior provides a solver that constrains the tracked object to a region safe for hand constrained content (such as hand UI, menus, etc). Safe regions are considered areas that don't intersect with the hand. A derived class of [`HandConstraint`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) called [`HandConstraintPalmUp`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp) is also included to demonstrate a common behavior of activating the solver tracked object when the palm is facing the user. For example use of this behavior please see the HandBasedMenuExample scene under: [MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes)
 
@@ -170,16 +180,37 @@ Please see the tool tips available for each [`HandConstraint`](xref:Microsoft.Mi
 
 * **Activation Events**: Currently the [`HandConstraint`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) triggers four activation events. These events can be used in many different combinations to create unique [`HandConstraint`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint) behaviors, please see the HandBasedMenuExample scene under: [MixedRealityToolkit.Examples/Demos/HandTracking/Scenes/](https://github.com/microsoft/MixedRealityToolkit-Unity/tree/mrtk_release/Assets/MixedRealityToolkit.Examples/Demos/HandTracking/Scenes) for examples of these behaviors.
 
+    * *OnHandActivate*: triggers when a hand satisfies the IsHandActive method
+    * *OnHandDeactivate*: triggers when the IsHandActive method is no longer satisfied.
+    * *OnFirstHandDetected*: occurs when the hand tracking state changes from no hands in view, to the first hand in view.
+    * *OnLastHandLost*: occurs when the hand tracking state changes from at least one hand in view, to no hands in view.
 
-    * OnHandActivate: triggers when a hand satisfies the IsHandActive method
-    * OnHandDeactivate: triggers when the IsHandActive method is no longer satisfied. 
-    * OnFirstHandDetected: occurs when the hand tracking state changes from no hands in view, to the first hand in view. 
-    * OnLastHandLost: occurs when the hand tracking state changes from at least one hand in view, to no hands in view.
+## Experimental Solvers
 
-#### Determining what surfaces can be hit
+These solvers are available in MRTK but are currently experimental. Their APIs and functionality are subject to change. Furthermore, their robustness and quality may be lower than standard features.
 
-When adding a [`SurfaceMagnetism`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism) component to a GameObject, it is important to consider the layer of the GameObject and it's children, if any have colliders. The component works by performing various types of raycasts to determine what surface to "magnet" itself against. If the Solver GameObject has a collider on one of the layers listed in the `MagneticSurfaces` property of `SurfaceMagnetism`, then the raycast will likely hit itself resulting in the GameObject attaching to it's own collider point. This odd behavior can be avoided by setting the main GameObject and all children to the *Ignore Raycast* layer or modifying the `MagneticSurfaces` LayerMask array appropriately.
+### Directional Indicator
 
-Conversely, a [`SurfaceMagnetism`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.SurfaceMagnetism) GameObject will not collide with surfaces on a layer not listed in the `MagneticSurfaces` property. It is generally recommended to place all desired surfaces on a dedicated layer (i.e *Surfaces*) and setting the `MagneticSurfaces` property to just this layer.  Using *default* or *everything* may result in UI components or cursors contributing to the solver.
+The [`DirectionalIndicator`](xref:Microsoft.MixedReality.Toolkit.Experimental.Utilities.DirectionalIndicator) class is a tag-along component that orients itself to the direction of a desired point in space.
 
-Finally, surfaces farther than the `MaxRaycastDistance` property setting will be ignored by the Surface Magnetism raycasts.
+Most commonly used when the *Tracked Target Type* of the [`SolverHandler`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler) is set to [`Head`](xref:Microsoft.MixedReality.Toolkit.Utilities.TrackedObjectType.Head). In this fashion, a UX component with the [`DirectionalIndicator`](xref:Microsoft.MixedReality.Toolkit.Experimental.Utilities.DirectionalIndicator)  solver will direct a user to look at the desired point in space.
+
+The desired point in space is determined via the *Directional Target* property. 
+
+If the directional target is viewable by the user, or whatever frame of reference is set in the [`SolverHandler`](xref:Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler), then this solver will disable all [`Renderer`](https://docs.unity3d.com/ScriptReference/Renderer.html) components underneath it. If not viewable, then everything will be enabled on the indicator.
+
+* *Visibility Scale Factor* - Multiplier to increase or decrease the FOV that determines if the *Directional Target* point is viewable or not
+* *View Offset* - From the viewpoint of the frame of reference (i.e camera possibly), this property defines how far in the indicator direction should the object be from the center of the viewport. 
+
+![Directional Indicator properties](../Documentation/Images/Solver/DirectionalIndicatorExample.png)
+<br/>
+*Directional Indicator properties*
+
+![Directional Indicator properties](../Documentation/Images/Solver/DirectionalIndicatorExampleScene.gif)
+
+*[Directional Indicator Example Scene](https://github.com/microsoft/MixedRealityToolkit-Unity/blob/mrtk_development/Assets/MixedRealityToolkit.Examples/Experimental/Solvers/DirectionalIndicatorExample.unity)*
+
+## See also
+
+* [Hand Tracking](Input/HandTracking.md)
+* [Gaze](Input/Gaze.md)

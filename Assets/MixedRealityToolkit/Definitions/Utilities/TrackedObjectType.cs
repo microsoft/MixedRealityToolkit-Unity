@@ -34,9 +34,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         HandJointRight = 4,
 
         /// <summary>
-        /// Calculates position and orientation from the motion-tracked controller.
+        /// Calculates position and orientation from the system-calculated ray of available controller (i.e motion controllers, hands, etc.)
         /// </summary>
-        MotionController = 5,
+        ControllerRay = 5,
         /// <summary>
         /// Calculates position and orientation from a tracked hand joint
         /// </summary>

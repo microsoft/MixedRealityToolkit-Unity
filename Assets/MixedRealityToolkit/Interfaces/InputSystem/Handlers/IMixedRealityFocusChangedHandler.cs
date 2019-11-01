@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// IMixedRealityFocusChangedHandler::OnFocusChanged
     ///
     /// Because these two interfaces are different, consumers must be wary about having nested
-    /// heirarchies where some game objects will implement both interfaces, and more deeply nested
+    /// hierarchies where some game objects will implement both interfaces, and more deeply nested
     /// object within the same parent-child chain that implement a single one of these - such
     /// a presence can lead to scenarios where one interface is invoked on the child object, and then
     /// the other interface is invoked on the parent object (thus, the parent would "miss" getting
@@ -30,13 +30,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Focus event that is raised before the focus is actually changed.
         /// </summary>
         /// <remarks>Useful for logic that needs to take place before focus changes.</remarks>
-        /// <param name="eventData"></param>
         void OnBeforeFocusChange(FocusEventData eventData);
 
         /// <summary>
         /// Focus event that is raised when the focused object is changed.
         /// </summary>
-        /// <param name="eventData"></param>
         void OnFocusChanged(FocusEventData eventData);
     }
 }

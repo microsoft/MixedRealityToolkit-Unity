@@ -32,8 +32,8 @@ namespace Microsoft.MixedReality.Toolkit.Physics
         /// <summary>
         /// The stabilized rotation.
         /// </summary>
-        private Quaternion stableRotation;
         public override Quaternion StableRotation => stableRotation;
+        private Quaternion stableRotation;
 
         /// <summary>
         /// The stabilized position.

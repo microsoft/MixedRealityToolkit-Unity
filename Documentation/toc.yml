@@ -3,24 +3,22 @@
   items:
   - name: Upgrading from HTK
     href: HTKToMRTKPortingGuide.md
-  - name: Updating from RC2 to GA
-    href: UpdatingToGA.md
+  - name: Updating from earlier versions
+    href: Updating.md
+  - name: Release Notes
+    href: ReleaseNotes.md
+  - name: Building and Deploying MRTK
+    href: BuildAndDeploy.md
   - name: Performance
     href: Performance/PerfGettingStarted.md
   - name: Hologram Stabilization
     href: Hologram-Stabilization.md
-  - name: Known Issues
-    href: KnownIssues.md
 - name: Architecture
   items:
   - name: Overview
     href: Architecture/Overview.md
   - name: Framework and Runtime
     href: Architecture/FrameworkAndRuntime.md
-  - name: Cross-platform
-    items:
-    - name: Platform Capabilities
-      href: Architecture/CrossPlatform/DeterminingPlatformCapabilities.md
   - name: Input System
     items:
     - name: Terminology
@@ -29,6 +27,8 @@
       href: Architecture/InputSystem/CoreSystem.md
     - name: Controllers, Pointers, and Focus
       href: Architecture/InputSystem/ControllersPointersAndFocus.md
+  - name: Systems, Extension Services and Data Providers
+    href: Architecture/SystemsExtensionsProviders.md
 - name: Feature Overviews
   items:
   - name: Profiles
@@ -49,6 +49,8 @@
       href: Input/Controllers.md
     - name: Pointers
       href: Input/Pointers.md
+    - name: How to Add Near Interaction
+      href: Input/HowToAddNearInteractivity.md
     - name: Gestures
       href: Input/Gestures.md
     - name: Speech(Voice command)
@@ -56,9 +58,13 @@
     - name: Dictation
       href: Input/Dictation.md
     - name: Hands
-      href: InputSystem/HandTracking.md
+      href: Input/HandTracking.md
+    - name: Gaze
+      href: Input/Gaze.md
     - name: Eyes
       href: EyeTracking/EyeTracking_Main.md
+    - name: Creating an input data provider
+      href: Input/CreateDataProvider.md
   - name: In-Editor Input Simulation
     href: InputSimulation/InputSimulationService.md
   - name: UX Building Blocks
@@ -79,8 +85,6 @@
       href: README_AppBar.md
     - name: Object Collection
       href: README_ObjectCollection.md
-    - name: Pointers
-      href: README_Pointers.md
     - name: Slate
       href: README_Slate.md
     - name: System Keyboard
@@ -93,18 +97,22 @@
       href: README_HandInteractionExamples.md
     - name: Eye Tracking Interaction Example
       href: EyeTracking/EyeTracking_ExamplesOverview.md
+  - name: Detecting Platform Capabilities
+    href: DetectingPlatformCapabilities.md
   - name: MRTK Standard Shader
     href: README_MRTKStandardShader.md
   - name: Spatial Awareness
     items:
-    - name: Spatial Awareness Overview
+    - name: Getting Started
       href: SpatialAwareness/SpatialAwarenessGettingStarted.md
-    - name: Configuring the Spatial Awareness Mesh Observer
+    - name: Configuring Observers for Device
       href: SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.md
-    - name: Spatial Object Mesh Observer
+    - name: Configuring Observers for Editor
       href: SpatialAwareness/SpatialObjectMeshObserver.md
-    - name: Usage Guide
+    - name: Controlling Observers via Code
       href: SpatialAwareness/UsageGuide.md
+    - name: Creating a custom Observer
+      href: SpatialAwareness/CreateDataProvider.md
   - name: Multi Scene System
     items:
     - name: Multi Scene System Overview
@@ -117,12 +125,18 @@
       href: SceneSystem/SceneSystemLoadProgress.md
     - name: Lighting Scene Operations
       href: SceneSystem/SceneSystemLightingScenes.md
+  - name: Teleport System
+    href: TeleportSystem/Overview.md
   - name: Boundary System
     items:
     - name: Boundary System Overview
       href: Boundary/BoundarySystemGettingStarted.md
     - name: Configuring the Boundary Visualization
       href: Boundary/ConfiguringBoundaryVisualization.md
+  - name: Rendering
+    items:
+    - name: Material Instance Overview
+      href: Rendering/MaterialInstance.md
   - name: Diagnostics System
     items:
     - name: Diagnostics System Overview
@@ -137,6 +151,8 @@
       href: MixedRealityServices.md
     - name: What are the MixedRealityServiceRegistry and IMixedRealityServiceRegistrar
       href: ServiceUtilities/MixedRealityServiceRegistryAndIMixedRealityServiceRegistrar.md
+    - name: Extension services
+      href: Extensions/ExtensionServices.md
   - name: Packages
     items:
     - name: MRTK Packages
@@ -145,8 +161,6 @@
       href: Packaging/MRTK_Modularization.md
   - name: Tools
     items:
-    - name: Build Window
-      href: Tools/BuildWindow.md
     - name: Dependency Window
       href: Tools/DependencyWindow.md
     - name: Optimize Window
@@ -158,35 +172,35 @@
         href: InputSimulation/InputAnimationFileFormat.md
     - name: Extension Service Creation Wizard
       href: Tools/ExtensionServiceCreationWizard.md
+    - name: Runtime tools
+      items:
+      - name: Controller Mapping tool
+        href: Tools/ControllerMappingTool.md 
   - name: Scene Transition Service
     href: Extensions/SceneTransitionService/SceneTransitionServiceOverview.md
-  - name: Experimental Features
-    href: ExperimentalFeatures.md
-  - name: Advanced topics
-    items:
-    - name: Shared Experiences
-      href: TODO.md
 - name: Contributing
   items:
   - name: Contributing Overview
     href: Contributing/CONTRIBUTING.md
-  - name: Feature Contribution Process
-    href: Contributing/Feature_Contribution_Process.md
   - name: Coding Guidelines
     href: Contributing/CodingGuidelines.md
-  - name: Documentation guide
-    href: Contributing/DocumentationGuide.md
-  - name: Developer portal generation with DocFX
-    href: Contributing/DevDocGuide.md
-  - name: Testing
+  - name: Writing and Running Tests
     href: Contributing/UnitTests.md
+  - name: Writing Documentation
+    href: Contributing/DocumentationGuide.md
+  - name: Pull Requests
+    href: Contributing/PullRequests.md
+  - name: Experimental Features
+    href: Contributing/ExperimentalFeatures.md
   - name: Breaking Changes
     href: Contributing/BreakingChanges.md
+  - name: How to use DocFX
+    href: Contributing/DevDocGuide.md
 - name: Planning
   items:
   - name: Roadmap
     href: Contributing/Roadmap.md
 - name: Notice
-  href: Legal/NOTICE.md
+  href: ../NOTICE.md
 - name: Authors
   href: Authors.md

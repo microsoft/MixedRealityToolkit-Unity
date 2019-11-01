@@ -54,18 +54,6 @@ namespace Microsoft.MixedReality.Toolkit
                 }
                 else
                 {
-                    if (CameraCache.Main.transform.parent.name != Name)
-                    {
-                        // Since the scene is set up with a different camera parent, its likely
-                        // that there's an expectation that that parent is going to be used for
-                        // something else. We print a warning to call out the fact that we're
-                        // co-opting this object for use with teleporting and such, since that
-                        // might cause conflicts with the parent's intended purpose.
-                        Debug.LogWarning($"The Mixed Reality Toolkit expected the camera\'s parent to be named {Name}. The existing parent will be renamed and used instead.");
-                        // If we rename it, we make it clearer that why it's being teleported around at runtime.
-                        CameraCache.Main.transform.parent.name = Name;
-                    }
-
                     mixedRealityPlayspace = CameraCache.Main.transform.parent;
                 }
 

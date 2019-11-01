@@ -10,6 +10,11 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Rendering;
 
+#if WINDOWS_UWP
+using Windows.Storage;
+using Windows.Storage.Streams;
+#endif // WINDOWS_UWP
+
 namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
 {
     public static class ConstructGltf
@@ -36,7 +41,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
         /// <summary>
         /// Constructs the glTF Object.
         /// </summary>
-        /// <param name="gltfObject"></param>
         /// <returns>The new <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> of the final constructed <see cref="Schema.GltfScene"/></returns>
         public static async void Construct(this GltfObject gltfObject)
         {
@@ -46,7 +50,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
         /// <summary>
         /// Constructs the glTF Object.
         /// </summary>
-        /// <param name="gltfObject"></param>
         /// <returns>The new <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> of the final constructed <see cref="Schema.GltfScene"/></returns>
         public static async Task<GameObject> ConstructAsync(this GltfObject gltfObject)
         {
@@ -139,14 +142,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Gltf.Serialization
                         {
                             try
                             {
-                                var storageFile = await Windows.Storage.StorageFile.GetFileFromPathAsync(path);
+                                var storageFile = await StorageFile.GetFileFromPathAsync(path);
 
                                 if (storageFile != null)
                                 {
 
-                                    var buffer = await Windows.Storage.FileIO.ReadBufferAsync(storageFile);
+                                    var buffer = await FileIO.ReadBufferAsync(storageFile);
 
-                                    using (Windows.Storage.Streams.DataReader dataReader = Windows.Storage.Streams.DataReader.FromBuffer(buffer))
+                                    using (DataReader dataReader = DataReader.FromBuffer(buffer))
                                     {
                                         imageData = new byte[buffer.Length];
                                         dataReader.ReadBytes(imageData);

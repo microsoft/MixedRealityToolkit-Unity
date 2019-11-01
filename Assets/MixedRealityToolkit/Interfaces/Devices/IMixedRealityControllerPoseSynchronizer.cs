@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         Handedness Handedness { get; }
 
         /// <summary>
-        /// Should this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> clean itself up when it's controller is lost?
+        /// Should this <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> clean itself up when its controller is lost?
         /// </summary>
         /// <remarks>It's up to the implementation to properly destroy the <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see>'s this interface will implement.</remarks>
         bool DestroyOnSourceLost { get; set; }

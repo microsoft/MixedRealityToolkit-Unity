@@ -90,6 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             }
         }
 
+        /// <inheritdoc />
         public override void SolverUpdate()
         {
             Vector3 desiredPos = SolverHandler.TransformTarget != null ? SolverHandler.TransformTarget.position : Vector3.zero;

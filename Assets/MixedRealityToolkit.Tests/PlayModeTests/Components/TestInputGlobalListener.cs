@@ -34,16 +34,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             {
                 base.OnEnable();
             }
-            else if (InputSystem != null)
+            else if (CoreServices.InputSystem != null)
             {
                 if (registerSpeechOnly)
                 {
-                    InputSystem.RegisterHandler<IMixedRealitySpeechHandler>(this);
+                    CoreServices.InputSystem.RegisterHandler<IMixedRealitySpeechHandler>(this);
                 }
                 else
                 {
-                    InputSystem.RegisterHandler<IMixedRealitySpeechHandler>(this);
-                    InputSystem.RegisterHandler<IMixedRealityPointerHandler>(this);
+                    CoreServices.InputSystem.RegisterHandler<IMixedRealitySpeechHandler>(this);
+                    CoreServices.InputSystem.RegisterHandler<IMixedRealityPointerHandler>(this);
                 }
             }
         }
@@ -62,16 +62,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             {
                 base.OnDisable();
             }
-            else if(InputSystem != null)
+            else if(CoreServices.InputSystem != null)
             {
                 if (registerSpeechOnly)
                 {
-                    InputSystem.UnregisterHandler<IMixedRealitySpeechHandler>(this);
+                    CoreServices.InputSystem.UnregisterHandler<IMixedRealitySpeechHandler>(this);
                 }
                 else
                 {
-                    InputSystem.UnregisterHandler<IMixedRealitySpeechHandler>(this);
-                    InputSystem.UnregisterHandler<IMixedRealityPointerHandler>(this);
+                    CoreServices.InputSystem.UnregisterHandler<IMixedRealitySpeechHandler>(this);
+                    CoreServices.InputSystem.UnregisterHandler<IMixedRealityPointerHandler>(this);
                 }
             }
         }
@@ -153,16 +153,16 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         protected override void RegisterHandlers()
         {
-            InputSystem?.RegisterHandler<IMixedRealityHandJointHandler>(this);
-            InputSystem?.RegisterHandler<IMixedRealitySpeechHandler>(this);
-            InputSystem?.RegisterHandler<IMixedRealityInputHandler<float>>(this);
+            CoreServices.InputSystem?.RegisterHandler<IMixedRealityHandJointHandler>(this);
+            CoreServices.InputSystem?.RegisterHandler<IMixedRealitySpeechHandler>(this);
+            CoreServices.InputSystem?.RegisterHandler<IMixedRealityInputHandler<float>>(this);
         }
 
         protected override void UnregisterHandlers()
         {
-            InputSystem?.UnregisterHandler<IMixedRealityHandJointHandler>(this);
-            InputSystem?.UnregisterHandler<IMixedRealitySpeechHandler>(this);
-            InputSystem?.UnregisterHandler<IMixedRealityInputHandler<float>>(this);
+            CoreServices.InputSystem?.UnregisterHandler<IMixedRealityHandJointHandler>(this);
+            CoreServices.InputSystem?.UnregisterHandler<IMixedRealitySpeechHandler>(this);
+            CoreServices.InputSystem?.UnregisterHandler<IMixedRealityInputHandler<float>>(this);
         }
     }
 #pragma warning restore 0618

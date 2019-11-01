@@ -1,13 +1,14 @@
 # CI build for developer builds.
 
 variables:
-  UnityVersion: Unity2018.3.7f1
-  MRTKVersion: 2.0.0
+  Unity2018Version: Unity2018.3.7f1
+  Unity2019Version: Unity2019.2.0f1
+  MRTKVersion: 2.2.0
   packagingEnabled: false
 
 jobs:
 - job: CIDeveloperValidation
-  timeoutInMinutes: 90
+  timeoutInMinutes: 120
   pool:
     name: On-Prem Unity
     demands:

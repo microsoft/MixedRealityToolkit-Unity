@@ -28,22 +28,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         new[] { Handedness.Left, Handedness.Right })]
     public class WindowsMixedRealityArticulatedHand : BaseWindowsMixedRealitySource, IMixedRealityHand
     {
-    /// <summary>
+        /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="trackingState"></param>
-        /// <param name="controllerHandedness"></param>
-        /// <param name="inputSource"></param>
-        /// <param name="interactions"></param>
         public WindowsMixedRealityArticulatedHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions)
         {
-#if WINDOWS_UWP
-            UnityEngine.WSA.Application.InvokeOnUIThread(() =>
-            {
-                spatialInteractionManager = SpatialInteractionManager.GetForCurrentView();
-            }, true);
-#endif // WINDOWS_UWP
         }
 
         /// <summary>
@@ -107,6 +97,22 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         private readonly HandRay handRay = new HandRay();
 
 #if WINDOWS_UWP
+        private SpatialInteractionManager SpatialInteractionManager
+        {
+            get
+            {
+                if (spatialInteractionManager == null)
+                {
+                    UnityEngine.WSA.Application.InvokeOnUIThread(() =>
+                    {
+                        spatialInteractionManager = SpatialInteractionManager.GetForCurrentView();
+                    }, true);
+                }
+
+                return spatialInteractionManager;
+            }
+        }
+
         private SpatialInteractionManager spatialInteractionManager = null;
         private HandMeshObserver handMeshObserver = null;
         private int[] handMeshTriangleIndices = null;
@@ -206,14 +212,14 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
 
             PerceptionTimestamp perceptionTimestamp = PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now);
-            IReadOnlyList<SpatialInteractionSourceState> sources = spatialInteractionManager?.GetDetectedSourcesAtTimestamp(perceptionTimestamp);
+            IReadOnlyList<SpatialInteractionSourceState> sources = SpatialInteractionManager?.GetDetectedSourcesAtTimestamp(perceptionTimestamp);
             foreach (SpatialInteractionSourceState sourceState in sources)
             {
                 if (sourceState.Source.Id.Equals(interactionSourceState.source.id))
                 {
                     HandPose handPose = sourceState.TryGetHandPose();
 
-                    if (InputSystem.InputSystemProfile.HandTrackingProfile.EnableHandMeshVisualization)
+                    if (CoreServices.InputSystem.InputSystemProfile.HandTrackingProfile.EnableHandMeshVisualization)
                     {
                         // Accessing the hand mesh data involves copying quite a bit of data, so only do it if application requests it.
                         if (handMeshObserver == null && !hasRequestedHandMeshObserver)
@@ -279,7 +285,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                                     rotation = WindowsMixedRealityUtilities.SystemQuaternionToUnity(rotation)
                                 };
 
-                                InputSystem?.RaiseHandMeshUpdated(InputSource, ControllerHandedness, handMeshInfo);
+                                CoreServices.InputSystem?.RaiseHandMeshUpdated(InputSource, ControllerHandedness, handMeshInfo);
                             }
                         }
                     }
@@ -290,7 +296,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                         {
                             // notify that hand mesh has been updated (cleared)
                             HandMeshInfo handMeshInfo = new HandMeshInfo();
-                            InputSystem?.RaiseHandMeshUpdated(InputSource, ControllerHandedness, handMeshInfo);
+                            CoreServices.InputSystem?.RaiseHandMeshUpdated(InputSource, ControllerHandedness, handMeshInfo);
                             hasRequestedHandMeshObserver = false;
                             handMeshObserver = null;
                         }
@@ -324,7 +330,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                                 unityJointPoses[handJoint] = new MixedRealityPose(unityJointPositions[i], unityJointOrientations[i]);
                             }
                         }
-                        InputSystem?.RaiseHandJointsUpdated(InputSource, ControllerHandedness, unityJointPoses);
+                        CoreServices.InputSystem?.RaiseHandJointsUpdated(InputSource, ControllerHandedness, unityJointPoses);
                     }
                 }
             }
@@ -343,7 +349,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             if (interactionMapping.Changed)
             {
                 // Raise input system Event if it enabled
-                InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentIndexPose);
+                CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentIndexPose);
             }
 #endif // WINDOWS_UWP
         }

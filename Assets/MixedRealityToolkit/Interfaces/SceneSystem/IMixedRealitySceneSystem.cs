@@ -122,7 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         float SceneOperationProgress { get; }
 
         /// <summary>
-        /// True if the scene system is transitioning from one lighting scene to anthother.
+        /// True if the scene system is transitioning from one lighting scene to another.
         /// Lighting operations will not impede other operations.
         /// </summary>
         bool LightingOperationInProgress { get; }
@@ -184,7 +184,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// If a scene is not loaded, it will be ignored.
         /// If a scene operation is in progress, no action will be taken.
         /// </summary>
-        /// <param name="scenesToLoad"></param>
         /// <returns>Task</returns>
         Task UnloadContent(IEnumerable<string> scenesToUnload);
 
@@ -206,7 +205,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// If the scene is not loaded, no action will be taken.
         /// If a scene operation is in progress, no action will be taken.
         /// </summary>
-        /// <param name="sceneToUnload"></param>
         /// <returns>Task</returns>
         Task UnloadContent(string sceneToUnload);
 
@@ -266,7 +264,6 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <summary>
         /// Returns true if a content scene is fully loaded.
         /// </summary>
-        /// <param name="sceneName"></param>
         bool IsContentLoaded(string sceneName);
 
         /// <summary>
@@ -287,16 +284,12 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// Returns a set of scenes by name.
         /// Useful for processing events.
         /// </summary>
-        /// <param name="sceneNames"></param>
-        /// <returns></returns>
         IEnumerable<Scene> GetScenes(IEnumerable<string> sceneNames);
 
         /// <summary>
         /// Returns a scene by name.
         /// Useful for processing events.
         /// </summary>
-        /// <param name="sceneName"></param>
-        /// <returns></returns>
         Scene GetScene(string sceneName);
 
         #endregion

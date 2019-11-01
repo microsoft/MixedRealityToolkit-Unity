@@ -71,14 +71,18 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
 
         public override void OnInspectorGUI()
         {
-            RenderProfileHeader(ProfileTitle, ProfileDescription, target, true, BackProfileType.SpatialAwareness);
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, target, true, BackProfileType.SpatialAwareness))
+            {
+                return;
+            }
 
             using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
             {
                 serializedObject.Update();
 
                 EditorGUILayout.PropertyField(spatialMeshObject);
-                MeshFilter[] filters = (spatialMeshObject.objectReferenceValue as GameObject)?.GetComponentsInChildren<MeshFilter>();
+                GameObject parent = spatialMeshObject.objectReferenceValue as GameObject;
+                MeshFilter[] filters = (parent != null) ? parent.GetComponentsInChildren<MeshFilter>() : null;
                 if ((filters == null) ||
                     (filters.Length == 0))
                 {

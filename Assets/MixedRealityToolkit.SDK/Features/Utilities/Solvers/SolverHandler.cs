@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Input;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -169,6 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         protected readonly List<Solver> solvers = new List<Solver>();
+        private bool updateSolversList = false;
 
         /// <summary>
         /// List of solvers that this handler will manage and update
@@ -227,7 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                     RefreshTrackedObject();
                 }
 
-                return trackingTarget?.transform;
+                return (trackingTarget != null) ? trackingTarget.transform : null;
             }
         }
 
@@ -253,25 +255,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         private float lastUpdateTime;
 
-        private IMixedRealityHandJointService HandJointService => handJointService ?? (handJointService = (InputSystem as IMixedRealityDataProviderAccess)?.GetDataProvider<IMixedRealityHandJointService>());
+        private IMixedRealityHandJointService HandJointService => handJointService ?? (handJointService = (CoreServices.InputSystem as IMixedRealityDataProviderAccess)?.GetDataProvider<IMixedRealityHandJointService>());
         private IMixedRealityHandJointService handJointService = null;
-
-        private IMixedRealityInputSystem inputSystem = null;
-
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        protected IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
-                return inputSystem;
-            }
-        }
 
         #region MonoBehaviour Implementation
 
@@ -297,8 +282,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         private void Start()
         {
-            solvers.AddRange(GetComponents<Solver>());
-
             RefreshTrackedObject();
         }
 
@@ -310,6 +293,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         private void LateUpdate()
         {
+            if (updateSolversList)
+            {
+                IEnumerable<Solver> inspectorOrderedSolvers = GetComponents<Solver>().Intersect(solvers);
+                Solvers = inspectorOrderedSolvers.Union(Solvers).ToReadOnlyCollection();
+
+                updateSolversList = false;
+            }
+
             if (UpdateSolvers)
             {
                 //Before calling solvers, update goal to be the transform so that working and transform will match
@@ -345,6 +336,26 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             AttachToNewTrackedObject();
         }
 
+        /// <summary>
+        /// Adds <paramref name="solver"/> to the list of <see cref="Solvers"/> guaranteeing inspector ordering.
+        /// </summary>
+        public void RegisterSolver(Solver solver)
+        {
+            if (!solvers.Contains(solver))
+            {
+                solvers.Add(solver);
+                updateSolversList = true;
+            }
+        }
+
+        /// <summary>
+        /// Removes <paramref name="solver"/> from the list of <see cref="Solvers"/>.
+        /// </summary>
+        public void UnregisterSolver(Solver solver)
+        {
+            solvers.Remove(solver);
+        }
+
         protected virtual void DetachFromCurrentTrackedObject()
         {
             if (trackingTarget != null)
@@ -363,16 +374,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             {
                 target = CameraCache.Main.transform;
             }
-            else if (TrackedTargetType == TrackedObjectType.MotionController)
+            else if (TrackedTargetType == TrackedObjectType.ControllerRay)
             {
                 if (this.TrackedHandness == Handedness.Both)
                 {
                     this.currentTrackedHandedness = Handedness.Left;
-                    target = GetMotionController(Handedness.Left);
+                    target = GetControllerRay(Handedness.Left);
                     if (target == null)
                     {
                         this.currentTrackedHandedness = Handedness.Right;
-                        target = GetMotionController(Handedness.Right);
+                        target = GetControllerRay(Handedness.Right);
                         if (target == null)
                         {
                             this.currentTrackedHandedness = Handedness.None;
@@ -382,7 +393,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 else
                 {
                     this.currentTrackedHandedness = this.TrackedHandness;
-                    target = GetMotionController(this.TrackedHandness);
+                    target = GetControllerRay(this.TrackedHandness);
                 }
             }
             else if (TrackedTargetType == TrackedObjectType.HandJoint)
@@ -430,27 +441,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             trackingTarget.transform.localRotation = Quaternion.Euler(AdditionalRotation);
         }
 
-        private Transform GetMotionController(Handedness handedness)
+        private Transform GetControllerRay(Handedness handedness)
         {
-            if (InputSystem == null) return null;
-
-            foreach (IMixedRealityController controller in InputSystem.DetectedControllers)
-            {
-                var hand = controller as IMixedRealityHand;
-                if (hand == null && controller.ControllerHandedness == handedness)
-                {
-                    if (controller.Visualizer == null ||
-                        controller.Visualizer.GameObjectProxy == null || 
-                        controller.Visualizer.GameObjectProxy.transform == null)
-                    {
-                        return null;
-                    }
-
-                    return controller.Visualizer.GameObjectProxy.transform;
-                }
-            }
-
-            return null;
+            var pointer = PointerUtils.GetPointer<LinePointer>(handedness);
+            return pointer?.transform;
         }
 
         /// <summary>
@@ -483,7 +477,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         public static bool IsValidTrackedObjectType(TrackedObjectType type)
         {
-            return type == TrackedObjectType.Head || type >= TrackedObjectType.MotionController;
+            return type == TrackedObjectType.Head || type >= TrackedObjectType.ControllerRay;
         }
 
     }

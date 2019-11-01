@@ -144,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// Directory levels to search for MRTK folders below the root directory.
         /// </summary>
         /// <remarks>
-        /// E.g. with level 3 and folders ROOT/A/B/C/D would seach A and B and C, but not D.
+        /// E.g. with level 3 and folders ROOT/A/B/C/D would search A and B and C, but not D.
         /// </remarks>
         public const int DirectorySearchDepth = 3;
 
@@ -239,7 +239,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Maps an absolute path to be relative to the Project Root path (the Unity folder that contains Assets)
         /// </summary>
-        /// <param name="absolutePath">The absolute path to the project/</param>
+        /// <param name="absolutePath">The absolute path to the project.</param>
         /// <returns>The project relative path.</returns>
         /// <remarks>This doesn't produce paths that contain step out '..' relative paths.</remarks>
         public static string GetAssetDatabasePath(string absolutePath) => FormatSeparatorsForUnity(absolutePath).Replace(Application.dataPath, "Assets");
@@ -363,6 +363,29 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             return null;
         }
 
+        /// <summary>
+        /// Finds the module type, if found, from the specified package folder name.
+        /// </summary>
+        /// <param name="packageFolder">The asset folder name (ex: MixedRealityToolkit.Providers)</param>
+        /// <returns>
+        /// <see cref="MixedRealityToolkitModuleType"/> associated with the package folder name. Returns
+        /// MixedRealityToolkitModuleType.None if an appropriate module type could not be found.
+        /// </returns>
+        public static MixedRealityToolkitModuleType GetModuleFromPackageFolder(string packageFolder)
+        {
+            if (!packageFolder.StartsWith("MixedRealityToolkit"))
+            {
+                // There are no mappings for folders that do not start with "MixedRealityToolkit"
+                return MixedRealityToolkitModuleType.None;
+            }
+
+            int separatorIndex = packageFolder.IndexOf('.');
+            packageFolder = (separatorIndex != -1) ? packageFolder.Substring(separatorIndex+1) : "Core";
+
+            MixedRealityToolkitModuleType moduleType;
+            return moduleNameMap.TryGetValue(packageFolder, out moduleType) ? moduleType: MixedRealityToolkitModuleType.None;
+        }
+
         private static readonly Dictionary<string, MixedRealityToolkitModuleType> moduleNameMap = new Dictionary<string, MixedRealityToolkitModuleType>()
         {
             { "Core", MixedRealityToolkitModuleType.Core },
@@ -440,7 +463,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// This function is only exposed for testing purposes, and can change/be removed at any time.
         /// </summary>
         /// <remarks>
-        /// Syncronously refreshes the MRTK folder database.
+        /// Synchronously refreshes the MRTK folder database.
         /// </remarks>
         public static void RefreshFolders()
         {

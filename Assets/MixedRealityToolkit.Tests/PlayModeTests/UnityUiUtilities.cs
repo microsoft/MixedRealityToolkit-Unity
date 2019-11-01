@@ -13,7 +13,7 @@ using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
-    // Utilties for testing Unity UI elements
+    // Utilities for testing Unity UI elements
     public static class UnityUiUtilities
     {
         private static GameObject CreateUiObject()

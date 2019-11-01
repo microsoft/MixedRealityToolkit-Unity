@@ -14,9 +14,11 @@ Inputs are produced by [**Input Data Providers(Device Manager)**](InputProviders
 
 [**Controllers**](Controllers.md) are created by *input providers* when input devices are detected and destroyed when they're lost or disconnected. The WMR input provider, for example, will create *WMR controllers* for 6 DOF devices and *WMR articulated hand controllers* for articulated hands. Controller inputs can be mapped to input actions via the **Controller Mapping Profile**, inside the *Input System Profile*. Inputs events raised by controllers will include the associated input action, if any.
 
-Controllers can have [**Pointers**](Pointers.md) attached to them that query the scene to determine the game object with focus and raise [**Pointer Events**](Pointers.md#events) on it. As an example, our *line pointer* performs a raycast against the scene using the controller pose to compute the origin and direction of the ray. The pointers created for each controller are set up in the **Pointer Profile**, under the *Input System Profile*.
+Controllers can have [**Pointers**](Pointers.md) attached to them that query the scene to determine the game object with focus and raise [**Pointer Events**](Pointers.md#pointer-event-interfaces) on it. As an example, our *line pointer* performs a raycast against the scene using the controller pose to compute the origin and direction of the ray. The pointers created for each controller are set up in the **Pointer Profile**, under the *Input System Profile*.
 
 <img src="../../Documentation/Images/Input/MRTK_Input_EventFlow.png" width="200px" style="display:block;margin-left:auto;margin-right:auto;">
-<sup>Event flow.</sup> 
+<sup>Event flow.</sup>
 
-While you can handle input events directly in UI components it is recommended to use pointer events to keep the implementation device-independent.
+While you can handle [input events directly in UI components](InputEvents.md) it is recommended to use [pointer events](pointers.md#pointer-event-interfaces) to keep the implementation device-independent.
+
+MRTK also provides several convenience methods to query input state directly in a device-independent way. See [Accessing Input State in MRTK](InputState.md) for more details.

@@ -222,6 +222,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             currentLifetime = 0;
         }
 
+        protected virtual void Start()
+        {
+            if (SolverHandler != null)
+            {
+                SolverHandler.RegisterSolver(this);
+            }
+        }
+        protected virtual void OnDestroy()
+        {
+            if (SolverHandler != null)
+            {
+                SolverHandler.UnregisterSolver(this);
+            }
+        }
+
         #endregion MonoBehaviour Implementation
 
         /// <summary>
@@ -252,8 +267,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <remarks>
         /// SnapTo may be used to bypass smoothing to a certain position if the object is teleported or spawned.
         /// </remarks>
-        /// <param name="position"></param>
-        /// <param name="rotation"></param>
         public virtual void SnapTo(Vector3 position, Quaternion rotation, Vector3 scale)
         {
             SnapGoalTo(position, rotation, scale);
@@ -266,8 +279,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <summary>
         /// SnapGoalTo only sets the goal orientation.  Not really useful.
         /// </summary>
-        /// <param name="position"></param>
-        /// <param name="rotation"></param>
         public virtual void SnapGoalTo(Vector3 position, Quaternion rotation, Vector3 scale)
         {
             GoalPosition = position;
@@ -281,8 +292,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <remarks>
         /// SnapTo may be used to bypass smoothing to a certain position if the object is teleported or spawned.
         /// </remarks>
-        /// <param name="position"></param>
-        /// <param name="rotation"></param>
         [Obsolete("Use SnapTo(Vector3, Quaternion, Vector3) instead.")]
         public virtual void SnapTo(Vector3 position, Quaternion rotation)
         {
@@ -295,8 +304,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <summary>
         /// SnapGoalTo only sets the goal orientation.  Not really useful.
         /// </summary>
-        /// <param name="position"></param>
-        /// <param name="rotation"></param>
         [Obsolete("Use SnapGoalTo(Vector3, Quaternion, Vector3) instead.")]
         public virtual void SnapGoalTo(Vector3 position, Quaternion rotation)
         {
@@ -307,7 +314,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <summary>
         /// Add an offset position to the target goal position.
         /// </summary>
-        /// <param name="offset"></param>
         public virtual void AddOffset(Vector3 offset)
         {
             GoalPosition += offset;
@@ -319,11 +325,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <remarks>
         /// Handles lerpTime of 0.
         /// </remarks>
-        /// <param name="source"></param>
-        /// <param name="goal"></param>
-        /// <param name="deltaTime"></param>
-        /// <param name="lerpTime"></param>
-        /// <returns></returns>
         public static Vector3 SmoothTo(Vector3 source, Vector3 goal, float deltaTime, float lerpTime)
         {
             return Vector3.Lerp(source, goal, lerpTime.Equals(0.0f) ? 1f : deltaTime / lerpTime);
@@ -332,11 +333,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// <summary>
         /// Slerps Quaternion source to goal, handles lerpTime of 0
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="goal"></param>
-        /// <param name="deltaTime"></param>
-        /// <param name="lerpTime"></param>
-        /// <returns></returns>
         public static Quaternion SmoothTo(Quaternion source, Quaternion goal, float deltaTime, float lerpTime)
         {
             return Quaternion.Slerp(source, goal, lerpTime.Equals(0.0f) ? 1f : deltaTime / lerpTime);

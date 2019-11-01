@@ -14,7 +14,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Constructor creates a default EventData object.
         /// Requires initialization.
         /// </summary>
-        /// <param name="eventSystem"></param>
         public HandTrackingInputEventData(EventSystem eventSystem) : base(eventSystem) { }
 
         public IMixedRealityController Controller { get; set; }

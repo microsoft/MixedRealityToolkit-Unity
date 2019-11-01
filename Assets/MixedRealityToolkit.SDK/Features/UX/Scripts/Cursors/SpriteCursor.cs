@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (CursorStateData == null)
             {
-                CursorStateData = new SpriteCursorDatum[0];
+                CursorStateData = Array.Empty<SpriteCursorDatum>();
             }
 
             if (TargetRenderer == null)
@@ -50,7 +50,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Override OnCursorState change to set the correct sprite
         /// state for the cursor
         /// </summary>
-        /// <param name="state"></param>
         public override void OnCursorStateChange(CursorStateEnum state)
         {
             base.OnCursorStateChange(state);
@@ -70,7 +69,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Based on the type of state info pass it through to the sprite renderer
         /// </summary>
-        /// <param name="stateDatum"></param>
         private void SetCursorState(SpriteCursorDatum stateDatum)
         {
             // Return if we do not have an animator

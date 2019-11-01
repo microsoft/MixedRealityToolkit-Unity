@@ -1,8 +1,9 @@
 # Build for PR validation.
 
 variables:
-  UnityVersion: Unity2018.3.7f1
-  MRTKVersion: 2.0.0
+  Unity2018Version: Unity2018.3.7f1
+  Unity2019Version: Unity2019.2.0f1
+  MRTKVersion: 2.2.0
 
 jobs:
 - job: PRValidation

@@ -10,6 +10,7 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
+using Microsoft.MixedReality.Toolkit.Experimental.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
@@ -51,9 +52,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         }
 
         /// <summary>
-        /// Test adding solver dynamically at runtime to gameobject
+        /// Test adding solver dynamically at runtime to GameObject
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestRuntimeInstantiation()
         {
@@ -65,7 +65,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test solver system's ability to change target types at runtime
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestTargetTypes()
         {
@@ -106,7 +105,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Tests solver handler's ability to switch hands
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestHandModality()
         {
@@ -115,7 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             // Set solver handler to track hands
             testObjects.handler.TrackedTargetType = TrackedObjectType.HandJoint;
 
-            // Set and save revelant positions
+            // Set and save relevant positions
             Vector3 rightHandPos = Vector3.right * 20.0f;
             Vector3 leftHandPos = Vector3.right * -20.0f;
 
@@ -143,7 +141,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test Surface Magnetism against "wall" and that attached object falls head direction
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestSurfaceMagnetism()
         {
@@ -162,7 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return WaitForFrames(2);
 
-            // Instantiate our test gameobject with solver. 
+            // Instantiate our test GameObject with solver. 
             // Set layer to ignore raycast so solver doesn't raycast itself (i.e BoxCollider)
             var testObjects = InstantiateTestSolver<SurfaceMagnetism>();
             testObjects.target.layer = LayerMask.NameToLayer("Ignore Raycast");
@@ -209,7 +206,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test solver system's ability to change target types at runtime
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestInBetween()
         {
@@ -220,7 +216,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var rightPost = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             rightPost.transform.position = Vector3.forward * 10.0f + Vector3.right * 10.0f;
 
-            // Instantiate our test gameobject with solver. 
+            // Instantiate our test GameObject with solver. 
             var testObjects = InstantiateTestSolver<InBetween>();
 
             testObjects.handler.TrackedTargetType = TrackedObjectType.CustomOverride;
@@ -248,11 +244,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test the HandConstraint to make sure it tracks hands correctly.
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestHandConstraint()
         {
-            // Instantiate our test gameobject with solver.
+            // Instantiate our test GameObject with solver.
             var testObjects = InstantiateTestSolver<HandConstraint>();
             testObjects.handler.TrackedTargetType = TrackedObjectType.HandJoint;
             testObjects.handler.TrackedHandness = Handedness.Both;
@@ -292,11 +287,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         /// <summary>
         /// Test the Overlap solver and make sure it tracks the left simulated hand exactly
         /// </summary>
-        /// <returns></returns>
         [UnityTest]
         public IEnumerator TestOverlap()
         {
-            // Instantiate our test gameobject with solver.
+            // Instantiate our test GameObject with solver.
             var testObjects = InstantiateTestSolver<Overlap>();
             testObjects.handler.TrackedTargetType = TrackedObjectType.HandJoint;
             var targetTransform = testObjects.target.transform;
@@ -326,6 +320,107 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.IsTrue(Quaternion.Angle(targetTransform.rotation, pose.Rotation) < 2.0f);
         }
 
+        /// <summary>
+        /// Test solver system's ability to add multiple solvers at runtime and switch between them.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestSolverSwap()
+        {
+            // Reset view to origin
+            MixedRealityPlayspace.PerformTransformation(p =>
+            {
+                p.position = Vector3.zero;
+                p.LookAt(Vector3.forward);
+            });
+
+            // Instantiate and setup RadialView to place object in the view center.
+            var testObjects = InstantiateTestSolver<RadialView>();
+            RadialView radialViewSolver = (RadialView)testObjects.solver;
+            radialViewSolver.MinDistance = 2.0f;
+            radialViewSolver.MaxDistance = 2.0f;
+            radialViewSolver.MinViewDegrees = 0.0f;
+            radialViewSolver.MaxViewDegrees = 0.0f;
+
+            // Let RadialView update the target object
+            yield return WaitForFrames(2);
+
+            // Make sure Radial View is placing object in center of View, so we can later check that a solver swap actually moved the target object.
+            TestUtilities.AssertAboutEqual(testObjects.target.transform.position, Vector3.forward * 2.0f, "RadialView does not place object in center of view");
+
+            // Disable the old solver
+            radialViewSolver.enabled = false;
+
+            // Add a another solver during runtime, give him a specific location to check whether the new solver updates the target object.
+            Orbital orbitalSolver = AddSolverComponent<Orbital>(testObjects.target);
+            orbitalSolver.WorldOffset = Vector3.zero;
+            orbitalSolver.LocalOffset = Vector3.down * 2.0f;
+
+            // Let Orbital update the target object
+            yield return WaitForFrames(2);
+
+            // Make sure Orbital is now updating the target object
+            TestUtilities.AssertAboutEqual(testObjects.target.transform.position, Vector3.down * 2.0f, "Orbital solver did not place object below origin");
+
+            // Swap solvers once again during runtime
+            radialViewSolver.enabled = true;
+            orbitalSolver.enabled = false;
+
+            // Let RadialView update the target object
+            yield return WaitForFrames(2);
+
+            // Make sure Radial View is now updating the target object once again.
+            TestUtilities.AssertAboutEqual(testObjects.target.transform.position, Vector3.forward * 2.0f, "RadialView solver did not place object in center of view");
+        }
+
+
+        #region Experimental
+
+        /// <summary>
+        /// Test solver system's ability to add multiple solvers at runtime and switch between them.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestDirectionalIndicator()
+        {
+            // Reset view to origin
+            MixedRealityPlayspace.PerformTransformation(p =>
+            {
+                p.position = Vector3.zero;
+                p.LookAt(Vector3.forward);
+            });
+
+            const float ANGLE_THRESHOLD = 30.0f;
+
+            var directionTarget = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            directionTarget.transform.position = 10.0f * Vector3.right; 
+
+            // Instantiate our test gameobject with solver.
+            var testObjects = InstantiateTestSolver<DirectionalIndicator>();
+
+            var indicatorSolver = testObjects.solver as DirectionalIndicator;
+            indicatorSolver.DirectionalTarget = directionTarget.transform;
+
+            var indicatorMesh = indicatorSolver.GetComponent<Renderer>();
+
+            // Test that solver points to the right and is visible
+            yield return WaitForFrames(2);
+            Assert.LessOrEqual(Vector3.Angle(indicatorSolver.transform.up, directionTarget.transform.position.normalized), ANGLE_THRESHOLD);
+            Assert.IsTrue(indicatorMesh.enabled);
+
+            directionTarget.transform.position = -10.0f * Vector3.right;
+
+            // Test that solver points to the left now and is visible
+            yield return WaitForFrames(2);
+            Assert.LessOrEqual(Vector3.Angle(indicatorSolver.transform.up, directionTarget.transform.position.normalized), ANGLE_THRESHOLD);
+            Assert.IsTrue(indicatorMesh.enabled);
+
+            // Test that the solver is invisible
+            directionTarget.transform.position = 5.0f * Vector3.forward;
+
+            yield return WaitForFrames(2);
+            Assert.IsFalse(indicatorMesh.enabled);
+        }
+
+        #endregion
 
         #region Test Helpers
 
@@ -347,15 +442,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private SetupData InstantiateTestSolver<T>() where T: Solver
         {
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.name = typeof(T).Name;
             cube.transform.localScale = new Vector3(0.1f, 0.2f, 0.1f);
 
-            Solver solver = cube.AddComponent<T>();
-            Assert.IsNotNull(solver, "AddComponent<T>() returned null");
-
-            // Set Solver lerp times to 0 so we can process tests faster instead of waiting for transforms to update/apply
-            solver.MoveLerpTime = 0.0f;
-            solver.RotateLerpTime = 0.0f;
-            solver.ScaleLerpTime = 0.0f;
+            Solver solver = AddSolverComponent<T>(cube);
 
             SolverHandler handler = cube.GetComponent<SolverHandler>();
             Assert.IsNotNull(handler, "GetComponent<SolverHandler>() returned null");
@@ -370,6 +460,19 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             setupDataList.Add(setupData);
 
             return setupData;
+        }
+
+        private T AddSolverComponent<T>(GameObject target) where T : Solver
+        {
+            T solver = target.AddComponent<T>();
+            Assert.IsNotNull(solver, "AddComponent<T>() returned null");
+
+            // Set Solver lerp times to 0 so we can process tests faster instead of waiting for transforms to update/apply
+            solver.MoveLerpTime = 0.0f;
+            solver.RotateLerpTime = 0.0f;
+            solver.ScaleLerpTime = 0.0f;
+
+            return solver;
         }
 
         private IEnumerator WaitForFrames(int frames)

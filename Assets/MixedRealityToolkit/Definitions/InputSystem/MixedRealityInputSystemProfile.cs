@@ -20,8 +20,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class MixedRealityInputSystemProfile : BaseMixedRealityProfile
     {
         [SerializeField]
-        private MixedRealityInputDataProviderConfiguration[] dataProviderConfigurations = new MixedRealityInputDataProviderConfiguration[0];
+        private MixedRealityInputDataProviderConfiguration[] dataProviderConfigurations = System.Array.Empty<MixedRealityInputDataProviderConfiguration>();
 
+        /// <summary>
+        /// List of input data provider configurations to initialize and manage by the Input System registrar
+        /// </summary>
         public MixedRealityInputDataProviderConfiguration[] DataProviderConfigurations
         {
             get { return dataProviderConfigurations; }
@@ -76,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public bool FocusIndividualCompoundCollider
         {
             get { return focusIndividualCompoundCollider; }
-            internal set { focusIndividualCompoundCollider = value; }
+            set { focusIndividualCompoundCollider = value; }
         }
 
         [SerializeField]

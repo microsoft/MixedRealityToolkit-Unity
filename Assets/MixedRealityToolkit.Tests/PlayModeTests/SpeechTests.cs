@@ -10,7 +10,6 @@
 // issue will likely persist for 2018, this issue is worked around by wrapping all
 // play mode tests in this check.
 
-using Microsoft.MixedReality.Toolkit.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using NUnit.Framework;
@@ -40,26 +39,22 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator TestToggleProfilerCommand()
         {
             // Confirm that the diagnostics system is enabled.
-            IMixedRealityDiagnosticsSystem diagnosticsSystem = null;
-            MixedRealityServiceRegistry.TryGetService<IMixedRealityDiagnosticsSystem>(out diagnosticsSystem);
-            Assert.IsNotNull(diagnosticsSystem, "The diagnostics system is not enabled in the scene.");
+            Assert.IsNotNull(CoreServices.DiagnosticsSystem, "The diagnostics system is not enabled in the scene.");
             yield return null;
 
             // This test uses the input system to simulate speech commands.
-            IMixedRealityInputSystem inputSystem = null;
-            MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-            Assert.IsNotNull(inputSystem, "The input system is not enabled in the scene.");
+            Assert.IsNotNull(CoreServices.InputSystem, "The input system is not enabled in the scene.");
             yield return null;
 
             // Verify that the VisualProfiler is enabled.
-            Assert.IsTrue(diagnosticsSystem.ShowProfiler, "The VisualProfiler is not active.");
+            Assert.IsTrue(CoreServices.DiagnosticsSystem.ShowProfiler, "The VisualProfiler is not active.");
             yield return null;
 
             int frameDelay = 10;
 
             // Toggle the profiler visualization off.
-            var gazeInputSource = inputSystem.DetectedInputSources.Where(x => x.SourceName.Equals("Gaze")).First();
-            inputSystem.RaiseSpeechCommandRecognized(
+            var gazeInputSource = CoreServices.InputSystem.DetectedInputSources.Where(x => x.SourceName.Equals("Gaze")).First();
+            CoreServices.InputSystem.RaiseSpeechCommandRecognized(
                 gazeInputSource, 
                 RecognitionConfidenceLevel.High, 
                 new TimeSpan(), 
@@ -69,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             for (int i = 0; i < frameDelay; i++) { yield return null; }
 
             // Verify that the VisualProfiler is disabled.
-            Assert.IsFalse(diagnosticsSystem.ShowProfiler, "The VisualProfiler is active (should be inactive).");
+            Assert.IsFalse(CoreServices.DiagnosticsSystem.ShowProfiler, "The VisualProfiler is active (should be inactive).");
             yield return null;
         }
     }

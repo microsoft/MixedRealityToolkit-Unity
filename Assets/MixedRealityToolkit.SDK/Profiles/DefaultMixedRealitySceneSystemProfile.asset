@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b81dae1d46879b444aa9847f7961649f, type: 3}
   m_Name: DefaultMixedRealitySceneSystemProfile
   m_EditorClassIdentifier: 
-  isCustomProfile: 1
+  isCustomProfile: 0
   useManagerScene: 1
   managerScene:
     Name: DefaultManagerScene
     Path: Assets/MixedRealityToolkit.SDK/StandardAssets/Scenes/DefaultManagerScene.unity
-    Included: 1
-    BuildIndex: 0
+    Included: 0
+    BuildIndex: -1
     Tag: Untagged
     Asset: {fileID: 102900000, guid: ae7bb08d297fb69408695d8de0962524, type: 3}
   useLightingScene: 1
