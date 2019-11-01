@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
                 for (int i = 0; i < profile.ObserverConfigurations.Length; i++)
                 {
                     MixedRealitySpatialObserverConfiguration configuration = profile.ObserverConfigurations[i];
-                    object[] args = { Registrar, this, configuration.ComponentName, configuration.Priority, configuration.ObserverProfile };
+                    object[] args = { this, configuration.ComponentName, configuration.Priority, configuration.ObserverProfile };
 
                     RegisterDataProvider<IMixedRealitySpatialAwarenessObserver>(
                         configuration.ComponentType.Type,

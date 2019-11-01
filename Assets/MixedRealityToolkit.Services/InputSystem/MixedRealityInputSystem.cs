@@ -253,7 +253,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 for (int i = 0; i < profile.DataProviderConfigurations.Length; i++)
                 {
                     MixedRealityInputDataProviderConfiguration configuration = profile.DataProviderConfigurations[i];
-                    object[] args = { Registrar, this, configuration.ComponentName, configuration.Priority, configuration.DeviceManagerProfile };
+                    object[] args = { this, configuration.ComponentName, configuration.Priority, configuration.DeviceManagerProfile };
 
                     RegisterDataProvider<IMixedRealityInputDeviceManager>(
                         configuration.ComponentType.Type,

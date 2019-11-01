@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
                         continue; 
                     }
 
-                    object[] args = { Registrar, this, configuration.ComponentName, configuration.Priority, configuration.SettingsProfile };
+                    object[] args = { this, configuration.ComponentName, configuration.Priority, configuration.SettingsProfile };
 
                     if (RegisterDataProvider<IMixedRealityCameraSettingsProvider>(
                         configuration.ComponentType.Type,
