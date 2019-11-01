@@ -16,6 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools.Runtime.Editor
         private SerializedProperty inputType;
         private SerializedProperty axisNumber;
         private SerializedProperty buttonNumber;
+        private SerializedProperty displayType;
 
         private void OnEnable()
         {
@@ -23,6 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools.Runtime.Editor
             inputType = serializedObject.FindProperty("inputType");
             axisNumber = serializedObject.FindProperty("axisNumber");
             buttonNumber = serializedObject.FindProperty("buttonNumber");
+            displayType = serializedObject.FindProperty("displayType");
         }
 
         public override void OnInspectorGUI()
@@ -30,22 +32,31 @@ namespace Microsoft.MixedReality.Toolkit.Tools.Runtime.Editor
             serializedObject.Update();
 
             EditorGUILayout.PropertyField(displayTextMesh);
-            EditorGUILayout.PropertyField(inputType);
+            EditorGUILayout.PropertyField(displayType);
 
-            switch ((AxisType)inputType.intValue)
+            if (displayType.intValue == 0)
             {
-                case AxisType.Digital:
-                    EditorGUILayout.PropertyField(buttonNumber);
-                    break;
-                case AxisType.SingleAxis:
-                    EditorGUILayout.PropertyField(axisNumber);
-                    break;
-                case AxisType.None:
-                    EditorGUILayout.HelpBox("Will display all active buttons and axes.", MessageType.Info);
-                    break;
-                default:
-                    EditorGUILayout.HelpBox("This axis type isn't currently supported with this script.", MessageType.Warning);
-                    break;
+                EditorGUILayout.PropertyField(inputType);
+
+                switch ((AxisType)inputType.intValue)
+                {
+                    case AxisType.Digital:
+                        EditorGUILayout.PropertyField(buttonNumber);
+                        break;
+                    case AxisType.SingleAxis:
+                        EditorGUILayout.PropertyField(axisNumber);
+                        break;
+                    case AxisType.None:
+                        EditorGUILayout.HelpBox("Will display all active buttons and axes.", MessageType.Info);
+                        break;
+                    default:
+                        EditorGUILayout.HelpBox("This axis type isn't currently supported with this script.", MessageType.Warning);
+                        break;
+                }
+            }
+            else
+            {
+                EditorGUILayout.HelpBox("Will display all detected joystick / controller names.", MessageType.Info);
             }
 
             serializedObject.ApplyModifiedProperties();

@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit
         private static bool isApplicationQuitting = false;
         private static bool internalShutdown = false;
 
-#region Mixed Reality Toolkit Profile configuration
+        #region Mixed Reality Toolkit Profile configuration
 
         /// <summary>
         /// Checks if there is a valid instance of the MixedRealityToolkit, then checks if there is there a valid Active Profile.
@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 return activeInstance == this;
             }
-        } 
+        }
 
         private bool HasProfileAndIsInitialized => activeProfile != null && IsInitialized;
 
@@ -122,9 +122,9 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
-#endregion Mixed Reality Toolkit Profile configuration
+        #endregion Mixed Reality Toolkit Profile configuration
 
-#region Mixed Reality runtime service registry
+        #region Mixed Reality runtime service registry
 
         private static readonly Dictionary<Type, IMixedRealityService> activeSystems = new Dictionary<Type, IMixedRealityService>();
 
@@ -145,9 +145,9 @@ namespace Microsoft.MixedReality.Toolkit
         [Obsolete("Use GetDataProvider<T> of MixedRealityService registering the desired IMixedRealityDataProvider")]
         public IReadOnlyList<Tuple<Type, IMixedRealityService>> RegisteredMixedRealityServices => new List<Tuple<Type, IMixedRealityService>>(registeredMixedRealityServices) as IReadOnlyList<Tuple<Type, IMixedRealityService>>;
 
-#endregion Mixed Reality runtime service registry
+        #endregion Mixed Reality runtime service registry
 
-#region IMixedRealityServiceRegistrar implementation
+        #region IMixedRealityServiceRegistrar implementation
 
         /// <inheritdoc />
         public bool RegisterService<T>(T serviceInstance) where T : IMixedRealityService
@@ -277,7 +277,7 @@ namespace Microsoft.MixedReality.Toolkit
             return GetAllServicesByNameInternal<T>(typeof(T), name);
         }
 
-#endregion IMixedRealityServiceRegistrar implementation
+        #endregion IMixedRealityServiceRegistrar implementation
 
         /// <summary>
         /// Once all services are registered and properties updated, the Mixed Reality Toolkit will initialize all active services.
@@ -309,7 +309,7 @@ namespace Microsoft.MixedReality.Toolkit
             CoreServices.ResetCacheReferences();
             EnsureMixedRealityRequirements();
 
-#region Services Registration
+            #region Services Registration
 
             // If the Input system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsInputSystemEnabled)
@@ -413,15 +413,12 @@ namespace Microsoft.MixedReality.Toolkit
                     if (typeof(IMixedRealityExtensionService).IsAssignableFrom(configuration.ComponentType.Type))
                     {
                         object[] args = { this, configuration.ComponentName, configuration.Priority, configuration.ConfigurationProfile };
-                        if (!RegisterService<IMixedRealityExtensionService>(configuration.ComponentType, configuration.RuntimePlatform, args))
-                        {
-                            Debug.LogError($"Failed to register {configuration.ComponentName}");
-                        }
+                        RegisterService<IMixedRealityExtensionService>(configuration.ComponentType, configuration.RuntimePlatform, args);
                     }
                 }
             }
 
-#endregion Service Registration
+            #endregion Service Registration
 
             InitializeAllServices();
 
@@ -433,6 +430,7 @@ namespace Microsoft.MixedReality.Toolkit
             // There's lots of documented cases that if the camera doesn't start at 0,0,0, things break with the WMR SDK specifically.
             // We'll enforce that here, then tracking can update it to the appropriate position later.
             CameraCache.Main.transform.position = Vector3.zero;
+            CameraCache.Main.transform.rotation = Quaternion.identity;
 
             // This will create the playspace
             Transform playspace = MixedRealityPlayspace.Transform;
@@ -473,7 +471,7 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
-#region MonoBehaviour Implementation
+        #region MonoBehaviour Implementation
 
         private static MixedRealityToolkit activeInstance;
         private static bool newInstanceBeingInitialized = false;
@@ -600,10 +598,10 @@ namespace Microsoft.MixedReality.Toolkit
             UnregisterInstance(this);
         }
 
-#endregion MonoBehaviour Implementation
+        #endregion MonoBehaviour Implementation
 
-#region Instance Registration
-        
+        #region Instance Registration
+
         private const string activeInstanceGameObjectName = "MixedRealityToolkit";
         private const string inactiveInstanceGameObjectName = "MixedRealityToolkit (Inactive)";
         private static List<MixedRealityToolkit> toolkitInstances = new List<MixedRealityToolkit>();
@@ -705,7 +703,7 @@ namespace Microsoft.MixedReality.Toolkit
                 }
 
                 for (int i = 0; i < toolkitInstances.Count; i++)
-                { 
+                {
                     if (toolkitInstances[i] == null)
                     {   // This may have been a mass-deletion - be wary of soon-to-be-unregistered instances
                         continue;
@@ -741,11 +739,11 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
-#endregion Instance Registration
+        #endregion Instance Registration
 
-#region Service Container Management
+        #region Service Container Management
 
-#region Registration
+        #region Registration
         // NOTE: This method intentionally does not add to the registry. This is actually mostly a helper function for RegisterServiceInternal<T>.
         private bool RegisterServiceInternal(Type interfaceType, IMixedRealityService serviceInstance)
         {
@@ -804,9 +802,9 @@ namespace Microsoft.MixedReality.Toolkit
             return false;
         }
 
-#endregion Registration
+        #endregion Registration
 
-#region Multiple Service Management
+        #region Multiple Service Management
 
         /// <summary>
         /// Enable all services in the Mixed Reality Toolkit active service registry for a given type
@@ -976,9 +974,9 @@ namespace Microsoft.MixedReality.Toolkit
             return true;
         }
 
-#endregion Multiple Service Management
+        #endregion Multiple Service Management
 
-#region Service Utilities
+        #region Service Utilities
 
         /// <summary>
         /// Generic function used to interrogate the Mixed Reality Toolkit active system registry for the existence of a core system.
@@ -1066,7 +1064,7 @@ namespace Microsoft.MixedReality.Toolkit
 
             if (!CanGetService(interfaceType)) { return new List<T>() as IReadOnlyList<T>; }
 
-            foreach(var service in MixedRealityServiceRegistry.GetAllServices())
+            foreach (var service in MixedRealityServiceRegistry.GetAllServices())
             {
                 if (service is T && (string.IsNullOrEmpty(serviceName) || service.Name == serviceName))
                 {
@@ -1139,11 +1137,11 @@ namespace Microsoft.MixedReality.Toolkit
             return true;
         }
 
-#endregion Service Utilities
+        #endregion Service Utilities
 
-#endregion Service Container Management
+        #endregion Service Container Management
 
-#region Core System Accessors
+        #region Core System Accessors
 
         /// <summary>
         /// The current Input System registered with the Mixed Reality Toolkit.
@@ -1274,9 +1272,9 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
-#endregion Core System Accessors
+        #endregion Core System Accessors
 
-#region Application Event Listeners
+        #region Application Event Listeners
         /// <summary>
         /// Registers once on startup and sets isApplicationQuitting to true when quit event is detected.
         /// </summary>
@@ -1389,6 +1387,6 @@ namespace Microsoft.MixedReality.Toolkit
         }
 #endif // UNITY_EDITOR
 
-#endregion
+        #endregion
     }
 }
