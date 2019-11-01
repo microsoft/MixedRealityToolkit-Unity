@@ -13,48 +13,44 @@ To get started with the Mixed Reality Toolkit you will need:
 
   MRTK supports both IL2CPP and .NET scripting backends on Unity 2018
 
-* [Get the latest MRTK release](#get-the-latest-mrtk-unity-packages)
 * [Windows SDK 18362+](https://developer.microsoft.com/en-US/windows/downloads/windows-10-sdk).
 
   This is necessary if you are building a UWP app for WMR, HoloLens 1, or HoloLens 2. This is not necessary
   when building for OpenVR.
 
-## Getting started tutorials
-
-If you are new to MRTK, or MR development, we recommend you check out the [Getting started tutorials](https://docs.microsoft.com/en-us/windows/mixed-reality/mrlearning-base) which uses MRTK v2. Check out [MRTK 101: How to use Mixed Reality Toolkit Unity for Basic Interactions (HoloLens 2, HoloLens, Windows Mixed Reality, Open VR)](https://docs.microsoft.com/en-us/windows/mixed-reality/mrtk-101) to learn about core building blocks.
-
 ## Add MRTK to your Unity Project
+
+**Required**
+
+1. [Get the latest MRTK Unity packages](#get-the-latest-mrtk-unity-packages)
+1. [Import MRTK packages into your Unity project](#import-mrtk-packages-into-your-unity-project)
+1. [Switch your Unity project to the target platform](#switch-your-unity-project-to-the-target-platform)
+1. [Add MRTK to a new scene or new project](#add-mrtk-to-a-new-scene-or-new-project)
+
+**Optional**
+
+- [Getting started tutorials](#get-the-latest-mrtk-unity-packages)
+- [Learn about the core building blocks of MRTK](#learn-about-the-core-building-blocks-of-mrtk)
+- [Run the HandInteractionExamples scene in the Unity Editor](#run-the-handinteractionexamples-scene-in-the-unity-editor)
 
 ### Get the latest MRTK Unity packages
 
 1. Go to the <a href="https://github.com/Microsoft/MixedRealityToolkit-Unity/releases" target="_blank">MRTK release page</a>.
 1. Under Assets, download
-    - `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage`
-    - `Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage`
-    - `Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage`
-    - `Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage`
+    - **Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage**
+    - (Optional) Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage
+    - (Optional) Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage
+    - (Optional) Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage
 
 The Mixed Reality Toolkit is now available for download on NuGet.org, for details see [MRTK NuGet Packages](MRTKNuGetPackage.md).
-
-### Switch your Unity project to the target platform
-
-The next step **Import MRTK packages into your Unity project** will apply changes to your project specifically for the platform that is selected in the project at that moment you import them.
-
-You should make sure that you select the correct platform before following the next step.
-
-For instance, if you want to create a HoloLens application, switch to Universal Windows Platform:
-
-- Open menu : File > Build Settings
-- Select **Universal Windows Platform** in the **Platform** list
-- Click on the **Switch Platform** button
 
 ### Import MRTK packages into your Unity project
 
 1. Create a new Unity project, or open an existing project. When creating a project, make sure to select "3D" as the template type.
-1. Import the `Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage` you downloaded by going into "Asset -> Import Package -> Custom Package", selecting the .unitypackage file, ensure all items to import are checked, and then selecting "Import".
-1. Import the `Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage` following the same steps as above. The examples package is optional and contains useful demonstration scenes for current MRTK features.
-1. Import the `Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage` following the same steps as for the foundation package. These tools package is optional and contains useful tools, such as the ExtensionServiceCreator, that enhance the MRTK developer experience.
-1. Import the `Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage` following the same steps as for the foundation package. The extensions package provides a set of useful optional components for the MRTK.
+1. Import the **Microsoft.MixedRealityToolkit.Unity.Foundation.unitypackage** you downloaded by going into "Asset -> Import Package -> Custom Package", selecting the .unitypackage file, ensure all items to import are checked, and then selecting "Import".
+1. (Optional) Import the **Microsoft.MixedRealityToolkit.Unity.Examples.unitypackage** following the same steps as above. The examples package is optional and contains useful demonstration scenes for current MRTK features.
+1. (Optional) Import the **Microsoft.MixedRealityToolkit.Unity.Tools.unitypackage** following the same steps as for the foundation package. These tools package is optional and contains useful tools, such as the ExtensionServiceCreator, that enhance the MRTK developer experience.
+1. (Optional) Import the **Microsoft.MixedRealityToolkit.Unity.Extensions.unitypackage** following the same steps as for the foundation package. The extensions package provides a set of useful optional components for the MRTK.
 
 After importing the Foundation package, you may see a setup prompt like the following:
 
@@ -69,11 +65,36 @@ Accepting these options is completely optional, but recommended.
 
 Some prefabs and assets require TextMesh Pro, meaning you have to have the TextMesh Pro package installed and the assets in your project (Window -> TextMeshPro -> Import TMP Essential Resources). **After you import TMP Essentials Resources, you need to restart Unity to see changes**.
 
-### Open and run the HandInteractionExamples scene in editor
+### Switch your Unity project to the target platform
+
+With the packages imported, the next step is to select the correct platform for the application.
+
+To create a **HoloLens application**, switch to Universal Windows Platform:
+
+1. Open menu : File > Build Settings
+1. Select **Universal Windows Platform** in the **Platform** list
+1. Click on the **Switch Platform** button
+
+![Switch Platform](../Documentation/Images/getting_started/SwitchPlatform.png)
+
+>[!NOTE]
+> The Mixed Reality Toolkit will prompt to apply recommended changes to the project when the platform is selected. Whenever the platform is switched, the appropriate settings will be checked and prompted, if necessary.
+
+### Getting started tutorials
+
+If you are new to MRTK, or MR development, we recommend you check out the [Getting started tutorials](https://docs.microsoft.com/en-us/windows/mixed-reality/mrlearning-base) which uses MRTK v2. 
+
+### Learn about the core building blocks of MRTK
+
+Check out [MRTK 101: How to use Mixed Reality Toolkit Unity for Basic Interactions (HoloLens 2, HoloLens, Windows Mixed Reality, Open VR)](https://docs.microsoft.com/en-us/windows/mixed-reality/mrtk-101) to learn about core building blocks.
+
+### Run the HandInteractionExamples scene in the Unity Editor
+
+The [hand interaction examples scene](README_HandInteractionExamples.md) article is a great place to learn more about the UX controls and interactions in MRTK. 
 
 [![HandInteractionExample scene](../Documentation/Images/MRTK_Examples.png)](README_HandInteractionExamples.md)
 
-The [hand interaction examples scene](README_HandInteractionExamples.md) is a great place to get started because it shows a wide variety of UX controls and interactions in MRTK. 
+To try the hand interaction scene, do the following steps.
 
 1. Open the **HandInteractionExamples** scene under `Assets\MixedRealityToolkit.Examples\Demos\HandTracking\Scenes\HandInteractionExamples`
 
