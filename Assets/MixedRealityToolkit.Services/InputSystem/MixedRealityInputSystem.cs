@@ -15,15 +15,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Input/Overview.html")]
     public class MixedRealityInputSystem : BaseDataProviderAccessCoreSystem, IMixedRealityInputSystem, IMixedRealityCapabilityCheck
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        /// <param name="profile">The configuration profile for the service.</param>
+        [Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
         public MixedRealityInputSystem(
             IMixedRealityServiceRegistrar registrar,
-            MixedRealityInputSystemProfile profile) : base(registrar, profile)
+            MixedRealityInputSystemProfile profile) : this(profile)
         {
-            if (registrar == null)
-            {
-                Debug.LogError("The MixedRealityInputSystem object requires a valid IMixedRealityServiceRegistrar instance.");
-            }
+            Registrar = registrar;
         }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="profile">The configuration profile for the service.</param>
+        public MixedRealityInputSystem(
+            MixedRealityInputSystemProfile profile) : base(profile)
+        { }
 
         /// <inheritdoc/>
         public override string Name { get; protected set; } = "Mixed Reality Input System";

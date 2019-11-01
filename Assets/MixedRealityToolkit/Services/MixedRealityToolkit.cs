@@ -358,20 +358,20 @@ namespace Microsoft.MixedReality.Toolkit
                 InputMappingAxisUtility.CheckUnityInputManagerMappings(ControllerMappingLibrary.UnityInputManagerAxes);
 #endif
 
-                object[] args = { this, ActiveProfile.InputSystemProfile };
+                object[] args = { ActiveProfile.InputSystemProfile };
                 if (!RegisterService<IMixedRealityInputSystem>(ActiveProfile.InputSystemType, args: args) || CoreServices.InputSystem == null)
                 {
                     Debug.LogError("Failed to start the Input System!");
                 }
 
-                args = new object[] { this, ActiveProfile.InputSystemProfile };
+                args = new object[] { ActiveProfile.InputSystemProfile };
                 if (!RegisterService<IMixedRealityFocusProvider>(ActiveProfile.InputSystemProfile.FocusProviderType, args: args))
                 {
                     Debug.LogError("Failed to register the focus provider! The input system will not function without it.");
                     return;
                 }
 
-                args = new object[] { this, ActiveProfile.InputSystemProfile };
+                args = new object[] { ActiveProfile.InputSystemProfile };
                 if (!RegisterService<IMixedRealityRaycastProvider>(ActiveProfile.InputSystemProfile.RaycastProviderType, args: args))
                 {
                     Debug.LogError("Failed to register the raycast provider! The input system will not function without it.");
@@ -388,7 +388,7 @@ namespace Microsoft.MixedReality.Toolkit
             // If the Boundary system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsBoundarySystemEnabled)
             {
-                object[] args = { this, ActiveProfile.BoundaryVisualizationProfile, ActiveProfile.TargetExperienceScale };
+                object[] args = { ActiveProfile.BoundaryVisualizationProfile, ActiveProfile.TargetExperienceScale };
                 if (!RegisterService<IMixedRealityBoundarySystem>(ActiveProfile.BoundarySystemSystemType, args: args) || CoreServices.BoundarySystem == null)
                 {
                     Debug.LogError("Failed to start the Boundary System!");
@@ -398,7 +398,7 @@ namespace Microsoft.MixedReality.Toolkit
             // If the Camera system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsCameraSystemEnabled)
             {
-                object[] args = { this, ActiveProfile.CameraProfile };
+                object[] args = { ActiveProfile.CameraProfile };
                 if (!RegisterService<IMixedRealityCameraSystem>(ActiveProfile.CameraSystemType, args: args) || CoreServices.CameraSystem == null)
                 {
                     Debug.LogError("Failed to start the Camera System!");
@@ -408,7 +408,7 @@ namespace Microsoft.MixedReality.Toolkit
             // If the Spatial Awareness system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsSpatialAwarenessSystemEnabled)
             {
-                object[] args = { this, ActiveProfile.SpatialAwarenessSystemProfile };
+                object[] args = { ActiveProfile.SpatialAwarenessSystemProfile };
                 if (!RegisterService<IMixedRealitySpatialAwarenessSystem>(ActiveProfile.SpatialAwarenessSystemSystemType, args: args) && CoreServices.SpatialAwarenessSystem != null)
                 {
                     Debug.LogError("Failed to start the Spatial Awareness System!");
@@ -418,8 +418,7 @@ namespace Microsoft.MixedReality.Toolkit
             // If the Teleport system has been selected for initialization in the Active profile, enable it in the project
             if (ActiveProfile.IsTeleportSystemEnabled)
             {
-                object[] args = { this };
-                if (!RegisterService<IMixedRealityTeleportSystem>(ActiveProfile.TeleportSystemSystemType, args: args) || CoreServices.TeleportSystem == null)
+                if (!RegisterService<IMixedRealityTeleportSystem>(ActiveProfile.TeleportSystemSystemType) || CoreServices.TeleportSystem == null)
                 {
                     Debug.LogError("Failed to start the Teleport System!");
                 }
@@ -427,7 +426,7 @@ namespace Microsoft.MixedReality.Toolkit
 
             if (ActiveProfile.IsDiagnosticsSystemEnabled)
             {
-                object[] args = { this, ActiveProfile.DiagnosticsSystemProfile };
+                object[] args = { ActiveProfile.DiagnosticsSystemProfile };
                 if (!RegisterService<IMixedRealityDiagnosticsSystem>(ActiveProfile.DiagnosticsSystemSystemType, args: args) || CoreServices.DiagnosticsSystem == null)
                 {
                     Debug.LogError("Failed to start the Diagnostics System!");
@@ -436,7 +435,7 @@ namespace Microsoft.MixedReality.Toolkit
 
             if (ActiveProfile.IsSceneSystemEnabled)
             {
-                object[] args = { this, ActiveProfile.SceneSystemProfile };
+                object[] args = { ActiveProfile.SceneSystemProfile };
                 if (!RegisterService<IMixedRealitySceneSystem>(ActiveProfile.SceneSystemSystemType, args: args) || CoreServices.SceneSystem == null)
                 {
                     Debug.LogError("Failed to start the Scene System!");
