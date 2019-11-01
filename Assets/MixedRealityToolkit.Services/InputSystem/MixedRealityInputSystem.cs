@@ -25,6 +25,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <inheritdoc/>
+        public override string Name { get; protected set; } = "Mixed Reality Input System";
+
         /// <inheritdoc />
         public event Action InputEnabled;
 
@@ -116,11 +119,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 // If one of the running data providers supports the requested capability, 
                 // the application has the needed support to leverage the desired functionality.
-                if ((capabilityChecker != null) &&
-                    capabilityChecker.CheckCapability(capability))
+                if (capabilityChecker?.CheckCapability(capability) == true)
                 {
                     return true;
                 }
+            }
+
+            // Check GazeProvider directly since not populated in data provider list but life-cycle is managed by InputSystem
+            var gazeProvider_CapabilityCheck = GazeProvider as IMixedRealityCapabilityCheck;
+            if (gazeProvider_CapabilityCheck?.CheckCapability(capability) == true)
+            {
+                return true;
             }
 
             return false;
@@ -179,18 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (profile.PointerProfile != null)
             {
-                if (profile.PointerProfile.GazeProviderType?.Type != null)
-                {
-                    GazeProvider = CameraCache.Main.gameObject.EnsureComponent(profile.PointerProfile.GazeProviderType.Type) as IMixedRealityGazeProvider;
-                    GazeProvider.GazeCursorPrefab = profile.PointerProfile.GazeCursorPrefab;
-                    // Current implementation implements both provider types in one concrete class.
-                    EyeGazeProvider = GazeProvider as IMixedRealityEyeGazeProvider;
-                }
-                else
-                {
-                    Debug.LogError("The Input system is missing the required GazeProviderType!");
-                    return;
-                }
+                InstantiateGazeProvider(profile.PointerProfile);
             }
             else
             {
@@ -223,12 +221,31 @@ namespace Microsoft.MixedReality.Toolkit.Input
             dictationEventData = new DictationEventData(EventSystem.current);
 
             handTrackingInputEventData = new HandTrackingInputEventData(EventSystem.current);
+
+            CreateDataProviders();
         }
 
         /// <inheritdoc />
         public override void Enable()
         {
+            CreateDataProviders();
+
+            // Ensure data providers are enabled (performed by the base class)
+            base.Enable();
+
+            InputEnabled?.Invoke();
+        }
+
+        private void CreateDataProviders()
+        {
             MixedRealityInputSystemProfile profile = ConfigurationProfile as MixedRealityInputSystemProfile;
+
+            // If the system gets disabled, the gaze provider is destroyed.
+            // Ensure that it gets recreated on when reenabled.
+            if (GazeProvider == null)
+            {
+                InstantiateGazeProvider(profile?.PointerProfile);
+            }
 
             if ((GetDataProviders().Count == 0) && (profile != null))
             {
@@ -244,11 +261,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         args);
                 }
             }
+        }
 
-            // Ensure data providers are enabled (performed by the base class)
-            base.Enable();
-
-            InputEnabled?.Invoke();
+        private void InstantiateGazeProvider(MixedRealityPointerProfile pointerProfile)
+        {
+            if (pointerProfile?.GazeProviderType?.Type != null)
+            {
+                GazeProvider = CameraCache.Main.gameObject.EnsureComponent(pointerProfile.GazeProviderType.Type) as IMixedRealityGazeProvider;
+                GazeProvider.GazeCursorPrefab = pointerProfile.GazeCursorPrefab;
+                // Current implementation implements both provider types in one concrete class.
+                EyeGazeProvider = GazeProvider as IMixedRealityEyeGazeProvider;
+            }
+            else
+            {
+                Debug.LogError("The Input system is missing the required GazeProviderType!");
+                return;
+            }
         }
 
         /// <inheritdoc />
@@ -565,7 +593,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Unregister a <see href="https://docs.unity3d.com/ScriptReference/GameObject.html">GameObject</see> from listening to input events.
         /// </summary>
-        /// <param name="listener"></param>
         public override void Unregister(GameObject listener)
         {
             base.Unregister(listener);
@@ -956,7 +983,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public void RaisePointerDown(IMixedRealityPointer pointer, MixedRealityInputAction inputAction, Handedness handedness = Handedness.None, IMixedRealityInputSource inputSource = null)
         {
-            pointer.IsFocusLocked = (pointer.Result?.Details.Object != null);
+            // Only lock the object if there is a grabbable above in the hierarchy
+            Transform currentObject = pointer.Result?.Details.Object?.transform;
+            IMixedRealityPointerHandler ancestorPointerHandler = null;
+            while(currentObject != null && ancestorPointerHandler == null)
+            {
+                foreach(var component in currentObject.GetComponents<Component>())
+                {
+                    if (component is IMixedRealityPointerHandler)
+                    {
+                        ancestorPointerHandler = (IMixedRealityPointerHandler) component;
+                        break;
+                    }
+                }
+                currentObject = currentObject.transform.parent;
+            }
+            pointer.IsFocusLocked = ancestorPointerHandler != null;
 
             pointerEventData.Initialize(pointer, inputAction, handedness, inputSource);
 

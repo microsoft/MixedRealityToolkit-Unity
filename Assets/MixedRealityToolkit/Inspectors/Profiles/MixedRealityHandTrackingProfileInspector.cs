@@ -15,11 +15,11 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
         private SerializedProperty palmPrefab;
         private SerializedProperty fingertipPrefab;
         private SerializedProperty handMeshPrefab;
-        private SerializedProperty enableHandMeshVisualization;
-        private SerializedProperty enableHandJointVisualization;
+        private SerializedProperty handMeshVisualizationModes;
+        private SerializedProperty handJointVisualizationModes;
 
         private const string ProfileTitle = "Hand Tracking Settings";
-        private const string ProfileDescription = "Use this for platform-specific hand tracking settings.";
+        private const string ProfileDescription = "Use this for hand tracking settings.";
 
         protected override void OnEnable()
         {
@@ -29,13 +29,16 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
             fingertipPrefab = serializedObject.FindProperty("fingertipPrefab");
             palmPrefab = serializedObject.FindProperty("palmPrefab");
             handMeshPrefab = serializedObject.FindProperty("handMeshPrefab");
-            enableHandMeshVisualization = serializedObject.FindProperty("enableHandMeshVisualization");
-            enableHandJointVisualization = serializedObject.FindProperty("enableHandJointVisualization");
+            handMeshVisualizationModes = serializedObject.FindProperty("handMeshVisualizationModes");
+            handJointVisualizationModes = serializedObject.FindProperty("handJointVisualizationModes");
         }
 
         public override void OnInspectorGUI()
         {
-            RenderProfileHeader(ProfileTitle, ProfileDescription, target, true, BackProfileType.Input);
+            if (!RenderProfileHeader(ProfileTitle, ProfileDescription, target, true, BackProfileType.Input))
+            {
+                return;
+            }
 
             using (new GUIEnabledWrapper(!IsProfileLock((BaseMixedRealityProfile)target)))
             {
@@ -46,8 +49,8 @@ namespace Microsoft.MixedReality.Toolkit.Inspectors
                 EditorGUILayout.PropertyField(palmPrefab);
                 EditorGUILayout.PropertyField(fingertipPrefab);
                 EditorGUILayout.PropertyField(handMeshPrefab);
-                EditorGUILayout.PropertyField(enableHandMeshVisualization);
-                EditorGUILayout.PropertyField(enableHandJointVisualization);
+                EditorGUILayout.PropertyField(handMeshVisualizationModes);
+                EditorGUILayout.PropertyField(handJointVisualizationModes);
 
                 serializedObject.ApplyModifiedProperties();
             }

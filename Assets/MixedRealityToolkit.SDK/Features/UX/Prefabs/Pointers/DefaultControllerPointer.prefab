@@ -190,12 +190,12 @@ LineRenderer:
       key0: {r: 1, g: 1, b: 1, a: 0}
       key1: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 1}
-      key3: {r: 0, g: 0, b: 0, a: 0}
+      key3: {r: 0, g: 0, b: 0, a: 0.49803922}
       key4: {r: 0, g: 0, b: 0, a: 0}
-      key5: {r: 0, g: 0, b: 0, a: 1}
-      key6: {r: 0, g: 0, b: 0, a: 1}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0.9411765}
       key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 42020
+      ctime0: 32768
       ctime1: 65535
       ctime2: 0
       ctime3: 0
@@ -203,17 +203,17 @@ LineRenderer:
       ctime5: 0
       ctime6: 0
       ctime7: 0
-      atime0: 0
-      atime1: 6361
-      atime2: 15806
-      atime3: 24479
-      atime4: 39514
-      atime5: 57632
-      atime6: 65535
-      atime7: 0
+      atime0: 4587
+      atime1: 11141
+      atime2: 13762
+      atime3: 16384
+      atime4: 22937
+      atime5: 49151
+      atime6: 58982
+      atime7: 65535
       m_Mode: 0
       m_NumColorKeys: 2
-      m_NumAlphaKeys: 7
+      m_NumAlphaKeys: 8
     numCornerVertices: 8
     numCapVertices: 8
     alignment: 0
@@ -238,9 +238,9 @@ MonoBehaviour:
   lineColor:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 0}
-    key1: {r: 0.5660378, g: 0.5660378, b: 0.5660378, a: 1}
+    key1: {r: 0.8113208, g: 0.8113208, b: 0.8113208, a: 0}
     key2: {r: 0, g: 0, b: 0, a: 1}
-    key3: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 1}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
@@ -254,8 +254,8 @@ MonoBehaviour:
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 6361
-    atime2: 57632
+    atime1: 4587
+    atime2: 11141
     atime3: 65535
     atime4: 0
     atime5: 0
@@ -322,6 +322,9 @@ MonoBehaviour:
   lineMaterial: {fileID: 2100000, guid: 11727442de02c1d4b8d37a063c748aec, type: 2}
   roundedEdges: 1
   roundedCaps: 1
+  fadeLineBrightnessOnEnable: 1
+  fadeLinePercentage: 0.55
+  fadeLineAnimationTime: 0.65
   lineRenderer: {fileID: 120690711267243118}
   tileMaterialByWorldLength: 0
   tileMaterialScale: 1
@@ -343,12 +346,12 @@ MonoBehaviour:
     key0: {r: 1, g: 1, b: 1, a: 0}
     key1: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 1}
-    key3: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0.49803922}
     key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 1}
-    key6: {r: 0, g: 0, b: 0, a: 1}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0.9411765}
     key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 42020
+    ctime0: 32768
     ctime1: 65535
     ctime2: 0
     ctime3: 0
@@ -356,17 +359,17 @@ MonoBehaviour:
     ctime5: 0
     ctime6: 0
     ctime7: 0
-    atime0: 0
-    atime1: 6361
-    atime2: 15806
-    atime3: 24479
-    atime4: 39514
-    atime5: 57632
-    atime6: 65535
-    atime7: 0
+    atime0: 4587
+    atime1: 11141
+    atime2: 13762
+    atime3: 16384
+    atime4: 22937
+    atime5: 49151
+    atime6: 58982
+    atime7: 65535
     m_Mode: 0
     m_NumColorKeys: 2
-    m_NumAlphaKeys: 7
+    m_NumAlphaKeys: 8
   lineWidth:
     serializedVersion: 2
     m_Curve:
@@ -395,7 +398,7 @@ MonoBehaviour:
   colorOffset: 0
   widthOffset: 0
   stepMode: 0
-  lineStepCount: 24
+  lineStepCount: 36
   pointDistributionMode: 1
   customPointDistributionLength: 0.1
   customPointDistributionCurve:
@@ -425,6 +428,9 @@ MonoBehaviour:
   lineMaterial: {fileID: 2100000, guid: 876c7e981edab3a44918b5c51482a286, type: 2}
   roundedEdges: 1
   roundedCaps: 1
+  fadeLineBrightnessOnEnable: 1
+  fadeLinePercentage: 0.55
+  fadeLineAnimationTime: 0.65
   lineRenderer: {fileID: 120690711267243118}
   tileMaterialByWorldLength: 0
   tileMaterialScale: 1
@@ -470,9 +476,9 @@ MonoBehaviour:
   LineColorSelected:
     serializedVersion: 2
     key0: {r: 0.990566, g: 0.990566, b: 0.990566, a: 0}
-    key1: {r: 0.8773585, g: 0.8773585, b: 0.8773585, a: 1}
+    key1: {r: 0.8301887, g: 0.8301887, b: 0.8301887, a: 0}
     key2: {r: 0, g: 0, b: 0, a: 1}
-    key3: {r: 0, g: 0, b: 0, a: 0.5647059}
+    key3: {r: 0, g: 0, b: 0, a: 1}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
@@ -486,22 +492,22 @@ MonoBehaviour:
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 2313
-    atime2: 50115
-    atime3: 58982
+    atime1: 4587
+    atime2: 11141
+    atime3: 65535
     atime4: 63029
     atime5: 0
     atime6: 0
     atime7: 0
     m_Mode: 0
     m_NumColorKeys: 2
-    m_NumAlphaKeys: 5
+    m_NumAlphaKeys: 4
   LineColorValid:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 0}
-    key1: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 0.9056604, g: 0.9056604, b: 0.9056604, a: 0}
     key2: {r: 0, g: 0, b: 0, a: 1}
-    key3: {r: 0, g: 0, b: 0, a: 0.6666667}
+    key3: {r: 0, g: 0, b: 0, a: 1}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
@@ -515,16 +521,16 @@ MonoBehaviour:
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 3277
-    atime2: 49922
-    atime3: 61102
+    atime1: 4587
+    atime2: 11141
+    atime3: 65535
     atime4: 63222
     atime5: 0
     atime6: 0
     atime7: 0
     m_Mode: 0
     m_NumColorKeys: 2
-    m_NumAlphaKeys: 5
+    m_NumAlphaKeys: 4
   LineColorInvalid:
     serializedVersion: 2
     key0: {r: 1, g: 0.7971698, b: 0.7971698, a: 0}
@@ -586,9 +592,9 @@ MonoBehaviour:
   LineColorLockFocus:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 0}
-    key1: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 0.8679245, g: 0.8679245, b: 0.8679245, a: 0}
     key2: {r: 0, g: 0, b: 0, a: 1}
-    key3: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 1}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
@@ -602,9 +608,9 @@ MonoBehaviour:
     ctime6: 0
     ctime7: 0
     atime0: 0
-    atime1: 4241
-    atime2: 56283
-    atime3: 63415
+    atime1: 4587
+    atime2: 11141
+    atime3: 65535
     atime4: 63415
     atime5: 63415
     atime6: 63415

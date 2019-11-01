@@ -18,6 +18,7 @@ Controls the color of the fade effect. Alpha is ingored. This setting can be cha
 
 ### Fade Targets
 Controls which cameras will have a fade effect applied to them. This setting can be changed at runtime via the service's `FadeTargets` property.
+
 Setting | Targeted Cameras
 --- | --- | ---
 Main | Applies fade effect to the main camera.

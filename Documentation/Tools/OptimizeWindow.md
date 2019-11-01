@@ -10,9 +10,13 @@ The *Performance Target* instructs the optimize tool what kind of device endpoin
 - *VR Standalone* are mobile-class devices such as the Oculus Go or Quest
 - *VR Tethered* are PC-powered devices such as the Samsung Odyssey, Oculus Rift or HTC Vive etc.
 
+![MRTK Optimize Window Performance Target](../../Documentation/Images/Performance/OptimizeWindowPerformanceTarget.jpg)
+
 ## Setting optimizations
 
 The settings optimization tab covers some of the important rendering configurations for a Unity project. This section can help automate and inform what settings should be changed for the best performing results.
+
+A green check icon means that an optimal value has been configured in the project/scene for this particular setting. A yellow warning icon indicates the current configuration can be improved. Clicking the associated button in a given section will auto-configure that setting in the Unity project/scene to a more optimal value.
 
 ![MRTK Optimize Window Settings](../../Documentation/Images/Performance/OptimizeWindow_Settings.png)
 
@@ -28,11 +32,17 @@ To improve [hologram stabilization](../hologram-Stabilization.md), developers ca
 
 Furthermore, for *AR Headsets*, it is recommended to utilize a 16-bit depth format when enabling depth buffer sharing compared to 24-bit. This means lower precision but saves on performance. If [z-fighting](https://en.wikipedia.org/wiki/Z-fighting) occurs because there is less precision in calculating depth for pixels, then it is recommended to move the [far clip plane](https://docs.unity3d.com/Manual/class-Camera.html) closer to the camera (ex: 50m instead of 1000m).
 
+> [!NOTE]
+> If using *16-bit depth format*, stencil buffer required effects will not work because [Unity does not create a stencil buffer](https://docs.unity3d.com/ScriptReference/RenderTexture-depth.html) in this setting. Selecting *24-bit depth format* conversely will generally create an [8-bit stencil buffer](https://docs.unity3d.com/Manual/SL-Stencil.html), if applicable on the endpoint graphics platform.
+>
+> If using a [Mask component](https://docs.unity3d.com/Manual/script-Mask.html) which requires the stencil buffer, consider using [RectMask2D](https://docs.unity3d.com/Manual/script-RectMask2D.html) instead which does not require the stencil buffer and thus can be used in conjunction with a *16-bit depth format*.
+
 ### Real-time Global Illumination
 
 [Real-time Global illumination](https://docs.unity3d.com/Manual/GIIntro.html) in Unity can provide fantastic aesthetic results but at a very high cost. Global illumination lighting is very expensive in mixed reality and thus it is recommended to disable this feature in development.
 
->Note: This value is set per-scene in Unity and not once across the entire project.
+> [!NOTE]
+> Global illumination settings in Unity are set per-scene and not once across the entire project.
 
 ## Scene analysis
 
@@ -55,3 +65,8 @@ The [Unity Standard shader](https://docs.unity3d.com/Manual/shader-StandardShade
 The *Shader Analysis* tab scans the current project's Asset folder for materials using the Unity Standard shader or if desired, all materials not using Mixed Reality Toolkit provided shaders. Once discovered, developers can convert all materials or convert individually using the appropriate buttons.
 
 ![MRTK Optimize Window Settings](../../Documentation/Images/Performance/OptimizeWindow_ShaderAnalysis.png)
+
+## See Also
+
+- [Performance](../Performance/PerfGettingStarted.md)
+- [Hologram Stabilization](../hologram-stabilization.md)

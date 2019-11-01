@@ -184,24 +184,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         protected HandBounds handBounds = null;
         protected bool autoTransitionBetweenHands = false;
 
-        private IMixedRealityInputSystem inputSystem = null;
         private readonly Quaternion handToWorldRotation = Quaternion.Euler(-90.0f, 0.0f, 180.0f);
-
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        protected IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService(out inputSystem);
-                }
-
-                return inputSystem;
-            }
-        }
 
         /// <inheritdoc />
         public override void SolverUpdate()
@@ -250,7 +233,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             if (!autoTransitionBetweenHands)
             {
                 return (SolverHandler.TrackedTargetType == TrackedObjectType.HandJoint || 
-                        SolverHandler.TrackedTargetType == TrackedObjectType.MotionController)  &&
+                        SolverHandler.TrackedTargetType == TrackedObjectType.ControllerRay)  &&
                        (SolverHandler.TrackedHandness == Handedness.Both || 
                         hand.ControllerHandedness == SolverHandler.TrackedHandness);
             }
@@ -347,7 +330,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         /// </summary>
         /// <param name="visible">Is the cursor visible?</param>
         /// <param name="frameDelay">Delay one frame before performing the toggle to allow the pointers to instantiate their cursors.</param>
-        /// <returns></returns>
         protected virtual IEnumerator ToggleCursor(bool visible, bool frameDelay = false)
         {
             if (hideHandCursorsOnActivate)
@@ -403,7 +385,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             if (hand != null)
             {
                 if (SolverHandler.TrackedTargetType == TrackedObjectType.HandJoint || 
-                    SolverHandler.TrackedTargetType == TrackedObjectType.MotionController)
+                    SolverHandler.TrackedTargetType == TrackedObjectType.ControllerRay)
                 {
                     if (SolverHandler.TrackedHandness != hand.ControllerHandedness)
                     {
@@ -504,6 +486,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             return false;
         }
 
+        /// <summary>
+        /// Returns true if the given controller is a valid target for this solver.
+        /// </summary>
+        /// <remarks>
+        /// Certain types of controllers (i.e. Xbox controllers) do not contain a handedness
+        /// and should not trigger the HandConstraint to show its corresponding UX.
+        /// </remarks>
+        private static bool IsApplicableController(IMixedRealityController controller)
+        {
+            return controller.ControllerHandedness != Handedness.None;
+        }
+
         #region MonoBehaviour Implementation
 
         protected override void Awake()
@@ -517,7 +511,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         protected override void OnEnable()
         {
             base.OnEnable();
-            InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
+            CoreServices.InputSystem?.RegisterHandler<IMixedRealitySourceStateHandler>(this);
 
             handBounds = GetComponent<HandBounds>();
 
@@ -529,7 +523,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         protected virtual void OnDisable()
         {
-            InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
+            CoreServices.InputSystem?.UnregisterHandler<IMixedRealitySourceStateHandler>(this);
         }
 
         #endregion MonoBehaviour Implementation
@@ -541,7 +535,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         {
             var hand = eventData.Controller;
 
-            if (hand != null && !handStack.Contains(hand))
+            if (hand != null && IsApplicableController(hand) && !handStack.Contains(hand))
             {
                 if (handStack.Count == 0)
                 {
@@ -557,7 +551,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         {
             var hand = eventData.Controller;
 
-            if (hand != null)
+            if (hand != null && IsApplicableController(hand))
             {
                 handStack.Remove(hand);
 

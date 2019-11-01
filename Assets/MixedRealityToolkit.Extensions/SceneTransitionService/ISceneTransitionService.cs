@@ -65,16 +65,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         /// </summary>
         /// <param name="sceneOperations">A set of tasks from the Scene System.</param>
         /// <param name="progressIndicator">If null, default progress indicator prefab will be used (or none if default is disabled in profile)</param>
-        /// <returns></returns>
         Task DoSceneTransition(IEnumerable<Func<Task>> sceneOperations, IProgressIndicator progressIndicator = null);
 
         /// <summary>
         /// Fades out, enables progress indicator, executes scene op 1, executes scene op 2, disables progress indicator, fades back in
         /// </summary>
-        /// <param name="sceneOp1"></param>
-        /// <param name="sceneOp2"></param>
-        /// <param name="progressIndicator"></param>
-        /// <returns></returns>
         Task DoSceneTransition(Func<Task> sceneOp1, Func<Task> sceneOp2, IProgressIndicator progressIndicator = null);
 
         /// <summary>
@@ -82,31 +77,26 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         /// </summary>
         /// <param name="sceneOperations">A set of tasks from the Scene System.</param>
         /// <param name="progressIndicator">If null, default progress indicator prefab will be used (or none if default is disabled in profile)</param>
-        /// <returns></returns>
         Task DoSceneTransition(Func<Task> sceneOperation, IProgressIndicator progressIndicator = null);
 
         /// <summary>
         /// If FadeTargets is set to custom, you will need to provide a custom set of cameras for fading using this function PRIOR to calling DoSceneTransition.
         /// </summary>
-        /// <param name="customFadeTargetCameras"></param>
         void SetCustomFadeTargetCameras(IEnumerable<Camera> customFadeTargetCameras);
         
         /// <summary>
         /// Fades target cameras out to color. Can be used independently of scene transitions provided no transition is taking place.
         /// </summary>
-        /// <returns></returns>
         Task FadeOut();
 
         /// <summary>
         /// Fades target cameras in. Instant fade-out will occur if fade state is not opaque. Can be used independently of scene transitions provided no transition is taking place.
         /// </summary>
-        /// <returns></returns>
         Task FadeIn();
 
         /// <summary>
         /// Instantiates the default progress indicator and returns its main transform. Can be used independently of scene transitions provided no transition is taking place.
         /// </summary>
-        /// <returns></returns>
         Transform ShowDefaultProgressIndicator();
 
         /// <summary>
@@ -117,13 +107,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         /// <summary>
         /// Sets progress to value from 0-1. If no progress indicator exists, has no effect.
         /// </summary>
-        /// <param name="progress"></param>
         void SetProgressValue(float progress);
 
         /// <summary>
         /// Sets the message on displayed progress indicator. If no progress indicator exists, has no effect.
         /// </summary>
-        /// <param name="message"></param>
         void SetProgressMessage(string message);
     }
 }

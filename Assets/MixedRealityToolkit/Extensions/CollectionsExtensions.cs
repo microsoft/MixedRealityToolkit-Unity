@@ -47,7 +47,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="elements">The collection of sorted elements to be inserted into.</param>
         /// <param name="toInsert">The element to insert.</param>
         /// <param name="comparer">The comparer to use when sorting or null to use <see cref="System.Collections.Generic.Comparer{T}.Default"/>.</param>
-        /// <returns></returns>
         public static int SortedInsert<TElement>(this List<TElement> elements, TElement toInsert, IComparer<TElement> comparer = null)
         {
             var effectiveComparer = comparer ?? Comparer<TElement>.Default;

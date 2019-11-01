@@ -1,0 +1,79 @@
+# This file contains information about the code owners for various
+# files in the MRTK codebase.
+#
+# For more information on CODEOWNERS, see:
+# https://help.github.com/en/articles/about-code-owners
+#
+# For syntax, see:
+# https://help.github.com/en/articles/about-code-owners#codeowners-syntax
+#
+# The intent of this file is to list, on a per-file/per-area basis:
+# 1) Who is the most familiar with an area of code.
+# OR
+# 2) Who can take a first pass at pull request review, or delegate the review
+# to someone else who may be more appropriate.
+#
+# Note that order in this file is EXTREMELY important - the last matching
+# rule will win. This means that the most general rules should be listed
+# first in this file, followed by more specific rules.
+
+# Build / CI Pipeline YAML
+/pipelines/ @wiwei @MenelvagorMilsom @macborow
+
+# Build / CI C#
+/Assets/MixedRealityToolkit/Utilities/BuildAndDeploy/ @wiwei @MenelvagorMilsom @macborow
+
+# Build / CI Powershell Scripts
+/scripts/ci/ @wiwei @MenelvagorMilsom @macborow
+
+# Packaging files
+*.asmdef @wiwei @davidkline-ms @keveleigh @andreiborodin
+*.nupkg @wiwei @andreiborodin @davidkline-ms
+
+# Foundation
+/Assets/MixedRealityToolkit/Attributes/ @wiwei @davidkline-ms @keveleigh
+/Assets/MixedRealityToolkit/Definitions/ @wiwei @davidkline-ms @keveleigh
+/Assets/MixedRealityToolkit/EventDatum/ @wiwei @davidkline-ms @keveleigh
+/Assets/MixedRealityToolkit/Extensions/ @wiwei @davidkline-ms @keveleigh
+/Assets/MixedRealityToolkit/Inspectors/ @wiwei @davidkline-ms @keveleigh
+/Assets/MixedRealityToolkit/Interfaces/ @wiwei @davidkline-ms @keveleigh
+/Assets/MixedRealityToolkit/Providers/ @wiwei @davidkline-ms @keveleigh
+/Assets/MixedRealityToolkit.Providers/UnityInput/ @wiwei @davidkline-ms @keveleigh @thalbern
+/Assets/MixedRealityToolkit/Services/ @wiwei @davidkline-ms @Troy-Ferrell
+/Assets/MixedRealityToolkit/Utilities/ @wiwei @davidkline-ms @keveleigh
+
+# Services and Providers
+/Assets/MixedRealityToolkit.Providers/ @wiwei @davidkline-ms @keveleigh
+/Assets/MixedRealityToolkit.Services/ @wiwei @davidkline-ms @keveleigh
+/Assets/MixedRealityToolkit.Services/InputAnimation/ @wiwei @davidkline-ms @keveleigh @lukastoenneMS
+/Assets/MixedRealityToolkit.Services/InputSimulation/ @wiwei @davidkline-ms @keveleigh @lukastoenneMS
+/Assets/MixedRealityToolkit.Services/InputSystem/ @wiwei @davidkline-ms @keveleigh @lukastoenneMS @julenka @thalbern
+/Assets/MixedRealityToolkit.Services/SceneSystem/ @wiwei @davidkline-ms @keveleigh @Railboy
+
+# SDK
+/Assets/MixedRealityToolkit.SDK/Features/Audio/ @wiwei @davidkline-ms
+/Assets/MixedRealityToolkit.SDK/Features/Experimental/ @wiwei @davidkline-ms
+/Assets/MixedRealityToolkit.SDK/Features/Input/ @wiwei @davidkline-ms @keveleigh @julenka @thalbern
+/Assets/MixedRealityToolkit.SDK/Features/Utilities/ @wiwei @davidkline-ms @keveleigh
+
+# UX
+/Assets/MixedRealityToolkit.SDK/Features/UX/ @wiwei @julenka @thalbern @CDiaz-MS
+
+# Tools
+/Assets/MixedRealityToolkit.Tools/ @wiwei @davidkline-ms @keveleigh @MenelvagorMilsom
+
+# Extensions
+/Assets/MixedRealityToolkit.Extensions/ @wiwei @davidkline-ms @keveleigh
+
+# Standard Assets
+/Assets/MixedRealityToolkit/StandardAssets/ @wiwei @davidkline-ms @cre8ivepark @julenka
+/Assets/MixedRealityToolkit/StandardAssets/Shaders/ @wiwei @Cameron-Micka
+/Assets/MixedRealityToolkit.SDK/StandardAssets/ @wiwei @davidkline-ms @cre8ivepark @julenka
+/Assets/MixedRealityToolkit.SDK/StandardAssets/Shaders/ @wiwei @Cameron-Micka
+/Assets/MixedRealityToolkit.Examples/StandardAssets/ @wiwei @davidkline-ms @cre8ivepark @julenka
+
+# Examples
+/Assets/MixedRealityToolkit.Examples/ @wiwei @davidkline-ms @keveleigh @julenka @CDiaz-MS @thalbern @cre8ivepark
+
+# Tests
+/Assets/MixedRealityToolkit.Tests/ @wiwei @davidkline-ms @keveleigh @julenka @CDiaz-MS @thalbern

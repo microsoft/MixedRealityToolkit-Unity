@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -38,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
             try
             {
                 RunGenerateSDKProjects();
-                Debug.Log($"{nameof(GenerateSDKProjects)} Completed Succesfully.");
+                Debug.Log($"{nameof(GenerateSDKProjects)} Completed Successfully.");
             }
             catch
             {
@@ -215,4 +214,3 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         }
     }
 }
-#endif

@@ -13,28 +13,49 @@ MonoBehaviour:
   m_Name: DefaultMixedRealityInputSimulationProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 0
+  indicatorsPrefab: {fileID: 0}
+  mouseRotationSensitivity: 0.1
+  mouseX: Mouse X
+  mouseY: Mouse Y
+  mouseScroll: Mouse ScrollWheel
+  doublePressTime: 0.4
   isCameraControlEnabled: 1
-  extraMouseSensitivityScale: 3
-  defaultMouseSensitivity: 0.1
-  mouseLookButton: 1
+  mouseLookSpeed: 3
+  mouseLookButton:
+    bindingType: 1
+    code: 1
+  mouseLookToggle: 0
   isControllerLookInverted: 1
   currentControlMode: 0
-  fastControlKey: 305
+  fastControlKey:
+    bindingType: 2
+    code: 305
   controlSlowSpeed: 0.1
   controlFastSpeed: 1
   moveHorizontal: Horizontal
   moveVertical: Vertical
-  mouseX: Mouse X
-  mouseY: Mouse Y
+  moveUpDown: UpDown
   lookHorizontal: AXIS_4
   lookVertical: AXIS_5
   simulateEyePosition: 0
-  handSimulationMode: 2
-  toggleLeftHandKey: 116
-  toggleRightHandKey: 121
+  defaultHandSimulationMode: 2
+  toggleLeftHandKey:
+    bindingType: 2
+    code: 116
+  toggleRightHandKey:
+    bindingType: 2
+    code: 121
   handHideTimeout: 0.2
-  leftHandManipulationKey: 304
-  rightHandManipulationKey: 32
+  leftHandManipulationKey:
+    bindingType: 2
+    code: 304
+  rightHandManipulationKey:
+    bindingType: 2
+    code: 32
+  mouseHandRotationSpeed: 30
+  handRotateButton:
+    bindingType: 2
+    code: 306
   defaultHandGesture: 2
   leftMouseHandGesture: 3
   middleMouseHandGesture: 0
@@ -43,12 +64,5 @@ MonoBehaviour:
   holdStartDuration: 0.5
   navigationStartThreshold: 0.03
   defaultHandDistance: 0.5
-  handDepthMultiplier: 0.1
+  handDepthMultiplier: 0.03
   handJitterAmount: 0
-  yawHandCWKey: 101
-  yawHandCCWKey: 113
-  pitchHandCWKey: 102
-  pitchHandCCWKey: 114
-  rollHandCWKey: 120
-  rollHandCCWKey: 122
-  handRotationSpeed: 100

@@ -1,10 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
+using System.Linq;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.UI
@@ -15,103 +17,81 @@ namespace Microsoft.MixedReality.Toolkit.UI
     [System.Serializable]
     public class InteractableEvent
     {
-        public string Name;
-        public UnityEvent Event;
-        public string ClassName;
-        public string AssemblyQualifiedName;
+        /// <summary>
+        /// Base Event used to initialize EventReceiver class
+        /// </summary>
+        public UnityEvent Event = new UnityEvent();
+
+        /// <summary>
+        /// ReceiverBase instantiation for this InteractableEvent. Used at runtime by Interactable class
+        /// </summary>
+        [NonSerialized]
         public ReceiverBase Receiver;
-        public List<InspectorPropertySetting> Settings;
-        public bool HideUnityEvents;
-
-        public struct ReceiverData
-        {
-            public string Name;
-            public bool HideUnityEvents;
-            public List<InspectorFieldData> Fields;
-        }
 
         /// <summary>
-        /// The list of base classes whose derived classes will be included in interactable event
-        /// selection dropdowns.
+        /// Defines the type of Receiver to associate. Type must be a class that extends ReceiverBase
         /// </summary>
-        private static readonly List<Type> candidateEventTypes = new List<Type>() { typeof(ReceiverBase) };
-
-        public ReceiverData AddOnClick()
+        public Type ReceiverType
         {
-            return AddReceiver(typeof(InteractableOnClickReceiver));
-        }
-
-        /// <summary>
-        /// Add new events/receivers to the list and grab all the InspectorFields so we can render them in the inspector
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        public ReceiverData AddReceiver(Type type)
-        {
-            ReceiverBase receiver = (ReceiverBase)Activator.CreateInstance(type, Event);
-            // get the settings for the inspector
-
-            List<InspectorFieldData> fields = new List<InspectorFieldData>();
-
-            Type myType = receiver.GetType();
-            int index = 0;
-
-            ReceiverData data = new ReceiverData();
-            
-            foreach (PropertyInfo prop in myType.GetProperties())
+            get
             {
-                var attrs = (InspectorField[])prop.GetCustomAttributes(typeof(InspectorField), false);
-                foreach (var attr in attrs)
+                if (receiverType == null)
                 {
-                    fields.Add(new InspectorFieldData() { Name = prop.Name, Attributes = attr, Value = prop.GetValue(receiver, null)});
+                    if (string.IsNullOrEmpty(AssemblyQualifiedName))
+                    {
+                        return null;
+                    }
+
+                    receiverType = Type.GetType(AssemblyQualifiedName);
                 }
 
-                index++;
+                return receiverType;
             }
-
-            index = 0;
-            foreach (FieldInfo field in myType.GetFields())
+            set
             {
-                var attrs = (InspectorField[])field.GetCustomAttributes(typeof(InspectorField), false);
-                foreach (var attr in attrs)
+                if (!value.IsSubclassOf(typeof(ReceiverBase)))
                 {
-                    fields.Add(new InspectorFieldData() { Name = field.Name, Attributes = attr, Value = field.GetValue(receiver) });
+                    Debug.LogWarning($"Cannot assign type {value} that does not extend {typeof(ReceiverBase)} to ThemeDefinition");
+                    return;
                 }
 
-                index++;
+                if (receiverType != value)
+                {
+                    receiverType = value;
+                    ClassName = receiverType.Name;
+                    AssemblyQualifiedName = receiverType.AssemblyQualifiedName;
+                }
             }
-
-            data.Fields = fields;
-            data.Name = receiver.Name;
-            data.HideUnityEvents = receiver.HideUnityEvents;
-
-            return data;
         }
 
-        /// <summary>
-        /// Get the recieverBase types that contain event logic
-        /// </summary>
-        /// <returns></returns>
-        public static InteractableTypesContainer GetEventTypes()
-        {
-            return InteractableTypeFinder.Find(candidateEventTypes, TypeRestriction.DerivedOnly);
-        }
-        
+        // Unity cannot serialize System.Type, thus must save AssemblyQualifiedName
+        // Field here for Runtime use
+        [NonSerialized]
+        private Type receiverType;
+
+        [SerializeField]
+        private string ClassName;
+
+        [SerializeField]
+        private string AssemblyQualifiedName;
+
+        [SerializeField]
+        private List<InspectorPropertySetting> Settings = new List<InspectorPropertySetting>();
+
         /// <summary>
         /// Create the event and setup the values from the inspector
         /// </summary>
-        /// <param name="iEvent"></param>
-        /// <returns></returns>
-        public static ReceiverBase GetReceiver(InteractableEvent iEvent, InteractableTypesContainer interactableTypes)
+        public static ReceiverBase CreateReceiver(InteractableEvent iEvent)
         {
-#if UNITY_EDITOR
-            int index = InspectorField.ReverseLookup(iEvent.ClassName, interactableTypes.ClassNames);
-            Type eventType = interactableTypes.Types[index];
-#else
-            Type eventType = Type.GetType(iEvent.AssemblyQualifiedName);
-#endif
-            // apply the settings?
-            ReceiverBase newEvent = (ReceiverBase)Activator.CreateInstance(eventType, iEvent.Event);
+            // Temporary workaround
+            // This is to fix a bug in GA where the AssemblyQualifiedName was never actually saved. Functionality would work in editor...but never on device player
+            if (iEvent.ReceiverType == null)
+            {
+                var correctType = TypeCacheUtility.GetSubClasses<ReceiverBase>().Where(s => s?.Name == iEvent.ClassName).First();
+                iEvent.ReceiverType = correctType;
+            }
+
+            ReceiverBase newEvent = (ReceiverBase)Activator.CreateInstance(iEvent.ReceiverType, iEvent.Event);
             InspectorGenericFields<ReceiverBase>.LoadSettings(newEvent, iEvent.Settings);
 
             return newEvent;

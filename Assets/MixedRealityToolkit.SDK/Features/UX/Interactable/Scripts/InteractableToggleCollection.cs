@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         [Tooltip("exposed selection changed event")]
         public UnityEvent OnSelectionEvents;
 
-        private void OnEnable()
+        private void Start()
         {
             for (int i = 0; i < ToggleList.Length; ++i)
             {
@@ -29,14 +29,18 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 ToggleList[i].OnClick.AddListener(() => OnSelection(itemIndex));
                 ToggleList[i].CanDeselect = false;
             }
-            
+
+            OnSelection(CurrentIndex, true);
+        }
+
+        private void OnEnable()
+        {
             OnSelection(CurrentIndex, true);
         }
 
         /// <summary>
         /// Sets the selected index and selected Interactive
         /// </summary>
-        /// <param name="index"></param>
         public void SetSelection(int index)
         {
             if (!isActiveAndEnabled ||
@@ -51,15 +55,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Set the toggle state of each button based on the selected item
         /// </summary>
-        /// <param name="index"></param>
-        /// <param name="force"></param>
         protected virtual void OnSelection(int index, bool force = false)
         {
             for (int i = 0; i < ToggleList.Length; ++i)
             {
                 if (i != index)
                 {
-                    ToggleList[i].SetDimensionIndex(0);
+                    ToggleList[i].IsToggled = false;
                 }
             }
 
@@ -67,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (force)
             {
-                ToggleList[index].SetDimensionIndex(1);
+                ToggleList[index].IsToggled = true;
             }
             else
             {

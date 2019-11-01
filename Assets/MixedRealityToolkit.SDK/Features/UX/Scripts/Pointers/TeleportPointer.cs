@@ -76,20 +76,6 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         /// </summary>
         public DistorterGravity GravityDistorter => gravityDistorter;
 
-        private IMixedRealityTeleportSystem teleportSystem = null;
-
-        protected IMixedRealityTeleportSystem TeleportSystem
-        {
-            get
-            {
-                if (teleportSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityTeleportSystem>(out teleportSystem); 
-                }
-                return teleportSystem;
-            }
-        }
-
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -101,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
             if (!lateRegisterTeleport)
             {
-                TeleportSystem?.RegisterHandler<IMixedRealityTeleportHandler>(this);
+                CoreServices.TeleportSystem?.RegisterHandler<IMixedRealityTeleportHandler>(this);
             }
         }
 
@@ -111,9 +97,9 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 
             if (lateRegisterTeleport)
             {
-                if (TeleportSystem == null)
+                if (CoreServices.TeleportSystem == null)
                 {
-                    await new WaitUntil(() => TeleportSystem != null);
+                    await new WaitUntil(() => CoreServices.TeleportSystem != null);
 
                     // We've been destroyed during the await.
                     if (this == null)
@@ -129,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                     }
                 }
                 lateRegisterTeleport = false;
-                TeleportSystem.RegisterHandler<IMixedRealityTeleportHandler>(this);
+                CoreServices.TeleportSystem.RegisterHandler<IMixedRealityTeleportHandler>(this);
             }
         }
 
@@ -137,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         {
             base.OnDisable();
 
-            TeleportSystem?.UnregisterHandler<IMixedRealityTeleportHandler>(this);
+            CoreServices.TeleportSystem?.UnregisterHandler<IMixedRealityTeleportHandler>(this);
         }
 
         private Vector2 currentInputPosition = Vector2.zero;
@@ -209,6 +195,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
             }
         }
 
+        /// <inheritdoc />
         public override void OnPreSceneQuery()
         {
             if (LineBase == null)
@@ -240,11 +227,12 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
             GravityDistorter.enabled = (TeleportSurfaceResult == TeleportSurfaceResult.HotSpot);
         }
 
+        /// <inheritdoc />
         public override void OnPostSceneQuery()
         {
             if (IsSelectPressed)
             {
-                InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, Handedness);
+                CoreServices.InputSystem.RaisePointerDragged(this, MixedRealityInputAction.None, Handedness);
             }
 
             // Use the results from the last update to set our NavigationResult
@@ -320,7 +308,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         public override void OnInputChanged(InputEventData<Vector2> eventData)
         {
             // Don't process input if we've got an active teleport request in progress.
-            if (isTeleportRequestActive || TeleportSystem == null)
+            if (isTeleportRequestActive || CoreServices.TeleportSystem == null)
             {
                 return;
             }
@@ -350,7 +338,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                     {
                         teleportEnabled = true;
 
-                        TeleportSystem?.RaiseTeleportRequest(this, TeleportHotSpot);
+                        CoreServices.TeleportSystem?.RaiseTeleportRequest(this, TeleportHotSpot);
                     }
                     else if (canMove)
                     {
@@ -416,7 +404,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                     if (TeleportSurfaceResult == TeleportSurfaceResult.Valid ||
                         TeleportSurfaceResult == TeleportSurfaceResult.HotSpot)
                     {
-                        TeleportSystem?.RaiseTeleportStarted(this, TeleportHotSpot);
+                        CoreServices.TeleportSystem?.RaiseTeleportStarted(this, TeleportHotSpot);
                     }
                 }
 
@@ -424,7 +412,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                 {
                     canTeleport = false;
                     teleportEnabled = false;
-                    TeleportSystem?.RaiseTeleportCanceled(this, TeleportHotSpot);
+                    CoreServices.TeleportSystem?.RaiseTeleportCanceled(this, TeleportHotSpot);
                 }
             }
 

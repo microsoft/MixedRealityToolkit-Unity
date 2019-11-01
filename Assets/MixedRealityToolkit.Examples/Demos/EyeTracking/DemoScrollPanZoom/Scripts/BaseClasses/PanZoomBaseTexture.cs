@@ -73,9 +73,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// Returns the pan speed.
         /// </summary>
         /// <param name="uvCursorVal">Normalized cursor position in the hit box. Center is assumed to be at [-0.5, 0.5].</param>
-        /// <param name="maxSpeed"></param>
-        /// <param name="minDistThresh"></param>
-        /// <returns></returns>
         public override float ComputePanSpeed(float uvCursorPos, float maxSpeed, float minDistFromCenterForAutoPan)
         {
             // UV space from [0,1] -> Center: [-0.5, 0.5]
@@ -192,7 +189,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                     Vector3 halfsize = gameObject.transform.lossyScale / 2;
 
                     // Let's transform back to the origin: Translate & Rotate
-                    Vector3 transfHitPnt = InputSystem.EyeGazeProvider.HitPosition - center;
+                    Vector3 transfHitPnt = CoreServices.InputSystem.EyeGazeProvider.HitPosition - center;
 
                     // Rotate around the y axis
                     transfHitPnt = Quaternion.AngleAxis(gameObject.transform.rotation.eulerAngles.y, Vector3.down) * transfHitPnt;

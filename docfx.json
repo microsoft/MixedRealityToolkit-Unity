@@ -50,12 +50,14 @@
       "_enableSearch": true,
       "_disableNavbar": false,
       "_appLogoPath": "Documentation/Images/mrt_logo_icon.png",
-      "_appFaviconPath": "Documentation/Images/favicon.ico"
-      // re-add this section if you want to publish a version of the docs that keeps the "improve this doc" link pointing to mrtk_development branch
-      //"_gitContribute": {
-      //  "repo": "https://github.com/Microsoft/MixedRealityToolkit-Unity",
-      //  "branch": "mrtk_development"
-      //}
+      "_appFaviconPath": "Documentation/Images/favicon.ico",
+      // section contribute start
+	  // remove this section if you want to restore default behavior which publishes a version of the docs that keeps the "improve this doc" link pointing to the publishing branch
+      "_gitContribute": {
+        "repo": "https://github.com/Microsoft/MixedRealityToolkit-Unity",
+        "branch": "mrtk_development"
+      }
+	  // section contribute end
     },
     "markdownEngineName": "markdig",
     "dest": "doc",

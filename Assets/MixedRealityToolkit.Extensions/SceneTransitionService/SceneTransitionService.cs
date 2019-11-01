@@ -10,7 +10,12 @@ using Microsoft.MixedReality.Toolkit.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 {
-    [MixedRealityExtensionService(SupportedPlatforms.WindowsStandalone|SupportedPlatforms.MacStandalone|SupportedPlatforms.LinuxStandalone|SupportedPlatforms.WindowsUniversal)]
+    [MixedRealityExtensionService(
+        SupportedPlatforms.WindowsStandalone | SupportedPlatforms.MacStandalone |
+        SupportedPlatforms.LinuxStandalone | SupportedPlatforms.WindowsUniversal,
+        "Scene Transition Service",
+        "SceneTransitionService/DefaultSceneTransitionServiceProfile.asset",
+        "MixedRealityToolkit.Extensions")]
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Extensions/SceneTransitionService/SceneTransitionServiceOverview.html")]
     public class SceneTransitionService : BaseExtensionService, ISceneTransitionService, IMixedRealityExtensionService
     {
@@ -236,7 +241,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             {
                 case ProgressIndicatorState.Open:
                 case ProgressIndicatorState.Opening:
-                    // If it's already open / opening, don't botheer to open again
+                    // If it's already open / opening, don't bother to open again
                     break;
 
                 case ProgressIndicatorState.Closed:
@@ -393,14 +398,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         {
             if (progressIndicatorObject != null)
             {
-                if (Application.isPlaying)
-                {
-                    GameObject.Destroy(progressIndicatorObject);
-                }
-                else
-                {
-                    GameObject.DestroyImmediate(progressIndicatorObject);
-                }
+                GameObjectExtensions.DestroyGameObject(progressIndicatorObject);
             }
         }
 
@@ -412,6 +410,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             }
 
             cameraFader = (ICameraFader)Activator.CreateInstance(sceneTransitionServiceProfile.CameraFaderType.Type);
+            cameraFader.Initialize(sceneTransitionServiceProfile);
 
             if (cameraFader == null)
             {

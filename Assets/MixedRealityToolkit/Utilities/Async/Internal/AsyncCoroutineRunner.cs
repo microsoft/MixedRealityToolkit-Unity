@@ -22,14 +22,22 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
+[assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests.PlayModeTests")]
 namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     /// <summary>
-    /// This Async Coroutine Runner is just a helper object to
+    /// This Async Coroutine Runner is just an object to
     /// ensure that coroutines run properly with async/await.
     /// </summary>
+    /// <remarks>
+    /// The object that this MonoBehavior is attached to must be a root object in the
+    /// scene, as it will be marked as DontDestroyOnLoad (so that when scenes are changed,
+    /// it will persist instead of being destroyed). The runner will force itself to
+    /// the root of the scene if it's rooted elsewhere.
+    /// </remarks>
     internal sealed class AsyncCoroutineRunner : MonoBehaviour
     {
         private static AsyncCoroutineRunner instance;
@@ -75,6 +83,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 }
 
                 instance.gameObject.hideFlags = HideFlags.None;
+
+                // AsyncCoroutineRunner must be at the root so that we can call DontDestroyOnLoad on it.
+                // This is ultimately to ensure that it persists across scene loads/unloads.
+                if (instance.transform.parent != null)
+                {
+                    Debug.LogWarning($"AsyncCoroutineRunner was found as a child of another GameObject {instance.transform.parent}, " +
+                        "it must be a root object in the scene. Moving the AsyncCoroutineRunner to the root.");
+                    instance.transform.parent = null;
+                }
+
 #if !UNITY_EDITOR
                 DontDestroyOnLoad(instance);
 #endif

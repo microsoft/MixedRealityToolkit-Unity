@@ -10,6 +10,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 {
     public static class MixedRealityOptimizeUtils
     {
+        public static bool IsSinglePassInstanced()
+        {
+            return PlayerSettings.stereoRenderingPath == StereoRenderingPath.Instancing;
+        }
+
+        public static void SetSinglePassInstanced()
+        {
+            PlayerSettings.stereoRenderingPath = StereoRenderingPath.Instancing;
+        }
+
         /// <summary>
         /// Checks if the project has depth buffer sharing enabled.
         /// </summary>
@@ -23,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     return true;
                 }
             }
-            else if (IsBuildTargetWMR())
+            else if (IsBuildTargetUWP())
             {
 #if UNITY_2019_1_OR_NEWER
                 if (PlayerSettings.VRWindowsMixedReality.depthBufferSharingEnabled)
@@ -49,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             {
                 PlayerSettings.VROculus.sharedDepthBuffer = enableDepthBuffer;
             }
-            else if (IsBuildTargetWMR())
+            else if (IsBuildTargetUWP())
             {
 #if UNITY_2019
                 PlayerSettings.VRWindowsMixedReality.depthBufferSharingEnabled = enableDepthBuffer;
@@ -128,9 +138,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 EditorUserBuildSettings.activeBuildTarget == BuildTarget.StandaloneWindows64;
         }
 
-        public static bool IsBuildTargetWMR()
+        public static bool IsBuildTargetUWP()
         {
             return EditorUserBuildSettings.activeBuildTarget == BuildTarget.WSAPlayer;
+        }
+
+        public static bool IsBuildTargetAndroid()
+        {
+            return EditorUserBuildSettings.activeBuildTarget == BuildTarget.Android;
+        }
+
+        public static bool IsBuildTargetIOS()
+        {
+            return EditorUserBuildSettings.activeBuildTarget == BuildTarget.iOS;
         }
 
         public static void ChangeProperty(SerializedObject target, string name, Action<SerializedProperty> changer)

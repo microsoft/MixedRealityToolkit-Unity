@@ -78,9 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         /// <inheritdoc />
         bool IMixedRealityCapabilityCheck.CheckCapability(MixedRealityCapability capability)
         {
-            if (capability == MixedRealityCapability.SpatialAwarenessMesh) { return true; }
-
-            return false;
+            return capability == MixedRealityCapability.SpatialAwarenessMesh;
         }
 
         #endregion IMixedRealityCapabilityCheck Implementation
@@ -132,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
             // Remember if we are currently running when Disable is called.
             autoResume = IsRunning;
 
-            // If we are disbled while running...
+            // If we are disabled while running...
             if (IsRunning)
             {
                 // Suspend the observer
@@ -239,7 +237,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
         /// <summary>
         /// Removes an observation.
         /// </summary>
-        /// <param name="meshId"></param>
         private void RemoveMeshObject(int meshId)
         {
             SpatialAwarenessMeshObject meshObject = null;

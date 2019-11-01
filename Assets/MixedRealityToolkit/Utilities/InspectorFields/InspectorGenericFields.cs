@@ -17,8 +17,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// Copies values from Inspector PropertySettings to an instantiated class on start,
         /// helps overcome polymorphism limitations of serialization
         /// </summary>
-        /// <param name="target"></param>
-        /// <param name="settings"></param>
         public static void LoadSettings(T target, List<InspectorPropertySetting> settings)
         {
             Type myType = target.GetType();
@@ -58,8 +56,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// Searches through a class for InspectorField tags creates properties that can be serialized and
         /// automatically rendered in a custom inspector
         /// </summary>
-        /// <param name="source"></param>
-        /// <returns></returns>
         public static List<InspectorPropertySetting> GetSettings(T source)
         {
             Type myType = source.GetType();

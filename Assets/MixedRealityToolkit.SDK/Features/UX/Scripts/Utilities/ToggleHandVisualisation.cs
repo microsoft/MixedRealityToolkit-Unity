@@ -11,37 +11,26 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public bool isHandMeshVisible = false;
         public bool isHandJointVisible = false;
 
-        private IMixedRealityInputSystem inputSystem = null;
-        protected IMixedRealityInputSystem InputSystem
+        /// <summary>
+        /// Initial setting of hand mesh visualization - default is disabled
+        /// </summary>
+        private void Start()
         {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
-                return inputSystem;
-            }
+            UpdateHandVisibility();
         }
 
-        void updateHandVisibility()
+        /// <summary>
+        /// Updates the hand tracking profile with the current local visualization settings
+        /// </summary>
+        private void UpdateHandVisibility()
         {
-            MixedRealityHandTrackingProfile handTrackingProfile = InputSystem?.InputSystemProfile?.HandTrackingProfile;
+            MixedRealityHandTrackingProfile handTrackingProfile = CoreServices.InputSystem?.InputSystemProfile?.HandTrackingProfile;
             if (handTrackingProfile != null)
-            { 
+            {
                 handTrackingProfile.EnableHandMeshVisualization = isHandMeshVisible;
                 handTrackingProfile.EnableHandJointVisualization = isHandJointVisible;
             }
         }
-
-        /// <summary>
-        /// Initial setting of hand mesh visualization - default is disabled
-        /// </summary>
-        void Start()
-        {
-            updateHandVisibility();
-        }
-
 
         /// <summary>
         /// Toggles hand mesh visualization
@@ -49,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public void OnToggleHandMesh()
         {
             isHandMeshVisible = !isHandMeshVisible;
-            updateHandVisibility();
+            UpdateHandVisibility();
         }
 
         /// <summary>
@@ -58,8 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public void OnToggleHandJoint()
         {
             isHandJointVisible = !isHandJointVisible;
-            updateHandVisibility();
+            UpdateHandVisibility();
         }
-
     }
 }

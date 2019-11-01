@@ -16,9 +16,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// Takes a point in the coordinate space specified by the "from" transform and transforms it to be the correct
         /// point in the coordinate space specified by the "to" transform applies rotation, scale and translation.
         /// </summary>
-        /// <param name="from"></param>
-        /// <param name="to"></param>
-        /// <param name="fromPoint"></param>
         /// <returns>Point to.</returns>
         public static Vector3 TransformPointFromTo(Transform from, Transform to, Vector3 fromPoint)
         {
@@ -30,9 +27,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// Takes a direction in the coordinate space specified by the "from" transform and transforms it to be the correct direction in the coordinate space specified by the "to" transform
         /// applies rotation only, no translation or scale
         /// </summary>
-        /// <param name="from"></param>
-        /// <param name="to"></param>
-        /// <param name="fromDirection"></param>
         /// <returns>Direction to.</returns>
         public static Vector3 TransformDirectionFromTo(Transform from, Transform to, Vector3 fromDirection)
         {
@@ -44,15 +38,27 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// Takes a vector in the coordinate space specified by the "from" transform and transforms it to be the correct direction in the coordinate space specified by the "to" transform
         /// applies rotation and scale, no translation
         /// </summary>
-        /// <param name="from"></param>
-        /// <param name="to"></param>
-        /// <param name="vecInFrom"></param>
-        /// <returns></returns>
         public static Vector3 TransformVectorFromTo(Transform from, Transform to, Vector3 vecInFrom)
         {
             Vector3 vecInWorld = (from == null) ? vecInFrom : from.TransformVector(vecInFrom);
             Vector3 vecInTo = (to == null) ? vecInWorld : to.InverseTransformVector(vecInWorld);
             return vecInTo;
+        }
+
+        /// <summary>
+        /// Retrieve angular measurement describing how large a sphere or circle appears from a given point of view.
+        /// Takes an angle (at given point of view) and a distance and returns the actual diameter of the object.
+        /// </summary>
+        public static float ScaleFromAngularSizeAndDistance(float angle, float distance)
+        {
+            float scale = 2.0f * distance * Mathf.Tan(angle * Mathf.Deg2Rad * 0.5f);            
+            return scale;
+        }
+
+        [System.Obsolete("Method obsolete. Use ScaleFromAngularSizeAndDistance instead")]
+        public static float AngularScaleFromDistance(float angle, float distance)
+        {
+            return ScaleFromAngularSizeAndDistance(angle, distance);
         }
 
         /// <summary>
@@ -73,7 +79,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// Creates a quaternion containing the rotation from the input matrix.
         /// </summary>
         /// <param name="m">Input matrix to convert to quaternion</param>
-        /// <returns></returns>
         public static Quaternion QuaternionFromMatrix(Matrix4x4 m)
         {
             // TODO: test and replace with this simpler, more unity-friendly code
@@ -106,7 +111,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Project vector onto XZ plane
         /// </summary>
-        /// <param name="v"></param>
         /// <returns>result of projecting v onto XZ plane</returns>
         public static Vector3 XZProject(Vector3 v)
         {
@@ -116,7 +120,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Project vector onto YZ plane
         /// </summary>
-        /// <param name="v"></param>
         /// <returns>result of projecting v onto YZ plane</returns>
         public static Vector3 YZProject(Vector3 v)
         {
@@ -126,7 +129,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Project vector onto XY plane
         /// </summary>
-        /// <param name="v"></param>
         /// <returns>result of projecting v onto XY plane</returns>
         public static Vector3 XYProject(Vector3 v)
         {
@@ -136,10 +138,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// <summary>
         /// Returns the distance between a point and an infinite line defined by two points; linePointA and linePointB
         /// </summary>
-        /// <param name="point"></param>
-        /// <param name="linePointA"></param>
-        /// <param name="linePointB"></param>
-        /// <returns></returns>
         public static float DistanceOfPointToLine(Vector3 point, Vector3 linePointA, Vector3 linePointB)
         {
             Vector3 closestPoint = ClosestPointOnLineToPoint(point, linePointA, linePointB);
@@ -370,7 +368,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
 
             // now find and count actual inliers and do least-squares to find best fit
-            var inlierList = rays.Where(r => DistanceOfPointToLine(r, nearestPoint) < ransac_threshold);
+            IEnumerable<Ray> inlierList = rays.Where(r => DistanceOfPointToLine(r, nearestPoint) < ransac_threshold);
             numActualInliers = inlierList.Count();
             if (numActualInliers >= 2)
             {
@@ -453,5 +451,69 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             Vector2 diff = pointA - pointB;
             return MathUtilities.RadiansToDegrees(Mathf.Atan2(diff.y, diff.x));
         }
+
+        /// <summary>
+        /// Clamps via a lerp for a "soft" clamp effect
+        /// </summary>
+        /// <param name="pos">number to clamp</param>
+        /// <param name="min">if pos is less than min, then lerp clamps to this value</param>
+        /// <param name="max">if pos is more than max, lerp clamps to this value</param>
+        /// <param name="clampFactor"> Range from 0.0f to 1.0f of how close to snap to min and max </param>
+        /// <returns>A soft clamped value</returns>
+        public static float CLampLerp(float pos, float min, float max, float clampFactor)
+        {
+            clampFactor = Mathf.Clamp(clampFactor, 0.0f, 1.0f);
+            if (pos < min)
+            {
+                return Mathf.Lerp(pos, min, clampFactor);
+            }
+            else if (pos > max)
+            {
+                return Mathf.Lerp(pos, max, clampFactor);
+            }
+
+            return pos;
+        }
+        
+        /// <summary>
+        /// Calculates the direction vector from a rotation.
+        /// </summary>
+        /// <param name="rotation">Quaternion representing the rotation of the object.</param>
+        /// <returns>
+        /// Normalized Vector3 representing the direction vector.
+        /// </returns>
+        public static Vector3 GetDirection(Quaternion rotation)
+        {
+            return (rotation * Vector3.forward).normalized;
+        }
+
+        /// <summary>
+        /// Returns if a point lies within a frame of reference view as defined by arguments
+        /// </summary>
+        /// <remarks>
+        /// Field of view parameters are in degrees and plane distances are in meters 
+        /// </remarks>
+        public static bool IsInFOV(Vector3 testPosition, Transform frameOfReference, 
+            float verticalFOV, float horizontalFOV, 
+            float minPlaneDistance, float maxPlaneDistance)
+        {
+            Vector3 deltaPos = testPosition - frameOfReference.position;
+            Vector3 referenceDeltaPos = TransformDirectionFromTo(null, frameOfReference, deltaPos);
+
+            if (referenceDeltaPos.z < minPlaneDistance || referenceDeltaPos.z > maxPlaneDistance)
+            {
+                return false;
+            }
+
+            float verticalFovHalf = verticalFOV * 0.5f;
+            float horizontalFovHalf = horizontalFOV * 0.5f;
+
+            referenceDeltaPos = referenceDeltaPos.normalized;
+            float yaw = Mathf.Asin(referenceDeltaPos.x) * Mathf.Rad2Deg;
+            float pitch = Mathf.Asin(referenceDeltaPos.y) * Mathf.Rad2Deg;
+
+            return Mathf.Abs(yaw) < horizontalFovHalf && Mathf.Abs(pitch) < verticalFovHalf;
+        }
+
     }
 }

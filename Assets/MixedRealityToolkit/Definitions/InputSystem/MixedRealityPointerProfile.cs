@@ -73,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("The Pointer options for this profile.")]
-        private PointerOption[] pointerOptions = new PointerOption[0];
+        private PointerOption[] pointerOptions = System.Array.Empty<PointerOption>();
 
         /// <summary>
         /// The Pointer options for this profile.

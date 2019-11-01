@@ -81,6 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
             set { axisOffset = value; }
         }
 
+        /// <inheritdoc />
         protected override Vector3 DistortPointInternal(Vector3 point, float strength)
         {
             Vector3 wiggly = point;
@@ -91,6 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
             return point + (wiggly * strength);
         }
 
+        /// <inheritdoc />
         protected override Vector3 DistortScaleInternal(Vector3 point, float strength)
         {
             return point;

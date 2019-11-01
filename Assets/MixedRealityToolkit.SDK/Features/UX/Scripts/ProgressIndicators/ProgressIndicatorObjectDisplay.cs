@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     /// <summary>
-    /// This class manages how a gameobject rotates and/or scales
+    /// This class manages how a GameObject rotates and/or scales
     /// when activated as part of a Progress Indicator effect.
     /// </summary>
     public class ProgressIndicatorObjectDisplay : MonoBehaviour, IProgressIndicator
