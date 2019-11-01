@@ -21,6 +21,54 @@ namespace Microsoft.MixedReality.Toolkit
     public static class CoreServices
     {
         /// <summary>
+        /// Cached reference to the active instance of the boundary system.
+        /// If system is destroyed, reference will be invalid. Please use ResetCacheReferences() 
+        /// </summary>
+        public static IMixedRealityBoundarySystem BoundarySystem
+        {
+            get
+            {
+                return GetService<IMixedRealityBoundarySystem>();
+            }
+        }
+
+        /// <summary>
+        /// Cached reference to the active instance of the camera system.
+        /// If system is destroyed, reference will be invalid. Please use ResetCacheReferences() 
+        /// </summary>
+        public static IMixedRealityCameraSystem CameraSystem
+        {
+            get
+            {
+                return GetService<IMixedRealityCameraSystem>();
+            }
+        }
+
+        /// <summary>
+        /// Cached reference to the active instance of the diagnostics system.
+        /// If system is destroyed, reference will be invalid. Please use ResetCacheReferences() 
+        /// </summary>
+        public static IMixedRealityDiagnosticsSystem DiagnosticsSystem
+        {
+            get
+            {
+                return GetService<IMixedRealityDiagnosticsSystem>();
+            }
+        }
+
+        /// <summary>
+        /// Cached reference to the active instance of the focus provider.
+        /// If system is destroyed, reference will be invalid. Please use ResetCacheReferences() 
+        /// </summary>
+        public static IMixedRealityFocusProvider FocusProvider
+        {
+            get
+            {
+                return GetService<IMixedRealityFocusProvider>();
+            }
+        }
+
+        /// <summary>
         /// Cached reference to the active instance of the input system.
         /// If system is destroyed, reference will be invalid. Please use ResetCacheReferences() 
         /// </summary>
@@ -33,14 +81,26 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Cached reference to the active instance of the boundary system.
+        /// Cached reference to the active instance of the raycast provider.
         /// If system is destroyed, reference will be invalid. Please use ResetCacheReferences() 
         /// </summary>
-        public static IMixedRealityBoundarySystem BoundarySystem
+        public static IMixedRealityRaycastProvider RaycastProvider
         {
             get
             {
-                return GetService<IMixedRealityBoundarySystem>();
+                return GetService<IMixedRealityRaycastProvider>();
+            }
+        }
+
+        /// <summary>
+        /// Cached reference to the active instance of the scene system.
+        /// If system is destroyed, reference will be invalid. Please use ResetCacheReferences() 
+        /// </summary>
+        public static IMixedRealitySceneSystem SceneSystem
+        {
+            get
+            {
+                return GetService<IMixedRealitySceneSystem>();
             }
         }
 
@@ -65,42 +125,6 @@ namespace Microsoft.MixedReality.Toolkit
             get
             {
                 return GetService<IMixedRealityTeleportSystem>();
-            }
-        }
-
-        /// <summary>
-        /// Cached reference to the active instance of the diagnostics system.
-        /// If system is destroyed, reference will be invalid. Please use ResetCacheReferences() 
-        /// </summary>
-        public static IMixedRealityDiagnosticsSystem DiagnosticsSystem
-        {
-            get
-            {
-                return GetService<IMixedRealityDiagnosticsSystem>();
-            }
-        }
-
-        /// <summary>
-        /// Cached reference to the active instance of the camera system.
-        /// If system is destroyed, reference will be invalid. Please use ResetCacheReferences() 
-        /// </summary>
-        public static IMixedRealityCameraSystem CameraSystem
-        {
-            get
-            {
-                return GetService<IMixedRealityCameraSystem>();
-            }
-        }
-
-        /// <summary>
-        /// Cached reference to the active instance of the camera system.
-        /// If system is destroyed, reference will be invalid. Please use ResetCacheReferences() 
-        /// </summary>
-        public static IMixedRealitySceneSystem SceneSystem
-        {
-            get
-            {
-                return GetService<IMixedRealitySceneSystem>();
             }
         }
 
