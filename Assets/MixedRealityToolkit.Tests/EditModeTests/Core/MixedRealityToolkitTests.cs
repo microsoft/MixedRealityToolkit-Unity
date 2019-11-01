@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
             // Register ITestExtensionService1
-            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1(null, "Test ExtensionService 1",10, null));
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1("Test ExtensionService 1",10, null));
 
             // Retrieve ITestExtensionService1
             Assert.IsNotNull(MixedRealityToolkit.Instance.GetService<IMixedRealityExtensionService>());
@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
             // Register ITestExtensionService1
-            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1(null, "Test ExtensionService 1", 10, null));
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1("Test ExtensionService 1", 10, null));
 
             // Retrieve ITestExtensionService1
             var extensionService1 = MixedRealityToolkit.Instance.GetService<ITestExtensionService1>();
@@ -111,7 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
             // Register ITestExtensionService1
-            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1(null, "Test ExtensionService 1", 10, null));
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1("Test ExtensionService 1", 10, null));
 
             // Retrieve ITestExtensionService1
             var extensionService1 = MixedRealityToolkit.Instance.GetService<ITestExtensionService1>();
@@ -137,8 +137,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
             // Add test ExtensionService
-            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1(null, "Test ExtensionService 1", 10, null));
-            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(new TestExtensionService2(null, "Test ExtensionService 2", 10, null));
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1("Test ExtensionService 1", 10, null));
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(new TestExtensionService2("Test ExtensionService 2", 10, null));
 
             // Retrieve all registered IMixedRealityExtensionServices
             var extensionServices = MixedRealityToolkit.Instance.GetServices<IMixedRealityExtensionService>();
@@ -156,8 +156,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
             // Add test ExtensionService
-            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1(null, "Test ExtensionService 1", 10, null));
-            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(new TestExtensionService2(null, "Test ExtensionService 2", 10, null));
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1("Test ExtensionService 1", 10, null));
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(new TestExtensionService2("Test ExtensionService 2", 10, null));
 
             // Retrieve all registered IMixedRealityExtensionServices
             var extensionServices = MixedRealityToolkit.Instance.GetServices<IMixedRealityExtensionService>();
@@ -197,7 +197,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
             // Add test ExtensionService 1
-            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1(null, "Test ExtensionService 1", 10, null));
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1("Test ExtensionService 1", 10, null));
 
             // Validate non-existent ExtensionService
             var isServiceRegistered = MixedRealityToolkit.Instance.IsServiceRegistered<ITestExtensionService2>();
@@ -214,7 +214,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             const string serviceName = "Test ExtensionService 1";
 
             // Add test ITestExtensionService1
-            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1(null, serviceName, 10, null));
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1(serviceName, 10, null));
 
             // Validate non-existent ExtensionService
             MixedRealityToolkit.Instance.GetService<ITestExtensionService2>(serviceName);
@@ -230,11 +230,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
 
             // Add test ExtensionService 1
             string service1Name = "Test14-1";
-            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1(null, service1Name, 10, null));
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1(service1Name, 10, null));
 
             // Add test ExtensionService 2
             string service2Name = "Test14-2";
-            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(new TestExtensionService2(null, service2Name, 10, null));
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(new TestExtensionService2(service2Name, 10, null));
 
             // Retrieve Test ExtensionService 2-2
             var extensionService2 = MixedRealityToolkit.Instance.GetService<ITestExtensionService2>(service2Name);
@@ -252,11 +252,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
             // Add test ExtensionService 1
-            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1(null, "Test15-1", 10, null));
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1("Test15-1", 10, null));
 
             // Add test ExtensionServices 2
-            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(new TestExtensionService2(null, "Test15-2.1", 10, null));
-            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(new TestExtensionService2(null, "Test15-2.2", 10, null));
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(new TestExtensionService2("Test15-2.1", 10, null));
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(new TestExtensionService2("Test15-2.2", 10, null));
 
             // Retrieve ExtensionService2
             var extensionServices = MixedRealityToolkit.Instance.GetServices<ITestExtensionService2>();
@@ -271,12 +271,12 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
             // Add test 1 services
-            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1(null, "Test16-1.1", 10, null));
-            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1(null, "Test16-1.2", 10, null));
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1("Test16-1.1", 10, null));
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1("Test16-1.2", 10, null));
 
             // Add test 2 services
-            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(new TestExtensionService2(null, "Test16-2.1", 10, null));
-            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(new TestExtensionService2(null, "Test16-2.2", 10, null));
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(new TestExtensionService2("Test16-2.1", 10, null));
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(new TestExtensionService2("Test16-2.2", 10, null));
 
             // Retrieve all extension services.
             var allExtensionServices = MixedRealityToolkit.Instance.GetServices<IMixedRealityExtensionService>();
@@ -294,11 +294,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
 
             // Add test 1 services
             MixedRealityToolkit.Instance.RegisterService<ITestDataProvider1>(new TestDataProvider1(null, "Test07-01-1.1", 10));
-            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1(null, "Test07-01-1.2",10, null));
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1("Test07-01-1.2",10, null));
 
             // Add test 2 services
             MixedRealityToolkit.Instance.RegisterService<ITestInputDataProvider>(new TestInputDataProvider(null, "Test07-01-2.1", 10, null));
-            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(new TestExtensionService2(null, "Test07-01-2.2",10, null));
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(new TestExtensionService2("Test07-01-2.2",10, null));
 
             // Enable all test services
             MixedRealityToolkit.Instance.EnableAllServicesByType(typeof(ITestService));
@@ -320,11 +320,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
 
             // Add test 1 services
             MixedRealityToolkit.Instance.RegisterService<ITestDataProvider1>(new TestDataProvider1(null, "Test07-01-1.1", 10));
-            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1(null, "Test07-01-1.2",10, null));
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(new TestExtensionService1("Test07-01-1.2",10, null));
 
             // Add test 2 services
             MixedRealityToolkit.Instance.RegisterService<ITestInputDataProvider>(new TestInputDataProvider(null, "Test07-01-2.1", 10, null));
-            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(new TestExtensionService2(null, "Test07-01-2.2",10, null));
+            MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(new TestExtensionService2("Test07-01-2.2",10, null));
 
             // Enable all test services
             MixedRealityToolkit.Instance.EnableAllServicesByType(typeof(ITestService));
@@ -358,13 +358,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
-            ITestExtensionService1 service1 = new TestExtensionService1(null, "Service1", 20, null);
+            ITestExtensionService1 service1 = new TestExtensionService1("Service1", 20, null);
             MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(service1);
 
-            ITestExtensionService2 service2 = new TestExtensionService2(null, "Service2", 30, null);
+            ITestExtensionService2 service2 = new TestExtensionService2("Service2", 30, null);
             MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(service2);
 
-            ITestExtensionService3 service3 = new TestExtensionService3(null, "Service3", 10, null);
+            ITestExtensionService3 service3 = new TestExtensionService3("Service3", 10, null);
             MixedRealityToolkit.Instance.RegisterService<ITestExtensionService3>(service3);
 
             // The order should be service3, service1, service2 because:
@@ -385,13 +385,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
 
-            ITestExtensionService3 service3 = new TestExtensionService3(null, "Service3", 10, null);
+            ITestExtensionService3 service3 = new TestExtensionService3("Service3", 10, null);
             MixedRealityToolkit.Instance.RegisterService<ITestExtensionService3>(service3);
 
-            ITestExtensionService1 service1 = new TestExtensionService1(null, "Service1", 20, null);
+            ITestExtensionService1 service1 = new TestExtensionService1("Service1", 20, null);
             MixedRealityToolkit.Instance.RegisterService<ITestExtensionService1>(service1);
 
-            ITestExtensionService2 service2 = new TestExtensionService2(null, "Service2", 30, null);
+            ITestExtensionService2 service2 = new TestExtensionService2("Service2", 30, null);
             MixedRealityToolkit.Instance.RegisterService<ITestExtensionService2>(service2);
 
             MixedRealityToolkit.Instance.UnregisterService<ITestExtensionService2>();
