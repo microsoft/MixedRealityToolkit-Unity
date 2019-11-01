@@ -222,7 +222,6 @@ namespace Microsoft.MixedReality.Toolkit
                     // Missing method exceptions are intentionally re-thrown so that registrar's can handle
                     // multiple constructor overloads.
                     Debug.LogWarning($"Failed to find an appropriate constructor for the {concreteType.Name} service. Adding the Registrar instance and re-attempting registration.");
-#pragma warning disable 0618
                     List<object> updatedArgs = new List<object>();
                     updatedArgs.Add(this);
                     updatedArgs.AddRange(args);
@@ -231,7 +230,6 @@ namespace Microsoft.MixedReality.Toolkit
                         concreteType,
                         supportedPlatforms,
                         updatedArgs.ToArray());
-#pragma warning restore 0618
                 }
 
                 Debug.LogError($"Failed to register the {concreteType.Name} service: {e.GetType()} - {e.Message}");
