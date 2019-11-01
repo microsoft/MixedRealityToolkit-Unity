@@ -49,7 +49,7 @@ From here you can navigate to all the configuration profiles for the MRTK, inclu
 * [Speech commands](#speech)
 * [Controller mapping configuration](#mapping)
 * [Controller visualization settings](#visualization)
-* [Service Inspectors](#inspectors)
+* [Editor Utilities](#editor-utilities)
 
 These configuration profiles are detailed below in their relevant sections:
 
@@ -306,17 +306,31 @@ If your controller representation in the scene needs to be offset from the physi
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerVisualizationProfile.png" width="650px" style="display:block;">
 
+<a name="editor-utilities"></a>
 
-<a name="inspectors"></a>
+## Editor Utilities
 
-## Service Inspectors
+The following utilities work only in the editor and are useful to improve development productivity.
+
+![MRTK Editor Configuration Utilities](../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_EditorConfiguration.png)
+
+### Service Inspectors
 
 Service Inspectors are an editor-only feature that generates in-scene objects representing active services. Selecting these objects displays inspectors which offer documentation links, control over editor visualizations and insight into the state of the service.
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ServiceInspectors.PNG" width="350px" style="display:block;">
 
-You can enable service inspectors by checking 'Use Service Inspectors' under Editor Settings in your Configuration Profile.
+You can enable service inspectors by checking *Use Service Inspectors* under *Editor Settings* in the Configuration Profile.
 
-<img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_EnableServiceInspectors.PNG" width="650px" style="display:block;"><br/>
-<sup>Enable Service Inspectors</sup>
+### Depth Buffer Renderer
 
+Sharing the depth buffer with some mixed reality platforms can improve [hologram stabilization](hologram-stabilization.md). For example, the Windows Mixed Reality platform can modify the rendered scene per-pixel to account for subtle head movements during the time it took to render a frame. However, these techniques require depth buffers with accurate data to know where and how far geometry is from the user. 
+
+To ensure a scene renders all necessary data to the depth buffer, developers can toggle the *Render Depth Buffer* feature under *Editor Settings* in the Configuration Profile. This will take the current depth buffer and render it as color to the scene view by applying a post-processing effect, [`DepthBufferRenderer `](xref:Microsoft.MixedReality.Toolkit.Rendering.DepthBufferRenderer ), to the main camera. 
+
+![Render Depth Buffer Utility](Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DepthBufferExample.gif)
+<sup>The blue cylinder in the scene has a material with ZWrite off so no depth data is written</sup>
+
+## See Also
+
+- [Hologram Stabilization](hologram-stabilization.md).
