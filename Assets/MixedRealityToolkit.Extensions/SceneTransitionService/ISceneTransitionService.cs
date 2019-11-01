@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.UI;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -36,12 +37,12 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         Color FadeColor { get; set; }
 
         /// <summary>
-        /// Time in seconds for fade in to complete.
+        /// The default time in seconds for fade in to complete.
         /// </summary>
         float FadeInTime { get; set; }
         
         /// <summary>
-        /// Time in seconds for fade out to complete.
+        /// The default time in seconds for fade out to complete.
         /// </summary>
         float FadeOutTime { get; set; }
 
@@ -59,6 +60,16 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         /// From 0 to 1
         /// </summary>
         float TransitionProgress { get; }
+
+        /// <summary>
+        /// Fades out, enables progress indicator, execute scene operations in order, disables progress indicator, fades back in
+        /// </summary>
+        /// <param name="sceneOperations">A set of tasks from the Scene System.</param>
+        /// <param name="fadeOutTime">Overrides the default FadeOutTIme value.</param>
+        /// <param name="fadeInTime">Overrides the default FadeInTime value.</param>
+        /// <param name="progressIndicator">If null, default progress indicator prefab will be used (or none if default is disabled in profile)</param>
+        /// <returns></returns>
+        Task DoSceneTransition(IEnumerable<Func<Task>> sceneOperations, float fadeOutTime, float fadeInTime, IProgressIndicator progressIndicator = null);
 
         /// <summary>
         /// Fades out, enables progress indicator, execute scene operations in order, disables progress indicator, fades back in
@@ -85,14 +96,24 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         void SetCustomFadeTargetCameras(IEnumerable<Camera> customFadeTargetCameras);
         
         /// <summary>
-        /// Fades target cameras out to color. Can be used independently of scene transitions provided no transition is taking place.
+        /// Fades target cameras out to color. Can be used independently of scene transitions provided no transition is taking place. Uses default FadeOutTime.
         /// </summary>
         Task FadeOut();
 
         /// <summary>
-        /// Fades target cameras in. Instant fade-out will occur if fade state is not opaque. Can be used independently of scene transitions provided no transition is taking place.
+        /// Fades target cameras in. Instant fade-out will occur if fade state is not opaque. Can be used independently of scene transitions provided no transition is taking place. Uses default FadeInTime.
         /// </summary>
         Task FadeIn();
+
+        /// <summary>
+        /// Fades target cameras out to color. Can be used independently of scene transitions provided no transition is taking place.
+        /// </summary>
+        Task FadeOut(float fadeOutTime);
+
+        /// <summary>
+        /// Fades target cameras in. Instant fade-out will occur if fade state is not opaque. Can be used independently of scene transitions provided no transition is taking place.
+        /// </summary>
+        Task FadeIn(float fadeInTime);
 
         /// <summary>
         /// Instantiates the default progress indicator and returns its main transform. Can be used independently of scene transitions provided no transition is taking place.
