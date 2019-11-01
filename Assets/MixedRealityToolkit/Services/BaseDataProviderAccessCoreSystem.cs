@@ -62,11 +62,26 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        /// <param name="profile">The configuration profile for the service.</param>
+        [Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
         public BaseDataProviderAccessCoreSystem(
             IMixedRealityServiceRegistrar registrar,
-            BaseMixedRealityProfile profile = null) : base(registrar, profile)
+            BaseMixedRealityProfile profile = null) : this(profile)
         {
+            Registrar = registrar;
         }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="profile">The configuration profile for the service.</param>
+        public BaseDataProviderAccessCoreSystem(
+            BaseMixedRealityProfile profile = null) : base(profile)
+        { }
 
         #region IMixedRealityDataProviderAccess Implementation
 

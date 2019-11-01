@@ -37,14 +37,28 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
             Lighting = 2,
         }
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        /// <param name="profile">The configuration profile for the service.</param>
+        [Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
         public MixedRealitySceneSystem(
             IMixedRealityServiceRegistrar registrar,
-            MixedRealitySceneSystemProfile profile) : base(registrar, profile)
+            MixedRealitySceneSystemProfile profile) : this(profile)
         {
-            this.profile = profile;
+            Registrar = registrar;
         }
 
-        private MixedRealitySceneSystemProfile profile;
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="profile">The configuration profile for the service.</param>
+        public MixedRealitySceneSystem(
+            MixedRealitySceneSystemProfile profile) : base(profile)
+        { }
+
+        private MixedRealitySceneSystemProfile profile => ConfigurationProfile as MixedRealitySceneSystemProfile;
 
         // Internal scene operation info
         private bool managerSceneOpInProgress;

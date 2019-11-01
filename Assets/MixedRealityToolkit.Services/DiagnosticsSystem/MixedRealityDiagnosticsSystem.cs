@@ -12,9 +12,26 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Diagnostics/DiagnosticsSystemGettingStarted.html")]
     public class MixedRealityDiagnosticsSystem : BaseCoreSystem, IMixedRealityDiagnosticsSystem
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        /// <param name="profile">The configuration profile for the service.</param>
+        [System.Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
         public MixedRealityDiagnosticsSystem(
             IMixedRealityServiceRegistrar registrar,
-            MixedRealityDiagnosticsProfile profile) : base(registrar, profile)
+            MixedRealityDiagnosticsProfile profile) : this(profile)
+        {
+            Registrar = registrar;
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="profile">The configuration profile for the service.</param>
+        [System.Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
+        public MixedRealityDiagnosticsSystem(
+            MixedRealityDiagnosticsProfile profile) : base(profile)
         { }
 
         /// <inheritdoc/>
