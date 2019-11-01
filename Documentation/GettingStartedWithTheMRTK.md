@@ -80,6 +80,49 @@ To create a **HoloLens application**, switch to Universal Windows Platform:
 >[!NOTE]
 > The Mixed Reality Toolkit will prompt to apply recommended changes to the project when the platform is selected. Whenever the platform is switched, the appropriate settings will be checked and prompted, if necessary.
 
+### Add MRTK to a new scene or new project
+
+1. Create a new Unity project, or start a new scene in your current project. 
+
+2. Make sure you have imported the MRTK packages (we recommend both Foundation and Examples, though Examples is not required) following [the steps above](#import-mrtk-packages-into-your-unity-project).
+
+3. From the menu bar, select Mixed Reality Toolkit -> Add to Scene and Configure
+
+![Configure to scene](../Documentation/Images/MRTK_ConfigureScene.png)
+
+4. You will see a prompt like this:
+
+![MRTK Configure Dialog](../Documentation/Images/MRTK_ConfigureDialog.png)
+
+Click "OK".
+
+5. You will then be prompted to choose an MRTK Configuration profile. Double click "DefaultMixedRealityToolkitConfigurationProfile".
+
+![MRTK Select Configure Dialog](../Documentation/Images/MRTK_SelectConfigurationDialog.png)
+
+For more information on profiles, please see the [profiles](Profiles/Profiles.md) article.
+
+> [!NOTE] 
+> If you are getting started on the HoloLens or HoloLens 2, you should choose the "DefaultHoloLens1ConfigurationProfile" or DefaultHoloLens2ConfigurationProfile" instead.
+> See the [profiles](Profiles/Profiles.md#hololens-2-profile) for more information on the differences between DefaultMixedRealityToolkitConfigurationProfile and DefaultHoloLens2ConfigurationProfile.
+
+You will then see the following in your Scene hierarchy:
+
+![MRTK Scene Setup](../Documentation/Images/MRTK_SceneSetup.png)
+
+Which contains the following:
+
+* **Mixed Reality Toolkit** - The toolkit itself, providing the central configuration entry point for the entire framework.
+* **MixedRealityPlayspace** - The parent object for the headset, which ensures the headset / controllers and other required systems are managed correctly in the scene.
+* The Main Camera is moved as a child to the Playspace - Which allows the playspace to manage the camera in conjunction with the SDKs
+
+>[!NOTE] 
+> While working in your scene, **DO NOT move the Main Camera** (or the **MixedRealityPlayspace**) from the scene origin (0,0,0).  This is controlled by the MRTK and the active SDK. If you need to move the players start point, then **move the scene content and NOT the camera**!
+
+6. Hit play and test out hand simulation by pressing spacebar.
+
+You are now ready to build and deploy to device! Follow the steps instructions at [Build and Deploy MRTK](BuildAndDeploy.md).
+
 ### Getting started tutorials
 
 If you are new to MRTK, or MR development, we recommend you check out the [Getting started tutorials](https://docs.microsoft.com/en-us/windows/mixed-reality/mrlearning-base) which uses MRTK v2. 
@@ -128,47 +171,6 @@ How to simulate hand input:
 Have fun exploring the scene! You can learn more about the UI controls [in the hand interaction examples guide](README_HandInteractionExamples.md). Also, read through [input simulation docs](InputSimulation/InputSimulationService.md) to learn more about in-editor hand input simulation in MRTK.
 
 Congratulations, you just used your first MRTK scene. Now onto creating your own experiences...
-
-### Add MRTK to a new scene or new project
-
-1. Create a new Unity project, or start a new scene in your current project. 
-
-2. Make sure you have imported the MRTK packages (we recommend both Foundation and Examples, though Examples is not required) following [the steps above](#import-mrtk-packages-into-your-unity-project).
-
-3. From the menu bar, select Mixed Reality Toolkit -> Add to Scene and Configure
-
-![Configure to scene](../Documentation/Images/MRTK_ConfigureScene.png)
-
-4. You will see a prompt like this:
-
-![MRTK Configure Dialog](../Documentation/Images/MRTK_ConfigureDialog.png)
-
-Click "OK".
-
-5. You will then be prompted to choose an MRTK Configuration profile. Double click "DefaultMixedRealityToolkitConfigurationProfile".
-
-![MRTK Select Configure Dialog](../Documentation/Images/MRTK_SelectConfigurationDialog.png)
-
-> **NOTE**: Note that if you are getting started on the HoloLens or HoloLens 2, you should choose the "DefaultHoloLens1ConfigurationProfile" or "DefaultHoloLens2ConfigurationProfile" instead.
-> See the [profiles](Profiles/Profiles.md#hololens-2-profile) for more information on the differences between 
-> DefaultMixedRealityToolkitConfigurationProfile and DefaultHoloLens2ConfigurationProfile.
-
-You will then see the following in your Scene hierarchy:
-
-![MRTK Scene Setup](../Documentation/Images/MRTK_SceneSetup.png)
-
-Which contains the following:
-
-* **Mixed Reality Toolkit** - The toolkit itself, providing the central configuration entry point for the entire framework.
-* **MixedRealityPlayspace** - The parent object for the headset, which ensures the headset / controllers and other required systems are managed correctly in the scene.
-* The Main Camera is moved as a child to the Playspace - Which allows the playspace to manage the camera in conjunction with the SDKs
-
-**Note** While working in your scene, **DO NOT move the Main Camera** (or the playspace) from the scene origin (0,0,0).  This is controlled by the MRTK and the active SDK.
-If you need to move the players start point, then **move the scene content and NOT the camera**!
-
-6. Hit play and test out hand simulation by pressing spacebar.
-
-You are now ready to build and deploy to device! Follow the steps instructions at [Build and Deploy MRTK](BuildAndDeploy.md).
 
 ## Next steps
 
