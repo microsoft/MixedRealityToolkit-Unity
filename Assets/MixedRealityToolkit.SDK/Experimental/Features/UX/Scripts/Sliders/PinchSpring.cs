@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Input.Utilities;
 using Microsoft.MixedReality.Toolkit.UI;
 using UnityEngine;
 
@@ -201,14 +200,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             manipulatePointer = eventData.Pointer;
 
             // Continue to forward the events upward because this component is a passive observer.
-            EventSystemExtensions.ExecuteHierarchyUpward(gameObject, eventData, MixedRealityEventHandlers.OnPointerDownEventHandler);
+            EventSystemExtensions.ExecuteHierarchyUpward(gameObject, eventData, MixedRealityInputSystem.OnPointerDownEventHandler);
         }
 
         /// <inheritdoc />
         public void OnPointerDragged(MixedRealityPointerEventData eventData)
         {
             // Continue to forward the events upward because this component is a passive observer.
-            EventSystemExtensions.ExecuteHierarchyUpward(gameObject, eventData, MixedRealityEventHandlers.OnPointerDraggedEventHandler);
+            EventSystemExtensions.ExecuteHierarchyUpward(gameObject, eventData, MixedRealityInputSystem.OnPointerDraggedEventHandler);
         }
 
         /// <inheritdoc />
@@ -217,14 +216,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             manipulatePointer = null;
 
             // Continue to forward the events upward because this component is a passive observer.
-            EventSystemExtensions.ExecuteHierarchyUpward(gameObject, eventData, MixedRealityEventHandlers.OnPointerUpEventHandler);
+            EventSystemExtensions.ExecuteHierarchyUpward(gameObject, eventData, MixedRealityInputSystem.OnPointerUpEventHandler);
         }
 
         /// <inheritdoc />
         public void OnPointerClicked(MixedRealityPointerEventData eventData)
         {
             // Continue to forward the events upward because this component is a passive observer.
-            EventSystemExtensions.ExecuteHierarchyUpward(gameObject, eventData, MixedRealityEventHandlers.OnInputClickedEventHandler);
+            EventSystemExtensions.ExecuteHierarchyUpward(gameObject, eventData, MixedRealityInputSystem.OnInputClickedEventHandler);
         }
 
         #endregion
@@ -237,7 +236,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             focusedPointer = eventData.Pointer;
 
             // Continue to forward the events upward because this component is a passive observer.
-            EventSystemExtensions.ExecuteHierarchyUpward(gameObject, eventData, MixedRealityEventHandlers.OnFocusEnterEventHandler);
+            EventSystemExtensions.ExecuteHierarchyUpward(gameObject, eventData, MixedRealityInputSystem.OnFocusEnterEventHandler);
         }
 
         /// <inheritdoc />
@@ -246,7 +245,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             focusedPointer = null;
 
             // Continue to forward the events upward because this component is a passive observer.
-            EventSystemExtensions.ExecuteHierarchyUpward(gameObject, eventData, MixedRealityEventHandlers.OnFocusExitEventHandler);
+            EventSystemExtensions.ExecuteHierarchyUpward(gameObject, eventData, MixedRealityInputSystem.OnFocusExitEventHandler);
         }
 
         #endregion
