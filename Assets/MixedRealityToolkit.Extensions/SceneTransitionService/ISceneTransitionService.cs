@@ -68,7 +68,6 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         /// <param name="fadeOutTime">Overrides the default FadeOutTIme value.</param>
         /// <param name="fadeInTime">Overrides the default FadeInTime value.</param>
         /// <param name="progressIndicator">If null, default progress indicator prefab will be used (or none if default is disabled in profile)</param>
-        /// <returns></returns>
         Task DoSceneTransition(IEnumerable<Func<Task>> sceneOperations, float fadeOutTime, float fadeInTime, IProgressIndicator progressIndicator = null);
 
         /// <summary>
