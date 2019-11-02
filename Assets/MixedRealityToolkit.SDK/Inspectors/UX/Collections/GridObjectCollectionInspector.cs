@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEditor;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
@@ -38,21 +39,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             EditorGUILayout.PropertyField(surfaceType);
             EditorGUILayout.PropertyField(orientType);
             EditorGUILayout.PropertyField(layout);
-            if ((ObjectOrientationSurfaceType) surfaceType.enumValueIndex == ObjectOrientationSurfaceType.Plane)
+
+            LayoutOrder layoutTypeIndex = (LayoutOrder) layout.enumValueIndex;
+            if (layoutTypeIndex == LayoutOrder.ColumnThenRow)
             {
-                EditorGUILayout.PropertyField(distance);
+                EditorGUILayout.PropertyField(rows, new GUIContent("Num Columns", "Number of columns per row."));
+            }
+            else if (layoutTypeIndex == LayoutOrder.RowThenColumn)
+            {
+                EditorGUILayout.PropertyField(rows, new GUIContent("Num Rows", "Number of rows per column."));
             }
             else
             {
-                EditorGUILayout.PropertyField(radius);
-                EditorGUILayout.PropertyField(radialRange);
+                // do not show rows / cols field 
             }
 
-            LayoutOrder layoutTypeIndex = (LayoutOrder) layout.enumValueIndex;
-            if (layoutTypeIndex != LayoutOrder.Horizontal && layoutTypeIndex != LayoutOrder.Vertical)
-            {
-                EditorGUILayout.PropertyField(rows);
-            }
             if (layoutTypeIndex != LayoutOrder.Vertical)
             {
                 EditorGUILayout.PropertyField(cellWidth);
@@ -60,6 +61,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             if (layoutTypeIndex != LayoutOrder.Horizontal)
             {
                 EditorGUILayout.PropertyField(cellHeight);
+            }
+
+            if ((ObjectOrientationSurfaceType) surfaceType.enumValueIndex == ObjectOrientationSurfaceType.Plane)
+            {
+                EditorGUILayout.PropertyField(distance, new GUIContent("Distance from parent", "Distance from parent object's origin"));
+            }
+            else
+            {
+                EditorGUILayout.PropertyField(radius);
+                EditorGUILayout.PropertyField(radialRange);
             }
         }
     }
