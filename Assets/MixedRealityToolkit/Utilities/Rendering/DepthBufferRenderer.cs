@@ -9,7 +9,19 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
     [ExecuteInEditMode]
     public class DepthBufferRenderer : MonoBehaviour
     {
-        public RenderTexture outputTexture;
+        [SerializeField]
+        [Tooltip("If not null, depth buffer rendering output will blit to this RenderTexture. If null, normal operation will blit the depth buffer as color to the screen.")]
+        private RenderTexture outputTexture = null;
+
+        /// <summary>
+        /// If not null, depth buffer rendering output will blit to this RenderTexture.
+        /// If null, normal operation will blit the depth buffer as color to the screen.
+        /// </summary>
+        public RenderTexture OutputTexture
+        {
+            get => outputTexture;
+            set => outputTexture = value;
+        }
 
         private RenderTexture originalRT;
 
@@ -32,6 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         {
             SetUp();
         }
+
         private void SetUp()
         {
             textureWidth = Screen.width;
@@ -42,7 +55,6 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
 
             postProcessMaterial.SetTexture("_DepthTex", depthTexture);
        
-            //var cam = CameraCache.Main;
             cam.depthTextureMode = DepthTextureMode.Depth;
             cam.SetTargetBuffers(renderTexture.colorBuffer, depthTexture.depthBuffer);
         }
@@ -57,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
 
         private void OnRenderImage(RenderTexture source, RenderTexture destination)
         {
-            var target = outputTexture != null ? outputTexture : destination;
+            var target = OutputTexture != null ? outputTexture : destination;
             Graphics.Blit(source, target, postProcessMaterial);
         }
 
