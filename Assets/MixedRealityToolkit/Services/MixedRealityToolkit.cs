@@ -171,12 +171,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Internal method that creates an instance of the specified concrete type and registers the service.
         /// </summary>
-        /// <typeparam name="T">The interface type of the service to be registered.</typeparam>
-        /// <param name="retryWithRegistrar"></param>
-        /// <param name="concreteType"></param>
-        /// <param name="supportedPlatforms"></param>
-        /// <param name="args"></param>
-        /// <returns></returns>
         private bool RegisterServiceInternal<T>(
             bool retryWithRegistrar,
             Type concreteType,
