@@ -206,8 +206,6 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 if (retryWithRegistrar && (e is MissingMethodException))
                 {
-                    // Missing method exceptions are intentionally re-thrown so that registrar's can handle
-                    // multiple constructor overloads.
                     Debug.LogWarning($"Failed to find an appropriate constructor for the {concreteType.Name} data provider. Adding the Registrar instance and re-attempting registration.");
 #pragma warning disable 0618
                     List<object> updatedArgs = new List<object>();
