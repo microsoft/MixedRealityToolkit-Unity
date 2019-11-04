@@ -117,7 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
             }
 
             var mh = (ObjectManipulator)target;
-            var rb = mh.GetComponent<Rigidbody>();
+            var rb = mh.HostTransform.GetComponent<Rigidbody>();
 
             EditorGUILayout.Space();
             physicsFoldout = EditorGUILayout.Foldout(physicsFoldout, "Physics", true);

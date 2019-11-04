@@ -58,7 +58,15 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         public Transform HostTransform
         {
-            get => hostTransform;
+            get
+            {
+                if (hostTransform == null)
+                {
+                    hostTransform = gameObject.transform;
+                }
+
+                return hostTransform;
+            }
             set => hostTransform = value;
         }
         
@@ -312,12 +320,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         }
         private void Start()
         {
-            if (hostTransform == null)
-            {
-                hostTransform = transform;
-            }
-
-            rigidBody = GetComponent<Rigidbody>();
+            rigidBody = HostTransform.GetComponent<Rigidbody>();
             constraints = new ConstraintManager(gameObject);
         }
         #endregion MonoBehaviour Functions
@@ -534,23 +537,23 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
             if (twoHandedManipulationType.HasFlag(TransformFlags.Rotate))
             {
-                rotateLogic.Setup(handPositionArray, hostTransform);
+                rotateLogic.Setup(handPositionArray, HostTransform);
             }
             if (twoHandedManipulationType.HasFlag(TransformFlags.Move))
             {
                 MixedRealityPose pointerPose = GetPointersPose();
-                MixedRealityPose hostPose = new MixedRealityPose(hostTransform.position, hostTransform.rotation);
-                moveLogic.Setup(pointerPose, GetPointersGrabPoint(), hostPose, hostTransform.localScale);
+                MixedRealityPose hostPose = new MixedRealityPose(HostTransform.position, HostTransform.rotation);
+                moveLogic.Setup(pointerPose, GetPointersGrabPoint(), hostPose, HostTransform.localScale);
             }
             if (twoHandedManipulationType.HasFlag(TransformFlags.Scale))
             {
-                scaleLogic.Setup(handPositionArray, hostTransform);
+                scaleLogic.Setup(handPositionArray, HostTransform);
             }
         }
 
         private void HandleTwoHandManipulationUpdated()
         {
-            var targetTransform = new MixedRealityTransform(hostTransform.position, hostTransform.rotation, hostTransform.localScale);
+            var targetTransform = new MixedRealityTransform(HostTransform.position, HostTransform.rotation, HostTransform.localScale);
 
             var handPositionArray = GetHandPositionArray();
 
@@ -583,26 +586,26 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             // cache objects rotation on start to have a reference for constraint calculations
             // if we don't cache this on manipulation start the near rotation might drift off the hand
             // over time
-            hostWorldRotationOnManipulationStart = hostTransform.rotation;
+            hostWorldRotationOnManipulationStart = HostTransform.rotation;
 
             // Calculate relative transform from object to hand.
             Quaternion worldToPalmRotation = Quaternion.Inverse(pointer.Rotation);
-            objectToHandRotation = worldToPalmRotation * hostTransform.rotation;
+            objectToHandRotation = worldToPalmRotation * HostTransform.rotation;
 
             // Calculate relative transform from object to grip.
             Quaternion gripRotation;
             TryGetGripRotation(pointer, out gripRotation);
             Quaternion worldToGripRotation = Quaternion.Inverse(gripRotation);
-            objectToGripRotation = worldToGripRotation * hostTransform.rotation;
+            objectToGripRotation = worldToGripRotation * HostTransform.rotation;
 
             MixedRealityPose pointerPose = new MixedRealityPose(pointer.Position, pointer.Rotation);
-            MixedRealityPose hostPose = new MixedRealityPose(hostTransform.position, hostTransform.rotation);
-            moveLogic.Setup(pointerPose, pointerData.GrabPoint, hostPose, hostTransform.localScale);
+            MixedRealityPose hostPose = new MixedRealityPose(HostTransform.position, HostTransform.rotation);
+            moveLogic.Setup(pointerPose, pointerData.GrabPoint, hostPose, HostTransform.localScale);
 
-            startObjectRotationCameraSpace = Quaternion.Inverse(CameraCache.Main.transform.rotation) * hostTransform.rotation;
+            startObjectRotationCameraSpace = Quaternion.Inverse(CameraCache.Main.transform.rotation) * HostTransform.rotation;
             var cameraFlat = CameraCache.Main.transform.forward;
             cameraFlat.y = 0;
-            var hostForwardFlat = hostTransform.forward;
+            var hostForwardFlat = HostTransform.forward;
             hostForwardFlat.y = 0;
             var hostRotFlat = Quaternion.LookRotation(hostForwardFlat, Vector3.up);
             startObjectRotationFlatCameraSpace = Quaternion.Inverse(Quaternion.LookRotation(cameraFlat, Vector3.up)) * hostRotFlat;
@@ -614,7 +617,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             PointerData pointerData = GetFirstPointer();
             IMixedRealityPointer pointer = pointerData.pointer;
 
-            var targetTransform = new MixedRealityTransform(hostTransform.position, hostTransform.rotation, hostTransform.localScale);
+            var targetTransform = new MixedRealityTransform(HostTransform.position, HostTransform.rotation, HostTransform.localScale);
 
             constraints.ApplyScaleConstraints(ref targetTransform);
 
@@ -622,7 +625,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             switch (rotateInOneHandType)
             {
                 case RotateInOneHandType.MaintainOriginalRotation:
-                    targetTransform.Rotation = hostTransform.rotation;
+                    targetTransform.Rotation = HostTransform.rotation;
                     break;
                 case RotateInOneHandType.MaintainRotationToUser:
                     Vector3 euler = CameraCache.Main.transform.rotation.eulerAngles;
@@ -637,7 +640,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 case RotateInOneHandType.FaceUser:
                 {
                     Vector3 directionToTarget = pointerData.GrabPoint - CameraCache.Main.transform.position;
-                    // Vector3 directionToTarget = hostTransform.position - CameraCache.Main.transform.position;
+                    // Vector3 directionToTarget = HostTransform.position - CameraCache.Main.transform.position;
                     targetTransform.Rotation = Quaternion.LookRotation(-directionToTarget);
                     break;
                 }
@@ -686,10 +689,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             if (rigidBody != null)
             {
                 wasKinematic = rigidBody.isKinematic;
-                rigidBody.isKinematic = true;
+                rigidBody.isKinematic = false;
             }
             
-            constraints.Initialize(new MixedRealityPose(hostTransform.position, hostTransform.rotation));
+            constraints.Initialize(new MixedRealityPose(HostTransform.position, HostTransform.rotation));
         }
 
         private void HandleManipulationEnded(Vector3 pointerGrabPoint, Vector3 pointerVelocity, Vector3 pointerAnglularVelocity)
@@ -725,9 +728,27 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
         private void ApplyTargetTransform(MixedRealityTransform targetTransform)
         {
-            hostTransform.position = SmoothTo(hostTransform.position, targetTransform.Position, moveLerpTime);
-            hostTransform.rotation = SmoothTo(hostTransform.rotation, targetTransform.Rotation, rotateLerpTime);
-            hostTransform.localScale = SmoothTo(hostTransform.localScale, targetTransform.Scale, scaleLerpTime);
+            if (rigidBody == null)
+            {
+                HostTransform.position = SmoothTo(HostTransform.position, targetTransform.Position, moveLerpTime);
+                HostTransform.rotation = SmoothTo(HostTransform.rotation, targetTransform.Rotation, rotateLerpTime);
+                HostTransform.localScale = SmoothTo(HostTransform.localScale, targetTransform.Scale, scaleLerpTime);
+            }
+            else
+            {
+                rigidBody.velocity = ((1f - Mathf.Pow(moveLerpTime, Time.deltaTime)) / Time.deltaTime) * (targetTransform.Position - HostTransform.position);
+
+                var relativeRotation = targetTransform.Rotation * Quaternion.Inverse(HostTransform.rotation);
+                relativeRotation.ToAngleAxis(out float angle, out Vector3 axis);
+                if (angle > 180f)
+                    angle -= 360f;
+                if (axis.IsValidVector())
+                {
+                    rigidBody.angularVelocity = ((1f - Mathf.Pow(rotateLerpTime, Time.deltaTime)) / Time.deltaTime) * (axis.normalized * angle * Mathf.Deg2Rad);
+                }
+
+                HostTransform.localScale = SmoothTo(HostTransform.localScale, targetTransform.Scale, scaleLerpTime);
+            }
         }
 
         private Vector3 SmoothTo(Vector3 source, Vector3 goal, float lerpTime)

@@ -1898,7 +1898,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             var rigRootObj = new GameObject(rigRootName);
             rigRoot = rigRootObj.transform;
-            rigRoot.parent = transform;
+            rigRoot.parent = Target.transform;
 
             var pH = rigRootObj.AddComponent<PointerHandler>();
             pH.OnPointerDown.AddListener(OnPointerDown);
@@ -2167,7 +2167,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 // move rig into position and rotation
                 rigRoot.position = TargetBounds.bounds.center;
                 rigRoot.rotation = Target.transform.rotation;
-                rigRoot.parent = transform;
+                rigRoot.parent = Target.transform;
             }
         }
 
