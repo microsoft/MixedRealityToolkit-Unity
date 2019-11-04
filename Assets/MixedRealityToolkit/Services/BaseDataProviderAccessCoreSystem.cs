@@ -210,7 +210,10 @@ namespace Microsoft.MixedReality.Toolkit
 #pragma warning disable 0618
                     List<object> updatedArgs = new List<object>();
                     updatedArgs.Add(Registrar);
-                    updatedArgs.AddRange(args);
+                    if (args != null)
+                    {
+                        updatedArgs.AddRange(args);
+                    }
                     return RegisterDataProviderInternal<T>(
                         false, // Do NOT retry, we have already added the configured IMIxedRealityServiceRegistrar
                         concreteType,

@@ -222,7 +222,10 @@ namespace Microsoft.MixedReality.Toolkit
                     Debug.LogWarning($"Failed to find an appropriate constructor for the {concreteType.Name} service. Adding the Registrar instance and re-attempting registration.");
                     List<object> updatedArgs = new List<object>();
                     updatedArgs.Add(this);
-                    updatedArgs.AddRange(args);
+                    if (args != null)
+                    {
+                        updatedArgs.AddRange(args);
+                    }
                     return RegisterServiceInternal<T>(
                         false, // Do NOT retry, we have already added the configured IMIxedRealityServiceRegistrar
                         concreteType,
