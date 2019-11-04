@@ -244,7 +244,7 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Extensions_SceneTransitions_SceneTransitionService_FadeInTime_" data-uid="Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.SceneTransitionService.FadeInTime*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Extensions_SceneTransitions_SceneTransitionService_FadeInTime" data-uid="Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.SceneTransitionService.FadeInTime">FadeInTime</h4>
-  <div class="markdown level1 summary"><p>Time in seconds for fade in to complete.</p>
+  <div class="markdown level1 summary"><p>The default time in seconds for fade in to complete.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -270,7 +270,7 @@
   
   <a id="Microsoft_MixedReality_Toolkit_Extensions_SceneTransitions_SceneTransitionService_FadeOutTime_" data-uid="Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.SceneTransitionService.FadeOutTime*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Extensions_SceneTransitions_SceneTransitionService_FadeOutTime" data-uid="Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.SceneTransitionService.FadeOutTime">FadeOutTime</h4>
-  <div class="markdown level1 summary"><p>Time in seconds for fade out to complete.</p>
+  <div class="markdown level1 summary"><p>The default time in seconds for fade out to complete.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -520,6 +520,68 @@ For scene load events, we recommend using IMixedRealitySceneSystem.</p>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Extensions_SceneTransitions_SceneTransitionService_DoSceneTransition_" data-uid="Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.SceneTransitionService.DoSceneTransition*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Extensions_SceneTransitions_SceneTransitionService_DoSceneTransition_IEnumerable_System_Func_Task___System_Single_System_Single_IProgressIndicator_" data-uid="Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.SceneTransitionService.DoSceneTransition(IEnumerable{System.Func{Task}},System.Single,System.Single,IProgressIndicator)">DoSceneTransition(IEnumerable&lt;Func&lt;Task&gt;&gt;, Single, Single, IProgressIndicator)</h4>
+  <div class="markdown level1 summary"><p>Fades out, enables progress indicator, execute scene operations in order, disables progress indicator, fades back in</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task DoSceneTransition(IEnumerable&lt;Func&lt;Task&gt;&gt; sceneOperations, float fadeOutTime, float fadeInTime, IProgressIndicator progressIndicator = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IEnumerable</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.func-1">Func</a>&lt;<span class="xref">Task</span>&gt;&gt;</td>
+        <td><span class="parametername">sceneOperations</span></td>
+        <td><p>A set of tasks from the Scene System.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">fadeOutTime</span></td>
+        <td><p>Overrides the default FadeOutTIme value.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">fadeInTime</span></td>
+        <td><p>Overrides the default FadeInTime value.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">IProgressIndicator</span></td>
+        <td><span class="parametername">progressIndicator</span></td>
+        <td><p>If null, default progress indicator prefab will be used (or none if default is disabled in profile)</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Extensions_SceneTransitions_SceneTransitionService_DoSceneTransition_" data-uid="Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.SceneTransitionService.DoSceneTransition*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Extensions_SceneTransitions_SceneTransitionService_DoSceneTransition_System_Func_Task__IProgressIndicator_" data-uid="Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.SceneTransitionService.DoSceneTransition(System.Func{Task},IProgressIndicator)">DoSceneTransition(Func&lt;Task&gt;, IProgressIndicator)</h4>
   <div class="markdown level1 summary"><p>Fades out, enables progress indicator, execute scene operation, disables progress indicator, fades back in</p>
 </div>
@@ -636,7 +698,7 @@ For scene load events, we recommend using IMixedRealitySceneSystem.</p>
   
   <a id="Microsoft_MixedReality_Toolkit_Extensions_SceneTransitions_SceneTransitionService_FadeIn_" data-uid="Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.SceneTransitionService.FadeIn*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Extensions_SceneTransitions_SceneTransitionService_FadeIn" data-uid="Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.SceneTransitionService.FadeIn">FadeIn()</h4>
-  <div class="markdown level1 summary"><p>Fades target cameras in. Instant fade-out will occur if fade state is not opaque. Can be used independently of scene transitions provided no transition is taking place.</p>
+  <div class="markdown level1 summary"><p>Fades target cameras in. Instant fade-out will occur if fade state is not opaque. Can be used independently of scene transitions provided no transition is taking place. Uses default FadeInTime.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -660,15 +722,101 @@ For scene load events, we recommend using IMixedRealitySceneSystem.</p>
   </table>
   
   
+  <a id="Microsoft_MixedReality_Toolkit_Extensions_SceneTransitions_SceneTransitionService_FadeIn_" data-uid="Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.SceneTransitionService.FadeIn*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Extensions_SceneTransitions_SceneTransitionService_FadeIn_System_Single_" data-uid="Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.SceneTransitionService.FadeIn(System.Single)">FadeIn(Single)</h4>
+  <div class="markdown level1 summary"><p>Fades target cameras in. Instant fade-out will occur if fade state is not opaque. Can be used independently of scene transitions provided no transition is taking place.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task FadeIn(float fadeInTime)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">fadeInTime</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="Microsoft_MixedReality_Toolkit_Extensions_SceneTransitions_SceneTransitionService_FadeOut_" data-uid="Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.SceneTransitionService.FadeOut*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Extensions_SceneTransitions_SceneTransitionService_FadeOut" data-uid="Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.SceneTransitionService.FadeOut">FadeOut()</h4>
-  <div class="markdown level1 summary"><p>Fades target cameras out to color. Can be used independently of scene transitions provided no transition is taking place.</p>
+  <div class="markdown level1 summary"><p>Fades target cameras out to color. Can be used independently of scene transitions provided no transition is taking place. Uses default FadeOutTime.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public Task FadeOut()</code></pre>
   </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Task</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Extensions_SceneTransitions_SceneTransitionService_FadeOut_" data-uid="Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.SceneTransitionService.FadeOut*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Extensions_SceneTransitions_SceneTransitionService_FadeOut_System_Single_" data-uid="Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions.SceneTransitionService.FadeOut(System.Single)">FadeOut(Single)</h4>
+  <div class="markdown level1 summary"><p>Fades target cameras out to color. Can be used independently of scene transitions provided no transition is taking place.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task FadeOut(float fadeOutTime)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.single">Single</a></td>
+        <td><span class="parametername">fadeOutTime</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
