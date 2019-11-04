@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// </summary>
         /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
         /// <param name="profile">The configuration profile for the service.</param>
-        /// <param name="scale">The application's configured <see cref="ExperienceScale"/>.</param>
+        /// <param name="scale">The application's configured <see cref="Utilities.ExperienceScale"/>.</param>
         [System.Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
         public MixedRealityBoundarySystem(
             IMixedRealityServiceRegistrar registrar,
@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         /// Constructor.
         /// </summary>
         /// <param name="profile">The configuration profile for the service.</param>
-        /// <param name="scale">The application's configured <see cref="ExperienceScale"/>.</param>
+        /// <param name="scale">The application's configured <see cref="Utilities.ExperienceScale"/>.</param>
         public MixedRealityBoundarySystem(
             MixedRealityBoundaryVisualizationProfile profile,
             ExperienceScale scale) : base(profile)
