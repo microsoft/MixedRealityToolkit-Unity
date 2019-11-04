@@ -50,6 +50,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             sceneTransitionServiceProfile = profile as SceneTransitionServiceProfile;
         }
 
+        private const float maxFadeOutTime = 30;
+        private const float maxFadeInTime = 30;
+
         /// <inheritdoc />
         public bool UseFadeColor { get; set; }
 
@@ -118,18 +121,27 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         /// <inheritdoc />
         public async Task DoSceneTransition(Func<Task> sceneOperation, IProgressIndicator progressIndicator = null)
         {
-            await DoSceneTransition(new Func<Task>[] { sceneOperation }, progressIndicator);
+            await DoSceneTransition(new Func<Task>[] { sceneOperation }, FadeOutTime, FadeInTime, progressIndicator);
         }
 
         /// <inheritdoc />
         public async Task DoSceneTransition(Func<Task> sceneOp1, Func<Task> sceneOp2, IProgressIndicator progressIndicator = null)
         {
-            await DoSceneTransition(new Func<Task>[] { sceneOp1, sceneOp2 }, progressIndicator);
+            await DoSceneTransition(new Func<Task>[] { sceneOp1, sceneOp2 }, FadeOutTime, FadeInTime, progressIndicator);
         }
 
         /// <inheritdoc />
         public async Task DoSceneTransition(IEnumerable<Func<Task>> sceneOperations, IProgressIndicator progressIndicator = null)
         {
+            await DoSceneTransition(sceneOperations, FadeOutTime, FadeInTime, progressIndicator);
+        }
+
+        /// <inheritdoc />
+        public async Task DoSceneTransition(IEnumerable<Func<Task>> sceneOperations, float fadeOutTime, float fadeInTime, IProgressIndicator progressIndicator = null)
+        {
+            fadeOutTime = Mathf.Clamp(fadeOutTime, 0, maxFadeOutTime);
+            fadeInTime = Mathf.Clamp(fadeInTime, 0, maxFadeInTime);
+
             if (TransitionInProgress)
             {
                 throw new Exception("Attempting to do a transition while one is already in progress.");
@@ -149,7 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 
             if (UseFadeColor)
             {
-                await FadeOut();
+                await FadeOut(fadeOutTime);
             }
 
             if (progressIndicator != null)
@@ -181,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 
             if (UseFadeColor)
             {
-                await FadeIn();
+                await FadeIn(fadeInTime);
             }
 
             TransitionInProgress = false;
@@ -199,6 +211,18 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 
         /// <inheritdoc />
         public async Task FadeOut()
+        {
+            await FadeOut(FadeOutTime);
+        }
+
+        /// <inheritdoc />
+        public async Task FadeIn()
+        {
+            await FadeIn(FadeInTime);
+        }
+
+        /// <inheritdoc />
+        public async Task FadeOut(float fadeOutTime)
         {
             CreateCameraFader();
 
@@ -224,11 +248,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
                     break;
             }
 
-            await cameraFader.FadeOutAsync(FadeInTime, FadeColor, GatherFadeTargetCameras());
+            await cameraFader.FadeOutAsync(fadeOutTime, FadeColor, GatherFadeTargetCameras());
         }
 
         /// <inheritdoc />
-        public async Task FadeIn()
+        public async Task FadeIn(float fadeInTime)
         {
             CreateCameraFader();
 
@@ -255,7 +279,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
                     break;
             }
 
-            await cameraFader.FadeInAsync(FadeInTime);
+            await cameraFader.FadeInAsync(fadeInTime);
         }
 
         /// <inheritdoc />
