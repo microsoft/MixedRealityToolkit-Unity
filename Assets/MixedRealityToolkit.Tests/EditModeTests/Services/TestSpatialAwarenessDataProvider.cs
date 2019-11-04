@@ -24,17 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Services
         "MixedRealityToolkit.SDK")]
     public class TestSpatialAwarenessDataProvider : TestBaseDataProvider, ITestSpatialAwarenessDataProvider
     {
-        [System.Obsolete()]
-        public TestSpatialAwarenessDataProvider(
-            IMixedRealityServiceRegistrar registrar,
-            IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
-            string name,
-            uint priority,
-            BaseMixedRealityProfile profile) : this(spatialAwarenessSystem, name, priority, profile)
-        {
-            Registrar = registrar;
-        }
-
         public TestSpatialAwarenessDataProvider(
             IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
             string name,

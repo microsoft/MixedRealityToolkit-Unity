@@ -9,15 +9,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Services
     /// </summary>
     public class TestBaseDataProvider : BaseDataProvider
     {
-        [System.Obsolete()]
-        public TestBaseDataProvider(
-            IMixedRealityServiceRegistrar registrar,
-            IMixedRealityService service,
-            string name = null,
-            uint priority = DefaultPriority,
-            BaseMixedRealityProfile profile = null)
-        : this(service, name, priority, profile) { }
-
         public TestBaseDataProvider(
             IMixedRealityService service,
             string name = null,
