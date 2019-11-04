@@ -38,9 +38,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Diagnostics
         private void InitializeManager()
         {
             // The Diagnostics system class takes arguments for:
-            // * The registrar
             // * The diagnostics system profile
-            object[] args = { this, profile };
+            object[] args = { profile };
 
             Initialize<IMixedRealityDiagnosticsSystem>(DiagnosticsSystemType.Type, args: args);
         }

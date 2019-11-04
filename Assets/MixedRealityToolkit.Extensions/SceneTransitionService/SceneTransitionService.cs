@@ -19,13 +19,39 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Extensions/SceneTransitionService/SceneTransitionServiceOverview.html")]
     public class SceneTransitionService : BaseExtensionService, ISceneTransitionService, IMixedRealityExtensionService
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        /// <param name="name">Friendly name of the service.</param>
+        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
+        /// <param name="profile">The service's configuration profile.</param>
+        [Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
+        public SceneTransitionService(
+            IMixedRealityServiceRegistrar registrar, 
+            string name, 
+            uint priority, 
+            BaseMixedRealityProfile profile) : this(name, priority, profile)
+        {
+            Registrar = registrar;
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="name">Friendly name of the service.</param>
+        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
+        /// <param name="profile">The service's configuration profile.</param>
+        public SceneTransitionService(
+            string name,
+            uint priority,
+            BaseMixedRealityProfile profile) : base(name, priority, profile)
+        {
+            sceneTransitionServiceProfile = profile as SceneTransitionServiceProfile;
+        }
+
         private const float maxFadeOutTime = 30;
         private const float maxFadeInTime = 30;
-
-        public SceneTransitionService(IMixedRealityServiceRegistrar registrar, string name, uint priority, BaseMixedRealityProfile profile) : base(registrar, name, priority, profile)
-        {
-            sceneTransitionServiceProfile = (SceneTransitionServiceProfile)profile;
-        }
 
         /// <inheritdoc />
         public bool UseFadeColor { get; set; }

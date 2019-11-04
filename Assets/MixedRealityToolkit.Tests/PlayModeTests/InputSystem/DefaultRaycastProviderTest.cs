@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Input
         public void SetUp()
         {
             PlayModeTestUtilities.Setup();
-            defaultRaycastProvider = new DefaultRaycastProvider(null, null);
+            defaultRaycastProvider = new DefaultRaycastProvider(null);
         }
 
         [TearDown]
