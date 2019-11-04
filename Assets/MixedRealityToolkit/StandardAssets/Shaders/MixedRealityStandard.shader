@@ -208,9 +208,6 @@ Shader "Mixed Reality Toolkit/Standard"
 
             CGPROGRAM
 
-#if defined(SHADER_API_D3D11)
-            #pragma target 5.0
-#endif
             #pragma vertex vert
             #pragma fragment frag
 
@@ -846,9 +843,6 @@ Shader "Mixed Reality Toolkit/Standard"
                 return o;
             }
 
-#if defined(SHADER_API_D3D11) && !defined(_ALPHA_CLIP) && !defined(_TRANSPARENT)
-            [earlydepthstencil]
-#endif
             fixed4 frag(v2f i, fixed facing : VFACE) : SV_Target
             {
 #if defined(_INSTANCED_COLOR)

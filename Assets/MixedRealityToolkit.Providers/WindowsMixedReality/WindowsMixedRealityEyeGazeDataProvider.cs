@@ -70,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             if (WindowsApiChecker.UniversalApiContractV8_IsAvailable)
             {
 #if WINDOWS_UWP
-                return ((capability == MixedRealityCapability.EyeTracking) && EyesPose.IsSupported());
+                return (capability == MixedRealityCapability.EyeTracking) && EyesPose.IsSupported();
 #endif // WINDOWS_UWP
             }
 
@@ -79,8 +79,15 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
 
         #endregion IMixedRealityCapabilityCheck Implementation
 
+        /// <inheritdoc />
         public override void Initialize()
         {
+#if UNITY_EDITOR && UNITY_WSA && UNITY_2019_3_OR_NEWER
+            Toolkit.Utilities.Editor.UWPCapabilityUtility.RequireCapability(
+                    UnityEditor.PlayerSettings.WSACapability.GazeInput,
+                    this.GetType());
+#endif
+
             if (Application.isPlaying && WindowsApiChecker.UniversalApiContractV8_IsAvailable)
             {
 #if WINDOWS_UWP
@@ -90,6 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             }
         }
 
+        /// <inheritdoc />
         public override void Update()
         {
 #if WINDOWS_UWP

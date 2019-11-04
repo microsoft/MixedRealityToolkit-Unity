@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
             themeStates = theme.States?.StateList.ToArray();
             if (themeStates == null)
             {
-                themeStates = new State[0];
+                themeStates = Array.Empty<State>();
             }
 
             // If no theme properties assigned, add a default one
@@ -308,7 +308,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                     shader.objectReferenceValue = Shader.Find(shaderName.stringValue);
                     shaderPropertyname.stringValue = shaderOption.stringValue;
 
-                    // Wipe old data from trigering this again
+                    // Wipe old data from triggering this again
                     shaderOptions.ClearArray();
 
                     stateProperty.serializedObject.ApplyModifiedProperties();

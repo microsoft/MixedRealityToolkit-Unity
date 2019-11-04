@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public float NearObjectRadius => SphereCastRadius + NearObjectMargin;
 
         [SerializeField]
-        [Tooltip("The LayerMasks, in prioritized order, that are used to determine the grabble objects. Remember to also add NearInteractionGrabbable! Only collidables with NearInteractionGrabbable will raise events.")]
+        [Tooltip("The LayerMasks, in prioritized order, that are used to determine the grabbable objects. Remember to also add NearInteractionGrabbable! Only collidables with NearInteractionGrabbable will raise events.")]
         private LayerMask[] grabLayerMasks = { UnityEngine.Physics.DefaultRaycastLayers };
         /// <summary>
         /// The LayerMasks, in prioritized order, that are used to determine the touchable objects.
@@ -174,7 +174,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public bool TryGetDistanceToNearestSurface(out float distance)
         {
-            var focusProvider = InputSystem?.FocusProvider;
+            var focusProvider = CoreServices.InputSystem?.FocusProvider;
             if (focusProvider != null)
             {
                 FocusDetails focusDetails;
@@ -192,7 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public bool TryGetNormalToNearestSurface(out Vector3 normal)
         {
-            var focusProvider = InputSystem?.FocusProvider;
+            var focusProvider = CoreServices.InputSystem?.FocusProvider;
             if (focusProvider != null)
             {
                 FocusDetails focusDetails;
@@ -256,7 +256,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
                 for (int i = 0; i < numColliders; i++)
                 {
-                    if (grabbable = queryBuffer[i].GetComponent<NearInteractionGrabbable>())
+                    grabbable = queryBuffer[i].GetComponent<NearInteractionGrabbable>();
+                    if (grabbable != null)
                     {
                         return true;
                     }

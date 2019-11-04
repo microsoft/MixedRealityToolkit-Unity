@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         const string primaryTestSceneTemporarySavePath = "Assets/__temp_primary_test_scene.unity";
         const string additiveTestSceneTemporarySavePath = "Assets/__temp_additive_test_scene_#.unity";
         public static Scene primaryTestScene;
-        public static Scene[] additiveTestScenes = new Scene[0];
+        public static Scene[] additiveTestScenes = System.Array.Empty<Scene>();
 
         /// <summary>
         /// Destroys all scene assets that were created over the course of testing.

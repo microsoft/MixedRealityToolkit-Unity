@@ -12,11 +12,19 @@ namespace Microsoft.MixedReality.Toolkit
     public static class CameraExtensions
     {
         /// <summary>
-        /// Get the horizontal FOV from the stereo camera
+        /// Get the horizontal FOV from the stereo camera in radians
         /// </summary>
         public static float GetHorizontalFieldOfViewRadians(this Camera camera)
         {
             return 2f * Mathf.Atan(Mathf.Tan(camera.fieldOfView * Mathf.Deg2Rad * 0.5f) * camera.aspect);
+        }
+
+        /// <summary>
+        /// Get the horizontal FOV from the stereo camera in degrees
+        /// </summary>
+        public static float GetHorizontalFieldOfViewDegrees(this Camera camera)
+        {
+            return camera.GetHorizontalFieldOfViewRadians() * Mathf.Rad2Deg;
         }
 
         /// <summary>
@@ -25,22 +33,9 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="camera">The camera to check the point against</param>
         public static bool IsInFOV(this Camera camera, Vector3 position)
         {
-            Vector3 deltaPos = position - camera.transform.position;
-            Vector3 headDeltaPos = MathUtilities.TransformDirectionFromTo(null, camera.transform, deltaPos);
-
-            if (headDeltaPos.z < camera.nearClipPlane || headDeltaPos.z > camera.farClipPlane)
-            {
-                return false;
-            }
-
-            float verticalFovHalf = camera.fieldOfView * 0.5f;
-            float horizontalFovHalf = camera.GetHorizontalFieldOfViewRadians() * Mathf.Rad2Deg * 0.5f;
-
-            headDeltaPos = headDeltaPos.normalized;
-            float yaw = Mathf.Asin(headDeltaPos.x) * Mathf.Rad2Deg;
-            float pitch = Mathf.Asin(headDeltaPos.y) * Mathf.Rad2Deg;
-
-            return Mathf.Abs(yaw) < horizontalFovHalf && Mathf.Abs(pitch) < verticalFovHalf;
+            return MathUtilities.IsInFOV(position, camera.transform, 
+                camera.fieldOfView, camera.GetHorizontalFieldOfViewDegrees(),
+                camera.nearClipPlane, camera.farClipPlane);
         }
 
         /// <summary>

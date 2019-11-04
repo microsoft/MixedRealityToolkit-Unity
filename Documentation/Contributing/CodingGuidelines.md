@@ -40,12 +40,13 @@ When you fix a bug, write a test to ensure it does not regress in the future. If
 ## Coding Conventions
 ### Script license information headers
 
-All scripts posted to the MRTK should have the standard License header attached, exactly as shown below:
+All Microsoft employees contributing new files should add the following standard License header at the top of any new files, exactly as shown below:
 
 ```c#
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 ```
+
 
 ### Function / Method summary headers
 All public classes, structs, enums, functions, properties, fields posted to the MRTK should be described as to it's purpose and use, exactly as shown below:
@@ -422,16 +423,6 @@ Always use private fields and public properties if access to the field is needed
  }
  ```
 
-### Use `for` instead of `foreach` when possible
-
-In some cases a foreach is required, e.g. when looping over an IEnumerable.  But for performance benefit, avoid foreach when you can.
-
-#### Don't
-
-```c#
-foreach(var item in items)
-```
-
 #### Do
 
  ```c#
@@ -541,5 +532,5 @@ DateTime.UtcNow is faster than DateTime.Now. In previous performance investigati
 Prefer using DateTime.UtcNow unless you actually need the localized times (a legitmate reason may be you wanting to show the current time in the user's time zone). If you are dealing with relative times (i.e. the delta between some last update and now), it's best to use DateTime.UtcNow to avoid the overhead of doing timezone conversions.
 
 
-## Set also
- [C# coding conventions from MSDN](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/coding-conventions).
+## See also
+ [C# coding conventions from MSDN](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/coding-conventions)

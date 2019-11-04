@@ -255,25 +255,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         private float lastUpdateTime;
 
-        private IMixedRealityHandJointService HandJointService => handJointService ?? (handJointService = (InputSystem as IMixedRealityDataProviderAccess)?.GetDataProvider<IMixedRealityHandJointService>());
+        private IMixedRealityHandJointService HandJointService => handJointService ?? (handJointService = (CoreServices.InputSystem as IMixedRealityDataProviderAccess)?.GetDataProvider<IMixedRealityHandJointService>());
         private IMixedRealityHandJointService handJointService = null;
-
-        private IMixedRealityInputSystem inputSystem = null;
-
-        /// <summary>
-        /// The active instance of the input system.
-        /// </summary>
-        protected IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
-                return inputSystem;
-            }
-        }
 
         #region MonoBehaviour Implementation
 
@@ -391,16 +374,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             {
                 target = CameraCache.Main.transform;
             }
-            else if (TrackedTargetType == TrackedObjectType.MotionController)
+            else if (TrackedTargetType == TrackedObjectType.ControllerRay)
             {
                 if (this.TrackedHandness == Handedness.Both)
                 {
                     this.currentTrackedHandedness = Handedness.Left;
-                    target = GetMotionController(Handedness.Left);
+                    target = GetControllerRay(Handedness.Left);
                     if (target == null)
                     {
                         this.currentTrackedHandedness = Handedness.Right;
-                        target = GetMotionController(Handedness.Right);
+                        target = GetControllerRay(Handedness.Right);
                         if (target == null)
                         {
                             this.currentTrackedHandedness = Handedness.None;
@@ -410,7 +393,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
                 else
                 {
                     this.currentTrackedHandedness = this.TrackedHandness;
-                    target = GetMotionController(this.TrackedHandness);
+                    target = GetControllerRay(this.TrackedHandness);
                 }
             }
             else if (TrackedTargetType == TrackedObjectType.HandJoint)
@@ -458,27 +441,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             trackingTarget.transform.localRotation = Quaternion.Euler(AdditionalRotation);
         }
 
-        private Transform GetMotionController(Handedness handedness)
+        private Transform GetControllerRay(Handedness handedness)
         {
-            if (InputSystem == null) return null;
-
-            foreach (IMixedRealityController controller in InputSystem.DetectedControllers)
-            {
-                var hand = controller as IMixedRealityHand;
-                if (hand == null && controller.ControllerHandedness == handedness)
-                {
-                    if (controller.Visualizer == null ||
-                        controller.Visualizer.GameObjectProxy == null || 
-                        controller.Visualizer.GameObjectProxy.transform == null)
-                    {
-                        return null;
-                    }
-
-                    return controller.Visualizer.GameObjectProxy.transform;
-                }
-            }
-
-            return null;
+            var pointer = PointerUtils.GetPointer<LinePointer>(handedness);
+            return pointer?.transform;
         }
 
         /// <summary>
@@ -511,7 +477,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
 
         public static bool IsValidTrackedObjectType(TrackedObjectType type)
         {
-            return type == TrackedObjectType.Head || type >= TrackedObjectType.MotionController;
+            return type == TrackedObjectType.Head || type >= TrackedObjectType.ControllerRay;
         }
 
     }

@@ -33,6 +33,9 @@ if your component is part of solvers at `Microsoft.MixedReality.Toolkit.Utilitie
 
 See [this PR](https://github.com/microsoft/MixedRealityToolkit-Unity/pull/4532) for an example. 
 
+### Experimental features should have an [Experimental] attribute
+Add an `[Experimental]` attribute above one of your fields to have a small dialog appear in the component editor that mentions your feature is experimental and subject to significant changes.
+
 ### Minimize impact to MRTK code
 While your MRTK change might get your experiment to work, it could impact other people in ways you do not expect.
 Any regressions you make to the MRTK core code would result in your pull request getting reverted. 

@@ -11,19 +11,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public bool isHandMeshVisible = false;
         public bool isHandJointVisible = false;
 
-        private IMixedRealityInputSystem inputSystem = null;
-        protected IMixedRealityInputSystem InputSystem
-        {
-            get
-            {
-                if (inputSystem == null)
-                {
-                    MixedRealityServiceRegistry.TryGetService<IMixedRealityInputSystem>(out inputSystem);
-                }
-                return inputSystem;
-            }
-        }
-
         /// <summary>
         /// Initial setting of hand mesh visualization - default is disabled
         /// </summary>
@@ -37,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         private void UpdateHandVisibility()
         {
-            MixedRealityHandTrackingProfile handTrackingProfile = InputSystem?.InputSystemProfile?.HandTrackingProfile;
+            MixedRealityHandTrackingProfile handTrackingProfile = CoreServices.InputSystem?.InputSystemProfile?.HandTrackingProfile;
             if (handTrackingProfile != null)
             {
                 handTrackingProfile.EnableHandMeshVisualization = isHandMeshVisible;

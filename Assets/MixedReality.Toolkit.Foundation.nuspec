@@ -17,10 +17,10 @@
     </contentFiles>
   </metadata>
   <files>
-    <file src="MixedRealityToolkit\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta" target="MRTK\" />
-    <file src="MixedRealityToolkit.Providers\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta" target="MRTK\" />
-    <file src="MixedRealityToolkit.SDK\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta" target="MRTK\" />
-    <file src="MixedRealityToolkit.Services\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta" target="MRTK\" />
+    <file src="MixedRealityToolkit\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;MixedRealityToolkit\toc.yml*" target="MRTK\" />
+    <file src="MixedRealityToolkit.Providers\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;MixedRealityToolkit.Providers\License.txt*;MixedRealityToolkit.Providers\Version.txt*" target="MRTK\" />
+    <file src="MixedRealityToolkit.SDK\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;MixedRealityToolkit.SDK\License.txt*;MixedRealityToolkit.SDK\Version.txt*;MixedRealityToolkit.SDK\toc.yml*;MixedRealityToolkit.SDK\StandardAssets.meta;MixedRealityToolkit.SDK\StandardAssets\Fonts.meta;MixedRealityToolkit.SDK\StandardAssets\Materials.meta;MixedRealityToolkit.SDK\StandardAssets\Shaders.meta;MixedRealityToolkit.SDK\StandardAssets\Textures.meta" target="MRTK\" />
+    <file src="MixedRealityToolkit.Services\**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta;MixedRealityToolkit.Services\License.txt*;MixedRealityToolkit.Services\Version.txt*" target="MRTK\" />
 
     <file src="MixedRealityToolkit\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Foundation.targets" />
 

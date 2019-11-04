@@ -83,13 +83,13 @@ In the [input simulation tools window](#input-simulation-tools-window) the __Han
 
 ## Controlling hand movement
 
-Press and hold the __Left/Right Hand Control Key__ (default: Left Shift/Space for left/right respectively) to gain control of either hand. While the manipulation key is pressed, the hand will appear in the viewport. Once the manipulation key is released the hands will disappear after a short __Hand Hide Timeout__.
+Press and hold the __Left/Right Hand Control Key__ (default: *Left Shift* for left hand and *Space* for right hand) to gain control of either hand. While the manipulation key is pressed, the hand will appear in the viewport. Once the manipulation key is released the hands will disappear after a short __Hand Hide Timeout__.
 
-Hands can be toggle on permanently in the [input simulation tools window](#input-simulation-tools-window) or by pressing the __Toggle Left/Right Hand Key__ (default: T/Y for left/right respectively). Press the toggle key again to hide the hands again.
+Hands can be toggle on permanently in the [input simulation tools window](#input-simulation-tools-window) or by pressing the __Toggle Left/Right Hand Key__ (default: *T* for left and *Y* for right). Press the toggle key again to hide the hands again.
 
 Mouse movement will move the hand in the view plane. Hands can be moved further or closer to the camera using the __mouse wheel__.
 
-To rotate hands using the mouse, hold both the __Left/Right Hand Control Key__ (shift/space) _and_ the __Hand Rotate Button__ (default: right mouse button). Hand rotation speed can be configured by changing the __Mouse Hand Rotation Speed__ setting in the input simulation profile.
+To rotate hands using the mouse, hold both the __Left/Right Hand Control Key__ (*Left Shift* or *Space*) _and_ the __Hand Rotate Button__ (default: *cntrl* button) then move the mouse to rotate the hand. Hand rotation speed can be configured by changing the __Mouse Hand Rotation Speed__ setting in the input simulation profile.
 
 All hand placement can also changed in the [input simulation tools window](#input-simulation-tools-window), including resetting hands to default.
 
@@ -105,9 +105,9 @@ All hand placement can also changed in the [input simulation tools window](#inpu
 
 Hand gestures such as pinching, grabbing, poking, etc. can also be simulated.
 
-1. First enable hand control using the manipulation keys (Left Shift/Space)
+1. First enable hand control using the __Left/Right Hand Control Key__ (*Left Shift* or *Space*)
 
-   Alternatively toggle the hands on/off using the toggle keys (T/Y).
+   Alternatively toggle the hands on/off using the toggle keys (*T* or *Y*).
 
 2. While manipulating, press and hold a mouse button to perform a hand gesture.
 
@@ -118,7 +118,7 @@ Each of the mouse buttons can be mapped to transform the hand shape into a diffe
 
 ## One-Hand Manipulation
 
-1. Press and hold hand control key (Space/Left Shift)
+1. Press and  __Left/Right Hand Control Key__ (*Left Shift* or *Space*)
 2. Point at object
 3. Hold mouse button to pinch
 4. Use mouse to move the object
@@ -132,9 +132,9 @@ For manipulating objects with two hands at the same time the persistent hand mod
 
 1. Toggle on both hands by pressing the toggle keys (T/Y).
 1. Manipulate one hand at a time:
-  1. Hold _Space_ to control the right hand
-  1. Move the hand to where you want to grab the object
-  1. Press mouse button to activate the _Pinch_ gesture. In persistent mode the gesture will remain active when you release the mouse button.
+    1. Hold _Space_ to control the right hand
+    1. Move the hand to where you want to grab the object
+    1. Press mouse button to activate the _Pinch_ gesture. In persistent mode the gesture will remain active when you release the mouse button.
 1. Repeat the process with the other hand, grabbing the same object in a second spot.
 1. Now that both hands are grabbing the same object, you can move either of them to perform two-handed manipulation.
 

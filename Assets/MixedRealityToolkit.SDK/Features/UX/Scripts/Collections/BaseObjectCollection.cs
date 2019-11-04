@@ -14,10 +14,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public Action<BaseObjectCollection> OnCollectionUpdated { get; set; }
 
+        [HideInInspector]
+        [SerializeField]
+        private List<ObjectCollectionNode> nodeList = new List<ObjectCollectionNode>();
+
         /// <summary>
         /// List of objects with generated data on the object.
         /// </summary>
-        protected List<ObjectCollectionNode> NodeList { get; } = new List<ObjectCollectionNode>();
+        protected List<ObjectCollectionNode> NodeList
+        {
+            get { return nodeList; }
+        }
 
         [Tooltip("Whether to include space for inactive transforms in the layout")]
         [SerializeField]
@@ -51,24 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public virtual void UpdateCollection()
         {
-            // Check for empty nodes and remove them
-            var emptyNodes = new List<ObjectCollectionNode>();
-
-            for (int i = 0; i < NodeList.Count; i++)
-            {
-                if (NodeList[i].Transform == null || (IgnoreInactiveTransforms && !NodeList[i].Transform.gameObject.activeSelf) || NodeList[i].Transform.parent == null || !(NodeList[i].Transform.parent.gameObject == gameObject))
-                {
-                    emptyNodes.Add(NodeList[i]);
-                }
-            }
-
-            // Now delete the empty nodes
-            for (int i = 0; i < emptyNodes.Count; i++)
-            {
-                NodeList.Remove(emptyNodes[i]);
-            }
-
-            emptyNodes.Clear();
+            PruneEmptyNodes();
 
             // Check when children change and adjust
             for (int i = 0; i < transform.childCount; i++)
@@ -83,6 +73,18 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                 }
             }
 
+            SortNodes();
+
+            LayoutChildren();
+
+            OnCollectionUpdated?.Invoke(this);
+        }
+
+        /// <summary>
+        /// Sorts NodeList based on <see cref="SortType"/>
+        /// </summary>
+        protected void SortNodes()
+        {
             switch (SortType)
             {
                 case CollationOrder.ChildOrder:
@@ -103,21 +105,73 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     NodeList.Reverse();
                     break;
             }
+        }
 
-            LayoutChildren();
+        /// <summary>
+        /// Checks for empty nodes and removes them
+        /// </summary>
+        protected void PruneEmptyNodes()
+        {
+            // Check for empty nodes and remove them
+            var emptyNodes = new List<ObjectCollectionNode>();
 
-            OnCollectionUpdated?.Invoke(this);
+            for (int i = 0; i < NodeList.Count; i++)
+            {
+                if (NodeList[i].Transform == null || (IgnoreInactiveTransforms && !NodeList[i].Transform.gameObject.activeSelf) || NodeList[i].Transform.parent == null || !(NodeList[i].Transform.parent.gameObject == gameObject))
+                {
+                    emptyNodes.Add(NodeList[i]);
+                }
+            }
+
+            // Now delete the empty nodes
+            for (int i = 0; i < emptyNodes.Count; i++)
+            {
+                NodeList.Remove(emptyNodes[i]);
+            }
+
+            emptyNodes.Clear();
         }
 
         /// <summary>
         /// Check if a node exists in the NodeList.
         /// </summary>
+        /// <param name="node">The Transfrom belonging to the <see cref="ObjectCollectionNode"/></param>
+        /// <returns>true when <paramref name="node"/> belongs to an element of the list.</returns>
         protected bool ContainsNode(Transform node)
         {
+            if (node == null)
+            {
+                return false;
+            }
             for (int i = 0; i < NodeList.Count; i++)
             {
                 if (NodeList[i].Transform == node)
                 {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Check if a node exists in the NodeList.
+        /// </summary>
+        /// <param name="node">The Transform belonging to <see cref="ObjectCollectionNode"/></param>
+        /// <param name="nodeIndex">The index of the element in <see cref="NodeList"/></param>
+        /// <returns>true when <paramref name="node"/> belongs to an element of the list.</returns>
+        protected bool ContainsNode(Transform node, out int nodeIndex)
+        {
+            nodeIndex = 0;
+            if (node == null)
+            {
+                return false;
+            }
+            for (int i = 0; i < NodeList.Count; i++)
+            {
+                if (NodeList[i].Transform == node)
+                {
+                    nodeIndex = i;
                     return true;
                 }
             }

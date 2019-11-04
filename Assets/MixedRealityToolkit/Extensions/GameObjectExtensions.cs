@@ -1,8 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit
@@ -12,11 +15,27 @@ namespace Microsoft.MixedReality.Toolkit
     /// </summary>
     public static class GameObjectExtensions
     {
+        /// <summary>
+        /// Export mesh data of current GameObject, and children if enabled, to file provided in OBJ format
+        /// </summary>
+        public static async Task ExportOBJAsync(this GameObject root, string filePath, bool includeChildren = true)
+        {
+            await OBJWriterUtility.ExportOBJAsync(root, filePath, includeChildren);
+        }
+
+        /// <summary>
+        /// Set all GameObject children active or inactive based on argument
+        /// </summary>
+        /// <param name="root">GameObject parent to traverse from</param>
+        /// <param name="isActive">Indicates whether children GameObjects should be active or not</param>
+        /// <remarks>
+        /// Does not call SetActive on the top level GameObject, only its children
+        /// </remarks>
         public static void SetChildrenActive(this GameObject root, bool isActive)
         {
             for (int i = 0; i < root.transform.childCount; i++)
             {
-                root.transform.GetChild(i).gameObject.SetActive(false);
+                root.transform.GetChild(i).gameObject.SetActive(isActive);
             }
         }
 
@@ -131,20 +150,13 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Destroys gameobject appropriately depending if in edit or playmode
+        /// Destroys GameObject appropriately depending if in edit or playmode
         /// </summary>
-        /// <param name="gameObject">gameobject to destroy</param>
+        /// <param name="gameObject">GameObject to destroy</param>
         /// <param name="t">time in seconds at which to destroy GameObject if applicable</param>
         public static void DestroyGameObject(GameObject gameObject, float t = 0.0f)
         {
-            if (Application.isPlaying)
-            {
-                GameObject.Destroy(gameObject, t);
-            }
-            else
-            {
-                GameObject.DestroyImmediate(gameObject);
-            }
+            UnityObjectExtensions.DestroyObject(gameObject, t);
         }
     }
 }

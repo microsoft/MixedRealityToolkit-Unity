@@ -570,7 +570,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         }
 
         /// <inheritdoc/>
-        public Edge[] Bounds { get; private set; } = new Edge[0];
+        public Edge[] Bounds { get; private set; } = System.Array.Empty<Edge>();
 
         /// <inheritdoc/>
         public float? FloorHeight { get; private set; } = null;
@@ -892,7 +892,7 @@ namespace Microsoft.MixedReality.Toolkit.Boundary
         private void CalculateBoundaryBounds()
         {
             // Reset the bounds
-            Bounds = new Edge[0];
+            Bounds = System.Array.Empty<Edge>();
             FloorHeight = null;
             rectangularBounds = null;
 

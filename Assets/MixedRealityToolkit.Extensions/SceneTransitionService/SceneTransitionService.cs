@@ -10,7 +10,13 @@ using Microsoft.MixedReality.Toolkit.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 {
-    [MixedRealityExtensionService(SupportedPlatforms.WindowsStandalone|SupportedPlatforms.MacStandalone|SupportedPlatforms.LinuxStandalone|SupportedPlatforms.WindowsUniversal, requiresProfile: true)]
+    [MixedRealityExtensionService(
+        SupportedPlatforms.WindowsStandalone | SupportedPlatforms.MacStandalone |
+        SupportedPlatforms.LinuxStandalone | SupportedPlatforms.WindowsUniversal,
+        "Scene Transition Service",
+        "SceneTransitionService/DefaultSceneTransitionServiceProfile.asset",
+        "MixedRealityToolkit.Extensions",
+	true)]
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/Extensions/SceneTransitionService/SceneTransitionServiceOverview.html")]
     public class SceneTransitionService : BaseExtensionService, ISceneTransitionService, IMixedRealityExtensionService
     {
@@ -236,7 +242,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
             {
                 case ProgressIndicatorState.Open:
                 case ProgressIndicatorState.Opening:
-                    // If it's already open / opening, don't botheer to open again
+                    // If it's already open / opening, don't bother to open again
                     break;
 
                 case ProgressIndicatorState.Closed:

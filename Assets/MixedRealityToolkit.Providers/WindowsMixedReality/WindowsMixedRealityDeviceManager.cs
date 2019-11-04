@@ -661,6 +661,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
                         pointer.Controller = null;
                     }
                 }
+
+                if (controller.Visualizer != null &&
+                    controller.Visualizer.GameObjectProxy != null)
+                {
+                    controller.Visualizer.GameObjectProxy.SetActive(false);
+                }
             }
 
             activeControllers.Remove(interactionSource.id);

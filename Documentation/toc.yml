@@ -3,7 +3,7 @@
   items:
   - name: Upgrading from HTK
     href: HTKToMRTKPortingGuide.md
-  - name: Updating from RC2
+  - name: Updating from earlier versions
     href: Updating.md
   - name: Release Notes
     href: ReleaseNotes.md
@@ -182,7 +182,6 @@
   items:
   - name: Contributing Overview
     href: Contributing/CONTRIBUTING.md
-
   - name: Coding Guidelines
     href: Contributing/CodingGuidelines.md
   - name: Writing and Running Tests
@@ -202,6 +201,6 @@
   - name: Roadmap
     href: Contributing/Roadmap.md
 - name: Notice
-  href: Legal/NOTICE.md
+  href: ../NOTICE.md
 - name: Authors
   href: Authors.md

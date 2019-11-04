@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SceneSystem
 {
@@ -45,26 +44,22 @@ namespace Microsoft.MixedReality.Toolkit.SceneSystem
         /// <summary>
         /// Name of the scene. Set by the property drawer.
         /// </summary>
-        [HideInInspector]
         public string Name;
 
         /// <summary>
         /// Path of the scene. Set by the property drawer.
         /// </summary>
-        [HideInInspector]
         public string Path;
 
         /// <summary>
         /// True if scene is included in build (NOT necessarily enabled)
         /// </summary>
-        [HideInInspector]
         public bool Included;
 
         /// <summary>
         /// Build index of the scene. If included in build settings and enabled, this will be a value greater than zero.
         /// If not included or disabled, this will be -1
         /// </summary>
-        [HideInInspector]
         public int BuildIndex;
 
         /// <summary>

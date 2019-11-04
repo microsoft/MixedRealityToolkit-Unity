@@ -13,11 +13,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
     public class InputSystemTests
     {
         private const string TestInputSystemProfilePath = "Assets/MixedRealityToolkit.Tests/EditModeTests/Services/TestProfiles/TestMixedRealityInputSystemProfile.asset";
+        private const string TestEmptyInputSystemProfilePath = "Assets/MixedRealityToolkit.Tests/EditModeTests/Services/TestProfiles/TestEmptyMixedRealityInputSystemProfile.asset";
 
         [TearDown]
         public void TearDown()
         {
             TestUtilities.ShutdownMixedRealityToolkit();
+            TestUtilities.EditorTearDownScenes();
         }
 
         [Test]
@@ -40,11 +42,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         {
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
 
-            // Retrieve Input System
-            MixedRealityServiceRegistry.TryGetService(out IMixedRealityInputSystem inputSystem);
-
             // Tests
-            Assert.IsNotNull(inputSystem);
+            Assert.IsNotNull(CoreServices.InputSystem);
         }
 
         [Test]
@@ -69,10 +68,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
         [Test]
         public void TestEmptyDataProvider()
         {
-            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes(true);
+            TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
+            MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile = AssetDatabase.LoadAssetAtPath<MixedRealityInputSystemProfile>(TestEmptyInputSystemProfilePath);
 
-            // Check for Input System
-            var inputSystem = MixedRealityToolkit.Instance.GetService<IMixedRealityInputSystem>();
+            var inputSystem = new MixedRealityInputSystem(MixedRealityToolkit.Instance, MixedRealityToolkit.Instance.ActiveProfile.InputSystemProfile);
+            Assert.IsTrue(MixedRealityToolkit.Instance.RegisterService<IMixedRealityInputSystem>(inputSystem));
+
+            // Since EditMode, we have to auto-enable MRTK input system ourselves
+            MixedRealityToolkit.Instance.EnableAllServicesByType(typeof(IMixedRealityInputSystem));
 
             var dataProviderAccess = (inputSystem as IMixedRealityDataProviderAccess);
 
@@ -125,12 +128,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests.InputSystem
             Assert.IsNotNull(dataProvider);
             Assert.IsTrue(dataProvider.IsInitialized);
             Assert.IsTrue(dataProvider.IsEnabled);
-        }
-
-        [TearDown]
-        public void CleanupMixedRealityToolkitTests()
-        {
-            TestUtilities.EditorCreateScenes();
         }
 
         /// <summary>

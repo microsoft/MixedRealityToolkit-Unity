@@ -97,6 +97,15 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 return false;
             }
 
+            // Need to add ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch to MixedRealityToolkit.vcxproj
+            if (buildInfo.BuildPlatform == "arm64")
+            {
+                if (!UpdateVSProj(buildInfo))
+                {
+                    return IsBuilding = false;
+                }
+            }
+
             // Now that NuGet packages have been restored, we can run the actual build process.
             exitCode = await Run(msBuildPath, 
                 $"\"{solutionProjectPath}\" {(buildInfo.Multicore ? "/m /nr:false" : "")} /t:{(buildInfo.RebuildAppx ? "Rebuild" : "Build")} /p:Configuration={buildInfo.Configuration} /p:Platform={buildInfo.BuildPlatform} {(string.IsNullOrEmpty(buildInfo.PlatformToolset) ? string.Empty : $"/p:PlatformToolset={buildInfo.PlatformToolset}")} {GetMSBuildLoggingCommand(buildInfo.LogDirectory, "buildAppx.log")}",
@@ -202,6 +211,46 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
 
             return string.Empty;
+        }
+
+        private static bool UpdateVSProj(IBuildInfo buildInfo)
+        {
+            // For ARM64 builds we need to add ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch
+            // to vcxproj file in order to ensure that the build passes
+
+            string projectName = PlayerSettings.productName;
+            string projectFilePath = $"{Path.GetFullPath(buildInfo.OutputDirectory)}\\{projectName}\\{projectName}.vcxproj";
+
+            if (!File.Exists(projectFilePath))
+            {
+                Debug.LogError($"Cannot find project file: {projectFilePath}");
+                return false;
+            }
+
+            var rootNode = XElement.Load(projectFilePath);
+            var defaultNamespace = rootNode.GetDefaultNamespace();
+            var propertyGroupNode = rootNode.Element(defaultNamespace + "PropertyGroup");
+            
+            if (propertyGroupNode == null)
+            {
+                propertyGroupNode = new XElement(defaultNamespace + "PropertyGroup", new XAttribute("Label", "Globals"));
+                rootNode.Add(propertyGroupNode);
+            }
+
+            var newNode = propertyGroupNode.Element(defaultNamespace + "ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch");
+            if (newNode != null)
+            {
+                // If this setting already exists in the project, ensure it's value is "None"
+                newNode.Value = "None";
+            }
+            else
+            {
+                propertyGroupNode.Add(new XElement(defaultNamespace + "ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch", "None"));
+            }
+
+            rootNode.Save(projectFilePath);
+
+            return true;
         }
 
         private static bool UpdateAppxManifest(IBuildInfo buildInfo)
@@ -437,7 +486,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// </summary>
         /// <param name="rootNode">An XElement containing the AppX manifest from 
         /// the build output</param>
-        /// <param name="capability">The added capabilites tag as XName</param>
+        /// <param name="capability">The added capabilities tag as XName</param>
         /// <param name="value">Value of the Name-XAttribute of the added capability</param>
         public static void AddCapability(XElement rootNode, XName capability, string value)
         {
