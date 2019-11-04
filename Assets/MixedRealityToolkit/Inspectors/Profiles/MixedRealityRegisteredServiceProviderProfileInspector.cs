@@ -163,9 +163,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                             providerAttribute = typeName != null ? MixedRealityExtensionServiceAttribute.Find(systemType) : null;
                         }
 
-                        if (providerAttribute != null && providerAttribute.RequiredProfileName != null && configurationProfile.objectReferenceValue == null)
+                        if (providerAttribute != null && providerAttribute.RequiresProfile && configurationProfile.objectReferenceValue == null)
                         {
-                            EditorGUILayout.HelpBox($"{(string.IsNullOrEmpty(providerAttribute.Name) ? typeName : providerAttribute.Name)} requires a {providerAttribute.RequiredProfileName}", MessageType.Warning);
+                            EditorGUILayout.HelpBox($"{(string.IsNullOrEmpty(providerAttribute.Name) ? typeName : providerAttribute.Name)} requires a Profile", MessageType.Warning);
                         }
                     }
                     EditorGUILayout.Space();

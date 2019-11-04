@@ -163,9 +163,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness.Editor
                             providerAttribute = typeName != null ? GetTypeNameAndProvider(systemType) : null;
                         }
 
-                        if (providerAttribute != null && providerAttribute.RequiredProfileName != null && observerProfile.objectReferenceValue == null)
+                        if (providerAttribute != null && providerAttribute.RequiresProfile && observerProfile.objectReferenceValue == null)
                         {
-                            EditorGUILayout.HelpBox($"{(string.IsNullOrEmpty(providerAttribute.Name) ? typeName : providerAttribute.Name)} requires a {providerAttribute.RequiredProfileName}", MessageType.Warning);
+                            EditorGUILayout.HelpBox($"{(string.IsNullOrEmpty(providerAttribute.Name) ? typeName : providerAttribute.Name)} requires a Profile", MessageType.Warning);
                         }
                     }
                 }

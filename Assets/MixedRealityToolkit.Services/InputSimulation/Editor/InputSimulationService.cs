@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         "Input Simulation Service",
         "Profiles/DefaultMixedRealityInputSimulationProfile.asset",
         "MixedRealityToolkit.SDK",
-        nameof(MixedRealityInputSimulationProfile))]
+        true)]
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/InputSimulation/InputSimulationService.html")]
     public class InputSimulationService :
         BaseInputSimulationService,

@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.UnityInput
         (SupportedPlatforms)(-1), // All platforms supported by Unity
         "Unity Mouse Device Manager",
         "Profiles/DefaultMixedRealityMouseInputProfile.asset",
-        requiredProfileName: nameof(MixedRealityMouseInputProfile))]  
+        requiresProfile: true)]  
     public class MouseDeviceManager : BaseInputDeviceManager, IMixedRealityMouseDeviceManager
     {
         /// <summary>

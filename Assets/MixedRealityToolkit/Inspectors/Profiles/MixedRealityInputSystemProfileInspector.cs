@@ -302,9 +302,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                             providerAttribute = typeName != null ? GetTypeNameAndProvider(systemType) : null;
                         }
 
-                        if (providerAttribute != null && providerAttribute.RequiredProfileName != null && configurationProfile.objectReferenceValue == null)
+                        if (providerAttribute != null && providerAttribute.RequiresProfile && configurationProfile.objectReferenceValue == null)
                         {
-                            EditorGUILayout.HelpBox($"{(string.IsNullOrEmpty(providerAttribute.Name) ? typeName : providerAttribute.Name)} requires a {providerAttribute.RequiredProfileName}", MessageType.Warning);
+                            EditorGUILayout.HelpBox($"{(string.IsNullOrEmpty(providerAttribute.Name) ? typeName : providerAttribute.Name)} requires a Profile", MessageType.Warning);
                         }
                     }
                 }
