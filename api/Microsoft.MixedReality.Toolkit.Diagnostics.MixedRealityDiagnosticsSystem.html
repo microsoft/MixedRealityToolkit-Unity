@@ -198,12 +198,43 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem__ctor_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.#ctor*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem__ctor_Microsoft_MixedReality_Toolkit_IMixedRealityServiceRegistrar_Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsProfile_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.#ctor(Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar,Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsProfile)">MixedRealityDiagnosticsSystem(IMixedRealityServiceRegistrar, MixedRealityDiagnosticsProfile)</h4>
-  <div class="markdown level1 summary"></div>
+  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem__ctor_Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsProfile_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.#ctor(Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsProfile)">MixedRealityDiagnosticsSystem(MixedRealityDiagnosticsProfile)</h4>
+  <div class="markdown level1 summary"><p>Constructor.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public MixedRealityDiagnosticsSystem(IMixedRealityServiceRegistrar registrar, MixedRealityDiagnosticsProfile profile)</code></pre>
+    <pre><code class="lang-csharp hljs">public MixedRealityDiagnosticsSystem(MixedRealityDiagnosticsProfile profile)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsProfile.html">MixedRealityDiagnosticsProfile</a></td>
+        <td><span class="parametername">profile</span></td>
+        <td><p>The configuration profile for the service.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem__ctor_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.#ctor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsSystem__ctor_Microsoft_MixedReality_Toolkit_IMixedRealityServiceRegistrar_Microsoft_MixedReality_Toolkit_Diagnostics_MixedRealityDiagnosticsProfile_" data-uid="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsSystem.#ctor(Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar,Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsProfile)">MixedRealityDiagnosticsSystem(IMixedRealityServiceRegistrar, MixedRealityDiagnosticsProfile)</h4>
+  <div class="markdown level1 summary"><p>Constructor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.&quot;)]
+public MixedRealityDiagnosticsSystem(IMixedRealityServiceRegistrar registrar, MixedRealityDiagnosticsProfile profile)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -218,12 +249,14 @@
       <tr>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar.html">IMixedRealityServiceRegistrar</a></td>
         <td><span class="parametername">registrar</span></td>
-        <td></td>
+        <td><p>The <a class="xref" href="Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar.html">IMixedRealityServiceRegistrar</a> instance that loaded the service.</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="Microsoft.MixedReality.Toolkit.Diagnostics.MixedRealityDiagnosticsProfile.html">MixedRealityDiagnosticsProfile</a></td>
         <td><span class="parametername">profile</span></td>
-        <td></td>
+        <td><p>The configuration profile for the service.</p>
+</td>
       </tr>
     </tbody>
   </table>

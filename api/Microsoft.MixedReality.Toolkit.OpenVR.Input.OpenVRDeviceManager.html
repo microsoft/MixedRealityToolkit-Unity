@@ -109,13 +109,61 @@
   
   
   <a id="Microsoft_MixedReality_Toolkit_OpenVR_Input_OpenVRDeviceManager__ctor_" data-uid="Microsoft.MixedReality.Toolkit.OpenVR.Input.OpenVRDeviceManager.#ctor*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_OpenVR_Input_OpenVRDeviceManager__ctor_IMixedRealityInputSystem_System_String_System_UInt32_Microsoft_MixedReality_Toolkit_BaseMixedRealityProfile_" data-uid="Microsoft.MixedReality.Toolkit.OpenVR.Input.OpenVRDeviceManager.#ctor(IMixedRealityInputSystem,System.String,System.UInt32,Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile)">OpenVRDeviceManager(IMixedRealityInputSystem, String, UInt32, BaseMixedRealityProfile)</h4>
+  <div class="markdown level1 summary"><p>Constructor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OpenVRDeviceManager(IMixedRealityInputSystem inputSystem, string name = null, uint priority = default(uint), BaseMixedRealityProfile profile = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IMixedRealityInputSystem</span></td>
+        <td><span class="parametername">inputSystem</span></td>
+        <td><p>The <a class="xref" href="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem.html">IMixedRealityInputSystem</a> instance that receives data from this provider.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>Friendly name of the service.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.uint32">UInt32</a></td>
+        <td><span class="parametername">priority</span></td>
+        <td><p>Service priority. Used to determine order of instantiation.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile.html">BaseMixedRealityProfile</a></td>
+        <td><span class="parametername">profile</span></td>
+        <td><p>The service's configuration profile.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="Microsoft_MixedReality_Toolkit_OpenVR_Input_OpenVRDeviceManager__ctor_" data-uid="Microsoft.MixedReality.Toolkit.OpenVR.Input.OpenVRDeviceManager.#ctor*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_OpenVR_Input_OpenVRDeviceManager__ctor_Microsoft_MixedReality_Toolkit_IMixedRealityServiceRegistrar_IMixedRealityInputSystem_System_String_System_UInt32_Microsoft_MixedReality_Toolkit_BaseMixedRealityProfile_" data-uid="Microsoft.MixedReality.Toolkit.OpenVR.Input.OpenVRDeviceManager.#ctor(Microsoft.MixedReality.Toolkit.IMixedRealityServiceRegistrar,IMixedRealityInputSystem,System.String,System.UInt32,Microsoft.MixedReality.Toolkit.BaseMixedRealityProfile)">OpenVRDeviceManager(IMixedRealityServiceRegistrar, IMixedRealityInputSystem, String, UInt32, BaseMixedRealityProfile)</h4>
   <div class="markdown level1 summary"><p>Constructor.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public OpenVRDeviceManager(IMixedRealityServiceRegistrar registrar, IMixedRealityInputSystem inputSystem, string name = null, uint priority = default(uint), BaseMixedRealityProfile profile = null)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.&quot;)]
+public OpenVRDeviceManager(IMixedRealityServiceRegistrar registrar, IMixedRealityInputSystem inputSystem, string name = null, uint priority = default(uint), BaseMixedRealityProfile profile = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
