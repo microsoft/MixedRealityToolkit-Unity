@@ -29,7 +29,6 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// Constructor.
         /// </summary>
         /// <param name="profile">The configuration profile for the service.</param>
-        [System.Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
         public MixedRealityDiagnosticsSystem(
             MixedRealityDiagnosticsProfile profile) : base(profile)
         { }
