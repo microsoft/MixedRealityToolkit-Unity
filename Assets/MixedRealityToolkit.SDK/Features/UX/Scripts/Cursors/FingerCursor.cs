@@ -97,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             nearPointer.TryGetNormalToNearestSurface(out surfaceNormal))
                         {
                             RotateToSurfaceNormal(indexFingerRingRenderer.transform, surfaceNormal, indexFingerRotation, distance);
-                            TranslateFromTipToPad(indexFingerRingRenderer.transform, indexFingerPosition, indexKnucklePosition, distance);
+                            TranslateFromTipToPad(indexFingerRingRenderer.transform, indexFingerPosition, indexKnucklePosition, surfaceNormal, distance);
                         }
                         else
                         {
@@ -219,15 +219,21 @@ namespace Microsoft.MixedReality.Toolkit.Input
             target.rotation = Quaternion.Slerp(targetRotation, pointerRotation, t);
         }
 
-        private void TranslateFromTipToPad(Transform target, Vector3 fingerPosition, Vector3 knucklePosition, float distance)
+        private void TranslateFromTipToPad(Transform target, Vector3 fingerPosition, Vector3 knucklePosition, Vector3 surfaceNormal, float distance)
         {
             var t = distance / alignWithSurfaceDistance;
-            Vector3 tipPosition = fingerPosition + (fingerPosition - knucklePosition).normalized * skinSurfaceOffset;
+
+            Vector3 tipNormal = (fingerPosition - knucklePosition).normalized;
+            Vector3 tipPosition = fingerPosition + tipNormal * skinSurfaceOffset;
             Vector3 tipOffset = tipPosition - fingerPosition;
+
+            // Check how perpindicular the finger normal is to the surface, so that the cursor will
+            // not translate to the finger pad if the user is poking with a horizontal finger
+            float fingerSurfaceDot = Vector3.Dot(tipNormal, -surfaceNormal);
 
             // Lerping an agular measurement from 0 degrees (default cursor position at tip of finger) to
             // 90 degrees (a new position on the fingertip pad) around the fingertip's X axis.
-            Quaternion degreesRelative = Quaternion.AngleAxis((1f - t) * 90f, indexFingerRingRenderer.transform.right);
+            Quaternion degreesRelative = Quaternion.AngleAxis((1f - t) * 90f * (1f - fingerSurfaceDot), indexFingerRingRenderer.transform.right);
 
             Vector3 tipToPadPosition = fingerPosition + degreesRelative * tipOffset;
             indexFingerRingRenderer.transform.position = tipToPadPosition;
