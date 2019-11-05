@@ -33,6 +33,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private const string DefaultInteractablePrefabAssetPath = "Assets/MixedRealityToolkit.Examples/Demos/UX/Interactables/Prefabs/Model_PushButton.prefab";
         private const string RadialSetPrefabAssetPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/RadialSet.prefab";
         private const string PressableHoloLens2TogglePrefabPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2Toggle.prefab";
+        private const string RadialPrefabAssetPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/Radial.prefab";
+        private const string ToggleSwitchPrefabAssetPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/ToggleSwitch.prefab";
 
         private readonly Color DefaultColor = Color.blue;
         private readonly Color FocusColor = Color.yellow;
@@ -627,6 +629,58 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             GameObject.Destroy(interactable.gameObject);
         }
 
+        [UnityTest]
+        /// <summary>
+        /// Test InteractableToggleCollection CurrentIndex updates
+        /// </summary>
+        public IEnumerator TestInteractableToggleCollectionIndexUpdate()
+        {
+            InteractableToggleCollection interactableToggleCollection;
+            int numRadials = 6;
+
+            AssembleInteractableToggleCollection(
+                out interactableToggleCollection,
+                numRadials,
+                Vector3.forward);
+
+            var toggleList = interactableToggleCollection.ToggleList;
+
+            int[] onClickEventCalled = new int[numRadials];
+
+            int index = 0;
+            foreach (var radial in toggleList)
+            {
+                int indexRadial = index;
+                radial.OnClick.AddListener(() => { onClickEventCalled[indexRadial] = 1; });
+                index++;
+            }
+
+            for (int j = 0; j < numRadials; j++)
+            {
+                interactableToggleCollection.CurrentIndex = j;
+                yield return null;
+
+                // If the CurrentIndex is changed the toggle should be visually updated and events should be triggered
+                for (int i = 0; i < numRadials; i++)
+                {
+                    if (i == interactableToggleCollection.CurrentIndex)
+                    {
+                        Assert.True(interactableToggleCollection.ToggleList[i].IsToggled);
+
+                        // Make sure OnClick event is called on index update
+                        Assert.True(onClickEventCalled[i] == 1);
+                    }
+                    else
+                    {
+                        Assert.False(interactableToggleCollection.ToggleList[i].IsToggled);
+                    }
+                }
+            }
+
+            //Cleanup
+            GameObject.Destroy(interactableToggleCollection.gameObject);
+        }
+
         #region Test Helpers
 
         /// <summary>
@@ -696,6 +750,26 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             MixedRealityInputAction selectAction = CoreServices.InputSystem.InputSystemProfile.InputActionsProfile.InputActions.Where(m => m.Description == selectActionDescription).FirstOrDefault();
             Assert.NotNull(selectAction.Description, "Couldn't find " + selectActionDescription + " input action in input system profile.");
             interactable.InputAction = selectAction;
+        }
+
+        /// <summary>
+        /// Generates an InteractableToggleCollection from radial prefabs
+        /// </summary>
+        private void AssembleInteractableToggleCollection(out InteractableToggleCollection interactableToggleCollection, int numRadials, Vector3 pos)
+        {
+            GameObject toggleCollection = new GameObject("ToggleCollection");
+            interactableToggleCollection = toggleCollection.AddComponent<InteractableToggleCollection>();
+
+            // Instantiate radial prefabs with toggleCollection as the parent
+            for (int i = 0; i < numRadials; i++)
+            {
+                var radial = InstantiateInteractableFromPath(pos + new Vector3(0.1f, i * 0.1f, 0), Quaternion.identity, RadialPrefabAssetPath);
+                radial.name = "Radial " + i;
+                Assert.IsNotNull(radial);
+                radial.transform.parent = toggleCollection.transform;
+            }
+
+            interactableToggleCollection.ToggleList = toggleCollection.GetComponentsInChildren<Interactable>();
         }
 
         private GameObject InstantiateInteractableFromPath(Vector3 position, Quaternion rotation, string path)
