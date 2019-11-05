@@ -428,16 +428,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             {
                 if (HandJointService != null)
                 {
-                    currentTrackedHandedness = PreferredTrackedHandedness;
+                    currentTrackedHandedness = TrackedHandness;
                     if (currentTrackedHandedness == Handedness.Both)
                     {
-                        if (HandJointService.IsHandTracked(Handedness.Left))
+                        if (HandJointService.IsHandTracked(PreferredTrackedHandedness))
                         {
-                            currentTrackedHandedness = Handedness.Left;
+                            currentTrackedHandedness = PreferredTrackedHandedness;
                         }
-                        else if (HandJointService.IsHandTracked(Handedness.Right))
+                        else if (HandJointService.IsHandTracked(PreferredTrackedHandedness.GetOppositeHandedness()))
                         {
-                            currentTrackedHandedness = Handedness.Right;
+                            currentTrackedHandedness = PreferredTrackedHandedness.GetOppositeHandedness();
                         }
                         else
                         {
