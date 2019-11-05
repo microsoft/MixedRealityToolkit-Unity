@@ -13,6 +13,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
     public class InteractableToggleCollection : MonoBehaviour
     {
         [Tooltip("Array of Interactables that will be managed by this controller")]
+        /// <summary>
+        /// Array of Interactables that will be managed by this controller
+        /// </summary>
         public Interactable[] ToggleList;
 
 
@@ -76,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 currentIndex = index;
 
-                UpdateToggleVisual(index);
+                OnSelection(index);
             }
 
             if (fireOnClick)
@@ -87,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         // Update the visual appearance and set the states of the selected and unselected toggles within 
         // Interactable
-        protected virtual void UpdateToggleVisual(int index)
+        protected virtual void OnSelection(int index, bool force = false)
         {
             int length = ToggleList.Length;
             for (int i = 0; i < length; ++i)
