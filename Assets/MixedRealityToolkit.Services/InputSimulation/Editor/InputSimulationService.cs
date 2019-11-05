@@ -130,12 +130,37 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region BaseInputDeviceManager Implementation
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the data provider.</param>
+        /// <param name="inputSystem">The <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
+        /// <param name="name">Friendly name of the service.</param>
+        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
+        /// <param name="profile">The service's configuration profile.</param>
+        [System.Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
         public InputSimulationService(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
             string name,
             uint priority,
-            BaseMixedRealityProfile profile) : base(registrar, inputSystem, name, priority, profile) { }
+            BaseMixedRealityProfile profile) : this(inputSystem, name, priority, profile) 
+        {
+            Registrar = registrar;
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="inputSystem">The <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
+        /// <param name="name">Friendly name of the service.</param>
+        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
+        /// <param name="profile">The service's configuration profile.</param>
+        public InputSimulationService(
+            IMixedRealityInputSystem inputSystem,
+            string name,
+            uint priority,
+            BaseMixedRealityProfile profile) : base(inputSystem, name, priority, profile) { }
 
         /// <inheritdoc />
         public bool CheckCapability(MixedRealityCapability capability)
@@ -418,33 +443,36 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // The pixel-to-world-unit ratio changes with depth, so have to chose a fixed distance for conversion.
         private const float mouseWorldDepth = 0.5f;
         // Center of the viewport is at (0.5, 0.5)
-        private readonly Vector2 viewportCenter = new Vector2(0.5f, 0.5f);
 
         private Vector2 ScreenToWorld(Vector2 screenDelta)
         {
             Vector3 deltaViewport3D = new Vector3(
-                screenDelta.x / CameraCache.Main.pixelWidth + viewportCenter.x,
-                screenDelta.y / CameraCache.Main.pixelHeight + viewportCenter.y,
-                mouseWorldDepth);
-            Vector3 deltaWorld3D = CameraCache.Main.ViewportToWorldPoint(deltaViewport3D);
-            Vector3 deltaLocal3D = CameraCache.Main.transform.InverseTransformPoint(deltaWorld3D);
-            return new Vector2(deltaLocal3D.x, deltaLocal3D.y);
+                screenDelta.x / (0.5f * CameraCache.Main.pixelWidth),
+                screenDelta.y / (0.5f * CameraCache.Main.pixelHeight),
+                1) * mouseWorldDepth;
+            var invProjMat = Matrix4x4.Inverse(CameraCache.Main.projectionMatrix);
+            Vector3 deltaWorld3D = invProjMat * deltaViewport3D;
+            return new Vector2(deltaWorld3D.x, deltaWorld3D.y);
         }
 
         private Vector2 WorldToScreen(Vector2 deltaWorld)
         {
-            Vector3 deltaWorld3D = CameraCache.Main.transform.TransformPoint(new Vector3(deltaWorld.x, deltaWorld.y, mouseWorldDepth));
-            Vector3 deltaViewport3D = CameraCache.Main.WorldToViewportPoint(deltaWorld3D);
+            Vector3 deltaWorld3D = new Vector3(deltaWorld.x, deltaWorld.y, mouseWorldDepth);
+            var projMat = CameraCache.Main.projectionMatrix;
+            Vector4 proj = projMat * deltaWorld3D;
+            Vector3 deltaViewport3D = -proj / proj.w;
             return new Vector2(
-                (deltaViewport3D.x - viewportCenter.x) * CameraCache.Main.pixelWidth,
-                (deltaViewport3D.y - viewportCenter.y) * CameraCache.Main.pixelHeight);
+                deltaViewport3D.x * CameraCache.Main.pixelWidth,
+                deltaViewport3D.y * CameraCache.Main.pixelHeight);
         }
 
         private Vector2 WorldToViewport(Vector2 deltaWorld)
         {
-            Vector3 deltaWorld3D = CameraCache.Main.transform.TransformPoint(new Vector3(deltaWorld.x, deltaWorld.y, mouseWorldDepth));
-            Vector3 deltaViewport3D = CameraCache.Main.WorldToViewportPoint(deltaWorld3D);
-            return new Vector2(deltaViewport3D.x - viewportCenter.x, deltaViewport3D.y - viewportCenter.y);
+            Vector3 deltaWorld3D = new Vector3(deltaWorld.x, deltaWorld.y, mouseWorldDepth);
+            var projMat = CameraCache.Main.projectionMatrix;
+            Vector4 proj = projMat * deltaWorld3D;
+            Vector3 deltaViewport3D = -proj / proj.w;
+            return new Vector2(deltaViewport3D.x, deltaViewport3D.y);
         }
     }
 }

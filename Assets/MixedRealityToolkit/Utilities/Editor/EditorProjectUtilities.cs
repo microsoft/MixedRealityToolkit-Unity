@@ -128,6 +128,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
 #if !UNITY_2019_1_OR_NEWER
 
+            Debug.Log("Checking to see if the AR Foundation, UWP, .NET backend workaround needs to be applied.");
+
             bool reloadLocked = EditorAssemblyReloadManager.LockReloadAssemblies;
             if (reloadLocked)
             {
@@ -171,6 +173,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     {
                         asmDef.Save(arFoundation.FullName);
                     }
+                    else
+                    {
+                        Debug.Log($"No changes required for {arFoundation.FullName}.");
+                    }
                 }
 
                 FileInfo arSubsystems = GetPackageCacheAssemblyDefinitionFile(
@@ -203,6 +209,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     if (changed)
                     {
                         asmDef.Save(arSubsystems.FullName);
+                    }
+                    else
+                    {
+                        Debug.Log($"No changes required for {arSubsystems.FullName}.");
                     }
                 }
             }
@@ -246,7 +256,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             DirectoryInfo[] folders = root.GetDirectories(folderName);
             if (folders.Length == 0) 
             {
-                Debug.Log($"Failed to locate a folder fitting the {folderName} pattern.");
                 return null; 
             }
             if (folders.Length > 1) 
@@ -257,14 +266,12 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             folders = folders[0].GetDirectories("Runtime");
             if (folders.Length == 0) 
             {
-                Debug.Log("Failed to locate the Runtime folder.");
                 return null; 
             }
 
             FileInfo[] files = folders[0].GetFiles(fileName);
             if (files.Length == 0)
             {
-                Debug.Log(@"Failed to locate {fileName}.");
                 return null;
             }
 

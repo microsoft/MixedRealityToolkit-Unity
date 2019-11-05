@@ -16,7 +16,11 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
     /// When tracking is lost, the service displays a visual indicator and sets the main camera's culling mask to hide all other objects.
     /// When tracking is restored, the camera mask is restored and the visual indicator is hidden.
     /// </summary>
-    [MixedRealityExtensionService(SupportedPlatforms.WindowsUniversal)]
+    [MixedRealityExtensionService(
+        SupportedPlatforms.WindowsUniversal,
+        "Tracking Lost Service",
+        "LostTrackingService/DefaultLostTrackingServiceProfile.asset",
+        "MixedRealityToolkit.Extensions")]
     public class LostTrackingService : BaseExtensionService, ILostTrackingService, IMixedRealityExtensionService
     {
         /// <inheritdoc />
@@ -33,9 +37,35 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.Tracking
         private int cullingMaskOnTrackingLost;
         private float timeScaleOnTrackingLost;
 
-        public LostTrackingService(IMixedRealityServiceRegistrar registrar, string name, uint priority, BaseMixedRealityProfile profile) : base(registrar, name, priority, profile)
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
+        /// <param name="name">Friendly name of the service.</param>
+        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
+        /// <param name="profile">The service's configuration profile.</param>
+        [Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
+        public LostTrackingService(
+            IMixedRealityServiceRegistrar registrar, 
+            string name, 
+            uint priority, 
+            BaseMixedRealityProfile profile) : this(name, priority, profile)
         {
-            this.profile = (LostTrackingServiceProfile)profile;
+            Registrar = registrar;
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="name">Friendly name of the service.</param>
+        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
+        /// <param name="profile">The service's configuration profile.</param>
+        public LostTrackingService(
+            string name, 
+            uint priority, 
+            BaseMixedRealityProfile profile) : base(name, priority, profile)
+        {
+            this.profile = profile as LostTrackingServiceProfile;
         }
 
         /// <inheritdoc />

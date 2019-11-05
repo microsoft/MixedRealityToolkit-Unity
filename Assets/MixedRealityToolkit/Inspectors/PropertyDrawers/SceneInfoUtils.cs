@@ -35,6 +35,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static int frameScriptableObjectsLastUpdated;
         private static int frameScenesLastUpdated;
         private static List<Tuple<Type, FieldInfo>> cachedComponentTypes = new List<Tuple<Type, FieldInfo>>();
+        private static HashSet<Type> fieldTypesToSearch = new HashSet<Type>
+        {
+            typeof(SceneInfo),
+            typeof(SceneInfo[]),
+            typeof(List<SceneInfo>)
+        };
 
         /// <summary>
         /// Call this when you make a change to the build settings and need those changes to be reflected immediately.
@@ -108,6 +114,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// </summary>
         public void OnProcessScene(Scene scene, BuildReport report)
         {
+            Debug.Log("Processing scene on build");
             RefreshSceneInfoFieldsInScene(scene);
         }
 
@@ -229,13 +236,23 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// </summary>
         private static void RefreshCachedTypes()
         {
+            if (EditorApplication.isCompiling || BuildPipeline.isBuildingPlayer)
+            {   // Don't refresh cached types if we're in the middle of something important
+                return;
+            }
+
+            cachedComponentTypes.Clear();
+
             foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 foreach (Type t in assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Component))))
                 {
-                    foreach (FieldInfo f in t.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(f => f.FieldType == typeof(SceneInfo)))
+                    foreach (FieldInfo f in t.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
                     {
-                        cachedComponentTypes.Add(new Tuple<Type, FieldInfo>(t, f));
+                        if (fieldTypesToSearch.Contains(f.FieldType))
+                        {
+                            cachedComponentTypes.Add(new Tuple<Type, FieldInfo>(t, f));
+                        }
                     }
                 }
             }
@@ -270,8 +287,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// </summary>
         private static void RefreshSceneInfoFieldsInScriptableObjects()
         {
-            if (Time.frameCount == frameScriptableObjectsLastUpdated)
-            {   // Don't update more than once per frame
+            if (Time.frameCount == frameScriptableObjectsLastUpdated && !BuildPipeline.isBuildingPlayer)
+            {   // Don't update more than once per frame unless we're building
                 return;
             }
 
@@ -281,17 +298,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 {
                     foreach (FieldInfo fieldInfo in source.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
                     {
-                        if (fieldInfo.FieldType == typeof(SceneInfo))
+                        if (fieldTypesToSearch.Contains(fieldInfo.FieldType))
                         {
-                            SerializedObject serializedObject = new SerializedObject(source);
-                            SerializedProperty property = serializedObject.FindProperty(fieldInfo.Name);
-                            SerializedProperty assetProperty, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty;
-                            GetSceneInfoRelativeProperties(property, out assetProperty, out nameProperty, out pathProperty, out buildIndexProperty, out includedProperty, out tagProperty);
-                            if (RefreshSceneInfo(assetProperty.objectReferenceValue, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty))
-                            {
-                                serializedObject.ApplyModifiedProperties();
-                            }
-
+                            CheckForChangesInField(source, fieldInfo);
                         }
                     }
                 }
@@ -306,8 +315,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private static void RefreshSceneInfoFieldsInOpenScenes()
         {
-            if (Time.frameCount == frameScenesLastUpdated)
-            {   // Don't udpate more than once per frame
+            if (Time.frameCount == frameScenesLastUpdated && !BuildPipeline.isBuildingPlayer)
+            {   // Don't update more than once per frame unless we're building
                 return;
             }
 
@@ -318,14 +327,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     FieldInfo fieldInfo = typeFieldInfoPair.Item2;
                     foreach (Component source in GameObject.FindObjectsOfType(typeFieldInfoPair.Item1))
                     {
-                        SerializedObject serializedObject = new SerializedObject(source);
-                        SerializedProperty property = serializedObject.FindProperty(fieldInfo.Name);
-                        SerializedProperty assetProperty, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty;
-                        GetSceneInfoRelativeProperties(property, out assetProperty, out nameProperty, out pathProperty, out buildIndexProperty, out includedProperty, out tagProperty);
-                        if (RefreshSceneInfo(assetProperty.objectReferenceValue, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty))
-                        {
-                            serializedObject.ApplyModifiedProperties();
-                        }
+                        CheckForChangesInField(source, fieldInfo);
                     }
                 }
 
@@ -348,14 +350,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     {
                         foreach (Component source in rootGameObject.GetComponentsInChildren(typeFieldInfoPair.Item1))
                         {
-                            SerializedObject serializedObject = new SerializedObject(source);
-                            SerializedProperty property = serializedObject.FindProperty(fieldInfo.Name);
-                            SerializedProperty assetProperty, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty;
-                            GetSceneInfoRelativeProperties(property, out assetProperty, out nameProperty, out pathProperty, out buildIndexProperty, out includedProperty, out tagProperty);
-                            if (RefreshSceneInfo(assetProperty.objectReferenceValue, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty))
-                            {
-                                serializedObject.ApplyModifiedProperties();
-                            }
+                            CheckForChangesInField(source, fieldInfo);
                         }
                     }
                 }
@@ -363,6 +358,49 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             catch (Exception)
             {
                 Debug.LogWarning("Error when attempting to update scene info fields. Scene info data may be stale.");
+            }
+        }
+
+        private static void CheckForChangesInField(UnityEngine.Object source, FieldInfo fieldInfo)
+        {
+            if (fieldInfo.FieldType == typeof(SceneInfo))
+            {
+                SerializedObject serializedObject = new SerializedObject(source);
+                SerializedProperty property = serializedObject.FindProperty(fieldInfo.Name);
+                SerializedProperty assetProperty, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty;
+                GetSceneInfoRelativeProperties(property, out assetProperty, out nameProperty, out pathProperty, out buildIndexProperty, out includedProperty, out tagProperty);
+                if (RefreshSceneInfo(assetProperty.objectReferenceValue, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty))
+                {
+                    if (BuildPipeline.isBuildingPlayer)
+                    {
+                        Debug.Log("Found out-of-date SceneInfo field '" + property.displayName + "' in asset '" + source.name + "' - The asset has been updated to: " + pathProperty.stringValue);
+                    }
+                    serializedObject.ApplyModifiedProperties();
+                }
+            }
+            else if (fieldInfo.FieldType == typeof(SceneInfo[]) || fieldInfo.FieldType == typeof(List<SceneInfo>))
+            {
+                SerializedObject serializedObject = new SerializedObject(source);
+                SerializedProperty arrayProperty = serializedObject.FindProperty(fieldInfo.Name);
+                for (int i = 0; i < arrayProperty.arraySize; i++)
+                {
+                    SerializedProperty property = arrayProperty.GetArrayElementAtIndex(i);
+                    SerializedProperty assetProperty, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty;
+                    GetSceneInfoRelativeProperties(property, out assetProperty, out nameProperty, out pathProperty, out buildIndexProperty, out includedProperty, out tagProperty);
+                    if (RefreshSceneInfo(assetProperty.objectReferenceValue, nameProperty, pathProperty, buildIndexProperty, includedProperty, tagProperty))
+                    {
+                        serializedObject.ApplyModifiedProperties();
+                        // If we're building, log this change
+                        if (BuildPipeline.isBuildingPlayer)
+                        {
+                            Debug.Log("Found out-of-date SceneInfo field '" + property.displayName + "' in asset '" + source.name + "' - The asset has been updated to: " + pathProperty.stringValue);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                Debug.LogWarning("Attempted to refresh SceneInfo field for a type that isn't recognized: " + fieldInfo.FieldType);
             }
         }
     }

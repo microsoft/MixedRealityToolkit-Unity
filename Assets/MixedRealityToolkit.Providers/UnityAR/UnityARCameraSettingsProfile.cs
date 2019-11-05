@@ -8,12 +8,14 @@ using UnityEngine.SpatialTracking;
 namespace Microsoft.MixedReality.Toolkit.CameraSystem
 {
     /// <summary>
-    /// Configuration profile for the XR Camera setttings provider.
+    /// Configuration profile for the XR Camera settings provider.
     /// </summary>
     [CreateAssetMenu(menuName = "Mixed Reality Toolkit/Profiles/Unity AR Foundation Camera Settings Profile", fileName = "DefaultUnityARCameraSettingsProfile", order = 100)]
     [MixedRealityServiceProfile(typeof(UnityARCameraSettings))]
     public class UnityARCameraSettingsProfile : BaseCameraSettingsProfile
     {
+#if !(WINDOWS_UWP && !ENABLE_IL2CPP)
+
 #region Tracked Pose Driver settings
 
         [SerializeField]
@@ -35,14 +37,16 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         public TrackedPoseDriver.TrackingType TrackingType => trackingType;
 
         [SerializeField]
-        [Tooltip("Specfies when (during Update and/or just before rendering) to update the tracking of the pose.")]
+        [Tooltip("Specifies when (during Update and/or just before rendering) to update the tracking of the pose.")]
         private TrackedPoseDriver.UpdateType updateType = TrackedPoseDriver.UpdateType.UpdateAndBeforeRender;
 
         /// <summary>
-        /// Specfies when (during Update and/or just before rendering) to update the tracking of the pose.
+        /// Specifies when (during Update and/or just before rendering) to update the tracking of the pose.
         /// </summary>
         public TrackedPoseDriver.UpdateType UpdateType => updateType;
 
 #endregion Tracked Pose Driver settings
+
+#endif // !(WINDOWS_UWP && !ENABLE_IL2CPP)
     }
 }
