@@ -37,9 +37,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         [SerializeField]
         private StringPreferences stringPreferences = new StringPreferences();
 
-        private const string FILE_NAME = "ProjectPreferences.asset";
+        protected const string FILE_NAME = "ProjectPreferences.asset";
 
-        private const MixedRealityToolkitModuleType MODULE = MixedRealityToolkitModuleType.Generated;
+        protected const MixedRealityToolkitModuleType MODULE = MixedRealityToolkitModuleType.Generated;
 
         private static ProjectPreferences _instance;
         private static ProjectPreferences Instance
@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             {
                 if (_instance == null)
                 {
-                    string filePath = MixedRealityToolkitFiles.MapRelativeFilePath(MODULE, FILE_NAME);
+                    string filePath = FilePath;
                     if (string.IsNullOrEmpty(filePath))
                     {
                         // MapRelativeFilePath returned null, need to build path ourselves
@@ -70,6 +70,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 return _instance;
             }
         }
+
+        protected static string FilePath => MixedRealityToolkitFiles.MapRelativeFilePath(MODULE, FILE_NAME);
 
         /// <summary>
         /// Save bool to preferences and save to ScriptableObject with key given.
