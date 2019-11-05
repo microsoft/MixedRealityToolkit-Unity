@@ -12,8 +12,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     public class InteractableScaleTheme : InteractableThemeBase
     {
-        protected Vector3 startScale;
-        private Transform hostTransform;
+        protected Vector3 originalScale;
+        protected Transform hostTransform;
 
         public InteractableScaleTheme()
         {
@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             base.Init(host, settings);
 
             hostTransform = Host.transform;
-            startScale = hostTransform.localScale;
+            originalScale = hostTransform.localScale;
         }
 
         /// <inheritdoc />
@@ -61,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc />
         public override void SetValue(ThemeStateProperty property, int index, float percentage)
         {
-            hostTransform.localScale = Vector3.Lerp(property.StartValue.Vector3, Vector3.Scale(startScale, property.Values[index].Vector3), percentage);
+            hostTransform.localScale = Vector3.Lerp(property.StartValue.Vector3, Vector3.Scale(originalScale, property.Values[index].Vector3), percentage);
         }
     }
 }

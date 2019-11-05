@@ -16,8 +16,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     public class ScaleOffsetColorTheme : InteractableColorTheme
     {
-        protected Vector3 startPosition;
-        protected Vector3 startScale;
+        protected Vector3 originalPosition;
+        protected Vector3 originalScale;
         protected Transform hostTransform;
 
         public ScaleOffsetColorTheme()
@@ -67,8 +67,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             base.Init(host, settings);
             hostTransform = Host.transform;
-            startPosition = hostTransform.localPosition;
-            startScale = hostTransform.localScale;
+            originalPosition = hostTransform.localPosition;
+            originalScale = hostTransform.localScale;
         }
 
         /// <inheritdoc />
@@ -99,10 +99,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
             switch (property.Name)
             {
                 case "Scale":
-                    hostTransform.localScale = Vector3.Lerp(property.StartValue.Vector3, Vector3.Scale(startScale, property.Values[index].Vector3), percentage);
+                    hostTransform.localScale = Vector3.Lerp(property.StartValue.Vector3, Vector3.Scale(originalScale, property.Values[index].Vector3), percentage);
                     break;
                 case "Offset":
-                    hostTransform.localPosition = Vector3.Lerp(property.StartValue.Vector3, startPosition + property.Values[index].Vector3, percentage);
+                    hostTransform.localPosition = Vector3.Lerp(property.StartValue.Vector3, originalPosition + property.Values[index].Vector3, percentage);
                     break;
                 case "Color":
                     base.SetValue(property, index, percentage);
