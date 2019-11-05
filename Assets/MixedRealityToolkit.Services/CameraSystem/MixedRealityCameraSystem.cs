@@ -111,8 +111,6 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
 
             if (useFallbackBehavior)
             {
-                Debug.Log("No settings providers were loaded for this platform. Using default camera system behavior.");
-
                 cameraOpaqueLastFrame = IsOpaque;
 
                 if (IsOpaque)
