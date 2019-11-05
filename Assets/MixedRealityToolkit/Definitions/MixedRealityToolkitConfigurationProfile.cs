@@ -330,7 +330,7 @@ namespace Microsoft.MixedReality.Toolkit
         private bool useServiceInspectors = false;
 
         /// <summary>
-        /// If true, MRTK will render the depth buffer as color. Only valid in editor."
+        /// If true, MRTK will render the depth buffer as color. Only valid in editor.
         /// </summary>
         public bool RenderDepthBuffer
         {
