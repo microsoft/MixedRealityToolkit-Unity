@@ -24,10 +24,10 @@ public class KeyboardTest : MonoBehaviour, IPointerDownHandler
 
     private void DisableKeyboard(object sender, EventArgs e)
     {
-        keyboard.Close();
-
         keyboard.OnTextUpdated -= UpdateText;
         keyboard.OnClosed -= DisableKeyboard;
         keyboard.OnTextSubmitted -= DisableKeyboard;
+
+        keyboard.Close();
     }
 }
