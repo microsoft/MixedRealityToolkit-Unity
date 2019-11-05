@@ -31,12 +31,29 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
+        [Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
         public WindowsMixedRealityEyeGazeDataProvider(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
             string name,
             uint priority,
-            BaseMixedRealityProfile profile) : base(registrar, inputSystem, name, priority, profile) { }
+            BaseMixedRealityProfile profile) : this(inputSystem, name, priority, profile) 
+        {
+            Registrar = registrar;
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="inputSystem">The <see cref="Microsoft.MixedReality.Toolkit.Input.IMixedRealityInputSystem"/> instance that receives data from this provider.</param>
+        /// <param name="name">Friendly name of the service.</param>
+        /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
+        /// <param name="profile">The service's configuration profile.</param>
+        public WindowsMixedRealityEyeGazeDataProvider(
+            IMixedRealityInputSystem inputSystem,
+            string name,
+            uint priority,
+            BaseMixedRealityProfile profile) : base(inputSystem, name, priority, profile) { }
 
         public bool SmoothEyeTracking { get; set; } = false;
 

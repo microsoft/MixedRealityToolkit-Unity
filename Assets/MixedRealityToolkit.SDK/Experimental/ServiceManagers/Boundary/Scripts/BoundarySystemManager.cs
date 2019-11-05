@@ -42,10 +42,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Boundary
         private void InitializeManager()
         {
             // The boundary system class takes arguments for:
-            // * The registrar
             // * The boundary visualization profile
             // * The desired experience scale
-            object[] args = { this, profile, experienceScale };
+            object[] args = { profile, experienceScale };
 
             Initialize<IMixedRealityBoundarySystem>(BoundarySystemType.Type, args: args);
         }

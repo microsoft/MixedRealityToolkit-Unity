@@ -48,23 +48,20 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Input
 #endif
 
             // The input system class takes arguments for:
-            // * The registrar
             // * The input system profile
-            object[] args = { this, profile };
+            object[] args = { profile };
             Initialize<IMixedRealityInputSystem>(InputSystemType.Type, args: args);
 
             // The input system uses the focus provider specified in the profile.
             // The args for the focus provider are:
-            // * The registrar
             // * The input system profile
-            args = new object[] { this, profile };
+            args = new object[] { profile };
             Initialize<IMixedRealityFocusProvider>(profile.FocusProviderType.Type, args: args);
 
             // The input system uses the raycast provider specified in the profile.
             // The args for the focus provider are:
-            // * The registrar
             // * The input system profile
-            args = new object[] { this, profile };
+            args = new object[] { profile };
             Initialize<IMixedRealityRaycastProvider>(profile.RaycastProviderType, args: args);
 
 
