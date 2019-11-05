@@ -45,8 +45,18 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             get
             {
                 currentDisplayType = DisplayType.Opaque;
+
+                IReadOnlyList<IMixedRealityCameraSettingsProvider> dataProviders = GetDataProviders<IMixedRealityCameraSettingsProvider>();
+                if (dataProviders.Count > 0)
+                {
+                    // Takes the first settings provider's setting.
+                    if (!dataProviders[0].IsOpaque)
+                    {
+                        currentDisplayType = DisplayType.Transparent;
+                    }
+                }
 #if UNITY_WSA
-                if (!UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque)
+                else if (!UnityEngine.XR.WSA.HolographicSettings.IsDisplayOpaque)
                 {
                     currentDisplayType = DisplayType.Transparent;
                 }
@@ -62,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         public string SourceName { get; } = "Mixed Reality Camera System";
 
         /// <inheritdoc/>
-        public MixedRealityCameraProfile CameraProfile =>  ConfigurationProfile as MixedRealityCameraProfile;
+        public MixedRealityCameraProfile CameraProfile => ConfigurationProfile as MixedRealityCameraProfile;
 
         private DisplayType currentDisplayType;
         private bool cameraOpaqueLastFrame = false;
