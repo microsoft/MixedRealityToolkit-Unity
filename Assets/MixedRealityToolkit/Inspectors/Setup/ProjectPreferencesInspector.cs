@@ -6,7 +6,7 @@ using UnityEditor;
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
     [CustomEditor(typeof(ProjectPreferences))]
-    public class ProjectPreferencesInspector : UnityEditor.Editor
+    internal class ProjectPreferencesInspector : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {
