@@ -36,6 +36,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
 
         [Tooltip("This event is triggered when any of the toggles in the ToggleList are selected")]
+        /// <summary>
+        /// This event is triggered when any of the toggles in the ToggleList are selected
+        /// </summary>
         public UnityEvent OnSelectionEvents = new UnityEvent();
 
         private void Start()
