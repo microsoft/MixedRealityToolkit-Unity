@@ -12,7 +12,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
     /// </summary>
     public class InteractableRotationTheme : InteractableThemeBase
     {
-        private Transform hostTransform;
+        protected Vector3 originalRotation;
+		protected Transform hostTransform;
 
         public InteractableRotationTheme()
         {
@@ -46,6 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             base.Init(host, settings);
 
             hostTransform = Host.transform;
+			originalRotation = hostTransform.localEulerAngles;
         }
 
         /// <inheritdoc />
@@ -59,7 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc />
         public override void SetValue(ThemeStateProperty property, int index, float percentage)
         {
-            hostTransform.localRotation = Quaternion.Euler( Vector3.Lerp(property.StartValue.Vector3, property.Values[index].Vector3, percentage));
+            hostTransform.localRotation = Quaternion.Euler( Vector3.Lerp(property.StartValue.Vector3, originalRotation + property.Values[index].Vector3, percentage));
         }
     }
 }
