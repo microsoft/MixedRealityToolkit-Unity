@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     public class InteractableRotationTheme : InteractableThemeBase
     {
         protected Vector3 originalRotation;
-		protected Transform hostTransform;
+        protected Transform hostTransform;
 
         public InteractableRotationTheme()
         {
@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             base.Init(host, settings);
 
             hostTransform = Host.transform;
-			originalRotation = hostTransform.localEulerAngles;
+            originalRotation = hostTransform.localEulerAngles;
         }
 
         /// <inheritdoc />
