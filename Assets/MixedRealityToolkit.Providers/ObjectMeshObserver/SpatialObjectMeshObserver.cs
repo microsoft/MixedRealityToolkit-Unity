@@ -108,10 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
 
             ReadProfile();
 
-            if (StartupBehavior == AutoStartBehavior.AutoStart)
-            {
-                Resume();
-            }
+            base.Initialize();
         }
 
         /// <inheritdoc />
@@ -125,20 +122,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
             SendMeshObjects();
         }
 
-        /// <inheritdoc />
-        public override void Reset()
-        {
-            CleanupObserver();
-            Initialize();
-        }
-
-        /// <inheritdoc />
-        public override void Destroy()
-        {
-            Disable();
-            CleanupObserver();
-        }
-
         #endregion IMixedRealityDataProvider Implementation
 
         #region IMixedRealitySpatialAwarenessObserver Implementation
@@ -147,6 +130,26 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
 
         /// <inheritdoc />
         protected virtual GameObject ObservedObjectParent => observedObjectParent != null ? observedObjectParent : (observedObjectParent = SpatialAwarenessSystem?.CreateSpatialAwarenessObservationParent(Name));
+
+        #region BaseSpatialObserver Implementation
+
+        /// <inheritdoc />
+        protected override void CreateObserver()
+        {
+            if (StartupBehavior == AutoStartBehavior.AutoStart)
+            {
+                Resume();
+            }
+        }
+
+        /// <inheritdoc />
+        protected override void CleanupObserver()
+        {
+            if (IsRunning)
+            {
+                Suspend();
+            }
+        }
 
         /// <inheritdoc />
         public override void ClearObservations()
@@ -166,14 +169,23 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
             sendObservations = true;
         }
 
-        private int currentMeshId = 0;
-
         /// <inheritdoc />
         public override void Resume()
         {
             if (IsRunning) { return; }
             IsRunning = true;
         }
+
+        /// <inheritdoc />
+        public override void Suspend()
+        {
+            if (!IsRunning) { return; }
+            IsRunning = false;
+        }
+
+        #endregion BaseSpatialObserver Implementation
+        
+        private int currentMeshId = 0;
 
         /// <summary>
         /// Event sent whenever a mesh is added.
@@ -184,13 +196,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
                 MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> spatialEventData = ExecuteEvents.ValidateEventData<MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>>(eventData);
                 handler.OnObservationAdded(spatialEventData);
             };
-
-        /// <inheritdoc />
-        public override void Suspend()
-        {
-            if (!IsRunning) { return; }
-            IsRunning = false;
-        }
 
         /// <summary>
         /// Sends the observations using the mesh data contained within the configured 3D model.
@@ -357,19 +362,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialObjectMeshObserver
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Stop the observer and releases resources.
-        /// </summary>
-        private void CleanupObserver()
-        {
-            if (IsRunning)
-            {
-                Suspend();
-            }
-
-            ClearObservations();
         }
 
         /// <summary>

@@ -98,6 +98,50 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             VisibleMaterial = profile.VisibleMaterial;
         }
 
+        #region BaseSpatialObserver Implementation
+
+        /// <summary>
+        /// Creates the surface observer and handles the desired startup behavior.
+        /// </summary>
+        protected override void CreateObserver()
+        {
+            if (SpatialAwarenessSystem == null) { return; }
+
+#if UNITY_WSA
+            if (observer == null)
+            {
+                observer = new SurfaceObserver();
+                ConfigureObserverVolume();
+
+                if (StartupBehavior == AutoStartBehavior.AutoStart)
+                {
+                    Resume();
+                }
+            }
+#endif // UNITY_WSA
+        }
+
+        /// <summary>
+        /// Implements proper cleanup of the SurfaceObserver.
+        /// </summary>
+        protected override void CleanupObserver()
+        {
+            if (IsRunning)
+            {
+                Suspend();
+            }
+
+#if UNITY_WSA
+            if (observer != null)
+            {
+                observer.Dispose();
+                observer = null;
+            }
+#endif // UNITY_WSA
+        }
+
+        #endregion BaseSpatialObserver Implementation
+
         #region IMixedRealityCapabilityCheck Implementation
 
         /// <inheritdoc />
@@ -118,29 +162,21 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         #region IMixedRealityDataProvider Implementation
 
 #if UNITY_WSA
-
-        /// <inheritdoc />
+        /// <summary>
+        /// Creates and configures the spatial observer, as well as
+        /// setting the required SpatialPerception capability.
+        /// </summary>
         public override void Initialize()
         {
             meshEventData = new MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject>(EventSystem.current);
 
-            CreateObserver();
-
-            // Apply the initial observer volume settings.
-            ConfigureObserverVolume();
+            base.Initialize();
 
 #if UNITY_EDITOR && UNITY_WSA
-            Toolkit.Utilities.Editor.UWPCapabilityUtility.RequireCapability(
+            Utilities.Editor.UWPCapabilityUtility.RequireCapability(
                     UnityEditor.PlayerSettings.WSACapability.SpatialPerception,
                     this.GetType());
 #endif
-        }
-
-        /// <inheritdoc />
-        public override void Reset()
-        {
-            CleanupObserver();
-            Initialize();
         }
 
         /// <inheritdoc />
@@ -148,13 +184,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         {
             UpdateObserver();
         }
-
-        /// <inheritdoc />
-        public override void Destroy()
-        {
-            CleanupObserver();
-        }
-
 #endif // UNITY_WSA
 
         #endregion IMixedRealityDataProvider Implementation
@@ -169,28 +198,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         private GameObject ObservedObjectParent => observedObjectParent != null ? observedObjectParent : (observedObjectParent = SpatialAwarenessSystem?.CreateSpatialAwarenessObservationParent("WindowsMixedRealitySpatialMeshObserver"));
 
 #if UNITY_WSA
-        /// <inheritdoc />
-        protected override void Dispose(bool disposing)
-        {
-            if (disposed) { return; }
-
-            base.Dispose(disposing);
-
-            if (IsRunning)
-            {
-                Suspend();
-            }
-
-            if (disposing)
-            {
-                CleanupObservedObjects();
-            }
-
-            DisposeObserver();
-
-            disposed = true;
-        }
-
         /// <summary>
         /// The surface observer providing the spatial data.
         /// </summary>
@@ -404,82 +411,6 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
 
 #if UNITY_WSA
         private MixedRealitySpatialAwarenessEventData<SpatialAwarenessMeshObject> meshEventData = null;
-
-        /// <summary>
-        /// Creates the surface observer and handles the desired startup behavior.
-        /// </summary>
-        private void CreateObserver()
-        {
-            if (SpatialAwarenessSystem == null) { return; }
-
-            if (observer == null)
-            {
-                observer = new SurfaceObserver();
-                ConfigureObserverVolume();
-
-                if (StartupBehavior == AutoStartBehavior.AutoStart)
-                {
-                    Resume();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Ensures that the surface observer has been stopped and destroyed.
-        /// </summary>
-        private void CleanupObserver()
-        {
-            // Destroys all observed objects and the observer.
-            Dispose(true);
-        }
-
-        /// <summary>
-        /// Cleans up the objects created during observation.
-        /// </summary>
-        private void CleanupObservedObjects()
-        {
-            if (Application.isPlaying)
-            {
-
-                foreach (SpatialAwarenessMeshObject meshObject in meshes.Values)
-                {
-                    if (meshObject != null)
-                    {
-                        // Destroy the game object, destroy the meshes.
-                        SpatialAwarenessMeshObject.Cleanup(meshObject);
-                    }
-                }
-                meshes.Clear();
-
-                // Cleanup the outstanding mesh object.
-                if (outstandingMeshObject != null)
-                {
-                    // Destroy the game object, destroy the meshes.
-                    SpatialAwarenessMeshObject.Cleanup(outstandingMeshObject);
-                    outstandingMeshObject = null;
-                }
-
-                // Cleanup the spare mesh object
-                if (spareMeshObject != null)
-                {
-                    // Destroy the game object, destroy the meshes.
-                    SpatialAwarenessMeshObject.Cleanup(spareMeshObject);
-                    spareMeshObject = null;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Implements proper cleanup of the SurfaceObserver.
-        /// </summary>
-        private void DisposeObserver()
-        {
-            if (observer != null)
-            {
-                observer.Dispose();
-                observer = null;
-            }
-        }
 
         /// <summary>
         /// Requests updates from the surface observer.
@@ -838,8 +769,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
         /// <inheritdoc />
         public override void ClearObservations()
         {
+            bool wasRunning = false;
+
             if (IsRunning)
             {
+                wasRunning = true;
                 Debug.Log("Cannot clear observations while the observer is running. Suspending this observer.");
                 Suspend();
             }
@@ -850,12 +784,18 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
                 RemoveMeshObject(meshId);
             }
 
-            if (spareMeshObject != null)
+            // Cleanup the outstanding mesh object.
+            if (outstandingMeshObject != null)
             {
-                spareMeshObject.CleanObject();
-                spareMeshObject = null;
+                // Destroy the game object, destroy the meshes.
+                SpatialAwarenessMeshObject.Cleanup(outstandingMeshObject);
+                outstandingMeshObject = null;
             }
 
+            if (wasRunning)
+            {
+                Resume();
+            }
         }
 #endif // UNITY_WSA
 
