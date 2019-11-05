@@ -37,7 +37,7 @@ Your profile stores cached copies of the lighting settings kept in your lighting
 ### Editor Behavior
 One benefit of using lighting scenes is knowing your content is lit correctly while editing. To this end, the Scene Service will keep a lighting scene loaded at all times, and will copy that scene's lighting settings to the current active scene.\*
 
-You can change which lighting scene is loaded by opening the Scene System's [service inspector.](../MixedRealityConfigurationGuide.md#inspectors) In edit mode you can instantaneously transition between lighting scenes. In play mode, you can preview transitions.
+You can change which lighting scene is loaded by opening the Scene System's [service inspector.](../MixedRealityConfigurationGuide.md#editor-utilities) In edit mode you can instantaneously transition between lighting scenes. In play mode, you can preview transitions.
 
 ![](../Images/SceneSystem/MRTK_SceneSystemServiceInspector.png)
 
