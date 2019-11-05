@@ -123,7 +123,7 @@
 <li><a href="#speech">Speech commands</a></li>
 <li><a href="#mapping">Controller mapping configuration</a></li>
 <li><a href="#visualization">Controller visualization settings</a></li>
-<li><a href="#inspectors">Service Inspectors</a></li>
+<li><a href="#editor-utilities">Editor Utilities</a></li>
 </ul>
 <p>These configuration profiles are detailed below in their relevant sections:</p>
 <hr>
@@ -341,13 +341,23 @@ or later programmatically as well as setting the extents for the field of view.<
 </div>
 <p>If your controller representation in the scene needs to be offset from the physical controller position, then simply set that offset against the controller model's prefab (e.g. setting the transform position of the controller prefab with an offset position).</p>
 <img src="Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ControllerVisualizationProfile.png" width="650px" style="display:block;">
-<p><a name="inspectors"></a></p>
-<h2 id="service-inspectors">Service Inspectors</h2>
+<p><a name="editor-utilities"></a></p>
+<h2 id="editor-utilities">Editor Utilities</h2>
+<p>The following utilities work only in the editor and are useful to improve development productivity.</p>
+<p><img src="Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_EditorConfiguration.png" alt="MRTK Editor Configuration Utilities"></p>
+<h3 id="service-inspectors">Service Inspectors</h3>
 <p>Service Inspectors are an editor-only feature that generates in-scene objects representing active services. Selecting these objects displays inspectors which offer documentation links, control over editor visualizations and insight into the state of the service.</p>
 <img src="Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ServiceInspectors.PNG" width="350px" style="display:block;">
-<p>You can enable service inspectors by checking 'Use Service Inspectors' under Editor Settings in your Configuration Profile.</p>
-<p><img src="Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_EnableServiceInspectors.PNG" width="650px" style="display:block;"><br>
-<sup>Enable Service Inspectors</sup></p>
+<p>You can enable service inspectors by checking <em>Use Service Inspectors</em> under <em>Editor Settings</em> in the Configuration Profile.</p>
+<h3 id="depth-buffer-renderer">Depth Buffer Renderer</h3>
+<p>Sharing the depth buffer with some mixed reality platforms can improve <a href="hologram-stabilization.html">hologram stabilization</a>. For example, the Windows Mixed Reality platform can modify the rendered scene per-pixel to account for subtle head movements during the time it took to render a frame. However, these techniques require depth buffers with accurate data to know where and how far geometry is from the user.</p>
+<p>To ensure a scene renders all necessary data to the depth buffer, developers can toggle the <em>Render Depth Buffer</em> feature under <em>Editor Settings</em> in the Configuration Profile. This will take the current depth buffer and render it as color to the scene view by applying a post-processing effect, <a class="xref" href="../api/Microsoft.MixedReality.Toolkit.Rendering.DepthBufferRenderer.html"><code>DepthBufferRenderer</code></a>, to the main camera.</p>
+<p><img src="Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DepthBufferExample.gif" alt="Render Depth Buffer Utility">
+<sup>The blue cylinder in the scene has a material with ZWrite off so no depth data is written</sup></p>
+<h2 id="see-also">See Also</h2>
+<ul>
+<li><a href="hologram-stabilization.html">Hologram Stabilization</a>.</li>
+</ul>
 </article>
           </div>
           

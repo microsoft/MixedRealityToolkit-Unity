@@ -3944,6 +3944,17 @@
     },
     {
       "type": "Resource",
+      "source_relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DepthBufferExample.gif",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DepthBufferExample.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
       "source_relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsProfile.png",
       "output": {
         "resource": {
@@ -3966,10 +3977,10 @@
     },
     {
       "type": "Resource",
-      "source_relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_EnableServiceInspectors.PNG",
+      "source_relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_EditorConfiguration.png",
       "output": {
         "resource": {
-          "relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_EnableServiceInspectors.PNG"
+          "relative_path": "Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_EditorConfiguration.png"
         }
       },
       "is_incremental": false,
@@ -5935,7 +5946,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/MixedRealityConfigurationGuide.html",
-          "hash": "bgOmXeE60DZEXKurKV7vdA=="
+          "hash": "2PT4PDkyyOiUTjGpzCoASw=="
         }
       },
       "is_incremental": false,
@@ -5983,7 +5994,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Performance/PerfGettingStarted.html",
-          "hash": "8UO1jj/JbGeG//gukXsrCQ=="
+          "hash": "z+zM6CkA4s186+mzd4PwtA=="
         }
       },
       "is_incremental": false,
@@ -6271,7 +6282,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/SceneSystem/SceneSystemContentLoading.html",
-          "hash": "oEa3gh208ftEOYo5YPhdWg=="
+          "hash": "VxDByaAUo+0Ij8p3NNQUuA=="
         }
       },
       "is_incremental": false,
@@ -6319,7 +6330,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/SceneSystem/SceneSystemSceneTypes.html",
-          "hash": "oQGacZ71aSMVTJqW8XBJ8w=="
+          "hash": "uVDbXZsgPqjKlMgu+CK0Xw=="
         }
       },
       "is_incremental": false,
@@ -6499,7 +6510,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/hologram-stabilization.html",
-          "hash": "N582xuqxCQDsAxqDjbtLSA=="
+          "hash": "gsms0ink4Ziuz7GVquoGGg=="
         }
       },
       "is_incremental": false,
@@ -13914,7 +13925,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.MixedRealityToolkitConfigurationProfile.html",
-          "hash": "RgDG8qAZWU2MpH6EO7Zrtw=="
+          "hash": "5KCvekP7Y8aXFJx6t3q7Cw=="
         }
       },
       "is_incremental": false,
@@ -16790,6 +16801,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Rendering.DepthBufferRenderer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Rendering.DepthBufferRenderer.html",
+          "hash": "4Mrex8vgObhyGqOhV5jlYw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Rendering.IMaterialInstanceOwner.yml",
       "output": {
         ".html": {
@@ -16818,7 +16841,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Rendering.html",
-          "hash": "5YK89wekdOSiIombZAI8Bw=="
+          "hash": "f3SKphpUjP5DcBUuL3V6fg=="
         }
       },
       "is_incremental": false,
@@ -23370,7 +23393,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "7zHfmw9PnmTfNtbMQUHVPQ=="
+          "hash": "0dO1gEH+2539GKt/CywZpw=="
         }
       },
       "is_incremental": false,
@@ -23445,7 +23468,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1401,
+          "total_file_count": 1402,
           "skipped_file_count": 0
         }
       }

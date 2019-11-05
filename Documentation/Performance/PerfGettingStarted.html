@@ -147,6 +147,10 @@ v2f vert (appdata v)
 <p>If using <em>16-bit depth format</em>, stencil buffer required effects will not work because <a href="https://docs.unity3d.com/ScriptReference/RenderTexture-depth.html">Unity does not create a stencil buffer</a> in this setting. Selecting <em>24-bit depth format</em> conversely will generally create an 8-bit stencil buffer, if applicable on the endpoint graphics platform.</p>
 <p>If using a <a href="https://docs.unity3d.com/Manual/script-Mask.html">Mask component</a> which requires the stencil buffer, consider using <a href="https://docs.unity3d.com/Manual/script-RectMask2D.html">RectMask2D</a> instead, which does not require the stencil buffer and thus can be used in conjunction with a <em>16-bit depth format</em>.</p>
 </div>
+<div class="NOTE">
+<h5>Note</h5>
+<p>To quickly determine which objects in a scene do not write to the depth buffer visually, one can use the <a href="../MixedRealityConfigurationGuide.html#editor-utilities"><em>Render Depth Buffer</em> utility</a> under the <em>Editor Settings</em> in the MRTK Configuration profile.</p>
+</div>
 <h2 id="general-recommendations">General Recommendations</h2>
 <p>Performance can be an ambiguous and constantly changing challenge for mixed reality developers and the spectrum of knowledge to rationalize performance is vast. There are some general recommendations for understanding how to approach performance for an application though.</p>
 <p>It is useful to simplify the execution of an application into the pieces that run on the <em>CPU</em> or the <em>GPU</em> and thus identify whether an app is bounded by either component.  There can be bottlenecks that span both processing units and some unique scenarios that have to be carefully investigated. However, for getting started, it is good to grasp where an application is executing for the most amount of time.</p>

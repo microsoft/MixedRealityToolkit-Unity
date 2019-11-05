@@ -103,7 +103,7 @@
 <p><img src="../Images/SceneSystem/MRTK_SceneSystemCachedLightingSettings.PNG" alt=""></p>
 <h3 id="editor-behavior">Editor Behavior</h3>
 <p>One benefit of using lighting scenes is knowing your content is lit correctly while editing. To this end, the Scene Service will keep a lighting scene loaded at all times, and will copy that scene's lighting settings to the current active scene.*</p>
-<p>You can change which lighting scene is loaded by opening the Scene System's <a href="../MixedRealityConfigurationGuide.html#inspectors">service inspector.</a> In edit mode you can instantaneously transition between lighting scenes. In play mode, you can preview transitions.</p>
+<p>You can change which lighting scene is loaded by opening the Scene System's <a href="../MixedRealityConfigurationGuide.html#editor-utilities">service inspector.</a> In edit mode you can instantaneously transition between lighting scenes. In play mode, you can preview transitions.</p>
 <p><img src="../Images/SceneSystem/MRTK_SceneSystemServiceInspector.PNG" alt=""></p>
 <p>*<em>Note: Typically the active scene determines your lighting settings in editor. However we choose not to use this feature to enforce lighting settings, because the active scene is also where newly created objects are placed by default, and lighting scenes are only permitted to contain lighting components. Instead, the current lighting scene's settings are automatically copied to the active scene's settings instead. Keep in mind that this will result in your content scene's lighting settings being over-written.</em></p>
 </article>

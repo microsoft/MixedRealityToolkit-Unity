@@ -115,6 +115,10 @@
 <li>When rendering color on screen, render depth as well</li>
 </ol>
 <p><a href="https://docs.unity3d.com/Manual/StandardShaderMaterialParameterRenderingMode.html">Opaque GameObjects</a> in Unity will generally write to depth automatically. However, transparent &amp; text objects will generally not write to depth by default. If utilizing the MRTK Standard Shader or Text Mesh Pro, this can be easily remedied.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>To quickly determine which objects in a scene do not write to the depth buffer visually, one can use the <a href="MixedRealityConfigurationGuide.html#editor-utilities"><em>Render Depth Buffer</em> utility</a> under the <em>Editor Settings</em> in the MRTK Configuration profile.</p>
+</div>
 <h5 id="transparent-mrtk-standard-shader">Transparent MRTK Standard shader</h5>
 <p>For transparent materials using the <a href="README_MRTKStandardShader.html">MRTK Standard shader</a>, select the material to view it in the <em>Inspector</em> window. Then click the <em>Fix Now</em> button to convert the material to write to depth (i.e Z-Write On).</p>
 <p>Before</p>
