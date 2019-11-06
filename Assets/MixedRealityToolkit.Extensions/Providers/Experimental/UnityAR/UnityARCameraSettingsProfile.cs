@@ -2,10 +2,11 @@
 // Copyright(c) 2019 Takahiro Miyaura
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
+using Microsoft.MixedReality.Toolkit.CameraSystem;
 using UnityEngine;
 using UnityEngine.SpatialTracking;
 
-namespace Microsoft.MixedReality.Toolkit.CameraSystem
+namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 {
     /// <summary>
     /// Configuration profile for the XR Camera settings provider.

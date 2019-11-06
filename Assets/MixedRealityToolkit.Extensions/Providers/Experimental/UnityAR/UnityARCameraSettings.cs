@@ -2,6 +2,7 @@
 // Copyright(c) 2019 Takahiro Miyaura
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
+using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ using UnityEngine.XR;
 using UnityEngine.XR.ARFoundation;
 #endif // !(WINDOWS_UWP && !ENABLE_IL2CPP)
 
-namespace Microsoft.MixedReality.Toolkit.CameraSystem
+namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 {
     /// <summary>
     /// Camera settings provider for use with the Unity AR Foundation system.
