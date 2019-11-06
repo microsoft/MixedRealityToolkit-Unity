@@ -86,14 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     var uwpBuildInfo = innerBuildInfo as UwpBuildInfo;
                     Debug.Assert(uwpBuildInfo != null);
                     UwpAppxBuildTools.AddCapabilities(uwpBuildInfo);
-
-#if !UNITY_2019_1_OR_NEWER
-                    if (EditorUserBuildSettings.wsaGenerateReferenceProjects &&
-                        PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
-                    {
-                        UwpAppxBuildTools.UpdateAssemblyCSharpProject(uwpBuildInfo);
-                    }
-#endif //!UNITY_2019_1_OR_NEWER
+                    UwpAppxBuildTools.UpdateAssemblyCSharpProject(uwpBuildInfo);
 
                     if (showDialog &&
                         !EditorUtility.DisplayDialog(PlayerSettings.productName, "Build Complete", "OK", "Build AppX"))
