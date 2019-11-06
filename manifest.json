@@ -10369,6 +10369,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.HandednessExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.HandednessExtensions.html",
+          "hash": "x9FZvGjtlVstbjWthFoUzQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.HelpAttribute.yml",
       "output": {
         ".html": {
@@ -22469,7 +22481,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.SolverSafeZone.html",
-          "hash": "Wh6I4ZAX4fDMEcupiiGYOw=="
+          "hash": "eub9DY2VPz5+e75lI+zTUw=="
         }
       },
       "is_incremental": false,
@@ -22481,7 +22493,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.html",
-          "hash": "Dkt+PQtqVAHUP5EMjXE+Ug=="
+          "hash": "PXk7b880oc39zNGnRSZlpA=="
         }
       },
       "is_incremental": false,
@@ -22493,7 +22505,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.html",
-          "hash": "MZE1s56kLDN1v6TU9WBVOw=="
+          "hash": "x09p/Dg4QZUgISjqy4Kifw=="
         }
       },
       "is_incremental": false,
@@ -22577,7 +22589,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.Solvers.SolverHandler.html",
-          "hash": "uFlWkS+87a82FUI1r9ZnJA=="
+          "hash": "CwrJWlGaT9SE1jTFxAXGhA=="
         }
       },
       "is_incremental": false,
@@ -23381,7 +23393,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.html",
-          "hash": "ks9W8ibgGo4JGYzAsYU4IA=="
+          "hash": "tILH0qGljtrjU0uz44vbJg=="
         }
       },
       "is_incremental": false,
@@ -23393,7 +23405,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "0dO1gEH+2539GKt/CywZpw=="
+          "hash": "Zb7jrdfONVjbNr5fvDBZrQ=="
         }
       },
       "is_incremental": false,
@@ -23452,6 +23464,12 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1403,
+          "skipped_file_count": 0
+        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
@@ -23463,12 +23481,6 @@
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1402,
           "skipped_file_count": 0
         }
       }

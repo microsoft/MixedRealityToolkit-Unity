@@ -97,10 +97,6 @@ This solver is intended to work with <a class="xref" href="Microsoft.MixedRealit
     <div class="level2"><span class="xref">HandConstraint</span></div>
       <div class="level3"><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraintPalmUp.html">HandConstraintPalmUp</a></div>
   </div>
-  <div classs="implements">
-    <h5>Implements</h5>
-    <div><span class="xref">IMixedRealitySourceStateHandler</span></div>
-  </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
@@ -138,6 +134,9 @@ This solver is intended to work with <a class="xref" href="Microsoft.MixedRealit
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_WorkingScale">Solver.WorkingScale</a>
+    </div>
+    <div>
+      <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_Awake">Solver.Awake()</a>
     </div>
     <div>
       <a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_Start">Solver.Start()</a>
@@ -189,34 +188,10 @@ This solver is intended to work with <a class="xref" href="Microsoft.MixedRealit
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class HandConstraint : Solver, IMixedRealitySourceStateHandler</code></pre>
+    <pre><code class="lang-csharp hljs">public class HandConstraint : Solver</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
-  
-  
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_autoTransitionBetweenHands" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.autoTransitionBetweenHands">autoTransitionBetweenHands</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected bool autoTransitionBetweenHands</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   
   
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_handBounds" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.handBounds">handBounds</h4>
@@ -243,36 +218,12 @@ This solver is intended to work with <a class="xref" href="Microsoft.MixedRealit
   </table>
   
   
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_handStack" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.handStack">handStack</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_trackedController" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.trackedController">trackedController</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected List&lt;IMixedRealityController&gt; handStack</code></pre>
-  </div>
-  <h5 class="fieldValue">Field Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">List</span>&lt;<span class="xref">IMixedRealityController</span>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_trackedHand" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.trackedHand">trackedHand</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected IMixedRealityController trackedHand</code></pre>
+    <pre><code class="lang-csharp hljs">protected IMixedRealityController trackedController</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -529,18 +480,6 @@ This solver is intended to work with <a class="xref" href="Microsoft.MixedRealit
   </h3>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_Awake_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.Awake*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_Awake" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.Awake">Awake()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override void Awake()</code></pre>
-  </div>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_Awake">Solver.Awake()</a></div>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_CalculateGoalPosition_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.CalculateGoalPosition*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_CalculateGoalPosition" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.CalculateGoalPosition">CalculateGoalPosition()</h4>
   <div class="markdown level1 summary"><p>Performs a ray vs AABB test to determine where the solver can constrain the tracked object without intersection.
@@ -596,51 +535,6 @@ The &quot;safe zone&quot; is calculated as if projected into the horizontal and 
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_IsHandActive_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.IsHandActive*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_IsHandActive_IMixedRealityController_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.IsHandActive(IMixedRealityController)">IsHandActive(IMixedRealityController)</h4>
-  <div class="markdown level1 summary"><p>Determines if a hand meets the requirements for use with constraining the tracked object.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual bool IsHandActive(IMixedRealityController hand)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">IMixedRealityController</span></td>
-        <td><span class="parametername">hand</span></td>
-        <td><p>The hand to check against.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td><p>True if this hand should be used from tracking.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_IsOppositeHandNear_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.IsOppositeHandNear*"></a>
   <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_IsOppositeHandNear_IMixedRealityController_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.IsOppositeHandNear(IMixedRealityController)">IsOppositeHandNear(IMixedRealityController)</h4>
   <div class="markdown level1 summary"><p>Performs an intersection test to see if the left hand is near the right hand or vice versa.</p>
@@ -648,7 +542,7 @@ The &quot;safe zone&quot; is calculated as if projected into the horizontal and 
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual bool IsOppositeHandNear(IMixedRealityController hand)</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual bool IsOppositeHandNear(IMixedRealityController controller)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -662,7 +556,7 @@ The &quot;safe zone&quot; is calculated as if projected into the horizontal and 
     <tbody>
       <tr>
         <td><span class="xref">IMixedRealityController</span></td>
-        <td><span class="parametername">hand</span></td>
+        <td><span class="parametername">controller</span></td>
         <td><p>The hand to check against.</p>
 </td>
       </tr>
@@ -686,14 +580,49 @@ The &quot;safe zone&quot; is calculated as if projected into the horizontal and 
   </table>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_OnDisable_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.OnDisable*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_OnDisable" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.OnDisable">OnDisable()</h4>
-  <div class="markdown level1 summary"></div>
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_IsValidController_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.IsValidController*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_IsValidController_IMixedRealityController_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.IsValidController(IMixedRealityController)">IsValidController(IMixedRealityController)</h4>
+  <div class="markdown level1 summary"><p>Determines if a hand meets the requirements for use with constraining the tracked object.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual void OnDisable()</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual bool IsValidController(IMixedRealityController controller)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">IMixedRealityController</span></td>
+        <td><span class="parametername">controller</span></td>
+        <td><p>The controller to check against.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><p>True if this hand should be used from tracking.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_OnEnable_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.OnEnable*"></a>
@@ -706,60 +635,6 @@ The &quot;safe zone&quot; is calculated as if projected into the horizontal and 
   </div>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_OnEnable">Solver.OnEnable()</a></div>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_OnSourceDetected_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.OnSourceDetected*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_OnSourceDetected_SourceStateEventData_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.OnSourceDetected(SourceStateEventData)">OnSourceDetected(SourceStateEventData)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnSourceDetected(SourceStateEventData eventData)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">SourceStateEventData</span></td>
-        <td><span class="parametername">eventData</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_OnSourceLost_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.OnSourceLost*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_OnSourceLost_SourceStateEventData_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.OnSourceLost(SourceStateEventData)">OnSourceLost(SourceStateEventData)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void OnSourceLost(SourceStateEventData eventData)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">SourceStateEventData</span></td>
-        <td><span class="parametername">eventData</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_SolverUpdate_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.SolverUpdate*"></a>
@@ -775,14 +650,14 @@ The &quot;safe zone&quot; is calculated as if projected into the horizontal and 
   <div><a class="xref" href="Microsoft.MixedReality.Toolkit.Utilities.Solvers.Solver.html#Microsoft_MixedReality_Toolkit_Utilities_Solvers_Solver_SolverUpdate">Solver.SolverUpdate()</a></div>
   
   
-  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_ToggleCursor_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.ToggleCursor*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_ToggleCursor_System_Boolean_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.ToggleCursor(System.Boolean,System.Boolean)">ToggleCursor(Boolean, Boolean)</h4>
+  <a id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_ToggleCursors_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.ToggleCursors*"></a>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Solvers_HandConstraint_ToggleCursors_IMixedRealityController_System_Boolean_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Solvers.HandConstraint.ToggleCursors(IMixedRealityController,System.Boolean,System.Boolean)">ToggleCursors(IMixedRealityController, Boolean, Boolean)</h4>
   <div class="markdown level1 summary"><p>Enables/disables all cursors on the currently tracked hand.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected virtual IEnumerator ToggleCursor(bool visible, bool frameDelay = false)</code></pre>
+    <pre><code class="lang-csharp hljs">protected virtual IEnumerator ToggleCursors(IMixedRealityController controller, bool visible, bool frameDelay = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -794,6 +669,12 @@ The &quot;safe zone&quot; is calculated as if projected into the horizontal and 
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><span class="xref">IMixedRealityController</span></td>
+        <td><span class="parametername">controller</span></td>
+        <td><p>Controller target to search for pointers</p>
+</td>
+      </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
         <td><span class="parametername">visible</span></td>
@@ -823,10 +704,6 @@ The &quot;safe zone&quot; is calculated as if projected into the horizontal and 
       </tr>
     </tbody>
   </table>
-  <h3 id="implements">Implements</h3>
-  <div>
-      <span class="xref">IMixedRealitySourceStateHandler</span>
-  </div>
 </article>
           </div>
           
