@@ -369,7 +369,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             string scaleDescription = GetExperienceDescription(experienceScale);
             if (!string.IsNullOrEmpty(scaleDescription))
             {
-                EditorGUILayout.HelpBox(scaleDescription, MessageType.Info);
+                EditorGUILayout.HelpBox(scaleDescription, MessageType.None);
                 EditorGUILayout.Space();
             }
 
