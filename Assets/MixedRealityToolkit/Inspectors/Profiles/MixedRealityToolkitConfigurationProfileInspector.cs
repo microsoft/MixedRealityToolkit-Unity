@@ -430,7 +430,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         protected static void RenderSystemDisabled(string service)
         {
+            EditorGUILayout.Space();
             EditorGUILayout.HelpBox("The " + service + " is disabled.\n\nThis module will not be loaded and thus none of it's feature will be available at runtime.", MessageType.Info);
+            EditorGUILayout.Space();
         }
 
         private static string GetExperienceDescription(ExperienceScale experienceScale)
