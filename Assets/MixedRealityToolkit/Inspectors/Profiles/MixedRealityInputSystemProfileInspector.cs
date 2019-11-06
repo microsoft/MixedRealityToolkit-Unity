@@ -105,7 +105,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                     using (new EditorGUI.IndentLevelScope())
                     {
                         changed |= RenderDataProviderList(AddProviderContent, RemoveProviderContent, DataProviderErrorMsg);
-                        //RenderList(dataProviderConfigurations);
                     }
                 }, ShowInputSystem_DataProviders_PreferenceKey);
 
