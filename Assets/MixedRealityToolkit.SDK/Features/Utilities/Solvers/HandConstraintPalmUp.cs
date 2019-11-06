@@ -55,21 +55,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
         }
 
         /// <summary>
-        /// Determines if a hand meets the requirements for use with constraining the tracked object and determines if the 
+        /// Determines if a controller meets the requirements for use with constraining the tracked object and determines if the 
         /// palm is currently facing the user.
         /// </summary>
-        /// <param name="hand">The hand to check against.</param>
+        /// <param name="controller">The hand to check against.</param>
         /// <returns>True if this hand should be used from tracking.</returns>
-        protected override bool IsHandActive(IMixedRealityController hand)
+        protected override bool IsValidController(IMixedRealityController controller)
         {
-            if (!base.IsHandActive(hand))
+            if (!base.IsValidController(controller))
             {
                 return false;
             }
 
             MixedRealityPose palmPose;
 
-            var jointedHand = hand as IMixedRealityHand;
+            var jointedHand = controller as IMixedRealityHand;
 
             if (jointedHand != null)
             {
