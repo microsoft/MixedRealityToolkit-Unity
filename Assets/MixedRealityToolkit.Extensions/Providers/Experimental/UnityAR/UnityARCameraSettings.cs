@@ -82,8 +82,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
         }
 
 #if !(WINDOWS_UWP && !ENABLE_IL2CPP)
-        bool isSupportedConfiguration = true;
-        bool isInitialized = false;
+        private bool isSupportedConfiguration = true;
+        private bool isInitialized = false;
 
         private GameObject arSessionObject = null;
         private bool preExistingArSessionObject = false;
@@ -115,6 +115,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
         {
             base.Initialize();
 
+            // Android platforms support both AR Foundation and VR.
+            // AR Foundation does not use the player's XR Settings.
             if (Application.platform == RuntimePlatform.Android)
             {
                 isSupportedConfiguration = string.IsNullOrWhiteSpace(XRSettings.loadedDeviceName);
