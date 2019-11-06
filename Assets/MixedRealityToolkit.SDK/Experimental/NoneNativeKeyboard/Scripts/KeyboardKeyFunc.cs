@@ -16,7 +16,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <summary>
         /// Possible functionality for a button.
         /// </summary>
-        [Experimental]
         public enum Function
         {
             // Commands
@@ -41,6 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <summary>
         /// Designer specified functionality of a keyboard button.
         /// </summary>
+        [Experimental]
         [SerializeField, FormerlySerializedAs("m_ButtonFunction")] private Function buttonFunction = Function.UNDEFINED;
 
         public Function ButtonFunction => buttonFunction;
