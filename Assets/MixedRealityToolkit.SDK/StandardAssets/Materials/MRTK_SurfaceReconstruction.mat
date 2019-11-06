@@ -21,7 +21,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Color_Map_:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 98e3b4b60df348344985cb363d5778fc, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
@@ -38,7 +38,7 @@ Material:
     - _Fill_Start_Time_: 0.5
     - _Filter_Width_: 1.5
     - _Flip_V_: 0
-    - _Intensity_: 5
+    - _Intensity_: 1.38
     - _Line_End_Time_: 0.5
     - _Line_Width_: 0.5
     - _Line_Width_Fade_: 0.25
@@ -66,6 +66,6 @@ Material:
     - _Wrist_Fade_End_: 0.16
     - _Wrist_Fade_Start_: 0.1
     m_Colors:
-    - _Fill_Color_: {r: 0.317647, g: 0.317647, b: 0.317647, a: 1}
-    - _Line_Color_: {r: 0.717647, g: 0.717647, b: 0.717647, a: 1}
+    - _Fill_Color_: {r: 0.6857557, g: 0.19290671, b: 0.8018868, a: 1}
+    - _Line_Color_: {r: 0.990566, g: 0.2476415, b: 0.8074146, a: 1}
     - _Pulse_Origin_: {r: 0, g: 0, b: 0, a: 1}
