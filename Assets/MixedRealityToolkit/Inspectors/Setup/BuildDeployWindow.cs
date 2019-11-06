@@ -70,6 +70,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private static readonly List<string> AppPackageDirectories = new List<string>(0);
 
+        private const string BuildWindowTabKey = "_BuildWindow_Tab";
+
         #endregion Constants and Readonly Values
 
         #region Labels
@@ -78,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private readonly GUIContent buildAllLabel = new GUIContent("Build all", "Builds the Unity Project and APPX");
 
-        private readonly GUIContent buildDirectoryLabel = new GUIContent("Build Directory", "It's recommended to use 'UWP'");
+        private readonly GUIContent BuildDirectoryLabel = new GUIContent("Build Directory", "It's recommended to use 'UWP'");
 
         private readonly GUIContent useCSharpProjectsLabel = new GUIContent("Generate C# Debug", "Generate C# Project References for debugging.\nOnly available in .NET Scripting runtime.");
         
@@ -133,7 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 bool canInstall = true;
                 if (EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens)
                 {
-                    canInstall = DevicePortalConnectionEnabled;
+                    canInstall |= DevicePortalConnectionEnabled && IsHoloLensConnectedUsb;
                 }
 
                 return canInstall && Directory.Exists(BuildDeployPreferences.AbsoluteBuildDirectory) && !string.IsNullOrEmpty(PackageName);
@@ -200,13 +202,12 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         {
             // Dock it next to the Scene View.
             var window = GetWindow<BuildDeployWindow>(typeof(SceneView));
-            window.titleContent = new GUIContent("Build Window");
+            window.titleContent = new GUIContent("Build Window", EditorGUIUtility.IconContent("Collab.Build").image);
             window.Show();
         }
 
         private void OnEnable()
         {
-            titleContent = new GUIContent("Build Window");
             minSize = new Vector2(512, 256);
 
             LoadWindowsSdkPaths();
@@ -224,213 +225,181 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private void OnGUI()
         {
-            #region Quick Options
+            MixedRealityInspectorUtility.RenderMixedRealityToolkitLogo();
 
             if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.WSAPlayer)
             {
-                using (new EditorGUILayout.VerticalScope())
-                {
-                    EditorGUILayout.Space();
-                    using (new EditorGUILayout.HorizontalScope())
-                    {
-                        // Build directory (and save setting, if it's changed)
-                        string curBuildDirectory = BuildDeployPreferences.BuildDirectory;
-                        EditorGUILayout.LabelField(buildDirectoryLabel, GUILayout.Width(96));
-                        string newBuildDirectory = EditorGUILayout.TextField(curBuildDirectory, GUILayout.Width(64), GUILayout.ExpandWidth(true));
-
-                        if (newBuildDirectory != curBuildDirectory)
-                        {
-                            BuildDeployPreferences.BuildDirectory = newBuildDirectory;
-                        }
-
-                        GUI.enabled = Directory.Exists(BuildDeployPreferences.AbsoluteBuildDirectory);
-
-                        if (GUILayout.Button("Open Build Directory"))
-                        {
-                            EditorApplication.delayCall += () => Process.Start(BuildDeployPreferences.AbsoluteBuildDirectory);
-                        }
-
-                        GUI.enabled = true;
-
-                        OpenPlayerSettingsGUI();
-                    }
-
-                    EditorGUILayout.Space();
-
-                    using (new EditorGUILayout.HorizontalScope())
-                    {
-                        if (GUILayout.Button("Build Unity Project", GUILayout.Width(192), GUILayout.ExpandWidth(true)))
-                        {
-                            EditorApplication.delayCall += () => UnityPlayerBuildTools.BuildUnityPlayer(new BuildInfo());
-                        }
-
-                        if (GUILayout.Button("Open Unity Build Window", GUILayout.Width(192), GUILayout.ExpandWidth(true)))
-                        {
-                            GetWindow(Type.GetType("UnityEditor.BuildPlayerWindow,UnityEditor"));
-                        }
-                    }
-                }
-                return;
+                RenderStandaloneBuildView();
             }
-
-            using (new EditorGUILayout.VerticalScope())
+            else
             {
-                EditorGUILayout.Space();
-                GUILayout.Label("Quick Options");
-                using (new EditorGUILayout.HorizontalScope())
-                {
-
-                    EditorUserBuildSettings.wsaSubtarget = (WSASubtarget)EditorGUILayout.Popup((int)EditorUserBuildSettings.wsaSubtarget, deviceNames);
-
-                    bool canInstall = CanInstall;
-
-                    if (EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens && !IsHoloLensConnectedUsb)
-                    {
-                        canInstall = IsHoloLensConnectedUsb;
-                    }
-
-                    GUI.enabled = ShouldBuildSLNBeEnabled;
-
-                    // Build & Run button...
-                    if (GUILayout.Button(CanInstall ? buildAllThenInstallLabel : buildAllLabel, GUILayout.Width(HALF_WIDTH), GUILayout.ExpandWidth(true)))
-                    {
-                        EditorApplication.delayCall += () => BuildAll(canInstall);
-                    }
-
-                    GUI.enabled = true;
-
-                    OpenPlayerSettingsGUI();
-
-                }
+                RenderWSABuildView();
             }
-            GUILayout.Space(10);
+        }
 
-            #endregion Quick Options
+        private void RenderWSABuildView()
+        {
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                using (new EditorGUI.DisabledGroupScope(!ShouldBuildSLNBeEnabled))
+                {
+                    // TODO: Troy -> looki at this carefully
+                    if (GUILayout.Button(CanInstall ? buildAllThenInstallLabel : buildAllLabel, GUILayout.ExpandWidth(true)))
+                    {
+                        EditorApplication.delayCall += () => BuildAll(CanInstall);
+                    }
+                }
+
+                RenderPlayerSettingsButton();
+            }
+
+            EditorGUILayout.Space();
 
             lastTab = currentTab;
-            currentTab = (BuildDeployTab)GUILayout.Toolbar(SessionState.GetInt("_BuildWindow_Tab", (int)currentTab), tabNames);
+            currentTab = (BuildDeployTab)GUILayout.Toolbar(SessionState.GetInt(BuildWindowTabKey, (int)currentTab), tabNames);
             if (currentTab != lastTab && currentTab == BuildDeployTab.DeployOptions)
             {
+                // TODO: Troy - investigate
                 UpdateBuilds();
             }
 
-            SessionState.SetInt("_BuildWindow_Tab", (int)currentTab);
+            SessionState.SetInt(BuildWindowTabKey, (int)currentTab);
 
-            GUILayout.Space(10);
-
+            // TODO: Convert to action array?
             switch (currentTab)
             {
                 case BuildDeployTab.UnityBuildOptions:
-                    UnityBuildGUI();
+                    using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
+                    {
+                        RenderUnityBuildView();
+                    }
                     break;
                 case BuildDeployTab.AppxBuildOptions:
-                    AppxBuildGUI();
+                    using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
+                    {
+                        RenderAppxBuildView();
+                    }
                     break;
                 case BuildDeployTab.DeployOptions:
-                    DeployGUI();
+                    using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
+                    {
+                        RenderDeployBuildView();
+                    }
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
 
-        private static void OpenPlayerSettingsGUI()
+        private void RenderStandaloneBuildView()
         {
-            if (GUILayout.Button("Open Player Settings"))
+            RenderBuildDirectory();
+
+            using (new EditorGUILayout.HorizontalScope())
             {
-                Selection.activeObject = Unsupported.GetSerializedAssetInterfaceSingleton("PlayerSettings");
-            }
-        }
-
-        private void UnityBuildGUI()
-        {
-            using (new EditorGUILayout.VerticalScope())
-            {
-                using (new EditorGUILayout.HorizontalScope())
-                {
-                    // Build directory (and save setting, if it's changed)
-                    string curBuildDirectory = BuildDeployPreferences.BuildDirectory;
-                    EditorGUILayout.LabelField(buildDirectoryLabel, GUILayout.Width(96));
-                    string newBuildDirectory = EditorGUILayout.TextField(curBuildDirectory, GUILayout.Width(64), GUILayout.ExpandWidth(true));
-
-                    if (newBuildDirectory != curBuildDirectory)
-                    {
-                        BuildDeployPreferences.BuildDirectory = newBuildDirectory;
-                    }
-
-                    GUI.enabled = Directory.Exists(BuildDeployPreferences.AbsoluteBuildDirectory);
-
-                    if (GUILayout.Button("Open Build Directory", GUILayout.Width(HALF_WIDTH)))
-                    {
-                        EditorApplication.delayCall += () => Process.Start(BuildDeployPreferences.AbsoluteBuildDirectory);
-                    }
-
-                    GUI.enabled = true;
-                }
-
-                using (new EditorGUILayout.HorizontalScope())
-                {
-                    // If the WSA target device is HoloLens, show the checkboxes for research mode
-                    if (EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens)
-                    {
-                        // Enable Research Mode Capability
-                        bool curResearchModeCapabilityEnabled = UwpBuildDeployPreferences.ResearchModeCapabilityEnabled;
-                        bool newResearchModeCapabilityEnabled = EditorGUILayout.ToggleLeft(researchModeCapabilityLabel, curResearchModeCapabilityEnabled);
-
-                        if (newResearchModeCapabilityEnabled != curResearchModeCapabilityEnabled)
-                        {
-                            UwpBuildDeployPreferences.ResearchModeCapabilityEnabled = newResearchModeCapabilityEnabled;
-                        }
-
-                        // Allow unsafe code
-                        bool curAllowUnsafeCode = UwpBuildDeployPreferences.AllowUnsafeCode;
-                        bool newAllowUnsafeCode = EditorGUILayout.ToggleLeft(allowUnsafeCode, curAllowUnsafeCode);
-
-                        if (newAllowUnsafeCode != curAllowUnsafeCode)
-                        {
-                            UwpBuildDeployPreferences.AllowUnsafeCode = newAllowUnsafeCode;
-                        }
-                    }
-
-                    GUILayout.FlexibleSpace();
-                    GUI.enabled = ShouldOpenSLNBeEnabled;
-
-                    if (GUILayout.Button("Open in Visual Studio", GUILayout.Width(HALF_WIDTH)))
-                    {
-                        // Open SLN
-                        string slnFilename = Path.Combine(BuildDeployPreferences.BuildDirectory, $"{PlayerSettings.productName}.sln");
-
-                        if (File.Exists(slnFilename))
-                        {
-                            EditorApplication.delayCall += () => Process.Start(new FileInfo(slnFilename).FullName);
-                        }
-                        else if (EditorUtility.DisplayDialog(
-                            "Solution Not Found",
-                            "We couldn't find the Project's Solution. Would you like to Build the project now?",
-                            "Yes, Build", "No"))
-                        {
-                            EditorApplication.delayCall += BuildUnityProject;
-                        }
-                    }
-                }
-                EditorGUILayout.Space();
-
-                // Build Unity Player
-                GUI.enabled = ShouldBuildSLNBeEnabled;
+                RenderPlayerSettingsButton();
 
                 if (GUILayout.Button("Build Unity Project"))
                 {
-                    EditorApplication.delayCall += BuildUnityProject;
+                    EditorApplication.delayCall += () => UnityPlayerBuildTools.BuildUnityPlayer(new BuildInfo());
                 }
 
-                GUI.enabled = true;
+                if (GUILayout.Button("Open Unity Build Window"))
+                {
+                    GetWindow(Type.GetType("UnityEditor.BuildPlayerWindow,UnityEditor"));
+                }
             }
         }
 
-        private void AppxBuildGUI()
+        private static void RenderOpenBuildDirectory()
         {
-            GUILayout.BeginVertical();
+            using (new EditorGUI.DisabledGroupScope(!Directory.Exists(BuildDeployPreferences.AbsoluteBuildDirectory)))
+            {
+                if (GUILayout.Button("Open", EditorStyles.miniButtonRight, GUILayout.Width(100f)))
+                {
+                    EditorApplication.delayCall += () => Process.Start(BuildDeployPreferences.AbsoluteBuildDirectory);
+                }
+            }
+        }
 
+        private void RenderUnityBuildView()
+        {
+            RenderBuildDirectory();
+
+            EditorUserBuildSettings.wsaSubtarget = (WSASubtarget)EditorGUILayout.Popup("Target Device", (int)EditorUserBuildSettings.wsaSubtarget, deviceNames, GUILayout.Width(HALF_WIDTH));
+
+#if UNITY_2018
+            var curScriptingBackend = PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA);
+            if (curScriptingBackend == ScriptingImplementation.WinRTDotNET)
+            {
+                EditorGUILayout.HelpBox(".NET Scripting backend is deprecated in Unity 2018 and is removed in Unity 2019.", MessageType.Warning);
+            }
+
+            var newScriptingBackend = (ScriptingImplementation)EditorGUILayout.IntPopup("Scripting Backend", (int)curScriptingBackend, scriptingBackendNames, scriptingBackendEnum, GUILayout.Width(HALF_WIDTH));
+            if (newScriptingBackend != curScriptingBackend)
+            {
+                //bool canUpdate = !Directory.Exists(BuildDeployPreferences.AbsoluteBuildDirectory);
+                // TODO: Troy - still needed? isn't Unity smart enough?
+                /*
+                if (EditorUtility.DisplayDialog("Attention!",
+                        $"Build path contains project built with {newScriptingBackend.ToString()} scripting backend, while current project is using {curScriptingBackend.ToString()} scripting backend.\n\nSwitching to a new scripting backend requires us to delete all the data currently in your build folder and rebuild the Unity Player!",
+                        "Okay", "Cancel"))
+                {
+                    Directory.Delete(BuildDeployPreferences.AbsoluteBuildDirectory, true);
+                    //canUpdate = true;
+                }*/
+
+                PlayerSettings.SetScriptingBackend(BuildTargetGroup.WSA, newScriptingBackend);
+            }
+#endif
+            // If the WSA target device is HoloLens, show the checkboxes for research mode
+            if (EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens)
+            {
+                // Enable Research Mode Capability
+                UwpBuildDeployPreferences.ResearchModeCapabilityEnabled = EditorGUILayout.ToggleLeft(researchModeCapabilityLabel, UwpBuildDeployPreferences.ResearchModeCapabilityEnabled);
+
+                // Allow unsafe code
+                UwpBuildDeployPreferences.AllowUnsafeCode = EditorGUILayout.ToggleLeft(allowUnsafeCode, UwpBuildDeployPreferences.AllowUnsafeCode);
+            }
+
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                using (new EditorGUI.DisabledGroupScope(!ShouldOpenSLNBeEnabled))
+                {
+                    RenderOpenVisualStudioButton();
+
+                    // TODO: Troy - move to new line*
+                    if (GUILayout.Button("Build Unity Project"))
+                    {
+                        EditorApplication.delayCall += BuildUnityProject;
+                    }
+                }
+            }
+            EditorGUILayout.Space();
+        }
+
+        private static void RenderOpenVisualStudioButton()
+        {
+            if (GUILayout.Button("Open in Visual Studio", GUILayout.Width(HALF_WIDTH)))
+            {
+                string slnFilename = Path.Combine(BuildDeployPreferences.BuildDirectory, $"{PlayerSettings.productName}.sln");
+
+                if (File.Exists(slnFilename))
+                {
+                    EditorApplication.delayCall += () => Process.Start(new FileInfo(slnFilename).FullName);
+                }
+                else if (EditorUtility.DisplayDialog(
+                    "Solution Not Found",
+                    "We couldn't find the Project's Solution. Would you like to Build the project now?",
+                    "Yes, Build", "No"))
+                {
+                    EditorApplication.delayCall += BuildUnityProject;
+                }
+            }
+        }
+
+        private void RenderAppxBuildView()
+        {
             // SDK and MS Build Version (and save setting, if it's changed)
             // Note that this is the 'Target SDK Version' which is required to physically build the
             // code on a build machine, not the minimum platform version.
@@ -458,7 +427,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 }
 
                 EditorGUILayout.HelpBox($"Unable to find the required Windows 10 SDK Target!\nPlease be sure to install the {UwpBuildDeployPreferences.MIN_SDK_VERSION} SDK from Visual Studio Installer.", MessageType.Error);
-                GUILayout.EndVertical();
                 IsValidSdkInstalled = false;
                 return;
             }
@@ -490,61 +458,25 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     MessageType.Warning);
             }
 
-            var curScriptingBackend = PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA);
 
-            if (curScriptingBackend == ScriptingImplementation.WinRTDotNET)
-            {
-                EditorGUILayout.HelpBox(".NET Scripting backend is deprecated in Unity 2018 and is removed in Unity 2019.", MessageType.Warning);
-            }
 
-            var newScriptingBackend = (ScriptingImplementation)EditorGUILayout.IntPopup("Scripting Backend", (int)curScriptingBackend, scriptingBackendNames, scriptingBackendEnum, GUILayout.Width(HALF_WIDTH));
-
-            if (newScriptingBackend != curScriptingBackend)
-            {
-                bool canUpdate = !Directory.Exists(BuildDeployPreferences.AbsoluteBuildDirectory);
-
-                if (!canUpdate &&
-                    EditorUtility.DisplayDialog("Attention!",
-                        $"Build path contains project built with {newScriptingBackend.ToString()} scripting backend, while current project is using {curScriptingBackend.ToString()} scripting backend.\n\nSwitching to a new scripting backend requires us to delete all the data currently in your build folder and rebuild the Unity Player!",
-                        "Okay", "Cancel"))
-                {
-                    Directory.Delete(BuildDeployPreferences.AbsoluteBuildDirectory, true);
-                    canUpdate = true;
-                }
-
-                if (canUpdate)
-                {
-                    PlayerSettings.SetScriptingBackend(BuildTargetGroup.WSA, newScriptingBackend);
-                }
-            }
 
             // Build config (and save setting, if it's changed)
-            string curBuildConfigString = UwpBuildDeployPreferences.BuildConfig;
-
-            WSABuildType buildConfigOption;
-            if (curBuildConfigString.ToLower().Equals("master"))
-            {
-                buildConfigOption = WSABuildType.Master;
-            }
-            else if (curBuildConfigString.ToLower().Equals("release"))
-            {
-                buildConfigOption = WSABuildType.Release;
-            }
-            else
-            {
-                buildConfigOption = WSABuildType.Debug;
-            }
-
-            buildConfigOption = (WSABuildType)EditorGUILayout.EnumPopup("Build Configuration", buildConfigOption, GUILayout.Width(HALF_WIDTH));
-
-            string buildConfigString = buildConfigOption.ToString().ToLower();
-
-            if (buildConfigString != curBuildConfigString)
-            {
-                UwpBuildDeployPreferences.BuildConfig = buildConfigString;
-            }
+            // TODO: Troy - look at changing type?
+            var newBuildConfigOption = (WSABuildType)EditorGUILayout.EnumPopup("Build Configuration", UwpBuildDeployPreferences.BuildConfigType, GUILayout.Width(HALF_WIDTH));
+            UwpBuildDeployPreferences.BuildConfig = newBuildConfigOption.ToString().ToLower();
 
             // Build Platform (and save setting, if it's changed)
+
+            // TODO: Troy - test and see if I  can eliminate the Architecture enum?
+            string[] archs = { "x86", "x64", "arm" };
+            int currentIndex = Array.IndexOf(archs, EditorUserBuildSettings.wsaArchitecture);
+            int newIndex = EditorGUILayout.Popup("Build Platform", currentIndex, archs, GUILayout.Width(HALF_WIDTH));
+            if (currentIndex != newIndex)
+            {
+                EditorUserBuildSettings.wsaArchitecture = archs[newIndex];
+            }
+            /*
             string currentArchitectureString = EditorUserBuildSettings.wsaArchitecture;
             var buildArchitecture = Architecture.x86;
 
@@ -569,6 +501,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             {
                 EditorUserBuildSettings.wsaArchitecture = newBuildArchitectureString;
             }
+            */
 
             // Platform Toolset (and save setting, if it's changed)
             string currentPlatformToolsetString = UwpBuildDeployPreferences.PlatformToolset;
@@ -654,7 +587,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             GUILayout.FlexibleSpace();
 
             // Open AppX packages location
-            string appxDirectory = curScriptingBackend == ScriptingImplementation.IL2CPP ? $"/AppPackages/{PlayerSettings.productName}" : $"/{PlayerSettings.productName}/AppPackages";
+            string appxDirectory = PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP ? $"/AppPackages/{PlayerSettings.productName}" : $"/{PlayerSettings.productName}/AppPackages";
             string appxBuildPath = Path.GetFullPath($"{BuildDeployPreferences.BuildDirectory}{appxDirectory}");
             GUI.enabled = Builds.Count > 0 && !string.IsNullOrEmpty(appxBuildPath);
 
@@ -724,10 +657,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
 
             GUILayout.EndHorizontal();
-            GUILayout.EndVertical();
         }
 
-        private void DeployGUI()
+        private void RenderDeployBuildView()
         {
             Debug.Assert(portalConnections.Connections.Count != 0);
             Debug.Assert(currentConnectionInfoIndex >= 0);
@@ -1016,9 +948,46 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             GUILayout.EndVertical();
         }
 
-        #endregion Methods
+#endregion Methods
 
-        #region Utilities
+#region Render Helpers
+
+        private void RenderBuildDirectory()
+        {
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                string currentBuildDirectory = BuildDeployPreferences.BuildDirectory;
+
+                EditorGUILayout.LabelField(BuildDirectoryLabel, GUILayout.Width(96));
+
+                using (new EditorGUI.DisabledGroupScope(true))
+                {
+                    EditorGUILayout.TextField(currentBuildDirectory, GUILayout.ExpandWidth(true));
+                }
+
+                if (GUILayout.Button(new GUIContent("Select Folder"), EditorStyles.miniButtonLeft, GUILayout.Width(100f)))
+                {
+                    // TODO: Troy - change buildirectory to relative?
+                    BuildDeployPreferences.BuildDirectory = EditorUtility.OpenFolderPanel("Select Build Directory", currentBuildDirectory, string.Empty);
+                }
+
+                RenderOpenBuildDirectory();
+            }
+
+            EditorGUILayout.Space();
+        }
+
+        private static void RenderPlayerSettingsButton()
+        {
+            if (GUILayout.Button("Open Player Settings"))
+            {
+                Selection.activeObject = Unsupported.GetSerializedAssetInterfaceSingleton("PlayerSettings");
+            }
+        }
+
+#endregion
+
+#region Utilities
 
         private async void ConnectToDevice(DeviceInfo currentConnection)
         {
@@ -1352,9 +1321,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             windowsSdkVersions.Sort();
         }
 
-        #endregion Utilities
+#endregion Utilities
 
-        #region Device Portal Commands
+#region Device Portal Commands
 
         private static async void OpenDevicePortal(DevicePortalConnections targetDevices, DeviceInfo currentConnection)
         {
@@ -1610,6 +1579,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
         }
 
-        #endregion Device Portal Commands
+#endregion Device Portal Commands
     }
 }

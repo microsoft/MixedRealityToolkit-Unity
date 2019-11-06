@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using Microsoft.MixedReality.Toolkit.WindowsDevicePortal;
 using System;
+using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Build.Editor
@@ -51,6 +52,27 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         {
             get => EditorPreferences.Get(EDITOR_PREF_BUILD_CONFIG, "master");
             set => EditorPreferences.Set(EDITOR_PREF_BUILD_CONFIG, value.ToLower());
+        }
+
+        // TODO: Troy - comment
+        public static WSABuildType BuildConfigType
+        {
+            get
+            {
+                string curBuildConfigString = BuildConfig;
+                if (curBuildConfigString.Equals("master", StringComparison.OrdinalIgnoreCase))
+                {
+                    return WSABuildType.Master;
+                }
+                else if (curBuildConfigString.Equals("release", StringComparison.OrdinalIgnoreCase))
+                {
+                    return WSABuildType.Release;
+                }
+                else
+                {
+                    return WSABuildType.Debug;
+                }
+            }
         }
 
         /// <summary>
