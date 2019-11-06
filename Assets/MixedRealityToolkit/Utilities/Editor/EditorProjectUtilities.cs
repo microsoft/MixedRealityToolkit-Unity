@@ -127,9 +127,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private static void ApplyARFoundationUWPCompileFix()
         {
 #if !UNITY_2019_1_OR_NEWER
-
-            Debug.Log("Checking to see if the AR Foundation, UWP, .NET backend workaround needs to be applied.");
-
             bool reloadLocked = EditorAssemblyReloadManager.LockReloadAssemblies;
             if (reloadLocked)
             {
@@ -173,10 +170,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     {
                         asmDef.Save(arFoundation.FullName);
                     }
-                    else
-                    {
-                        Debug.Log($"No changes required for {arFoundation.FullName}.");
-                    }
                 }
 
                 FileInfo arSubsystems = GetPackageCacheAssemblyDefinitionFile(
@@ -209,10 +202,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     if (changed)
                     {
                         asmDef.Save(arSubsystems.FullName);
-                    }
-                    else
-                    {
-                        Debug.Log($"No changes required for {arSubsystems.FullName}.");
                     }
                 }
             }
