@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace HoloToolkit.UI.Keyboard
+namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
     /// <summary>
     /// This component represents and ordered collection of UI elements. You

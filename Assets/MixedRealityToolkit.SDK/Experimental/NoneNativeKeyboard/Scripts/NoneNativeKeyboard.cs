@@ -19,9 +19,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
     ///       To retrieve the input from the Keyboard, subscribe to the textEntered event. Note that
     ///       tapping 'Close' on the Keyboard will not fire the textEntered event. You must tap 'Enter' to
     ///       get the textEntered event.
-    public class Keyboard : InputSystemGlobalHandlerListener, IMixedRealityDictationHandler
+    public class NoneNativeKeyboard : InputSystemGlobalHandlerListener, IMixedRealityDictationHandler
     {
-        public static Keyboard Instance { get; private set; }
+        public static NoneNativeKeyboard Instance { get; private set; }
 
         /// <summary>
         /// Layout type enum for the type of keyboard layout to use.  
@@ -295,13 +295,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// Workaround for strange leftover reference when unsubscribing.
         /// </summary>
         /// <param name="value">String value.</param>
-        private void DoTextUpdated(string value)
-        {
-            if (OnTextUpdated != null)
-            {
-                OnTextUpdated(value);
-            }
-        }
+        private void DoTextUpdated(string value) => OnTextUpdated?.Invoke(value);
 
         /// <summary>
         /// Makes sure the input field is always selected while the keyboard is up.
@@ -315,13 +309,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 Vector3 relPos = transform.InverseTransformPoint(nearPoint);
                 InputFieldSlide.TargetPoint = relPos;
             }
+
             CheckForCloseOnInactivityTimeExpired();
         }
 
-        private void UpdateCaretPosition(int newPos)
-        {
-            InputField.caretPosition = newPos;
-        }
+        private void UpdateCaretPosition(int newPos) => InputField.caretPosition = newPos;
 
         /// <summary>
         /// Called whenever the keyboard is disabled or deactivated.
@@ -338,9 +330,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// Called when dictation hypothesis is found. Not used here
         /// </summary>
         /// <param name="eventData">Dictation event data</param>
-        public void OnDictationHypothesis(DictationEventData eventData)
-        {
-        }
+        public void OnDictationHypothesis(DictationEventData eventData) { }
 
         /// <summary>
         /// Called when dictation result is obtained
@@ -380,9 +370,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// Called on dictation error. Not used here.
         /// </summary>
         /// <param name="eventData">Dictation event data</param>
-        public void OnDictationError(DictationEventData eventData)
-        {
-        }
+        public void OnDictationError(DictationEventData eventData) { }
 
         /// <summary>
         /// Destroy unmanaged memory links.
@@ -638,7 +626,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         public void FunctionKey(KeyboardKeyFunc functionKey)
         {
             IndicateActivity();
-            switch (functionKey.m_ButtonFunction)
+            switch (functionKey.ButtonFunction)
             {
                 case KeyboardKeyFunc.Function.Enter:
                     {

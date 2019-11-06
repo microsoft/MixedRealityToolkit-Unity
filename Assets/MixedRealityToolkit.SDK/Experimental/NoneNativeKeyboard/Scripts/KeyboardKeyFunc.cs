@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
@@ -39,28 +40,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <summary>
         /// Designer specified functionality of a keyboard button.
         /// </summary>
-        public Function m_ButtonFunction = Function.UNDEFINED;
+        [SerializeField, FormerlySerializedAs("m_ButtonFunction")] private Function buttonFunction = Function.UNDEFINED;
 
-        /// <summary>
-        /// Reference to GameObject's Button component.
-        /// </summary>
-        private Button m_Button = null;
-
-        /// <summary>
-        /// Get the button component.
-        /// </summary>
-        private void Awake()
-        {
-            m_Button = GetComponent<Button>();
-        }
+        public Function ButtonFunction => buttonFunction;
 
         /// <summary>
         /// Subscribe to the onClick event.
         /// </summary>
         private void Start()
         {
+            Button m_Button = GetComponent<Button>();
             m_Button.onClick.RemoveAllListeners();
-            m_Button.onClick.AddListener(new UnityEngine.Events.UnityAction(FireFunctionKey));
+            m_Button.onClick.AddListener(FireFunctionKey);
         }
 
         /// <summary>
@@ -68,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         private void FireFunctionKey()
         {
-            Keyboard.Instance.FunctionKey(this);
+            NoneNativeKeyboard.Instance.FunctionKey(this);
         }
     }
 }

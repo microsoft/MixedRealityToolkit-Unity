@@ -4,7 +4,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace HoloToolkit.UI.Keyboard
+namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
     public class SymbolDisableHighlight : MonoBehaviour
     {
