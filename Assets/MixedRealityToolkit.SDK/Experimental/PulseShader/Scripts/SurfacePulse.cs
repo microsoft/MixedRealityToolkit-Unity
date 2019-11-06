@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Cognition.OOBE
+namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
 {
-
 	public class SurfacePulse : MonoBehaviour
 	{
 		[Tooltip("Shader parameter name to drive the pulse radius")]
@@ -64,7 +63,10 @@ namespace Cognition.OOBE
 
 		private void Start()
 		{
-			StartPulsing();
+			if (bAutoStart)
+			{
+				StartPulsing();
+			}
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////////
