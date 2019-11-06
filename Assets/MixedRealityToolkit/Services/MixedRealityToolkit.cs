@@ -443,7 +443,7 @@ namespace Microsoft.MixedReality.Toolkit
 
                     if (typeof(IMixedRealityExtensionService).IsAssignableFrom(configuration.ComponentType.Type))
                     {
-                        object[] args = { configuration.ComponentName, configuration.Priority, configuration.ConfigurationProfile };
+                        object[] args = { configuration.ComponentName, configuration.Priority, configuration.Profile };
                         RegisterService<IMixedRealityExtensionService>(configuration.ComponentType, configuration.RuntimePlatform, args);
                     }
                 }
