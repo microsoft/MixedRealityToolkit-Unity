@@ -382,14 +382,21 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                             UwpBuildDeployPreferences.ResearchModeCapabilityEnabled = newResearchModeCapabilityEnabled;
                         }
 
-                        // Allow unsafe code
-                        bool curAllowUnsafeCode = UwpBuildDeployPreferences.AllowUnsafeCode;
-                        bool newAllowUnsafeCode = EditorGUILayout.ToggleLeft(allowUnsafeCode, curAllowUnsafeCode);
-
-                        if (newAllowUnsafeCode != curAllowUnsafeCode)
+#if !UNITY_2019_1_OR_NEWER
+                        // To prevent potential confusion, only show this when C# projects will be generated
+                        if (EditorUserBuildSettings.wsaGenerateReferenceProjects &&
+                            PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
                         {
-                            UwpBuildDeployPreferences.AllowUnsafeCode = newAllowUnsafeCode;
+                            // Allow unsafe code
+                            bool curAllowUnsafeCode = UwpBuildDeployPreferences.AllowUnsafeCode;
+                            bool newAllowUnsafeCode = EditorGUILayout.ToggleLeft(allowUnsafeCode, curAllowUnsafeCode);
+
+                            if (newAllowUnsafeCode != curAllowUnsafeCode)
+                            {
+                                UwpBuildDeployPreferences.AllowUnsafeCode = newAllowUnsafeCode;
+                            }
                         }
+#endif // !UNITY_2019_1_OR_NEWER
                     }
 
                     GUILayout.FlexibleSpace();
