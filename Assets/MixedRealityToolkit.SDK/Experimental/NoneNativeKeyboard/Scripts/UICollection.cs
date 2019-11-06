@@ -25,6 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// The maximum width that the collection should expand to. If the value is -1.0 then it will use
         /// the width specified by the RectTransform of this component's GameObject.
         /// </summary>
+        [Experimental]
         public float MaxWidth = -1.0f;
 
         /// <summary>

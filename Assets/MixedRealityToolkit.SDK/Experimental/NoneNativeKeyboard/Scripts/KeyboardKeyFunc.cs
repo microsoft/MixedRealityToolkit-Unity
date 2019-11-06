@@ -16,6 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <summary>
         /// Possible functionality for a button.
         /// </summary>
+        [Experimental]
         public enum Function
         {
             // Commands

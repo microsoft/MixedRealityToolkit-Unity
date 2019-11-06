@@ -11,6 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <summary>
         /// The text field to update.
         /// </summary>
+        [Experimental]
         [SerializeField]
         private Text m_TextField = null;
 

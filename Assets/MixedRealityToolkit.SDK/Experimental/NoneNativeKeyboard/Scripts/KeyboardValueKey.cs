@@ -15,6 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <summary>
         /// The default string value for this key.
         /// </summary>
+        [Experimental]
         public string Value;
 
         /// <summary>

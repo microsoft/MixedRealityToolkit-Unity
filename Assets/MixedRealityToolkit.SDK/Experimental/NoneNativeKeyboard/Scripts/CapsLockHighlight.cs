@@ -17,6 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// <summary>
         /// The keyboard to check for caps locks
         /// </summary>
+        [Experimental]
         private NoneNativeKeyboard m_Keyboard;
 
         /// <summary>

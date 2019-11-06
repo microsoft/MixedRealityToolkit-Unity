@@ -82,6 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// If you are using the Keyboard prefab you can ignore this field as it will
         /// be already assigned.
         /// </summary>
+        [Experimental]
         public TMP_InputField InputField = null;
 
         /// <summary>

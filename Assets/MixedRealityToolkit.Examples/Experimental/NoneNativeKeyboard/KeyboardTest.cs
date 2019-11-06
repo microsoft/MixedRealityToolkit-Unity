@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
     [RequireComponent(typeof(TMP_InputField))]
     public class KeyboardTest : MonoBehaviour, IPointerDownHandler
     {
+        [Experimental]
         [SerializeField] private NoneNativeKeyboard keyboard = null;
 
         public void OnPointerDown(PointerEventData eventData)

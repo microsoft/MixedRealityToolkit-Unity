@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             Z
         }
 
+        [Experimental]
         public EAxis Axis = EAxis.X;
 
         private float currentPos;

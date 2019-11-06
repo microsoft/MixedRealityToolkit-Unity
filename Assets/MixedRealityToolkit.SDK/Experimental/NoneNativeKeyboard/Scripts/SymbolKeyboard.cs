@@ -7,6 +7,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
     public class SymbolKeyboard : MonoBehaviour
     {
+        [Experimental]
         [SerializeField]
         private UnityEngine.UI.Button m_PageBck = null;
 
