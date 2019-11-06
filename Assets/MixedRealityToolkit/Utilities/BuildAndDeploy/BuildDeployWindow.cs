@@ -54,6 +54,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private const string LOCAL_MACHINE = "Local Machine";
 
+        private const string HOLOLENS_USB = "HoloLens over USB";
+
         private const string LOCAL_IP_ADDRESS = "127.0.0.1";
 
         private const string EMPTY_IP_ADDRESS = "0.0.0.0";
@@ -759,12 +761,17 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             currentConnectionInfoIndex = EditorGUILayout.Popup(currentConnectionInfoIndex, targetIps);
 
-            var currentConnection = portalConnections.Connections[currentConnectionInfoIndex];
+            DeviceInfo currentConnection = portalConnections.Connections[currentConnectionInfoIndex];
             bool currentConnectionIsLocal = IsLocalConnection(currentConnection);
 
             if (currentConnectionIsLocal)
             {
-                currentConnection.MachineName = LOCAL_MACHINE;
+                currentConnection.MachineName = IsHoloLensConnectedUsb ? HOLOLENS_USB : LOCAL_MACHINE;
+
+                if (currentConnection.MachineName != targetIps[0])
+                {
+                    UpdatePortalConnections();
+                }
             }
 
             GUI.enabled = IsValidIpAddress(currentConnection.IP);
@@ -1235,7 +1242,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 currentConnectionInfoIndex = portalConnections.Connections.Count - 1;
             }
 
-            targetIps[0] = LOCAL_MACHINE;
+            targetIps[0] = IsHoloLensConnectedUsb ? HOLOLENS_USB : LOCAL_MACHINE;
             for (int i = 1; i < targetIps.Length; i++)
             {
                 if (string.IsNullOrEmpty(portalConnections.Connections[i].MachineName))
