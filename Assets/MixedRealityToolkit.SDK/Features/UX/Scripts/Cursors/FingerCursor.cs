@@ -231,7 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // not translate to the finger pad if the user is poking with a horizontal finger
             float fingerSurfaceDot = Vector3.Dot(tipNormal, -surfaceNormal);
 
-            // Lerping an agular measurement from 0 degrees (default cursor position at tip of finger) to
+            // Lerping an angular measurement from 0 degrees (default cursor position at tip of finger) to
             // 90 degrees (a new position on the fingertip pad) around the fingertip's X axis.
             Quaternion degreesRelative = Quaternion.AngleAxis((1f - t) * 90f * (1f - fingerSurfaceDot), indexFingerRingRenderer.transform.right);
 
