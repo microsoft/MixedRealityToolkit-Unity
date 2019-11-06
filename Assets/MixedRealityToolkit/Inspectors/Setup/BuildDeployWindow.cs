@@ -34,20 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             DeployOptions
         }
 
-        private enum Architecture
-        {
-            x86 = 0,
-            x64 = 1,
-            ARM = 2,
-        }
-
-        private enum PlatformToolset
-        {
-            Solution,
-            v141,
-            v142,
-        }
-
         #endregion Internal Types
 
         #region Constants and Readonly Values
@@ -328,7 +314,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             EditorUserBuildSettings.wsaSubtarget = (WSASubtarget)EditorGUILayout.Popup("Target Device", (int)EditorUserBuildSettings.wsaSubtarget, deviceNames, GUILayout.Width(HALF_WIDTH));
 
-#if UNITY_2018
+#if !UNITY_2019_1_OR_NEWER
             var curScriptingBackend = PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA);
             if (curScriptingBackend == ScriptingImplementation.WinRTDotNET)
             {
@@ -356,10 +342,27 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             if (EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens)
             {
                 // Enable Research Mode Capability
-                UwpBuildDeployPreferences.ResearchModeCapabilityEnabled = EditorGUILayout.ToggleLeft(researchModeCapabilityLabel, UwpBuildDeployPreferences.ResearchModeCapabilityEnabled);
+                bool researchModeEnabled = UwpBuildDeployPreferences.ResearchModeCapabilityEnabled;
+                bool newResearchModeEnabled = EditorGUILayout.ToggleLeft(researchModeCapabilityLabel, UwpBuildDeployPreferences.ResearchModeCapabilityEnabled);
+                if (newResearchModeEnabled != researchModeEnabled)
+                {
+                    UwpBuildDeployPreferences.ResearchModeCapabilityEnabled = newResearchModeEnabled;
+                }
 
-                // Allow unsafe code
-                UwpBuildDeployPreferences.AllowUnsafeCode = EditorGUILayout.ToggleLeft(allowUnsafeCode, UwpBuildDeployPreferences.AllowUnsafeCode);
+#if !UNITY_2019_1_OR_NEWER
+                // To prevent potential confusion, only show this when C# projects will be generated
+                if (EditorUserBuildSettings.wsaGenerateReferenceProjects &&
+                    PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
+                {
+                    // Allow unsafe code
+                    bool curAllowUnsafeCode = UwpBuildDeployPreferences.AllowUnsafeCode;
+                    bool newAllowUnsafeCode = EditorGUILayout.ToggleLeft(allowUnsafeCode, curAllowUnsafeCode);
+                    if (newAllowUnsafeCode != curAllowUnsafeCode)
+                    {
+                        UwpBuildDeployPreferences.AllowUnsafeCode = newAllowUnsafeCode;
+                    }
+                }
+#endif // !UNITY_2019_1_OR_NEWER
             }
 
             using (new EditorGUILayout.HorizontalScope())
@@ -468,7 +471,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             // Build Platform (and save setting, if it's changed)
 
-            // TODO: Troy - test and see if I  can eliminate the Architecture enum?
+            // TODO: Troy - save arrays as constants 
             string[] archs = { "x86", "x64", "arm" };
             int currentIndex = Array.IndexOf(archs, EditorUserBuildSettings.wsaArchitecture);
             int newIndex = EditorGUILayout.Popup("Build Platform", currentIndex, archs, GUILayout.Width(HALF_WIDTH));
@@ -476,56 +479,14 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             {
                 EditorUserBuildSettings.wsaArchitecture = archs[newIndex];
             }
-            /*
-            string currentArchitectureString = EditorUserBuildSettings.wsaArchitecture;
-            var buildArchitecture = Architecture.x86;
 
-            if (currentArchitectureString.ToLower().Equals("x86"))
+            // Platform Toolset
+            string[] platformToolsets = { string.Empty, "v141", "v142" };
+            currentIndex = Array.IndexOf(platformToolsets, UwpBuildDeployPreferences.PlatformToolset);
+            newIndex = EditorGUILayout.Popup("Plaform Toolset", currentIndex, platformToolsets, GUILayout.Width(HALF_WIDTH));
+            if (currentIndex != newIndex)
             {
-                buildArchitecture = Architecture.x86;
-            }
-            else if (currentArchitectureString.ToLower().Equals("x64"))
-            {
-                buildArchitecture = Architecture.x64;
-            }
-            else if (currentArchitectureString.ToLower().Equals("arm"))
-            {
-                buildArchitecture = Architecture.ARM;
-            }
-
-            buildArchitecture = (Architecture)EditorGUILayout.EnumPopup("Build Platform", buildArchitecture, GUILayout.Width(HALF_WIDTH));
-
-            string newBuildArchitectureString = buildArchitecture.ToString();
-
-            if (newBuildArchitectureString != currentArchitectureString)
-            {
-                EditorUserBuildSettings.wsaArchitecture = newBuildArchitectureString;
-            }
-            */
-
-            // Platform Toolset (and save setting, if it's changed)
-            string currentPlatformToolsetString = UwpBuildDeployPreferences.PlatformToolset;
-
-            PlatformToolset platformToolset = PlatformToolset.Solution;
-            if (string.IsNullOrEmpty(currentPlatformToolsetString))
-            {
-                platformToolset = PlatformToolset.Solution;
-            }
-            else if(currentPlatformToolsetString.ToLower().Equals(PlatformToolset.v141.ToString().ToLower()))
-            {
-                platformToolset = PlatformToolset.v141;
-            }
-            else if (currentPlatformToolsetString.ToLower().Equals(PlatformToolset.v142.ToString().ToLower()))
-            {
-                platformToolset = PlatformToolset.v142;
-            }
-
-            platformToolset = (PlatformToolset)EditorGUILayout.EnumPopup("Platform Toolset", platformToolset, GUILayout.Width(HALF_WIDTH));
-
-            string platformToolsetString = platformToolset == PlatformToolset.Solution ? string.Empty : platformToolset.ToString();
-            if (platformToolsetString != currentPlatformToolsetString)
-            {
-                UwpBuildDeployPreferences.PlatformToolset = platformToolsetString;
+                UwpBuildDeployPreferences.PlatformToolset = platformToolsets[newIndex];
             }
 
             // The 'Gaze Input' capability support was added for HL2 in the Windows SDK 18362, but 
@@ -539,128 +500,108 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             {
                 UwpBuildDeployPreferences.GazeInputCapabilityEnabled = newGazeInputCapabilityEnabled;
             }
-            
-            GUILayout.BeginHorizontal();
 
-            var prevFieldWidth = EditorGUIUtility.fieldWidth;
-
-            EditorGUIUtility.fieldWidth = prevFieldWidth;
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();
-            GUILayout.BeginHorizontal();
-
-            var previousLabelWidth = EditorGUIUtility.labelWidth;
-
-            // Auto Increment version
-            EditorGUIUtility.labelWidth = 96;
-            bool curIncrementVersion = BuildDeployPreferences.IncrementBuildVersion;
-            bool newIncrementVersion = EditorGUILayout.Toggle(autoIncrementLabel, curIncrementVersion);
-
-            // Restore previous label width
-            EditorGUIUtility.labelWidth = previousLabelWidth;
-
-            if (newIncrementVersion != curIncrementVersion)
+            using (new EditorGUILayout.HorizontalScope())
             {
-                BuildDeployPreferences.IncrementBuildVersion = newIncrementVersion;
-            }
-
-            EditorGUILayout.LabelField(versionNumberLabel, GUILayout.Width(96));
-            Vector3 newVersion = Vector3.zero;
-
-            EditorGUI.BeginChangeCheck();
-
-            newVersion.x = EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Major);
-            newVersion.y = EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Minor);
-            newVersion.z = EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Build);
-
-            if (EditorGUI.EndChangeCheck())
-            {
-                PlayerSettings.WSA.packageVersion = new Version((int)newVersion.x, (int)newVersion.y, (int)newVersion.z, 0);
-            }
-
-            GUI.enabled = false;
-            EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Revision);
-            GUI.enabled = true;
-
-            GUILayout.EndHorizontal();
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-
-            // Open AppX packages location
-            string appxDirectory = PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP ? $"/AppPackages/{PlayerSettings.productName}" : $"/{PlayerSettings.productName}/AppPackages";
-            string appxBuildPath = Path.GetFullPath($"{BuildDeployPreferences.BuildDirectory}{appxDirectory}");
-            GUI.enabled = Builds.Count > 0 && !string.IsNullOrEmpty(appxBuildPath);
-
-            if (GUILayout.Button("Open APPX Packages Location", GUILayout.Width(HALF_WIDTH)))
-            {
-                EditorApplication.delayCall += () => Process.Start("explorer.exe", $"/f /open,{appxBuildPath}");
-            }
-
-            GUI.enabled = true;
-
-            GUILayout.EndHorizontal();
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-
-            // Force rebuild
-            previousLabelWidth = EditorGUIUtility.labelWidth;
-            EditorGUIUtility.labelWidth = 50;
-            bool curForceRebuildAppx = UwpBuildDeployPreferences.ForceRebuild;
-            bool newForceRebuildAppx = EditorGUILayout.Toggle("Rebuild", curForceRebuildAppx);
-
-            if (newForceRebuildAppx != curForceRebuildAppx)
-            {
-                UwpBuildDeployPreferences.ForceRebuild = newForceRebuildAppx;
-            }
-
-            // Multicore Appx Build
-            EditorGUIUtility.labelWidth = 90;
-            bool curMulticoreAppxBuildEnabled = UwpBuildDeployPreferences.MulticoreAppxBuildEnabled;
-            bool newMulticoreAppxBuildEnabled = EditorGUILayout.Toggle("Multicore Build", curMulticoreAppxBuildEnabled);
-
-            if (newMulticoreAppxBuildEnabled != curMulticoreAppxBuildEnabled)
-            {
-                UwpBuildDeployPreferences.MulticoreAppxBuildEnabled = newMulticoreAppxBuildEnabled;
-            }
-
-            // Restore previous label width
-            EditorGUIUtility.labelWidth = previousLabelWidth;
-
-            if (appxCancellationTokenSource == null)
-            {
-                // Build APPX
-                GUI.enabled = ShouldBuildAppxBeEnabled;
-
-                if (GUILayout.Button("Build APPX", GUILayout.Width(HALF_WIDTH)))
+                // Auto Increment version
+                bool curIncrementVersion = BuildDeployPreferences.IncrementBuildVersion;
+                bool newIncrementVersion = EditorGUILayout.Toggle(autoIncrementLabel, curIncrementVersion);
+                if (newIncrementVersion != curIncrementVersion)
                 {
-                    // Check if solution exists
-                    string slnFilename = Path.Combine(BuildDeployPreferences.BuildDirectory, $"{PlayerSettings.productName}.sln");
-
-                    if (File.Exists(slnFilename))
-                    {
-                        EditorApplication.delayCall += BuildAppx;
-                    }
-                    else if (EditorUtility.DisplayDialog("Solution Not Found", "We couldn't find the solution. Would you like to Build it?", "Yes, Build", "No"))
-                    {
-                        EditorApplication.delayCall += () => BuildAll(install: false);
-                    }
-
-                    GUI.enabled = true;
+                    BuildDeployPreferences.IncrementBuildVersion = newIncrementVersion;
                 }
-            }
-            else
-            {
-                if (GUILayout.Button("Cancel Build", GUILayout.Width(HALF_WIDTH)))
+
+                EditorGUILayout.LabelField(versionNumberLabel, GUILayout.Width(96));
+                Vector3 newVersion = Vector3.zero;
+                using (var c = new EditorGUI.ChangeCheckScope())
                 {
-                    appxCancellationTokenSource.Cancel();
+                    EditorGUI.BeginChangeCheck();
+
+                    newVersion.x = EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Major);
+                    newVersion.y = EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Minor);
+                    newVersion.z = EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Build);
+
+                    if (c.changed)
+                    {
+                        PlayerSettings.WSA.packageVersion = new Version((int)newVersion.x, (int)newVersion.y, (int)newVersion.z, 0);
+                    }
+                }
+
+                using (new EditorGUI.DisabledGroupScope(true))
+                {
+                    EditorGUILayout.IntField(PlayerSettings.WSA.packageVersion.Revision);
                 }
             }
 
-            GUILayout.EndHorizontal();
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                GUILayout.FlexibleSpace();
+
+                // Open AppX packages location
+                string appxDirectory = PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.IL2CPP ? $"/AppPackages/{PlayerSettings.productName}" : $"/{PlayerSettings.productName}/AppPackages";
+                string appxBuildPath = Path.GetFullPath($"{BuildDeployPreferences.BuildDirectory}{appxDirectory}");
+
+                using (new EditorGUI.DisabledGroupScope(Builds.Count <= 0 || string.IsNullOrEmpty(appxBuildPath)))
+                {
+                    if (GUILayout.Button("Open APPX Packages Location", GUILayout.Width(HALF_WIDTH)))
+                    {
+                        EditorApplication.delayCall += () => Process.Start("explorer.exe", $"/f /open,{appxBuildPath}");
+                    }
+                }
+            }
+
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                GUILayout.FlexibleSpace();
+
+                // Force rebuild
+                bool curForceRebuildAppx = UwpBuildDeployPreferences.ForceRebuild;
+                bool newForceRebuildAppx = EditorGUILayout.Toggle("Rebuild", curForceRebuildAppx);
+                if (newForceRebuildAppx != curForceRebuildAppx)
+                {
+                    UwpBuildDeployPreferences.ForceRebuild = newForceRebuildAppx;
+                }
+
+                // Multicore Appx Build
+                bool curMulticoreAppxBuildEnabled = UwpBuildDeployPreferences.MulticoreAppxBuildEnabled;
+                bool newMulticoreAppxBuildEnabled = EditorGUILayout.Toggle("Multicore Build", curMulticoreAppxBuildEnabled);
+                if (newMulticoreAppxBuildEnabled != curMulticoreAppxBuildEnabled)
+                {
+                    UwpBuildDeployPreferences.MulticoreAppxBuildEnabled = newMulticoreAppxBuildEnabled;
+                }
+
+                if (appxCancellationTokenSource == null)
+                {
+                    using (new EditorGUI.DisabledGroupScope(!ShouldBuildAppxBeEnabled))
+                    {
+                        if (GUILayout.Button("Build APPX", GUILayout.Width(HALF_WIDTH)))
+                        {
+                            // Check if solution exists
+                            string slnFilename = Path.Combine(BuildDeployPreferences.BuildDirectory, $"{PlayerSettings.productName}.sln");
+                            if (File.Exists(slnFilename))
+                            {
+                                EditorApplication.delayCall += BuildAppx;
+                            }
+                            else if (EditorUtility.DisplayDialog("Solution Not Found", "We couldn't find the solution. Would you like to Build it?", "Yes, Build", "No"))
+                            {
+                                EditorApplication.delayCall += () => BuildAll(install: false);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (GUILayout.Button("Cancel Build", GUILayout.Width(HALF_WIDTH)))
+                    {
+                        appxCancellationTokenSource.Cancel();
+                    }
+                }
+            }
         }
 
         private void RenderDeployBuildView()
         {
+            // TODO: Change asserts*
             Debug.Assert(portalConnections.Connections.Count != 0);
             Debug.Assert(currentConnectionInfoIndex >= 0);
 
@@ -669,143 +610,139 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 currentConnectionInfoIndex = 0;
             }
 
-            GUILayout.BeginVertical();
             EditorGUI.BeginChangeCheck();
-            GUILayout.BeginHorizontal();
-
-            GUI.enabled = IsHoloLensConnectedUsb;
-
-            if (GUILayout.Button(pairHoloLensUsbLabel, GUILayout.Width(128f)))
-            {
-                EditorApplication.delayCall += PairDevice;
-            }
-
-            GUI.enabled = true;
-
-            GUILayout.FlexibleSpace();
-
-            var previousLabelWidth = EditorGUIUtility.labelWidth;
-            EditorGUIUtility.labelWidth = 64;
-            bool useSSL = EditorGUILayout.Toggle(useSSLLabel, UwpBuildDeployPreferences.UseSSL);
-            EditorGUIUtility.labelWidth = previousLabelWidth;
-
-            currentConnectionInfoIndex = EditorGUILayout.Popup(currentConnectionInfoIndex, targetIps);
 
             var currentConnection = portalConnections.Connections[currentConnectionInfoIndex];
             bool currentConnectionIsLocal = IsLocalConnection(currentConnection);
+            bool useSSL = UwpBuildDeployPreferences.UseSSL;
+            bool processAll = UwpBuildDeployPreferences.TargetAllConnections;
 
-            if (currentConnectionIsLocal)
+            using (new EditorGUILayout.HorizontalScope())
             {
-                currentConnection.MachineName = LOCAL_MACHINE;
-            }
-
-            GUI.enabled = IsValidIpAddress(currentConnection.IP);
-
-            if (GUILayout.Button(addConnectionLabel, GUILayout.Width(20)))
-            {
-                portalConnections.Connections.Add(new DeviceInfo(EMPTY_IP_ADDRESS, currentConnection.User, currentConnection.Password));
-                currentConnectionInfoIndex++;
-                currentConnection = portalConnections.Connections[currentConnectionInfoIndex];
-                UpdatePortalConnections();
-            }
-
-            GUI.enabled = portalConnections.Connections.Count > 1 && currentConnectionInfoIndex != 0;
-
-            if (GUILayout.Button(removeConnectionLabel, GUILayout.Width(20)))
-            {
-                portalConnections.Connections.RemoveAt(currentConnectionInfoIndex);
-                currentConnectionInfoIndex--;
-                currentConnection = portalConnections.Connections[currentConnectionInfoIndex];
-                UpdatePortalConnections();
-            }
-
-            GUI.enabled = true;
-
-            GUILayout.EndHorizontal();
-            GUILayout.Space(5);
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-
-            GUILayout.Label(currentConnection.MachineName, GUILayout.Width(HALF_WIDTH));
-
-            GUILayout.EndHorizontal();
-
-            previousLabelWidth = EditorGUIUtility.labelWidth;
-            EditorGUIUtility.labelWidth = 64;
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-
-            GUI.enabled = !currentConnectionIsLocal;
-            currentConnection.IP = EditorGUILayout.TextField(ipAddressLabel, currentConnection.IP, GUILayout.Width(HALF_WIDTH));
-            GUI.enabled = true;
-
-            GUILayout.EndHorizontal();
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-            currentConnection.User = EditorGUILayout.TextField("Username", currentConnection.User, GUILayout.Width(HALF_WIDTH));
-            GUILayout.EndHorizontal();
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-            currentConnection.Password = EditorGUILayout.PasswordField("Password", currentConnection.Password, GUILayout.Width(HALF_WIDTH));
-            GUILayout.EndHorizontal();
-            GUILayout.BeginHorizontal();
-
-            EditorGUIUtility.labelWidth = 152;
-
-            bool processAll = EditorGUILayout.Toggle(doAllLabel, UwpBuildDeployPreferences.TargetAllConnections, GUILayout.Width(176));
-
-            EditorGUIUtility.labelWidth = 86;
-
-            bool fullReinstall = EditorGUILayout.Toggle(uninstallLabel, UwpBuildDeployPreferences.FullReinstall, GUILayout.ExpandWidth(false));
-            EditorGUIUtility.labelWidth = previousLabelWidth;
-
-            if (EditorGUI.EndChangeCheck())
-            {
-                UwpBuildDeployPreferences.TargetAllConnections = processAll;
-                UwpBuildDeployPreferences.FullReinstall = fullReinstall;
-                UwpBuildDeployPreferences.UseSSL = useSSL;
-                Rest.UseSSL = useSSL;
-
-                // Format our local connection
-                if (currentConnection.IP.Contains(LOCAL_IP_ADDRESS))
+                using (new EditorGUI.DisabledGroupScope(!IsHoloLensConnectedUsb))
                 {
-                    currentConnection.IP = LOCAL_MACHINE;
-                }
-
-                portalConnections.Connections[currentConnectionInfoIndex] = currentConnection;
-                UpdatePortalConnections();
-                Repaint();
-            }
-
-            GUILayout.FlexibleSpace();
-
-            // Connect
-            if (!IsLocalConnection(currentConnection))
-            {
-                GUI.enabled = IsValidIpAddress(currentConnection.IP) && IsCredentialsValid(currentConnection);
-
-                if (GUILayout.Button("Connect"))
-                {
-                    EditorApplication.delayCall += () =>
+                    if (GUILayout.Button(pairHoloLensUsbLabel, GUILayout.Width(128f)))
                     {
-                        ConnectToDevice(currentConnection);
-                    };
+                        EditorApplication.delayCall += PairDevice;
+                    }
                 }
 
+                GUILayout.FlexibleSpace();
+
+                useSSL = EditorGUILayout.Toggle(useSSLLabel, useSSL);
+
+                currentConnectionInfoIndex = EditorGUILayout.Popup(currentConnectionInfoIndex, targetIps);
+
+                if (currentConnectionIsLocal)
+                {
+                    currentConnection.MachineName = LOCAL_MACHINE;
+                }
+
+                using (new EditorGUI.DisabledGroupScope(!IsValidIpAddress(currentConnection.IP)))
+                {
+
+                    if (GUILayout.Button(addConnectionLabel, GUILayout.Width(20)))
+                    {
+                        portalConnections.Connections.Add(new DeviceInfo(EMPTY_IP_ADDRESS, currentConnection.User, currentConnection.Password));
+                        currentConnectionInfoIndex++;
+                        currentConnection = portalConnections.Connections[currentConnectionInfoIndex];
+                        UpdatePortalConnections();
+                    }
+                }
+
+                bool enabled = portalConnections.Connections.Count > 1 && currentConnectionInfoIndex != 0;
+                using (new EditorGUI.DisabledGroupScope(!enabled))
+                {
+                    if (GUILayout.Button(removeConnectionLabel, GUILayout.Width(20)))
+                    {
+                        portalConnections.Connections.RemoveAt(currentConnectionInfoIndex);
+                        currentConnectionInfoIndex--;
+                        currentConnection = portalConnections.Connections[currentConnectionInfoIndex];
+                        UpdatePortalConnections();
+                    }
+                }
+            }
+
+            GUILayout.Space(5);
+
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                GUILayout.FlexibleSpace();
+                GUILayout.Label(currentConnection.MachineName, GUILayout.Width(HALF_WIDTH));
+            }
+
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                GUILayout.FlexibleSpace();
+                GUI.enabled = !currentConnectionIsLocal;
+                currentConnection.IP = EditorGUILayout.TextField(ipAddressLabel, currentConnection.IP, GUILayout.Width(HALF_WIDTH));
                 GUI.enabled = true;
             }
 
-            GUI.enabled = DevicePortalConnectionEnabled && CanInstall;
-
-            // Open web portal
-            if (GUILayout.Button("Open Device Portal", GUILayout.Width(128f)))
+            using (new EditorGUILayout.HorizontalScope())
             {
-                EditorApplication.delayCall += () => OpenDevicePortal(portalConnections, currentConnection);
+                GUILayout.FlexibleSpace();
+                currentConnection.User = EditorGUILayout.TextField("Username", currentConnection.User, GUILayout.Width(HALF_WIDTH));
             }
 
-            GUI.enabled = true;
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                GUILayout.FlexibleSpace();
+                currentConnection.Password = EditorGUILayout.PasswordField("Password", currentConnection.Password, GUILayout.Width(HALF_WIDTH));
+            }
 
-            GUILayout.EndHorizontal();
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                processAll = EditorGUILayout.Toggle(doAllLabel, processAll, GUILayout.Width(176));
+
+                bool fullReinstall = EditorGUILayout.Toggle(uninstallLabel, UwpBuildDeployPreferences.FullReinstall, GUILayout.ExpandWidth(false));
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    UwpBuildDeployPreferences.TargetAllConnections = processAll;
+                    UwpBuildDeployPreferences.FullReinstall = fullReinstall;
+                    UwpBuildDeployPreferences.UseSSL = useSSL;
+                    Rest.UseSSL = useSSL;
+
+                    // Format our local connection
+                    if (currentConnection.IP.Contains(LOCAL_IP_ADDRESS))
+                    {
+                        currentConnection.IP = LOCAL_MACHINE;
+                    }
+
+                    portalConnections.Connections[currentConnectionInfoIndex] = currentConnection;
+                    UpdatePortalConnections();
+                    Repaint();
+                }
+
+                GUILayout.FlexibleSpace();
+
+                // Connect
+                if (!IsLocalConnection(currentConnection))
+                {
+                    bool enableConnection = IsValidIpAddress(currentConnection.IP) && IsCredentialsValid(currentConnection);
+                    using (new EditorGUI.DisabledGroupScope(!enableConnection))
+                    {
+                        if (GUILayout.Button("Connect"))
+                        {
+                            EditorApplication.delayCall += () =>
+                            {
+                                ConnectToDevice(currentConnection);
+                            };
+                        }
+                    }
+                }
+
+                bool enabled = DevicePortalConnectionEnabled && CanInstall;
+                using (new EditorGUI.DisabledGroupScope(!enabled))
+                {
+                    // Open web portal
+                    if (GUILayout.Button("Open Device Portal", GUILayout.Width(128f)))
+                    {
+                        EditorApplication.delayCall += () => OpenDevicePortal(portalConnections, currentConnection);
+                    }
+                }
+            }
 
             GUILayout.Space(10f);
 
@@ -822,130 +759,123 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             else
             {
                 EditorGUILayout.Separator();
-                GUILayout.BeginVertical(GUILayout.ExpandHeight(true));
-                scrollPosition = GUILayout.BeginScrollView(scrollPosition, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true));
-
-                foreach (var fullBuildLocation in Builds)
+                using (new EditorGUILayout.VerticalScope(GUILayout.ExpandHeight(true)))
                 {
-                    int lastBackslashIndex = fullBuildLocation.LastIndexOf("\\", StringComparison.Ordinal);
+                    // TODO: Troy
+                    //EditorGUILayout.ScrollViewScope()
+                    scrollPosition = GUILayout.BeginScrollView(scrollPosition, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true));
 
-                    var directoryDate = Directory.GetLastWriteTime(fullBuildLocation).ToString("yyyy/MM/dd HH:mm:ss");
-                    string packageName = fullBuildLocation.Substring(lastBackslashIndex + 1);
-
-                    GUILayout.Space(2);
-                    using (new EditorGUILayout.HorizontalScope())
+                    foreach (var fullBuildLocation in Builds)
                     {
+                        int lastBackslashIndex = fullBuildLocation.LastIndexOf("\\", StringComparison.Ordinal);
 
-                        GUI.enabled = CanInstall;
-                        if (GUILayout.Button("Install", GUILayout.Width(96)))
+                        var directoryDate = Directory.GetLastWriteTime(fullBuildLocation).ToString("yyyy/MM/dd HH:mm:ss");
+                        string packageName = fullBuildLocation.Substring(lastBackslashIndex + 1);
+
+                        using (new EditorGUILayout.HorizontalScope())
                         {
-                            EditorApplication.delayCall += () =>
+                            using (new EditorGUI.DisabledGroupScope(!CanInstall))
                             {
-                                if (processAll)
+                                if (GUILayout.Button("Install", GUILayout.Width(96)))
                                 {
-                                    InstallAppOnDevicesList(fullBuildLocation, portalConnections);
+                                    EditorApplication.delayCall += () =>
+                                    {
+                                        if (processAll)
+                                        {
+                                            InstallAppOnDevicesList(fullBuildLocation, portalConnections);
+                                        }
+                                        else
+                                        {
+                                            InstallOnTargetDevice(fullBuildLocation, currentConnection);
+                                        }
+                                    };
                                 }
-                                else
+
+                                if (GUILayout.Button("Uninstall", GUILayout.Width(96)))
                                 {
-                                    InstallOnTargetDevice(fullBuildLocation, currentConnection);
+                                    EditorApplication.delayCall += () =>
+                                    {
+                                        if (processAll)
+                                        {
+                                            UninstallAppOnDevicesList(portalConnections);
+                                        }
+                                        else
+                                        {
+                                            UninstallAppOnTargetDevice(currentConnection);
+                                        }
+                                    };
                                 }
-                            };
-                        }
+                            }
 
-                        GUI.enabled = true;
+                            bool canLaunchLocal = currentConnectionInfoIndex == 0 && IsHoloLensConnectedUsb;
+                            bool canLaunchRemote = DevicePortalConnectionEnabled && CanInstall && currentConnectionInfoIndex != 0;
 
-                        // Uninstall...
-                        GUI.enabled = CanInstall;
-
-                        if (GUILayout.Button("Uninstall", GUILayout.Width(96)))
-                        {
-                            EditorApplication.delayCall += () =>
+                            // Launch app...
+                            bool launchAppEnabled = canLaunchLocal || canLaunchRemote;
+                            using (new EditorGUI.DisabledGroupScope(!launchAppEnabled))
                             {
-                                if (processAll)
+                                if (GUILayout.Button(new GUIContent(isAppRunning ? "Kill App" : "Launch App", "These are remote commands only"), GUILayout.Width(96)))
                                 {
-                                    UninstallAppOnDevicesList(portalConnections);
+                                    EditorApplication.delayCall += () =>
+                                    {
+                                        if (isAppRunning)
+                                        {
+                                            if (processAll)
+                                            {
+                                                KillAppOnDeviceList(portalConnections);
+                                                isAppRunning = false;
+                                            }
+                                            else
+                                            {
+                                                KillAppOnTargetDevice(currentConnection);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (processAll)
+                                            {
+                                                LaunchAppOnDeviceList(portalConnections);
+                                                isAppRunning = true;
+                                            }
+                                            else
+                                            {
+                                                LaunchAppOnTargetDevice(currentConnection);
+                                            }
+                                        }
+                                    };
                                 }
-                                else
-                                {
-                                    UninstallAppOnTargetDevice(currentConnection);
-                                }
-                            };
-                        }
+                            }
 
-                        GUI.enabled = true;
+                            // Log file
+                            string localLogPath = $"%USERPROFILE%\\AppData\\Local\\Packages\\{PlayerSettings.productName}\\TempState\\UnityPlayer.log";
+                            bool localLogExists = File.Exists(localLogPath);
 
-                        bool canLaunchLocal = currentConnectionInfoIndex == 0 && IsHoloLensConnectedUsb;
-                        bool canLaunchRemote = DevicePortalConnectionEnabled && CanInstall && currentConnectionInfoIndex != 0;
-
-                        // Launch app...
-                        GUI.enabled = canLaunchLocal || canLaunchRemote;
-
-                        if (GUILayout.Button(new GUIContent(isAppRunning ? "Kill App" : "Launch App", "These are remote commands only"), GUILayout.Width(96)))
-                        {
-                            EditorApplication.delayCall += () =>
+                            bool viewLogEnabled = localLogExists || canLaunchRemote || canLaunchLocal;
+                            using (new EditorGUI.DisabledGroupScope(!viewLogEnabled))
                             {
-                                if (isAppRunning)
+                                if (GUILayout.Button("View Log", GUILayout.Width(96)))
                                 {
-                                    if (processAll)
+                                    EditorApplication.delayCall += () =>
                                     {
-                                        KillAppOnDeviceList(portalConnections);
-                                        isAppRunning = false;
-                                    }
-                                    else
-                                    {
-                                        KillAppOnTargetDevice(currentConnection);
-                                    }
+                                        if (processAll)
+                                        {
+                                            OpenLogFilesOnDeviceList(portalConnections, localLogPath);
+                                        }
+                                        else
+                                        {
+                                            OpenLogFileForTargetDevice(currentConnection, localLogPath);
+                                        }
+                                    };
                                 }
-                                else
-                                {
-                                    if (processAll)
-                                    {
-                                        LaunchAppOnDeviceList(portalConnections);
-                                        isAppRunning = true;
-                                    }
-                                    else
-                                    {
-                                        LaunchAppOnTargetDevice(currentConnection);
-                                    }
-                                }
-                            };
+                            }
+
+                            EditorGUILayout.LabelField(new GUIContent($"{packageName} ({directoryDate})"));
                         }
-
-                        GUI.enabled = true;
-
-                        // Log file
-                        string localLogPath = $"%USERPROFILE%\\AppData\\Local\\Packages\\{PlayerSettings.productName}\\TempState\\UnityPlayer.log";
-                        bool localLogExists = File.Exists(localLogPath);
-
-                        GUI.enabled = localLogExists || canLaunchRemote || canLaunchLocal;
-
-                        if (GUILayout.Button("View Log", GUILayout.Width(96)))
-                        {
-                            EditorApplication.delayCall += () =>
-                            {
-                                if (processAll)
-                                {
-                                    OpenLogFilesOnDeviceList(portalConnections, localLogPath);
-                                }
-                                else
-                                {
-                                    OpenLogFileForTargetDevice(currentConnection, localLogPath);
-                                }
-                            };
-                        }
-
-                        GUI.enabled = true;
-
-                        GUILayout.Space(8);
-                        GUILayout.Label(new GUIContent($"{packageName} ({directoryDate})"));
                     }
+
+                    GUILayout.EndScrollView();
                 }
-
-                GUILayout.EndScrollView();
-                GUILayout.EndVertical();
             }
-
-            GUILayout.EndVertical();
         }
 
 #endregion Methods
