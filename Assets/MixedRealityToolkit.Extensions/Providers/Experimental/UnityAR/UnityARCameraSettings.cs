@@ -4,9 +4,10 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
-using UnityEngine.SpatialTracking;
 
 #if !(WINDOWS_UWP && !ENABLE_IL2CPP)
+using UnityEngine.SpatialTracking;
+using UnityEngine.XR;
 using UnityEngine.XR.ARFoundation;
 #endif // !(WINDOWS_UWP && !ENABLE_IL2CPP)
 
@@ -19,8 +20,8 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         typeof(IMixedRealityCameraSystem),
         SupportedPlatforms.Android | SupportedPlatforms.IOS,
         "Unity AR Foundation Camera Settings",
-        "UnityAR/Profiles/DefaultUnityARCameraSettingsProfile.asset",
-        "MixedRealityToolkit.Providers")]
+        "Providers/Experimental/UnityAR/Profiles/DefaultUnityARCameraSettingsProfile.asset",
+        "MixedRealityToolkit.Extensions")]
     public class UnityARCameraSettings : BaseDataProvider, IMixedRealityCameraSettingsProvider
     {
         /// <summary>
@@ -79,9 +80,10 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             }
         }
 
+#if !(WINDOWS_UWP && !ENABLE_IL2CPP)
+        bool isSupportedConfiguration = true;
         bool isInitialized = false;
 
-#if !(WINDOWS_UWP && !ENABLE_IL2CPP)
         private GameObject arSessionObject = null;
         private bool preExistingArSessionObject = false;
         private ARSession arSession = null;
@@ -106,21 +108,16 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             arSessionOriginObject = GameObject.Find("AR Session Origin");
             preExistingArSessionOriginObject = (arSessionOriginObject != null);
         }
-#endif //!(WINDOWS_UWP && !ENABLE_IL2CPP)
 
         /// <inheritdoc />
-        public override async void Initialize()
+        public override void Initialize()
         {
             base.Initialize();
 
-#if !(WINDOWS_UWP && !ENABLE_IL2CPP)
-            ARSessionState sessionState = (ARSessionState)(await ARSession.CheckAvailability());
-            if (ARSessionState.Ready > sessionState)
+            if (Application.platform == RuntimePlatform.Android)
             {
-                Debug.LogError("Unable to initialize the Unity AR Camera Settings provider. Device support for AR Foundation was not detected.");
-                isInitialized = true;
+                isSupportedConfiguration = string.IsNullOrWhiteSpace(XRSettings.loadedDeviceName);
             }
-#endif //!(WINDOWS_UWP && !ENABLE_IL2CPP)
         }
 
         /// <inheritdoc />
@@ -152,9 +149,10 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// </remarks>
         private void InitializeARFoundation()
         {
+            if (!isSupportedConfiguration) { return; }
+
             if (isInitialized) { return; }
 
-#if !(WINDOWS_UWP && !ENABLE_IL2CPP)
             FindARFoundationComponents();
 
             if (arSessionObject == null)
@@ -207,7 +205,6 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             trackedPoseDriver.trackingType = trackingType;
             trackedPoseDriver.updateType = updateType;
             trackedPoseDriver.UseRelativeTransform = false;
-#endif //!(WINDOWS_UWP && !ENABLE_IL2CPP)
 
             isInitialized = true;
         }
@@ -219,7 +216,6 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         {
             if (!isInitialized) { return; }
 
-#if !(WINDOWS_UWP && !ENABLE_IL2CPP)
             if (!preExistingArSessionOriginObject &&
                 (arSessionOriginObject != null))
             {
@@ -243,9 +239,9 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
                 UnityObjectExtensions.DestroyObject(arSessionObject);
                 arSessionObject = null;
             }
-#endif // !(WINDOWS_UWP && !ENABLE_IL2CPP)
 
             isInitialized = false;
         }
+#endif //!(WINDOWS_UWP && !ENABLE_IL2CPP)
     }
 }
