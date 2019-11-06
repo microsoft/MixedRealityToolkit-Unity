@@ -619,7 +619,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             new VSWhereFindOption(
                 $@"/C vswhere -all -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe",
                 ""),
-            // This find option corresponds to the versin of vswhere that ships with VS2017 - this doesn't have
+            // This find option corresponds to the version of vswhere that ships with VS2017 - this doesn't have
             // support for the -find command switch.
             new VSWhereFindOption(
                 $@"/C vswhere -all -products * -requires Microsoft.Component.MSBuild -property installationPath",
