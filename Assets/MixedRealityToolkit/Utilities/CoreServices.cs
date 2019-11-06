@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Boundary;
@@ -24,37 +24,37 @@ namespace Microsoft.MixedReality.Toolkit
         /// Cached reference to the active instance of the boundary system.
         /// If system is destroyed, reference will be invalid. Please use ResetCacheReferences() 
         /// </summary>
-        public static IMixedRealityInputSystem InputSystem => GetService<IMixedRealityInputSystem>();
+        public static IMixedRealityBoundarySystem BoundarySystem => GetService<IMixedRealityBoundarySystem>();
 
         /// <summary>
         /// Cached reference to the active instance of the camera system.
         /// If system is destroyed, reference will be invalid. Please use ResetCacheReferences() 
         /// </summary>
-        public static IMixedRealityBoundarySystem BoundarySystem => GetService<IMixedRealityBoundarySystem>();
+        public static IMixedRealityCameraSystem CameraSystem => GetService<IMixedRealityCameraSystem>();
 
         /// <summary>
         /// Cached reference to the active instance of the diagnostics system.
         /// If system is destroyed, reference will be invalid. Please use ResetCacheReferences() 
         /// </summary>
-        public static IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => GetService<IMixedRealitySpatialAwarenessSystem>();
+        public static IMixedRealityDiagnosticsSystem DiagnosticsSystem => GetService<IMixedRealityDiagnosticsSystem>();
 
         /// <summary>
         /// Cached reference to the active instance of the focus provider.
         /// If system is destroyed, reference will be invalid. Please use ResetCacheReferences() 
         /// </summary>
-        public static IMixedRealityTeleportSystem TeleportSystem => GetService<IMixedRealityTeleportSystem>();
+        public static IMixedRealityFocusProvider FocusProvider => GetService<IMixedRealityFocusProvider>();
 
         /// <summary>
         /// Cached reference to the active instance of the input system.
         /// If system is destroyed, reference will be invalid. Please use ResetCacheReferences() 
         /// </summary>
-        public static IMixedRealityDiagnosticsSystem DiagnosticsSystem => GetService<IMixedRealityDiagnosticsSystem>();
+        public static IMixedRealityInputSystem InputSystem => GetService<IMixedRealityInputSystem>();
 
         /// <summary>
         /// Cached reference to the active instance of the raycast provider.
         /// If system is destroyed, reference will be invalid. Please use ResetCacheReferences() 
         /// </summary>
-        public static IMixedRealityCameraSystem CameraSystem => GetService<IMixedRealityCameraSystem>();
+        public static IMixedRealityRaycastProvider RaycastProvider => GetService<IMixedRealityRaycastProvider>();
 
         /// <summary>
         /// Cached reference to the active instance of the scene system.
@@ -66,25 +66,13 @@ namespace Microsoft.MixedReality.Toolkit
         /// Cached reference to the active instance of the spatial awareness system.
         /// If system is destroyed, reference will be invalid. Please use ResetCacheReferences() 
         /// </summary>
-        public static IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem
-        {
-            get
-            {
-                return GetService<IMixedRealitySpatialAwarenessSystem>();
-            }
-        }
+        public static IMixedRealitySpatialAwarenessSystem SpatialAwarenessSystem => GetService<IMixedRealitySpatialAwarenessSystem>();
 
         /// <summary>
         /// Cached reference to the active instance of the teleport system.
         /// If system is destroyed, reference will be invalid. Please use ResetCacheReferences() 
         /// </summary>
-        public static IMixedRealityTeleportSystem TeleportSystem
-        {
-            get
-            {
-                return GetService<IMixedRealityTeleportSystem>();
-            }
-        }
+        public static IMixedRealityTeleportSystem TeleportSystem => GetService<IMixedRealityTeleportSystem>();
 
         /// <summary>
         /// Resets all cached system references to null
