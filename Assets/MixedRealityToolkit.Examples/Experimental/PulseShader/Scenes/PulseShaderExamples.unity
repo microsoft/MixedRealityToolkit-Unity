@@ -1496,6 +1496,7 @@ MonoBehaviour:
   PulseRepeatDelay: 5
   PulseRepeatMinDelay: 1
   bAutoStart: 0
+  bOriginFollowCamera: 0
   SurfaceMat: {fileID: 2100000, guid: 8898ca407d928454d876a616ba1be32e, type: 2}
 --- !u!114 &1467086759
 MonoBehaviour:
@@ -1515,6 +1516,7 @@ MonoBehaviour:
   PulseRepeatDelay: 10
   PulseRepeatMinDelay: 1
   bAutoStart: 1
+  bOriginFollowCamera: 1
   SurfaceMat: {fileID: 2100000, guid: 3a3a03a9e0a1eb24eb192533df212c4c, type: 2}
 --- !u!4 &1467086760
 Transform:
