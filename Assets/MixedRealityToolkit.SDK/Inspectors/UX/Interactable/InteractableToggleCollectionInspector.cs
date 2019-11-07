@@ -13,7 +13,10 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UI.Editor
 {
     [CustomEditor(typeof(InteractableToggleCollection))]
-    public class InteractableToggleCollectionInspector : UnityEditor.Editor
+    /// <summary>
+    /// Custom inspector for InteractableToggleCollection
+    /// </summary>
+    internal class InteractableToggleCollectionInspector : UnityEditor.Editor
     {
         protected InteractableToggleCollection instance;
 
@@ -26,25 +29,18 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         {
             base.OnInspectorGUI();
 
-            if (Application.isPlaying)
+            if (Application.isPlaying && instance != null && GUI.changed)
             {
-                if (instance != null)
+                int index = instance.CurrentIndex;
+                if (index >= instance.ToggleList.Length || index < 0)
                 {
-                    if (GUI.changed)
-                    {
-                        if (instance.CurrentIndex <= instance.ToggleList.Length)
-                        {
-                            instance.SetSelection(instance.CurrentIndex, false, true);
-                        }
-                        else
-                        {
-                            Debug.LogError("Index out of range");
-                        }
-
-                    }
+                    Debug.Log("Index out of range: " + index);
                 }
+                else
+                {
+                    instance.SetSelection(instance.CurrentIndex, true, true);
+                }  
             }
         }
-
     }
 }

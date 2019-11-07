@@ -34,7 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private const string RadialSetPrefabAssetPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/RadialSet.prefab";
         private const string PressableHoloLens2TogglePrefabPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2Toggle.prefab";
         private const string RadialPrefabAssetPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/Radial.prefab";
-        private const string ToggleSwitchPrefabAssetPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/ToggleSwitch.prefab";
 
         private readonly Color DefaultColor = Color.blue;
         private readonly Color FocusColor = Color.yellow;
@@ -647,12 +646,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             int[] onClickEventCalled = new int[numRadials];
 
-            int index = 0;
-            foreach (var radial in toggleList)
+            // Add listener to each toggle in the toggle collection
+            for (int i = 0; i < toggleList.Length; i++)
             {
-                int indexRadial = index;
-                radial.OnClick.AddListener(() => { onClickEventCalled[indexRadial] = 1; });
-                index++;
+                int indexClick = i;
+                toggleList[i].OnClick.AddListener(() => { onClickEventCalled[indexClick] = 1; });
             }
 
             for (int j = 0; j < numRadials; j++)
@@ -663,17 +661,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 // If the CurrentIndex is changed the toggle should be visually updated and events should be triggered
                 for (int i = 0; i < numRadials; i++)
                 {
-                    if (i == interactableToggleCollection.CurrentIndex)
-                    {
-                        Assert.True(interactableToggleCollection.ToggleList[i].IsToggled);
+                    bool shouldBeSelected = (i == interactableToggleCollection.CurrentIndex);
+                    Assert.AreEqual(shouldBeSelected, interactableToggleCollection.ToggleList[i].IsToggled);
 
-                        // Make sure OnClick event is called on index update
-                        Assert.True(onClickEventCalled[i] == 1);
-                    }
-                    else
-                    {
-                        Assert.False(interactableToggleCollection.ToggleList[i].IsToggled);
-                    }
+                    int expectedClickCount = (i <= j ? 1 : 0);
+                    Assert.AreEqual(onClickEventCalled[i], expectedClickCount);
                 }
             }
 

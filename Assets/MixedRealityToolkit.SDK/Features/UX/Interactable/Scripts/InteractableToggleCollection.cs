@@ -4,6 +4,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
@@ -13,11 +14,17 @@ namespace Microsoft.MixedReality.Toolkit.UI
     public class InteractableToggleCollection : MonoBehaviour
     {
         [Tooltip("Array of Interactables that will be managed by this controller")]
+        [SerializeField, FormerlySerializedAs("ToggleList")]
+        private Interactable[] toggleList;
+
         /// <summary>
         /// Array of Interactables that will be managed by this controller
         /// </summary>
-        public Interactable[] ToggleList;
-
+        public Interactable[] ToggleList
+        {
+            get => toggleList;
+            set => toggleList = value;
+        }
 
         [Tooltip("Currently selected index in the ToggleList, default is 0")]
         [SerializeField]
@@ -28,14 +35,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         public int CurrentIndex
         {
-            get
-            {
-                return currentIndex;
-            }
-            set
-            {
-                SetSelection(value, false, true);
-            }
+            get => currentIndex;
+            set => SetSelection(value, false, true);
         }
 
         [Tooltip("This event is triggered when any of the toggles in the ToggleList are selected")]
@@ -43,6 +44,8 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// This event is triggered when any of the toggles in the ToggleList are selected
         /// </summary>
         public UnityEvent OnSelectionEvents = new UnityEvent();
+
+        private List<UnityAction> toggleActions = new List<UnityAction>();
 
         private void Start()
         {
@@ -52,7 +55,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 for (int i = 0; i < ToggleList.Length; ++i)
                 {
                     int itemIndex = i;
-                    ToggleList[i].OnClick.AddListener(() => SetSelection(itemIndex, true, false));
+
+                    UnityAction setSelectionAction = () =>
+                    {
+                        SetSelection(itemIndex, true, false);
+                    };
+
+                    toggleActions.Add(setSelectionAction);
+
+                    ToggleList[i].OnClick.AddListener(setSelectionAction);
                     ToggleList[i].CanDeselect = false;
                 }
 
@@ -63,13 +74,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <summary>
         /// Set the selection of a an element in the toggle collection based on index.
         /// <param name="index">Index of an element in ToggleList</param>
-        /// <param name="force">Force update currentIndex</param>
+        /// <param name="force">Force selection set</param>
         /// <param name="fireOnClick">The manual trigger of the OnClick event. OnClick event is manually triggered 
         /// when the CurrentIndex is updated via script or inspector</param>
         /// </summary>
         public void SetSelection(int index, bool force = false, bool fireOnClick = false)
         {
-            if (index < 0 || ToggleList.Length <= index)
+            if (index < 0 || ToggleList.Length <= index || ToggleList == null || !isActiveAndEnabled)
             {
                 Debug.LogWarning("Index out of range of ToggleList: " + index);
                 return;
@@ -80,11 +91,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 currentIndex = index;
 
                 OnSelection(index);
-            }
 
-            if (fireOnClick)
-            {
-                ToggleList[index].TriggerOnClick();
+                if (fireOnClick)
+                {
+                    ToggleList[index].TriggerOnClick();
+                }
             }
         }
 
@@ -92,29 +103,22 @@ namespace Microsoft.MixedReality.Toolkit.UI
         // Interactable
         protected virtual void OnSelection(int index, bool force = false)
         {
-            int length = ToggleList.Length;
-            for (int i = 0; i < length; ++i)
+            for (int i = 0; i < ToggleList.Length; ++i)
             {
-                if (i != index)
-                {
-                    ToggleList[i].IsToggled = false;
-                }
-                else
-                {
-                    ToggleList[i].IsToggled = true;
-                }
+                ToggleList[i].IsToggled = (i == index);
             }
 
-            OnSelectionEvents.Invoke();
+            OnSelectionEvents?.Invoke();
         }
 
         private void OnDestroy()
         {
-            for (int i = 0; i < ToggleList.Length; ++i)
+            for (int i = 0; i < toggleActions.Count; ++i)
             {
-                int itemIndex = i;
-                ToggleList[i].OnClick.RemoveListener(() => SetSelection(itemIndex, true, false));
+                ToggleList[i]?.OnClick.RemoveListener(toggleActions[i]);
             }
+
+            toggleActions.Clear();
         }
     }
 }
