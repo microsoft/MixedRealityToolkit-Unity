@@ -196,9 +196,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                         {
                             // if there are multiple visual studio installs,
                             // prefer enterprise, then pro, then community
-                            string bestPath = paths.OrderBy(p => p.ToLower().Contains("enterprise"))
-                                .ThenBy(p => p.ToLower().Contains("professional"))
-                                .ThenBy(p => p.ToLower().Contains("community")).First();
+                            string bestPath = paths.OrderByDescending(p => p.ToLower().Contains("enterprise"))
+                                .ThenByDescending(p => p.ToLower().Contains("professional"))
+                                .ThenByDescending(p => p.ToLower().Contains("community")).First();
 
                             string finalPath = $@"{bestPath}{findOption.pathSuffix}";
                             if (File.Exists(finalPath))
