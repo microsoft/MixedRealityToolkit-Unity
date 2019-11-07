@@ -773,6 +773,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 {
                     ManipulationSource = this,
                     IsNearInteraction = isNearManipulation,
+                    Pointer = GetFirstPointer().pointer,
                     PointerCentroid = GetPointersCentroid(),
                     PointerVelocity = GetPointersVelocity(),
                     PointerAngularVelocity = GetPointersAngularVelocity()
@@ -845,6 +846,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     OnHoverEntered.Invoke(new ManipulationEventData
                     {
                         ManipulationSource = this,
+                        Pointer = eventData.Pointer,
                         IsNearInteraction = !isFar
                     });
                 }
@@ -861,6 +863,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     OnHoverExited.Invoke(new ManipulationEventData
                     {
                         ManipulationSource = this,
+                        Pointer = eventData.Pointer,
                         IsNearInteraction = !isFar
                     });
                 }
