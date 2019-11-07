@@ -337,8 +337,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
 
                 // save relative pos grab point to object
-                Vector3 initialOffsetGrabToObjPivot = pointer.Position - testObject.transform.position;
-                Vector3 initialGrabPointInObject = testObject.transform.InverseTransformPoint(manipHandler.GetPointerGrabPoint(pointer.PointerId));
+                Vector3 initialGrabPoint = manipHandler.GetPointerGrabPoint(pointer.PointerId);
+                Vector3 initialOffsetGrabToObjPivot = initialGrabPoint - testObject.transform.position;
+                Vector3 initialGrabPointInObject = testObject.transform.InverseTransformPoint(initialGrabPoint);
 
                 // full circle
                 const int degreeStep = 360 / numCircleSteps;
@@ -363,8 +364,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
                     if (type == ManipulationHandler.RotateInOneHandType.RotateAboutObjectCenter)
                     {
-                        // make sure that the offset between hand and object centre hasn't changed while rotating
-                        Vector3 offsetRotated = pointer.Position - testObject.transform.position;
+                        // make sure that the offset between grab and object centre hasn't changed while rotating
+                        Vector3 grabPoint = manipHandler.GetPointerGrabPoint(pointer.PointerId);
+                        Vector3 offsetRotated = grabPoint - testObject.transform.position;
                         TestUtilities.AssertAboutEqual(offsetRotated, initialOffsetGrabToObjPivot, $"Object offset changed during rotation using {type}");
                     }
                     else
@@ -960,6 +962,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Assert.AreEqual(expectedDist, Vector3.Distance(testObject.transform.position, CameraCache.Main.transform.position), 0.02f);
 
             yield return hand.SetGesture(ArticulatedHandPose.GestureId.Pinch);
+
+            // Apply correction delta again as we have changed hand pose
+            correction = CameraCache.Main.transform.position - hand.GetPointer<GGVPointer>().Position;
+            yield return hand.Move(correction, numHandSteps);
             yield return null;
 
             Assert.AreEqual(expectedDist, Vector3.Distance(testObject.transform.position, CameraCache.Main.transform.position), 0.02f);
