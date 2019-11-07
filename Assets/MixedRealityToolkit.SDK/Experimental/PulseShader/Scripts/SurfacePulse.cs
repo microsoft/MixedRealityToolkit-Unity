@@ -1,3 +1,4 @@
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -24,6 +25,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
 
 		[Tooltip("Automatically begin repeated pulsing")]
 		public bool bAutoStart = false;
+
+		[Tooltip("Automatically set pulse origin to the main camera location")]
+		public bool bOriginFollowCamera = false;
 
 		[Tooltip("The material to animate")]
 		public Material SurfaceMat;
@@ -66,6 +70,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse
 			if (bAutoStart)
 			{
 				StartPulsing();
+			}
+		}
+
+		private void Update()
+		{
+			if (bOriginFollowCamera)
+			{
+				SetLocalOrigin(CameraCache.Main.transform.position);
 			}
 		}
 
