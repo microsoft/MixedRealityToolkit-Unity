@@ -712,8 +712,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             for (int i = 0; i < InteractableEvents.Count; i++)
             {
-                InteractableEvents[i].Receiver = InteractableEvent.CreateReceiver(InteractableEvents[i]);
-                InteractableEvents[i].Receiver.Host = this;
+                var receiver = InteractableEvent.CreateReceiver(InteractableEvents[i]);
+                if (receiver != null)
+                {
+                    InteractableEvents[i].Receiver = receiver;
+                    InteractableEvents[i].Receiver.Host = this;
+                }
+                else
+                {
+                    Debug.LogWarning($"Empty event receiver found on {gameObject.name}, you may want to re-create this asset." );
+                }
             }
         }
 

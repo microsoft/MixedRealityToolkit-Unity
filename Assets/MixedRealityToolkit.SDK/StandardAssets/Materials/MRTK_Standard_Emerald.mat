@@ -10,7 +10,7 @@ Material:
   m_Name: MRTK_Standard_Emerald
   m_Shader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
   m_ShaderKeywords: _BORDER_LIGHT_USES_HOVER_COLOR _DIRECTIONAL_LIGHT _DISABLE_ALBEDO_MAP
-    _LIGHTMAPPING_REALTIME _SPECULAR_HIGHLIGHTS
+    _HOVER_LIGHT _LIGHTMAPPING_REALTIME _PROXIMITY_LIGHT _SPECULAR_HIGHLIGHTS
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -116,7 +116,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0
     - _GlossyReflections: 1
-    - _HoverLight: 0
+    - _HoverLight: 1
     - _HoverLightOpaque: 0
     - _IgnoreZScale: 0
     - _InnerGlow: 0
@@ -134,7 +134,7 @@ Material:
     - _NormalMapScale: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _ProximityLight: 0
+    - _ProximityLight: 1
     - _ProximityLightSubtractive: 0
     - _ProximityLightTwoSided: 0
     - _Reflections: 0
