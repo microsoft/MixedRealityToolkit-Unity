@@ -685,12 +685,10 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     break;
                 }
                 case RotateInOneHandType.RotateAboutObjectCenter:
+                case RotateInOneHandType.RotateAboutGrabPoint:
                     Quaternion gripRotation;
                     TryGetGripRotation(pointer, out gripRotation);
                     targetRotation = gripRotation * objectToGripRotation;
-                    break;
-                case RotateInOneHandType.RotateAboutGrabPoint:
-                    targetRotation = pointer.Rotation * objectToHandRotation;
                     break;
             }
 
