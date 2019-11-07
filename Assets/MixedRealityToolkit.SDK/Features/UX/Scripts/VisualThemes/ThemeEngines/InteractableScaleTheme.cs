@@ -37,7 +37,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         Default = new ThemePropertyValue() { Vector3 = Vector3.one}
                     },
                 },
-                CustomProperties = new List<ThemeProperty>(),
+                CustomProperties = new List<ThemeProperty>()
+                {
+                    new ThemeProperty()
+                    {
+                        Name = "Relative Scale",
+                        Type = ThemePropertyTypes.Bool,
+                        Value = new ThemePropertyValue() { Bool = false }
+                    },
+                },
             };
         }
 
@@ -61,7 +69,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc />
         public override void SetValue(ThemeStateProperty property, int index, float percentage)
         {
-            hostTransform.localScale = Vector3.Lerp(property.StartValue.Vector3, Vector3.Scale(originalScale, property.Values[index].Vector3), percentage);
+            Vector3 lerpTarget = property.Values[index].Vector3;
+
+            bool relative = Properties[0].Value.Bool;
+            if (relative)
+            {
+                lerpTarget = Vector3.Scale(originalScale, lerpTarget);
+            }
+
+            hostTransform.localScale = Vector3.Lerp(property.StartValue.Vector3, lerpTarget, percentage);
         }
     }
 }
