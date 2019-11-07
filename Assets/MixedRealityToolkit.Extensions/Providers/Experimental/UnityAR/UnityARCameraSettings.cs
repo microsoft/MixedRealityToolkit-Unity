@@ -2,15 +2,17 @@
 // Copyright(c) 2019 Takahiro Miyaura
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
+using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
+
+#if UNITY_IOS || UNITY_ANDROID
 using UnityEngine.SpatialTracking;
-
-#if !(WINDOWS_UWP && !ENABLE_IL2CPP)
+using UnityEngine.XR;
 using UnityEngine.XR.ARFoundation;
-#endif // !(WINDOWS_UWP && !ENABLE_IL2CPP)
+#endif //UNITY_IOS || UNITY_ANDROID
 
-namespace Microsoft.MixedReality.Toolkit.CameraSystem
+namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 {
     /// <summary>
     /// Camera settings provider for use with the Unity AR Foundation system.
@@ -19,8 +21,8 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         typeof(IMixedRealityCameraSystem),
         SupportedPlatforms.Android | SupportedPlatforms.IOS,
         "Unity AR Foundation Camera Settings",
-        "UnityAR/Profiles/DefaultUnityARCameraSettingsProfile.asset",
-        "MixedRealityToolkit.Providers")]
+        "Providers/Experimental/UnityAR/Profiles/DefaultUnityARCameraSettingsProfile.asset",
+        "MixedRealityToolkit.Extensions")]
     public class UnityARCameraSettings : BaseDataProvider, IMixedRealityCameraSettingsProvider
     {
         /// <summary>
@@ -37,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             BaseCameraSettingsProfile profile = null) : base(cameraSystem, name, priority, profile)
         { }
 
-        #region IMixedRealityCameraSettings
+#region IMixedRealityCameraSettings
 
         /// <inheritdoc/>
         public bool IsOpaque => false;
@@ -66,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             }
         }
 
-        #endregion IMixedRealityCameraSettings
+#endregion IMixedRealityCameraSettings
 
         /// <summary>
         /// The profile used to configure the camera.
@@ -79,9 +81,10 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             }
         }
 
-        bool isInitialized = false;
+#if UNITY_IOS || UNITY_ANDROID
+        private bool isSupportedArConfiguration = true;
+        private bool isInitialized = false;
 
-#if !(WINDOWS_UWP && !ENABLE_IL2CPP)
         private GameObject arSessionObject = null;
         private bool preExistingArSessionObject = false;
         private ARSession arSession = null;
@@ -106,21 +109,20 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             arSessionOriginObject = GameObject.Find("AR Session Origin");
             preExistingArSessionOriginObject = (arSessionOriginObject != null);
         }
-#endif //!(WINDOWS_UWP && !ENABLE_IL2CPP)
 
         /// <inheritdoc />
-        public override async void Initialize()
+        public override void Initialize()
         {
             base.Initialize();
 
-#if !(WINDOWS_UWP && !ENABLE_IL2CPP)
-            ARSessionState sessionState = (ARSessionState)(await ARSession.CheckAvailability());
-            if (ARSessionState.Ready > sessionState)
+            // Android platforms support both AR Foundation and VR.
+            // AR Foundation does not use the player's XR Settings.
+            // If the loaded device name is not an empty string, then a VR
+            // SDK is in use (not using AR Foundation).
+            if (Application.platform == RuntimePlatform.Android)
             {
-                Debug.LogError("Unable to initialize the Unity AR Camera Settings provider. Device support for AR Foundation was not detected.");
-                isInitialized = true;
+                isSupportedArConfiguration = string.IsNullOrWhiteSpace(XRSettings.loadedDeviceName);
             }
-#endif //!(WINDOWS_UWP && !ENABLE_IL2CPP)
         }
 
         /// <inheritdoc />
@@ -152,9 +154,10 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// </remarks>
         private void InitializeARFoundation()
         {
+            if (!isSupportedArConfiguration) { return; }
+
             if (isInitialized) { return; }
 
-#if !(WINDOWS_UWP && !ENABLE_IL2CPP)
             FindARFoundationComponents();
 
             if (arSessionObject == null)
@@ -188,9 +191,12 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             if (SettingsProfile != null)
             {
                 // Read settings to be applied to the camera.
-                poseSource = SettingsProfile.PoseSource;
-                trackingType = SettingsProfile.TrackingType;
-                updateType = SettingsProfile.UpdateType;
+                // The enums used by the profile use the same values as those provided by Unity.
+                // We use custom enums to avoid customers needing to include packages and/or namespaces simply to resolve
+                // enum values in the profile.
+                poseSource = ArEnumConversion.ToUnityTrackedPose(SettingsProfile.PoseSource);
+                trackingType = ArEnumConversion.ToUnityTrackingType(SettingsProfile.TrackingType);
+                updateType = ArEnumConversion.ToUnityUpdateType(SettingsProfile.UpdateType);
             }
             else
             {
@@ -207,7 +213,6 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             trackedPoseDriver.trackingType = trackingType;
             trackedPoseDriver.updateType = updateType;
             trackedPoseDriver.UseRelativeTransform = false;
-#endif //!(WINDOWS_UWP && !ENABLE_IL2CPP)
 
             isInitialized = true;
         }
@@ -219,7 +224,6 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         {
             if (!isInitialized) { return; }
 
-#if !(WINDOWS_UWP && !ENABLE_IL2CPP)
             if (!preExistingArSessionOriginObject &&
                 (arSessionOriginObject != null))
             {
@@ -243,9 +247,9 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
                 UnityObjectExtensions.DestroyObject(arSessionObject);
                 arSessionObject = null;
             }
-#endif // !(WINDOWS_UWP && !ENABLE_IL2CPP)
 
             isInitialized = false;
         }
+#endif // UNITY_IOS || UNITY_ANDROID
     }
 }
