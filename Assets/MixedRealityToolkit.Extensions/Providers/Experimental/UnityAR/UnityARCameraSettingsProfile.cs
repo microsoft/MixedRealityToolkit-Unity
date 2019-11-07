@@ -1,5 +1,4 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Copyright(c) 2019 Takahiro Miyaura
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
 using Microsoft.MixedReality.Toolkit.CameraSystem;
@@ -15,39 +14,35 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
     [MixedRealityServiceProfile(typeof(UnityARCameraSettings))]
     public class UnityARCameraSettingsProfile : BaseCameraSettingsProfile
     {
-#if !(WINDOWS_UWP && !ENABLE_IL2CPP)
-
 #region Tracked Pose Driver settings
 
         [SerializeField]
         [Tooltip("The portion of the device (ex: color camera) from which to read the pose.")]
-        private TrackedPoseDriver.TrackedPose poseSource = TrackedPoseDriver.TrackedPose.ColorCamera;
+        private ArTrackedPose poseSource = ArTrackedPose.ColorCamera;
 
         /// <summary>
         /// The portion of the device (ex: color camera) from which to read the pose.
         /// </summary>
-        public TrackedPoseDriver.TrackedPose PoseSource => poseSource;
+        public ArTrackedPose PoseSource => poseSource;
 
         [SerializeField]
         [Tooltip("The type of tracking (position and/or rotation) to apply.")]
-        private TrackedPoseDriver.TrackingType trackingType = TrackedPoseDriver.TrackingType.RotationAndPosition;
+        private ArTrackingType trackingType = ArTrackingType.RotationAndPosition;
 
         /// <summary>
         /// The type of tracking (position and/or rotation) to apply.
         /// </summary>
-        public TrackedPoseDriver.TrackingType TrackingType => trackingType;
+        public ArTrackingType TrackingType => trackingType;
 
         [SerializeField]
         [Tooltip("Specifies when (during Update and/or just before rendering) to update the tracking of the pose.")]
-        private TrackedPoseDriver.UpdateType updateType = TrackedPoseDriver.UpdateType.UpdateAndBeforeRender;
+        private ArUpdateType updateType = ArUpdateType.UpdateAndBeforeRender;
 
         /// <summary>
         /// Specifies when (during Update and/or just before rendering) to update the tracking of the pose.
         /// </summary>
-        public TrackedPoseDriver.UpdateType UpdateType => updateType;
+        public ArUpdateType UpdateType => updateType;
 
 #endregion Tracked Pose Driver settings
-
-#endif // !(WINDOWS_UWP && !ENABLE_IL2CPP)
     }
 }

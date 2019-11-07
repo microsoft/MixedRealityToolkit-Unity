@@ -5,9 +5,12 @@
 using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
+
+#if UNITY_IOS || UNITY_ANDROID
 using UnityEngine.SpatialTracking;
 using UnityEngine.XR;
 using UnityEngine.XR.ARFoundation;
+#endif //UNITY_IOS || UNITY_ANDROID
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 {
@@ -36,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
             BaseCameraSettingsProfile profile = null) : base(cameraSystem, name, priority, profile)
         { }
 
-        #region IMixedRealityCameraSettings
+#region IMixedRealityCameraSettings
 
         /// <inheritdoc/>
         public bool IsOpaque => false;
@@ -65,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
             }
         }
 
-        #endregion IMixedRealityCameraSettings
+#endregion IMixedRealityCameraSettings
 
         /// <summary>
         /// The profile used to configure the camera.
@@ -78,6 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
             }
         }
 
+#if UNITY_IOS || UNITY_ANDROID
         private bool isSupportedConfiguration = true;
         private bool isInitialized = false;
 
@@ -185,9 +189,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
             if (SettingsProfile != null)
             {
                 // Read settings to be applied to the camera.
-                poseSource = SettingsProfile.PoseSource;
-                trackingType = SettingsProfile.TrackingType;
-                updateType = SettingsProfile.UpdateType;
+                // The enums used by the profile use the same values as those provided by Unity.
+                // We use custom enums to avoid customers needing to include packages and/or namespaces simply to resolve
+                // enum values in the profile.
+                poseSource = (TrackedPoseDriver.TrackedPose)SettingsProfile.PoseSource;
+                trackingType = (TrackedPoseDriver.TrackingType)SettingsProfile.TrackingType;
+                updateType = (TrackedPoseDriver.UpdateType)SettingsProfile.UpdateType;
             }
             else
             {
@@ -241,5 +248,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 
             isInitialized = false;
         }
+#endif // UNITY_IOS || UNITY_ANDROID
     }
 }
