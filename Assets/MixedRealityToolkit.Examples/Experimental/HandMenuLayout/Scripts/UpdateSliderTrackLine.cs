@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.UI;
 
-public class UpdateSliderTrackLine : MonoBehaviour
+namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.HandMenu
 {
-    [SerializeField]
-    private GameObject activeLine = null;
-    private float roundedValue;
-
-    public void OnSliderUpdated(SliderEventData eventData)
+    public class UpdateSliderTrackLine : MonoBehaviour
     {
-            roundedValue = Mathf.Round(eventData.NewValue * 100f) / 100f;
-            activeLine.transform.localScale = new Vector3 (transform.localScale.x, roundedValue, transform.localScale.z);
+        [SerializeField]
+        private GameObject activeLine = null;
+        
+        public void OnSliderUpdated(SliderEventData eventData)
+        {
+            activeLine.transform.localScale = new Vector3 (transform.localScale.x, eventData.NewValue, transform.localScale.z);
+        }
     }
 }
