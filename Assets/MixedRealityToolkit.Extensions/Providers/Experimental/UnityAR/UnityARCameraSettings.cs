@@ -5,12 +5,9 @@
 using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
-
-#if !(WINDOWS_UWP && !ENABLE_IL2CPP)
 using UnityEngine.SpatialTracking;
 using UnityEngine.XR;
 using UnityEngine.XR.ARFoundation;
-#endif // !(WINDOWS_UWP && !ENABLE_IL2CPP)
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 {
@@ -81,7 +78,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
             }
         }
 
-#if !(WINDOWS_UWP && !ENABLE_IL2CPP)
         private bool isSupportedConfiguration = true;
         private bool isInitialized = false;
 
@@ -245,6 +241,5 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 
             isInitialized = false;
         }
-#endif //!(WINDOWS_UWP && !ENABLE_IL2CPP)
     }
 }
