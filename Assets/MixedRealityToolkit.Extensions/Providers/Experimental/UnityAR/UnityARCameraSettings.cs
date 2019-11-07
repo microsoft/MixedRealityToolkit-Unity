@@ -82,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
         }
 
 #if UNITY_IOS || UNITY_ANDROID
-        private bool isSupportedConfiguration = true;
+        private bool isSupportedArConfiguration = true;
         private bool isInitialized = false;
 
         private GameObject arSessionObject = null;
@@ -117,9 +117,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 
             // Android platforms support both AR Foundation and VR.
             // AR Foundation does not use the player's XR Settings.
+            // If the loaded device name is not an empty string, then a VR
+            // SDK is in use (not using AR Foundation).
             if (Application.platform == RuntimePlatform.Android)
             {
-                isSupportedConfiguration = string.IsNullOrWhiteSpace(XRSettings.loadedDeviceName);
+                isSupportedArConfiguration = string.IsNullOrWhiteSpace(XRSettings.loadedDeviceName);
             }
         }
 
@@ -152,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
         /// </remarks>
         private void InitializeARFoundation()
         {
-            if (!isSupportedConfiguration) { return; }
+            if (!isSupportedArConfiguration) { return; }
 
             if (isInitialized) { return; }
 
@@ -192,9 +194,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
                 // The enums used by the profile use the same values as those provided by Unity.
                 // We use custom enums to avoid customers needing to include packages and/or namespaces simply to resolve
                 // enum values in the profile.
-                poseSource = (TrackedPoseDriver.TrackedPose)SettingsProfile.PoseSource;
-                trackingType = (TrackedPoseDriver.TrackingType)SettingsProfile.TrackingType;
-                updateType = (TrackedPoseDriver.UpdateType)SettingsProfile.UpdateType;
+                poseSource = ArEnumConversion.ToUnityTrackedPose(SettingsProfile.PoseSource);
+                trackingType = ArEnumConversion.ToUnityTrackingType(SettingsProfile.TrackingType);
+                updateType = ArEnumConversion.ToUnityUpdateType(SettingsProfile.UpdateType);
             }
             else
             {

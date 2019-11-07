@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
         RightPose = 5,
 
         /// <summary>
-        /// The color camera of a movible (ex: phone) device.
+        /// The color camera of a mobile (ex: phone) device.
         /// </summary>
         ColorCamera = 6
     }

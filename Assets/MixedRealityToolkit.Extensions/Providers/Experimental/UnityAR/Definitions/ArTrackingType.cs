@@ -16,11 +16,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
         /// <summary>
         /// The pose rotation will be used.
         /// </summary>
-        RotationOnly = 1,
+        Rotation = 1,
 
         /// <summary>
         /// The pose rotation will be used.
         /// </summary>
-        PositionOnly = 2
+        Position = 2
     }
 }
