@@ -125,11 +125,11 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         private Material[] instanceMaterials = null;
         private bool initialized = false;
         private bool materialsInstanced = false;
-        private HashSet<Object> materialOwners = new HashSet<Object>();
+        private readonly HashSet<Object> materialOwners = new HashSet<Object>();
 
         private const string instancePostfix = " (Instance)";
 
-#region MonoBehaviour Implementation
+        #region MonoBehaviour Implementation
 
         private void Awake()
         {
@@ -186,7 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
             instanceMaterials = null;
         }
 
-#endregion MonoBehaviour Implementation
+        #endregion MonoBehaviour Implementation
 
         private void Initialize()
         {
