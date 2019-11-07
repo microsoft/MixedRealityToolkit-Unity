@@ -54,7 +54,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             set => EditorPreferences.Set(EDITOR_PREF_BUILD_CONFIG, value.ToLower());
         }
 
-        // TODO: Troy - comment
+        /// <summary>
+        /// Gets the build configuraition type as a WSABuildType enum
+        /// </summary>
         public static WSABuildType BuildConfigType
         {
             get

@@ -77,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
             IP = ip;
             User = user;
             Password = password;
-            MachineName = machineName;// TODO: Troy - string.IsNullOrEmpty(machineName) ? ip : machineName;
+            MachineName = machineName;
             CsrfToken = string.Empty;
         }
     }
