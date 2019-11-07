@@ -735,7 +735,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
         {
             string ssl = Rest.UseSSL ? "s" : string.Empty;
 
-            if (targetUrl.Contains("Local Machine"))
+            if (targetUrl.Contains("Local Machine") || targetUrl.Contains("127.0.0.1"))
             {
                 targetUrl = "127.0.0.1:10080";
                 ssl = string.Empty;
@@ -787,10 +787,8 @@ namespace Microsoft.MixedReality.Toolkit.WindowsDevicePortal
 
                 if (success)
                 {
-                    targetDevice.CsrfToken = response.ResponseBody;
-
                     // Strip the beginning of the cookie header
-                    targetDevice.CsrfToken = targetDevice.CsrfToken.Replace("CSRF-Token=", string.Empty);
+                    targetDevice.CsrfToken = response.ResponseBody?.Replace("CSRF-Token=", string.Empty);
                 }
                 else
                 {
