@@ -370,30 +370,48 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
                 using (new EditorGUILayout.HorizontalScope())
                 {
-                    // If the WSA target device is HoloLens, show the checkboxes for research mode
-                    if (EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens)
+                    using (new EditorGUILayout.VerticalScope())
                     {
-                        // Enable Research Mode Capability
-                        bool curResearchModeCapabilityEnabled = UwpBuildDeployPreferences.ResearchModeCapabilityEnabled;
-                        bool newResearchModeCapabilityEnabled = EditorGUILayout.ToggleLeft(researchModeCapabilityLabel, curResearchModeCapabilityEnabled);
-
-                        if (newResearchModeCapabilityEnabled != curResearchModeCapabilityEnabled)
+#if !UNITY_2019_1_OR_NEWER
+                        // If the WSA target device is HoloLens, show the checkboxes for research mode
+                        if (EditorUserBuildSettings.wsaSubtarget == WSASubtarget.HoloLens)
                         {
-                            UwpBuildDeployPreferences.ResearchModeCapabilityEnabled = newResearchModeCapabilityEnabled;
+                            using (new EditorGUILayout.HorizontalScope())
+                            {
+                                // Enable Research Mode Capability
+                                bool curResearchModeCapabilityEnabled = UwpBuildDeployPreferences.ResearchModeCapabilityEnabled;
+                                bool newResearchModeCapabilityEnabled = EditorGUILayout.ToggleLeft(researchModeCapabilityLabel, curResearchModeCapabilityEnabled);
+
+                                if (newResearchModeCapabilityEnabled != curResearchModeCapabilityEnabled)
+                                {
+                                    UwpBuildDeployPreferences.ResearchModeCapabilityEnabled = newResearchModeCapabilityEnabled;
+                                }
+
+                                // To prevent potential confusion, only show this when C# projects will be generated
+                                if (EditorUserBuildSettings.wsaGenerateReferenceProjects &&
+                                    PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
+                                {
+                                    // Allow unsafe code
+                                    bool curAllowUnsafeCode = UwpBuildDeployPreferences.AllowUnsafeCode;
+                                    bool newAllowUnsafeCode = EditorGUILayout.ToggleLeft(allowUnsafeCode, curAllowUnsafeCode);
+
+                                    if (newAllowUnsafeCode != curAllowUnsafeCode)
+                                    {
+                                        UwpBuildDeployPreferences.AllowUnsafeCode = newAllowUnsafeCode;
+                                    }
+                                }
+                            }
                         }
 
-#if !UNITY_2019_1_OR_NEWER
-                        // To prevent potential confusion, only show this when C# projects will be generated
-                        if (EditorUserBuildSettings.wsaGenerateReferenceProjects &&
-                            PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
+                        // Generate C# Project References for debugging	
+                        if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
                         {
-                            // Allow unsafe code
-                            bool curAllowUnsafeCode = UwpBuildDeployPreferences.AllowUnsafeCode;
-                            bool newAllowUnsafeCode = EditorGUILayout.ToggleLeft(allowUnsafeCode, curAllowUnsafeCode);
+                            bool generateReferenceProjects = EditorUserBuildSettings.wsaGenerateReferenceProjects;
+                            bool shouldGenerateProjects = EditorGUILayout.ToggleLeft(useCSharpProjectsLabel, generateReferenceProjects);
 
-                            if (newAllowUnsafeCode != curAllowUnsafeCode)
+                            if (shouldGenerateProjects != generateReferenceProjects)
                             {
-                                UwpBuildDeployPreferences.AllowUnsafeCode = newAllowUnsafeCode;
+                                EditorUserBuildSettings.wsaGenerateReferenceProjects = shouldGenerateProjects;
                             }
                         }
 #endif // !UNITY_2019_1_OR_NEWER
@@ -420,6 +438,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                         }
                     }
                 }
+
                 EditorGUILayout.Space();
 
                 // Build Unity Player
