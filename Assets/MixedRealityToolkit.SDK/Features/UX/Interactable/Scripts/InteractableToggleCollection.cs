@@ -23,7 +23,51 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public Interactable[] ToggleList
         {
             get => toggleList;
-            set => toggleList = value;
+            set 
+            {
+                if (value == null)
+                {
+                    return;
+                }
+
+                if (toggleList != value)
+                {
+                    if (toggleList != null)
+                    {
+                        // Destroy all listeners on previous toggleList
+                        for (int i = 0; i < toggleActions.Count; ++i)
+                        {
+                            toggleList[i]?.OnClick.RemoveListener(toggleActions[i]);
+                        }
+                        listenersAdded = false;
+                        toggleActions.Clear();
+                    }
+
+                    // Set new list
+                    toggleList = value;
+
+                    // Add listeners to new list
+                    for (int i = 0; i < toggleList.Length; ++i)
+                    {
+                        int itemIndex = i;
+
+                        UnityAction setSelectionAction = () =>
+                        {
+                            SetSelection(itemIndex, true, false);
+                        };
+
+                        toggleActions.Add(setSelectionAction);
+
+                        toggleList[i].OnClick.AddListener(setSelectionAction);
+                        toggleList[i].CanDeselect = false;
+                    }
+
+                    listenersAdded = true;
+
+                    int index = Mathf.Clamp(CurrentIndex, 0, toggleList.Length - 1);
+                    SetSelection(index, true, true);
+                }
+            }
         }
 
         [Tooltip("Currently selected index in the ToggleList, default is 0")]
@@ -36,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public int CurrentIndex
         {
             get => currentIndex;
-            set => SetSelection(value, false, true);
+            set => SetSelection(value, true, true);    
         }
 
         [Tooltip("This event is triggered when any of the toggles in the ToggleList are selected")]
@@ -47,27 +91,35 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private List<UnityAction> toggleActions = new List<UnityAction>();
 
+        private bool listenersAdded = false;
+
         private void Start()
         {
             if (ToggleList != null)
             {
-                // Add listeners to each toggle in ToggleList
-                for (int i = 0; i < ToggleList.Length; ++i)
+                // If the ToggleList is set before start, then it already has listeners
+                // If the ToggleList is populated through the inspector, then it needs listeners
+                if (listenersAdded == false)
                 {
-                    int itemIndex = i;
-
-                    UnityAction setSelectionAction = () =>
+                    // Add listeners to each toggle in ToggleList
+                    for (int i = 0; i < ToggleList.Length; ++i)
                     {
-                        SetSelection(itemIndex, true, false);
-                    };
+                        int itemIndex = i;
 
-                    toggleActions.Add(setSelectionAction);
+                        UnityAction setSelectionAction = () =>
+                        {
+                            SetSelection(itemIndex, true, false);
+                        };
 
-                    ToggleList[i].OnClick.AddListener(setSelectionAction);
-                    ToggleList[i].CanDeselect = false;
-                }
+                        toggleActions.Add(setSelectionAction);
 
-                SetSelection(CurrentIndex, true, true);
+                        ToggleList[i].OnClick.AddListener(setSelectionAction);
+                        ToggleList[i].CanDeselect = false;
+                    }
+
+                    listenersAdded = true;
+                    SetSelection(CurrentIndex, true, true);
+                }  
             }
         }
 

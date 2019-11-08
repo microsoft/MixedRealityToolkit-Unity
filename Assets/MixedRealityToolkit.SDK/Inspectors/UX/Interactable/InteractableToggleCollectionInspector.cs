@@ -31,10 +31,11 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
             if (Application.isPlaying && instance != null && GUI.changed)
             {
-                int index = instance.CurrentIndex;
-                if (index >= instance.ToggleList.Length || index < 0)
+                instance.CurrentIndex = Mathf.Clamp(instance.CurrentIndex, 0, instance.ToggleList.Length - 1);
+
+                if (instance.CurrentIndex >= instance.ToggleList.Length || instance.CurrentIndex < 0)
                 {
-                    Debug.Log("Index out of range: " + index);
+                    Debug.Log("Index out of range: " + instance.CurrentIndex);
                 }
                 else
                 {
