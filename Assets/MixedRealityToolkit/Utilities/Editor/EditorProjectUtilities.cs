@@ -232,7 +232,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// Gets the assembly definition file that best matches the folder name pattern and the file names.
         /// </summary>
         /// <param name="root"><see href="https://docs.microsoft.com/en-us/dotnet/api/system.io.directoryinfo"/>DirectoryInfo</see> that describes the package cache root folder.</param>
-        /// <param name="folderName">The name of the folder in which to find the requested file. A wildcard ('*') can be specifid to match a partial name.</param>
+        /// <param name="folderName">The name of the folder in which to find the requested file. A wildcard ('*') can be specified to match a partial name.</param>
         /// <param name="fileName">The name of the assembly definition file.</param>
         /// <returns>
         /// A <see href="https://docs.microsoft.com/en-us/dotnet/api/system.io.fileinfo"/>FileInfo</see> object that describes the assembly definition file or null.

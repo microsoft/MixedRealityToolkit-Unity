@@ -196,9 +196,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                         {
                             // if there are multiple visual studio installs,
                             // prefer enterprise, then pro, then community
-                            string bestPath = paths.OrderBy(p => p.ToLower().Contains("enterprise"))
-                                .ThenBy(p => p.ToLower().Contains("professional"))
-                                .ThenBy(p => p.ToLower().Contains("community")).First();
+                            string bestPath = paths.OrderByDescending(p => p.ToLower().Contains("enterprise"))
+                                .ThenByDescending(p => p.ToLower().Contains("professional"))
+                                .ThenByDescending(p => p.ToLower().Contains("community")).First();
 
                             string finalPath = $@"{bestPath}{findOption.pathSuffix}";
                             if (File.Exists(finalPath))
@@ -335,8 +335,17 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         /// Updates 'Assembly-CSharp.csproj' file according to the values set in buildInfo.
         /// </summary>
         /// <param name="buildInfo">An IBuildInfo containing a valid OutputDirectory</param>
+        /// <remarks>Only used with the .NET backend in Unity 2018 or older, with Unity C# Projects enabled.</remarks>
         public static void UpdateAssemblyCSharpProject(IBuildInfo buildInfo)
         {
+#if !UNITY_2019_1_OR_NEWER
+            if (!EditorUserBuildSettings.wsaGenerateReferenceProjects ||
+                PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) != ScriptingImplementation.WinRTDotNET)
+            {
+                // Assembly-CSharp.csproj is only generated when the above is true
+                return;
+            }
+
             string projectFilePath = GetAssemblyCSharpProjectFilePath(buildInfo);
             if (projectFilePath == null)
             {
@@ -347,16 +356,13 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             var uwpBuildInfo = buildInfo as UwpBuildInfo;
             Debug.Assert(uwpBuildInfo != null);
 
-            if (
-#if !UNITY_2019_1_OR_NEWER
-            EditorUserBuildSettings.wsaGenerateReferenceProjects &&
-#endif
-            uwpBuildInfo.AllowUnsafeCode)
+            if (uwpBuildInfo.AllowUnsafeCode)
             {
                 AllowUnsafeCode(rootElement);
             }
 
             rootElement.Save(projectFilePath);
+#endif // !UNITY_2019_1_OR_NEWER
         }
 
         /// <summary>
@@ -619,7 +625,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             new VSWhereFindOption(
                 $@"/C vswhere -all -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe",
                 ""),
-            // This find option corresponds to the versin of vswhere that ships with VS2017 - this doesn't have
+            // This find option corresponds to the version of vswhere that ships with VS2017 - this doesn't have
             // support for the -find command switch.
             new VSWhereFindOption(
                 $@"/C vswhere -all -products * -requires Microsoft.Component.MSBuild -property installationPath",
