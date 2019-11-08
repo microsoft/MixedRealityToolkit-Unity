@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private SerializedProperty rows;
         private SerializedProperty cellWidth;
         private SerializedProperty cellHeight;
+        private SerializedProperty anchor;
 
 
         protected override void OnEnable()
@@ -32,6 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             rows = serializedObject.FindProperty("rows");
             cellWidth = serializedObject.FindProperty("cellWidth");
             cellHeight = serializedObject.FindProperty("cellHeight");
+            anchor = serializedObject.FindProperty("anchor");
         }
 
         protected override void OnInspectorGUIInsertion()
@@ -39,6 +41,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             EditorGUILayout.PropertyField(surfaceType);
             EditorGUILayout.PropertyField(orientType);
             EditorGUILayout.PropertyField(layout);
+            EditorGUILayout.PropertyField(anchor);
+
 
             LayoutOrder layoutTypeIndex = (LayoutOrder) layout.enumValueIndex;
             if (layoutTypeIndex == LayoutOrder.ColumnThenRow)

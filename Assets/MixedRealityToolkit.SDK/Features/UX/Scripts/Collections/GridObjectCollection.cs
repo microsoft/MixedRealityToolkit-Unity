@@ -49,8 +49,43 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public LayoutOrder Layout
         {
             get { return layout; }
-            set { layout = value; }
+            set 
+            { 
+                layout = value; 
+                UpdateCollection();
+            }
         }
+
+        public enum AnchorType
+        {
+            UpperLeft,
+            UpperCenter,
+            UpperRight,
+            MiddleLeft,
+            MiddleCenter,
+            MiddleRight,
+            BottomLeft,
+            BottomCenter,
+            BottomRight
+        };
+        [SerializeField, Tooltip("Where the grid is anchored relative to local origin")]
+        private AnchorType anchor;
+        public AnchorType Anchor {
+            get { return anchor;}
+            set
+            {
+                anchor = value;
+                UpdateCollection();
+            }
+        }
+
+        public enum VerticalAlignmentType
+        {
+            Top,
+            Middle,
+            Bottom
+        };
+        public VerticalAlignmentType verticalAlignment;
 
         [Range(0.05f, 100.0f)]
         [Tooltip("Radius for the sphere or cylinder")]
@@ -266,7 +301,24 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
 
             float startOffsetX = (iMax * 0.5f) * CellWidth;
+            if (anchor == AnchorType.BottomLeft || anchor == AnchorType.UpperLeft || anchor == AnchorType.BottomLeft)
+            {
+                startOffsetX = 0;
+            }
+            else if (anchor == AnchorType.BottomRight || anchor == AnchorType.UpperRight || anchor == AnchorType.BottomRight)
+            {
+                startOffsetX = iMax * CellWidth;
+            }
+
             float startOffsetY = (jMax * 0.5f) * CellHeight;
+            if (anchor == AnchorType.UpperLeft || anchor == AnchorType.UpperCenter || anchor == AnchorType.UpperRight)
+            {
+                startOffsetY = 0;
+            }
+            else if (anchor == AnchorType.BottomLeft || anchor == AnchorType.BottomCenter || anchor == AnchorType.BottomRight)
+            {
+                startOffsetY = -1 * (jMax * CellHeight);
+            }
 
             for (int i = 0; i < iMax; i++)
             {
