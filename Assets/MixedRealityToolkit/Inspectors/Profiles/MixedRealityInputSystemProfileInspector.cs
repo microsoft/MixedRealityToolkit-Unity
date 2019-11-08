@@ -248,7 +248,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
                         {
                             providerFoldouts[i] = EditorGUILayout.Foldout(providerFoldouts[i], providerName.stringValue, true);
 
-                            if (GUILayout.Button(RemoveProviderContent, EditorStyles.miniButtonRight))
+                            if (GUILayout.Button(RemoveProviderContent, EditorStyles.miniButtonRight, GUILayout.Width(24f)))
                             {
                                 list.DeleteArrayElementAtIndex(i);
                                 serializedObject.ApplyModifiedProperties();
