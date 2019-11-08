@@ -15,18 +15,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
     // Tests for the MixedRealityToolkitFiles utility class
     public class MixedRealityToolkitFilesTests
     {
-        [SetUp]
-        public void Setup()
-        {
-            RefreshFiles();
-        }
-
         /// <summary>
         /// Validate that each module has a corresponding found folder (excluding None/AdHocTesting)
         /// </summary>
-        [Test]
-        public void TestGetDirectories()
+        [UnityTest]
+        public IEnumerator TestGetDirectories()
         {
+            yield return RefreshFiles();
+
             foreach (var moduleType in GetTestModulesTypes())
             {
                 var dirs = MixedRealityToolkitFiles.GetDirectories(moduleType);
@@ -35,9 +31,14 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
             }
         }
 
-        [Test]
-        public void TestMapModulePath()
+        /// <summary>
+        /// Test that the MapModulePath API works for each Module Type
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestMapModulePath()
         {
+            yield return RefreshFiles();
+
             foreach (var moduleType in GetTestModulesTypes())
             {
                 Assert.IsNotNull(MixedRealityToolkitFiles.MapModulePath(moduleType), $"Module Path was null for module type {moduleType.ToString()}");
@@ -47,9 +48,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         /// <summary>
         /// Test the ModuleType.None and that no items are found
         /// </summary>
-        [Test]
-        public void TestNoneDirectory()
+        [UnityTest]
+        public IEnumerator TestNoneDirectory()
         {
+            yield return RefreshFiles();
+
             var dirs = MixedRealityToolkitFiles.GetDirectories(MixedRealityToolkitModuleType.None);
             Assert.IsNull(dirs, $"Directory list should be null for module type {MixedRealityToolkitModuleType.None.ToString()}");
         }
@@ -57,8 +60,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         /// <summary>
         /// Validate that a Non-MRTK folder is recognized still
         /// </summary>
-        [Test]
-        public void TestAdHocDirectory()
+        [UnityTest]
+        public IEnumerator TestAdHocDirectory()
         {
             string adhocTesting = MixedRealityToolkitModuleType.AdhocTesting.ToString();
             string adHocFolderPath = Path.Combine(UnityEngine.Application.dataPath, adhocTesting);
@@ -70,8 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
                 Directory.CreateDirectory(adHocFolderPath);
                 using (var file = File.Create(adHocSentinelFilePath))
                 {
-                    const int WAIT_TIMEOUT = 5000;// miliseconds
-                    Assert.IsTrue(MixedRealityToolkitFiles.RefreshFoldersAsync().Wait(WAIT_TIMEOUT));
+                    yield return RefreshFiles();
 
                     var moduleType = MixedRealityToolkitModuleType.AdhocTesting;
                     var dirs = MixedRealityToolkitFiles.GetDirectories(moduleType);
@@ -90,9 +92,11 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         /// <summary>
         /// Validates that MixedRealityToolkitFiles is able to reason over MRTK folders when placed in the root Asset directory.
         /// </summary>
-        [Test]
-        public void TestRootAssetFolderResolution()
+        [UnityTest]
+        public IEnumerator TestRootAssetFolderResolution()
         {
+            yield return RefreshFiles();
+
             string resolvedPath = MixedRealityToolkitFiles.MapRelativeFilePathToAbsolutePath("Inspectors\\Data\\EditorWindowOptions.json");
             Assert.IsNotNull(resolvedPath);
         }
@@ -105,9 +109,13 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
 
         #region Test Helpers
 
-        private static void RefreshFiles()
+        private static IEnumerator RefreshFiles()
         {
-            MixedRealityToolkitFiles.RefreshFolders();
+            var task = MixedRealityToolkitFiles.RefreshFoldersAsync();
+            while (!task.IsCompleted)
+            {
+                yield return null;
+            }
 
             Assert.IsTrue(MixedRealityToolkitFiles.AreFoldersAvailable);
         }

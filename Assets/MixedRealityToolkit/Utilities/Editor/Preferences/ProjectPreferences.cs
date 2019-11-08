@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -52,11 +53,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     if (string.IsNullOrEmpty(filePath))
                     {
                         // MapRelativeFilePath returned null, need to build path ourselves
-                        filePath = MixedRealityToolkitFiles.MapModulePath(MODULE) + "/" + DEFAULT_FILE_NAME;
-
-                        _instance = ScriptableObject.CreateInstance<ProjectPreferences>();
-                        AssetDatabase.CreateAsset(_instance, filePath);
-                        AssetDatabase.SaveAssets();
+                        string modulePath = MixedRealityToolkitFiles.MapModulePath(MODULE);
+                        if (!string.IsNullOrEmpty(modulePath))
+                        {
+                            filePath = Path.Combine(modulePath, DEFAULT_FILE_NAME);
+                            _instance = ScriptableObject.CreateInstance<ProjectPreferences>();
+                            AssetDatabase.CreateAsset(_instance, filePath);
+                            AssetDatabase.SaveAssets();
+                        }
                     }
                     else
                     {

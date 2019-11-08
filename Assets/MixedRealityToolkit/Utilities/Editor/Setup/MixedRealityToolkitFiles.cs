@@ -183,7 +183,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         static MixedRealityToolkitFiles()
         {
-            string path = Application.dataPath;
             RefreshFolders();
         }
 
@@ -206,11 +205,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </remarks>
         public static async Task RefreshFoldersAsync()
         {
-            if (searchForFoldersToken != null)
-            {
-                searchForFoldersToken.Cancel();
-            }
-
             searchForFoldersTask = SearchForFoldersAsync(Application.dataPath);
             await searchForFoldersTask;
         }
@@ -234,7 +228,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             if (!AreFoldersAvailable)
             {
-                Debug.LogError("Failed to locate MixedRealityToolkit folders in the project.");
+                Debug.LogWarning("Failed to locate MixedRealityToolkit folders in the project.");
                 return null;
             }
 
@@ -347,9 +341,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private static async Task SearchForFoldersAsync(string rootPath)
         {
+            if (searchForFoldersToken != null)
+            {
+                searchForFoldersToken.Cancel();
+            }
+
             searchForFoldersToken = new CancellationTokenSource();
             await Task.Run(() => SearchForFolders(rootPath, searchForFoldersToken.Token), searchForFoldersToken.Token);
-            Debug.Log("TASK FINISHED");
             searchForFoldersToken = null;
         }
 
@@ -462,7 +460,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             if (!AreFoldersAvailable)
             {
-                Debug.LogError("Failed to locate MixedRealityToolkit folders in the project.");
+                Debug.LogWarning("Failed to locate MixedRealityToolkit folders in the project.");
                 return null;
             }
 
