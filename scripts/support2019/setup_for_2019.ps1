@@ -4,7 +4,7 @@
 
 $scriptPath = Split-Path $PSCommandPath -Parent
 $manifestPath = "Packages\manifest.json"
-$arFoundationAsmdefPath = "Assets\MixedRealityToolkit.Providers\UnityAR\Microsoft.MixedReality.Toolkit.Providers.UnityAR.asmdef"
+$arFoundationAsmdefPath = "Assets\MixedRealityToolkit.Extensions\Providers\Experimental\UnityAR\Microsoft.MixedReality.Toolkit.Providers.UnityAR.asmdef"
 $projectPath = Split-Path (Split-Path $scriptPath -Parent) -Parent
 
 Copy-Item (Join-Path $scriptPath $manifestPath) (Join-Path $projectPath $manifestPath)
