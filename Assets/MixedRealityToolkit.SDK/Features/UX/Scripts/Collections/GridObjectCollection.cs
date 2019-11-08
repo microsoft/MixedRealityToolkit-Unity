@@ -134,12 +134,40 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         private int rows = 3;
 
         /// <summary>
-        /// Number of rows per column, column number is automatically determined
+        /// Number of rows per column.false Can only be assigned when layout type is
+        /// RowsThenColumns
         /// </summary>
         public int Rows
         {
             get { return rows; }
-            set { rows = value; }
+            set 
+            {
+                if (Layout == LayoutOrder.ColumnThenRow) 
+                {
+                    Debug.LogError("Cannot assign Rows when layout type is " + Layout);
+                    return;                    
+                }
+                rows = value; 
+            }
+        }
+
+        
+        /// <summary>
+        /// Number of columns per row. Can only be assigned when layout type is 
+        /// ColumnsThenRows
+        /// </summary>
+        public int Columns
+        {
+            get { return columns; }
+            set 
+            { 
+                if (Layout == LayoutOrder.RowThenColumn)    
+                {
+                    Debug.LogError("Cannot assign Columns when layout type is " + Layout);
+                    return;
+                }
+                columns = value;
+            }
         }
 
         [Tooltip("Width of cell per object")]
@@ -188,7 +216,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public Mesh CylinderMesh { get; set; }
 
-        protected int Columns;
+        // protected int Columns;
+        [Tooltip("Number of columns per row")]
+        [SerializeField]
+        private int columns = 0;
 
         protected Vector2 HalfCell;
 
@@ -201,7 +232,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             Vector3 newPos;
 
             // Now lets lay out the grid
-            Columns = Mathf.CeilToInt((float)NodeList.Count / rows);
+            if (Layout == LayoutOrder.RowThenColumn)
+            {
+                columns = Mathf.CeilToInt((float)NodeList.Count / rows);
+            }
+            else if (Layout == LayoutOrder.ColumnThenRow )
+            {
+                rows = Mathf.CeilToInt((float)NodeList.Count / columns);
+            }
+            Debug.Log($"Rows: {rows} Columns: {columns}");
             HalfCell = new Vector2(CellWidth * 0.5f, CellHeight * 0.5f);
 
             // First start with a grid then project onto surface
@@ -279,8 +318,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             switch (order)
             {
                 case LayoutOrder.RowThenColumn:
-                    iMax = Rows;
-                    jMax = Columns;
+                    iMax = Columns;
+                    jMax = Rows;
                     break;
                 case LayoutOrder.ColumnThenRow:
                     iMax = Columns;
@@ -301,11 +340,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
 
             float startOffsetX = (iMax * 0.5f) * CellWidth;
-            if (anchor == AnchorType.BottomLeft || anchor == AnchorType.UpperLeft || anchor == AnchorType.BottomLeft)
+            if (anchor == AnchorType.BottomLeft || anchor == AnchorType.UpperLeft || anchor == AnchorType.MiddleLeft)
             {
                 startOffsetX = 0;
             }
-            else if (anchor == AnchorType.BottomRight || anchor == AnchorType.UpperRight || anchor == AnchorType.BottomRight)
+            else if (anchor == AnchorType.BottomRight || anchor == AnchorType.UpperRight || anchor == AnchorType.MiddleRight)
             {
                 startOffsetX = iMax * CellWidth;
             }
@@ -317,7 +356,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
             else if (anchor == AnchorType.BottomLeft || anchor == AnchorType.BottomCenter || anchor == AnchorType.BottomRight)
             {
-                startOffsetY = -1 * (jMax * CellHeight);
+                startOffsetY = jMax * CellHeight;
             }
 
             for (int i = 0; i < iMax; i++)

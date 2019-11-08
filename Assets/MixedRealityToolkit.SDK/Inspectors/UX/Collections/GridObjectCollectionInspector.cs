@@ -16,6 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private SerializedProperty radialRange;
         private SerializedProperty distance;
         private SerializedProperty rows;
+        private SerializedProperty cols;
         private SerializedProperty cellWidth;
         private SerializedProperty cellHeight;
         private SerializedProperty anchor;
@@ -31,6 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             distance = serializedObject.FindProperty("distance");
             radialRange = serializedObject.FindProperty("radialRange");
             rows = serializedObject.FindProperty("rows");
+            cols = serializedObject.FindProperty("columns");
             cellWidth = serializedObject.FindProperty("cellWidth");
             cellHeight = serializedObject.FindProperty("cellHeight");
             anchor = serializedObject.FindProperty("anchor");
@@ -47,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             LayoutOrder layoutTypeIndex = (LayoutOrder) layout.enumValueIndex;
             if (layoutTypeIndex == LayoutOrder.ColumnThenRow)
             {
-                EditorGUILayout.PropertyField(rows, new GUIContent("Num Columns", "Number of columns per row."));
+                EditorGUILayout.PropertyField(cols, new GUIContent("Num Columns", "Number of columns per row."));
             }
             else if (layoutTypeIndex == LayoutOrder.RowThenColumn)
             {
