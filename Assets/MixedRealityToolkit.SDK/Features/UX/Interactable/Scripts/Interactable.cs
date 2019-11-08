@@ -576,13 +576,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 States = GetDefaultInteractableStates();
             }
 
-            IsEnabled = enabledOnStart;
-
             InputAction = ResolveInputAction(InputActionId);
 
             CurrentDimension = startDimensionIndex;
 
             RefreshSetup();
+
+            IsEnabled = enabledOnStart;
         }
 
         protected virtual void OnEnable()
