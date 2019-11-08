@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private static readonly string[] SCRIPTING_BACKEND_NAMES = { "IL2CPP", ".NET" };
 
-        private static readonly int[] SCRIPTING_BACKEND_ENUM = { (int)ScriptingImplementation.IL2CPP, (int)ScriptingImplementation.WinRTDotNET };
+        private static readonly int[] SCRIPTING_BACKEND_ENUMS = { (int)ScriptingImplementation.IL2CPP, (int)ScriptingImplementation.WinRTDotNET };
 
         private static readonly string[] TARGET_DEVICE_OPTIONS = { "Any Device", "PC", "Mobile", "HoloLens" };
 
@@ -78,16 +78,14 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private readonly GUIContent BuildDirectoryLabel = new GUIContent("Build Directory", "It's recommended to use 'UWP'");
 
         private readonly GUIContent UseCSharpProjectsLabel = new GUIContent("Generate C# Debug", "Generate C# Project References for debugging.\nOnly available in .NET Scripting runtime.");
-        
+
         private readonly GUIContent gazeInputCapabilityLabel =
-            new GUIContent("Gaze Input Capability", 
+            new GUIContent("Gaze Input Capability",
                            "If checked, the 'Gaze Input' capability will be added to the AppX manifest after the Unity build.");
 
         private readonly GUIContent AutoIncrementLabel = new GUIContent("Auto Increment", "Increases Version Build Number");
 
         private readonly GUIContent VersionNumberLabel = new GUIContent("Version Number", "Major.Minor.Build.Revision\nNote: Revision should always be zero because it's reserved by Windows Store.");
-
-        private readonly GUIContent PairHoloLensUsbLabel = new GUIContent("Pair HoloLens", "Pairs the USB connected HoloLens with the Build Window so you can deploy via USB");
 
         private readonly GUIContent UseSSLLabel = new GUIContent("Use SSL?", "Use SLL to communicate with Device Portal");
 
@@ -215,7 +213,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private string[] targetIps;
         private List<Version> windowsSdkVersions = new List<Version>();
 
-        private Vector2 scrollPosition;
+        private Vector2 deployBuildListScrollPosition;
 
         private BuildDeployTab currentTab = BuildDeployTab.UnityBuildOptions;
         private Action[] tabRenders;
@@ -335,17 +333,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
         }
 
-        private static void RenderOpenBuildDirectory()
-        {
-            using (new EditorGUI.DisabledGroupScope(!Directory.Exists(BuildDeployPreferences.AbsoluteBuildDirectory)))
-            {
-                if (GUILayout.Button("Open", EditorStyles.miniButtonRight, GUILayout.Width(100f)))
-                {
-                    EditorApplication.delayCall += () => Process.Start(BuildDeployPreferences.AbsoluteBuildDirectory);
-                }
-            }
-        }
-
         private void RenderUnityBuildView()
         {
             RenderBuildDirectory();
@@ -359,12 +346,12 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 EditorGUILayout.HelpBox(".NET Scripting backend is deprecated in Unity 2018 and is removed in Unity 2019.", MessageType.Warning);
             }
 
-            var newScriptingBackend = (ScriptingImplementation)EditorGUILayout.IntPopup("Scripting Backend", (int)curScriptingBackend, scriptingBackendNames, scriptingBackendEnum, GUILayout.Width(HALF_WIDTH));
+            var newScriptingBackend = (ScriptingImplementation)EditorGUILayout.IntPopup("Scripting Backend", (int)curScriptingBackend, SCRIPTING_BACKEND_NAMES, SCRIPTING_BACKEND_ENUMS, GUILayout.Width(HALF_WIDTH));
             if (newScriptingBackend != curScriptingBackend)
             {
                 bool canUpdate = !Directory.Exists(BuildDeployPreferences.AbsoluteBuildDirectory);
                 if (EditorUtility.DisplayDialog("Attention!",
-                        $"Build path contains project built with {newScriptingBackend.ToString()} scripting backend, while current project is using {curScriptingBackend.ToString()} scripting backend.\n\nSwitching to a new scripting backend requires us to delete all the data currently in your build folder and rebuild the Unity Player!",
+                        $"Build path contains project built with {curScriptingBackend.ToString()} scripting backend, while project wants to use {newScriptingBackend.ToString()} scripting backend.\n\nSwitching to a new scripting backend requires us to delete all the data currently in your build folder and rebuild the Unity Player!",
                         "Okay", "Cancel"))
                 {
                     Directory.Delete(BuildDeployPreferences.AbsoluteBuildDirectory, true);
@@ -383,10 +370,21 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             {
                 // Allow unsafe code
                 bool curAllowUnsafeCode = UwpBuildDeployPreferences.AllowUnsafeCode;
-                bool newAllowUnsafeCode = EditorGUILayout.ToggleLeft(allowUnsafeCode, curAllowUnsafeCode);
+                bool newAllowUnsafeCode = EditorGUILayout.ToggleLeft(AllowUnsafeCodeLabel, curAllowUnsafeCode);
                 if (newAllowUnsafeCode != curAllowUnsafeCode)
                 {
                     UwpBuildDeployPreferences.AllowUnsafeCode = newAllowUnsafeCode;
+                }
+            }
+
+            // Generate C# Project References for debugging	
+            if (PlayerSettings.GetScriptingBackend(BuildTargetGroup.WSA) == ScriptingImplementation.WinRTDotNET)
+            {
+                bool generateReferenceProjects = EditorUserBuildSettings.wsaGenerateReferenceProjects;
+                bool shouldGenerateProjects = EditorGUILayout.ToggleLeft(UseCSharpProjectsLabel, generateReferenceProjects);
+                if (shouldGenerateProjects != generateReferenceProjects)
+                {
+                    EditorUserBuildSettings.wsaGenerateReferenceProjects = shouldGenerateProjects;
                 }
             }
 #endif // !UNITY_2019_1_OR_NEWER
@@ -407,33 +405,13 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             EditorGUILayout.Space();
         }
 
-        private static void RenderOpenVisualStudioButton()
-        {
-            if (GUILayout.Button("Open in Visual Studio", GUILayout.Width(HALF_WIDTH)))
-            {
-                string slnFilename = Path.Combine(BuildDeployPreferences.BuildDirectory, $"{PlayerSettings.productName}.sln");
-
-                if (File.Exists(slnFilename))
-                {
-                    EditorApplication.delayCall += () => Process.Start(new FileInfo(slnFilename).FullName);
-                }
-                else if (EditorUtility.DisplayDialog(
-                    "Solution Not Found",
-                    "We couldn't find the Project's Solution. Would you like to Build the project now?",
-                    "Yes, Build", "No"))
-                {
-                    EditorApplication.delayCall += BuildUnityProject;
-                }
-            }
-        }
-
         private void RenderAppxBuildView()
         {
             // SDK and MS Build Version (and save setting, if it's changed)
             // Note that this is the 'Target SDK Version' which is required to physically build the
             // code on a build machine, not the minimum platform version.
             string currentSDKVersion = EditorUserBuildSettings.wsaUWPSDK;
-            
+
             Version chosenSDKVersion = null;
             for (var i = 0; i < windowsSdkVersions.Count; i++)
             {
@@ -502,6 +480,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 int newPlatformToolsetIndex = EditorGUILayout.Popup("Plaform Toolset", currentPlatformToolsetIndex, PLATFORM_TOOLSET_NAMES, GUILayout.Width(HALF_WIDTH));
 
                 EditorGUILayout.LabelField("Manifest Options", EditorStyles.boldLabel);
+
                 // The 'Gaze Input' capability support was added for HL2 in the Windows SDK 18362, but 
                 // existing versions of Unity don't have support for automatically adding the capability to the generated
                 // AppX manifest during the build. This option provides a mechanism for people using the
@@ -522,6 +501,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
 
             EditorGUILayout.LabelField("Versioning Options", EditorStyles.boldLabel);
+
             using (new EditorGUILayout.HorizontalScope())
             {
                 using (var c = new EditorGUI.ChangeCheckScope())
@@ -632,8 +612,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             {
                 DeviceInfo currentConnection = CurrentConnection;
 
-                bool enableConnection = IsValidIpAddress(currentConnection.IP) && AreCredentialsValid(currentConnection);
-                using (new EditorGUI.DisabledGroupScope(!enableConnection))
+                bool canTestConnection = IsValidIpAddress(currentConnection.IP) && AreCredentialsValid(currentConnection);
+                using (new EditorGUI.DisabledGroupScope(!canTestConnection))
                 {
                     if (GUILayout.Button("Test Connection"))
                     {
@@ -680,8 +660,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                         AddConnection();
                     }
 
-                    bool enabled = portalConnections.Connections.Count > 1 && CurrentConnectionIndex != 0;
-                    using (new EditorGUI.DisabledGroupScope(!enabled))
+                    using (new EditorGUI.DisabledGroupScope(portalConnections.Connections.Count <= 1))
                     {
                         if (GUILayout.Button(RemoveConnectionLabel, EditorStyles.miniButtonRight, GUILayout.Width(20)))
                         {
@@ -706,7 +685,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 if (c.changed)
                 {
                     UpdatePortalConnections();
-                    Repaint();
                 }
             }
 
@@ -755,9 +733,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             {
                 using (new EditorGUILayout.VerticalScope(GUILayout.ExpandHeight(true)))
                 {
-                    using (var scrollView = new EditorGUILayout.ScrollViewScope(scrollPosition, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true)))
+                    using (var scrollView = new EditorGUILayout.ScrollViewScope(deployBuildListScrollPosition, GUILayout.ExpandHeight(true), GUILayout.ExpandWidth(true)))
                     {
-                        scrollPosition = scrollView.scrollPosition;
+                        deployBuildListScrollPosition = scrollView.scrollPosition;
 
                         foreach (var fullBuildLocation in Builds)
                         {
@@ -787,8 +765,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                                     }
                                 }
 
-                                bool canLaunchLocal = CurrentConnectionIndex == 0 && IsHoloLensConnectedUsb;
-                                bool canLaunchRemote = DevicePortalConnectionEnabled && CanInstall && CurrentConnectionIndex != 0;
+                                bool canLaunchLocal = IsLocalConnection(currentConnection) && IsHoloLensConnectedUsb;
+                                bool canLaunchRemote = DevicePortalConnectionEnabled && CanInstall;
 
                                 // Launch app...
                                 bool launchAppEnabled = canLaunchLocal || canLaunchRemote;
@@ -891,10 +869,30 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     }
                 }
 
-                RenderOpenBuildDirectory();
+                RenderOpenBuildDirectoryButton();
             }
 
             EditorGUILayout.Space();
+        }
+
+        private static void RenderOpenVisualStudioButton()
+        {
+            if (GUILayout.Button("Open in Visual Studio", GUILayout.Width(HALF_WIDTH)))
+            {
+                string slnFilename = Path.Combine(BuildDeployPreferences.BuildDirectory, $"{PlayerSettings.productName}.sln");
+
+                if (File.Exists(slnFilename))
+                {
+                    EditorApplication.delayCall += () => Process.Start(new FileInfo(slnFilename).FullName);
+                }
+                else if (EditorUtility.DisplayDialog(
+                    "Solution Not Found",
+                    "We couldn't find the Project's Solution. Would you like to Build the project now?",
+                    "Yes, Build", "No"))
+                {
+                    EditorApplication.delayCall += BuildUnityProject;
+                }
+            }
         }
 
         private static void RenderPlayerSettingsButton()
@@ -902,6 +900,17 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             if (GUILayout.Button("Open Player Settings"))
             {
                 Selection.activeObject = Unsupported.GetSerializedAssetInterfaceSingleton("PlayerSettings");
+            }
+        }
+
+        private static void RenderOpenBuildDirectoryButton()
+        {
+            using (new EditorGUI.DisabledGroupScope(!Directory.Exists(BuildDeployPreferences.AbsoluteBuildDirectory)))
+            {
+                if (GUILayout.Button("Open", EditorStyles.miniButtonRight, GUILayout.Width(100f)))
+                {
+                    EditorApplication.delayCall += () => Process.Start(BuildDeployPreferences.AbsoluteBuildDirectory);
+                }
             }
         }
 
@@ -934,7 +943,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             var machineName = await DevicePortal.GetMachineNameAsync(currentConnection);
             currentConnection.MachineName = machineName?.ComputerName;
             UpdatePortalConnections();
-            Repaint();
             Debug.Log($"Successfully connected to device {machineName?.ComputerName} with IP {currentConnection.IP}");
         }
 
@@ -1319,10 +1327,13 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 return;
             }
 
+            var uninstallTasks = new List<Task>();
             for (int i = 0; i < devices.Count; i++)
             {
-                await UninstallAppOnDeviceAsync(devices[i]);
+                uninstallTasks.Add(UninstallAppOnDeviceAsync(devices[i]));
             }
+
+            await Task.WhenAll(uninstallTasks);
         }
 
         private static async void LaunchAppOnTargetDevice(DeviceInfo targetDevice)
