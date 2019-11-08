@@ -320,8 +320,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                 currentInputPosition = eventData.InputData;
             }
 
-            if (Mathf.Abs(currentInputPosition.y) > inputThreshold ||
-                Mathf.Abs(currentInputPosition.x) > inputThreshold)
+            if (currentInputPosition.sqrMagnitude > Mathf.Pow(inputThreshold, 2f))
             {
                 // Get the angle of the pointer input
                 float angle = Mathf.Atan2(currentInputPosition.x, currentInputPosition.y) * Mathf.Rad2Deg;
@@ -359,7 +358,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                         if (offsetRotationAngle > 0)
                         {
                             // check to make sure we're still under our activation threshold.
-                            if (offsetRotationAngle < rotateActivationAngle)
+                            if (offsetRotationAngle < 2 * rotateActivationAngle)
                             {
                                 canMove = false;
                                 // Rotate the camera by the rotation amount.  If our angle is positive then rotate in the positive direction, otherwise in the opposite direction.
@@ -374,7 +373,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                                 offsetStrafeAngle = absoluteAngle - offsetStrafeAngle;
 
                                 // Check to make sure we're still under our activation threshold.
-                                if (offsetStrafeAngle > 0 && offsetStrafeAngle < backStrafeActivationAngle)
+                                if (offsetStrafeAngle > 0 && offsetStrafeAngle <= backStrafeActivationAngle)
                                 {
                                     canMove = false;
                                     var height = MixedRealityPlayspace.Position.y;
