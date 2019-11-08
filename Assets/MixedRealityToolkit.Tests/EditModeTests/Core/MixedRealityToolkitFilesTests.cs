@@ -4,9 +4,11 @@
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using NUnit.Framework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using UnityEngine.TestTools;
 
 namespace Microsoft.MixedReality.Toolkit.Tests.Core
 {
@@ -59,23 +61,30 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
         public void TestAdHocDirectory()
         {
             string adhocTesting = MixedRealityToolkitModuleType.AdhocTesting.ToString();
-            string adHocFolderPath = UnityEngine.Application.dataPath + "\\" + adhocTesting;
-            string adHocSentinelFilePath = UnityEngine.Application.dataPath + "\\" + "MRTK." + adhocTesting + ".sentinel";
+            string adHocFolderPath = Path.Combine(UnityEngine.Application.dataPath, adhocTesting);
+            string adHocFolderMetaPath = Path.Combine(UnityEngine.Application.dataPath, adhocTesting + ".meta");
+            string adHocSentinelFilePath = Path.Combine(adHocFolderPath, "MRTK." + adhocTesting + ".sentinel");
 
-            Directory.CreateDirectory(adHocFolderPath);
-            using (var file = File.Create(adHocSentinelFilePath))
+            try
             {
-                RefreshFiles();
+                Directory.CreateDirectory(adHocFolderPath);
+                using (var file = File.Create(adHocSentinelFilePath))
+                {
+                    const int WAIT_TIMEOUT = 5000;// miliseconds
+                    Assert.IsTrue(MixedRealityToolkitFiles.RefreshFoldersAsync().Wait(WAIT_TIMEOUT));
 
-                var moduleType = MixedRealityToolkitModuleType.AdhocTesting;
-                var dirs = MixedRealityToolkitFiles.GetDirectories(moduleType);
-                Assert.IsNotNull(dirs, $"Directory list was null for module type {moduleType.ToString()}");
-                Assert.IsNotEmpty(dirs, $"Directory list was empty for module type {moduleType.ToString()}");
+                    var moduleType = MixedRealityToolkitModuleType.AdhocTesting;
+                    var dirs = MixedRealityToolkitFiles.GetDirectories(moduleType);
+                    Assert.IsNotNull(dirs, $"Directory list was null for module type {moduleType.ToString()}");
+                    Assert.IsNotEmpty(dirs, $"Directory list was empty for module type {moduleType.ToString()}");
+                }
             }
-
-            // Clean up
-            File.Delete(adHocSentinelFilePath);
-            Directory.Delete(adHocFolderPath);
+            finally
+            {
+                // Clean up
+                Directory.Delete(adHocFolderPath, true);
+                File.Delete(adHocFolderMetaPath);
+            }
         }
 
         /// <summary>

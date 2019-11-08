@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
@@ -101,13 +102,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         private readonly static Dictionary<MixedRealityToolkitModuleType, HashSet<string>> mrtkFolders =
             new Dictionary<MixedRealityToolkitModuleType, HashSet<string>>();
 
-        private static Task searchForFoldersTask;
+        private static Task searchForFoldersTask = null;
+        private static CancellationTokenSource searchForFoldersToken;
 
         private static string NormalizeSeparators(string path) => 
-            string.IsNullOrEmpty(path) ? null : path.Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar);
+            path?.Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar);
 
-        private static string FormatSeparatorsForUnity(string path) =>
-            string.IsNullOrEmpty(path) ? null : path.Replace('\\', '/');
+        private static string FormatSeparatorsForUnity(string path) => path?.Replace('\\', '/');
 
         private static readonly Dictionary<string, MixedRealityToolkitModuleType> moduleNameMap = new Dictionary<string, MixedRealityToolkitModuleType>()
         {
@@ -133,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <param name="absolutePath">The absolute path to the project.</param>
         /// <returns>The project relative path.</returns>
         /// <remarks>This doesn't produce paths that contain step out '..' relative paths.</remarks>
-        public static string GetAssetDatabasePath(string absolutePath) => FormatSeparatorsForUnity(absolutePath).Replace(Application.dataPath, "Assets");
+        public static string GetAssetDatabasePath(string absolutePath) => FormatSeparatorsForUnity(absolutePath)?.Replace(Application.dataPath, "Assets");
 
         /// <summary>
         /// Returns a collection of MRTK Core directories found in the project.
@@ -183,19 +184,35 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         static MixedRealityToolkitFiles()
         {
             string path = Application.dataPath;
-            searchForFoldersTask = SearchForFoldersAsync(path);
+            RefreshFolders();
         }
 
         /// <summary>
-        /// Force refresh of MRTK tracked folders
+        /// Force refresh of MRTK tracked folders. Fires and forgets async call. Returns immediately
         /// </summary>
         /// <remarks>
         /// Kicks off async refresh of the MRTK folder database.
         /// </remarks>
         public static void RefreshFolders()
         {
-            searchForFoldersTask.Wait();
+            Task.Run(() => RefreshFoldersAsync());
+        }
+
+        /// <summary>
+        /// Force refresh of MRTK tracked folders and return task
+        /// </summary>
+        /// <remarks>
+        /// Tracks async refresh of the MRTK folder database.
+        /// </remarks>
+        public static async Task RefreshFoldersAsync()
+        {
+            if (searchForFoldersToken != null)
+            {
+                searchForFoldersToken.Cancel();
+            }
+
             searchForFoldersTask = SearchForFoldersAsync(Application.dataPath);
+            await searchForFoldersTask;
         }
 
         /// <summary>
@@ -330,10 +347,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private static async Task SearchForFoldersAsync(string rootPath)
         {
-            await Task.Run(() => SearchForFolders(rootPath));
+            searchForFoldersToken = new CancellationTokenSource();
+            await Task.Run(() => SearchForFolders(rootPath, searchForFoldersToken.Token), searchForFoldersToken.Token);
+            Debug.Log("TASK FINISHED");
+            searchForFoldersToken = null;
         }
 
-        private static void SearchForFolders(string rootPath)
+        private static void SearchForFolders(string rootPath, CancellationToken ct)
         {
             try
             {
@@ -341,7 +361,16 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 foreach (var sentinelFilePath in filePathResults)
                 {
                     TryRegisterModuleViaFile(sentinelFilePath);
+
+                    if (ct.IsCancellationRequested)
+                    {
+                        ct.ThrowIfCancellationRequested();
+                    }
                 }
+            }
+            catch (OperationCanceledException)
+            {
+                Console.WriteLine($"\n{nameof(OperationCanceledException)} thrown\n");
             }
             catch (Exception ex)
             {
@@ -404,16 +433,22 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             string normalizedFolder = NormalizeSeparators(folderPath);
             bool found = false;
+            var removeKeys = new HashSet<MixedRealityToolkitModuleType>();
             foreach (var modFolders in mrtkFolders)
             {
                 if (modFolders.Value.Remove(normalizedFolder))
                 {
                     if (modFolders.Value.Count == 0)
                     {
-                        mrtkFolders.Remove(modFolders.Key);
+                        removeKeys.Add(modFolders.Key);
                     }
                     found = true;
                 }
+            }
+
+            foreach (var key in removeKeys)
+            {
+                mrtkFolders.Remove(key);
             }
 
             return found;
