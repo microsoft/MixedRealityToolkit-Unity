@@ -3,7 +3,7 @@ function createDropdown()
 {
 	// configurable values:
 	var defaultTitle = "mrtk_development"; 	// title in the dropdown for the root version of the docs
-	var versionArray = ["releases/2.0.0", "releases/2.1.0"];	// list of all versions in the version folder
+	var versionArray = ["releases/2.0.0", "releases/2.1.0", "prerelease/2.2.0_stabilization"];	// list of all versions in the version folder
 	
 	//--------------------------------------
 
@@ -40,8 +40,6 @@ function createDropdown()
 		createEntry(innerDiv, versionArray[i], rootDir+"version/"+versionArray[i]+"/README.html");
 	}
 }
-
-
 
 function createEntry(attachTo, name, url)
 {
