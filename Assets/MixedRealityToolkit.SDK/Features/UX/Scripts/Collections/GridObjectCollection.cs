@@ -79,14 +79,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
-        public enum VerticalAlignmentType
-        {
-            Top,
-            Middle,
-            Bottom
-        };
-        public VerticalAlignmentType verticalAlignment;
-
         [Range(0.05f, 100.0f)]
         [Tooltip("Radius for the sphere or cylinder")]
         [SerializeField]
@@ -240,7 +232,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             {
                 rows = Mathf.CeilToInt((float)NodeList.Count / columns);
             }
-            Debug.Log($"Rows: {rows} Columns: {columns}");
             HalfCell = new Vector2(CellWidth * 0.5f, CellHeight * 0.5f);
 
             // First start with a grid then project onto surface
