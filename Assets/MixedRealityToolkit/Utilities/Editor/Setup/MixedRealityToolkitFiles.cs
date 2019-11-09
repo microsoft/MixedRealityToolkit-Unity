@@ -110,6 +110,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         private static string FormatSeparatorsForUnity(string path) => path?.Replace('\\', '/');
 
+        private static bool isInitialized = false;
+
         private static readonly Dictionary<string, MixedRealityToolkitModuleType> moduleNameMap = new Dictionary<string, MixedRealityToolkitModuleType>()
         {
             { "Core", MixedRealityToolkitModuleType.Core },
@@ -171,8 +173,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         {
             get
             {
-                if (searchForFoldersTask != null 
-                    && searchForFoldersTask.Status == TaskStatus.Running)
+                // Other components that InitializeOnLoad may be called before our static constructor. If that is the case, initialize now
+                if (!isInitialized)
+                {
+                    Init();
+                }
+
+                // If we are currently searching for folders, wait up to 1 second for operation to complete
+                if (searchForFoldersTask != null)
                 {
                     searchForFoldersTask.Wait(1);
                 }
@@ -183,7 +191,17 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
         static MixedRealityToolkitFiles()
         {
-            RefreshFolders();
+            Init();
+        }
+
+        private static void Init()
+        {
+            if (!isInitialized)
+            {
+                RefreshFolders();
+            }
+
+            isInitialized = true;
         }
 
         /// <summary>
@@ -194,18 +212,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </remarks>
         public static void RefreshFolders()
         {
-            Task.Run(() => RefreshFoldersAsync());
+            string path = Application.dataPath;
+            searchForFoldersTask = Task.Run(() => SearchForFoldersAsync(path));
         }
 
         /// <summary>
-        /// Force refresh of MRTK tracked folders and return task
+        /// Get task tracking folder refresh if component wants to wait for files to be ready
         /// </summary>
-        /// <remarks>
-        /// Tracks async refresh of the MRTK folder database.
-        /// </remarks>
-        public static async Task RefreshFoldersAsync()
+        public static async Task WaitForFolderRefresh()
         {
-            searchForFoldersTask = SearchForFoldersAsync(Application.dataPath);
             await searchForFoldersTask;
         }
 
