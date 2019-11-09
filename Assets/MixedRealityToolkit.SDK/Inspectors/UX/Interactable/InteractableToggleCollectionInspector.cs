@@ -19,29 +19,50 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
     internal class InteractableToggleCollectionInspector : UnityEditor.Editor
     {
         protected InteractableToggleCollection instance;
+        protected SerializedProperty toggleListProperty;
+        protected SerializedProperty currentIndexProperty;
 
         protected virtual void OnEnable()
         {
             instance = (InteractableToggleCollection)target;
+            toggleListProperty = serializedObject.FindProperty("toggleList");
+            currentIndexProperty = serializedObject.FindProperty("currentIndex");
         }
 
         public override void OnInspectorGUI()
         {
-            base.OnInspectorGUI();
+            RenderCustomInspector();
 
             if (Application.isPlaying && instance != null && GUI.changed)
             {
-                instance.CurrentIndex = Mathf.Clamp(instance.CurrentIndex, 0, instance.ToggleList.Length - 1);
+                int currentIndex = instance.CurrentIndex;
+                currentIndex = Mathf.Clamp(currentIndex, 0, instance.ToggleList.Length - 1);
 
-                if (instance.CurrentIndex >= instance.ToggleList.Length || instance.CurrentIndex < 0)
+                if (currentIndex >= instance.ToggleList.Length || currentIndex < 0)
                 {
-                    Debug.Log("Index out of range: " + instance.CurrentIndex);
+                    Debug.Log("Index out of range: " + currentIndex);
                 }
                 else
                 {
-                    instance.SetSelection(instance.CurrentIndex, true, true);
+                    instance.SetSelection(currentIndex, true, true);
                 }  
             }
+        }
+
+        public virtual void RenderCustomInspector()
+        {
+            serializedObject.Update();
+
+            // Disable ability to edit ToggleList through the inspector if in play mode 
+            bool isPlayMode = EditorApplication.isPlaying || EditorApplication.isPaused;
+            using (new EditorGUI.DisabledScope(isPlayMode))
+            {
+                EditorGUILayout.PropertyField(toggleListProperty, true);
+            }
+
+            EditorGUILayout.PropertyField(currentIndexProperty);
+
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }
