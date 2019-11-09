@@ -111,6 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.Core
 
         private static IEnumerator RefreshFiles()
         {
+            MixedRealityToolkitFiles.RefreshFolders();
             var task = MixedRealityToolkitFiles.WaitForFolderRefresh();
             while (!task.IsCompleted)
             {
