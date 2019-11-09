@@ -174,10 +174,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private const float HALF_WIDTH = 256f;
 
-        private static float timeLastUpdatedBuilds;
-
         private string[] targetIps;
-        private List<Version> windowsSdkVersions = new List<Version>();
+        private readonly List<Version> windowsSdkVersions = new List<Version>();
 
         private Vector2 scrollPosition;
 
@@ -1236,8 +1234,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
 
             UpdatePackageName();
-
-            timeLastUpdatedBuilds = Time.realtimeSinceStartup;
         }
 
         private static string CalcMostRecentBuild()
