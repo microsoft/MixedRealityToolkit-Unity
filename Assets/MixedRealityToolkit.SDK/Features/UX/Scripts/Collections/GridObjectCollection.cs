@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             BottomRight
         };
         [SerializeField, Tooltip("Where the grid is anchored relative to local origin")]
-        private AnchorType anchor;
+        private AnchorType anchor = AnchorType.MiddleCenter;
         public AnchorType Anchor {
             get { return anchor;}
             set
@@ -143,7 +143,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
-        
+        // protected int Columns;
+        [Tooltip("Number of columns per row")]
+        [SerializeField]
+        private int columns = 3;
+
         /// <summary>
         /// Number of columns per row. Can only be assigned when layout type is 
         /// ColumnsThenRows
@@ -207,11 +211,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// Reference mesh to use for rendering the cylinder layout
         /// </summary>
         public Mesh CylinderMesh { get; set; }
-
-        // protected int Columns;
-        [Tooltip("Number of columns per row")]
-        [SerializeField]
-        private int columns = 0;
 
         protected Vector2 HalfCell;
 

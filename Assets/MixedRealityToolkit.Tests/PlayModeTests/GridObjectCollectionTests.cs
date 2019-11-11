@@ -26,6 +26,11 @@ using System.IO;
 
 namespace Microsoft.MixedReality.Toolkit.Tests
 {
+    /// <summary>
+    /// Tests different layout behavior of GridObjectCollection.
+    /// You can use GridObjectLayoutControl.cs in the examples package to
+    /// quickly generate the expected positions used in these tests.
+    /// </summary>
     internal class GridObjectCollectionTests
     {
         [SetUp]
@@ -44,10 +49,6 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         #region Tests
         /// <summary>
         /// Tests that grid lays out object correctly for all different anchor types
-        /// 1. Create list of 10 objects
-        /// 2. Configure width, height of cell to be 1.0
-        /// 3. Make the layout horizontal
-        /// 4. Iterate over every layout type. Print the positions to get expected values for each type
         /// </summary>
         [UnityTest]
         public IEnumerator TestAnchors()
@@ -66,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 child.transform.parent = go.transform;
                 child.transform.localScale = Vector3.one * 0.1f;
             }
-            // To Do: iterate over every layout type
+
             grid.Layout = LayoutOrder.Horizontal;
 
             int expectedIdx = 0;
@@ -93,6 +94,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
             yield return null;
         }
+
+    #region Expected Values
+    // You can use GridObjectLayoutControl.cs in the examples package to
+    // quickly generate the expected positions used in these tests.
 
     Vector3[] anchorTestExpected = new Vector3[] {
         new Vector3(0.08f, -0.08f, 0.75f), // UpperLeft index 0
@@ -123,7 +128,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         new Vector3(-0.23f, 0.08f, 0.75f), // BottomRight index 1
         new Vector3(-0.08f, 0.08f, 0.75f) // BottomRight index 2
     };
-        #endregion
+    #endregion
+    
+    #endregion
     }
 }
 #endif
