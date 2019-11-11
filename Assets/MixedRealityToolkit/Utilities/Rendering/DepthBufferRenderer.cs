@@ -23,15 +23,15 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
             set => outputTexture = value;
         }
 
-        private RenderTexture originalRT;
+        private const string DepthShaderName = "Mixed Reality Toolkit/Depth Buffer Viewer";
 
+#if UNITY_EDITOR
+        private RenderTexture originalRT;
         private Material postProcessMaterial;
         private RenderTexture depthTexture;
-        private const string DepthShaderName = "Mixed Reality Toolkit/Depth Buffer Viewer";
         private int textureWidth, textureHeight;
         private Camera cam;
 
-#if UNITY_EDITOR
         private void Awake()
         {
             originalRT = CameraCache.Main.targetTexture;

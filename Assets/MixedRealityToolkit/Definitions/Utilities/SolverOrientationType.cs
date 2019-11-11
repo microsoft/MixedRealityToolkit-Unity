@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         Unmodified,
         /// <summary>
-        /// Orient toward Camera.main instead of SolverHandler's properties.
+        /// Orient toward the main camera instead of SolverHandler's properties.
         /// </summary>
         CameraFacing,
         /// <summary>

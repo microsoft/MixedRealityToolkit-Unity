@@ -23,7 +23,26 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public Interactable[] ToggleList
         {
             get => toggleList;
-            set => toggleList = value;
+            set 
+            {
+                if (value != null && toggleList != value)
+                {
+                    if (toggleList != null)
+                    {
+                        // Destroy all listeners on previous toggleList
+                        RemoveSelectionListeners();
+                    }
+
+                    // Set new list
+                    toggleList = value;
+
+                    // Add listeners to new list
+                    AddSelectionListeners();
+
+                    int index = Mathf.Clamp(CurrentIndex, 0, toggleList.Length - 1);
+                    SetSelection(index, true, true);
+                }
+            }
         }
 
         [Tooltip("Currently selected index in the ToggleList, default is 0")]
@@ -36,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public int CurrentIndex
         {
             get => currentIndex;
-            set => SetSelection(value, false, true);
+            set => SetSelection(value, true, true);    
         }
 
         [Tooltip("This event is triggered when any of the toggles in the ToggleList are selected")]
@@ -51,23 +70,15 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             if (ToggleList != null)
             {
-                // Add listeners to each toggle in ToggleList
-                for (int i = 0; i < ToggleList.Length; ++i)
+                // If the ToggleList is set before start, then it already has listeners
+                // If the ToggleList is populated through the inspector, then it needs listeners
+                if (toggleActions.Count == 0)
                 {
-                    int itemIndex = i;
+                    // Add listeners to each toggle in ToggleList
+                    AddSelectionListeners();
 
-                    UnityAction setSelectionAction = () =>
-                    {
-                        SetSelection(itemIndex, true, false);
-                    };
-
-                    toggleActions.Add(setSelectionAction);
-
-                    ToggleList[i].OnClick.AddListener(setSelectionAction);
-                    ToggleList[i].CanDeselect = false;
-                }
-
-                SetSelection(CurrentIndex, true, true);
+                    SetSelection(CurrentIndex, true, true);
+                }  
             }
         }
 
@@ -111,7 +122,26 @@ namespace Microsoft.MixedReality.Toolkit.UI
             OnSelectionEvents?.Invoke();
         }
 
-        private void OnDestroy()
+        private void AddSelectionListeners()
+        {
+            // Add listeners to new list
+            for (int i = 0; i < ToggleList.Length; ++i)
+            {
+                int itemIndex = i;
+
+                UnityAction setSelectionAction = () =>
+                {
+                    SetSelection(itemIndex, true, false);
+                };
+
+                toggleActions.Add(setSelectionAction);
+
+                ToggleList[i].OnClick.AddListener(setSelectionAction);
+                ToggleList[i].CanDeselect = false;
+            }
+        }
+
+        private void RemoveSelectionListeners()
         {
             for (int i = 0; i < toggleActions.Count; ++i)
             {
@@ -119,6 +149,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
 
             toggleActions.Clear();
+        }
+
+        private void OnDestroy()
+        {
+            RemoveSelectionListeners();
         }
     }
 }

@@ -89,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             yield return WaitForFrames(2);
 
-            Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, Camera.main.transform.position), DistanceThreshold);
+            Assert.LessOrEqual(Vector3.Distance(testObjects.target.transform.position, CameraCache.Main.transform.position), DistanceThreshold);
 
             // Test orbital around custom override
             testObjects.handler.TrackedTargetType = TrackedObjectType.CustomOverride;
