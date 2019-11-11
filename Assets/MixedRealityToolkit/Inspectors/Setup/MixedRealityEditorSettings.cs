@@ -44,15 +44,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// </summary>
         public static bool IgnoreProjectConfigForSession
         {
-            get
-            {
-                return SessionState.GetBool(SessionKey, false);
-            }
-
-            set
-            {
-                SessionState.SetBool(SessionKey, value);
-            }
+            get => SessionState.GetBool(SessionKey, false);
+            set => SessionState.SetBool(SessionKey, value);
         }
 
         private static void OnPlayStateModeChanged(PlayModeStateChange state)

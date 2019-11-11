@@ -182,7 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 // If we are currently searching for folders, wait up to 1 second for operation to complete
                 if (searchForFoldersTask != null)
                 {
-                    searchForFoldersTask.Wait(1);
+                    searchForFoldersTask.Wait(1000);
                 }
 
                 return mrtkFolders.Count > 0;
