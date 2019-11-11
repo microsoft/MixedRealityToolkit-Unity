@@ -25,13 +25,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
             get => toggleList;
             set 
             {
-                if (value != null && toggleList != value )
+                if (value != null && toggleList != value)
                 {
                     if (toggleList != null)
                     {
                         // Destroy all listeners on previous toggleList
                         RemoveSelectionListeners();
-                        listenersAdded = false;
                     }
 
                     // Set new list
@@ -39,8 +38,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
                     // Add listeners to new list
                     AddSelectionListeners();
-
-                    listenersAdded = true;
 
                     int index = Mathf.Clamp(CurrentIndex, 0, toggleList.Length - 1);
                     SetSelection(index, true, true);
@@ -69,20 +66,16 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private List<UnityAction> toggleActions = new List<UnityAction>();
 
-        private bool listenersAdded = false;
-
         private void Start()
         {
             if (ToggleList != null)
             {
                 // If the ToggleList is set before start, then it already has listeners
                 // If the ToggleList is populated through the inspector, then it needs listeners
-                if (listenersAdded == false)
+                if (toggleActions.Count == 0)
                 {
                     // Add listeners to each toggle in ToggleList
                     AddSelectionListeners();
-
-                    listenersAdded = true;
 
                     SetSelection(CurrentIndex, true, true);
                 }  
@@ -150,7 +143,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         private void RemoveSelectionListeners()
         {
-            Debug.Log(toggleActions.Count);
             for (int i = 0; i < toggleActions.Count; ++i)
             {
                 ToggleList[i]?.OnClick.RemoveListener(toggleActions[i]);
