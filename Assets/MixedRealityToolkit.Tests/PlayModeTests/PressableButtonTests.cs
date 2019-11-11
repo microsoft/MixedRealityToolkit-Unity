@@ -34,6 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         #region Utilities
 
         private static string PrefabDirectoryPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs";
+        private static string UnitTestCanvasPrefabPath = "Assets/MixedRealityToolkit.Tests/PlayModeTests/Prefabs/UnitTestCanvas.prefab";
 
         private static Dictionary<string, bool> PressableButtonTestPrefabs = new Dictionary<string, bool>
         {
@@ -62,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             if (PressableButtonTestPrefabs[prefabFilename])
             {
                 // Need to place this test button in a Canvas.  Instantiate the test canvas and place the button into it.
-                var canvasPrefab = AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit.Tests/PlayModeTests/Prefabs/UnitTestCanvas.prefab", typeof(Object));
+                var canvasPrefab = AssetDatabase.LoadAssetAtPath(UnitTestCanvasPrefabPath, typeof(Object));
                 var canvasObject = (GameObject)Object.Instantiate(canvasPrefab);
                 testButton.transform.SetParent(canvasObject.transform, worldPositionStays: false);
             }
