@@ -242,7 +242,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0.55, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: -0.5062375, z: 0}
+  m_ConnectedAnchor: {x: 0, y: -0.52499956, z: -0.00000018626451}
   m_UseSpring: 1
   m_Spring:
     spring: 0.1
@@ -835,7 +835,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: -0.56, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: 1.0400003, z: 0}
+  m_ConnectedAnchor: {x: 0, y: 1.0400009, z: 0}
   m_UseSpring: 1
   m_Spring:
     spring: 1
@@ -886,7 +886,6 @@ GameObject:
   - component: {fileID: 887160072}
   - component: {fileID: 887160075}
   - component: {fileID: 887160074}
-  - component: {fileID: 887160073}
   m_Layer: 0
   m_Name: MRTKLogo
   m_TagString: Untagged
@@ -908,20 +907,6 @@ Transform:
   m_Father: {fileID: 317785146}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!64 &887160073
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 887160071}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &887160074
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1323,7 +1308,6 @@ GameObject:
   - component: {fileID: 1355410463}
   - component: {fileID: 1355410466}
   - component: {fileID: 1355410465}
-  - component: {fileID: 1355410464}
   m_Layer: 0
   m_Name: MRTKLogo
   m_TagString: Untagged
@@ -1345,20 +1329,6 @@ Transform:
   m_Father: {fileID: 317785146}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!64 &1355410464
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1355410462}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &1355410465
 MeshRenderer:
   m_ObjectHideFlags: 0
