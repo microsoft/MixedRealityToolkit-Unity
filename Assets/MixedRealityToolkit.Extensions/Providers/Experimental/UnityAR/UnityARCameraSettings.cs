@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
         {
             if (SettingsProfile == null)
             {
-                Debug.LogWarning("A profile was not specified for the XR Camera Settings provider.\nApplying Microsoft Mixed Reality Toolkit default options.");
+                Debug.LogWarning("A profile was not specified for the Unity AR Camera Settings provider.\nApplying Microsoft Mixed Reality Toolkit default options.");
                 return;
             }
 
