@@ -75,6 +75,13 @@ try
             Write-Error "Building InEditor WindowsStandalone32 Failed! See log file for more information $(Get-Location)\Logs\Build.InEditor.WindowsStandalone32.$($Version).log";
         exit($lastexitcode)
     }
+    Write-Output "============ Building InEditor USA ============ "
+    dotnet msbuild .\BuildSource.proj -target:BuildWSAEditor > "Logs\Build.InEditor.WSA.$($Version).log"
+    if ($lastexitcode -ge 1)
+    {
+            Write-Error "Building InEditor WSA Failed! See log file for more information $(Get-Location)\Logs\Build.InEditor.WSA.$($Version).log";
+        exit($lastexitcode)
+    }
     Write-Output "============ Building Player WindowsStandalone32 ============ "
     dotnet msbuild .\BuildSource.proj -target:BuildStandalonePlayer > "Logs\Build.Player.WindowsStandalone32.$($Version).log"
     if ($lastexitcode -ge 1)
