@@ -16,6 +16,18 @@
     </MSBuild>
   </Target>
 
+  <Target Name="BuildAndroidPlayer">
+    <MSBuild Projects="@(ProjectReferences)" Targets="Restore;Build" Properties="Configuration=Player;Platform=Android;BuildProjectReferences=false">
+      <Output TaskParameter="TargetOutputs" ItemName="BuildStandalonePlayerOutputs" />
+    </MSBuild>
+  </Target>
+  
+  <Target Name="BuildIOSPlayer">
+    <MSBuild Projects="@(ProjectReferences)" Targets="Restore;Build" Properties="Configuration=Player;Platform=IOS;BuildProjectReferences=false">
+      <Output TaskParameter="TargetOutputs" ItemName="BuildStandalonePlayerOutputs" />
+    </MSBuild>
+  </Target>
+
   <Target Name="BuildWSAPlayer">
     <MSBuild Projects="@(ProjectReferences)" Targets="Restore;Build" Properties="Configuration=Player;Platform=WSA;BuildProjectReferences=false;MSBuildExtensionsPathOverride=C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild">
       <Output TaskParameter="TargetOutputs" ItemName="BuildWSAPlayerOutputs" />
