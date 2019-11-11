@@ -13,23 +13,30 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Input
         /// The joint this component tracks.
         /// </summary>
         public Transform Joint { get; set; }
+
         /// <summary>
         /// What hand this component lives one.
         /// </summary>
         public Handedness HandednessType { get; set; }
+
         /// <summary>
         /// What joint this component lives on.
         /// </summary>
         public TrackedHandJoint JointType { get; set; }
+
         /// <summary>
         /// An event to subscribe to when the component get's enabled. Useful for tacking when the joint loses tracking.
         /// </summary>
         public Action<JointKinematicBody> OnEnableAction { get; set; }
+
         /// <summary>
         /// An event to subscribe to when the component get's disabled. Useful for tacking when the joint loses tracking.
         /// </summary>
         public Action<JointKinematicBody> OnDisableAction { get; set; }
 
+        /// <summary>
+        /// Updates the position of the <see cref="JointKinematicBody"/> based on <see cref="JointType"/>.
+        /// </summary>
         public void UpdateState(bool active)
         {
             bool previousActiveState = gameObject.activeSelf;
