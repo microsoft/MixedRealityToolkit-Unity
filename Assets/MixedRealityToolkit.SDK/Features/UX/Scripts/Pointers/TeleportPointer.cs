@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using System.IO;
 using UnityEngine;
 using UnityPhysics = UnityEngine.Physics;
 
@@ -22,6 +23,27 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         [Range(0f, 1f)]
         [Tooltip("The threshold amount for joystick input (Dead Zone)")]
         private float inputThreshold = 0.5f;
+
+        private float InputThreshold
+        {
+            get => inputThreshold;
+            set
+            {
+                if (inputThreshold != value)
+                {
+                    inputThresholdChanged = true;
+                    inputThreshold = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Indicates whether or not the inputThreshold value has been changed (in the inspector or via code).
+        /// </summary>
+        /// <remarks>
+        /// This defaults to true to allow the initial value to be calculated on first use.
+        /// </remarks>
+        private bool inputThresholdChanged = true;
 
         [SerializeField]
         [Range(0f, 360f)]
@@ -75,6 +97,24 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         /// The Gravity Distorter that is affecting the <see cref="Utilities.BaseMixedRealityLineDataProvider"/> attached to this pointer.
         /// </summary>
         public DistorterGravity GravityDistorter => gravityDistorter;
+
+        private float inputThresholdSquared = 0f;
+
+        /// <summary>
+        /// The square of the InputThreshold value.
+        /// </summary>
+        private float InputThresholdSquared
+        {
+            get
+            {
+                if (inputThresholdChanged)
+                {
+                    inputThresholdSquared = Mathf.Pow(InputThreshold, 2f);
+                    inputThresholdChanged = false;
+                }
+                return inputThresholdSquared;
+            }
+        }
 
         protected override void OnEnable()
         {
@@ -320,7 +360,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                 currentInputPosition = eventData.InputData;
             }
 
-            if (currentInputPosition.sqrMagnitude > Mathf.Pow(inputThreshold, 2f))
+            if (currentInputPosition.sqrMagnitude > InputThresholdSquared)
             {
                 // Get the angle of the pointer input
                 float angle = Mathf.Atan2(currentInputPosition.x, currentInputPosition.y) * Mathf.Rad2Deg;
