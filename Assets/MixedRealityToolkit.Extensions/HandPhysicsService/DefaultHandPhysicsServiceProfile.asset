@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: DefaultHandPhysicsServiceProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 1
+  handPhysicsLayer:
+    serializedVersion: 2
+    m_Bits: 1
   fingerTipKinematicBodyPrefab: {fileID: 6269093343897851288, guid: f3b3591b938890745b0e96406eca7a80,
     type: 3}
   usePalmKinematicBody: 0

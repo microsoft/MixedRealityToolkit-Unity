@@ -12,6 +12,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Extensions
         public GameObject FingerTipKinematicBodyPrefab => fingerTipKinematicBodyPrefab;
         public GameObject PalmKinematicBodyPrefab => palmKinematicBodyPrefab;
 
+        public int HandPhysicsLayer => handPhysicsLayer;
+
+        [SerializeField]
+        [Tooltip("The Layer the PhysicsJoints will be on")]
+        private int handPhysicsLayer = 0;
+
         [SerializeField]
         [Tooltip("The prefab to represent each PhysicsJoint")]
         private GameObject fingerTipKinematicBodyPrefab = null;

@@ -14,7 +14,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Extensions
         GameObject HandPhysicsServiceRoot { get; }
 
         /// <summary>
-        /// Whether make the Palm a PhysicsJoint
+        /// The LayerMask the PhysicsJoints will be on
+        /// </summary>
+        int HandPhysicsLayer { get; set; }
+
+        /// <summary>
+        /// Whether to make the Palm a PhysicsJoint
         /// </summary>
         bool UsePalmKinematicBody { get; set; }
 

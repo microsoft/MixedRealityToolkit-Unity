@@ -660,7 +660,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 844079863}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.137, y: -0.04639998, z: 0}
+  m_LocalPosition: {x: 0.1659, y: -0.04639998, z: 0.0154}
   m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
   m_Children: []
   m_Father: {fileID: 189989385}
@@ -1146,6 +1146,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: e4c84336a1663704083b58c1b3d8cedf, type: 2}
+    - target: {fileID: 400004, guid: bb88669a3463b36438d9225a3ecd3a35, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.29
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bb88669a3463b36438d9225a3ecd3a35, type: 3}
 --- !u!1 &1300550607 stripped
@@ -1598,7 +1602,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1683235911}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.137, y: -0.07229998, z: 0}
+  m_LocalPosition: {x: 0.1583, y: -0.07229998, z: -0.0911}
   m_LocalScale: {x: 0.02171, y: 0.02171, z: 0.02171}
   m_Children:
   - {fileID: 826893200}
@@ -1799,8 +1803,8 @@ PrefabInstance:
 
 
         While the service defaults to the "default" layer, it is recommended to use
-        a seperate layer for HandPhysics objects otherwise you can end up complicating
-        standard raycasting and may end up with unwanted collisions.'
+        a separate layer for HandPhysics objects. Otherwise there may be unwanted
+        collisions and/or inaccurate raycasts.'
       objectReference: {fileID: 0}
     - target: {fileID: 114125765304321574, guid: a900c08743a94c328074df8bbe3eb63c,
         type: 3}

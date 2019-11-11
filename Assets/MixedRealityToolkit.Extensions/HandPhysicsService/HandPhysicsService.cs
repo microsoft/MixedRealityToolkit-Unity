@@ -28,6 +28,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Extensions
         public GameObject HandPhysicsServiceRoot { get; private set; }
 
         /// <inheritdoc />
+        public int HandPhysicsLayer { get; set; }
+
+        /// <inheritdoc />
         public bool UsePalmKinematicBody { get; set; }
 
         /// <inheritdoc />
@@ -87,6 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Extensions
         /// <inheritdoc />
         public override void Initialize()
         {
+            HandPhysicsLayer = handPhysicsServiceProfile.HandPhysicsLayer;
             UsePalmKinematicBody = handPhysicsServiceProfile.UsePalmKinematicBody;
             FingerTipKinematicBodyPrefab = handPhysicsServiceProfile.FingerTipKinematicBodyPrefab;
             PalmKinematicBodyPrefab = handPhysicsServiceProfile.PalmKinematicBodyPrefab;
@@ -148,7 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Extensions
                 for (int j = 0; j < fingerTipTypes.Length; ++j)
                 {
                     if(FingerTipKinematicBodyPrefab == null) { continue; }
-                    if (TryCreateJointKinematicBody(FingerTipKinematicBodyPrefab, handednessTypes[i], fingerTipTypes[j], HandPhysicsServiceRoot.transform, out JointKinematicBody jointKinematicBody))
+                    if (TryCreateJointKinematicBody(FingerTipKinematicBodyPrefab, HandPhysicsLayer, handednessTypes[i], fingerTipTypes[j], HandPhysicsServiceRoot.transform, out JointKinematicBody jointKinematicBody))
                     {
                         jointKinematicBodies.Add(jointKinematicBody);
                     }
@@ -157,7 +161,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Extensions
                 if (UsePalmKinematicBody)
                 {
                     if (PalmKinematicBodyPrefab == null) { continue; }
-                    if (TryCreateJointKinematicBody(PalmKinematicBodyPrefab, handednessTypes[i], TrackedHandJoint.Palm, HandPhysicsServiceRoot.transform, out JointKinematicBody jointKinematicBody))
+                    if (TryCreateJointKinematicBody(PalmKinematicBodyPrefab, HandPhysicsLayer, handednessTypes[i], TrackedHandJoint.Palm, HandPhysicsServiceRoot.transform, out JointKinematicBody jointKinematicBody))
                     {
                         jointKinematicBodies.Add(jointKinematicBody);
                     }
@@ -165,38 +169,38 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Extensions
             }
         }
 
-        private static bool TryCreateJointKinematicBody(GameObject rbPrefab, Handedness handednessType, TrackedHandJoint jointType, Transform parent, out JointKinematicBody jointKinematicBody)
+        private static bool TryCreateJointKinematicBody(GameObject rbPrefab, int layer, Handedness handednessType, TrackedHandJoint jointType, Transform parent, out JointKinematicBody jointKinematicBody)
         {
             jointKinematicBody = null;
 
-            GameObject gO = GameObject.Instantiate(rbPrefab, parent);
+            GameObject currentGameObject = GameObject.Instantiate(rbPrefab, parent);
+            currentGameObject.layer = layer;
+            JointKinematicBody currentJoint = currentGameObject.GetComponent<JointKinematicBody>();
 
-            JointKinematicBody jkb = gO.GetComponent<JointKinematicBody>();
-
-            if (jkb == null)
+            if (currentJoint == null)
             {
                 Debug.LogError("The HandPhysicsService assumes the FingerTipKinematicBodyPrefab has a JointKinematicBody component.");
-                UnityEngine.Object.Destroy(gO);
+                UnityEngine.Object.Destroy(currentGameObject);
                 return false;
             }
 
-            jkb.JointType = jointType;
-            jkb.HandednessType = handednessType;
-            gO.name = handednessType + " " + jointType;
+            currentJoint.JointType = jointType;
+            currentJoint.HandednessType = handednessType;
+            currentGameObject.name = handednessType + " " + jointType;
 
-            if (gO.GetComponent<Collider>() == null)
+            if (currentGameObject.GetComponent<Collider>() == null)
             {
                 Debug.LogError("The HandPhysicsService assumes the FingerTipKinematicBodyPrefab has a Collder component.");
-                UnityEngine.Object.Destroy(gO);
+                UnityEngine.Object.Destroy(currentGameObject);
                 return false;
             }
 
-            Rigidbody rigidbody = gO.GetComponent<Rigidbody>();
+            Rigidbody rigidbody = currentGameObject.GetComponent<Rigidbody>();
 
             if (rigidbody == null)
             {
                 Debug.LogError("The HandPhysicsService assumes the FingerTipKinematicBodyPrefab has a Rigidbody component.");
-                UnityEngine.Object.Destroy(gO);
+                UnityEngine.Object.Destroy(currentGameObject);
                 return false;
             }
 
@@ -206,7 +210,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Extensions
                 rigidbody.isKinematic = true;
             }
 
-            jointKinematicBody = jkb;
+            jointKinematicBody = currentJoint;
             return true;
         }
 
