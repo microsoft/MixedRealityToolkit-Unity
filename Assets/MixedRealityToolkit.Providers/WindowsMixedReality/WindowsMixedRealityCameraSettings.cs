@@ -4,7 +4,10 @@
 using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
+
+#if UNITY_WSA
 using UnityEngine.XR.WSA;
+#endif // UNITY_WSA
 
 namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
 {
@@ -34,7 +37,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         #region IMixedRealityCameraSettings
 
         /// <inheritdoc/>
-        public bool IsOpaque => HolographicSettings.IsDisplayOpaque;
+        public bool IsOpaque =>
+#if UNITY_WSA
+            HolographicSettings.IsDisplayOpaque;
+#else
+            false;
+#endif
 
         /// <inheritdoc/>
         public void ApplyDisplaySettings()

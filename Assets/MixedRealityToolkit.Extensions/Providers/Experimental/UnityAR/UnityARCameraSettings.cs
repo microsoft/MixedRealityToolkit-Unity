@@ -1,6 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Copyright(c) 2019 Takahiro Miyaura
-// Licensed under the MIT License. See LICENSE in the project root for license information.﻿
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -61,23 +61,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
         #region IMixedRealityCameraSettings
 
         /// <inheritdoc/>
-        public override bool IsOpaque
-        {
-            get => (poseSource != ArTrackedPose.ColorCamera);
-        }
+        public override bool IsOpaque => poseSource != ArTrackedPose.ColorCamera;
 
         #endregion IMixedRealityCameraSettings
 
         /// <summary>
         /// The profile used to configure the camera.
         /// </summary>
-        public UnityARCameraSettingsProfile SettingsProfile
-        {
-            get
-            {
-                return ConfigurationProfile as UnityARCameraSettingsProfile;
-            }
-        }
+        public UnityARCameraSettingsProfile SettingsProfile => ConfigurationProfile as UnityARCameraSettingsProfile;
 
 #if UNITY_IOS || UNITY_ANDROID
         private bool isSupportedArConfiguration = true;
@@ -96,7 +87,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
         private ARInputManager arInputManager = null;
         private TrackedPoseDriver trackedPoseDriver = null;
 
-        /// <summary>
         /// <summary>
         /// Examines the scene to determine if AR Foundation components are present.
         /// </summary>
