@@ -152,7 +152,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private bool ColorExistsInFrame(Color color, int width, int height)
         {
-            var frameCapture = CaptureFrame(Camera.main, width, height);
+            var frameCapture = CaptureFrame(CameraCache.Main, width, height);
 
             Assert.NotNull(frameCapture, "Frame capture is null.");
 

@@ -73,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             }
 
             // If a transparent clear color isn't needed and we are capturing from the default camera, use Unity's screenshot API.
-            if (!transparentClearColor && (camera == null || camera == Camera.main))
+            if (!transparentClearColor && (camera == null || camera == CameraCache.Main))
             {
                 ScreenCapture.CaptureScreenshot(path, superSize);
 
@@ -85,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             // Make sure we have a valid camera to render from.
             if (camera == null)
             {
-                camera = Camera.main;
+                camera = CameraCache.Main;
 
                 if (camera == null)
                 {
