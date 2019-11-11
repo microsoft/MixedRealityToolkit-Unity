@@ -74,6 +74,18 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Assets/MixedRealityToolkit.SDK/Experimental/PulseShader/README.md",
+      "output": {
+        ".html": {
+          "relative_path": "Assets/MixedRealityToolkit.SDK/Experimental/PulseShader/README.html",
+          "hash": "WGT32K6o9hXgARc4rm9jIw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Assets/MixedRealityToolkit.SDK/Experimental/ScrollingObjectCollection/README.md",
       "output": {
         ".html": {
@@ -9889,6 +9901,42 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.HandPulseLogic.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.HandPulseLogic.html",
+          "hash": "yQLkoRux8sHcBQwNVsyS/g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.SurfacePulse.html",
+          "hash": "X9tBbEKj7UMhkX5EkWMFtA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.SurfacePulse.html",
+          "hash": "SzFd8QIcehTvMdm29h5AEg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Experimental.Teleport.TeleportSystemManager.yml",
       "output": {
         ".html": {
@@ -18281,7 +18329,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Tests.TestUtilities.html",
-          "hash": "NFZvh1PvZCGeWOVxI3RmTw=="
+          "hash": "xv0DbMyydtwb0Ofn0jQN7Q=="
         }
       },
       "is_incremental": false,
@@ -22493,7 +22541,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.SolverOrientationType.html",
-          "hash": "7a0yjbZr8K+Im27OW/CcZg=="
+          "hash": "Dqmk5pq/vD0mW2xS6hoC/A=="
         }
       },
       "is_incremental": false,
@@ -23465,7 +23513,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "QHJSC9EU+a8qYMC9sRZNzg=="
+          "hash": "o6XSfWIO+ZBr6s7QVbAG2A=="
         }
       },
       "is_incremental": false,
@@ -23527,13 +23575,13 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1408,
+          "total_file_count": 1411,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 134,
+          "total_file_count": 135,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
