@@ -75,7 +75,7 @@ try
             Write-Error "Building InEditor WindowsStandalone32 Failed! See log file for more information $(Get-Location)\Logs\Build.InEditor.WindowsStandalone32.$($Version).log";
         exit($lastexitcode)
     }
-    Write-Output "============ Building InEditor USA ============ "
+    Write-Output "============ Building InEditor WSA ============ "
     dotnet msbuild .\BuildSource.proj -target:BuildWSAEditor > "Logs\Build.InEditor.WSA.$($Version).log"
     if ($lastexitcode -ge 1)
     {
