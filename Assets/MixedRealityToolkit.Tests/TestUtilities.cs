@@ -137,7 +137,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         public static void InitializeCamera()
         {
-            if (Camera.main == null)
+            Camera[] cameras = GameObject.FindObjectsOfType<Camera>();
+
+            if (cameras.Length == 0)
             {
                 new GameObject("Main Camera", typeof(Camera), typeof(AudioListener)) { tag = "MainCamera" }.GetComponent<Camera>();
             }
