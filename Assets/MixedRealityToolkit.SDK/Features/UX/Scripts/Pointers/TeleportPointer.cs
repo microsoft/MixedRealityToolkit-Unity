@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         {
             get
             {
-                if (Mathf.Approximately(cachedInputThreshold, inputThreshold))
+                if (!Mathf.Approximately(cachedInputThreshold, inputThreshold))
                 {
                     inputThresholdSquared = Mathf.Pow(inputThreshold, 2f);
                     cachedInputThreshold = inputThreshold;
