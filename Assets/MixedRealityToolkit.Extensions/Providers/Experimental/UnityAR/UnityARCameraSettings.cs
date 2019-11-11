@@ -179,7 +179,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 
             arCameraManager = cameraObject.EnsureComponent<ARCameraManager>();
             arCameraBackground = cameraObject.EnsureComponent<ARCameraBackground>();
-
             trackedPoseDriver = cameraObject.EnsureComponent<TrackedPoseDriver>();
 
             trackedPoseDriver.SetPoseSource(
