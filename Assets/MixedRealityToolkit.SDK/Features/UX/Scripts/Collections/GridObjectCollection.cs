@@ -68,6 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             BottomCenter,
             BottomRight
         };
+
         [SerializeField, Tooltip("Where the grid is anchored relative to local origin")]
         private AnchorType anchor = AnchorType.MiddleCenter;
         public AnchorType Anchor {
