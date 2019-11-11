@@ -24,27 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         [Tooltip("The threshold amount for joystick input (Dead Zone)")]
         private float inputThreshold = 0.5f;
 
-        private float InputThreshold
-        {
-            get => inputThreshold;
-            set
-            {
-                if (inputThreshold != value)
-                {
-                    inputThresholdChanged = true;
-                    inputThreshold = value;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Indicates whether or not the inputThreshold value has been changed (in the inspector or via code).
-        /// </summary>
-        /// <remarks>
-        /// This defaults to true to allow the initial value to be calculated on first use.
-        /// </remarks>
-        private bool inputThresholdChanged = true;
-
         [SerializeField]
         [Range(0f, 360f)]
         [Tooltip("If Pressing 'forward' on the thumbstick gives us an angle that doesn't quite feel like the forward direction, we apply this offset to make navigation feel more natural")]
@@ -98,6 +77,8 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         /// </summary>
         public DistorterGravity GravityDistorter => gravityDistorter;
 
+        private float cachedInputThreshold = 0f;
+
         private float inputThresholdSquared = 0f;
 
         /// <summary>
@@ -107,10 +88,10 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         {
             get
             {
-                if (inputThresholdChanged)
+                if (cachedInputThreshold != inputThreshold)
                 {
-                    inputThresholdSquared = Mathf.Pow(InputThreshold, 2f);
-                    inputThresholdChanged = false;
+                    inputThresholdSquared = Mathf.Pow(inputThreshold, 2f);
+                    cachedInputThreshold = inputThreshold;
                 }
                 return inputThresholdSquared;
             }
