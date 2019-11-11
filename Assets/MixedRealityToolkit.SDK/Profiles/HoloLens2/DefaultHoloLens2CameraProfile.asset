@@ -13,7 +13,14 @@ MonoBehaviour:
   m_Name: DefaultHoloLens2CameraProfile
   m_EditorClassIdentifier: 
   isCustomProfile: 0
-  settingsConfigurations: []
+  settingsConfigurations:
+  - componentType:
+      reference: Microsoft.MixedReality.Toolkit.WindowsMixedReality.WindowsMixedRealityCameraSettings,
+        Microsoft.MixedReality.Toolkit.Providers.WindowsMixedReality
+    componentName: Windows Mixed Reality Camera Settings
+    priority: 0
+    runtimePlatform: 8
+    settingsProfile: {fileID: 0}
   nearClipPlaneOpaqueDisplay: 0.1
   farClipPlaneOpaqueDisplay: 1000
   cameraClearFlagsOpaqueDisplay: 2
