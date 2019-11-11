@@ -9,8 +9,9 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: MRTK_SurfaceReconstruction
   m_Shader: {fileID: 4800000, guid: c31d23be78a0c7d438feb3d0305a7707, type: 3}
-  m_ShaderKeywords: USE_ALBEDO_TEXTURE _ALPHABLEND_ON _COLOR_MAP_ENABLE_ _COLOR_MAP_ENABLE__ON
-    _DIRECTIONAL_LIGHT _DISABLE_ALBEDO_MAP _PULSE_ENABLED__ON _RIM_LIGHT _UNITY_TO_SRGB__ON
+  m_ShaderKeywords: USE_ALBEDO_TEXTURE _ALPHABLEND_ON _AUTO_PULSE__ON _COLOR_MAP_ENABLE_
+    _COLOR_MAP_ENABLE__ON _DIRECTIONAL_LIGHT _DISABLE_ALBEDO_MAP _PULSE_ENABLED__ON
+    _RIM_LIGHT _UNITY_TO_SRGB__ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -26,7 +27,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - USE_ALBEDO_TEXTURE: 1
-    - _Auto_Pulse_: 0
+    - _Auto_Pulse_: 1
     - _Color_Center_: 0.4
     - _Color_Leading_Fuzz_: 1
     - _Color_Map_Enable_: 1
@@ -47,7 +48,7 @@ Material:
     - _Max_In_Angle_: 0.6
     - _Max_Out_Angle_: 0.4
     - _Noise_Frequency_: 40.5
-    - _Period_: 2.7
+    - _Period_: 5
     - _Pulse_: 0
     - _Pulse_Amplify_Leading_: 0
     - _Pulse_Color_Width_: 1
