@@ -226,6 +226,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private static int currentConnectionInfoIndex = 0;
         private static DevicePortalConnections portalConnections = null;
         private static CancellationTokenSource appxCancellationTokenSource = null;
+        private static float appxProgressBarTimer = 0.0f;
 
         #endregion Fields
 
@@ -546,6 +547,15 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                         EditorApplication.delayCall += () => Process.Start("explorer.exe", $"/f /open,{appxBuildPath}");
                     }
                 }
+            }
+
+            using (var progressBarRect = new EditorGUILayout.VerticalScope())
+            {
+                appxProgressBarTimer = Mathf.Clamp01(Time.realtimeSinceStartup % 1.0f);
+
+                EditorGUI.ProgressBar(progressBarRect.rect, appxProgressBarTimer, "Building AppX...");
+                GUILayout.Space(16);
+                Repaint();
             }
 
             using (new EditorGUILayout.HorizontalScope())
