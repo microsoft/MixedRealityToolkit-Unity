@@ -5,6 +5,7 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
+using System.IO;
 using UnityEngine;
 using UnityPhysics = UnityEngine.Physics;
 
@@ -75,6 +76,26 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
         /// The Gravity Distorter that is affecting the <see cref="Utilities.BaseMixedRealityLineDataProvider"/> attached to this pointer.
         /// </summary>
         public DistorterGravity GravityDistorter => gravityDistorter;
+
+        private float cachedInputThreshold = 0f;
+
+        private float inputThresholdSquared = 0f;
+
+        /// <summary>
+        /// The square of the InputThreshold value.
+        /// </summary>
+        private float InputThresholdSquared
+        {
+            get
+            {
+                if (!Mathf.Approximately(cachedInputThreshold, inputThreshold))
+                {
+                    inputThresholdSquared = Mathf.Pow(inputThreshold, 2f);
+                    cachedInputThreshold = inputThreshold;
+                }
+                return inputThresholdSquared;
+            }
+        }
 
         protected override void OnEnable()
         {
@@ -320,7 +341,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
                 currentInputPosition = eventData.InputData;
             }
 
-            if (currentInputPosition.sqrMagnitude > Mathf.Pow(inputThreshold, 2f))
+            if (currentInputPosition.sqrMagnitude > InputThresholdSquared)
             {
                 // Get the angle of the pointer input
                 float angle = Mathf.Atan2(currentInputPosition.x, currentInputPosition.y) * Mathf.Rad2Deg;
