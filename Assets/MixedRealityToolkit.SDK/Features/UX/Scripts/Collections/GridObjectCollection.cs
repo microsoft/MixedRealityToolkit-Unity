@@ -117,7 +117,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             {
                 if (Layout == LayoutOrder.ColumnThenRow) 
                 {
-                    Debug.LogError("Cannot assign Rows when layout type is " + Layout);
+                    Debug.LogError("When using ColumnThenRow layout, assign Columns instead of Rows.");
                     return;                    
                 }
                 rows = value; 
@@ -139,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             { 
                 if (Layout == LayoutOrder.RowThenColumn)
                 {
-                    Debug.LogError("Cannot assign Columns when layout type is " + Layout);
+                    Debug.LogError("When using RowThenColumn layout, assign Rows instead of Columns.");
                     return;
                 }
                 columns = value;

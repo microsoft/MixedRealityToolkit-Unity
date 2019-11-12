@@ -51,6 +51,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// Use this to run mock tests in grid object collection tests
         /// and print the resulting positions of child objects to a file.
         /// Used to get expected values for GridObjectCollectionTests.
+        /// When you run the comand, look in the Debug log for where the file is output,
+        /// it will be of form "printgrid-yyMMdd-HHmmss.txt"
         /// </summary>
         public void RunTest()
         {
@@ -99,6 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 gridCollection.Anchor = value;
                 gridCollection.UpdateCollection();
                 PrintGrid(gridCollection, value.ToString(), path, stringBuilder);
+                // Wait for 5 seconds so dev / user can see the layout 
                 yield return new WaitForSeconds(0.5f);
             }
             stringBuilder.AppendLine("}");
@@ -115,7 +118,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         private void PrintGrid(GridObjectCollection grid, string prefix, string path, StringBuilder builder)
         {
-
             Debug.Log(prefix);
             var i = 0;
             foreach (Transform child in grid.gameObject.transform)
