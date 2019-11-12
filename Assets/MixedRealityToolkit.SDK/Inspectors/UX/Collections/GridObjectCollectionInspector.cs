@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             EditorGUILayout.PropertyField(surfaceType);
             EditorGUILayout.PropertyField(orientType);
             EditorGUILayout.PropertyField(layout);
-            EditorGUILayout.PropertyField(anchor);
+
 
 
             LayoutOrder layoutTypeIndex = (LayoutOrder) layout.enumValueIndex;
@@ -69,7 +69,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 EditorGUILayout.PropertyField(cellHeight);
             }
 
-            if ((ObjectOrientationSurfaceType) surfaceType.enumValueIndex == ObjectOrientationSurfaceType.Plane)
+            ObjectOrientationSurfaceType surfaceTypeIndex = (ObjectOrientationSurfaceType) surfaceType.enumValueIndex;
+            if (surfaceTypeIndex == ObjectOrientationSurfaceType.Plane)
             {
                 EditorGUILayout.PropertyField(distance, new GUIContent("Distance from parent", "Distance from parent object's origin"));
             }
@@ -78,6 +79,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 EditorGUILayout.PropertyField(radius);
                 EditorGUILayout.PropertyField(radialRange);
             }
+
+            if (surfaceTypeIndex != ObjectOrientationSurfaceType.Radial)
+            {
+                // layout anchor has no effect on radial layout, it is always at center.
+                EditorGUILayout.PropertyField(anchor);
+            }
+            
         }
     }
 }
