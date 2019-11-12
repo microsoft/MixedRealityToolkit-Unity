@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using UnityEngine;
 
 #if UNITY_WSA
 using UnityEngine.XR.WSA;
@@ -18,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         typeof(IMixedRealityCameraSystem),
         SupportedPlatforms.WindowsUniversal,
         "Windows Mixed Reality Camera Settings")]
-    public class WindowsMixedRealityCameraSettings : BaseDataProvider, IMixedRealityCameraSettingsProvider
+    public class WindowsMixedRealityCameraSettings : BaseCameraSettingsProvider
     {
         /// <summary>
         /// Constructor.
@@ -37,36 +36,12 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality
         #region IMixedRealityCameraSettings
 
         /// <inheritdoc/>
-        public bool IsOpaque =>
+        public override bool IsOpaque =>
 #if UNITY_WSA
             HolographicSettings.IsDisplayOpaque;
 #else
             false;
 #endif
-
-        /// <inheritdoc/>
-        public void ApplyDisplaySettings()
-        {
-            MixedRealityCameraProfile cameraProfile = (Service as IMixedRealityCameraSystem)?.CameraProfile;
-            if (cameraProfile == null) { return; }
-
-            if (IsOpaque)
-            {
-                CameraCache.Main.clearFlags = cameraProfile.CameraClearFlagsOpaqueDisplay;
-                CameraCache.Main.nearClipPlane = cameraProfile.NearClipPlaneOpaqueDisplay;
-                CameraCache.Main.farClipPlane = cameraProfile.FarClipPlaneOpaqueDisplay;
-                CameraCache.Main.backgroundColor = cameraProfile.BackgroundColorOpaqueDisplay;
-                QualitySettings.SetQualityLevel(cameraProfile.OpaqueQualityLevel, false);
-            }
-            else
-            {
-                CameraCache.Main.clearFlags = cameraProfile.CameraClearFlagsTransparentDisplay;
-                CameraCache.Main.backgroundColor = cameraProfile.BackgroundColorTransparentDisplay;
-                CameraCache.Main.nearClipPlane = cameraProfile.NearClipPlaneTransparentDisplay;
-                CameraCache.Main.farClipPlane = cameraProfile.FarClipPlaneTransparentDisplay;
-                QualitySettings.SetQualityLevel(cameraProfile.TransparentQualityLevel, false);
-            }
-        }
 
         #endregion IMixedRealityCameraSettings
     }
