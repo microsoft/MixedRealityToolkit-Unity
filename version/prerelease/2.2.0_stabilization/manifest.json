@@ -6701,7 +6701,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.BaseDataProvider.html",
-          "hash": "Cul0Hl174PQ5f0C6eJZDpg=="
+          "hash": "XhUPKBx14hCHPsB74lGHEg=="
         }
       },
       "is_incremental": false,
@@ -7093,6 +7093,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.CameraSystem.BaseCameraSettingsProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.CameraSystem.BaseCameraSettingsProvider.html",
+          "hash": "81C2JzHp3xoxDaTAehYPoQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.CameraSystem.DisplayType.yml",
       "output": {
         ".html": {
@@ -7109,7 +7121,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.CameraSystem.IMixedRealityCameraSettingsProvider.html",
-          "hash": "cJ5BwqR74uKX7dKhxfNw0g=="
+          "hash": "X7a/rPcu2Uso3WYEun7JJw=="
         }
       },
       "is_incremental": false,
@@ -7157,7 +7169,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.CameraSystem.html",
-          "hash": "F6dW6zYoPJQZ/Rp37wP8kQ=="
+          "hash": "DD9/zh1pS0TFBPJjSdV6NA=="
         }
       },
       "is_incremental": false,
@@ -10109,7 +10121,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Experimental.UnityAR.UnityARCameraSettings.html",
-          "hash": "X4bPilzt8CE+Mmon8qnyLg=="
+          "hash": "rnlMWHR47ZSN9EcVjxy1jg=="
         }
       },
       "is_incremental": false,
@@ -23513,7 +23525,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "o6XSfWIO+ZBr6s7QVbAG2A=="
+          "hash": "4xEBHIOGa/+v8R1VJIWHig=="
         }
       },
       "is_incremental": false,
@@ -23565,17 +23577,10 @@
         "full_build_reason_code": "ForceRebuild"
       },
       "processors": {
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1411,
+          "total_file_count": 1412,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {
@@ -23587,6 +23592,13 @@
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
