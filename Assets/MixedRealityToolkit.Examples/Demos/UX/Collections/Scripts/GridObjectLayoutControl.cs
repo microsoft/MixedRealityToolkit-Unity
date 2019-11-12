@@ -19,6 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     {
         [Tooltip("Point this at the GridObjectCollection to control.")]
         public GridObjectCollection grid;
+
         [Tooltip("Optional text field to output the layout of control.")]
         public TMPro.TextMeshPro text;
 
@@ -27,10 +28,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         public void NextLayout()
         {
-            GridObjectCollection.AnchorType cL = grid.Anchor;
-            var anchorTypeCount = Enum.GetNames(typeof(GridObjectCollection.AnchorType)).Length;
-            int n = (((int)cL) + 1) % anchorTypeCount;
-            grid.Anchor = (GridObjectCollection.AnchorType)n;
+            LayoutAnchor currentLayout = grid.Anchor;
+            var anchorTypeCount = Enum.GetNames(typeof(LayoutAnchor)).Length;
+            int nextLayout = (((int)currentLayout) + 1) % anchorTypeCount;
+            grid.Anchor = (LayoutAnchor)nextLayout;
             UpdateUI();
         }
 
@@ -39,10 +40,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         public void PreviousLayout()
         {
-            GridObjectCollection.AnchorType cL = grid.Anchor;
-            var anchorTypeCount = Enum.GetNames(typeof(GridObjectCollection.AnchorType)).Length;
-            int n = (((int)cL) - 1) % anchorTypeCount;
-            grid.Anchor = (GridObjectCollection.AnchorType)n;
+            LayoutAnchor currentLayout = grid.Anchor;
+            var anchorTypeCount = Enum.GetNames(typeof(LayoutAnchor)).Length;
+            int nextLayout = (((int)currentLayout) - 1) % anchorTypeCount;
+            grid.Anchor = (LayoutAnchor)nextLayout;
             UpdateUI();
         }
 
@@ -73,37 +74,37 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         private IEnumerator TestAnchors()
         {
-            var go = new GameObject();
-            go.name = "grid";
-            var grid = go.AddComponent<GridObjectCollection>();
-            grid.Distance = 0.75f;
-            grid.CellWidth = 0.15f;
-            grid.CellHeight = 0.15f;
+            var gridRoot = new GameObject();
+            gridRoot.name = "grid";
+            var gridCollection = gridRoot.AddComponent<GridObjectCollection>();
+            gridCollection.Distance = 0.75f;
+            gridCollection.CellWidth = 0.15f;
+            gridCollection.CellHeight = 0.15f;
 
             for (int i = 0; i < 3; i++)
             {
                 var child = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                child.transform.parent = go.transform;
+                child.transform.parent = gridRoot.transform;
                 child.transform.localScale = Vector3.one * 0.1f;
             }
-            grid.Layout = LayoutOrder.Horizontal;
+            gridCollection.Layout = LayoutOrder.Horizontal;
 
 
             var filename = "printgrid-" + DateTime.UtcNow.ToString("yyMMdd-HHmmss") + ".txt";
             string path = Path.Combine(Application.persistentDataPath, filename);
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("Vector3[] expectedPositions = new Vector3[] {");
-            foreach (GridObjectCollection.AnchorType et in Enum.GetValues(typeof(GridObjectCollection.AnchorType)))
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine("Vector3[] expectedPositions = new Vector3[] {");
+            foreach (LayoutAnchor value in Enum.GetValues(typeof(LayoutAnchor)))
             {
-                grid.Anchor = et;
-                grid.UpdateCollection();
-                PrintGrid(grid, et.ToString(), path, sb);
+                gridCollection.Anchor = value;
+                gridCollection.UpdateCollection();
+                PrintGrid(gridCollection, value.ToString(), path, stringBuilder);
                 yield return new WaitForSeconds(0.5f);
             }
-            sb.AppendLine("}");
+            stringBuilder.AppendLine("}");
             using (var writer = new StreamWriter(path))
             {
-                writer.Write(sb.ToString());
+                writer.Write(stringBuilder.ToString());
                 Debug.Log("Wrote to: " + path);
             }
             yield return null;
@@ -112,14 +113,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// <summary>
         /// Prints the coordinates of every child in the grid
         /// </summary>
-        private void PrintGrid(GridObjectCollection grid, string prefix, string path, StringBuilder sb)
+        private void PrintGrid(GridObjectCollection grid, string prefix, string path, StringBuilder builder)
         {
 
             Debug.Log(prefix);
             var i = 0;
             foreach (Transform child in grid.gameObject.transform)
             {
-                sb.AppendLine($"    new Vector3({child.localPosition.x:F2}f, {child.localPosition.y:F2}f, {child.localPosition.z:F2}f), // {prefix} index {i}");
+                builder.AppendLine($"    new Vector3({child.localPosition.x:F2}f, {child.localPosition.y:F2}f, {child.localPosition.z:F2}f), // {prefix} index {i}");
                 i++;
             }
         }

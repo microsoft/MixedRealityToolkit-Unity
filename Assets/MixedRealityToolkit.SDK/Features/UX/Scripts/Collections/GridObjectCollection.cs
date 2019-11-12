@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// control panels or sets of prefab/objects.
     /// </summary>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_ObjectCollection.html")]
-    public class GridObjectCollection : BaseObjectCollection
+    public partial class GridObjectCollection : BaseObjectCollection
     {
         [Tooltip("Type of surface to map the collection to")]
         [SerializeField]
@@ -49,35 +49,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         public LayoutOrder Layout
         {
             get { return layout; }
-            set 
-            { 
-                layout = value; 
-                UpdateCollection();
-            }
+            set { layout = value; }
         }
 
-        public enum AnchorType
-        {
-            UpperLeft,
-            UpperCenter,
-            UpperRight,
-            MiddleLeft,
-            MiddleCenter,
-            MiddleRight,
-            BottomLeft,
-            BottomCenter,
-            BottomRight
-        };
-
         [SerializeField, Tooltip("Where the grid is anchored relative to local origin")]
-        private AnchorType anchor = AnchorType.MiddleCenter;
-        public AnchorType Anchor {
-            get { return anchor;}
-            set
-            {
-                anchor = value;
-                UpdateCollection();
-            }
+        private LayoutAnchor anchor = LayoutAnchor.MiddleCenter;
+        public LayoutAnchor Anchor 
+        {
+            get { return anchor; }
+            set { anchor = value; }
         }
 
         [Range(0.05f, 100.0f)]
@@ -127,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         private int rows = 3;
 
         /// <summary>
-        /// Number of rows per column.false Can only be assigned when layout type is
+        /// Number of rows per column. Can only be assigned when layout type is
         /// RowsThenColumns
         /// </summary>
         public int Rows
@@ -144,7 +124,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
         }
 
-        // protected int Columns;
         [Tooltip("Number of columns per row")]
         [SerializeField]
         private int columns = 3;
@@ -158,7 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             get { return columns; }
             set 
             { 
-                if (Layout == LayoutOrder.RowThenColumn)    
+                if (Layout == LayoutOrder.RowThenColumn)
                 {
                     Debug.LogError("Cannot assign Columns when layout type is " + Layout);
                     return;
@@ -331,21 +310,21 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
 
             float startOffsetX = (iMax * 0.5f) * CellWidth;
-            if (anchor == AnchorType.BottomLeft || anchor == AnchorType.UpperLeft || anchor == AnchorType.MiddleLeft)
+            if (anchor == LayoutAnchor.BottomLeft || anchor == LayoutAnchor.UpperLeft || anchor == LayoutAnchor.MiddleLeft)
             {
                 startOffsetX = 0;
             }
-            else if (anchor == AnchorType.BottomRight || anchor == AnchorType.UpperRight || anchor == AnchorType.MiddleRight)
+            else if (anchor == LayoutAnchor.BottomRight || anchor == LayoutAnchor.UpperRight || anchor == LayoutAnchor.MiddleRight)
             {
                 startOffsetX = iMax * CellWidth;
             }
 
             float startOffsetY = (jMax * 0.5f) * CellHeight;
-            if (anchor == AnchorType.UpperLeft || anchor == AnchorType.UpperCenter || anchor == AnchorType.UpperRight)
+            if (anchor == LayoutAnchor.UpperLeft || anchor == LayoutAnchor.UpperCenter || anchor == LayoutAnchor.UpperRight)
             {
                 startOffsetY = 0;
             }
-            else if (anchor == AnchorType.BottomLeft || anchor == AnchorType.BottomCenter || anchor == AnchorType.BottomRight)
+            else if (anchor == LayoutAnchor.BottomLeft || anchor == LayoutAnchor.BottomCenter || anchor == LayoutAnchor.BottomRight)
             {
                 startOffsetY = jMax * CellHeight;
             }

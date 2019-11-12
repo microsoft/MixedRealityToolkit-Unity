@@ -71,11 +71,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             grid.Layout = LayoutOrder.Horizontal;
 
             int expectedIdx = 0;
-            foreach(GridObjectCollection.AnchorType et in Enum.GetValues(typeof(GridObjectCollection.AnchorType)))
+            foreach(LayoutAnchor et in Enum.GetValues(typeof(LayoutAnchor)))
             {
                 grid.Anchor = et;
                 grid.UpdateCollection();
-                // TO DO: check stuff
                 int j = 0;
                 foreach(Transform child2 in go.transform)
                 {
