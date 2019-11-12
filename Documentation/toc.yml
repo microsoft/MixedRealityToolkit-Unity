@@ -43,7 +43,10 @@
       href: CameraSystem/CameraSystemOverview.md
     - name: Camera Settings Providers
       items:
-      - name: Settings Provider Overview
+      - name: Windows Mixed Reality Camera Settings
+        href: CameraSystem/WindowsMixedRealityCameraSettings.md
+      - name: Unity AR Camera Settings [Experimental]
+        href: CameraSystem/UnityArCameraSettings.md
         href: CameraSystem/ProviderOverview.md
       - name: Creating a camera settings provider
         href: CameraSystem/CreateSettingsProvider.md

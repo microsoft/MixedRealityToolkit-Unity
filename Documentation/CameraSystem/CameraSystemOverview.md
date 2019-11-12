@@ -66,4 +66,4 @@ The quality settings value indicates the graphics quality that Unity should use 
 ## See also
 
 - [Camera System API Documentation](xref:Microsoft.MixedReality.Toolkit.CameraSystem)
-- [Camera Settings Provider Overview](ProviderOverview.md)
+- [Creating a Camera Settings Provider](CreateSettingsProvider.md)
