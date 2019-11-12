@@ -228,7 +228,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             {
                 columns = Mathf.CeilToInt((float)NodeList.Count / rows);
             }
-            else if (Layout == LayoutOrder.ColumnThenRow )
+            else if (Layout == LayoutOrder.ColumnThenRow)
             {
                 rows = Mathf.CeilToInt((float)NodeList.Count / columns);
             }
