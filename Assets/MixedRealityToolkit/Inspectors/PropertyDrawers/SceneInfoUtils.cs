@@ -114,7 +114,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// </summary>
         public void OnProcessScene(Scene scene, BuildReport report)
         {
-            Debug.Log("Processing scene on build");
             RefreshSceneInfoFieldsInScene(scene);
         }
 

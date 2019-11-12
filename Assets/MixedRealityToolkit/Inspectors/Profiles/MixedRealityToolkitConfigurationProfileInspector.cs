@@ -4,6 +4,7 @@
 using Microsoft.MixedReality.Toolkit.Boundary;
 using Microsoft.MixedReality.Toolkit.Diagnostics;
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Rendering;
 using Microsoft.MixedReality.Toolkit.SceneSystem;
 using Microsoft.MixedReality.Toolkit.SpatialAwareness;
 using Microsoft.MixedReality.Toolkit.Utilities;
@@ -54,6 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         // Editor settings
         private SerializedProperty useServiceInspectors;
+        private SerializedProperty renderDepthBuffer;
 
         private Func<bool>[] RenderProfileFuncs;
 
@@ -108,6 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             // Editor settings
             useServiceInspectors = serializedObject.FindProperty("useServiceInspectors");
+            renderDepthBuffer = serializedObject.FindProperty("renderDepthBuffer");
 
             SelectedProfileTab = SessionState.GetInt(SelectedTabPreferenceKey, SelectedProfileTab);
 
@@ -248,6 +251,25 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     },
                     () => {
                         EditorGUILayout.PropertyField(useServiceInspectors);
+
+                        using (var c = new EditorGUI.ChangeCheckScope())
+                        {
+                            EditorGUILayout.PropertyField(renderDepthBuffer);
+                            if (c.changed)
+                            {
+                                if (renderDepthBuffer.boolValue)
+                                {
+                                    CameraCache.Main.gameObject.AddComponent<DepthBufferRenderer>();
+                                }
+                                else
+                                {
+                                    foreach (var dbr in FindObjectsOfType<DepthBufferRenderer>())
+                                    {
+                                        UnityObjectExtensions.DestroyObject(dbr);
+                                    }
+                                }
+                            }
+                        }
                         return false;
                     },
                 };

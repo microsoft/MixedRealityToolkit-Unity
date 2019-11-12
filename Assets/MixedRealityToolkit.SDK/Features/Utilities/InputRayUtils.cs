@@ -96,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Gets the <seealso cref="IMixedRealityController"/> instance matching the specified source type and hand.
+        /// Gets the first <seealso cref="IMixedRealityController"/> instance matching the specified source type and hand.
         /// </summary>
         /// <param name="sourceType">Type of the input source</param>
         /// <param name="hand">The handedness of the controller</param>

@@ -29,6 +29,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         [UnityTest]
         public IEnumerator TestDynamicServices()
         {
+            TestUtilities.InitializeCamera();
+
             UnityEngine.Object cameraSystemPrefab = AssetDatabase.LoadAssetAtPath("Assets/MixedRealityToolkit.SDK/Experimental/ServiceManagers/Camera/Prefabs/CameraSystem.prefab", typeof(UnityEngine.Object));
             Assert.IsNull(CoreServices.CameraSystem);
 

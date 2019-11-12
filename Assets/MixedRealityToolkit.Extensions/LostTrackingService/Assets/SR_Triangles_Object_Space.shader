@@ -1,7 +1,3 @@
-// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
-// Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
-
-
 Shader "SR_Triangles_Object_Space" {
 
 Properties {
@@ -485,11 +481,7 @@ SubShader {
     void geometry_main(triangle VertexOutput vxIn[3], inout TriangleStream<FragmentInput> triStream)
     {
         UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(vxIn[0]);
-        //huxEye = _WorldSpaceCameraPos;
-        //workaround for Unity's auto updater in 5.6
-        float4x4 tmp = UNITY_MATRIX_MVP;
-        matrixVP = mul(tmp, unity_WorldToObject);
-        //matrixVP = mul(UNITY_MATRIX_MVP, _World2Object);
+        matrixVP = UnityObjectToClipPos(unity_WorldToObject);
         vxOutCount=0;
         stripCount=0;
         stripVxCount[0]=0;

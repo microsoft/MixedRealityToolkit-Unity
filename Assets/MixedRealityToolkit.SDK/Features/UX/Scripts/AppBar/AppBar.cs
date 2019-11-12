@@ -372,7 +372,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             //calculate best follow position for AppBar
             Vector3 finalPosition = Vector3.zero;
-            Vector3 headPosition = Camera.main.transform.position;
+            Vector3 headPosition = CameraCache.Main.transform.position;
             boundsPoints.Clear();
 
             helper.UpdateNonAABoundingBoxCornerPositions(boundingBox, boundsPoints);

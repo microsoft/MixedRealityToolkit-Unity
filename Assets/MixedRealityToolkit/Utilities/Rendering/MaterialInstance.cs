@@ -125,11 +125,11 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
         private Material[] instanceMaterials = null;
         private bool initialized = false;
         private bool materialsInstanced = false;
-        private HashSet<Object> materialOwners = new HashSet<Object>();
+        private readonly HashSet<Object> materialOwners = new HashSet<Object>();
 
         private const string instancePostfix = " (Instance)";
 
-#region MonoBehaviour Implementation
+        #region MonoBehaviour Implementation
 
         private void Awake()
         {
@@ -186,7 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
             instanceMaterials = null;
         }
 
-#endregion MonoBehaviour Implementation
+        #endregion MonoBehaviour Implementation
 
         private void Initialize()
         {
@@ -264,7 +264,10 @@ namespace Microsoft.MixedReality.Toolkit.Rendering
             {
                 if (source[i] != null)
                 {
-                    Debug.Assert(!IsInstanceMaterial(source[i]), "A material which is already instanced was instanced multiple times." + source[i].name);
+                    if (IsInstanceMaterial(source[i]))
+                    {
+                        Debug.LogWarning($"A material ({source[i].name}) which is already instanced was instanced multiple times.");
+                    }
 
                     output[i] = new Material(source[i]);
                     output[i].name += instancePostfix;

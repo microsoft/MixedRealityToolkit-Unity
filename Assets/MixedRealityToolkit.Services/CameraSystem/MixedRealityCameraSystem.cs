@@ -101,7 +101,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
                     {
                         // Apply the display settings
                         IMixedRealityCameraSettingsProvider provider = GetDataProvider<IMixedRealityCameraSettingsProvider>(configuration.ComponentName);
-                        provider?.ApplyDisplaySettings();
+                        provider?.ApplyConfiguration();
                     }
                 }
             }

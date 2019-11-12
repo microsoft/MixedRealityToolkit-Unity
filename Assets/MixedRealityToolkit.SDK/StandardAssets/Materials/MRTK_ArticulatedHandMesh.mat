@@ -10,7 +10,7 @@ Material:
   m_Name: MRTK_ArticulatedHandMesh
   m_Shader: {fileID: 4800000, guid: aca12b5bed90b92448a88757df739294, type: 3}
   m_ShaderKeywords: USE_ALBEDO_TEXTURE _ALPHABLEND_ON _COLOR_MAP_ENABLE__ON _DIRECTIONAL_LIGHT
-    _DISABLE_ALBEDO_MAP _RIM_LIGHT _UNITY_TO_SRGB__ON
+    _DISABLE_ALBEDO_MAP _PULSE_ENABLED__ON _RIM_LIGHT _UNITY_TO_SRGB__ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -38,10 +38,10 @@ Material:
     - _Max_In_Angle_: 0.6
     - _Max_Out_Angle_: 0.4
     - _Period_: 2.7
-    - _Pulse_: 0.346
+    - _Pulse_: 0
     - _Pulse_Amplify_Leading_: 0
     - _Pulse_Color_Width_: 1
-    - _Pulse_Enabled_: 0
+    - _Pulse_Enabled_: 1
     - _Pulse_Lead_Fuzz_: 0.67
     - _Pulse_Line_Fuzz_: 0.2
     - _Pulse_Noise_Frequency_: 777
@@ -54,6 +54,6 @@ Material:
     - _Wrist_Fade_End_: 0.16
     - _Wrist_Fade_Start_: 0.1
     m_Colors:
-    - _Fill_Color_: {r: 0.317647, g: 0.317647, b: 0.317647, a: 1}
-    - _Line_Color_: {r: 0.717647, g: 0.717647, b: 0.717647, a: 1}
+    - _Fill_Color_: {r: 0.15294118, g: 0.27058825, b: 0.5372549, a: 1}
+    - _Line_Color_: {r: 0.5882353, g: 0.84313726, b: 1, a: 1}
     - _Pulse_Origin_: {r: 0.5, g: 0, b: 0, a: 0}

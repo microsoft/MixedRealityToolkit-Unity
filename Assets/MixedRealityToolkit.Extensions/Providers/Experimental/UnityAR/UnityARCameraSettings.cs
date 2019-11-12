@@ -2,15 +2,17 @@
 // Copyright(c) 2019 Takahiro Miyaura
 // Licensed under the MIT License. See LICENSE in the project root for license information.﻿
 
+using Microsoft.MixedReality.Toolkit.CameraSystem;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
+
+#if UNITY_IOS || UNITY_ANDROID
 using UnityEngine.SpatialTracking;
-
-#if !(WINDOWS_UWP && !ENABLE_IL2CPP)
+using UnityEngine.XR;
 using UnityEngine.XR.ARFoundation;
-#endif // !(WINDOWS_UWP && !ENABLE_IL2CPP)
+#endif //UNITY_IOS || UNITY_ANDROID
 
-namespace Microsoft.MixedReality.Toolkit.CameraSystem
+namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 {
     /// <summary>
     /// Camera settings provider for use with the Unity AR Foundation system.
@@ -19,9 +21,9 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         typeof(IMixedRealityCameraSystem),
         SupportedPlatforms.Android | SupportedPlatforms.IOS,
         "Unity AR Foundation Camera Settings",
-        "UnityAR/Profiles/DefaultUnityARCameraSettingsProfile.asset",
-        "MixedRealityToolkit.Providers")]
-    public class UnityARCameraSettings : BaseDataProvider, IMixedRealityCameraSettingsProvider
+        "Providers/Experimental/UnityAR/Profiles/DefaultUnityARCameraSettingsProfile.asset",
+        "MixedRealityToolkit.Extensions")]
+    public class UnityARCameraSettings : BaseCameraSettingsProvider
     {
         /// <summary>
         /// Constructor.
@@ -35,35 +37,33 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             string name = null,
             uint priority = DefaultPriority,
             BaseCameraSettingsProfile profile = null) : base(cameraSystem, name, priority, profile)
-        { }
+        {
+            ReadProfile();
+        }
+
+        private ArTrackedPose poseSource = ArTrackedPose.ColorCamera;
+        private ArTrackingType trackingType = ArTrackingType.RotationAndPosition;
+        private ArUpdateType updateType = ArUpdateType.UpdateAndBeforeRender;
+
+        private void ReadProfile()
+        {
+            if (SettingsProfile == null)
+            {
+                Debug.LogWarning("A profile was not specified for the Unity AR Camera Settings provider.\nUsing Microsoft Mixed Reality Toolkit default options.");
+                return;
+            }
+
+            poseSource = SettingsProfile.PoseSource;
+            trackingType = SettingsProfile.TrackingType;
+            updateType = SettingsProfile.UpdateType;
+        }
 
         #region IMixedRealityCameraSettings
 
         /// <inheritdoc/>
-        public bool IsOpaque => false;
-
-        /// <inheritdoc/>
-        public void ApplyDisplaySettings()
+        public override bool IsOpaque
         {
-            MixedRealityCameraProfile cameraProfile = (Service as IMixedRealityCameraSystem)?.CameraProfile;
-            if (cameraProfile == null) { return; } 
-
-            if (IsOpaque)
-            {
-                CameraCache.Main.clearFlags = cameraProfile.CameraClearFlagsOpaqueDisplay;
-                CameraCache.Main.nearClipPlane = cameraProfile.NearClipPlaneOpaqueDisplay;
-                CameraCache.Main.farClipPlane = cameraProfile.FarClipPlaneOpaqueDisplay;
-                CameraCache.Main.backgroundColor = cameraProfile.BackgroundColorOpaqueDisplay;
-                QualitySettings.SetQualityLevel(cameraProfile.OpaqueQualityLevel, false);
-            }
-            else
-            {
-                CameraCache.Main.clearFlags = cameraProfile.CameraClearFlagsTransparentDisplay;
-                CameraCache.Main.backgroundColor = cameraProfile.BackgroundColorTransparentDisplay;
-                CameraCache.Main.nearClipPlane = cameraProfile.NearClipPlaneTransparentDisplay;
-                CameraCache.Main.farClipPlane = cameraProfile.FarClipPlaneTransparentDisplay;
-                QualitySettings.SetQualityLevel(cameraProfile.TransparentQualityLevel, false);
-            }
+            get => (poseSource != ArTrackedPose.ColorCamera);
         }
 
         #endregion IMixedRealityCameraSettings
@@ -79,9 +79,10 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             }
         }
 
-        bool isInitialized = false;
+#if UNITY_IOS || UNITY_ANDROID
+        private bool isSupportedArConfiguration = true;
+        private bool isInitialized = false;
 
-#if !(WINDOWS_UWP && !ENABLE_IL2CPP)
         private GameObject arSessionObject = null;
         private bool preExistingArSessionObject = false;
         private ARSession arSession = null;
@@ -106,21 +107,20 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
             arSessionOriginObject = GameObject.Find("AR Session Origin");
             preExistingArSessionOriginObject = (arSessionOriginObject != null);
         }
-#endif //!(WINDOWS_UWP && !ENABLE_IL2CPP)
 
         /// <inheritdoc />
-        public override async void Initialize()
+        public override void Initialize()
         {
             base.Initialize();
 
-#if !(WINDOWS_UWP && !ENABLE_IL2CPP)
-            ARSessionState sessionState = (ARSessionState)(await ARSession.CheckAvailability());
-            if (ARSessionState.Ready > sessionState)
+            // Android platforms support both AR Foundation and VR.
+            // AR Foundation does not use the player's XR Settings.
+            // If the loaded device name is not an empty string, then a VR
+            // SDK is in use (not using AR Foundation).
+            if (Application.platform == RuntimePlatform.Android)
             {
-                Debug.LogError("Unable to initialize the Unity AR Camera Settings provider. Device support for AR Foundation was not detected.");
-                isInitialized = true;
+                isSupportedArConfiguration = string.IsNullOrWhiteSpace(XRSettings.loadedDeviceName);
             }
-#endif //!(WINDOWS_UWP && !ENABLE_IL2CPP)
         }
 
         /// <inheritdoc />
@@ -152,9 +152,10 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// </remarks>
         private void InitializeARFoundation()
         {
+            if (!isSupportedArConfiguration) { return; }
+
             if (isInitialized) { return; }
 
-#if !(WINDOWS_UWP && !ENABLE_IL2CPP)
             FindARFoundationComponents();
 
             if (arSessionObject == null)
@@ -178,36 +179,14 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
 
             arCameraManager = cameraObject.EnsureComponent<ARCameraManager>();
             arCameraBackground = cameraObject.EnsureComponent<ARCameraBackground>();
-
             trackedPoseDriver = cameraObject.EnsureComponent<TrackedPoseDriver>();
-
-            TrackedPoseDriver.TrackedPose poseSource;
-            TrackedPoseDriver.TrackingType trackingType;
-            TrackedPoseDriver.UpdateType updateType;
-
-            if (SettingsProfile != null)
-            {
-                // Read settings to be applied to the camera.
-                poseSource = SettingsProfile.PoseSource;
-                trackingType = SettingsProfile.TrackingType;
-                updateType = SettingsProfile.UpdateType;
-            }
-            else
-            {
-                Debug.LogWarning("A profile was not specified for the XR Camera Settings provider.\nApplying Microsoft Mixed Reality Toolkit default options.");
-                // Use default settings.
-                poseSource = TrackedPoseDriver.TrackedPose.ColorCamera;
-                trackingType = TrackedPoseDriver.TrackingType.RotationAndPosition;
-                updateType = TrackedPoseDriver.UpdateType.UpdateAndBeforeRender;
-            }
 
             trackedPoseDriver.SetPoseSource(
                 TrackedPoseDriver.DeviceType.GenericXRDevice,
-                poseSource);
-            trackedPoseDriver.trackingType = trackingType;
-            trackedPoseDriver.updateType = updateType;
+                ArEnumConversion.ToUnityTrackedPose(SettingsProfile.PoseSource));
+            trackedPoseDriver.trackingType = ArEnumConversion.ToUnityTrackingType(SettingsProfile.TrackingType);
+            trackedPoseDriver.updateType = ArEnumConversion.ToUnityUpdateType(SettingsProfile.UpdateType);
             trackedPoseDriver.UseRelativeTransform = false;
-#endif //!(WINDOWS_UWP && !ENABLE_IL2CPP)
 
             isInitialized = true;
         }
@@ -219,7 +198,6 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         {
             if (!isInitialized) { return; }
 
-#if !(WINDOWS_UWP && !ENABLE_IL2CPP)
             if (!preExistingArSessionOriginObject &&
                 (arSessionOriginObject != null))
             {
@@ -243,9 +221,9 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
                 UnityObjectExtensions.DestroyObject(arSessionObject);
                 arSessionObject = null;
             }
-#endif // !(WINDOWS_UWP && !ENABLE_IL2CPP)
 
             isInitialized = false;
         }
+#endif // UNITY_IOS || UNITY_ANDROID
     }
 }
