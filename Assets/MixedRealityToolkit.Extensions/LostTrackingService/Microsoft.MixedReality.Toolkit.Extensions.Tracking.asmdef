@@ -1,8 +1,7 @@
 {
     "name": "Microsoft.MixedReality.Toolkit.Extensions.Tracking",
     "references": [
-        "Microsoft.MixedReality.Toolkit",
-        "Microsoft.MixedReality.Toolkit.Editor.ServiceInspectors"
+        "Microsoft.MixedReality.Toolkit"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
