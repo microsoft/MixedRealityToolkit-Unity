@@ -34,6 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         private const string RadialSetPrefabAssetPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/RadialSet.prefab";
         private const string PressableHoloLens2TogglePrefabPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/PressableButtonHoloLens2Toggle.prefab";
         private const string RadialPrefabAssetPath = "Assets/MixedRealityToolkit.SDK/Features/UX/Interactable/Prefabs/Radial.prefab";
+        private static string DisabledOnStartPrefabAssetPath = "Assets/MixedRealityToolkit.Tests/PlayModeTests/Prefabs/Model_PushButton_DisabledOnStart.prefab";
 
         private readonly Color DefaultColor = Color.blue;
         private readonly Color FocusColor = Color.yellow;
@@ -71,22 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
             Vector3 targetStartPosition = translateTargetObject.localPosition;
 
-            // Move the hand forward to intersect the interactable
-            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
-            int numSteps = 32;
-            Vector3 p1 = Vector3.zero;
-            Vector3 p2 = new Vector3(0.05f, 0f, 0.51f);
-            Vector3 p3 = Vector3.zero;
-
-            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
-            yield return PlayModeTestUtilities.MoveHandFromTo(p1, p2, numSteps, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
-
-            yield return CheckButtonTranslation(targetStartPosition, translateTargetObject);
-
-            // Move the hand back
-            yield return PlayModeTestUtilities.MoveHandFromTo(p2, p3, numSteps, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
-            yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
-            yield return new WaitForSeconds(ButtonReleaseAnimationDelay);
+            yield return TestClickPushButton(targetStartPosition, translateTargetObject);
 
             Assert.True(wasClicked, "Interactable was not clicked.");
 
@@ -581,6 +567,45 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         [UnityTest]
         /// <summary>
+        /// Tests that Interactable configured not Enabled on start works as expected.
+        /// Enabled on start is an editor level setting only that is applied on Awake/Start
+        /// </summary>
+        public IEnumerator TestDisabledOnStart()
+        {
+            // Instantiate model_pushbutton prefab but with enabled on start false
+            var prefab = InstantiateInteractableFromPath(
+                                new Vector3(0.025f, 0.05f, 0.5f),
+                                DefaultRotation,
+                                DisabledOnStartPrefabAssetPath);
+            Interactable interactable = prefab.GetComponent<Interactable>();
+
+            Assert.False(interactable.IsEnabled, "Test Prefab has been corrupted. Should be disabled on start");
+
+            // Find the target object for the interactable transformation
+            var pressButtonCylinder = interactable.transform.Find("Cylinder");
+            Assert.IsNotNull(pressButtonCylinder, "Object 'Cylinder' could not be found under example object Model_PushButton.");
+
+            // Subscribe to interactable's on click so we know the click went through
+            bool wasClicked = false;
+            interactable.OnClick.AddListener(() => { wasClicked = true; });
+
+            Vector3 targetStartPosition = pressButtonCylinder.localPosition;
+
+            yield return TestClickPushButton(targetStartPosition, pressButtonCylinder, false);
+
+            Assert.False(wasClicked, "Interactable was clicked.");
+
+            interactable.IsEnabled = true;
+
+            yield return TestClickPushButton(targetStartPosition, pressButtonCylinder, true);
+
+            Assert.True(wasClicked, "Interactable was not clicked.");
+
+            GameObject.Destroy(interactable.gameObject);
+        }
+
+        [UnityTest]
+        /// <summary>
         /// Tests that the toggle button states consistently return to original state
         /// after subsequent clicks (front plate does not move back after every click).
         /// </summary>
@@ -819,6 +844,25 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             }
 
             Assert.AreEqual(shouldTranslate, wasTranslated, "Transform target object did or did not translate properly by action.");
+        }
+
+        private IEnumerator TestClickPushButton(Vector3 targetStartPosition, Transform translateTargetObject, bool shouldClick = true)
+        {
+            var inputSimulationService = PlayModeTestUtilities.GetInputSimulationService();
+            int numSteps = 32;
+            Vector3 p1 = Vector3.zero;
+            Vector3 p2 = new Vector3(0.05f, 0f, 0.51f);
+            Vector3 p3 = Vector3.zero;
+
+            yield return PlayModeTestUtilities.ShowHand(Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.MoveHandFromTo(p1, p2, numSteps, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
+
+            yield return CheckButtonTranslation(targetStartPosition, translateTargetObject, shouldClick);
+
+            // Move the hand back
+            yield return PlayModeTestUtilities.MoveHandFromTo(p2, p3, numSteps, ArticulatedHandPose.GestureId.Poke, Handedness.Right, inputSimulationService);
+            yield return PlayModeTestUtilities.HideHand(Handedness.Right, inputSimulationService);
+            yield return new WaitForSeconds(ButtonReleaseAnimationDelay);
         }
 
         private IEnumerator RunGlobalClick(IMixedRealityInputSource defaultInputSource, 
