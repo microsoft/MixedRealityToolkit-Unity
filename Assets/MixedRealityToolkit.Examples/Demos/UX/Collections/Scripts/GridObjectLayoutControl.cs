@@ -105,10 +105,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 yield return new WaitForSeconds(0.5f);
             }
             stringBuilder.AppendLine("}");
-            using (var writer = new StreamWriter(path))
+            using (FileStream fs = new FileStream(path, FileMode.Create))
             {
-                writer.Write(stringBuilder.ToString());
-                Debug.Log("Wrote to: " + path);
+                using (StreamWriter writer = new StreamWriter(fs))
+                {
+                    writer.Write(stringBuilder.ToString());
+                    Debug.Log("Wrote to: " + path);
+                }
             }
             yield return null;
         }
