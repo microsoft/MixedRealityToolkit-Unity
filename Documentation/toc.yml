@@ -37,6 +37,8 @@
       href: Boundary/BoundarySystemGettingStarted.md
     - name: Configuring the Boundary Visualization
       href: Boundary/ConfiguringBoundaryVisualization.md
+  - name: Detecting Platform Capabilities
+    href: DetectingPlatformCapabilities.md
   - name: Diagnostics System
     items:
     - name: Diagnostics System Overview
@@ -47,40 +49,46 @@
       href: Diagnostics/UsingVisualProfiler.md
   - name: Extension Services
     items:
+    - name: Extension Service Creation Wizard
+      href: Tools/ExtensionServiceCreationWizard.md
     - name: Scene Transition Service Overview
       href: Extensions/SceneTransitionService/SceneTransitionServiceOverview.md
   - name: Input System
     items:
     - name: Input Overview
       href: Input/Overview.md
-    - name: Input Providers
-      href: Input/InputProviders.md
-    - name: Input Events
-      href: Input/InputEvents.md
     - name: Input Actions
       href: Input/InputActions.md
+    - name: Input Events
+      href: Input/InputEvents.md
+    - name: Input Providers
+      items:
+      - name: Input Providers Overview
+        href: Input/InputProviders.md
+      - name: Creating an input data provider
+        href: Input/CreateDataProvider.md
     - name: Controllers
       href: Input/Controllers.md
-    - name: Pointers
-      href: Input/Pointers.md
-    - name: How to Add Near Interaction
-      href: Input/HowToAddNearInteractivity.md
-    - name: Gestures
-      href: Input/Gestures.md
-    - name: Speech(Voice command)
-      href: Input/Speech.md
-    - name: Dictation
-      href: Input/Dictation.md
-    - name: Hands
-      href: Input/HandTracking.md
-    - name: Gaze
-      href: Input/Gaze.md
     - name: Eyes
       href: EyeTracking/EyeTracking_Main.md
-    - name: Creating an input data provider
-      href: Input/CreateDataProvider.md
+    - name: Gaze
+      href: Input/Gaze.md
+    - name: Gestures
+      href: Input/Gestures.md
+    - name: Hands
+      href: Input/HandTracking.md
+    - name: How to Add Near Interaction
+      href: Input/HowToAddNearInteractivity.md
     - name: In-Editor Input Simulation
       href: InputSimulation/InputSimulationService.md
+    - name: Pointers
+      href: Input/Pointers.md
+    - name: Voice Input/Controllers.md
+      items:
+      - name: Dictation
+        href: Input/Dictation.md
+      - name: Speech (Command and Control)
+        href: Input/Speech.md
   - name: Multi Scene System
     items:
     - name: Multi Scene System Overview
@@ -133,10 +141,8 @@
       href: SpatialAwareness/UsageGuide.md
     - name: Creating a custom Observer
       href: SpatialAwareness/CreateDataProvider.md
-  - name: Teleport System
-    items:
-    - name: Teleport System Overview
-      href: TeleportSystem/Overview.md
+  - name: Teleport System Overview
+    href: TeleportSystem/Overview.md
   - name: Tools
     items:
     - name: Dependency Window
@@ -154,10 +160,6 @@
       items:
       - name: Controller Mapping tool
         href: Tools/ControllerMappingTool.md 
-  - name: Utility
-    items:
-    - name: Detecting Platform Capabilities
-      href: DetectingPlatformCapabilities.md
   - name: UX Building Blocks
     items:
     - name: Interactable
