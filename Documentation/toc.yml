@@ -31,11 +31,25 @@
     href: Architecture/SystemsExtensionsProviders.md
 - name: Feature Overviews
   items:
-  - name: Profiles
-    href: Profiles/Profiles.md
-  - name: Profiles Configuration
-    href: MixedRealityConfigurationGuide.md
-  - name: Input
+  - name: Boundary System
+    items:
+    - name: Boundary System Overview
+      href: Boundary/BoundarySystemGettingStarted.md
+    - name: Configuring the Boundary Visualization
+      href: Boundary/ConfiguringBoundaryVisualization.md
+  - name: Diagnostics System
+    items:
+    - name: Diagnostics System Overview
+      href: Diagnostics/DiagnosticsSystemGettingStarted.md
+    - name: Configuring the Diagnostics System
+      href: Diagnostics/ConfiguringDiagnostics.md
+    - name: Using the Visual Profiler
+      href: Diagnostics/UsingVisualProfiler.md
+  - name: Extension Services
+    items:
+    - name: Scene Transition Service Overview
+      href: Extensions/SceneTransitionService/SceneTransitionServiceOverview.md
+  - name: Input System
     items:
     - name: Input Overview
       href: Input/Overview.md
@@ -65,8 +79,85 @@
       href: EyeTracking/EyeTracking_Main.md
     - name: Creating an input data provider
       href: Input/CreateDataProvider.md
-  - name: In-Editor Input Simulation
-    href: InputSimulation/InputSimulationService.md
+    - name: In-Editor Input Simulation
+      href: InputSimulation/InputSimulationService.md
+  - name: Multi Scene System
+    items:
+    - name: Multi Scene System Overview
+      href: SceneSystem/SceneSystemGettingStarted.md
+    - name: Scene Types
+      href: SceneSystem/SceneSystemSceneTypes.md
+    - name: Content Scene Loading
+      href: SceneSystem/SceneSystemContentLoading.md
+    - name: Monitoring Content Loading
+      href: SceneSystem/SceneSystemLoadProgress.md
+    - name: Lighting Scene Operations
+      href: SceneSystem/SceneSystemLightingScenes.md
+  - name: Packaging
+    items:
+    - name: MRTK Packages
+      href: Packaging/MRTK_Packages.md
+    - name: MRTK Modularization
+      href: Packaging/MRTK_Modularization.md
+  - name: Profiles
+    items:
+    - name: Profiles Overview
+      href: Profiles/Profiles.md
+    - name: Configuration Guide
+      href: MixedRealityConfigurationGuide.md
+  - name: Rendering
+    items:
+    - name: Material Instance Overview
+      href: Rendering/MaterialInstance.md
+    - name: Shaders
+      items:
+      - name: MRTK Standard Shader
+        href: README_MRTKStandardShader.md
+  - name: Services
+    items:
+    - name: What makes a mixed reality feature
+      href: MixedRealityServices.md
+    - name: What are the MixedRealityServiceRegistry and IMixedRealityServiceRegistrar
+      href: ServiceUtilities/MixedRealityServiceRegistryAndIMixedRealityServiceRegistrar.md
+    - name: Extension services
+      href: Extensions/ExtensionServices.md
+  - name: Spatial Awareness System
+    items:
+    - name: Spatial Awareness Overview
+      href: SpatialAwareness/SpatialAwarenessGettingStarted.md
+    - name: Configuring Observers for Device
+      href: SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.md
+    - name: Configuring Observers for Editor
+      href: SpatialAwareness/SpatialObjectMeshObserver.md
+    - name: Controlling Observers via Code
+      href: SpatialAwareness/UsageGuide.md
+    - name: Creating a custom Observer
+      href: SpatialAwareness/CreateDataProvider.md
+  - name: Teleport System
+    items:
+    - name: Teleport System Overview
+      href: TeleportSystem/Overview.md
+  - name: Tools
+    items:
+    - name: Dependency Window
+      href: Tools/DependencyWindow.md
+    - name: Optimize Window
+      href: Tools/OptimizeWindow.md
+    - name: Input Animation Recording
+      href: InputSimulation/InputAnimationRecording.md
+      items:
+      - name: Input Animation File Format Specification
+        href: InputSimulation/InputAnimationFileFormat.md
+    - name: Extension Service Creation Wizard
+      href: Tools/ExtensionServiceCreationWizard.md
+    - name: Runtime tools
+      items:
+      - name: Controller Mapping tool
+        href: Tools/ControllerMappingTool.md 
+  - name: Utility
+    items:
+    - name: Detecting Platform Capabilities
+      href: DetectingPlatformCapabilities.md
   - name: UX Building Blocks
     items:
     - name: Interactable
@@ -97,87 +188,6 @@
       href: README_HandInteractionExamples.md
     - name: Eye Tracking Interaction Example
       href: EyeTracking/EyeTracking_ExamplesOverview.md
-  - name: Detecting Platform Capabilities
-    href: DetectingPlatformCapabilities.md
-  - name: MRTK Standard Shader
-    href: README_MRTKStandardShader.md
-  - name: Spatial Awareness
-    items:
-    - name: Getting Started
-      href: SpatialAwareness/SpatialAwarenessGettingStarted.md
-    - name: Configuring Observers for Device
-      href: SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.md
-    - name: Configuring Observers for Editor
-      href: SpatialAwareness/SpatialObjectMeshObserver.md
-    - name: Controlling Observers via Code
-      href: SpatialAwareness/UsageGuide.md
-    - name: Creating a custom Observer
-      href: SpatialAwareness/CreateDataProvider.md
-  - name: Multi Scene System
-    items:
-    - name: Multi Scene System Overview
-      href: SceneSystem/SceneSystemGettingStarted.md
-    - name: Scene Types
-      href: SceneSystem/SceneSystemSceneTypes.md
-    - name: Content Scene Loading
-      href: SceneSystem/SceneSystemContentLoading.md
-    - name: Monitoring Content Loading
-      href: SceneSystem/SceneSystemLoadProgress.md
-    - name: Lighting Scene Operations
-      href: SceneSystem/SceneSystemLightingScenes.md
-  - name: Teleport System
-    href: TeleportSystem/Overview.md
-  - name: Boundary System
-    items:
-    - name: Boundary System Overview
-      href: Boundary/BoundarySystemGettingStarted.md
-    - name: Configuring the Boundary Visualization
-      href: Boundary/ConfiguringBoundaryVisualization.md
-  - name: Rendering
-    items:
-    - name: Material Instance Overview
-      href: Rendering/MaterialInstance.md
-  - name: Diagnostics System
-    items:
-    - name: Diagnostics System Overview
-      href: Diagnostics/DiagnosticsSystemGettingStarted.md
-    - name: Configuring the Diagnostics System
-      href: Diagnostics/ConfiguringDiagnostics.md
-    - name: Using the Visual Profiler
-      href: Diagnostics/UsingVisualProfiler.md
-  - name: Services
-    items:
-    - name: What makes a mixed reality feature
-      href: MixedRealityServices.md
-    - name: What are the MixedRealityServiceRegistry and IMixedRealityServiceRegistrar
-      href: ServiceUtilities/MixedRealityServiceRegistryAndIMixedRealityServiceRegistrar.md
-    - name: Extension services
-      href: Extensions/ExtensionServices.md
-  - name: Packages
-    items:
-    - name: MRTK Packages
-      href: Packaging/MRTK_Packages.md
-    - name: MRTK Componentization
-      href: Packaging/MRTK_Modularization.md
-  - name: Tools
-    items:
-    - name: Dependency Window
-      href: Tools/DependencyWindow.md
-    - name: Optimize Window
-      href: Tools/OptimizeWindow.md
-    - name: Input Animation Recording
-      href: InputSimulation/InputAnimationRecording.md
-      items:
-      - name: Input Animation File Format Specification
-        href: InputSimulation/InputAnimationFileFormat.md
-    - name: Extension Service Creation Wizard
-      href: Tools/ExtensionServiceCreationWizard.md
-    - name: Runtime tools
-      items:
-      - name: Controller Mapping tool
-        href: Tools/ControllerMappingTool.md 
-  - name: Scene Transition Service
-    href: Extensions/SceneTransitionService/SceneTransitionServiceOverview.md
 - name: Contributing
   items:
   - name: Contributing Overview
