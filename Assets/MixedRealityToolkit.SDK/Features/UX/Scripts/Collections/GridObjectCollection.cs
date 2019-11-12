@@ -102,9 +102,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             set { distance = value; }
         }
 
+        private static readonly int defaultValueRowsCols = 3;
+
         [Tooltip("Number of rows per column")]
         [SerializeField]
-        private int rows = 3;
+        private int rows = defaultValueRowsCols;
 
         /// <summary>
         /// Number of rows per column. Can only be assigned when layout type is
@@ -126,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
 
         [Tooltip("Number of columns per row")]
         [SerializeField]
-        private int columns = 3;
+        private int columns = defaultValueRowsCols;
 
         /// <summary>
         /// Number of columns per row. Can only be assigned when layout type is 
@@ -416,5 +418,45 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     break;
             }
         }
+    
+
+        public void OnValidate()
+        {
+            if (Application.isPlaying)
+            {   // Don't validate during play mode
+                return;
+            }
+
+            // Check upgrade from MRTK 2.X to 2.2
+            // We used to always specify rows even when layout was column then row
+            // 
+            if (Layout == LayoutOrder.ColumnThenRow)
+            {
+                // We count number of children this way to avoid re-laying out children without button press
+                int nodeListCount = 0;
+                for (int i = 0; i < transform.childCount; i++)
+                {
+                    Transform child = transform.GetChild(i);
+                    if (!ContainsNode(child) && (child.gameObject.activeSelf || !IgnoreInactiveTransforms))
+                    {
+                        nodeListCount++;
+                    }
+                }
+
+                // If we have an old asset, then rows could be != default value, columns would be default value
+                bool upgradeScenarioA = rows != defaultValueRowsCols && columns == defaultValueRowsCols;
+                // Edge case: user specified defaultValue rows in old code. Rows would be defaultValue, cols would be defaultValue.
+                // This will be okay unless the number of children exceeds rows * cols
+                bool upgradeScenarioB = rows == defaultValueRowsCols && columns == defaultValueRowsCols && nodeListCount > rows * columns;
+                if (upgradeScenarioA || upgradeScenarioB)
+                {
+                    // Try to guess what the desired columns would be
+                    int columnsGuess = Mathf.CeilToInt((float)nodeListCount / rows);
+                    Debug.LogWarning("GridObjectCollection on " + gameObject.name + " has layout ColumnsThenRows but columns are not specified. Most likely from asset upgrade to MRTK 2.2. Settings Columns property to " + nodeListCount + "/ " + rows + " = " + columnsGuess +". Check your asset to make sure GridObjectCollection has the correct values.");
+                    Columns = columnsGuess;
+                }
+            }
+        }
+
     }
 }
