@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
         "Unity AR Foundation Camera Settings",
         "Providers/Experimental/UnityAR/Profiles/DefaultUnityARCameraSettingsProfile.asset",
         "MixedRealityToolkit.Extensions")]
-    public class UnityARCameraSettings : BaseDataProvider, IMixedRealityCameraSettingsProvider
+    public class UnityARCameraSettings : BaseCameraSettingsProvider
     {
         /// <summary>
         /// Constructor.
@@ -37,38 +37,36 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
             string name = null,
             uint priority = DefaultPriority,
             BaseCameraSettingsProfile profile = null) : base(cameraSystem, name, priority, profile)
-        { }
-
-#region IMixedRealityCameraSettings
-
-        /// <inheritdoc/>
-        public bool IsOpaque => false;
-
-        /// <inheritdoc/>
-        public void ApplyDisplaySettings()
         {
-            MixedRealityCameraProfile cameraProfile = (Service as IMixedRealityCameraSystem)?.CameraProfile;
-            if (cameraProfile == null) { return; } 
-
-            if (IsOpaque)
-            {
-                CameraCache.Main.clearFlags = cameraProfile.CameraClearFlagsOpaqueDisplay;
-                CameraCache.Main.nearClipPlane = cameraProfile.NearClipPlaneOpaqueDisplay;
-                CameraCache.Main.farClipPlane = cameraProfile.FarClipPlaneOpaqueDisplay;
-                CameraCache.Main.backgroundColor = cameraProfile.BackgroundColorOpaqueDisplay;
-                QualitySettings.SetQualityLevel(cameraProfile.OpaqueQualityLevel, false);
-            }
-            else
-            {
-                CameraCache.Main.clearFlags = cameraProfile.CameraClearFlagsTransparentDisplay;
-                CameraCache.Main.backgroundColor = cameraProfile.BackgroundColorTransparentDisplay;
-                CameraCache.Main.nearClipPlane = cameraProfile.NearClipPlaneTransparentDisplay;
-                CameraCache.Main.farClipPlane = cameraProfile.FarClipPlaneTransparentDisplay;
-                QualitySettings.SetQualityLevel(cameraProfile.TransparentQualityLevel, false);
-            }
+            ReadProfile();
         }
 
-#endregion IMixedRealityCameraSettings
+        private ArTrackedPose poseSource = ArTrackedPose.ColorCamera;
+        private ArTrackingType trackingType = ArTrackingType.RotationAndPosition;
+        private ArUpdateType updateType = ArUpdateType.UpdateAndBeforeRender;
+
+        private void ReadProfile()
+        {
+            if (SettingsProfile == null)
+            {
+                Debug.LogWarning("A profile was not specified for the Unity AR Camera Settings provider.\nUsing Microsoft Mixed Reality Toolkit default options.");
+                return;
+            }
+
+            poseSource = SettingsProfile.PoseSource;
+            trackingType = SettingsProfile.TrackingType;
+            updateType = SettingsProfile.UpdateType;
+        }
+
+        #region IMixedRealityCameraSettings
+
+        /// <inheritdoc/>
+        public override bool IsOpaque
+        {
+            get => (poseSource != ArTrackedPose.ColorCamera);
+        }
+
+        #endregion IMixedRealityCameraSettings
 
         /// <summary>
         /// The profile used to configure the camera.
@@ -181,37 +179,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 
             arCameraManager = cameraObject.EnsureComponent<ARCameraManager>();
             arCameraBackground = cameraObject.EnsureComponent<ARCameraBackground>();
-
             trackedPoseDriver = cameraObject.EnsureComponent<TrackedPoseDriver>();
-
-            TrackedPoseDriver.TrackedPose poseSource;
-            TrackedPoseDriver.TrackingType trackingType;
-            TrackedPoseDriver.UpdateType updateType;
-
-            if (SettingsProfile != null)
-            {
-                // Read settings to be applied to the camera.
-                // The enums used by the profile use the same values as those provided by Unity.
-                // We use custom enums to avoid customers needing to include packages and/or namespaces simply to resolve
-                // enum values in the profile.
-                poseSource = ArEnumConversion.ToUnityTrackedPose(SettingsProfile.PoseSource);
-                trackingType = ArEnumConversion.ToUnityTrackingType(SettingsProfile.TrackingType);
-                updateType = ArEnumConversion.ToUnityUpdateType(SettingsProfile.UpdateType);
-            }
-            else
-            {
-                Debug.LogWarning("A profile was not specified for the XR Camera Settings provider.\nApplying Microsoft Mixed Reality Toolkit default options.");
-                // Use default settings.
-                poseSource = TrackedPoseDriver.TrackedPose.ColorCamera;
-                trackingType = TrackedPoseDriver.TrackingType.RotationAndPosition;
-                updateType = TrackedPoseDriver.UpdateType.UpdateAndBeforeRender;
-            }
 
             trackedPoseDriver.SetPoseSource(
                 TrackedPoseDriver.DeviceType.GenericXRDevice,
-                poseSource);
-            trackedPoseDriver.trackingType = trackingType;
-            trackedPoseDriver.updateType = updateType;
+                ArEnumConversion.ToUnityTrackedPose(SettingsProfile.PoseSource));
+            trackedPoseDriver.trackingType = ArEnumConversion.ToUnityTrackingType(SettingsProfile.TrackingType);
+            trackedPoseDriver.updateType = ArEnumConversion.ToUnityUpdateType(SettingsProfile.UpdateType);
             trackedPoseDriver.UseRelativeTransform = false;
 
             isInitialized = true;
