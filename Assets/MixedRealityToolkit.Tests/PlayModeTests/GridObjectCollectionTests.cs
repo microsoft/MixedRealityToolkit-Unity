@@ -99,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
     // You can use GridObjectLayoutControl.cs in the examples package to
     // quickly generate the expected positions used in these tests.
 
-    Vector3[] anchorTestExpected = new Vector3[] {
+    private Vector3[] anchorTestExpected = new Vector3[] {
         new Vector3(0.08f, -0.08f, 0.75f), // UpperLeft index 0
         new Vector3(0.23f, -0.08f, 0.75f), // UpperLeft index 1
         new Vector3(0.38f, -0.08f, 0.75f), // UpperLeft index 2

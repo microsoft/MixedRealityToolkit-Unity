@@ -1,14 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using UnityEngine;
-using UnityEngine.UI;
 using System.IO;
 using System.Text;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
@@ -59,12 +57,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         }
 
 
-        void Start()
+        private void Start()
         {
             UpdateUI();
         }
 
-        void UpdateUI()
+        private void UpdateUI()
         {
             if (text != null)
             {
@@ -73,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             grid.UpdateCollection();
         }
 
-        IEnumerator TestAnchors()
+        private IEnumerator TestAnchors()
         {
             var go = new GameObject();
             go.name = "grid";
