@@ -204,6 +204,8 @@ If a data provider is submitted and accepted as a part of the Microsoft Mixed Re
 
 ## See also
 
+- [Camera System Overview](CameraSystemOverview.md)
+- [Camera Settings Provider Overview](ProviderOverview.md)
 - [`BaseCameraSettingsProvider` class](xref:Microsoft.MixedReality.Toolkit.CameraSystem.BaseCameraSettingsProvider)
 - [`IMixedRealityCameraSettingsProvider` interface](xref:Microsoft.MixedReality.Toolkit.CameraSystem.IMixedRealityCameraSettingsProvider)
 - [`IMixedRealityDataProvider` interface](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider)
