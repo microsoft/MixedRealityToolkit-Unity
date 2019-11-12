@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         }
 
         /// <summary>
-        /// Change the grid's layout to the previous one in order
+        /// Change the grid's layout to the previous one in order.
         /// </summary>
         public void PreviousLayout()
         {
