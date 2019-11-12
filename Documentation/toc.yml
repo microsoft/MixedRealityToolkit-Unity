@@ -41,8 +41,6 @@
     items:
     - name: Camera System Overview
       href: CameraSystem/CameraSystemOverview.md
-    - name: Configuring the Camera System
-      href: CameraSystem/Configuring.md
     - name: Camera Settings Providers
       items:
       - name: Settings Provider Overview
@@ -95,7 +93,7 @@
       href: InputSimulation/InputSimulationService.md
     - name: Pointers
       href: Input/Pointers.md
-    - name: Voice Input/Controllers.md
+    - name: Voice Input
       items:
       - name: Dictation
         href: Input/Dictation.md
