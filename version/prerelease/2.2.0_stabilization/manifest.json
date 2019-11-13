@@ -518,6 +518,54 @@
     },
     {
       "type": "Conceptual",
+      "source_relative_path": "Documentation/CameraSystem/CameraSystemOverview.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/CameraSystem/CameraSystemOverview.html",
+          "hash": "D3Qg6ioXPB+rVGTxQexeMg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/CameraSystem/CreateSettingsProvider.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/CameraSystem/CreateSettingsProvider.html",
+          "hash": "q/H58Tkb/H62V0wGVLFAcA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/CameraSystem/UnityArCameraSettings.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/CameraSystem/UnityArCameraSettings.html",
+          "hash": "ohpHHDxzpDkESJNKDzbPVg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "Documentation/CameraSystem/WindowsMixedRealityCameraSettings.md",
+      "output": {
+        ".html": {
+          "relative_path": "Documentation/CameraSystem/WindowsMixedRealityCameraSettings.html",
+          "hash": "OVxHorHsBj82xv02IxZYMg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
       "source_relative_path": "Documentation/Contributing/BreakingChanges.md",
       "output": {
         ".html": {
@@ -1595,6 +1643,127 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/Button/mrtk_button_profiles.gif"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CameraSystem/CameraDisplaySettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CameraSystem/CameraDisplaySettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CameraSystem/CameraSettingsProviders.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CameraSystem/CameraSettingsProviders.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CameraSystem/EnableCameraSystem.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CameraSystem/EnableCameraSystem.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CameraSystem/ExampleProviderFolderStructure.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CameraSystem/ExampleProviderFolderStructure.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CameraSystem/ExpandNewProvider.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CameraSystem/ExpandNewProvider.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CameraSystem/ExpandProviders.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CameraSystem/ExpandProviders.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CameraSystem/SelectCameraProfile.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CameraSystem/SelectCameraProfile.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CameraSystem/SelectCameraSystemType.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CameraSystem/SelectCameraSystemType.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CameraSystem/SelectUnityArSettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CameraSystem/SelectUnityArSettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CameraSystem/SelectWindowsMixedRealitySettings.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CameraSystem/SelectWindowsMixedRealitySettings.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CameraSystem/UnityArSettingsConfiguration.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CameraSystem/UnityArSettingsConfiguration.png"
         }
       },
       "is_incremental": false,
@@ -6534,7 +6703,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/toc.html",
-          "hash": "suXxfd5aAg6pxDMc8y4MmQ=="
+          "hash": "RYYlkXgyM+EDg3p+jcgylQ=="
         }
       },
       "is_incremental": false,
@@ -7097,7 +7266,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.CameraSystem.BaseCameraSettingsProvider.html",
-          "hash": "81C2JzHp3xoxDaTAehYPoQ=="
+          "hash": "amEu6q14LjsS4rgXBkikeg=="
         }
       },
       "is_incremental": false,
@@ -23611,13 +23780,7 @@
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 135,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1414,
+          "total_file_count": 139,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
@@ -23625,6 +23788,12 @@
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1414,
           "skipped_file_count": 0
         }
       }
