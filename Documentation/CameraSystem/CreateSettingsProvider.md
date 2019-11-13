@@ -194,7 +194,7 @@ The ContosoCameraEditor assembly definition will specify the profile inspector a
 
 Once created, the data provider can be registered with the Camera system to be used in the application.
 
-![Selecting the camera settings providier](../Images/Camera/SelectSettingsProvider.png)
+![Selecting the camera settings providier](../Images/Camera/SelectUnityArSettings.png)
 
 ## Packaging and distribution
 
@@ -205,7 +205,6 @@ If a data provider is submitted and accepted as a part of the Microsoft Mixed Re
 ## See also
 
 - [Camera System Overview](CameraSystemOverview.md)
-- [Camera Settings Provider Overview](ProviderOverview.md)
 - [`BaseCameraSettingsProvider` class](xref:Microsoft.MixedReality.Toolkit.CameraSystem.BaseCameraSettingsProvider)
 - [`IMixedRealityCameraSettingsProvider` interface](xref:Microsoft.MixedReality.Toolkit.CameraSystem.IMixedRealityCameraSettingsProvider)
 - [`IMixedRealityDataProvider` interface](xref:Microsoft.MixedReality.Toolkit.IMixedRealityDataProvider)
