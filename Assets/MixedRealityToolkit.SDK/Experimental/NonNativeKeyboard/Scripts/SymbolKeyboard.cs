@@ -17,8 +17,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         private void Update()
         {
             // Visual reflection of state.
-            m_PageBck.interactable = NoneNativeKeyboard.Instance.IsShifted;
-            m_PageFwd.interactable = !NoneNativeKeyboard.Instance.IsShifted;
+            m_PageBck.interactable = NonNativeKeyboard.Instance.IsShifted;
+            m_PageFwd.interactable = !NonNativeKeyboard.Instance.IsShifted;
         }
     }
 }

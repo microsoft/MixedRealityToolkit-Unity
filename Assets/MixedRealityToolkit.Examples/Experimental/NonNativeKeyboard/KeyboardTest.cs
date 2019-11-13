@@ -6,14 +6,14 @@ using UnityEngine.EventSystems;
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
     /// <summary>
-    /// This component links the NoneNativeKeyboard to a TMP_InputField
-    /// Put it on the TMP_InputField and assign the NoneNativeKeyboard.prefab
+    /// This component links the NonNativeKeyboard to a TMP_InputField
+    /// Put it on the TMP_InputField and assign the NonNativeKeyboard.prefab
     /// </summary>
     [RequireComponent(typeof(TMP_InputField))]
     public class KeyboardTest : MonoBehaviour, IPointerDownHandler
     {
         [Experimental]
-        [SerializeField] private NoneNativeKeyboard keyboard = null;
+        [SerializeField] private NonNativeKeyboard keyboard = null;
 
         public void OnPointerDown(PointerEventData eventData)
         {

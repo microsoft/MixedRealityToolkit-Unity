@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         private void FireFunctionKey()
         {
-            NoneNativeKeyboard.Instance.FunctionKey(this);
+            NonNativeKeyboard.Instance.FunctionKey(this);
         }
     }
 }

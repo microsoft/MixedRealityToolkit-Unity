@@ -18,14 +18,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// The keyboard to check for caps locks
         /// </summary>
         [Experimental]
-        private NoneNativeKeyboard m_Keyboard;
+        private NonNativeKeyboard m_Keyboard;
 
         /// <summary>
         /// Unity Start method.
         /// </summary>
         private void Start()
         {
-            m_Keyboard = this.GetComponentInParent<NoneNativeKeyboard>();
+            m_Keyboard = this.GetComponentInParent<NonNativeKeyboard>();
             UpdateState();
         }
 
