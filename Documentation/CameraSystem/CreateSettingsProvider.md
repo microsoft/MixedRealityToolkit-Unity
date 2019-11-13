@@ -194,7 +194,7 @@ The ContosoCameraEditor assembly definition will specify the profile inspector a
 
 Once created, the data provider can be registered with the Camera system to be used in the application.
 
-![Selecting the camera settings providier](../Images/Camera/SelectUnityArSettings.png)
+![Selecting the camera settings providier](../Images/CameraSystem/SelectUnityArSettings.png)
 
 ## Packaging and distribution
 
