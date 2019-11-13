@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Input
+namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
 {
     public class JointKinematicBody : MonoBehaviour
     {

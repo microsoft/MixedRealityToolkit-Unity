@@ -11,9 +11,6 @@ GameObject:
   - component: {fileID: 6714055757351649129}
   - component: {fileID: 2243365551929065800}
   - component: {fileID: 3772789015417365136}
-  - component: {fileID: 4182290563061787520}
-  - component: {fileID: 5543879720666572150}
-  - component: {fileID: 5851701526641019889}
   - component: {fileID: 7967104691868737989}
   m_Layer: 8
   m_Name: PalmKinematicBody
@@ -64,53 +61,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 3
---- !u!135 &4182290563061787520
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7890367414255737973}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 0.02
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5543879720666572150
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7890367414255737973}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9296b71443954db1b4571935a43e5266, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  radius: 0.05
-  color: {r: 0.3, g: 0.3, b: 0.3, a: 1}
---- !u!114 &5851701526641019889
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7890367414255737973}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61e55d5030302974a867024ab486d306, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  settings:
-    nearRadius: 0.05
-    farRadius: 0.2
-    nearDistance: 0.02
-    minNearSizePercentage: 0.35
-    centerColor: {r: 0.21176471, g: 0.5568628, b: 0.98039216, a: 0}
-    middleColor: {r: 0.18431373, g: 0.5176471, b: 1, a: 0.2}
-    outerColor: {r: 0.9647059, g: 0.3647059, b: 2.2470589, a: 1}
 --- !u!65 &7967104691868737989
 BoxCollider:
   m_ObjectHideFlags: 0

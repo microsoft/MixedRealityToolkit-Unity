@@ -6,7 +6,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Extensions
+namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
 {
     [MixedRealityExtensionService(SupportedPlatforms.WindowsUniversal)]
     public class HandPhysicsService : BaseExtensionService, IHandPhysicsService, IMixedRealityExtensionService

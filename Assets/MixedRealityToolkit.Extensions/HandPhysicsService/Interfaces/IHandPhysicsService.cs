@@ -7,7 +7,7 @@ using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Extensions
+namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
 {
     public interface IHandPhysicsService : IMixedRealityExtensionService
     {

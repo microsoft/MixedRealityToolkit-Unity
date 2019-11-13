@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Experimental.Extensions
+namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
 {
 	[MixedRealityServiceProfile(typeof(IHandPhysicsService))]
 	[CreateAssetMenu(fileName = "HandPhysicsServiceProfile", menuName = "MixedRealityToolkit/Hand Physics Service Configuration Profile")]
