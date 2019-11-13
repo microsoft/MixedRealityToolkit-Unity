@@ -14,7 +14,7 @@ The following steps presume use of the MixedRealityToolkit object. Steps require
 
 2. Navigate the Inspector panel to the camera system section and ensure that **Enable Camera System** is checked.
 
-![Enablng the camera system](../Images/CameraSystem/EnableCamneraSystem.png)
+![Enablng the camera system](../Images/CameraSystem/EnableCameraSystem.png)
 
 3. Select the camera system implementation. The default class implementation provided by the MRTK is the `MixedRealityCameraSystem`.
 

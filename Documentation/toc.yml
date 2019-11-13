@@ -47,7 +47,6 @@
         href: CameraSystem/WindowsMixedRealityCameraSettings.md
       - name: Unity AR Camera Settings [Experimental]
         href: CameraSystem/UnityArCameraSettings.md
-        href: CameraSystem/ProviderOverview.md
       - name: Creating a camera settings provider
         href: CameraSystem/CreateSettingsProvider.md
   - name: Detecting Platform Capabilities
