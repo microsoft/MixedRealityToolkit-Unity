@@ -247,7 +247,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// walk hierarchy looking for named transform
+        /// Walk hierarchy looking for named transform
         /// </summary>
         /// <param name="t">root transform to start searching from</param>
         /// <param name="name">name to look for</param>
