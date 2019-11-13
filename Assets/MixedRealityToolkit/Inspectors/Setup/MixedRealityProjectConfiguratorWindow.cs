@@ -127,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
                 if (GUILayout.Button(IgnoreButtonContent))
                 {
-                    MixedRealityPreferences.IgnoreSettingsPrompt = true;
+                    MixedRealityProjectPreferences.IgnoreSettingsPrompt = true;
                     Close();
                 }
             }
