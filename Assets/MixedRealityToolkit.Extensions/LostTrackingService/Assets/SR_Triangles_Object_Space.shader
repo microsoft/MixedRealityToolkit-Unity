@@ -132,7 +132,6 @@ SubShader {
 
     FragmentInput vxOut[Geo_Max_Out_Vertices];
     int stripVxCount[Geo_Max_Out_Vertices];
-    float4x4 matrixVP;
     int vxOutCount;
     int stripCount;
 
@@ -481,7 +480,6 @@ SubShader {
     void geometry_main(triangle VertexOutput vxIn[3], inout TriangleStream<FragmentInput> triStream)
     {
         UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(vxIn[0]);
-        matrixVP = UnityObjectToClipPos(unity_WorldToObject);
         vxOutCount=0;
         stripCount=0;
         stripVxCount[0]=0;

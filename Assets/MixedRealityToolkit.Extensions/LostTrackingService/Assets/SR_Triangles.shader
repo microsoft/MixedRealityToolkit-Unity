@@ -135,10 +135,8 @@ SubShader {
 
     FragmentInput vxOut[Geo_Max_Out_Vertices];
     int stripVxCount[Geo_Max_Out_Vertices];
-    float4x4 matrixVP;
     int vxOutCount;
     int stripCount;
-
 
     #define HUX_VIEW_TO_WORLD_DIR(V) (mul(transpose(UNITY_MATRIX_V), float4(V,0)).xyz)
 
@@ -436,11 +434,6 @@ SubShader {
     void geometry_main(triangle VertexOutput vxIn[3], inout TriangleStream<FragmentInput> triStream)
     {
         UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(vxIn[0]);
-        //huxEye = _WorldSpaceCameraPos;
-        //workaround for Unity's auto updater in 5.6
-        float4x4 tmp = UNITY_MATRIX_MVP;
-        matrixVP = mul(tmp, unity_WorldToObject);
-        //matrixVP = mul(UNITY_MATRIX_MVP, _World2Object);
         vxOutCount=0;
         stripCount=0;
         stripVxCount[0]=0;
