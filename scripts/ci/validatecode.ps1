@@ -12,6 +12,7 @@
     - All checked in profiles should not be marked custom
     - There are no references to hardcoded paths
     - There's only a single MixedRealityWorkspace per scene
+    - There aren't any references to Camera.main
 
     Returns 0 if there are no issues, non-zero if there are.
 .PARAMETER Directory
@@ -70,6 +71,25 @@ function CheckEmptyDoccomment(
         }
     }
     return $containsEmptyDoccomment
+}
+
+function CheckMainCamera(
+    [string]$FileName,
+    [string[]]$FileContent,
+    [int]$LineNumber
+) {
+    <#
+    .SYNOPSIS
+        Checks if the given file (at the given line number) contains a reference to Camera.main
+        Returns true if such a reference exists.
+    #>
+    if ($FileName -notmatch "CameraCache.cs" -and $FileContent[$LineNumber] -match "Camera\.main") {
+        Write-Host "An instance of Camera.main was found in $FileName at line $LineNumber "
+        Write-Host "Use CameraCache.Main instead."
+        return $true;
+    }
+
+    return $false;
 }
 
 function CheckCustomProfile(
@@ -176,6 +196,9 @@ function CheckScript(
             $containsIssue = $true
         }
         if (CheckEmptyDoccomment $FileName $fileContent $i) {
+            $containsIssue = $true
+        }
+        if (CheckMainCamera $FileName $fileContent $i) {
             $containsIssue = $true
         }
     }

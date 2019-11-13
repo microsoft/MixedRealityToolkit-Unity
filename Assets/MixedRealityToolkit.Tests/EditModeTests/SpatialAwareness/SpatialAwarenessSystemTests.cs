@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.SpatialAwarenessSystem
             TestUtilities.InitializeMixedRealityToolkitAndCreateScenes();
             MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessSystemProfile = AssetDatabase.LoadAssetAtPath<MixedRealitySpatialAwarenessSystemProfile>(TestSpatialAwarenessSysteProfilePath);
 
-            var spatialAwarenessSystem = new MixedRealitySpatialAwarenessSystem(MixedRealityToolkit.Instance, MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessSystemProfile);
+            var spatialAwarenessSystem = new MixedRealitySpatialAwarenessSystem(MixedRealityToolkit.Instance.ActiveProfile.SpatialAwarenessSystemProfile);
 
             Assert.IsTrue(MixedRealityToolkit.Instance.RegisterService<IMixedRealitySpatialAwarenessSystem>(spatialAwarenessSystem));
 

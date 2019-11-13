@@ -38,9 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.SpatialAwareness
         private void InitializeManager()
         {
             // The spatial awareness system class takes arguments for:
-            // * The registrar
-            // * The spatial awareness system profile
-            object[] args = { this, profile };
+            object[] args = { profile };
 
             Initialize<IMixedRealitySpatialAwarenessSystem>(SpatialAwarenessSystemType.Type, args: args);
         }

@@ -15,9 +15,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
     [InitializeOnLoad]
     public static class MixedRealityToolkitFacadeHandler
     {
-        private static List<Transform> childrenToDelete = new List<Transform>();
+        private static readonly List<Transform> childrenToDelete = new List<Transform>();
         private static MixedRealityToolkit previousActiveInstance;
-        private static long previousFrameCount;
         private static short editorUpdateTicks;
         private const short EditorUpdateTickInterval = 15;
 

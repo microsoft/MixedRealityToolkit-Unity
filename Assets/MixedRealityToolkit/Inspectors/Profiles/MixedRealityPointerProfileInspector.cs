@@ -24,7 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
         private SerializedProperty pointingRaycastLayerMasks;
         private static bool showPointerOptionProperties = true;
         private SerializedProperty pointerOptions;
-        private ReorderableList pointerOptionList;
         private SerializedProperty debugDrawPointingRays;
         private SerializedProperty debugDrawPointingRayColors;
         private SerializedProperty gazeCursorPrefab;
