@@ -376,10 +376,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02a7240a07c6149409b42274987c904a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxWidth: -1
-  MaxHeight: -1
-  HorizontalSpacing: 2
-  VerticalSpacing: 2
+  maxWidth: -1
+  maxHeight: -1
+  horizontalSpacing: 2
+  verticalSpacing: 2
 --- !u!1 &101348
 GameObject:
   m_ObjectHideFlags: 0
@@ -923,10 +923,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02a7240a07c6149409b42274987c904a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxWidth: -1
-  MaxHeight: -1
-  HorizontalSpacing: 2
-  VerticalSpacing: 2
+  maxWidth: -1
+  maxHeight: -1
+  horizontalSpacing: 2
+  verticalSpacing: 2
 --- !u!1 &103114
 GameObject:
   m_ObjectHideFlags: 0
@@ -3659,10 +3659,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02a7240a07c6149409b42274987c904a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxWidth: -1
-  MaxHeight: -1
-  HorizontalSpacing: 2
-  VerticalSpacing: 2
+  maxWidth: -1
+  maxHeight: -1
+  horizontalSpacing: 2
+  verticalSpacing: 2
 --- !u!114 &11486678
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3877,7 +3877,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b48fdfeddeb58db43a7b165be1dedff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ButtonFunction: 3
+  buttonFunction: 3
 --- !u!1 &115944
 GameObject:
   m_ObjectHideFlags: 0
@@ -4294,7 +4294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b48fdfeddeb58db43a7b165be1dedff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ButtonFunction: 0
+  buttonFunction: 0
 --- !u!1 &117362
 GameObject:
   m_ObjectHideFlags: 0
@@ -4928,7 +4928,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b48fdfeddeb58db43a7b165be1dedff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ButtonFunction: 8
+  buttonFunction: 8
 --- !u!1 &118566
 GameObject:
   m_ObjectHideFlags: 0
@@ -5033,10 +5033,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02a7240a07c6149409b42274987c904a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxWidth: -1
-  MaxHeight: -1
-  HorizontalSpacing: 2
-  VerticalSpacing: 2
+  maxWidth: -1
+  maxHeight: -1
+  horizontalSpacing: 2
+  verticalSpacing: 2
 --- !u!1 &118610
 GameObject:
   m_ObjectHideFlags: 0
@@ -6442,10 +6442,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02a7240a07c6149409b42274987c904a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxWidth: -1
-  MaxHeight: -1
-  HorizontalSpacing: 2
-  VerticalSpacing: 2
+  maxWidth: -1
+  maxHeight: -1
+  horizontalSpacing: 2
+  verticalSpacing: 2
 --- !u!1 &126222
 GameObject:
   m_ObjectHideFlags: 0
@@ -6816,10 +6816,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02a7240a07c6149409b42274987c904a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxWidth: -1
-  MaxHeight: -1
-  HorizontalSpacing: 2
-  VerticalSpacing: 2
+  maxWidth: -1
+  maxHeight: -1
+  horizontalSpacing: 2
+  verticalSpacing: 2
 --- !u!1 &127338
 GameObject:
   m_ObjectHideFlags: 0
@@ -7645,7 +7645,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b48fdfeddeb58db43a7b165be1dedff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ButtonFunction: 5
+  buttonFunction: 5
 --- !u!1 &129482
 GameObject:
   m_ObjectHideFlags: 0
@@ -9020,7 +9020,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b48fdfeddeb58db43a7b165be1dedff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ButtonFunction: 7
+  buttonFunction: 7
 --- !u!1 &135164
 GameObject:
   m_ObjectHideFlags: 0
@@ -9765,7 +9765,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b48fdfeddeb58db43a7b165be1dedff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ButtonFunction: 10
+  buttonFunction: 10
 --- !u!1 &136952
 GameObject:
   m_ObjectHideFlags: 0
@@ -11707,7 +11707,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b48fdfeddeb58db43a7b165be1dedff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ButtonFunction: 3
+  buttonFunction: 3
 --- !u!1 &143664
 GameObject:
   m_ObjectHideFlags: 0
@@ -12043,7 +12043,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b48fdfeddeb58db43a7b165be1dedff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ButtonFunction: 3
+  buttonFunction: 3
 --- !u!1 &144552
 GameObject:
   m_ObjectHideFlags: 0
@@ -12394,7 +12394,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b48fdfeddeb58db43a7b165be1dedff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ButtonFunction: 6
+  buttonFunction: 6
 --- !u!1 &146036
 GameObject:
   m_ObjectHideFlags: 0
@@ -12618,7 +12618,7 @@ GameObject:
   - component: {fileID: 6050639456931552995}
   - component: {fileID: 583446739}
   m_Layer: 0
-  m_Name: NoneNativeKeyboard
+  m_Name: NonNativeKeyboard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12967,7 +12967,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b48fdfeddeb58db43a7b165be1dedff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ButtonFunction: 3
+  buttonFunction: 3
 --- !u!1 &146328
 GameObject:
   m_ObjectHideFlags: 0
@@ -13654,7 +13654,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b48fdfeddeb58db43a7b165be1dedff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ButtonFunction: 1
+  buttonFunction: 1
 --- !u!1 &147524
 GameObject:
   m_ObjectHideFlags: 0
@@ -14571,7 +14571,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b48fdfeddeb58db43a7b165be1dedff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ButtonFunction: 3
+  buttonFunction: 3
 --- !u!1 &150910
 GameObject:
   m_ObjectHideFlags: 0
@@ -14661,10 +14661,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02a7240a07c6149409b42274987c904a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxWidth: -1
-  MaxHeight: -1
-  HorizontalSpacing: 2
-  VerticalSpacing: 2
+  maxWidth: -1
+  maxHeight: -1
+  horizontalSpacing: 2
+  verticalSpacing: 2
 --- !u!1 &151086
 GameObject:
   m_ObjectHideFlags: 0
@@ -15293,7 +15293,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b48fdfeddeb58db43a7b165be1dedff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ButtonFunction: 5
+  buttonFunction: 5
 --- !u!1 &152112
 GameObject:
   m_ObjectHideFlags: 0
@@ -15773,7 +15773,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b48fdfeddeb58db43a7b165be1dedff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ButtonFunction: 0
+  buttonFunction: 0
 --- !u!1 &153830
 GameObject:
   m_ObjectHideFlags: 0
@@ -16064,10 +16064,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02a7240a07c6149409b42274987c904a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxWidth: -1
-  MaxHeight: -1
-  HorizontalSpacing: 2
-  VerticalSpacing: 2
+  maxWidth: -1
+  maxHeight: -1
+  horizontalSpacing: 2
+  verticalSpacing: 2
 --- !u!1 &155720
 GameObject:
   m_ObjectHideFlags: 0
@@ -17619,7 +17619,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b48fdfeddeb58db43a7b165be1dedff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ButtonFunction: 11
+  buttonFunction: 11
 --- !u!1 &164942
 GameObject:
   m_ObjectHideFlags: 0
@@ -18113,7 +18113,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b48fdfeddeb58db43a7b165be1dedff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ButtonFunction: 2
+  buttonFunction: 2
 --- !u!1 &167098
 GameObject:
   m_ObjectHideFlags: 0
@@ -19128,7 +19128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b48fdfeddeb58db43a7b165be1dedff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ButtonFunction: 8
+  buttonFunction: 8
 --- !u!1 &168922
 GameObject:
   m_ObjectHideFlags: 0
@@ -20517,7 +20517,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b48fdfeddeb58db43a7b165be1dedff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ButtonFunction: 10
+  buttonFunction: 10
 --- !u!1 &171990
 GameObject:
   m_ObjectHideFlags: 0
@@ -20867,7 +20867,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b48fdfeddeb58db43a7b165be1dedff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ButtonFunction: 2
+  buttonFunction: 2
 --- !u!1 &172484
 GameObject:
   m_ObjectHideFlags: 0
@@ -21346,7 +21346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b48fdfeddeb58db43a7b165be1dedff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ButtonFunction: 4
+  buttonFunction: 4
 --- !u!1 &174232
 GameObject:
   m_ObjectHideFlags: 0
@@ -22259,7 +22259,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b48fdfeddeb58db43a7b165be1dedff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ButtonFunction: 10
+  buttonFunction: 10
 --- !u!1 &176658
 GameObject:
   m_ObjectHideFlags: 0
@@ -22903,7 +22903,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b48fdfeddeb58db43a7b165be1dedff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ButtonFunction: 8
+  buttonFunction: 8
 --- !u!1 &179654
 GameObject:
   m_ObjectHideFlags: 0
@@ -23457,7 +23457,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b48fdfeddeb58db43a7b165be1dedff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ButtonFunction: 3
+  buttonFunction: 3
 --- !u!1 &181608
 GameObject:
   m_ObjectHideFlags: 0
@@ -23793,7 +23793,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b48fdfeddeb58db43a7b165be1dedff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ButtonFunction: 8
+  buttonFunction: 8
 --- !u!1 &182082
 GameObject:
   m_ObjectHideFlags: 0
@@ -25369,7 +25369,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b48fdfeddeb58db43a7b165be1dedff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ButtonFunction: 10
+  buttonFunction: 10
 --- !u!1 &190436
 GameObject:
   m_ObjectHideFlags: 0
@@ -27150,7 +27150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b48fdfeddeb58db43a7b165be1dedff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ButtonFunction: 4
+  buttonFunction: 4
 --- !u!1 &197312
 GameObject:
   m_ObjectHideFlags: 0
@@ -27662,7 +27662,7 @@ MonoBehaviour:
   m_CaretWidth: 1
   m_ReadOnly: 0
   m_RichText: 1
-  m_GlobalFontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_GlobalFontAsset: {fileID: 0}
   m_OnFocusSelectAll: 1
   m_ResetOnDeActivation: 1
   m_RestoreOriginalTextOnEscape: 1
