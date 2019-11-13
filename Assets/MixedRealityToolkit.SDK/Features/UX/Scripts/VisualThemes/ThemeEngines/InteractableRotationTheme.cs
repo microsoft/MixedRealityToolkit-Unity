@@ -42,6 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     new ThemeProperty()
                     {
                         Name = "Relative Rotation",
+                        Tooltip = "Should the rotation be added to initial Gameobject rotation, or absolute",
                         Type = ThemePropertyTypes.Bool,
                         Value = new ThemePropertyValue() { Bool = false }
                     },

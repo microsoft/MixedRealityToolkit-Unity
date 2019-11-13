@@ -148,6 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 this.Properties.Add(new ThemeProperty()
                 {
                     Name = prop.Name,
+                    Tooltip = prop.Tooltip,
                     Type = prop.Type,
                     Value = prop.Value,
                 });

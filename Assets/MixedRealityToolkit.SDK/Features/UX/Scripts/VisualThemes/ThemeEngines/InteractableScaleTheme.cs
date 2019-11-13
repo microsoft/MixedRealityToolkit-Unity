@@ -42,6 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     new ThemeProperty()
                     {
                         Name = "Relative Scale",
+                        Tooltip = "Should the scale be relative to initial Gameobject scale, or absolute",
                         Type = ThemePropertyTypes.Bool,
                         Value = new ThemePropertyValue() { Bool = false }
                     },

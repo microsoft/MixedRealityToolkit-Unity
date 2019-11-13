@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
     public class ThemeProperty
     {
         public string Name;
+        public string Tooltip;
         public ThemePropertyTypes Type;
         public ThemePropertyValue Value;
     }
