@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
 {
+    /// <summary>
+    /// Configuration profile for <see cref="HandPhysicsService"/> Extension service.
+    /// </summary>
 	[MixedRealityServiceProfile(typeof(IHandPhysicsService))]
 	[CreateAssetMenu(fileName = "HandPhysicsServiceProfile", menuName = "MixedRealityToolkit/Hand Physics Service Configuration Profile")]
 	public class HandPhysicsServiceProfile : BaseMixedRealityProfile

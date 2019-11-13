@@ -2,10 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Collections.Generic;
+using System.Text;
 using TMPro;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Input;
-using System.Text;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics.Examples
 {
@@ -32,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics.Examples
         private void OnTriggerEnter(Collider other)
         {
             JointKinematicBody joint = other.GetComponent<JointKinematicBody>();
-            if (!joint) { return; }
+            if (joint == null) { return; }
 
             currentJoints.Add(joint);
             WriteText();
@@ -41,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics.Examples
         private void OnTriggerExit(Collider other)
         {
             JointKinematicBody joint = other.GetComponent<JointKinematicBody>();
-            if (!joint) { return; }
+            if (joint == null) { return; }
 
             if(currentJoints.Contains(joint))
             {
@@ -61,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics.Examples
 
         private void WriteText(bool clear = false)
         {
-            if (!textField) { return; }
+            if (textField == null) { return; }
 
             if (clear)
             {
@@ -77,6 +76,5 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics.Examples
             }
                 textField.text = text + "<br>";
         }
-
     }
 }

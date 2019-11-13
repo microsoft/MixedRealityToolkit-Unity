@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
 {
+    /// <summary>
+    /// Updates a Rigidbody Transform against another Transform.
+    /// </summary>
     public class JointKinematicBody : MonoBehaviour
     {
         /// <summary>

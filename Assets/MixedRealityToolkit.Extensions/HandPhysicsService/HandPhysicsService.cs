@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
 {
+    /// <summary>
+    /// A simple service that creates KinematicRigidbodies on fingertips for physics interactions.
+    /// </summary>
     [MixedRealityExtensionService(SupportedPlatforms.WindowsUniversal)]
     public class HandPhysicsService : BaseExtensionService, IHandPhysicsService, IMixedRealityExtensionService
     {
@@ -24,7 +27,8 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
             handPhysicsServiceProfile = (HandPhysicsServiceProfile)profile;
         }
 
-        private IMixedRealityHandJointService HandJointService => handJointService ?? (MixedRealityToolkit.Instance.GetService<IMixedRealityInputSystem>() as MixedRealityInputSystem).GetDataProvider<IMixedRealityHandJointService>();
+        private IMixedRealityHandJointService HandJointService => handJointService ??
+            (CoreServices.InputSystem as IMixedRealityDataProviderAccess)?.GetDataProvider<IMixedRealityHandJointService>();
 
         /// <inheritdoc />
         public GameObject HandPhysicsServiceRoot { get; private set; }
@@ -137,6 +141,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
 
         #region HandPhysicsService Implementation
 
+        /// <summary>
+        /// Sets up the service by iterating over joints
+        /// </summary>
         private void CreateKinematicBodies()
         {
             if(jointKinematicBodies.Count > 0)
@@ -171,11 +178,24 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
             }
         }
 
-        private static bool TryCreateJointKinematicBody(GameObject rbPrefab, int layer, Handedness handednessType, TrackedHandJoint jointType, Transform parent, out JointKinematicBody jointKinematicBody)
+        /// <summary>
+        /// Instantiates <see cref="FingerTipKinematicBodyPrefab"/>s for all <see cref="fingerTipTypes"/>.
+        /// </summary>
+        /// <remarks>
+        /// Optionally instantiates <see cref="PalmKinematicBodyPrefab"/>.
+        /// </remarks>
+        /// <param name="rigidBodyPrefab">The prefab to intantiate.</param>
+        /// <param name="layer">the layer to put the prefab on.</param>
+        /// <param name="handednessType">the specified <see cref="Handedness"/> for the joint.</param>
+        /// <param name="jointType">the specified <see cref="TrackedHandJoint"/> to intantiate against.</param>
+        /// <param name="parent">The root <see href="https://docs.unity3d.com/ScriptReference/GameObject.html"> for the joints.</param>
+        /// <param name="jointKinematicBody">When successful, the generated <see cref="JointKinematicBody"/>.</param>
+        /// <returns>True when able to successfully intantiate and create a <see cref="JointKinematicBody"/>.</returns>
+        private static bool TryCreateJointKinematicBody(GameObject rigidBodyPrefab, int layer, Handedness handednessType, TrackedHandJoint jointType, Transform parent, out JointKinematicBody jointKinematicBody)
         {
             jointKinematicBody = null;
 
-            GameObject currentGameObject = GameObject.Instantiate(rbPrefab, parent);
+            GameObject currentGameObject = GameObject.Instantiate(rigidBodyPrefab, parent);
             currentGameObject.layer = layer;
             JointKinematicBody currentJoint = currentGameObject.GetComponent<JointKinematicBody>();
 

@@ -1,14 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
-using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit;
-using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics
 {
+    /// <summary>
+    /// Generic interface for applying rigidbodies to handJoints
+    /// </summary>
     public interface IHandPhysicsService : IMixedRealityExtensionService
     {
         /// <summary>
