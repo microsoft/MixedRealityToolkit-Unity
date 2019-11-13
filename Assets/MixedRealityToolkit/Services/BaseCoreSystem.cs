@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="registrar">The <see cref="IMixedRealityServiceRegistrar"/> instance that loaded the service.</param>
         /// <param name="profile">The configuration profile for the service.</param>
         [System.Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
-        public BaseCoreSystem(
+        protected BaseCoreSystem(
             IMixedRealityServiceRegistrar registrar,
             BaseMixedRealityProfile profile = null) : this(profile)
         {
@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// Constructor.
         /// </summary>
         /// <param name="profile">The configuration profile for the service.</param>
-        public BaseCoreSystem(
+        protected BaseCoreSystem(
             BaseMixedRealityProfile profile = null) : base()
         {
             ConfigurationProfile = profile;
