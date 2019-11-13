@@ -963,7 +963,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         gazeHitResult = hitResult3d;
                     }
 
-                    int hitResult3dLayer = hitResult3d.hitObject?.layer ?? -1;
+                    int hitResult3dLayer = hitResult3d.hitObject != null ? hitResult3d.hitObject.layer : -1;
                     if (hitResult3dLayer == 0)
                     {
                         // If we have a hit in the highest priority layer, we can go ahead and truncate the pointer before doing the UI raycast

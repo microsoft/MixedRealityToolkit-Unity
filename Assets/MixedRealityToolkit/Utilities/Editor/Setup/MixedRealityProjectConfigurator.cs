@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         };
 
         // The check functions for each type of setting
-        private static Dictionary<Configurations, Func<bool>> ConfigurationGetters = new Dictionary<Configurations, Func<bool>>()
+        private static readonly Dictionary<Configurations, Func<bool>> ConfigurationGetters = new Dictionary<Configurations, Func<bool>>()
         {
             { Configurations.LatestScriptingRuntime,  () => { return IsLatestScriptingRuntime(); } },
             { Configurations.ForceTextSerialization,  () => { return IsForceTextSerialization(); } },
@@ -206,7 +206,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         }
 
         /// <summary>
-        /// Checks if current Unity projects uses force text serialziation
+        /// Checks if current Unity projects uses force text serialization
         /// </summary>
         public static bool IsForceTextSerialization()
         {

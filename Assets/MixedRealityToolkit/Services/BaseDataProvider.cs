@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="priority">The registration priority of the data provider.</param>
         /// <param name="profile">The configuration profile for the data provider.</param>
         [System.Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
-        public BaseDataProvider(
+        protected BaseDataProvider(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityService service,
             string name = null,
@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="name">The friendly name of the data provider.</param>
         /// <param name="priority">The registration priority of the data provider.</param>
         /// <param name="profile">The configuration profile for the data provider.</param>
-        public BaseDataProvider(
+        protected BaseDataProvider(
             IMixedRealityService service,
             string name = null,
             uint priority = DefaultPriority,

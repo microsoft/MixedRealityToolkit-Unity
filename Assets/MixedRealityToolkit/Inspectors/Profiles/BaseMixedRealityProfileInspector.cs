@@ -3,7 +3,6 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEditor;
@@ -16,9 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     /// </summary>
     public abstract class BaseMixedRealityProfileInspector : UnityEditor.Editor
     {
-        private const string IsCustomProfileProperty = "isCustomProfile";
-
-        private static StringBuilder dropdownKeyBuilder = new StringBuilder();
+        private static readonly StringBuilder dropdownKeyBuilder = new StringBuilder();
 
         protected virtual void OnEnable()
         {
@@ -51,9 +48,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     {
                         using (new EditorGUI.IndentLevelScope())
                         {
-                            UnityEditor.Editor subProfileEditor = UnityEditor.Editor.CreateEditor(property.objectReferenceValue);
-                        // If this is a default MRTK configuration profile, ask it to render as a sub-profile
-                        if (typeof(BaseMixedRealityToolkitConfigurationProfileInspector).IsAssignableFrom(subProfileEditor.GetType()))
+                            UnityEditor.Editor subProfileEditor = CreateEditor(property.objectReferenceValue);
+                            // If this is a default MRTK configuration profile, ask it to render as a sub-profile
+                            if (typeof(BaseMixedRealityToolkitConfigurationProfileInspector).IsAssignableFrom(subProfileEditor.GetType()))
                             {
                                 BaseMixedRealityToolkitConfigurationProfileInspector configProfile = (BaseMixedRealityToolkitConfigurationProfileInspector)subProfileEditor;
                                 configProfile.RenderAsSubProfile = true;

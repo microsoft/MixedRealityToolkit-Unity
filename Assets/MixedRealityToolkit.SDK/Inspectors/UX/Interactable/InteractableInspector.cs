@@ -572,11 +572,18 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                 return false;
             }
 
-            commands = CoreServices.InputSystem.InputSystemProfile.SpeechCommandsProfile?.SpeechCommands;
+            MixedRealityInputSystemProfile inputSystemProfile = CoreServices.InputSystem?.InputSystemProfile;
+            if (inputSystemProfile != null && inputSystemProfile.SpeechCommandsProfile != null)
+            {
+                commands = inputSystemProfile.SpeechCommandsProfile.SpeechCommands;
+            }
+            else
+            {
+                commands = null;
+            }
 
             if (commands == null || commands.Length < 1)
             {
-                commands = null;
                 return false;
             }
 

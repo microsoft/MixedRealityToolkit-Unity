@@ -440,7 +440,7 @@ namespace Microsoft.MixedReality.Toolkit
 
             if (ActiveProfile.RegisteredServiceProvidersProfile != null)
             {
-                for (int i = 0; i < ActiveProfile.RegisteredServiceProvidersProfile?.Configurations?.Length; i++)
+                for (int i = 0; i < ActiveProfile.RegisteredServiceProvidersProfile.Configurations?.Length; i++)
                 {
                     var configuration = ActiveProfile.RegisteredServiceProvidersProfile.Configurations[i];
 

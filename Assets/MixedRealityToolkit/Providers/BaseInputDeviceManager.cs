@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
         [System.Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
-        public BaseInputDeviceManager(
+        protected BaseInputDeviceManager(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
             string name, 
@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="name">Friendly name of the service.</param>
         /// <param name="priority">Service priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The service's configuration profile.</param>
-        public BaseInputDeviceManager(
+        protected BaseInputDeviceManager(
             IMixedRealityInputSystem inputSystem,
             string name,
             uint priority,
