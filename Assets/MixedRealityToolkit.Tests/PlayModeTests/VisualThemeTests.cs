@@ -125,6 +125,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 (theme) => { Assert.AreEqual(state1, theme.Host.transform.rotation.eulerAngles); });
         }
 
+        /// <summary>
+        /// tests that the rotation theme with "Relative Rotation" custom property keeps the initial rotation of target gameobject
+        /// </summary>
         [UnityTest]
         public IEnumerator TestRelativeRotationTheme()
         {
@@ -135,8 +138,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 state0 = Quaternion.LookRotation(Vector3.up).eulerAngles;
             Vector3 state1 = Quaternion.LookRotation(Vector3.down).eulerAngles;
 
-            Vector3 expectedState0 = new Vector3(hostInitialRotation.x + state0.x, hostInitialRotation.y + state0.y, hostInitialRotation.z + state0.z);
-            Vector3 expectedState1 = new Vector3(hostInitialRotation.x + state1.x, hostInitialRotation.y + state1.y, hostInitialRotation.z + state1.z);
+            Vector3 expectedState0 = hostInitialRotation + state0;
+            Vector3 expectedState1 = hostInitialRotation + state1;
 
             var defaultStateValues = new List<List<ThemePropertyValue>>()
             {
@@ -180,6 +183,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
                 (theme) => { Assert.AreEqual(state1, theme.Host.transform.localScale); });
         }
 
+        /// <summary>
+        /// tests that the scale theme with "Relative Scale" custom property also take into account the initial scale of target gameobject
+        /// </summary>
         [UnityTest]
         public IEnumerator TestRelativeScaleTheme()
         {
@@ -190,9 +196,8 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             Vector3 state0 = Vector3.one * 4.0f;
             Vector3 state1 = Vector3.one;
 
-            Vector3 expectedState0 = new Vector3(hostInitialScale.x * state0.x, hostInitialScale.y * state0.y, hostInitialScale.z * state0.z);
-            Vector3 expectedState1 = new Vector3(hostInitialScale.x * state1.x, hostInitialScale.y * state1.y, hostInitialScale.z * state1.z);
-
+            Vector3 expectedState0 = Vector3.Scale(hostInitialScale, state0);
+            Vector3 expectedState1 = Vector3.Scale(hostInitialScale, state1);
 
             var defaultStateValues = new List<List<ThemePropertyValue>>()
             {
