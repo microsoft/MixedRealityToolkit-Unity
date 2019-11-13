@@ -27,14 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.HandPhysics.Examples
             set { textField = value; }
         }
 
-
         private List<JointKinematicBody> currentJoints = new List<JointKinematicBody>();
-
-
-        private void OnEnable()
-        {
-
-        }
 
         private void OnTriggerEnter(Collider other)
         {
