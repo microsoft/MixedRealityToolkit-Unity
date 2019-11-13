@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
+    /// <summary>
+    /// Updates the visual state of the text based on the buttons state
+    /// </summary>
     public class SymbolDisableHighlight : MonoBehaviour
     {
         /// <summary>

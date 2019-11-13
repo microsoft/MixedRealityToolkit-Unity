@@ -6,18 +6,21 @@ using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
+    /// <summary>
+    /// This class toggles the Caps Lock image based on the NonNativeKeyboard's IsCapsLocked state 
+    /// </summary>
     public class CapsLockHighlight : MonoBehaviour
     {
         /// <summary>
         /// The highlight image to turn on and off.
         /// </summary>
+        [Experimental]
         [SerializeField]
         private Image m_Highlight = null;
 
         /// <summary>
         /// The keyboard to check for caps locks
         /// </summary>
-        [Experimental]
         private NonNativeKeyboard m_Keyboard;
 
         /// <summary>
@@ -25,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         /// </summary>
         private void Start()
         {
-            m_Keyboard = this.GetComponentInParent<NonNativeKeyboard>();
+            m_Keyboard = GetComponentInParent<NonNativeKeyboard>();
             UpdateState();
         }
 

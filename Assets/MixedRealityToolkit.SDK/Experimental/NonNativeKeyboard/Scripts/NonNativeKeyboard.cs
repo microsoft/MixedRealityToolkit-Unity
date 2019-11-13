@@ -11,7 +11,7 @@ using TMPro;
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
     /// <summary>
-    /// A simple general use keyboard that is ideal for AR/VR applications.
+    /// A simple general use keyboard that is ideal for AR/VR applications that do not provide a native keyboard.
     /// </summary>
     /// 
     /// NOTE: This keyboard will not automatically appear when you select an InputField in your

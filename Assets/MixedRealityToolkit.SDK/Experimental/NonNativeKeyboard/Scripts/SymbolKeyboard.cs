@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 {
+    /// <summary>
+    /// This class switches back and forth between two symbol boards that otherwise do not fit on the keyboard entirely
+    /// </summary>
     public class SymbolKeyboard : MonoBehaviour
     {
         [Experimental]
