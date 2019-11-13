@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
     /// control panels or sets of prefab/objects.
     /// </summary>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/README_ObjectCollection.html")]
-    public class GridObjectCollection : BaseObjectCollection
+    public partial class GridObjectCollection : BaseObjectCollection
     {
         [Tooltip("Type of surface to map the collection to")]
         [SerializeField]
@@ -50,6 +50,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             get { return layout; }
             set { layout = value; }
+        }
+
+        [SerializeField, Tooltip("Where the grid is anchored relative to local origin")]
+        private LayoutAnchor anchor = LayoutAnchor.MiddleCenter;
+        public LayoutAnchor Anchor 
+        {
+            get { return anchor; }
+            set { anchor = value; }
         }
 
         [Range(0.05f, 100.0f)]
@@ -94,17 +102,50 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             set { distance = value; }
         }
 
+        private static readonly int defaultValueRowsCols = 3;
+
         [Tooltip("Number of rows per column")]
         [SerializeField]
-        private int rows = 3;
+        private int rows = defaultValueRowsCols;
 
         /// <summary>
-        /// Number of rows per column, column number is automatically determined
+        /// Number of rows per column. Can only be assigned when layout type is
+        /// RowsThenColumns
         /// </summary>
         public int Rows
         {
             get { return rows; }
-            set { rows = value; }
+            set 
+            {
+                if (Layout == LayoutOrder.ColumnThenRow) 
+                {
+                    Debug.LogError("When using ColumnThenRow layout, assign Columns instead of Rows.");
+                    return;                    
+                }
+                rows = value; 
+            }
+        }
+
+        [Tooltip("Number of columns per row")]
+        [SerializeField]
+        private int columns = defaultValueRowsCols;
+
+        /// <summary>
+        /// Number of columns per row. Can only be assigned when layout type is 
+        /// ColumnsThenRows
+        /// </summary>
+        public int Columns
+        {
+            get { return columns; }
+            set 
+            { 
+                if (Layout == LayoutOrder.RowThenColumn)
+                {
+                    Debug.LogError("When using RowThenColumn layout, assign Rows instead of Columns.");
+                    return;
+                }
+                columns = value;
+            }
         }
 
         [Tooltip("Width of cell per object")]
@@ -153,8 +194,6 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         /// </summary>
         public Mesh CylinderMesh { get; set; }
 
-        protected int Columns;
-
         protected Vector2 HalfCell;
 
         /// <summary>
@@ -166,7 +205,14 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             Vector3 newPos;
 
             // Now lets lay out the grid
-            Columns = Mathf.CeilToInt((float)NodeList.Count / rows);
+            if (Layout == LayoutOrder.RowThenColumn)
+            {
+                columns = Mathf.CeilToInt((float)NodeList.Count / rows);
+            }
+            else if (Layout == LayoutOrder.ColumnThenRow)
+            {
+                rows = Mathf.CeilToInt((float)NodeList.Count / columns);
+            }
             HalfCell = new Vector2(CellWidth * 0.5f, CellHeight * 0.5f);
 
             // First start with a grid then project onto surface
@@ -244,8 +290,8 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             switch (order)
             {
                 case LayoutOrder.RowThenColumn:
-                    iMax = Rows;
-                    jMax = Columns;
+                    iMax = Columns;
+                    jMax = Rows;
                     break;
                 case LayoutOrder.ColumnThenRow:
                     iMax = Columns;
@@ -266,7 +312,24 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             }
 
             float startOffsetX = (iMax * 0.5f) * CellWidth;
+            if (anchor == LayoutAnchor.BottomLeft || anchor == LayoutAnchor.UpperLeft || anchor == LayoutAnchor.MiddleLeft)
+            {
+                startOffsetX = 0;
+            }
+            else if (anchor == LayoutAnchor.BottomRight || anchor == LayoutAnchor.UpperRight || anchor == LayoutAnchor.MiddleRight)
+            {
+                startOffsetX = iMax * CellWidth;
+            }
+
             float startOffsetY = (jMax * 0.5f) * CellHeight;
+            if (anchor == LayoutAnchor.UpperLeft || anchor == LayoutAnchor.UpperCenter || anchor == LayoutAnchor.UpperRight)
+            {
+                startOffsetY = 0;
+            }
+            else if (anchor == LayoutAnchor.BottomLeft || anchor == LayoutAnchor.BottomCenter || anchor == LayoutAnchor.BottomRight)
+            {
+                startOffsetY = jMax * CellHeight;
+            }
 
             for (int i = 0; i < iMax; i++)
             {
@@ -355,5 +418,45 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     break;
             }
         }
+    
+
+        public void OnValidate()
+        {
+            if (Application.isPlaying)
+            {   // Don't validate during play mode
+                return;
+            }
+
+            // Check upgrade from MRTK 2.X to 2.2
+            // We used to always specify rows even when layout was column then row
+            // 
+            if (Layout == LayoutOrder.ColumnThenRow)
+            {
+                // We count number of children this way to avoid re-laying out children without button press
+                int nodeListCount = 0;
+                for (int i = 0; i < transform.childCount; i++)
+                {
+                    Transform child = transform.GetChild(i);
+                    if (!ContainsNode(child) && (child.gameObject.activeSelf || !IgnoreInactiveTransforms))
+                    {
+                        nodeListCount++;
+                    }
+                }
+
+                // If we have an old asset, then rows could be != default value, columns would be default value
+                bool upgradeScenarioA = rows != defaultValueRowsCols && columns == defaultValueRowsCols;
+                // Edge case: user specified defaultValue rows in old code. Rows would be defaultValue, cols would be defaultValue.
+                // This will be okay unless the number of children exceeds rows * cols
+                bool upgradeScenarioB = rows == defaultValueRowsCols && columns == defaultValueRowsCols && nodeListCount > rows * columns;
+                if (upgradeScenarioA || upgradeScenarioB)
+                {
+                    // Try to guess what the desired columns would be
+                    int columnsGuess = Mathf.CeilToInt((float)nodeListCount / rows);
+                    Debug.LogWarning("GridObjectCollection on " + gameObject.name + " has layout ColumnsThenRows but columns are not specified. Most likely from asset upgrade to MRTK 2.2. Settings Columns property to " + nodeListCount + "/ " + rows + " = " + columnsGuess +". Check your asset to make sure GridObjectCollection has the correct values.");
+                    Columns = columnsGuess;
+                }
+            }
+        }
+
     }
 }
