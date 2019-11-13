@@ -26,6 +26,18 @@ steps:
   inputs:
     solution: '$(Build.SourcesDirectory)\MSBuild\Projects\MixedRealityToolkit.sln'
     msbuildArchitecture: 'x64'
+    platform: 'WSA'
+    configuration: 'InEditor'
+    createLogFile: true
+    restoreNugetPackages: false
+    msbuildVersion: '15.0'
+    msbuildArguments: '/p:BuildProjectReferences=false'
+  displayName: 'Build InEditor WSA'
+  
+- task: MSBuild@1
+  inputs:
+    solution: '$(Build.SourcesDirectory)\MSBuild\Projects\MixedRealityToolkit.sln'
+    msbuildArchitecture: 'x64'
     platform: 'WindowsStandalone32'
     configuration: 'Player'
     createLogFile: true
