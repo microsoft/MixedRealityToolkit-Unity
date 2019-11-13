@@ -37,6 +37,18 @@
       href: Boundary/BoundarySystemGettingStarted.md
     - name: Configuring the Boundary Visualization
       href: Boundary/ConfiguringBoundaryVisualization.md
+  - name: Camera System
+    items:
+    - name: Camera System Overview
+      href: CameraSystem/CameraSystemOverview.md
+    - name: Camera Settings Providers
+      items:
+      - name: Windows Mixed Reality Camera Settings
+        href: CameraSystem/WindowsMixedRealityCameraSettings.md
+      - name: Unity AR Camera Settings [Experimental]
+        href: CameraSystem/UnityArCameraSettings.md
+      - name: Creating a camera settings provider
+        href: CameraSystem/CreateSettingsProvider.md
   - name: Detecting Platform Capabilities
     href: DetectingPlatformCapabilities.md
   - name: Diagnostics System
@@ -83,7 +95,7 @@
       href: InputSimulation/InputSimulationService.md
     - name: Pointers
       href: Input/Pointers.md
-    - name: Voice Input/Controllers.md
+    - name: Voice Input
       items:
       - name: Dictation
         href: Input/Dictation.md
@@ -133,14 +145,16 @@
     items:
     - name: Spatial Awareness Overview
       href: SpatialAwareness/SpatialAwarenessGettingStarted.md
-    - name: Configuring Observers for Device
-      href: SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.md
-    - name: Configuring Observers for Editor
-      href: SpatialAwareness/SpatialObjectMeshObserver.md
-    - name: Controlling Observers via Code
-      href: SpatialAwareness/UsageGuide.md
-    - name: Creating a custom Observer
-      href: SpatialAwareness/CreateDataProvider.md
+    - name: Spatial Observers
+      items:
+      - name: Configuring Observers for Device
+        href: SpatialAwareness/ConfiguringSpatialAwarenessMeshObserver.md
+      - name: Configuring Observers for Editor
+        href: SpatialAwareness/SpatialObjectMeshObserver.md
+      - name: Controlling Observers via Code
+        href: SpatialAwareness/UsageGuide.md
+      - name: Creating a custom Observer
+        href: SpatialAwareness/CreateDataProvider.md
   - name: Teleport System Overview
     href: TeleportSystem/Overview.md
   - name: Tools
