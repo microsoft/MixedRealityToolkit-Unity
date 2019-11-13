@@ -6343,7 +6343,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/README_ObjectCollection.html",
-          "hash": "Ysz5qCu7aA8CaSvIjAUdfw=="
+          "hash": "wnduJ2QkWdM7qKDCQCFKQA=="
         }
       },
       "is_incremental": false,
@@ -9398,6 +9398,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.GridObjectLayoutControl.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.GridObjectLayoutControl.html",
+          "hash": "vyJrFbZpud/3wbbQ4IdjeQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Examples.Demos.HandInteractionTouch.yml",
       "output": {
         ".html": {
@@ -9678,7 +9690,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Examples.Demos.html",
-          "hash": "9QL6+2KRha/d26GsM1MzpQ=="
+          "hash": "Ko5LJtQdL04CMji1wF4x/Q=="
         }
       },
       "is_incremental": false,
@@ -22230,7 +22242,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.GridObjectCollection.html",
-          "hash": "r0oGdpB0yi0HQUBL1uXPFw=="
+          "hash": "6ONtCguUqxdUTeXI4gAtyw=="
         }
       },
       "is_incremental": false,
@@ -22267,6 +22279,18 @@
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.HoverLight.html",
           "hash": "lnWNoqmWkUtLjYBitHg6nQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Utilities.LayoutAnchor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.LayoutAnchor.html",
+          "hash": "hr9pT9OBhL7rmGcKFbWbtg=="
         }
       },
       "is_incremental": false,
@@ -22698,7 +22722,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.ScatterObjectCollection.html",
-          "hash": "pSj9k+Vqtgc/FBXfsM9h/w=="
+          "hash": "BNjWZIR2Xd1XbNDWh4668A=="
         }
       },
       "is_incremental": false,
@@ -23142,7 +23166,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Utilities.html",
-          "hash": "bCA9h8p4chMLokHwj4HzkQ=="
+          "hash": "/rfpVy6Z9H5+TE7tqdsojA=="
         }
       },
       "is_incremental": false,
@@ -23718,7 +23742,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "wYPBQA96SrJFLTIiRKpCCw=="
+          "hash": "ehM7y81gCi+buVEWmhBX3A=="
         }
       },
       "is_incremental": false,
@@ -23793,7 +23817,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 1414,
+          "total_file_count": 1416,
           "skipped_file_count": 0
         }
       }
