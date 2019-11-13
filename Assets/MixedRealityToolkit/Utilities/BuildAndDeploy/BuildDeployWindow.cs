@@ -279,7 +279,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 GUILayout.Label("Quick Options");
                 using (new EditorGUILayout.HorizontalScope())
                 {
-
                     EditorUserBuildSettings.wsaSubtarget = (WSASubtarget)EditorGUILayout.Popup((int)EditorUserBuildSettings.wsaSubtarget, deviceNames);
 
                     bool canInstall = CanInstall;
@@ -300,7 +299,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     GUI.enabled = true;
 
                     OpenPlayerSettingsGUI();
-
                 }
             }
             GUILayout.Space(10);
