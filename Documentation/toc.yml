@@ -175,9 +175,13 @@
     - name: Runtime tools
       items:
       - name: Controller Mapping tool
-        href: Tools/ControllerMappingTool.md 
-  - name: Scene Transition Service
-    href: Extensions/SceneTransitionService/SceneTransitionServiceOverview.md
+        href: Tools/ControllerMappingTool.md
+  - name: Extensions
+    items:
+    - name: Scene Transition Service
+      href: Extensions/SceneTransitionService/SceneTransitionServiceOverview.md
+    - name: Hand Physics Service
+      href: Extensions/HandPhysicsService/HandPhysicsServiceOverview.md
 - name: Contributing
   items:
   - name: Contributing Overview
