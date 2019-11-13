@@ -10,19 +10,19 @@ The following steps presume use of the MixedRealityToolkit object. Steps require
 
 1. Select the MixedRealityToolkit object in the scene hierarchy.
 
-![MRTK Configured Scene Hierarchy](../Images/MRTK_ConfiguredHierarchy.png)
+    ![MRTK Configured Scene Hierarchy](../Images/MRTK_ConfiguredHierarchy.png)
 
 2. Navigate the Inspector panel to the camera system section and ensure that **Enable Camera System** is checked.
 
-![Enablng the camera system](../Images/CameraSystem/EnableCameraSystem.png)
+    ![Enablng the camera system](../Images/CameraSystem/EnableCameraSystem.png)
 
 3. Select the camera system implementation. The default class implementation provided by the MRTK is the `MixedRealityCameraSystem`.
 
-![Select camera system implementation](../Images/CameraSystem/SelectCameraSystemType.png)
+    ![Select camera system implementation](../Images/CameraSystem/SelectCameraSystemType.png)
 
 4. Select the desired configuration profile
 
-![Select camera system profile](../Images/CameraSystem/SelectCameraProfile.png)
+    ![Select camera system profile](../Images/CameraSystem/SelectCameraProfile.png)
 
 ## Configuring the camera system
 
