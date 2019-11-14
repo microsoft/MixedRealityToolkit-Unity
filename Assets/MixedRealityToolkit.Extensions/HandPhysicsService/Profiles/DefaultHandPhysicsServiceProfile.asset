@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6a7cd77bc44d654182d0fde9d267aee, type: 3}
   m_Name: DefaultHandPhysicsServiceProfile
   m_EditorClassIdentifier: 
-  isCustomProfile: 1
+  isCustomProfile: 0
   handPhysicsLayer: 0
   fingerTipKinematicBodyPrefab: {fileID: 6269093343897851288, guid: f3b3591b938890745b0e96406eca7a80,
     type: 3}
