@@ -154,6 +154,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 });
             }
 
+            Debug.Assert(GetDefaultThemeDefinition().StateProperties.Count == StateProperties.Count, $"{Name}  state properties inconsistency with default theme definition, consider reserializing.");
+            Debug.Assert(GetDefaultThemeDefinition().CustomProperties.Count == Properties.Count, $"{Name}  custom properties inconsistency with default theme definition, consider reserializing.");
+
             if (definition.Easing != null)
             {
                 Ease = definition.Easing.Copy();
