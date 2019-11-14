@@ -62,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.MSBuild
         // This is the known Unity-defined script fileId
         private const string ScriptFileIdConstant = "11500000";
 
-        [MenuItem("Assets/Retarget To DLL")]
+        [MenuItem("Mixed Reality Toolkit/MSBuild/Assets/Retarget To DLL")]
         public static void RetargetAssets()
         {
             try
