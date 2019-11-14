@@ -92,6 +92,9 @@ $packages = @{
     "Tools" = @(
         "Assets\MixedRealityToolkit.Tools"
     );
+    "Experimental.UnityAR" = @(
+        "Assets\MixedRealityToolkit.Providers.UnityAR"
+    );
 }
 
 function GetPackageVersion() {
