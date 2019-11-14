@@ -92,7 +92,7 @@ $packages = @{
     "Tools" = @(
         "Assets\MixedRealityToolkit.Tools"
     );
-    "Experimental.UnityAR" = @(
+    "Providers.UnityAR" = @(
         "Assets\MixedRealityToolkit.Providers.UnityAR"
     );
 }
