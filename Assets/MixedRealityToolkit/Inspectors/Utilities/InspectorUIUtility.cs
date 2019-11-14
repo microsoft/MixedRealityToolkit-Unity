@@ -474,7 +474,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Draws a section start (initiated by the Header attribute)
         /// </summary>
-        public static bool DrawSectionFoldout(string headerName, bool open = true, GUIStyle style = null, int size = 0)
+        public static bool DrawSectionFoldout(string headerName, bool open = true, GUIStyle style = null)
         {
             if (style == null)
             {
@@ -489,10 +489,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         /// <summary>
         /// Draws a section start with header name and save open/close state to given preference key in SessionState
         /// </summary>
-        public static bool DrawSectionFoldoutWithKey(string headerName, string preferenceKey = null, GUIStyle style = null, int size = 0)
+        public static bool DrawSectionFoldoutWithKey(string headerName, string preferenceKey = null, GUIStyle style = null, bool defaultOpen = true)
         {
-            bool showPref = SessionState.GetBool(preferenceKey, true);
-            bool show = DrawSectionFoldout(headerName, showPref, style, size);
+            bool showPref = SessionState.GetBool(preferenceKey, defaultOpen);
+            bool show = DrawSectionFoldout(headerName, showPref, style);
             if (show != showPref)
             {
                 SessionState.SetBool(preferenceKey, show);
