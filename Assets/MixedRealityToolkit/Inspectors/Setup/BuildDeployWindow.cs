@@ -65,9 +65,15 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private static readonly List<string> AppPackageDirectories = new List<string>(0);
 
+        #endregion Constants and Readonly Values
+
+        #region Preference Keys
+
         private const string BuildWindowTabKey = "_BuildWindow_Tab";
 
-        #endregion Constants and Readonly Values
+        private const string CurrentConnectionIndexKey = "_BuildWindow_CurrentConnectionIndex";
+
+        #endregion
 
         #region Labels
 
@@ -191,13 +197,21 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private static int CurrentConnectionIndex
         {
-            get => currentConnectionInfoIndex;
+            get
+            {
+                if (currentConnectionInfoIndex == -1)
+                {
+                    CurrentConnectionIndex = SessionState.GetInt(CurrentConnectionIndexKey, 0);
+                }
+                return currentConnectionInfoIndex;
+            }
             set
             {
                 var connections = portalConnections?.Connections;
                 if (connections != null && value >= 0 && value < connections.Count)
                 {
                     currentConnectionInfoIndex = value;
+                    SessionState.SetInt(CurrentConnectionIndexKey, value);
                 }
             }
         }
@@ -207,8 +221,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         #region Fields
 
         private const float HALF_WIDTH = 256f;
-
-        private static float timeLastUpdatedBuilds;
 
         private string[] targetIps;
         private List<Version> windowsSdkVersions = new List<Version>();
@@ -221,9 +233,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private static bool isBuilding;
         private static bool isAppRunning;
 
-        [SerializeField]
-        private int lastSessionConnectionInfoIndex;
-        private static int currentConnectionInfoIndex = 0;
+        private static int currentConnectionInfoIndex = -1;
         private static DevicePortalConnections portalConnections = null;
         private static CancellationTokenSource appxCancellationTokenSource = null;
         private static float appxProgressBarTimer = 0.0f;
@@ -255,14 +265,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             LoadWindowsSdkPaths();
             UpdateBuilds();
 
-            CurrentConnectionIndex = lastSessionConnectionInfoIndex;
             portalConnections = JsonUtility.FromJson<DevicePortalConnections>(UwpBuildDeployPreferences.DevicePortalConnections);
             UpdatePortalConnections();
-        }
-
-        private void OnDestroy()
-        {
-            lastSessionConnectionInfoIndex = CurrentConnectionIndex;
         }
 
         private void OnGUI()
@@ -333,6 +337,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 }
             }
         }
+
+        #region Tab Renders
 
         private void RenderUnityBuildView()
         {
@@ -650,6 +656,8 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             RenderBuildsList();
         }
 
+        #endregion
+
         private void RenderConnectionInfoView()
         {
             using (var c = new EditorGUI.ChangeCheckScope())
@@ -687,9 +695,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 }
 
                 currentConnection.IP = EditorGUILayout.TextField(IPAddressLabel, currentConnection.IP, GUILayout.Width(HALF_WIDTH));
-
                 currentConnection.User = EditorGUILayout.TextField(UsernameLabel, currentConnection.User, GUILayout.Width(HALF_WIDTH));
-
                 currentConnection.Password = EditorGUILayout.PasswordField(PasswordLabel, currentConnection.Password, GUILayout.Width(HALF_WIDTH));
 
                 if (c.changed)
@@ -704,15 +710,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
         private void RenderBuildsList()
         {
             DeviceInfo currentConnection = CurrentConnection;
-
-            using (new EditorGUILayout.HorizontalScope())
+            if (GUILayout.Button(RefreshBuildsLabel, GUILayout.Width(140f)))
             {
-                if (GUILayout.Button(RefreshBuildsLabel))
-                {
-                    UpdateBuilds();
-                }
-
-                GUILayout.FlexibleSpace();
+                UpdateBuilds();
             }
 
             bool processAll = UwpBuildDeployPreferences.TargetAllConnections;
@@ -721,7 +721,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 EditorGUI.BeginChangeCheck();
 
                 processAll = EditorGUILayout.ToggleLeft(ExecuteOnAllDevicesLabel, processAll);
-
                 bool fullReinstall = EditorGUILayout.ToggleLeft(AlwaysUninstallLabel, UwpBuildDeployPreferences.FullReinstall);
 
                 GUILayout.FlexibleSpace();
@@ -737,7 +736,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
             if (Builds.Count == 0)
             {
-                GUILayout.Label("*** No builds found in build directory", EditorStyles.boldLabel);
+                EditorGUILayout.HelpBox("No builds found in build directory. Change directory or refresh.", MessageType.Warning);
             }
             else
             {
@@ -747,101 +746,106 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                     {
                         deployBuildListScrollPosition = scrollView.scrollPosition;
 
-                        foreach (var fullBuildLocation in Builds)
+                        foreach (var appxBuildPath in Builds)
                         {
-                            int lastBackslashIndex = fullBuildLocation.LastIndexOf("\\", StringComparison.Ordinal);
-
-                            var directoryDate = Directory.GetLastWriteTime(fullBuildLocation).ToString("yyyy/MM/dd HH:mm:ss");
-                            string packageName = fullBuildLocation.Substring(lastBackslashIndex + 1);
-
-                            using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox))
-                            {
-                                using (new EditorGUI.DisabledGroupScope(!CanInstall))
-                                {
-                                    if (GUILayout.Button(InstallAppXLabel, GUILayout.Width(96)))
-                                    {
-                                        EditorApplication.delayCall += () =>
-                                        {
-                                            InstallApp(fullBuildLocation);
-                                        };
-                                    }
-
-                                    if (GUILayout.Button(UninstallAppXLabel, GUILayout.Width(96)))
-                                    {
-                                        EditorApplication.delayCall += () =>
-                                        {
-                                            UninstallApp();
-                                        };
-                                    }
-                                }
-
-                                bool canLaunchLocal = IsLocalConnection(currentConnection) && IsHoloLensConnectedUsb;
-                                bool canLaunchRemote = DevicePortalConnectionEnabled && CanInstall;
-
-                                // Launch app...
-                                bool launchAppEnabled = canLaunchLocal || canLaunchRemote;
-                                using (new EditorGUI.DisabledGroupScope(!launchAppEnabled))
-                                {
-                                    if (GUILayout.Button(new GUIContent(isAppRunning ? "Kill App" : "Launch App", "These are remote commands only"), GUILayout.Width(96)))
-                                    {
-                                        EditorApplication.delayCall += () =>
-                                        {
-                                            if (isAppRunning)
-                                            {
-                                                if (processAll)
-                                                {
-                                                    KillAppOnDeviceList(portalConnections);
-                                                    isAppRunning = false;
-                                                }
-                                                else
-                                                {
-                                                    KillAppOnTargetDevice(currentConnection);
-                                                }
-                                            }
-                                            else
-                                            {
-                                                if (processAll)
-                                                {
-                                                    LaunchAppOnDeviceList(portalConnections);
-                                                    isAppRunning = true;
-                                                }
-                                                else
-                                                {
-                                                    LaunchAppOnTargetDevice(currentConnection);
-                                                }
-                                            }
-                                        };
-                                    }
-                                }
-
-                                // Log file
-                                string localLogPath = $"%USERPROFILE%\\AppData\\Local\\Packages\\{PlayerSettings.productName}\\TempState\\UnityPlayer.log";
-                                bool localLogExists = File.Exists(localLogPath);
-
-                                bool viewLogEnabled = localLogExists || canLaunchRemote || canLaunchLocal;
-                                using (new EditorGUI.DisabledGroupScope(!viewLogEnabled))
-                                {
-                                    if (GUILayout.Button(ViewPlayerLogLabel, GUILayout.Width(126)))
-                                    {
-                                        EditorApplication.delayCall += () =>
-                                        {
-                                            if (processAll)
-                                            {
-                                                OpenLogFilesOnDeviceList(portalConnections, localLogPath);
-                                            }
-                                            else
-                                            {
-                                                OpenLogFileForTargetDevice(currentConnection, localLogPath);
-                                            }
-                                        };
-                                    }
-                                }
-
-                                EditorGUILayout.LabelField(new GUIContent($"{packageName} ({directoryDate})"));
-                            }
+                            RenderBuiltAppxOptions(appxBuildPath, currentConnection, processAll);
                         }
                     }
                 }
+            }
+        }
+
+        private void RenderBuiltAppxOptions(string appxBuildPath, DeviceInfo currentConnection, bool processAll)
+        {
+            int lastBackslashIndex = appxBuildPath.LastIndexOf("\\", StringComparison.Ordinal);
+
+            var directoryDate = Directory.GetLastWriteTime(appxBuildPath).ToString("yyyy/MM/dd HH:mm:ss");
+            string packageName = appxBuildPath.Substring(lastBackslashIndex + 1);
+
+            using (new EditorGUILayout.HorizontalScope(EditorStyles.helpBox))
+            {
+                using (new EditorGUI.DisabledGroupScope(!CanInstall))
+                {
+                    if (GUILayout.Button(InstallAppXLabel, GUILayout.Width(96)))
+                    {
+                        EditorApplication.delayCall += () =>
+                        {
+                            InstallApp(appxBuildPath);
+                        };
+                    }
+
+                    if (GUILayout.Button(UninstallAppXLabel, GUILayout.Width(96)))
+                    {
+                        EditorApplication.delayCall += () =>
+                        {
+                            UninstallApp();
+                        };
+                    }
+                }
+
+                bool canLaunchLocal = IsLocalConnection(currentConnection) && IsHoloLensConnectedUsb;
+                bool canLaunchRemote = DevicePortalConnectionEnabled && CanInstall;
+
+                // Launch app...
+                bool launchAppEnabled = canLaunchLocal || canLaunchRemote;
+                using (new EditorGUI.DisabledGroupScope(!launchAppEnabled))
+                {
+                    if (GUILayout.Button(new GUIContent(isAppRunning ? "Kill App" : "Launch App", "These are remote commands only"), GUILayout.Width(96)))
+                    {
+                        EditorApplication.delayCall += () =>
+                        {
+                            if (isAppRunning)
+                            {
+                                if (processAll)
+                                {
+                                    KillAppOnDeviceList(portalConnections);
+                                    isAppRunning = false;
+                                }
+                                else
+                                {
+                                    KillAppOnTargetDevice(currentConnection);
+                                }
+                            }
+                            else
+                            {
+                                if (processAll)
+                                {
+                                    LaunchAppOnDeviceList(portalConnections);
+                                    isAppRunning = true;
+                                }
+                                else
+                                {
+                                    LaunchAppOnTargetDevice(currentConnection);
+                                }
+                            }
+                        };
+                    }
+                }
+
+                // Log file
+                string localLogPath = $"%USERPROFILE%\\AppData\\Local\\Packages\\{PlayerSettings.productName}\\TempState\\UnityPlayer.log";
+                bool localLogExists = File.Exists(localLogPath);
+
+                bool viewLogEnabled = localLogExists || canLaunchRemote || canLaunchLocal;
+                using (new EditorGUI.DisabledGroupScope(!viewLogEnabled))
+                {
+                    if (GUILayout.Button(ViewPlayerLogLabel, GUILayout.Width(126)))
+                    {
+                        EditorApplication.delayCall += () =>
+                        {
+                            if (processAll)
+                            {
+                                OpenLogFilesOnDeviceList(portalConnections, localLogPath);
+                            }
+                            else
+                            {
+                                OpenLogFileForTargetDevice(currentConnection, localLogPath);
+                            }
+                        };
+                    }
+                }
+
+                EditorGUILayout.LabelField(new GUIContent($"{packageName} ({directoryDate})"));
             }
         }
 
@@ -1059,8 +1063,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
 
             UpdatePackageName();
-
-            timeLastUpdatedBuilds = Time.realtimeSinceStartup;
         }
 
         private static string CalcMostRecentBuild()
@@ -1100,7 +1102,6 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
             }
 
             UwpBuildDeployPreferences.DevicePortalConnections = JsonUtility.ToJson(portalConnections);
-            lastSessionConnectionInfoIndex = CurrentConnectionIndex;
             Repaint();
         }
 
