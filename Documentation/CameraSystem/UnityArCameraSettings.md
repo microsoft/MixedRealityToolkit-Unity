@@ -16,7 +16,7 @@ Before the Unity AR camera settings provider can be enabled in an application, t
 | AR Core | | For Android device support |
 | AR Kit | | For iOS device support |
 
-3. If using Unity 2019.x, the assembly definition file for the Unity AR provider needs to be modified to have the **UnityuEngine.SpatialTracking** reference added.
+3. If using Unity 2019.x, the assembly definition file for the Unity AR provider needs to be modified to have the **UnityEngine.SpatialTracking** reference added.
 
     ![Unity AR assembly definition](../Images/CrossPlatform/UnityArAssemblyReferences.png)
 
