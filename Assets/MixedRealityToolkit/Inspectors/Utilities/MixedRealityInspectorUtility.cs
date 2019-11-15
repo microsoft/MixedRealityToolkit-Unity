@@ -556,10 +556,10 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     // The view asset button should always be enabled.
                     using (new GUIEnabledWrapper(true, true))
                     { 
-                    if (GUILayout.Button("View Asset", EditorStyles.miniButton, GUILayout.Width(80)))
-                    {
-                        EditorGUIUtility.PingObject(property.objectReferenceValue);
-                    }
+                        if (GUILayout.Button("View Asset", EditorStyles.miniButton, GUILayout.Width(80)))
+                        {
+                            EditorGUIUtility.PingObject(property.objectReferenceValue);
+                        }
                     }
                 }
 
