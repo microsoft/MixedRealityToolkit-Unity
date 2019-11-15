@@ -546,7 +546,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/CameraSystem/UnityArCameraSettings.html",
-          "hash": "ohpHHDxzpDkESJNKDzbPVg=="
+          "hash": "0RT72Q5XVvXH6G5IvG7gqg=="
         }
       },
       "is_incremental": false,
@@ -1885,6 +1885,17 @@
       "output": {
         "resource": {
           "relative_path": "Documentation/Images/ControllerVisualizer/ControllerVisualizerInspector.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "Documentation/Images/CrossPlatform/UnityArAssemblyReferences.png",
+      "output": {
+        "resource": {
+          "relative_path": "Documentation/Images/CrossPlatform/UnityArAssemblyReferences.png"
         }
       },
       "is_incremental": false,
@@ -23848,16 +23859,16 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1419,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 139,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1419,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
