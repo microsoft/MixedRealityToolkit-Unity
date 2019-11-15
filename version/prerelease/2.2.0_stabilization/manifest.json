@@ -6667,7 +6667,7 @@
       "output": {
         ".html": {
           "relative_path": "Documentation/Updating.html",
-          "hash": "m6GivpsLkV8iUpXtg93tGA=="
+          "hash": "MxxC7Dbo9xO+LLEd2FxdNg=="
         }
       },
       "is_incremental": false,
@@ -6974,6 +6974,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Boundary.BoundaryType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Microsoft.MixedReality.Toolkit.Boundary.BoundaryType.html",
+          "hash": "QpRNsM9lw+T4yfq0hDGo7g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/api/Microsoft.MixedReality.Toolkit.Boundary.Edge.yml",
       "output": {
         ".html": {
@@ -7026,7 +7038,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Boundary.IMixedRealityBoundarySystem.html",
-          "hash": "g0rrPh9S84XiFdQyFbrtUw=="
+          "hash": "0G3BplgafkPPIaS0ffKdTg=="
         }
       },
       "is_incremental": false,
@@ -7050,7 +7062,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Boundary.MixedRealityBoundarySystem.html",
-          "hash": "Gs3t1X1G+ulcRSaZJLGhhA=="
+          "hash": "BYCqbf+hmfWxcal/cWjsnA=="
         }
       },
       "is_incremental": false,
@@ -7074,7 +7086,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Microsoft.MixedReality.Toolkit.Boundary.html",
-          "hash": "NtH80McQzVt1jQt1OwYtQQ=="
+          "hash": "bNEgL3vASvSsgNIHYg+2bQ=="
         }
       },
       "is_incremental": false,
@@ -23742,7 +23754,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "ehM7y81gCi+buVEWmhBX3A=="
+          "hash": "7zrjGkp+0vg2u2Rzrcuicg=="
         }
       },
       "is_incremental": false,
@@ -23801,12 +23813,6 @@
           "total_file_count": 0,
           "skipped_file_count": 0
         },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 1416,
-          "skipped_file_count": 0
-        },
         "ConceptualDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
@@ -23818,6 +23824,12 @@
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 1417,
           "skipped_file_count": 0
         }
       }
