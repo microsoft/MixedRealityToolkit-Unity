@@ -58,7 +58,7 @@ These configuration profiles are detailed below in their relevant sections:
 
 ## Experience settings
 
-Located on the main Mixed Reality Toolkit configuration page, this setting defines the default operation for the Mixed Reality environment for your project.
+Located on the main Mixed Reality Toolkit configuration page, this setting defines the default operation of the Mixed Reality environment for your project.
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_ExperienceSettings.png" width="650px" style="display:block;">
 
@@ -140,7 +140,7 @@ This is only applicable for devices that can provide a scanned environment.
 
 ## Diagnostics settings
 
-An optional but highly useful feature of the MRTK is the plugin diagnostics functionality. This presents a style of debug log in to the scene
+An optional but highly useful feature of the MRTK is the plugin diagnostics functionality.
 
 <img src="../Documentation/Images/MixedRealityToolkitConfigurationProfileScreens/MRTK_DiagnosticsSystemSelection.png" width="650px" style="display:block;">
 
