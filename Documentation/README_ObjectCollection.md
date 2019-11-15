@@ -7,7 +7,7 @@ Object collection is a script to help lay out an array of objects in predefined 
 # Object collection scripts #
 - [`GridObjectCollection.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Collections/GridObjectCollection.cs) supports Cylinder, Plane, Sphere, Radial surface types
 - [`ScatterObjectCollection.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Collections/ScatterObjectCollection.cs) supports scattered style collection  
-- [`TileGridObjectCollection.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Collections/TileGridObjectCollection.cs) provides some additional options to GridObjectCollection.
+- [`TileGridObjectCollection.cs`](https://github.com/Microsoft/MixedRealityToolkit-Unity/blob/mrtk_release/Assets/MixedRealityToolkit.SDK/Features/UX/Scripts/Collections/TileGridObjectCollection.cs) provides some additional options to GridObjectCollection. **Note:* 
 
 |![Grid Object Collection - Cylinder](../Documentation/Images/ObjectCollection/MRTK_ObjectCollectionCylinder.png) Grid Object Collection - Cylinder | ![Grid Object Collection - Sphere](../Documentation/Images/ObjectCollection/MRTK_ObjectCollectionSphere.png) Grid Object Collection - Sphere |
 |:--- | :--- |
@@ -17,12 +17,24 @@ Object collection is a script to help lay out an array of objects in predefined 
 
 ## How to use an object collection ##
 
-To create a collection, create an empty GameObject and assign one of the Object Collection scripts to it. Any object(s) can be added as a child of the GameObject. Once finished adding child objects, click the *Update Collection* button in the inspector panel to generate the object collection. The objects will be laid out in the scene according to the selected surface type. Update Collection can be accessed thorugh the code too.
-
-
+To create a collection, create an empty GameObject and assign one of the Object Collection scripts to it. Any object(s) can be added as a child of the GameObject. Once finished adding child objects, click the *Update Collection* button in the inspector panel to generate the object collection. The objects will be laid out in the scene according to the selected surface type. Update Collection can be accessed through the code too.
 
 
 ![Object collection](../Documentation/Images/ObjectCollection/MRTK_ObjectCollectionScript.png)
+
+## `GridObjectCollection` Content Alignment
+The content in a GridObjectCollection can be aligned so that the parent object is anchored to the top/middle/bottom and left/center/right of the collection. Use the **anchor** property to specify content alignment.
+
+## `GridObjectCollection` Layout Order
+Use the **Layout** field to specify the row / column order that children are laid out:
+
+**Row Then Column** - Children are first laid out by row, then column. Use **Num Rows** (or Rows property in code) to specify the number of rows in the grid.
+
+**Column Then Row** - Children are first laid out by column, then row. Use **Num Columns** (or Columns property in code) to specify the number of columns in the grid.
+
+**Horizontal** - Children are laid out in a single row using columns only
+
+**Vertical** - Children are laid out in a single column using rows only.
 
 ## Object collection examples ##
 

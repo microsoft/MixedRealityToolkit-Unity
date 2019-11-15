@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.CameraSystem
 {
-    public class BaseCameraSettingsProvider : BaseDataProvider, IMixedRealityCameraSettingsProvider
+    public abstract class BaseCameraSettingsProvider : BaseDataProvider, IMixedRealityCameraSettingsProvider
     {
         /// <summary>
         /// Constructor.
@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.CameraSystem
         /// <param name="name">Friendly name of the provider.</param>
         /// <param name="priority">Provider priority. Used to determine order of instantiation.</param>
         /// <param name="profile">The provider's configuration profile.</param>
-        public BaseCameraSettingsProvider(
+        protected BaseCameraSettingsProvider(
             IMixedRealityCameraSystem cameraSystem,
             string name = null,
             uint priority = DefaultPriority,

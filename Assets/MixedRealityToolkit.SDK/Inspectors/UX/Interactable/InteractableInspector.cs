@@ -3,9 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
@@ -31,6 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
         protected const string ShowProfilesPrefKey = "InteractableInspectorProfiles";
         protected const string ShowEventsPrefKey = "InteractableInspectorProfiles_ShowEvents";
+        protected const string ShowEventReceiversPrefKey = "InteractableInspectorProfiles_ShowEvents_Receivers";
         protected bool enabled = false;
 
         protected string[] inputActionOptions = null;
@@ -45,6 +44,8 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
         private static readonly GUIContent CreateThemeLabel = new GUIContent("Create and Assign New Theme", "Create a new theme");
         private static readonly GUIContent AddThemePropertyLabel = new GUIContent("+ Add Theme Property", "Add Theme Property");
         private static readonly GUIContent SpeechComamndsLabel = new GUIContent("Speech Command", "Speech Commands to use with Interactable, pulled from MRTK/Input/Speech Commands Profile");
+        private static readonly GUIContent OnClickEventLabel = new GUIContent("OnClick", "Fired when this Interactable is triggered by a click.");
+        private static readonly GUIContent AddEventReceiverLabel = new GUIContent("Add Event", "Add event receiver to this Interactable for special event handling.");
 
         protected virtual void OnEnable()
         {
@@ -114,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                 AddProfile(0);
             }
 
-            if (InspectorUIUtility.DrawSectionFoldoutWithKey("Profiles", ShowProfilesPrefKey, MixedRealityStylesUtility.TitleFoldoutStyle))
+            if (InspectorUIUtility.DrawSectionFoldoutWithKey("Profiles", ShowProfilesPrefKey, MixedRealityStylesUtility.BoldTitleFoldoutStyle))
             {
                 // Render all profile items. Profiles are per GameObject/ThemeContainer
                 for (int i = 0; i < profileList.arraySize; i++)
@@ -143,8 +144,6 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                             }
                         }
 
-                        EditorGUILayout.Space();
-
                         SerializedProperty themes = profileItem.FindPropertyRelative("Themes");
                         ValidateThemesForDimensions(dimensions, themes);
 
@@ -160,7 +159,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                                 using (new EditorGUILayout.HorizontalScope())
                                 {
                                     string prefKey = themeItem.objectReferenceValue.name + "Profiles" + i + "_Theme" + t + "_Edit";
-                                    showThemeSettings = InspectorUIUtility.DrawSectionFoldoutWithKey(themeLabel, prefKey);
+                                    showThemeSettings = InspectorUIUtility.DrawSectionFoldoutWithKey(themeLabel, prefKey, null, false);
                                     EditorGUILayout.PropertyField(themeItem, new GUIContent(string.Empty, "Theme properties for interaction feedback"));
                                 }
 
@@ -210,30 +209,33 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
 
         private void RenderEventSettings()
         {
-            if (InspectorUIUtility.DrawSectionFoldoutWithKey("Events", ShowEventsPrefKey, MixedRealityStylesUtility.TitleFoldoutStyle))
+            if (InspectorUIUtility.DrawSectionFoldoutWithKey("Events", ShowEventsPrefKey, MixedRealityStylesUtility.BoldTitleFoldoutStyle))
             {
-                EditorGUILayout.Space();
-
-                SerializedProperty onClick = serializedObject.FindProperty("OnClick");
-                EditorGUILayout.PropertyField(onClick, new GUIContent("OnClick"));
-
-                SerializedProperty events = serializedObject.FindProperty("Events");
-                for (int i = 0; i < events.arraySize; i++)
+                using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
                 {
-                    SerializedProperty eventItem = events.GetArrayElementAtIndex(i);
-                    if (InteractableEventInspector.RenderEvent(eventItem))
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("OnClick"), OnClickEventLabel);
+
+                    if (InspectorUIUtility.DrawSectionFoldoutWithKey("Receivers", ShowEventReceiversPrefKey, MixedRealityStylesUtility.TitleFoldoutStyle, false))
                     {
-                        events.DeleteArrayElementAtIndex(i);
-                        // If removed, skip rendering rest of list till next redraw
-                        break;
+                        SerializedProperty events = serializedObject.FindProperty("Events");
+                        for (int i = 0; i < events.arraySize; i++)
+                        {
+                            SerializedProperty eventItem = events.GetArrayElementAtIndex(i);
+                            if (InteractableEventInspector.RenderEvent(eventItem))
+                            {
+                                events.DeleteArrayElementAtIndex(i);
+                                // If removed, skip rendering rest of list till next redraw
+                                break;
+                            }
+
+                            EditorGUILayout.Space();
+                        }
+
+                        if (GUILayout.Button(AddEventReceiverLabel))
+                        {
+                            AddEvent(events.arraySize);
+                        }
                     }
-
-                    EditorGUILayout.Space();
-                }
-
-                if (GUILayout.Button(new GUIContent("Add Event")))
-                {
-                    AddEvent(events.arraySize);
                 }
             }
         }
@@ -572,11 +574,18 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                 return false;
             }
 
-            commands = CoreServices.InputSystem.InputSystemProfile.SpeechCommandsProfile?.SpeechCommands;
+            MixedRealityInputSystemProfile inputSystemProfile = CoreServices.InputSystem?.InputSystemProfile;
+            if (inputSystemProfile != null && inputSystemProfile.SpeechCommandsProfile != null)
+            {
+                commands = inputSystemProfile.SpeechCommandsProfile.SpeechCommands;
+            }
+            else
+            {
+                commands = null;
+            }
 
             if (commands == null || commands.Length < 1)
             {
-                commands = null;
                 return false;
             }
 

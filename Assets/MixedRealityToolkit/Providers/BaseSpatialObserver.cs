@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <param name="priority">The registration priority of the data provider.</param>
         /// <param name="profile">The configuration profile for the data provider.</param>
         [System.Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
-        public BaseSpatialObserver(
+        protected BaseSpatialObserver(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
             string name = null,
@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <param name="name">The friendly name of the data provider.</param>
         /// <param name="priority">The registration priority of the data provider.</param>
         /// <param name="profile">The configuration profile for the data provider.</param>
-        public BaseSpatialObserver(
+        protected BaseSpatialObserver(
             IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
             string name = null,
             uint priority = DefaultPriority,

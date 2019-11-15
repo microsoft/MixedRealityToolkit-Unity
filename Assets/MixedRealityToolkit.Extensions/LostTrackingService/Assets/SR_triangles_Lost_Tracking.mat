@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SR_triangles_Lost_Tracking
+  m_Name: SR_Triangles_Lost_Tracking
   m_Shader: {fileID: 4800000, guid: 328d97e479ecdff41a40e36724da6158, type: 3}
   m_ShaderKeywords: _COLOR_MAP_ENABLE_ _PULSE_ENABLED__ON
   m_LightmapFlags: 4

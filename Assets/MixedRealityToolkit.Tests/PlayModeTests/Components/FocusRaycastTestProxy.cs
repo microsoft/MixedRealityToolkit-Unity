@@ -40,7 +40,10 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         private void Awake()
         {
-            RayLineData = RayLineData ?? GetComponent<BaseMixedRealityLineDataProvider>();
+            if (RayLineData == null)
+            {
+                RayLineData = GetComponent<BaseMixedRealityLineDataProvider>();
+            }
         }
 
         private void OnDrawGizmos()
