@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         [SerializeField]
         [Tooltip("Distance for plane layout")]
         [Range(0f, 100f)]
-        private float distance = 1f;
+        private float distance = 0f;
 
         /// <summary>
         /// This is the Distance for an offset for the Plane mapping and is ignored for the other mappings.
