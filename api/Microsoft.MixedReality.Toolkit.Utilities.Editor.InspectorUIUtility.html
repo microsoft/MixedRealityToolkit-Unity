@@ -1061,13 +1061,13 @@ Displays prefab pending updates</p>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_DrawSectionFoldout_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.DrawSectionFoldout*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_DrawSectionFoldout_System_String_System_Boolean_GUIStyle_System_Int32_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.DrawSectionFoldout(System.String,System.Boolean,GUIStyle,System.Int32)">DrawSectionFoldout(String, Boolean, GUIStyle, Int32)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_DrawSectionFoldout_System_String_System_Boolean_GUIStyle_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.DrawSectionFoldout(System.String,System.Boolean,GUIStyle)">DrawSectionFoldout(String, Boolean, GUIStyle)</h4>
   <div class="markdown level1 summary"><p>Draws a section start (initiated by the Header attribute)</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool DrawSectionFoldout(string headerName, bool open = true, GUIStyle style = null, int size = 0)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool DrawSectionFoldout(string headerName, bool open = true, GUIStyle style = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1094,11 +1094,6 @@ Displays prefab pending updates</p>
         <td><span class="parametername">style</span></td>
         <td></td>
       </tr>
-      <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td><span class="parametername">size</span></td>
-        <td></td>
-      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -1119,13 +1114,13 @@ Displays prefab pending updates</p>
   
   
   <a id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_DrawSectionFoldoutWithKey_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.DrawSectionFoldoutWithKey*"></a>
-  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_DrawSectionFoldoutWithKey_System_String_System_String_GUIStyle_System_Int32_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.DrawSectionFoldoutWithKey(System.String,System.String,GUIStyle,System.Int32)">DrawSectionFoldoutWithKey(String, String, GUIStyle, Int32)</h4>
+  <h4 id="Microsoft_MixedReality_Toolkit_Utilities_Editor_InspectorUIUtility_DrawSectionFoldoutWithKey_System_String_System_String_GUIStyle_System_Boolean_" data-uid="Microsoft.MixedReality.Toolkit.Utilities.Editor.InspectorUIUtility.DrawSectionFoldoutWithKey(System.String,System.String,GUIStyle,System.Boolean)">DrawSectionFoldoutWithKey(String, String, GUIStyle, Boolean)</h4>
   <div class="markdown level1 summary"><p>Draws a section start with header name and save open/close state to given preference key in SessionState</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool DrawSectionFoldoutWithKey(string headerName, string preferenceKey = null, GUIStyle style = null, int size = 0)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool DrawSectionFoldoutWithKey(string headerName, string preferenceKey = null, GUIStyle style = null, bool defaultOpen = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1153,8 +1148,8 @@ Displays prefab pending updates</p>
         <td></td>
       </tr>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td><span class="parametername">size</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
+        <td><span class="parametername">defaultOpen</span></td>
         <td></td>
       </tr>
     </tbody>

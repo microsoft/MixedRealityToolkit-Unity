@@ -178,7 +178,7 @@
   <h6><strong>Assembly</strong>: cs.temp.dll.dll</h6>
   <h5 id="Microsoft_MixedReality_Toolkit_CameraSystem_BaseCameraSettingsProvider_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class BaseCameraSettingsProvider : BaseDataProvider, IMixedRealityCameraSettingsProvider, IMixedRealityDataProvider, IMixedRealityService, IDisposable</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class BaseCameraSettingsProvider : BaseDataProvider, IMixedRealityCameraSettingsProvider, IMixedRealityDataProvider, IMixedRealityService, IDisposable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -191,7 +191,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BaseCameraSettingsProvider(IMixedRealityCameraSystem cameraSystem, string name = null, uint priority = 10U, BaseCameraSettingsProfile profile = null)</code></pre>
+    <pre><code class="lang-csharp hljs">protected BaseCameraSettingsProvider(IMixedRealityCameraSystem cameraSystem, string name = null, uint priority = 10U, BaseCameraSettingsProfile profile = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
