@@ -23,9 +23,9 @@
     <file src="**" exclude="*.nuspec;*.nuspec.meta;*.props;*.props.meta;*.targets;*.targets.meta" target="MRTK\" />
 
     <!-- Reuse MixedReality.Toolkit.targets, as the MSBuild logic is the same for all MRTK nuget packages. -->
-    <file src="..\MixedRealityToolkit\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Providers.UnityAR.targets" />
+    <file src="..\..\MixedRealityToolkit\MixedReality.Toolkit.targets" target="build\Microsoft.MixedReality.Toolkit.Providers.UnityAR.targets" />
 
-    <file src="..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Providers.UnityAR.*" target="Plugins\" />
-    <file src="..\..\..\Assets\MixedRealityToolkit.Providers.UnityAR\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Providers.UnityAR" />
+    <file src="..\..\..\Plugins\**\Microsoft.MixedReality.Toolkit.Providers.UnityAR.*" target="Plugins\" />
+    <file src="..\..\..\..\Assets\MixedRealityToolkit.Staging\UnityAR\**\*.cs" target="contentFiles\any\any\.PkgSrc\MRTK\MixedRealityToolkit.Staging\UnityAR" />
   </files>
 </package>
