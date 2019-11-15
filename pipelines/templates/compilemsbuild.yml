@@ -50,6 +50,30 @@ steps:
   inputs:
     solution: '$(Build.SourcesDirectory)\MSBuild\Projects\MixedRealityToolkit.sln'
     msbuildArchitecture: 'x64'
+    platform: 'Android'
+    configuration: 'Player'
+    createLogFile: true
+    restoreNugetPackages: false
+    msbuildVersion: '15.0'
+    msbuildArguments: '/p:BuildProjectReferences=false'
+  displayName: 'Build Player Android'
+
+- task: MSBuild@1
+  inputs:
+    solution: '$(Build.SourcesDirectory)\MSBuild\Projects\MixedRealityToolkit.sln'
+    msbuildArchitecture: 'x64'
+    platform: 'iOS'
+    configuration: 'Player'
+    createLogFile: true
+    restoreNugetPackages: false
+    msbuildVersion: '15.0'
+    msbuildArguments: '/p:BuildProjectReferences=false'
+  displayName: 'Build Player iOS'
+
+- task: MSBuild@1
+  inputs:
+    solution: '$(Build.SourcesDirectory)\MSBuild\Projects\MixedRealityToolkit.sln'
+    msbuildArchitecture: 'x64'
     platform: 'WSA'
     configuration: 'Player'
     createLogFile: true
