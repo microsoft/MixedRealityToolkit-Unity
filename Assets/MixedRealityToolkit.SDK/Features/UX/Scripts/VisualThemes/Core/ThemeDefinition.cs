@@ -137,6 +137,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
             return null;
         }
 
+        #region ISerializationCallbackReceiver implementation
+
+        ///<inheritdoc/>
         void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
             //backward compatibility at runtime in case some custom properties have been added in code after first serialization
@@ -144,7 +147,6 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             if (defaultDefinition.CustomProperties.Count > CustomProperties.Count)
             {
-                //Debug.LogWarning($"{Name} Theme has inconsistent custom properties, consider forcing serialization. Fixing now by adding default custom properties.");
                 foreach (ThemeProperty prop in defaultDefinition.CustomProperties)
                 {
                     if (!CustomProperties.Exists(p => p.Name == prop.Name))
@@ -161,8 +163,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
             }
         }
 
+        ///<inheritdoc/>
         void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
         }
+
+        #endregion
     }
 }
