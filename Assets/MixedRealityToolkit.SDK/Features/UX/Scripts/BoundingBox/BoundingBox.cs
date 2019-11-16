@@ -1462,7 +1462,12 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 var cornerbounds = GetMaxBounds(cornerVisual);
                 float maxDim = Mathf.Max(Mathf.Max(cornerbounds.size.x, cornerbounds.size.y), cornerbounds.size.z);
                 cornerbounds.size = maxDim * Vector3.one;
-                cornerbounds.center = Vector3.zero;
+
+                cornerbounds.center = new Vector3(
+                    (i & (1 << 0)) == 0 ? cornerbounds.center.x : -cornerbounds.center.x,
+                    (i & (1 << 1)) == 0 ? -cornerbounds.center.y : cornerbounds.center.y,
+                    (i & (1 << 2)) == 0 ? -cornerbounds.center.z : cornerbounds.center.z
+                    );
 
                 // we need to multiply by this amount to get to desired scale handle size
                 var invScale = scaleHandleSize / cornerbounds.size.x;
